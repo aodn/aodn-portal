@@ -1,6 +1,8 @@
 
 class ProxyController {
 
+    def DEBUG = true;
+
     def index = {
 
         if (params.url) {
@@ -12,9 +14,7 @@ class ProxyController {
            // get the doamin name from the supplied uri
            def hostName =  params.url.toURL().getHost()
 
-           println(hostList.contains(hostName))
-
-            if (hostList.contains(hostName)) {
+            if (DEBUG || hostList.contains(hostName)) {
 
                  def thetext = params.url.toURL()
                  log.info("Proxy: The url to be requested " + thetext)
@@ -31,8 +31,7 @@ class ProxyController {
                log.error("Proxy: The url " + hostName + "was not allowed")
                render(text: "Host not allowed",contentType:"text/html",encoding:"UTF-8")
            }
-
-
+            
         }
         else {
              render(text: "No URL supplied",contentType:"text/html",encoding:"UTF-8")
