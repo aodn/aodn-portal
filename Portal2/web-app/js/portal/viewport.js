@@ -332,7 +332,7 @@ Ext.onReady(function() {
         })
 		,
         width: 250,
-		autoHeight: true,
+        autoHeight: true,
         border: false,
 
 
@@ -377,7 +377,7 @@ Ext.onReady(function() {
 
 
 	Ext.Ajax.request({
-            url: proxyURL + 'url=http://131.217.38.28:8080/Portal2/server/list?type=JSON',
+            url: 'server/list?type=JSON',
             success: function(resp){
                      //alert(resp.responseText);
                     var serverList= Ext.util.JSON.decode(resp.responseText);
@@ -388,7 +388,7 @@ Ext.onReady(function() {
                                 root: new Ext.tree.AsyncTreeNode({
                                         text: serverList[i].name,
                                         loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                                                url: 'proxy.php?url='+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
+                                                url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
                                                 layerOptions: {buffer: 0, singleTile: true, ratio: 1},
                                                 layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion, 'serverType':serverList[i].type},
 
@@ -403,7 +403,8 @@ Ext.onReady(function() {
                                 })
                                 ,
                                 width: 250,
-
+                                autoHeight: true,
+                                border: false,
                                 rootVisible: true,
                                 listeners: {
                                     // Add layers to the map when ckecked, remove when unchecked.

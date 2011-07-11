@@ -15,6 +15,7 @@
 <script src="${resource(dir:'js',file:'portal/map.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
+<title> Portal 2.0</title>
 </head>
 
 <body>
