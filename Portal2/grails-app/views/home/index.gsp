@@ -10,9 +10,10 @@
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all-debug.css')}" />
 
+<!-- <script src="${resource(dir:'js',file:'map.js')}" defer="defer"  type="text/javascript"></script> -->
 
-
-<script src="${resource(dir:'js',file:'map.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/map.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
 </head>
 
