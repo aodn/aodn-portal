@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="${resource(dir:'js',file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />
 
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" defer="defer" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'GeoExt/lib/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all-debug.css')}" />
 
 
