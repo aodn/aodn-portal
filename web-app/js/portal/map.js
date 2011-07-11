@@ -134,8 +134,7 @@ function addToPopup(loc,mapPanel,e) {
 			}
 			if(url!="none"){
 				Ext.Ajax.request({
-				   url: proxyURL,
-				   params: { url:url},
+				   url: proxyURL+encodeURIComponent(url),
 				   success: function(resp){		 
 					  // add some content to the popup (this can be any Ext component)
 						popup.add({
