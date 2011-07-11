@@ -1,0 +1,315 @@
+/*
+ * Copyright 2009, 2010, 2011 Integrated Marine Observing System (IMOS)
+ * Copyright 2010, 2011 Australian Ocean Data Network (AODN)
+
+ *  This file is part of aodn_ocean_portal
+
+ *  aodn_ocean_portal is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  aodn_ocean_portal is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+ html, body {
+	
+	font-family: arial, Helvetica, Arial, sans-serif;
+	font-size: 0.85em;
+	margin: 0px;
+	background-color: #7391ad;	
+}
+h2 { color:#3B6E8F; font-size: 16px; font-weight: bold;}
+h3 { color:#3B6E8F; font-size: 14px; font-weight: bold; margin-bottom:2px;margin-top:0px;}
+h4 { color:#3B6E8F; font-size: 12px;  margin: 0px 2px;}
+h5 { color:#3B6E8F; font-size: 11px;  margin: 0px 2px;}
+h6 { color:#3B6E8F; font-size: 10px;  margin: 0px 2px; display:inline;	}
+
+
+a {
+	color: black;
+}
+a img{
+	border: none;
+}
+
+a:hover{
+	color: grey;
+}
+a[rel="external"], a.external {
+white-space: nowrap;
+padding-right: 15px;
+background: url(../img/extlink.gif) no-repeat 100% 50%;
+zoom: 1;
+}
+.extlink {
+	margin-left: 2px;	
+}
+hr {
+	width: 80%;		
+	color:#7391ad;
+	background: #fff url(../img/borderLine.gif) no-repeat center bottom;
+	margin: 8px auto;
+	height: 1px;
+	border: 0 none;	
+}
+
+
+
+
+#mapdiv {
+	position: absolute;	
+	z-index: 1;
+	height: 100%;
+	width:100%;
+}
+
+
+.topdrop  {
+  background-image:url(../img/mapshadow.png);
+  background-position:left top;
+  background-repeat:repeat-x;  
+	z-index: 100;
+	width: 100%;
+  height:10px;
+	position: absolute;
+}
+
+
+#navtoolbar{
+	position: absolute;	
+  float: left;
+	width: 42px;
+	z-index: 1001;
+}
+
+.leftdrop  {
+  background-image:url(../img/leftshadow.png);
+  background-position:left top;
+  background-repeat:repeat-y;
+	z-index: 101;
+	width:10px ;
+  height:100%;
+	position: absolute;
+}
+
+
+
+#mapscale {
+	width: 90px;
+	z-index: 3;
+  position: relative;
+  float: left;	
+	color: white;
+}
+#mapcoords {
+	width: 90px;
+	z-index: 4;
+  position: relative;
+  float: right;
+	color: white;
+	background: inherit;
+}
+#mapcoords b{
+	background: none;
+}
+
+#mapinfo {
+	bottom: 0em;
+	left: 0px;
+	padding: 10px 15px ;
+	display: block;
+	position: absolute;  
+	width: 220px;
+	z-index: 3;
+	font-family: Arial;
+	font-size: smaller;	
+    -moz-border-radius: 5! important;
+    border: 1px 1px 0 0;
+}
+ 
+ 
+.feature {
+	margin: 5px 0px;
+	padding: 5px;
+	width:100%;
+	background-color: #fafafa;
+	border:1px solid #eee;	
+}
+
+
+
+/*	getfeatureinfo results 
+*/
+
+
+.getfeaturepopup_contentDiv, .olPopupContent {	
+	overflow: hidden! important;
+	cursor: default; 
+}
+.olPopup {
+	height: 100%;	
+}
+
+
+.closebox {
+	height: 15px;
+	width: 420px;
+	clear: both;
+}
+.closebox a {
+	position:absolute;
+	right: 25px;
+	font-size: 11px; 
+	font-weight: bold;
+}
+
+
+.feature ul li{
+	margin-left: 1em;
+}
+
+
+
+#featureinfocontent {
+	padding: 0px;
+	width: 420px;
+	height: 220px;	
+	overflow-x: hidden;
+	background-color: white;
+	overflow-y: auto;
+}
+#featureinfocontent .feature {
+	width: 97%;
+	
+}
+#featureinfocontent img {
+	padding: 5px;
+}
+#featureinfocontent b { 
+	color:#3B6E8F; 
+	font-weight: bold;
+}
+#featureinfocontent ul { 
+	margin: 5px 0px;
+	padding-left: 2px; 
+	list-style-type: circle;
+}
+#featureinfocontent li { 
+	margin-left: 2px; 
+	padding-left: 2px; 
+	list-style-position: inside;
+}
+
+
+.block h3 {
+	border: solid 1px #cccccc;
+	background-color: #efefef;
+	padding-left: 3px;
+	width: 100%;
+}
+
+p.important {
+	color:#3c668d;
+	font-weight: bold;
+}
+
+
+
+
+/* Overview Map wigit */
+.olControlOverviewMapElement {
+	background-color: #3c668d;
+}
+
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
+	background-color: transparent;
+}
+a.ygtvlabel:hover {
+	text-decoration:underline;
+}
+
+ 
+div.olControlScaleLineBottom {
+	margin-top: -1;
+	
+}
+div.olControlScaleLineTop, div.olControlScaleLineBottom {
+	border-color: black;
+}
+
+.olControlEditingToolbar {
+float: left;
+width: 50px;
+}
+.olControlEditingToolbar div {
+float: left;
+}
+
+
+#navtoolbar {
+	margin-top: 250px;
+	margin-left: 9px;
+	
+}
+
+
+
+
+#controlPanZoom {
+	display: none;
+}
+
+
+
+.olControlOverviewMapElement
+{
+    position: absolute! important;
+    bottom: 0! important;
+    right: 0! important;
+    _bottom: -1px! important;
+    _right: -1px! important;
+    background: #3c668d! important;
+    -moz-border-radius: 5! important;    
+}
+
+.olControlOverviewMapExtentRectangle
+{
+    border: 1px solid #e89c14! important;
+    margin: 0! important;
+    padding: 0! important;
+}
+
+#layerswitch {
+	position: static;
+	clear: both;
+}
+.olControlLayerSwitcher {	
+	display: none;
+}
+
+/* hide it till positioned in style.css */
+.olControlOverviewMapMaximizeButton {
+
+    visibility : hidden;
+}
+
+
+
+
+
+
+
+.leftdrop, .topdrop {display: none; width:0px;}
+
+
+
+
+
+

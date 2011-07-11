@@ -14,6 +14,8 @@
 
 <script src="${resource(dir:'js',file:'portal/map.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'map.css')}" />
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" />
 
 <title> Portal 2.0</title>
 </head>
