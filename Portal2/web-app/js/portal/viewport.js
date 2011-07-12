@@ -15,7 +15,7 @@ var layersTree;
 var currentNode;
 var checkNode;
 var proxyURL = "proxy?url=";
-
+var activePanel, layerList, opacitySlider;
 //--------------------------------------------------------------------------------------------
 //GeoExt stuff
 Ext.onReady(function() {
@@ -169,10 +169,9 @@ Ext.onReady(function() {
                                     layer: childLayer,
                                     listeners: {
                                         click: function(node, event){
-                                            mapPanel.map.addLayer(node.layer);
-                                            //alert(map.layers.length);
+                                            mapPanel.map.addLayer(node.layer);                                            
                                         },
-										load: function(node, event){
+					load: function(node, event){
                                             node.layer;
                                             //alert(map.layers.length);
                                         }
@@ -430,60 +429,65 @@ Ext.onReady(function() {
         }
     });
 
-
-   detailsPanel = new Ext.Panel({
-        title: 'Layer Details',
-        region: 'south',
-        html: '<div id="slider" style="clear:both"></div>',
-        //items: [opacitySlider],
-        border: false,
-        split: true,
-        autoScroll: true,
-        collapsible: true
-    });
-
-    var layerList = new GeoExt.tree.OverlayLayerContainer({
-        text: 'All Layers',
-        layerStore: mapPanel.layers,
-        leaf: false,
-        expanded: true,
-        listeners: {
-            // Add layers to the map when ckecked, remove when unchecked.
-            // Note that this does not take care of maintaining the layer
-            // order on the map.
-            append: function(node, event){
-                    //if(node.layer.isBaseLayer==false){
-                            //alert('load');
-                    //}
-            }
-        }
-    });
-
-   var activePanel = new Ext.tree.TreePanel({
-        autoScroll: true,
-        split: true,
-        region: 'north',
-        root: layerList,
-	enableDD: true,
-        width: 170,
-        height: 300,
-        floating: true,
-        rootVisible: false,
-        x: 380,
-        y: 0
-
-    });
-//
 // create a separate slider bound to the map but displayed elsewhere
-    var opacitySlider = new GeoExt.LayerOpacitySlider({
+    opacitySlider = new GeoExt.LayerOpacitySlider({
+        id: "opacitySlider",
         layer: layer,
-        aggressive: true,
         width: 200,
-        isFormField: true,
         inverse: false,
         fieldLabel: "opacity",
         plugins: new GeoExt.LayerOpacitySliderTip({template: '<div>Opacity: {opacity}%</div>'})
     });
+
+   detailsPanel = new Ext.Panel({
+        title: 'Layer Options',
+        region: 'south',
+        border: false,
+        split: true,
+        height: 100,
+        autoScroll: true,
+        collapsible: true,
+        items: [
+               opacitySlider
+        ]
+    });
+
+
+   function updateDetailsPanel(layer)
+   {
+        detailsPanel.text = layer.name;
+        detailsPanel.setTitle("Layer Options: " + layer.name);
+        opacitySlider.setLayer(layer);
+   }
+
+
+    layerList = new GeoExt.tree.OverlayLayerContainer({
+        text: 'All Layers',
+        layerStore: mapPanel.layers,
+        leaf: false,
+        expanded: true
+    });
+
+   activePanel = new Ext.tree.TreePanel({
+       header: false,
+       title: 'Map Layers',
+       split: true,
+       region: 'north',
+       height: 200,
+       showRoot: false,
+        root: layerList,
+        listeners: {
+            append: function(node){
+                node.on("click", function(node){
+                    if(node.isSelected())
+                    {
+                        updateDetailsPanel(node.layer);
+                    }
+                });
+            }
+        }
+    });
+//
 
 
 var viewport = new Ext.Viewport({
