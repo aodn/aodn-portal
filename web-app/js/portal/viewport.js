@@ -466,6 +466,7 @@ Ext.onReady(function() {
         layerStore: mapPanel.layers,
         leaf: false,
         expanded: true
+        
     });
 
    activePanel = new Ext.tree.TreePanel({
@@ -474,7 +475,7 @@ Ext.onReady(function() {
        split: true,
        region: 'north',
        height: 200,
-       showRoot: false,
+       displayRoot: false,
         root: layerList,
         listeners: {
             append: function(node){
