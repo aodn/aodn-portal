@@ -37,6 +37,9 @@ var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
 
+var testing;//Variable for debug.
+
+
 // Pop up things
 var popup;
 var bogusMarkup = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
@@ -200,7 +203,6 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 // xml document where the first value is the javascript function that has to
 // applied to format the get feature Info.
 function formatGetFeatureInfo(response){
-        testing=response;
         if(response.responseXML == null){
             return response.responseText;
         }else{
@@ -208,13 +210,12 @@ function formatGetFeatureInfo(response){
         }
 }
 
-var testing;
+
 function setHTML_ncWMS(response) {
 
     
     var xmldoc = response.responseXML;
     if (xmldoc==null)
-    testing=response;
     var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
     var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
     var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
@@ -650,31 +651,6 @@ function ucwords( str ) {
 }
 
 
-function URLEncode (clearString) {
-    var output = '';
-    var x = 0;
-   clearString = clearString.toString();
-
-    var regex = /(^[a-zA-Z0-9_.]*)/;
-    while (x < clearString.length) {
-        var match = regex.exec(clearString.substr(x));
-        if (match != null && match.length > 1 && match[1] != '') {
-            output += match[1];
-            x += match[1].length;
-        } else {
-            if (clearString[x] == ' ')
-                output += '+';
-            else {
-                var charCode = clearString.charCodeAt(x);
-                var hexVal = charCode.toString(16);
-                output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
-            }
-            x++;
-        }
-    }
-    return output;
-}
-
  function imgSizer(){
     //Configuration Options
     var max_width = popupWidth -70 ; 	//Sets the max width, in pixels, for every image
@@ -684,8 +660,8 @@ function URLEncode (clearString) {
     var tics = new Date().getTime();
 
     $(selector).each(function(){
-        var width = $(this).width();
-        var height = $(this).height();
+        var width = $.width();
+        var height = $.height();
         //alert("here");
         if (width > max_width) {
 
@@ -696,12 +672,12 @@ function URLEncode (clearString) {
             //alert("(popupwidth "+max_width+" "+width + ") " +height+" * "+ratio);
 
             //Shrink the image and add link to full-sized image
-            $(this).animate({
+            $.animate({
                 width: new_width
             }, 'slow').width(new_height);
 
-            $(this).hover(function(){
-                $(this).attr("title", "This image has been scaled down.")
+            $.hover(function(){
+                $.attr("title", "This image has been scaled down.")
             //$(this).css("cursor","pointer");
             });
 
@@ -816,7 +792,7 @@ function isArgoExisting (base_url,argo_id) {
     else {
 
             getArgoList(base_url) ;
-
+            
             if(argos.length > 0) {
                 if ( inArray(argos,argo_id))  {
                     status = true;
@@ -865,26 +841,26 @@ function drawSingleArgo(base_url, argo_id, zoomlevel) {
         centreOnArgo(base_url, argo_id, null);
     }
 
-
 }
 
 function getArgoList(base_url) {
 
-
+       
         if (argos == null) {
             argos =  Array();
             var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=platform_number&version=1.0.0');
-            var x= xmlDoc.getElementsByTagName('topp:argo_float');
-
-            if (x.length > 0) {
-                 for (i=0;i<x.length;i++) {
-                    argos[i]= x[i].getElementsByTagName("topp:platform_number")[0].childNodes[0].nodeValue;
-                 }
-            }
-
-            else {
-                // tried once and failed leave it alone
-                argos =  Array();
+            testing=xmlDoc;
+            if(xmlDoc!=null){
+                var x= xmlDoc.getElementsByTagName('topp:argo_float');
+                if (x.length > 0) {
+                     for (i=0;i<x.length;i++) {
+                        argos[i]= x[i].getElementsByTagName("topp:platform_number")[0].childNodes[0].nodeValue;
+                     }
+                }
+                else {
+                    // tried once and failed leave it alone
+                    argos =  Array();
+                }
             }
 
         }
@@ -915,6 +891,26 @@ function IsInt(sText) {
 
 
 
+/*function getXML(request_string) {
+        var xml;
+        var conn = new Ext.data.Connection;
+        conn.request({
+          url: proxyURL+encodeURIComponent(request_string)+"&format=xml",
+          callback: function(options, success, response)
+          {
+            testing=response;
+            if (success){      
+                xml=response.responseXML;
+            }else{
+                xml=null;
+            }
+          }
+        });
+        alert("outsidecall: "+xml);
+        return xml;
+}*/
+// Move this to Extjs framework
+
 function getXML(request_string) {
 
         if (window.XMLHttpRequest)  {
@@ -923,13 +919,12 @@ function getXML(request_string) {
         else {// Internet Explorer 5/6
             xhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
-        request_string=request_string.replace(/\\/g,'');
-        var  theurl = URLEncode(request_string);
-        xhttp.open("GET","RemoteRequest?url=" + theurl,false);
+        xhttp.open("GET",proxyURL+encodeURIComponent(request_string)+"&format=xml",false);
         xhttp.send("");
        return xhttp.responseXML;
 
 }
+
 
 
 function acornHistory(request_string,div,data) {
