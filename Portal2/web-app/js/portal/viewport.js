@@ -362,7 +362,7 @@ Ext.onReady(function() {
         autoscroll: true,
         split: true,
         width: 250,
-		autoScroll: true,
+	autoScroll: true,
         activeTab: 1,
         items: [
             contributorTree ,
@@ -376,63 +376,59 @@ Ext.onReady(function() {
     });
 
 
-	Ext.Ajax.request({
-            url: 'server/list?type=JSON',
-            success: function(resp){
-                     //alert(resp.responseText);
-                    var serverList= Ext.util.JSON.decode(resp.responseText);
-                    for(var i = 0; i<serverList.length;i++){
+    Ext.Ajax.request({
+        url: 'server/list?type=JSON',
+        success: function(resp){
+                 //alert(resp.responseText);
+                var serverList= Ext.util.JSON.decode(resp.responseText);
+                for(var i = 0; i<serverList.length;i++){
 
-                        Ext.getCmp('contributorTree').add(
-                            new Ext.tree.TreePanel({
-                                root: new Ext.tree.AsyncTreeNode({
-                                        text: serverList[i].name,
-                                        loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                                                url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
-                                                layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                                                layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion, 'serverType':serverList[i].type},
+                    Ext.getCmp('contributorTree').add(
+                        new Ext.tree.TreePanel({
+                            root: new Ext.tree.AsyncTreeNode({
+                                    text: serverList[i].name,
+                                    loader: new GeoExt.tree.WMSCapabilitiesLoader({
+                                            url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
+                                            layerOptions: {buffer: 0, singleTile: true, ratio: 1},
+                                            layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion, 'serverType':serverList[i].type},
 
-                                                // customize the createNode method to add a checkbox to nodes
-                                                createNode: function(attr) {
+                                            // customize the createNode method to add a checkbox to nodes
+                                            createNode: function(attr) {
 
-                                                        attr.checked = attr.leaf ? false : undefined;
+                                                    attr.checked = attr.leaf ? false : undefined;
 
-                                                        return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-                                                }
-                                        })
-                                })
-                                ,
-                                width: 250,
-                                autoHeight: true,
-                                border: false,
+                                                    return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
+                                            }
+                                    })
+                            })
+                            ,
+                            width: 250,
+                            autoHeight: true,
+                            border: false,
 
-                                rootVisible: true,
-                                listeners: {
-                                    // Add layers to the map when ckecked, remove when unchecked.
-                                    // Note that this does not take care of maintaining the layer
-                                    // order on the map.
-                                    'checkchange': function(node, checked) {
-                                        if (checked === true) {
-                                                testing=node;
-                                                if (node.attributes.layer.serverType='NCWMS'){
-                                                        node.attributes.layer.yx = true;
-                                                        node.attributes.layer.isncWMS =true;
-                                                }
-                                                mapPanel.map.addLayer(node.attributes.layer);
-                                        } else {
-                                                mapPanel.map.removeLayer(node.attributes.layer);
-                                    }
+                            rootVisible: true,
+                            listeners: {
+                                // Add layers to the map when ckecked, remove when unchecked.
+                                // Note that this does not take care of maintaining the layer
+                                // order on the map.
+                                'checkchange': function(node, checked) {
+                                    if (checked === true) {
+                                            testing=node;
+                                            if (node.attributes.layer.serverType='NCWMS'){
+                                                    node.attributes.layer.yx = true;
+                                                    node.attributes.layer.isncWMS =true;
+                                            }
+                                            mapPanel.map.addLayer(node.attributes.layer);
+                                    } else {
+                                            mapPanel.map.removeLayer(node.attributes.layer);
                                 }
                             }
-                        })
-                    );
-                }
+                        }
+                    })
+                );
             }
-	});
-
-
-
-
+        }
+    });
 
 
    detailsPanel = new Ext.Panel({
@@ -507,6 +503,9 @@ var viewport = new Ext.Viewport({
     },
     detailsPanel,mapPanel]
 });
+
+
+
 
 viewport.show();
 

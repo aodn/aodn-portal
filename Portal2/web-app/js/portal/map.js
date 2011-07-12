@@ -215,7 +215,7 @@ function setHTML_ncWMS(response) {
 
     
     var xmldoc = response.responseXML;
-    if (xmldoc==null)
+    if (xmldoc==null) return "response not in xmls";
     var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
     var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
     var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
@@ -849,7 +849,6 @@ function getArgoList(base_url) {
         if (argos == null) {
             argos =  Array();
             var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=platform_number&version=1.0.0');
-            testing=xmlDoc;
             if(xmlDoc!=null){
                 var x= xmlDoc.getElementsByTagName('topp:argo_float');
                 if (x.length > 0) {
@@ -901,13 +900,15 @@ function IsInt(sText) {
             testing=response;
             if (success){      
                 xml=response.responseXML;
+                return xml;
             }else{
                 xml=null;
+                return xml;
             }
           }
         });
         alert("outsidecall: "+xml);
-        return xml;
+        
 }*/
 // Move this to Extjs framework
 
@@ -921,6 +922,7 @@ function getXML(request_string) {
         }
         xhttp.open("GET",proxyURL+encodeURIComponent(request_string)+"&format=xml",false);
         xhttp.send("");
+        testing=xhttp;
        return xhttp.responseXML;
 
 }
