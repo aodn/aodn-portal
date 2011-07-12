@@ -21,7 +21,7 @@
  * Instance of OpenLayers map
  */
 var map;
-var proxyURL = "proxy?";
+var proxyURL = "proxy?url=";
 //var tmp_response;
 
 var argos = null; // array of existing argo platform_numbers
@@ -74,7 +74,6 @@ function addToPopup(loc,mapPanel,e) {
 			   var layer = map.getLayer(map.layers[key].id);
 				if ((!layer.isBaseLayer) && layer.queryable) {
 					if (layer.animatedNcwmsLayer) {
-
 					   if (layer.tile.bounds.containsLonLat(lonlat)) {
 							url = layer.baseUri +
 							"&EXCEPTIONS=application/vnd.ogc.se_xml" +
@@ -132,15 +131,20 @@ function addToPopup(loc,mapPanel,e) {
 						});
 					}
 			}
+                       
 			if(url!="none"){
+                                format = "html";
+                                if(layer.isncWMS!=undefined) format = "xml";
+                                
 				Ext.Ajax.request({
 				   url: proxyURL+encodeURIComponent(url),
+                                   params: {format: format},
 				   success: function(resp){		 
 					  // add some content to the popup (this can be any Ext component)
 						popup.add({
 							xtype: "box",
 							autoEl: {
-								html: formatGetFeatureInfo(resp,layer.isncWMS)
+								html: formatGetFeatureInfo(resp)
 							}
 						});
 
@@ -157,10 +161,6 @@ function addToPopup(loc,mapPanel,e) {
 		}
 }
 
-function formatGetFeatureInfo(response,isncWMS){
-	if (isncWMS==undefined) return response.responseText;
-	else return setHTML_ncWMS(response);
-}
 
 OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
 
@@ -194,9 +194,131 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 });
 
 
+// First solution where the only distinction if we have XML response
+// then I know is XML. For the future I think the proxy should return some
+// extra information to be used by the formatFetFeatureInfo, for example an
+// xml document where the first value is the javascript function that has to
+// applied to format the get feature Info.
+function formatGetFeatureInfo(response){
+        testing=response;
+        if(response.responseXML == null){
+            return response.responseText;
+        }else{
+            return setHTML_ncWMS(response);
+        }
+}
 
+var testing;
+function setHTML_ncWMS(response) {
 
+    
+    var xmldoc = response.responseXML;
+    if (xmldoc==null)
+    testing=response;
+    var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
+    var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
+    var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
+    var x    = xmldoc.getElementsByTagName('value');
+    var copyright = xmldoc.getElementsByTagName('copyright');
+    var vals = "";
+    var origStartVal = startval;
 
+    var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
+    var timeList = xmldoc.getElementsByTagName('time').length;
+    var time = null;
+
+    if(timeList > 0){
+        time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
+    }
+        
+    if (x.length > 1) {
+        var endval = parseFloat(xmldoc.getElementsByTagName('value')[x.length -1].childNodes[0].nodeValue);
+        if(time != null)
+            var endtime = xmldoc.getElementsByTagName('time')[x.length -1].firstChild.nodeValue;
+    }
+    var origEndVal = endval;
+
+    var html = "";
+    var  extras = "";
+
+    var isSD = true;//this.layername.toLowerCase().indexOf("standard deviation") >= 0;
+    
+
+    if (lon) {  // We have a successful result
+
+        if (!isNaN(startval) ) {  // may have no data at this point
+            var layer_type = " - ncWMS Layer";
+
+            if(time != null)
+            {
+                var human_time = new Date();
+                human_time.setISO8601(time);
+            } 
+            if(time != null)
+            {
+                if (endval == null) {
+                    if(isSD)
+                    {
+                        vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " <b>" + origStartVal + "</b> degrees";
+                    }
+                    else{
+                        vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
+                    }
+                }
+                else {
+
+                    var human_endtime = new Date();
+                    human_endtime.setISO8601(endtime);
+                    var endval =getCelsius(endval, this.unit);
+                    
+                    if(isSD)
+                    {
+                        vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b>" + origStartVal + "</b> degrees";
+                        vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ ": <b>" + origEndVal + "</b> degrees";
+                        vals += "<BR />";
+                    }
+                    else
+                    {
+                        vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b> " + startval[0] +"</b> "+ startval[1] + startval[2];
+                        vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
+                        vals += "<BR />";
+                    }
+                }
+            }
+            
+			
+            lon = toNSigFigs(lon, 7);
+            lat = toNSigFigs(lat, 7);
+
+            
+            html = "<h3>"+layer_type+"</h3>";
+
+            
+            html +=        "<div class=\"feature\">";
+
+            html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<BR />" + extras;
+
+                // to do add transect drawing here
+                //
+           html += "<BR><h6>Get a graph of the data along a transect via layer options!</h6>\n";
+           //html = html +" <div  ><a href="#" onclick=\"addLineDrawingLayer('ocean_east_aus_temp/temp','http://emii3.its.utas.edu.au/ncWMS/wms')\" >Turn on transect graphing for this layer </a></div>";
+
+          if(copyright.length > 0)
+          {
+                html += "<p>" + copyright[0].firstChild.nodeValue + "</p>";
+          }
+
+          
+            html = html +"</div>" ;
+        }
+
+    }
+    else {
+        html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
+    }
+
+	return html;
+}
 
 
 
@@ -302,116 +424,6 @@ function setHTML2(response) {
 
 
 }
-
-function setHTML_ncWMS(response) {
-
-    var xmldoc = response.responseXML;
-    var lon  = parseFloat(xmldoc.getElementsByTagName('longitude')[0].firstChild.nodeValue);
-    var lat  = parseFloat(xmldoc.getElementsByTagName('latitude')[0].firstChild.nodeValue);
-    var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
-    var x    = xmldoc.getElementsByTagName('value');
-    var copyright = xmldoc.getElementsByTagName('copyright');
-    var vals = "";
-    var origStartVal = startval;
-
-    var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
-    var timeList = xmldoc.getElementsByTagName('time').length;
-    var time = null;
-
-    if(timeList > 0){
-        time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
-    }
-        
-    if (x.length > 1) {
-        var endval = parseFloat(xmldoc.getElementsByTagName('value')[x.length -1].childNodes[0].nodeValue);
-        if(time != null)
-            var endtime = xmldoc.getElementsByTagName('time')[x.length -1].firstChild.nodeValue;
-    }
-    var origEndVal = endval;
-
-    var html = "";
-    var  extras = "";
-
-    var isSD = true;//this.layername.toLowerCase().indexOf("standard deviation") >= 0;
-	testing=this;
-
-
-    if (lon) {  // We have a successful result
-
-        if (!isNaN(startval) ) {  // may have no data at this point
-            var layer_type = " - ncWMS Layer";
-
-            if(time != null)
-            {
-                var human_time = new Date();
-                human_time.setISO8601(time);
-            } 
-            if(time != null)
-            {
-                if (endval == null) {
-                    if(isSD)
-                    {
-                        vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " <b>" + origStartVal + "</b> degrees";
-                    }
-                    else{
-                        vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
-                    }
-                }
-                else {
-
-                    var human_endtime = new Date();
-                    human_endtime.setISO8601(endtime);
-                    var endval =getCelsius(endval, this.unit);
-                    
-                    if(isSD)
-                    {
-                        vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b>" + origStartVal + "</b> degrees";
-                        vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ ": <b>" + origEndVal + "</b> degrees";
-                        vals += "<BR />";
-                    }
-                    else
-                    {
-                        vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b> " + startval[0] +"</b> "+ startval[1] + startval[2];
-                        vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
-                        vals += "<BR />";
-                    }
-                }
-            }
-            
-			
-            lon = toNSigFigs(lon, 7);
-            lat = toNSigFigs(lat, 7);
-
-            
-            html = "<h3>"+layer_type+"</h3>";
-
-            
-            html +=        "<div class=\"feature\">";
-
-            html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<BR />" + extras;
-
-                // to do add transect drawing here
-                //
-           html += "<BR><h6>Get a graph of the data along a transect via layer options!</h6>\n";
-           //html = html +" <div  ><a href="#" onclick=\"addLineDrawingLayer('ocean_east_aus_temp/temp','http://emii3.its.utas.edu.au/ncWMS/wms')\" >Turn on transect graphing for this layer </a></div>";
-
-          if(copyright.length > 0)
-          {
-                html += "<p>" + copyright[0].firstChild.nodeValue + "</p>";
-          }
-
-          
-            html = html +"</div>" ;
-        }
-
-    }
-    else {
-        html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
-    }
-
-	return html;
-}
-
 
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius

@@ -211,13 +211,12 @@ Ext.onReady(function() {
    });
 
 
-    var root =
-
+    
     ncWMS = new Ext.tree.TreePanel({
         root: new Ext.tree.AsyncTreeNode({
                 text: 'ncWMS emii',
                 loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                        url: proxyURL +encodeURIComponent('http://ncwms.emii.org.au/ncWMS/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0'),
+                        url: proxyURL +encodeURIComponent('http://ncwms.emii.org.au/ncWMS/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0&DATASET=satellite_data_sst'),
                         layerOptions: {buffer: 0, singleTile: true, ratio: 1},
                         layerParams: {'TRANSPARENT': 'TRUE','VERSION':'1.3.0'},
                         // customize the createNode method to add a checkbox to nodes
@@ -229,7 +228,7 @@ Ext.onReady(function() {
         })
 		,
         width: 250,
-		autoHeight: true,
+        autoHeight: true,
         border: false,
 		//rootVisible: false,
         listeners: {
@@ -238,8 +237,8 @@ Ext.onReady(function() {
             // order on the map.
             'checkchange': function(node, checked) {
                 if (checked === true) {
-					node.attributes.layer.yx = true;
-					node.attributes.layer.isncWMS =true;
+                    node.attributes.layer.yx = true;
+                    node.attributes.layer.isncWMS =true;
                     mapPanel.map.addLayer(node.attributes.layer);
                 } else {
                     mapPanel.map.removeLayer(node.attributes.layer);
@@ -405,6 +404,7 @@ Ext.onReady(function() {
                                 width: 250,
                                 autoHeight: true,
                                 border: false,
+
                                 rootVisible: true,
                                 listeners: {
                                     // Add layers to the map when ckecked, remove when unchecked.
@@ -445,7 +445,7 @@ Ext.onReady(function() {
         collapsible: true
     });
 
-    var layerList = new GeoExt.tree.LayerContainer({
+    var layerList = new GeoExt.tree.OverlayLayerContainer({
         text: 'All Layers',
         layerStore: mapPanel.layers,
         leaf: false,
@@ -467,12 +467,11 @@ Ext.onReady(function() {
         split: true,
         region: 'north',
         root: layerList,
-
-		enableDD: true,
+	enableDD: true,
         width: 170,
         height: 300,
         floating: true,
-		rootVisible: false,
+        rootVisible: false,
         x: 380,
         y: 0
 
@@ -494,7 +493,7 @@ var viewport = new Ext.Viewport({
     layout: 'border',
     items: [
     {
-        title: "Nested left",
+        title: "Active layers",
         layout: 'border',
         items: [
             activePanel,leftTabPanel

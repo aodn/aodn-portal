@@ -17,6 +17,9 @@
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'map.css')}" />
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" />
 
+<!-- TODO Download jquery and add it to the project-->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
 <title> Portal 2.0</title>
 </head>
 
