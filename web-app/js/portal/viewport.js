@@ -453,11 +453,11 @@ Ext.onReady(function() {
     });
 
 
-   function updateDetailsPanel(layer)
+   function updateDetailsPanel(node)
    {
-        detailsPanel.text = layer.name;
-        detailsPanel.setTitle("Layer Options: " + layer.name);
-        opacitySlider.setLayer(layer);
+        detailsPanel.text = node.layer.name;
+        detailsPanel.setTitle("Layer Options: " + node.layer.name);
+        opacitySlider.setLayer(node.layer);
    }
 
 
@@ -482,7 +482,7 @@ Ext.onReady(function() {
                 node.on("click", function(node){
                     if(node.isSelected())
                     {
-                        updateDetailsPanel(node.layer);
+                        updateDetailsPanel(node);
                     }
                 });
             }
