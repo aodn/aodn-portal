@@ -157,6 +157,7 @@ function addToPopup(loc,mapPanel,e) {
 						popup.doLayout();
 						// since the popup is anchored, calling show will move popup to this location
 						popup.show();
+                                                imgSizer();
 					}
 				});
 			}
