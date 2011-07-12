@@ -447,16 +447,16 @@ Ext.onReady(function() {
         layerStore: mapPanel.layers,
         leaf: false,
         expanded: true,
-		listeners: {
-				// Add layers to the map when ckecked, remove when unchecked.
-				// Note that this does not take care of maintaining the layer
-				// order on the map.
-				append: function(node, event){
-					//if(node.layer.isBaseLayer==false){
-						//alert('load');
-					//}
-				}
-		}
+        listeners: {
+            // Add layers to the map when ckecked, remove when unchecked.
+            // Note that this does not take care of maintaining the layer
+            // order on the map.
+            append: function(node, event){
+                    //if(node.layer.isBaseLayer==false){
+                            //alert('load');
+                    //}
+            }
+        }
     });
 
    var activePanel = new Ext.tree.TreePanel({
