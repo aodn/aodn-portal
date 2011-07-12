@@ -17,8 +17,12 @@
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'map.css')}" />
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" />
 
-<!-- TODO Download jquery and add it to the project-->
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-1.4.1.min.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-autocomplete1.1.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery.rotate.1-1.js')}"></script>
+<!-- TODO Download jquery and add it to the project>
+<script src="http://code.jquery.com/jquery-latest.js"></script-->
 
 <title> Portal 2.0</title>
 </head>

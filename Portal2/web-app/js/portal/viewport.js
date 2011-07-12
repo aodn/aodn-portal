@@ -105,19 +105,20 @@ Ext.onReady(function() {
             split: true,
 			tbar: toolbarItems,
             zoom: 1,
-            title: 'A Simple GeoExt Map',
+            title: 'Map panel',
             items: [{
                 xtype: "gx_zoomslider",
                 aggressive: false,
                 vertical: true,
                 height: 100,
                 x: 15,
-                y: 140,
-                plugins: new GeoExt.ZoomSliderTip()
+                y: 140
+                //plugins: new GeoExt.ZoomSliderTip()
             }]
            });
 
-	 var control = new OpenLayers.Control.Click({
+    // Controll to get feature info or pop up
+    var control = new OpenLayers.Control.Click({
         trigger: function(evt) {
             var loc = mapPanel.map.getLonLatFromViewPortPx(evt.xy);
             addToPopup(loc,mapPanel,evt);
@@ -135,7 +136,7 @@ Ext.onReady(function() {
         text: 'AODN Map Layers',
         leaf: false,
         expanded: false,
-		enableDD: true,
+        enableDD: true,
         layerStore: layerStore,
         listeners: {
             expand: function(node, event){
