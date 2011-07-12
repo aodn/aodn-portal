@@ -36,7 +36,6 @@ var timestamp; // timestamp for getFeatureInfo requests
 var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
-
 var testing;//Variable for debug.
 
 
