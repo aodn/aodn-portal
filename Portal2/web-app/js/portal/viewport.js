@@ -17,6 +17,10 @@ var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel, layerList, opacitySlider;
 //--------------------------------------------------------------------------------------------
+
+ var nodeSelected;
+ var mapPanel;
+//
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
@@ -98,7 +102,7 @@ Ext.onReady(function() {
 
 
   //creating the map panel in the center
-    var mapPanel = new GeoExt.MapPanel({
+    mapPanel = new GeoExt.MapPanel({
             height: 800,
             width: 800,
             border: true,
@@ -470,42 +474,13 @@ Ext.onReady(function() {
         expanded: true
         
     });
-    //Active layer menu
-    layerMenu = new Ext.menu.Menu({
-            items: [
-                {
-                    text: 'Remove Layer',
-                    handler: removeLayer
-                },
-                {
-                    text: 'I like Ext',
-                    checked: true
-                }, '-', {
-                    text: 'Open With',
-                    menu: {
-                        items: [{
-                            text: 'Notepad ++'
-                        }, {
-                            text: 'GIMP 2.0'
-                        }, {
-                            text: 'Firefox'
-                        }]
-                    }
-                }
-            ]
-        });
 
-    
-    var nodeSelected;
-    function removeLayer() {
-        testing=nodeSelected;
-        mapPanel.map.removeLayer(nodeSelected.layer);
-    }
 
 
    activePanel = new Ext.tree.TreePanel({
        header: false,
        title: 'Map Layers',
+       id: 'activePanelTree',
        split: true,
        region: 'north',
        height: 200,
@@ -518,23 +493,53 @@ Ext.onReady(function() {
                     {
                         updateDetailsPanel(node);
                     }
-                    nodeSelected=node;
-                    x = event.browserEvent.clientX;
-                    y = event.browserEvent.clientY;
-                    layerMenu.showAt([x, y]);
-                });
-                node.on("contextmenu",function(node,event){
-                    x = event.browserEvent.clientX;
-                    y = event.browserEvent.clientY;
-                    nodeSelected=node;
-                    layerMenu.showAt([x, y]);
                 });
 
             }
         }
     });
 
+    //Active layer menu
+    layerMenu = new Ext.menu.Menu({
+            items: [
+                {
+                    text: 'Remove Layer',
+                    handler: removeLayer
+                },
+                {
+                    text: 'Visible',
+                    checked: true,
+                    handler: visibleLayer
+                }, '-', {
+                    text: 'More Options',
+                    menu: {
+                        items: [{
+                            text: 'Geoext is great'
+                        }, {
+                            text: 'Ext is even better'
+                        }, {
+                            text: 'Matias rocks!'
+                        }]
+                    }
+                }
+            ]
+        });
 
+
+
+    function removeLayer() {
+        // Remove layer. First unselect to remove from the tree of WMS Browse
+        mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
+    }
+    function visibleLayer() {
+        // If visible the undo checkchange
+        activePanel.getSelectionModel().getSelectedNode().checked=!activePanel.getSelectionModel().getSelectedNode().checked;
+    }
+
+    activePanel.on("contextmenu",function(node,event){
+                    activePanel.getSelectionModel().select(node);
+                    layerMenu.show(node.ui.getAnchor());
+    });
 
 
 var viewport = new Ext.Viewport({

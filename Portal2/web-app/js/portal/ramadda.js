@@ -1,27 +1,35 @@
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 
+var Tree = Ext.tree;
  var ramaddaTree = new Ext.tree.TreePanel({
         text: 'ramadda',
-        leaf: false,
         expanded: false,
+        loader: new Tree.TreeLoader(),
+        selModel: new Ext.tree.MultiSelectionModel(),
         root : new Ext.tree.AsyncTreeNode({
             text: 'ramadda',
             draggable:false,
+            leaf: false,
             id:'ramadda',
             listeners: {
-                click: function (node) {
+                load: function (node, event) {
+                        alert("node.id");
 
+                },
+                expand: function (node, event) {
+                        alert("node.id");
+                        
+                },
+                click: function (node) {
                         alert(node.id);
                         loadChildrens(node,rootId);
                 }
-               
             }
-        })
+         })        
     });
 
 
 function loadChildrens(node, id){
-        alert('hola');
         Ext.Ajax.request({
                url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/entry/show/Data%20Repository.json?entryid='+id+'&output=json'),
                success: function(resp){

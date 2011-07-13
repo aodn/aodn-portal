@@ -75,7 +75,7 @@ function addToPopup(loc,mapPanel,e) {
 			   url="none";
 			   var layer = map.getLayer(map.layers[key].id);
 				if ((!layer.isBaseLayer) && layer.queryable) {
-					if (layer.animatedNcwmsLayer) {
+					if (layer.showTimeSeriesNcWMS) {
 					   if (layer.tile.bounds.containsLonLat(lonlat)) {
 							url = layer.baseUri +
 							"&EXCEPTIONS=application/vnd.ogc.se_xml" +
