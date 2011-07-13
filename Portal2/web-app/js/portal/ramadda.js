@@ -1,71 +1,71 @@
-Ext.ns('Ext.ux.state');
-// dummy constructor
-Ext.ux.state.TreePanel = function() {};
+var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 
-Ext.override(Ext.ux.state.TreePanel, {
-	/**
-	 * Initializes the plugin
-	 * @param {Ext.tree.TreePanel} tree
-	 * @private
-	 */
-	init:function(tree) {
+ var ramaddaTree = new Ext.tree.TreePanel({
+        text: 'ramadda',
+        leaf: false,
+        expanded: false,
+        root : new Ext.tree.AsyncTreeNode({
+            text: 'ramadda',
+            draggable:false,
+            id:'ramadda',
+            listeners: {
+                click: function (node) {
 
-		// install event handlers on TreePanel
-		tree.on({
-			// add path of expanded node to stateHash
-			 beforeexpandnode:function(n) {
-				this.stateHash[n.id] = n.getPath();
-			}
+                        alert(node.id);
+                        loadChildrens(node,rootId);
+                }
+               
+            }
+        })
+    });
 
-			// delete path and all subpaths of collapsed node from stateHash
-			,beforecollapsenode:function(n) {
-				delete this.stateHash[n.id];
-				var cPath = n.getPath();
-				for(var p in this.stateHash) {
-					if(this.stateHash.hasOwnProperty(p)) {
-						if(-1 !== this.stateHash[p].indexOf(cPath)) {
-							delete this.stateHash[p];
-						}
-					}
-				}
-			}
-		});
 
-		// update state on node expand or collapse
-		tree.stateEvents = tree.stateEvents || [];
-		tree.stateEvents.push('expandnode', 'collapsenode');
+function loadChildrens(node, id){
+        alert('hola');
+        Ext.Ajax.request({
+               url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/entry/show/Data%20Repository.json?entryid='+id+'&output=json'),
+               success: function(resp){
+                     //alert(resp.responseText);
+                     var jsonData= Ext.util.JSON.decode(resp.responseText);
+                     if(jsonData.length > 0){
 
-		// add state related props to the tree
-		Ext.apply(tree, {
-			// keeps expanded nodes paths keyed by node.ids
-			 stateHash:{}
+                          for(var i = 0; i < jsonData.length; i++){
+                                   entry=jsonData[i];
+                                    alert(entry.name);
+                                   if(entry.isGroup){
+                                       newNode = new Ext.tree.TreeNode({
+                                            id: entry.id,
+                                            text: entry.name,
+                                            expanded: true,
+                                            leaf : true,
+                                              listeners: {
+                                                click: function(node, event){
+                                                    alert(node.id);
+                                                }
+                                            }
+                                        });
+                                    }else{
+                                        newNode = new Ext.tree.TreeNode({
+                                            id: entry.id,
+                                            text: entry.name,
+                                            expanded: true,
+                                            leaf : true,
+                                              listeners: {
+                                                click:  function ( node, event) {
+                                                    loadChildrens(node, event,entry.id)
+                                                }
+                                            }
+                                        });
 
-			// apply state on tree initialization
-			,applyState:function(state) {
-				if(state) {
-					Ext.apply(this, state);
+                                    }
+                                   node.appendChild(newNode);
+                            }
+                        }
 
-					// it is too early to expand paths here
-					// so do it once on root load
-					this.root.on({
-						load:{single:true, scope:this, fn:function() {
-							for(var p in this.stateHash) {
-								if(this.stateHash.hasOwnProperty(p)) {
-									this.expandPath(this.stateHash[p]);
-								}
-							}
-						}}
-					});
-				}
-			} // eo function applyState
+             },failure: function ( result, request ) {
+                   alert("error");
+               }
+        });
+}
 
-			// returns stateHash for save by state manager
-			,getState:function() {
-				return {stateHash:this.stateHash};
-			} // eo function getState
-		});
-	} // eo function init
 
-}); // eo override
-
-// eof

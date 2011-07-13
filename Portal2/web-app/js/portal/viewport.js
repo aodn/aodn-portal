@@ -17,6 +17,8 @@ var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel, layerList, opacitySlider;
 //--------------------------------------------------------------------------------------------
+//
+Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
 
@@ -250,6 +252,7 @@ Ext.onReady(function() {
    geoserver = new Ext.tree.TreePanel({
         root: new Ext.tree.AsyncTreeNode({
         text: 'geoserver',
+        
         loader: new GeoExt.tree.WMSCapabilitiesLoader({
                 url: proxyURL + encodeURIComponent('http://geoserver.emii.org.au/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities'),
                 layerOptions: {buffer: 0, singleTile: true, ratio: 1},
@@ -263,7 +266,7 @@ Ext.onReady(function() {
 })
 		,
         width: 250,
-		autoHeight: true,
+        autoHeight: true,
         border: false,
 		//rootVisible: false,
         listeners: {
@@ -369,7 +372,7 @@ Ext.onReady(function() {
 				title: "WMS Browser",
 				id : 'contributorTree',
 				autoscroll: true,
-				items : [  ncWMS,geoserver,AAD,cmar]
+				items : [  ramaddaTree,ncWMS,geoserver,AAD,cmar]
 			}
         ]
     });
@@ -412,7 +415,6 @@ Ext.onReady(function() {
                                 // order on the map.
                                 'checkchange': function(node, checked) {
                                     if (checked === true) {
-                                            testing=node;
                                             if (node.attributes.layer.serverType='NCWMS'){
                                                     node.attributes.layer.yx = true;
                                                     node.attributes.layer.isncWMS =true;
@@ -468,6 +470,38 @@ Ext.onReady(function() {
         expanded: true
         
     });
+    //Active layer menu
+    layerMenu = new Ext.menu.Menu({
+            items: [
+                {
+                    text: 'Remove Layer',
+                    handler: removeLayer
+                },
+                {
+                    text: 'I like Ext',
+                    checked: true
+                }, '-', {
+                    text: 'Open With',
+                    menu: {
+                        items: [{
+                            text: 'Notepad ++'
+                        }, {
+                            text: 'GIMP 2.0'
+                        }, {
+                            text: 'Firefox'
+                        }]
+                    }
+                }
+            ]
+        });
+
+    
+    var nodeSelected;
+    function removeLayer() {
+        testing=nodeSelected;
+        mapPanel.map.removeLayer(nodeSelected.layer);
+    }
+
 
    activePanel = new Ext.tree.TreePanel({
        header: false,
@@ -475,20 +509,32 @@ Ext.onReady(function() {
        split: true,
        region: 'north',
        height: 200,
-       displayRoot: false,
-        root: layerList,
+       rootVisible: false,
+       root: layerList,
         listeners: {
-            append: function(node){
-                node.on("click", function(node){
+            append: function(node,event){
+                node.on("click", function(node,event){
                     if(node.isSelected())
                     {
                         updateDetailsPanel(node);
                     }
+                    nodeSelected=node;
+                    x = event.browserEvent.clientX;
+                    y = event.browserEvent.clientY;
+                    layerMenu.showAt([x, y]);
                 });
+                node.on("contextmenu",function(node,event){
+                    x = event.browserEvent.clientX;
+                    y = event.browserEvent.clientY;
+                    nodeSelected=node;
+                    layerMenu.showAt([x, y]);
+                });
+
             }
         }
     });
-//
+
+
 
 
 var viewport = new Ext.Viewport({
