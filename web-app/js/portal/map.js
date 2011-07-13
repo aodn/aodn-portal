@@ -20,7 +20,7 @@
 /**
  * Instance of OpenLayers map
  */
-var map;
+//var map;
 var proxyURL = "proxy?url=";
 //var tmp_response;
 
