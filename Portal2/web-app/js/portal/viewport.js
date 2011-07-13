@@ -72,20 +72,17 @@ Ext.onReady(function() {
     map.addLayer(layer);
     //map.setCenter(new OpenLayers.LonLat(141, -32), 1);
 
-
     setToolbarItems(); // set 'toolbarItems' array
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
-            height: 800,
-            width: 800,
             center: new OpenLayers.LonLat(141, -32),
             zoom: 1,
             border: false,
             map: map,
             region: "center",
             split: true,
-			tbar: toolbarItems,
+	    tbar: toolbarItems,
             header: false,
             //title: 'Map panel',
             items: [{
@@ -97,7 +94,8 @@ Ext.onReady(function() {
                 y: 80
                 //plugins: new GeoExt.ZoomSliderTip()
             }]
-     });
+           });
+    
 
     // Controll to get feature info or pop up
     var control = new OpenLayers.Control.Click({
@@ -194,150 +192,6 @@ Ext.onReady(function() {
    });
 
 
-    
-    ncWMS = new Ext.tree.TreePanel({
-        root: new Ext.tree.AsyncTreeNode({
-                text: 'ncWMS emii',
-                loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                        url: proxyURL +encodeURIComponent('http://ncwms.emii.org.au/ncWMS/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0&DATASET=satellite_data_sst'),
-                        layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                        layerParams: {'TRANSPARENT': 'TRUE','VERSION':'1.3.0'},
-                        // customize the createNode method to add a checkbox to nodes
-                        createNode: function(attr) {
-                                attr.checked = attr.leaf ? false : undefined;
-                                return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-                        }
-                })
-        })
-		,
-        width: 250,
-        autoHeight: true,
-        border: false,
-		//rootVisible: false,
-        listeners: {
-            // Add layers to the map when ckecked, remove when unchecked.
-            // Note that this does not take care of maintaining the layer
-            // order on the map.
-            'checkchange': function(node, checked) {
-                if (checked === true) {
-                    node.attributes.layer.yx = true;
-                    node.attributes.layer.isncWMS =true;
-                    mapPanel.map.addLayer(node.attributes.layer);
-                } else {
-                    mapPanel.map.removeLayer(node.attributes.layer);
-                }
-            }
-        }
-    });
-
-   geoserver = new Ext.tree.TreePanel({
-        root: new Ext.tree.AsyncTreeNode({
-        text: 'geoserver',
-        
-        loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                url: proxyURL + encodeURIComponent('http://geoserver.emii.org.au/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities'),
-                layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                layerParams: {'TRANSPARENT': 'TRUE'},
-                // customize the createNode method to add a checkbox to nodes
-                createNode: function(attr) {
-                        attr.checked = attr.leaf ? false : undefined;
-                        return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-                }
-        })
-})
-		,
-        width: 250,
-        autoHeight: true,
-        border: false,
-		//rootVisible: false,
-        listeners: {
-            // Add layers to the map when ckecked, remove when unchecked.
-            // Note that this does not take care of maintaining the layer
-            // order on the map.
-            'checkchange': function(node, checked) {
-                if (checked === true) {
-                    mapPanel.map.addLayer(node.attributes.layer);
-                } else {
-                    mapPanel.map.removeLayer(node.attributes.layer);
-                }
-            }
-        }
-    });
-
-	   cmar = new Ext.tree.TreePanel({
-
-        root: new Ext.tree.AsyncTreeNode({
-                text: 'cmar',
-                loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                        url: proxyURL +encodeURIComponent('http://www.cmar.csiro.au/geoserver/ows?service=wms&version=1.1.1&request=GetCapabilities'),
-                        layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                        layerParams: {'TRANSPARENT': 'TRUE'},
-                        // customize the createNode method to add a checkbox to nodes
-                        createNode: function(attr) {
-                                attr.checked = attr.leaf ? false : undefined;
-                                return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-                        }
-                })
-        })
-		,
-        width: 250,
-		autoHeight: true,
-        border: false,
-        margins: '0 0 5 0',
-		//rootVisible: false,
-        listeners: {
-            // Add layers to the map when ckecked, remove when unchecked.
-            // Note that this does not take care of maintaining the layer
-            // order on the map.
-            'checkchange': function(node, checked) {
-                if (checked === true) {
-                    mapPanel.map.addLayer(node.attributes.layer);
-                } else {
-                    mapPanel.map.removeLayer(node.attributes.layer);
-                }
-            }
-        }
-    });
-
-	AAD = new Ext.tree.TreePanel({
-        root: new Ext.tree.AsyncTreeNode({
-                text: 'AAD',
-                loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                        url: proxyURL +encodeURIComponent('http://services.aad.gov.au/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities'),
-                        layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                        layerParams: {'TRANSPARENT': 'TRUE'},
-                        // customize the createNode method to add a checkbox to nodes
-                        createNode: function(attr) {
-                                attr.checked = attr.leaf ? false : undefined;
-                                return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-                        }
-                })
-        })
-		,
-        width: 250,
-        autoHeight: true,
-        border: false,
-
-
-		//rootVisible: false,
-        listeners: {
-            // Add layers to the map when ckecked, remove when unchecked.
-            // Note that this does not take care of maintaining the layer
-            // order on the map.
-            'checkchange': function(node, checked) {
-                if (checked === true) {
-                    mapPanel.map.addLayer(node.attributes.layer);
-                } else {
-                    mapPanel.map.removeLayer(node.attributes.layer);
-                }
-            }
-        }
-    });
-
-
-
-
-
 
     var leftTabPanel = new Ext.TabPanel({
         title: 'Layers Tab Panel',
@@ -352,8 +206,8 @@ Ext.onReady(function() {
 			{ 	region: 'west',
 				title: "WMS Browser",
 				id : 'contributorTree',
-				autoscroll: true,
-				items : [  ramaddaTree,ncWMS,geoserver,AAD,cmar]
+				autoscroll: true
+				
 			}
         ]
     });
@@ -373,13 +227,12 @@ Ext.onReady(function() {
                                     loader: new GeoExt.tree.WMSCapabilitiesLoader({
                                             url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
                                             layerOptions: {buffer: 0, singleTile: true, ratio: 1},
-                                            layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion, 'serverType':serverList[i].type},
+                                            layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion,
+                                                           'serverType':serverList[i].type},
 
                                             // customize the createNode method to add a checkbox to nodes
                                             createNode: function(attr) {
-
                                                     attr.checked = attr.leaf ? false : undefined;
-
                                                     return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
                                             }
                                     })
@@ -460,6 +313,7 @@ Ext.onReady(function() {
        id: 'activePanelTree',
        split: true,
        region: 'north',
+       enableDD: true,
        height: 200,
        rootVisible: false,
        root: layerList,
@@ -519,6 +373,8 @@ Ext.onReady(function() {
     });
 
 
+   
+   
 var viewport = new Ext.Viewport({
     layout: 'border',
     items: [
@@ -533,8 +389,14 @@ var viewport = new Ext.Viewport({
         collapsible: true,
         split: true,
         width: 250
-    },
-    detailsPanel,mapPanel]
+    },{
+        region:'center',
+        layout:'border',
+        items: [
+            mapPanel,
+            detailsPanel
+        ]
+    }]
 });
 
 
@@ -542,18 +404,13 @@ var viewport = new Ext.Viewport({
 
 viewport.show();
 
-});
-
+ });
 
 
 
 function setToolbarItems() {
 
     var ctrl, action, actions = {};
-
-
-
-
     // Navigation history - two "button" controls
     ctrl = new OpenLayers.Control.NavigationHistory();
     map.addControl(ctrl);
