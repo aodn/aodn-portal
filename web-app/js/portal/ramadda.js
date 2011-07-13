@@ -32,10 +32,6 @@ var root = new Ext.tree.AsyncTreeNode({
     });
 
 
-
-
-
-
 function loadChildrens(node, id){
         Ext.Ajax.request({
                url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/entry/show/Data%20Repository.json?entryid='+id+'&output=json'),

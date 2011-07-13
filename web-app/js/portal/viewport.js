@@ -334,8 +334,12 @@ Ext.onReady(function() {
     layerMenu = new Ext.menu.Menu({
             items: [
                 {
-                    text: 'Remove Layer',
+                    text: 'Remove layer',
                     handler: removeLayer
+                },
+                {
+                    text: 'Zoom to layer',
+                    handler: setExtentLayer
                 },
                 {
                     text: 'Visible',
@@ -349,7 +353,7 @@ Ext.onReady(function() {
                         }, {
                             text: 'Ext is even better'
                         }, {
-                            text: 'Matias rocks!'
+                            text: 'Matias add menu items!'
                         }]
                     }
                 }
@@ -366,12 +370,24 @@ Ext.onReady(function() {
         // If visible the undo checkchange
         activePanel.getSelectionModel().getSelectedNode().checked=!activePanel.getSelectionModel().getSelectedNode().checked;
     }
+     function setExtentLayer() {
+        // Remove layer. First unselect to remove from the tree of WMS Browse
+        var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.llbbox;
+        bounds = new OpenLayers.Bounds();
+        bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
+        bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
+
+        mapPanel.map.zoomToExtent(bounds);
+    }
+
 
     activePanel.on("contextmenu",function(node,event){
                     activePanel.getSelectionModel().select(node);
                     layerMenu.show(node.ui.getAnchor());
     });
 
+   
+    
 
    
    
