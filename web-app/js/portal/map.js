@@ -922,7 +922,6 @@ function getXML(request_string) {
         }
         xhttp.open("GET",proxyURL+encodeURIComponent(request_string)+"&format=xml",false);
         xhttp.send("");
-        testing=xhttp;
        return xhttp.responseXML;
 
 }
