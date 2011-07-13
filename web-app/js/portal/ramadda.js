@@ -1,32 +1,39 @@
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 
-var Tree = Ext.tree;
- var ramaddaTree = new Ext.tree.TreePanel({
-        text: 'ramadda',
-        expanded: false,
-        loader: new Tree.TreeLoader(),
-        selModel: new Ext.tree.MultiSelectionModel(),
-        root : new Ext.tree.AsyncTreeNode({
+var root = new Ext.tree.AsyncTreeNode({
             text: 'ramadda',
             draggable:false,
             leaf: false,
             id:'ramadda',
+            expanded: false,
             listeners: {
-                load: function (node, event) {
-                        alert("node.id");
-
-                },
-                expand: function (node, event) {
-                        alert("node.id");
-                        
-                },
+                //expanded:alert("expanding"),
                 click: function (node) {
-                        alert(node.id);
+                        alert("clicking"+node.id);
                         loadChildrens(node,rootId);
                 }
             }
-         })        
     });
+
+
+    var ramaddaTree = new Ext.tree.TreePanel({
+        animate: true,
+        autoScroll: true,
+        nodeType: 'async',
+        loader: new Ext.tree.TreeLoader(),
+        containerScroll: true,
+        border: false,
+        
+        id: 'ramaddaTree',
+        root:root,
+         listeners: {
+                //beforeload : loadChildrens(root,rootId)
+            }
+    });
+
+
+
+
 
 
 function loadChildrens(node, id){
@@ -68,12 +75,11 @@ function loadChildrens(node, id){
                                     }
                                    node.appendChild(newNode);
                             }
+                            
                         }
-
              },failure: function ( result, request ) {
                    alert("error");
                }
         });
 }
-
 
