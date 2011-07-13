@@ -1,8 +1,8 @@
 dataSource {
     pooled = true
-    driverClassName = "org.hsqldb.jdbcDriver"
-    username = "sa"
-    password = ""
+    //driverClassName = "org.hsqldb.jdbcDriver"
+    //username = "sa"
+    //password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -25,14 +25,14 @@ environments {
    }
     test {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:mem:testDb"
+            //dbCreate = "update"
+            //url = "jdbc:hsqldb:mem:testDb"
         }
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+            //dbCreate = "update"
+            //url = "jdbc:hsqldb:file:prodDb;shutdown=true"
         }
     }
 }

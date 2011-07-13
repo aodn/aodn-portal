@@ -16,6 +16,10 @@ var currentNode;
 var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel, layerList, opacitySlider;
+var toolbarItems = []
+
+
+
 //--------------------------------------------------------------------------------------------
 
  var nodeSelected;
@@ -26,92 +30,53 @@ Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
 
-//making the map
-        map = new OpenLayers.Map();
-        map.restrictedExtent = new OpenLayers.Bounds.fromString("-10000,-90,10000,90");
-        map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
-        OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+    // Stop the pink tiles appearing on error
+    OpenLayers.Util.onImageLoadError = function() {
+        this.style.display = "";
+        this.src="img/blank.png";
+    }
+    //making the map
+    map = new OpenLayers.Map();
+    map.restrictedExtent = new OpenLayers.Bounds.fromString("-10000,-90,10000,90");
+    map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
-        layer = new OpenLayers.Layer.WMS(
-            "IMOS Base Layer",
-            "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
-            {layers: "HiRes_aus-group"},
-            {wrapDateLine: true},
-            {isBaseLayer: true}
-        );
-        map.addLayer(layer);
-        map.setCenter(new OpenLayers.LonLat(141, -32), 1);
+    OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-		var ctrl, toolbarItems = [], action, actions = {};
+    layer = new OpenLayers.Layer.WMS(
+        "IMOS Base Layer",
+        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
+        {layers: "HiRes_aus-group"},
+        {wrapDateLine: true,
+            transitionEffect: 'resize',
+            isBaseLayer: true}
+    );
 
-    // ZoomToMaxExtent control, a "button" control
-    action = new GeoExt.Action({
-        control: new OpenLayers.Control.ZoomToMaxExtent(),
-        map: map,
-        text: "max extent",
-        tooltip: "zoom to max extent"
+    var pan = new OpenLayers.Control.Navigation({
+        id: 'navpan',
+        title: 'Pan Control'
     });
-    actions["max_extent"] = action;
-    toolbarItems.push(action);
-    toolbarItems.push("-");
+    
+
+    map.addLayer(layer);
+    //map.setCenter(new OpenLayers.LonLat(141, -32), 1);
 
 
+    setToolbarItems(); // set 'toolbarItems' array
 
-    // Navigation history - two "button" controls
-    ctrl = new OpenLayers.Control.NavigationHistory();
-    map.addControl(ctrl);
-
-    action = new GeoExt.Action({
-        text: "previous",
-        control: ctrl.previous,
-        disabled: true,
-        tooltip: "previous in history"
-    });
-    actions["previous"] = action;
-    toolbarItems.push(action);
-
-    action = new GeoExt.Action({
-        text: "next",
-        control: ctrl.next,
-        disabled: true,
-        tooltip: "next in history"
-    });
-    actions["next"] = action;
-    toolbarItems.push(action);
-    toolbarItems.push("->");
-
-    // Reuse the GeoExt.Action objects created above
-    // as menu items
-    toolbarItems.push({
-        text: "menu",
-        menu: new Ext.menu.Menu({
-            items: [
-                // ZoomToMaxExtent
-                actions["max_extent"],
-                // Nav
-                new Ext.menu.CheckItem(actions["nav"]),
-                // Select control
-                new Ext.menu.CheckItem(actions["select"]),
-                // Navigation history control
-                actions["previous"],
-                actions["next"]
-            ]
-        })
-    });
-
-
-  //creating the map panel in the center
+    //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
             height: 800,
             width: 800,
-            border: true,
+            center: new OpenLayers.LonLat(141, -32),
+            zoom: 1,
+            border: false,
             map: map,
             region: "center",
             split: true,
 			tbar: toolbarItems,
-            zoom: 1,
-            title: 'Map panel',
+            header: false,
+            //title: 'Map panel',
             items: [{
                 xtype: "gx_zoomslider",
                 aggressive: false,
@@ -121,7 +86,7 @@ Ext.onReady(function() {
                 y: 140
                 //plugins: new GeoExt.ZoomSliderTip()
             }]
-           });
+     });
 
     // Controll to get feature info or pop up
     var control = new OpenLayers.Control.Click({
@@ -177,7 +142,7 @@ Ext.onReady(function() {
                                         click: function(node, event){
                                             mapPanel.map.addLayer(node.layer);                                            
                                         },
-					load: function(node, event){
+                                        load: function(node, event){
                                             node.layer;
                                             //alert(map.layers.length);
                                         }
@@ -566,3 +531,56 @@ var viewport = new Ext.Viewport({
 viewport.show();
 
 });
+
+
+
+
+function setToolbarItems() {
+
+    var ctrl, action, actions = {};
+
+
+
+
+    // Navigation history - two "button" controls
+    ctrl = new OpenLayers.Control.NavigationHistory();
+    map.addControl(ctrl);
+
+    action = new GeoExt.Action({
+        text: "previous",
+        control: ctrl.previous,
+        disabled: true,
+        tooltip: "previous in history"
+    });
+    actions["previous"] = action;
+    toolbarItems.push(action);
+
+    action = new GeoExt.Action({
+        text: "next",
+        control: ctrl.next,
+        disabled: true,
+        tooltip: "next in history"
+    });
+    actions["next"] = action;
+    toolbarItems.push(action);
+    toolbarItems.push("->");
+
+    // Reuse the GeoExt.Action objects created above
+    // as menu items
+    toolbarItems.push({
+        text: "menu",
+        menu: new Ext.menu.Menu({
+            items: [
+                // Nav
+                new Ext.menu.CheckItem(actions["nav"]),
+                // Select control
+                new Ext.menu.CheckItem(actions["select"]),
+                // Navigation history control
+                actions["previous"],
+                actions["next"]
+            ]
+        })
+    });
+
+    
+}
