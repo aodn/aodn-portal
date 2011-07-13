@@ -36,11 +36,21 @@ Ext.onReady(function() {
         this.style.display = "";
         this.src="img/blank.png";
     }
-    //making the map
-    map = new OpenLayers.Map();
+
+
+    
+    var options = {
+         controls: [ new OpenLayers.Control.PanPanel()],
+         displayProjection: new OpenLayers.Projection("EPSG:4326"),
+         units: "m",
+         prettyStateKeys: true // for pretty permalinks
+     };
+     
+    //make the map
+    map = new OpenLayers.Map(options);
     map.restrictedExtent = new OpenLayers.Bounds.fromString("-10000,-90,10000,90");
     map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
-
+  
     OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
     layer = new OpenLayers.Layer.WMS(
@@ -52,11 +62,6 @@ Ext.onReady(function() {
             isBaseLayer: true}
     );
 
-    var pan = new OpenLayers.Control.Navigation({
-        id: 'navpan',
-        title: 'Pan Control'
-    });
-    
 
     map.addLayer(layer);
     //map.setCenter(new OpenLayers.LonLat(141, -32), 1);
@@ -82,9 +87,9 @@ Ext.onReady(function() {
                 aggressive: false,
                 vertical: true,
                 height: 100,
-                x: 15,
-                y: 140
-                //plugins: new GeoExt.ZoomSliderTip()
+                x: 12,
+                y: 80,
+                plugins: new GeoExt.ZoomSliderTip()
             }]
      });
 
@@ -95,6 +100,7 @@ Ext.onReady(function() {
             addToPopup(loc,mapPanel,evt);
         }
     });
+
 
     mapPanel.map.addControl(control);
     control.activate();
