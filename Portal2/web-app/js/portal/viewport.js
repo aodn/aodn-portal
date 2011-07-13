@@ -37,10 +37,16 @@ Ext.onReady(function() {
         this.src="img/blank.png";
     }
 
-
+    var controls= [];
+    controls.push(
+        new OpenLayers.Control.Navigation(),
+        new OpenLayers.Control.Attribution(),
+        new OpenLayers.Control.PanPanel()//,
+        //new OpenLayers.Control.ZoomPanel()
+    );
     
     var options = {
-         controls: [ new OpenLayers.Control.PanPanel()],
+         controls: controls,
          displayProjection: new OpenLayers.Projection("EPSG:4326"),
          units: "m",
          prettyStateKeys: true // for pretty permalinks
@@ -88,8 +94,8 @@ Ext.onReady(function() {
                 vertical: true,
                 height: 100,
                 x: 12,
-                y: 80,
-                plugins: new GeoExt.ZoomSliderTip()
+                y: 80
+                //plugins: new GeoExt.ZoomSliderTip()
             }]
      });
 
