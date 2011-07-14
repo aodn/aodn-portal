@@ -139,8 +139,7 @@ function addToPopup(loc,mapPanel,e) {
                                 if(layer.isncWMS!=undefined) format = "xml";
                                 
 				Ext.Ajax.request({
-				   url: proxyURL+encodeURIComponent(url),
-                                   params: {format: format},
+				   url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
 				   success: function(resp){		 
 					  // add some content to the popup (this can be any Ext component)
 						popup.add({
@@ -203,7 +202,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 // xml document where the first value is the javascript function that has to
 // applied to format the get feature Info.
 function formatGetFeatureInfo(response){
-        if(response.responseXML == null){
+            if(response.responseXML == null){
             return response.responseText;
         }else{
             return setHTML_ncWMS(response);
