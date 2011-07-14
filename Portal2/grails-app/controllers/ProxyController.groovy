@@ -17,6 +17,21 @@ class ProxyController {
             if (DEBUG || hostList.contains(hostName)) {
 
                  def thetext = params.url.toURL()
+                 def conn = thetext.openConnection()
+                 def type = conn.contentType
+                 def incomingFormat
+                 def incomingEncoding = "UTF-8"
+                def typeSplit = type.split(';')
+
+                if(type != null)
+                {
+                    incomingFormat = typeSplit[0]
+                 
+                    if(typeSplit.length == 2)
+                        incomingEncoding = typeSplit[1].split('=')[1]
+                }
+                 
+                 println("type:" + typeSplit[0])
                  log.info("Proxy: The url to be requested " + thetext)
                  if (params.format == "xml") {
                      format = "text/xml"
@@ -25,7 +40,7 @@ class ProxyController {
                      format = "text/html"
                  }
                  println(format + '   -----    '+thetext)
-                render(text: thetext.text ,contentType:format,encoding:"UTF-8")
+                render(text: thetext.text ,contentType:incomingFormat,encoding:incomingEncoding)
            }
            else {
                log.error("Proxy: The url " + hostName + "was not allowed")

@@ -10,9 +10,6 @@ Ext.onReady(function() {
 
 var ramaddaLoader = new Ext.tree.TreeLoader({
       dataUrl: proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+rootId+'&output=json')
-      ,baseParams: {
-           perrito: 'gatito'
-       }
       ,createNode: function(attr) {
          testing=attr;
          attr.text=attr.name;

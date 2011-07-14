@@ -32,6 +32,7 @@
 <!-- Portal clases-->
 <script src="${resource(dir:'js',file:'portal/map.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/MainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/components/LayerSelectionPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ramadda.js')}" defer="defer"  type="text/javascript"></script>
 
