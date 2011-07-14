@@ -35,6 +35,41 @@
 <script src="${resource(dir:'js',file:'portal/ramadda.js')}" defer="defer"  type="text/javascript"></script>
 
 <title> Portal 2.0</title>
+
+<style>
+  .x-tree-node-icon { display: none !important; }
+
+
+    /* Line styles 
+    .x-tree-lines .x-tree-elbow{
+        background-image:url(../images/default/tree/elbow.gif);
+    }
+     .x-tree-lines .x-tree-elbow-end{
+        background-image:url(../images/default/tree/elbow-end.gif);
+    }
+     .x-tree-lines .x-tree-elbow-line{
+        background-image:url(../images/default/tree/elbow-line.gif);
+    }
+    */
+    .x-tree-lines .x-tree-elbow-plus{
+        background-image:url(${resource(dir:'img/icons/',file:'treePlus.png')});
+    }
+    .x-tree-lines .x-tree-elbow-minus{
+        background-image:url(${resource(dir:'img/icons/',file:'treeMinus.png')});
+    }
+   
+    .x-tree-lines .x-tree-elbow-end-plus{
+        background-image:url(${resource(dir:'img/icons/',file:'treePlus.png')});
+    }
+    .x-tree-lines .x-tree-elbow-end-minus{
+        background-image:url(${resource(dir:'img/icons/',file:'treeMinus.png')});
+    }
+   
+
+
+
+</style>
+
 </head>
 
 <body>

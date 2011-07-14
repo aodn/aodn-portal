@@ -4,7 +4,7 @@ var MAX_WIDTH = 1024;
 var MAX_HEIGHT = 1024;
 var activeLayers;
 var contributorTree;
-var testing;
+var testViewport;
 
 //--------------------------------------------------------------------------------------------
 //Some JSON stuff
@@ -233,6 +233,7 @@ Ext.onReady(function() {
                                             // customize the createNode method to add a checkbox to nodes
                                             createNode: function(attr) {
                                                     attr.checked = attr.leaf ? false : undefined;
+                                                    //attr.active=attr.leaf ? false : undefined;;
                                                     return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
                                             }
                                     })
@@ -247,7 +248,7 @@ Ext.onReady(function() {
                                 // Add layers to the map when ckecked, remove when unchecked.
                                 // Note that this does not take care of maintaining the layer
                                 // order on the map.
-                                'checkchange': function(node, checked) {
+                                'checkchange': function(node,checked) {
                                     if (checked === true) {
                                             if (node.attributes.layer.serverType='NCWMS'){
                                                     node.attributes.layer.yx = true;
@@ -393,6 +394,7 @@ Ext.onReady(function() {
    
 var viewport = new Ext.Viewport({
     layout: 'border',
+    stateful: true,
     items: [
     {
         title: "Active layers",
