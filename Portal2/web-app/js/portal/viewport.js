@@ -16,7 +16,7 @@ var currentNode;
 var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel, layerList, opacitySlider;
-var toolbarItems = []
+var toolbarItems = [];
 
 var toolbarpointer;
 
@@ -31,7 +31,7 @@ Ext.onReady(function() {
 
      initMap();
 
-    //creating the map panel in the center
+ //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
             center: new OpenLayers.LonLat(141, -32),
             zoom: 1,
@@ -39,7 +39,7 @@ Ext.onReady(function() {
             map: map,
             region: "center",
             split: true,
-	    tbar: toolbarItems,
+            tbar: toolbarItems,
             header: false,
             //title: 'Map panel',
             items: [{
@@ -48,11 +48,21 @@ Ext.onReady(function() {
                 vertical: true,
                 height: 100,
                 x: 12,
-                y: 80
-                //plugins: new GeoExt.ZoomSliderTip()
+                y: 80,
+                plugins: new GeoExt.ZoomSliderTip()
             }]
            });
 
+
+    // Controll to get feature info or pop up
+    var control = new OpenLayers.Control.Click({
+        trigger: function(evt) {
+            var loc = mapPanel.map.getLonLatFromViewPortPx(evt.xy);
+            addToPopup(loc,mapPanel,evt);
+        }
+    });
+    mapPanel.map.addControl(control);
+    control.activate();
 
     // Controll to get feature info or pop up
     var control = new OpenLayers.Control.Click({
@@ -375,4 +385,5 @@ var viewport = new Ext.Viewport({
 viewport.show();
 
  });
+
 

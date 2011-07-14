@@ -135,19 +135,22 @@ function addToPopup(loc,mapPanel,e) {
 			}
                        
 			if(url!="none"){
-                                format = "html";
-                                if(layer.isncWMS!=undefined) format = "xml";
+                
+                    format = "html";
+                    if(layer.isncWMS!=true) format = "xml";
                                 
-				Ext.Ajax.request({
-				   url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
-				   success: function(resp){		 
-					  // add some content to the popup (this can be any Ext component)
-						popup.add({
-							xtype: "box",
-							autoEl: {
-								html: formatGetFeatureInfo(resp)
-							}
-						});
+                    Ext.Ajax.request({
+                       url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
+                       success: function(resp){
+                          // add some content to the popup (this can be any Ext component)
+                            popup.add({
+                            xtype: "box",
+                            padding: 30,
+                            cls: "featureinfocontent",
+                            autoEl: {
+                                html: formatGetFeatureInfo(resp)
+                            }
+                        });
 
 						// reset the popup's location
 						popup.location = loc;
@@ -155,7 +158,7 @@ function addToPopup(loc,mapPanel,e) {
 						popup.doLayout();
 						// since the popup is anchored, calling show will move popup to this location
 						popup.show();
-                                                imgSizer();
+                        imgSizer();
 					}
 				});
 			}
@@ -195,16 +198,22 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 
 });
 
-
-// First solution where the only distinction if we have XML response
-// then I know is XML. For the future I think the proxy should return some
-// extra information to be used by the formatFetFeatureInfo, for example an
-// xml document where the first value is the javascript function that has to
-// applied to format the get feature Info.
-function formatGetFeatureInfo(response){
-            if(response.responseXML == null){
-            return response.responseText;
-        }else{
+// if its XML then ncWMS is assumed. TODO
+function formatGetFeatureInfo(response) {
+            
+        if(response.responseXML == null) {
+            // strip out all unwanted HTML
+             if ( response.responseText.match(/<\/body>/m)) {
+                var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
+                if (html_content) {
+                    //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
+                    html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
+                }
+            }
+            return html_content;
+            
+        }
+        else{
             return setHTML_ncWMS(response);
         }
 }
