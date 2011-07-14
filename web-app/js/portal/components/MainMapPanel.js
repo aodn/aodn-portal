@@ -49,6 +49,41 @@ function initMap()
     map.addLayer(layer);
 
     setToolbarItems(); // set 'toolbarItems' array
+
+    //creating the map panel in the center
+    mapPanel = new GeoExt.MapPanel({
+            center: new OpenLayers.LonLat(141, -32),
+            zoom: 1,
+            border: false,
+            map: map,
+            region: "center",
+            split: true,
+	    tbar: toolbarItems,
+            header: false,
+            //title: 'Map panel',
+            items: [{
+                xtype: "gx_zoomslider",
+                aggressive: false,
+                vertical: true,
+                height: 100,
+                x: 12,
+                y: 80
+                //plugins: new GeoExt.ZoomSliderTip()
+            }]
+           });
+
+
+    // Controll to get feature info or pop up
+    var control = new OpenLayers.Control.Click({
+        trigger: function(evt) {
+            var loc = mapPanel.map.getLonLatFromViewPortPx(evt.xy);
+            addToPopup(loc,mapPanel,evt);
+        }
+    });
+
+    mapPanel.map.addControl(control);
+    control.activate();
+
 }
 
 function setToolbarItems() {
