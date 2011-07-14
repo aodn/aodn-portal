@@ -48,8 +48,8 @@ function addToPopup(loc,mapPanel,e) {
         if (!popup) {
             popup = new GeoExt.Popup({
                 title: "Popup",
-                width: 400,
-				height: 300,
+                width: 450,
+				height: 380,
                 maximizable: true,
                 collapsible: true,
                 map: mapPanel.map,
