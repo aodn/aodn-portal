@@ -21,8 +21,8 @@
 
 <!-- Open Layers-->
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" defer="defer" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'map.css')}" />
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" />
+<link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'map.css')}" />
+<link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" />
 
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
