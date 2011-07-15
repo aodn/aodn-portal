@@ -54,7 +54,7 @@ function initLayerSelectionPanel()
                                     text: serverList[i].name,
                                     loader: new GeoExt.tree.WMSCapabilitiesLoader({
                                             url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
-                                            layerOptions: {buffer: 0, singleTile: true, ratio: 1},
+                                            layerOptions: {buffer: 0,  ratio: 1},
                                             layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion,
                                                            'serverType':serverList[i].type},
 
