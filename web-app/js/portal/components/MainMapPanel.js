@@ -1,6 +1,5 @@
 var map;
 var layer;
-var testing;
 
 function initMap()
 {
@@ -9,9 +8,7 @@ function initMap()
     // Stop the pink tiles appearing on error
     OpenLayers.Util.onImageLoadError = function(e) {
         this.style.display = "";
-        this.src="img/blank.png";
-
-        testing = e;
+        this.src="img/blank.gif";
     }
 
 
