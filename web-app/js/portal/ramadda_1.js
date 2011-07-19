@@ -14,7 +14,7 @@ Ext.onReady(function(){
             ]
         )
      store=new Ext.data.JsonStore(    {
-          url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text=20071231T233000Z_CBG_FV01_1-hour-avg.nc&output=json')
+          url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text=matias&output=json')
           ,fields: ['id', 'name', {name:'type', type: 'string'},'icon']
 
      });
@@ -31,8 +31,9 @@ Ext.onReady(function(){
             {header: "name", width: 400, dataIndex: 'name', sortable: true},
             {header: "id", width: 200, dataIndex: 'id', sortable: true},
             {header: "type", width: 60, dataIndex: 'type', sortable: true}
-        ],
-        height:300
+        ]
+        ,autoHeight:true
+        ,emptyText:'Use the search box'
     });
 
     filterTextField = new Ext.form.TextField({
@@ -49,10 +50,12 @@ Ext.onReady(function(){
                 store=new Ext.data.JsonStore(    {
                       url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text='+filterTextField.getRawValue()+'&output=json')
                       ,fields: ['id', 'name', {name:'type', type: 'string'},'icon']
-
+                      ,baseParams:{hello:'hello'}
                  });
-                store.load();
+                
                 grid.store=store;
+                grid.getStore().load();
+                
             }
         });
 
@@ -64,7 +67,7 @@ Ext.onReady(function(){
             maximizable: true,
             collapsible: true,
             autoScroll: true,
-            title:'testing',
+            title:'Ramadda Search',
             items: [{
                      id:'fs2col-form'
                     ,xtype:'form'
@@ -93,17 +96,15 @@ Ext.onReady(function(){
                                 ,defaults:{anchor:'-20', allowBlank:false}
 
                                 // fields
-                                ,items:[{
-                                    fieldLabel:'Text'
-                                },filterTextField]
+                                ,items:[filterTextField]
                         }]
-                    ,buttons: [{
+                    /*,buttons: [{
                             text: 'Search',
                             click: function()
                             {
                                 alert('hello');
                             }
-                        }]
+                        }]*/
                     }]
         }       ,grid]
     });
