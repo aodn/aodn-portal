@@ -75,7 +75,9 @@ function addToPopup(loc,mapPanel,e) {
 			   url="none";
 			   var layer = map.getLayer(map.layers[key].id);
 				if ((!layer.isBaseLayer) && layer.queryable) {
-					if (layer.showTimeSeriesNcWMS) {
+
+                                        //To do add a check box on the interface to get the profile and the time series from ncWMS.
+                                        /*if (layer.showTimeSeriesNcWMS) {
 					   if (layer.tile.bounds.containsLonLat(lonlat)) {
 							url = layer.baseUri +
 							"&EXCEPTIONS=application/vnd.ogc.se_xml" +
@@ -99,7 +101,7 @@ function addToPopup(loc,mapPanel,e) {
 
 						}
 					}
-					else if (layer.params.VERSION == "1.1.1") {
+					else*/ if (layer.params.VERSION == "1.1.1") {
 						url = layer.getFullRequestString({
 							REQUEST: "GetFeatureInfo",
 							EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -142,28 +144,27 @@ function addToPopup(loc,mapPanel,e) {
                     Ext.Ajax.request({
                        url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
                        success: function(resp){
-                          // add some content to the popup (this can be any Ext component)
-                            popup.add({
-                            xtype: "box",
-                            padding: 30,
-                            cls: "featureinfocontent",
-                            autoEl: {
-                                html: formatGetFeatureInfo(resp)
-                            }
-                        });
+                              // add some content to the popup (this can be any Ext component)
+                                popup.add({
+                                    xtype: "box",
+                                    padding: 30,
+                                    cls: "featureinfocontent",
+                                    autoEl: {
+                                        html: formatGetFeatureInfo(resp)
+                                    }
+                                });
 
-						// reset the popup's location
-						popup.location = loc;
-						
-						popup.doLayout();
-						// since the popup is anchored, calling show will move popup to this location
-						popup.show();
-                        imgSizer();
-					}
-				});
-			}
-		  }
+                                // reset the popup's location
+                                popup.location = loc;
+
+                                popup.doLayout();
+                                // since the popup is anchored, calling show will move popup to this location
+                                popup.show();
+                                }
+                        });
 		}
+	  }
+    }
 }
 
 

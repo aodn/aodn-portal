@@ -10,7 +10,8 @@ Ext.onReady(function(){
             },[
                      {name:'id', type:'string'}
                     ,{name:'name', type:'string'}
-                    ,{name:'type', type:'string'}
+                    ,{name:'type', type:'string'},
+                    ,{name:'icon', type:'string'},
             ]
         )
      store=new Ext.data.JsonStore(    {
@@ -28,13 +29,21 @@ Ext.onReady(function(){
         columns: [
             
             //{header: "icon", width: 30, dataIndex: 'icon', sortable: true},
+            {header: "icon", width: 60, dataIndex: 'icon', sortable: false,renderer:renderIcon},
             {header: "name", width: 400, dataIndex: 'name', sortable: true},
             {header: "id", width: 200, dataIndex: 'id', sortable: true},
             {header: "type", width: 60, dataIndex: 'type', sortable: true}
+            
         ]
         ,autoHeight:true
+        ,autoWidth:true
         ,emptyText:'Use the search box'
+       
     });
+
+    function renderIcon(val) {
+        return '<img src="' +ramaddaHost+ val + '">';
+    }
 
     filterTextField = new Ext.form.TextField({
             enableKeyEvents: true,
@@ -98,16 +107,8 @@ Ext.onReady(function(){
                                 // fields
                                 ,items:[filterTextField]
                         }]
-                    /*,buttons: [{
-                            text: 'Search',
-                            click: function()
-                            {
-                                alert('hello');
-                            }
-                        }]*/
                     }]
         }       ,grid]
     });
     win.show();
-
 });

@@ -5,24 +5,26 @@ var ramaddaHost = 'http://ramadda.aodn.org.au';
 var ramaddaPath='/respository/';
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 var ramaddaTree;
-
+Ext.QuickTips.init();
 Ext.onReady(function() {
-
-
-
+    
     var ramaddaLoader = new Ext.tree.TreeLoader({
           dataUrl: proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+rootId+'&output=json')
           ,createNode: function(attr) {
-
-             attr.text=attr.name;
-             attr.leaf=!attr.isGroup;
-
+            
+                 attr.text=attr.name;
+                 attr.leaf=!attr.isGroup;
+             if(attr.id!=rootId){
+                attr.icon=ramaddaHost+attr.icon;
+                attr.qtip=attr.description;
+             }
              return(attr.leaf ?
                         new Ext.tree.TreeNode(attr) :
                         new Ext.tree.AsyncTreeNode(attr));// Ext.tree.TreeLoader.superclass.createNode.call(this, attr);
            }
            ,listeners:{
                 beforeload:function(treeLoader, node) {
+                    testing=node;
                     this.dataUrl = proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+node.id+'&output=json')
                 }
            }
@@ -51,16 +53,12 @@ Ext.onReady(function() {
     });
       
 
-
+    Ext.QuickTips.enable();
 });
 
 function createEntryMenu(node){
     var treeMenu = undefined;
-    treeMenu = new Ext.menu.Menu({
-                items: [
-                {
-                }]});
-    testing=node;
+    treeMenu = new Ext.menu.Menu();
     if(node.attributes.links!=undefined){
         for(i=0;i< node.attributes.links.length;i++){
                 link=node.attributes.links[i];
@@ -70,22 +68,7 @@ function createEntryMenu(node){
                        ,icon: ramaddaHost+link.icon
                        ,url: ramaddaHost+link.url
                        ,labe: link.label
-                       //,handler: ramaddaHandler(ramaddaHost+link.url,link.label)
                     }
-                    /*,
-                    {
-                      xtype: 'box'
-                      ,autoEl: {
-
-                        icon: ramaddaHost+link.icon,
-                        tag: 'a',
-                        href: ramaddaHost+link.url,
-                        target:'_blank',
-                        cn: link.label
-                       
-
-                      }
-                    }*/
                 );
         }
         treeMenu.on('click', function(menu, item){
@@ -132,6 +115,7 @@ function ramaddaHandler(url,label){
     });
     win.show();
 };
+
 
 
 
