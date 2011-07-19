@@ -177,10 +177,8 @@ function initLayerSelectionPanel()
         mapPanel.map.zoomToExtent(bounds);
     }
 
-
     activePanel.on("contextmenu",function(node,event){
                     activePanel.getSelectionModel().select(node);
                     layerMenu.show(node.ui.getAnchor());
     });
-
 }

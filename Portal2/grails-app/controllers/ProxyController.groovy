@@ -21,7 +21,7 @@ class ProxyController {
                  def type = conn.contentType
                  def incomingFormat
                  def incomingEncoding = "UTF-8"
-                def typeSplit = type.split(';')
+                /*def typeSplit = type.split(';')
 
                 if(type != null)
                 {
@@ -31,7 +31,7 @@ class ProxyController {
                         incomingEncoding = typeSplit[1].split('=')[1]
                 }
                  
-                 println("type:" + typeSplit[0])
+                 println("type:" + typeSplit[0])*/
                  log.info("Proxy: The url to be requested " + thetext)
                  if (params.format == "xml") {
                      format = "text/xml"
@@ -40,7 +40,7 @@ class ProxyController {
                      format = "text/html"
                  }
                  println(format + '   -----    '+thetext)
-                render(text: thetext.text ,contentType:incomingFormat,encoding:incomingEncoding)
+                 render(text: thetext.text ,contentType:format,encoding:incomingEncoding)
            }
            else {
                log.error("Proxy: The url " + hostName + "was not allowed")
