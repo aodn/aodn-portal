@@ -8,6 +8,7 @@ var ramaddaTree;
 Ext.QuickTips.init();
 Ext.onReady(function() {
     
+
     var ramaddaLoader = new Ext.tree.TreeLoader({
           dataUrl: proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+rootId+'&output=json')
           ,createNode: function(attr) {
