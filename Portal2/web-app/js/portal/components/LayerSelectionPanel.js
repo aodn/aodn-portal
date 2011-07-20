@@ -84,6 +84,7 @@ function initLayerSelectionPanel()
                         }
                     })
                 );
+                Ext.getCmp('contributorTree').doLayout();
             }
         }
     });

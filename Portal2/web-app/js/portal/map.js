@@ -21,6 +21,9 @@
  * Instance of OpenLayers map
  */
 //var map;
+
+
+
 var proxyURL = "proxy?url=";
 //var tmp_response;
 
@@ -431,7 +434,6 @@ function setHTML2(response) {
     if (handleQueryStatus(this)) {
         setFeatureInfo(html_content,true);
     }
-
 
 }
 

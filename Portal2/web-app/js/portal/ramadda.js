@@ -17,7 +17,7 @@ Ext.onReady(function() {
                  attr.leaf=!attr.isGroup;
              if(attr.id!=rootId){
                 attr.icon=ramaddaHost+attr.icon;
-                attr.qtip=attr.description;
+                //attr.qtip=attr.description;
              }
              return(attr.leaf ?
                         new Ext.tree.TreeNode(attr) :
@@ -58,8 +58,14 @@ Ext.onReady(function() {
 });
 
 function createEntryMenu(node){
-    var treeMenu = undefined;
+   var treeMenu = undefined;
     treeMenu = new Ext.menu.Menu();
+    if(node.attributes.type=="wmsserver"){
+        treeMenu.add({
+            text:'browse WMS server'
+            ,handler: addWMStoTree(node.attributes)
+        })
+    }
     if(node.attributes.links!=undefined){
         for(i=0;i< node.attributes.links.length;i++){
                 link=node.attributes.links[i];
@@ -68,13 +74,16 @@ function createEntryMenu(node){
                        text:link.label
                        ,icon: ramaddaHost+link.icon
                        ,url: ramaddaHost+link.url
-                       ,labe: link.label
+                       ,label: link.label
+                       ,listeners:{
+                           click: function(item){
+                               ramaddaHandler(item.url,item.label);
+                           }
+                       }
                     }
                 );
         }
-        treeMenu.on('click', function(menu, item){
-            ramaddaHandler(item.url,item.label);
-        });
+        
         return treeMenu;
     }return null;
 }
@@ -82,17 +91,19 @@ function createEntryMenu(node){
 
 
 
-
+var win=null;
 function ramaddaHandler(url,label){
-    var win = new Ext.Window({
-            id:'ramaddaInfoWindow',
-            width:400,
-            height:400,
-            maximizable: true,
-            collapsible: true,
-            autoScroll: true,
-            title:label
-    });
+    if(win=null){
+        var win = new Ext.Window({
+                id:'ramaddaInfoWindow',
+                width:400,
+                height:400,
+                maximizable: true,
+                collapsible: true,
+                autoScroll: true,
+                title:label
+        });
+    }
     win.add({
         xtype : "component",
         autoEl : {
@@ -117,7 +128,52 @@ function ramaddaHandler(url,label){
     win.show();
 };
 
+function addWMStoTree(attributes){
+            
+            Ext.getCmp('contributorTree').add(
+                new Ext.tree.TreePanel({
+                    root: new Ext.tree.AsyncTreeNode({
+                            text: attributes.name,
+                            loader: new GeoExt.tree.WMSCapabilitiesLoader({
+                                    url: proxyURL+encodeURIComponent(attributes.filename+"SERVICE=WMS&version="+attributes.extraColumns[1]['1']+"&request=GetCapabilities"),
+                                    layerOptions: {buffer: 0,  ratio: 1},
+                                    layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : attributes.extraColumns[1]['1'],
+                                                   'serverType':attributes.extraColumns[0]['0']},
 
+                                    // customize the createNode method to add a checkbox to nodes
+                                    createNode: function(attr) {
+                                            attr.checked = attr.leaf ? false : undefined;
+                                            //attr.active=attr.leaf ? false : undefined;;
+                                            return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
+                                    }
+                            })
+                    })
+                    ,
+                    width: 250,
+                    autoHeight: true,
+                    border: false,
+
+                    rootVisible: true,
+                    listeners: {
+                        // Add layers to the map when ckecked, remove when unchecked.
+                        // Note that this does not take care of maintaining the layer
+                        // order on the map.
+                        'checkchange': function(node,checked) {
+                            if (checked === true) {
+                                    if (node.attributes.layer.serverType='NCWMS'){
+                                            node.attributes.layer.yx = true;
+                                            node.attributes.layer.isncWMS =true;
+                                    }
+                                    mapPanel.map.addLayer(node.attributes.layer);
+                            } else {
+                                    mapPanel.map.removeLayer(node.attributes.layer);
+                        }
+                    }
+                }
+            })
+       );
+       Ext.getCmp('contributorTree').doLayout();
+}
 
 
 
