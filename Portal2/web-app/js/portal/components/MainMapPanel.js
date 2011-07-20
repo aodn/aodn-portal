@@ -1,5 +1,6 @@
 var map;
 var layer;
+var navigationHistoryCtrl;
 
 function initMap()
 {
@@ -12,11 +13,16 @@ function initMap()
     }
 
 
+    navigationHistoryCtrl = new OpenLayers.Control.NavigationHistory();
+
+    
     var controls= [];
+
     controls.push(
         new OpenLayers.Control.Navigation(),
         new OpenLayers.Control.Attribution(),
-        new OpenLayers.Control.PanPanel()//,
+        new OpenLayers.Control.PanPanel(),
+        navigationHistoryCtrl
         //new OpenLayers.Control.ZoomPanel()
     );
     var options = {
@@ -34,6 +40,7 @@ function initMap()
 
     OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
+
     layer = new OpenLayers.Layer.WMS(
         "IMOS Base Layer",
         "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
@@ -45,17 +52,20 @@ function initMap()
 
     map.addLayer(layer);
 
-    setToolbarItems(); // set 'toolbarItems' array
+
+
+
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
             center: new OpenLayers.LonLat(141, -32),
             zoom: 1,
+            id: "map",
             border: false,
             map: map,
             region: "center",
             split: true,
-	    tbar: toolbarItems,
+            // tbar: setToolbarItems(),
             header: false,
             //title: 'Map panel',
             items: [{
@@ -64,11 +74,52 @@ function initMap()
                 vertical: true,
                 height: 100,
                 x: 12,
-                y: 80
-                //plugins: new GeoExt.ZoomSliderTip()
-            }]
-           });
+                y: 120,
+                plugins: new GeoExt.ZoomSliderTip()
+            }
+            ]
+       });
 
+    /*var fakeHTML = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolo\n\
+re magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo conseq\n\
+uat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupi\n\
+datat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    //var stuff = setToolbarItems();
+    var stuff = new Ext.Button({
+            text: 'Send',
+            html: fakeHTML,
+            minWidth: '100',
+            style: {
+                marginBottom: '10px'
+            }
+        });
+    */
+
+
+    var mapToolbar=  new Ext.Toolbar({
+              // shadow: false,
+               height: 28
+               ,width:'100%'
+               ,floating: true
+               ,cls:'semiTransparent noborder'//
+               ,overCls: "fullTransparency"
+               ,unstyled: true
+               ,items: setToolbarItems()
+            });
+     // put the toobar in a panel as  the toolbar wont float
+    var mapLinks=  new Ext.Panel({
+               id: "mapLinks"
+               ,shadow: false
+               ,width:'100%'
+               ,closeAction: 'hide'
+               ,floating: true
+               ,unstyled: true
+               ,closeable: true
+               ,items: mapToolbar
+            });
+
+    mapPanel.add(mapLinks);
+    mapLinks.setPosition(1,0);
 
     // Controll to get feature info or pop up
     var control = new OpenLayers.Control.Click({
@@ -85,14 +136,16 @@ function initMap()
 
 function setToolbarItems() {
 
-    var ctrl, action, actions = {};
+    var action, actions = {};
+    var toolbarItems = [];
+    
+
     // Navigation history - two "button" controls
-    ctrl = new OpenLayers.Control.NavigationHistory();
-    map.addControl(ctrl);
+
 
     action = new GeoExt.Action({
         text: "previous",
-        control: ctrl.previous,
+        control: navigationHistoryCtrl.previous,
         disabled: true,
         tooltip: "previous in history"
     });
@@ -101,28 +154,39 @@ function setToolbarItems() {
 
     action = new GeoExt.Action({
         text: "next",
-        control: ctrl.next,
+        control: navigationHistoryCtrl.next,
         disabled: true,
         tooltip: "next in history"
     });
     actions["next"] = action;
     toolbarItems.push(action);
+    
+    
     toolbarItems.push("->");
 
     // Reuse the GeoExt.Action objects created above
     // as menu items
     toolbarItems.push({
-        text: "menu",
+        text: "History",
         menu: new Ext.menu.Menu({
             items: [
                 // Nav
-                new Ext.menu.CheckItem(actions["nav"]),
+                //new Ext.menu.CheckItem(actions["previous"]),
                 // Select control
-                new Ext.menu.CheckItem(actions["select"]),
+                //new Ext.menu.CheckItem(actions["select"]),
                 // Navigation history control
                 actions["previous"],
                 actions["next"]
             ]
         })
+        
     });
+
+
+
+  return toolbarItems;
+
+  
+
+
 }

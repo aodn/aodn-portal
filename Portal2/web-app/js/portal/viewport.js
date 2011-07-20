@@ -16,7 +16,6 @@ var currentNode;
 var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel, layerList;
-var toolbarItems = [];
 
 var toolbarpointer;
 //--------------------------------------------------------------------------------------------
@@ -44,10 +43,9 @@ var viewport = new Ext.Viewport({
             activePanel,leftTabPanel
         ],
         region: 'west',
-        autoscroll: true,
         collapsible: true,
         split: true,
-        width: 250
+        width: 290
     },{
         region:'center',
         layout:'border',

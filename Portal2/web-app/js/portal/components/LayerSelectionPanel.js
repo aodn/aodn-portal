@@ -13,8 +13,6 @@ function initLayerSelectionPanel()
         region: "west",
         title: "Contributors",
         width: 170,
-        height: 500,
-        autoscroll: true,
         collapsible: false,
         collapseMode: "mini",
         split: true,
@@ -23,20 +21,17 @@ function initLayerSelectionPanel()
 
 
     leftTabPanel = new Ext.TabPanel({
+        defaults: {autoScroll: true}, // autoScroll for all items
         title: 'Layers Tab Panel',
         region: 'center',
-        autoscroll: true,
         split: true,
         width: 250,
-        autoScroll: true,
         activeTab: 1,
         items: [
             contributorTree ,
             { 	region: 'west',
                     title: "WMS Browser",
-                    id : 'contributorTree',
-                    autoscroll: true
-
+                    id : 'contributorTree'
             }
         ]
     });
@@ -67,10 +62,9 @@ function initLayerSelectionPanel()
                                     })
                             })
                             ,
-                            width: 250,
+                            //width: 250,
                             autoHeight: true,
                             border: false,
-
                             rootVisible: true,
                             listeners: {
                                 // Add layers to the map when ckecked, remove when unchecked.
@@ -95,7 +89,8 @@ function initLayerSelectionPanel()
     });
 
     layerList = new GeoExt.tree.OverlayLayerContainer({
-        text: 'All Layers',
+        
+        text: 'All Active Layers',
         layerStore: mapPanel.layers,
         leaf: false,
         expanded: true
@@ -105,6 +100,8 @@ function initLayerSelectionPanel()
 
 
    activePanel = new Ext.tree.TreePanel({
+
+       autoScroll: true,
        header: false,
        title: 'Map Layers',
        id: 'activePanelTree',
@@ -127,8 +124,9 @@ function initLayerSelectionPanel()
         }
     });
 
-    //Active layer menu
+    //Active layer Right Click menu
     layerMenu = new Ext.menu.Menu({
+
             items: [
                 {
                     text: 'Remove layer',

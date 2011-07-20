@@ -110,5 +110,7 @@ Ext.onReady(function(){
                     }]
         }       ,grid]
     });
-    win.show();
+
+    //win.show();
+
 });

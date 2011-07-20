@@ -165,6 +165,21 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     opacity: 0.0;
 }
 
+.semiTransparent {
+    background: inherit! important;
+    background-color:#3c668d! important;
+    opacity: 0.7;
+    color: white;
+}
+.fullTransparency {
+    background: inherit! important;
+    background-color:white! important; 
+    opacity: 0.9! important;
+
+}
+.noborder {
+    border: none! important;
+}
 
 
 /*
@@ -290,7 +305,9 @@ p.important {
 }
 
 
-
+.olControlPanPanel div {
+    margin-top: 45px;
+}
 
 /* Overview Map wigit */
 .olControlOverviewMapElement {
