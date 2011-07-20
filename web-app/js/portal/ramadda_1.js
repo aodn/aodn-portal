@@ -59,11 +59,11 @@ Ext.onReady(function(){
                 store=new Ext.data.JsonStore(    {
                       url: proxyURL+encodeURIComponent('http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text='+filterTextField.getRawValue()+'&output=json')
                       ,fields: ['id', 'name', {name:'type', type: 'string'},'icon']
-                      ,baseParams:{hello:'hello'}
                  });
                 
                 grid.store=store;
                 grid.getStore().load();
+                grid.doLayout();
                 
             }
         });

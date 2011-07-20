@@ -1,4 +1,5 @@
-GeoNetwork.URL = 'geonetwork';
+
+GeoNetwork.URL = 'http://asdddev.emii.org.au/geonetwork';
 GeoNetwork.map.PROJECTION = "EPSG:4326";
 GeoNetwork.map.EXTENT = new OpenLayers.Bounds(-180,-90,180,90);
 GeoNetwork.map.BACKGROUND_LAYERS = [

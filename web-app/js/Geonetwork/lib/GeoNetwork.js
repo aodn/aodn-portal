@@ -164,10 +164,10 @@
             "GeoNetwork/map/windows/LayerStyles.js",
             "GeoNetwork/map/windows/WmsLayerMetadata.js",
             "GeoNetwork/map/windows/WMSTime.js",
-            "../../OpenLayers/addins/LoadingPanel.js",
-            "../../OpenLayers/addins/ScaleBar.js",
-            "../../OpenLayers/addins/Format/CSWGetRecords/v2_0_2_GeoNetwork.js",
-            "../../OpenLayers/addins/Format/GeoNetworkRecords.js"
+            "../../OpenLayers-2.10/addins/LoadingPanel.js",
+            "../../OpenLayers-2.10/addins/ScaleBar.js",
+            "../../OpenLayers-2.10/addins/Format/CSWGetRecords/v2_0_2_GeoNetwork.js",
+            "../../OpenLayers-2.10/addins/Format/GeoNetworkRecords.js"
             //"GeoNetwork/map/widgets/PrintAction.js"
         );
 
