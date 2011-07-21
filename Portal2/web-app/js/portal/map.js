@@ -44,19 +44,27 @@ var testing;//Variable for debug.
 
 // Pop up things
 var popup;
-var bogusMarkup = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
+
+function centreMap() {
+    mapPanel.map.setCenter(new OpenLayers.LonLat(141, -32),1,1,1);
+}
+
 function addToPopup(loc,mapPanel,e) {
 		
         // create the popup if it doesn't exist
         if (!popup) {
             popup = new GeoExt.Popup({
-                title: "Popup",
+                title: "Features at your click point",
                 width: 450,
 				height: 380,
                 maximizable: true,
-                collapsible: true,
+               // collapsible: true,
                 map: mapPanel.map,
                 anchored: true,
+                border: false,
+                margins: 10,
+                constrainHeader: true,
+                panIn: true,
 				autoScroll: true, 
                 listeners: {
                     close: function() {
@@ -170,12 +178,11 @@ function addToPopup(loc,mapPanel,e) {
     }
 }
 
-
-OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
 
     defaultHandlerOptions: {
         single: true,
-        double: false,
+        'double': false, // this isnt working
         pixelTolerance: 0,
         stopSingle: true
     },
@@ -201,6 +208,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
     CLASS_NAME: "OpenLayers.Control.Click"
 
 });
+  
 
 // if its XML then ncWMS is assumed. TODO
 function formatGetFeatureInfo(response) {
@@ -238,7 +246,7 @@ function setHTML_ncWMS(response) {
 
     var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
     var timeList = xmldoc.getElementsByTagName('time').length;
-    var time = null;
+    time = null;
 
     if(timeList > 0){
         time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
