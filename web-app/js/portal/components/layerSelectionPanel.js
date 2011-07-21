@@ -84,7 +84,6 @@ function initLayerSelectionPanel()
                         }
                     })
                 );
-                Ext.getCmp('contributorTree').doLayout();
             }
         }
     });
@@ -101,7 +100,7 @@ function initLayerSelectionPanel()
 
 
    activePanel = new Ext.tree.TreePanel({
-
+       
        autoScroll: true,
        header: false,
        title: 'Map Layers',

@@ -32,32 +32,36 @@ Ext.onReady(function() {
      initDetailsPanel();
 
 
-var viewport = new Ext.Viewport({
-    layout: 'border',
-    stateful: true,
-    items: [
-    {
-        title: "Active layers",
+    var viewport = new Ext.Viewport({
         layout: 'border',
+        stateful: true,
         items: [
-            activePanel,leftTabPanel
-        ],
-        region: 'west',
-        collapsible: true,
-        split: true,
-        width: 290
-    },{
-        region:'center',
-        layout:'border',
-        items: [
-            mapPanel,
-            detailsPanel
-        ]
-    }]
-});
+        {
+            title: "Active layers",
+            layout: 'border',
+            items: [
+                activePanel,leftTabPanel
+            ],
+            region: 'west',
+            collapsible: true,
+            split: true,
+            width: 290
+        },{
+            region:'center',
+            layout:'border',
+            items: [
+                mapPanel,
+                detailsPanel
+            ]
+        }]
+    });
 
 
-viewport.show();
+    viewport.show();
+    
+    modMapListeners(); // mainMapPanel.js
+
+
 
  });
 

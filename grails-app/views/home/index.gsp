@@ -26,14 +26,14 @@
 
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all-debug.css')}" />
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
 
 
 <!-- Portal clases-->
 <script src="${resource(dir:'js',file:'portal/map.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/MainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/LayerSelectionPanel.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/DetailsPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/components/mainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/components/layerSelectionPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/components/detailsPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/ramadda.js')}" defer="defer"  type="text/javascript"></script>

@@ -53,9 +53,6 @@ function initMap()
     map.addLayer(layer);
 
 
-
-
-
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
             center: new OpenLayers.LonLat(141, -32),
@@ -80,33 +77,22 @@ function initMap()
             ]
        });
 
-    /*var fakeHTML = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolo\n\
-re magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo conseq\n\
-uat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupi\n\
-datat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-    //var stuff = setToolbarItems();
-    var stuff = new Ext.Button({
-            text: 'Send',
-            html: fakeHTML,
-            minWidth: '100',
-            style: {
-                marginBottom: '10px'
-            }
-        });
-    */
-
-
+     // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
               // shadow: false,
                height: 28
                ,width:'100%'
-               ,floating: true
+              // ,floating: true
                ,cls:'semiTransparent noborder'//
                ,overCls: "fullTransparency"
-               ,unstyled: true
+               ,unstyled: true               
                ,items: setToolbarItems()
+               
             });
-     // put the toobar in a panel as  the toolbar wont float
+//mapToolbar.suspendEvents(true);
+   //   mapToolbar.un('click', this.onClick, this);
+
+     // put the toobar in a panel as the toolbar wont float
     var mapLinks=  new Ext.Panel({
                id: "mapLinks"
                ,shadow: false
@@ -115,23 +101,54 @@ datat non proident, sunt in culpa qui officia deserunt mollit anim id est laboru
                ,floating: true
                ,unstyled: true
                ,closeable: true
+               //,listeners: NOT WORKING HERE
                ,items: mapToolbar
             });
+
+ var onClick2 = function(ev, target){
+    alert(target);
+    ev.preventDefault(); // Prevents the browsers default handling of the event
+    ev.stopPropagation(); // Cancels bubbling of the event
+    ev.stopEvent() // preventDefault + stopPropagation
+
+    var target = ev.getTarget() // Gets the target of the event (same as the argument)
+    
+    var relTarget = ev.getRelatedTarget(); // Gets the related target
+};
+
+
 
     mapPanel.add(mapLinks);
     mapLinks.setPosition(1,0);
 
+
     // Controll to get feature info or pop up
-    var control = new OpenLayers.Control.Click({
+    var clickControl = new OpenLayers.Control.Click2({
+
         trigger: function(evt) {
             var loc = mapPanel.map.getLonLatFromViewPortPx(evt.xy);
             addToPopup(loc,mapPanel,evt);
         }
+        
     });
 
-    mapPanel.map.addControl(control);
-    control.activate();
+    mapPanel.map.addControl(clickControl);
+    clickControl.activate();
 
+}
+// lsteners modified here after layout
+function modMapListeners() {
+
+    var el = Ext.get('mapLinks');
+    // stops the click bubbling to a getFeatureInfo request on the map
+    el.on('click', function(ev, target){
+        //alert(target);
+        ev.preventDefault(); // Prevents the browsers default handling of the event
+        ev.stopPropagation(); // Cancels bubbling of the event
+        ev.stopEvent() // preventDefault + stopPropagation
+        //var target = ev.getTarget(); // Gets the target of the event (same as the argument)
+        //var relTarget = ev.getRelatedTarget(); // Gets the related target
+    });
 }
 
 function setToolbarItems() {
@@ -141,7 +158,13 @@ function setToolbarItems() {
     
 
     // Navigation history - two "button" controls
+    action = new Ext.Button({
+        text:'Home',
+        handler: centreMap //map.js
+    });
 
+    actions["previous"] = action;
+    toolbarItems.push(action);
 
     action = new GeoExt.Action({
         text: "previous",
