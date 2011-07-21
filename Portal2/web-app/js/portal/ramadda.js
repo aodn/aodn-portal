@@ -5,8 +5,10 @@ var ramaddaHost = 'http://ramadda.aodn.org.au';
 var ramaddaPath='/respository/';
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 var ramaddaTree;
+var ramaddaInfoWindow =null;
 Ext.QuickTips.init();
-Ext.onReady(function() {
+
+function addRamadda() {
     
 
     var ramaddaLoader = new Ext.tree.TreeLoader({
@@ -25,14 +27,14 @@ Ext.onReady(function() {
            }
            ,listeners:{
                 beforeload:function(treeLoader, node) {
-                    testing=node;
+                   // testing=node;
                     this.dataUrl = proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+node.id+'&output=json')
                 }
            }
     });
 
     ramaddaTree = new Ext.tree.TreePanel({
-         id:'tree'
+         id:'rammadaTree'
         ,autoScroll:true
         ,root:{
              nodeType:'async'
@@ -51,11 +53,10 @@ Ext.onReady(function() {
                     treeMenu = createEntryMenu(node);
                     if(treeMenu!=null)
                         treeMenu.show(node.ui.getAnchor());
-    });
-      
+    });      
 
     Ext.QuickTips.enable();
-});
+}
 
 function createEntryMenu(node){
    var treeMenu = undefined;
@@ -91,10 +92,11 @@ function createEntryMenu(node){
 
 
 
-var win=null;
 function ramaddaHandler(url,label){
-    if(win=null){
-        var win = new Ext.Window({
+    
+
+    if(ramaddaInfoWindow==null){
+        var ramaddaInfoWindow = new Ext.Window({
                 id:'ramaddaInfoWindow',
                 width:400,
                 height:400,
@@ -104,7 +106,7 @@ function ramaddaHandler(url,label){
                 title:label
         });
     }
-    win.add({
+    ramaddaInfoWindow.add({
         xtype : "component",
         autoEl : {
             tag : "iframe",
@@ -117,16 +119,16 @@ function ramaddaHandler(url,label){
 
         }
     })
-    win.on('resize', function(win,w,h){
-      Ext.get(win.id).query('iframe')[0].style.height = h;
-      Ext.get(win.id).query('iframe')[0].style.width = w;
+    ramaddaInfoWindow.on('resize', function(ramaddaInfoWindow,w,h){
+      Ext.get(ramaddaInfoWindow.id).query('iframe')[0].style.height = h;
+      Ext.get(ramaddaInfoWindow.id).query('iframe')[0].style.width = w;
     });
-    win.on('show', function(win){
-      Ext.get(win.id).query('iframe')[0].style.height = this.height;
-      Ext.get(win.id).query('iframe')[0].style.width = this.width;
+    ramaddaInfoWindow.on('show', function(ramaddaInfoWindow){
+      Ext.get(ramaddaInfoWindow.id).query('iframe')[0].style.height = this.height;
+      Ext.get(ramaddaInfoWindow.id).query('iframe')[0].style.width = this.width;
     });
-    win.show();
-};
+    ramaddaInfoWindow.show();
+}
 
 function addWMStoTree(attributes){
             
@@ -160,7 +162,7 @@ function addWMStoTree(attributes){
                         // order on the map.
                         'checkchange': function(node,checked) {
                             if (checked === true) {
-                                    if (node.attributes.layer.serverType='NCWMS'){
+                                    if (node.attributes.layer.serverType=='NCWMS'){
                                             node.attributes.layer.yx = true;
                                             node.attributes.layer.isncWMS =true;
                                     }
@@ -172,7 +174,7 @@ function addWMStoTree(attributes){
                 }
             })
        );
-       Ext.getCmp('contributorTree').doLayout();
+      // Ext.getCmp('contributorTree').doLayout();
 }
 
 

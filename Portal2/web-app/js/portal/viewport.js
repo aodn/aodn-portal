@@ -2,7 +2,6 @@
 
 var MAX_WIDTH = 1024;
 var MAX_HEIGHT = 1024;
-var activeLayers;
 
 var testViewport;
 
@@ -20,17 +19,27 @@ var activePanel, layerList;
 var toolbarpointer;
 //--------------------------------------------------------------------------------------------
 
- var nodeSelected;
- var mapPanel;
+var nodeSelected;
+var mapPanel;
+ 
+// menuPanel.js
+var leftTabPanel;
+var activeLayers;
+var contributorTree;
+ 
+
+
+
+
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
 
      initMap();
-     initLayerSelectionPanel();
-     initDetailsPanel();
+     initMenusPanel();
 
+     initDetailsPanel();
 
     var viewport = new Ext.Viewport({
         layout: 'border',
@@ -43,6 +52,7 @@ Ext.onReady(function() {
                 activePanel,leftTabPanel
             ],
             region: 'west',
+            id: "leftMenus",
             collapsible: true,
             split: true,
             width: 290
@@ -55,11 +65,18 @@ Ext.onReady(function() {
             ]
         }]
     });
-
-
-    viewport.show();
     
+    viewport.show();
+        
+    // now that components are rendered. fill them
+    populateMenus();
+    addRamadda();
+Ext.getCmp('leftMenus').doLayout();
+
     modMapListeners(); // mainMapPanel.js
+
+
+
 
 
 
