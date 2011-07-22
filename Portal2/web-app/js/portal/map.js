@@ -147,7 +147,7 @@ function addToPopup(loc,mapPanel,e) {
 					}
 			}
                        
-			if(url!="none"){
+            if(url!="none"){
                 
                     format = "html";
                     if(layer.isncWMS!=true) format = "xml";
