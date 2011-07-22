@@ -189,6 +189,8 @@ function populateMenus() {
                 );                
             }     // end 4loop
             // doLlayout needed. why?
+            // matias: because we are not sure if the tree is rendered alredy
+            // this is a
             Ext.getCmp('contributorTree').doLayout();
         }
     });

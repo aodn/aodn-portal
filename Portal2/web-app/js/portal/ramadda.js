@@ -2,7 +2,7 @@
 
 var ramaddaUrl = 'http://ramadda.aodn.org.au/repository/';
 var ramaddaHost = 'http://ramadda.aodn.org.au';
-var ramaddaPath='/respository/';
+var ramaddaPath='/repository/';
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 var ramaddaTree;
 var ramaddaInfoWindow =null;
@@ -10,10 +10,26 @@ var testingRamadda;
 
 function addRamadda() {
 
+    ramaddaTree=ramaddaFolderToTree('AODN data repository','ramaddaTree',rootId,ramaddaHost,ramaddaPath);
+    Ext.getCmp('contributorTree').add(ramaddaTree);
+    ramaddaTree.on("contextmenu",function(node,event){
+                    ramaddaTree.getSelectionModel().select(node);
+                    treeMenu = createEntryMenu(node);
+                    if(treeMenu!=null)
+                        treeMenu.show(node.ui.getAnchor());
+    });      
+
+}
+
+/* Given a root ID, ramadda base URL, folder title
+ * create a tree 
+ */
+function ramaddaFolderToTree(rootLabel,treeId,rootId,ramaddaHost,ramaddaPath ){
+    var ramaddaUrl=ramaddaHost+ramaddaPath;
     var ramaddaLoader = new Ext.tree.TreeLoader({
           dataUrl: proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+rootId+'&output=json')
           ,createNode: function(attr) {
-            
+
              attr.text=attr.name;
              attr.leaf=!attr.isGroup;
              if(attr.id!=rootId){
@@ -30,8 +46,8 @@ function addRamadda() {
            }
     });
 
-    ramaddaTree = new Ext.tree.TreePanel({
-         id:'rammadaTree'
+    return new Ext.tree.TreePanel({
+         id:treeId
          ,autoHeight: true
           ,border: false
           ,rootVisible: true
@@ -39,21 +55,11 @@ function addRamadda() {
              nodeType:'async'
             ,id:rootId
             ,expanded:false
-            ,name:'AODN Data Repository'
+            ,name:rootLabel
             ,isGroup:'true'
         }
         ,loader: ramaddaLoader
     });
-
-    Ext.getCmp('contributorTree').add(ramaddaTree);
-
-    ramaddaTree.on("contextmenu",function(node,event){
-                    ramaddaTree.getSelectionModel().select(node);
-                    treeMenu = createEntryMenu(node);
-                    if(treeMenu!=null)
-                        treeMenu.show(node.ui.getAnchor());
-    });      
-
 }
 
 function createEntryMenu(node){
@@ -72,6 +78,7 @@ function createEntryMenu(node){
         
     })
 
+    // To browse WMS layers into the portal
     if(node.attributes.type=="wmsserver"){
         treeMenu.add({
             text:'browse WMS server'
@@ -142,7 +149,8 @@ function showInfoRamaddaEntry(item){
 
 function ramaddaHandler(url,label){
     
-
+    // This is the default handler probably we have to make available only
+    // The entries that you want.
     if(ramaddaInfoWindow!=null){
         ramaddaInfoWindow.close();
     }
@@ -214,7 +222,7 @@ function addWMStoTree(item){
                         // order on the map.
                         'checkchange': function(node,checked) {
                             if (checked === true) {
-                                    if (node.attributes.layer.serverType=='NCWMS'){
+                                    if (node.attributes.layer.serverType=='ncWMS'){
                                             node.attributes.layer.yx = true;
                                             node.attributes.layer.isncWMS =true;
                                     }
@@ -226,9 +234,121 @@ function addWMStoTree(item){
                 }
             })
        );
-      // Ext.getCmp('contributorTree').doLayout();
+       Ext.getCmp('contributorTree').doLayout();
 }
 
+function ramaddaSearchWindow(){
+    var store;
+    var grid;
+    var filterTextField
 
+
+    filterTextField = new Ext.form.TextField({
+            enableKeyEvents: true,
+            width: 100,
+            id: 'unique id',
+            fieldLabel: 'search',
+            name: 'unique name'
+        });
+
+     var reader=new Ext.data.JsonReader(
+            {
+            },[
+                     {name:'id', type:'string'}
+                    ,{name:'name', type:'string'}
+                    ,{name:'type', type:'string'},
+                    ,{name:'icon', type:'string'},
+            ]
+        )
+
+    store = new Ext.data.JsonStore(    {
+                      url:'proxy',
+                      method:'GET',
+                      baseParams:{
+                          url: '',
+                          format:'text/html'
+                      },
+                      fields: ['id', 'name', {name:'type', type: 'string'},'icon'],
+                      reader:reader
+
+                   });
+    // create the grid
+    grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+
+            //{header: "icon", width: 30, dataIndex: 'icon', sortable: true},
+            {header: "icon", width: 60, dataIndex: 'icon', sortable: false,renderer:renderIcon},
+            {header: "name", width: 400, dataIndex: 'name', sortable: true},
+            {header: "id", width: 200, dataIndex: 'id', sortable: true},
+            {header: "type", width: 60, dataIndex: 'type', sortable: true}
+
+        ]
+        ,autoHeight:true
+        ,autoWidth:true
+        ,emptyText:'Use the search box'
+
+    });
+
+    function renderIcon(val) {
+        return '<img src="' +ramaddaHost+ val + '">';
+    }
+
+
+
+    filterTextField.on('specialkey', function(form,e){
+            // Press enter key
+            if (e.button == 12) {
+                 grid.getStore().baseParams.url='http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text='+filterTextField.getRawValue()+'&output=json';
+                 grid.getStore().load();
+            }
+        });
+
+
+     var win = new Ext.Window({
+            id:'ramaddaSearch',
+            width:400,
+            height:400,
+            maximizable: true,
+            collapsible: true,
+            autoScroll: true,
+            title:'Ramadda Search',
+            items: [{
+                     id:'fs2col-form'
+                    ,xtype:'form'
+                    ,layout:'column'
+                    ,frame:true
+                    ,labelWidth:50
+                    // these are applied to columns
+                    ,defaults:{
+                         columnWidth:0.5
+                        ,layout:'form'
+                        ,hideLabels:true
+                        ,border:false
+                        ,bodyStyle:'padding:4px'
+                    }
+                    // columns
+                    ,items:[{
+                        // these are applied to fieldsets
+                         defaults:{xtype:'fieldset', layout:'form', anchor:'100%', autoHeight:true}
+                        // fieldsets
+                        ,items:[
+                            {
+                                 title:'Search in ramadda'
+                                ,defaultType:'textfield'
+                                ,id:'textsearch'
+                                // these are applied to fields
+                                ,defaults:{anchor:'-20', allowBlank:false}
+
+                                // fields
+                                ,items:[filterTextField]
+                        }]
+                    }]
+        }       ,grid]
+    });
+
+    win.show();
+
+}
 
 

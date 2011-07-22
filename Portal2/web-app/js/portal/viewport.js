@@ -72,12 +72,7 @@ Ext.onReady(function() {
     populateMenus();
     addRamadda();
     Ext.getCmp('leftMenus').doLayout();
-
     modMapListeners(); // mainMapPanel.js
-
-
-
-
 
 
  });
