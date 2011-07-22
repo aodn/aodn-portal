@@ -908,27 +908,6 @@ function IsInt(sText) {
 }
 
 
-
-/*function getXML(request_string) {
-        var xml;
-        var conn = new Ext.data.Connection;
-        conn.request({
-          url: proxyURL+encodeURIComponent(request_string)+"&format=xml",
-          callback: function(options, success, response)
-          {
-            testing=response;
-            if (success){      
-                xml=response.responseXML;
-                return xml;
-            }else{
-                xml=null;
-                return xml;
-            }
-          }
-        });
-        alert("outsidecall: "+xml);
-        
-}*/
 // Move this to Extjs framework
 
 function getXML(request_string) {

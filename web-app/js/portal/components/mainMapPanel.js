@@ -183,7 +183,14 @@ function setToolbarItems() {
     });
     actions["next"] = action;
     toolbarItems.push(action);
-    
+
+    action = new GeoExt.Action({
+         text:'Search repository',
+        handler: ramaddaSearchWindow
+    });
+    actions["next"] = action;
+    toolbarItems.push(action);
+
     
     toolbarItems.push("->");
 
