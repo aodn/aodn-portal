@@ -121,7 +121,6 @@ function createEntryMenu(node){
              ,listeners:{
                    click: function(item){
                       var entry = item.node.attributes;
-                      testingRamadda=item;
                       ramaddaBrowseFolderWindow(entry.name,entry.id,entry.id,ramaddaHost,ramaddaPath);
                    }
                }
@@ -235,8 +234,7 @@ function addWMStoTree(item){
                             loader: new GeoExt.tree.WMSCapabilitiesLoader({
                                     url: proxyURL+encodeURIComponent(attributes.filename+"SERVICE=WMS&version="+attributes.extraColumns[1]['1']+"&request=GetCapabilities"),
                                     layerOptions: {buffer: 0,  ratio: 1},
-                                    layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : attributes.extraColumns[1]['1'],
-                                                   'serverType':attributes.extraColumns[0]['0']},
+                                    layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : attributes.extraColumns[1]['1'],'serverType':attributes.extraColumns[0]['0']},
 
                                     // customize the createNode method to add a checkbox to nodes
                                     createNode: function(attr) {
@@ -257,8 +255,9 @@ function addWMStoTree(item){
                         // Note that this does not take care of maintaining the layer
                         // order on the map.
                         'checkchange': function(node,checked) {
+                            testingRamadda=node;
                             if (checked === true) {
-                                    if (node.attributes.layer.serverType=='ncWMS'){
+                                    if (node.attributes.layer.params.SERVERTYPE=='ncWMS'){
                                             node.attributes.layer.yx = true;
                                             node.attributes.layer.isncWMS =true;
                                     }
@@ -403,7 +402,6 @@ function createRamaddaGridContextMenu(grid,index){
         }],
         listeners: {
                 itemclick: function(item) {
-                    testingRamadda=item;
                     ramaddaBrowseFolderWindow(item.node.json.name,item.node.json.id,item.node.json.id,ramaddaHost,ramaddaPath)
                 }
             }

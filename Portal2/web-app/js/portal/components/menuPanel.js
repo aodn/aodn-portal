@@ -149,9 +149,8 @@ function populateMenus() {
                                 text: serverList[i].name,
                                 loader: new GeoExt.tree.WMSCapabilitiesLoader({
                                         url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
-                                        layerOptions: {buffer: 0,  ratio: 1},
-                                        layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion,
-                                                       'serverType':serverList[i].type},
+                                        layerOptions: {buffer: 0, singleTile: false, ratio: 1},
+                                        layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion,'serverType':serverList[i].type},
 
                                         // customize the createNode method to add a checkbox to nodes
                                         createNode: function(attr) {
@@ -173,8 +172,9 @@ function populateMenus() {
                             // Note that this does not take care of maintaining the layer
                             // order on the map.
                             'checkchange': function(node,checked) {
+                                testing=node;
                                 if (checked === true) {
-                                        if (node.attributes.layer.serverType=='NCWMS') {
+                                        if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
                                                 node.attributes.layer.yx = true;
                                                 node.attributes.layer.isncWMS =true;
                                         }
