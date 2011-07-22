@@ -1,6 +1,12 @@
-function initDetailsPanel()
- {
+var combo;
+var styleList;
+var detailsPanel;
+var opacitySlider;
+var detailsPanelLayer;
 
+
+function initDetailsPanel()
+{
     styleList = new Ext.data.ArrayStore({
         autoDestroy: true
         ,id: 0
@@ -9,6 +15,16 @@ function initDetailsPanel()
             {name: 'myId'},
             {name: 'displayText'}
         ]
+    });
+
+// create a separate slider bound to the map but displayed elsewhere
+    opacitySlider = new GeoExt.LayerOpacitySlider({
+        id: "opacitySlider",
+        layer: layer,
+        width: 200,
+        inverse: false,
+        fieldLabel: "opacity",
+        plugins: new GeoExt.LayerOpacitySliderTip({template: '<div>Opacity: {opacity}%</div>'})
     });
 
 
@@ -47,7 +63,7 @@ function initDetailsPanel()
 
 function updateDetailsPanel(node)
 {
-
+    detailsPanelLayer = node.layer;
     var styles = node.layer.metadata.styles;
     styleList.removeAll();
     combo.clearValue();
@@ -61,6 +77,6 @@ function updateDetailsPanel(node)
     detailsPanel.text = node.layer.name;
     detailsPanel.setTitle("Layer Options: " + node.layer.name);
     opacitySlider.setLayer(node.layer);
-    detailsPanelLayer = layer;
+
 }
 
