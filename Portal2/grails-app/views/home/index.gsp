@@ -15,6 +15,7 @@
 <!-- ExJS-->
 <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all.js')}" defer="defer"   type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-3.3.1/resources/css/ext-all.css')}" />
 <link rel="stylesheet" type="text/css" href="${resource(dir:'js',file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />
 
@@ -37,9 +38,9 @@
 <script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/ramadda.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ramadda_1.js')}" defer="defer"  type="text/javascript"></script>
 
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
+
 
 <title> Portal 2.0</title>
 

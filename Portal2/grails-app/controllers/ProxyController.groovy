@@ -11,9 +11,10 @@ class ProxyController {
            def hostList = ['geoserver.emii.org.au','geoserverdev.emii.org.au']
            def format
 
+           
            // get the doamin name from the supplied uri
            def hostName =  params.url.toURL().getHost()
-
+           
             if (DEBUG || hostList.contains(hostName)) {
 
                  def thetext = params.url.toURL()
@@ -39,7 +40,7 @@ class ProxyController {
                  else {
                      format = "text/html"
                  }
-                 println(format + '   -----    '+thetext)
+                 println(format + '   --matias---    '+thetext)
                  render(text: thetext.text ,contentType:format,encoding:incomingEncoding)
            }
            else {

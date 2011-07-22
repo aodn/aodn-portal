@@ -11,14 +11,11 @@ var testingRamadda;
 function addRamadda() {
 
     ramaddaTree=ramaddaFolderToTree('AODN data repository','ramaddaTree',rootId,ramaddaHost,ramaddaPath);
+    ramaddaTreeWMS=ramaddaFolderToTree('WMS Servers','ramaddaTreeWMS','f48cd9c1-fee8-42f8-8bfc-aa0cbcea673f',ramaddaHost,ramaddaPath);
+    
     Ext.getCmp('contributorTree').add(ramaddaTree);
-    ramaddaTree.on("contextmenu",function(node,event){
-                    ramaddaTree.getSelectionModel().select(node);
-                    treeMenu = createEntryMenu(node);
-                    if(treeMenu!=null)
-                        treeMenu.show(node.ui.getAnchor());
-    });      
-
+    Ext.getCmp('contributorTree').add(ramaddaTreeWMS);
+   
 }
 
 /* Given a root ID, ramadda base URL, folder title
@@ -46,7 +43,7 @@ function ramaddaFolderToTree(rootLabel,treeId,rootId,ramaddaHost,ramaddaPath ){
            }
     });
 
-    return new Ext.tree.TreePanel({
+    tree = new Ext.tree.TreePanel({
          id:treeId
          ,autoHeight: true
           ,border: false
@@ -60,6 +57,32 @@ function ramaddaFolderToTree(rootLabel,treeId,rootId,ramaddaHost,ramaddaPath ){
         }
         ,loader: ramaddaLoader
     });
+    
+    tree.on("contextmenu",function(node,event){
+                    this.getSelectionModel().select(node);
+                    treeMenu = createEntryMenu(node);
+                    if(treeMenu!=null)
+                        treeMenu.show(node.ui.getAnchor());
+    });
+    return tree;
+
+}
+
+function ramaddaBrowseFolderWindow(rootLabel,treeId,rootId,ramaddaHost,ramaddaPath){
+     var win = new Ext.Window({
+                id:treeId+'_window',
+                width:400,
+                height:400,
+                maximizable: true,
+                collapsible: true,
+                autoScroll: true,
+                title:rootLabel,
+                items: [
+                    ramaddaFolderToTree(rootLabel,treeId+"_tree",rootId,ramaddaHost,ramaddaPath)
+                ]
+         });
+      win.show();
+
 }
 
 function createEntryMenu(node){
@@ -86,6 +109,20 @@ function createEntryMenu(node){
              ,listeners:{
                    click: function(item){
                        addWMStoTree(item);
+                   }
+               }
+        });
+    }
+     // To browse WMS layers into the portal
+    if(node.attributes.isGroup){
+        treeMenu.add({
+            text:'Browse Folder new window'
+            ,node:node
+             ,listeners:{
+                   click: function(item){
+                      var entry = item.node.attributes;
+                      testingRamadda=item;
+                      ramaddaBrowseFolderWindow(entry.name,entry.id,entry.id,ramaddaHost,ramaddaPath);
                    }
                }
         });
@@ -190,7 +227,6 @@ function ramaddaHandler(url,label){
 }
 
 function addWMStoTree(item){
-            testingRamadda=item;
             attributes=item.node.attributes;
             Ext.getCmp('contributorTree').add(
                 new Ext.tree.TreePanel({
@@ -237,10 +273,11 @@ function addWMStoTree(item){
        Ext.getCmp('contributorTree').doLayout();
 }
 
+var store;
+var grid;
+var filterTextField
+
 function ramaddaSearchWindow(){
-    var store;
-    var grid;
-    var filterTextField
 
 
     filterTextField = new Ext.form.TextField({
@@ -282,18 +319,22 @@ function ramaddaSearchWindow(){
             {header: "name", width: 400, dataIndex: 'name', sortable: true},
             {header: "id", width: 200, dataIndex: 'id', sortable: true},
             {header: "type", width: 60, dataIndex: 'type', sortable: true}
+            /* add other renderers for example button to browse the folder,
+            {header: "browse", width: 60, dataIndex: 'type', renderer:renderBrowse},*/
 
         ]
         ,autoHeight:true
         ,autoWidth:true
         ,emptyText:'Use the search box'
-
+        /*,listeners:{
+            rowcontextmenu: function(grid, index, event){
+                                 event.stopEvent();
+                                 grid.getSelectionModel().selectRow(index);
+                                 var contexMenu= createRamaddaGridContextMenu(grid,index)
+                                 contexMenu.showAt(event.xy);
+                            }
+        }*/
     });
-
-    function renderIcon(val) {
-        return '<img src="' +ramaddaHost+ val + '">';
-    }
-
 
 
     filterTextField.on('specialkey', function(form,e){
@@ -351,4 +392,31 @@ function ramaddaSearchWindow(){
 
 }
 
+function createRamaddaGridContextMenu(grid,index){
+    
+    var contextMenu = undefined;
+    contextMenu = new Ext.menu.Menu({
+        items: [{
+            id: 'someAction',
+            text: 'someAction',
+            node: grid.getSelectionModel().getSelected()
+        }],
+        listeners: {
+                itemclick: function(item) {
+                    testingRamadda=item;
+                    ramaddaBrowseFolderWindow(item.node.json.name,item.node.json.id,item.node.json.id,ramaddaHost,ramaddaPath)
+                }
+            }
+        });
+    return contextMenu;
 
+}
+
+// Function to render grid results from a search
+function renderIcon(val) {
+    return '<img src="' +ramaddaHost+ val + '">';
+}
+
+function renderBrowse(val) {
+    return '<img src="' +ramaddaHost+ val + '">';
+}
