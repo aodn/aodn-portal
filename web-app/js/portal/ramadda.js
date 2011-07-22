@@ -6,20 +6,18 @@ var ramaddaPath='/respository/';
 var rootId='21b7aa26-9a0b-492a-9aca-e2ea55dc10d0';
 var ramaddaTree;
 var ramaddaInfoWindow =null;
-Ext.QuickTips.init();
+var testingRamadda;
 
 function addRamadda() {
-    
 
     var ramaddaLoader = new Ext.tree.TreeLoader({
           dataUrl: proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+rootId+'&output=json')
           ,createNode: function(attr) {
             
-                 attr.text=attr.name;
-                 attr.leaf=!attr.isGroup;
+             attr.text=attr.name;
+             attr.leaf=!attr.isGroup;
              if(attr.id!=rootId){
                 attr.icon=ramaddaHost+attr.icon;
-                //attr.qtip=attr.description;
              }
              return(attr.leaf ?
                         new Ext.tree.TreeNode(attr) :
@@ -27,7 +25,6 @@ function addRamadda() {
            }
            ,listeners:{
                 beforeload:function(treeLoader, node) {
-                   // testing=node;
                     this.dataUrl = proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+node.id+'&output=json')
                 }
            }
@@ -35,7 +32,9 @@ function addRamadda() {
 
     ramaddaTree = new Ext.tree.TreePanel({
          id:'rammadaTree'
-        ,autoScroll:true
+         ,autoHeight: true
+          ,border: false
+          ,rootVisible: true
         ,root:{
              nodeType:'async'
             ,id:rootId
@@ -55,17 +54,34 @@ function addRamadda() {
                         treeMenu.show(node.ui.getAnchor());
     });      
 
-    Ext.QuickTips.enable();
 }
 
 function createEntryMenu(node){
    var treeMenu = undefined;
     treeMenu = new Ext.menu.Menu();
+
+    // Show information about the entry
+    treeMenu.add({
+        text:'information'
+        ,node:node
+        ,listeners:{
+                   click: function(item){
+                       showInfoRamaddaEntry(item);
+                   }
+               }
+        
+    })
+
     if(node.attributes.type=="wmsserver"){
         treeMenu.add({
             text:'browse WMS server'
-            ,handler: addWMStoTree(node.attributes)
-        })
+            ,node:node
+             ,listeners:{
+                   click: function(item){
+                       addWMStoTree(item);
+                   }
+               }
+        });
     }
     if(node.attributes.links!=undefined){
         for(i=0;i< node.attributes.links.length;i++){
@@ -90,22 +106,57 @@ function createEntryMenu(node){
 }
 
 
+function showInfoRamaddaEntry(item){
+    node=item.node;
+    if(ramaddaInfoWindow!=null){
+        ramaddaInfoWindow.close();
+    }
+
+    html='<h1><img src='+node.attributes.icon+'>'+node.attributes.name+'<h1>';
+    html+='<p>'+node.attributes.description+'<p>';
+    
+    if(node.attributes.metadata.length>0){
+        html+='<ul>';
+        for(var i=0; i<node.attributes.metadata.length;i++){
+            metadata=node.attributes.metadata[i];
+            html+='<li>'+metadata.type+' - '+metadata.attr1+' - '+metadata.attr2+' - '+metadata.attr3+'</li>';
+        }
+        html+='</ul>';
+    }
+
+
+    ramaddaInfoWindow = new Ext.Window({
+            id:'ramaddaInfoWindow',
+            width:400,
+            height:400,
+            maximizable: true,
+            collapsible: true,
+            autoScroll: true,
+            title:node.label,
+            html:html
+    });
+    
+    ramaddaInfoWindow.show();
+}
 
 
 function ramaddaHandler(url,label){
     
 
-    if(ramaddaInfoWindow==null){
-        var ramaddaInfoWindow = new Ext.Window({
-                id:'ramaddaInfoWindow',
-                width:400,
-                height:400,
-                maximizable: true,
-                collapsible: true,
-                autoScroll: true,
-                title:label
-        });
+    if(ramaddaInfoWindow!=null){
+        ramaddaInfoWindow.close();
     }
+
+    ramaddaInfoWindow = new Ext.Window({
+            id:'ramaddaInfoWindow',
+            width:400,
+            height:400,
+            maximizable: true,
+            collapsible: true,
+            autoScroll: true,
+            title:label
+    });
+
     ramaddaInfoWindow.add({
         xtype : "component",
         autoEl : {
@@ -130,8 +181,9 @@ function ramaddaHandler(url,label){
     ramaddaInfoWindow.show();
 }
 
-function addWMStoTree(attributes){
-            
+function addWMStoTree(item){
+            testingRamadda=item;
+            attributes=item.node.attributes;
             Ext.getCmp('contributorTree').add(
                 new Ext.tree.TreePanel({
                     root: new Ext.tree.AsyncTreeNode({

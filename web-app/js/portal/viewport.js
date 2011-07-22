@@ -71,7 +71,7 @@ Ext.onReady(function() {
     // now that components are rendered. fill them
     populateMenus();
     addRamadda();
-Ext.getCmp('leftMenus').doLayout();
+    Ext.getCmp('leftMenus').doLayout();
 
     modMapListeners(); // mainMapPanel.js
 
