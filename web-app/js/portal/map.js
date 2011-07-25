@@ -51,29 +51,7 @@ function centreMap() {
 
 function addToPopup(loc,mapPanel,e) {
 		
-        // create the popup if it doesn't exist
-        if (!popup) {
-            popup = new GeoExt.Popup({
-                title: "Features at your click point",
-                width: 450,
-				height: 380,
-                maximizable: true,
-               // collapsible: true,
-                map: mapPanel.map,
-                anchored: true,
-                border: false,
-                margins: 10,
-                constrainHeader: true,
-                panIn: true,
-				autoScroll: true, 
-                listeners: {
-                    close: function() {
-                        // closing a popup destroys it, but our reference is truthy
-                        popup = null;
-                    }
-                }
-            });
-        }
+        
 
 		var map = mapPanel.map;
 		var wmsLayers = map.getLayersByClass("OpenLayers.Layer.WMS");
@@ -148,10 +126,32 @@ function addToPopup(loc,mapPanel,e) {
 			}
                        
             if(url!="none"){
-                
+                    // create the popup if it doesn't exist
+                    if (!popup) {
+                        popup = new GeoExt.Popup({
+                            title: "Features at your click point",
+                            width: 450,
+                                            height: 380,
+                            maximizable: true,
+                           // collapsible: true,
+                            map: mapPanel.map,
+                            anchored: true,
+                            border: false,
+                            margins: 10,
+                            constrainHeader: true,
+                            panIn: true,
+                                            autoScroll: true,
+                            listeners: {
+                                close: function() {
+                                    // closing a popup destroys it, but our reference is truthy
+                                    popup = null;
+                                }
+                            }
+                        });
+                    }
+
                     format = "html";
-                    if(layer.isncWMS!=true) format = "xml";
-                                
+                    if(layer.isncWMS==true) format = "xml";
                     Ext.Ajax.request({
                        url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
                        success: function(resp){

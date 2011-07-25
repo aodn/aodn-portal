@@ -38,7 +38,7 @@ function ramaddaFolderToTree(rootLabel,treeId,rootId,ramaddaHost,ramaddaPath ){
            }
            ,listeners:{
                 beforeload:function(treeLoader, node) {
-                    this.dataUrl = proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+node.id+'&output=json')
+                    this.dataUrl = proxyURL+encodeURIComponent(ramaddaUrl+'?entryid='+node.id+'&output=json&links=true')
                 }
            }
     });
@@ -86,9 +86,26 @@ function ramaddaBrowseFolderWindow(rootLabel,treeId,rootId,ramaddaHost,ramaddaPa
 }
 
 function createEntryMenu(node){
-   var treeMenu = undefined;
+    var treeMenu = undefined;
     treeMenu = new Ext.menu.Menu();
 
+    
+    if(node.attributes.south!=-9999){
+        // Show information about the entry
+        treeMenu.add({
+            text:'view extent'
+            ,node:node
+            ,listeners:{
+                       click: function(item){
+                            bounds = new OpenLayers.Bounds();
+                            bounds.extend(new OpenLayers.LonLat(node.attributes.west,node.attributes.south));
+                            bounds.extend(new OpenLayers.LonLat(node.attributes.east,node.attributes.north));
+                            mapPanel.map.zoomToExtent(bounds);
+                       }
+                   }
+
+        })
+    }
     // Show information about the entry
     treeMenu.add({
         text:'information'
@@ -100,7 +117,6 @@ function createEntryMenu(node){
                }
         
     })
-
     // To browse WMS layers into the portal
     if(node.attributes.type=="wmsserver"){
         treeMenu.add({
@@ -255,7 +271,6 @@ function addWMStoTree(item){
                         // Note that this does not take care of maintaining the layer
                         // order on the map.
                         'checkchange': function(node,checked) {
-                            testingRamadda=node;
                             if (checked === true) {
                                     if (node.attributes.layer.params.SERVERTYPE=='ncWMS'){
                                             node.attributes.layer.yx = true;
@@ -272,11 +287,14 @@ function addWMStoTree(item){
        Ext.getCmp('contributorTree').doLayout();
 }
 
+// Variables for the search.
 var store;
 var grid;
-var filterTextField
-
+var filterTextField;
+//This has to be global to get the context menu position
+var eventxy;
 function ramaddaSearchWindow(){
+
 
 
     filterTextField = new Ext.form.TextField({
@@ -325,21 +343,44 @@ function ramaddaSearchWindow(){
         ,autoHeight:true
         ,autoWidth:true
         ,emptyText:'Use the search box'
-        /*,listeners:{
-            rowcontextmenu: function(grid, index, event){
-                                 event.stopEvent();
-                                 grid.getSelectionModel().selectRow(index);
-                                 var contexMenu= createRamaddaGridContextMenu(grid,index)
-                                 contexMenu.showAt(event.xy);
+        ,loadMask: {
+                            msg: 'Searching...'
+                        }
+        ,listeners:{
+                     rowcontextmenu: function(grid, index, event){
+                                  event.stopEvent();
+                                  // Global variable to be used after the ajax call
+                                  eventxy=event.xy;
+                                  grid.getSelectionModel().selectRow(index);
+                                  entry=grid.getSelectionModel().getSelected().json;
+
+                                  // If the entry is a group add the parameter show only entry not the childrens is an extra parameter of the json response
+                                  var groupShow=entry.isGroup;
+                                  
+                                  Ext.Ajax.request({
+                                        url: proxyURL+encodeURIComponent(ramaddaHost+ramaddaPath+'?entryid='+entry.id+'&output=json&links=true&onlyentry='+groupShow),
+                                        success: function(resp){
+                                            testingRamadda=resp;
+                                            var node=new Object();
+                                            // Compatibility with the other context menu
+                                            node.attributes=Ext.util.JSON.decode(resp.responseText)[0];
+                                            var itemSearchMenu=createEntryMenu(node);
+                                            itemSearchMenu.showAt(eventxy);
+                                        }
+                                    });
+                                
+                                 
                             }
-        }*/
+        }
+
     });
 
 
     filterTextField.on('specialkey', function(form,e){
             // Press enter key
             if (e.button == 12) {
-                 grid.getStore().baseParams.url='http://ramadda.aodn.org.au/repository/search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text='+filterTextField.getRawValue()+'&output=json';
+                 grid.getStore().baseParams.url=ramaddaHost+ramaddaPath+'search/do?search.type=search.type.text&search.submit.y=0&search.submit.x=0&text='+filterTextField.getRawValue()+'&output=json&max=50';
+                 
                  grid.getStore().load();
             }
         });
@@ -391,24 +432,7 @@ function ramaddaSearchWindow(){
 
 }
 
-function createRamaddaGridContextMenu(grid,index){
-    
-    var contextMenu = undefined;
-    contextMenu = new Ext.menu.Menu({
-        items: [{
-            id: 'someAction',
-            text: 'someAction',
-            node: grid.getSelectionModel().getSelected()
-        }],
-        listeners: {
-                itemclick: function(item) {
-                    ramaddaBrowseFolderWindow(item.node.json.name,item.node.json.id,item.node.json.id,ramaddaHost,ramaddaPath)
-                }
-            }
-        });
-    return contextMenu;
 
-}
 
 // Function to render grid results from a search
 function renderIcon(val) {
