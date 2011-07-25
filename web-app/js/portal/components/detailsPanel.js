@@ -75,17 +75,38 @@ function initDetailsPanel()
 
 function updateDetailsPanel(node)
 {
-    detailsPanelLayer = node.layer;
-    var styles = detailsPanelLayer.metadata.styles;
-    styleList.removeAll();
-    combo.clearValue();
+    
+    var styles = node.layer.metadata.styles;
     var data = new Array();
 
+    detailsPanelLayer = node.layer;
+    styleList.removeAll();
+    combo.clearValue();
+    
     for(var i = 0;i < styles.length; i++)
     {
         data.push([i, styles[i].name, styles[i].name]);
     }
+
     styleList.loadData(data);
+
+    if(detailsPanelLayer.params.STYLES != '')
+    {
+        for(var j = 0; j < styles.length; j++)
+        {
+            if(styles[j].name == detailsPanelLayer.params.STYLES)
+            {
+                legendImage.setUrl(styles[j].legend.href);
+                combo.select(j);
+            }
+        }
+    }
+    else
+    {
+        //use some default thingy
+        legendImage.setUrl(styles[0].legend.href);
+    }
+    
     detailsPanel.text = detailsPanelLayer.name;
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
