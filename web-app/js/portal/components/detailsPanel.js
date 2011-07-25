@@ -3,10 +3,12 @@ var styleList;
 var detailsPanel;
 var opacitySlider;
 var detailsPanelLayer;
-
+var legendImage;
 
 function initDetailsPanel()
 {
+    legendImage = new GeoExt.LegendImage();
+
     styleList = new Ext.data.ArrayStore({
         autoDestroy: true
         ,id: 0
@@ -43,6 +45,16 @@ function initDetailsPanel()
                 detailsPanelLayer.mergeNewParams({
                     styles: record.get('myId')
                 });
+
+                var stylesList = detailsPanelLayer.metadata.styles;
+
+                for(var i = 0; i < stylesList.length; i++)
+                {
+                    if(stylesList[i].name == record.get('myId'))
+                    {
+                        legendImage.setUrl(stylesList[i].legend.href);
+                    }
+                }
             }
         }
     });
@@ -56,7 +68,7 @@ function initDetailsPanel()
         ,autoScroll: true
         ,collapsible: true
         ,items: [
-               opacitySlider, combo
+               opacitySlider, combo, legendImage
          ]
     });
 }
@@ -64,7 +76,7 @@ function initDetailsPanel()
 function updateDetailsPanel(node)
 {
     detailsPanelLayer = node.layer;
-    var styles = node.layer.metadata.styles;
+    var styles = detailsPanelLayer.metadata.styles;
     styleList.removeAll();
     combo.clearValue();
     var data = new Array();
@@ -74,9 +86,8 @@ function updateDetailsPanel(node)
         data.push([i, styles[i].name, styles[i].name]);
     }
     styleList.loadData(data);
-    detailsPanel.text = node.layer.name;
-    detailsPanel.setTitle("Layer Options: " + node.layer.name);
-    opacitySlider.setLayer(node.layer);
-
+    detailsPanel.text = detailsPanelLayer.name;
+    detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
+    opacitySlider.setLayer(detailsPanelLayer);
 }
 
