@@ -1,7 +1,7 @@
 var map;
 var layer;
 var navigationHistoryCtrl;
-
+var automaticZoom=false;
 function initMap()
 {
 
@@ -105,16 +105,16 @@ function initMap()
                ,items: mapToolbar
             });
 
- var onClick2 = function(ev, target){
-    alert(target);
-    ev.preventDefault(); // Prevents the browsers default handling of the event
-    ev.stopPropagation(); // Cancels bubbling of the event
-    ev.stopEvent() // preventDefault + stopPropagation
+     var onClick2 = function(ev, target){
+        alert(target);
+        ev.preventDefault(); // Prevents the browsers default handling of the event
+        ev.stopPropagation(); // Cancels bubbling of the event
+        ev.stopEvent() // preventDefault + stopPropagation
 
-    var target = ev.getTarget() // Gets the target of the event (same as the argument)
-    
-    var relTarget = ev.getRelatedTarget(); // Gets the related target
-};
+        var target = ev.getTarget() // Gets the target of the event (same as the argument)
+
+        var relTarget = ev.getRelatedTarget(); // Gets the related target
+    };
 
 
 
@@ -190,7 +190,6 @@ function setToolbarItems() {
     });
     actions["next"] = action;
     toolbarItems.push(action);
-
     
     toolbarItems.push("->");
 
