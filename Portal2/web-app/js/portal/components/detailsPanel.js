@@ -1,23 +1,14 @@
-var combo;
-var styleList;
+var styleCombo;
 var detailsPanel;
 var opacitySlider;
 var detailsPanelLayer;
 var legendImage;
+var dimension;
+var dimensionPanel;
 
 function initDetailsPanel()
 {
     legendImage = new GeoExt.LegendImage();
-
-    styleList = new Ext.data.ArrayStore({
-        autoDestroy: true
-        ,id: 0
-        ,fields: [
-            'blah',
-            {name: 'myId'},
-            {name: 'displayText'}
-        ]
-    });
 
 // create a separate slider bound to the map but displayed elsewhere
     opacitySlider = new GeoExt.LayerOpacitySlider({
@@ -30,34 +21,8 @@ function initDetailsPanel()
     });
 
 
-    // create the combo instance
-    combo = new Ext.form.ComboBox({
-        typeAhead: true
-        ,triggerAction: 'all'
-        ,lazyRender:true
-        ,mode: 'local'
-        ,store: styleList
-        ,valueField: 'myId'
-        ,displayField: 'displayText'
-        ,listeners: {
-            select: function(cbbox, record, index)
-            {
-                detailsPanelLayer.mergeNewParams({
-                    styles: record.get('myId')
-                });
-
-                var stylesList = detailsPanelLayer.metadata.styles;
-
-                for(var i = 0; i < stylesList.length; i++)
-                {
-                    if(stylesList[i].name == record.get('myId'))
-                    {
-                        legendImage.setUrl(stylesList[i].legend.href);
-                    }
-                }
-            }
-        }
-    });
+    // create the styleCombo instance
+    styleCombo = makeCombo("styles");
 
     detailsPanel = new Ext.Panel({
         title: 'Layer Options'
@@ -68,24 +33,24 @@ function initDetailsPanel()
         ,autoScroll: true
         ,collapsible: true
         ,items: [
-               opacitySlider, combo, legendImage
+               opacitySlider, styleCombo, legendImage
          ]
     });
 }
 
-function updateDetailsPanel(node)
+function updateStyles(node)
 {
-    
     var styles = node.layer.metadata.styles;
-    var data = new Array();
 
     detailsPanelLayer = node.layer;
+    var styleList = styleCombo.store;
+    var data = new Array();
     styleList.removeAll();
-    combo.clearValue();
-    
+    styleCombo.clearValue();
+
     for(var i = 0;i < styles.length; i++)
     {
-        data.push([i, styles[i].name, styles[i].name]);
+        data.push([i, styles[i].legend.href, styles[i].name]);
     }
 
     styleList.loadData(data);
@@ -97,7 +62,7 @@ function updateDetailsPanel(node)
             if(styles[j].name == detailsPanelLayer.params.STYLES)
             {
                 legendImage.setUrl(styles[j].legend.href);
-                combo.select(j);
+                styleCombo.select(j);
             }
         }
     }
@@ -106,9 +71,96 @@ function updateDetailsPanel(node)
         //use some default thingy
         legendImage.setUrl(styles[0].legend.href);
     }
-    
+}
+
+function updateDimensions(node)
+{
+    var dims = node.layer.metadata.dimensions;
+    if(dims != undefined)
+    {
+        for(var d in dims)
+        {
+            if(dims[d].values != undefined)
+            {
+                var valList = dims[d].values;
+                var dimStore, dimData;
+
+                dimData = new Array();
+
+                dimCombo = makeCombo(d);
+                dimStore = dimCombo.store;
+                dimStore.removeAll();
+
+                for(var j = 0; j < valList.length; j++)
+                {
+                    //trimming function thanks to
+                    //http://developer.loftdigital.com/blog/trim-a-string-in-javascript
+                    var trimmed = valList[j].replace(/^\s+|\s+$/g, '') ;
+                    dimData.push([j, trimmed, trimmed]);
+                }
+
+                dimStore.loadData(dimData);
+                detailsPanel.add(dimCombo);
+                detailsPanel.doLayout();
+            }
+            
+        }
+    }
+}
+
+function updateDetailsPanel(node)
+{
+    updateStyles(node);
+    updateDimensions(node);
     detailsPanel.text = detailsPanelLayer.name;
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
 }
 
+function makeCombo(type)
+{
+    var valueStore  = new Ext.data.ArrayStore({
+        autoDestroy: true
+        ,itemId: type
+        ,name: type
+        ,fields: [
+                ,
+                {name: 'myId'},
+                {name: 'displayText'}
+            ]
+        });
+
+    var combo = new Ext.form.ComboBox({
+        fieldLabel: type
+        ,triggerAction: 'all'
+        ,lazyRender:true
+        ,mode: 'local'
+        ,store: valueStore
+        ,valueField: 'myId'
+        ,displayField: 'displayText'
+        ,listeners:{
+            select: function(cbbox, record, index){
+                if(cbbox.fieldLabel == 'styles')
+                {
+                    detailsPanelLayer.mergeNewParams({
+                        styles : record.get('displayText')
+                    });
+                }
+                else if(cbbox.fieldLabel == 'time')
+                {
+                    detailsPanelLayer.mergeNewParams({
+                        time : record.get('myId')
+                    });
+                }
+                else if(cbbox.fieldLabel == 'elevation')
+                {
+                    detailsPanelLayer.mergeNewParams({
+                        elevation : record.get('myId')
+                    });
+                }
+            }
+        }
+    });
+    
+    return combo;
+}
