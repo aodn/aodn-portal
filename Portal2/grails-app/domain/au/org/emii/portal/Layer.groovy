@@ -1,5 +1,9 @@
 package au.org.emii.portal
 
+import grails.converters.deep.*
+import groovyx.net.http.*
+
+
 class Layer {
 
     String name
@@ -14,6 +18,7 @@ class Layer {
     String layers
     String imageFormat
     Boolean queryable
+    Boolean isBaseLayer
 
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
@@ -44,6 +49,7 @@ class Layer {
         layers()
         imageFormat( inList:['image/png','image/gif'] )
         queryable()
+        isBaseLayer()
 
     }
 }

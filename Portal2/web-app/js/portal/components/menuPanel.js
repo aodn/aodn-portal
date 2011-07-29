@@ -1,6 +1,3 @@
-
-
-
 function initMenusPanel()
 {
 
@@ -21,15 +18,16 @@ function initMenusPanel()
     leftTabPanel = new Ext.TabPanel({
         defaults: {autoScroll: true}, // autoScroll for all items
         title: 'Layers Tab Panel',
-        region: 'center',
+        region: 'south',
         split: true,
         width: 250,
+        height:200,
         activeTab: 1,
         items: [
             contributorTree ,
             { 	region: 'west',
-                    title: "WMS Browser",
-                    id : 'contributorTree'
+                title: "WMS Browser",
+                id : 'contributorTree'
             }
         ]
     });
@@ -68,6 +66,26 @@ function initMenusPanel()
 
             }
         }
+    });
+    
+    baseList = new GeoExt.tree.BaseLayerContainer({
+        text: 'Base Layers',
+        layerStore: mapPanel.layers,
+        leaf: false,
+        expanded: true
+    });
+
+    basePanel = new Ext.tree.TreePanel({
+       nodeType: 'gx_baselayercontainer',
+       autoScroll: true,
+       header: true,
+       title: 'Base Layers',
+       split: true,
+       region: 'center',
+       enableDD: true,
+       height: 50,
+       rootVisible: false,
+       root: baseList
     });
 
     //Active layer Right Click menu

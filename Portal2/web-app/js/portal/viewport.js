@@ -26,8 +26,8 @@ var mapPanel;
 var leftTabPanel;
 var activeLayers;
 var contributorTree;
- 
-
+var basePanel;
+var baseLayerList;
 
 
 
@@ -35,13 +35,35 @@ var contributorTree;
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
+     Ext.Ajax.request({
+        url: 'layer/listBaseLayers',
+        success: function(resp){
+            var bl = Ext.util.JSON.decode(resp.responseText);
+            baseLayerList = new Array();
+            
+            for(var i = 0; i < bl.length; i++){
+                var l = new OpenLayers.Layer.WMS(
+                    bl[i].name,
+                    bl[i].server.uri,
+                    {layers: bl[i].layers},
+                    {wrapDateLine: true,
+                        transitionEffect: 'resize',
+                        isBaseLayer: true}
+                );
+                baseLayerList.push(l);
+            }
 
-     initMap();
-     initMenusPanel();
+            initMap();
+            initMenusPanel();
+            initDetailsPanel();
+            doViewPort();
+        }
+    });
+ });
 
-     initDetailsPanel();
-
-    var viewport = new Ext.Viewport({
+ function doViewPort()
+ {
+     var viewport = new Ext.Viewport({
         layout: 'border',
         stateful: true,
         items: [
@@ -49,7 +71,7 @@ Ext.onReady(function() {
             title: "Active layers",
             layout: 'border',
             items: [
-                activePanel,leftTabPanel
+                activePanel,basePanel,leftTabPanel
             ],
             region: 'west',
             id: "leftMenus",
@@ -65,16 +87,14 @@ Ext.onReady(function() {
             ]
         }]
     });
-    
+
     viewport.show();
-        
+
     // now that components are rendered. fill them
     populateMenus();
     addRamadda();
     Ext.getCmp('leftMenus').doLayout();
     modMapListeners(); // mainMapPanel.js
-
-
- });
+ }
 
 

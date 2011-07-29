@@ -17,6 +17,12 @@ class LayerController {
         [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]
     }
 
+    def listBaseLayers = {
+        def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
+
+        render layerInstanceList as JSON
+    }
+
     def showLayerByItsId = {
 
         def layerInstance = null
