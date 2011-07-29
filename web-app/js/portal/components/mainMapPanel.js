@@ -2,6 +2,7 @@ var map;
 var layer;
 var navigationHistoryCtrl;
 var automaticZoom=false;
+
 function initMap()
 {
 
@@ -35,22 +36,61 @@ function initMap()
 
     //make the map
     map = new OpenLayers.Map(options);
+
     map.restrictedExtent = new OpenLayers.Bounds.fromString("-10000,-90,10000,90");
     map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
     OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
 
-    layer = new OpenLayers.Layer.WMS(
-        "IMOS Base Layer",
+     //grab all of the base layers from the database!
+     for(var i = 0; i < baseLayerList.length; i++)
+     {
+        map.addLayer(baseLayerList[i]);
+     }
+    
+
+   /*layer = new OpenLayers.Layer.WMS(
+        "World Bathymetry",
         "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
         {layers: "HiRes_aus-group"},
         {wrapDateLine: true,
             transitionEffect: 'resize',
             isBaseLayer: true}
     );
+    map.addLayer(layer);*/
+
+    /*baseLayer2 = new OpenLayers.Layer.WMS(
+        "Marine Geo",
+        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
+        {layers: "marine_geo"},
+        {wrapDateLine: true,
+            transitionEffect: 'resize',
+            isBaseLayer: true}
+    );
+
+    baseLayer3 = new OpenLayers.Layer.WMS(
+        "Blue Marbler",
+        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
+        {layers: "satellite"},
+        {wrapDateLine: true,
+            transitionEffect: 'resize',
+            isBaseLayer: true}
+    );
+
+    baseLayer4 = new OpenLayers.Layer.WMS(
+        "Blue Basi",
+        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
+        {layers: "default_basemap_simple"},
+        {wrapDateLine: true,
+            transitionEffect: 'resize',
+            isBaseLayer: true}
+    );
 
     map.addLayer(layer);
+    map.addLayer(baseLayer2);
+    map.addLayer(baseLayer3);
+    map.addLayer(baseLayer4);*/
 
 
     //creating the map panel in the center
@@ -133,6 +173,7 @@ function initMap()
     });
 
     mapPanel.map.addControl(clickControl);
+
     clickControl.activate();
 
 }

@@ -33,6 +33,8 @@
                             <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
                         
                             <th><g:message code="layer.server.label" default="Server" /></th>
+
+                            <th><g:message code="layer.server.label" default="Is Base Layer" /></th>
                         
                         
                         </tr>
@@ -54,7 +56,9 @@
                         
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
-                        
+                            <td>${fieldValue(bean: layerInstance, field: "isBaseLayer")}</td>
+
+                            
                         </tr>
                     </g:each>
                     </tbody>

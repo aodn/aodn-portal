@@ -109,3 +109,11 @@
                                     <g:checkBox name="queryable" value="${true}"  /> Defaulting to true.
                                 </td>
                             </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="isBaseLayer"><g:message code="layer.isBaseLayer.label" default="IsBaseLayer" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'isBaseLayer', 'errors')}">
+                                    <g:checkBox name="isBaseLayer" value="${layerInstance?.isBaseLayer}"  />
+                                </td>
+                            </tr>
