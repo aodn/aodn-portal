@@ -1,0 +1,512 @@
+html * {
+    margin: 0;
+    /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
+}
+
+
+body {
+    background: #fff;
+    color: #636363;
+    font: 11px verdana, arial, helvetica, sans-serif;
+}
+
+
+
+h1 {
+
+    color: #67695E;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 30px;    
+    margin-bottom: 5px;
+}
+h2,h3,h4,h5 {
+    color: #67695E;
+    clear: both
+}
+h5 {
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+#logo {
+    padding: 15px;
+    padding-top: 0px;
+    height: 50px;
+}
+#logo h1,#logo img {
+    float: left;
+}
+#logo h1 {
+    margin-left: 50px;
+}
+
+.right {
+    float: right;
+}
+.small {
+    font-size: smaller;
+    font-weight: normal;
+}
+.spaced {
+    margin: 5px 0px;
+}
+
+/* GENERAL */
+
+.spinner {
+    padding: 5px;
+    position: absolute;
+    right: 0;
+}
+
+#mask {
+  position:absolute;
+  z-index:9000;
+  background-color:#7A8990;
+  display:none;
+}
+
+#boxes .window {
+  
+  display:none;
+  z-index:9999;
+  padding:5px;
+  background-color: White;
+}
+
+#boxes #dialog {
+
+ position: absolute;
+  width:780px;
+  height:720px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 0px 20px 30px 5px #7A8990;
+  box-shadow: 0px 20px 30px 5px #7A8990;
+}
+
+.fixed {
+        position: fixed;
+        top: 30px;
+}
+
+#grailsLogo {
+	padding:20px;
+}
+
+a:link, a:visited {
+    color: #3A728B;
+   /* font-weight: bold;*/
+    text-decoration: none;
+}
+a:hover {
+    color: #999;
+   /* font-weight: bold;*/
+    text-decoration: none;
+}
+
+ul.results {
+		list-style: circle outside;
+}
+
+
+td.value ul, div.list ul {
+    margin: 0px;
+    margin-right: 5px;
+}
+
+#controllerList  {
+    margin-top: 20px;
+
+}
+#controllerList a {
+    font-weight: bold;
+    float: left;
+}
+#controllerList span {
+   margin-left: 5px;
+}
+
+#controllerList li {
+    margin: 5px;
+    clear: both;
+}
+
+
+
+.sortableList {
+      float: left;
+      width: 150px;
+      background-color: #FFFFFF;
+      height: 150px;
+      border: 1px solid #ccc;
+      overflow:auto;
+      margin: 0 10px 0 0;
+}
+
+/* sortable lists */
+.sortableList  li{
+      margin: 0 2px 2px 2px; padding: 2px;
+      cursor: move;vertical-align: text-top;
+}
+.sortableList span {
+    margin: 0 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: inline;
+}
+
+
+
+input, select, textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    padding: 2px 4px;
+    
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 2px 2px 3px 0px #eee;
+  box-shadow: 2px 2px 3px 0px #eee;
+}
+select {
+   padding: 2px 2px 2px 0;
+}
+textarea {
+	width: 250px;
+	height: 150px;
+	vertical-align: top;
+}
+
+input:focus, select:focus, textarea:focus {
+    border: 1px solid #b2d1ff;
+}
+
+
+
+
+/* NAVIGATION MENU */
+
+.nav {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+   border-bottom: 1px solid #ccc;
+    margin-top: 12px;
+    padding: 7px 12px;
+}
+
+.menuButton {
+    font-size: 10px;
+    padding: 0 5px;
+}
+.menuButton a {
+    padding: 4px 6px;
+}
+.menuButton a {
+    background: url(../images/skin/house.png) center left no-repeat;
+    font-weight: bold;
+    padding-left: 25px;
+}
+.menuButton a.list {
+    background: url(../images/skin/database_table.png) center left no-repeat;
+}
+.menuButton a.create {
+    background: url(../images/skin/database_add.png) center left no-repeat;
+}
+
+/* MESSAGES AND ERRORS */
+
+.message {
+    background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
+    border: 1px solid #b2d1ff;
+    color: #006dba;
+    margin: 10px 0 5px 0;
+    padding: 5px 5px 5px 30px;
+        
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px 0px #eee;
+  box-shadow: 2px 2px 3px 0px #eee;
+}
+
+div.errors {
+    background: #fff3f3;
+    border: 1px solid red;
+    color: #cc0000;
+    margin: 10px 0 5px 0;
+    padding: 15px;
+    
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px 0px #eee;
+  box-shadow: 2px 2px 3px 0px #eee;
+}
+div.errors ul {
+    list-style: none;
+    padding: 0;
+}
+div.errors li {
+	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    line-height: 16px;
+    padding-left: 30px;
+}
+
+td.errors select {
+    border: 1px solid red;
+}
+td.errors input {
+    border: 1px solid red;
+}
+td.errors textarea {
+    border: 1px solid red;
+}
+
+/* TABLES */
+
+td.name {
+    font-weight: bold;
+    color: #3A728B;
+}
+th {
+    background: #fff url(../images/skin/shadow.jpg) repeat-x 0 14px;
+    color: #666;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 2px 6px;
+}
+th a:link, th a:visited, th a:hover {
+    display: block;
+    font-size: 10px;
+    text-decoration: none;
+    width: 100%;
+}
+th.asc a, th.desc a {
+    background-position: right;
+    background-repeat: no-repeat;
+}
+th.asc a {
+    background-image: url(../images/skin/sorted_asc.gif);
+}
+th.desc a {
+    background-image: url(../images/skin/sorted_desc.gif);
+}
+
+
+
+
+.odd {
+    background: #f7f7f7;
+}
+.even {
+    background: #fff;
+}
+
+.highlight {
+    background-image: url("../images/highlight.png");
+    background-color: #eee;
+}
+.optional {
+    background-color: #eee;
+}
+
+/* LIST */
+
+.list table {
+    border-collapse: collapse;
+}
+.list th, .list td {
+    border-left: 1px solid #ddd;
+
+    padding: 6px 6px;
+}
+.list th:hover, .list tr:hover {
+   /* background: #b2d1ff;*/
+}
+
+/* PAGINATION */
+
+.paginateButtons {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    border: 1px solid #ccc;
+    border-top: 0;
+    color: #666;
+    font-size: 10px;
+    overflow: hidden;
+    padding: 10px 3px;
+}
+.paginateButtons a {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: #ccc #aaa #aaa #ccc;
+    color: #666;
+    margin: 0 3px;
+    padding: 2px 6px;
+    font-weight: bold;
+}
+.paginateButtons span {
+    padding: 2px 3px;
+}
+
+/* DIALOG */
+
+.dialog table {
+    padding: 5px 0;
+    border: 0px solid #ccc;
+}
+.dialog, .buttons {
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 3px 3px 12px 0px #eeeeee;
+  box-shadow: 3px 3px 12px 0px #eeeeee;
+}
+
+.prop {
+    padding: 5px;
+}
+.prop .name {
+    text-align: left;
+    width: 15%;
+    white-space: nowrap;
+}
+.prop .value {
+    text-align: left;
+    width: 85%;
+}
+
+/* ACTION BUTTONS */
+
+.buttons {
+    color: #666;
+    font-size: 10px;
+    margin-top: 5px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.buttons input {
+    background: #fff;
+    border: 0;
+    color: #333;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 3px;
+    overflow: visible;
+    padding: 2px 6px;
+}
+.buttons input.delete {
+    background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.buttons input.edit {
+    background: transparent url(../images/skin/database_edit.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.buttons input.save {
+    background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+
+/* extras for jQuery_ui */
+.ui-datepicker {
+    display:none;
+}
+
+/* needed for ''required field' spans in the label columns */
+td.name span {
+    display: inline;
+    width: 20px;
+}
+.ui-icon-circle-check {
+    background-position: -208px -194px;
+}
+/* needed for span.inline in the input columns */
+td select, td ul {
+    float:left;
+    margin-right: 5px;
+}
+span.inline {
+    float:left
+}
+
+#login {
+	margin:15px 0px;
+    padding:20px;
+    width: 500px;
+}
+#login .inner {
+	width:260px;
+	margin:0px auto;
+	text-align:left;
+	padding:10px;
+	border:1px solid #eee;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 5px 20px 30px 0px #AFB296;
+  box-shadow: 5px 20px 30px 0px #AFB296;
+	background-color: #F1F2E4;
+}
+#login .inner .fheader {
+    margin:16px 0;
+    font-size:14px;
+    font-weight:bold;
+}
+#login .inner .cssform p {
+	clear: left;
+	margin: 0;
+	padding: 5px 0 8px 0;
+	padding-left: 105px;
+	margin-bottom: 10px;
+	height: 1%;
+}
+#login .inner .cssform input[type='text'] {
+	width: 120px;
+}
+#login .inner .cssform label {
+	font-weight: bold;
+	float: left;
+	margin-left: -105px;
+	width: 100px;
+}
+#login .inner .login_message {color:red;}
+#login .inner .text_ {width:120px;}
+#login .inner .chk {height:12px;}
+
+
+#userlogin {
+    float: right;
+    margin-top: 22px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.jasperReport {
+    margin: 6px;
+}
+.jasperReport img {
+    width:16px;
+}
+
+
+div.mainSearch {
+    margin: 20px;
+    margin-top: 2px;
+}
+/* search inside person list.gsp */
+div.search {
+    margin: 10px 0px;
+}
+div.paging {
+    margin: 6px 0px;
+}
+div.results {
+    margin: 6px
+}
+div.paging a {
+    margin-left: 4px;
+}
+

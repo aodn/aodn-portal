@@ -22,7 +22,7 @@ var toolbarpointer;
 var nodeSelected;
 var mapPanel;
  
-// menuPanel.js
+// components in menuPanel.js
 var leftTabPanel;
 var activeLayers;
 var contributorTree;

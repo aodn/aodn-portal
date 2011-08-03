@@ -1,0 +1,9 @@
+
+
+.x-menu-floating {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.noborder {
+    border: none! important;
+}

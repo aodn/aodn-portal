@@ -120,7 +120,8 @@ function initMap()
      // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
               // shadow: false,
-               height: 28
+              id: 'maptools'
+               ,height: 28
                ,width:'100%'
               // ,floating: true
                ,cls:'semiTransparent noborder'//

@@ -293,6 +293,7 @@ var grid;
 var filterTextField;
 //This has to be global to get the context menu position
 var eventxy;
+
 function ramaddaSearchWindow(){
 
 
