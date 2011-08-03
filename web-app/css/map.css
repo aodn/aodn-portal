@@ -165,21 +165,38 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     opacity: 0.0;
 }
 
+
+
+/* map toolbar */
+
 .semiTransparent {
     background: inherit! important;
     background-color:#3c668d! important;
     opacity: 0.7;
     color: white;
 }
+.semiTransparent button {
+    color: white;
+}
+.semiTransparent .x-item-disabled * {
+    color:  #eee! important;
+}
 .fullTransparency {
     background: inherit! important;
     background-color:white! important; 
-    opacity: 0.9! important;
+    opacity: 0.8! important;
+}
 
+.fullTransparency .x-item-disabled * {
+    color: #666! important;
 }
-.noborder {
-    border: none! important;
+.fullTransparency button {
+    color: #333;
 }
+
+
+
+
 
 
 /*
