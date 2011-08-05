@@ -49,7 +49,7 @@
             </g:hasErrors>
             <h1><g:message default="[entityName]" /></h1>
             <g:if test="${flash.message}">
-              <div class="message">${flash.message}</div>
+              <div  id="message" class="message">${flash.message}</div>
             </g:if>
             
             

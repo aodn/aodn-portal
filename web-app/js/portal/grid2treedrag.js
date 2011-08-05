@@ -255,8 +255,10 @@ function setupgrid2treedrag() {
                     
                                         // show the submit button
                                         Ext.get('submitMenu').show();
-                                        // hide the help                                        
-                                        Ext.getCmp('message').get().hide();
+                                        // hide the help with gay ext-js         
+                                        var element = Ext.get('message');
+                                        element.setVisibilityMode(Ext.Element.DISPLAY);
+                                        element.hide();
 
 
 

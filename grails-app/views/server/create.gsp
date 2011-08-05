@@ -7,15 +7,13 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'server.label', default: 'Server')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
-        
-        
     </head>
     <body>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
         </div>
-        <div class="content">
+        <div class="body">
             <h1><g:message code="default.create.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -45,15 +43,6 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'shortAcron', 'errors')}">
                                     <g:textField name="shortAcron" maxlength="16" value="${serverInstance?.shortAcron}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="wmsVersion"><g:message code="server.wmsVersion.label" default="Wms Version" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'wmsVersion', 'errors')}">
-                                    <g:select name="wmsVersion" from="${serverInstance.constraints.wmsVersion.inList}" value="${serverInstance?.wmsVersion}" valueMessagePrefix="server.wmsVersion"  />
                                 </td>
                             </tr>
                         
@@ -90,6 +79,24 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'comments', 'errors')}">
                                     <g:textField name="comments" value="${serverInstance?.comments}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="parseDate"><g:message code="server.parseDate.label" default="Parse Date" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'parseDate', 'errors')}">
+                                    <g:datePicker name="parseDate" precision="day" value="${serverInstance?.parseDate}"  />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="parseFrequency"><g:message code="server.parseFrequency.label" default="Parse Frequency" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'parseFrequency', 'errors')}">
+                                    <g:textField name="parseFrequency" value="${serverInstance?.parseFrequency}" />
                                 </td>
                             </tr>
                         

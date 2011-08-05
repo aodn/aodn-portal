@@ -5,8 +5,7 @@ class Server {
     String uri
     String shortAcron
     String name
-    String type  // type and wmsVersionshould be moved out into another class ?
-    String wmsVersion
+    String type // no need for another class
     Date parseDate
     String parseFrequency 
     Boolean disable
@@ -15,21 +14,16 @@ class Server {
     static constraints = {
         uri(unique:true)
         shortAcron(unique:true,size:0..16)
-        wmsVersion(inList:["", "1.0.0", "1.1.0","1.1.1", "1.3.0"])
-        type(inList:["WMS-1.0.0"
-                 ,      "WMS-LAYER-1.0.0"
-                 ,      "WMS-1.1.0"
-                 ,      "WMS-LAYER-1.1.0"
-                 ,      "WMS-1.1.1"
-                 ,      "WMS-LAYER-1.1.1"
-                 ,      "WMS-1.3.0"
-                 ,      "WMS-LAYER-1.3.0"
-                 ,      "NCWMS"
-                 ,      "THREDDS"
-                 ,      "GEORSS"
-                 ,      "KML"
-                 ,      "RAMADDA"
-                 ,      "AUTO" ])
+        type(inList:["WMS-1.0.0", // code will be written to handle these strings
+                       "WMS-1.1.0",
+                       "WMS-1.1.1",
+                       "WMS-1.3.0",
+                       "NCWMS",
+                       "THREDDS",
+                       "GEORSS",
+                       "KML",
+                       "RAMADDA",
+                       "AUTO" ])
         name(unique:true)
         disable()
         comments(nullable:true)
