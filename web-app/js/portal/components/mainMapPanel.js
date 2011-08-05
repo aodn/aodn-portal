@@ -50,49 +50,6 @@ function initMap()
      }
     
 
-   /*layer = new OpenLayers.Layer.WMS(
-        "World Bathymetry",
-        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
-        {layers: "HiRes_aus-group"},
-        {wrapDateLine: true,
-            transitionEffect: 'resize',
-            isBaseLayer: true}
-    );
-    map.addLayer(layer);*/
-
-    /*baseLayer2 = new OpenLayers.Layer.WMS(
-        "Marine Geo",
-        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
-        {layers: "marine_geo"},
-        {wrapDateLine: true,
-            transitionEffect: 'resize',
-            isBaseLayer: true}
-    );
-
-    baseLayer3 = new OpenLayers.Layer.WMS(
-        "Blue Marbler",
-        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
-        {layers: "satellite"},
-        {wrapDateLine: true,
-            transitionEffect: 'resize',
-            isBaseLayer: true}
-    );
-
-    baseLayer4 = new OpenLayers.Layer.WMS(
-        "Blue Basi",
-        "http://imos2.ersa.edu.au/cgi-bin/tilecache.cgi",
-        {layers: "default_basemap_simple"},
-        {wrapDateLine: true,
-            transitionEffect: 'resize',
-            isBaseLayer: true}
-    );
-
-    map.addLayer(layer);
-    map.addLayer(baseLayer2);
-    map.addLayer(baseLayer3);
-    map.addLayer(baseLayer4);*/
-
-
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
             center: new OpenLayers.LonLat(141, -32),
@@ -130,8 +87,7 @@ function initMap()
                ,items: setToolbarItems()
                
             });
-//mapToolbar.suspendEvents(true);
-   //   mapToolbar.un('click', this.onClick, this);
+
 
      // put the toobar in a panel as the toolbar wont float
     var mapLinks=  new Ext.Panel({
@@ -184,12 +140,7 @@ function modMapListeners() {
     var el = Ext.get('mapLinks');
     // stops the click bubbling to a getFeatureInfo request on the map
     el.on('click', function(ev, target){
-        //alert(target);
-        ev.preventDefault(); // Prevents the browsers default handling of the event
         ev.stopPropagation(); // Cancels bubbling of the event
-        ev.stopEvent() // preventDefault + stopPropagation
-        //var target = ev.getTarget(); // Gets the target of the event (same as the argument)
-        //var relTarget = ev.getRelatedTarget(); // Gets the related target
     });
 }
 
@@ -233,7 +184,7 @@ function setToolbarItems() {
     actions["next"] = action;
     toolbarItems.push(action);
     
-    toolbarItems.push("->");
+    //toolbarItems.push("->");
 
     // Reuse the GeoExt.Action objects created above
     // as menu items
@@ -254,6 +205,36 @@ function setToolbarItems() {
     });
 
 
+    toolbarItems.push("->");
+    toolbarItems.push({
+        xtype: 'box',
+        autoEl: {
+            tag: 'a',
+            href: 'http://www.imos.org.au',
+            cn: ' IMOS ',
+            target: "_blank"
+        }
+    });
+
+    toolbarItems.push({
+        xtype: 'box',
+        autoEl: {
+            tag: 'a',
+            href: 'http://www.imos.org.au/aodn.html',
+            cn: ' AODN ',
+            target: "_blank"
+        }
+    });
+
+        toolbarItems.push({
+        xtype: 'box',
+        autoEl: {
+            tag: 'a',
+            href: 'http://www.imos.org.au/aodn.html',
+            cn: ' Help ',
+            target: "_blank"
+        }
+    });
 
   return toolbarItems;
 
