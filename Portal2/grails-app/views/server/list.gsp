@@ -12,7 +12,7 @@
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
-        <div class="content">
+        <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -28,11 +28,11 @@
                         
                             <g:sortableColumn property="shortAcron" title="${message(code: 'server.shortAcron.label', default: 'Short Acron')}" />
                         
-                            <g:sortableColumn property="wmsVersion" title="${message(code: 'server.wmsVersion.label', default: 'Wms Version')}" />
-                        
                             <g:sortableColumn property="type" title="${message(code: 'server.type.label', default: 'Type')}" />
                         
                             <g:sortableColumn property="name" title="${message(code: 'server.name.label', default: 'Name')}" />
+                        
+                            <g:sortableColumn property="disable" title="${message(code: 'server.disable.label', default: 'Disable')}" />
                         
                         </tr>
                     </thead>
@@ -46,11 +46,11 @@
                         
                             <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
                         
-                            <td>${fieldValue(bean: serverInstance, field: "wmsVersion")}</td>
-                        
                             <td>${fieldValue(bean: serverInstance, field: "type")}</td>
                         
                             <td>${fieldValue(bean: serverInstance, field: "name")}</td>
+                        
+                            <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
                         
                         </tr>
                     </g:each>

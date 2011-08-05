@@ -13,7 +13,7 @@
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
-        <div class="content">
+        <div class="body">
             <h1><g:message code="default.show.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -44,13 +44,6 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="server.wmsVersion.label" default="Wms Version" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "wmsVersion")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="server.type.label" default="Type" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "type")}</td>
@@ -75,6 +68,20 @@
                             <td valign="top" class="name"><g:message code="server.comments.label" default="Comments" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "comments")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.parseDate.label" default="Parse Date" /></td>
+                            
+                            <td valign="top" class="value"><g:formatDate date="${serverInstance?.parseDate}" /></td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.parseFrequency.label" default="Parse Frequency" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "parseFrequency")}</td>
                             
                         </tr>
                     
