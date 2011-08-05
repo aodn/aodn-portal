@@ -7,6 +7,8 @@ class Server {
     String name
     String type  // type and wmsVersionshould be moved out into another class ?
     String wmsVersion
+    Date parseDate
+    String parseFrequency 
     Boolean disable
     String comments
     

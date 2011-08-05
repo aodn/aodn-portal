@@ -8,14 +8,14 @@ class LayerController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
-        //redirect(action: "list", params: params)
+        redirect(action: "list", params: params)
     }
 
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         if(params.type == 'JSON')
-            render Layer.list(params) as JSON
+            render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
         else
             [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]          
         

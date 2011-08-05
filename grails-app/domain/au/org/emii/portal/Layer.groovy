@@ -16,7 +16,9 @@ class Layer {
     String style
     Integer opacity
     String layers
+    String bbox
     String imageFormat
+    String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
 
@@ -37,16 +39,18 @@ class Layer {
      */
 
     static constraints = {
-        name(size:5..25)
+        name(size:5..225,unique:true)
         keywords(nullable:true)
         disabled()
-        description(size:5..55)
+        description(size:5..455,blank:false,unique:true)
         server()
         cache()
         cql(nullable:true)
         style(nullable:true)
+        metaUrl(nullable:true)
         opacity(range:30..100)
         layers()
+        bbox(nullable:true)
         imageFormat( inList:['image/png','image/gif'] )
         queryable()
         isBaseLayer()

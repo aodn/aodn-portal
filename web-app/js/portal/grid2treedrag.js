@@ -19,7 +19,32 @@
 Ext.ns('Example');
 Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
+var jsonLayers = '/Portal2/layer/list?type=JSON';
 
+
+function initMenu() {
+    
+                
+              // initialize QuickTips
+              Ext.QuickTips.init();
+              
+              setupgrid2treedrag();
+ 
+             Ext.get('submitMenu').on('click', function() {
+
+                var json = tree.toJsonString(null,
+                    function(key, val) {
+                        return (key == 'leaf' || key == 'grailsLayerId'  || key =='text' );
+                    }
+                    , 
+                    {
+                    description: 'name'
+                });
+                if (json != "") {
+                  Ext.get('jsonString').dom.value = json;                  
+                }
+            });
+}
 
 // {{{
 // example grid extension
@@ -28,33 +53,35 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
 		var config = {
                             
 			 store:new Ext.data.JsonStore({
-				 id:'company'
-				,url:'../layer/list?type=JSON'
-				,fields:[
+				url: jsonLayers,
+				fields:[
 				    {name:'id'}
-				   ,{name:'description'}
+				   ,{name:'name'}
 				   ,{name:'layers'}
+				   ,{name:'description'}
 				   ,{name:'server.shortAcron'}
 				]
-			})
-			,columns:[{
+			}),
+                        width: 600,
+			columns:[{
 				 id:'grailsLayerId'
 				,header:"Id"
-                                ,width: 20
+                                ,width: 10
                                 ,sortable:true
 				,dataIndex:'id'
 			},{
-				 header:"Description"
+				 header:"Name"
 				,sortable:true
-				,dataIndex:'description'
+				,dataIndex:'name'
 			},{
-				 header:"Layer name"
+				 header:"WMS Server"
+				,sortable:true
+                                ,width: 30
+				,dataIndex:'server.shortAcron'
+			},{
+				 header:"WMS Server Layer Name"
 				,sortable:true
 				,dataIndex:'layers'
-			},{
-				 header:"Server"
-				,sortable:true
-				,dataIndex:'server.shortAcron'
 			}]
 			,viewConfig:{forceFit:true}
 		}; // eo config object
@@ -65,7 +92,7 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
 		this.bbar = new Ext.PagingToolbar({
 			 store:this.store
 			,displayInfo:true
-			,pageSize:30
+			,pageSize:50
 		});
 		// call parent
 		Example.Grid.superclass.initComponent.apply(this, arguments);
@@ -77,13 +104,13 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
 		Example.Grid.superclass.onRender.apply(this, arguments);
 
 		// load the store
-		this.store.load({params:{start:0, limit:10}});
+		this.store.load({params:{start:0, limit:50}});
 
 	} // eo function onRender
 
 });
-Ext.reg('examplegrid', Example.Grid);
-// }}}
+Ext.reg('thegrid', Example.Grid); 
+
 
 
 function rightClickMenu(node){
@@ -160,15 +187,13 @@ function rightClickMenu(node){
 
 
 // application main entry point
-Ext.onReady(function() {
+function setupgrid2treedrag() {
 
-	// initialize QuickTips
-	Ext.QuickTips.init();
-
-	// {{{
+        // 
+    	// {{{
 	// create DD enabled tree in the east
 	// Note: It can be also an extension as the grid is
-	var tree = new Ext.tree.TreePanel({
+	tree = new Ext.tree.TreePanel({
         
         
 		// root with some static demo nodes
@@ -186,8 +211,7 @@ Ext.onReady(function() {
 		,ddGroup:'grid2tree'
 
 		,id:'tree'
-                ,flex: 1 // width
-                ,height: 500
+                ,width: 250
 		,border:false
 		,collapsible:false
                 ,padding: 20
@@ -202,18 +226,6 @@ Ext.onReady(function() {
                             }
                         },
 
-                       
-                        'click': function() {
-                            var json = tree.toJsonString(null,
-                                function(key, val) {
-                                    return (key == 'leaf' || key == 'grailsLayerId'  || key =='text' );
-                                }
-                                , 
-                                {
-                                description: 'description'
-                            });
-                            alert(json);
-                        },
 
 			// create nodes based on data from grid
 			beforenodedrop:{fn:function(e) {
@@ -234,12 +246,18 @@ Ext.onReady(function() {
 
 						// create node from record data
 						e.dropNode.push(this.loader.createNode({
-							 text:r.get('description')
+							 text:r.get('name')
 							,leaf:true
 							,grailsLayerId:r.get('id') // identify grails layers by this variable                            
 							,qtip:r.get('layers') + " - " + r.get('server.shortAcron')
 						}));
-					}
+					};
+                    
+                                        // show the submit button
+                                        Ext.get('submitMenu').show();
+                                        // hide the help                                        
+                                        Ext.getCmp('message').get().hide();
+
 
 
 					// we want Ext to complete the drop, thus return true
@@ -258,10 +276,11 @@ Ext.onReady(function() {
 	var win = new Ext.Panel({
                 defaultMargins: 10 ,
 		border:false,
+                padding: 25,      
                 layout:  {
-                    type: 'hbox'
-                   ,padding: 5                
+                    type: 'column'          
                   ,align: 'left'
+                  
                 }
                 
                 ,pack: 'start',
@@ -271,22 +290,22 @@ Ext.onReady(function() {
                 ,items:[
                     tree,
                     {                                  
-			 xtype:'examplegrid'
-			,id:'grid'
+			 xtype:'thegrid'
+			,id:'availableLayers'
 			,title:'Drag layers to the tree'  
                         ,height: 500
                         ,stripeRows : true
-			,flex: 4
 			,enableDragDrop:true
 			,ddGroup:'grid2tree'
                     }
                 ]
                 
 	});
-	win.doLayout();
+	win.doLayout();    
+    
  
  
-}); // eo function onReady
+}; 
 
 
 

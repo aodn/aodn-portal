@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+      
+        <!--- common styles and JavaScript for the map page and Grails admin pages -->
+       <g:render template="/common_includes"></g:render>
+       
         <title><g:layoutTitle default="Administration" /></title>
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         

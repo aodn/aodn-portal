@@ -8,45 +8,39 @@ class MenuController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
-        //redirect(action: "list", params: params)
+        redirect(action: "list", params: params)
     }
 
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        if(params.type == 'JSON')
-            render Menu.list(params) as JSON
-        else
-            [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]          
+        [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]          
         
     }
 
-    def showMenuByItsId = {
-
-        def menuInstance = null
-        // unencode menuId as per 'listAllMenus' to get just the id
-        if (params.menuId != null) {
-            def menuIdArr = params.menuId.split("_")
-            menuInstance = Menu.get( menuIdArr[ menuIdArr.size() - 1 ])
-        }
-        if (menuInstance) {
-            render menuInstance as JSON
-        }
-        else {
-            render  ""
-        }
-    }
 
 
     def create = {
         def menuInstance = new Menu()
         menuInstance.properties = params
+        flash.message = "Drag layers onto the tree. <BR>The root element of the tree must be renamed. Right click on the tree to see options"
         return [menuInstance: menuInstance]
 
     }
 
-    def save = {
+    def save = {             
+   
+        params.active = true
+        params.editDate = new Date()
+        
+        // strip out the root node and use it as the title
+        def jsonArray = JSON.parse(params.json)        
+        params.title = jsonArray.text        
+        // the JSON string to save and use is the children of the root node
+        params.json = jsonArray.children.toString()
+        
         def menuInstance = new Menu(params)
+       
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
             redirect(action: "show", id: menuInstance.id)
