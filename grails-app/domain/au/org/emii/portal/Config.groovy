@@ -11,6 +11,11 @@ class Config {
     Integer proxyPort
     String initialBbox
     Menu defaultMenu
+    String motd         //message of the day
+    Boolean enableMOTD  //toggle
+    List defaultLayers
+    static hasMany = [defaultLayers:Layer]
+    
 
     static constraints = {
         name(size:5..25,unique:true)
@@ -18,5 +23,6 @@ class Config {
         proxyPort(nullable:true)
         initialBbox(size:20..50)
         defaultMenu()
+        defaultLayers(nullable:true)
     }
 }

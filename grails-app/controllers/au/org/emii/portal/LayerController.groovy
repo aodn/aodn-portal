@@ -13,7 +13,7 @@ class LayerController {
 
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
         if(params.type == 'JSON')
             render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
         else

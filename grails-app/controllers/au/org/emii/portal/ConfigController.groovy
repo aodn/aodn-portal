@@ -1,6 +1,8 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import grails.converters.deep.*
+import groovyx.net.http.*
 
 class ConfigController {
 
@@ -11,8 +13,11 @@ class ConfigController {
     }
 
 	def list = {
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[configInstanceList: Config.list(params), configInstanceTotal: Config.count()]
+        if(params.type == 'JSON')
+            render Config.list(params) as JSON
+	else
+            params.max = Math.min(params.max ? params.int('max') : 10, 100)
+            [configInstanceList: Config.list(params), configInstanceTotal: Config.count()]
 	}
 
     def create = {

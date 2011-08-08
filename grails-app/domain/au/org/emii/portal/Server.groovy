@@ -10,6 +10,10 @@ class Server {
     String parseFrequency 
     Boolean disable
     String comments
+
+    static mapping = {
+        sort "shortAcron"
+    }
     
     static constraints = {
         uri(unique:true)
