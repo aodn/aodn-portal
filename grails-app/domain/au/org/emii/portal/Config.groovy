@@ -12,6 +12,7 @@ class Config {
     String initialBbox
     Menu defaultMenu
     String motd         //message of the day
+    String motdTitle
     Boolean enableMOTD  //toggle
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
