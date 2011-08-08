@@ -37,6 +37,9 @@ class Layer {
         <tns:queryable>true</tns:queryable>
 
      */
+    static mapping = {
+        sort "server"
+    }
 
     static constraints = {
         name(size:5..225,unique:true)

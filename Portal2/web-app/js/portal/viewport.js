@@ -35,30 +35,50 @@ var baseLayerList;
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
+
      Ext.Ajax.request({
-        url: 'layer/listBaseLayers',
+        url: 'config/list?type=JSON',
         success: function(resp){
             var bl = Ext.util.JSON.decode(resp.responseText);
-            baseLayerList = new Array();
             
-            for(var i = 0; i < bl.length; i++){
-                var l = new OpenLayers.Layer.WMS(
-                    bl[i].name,
-                    bl[i].server.uri,
-                    {layers: bl[i].layers},
-                    {wrapDateLine: true,
-                        transitionEffect: 'resize',
-                        isBaseLayer: true}
-                );
-                baseLayerList.push(l);
+            if(bl.length == 0)
+            {
+                Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
+            }
+            else
+            {
+                if(bl[0].enableMOTD)
+                    Ext.MessageBox.alert( bl[0].motdTitle, bl[0].motd);
             }
 
-            initMap();
-            initMenusPanel();
-            initDetailsPanel();
-            doViewPort();
+            Ext.Ajax.request({
+                url: 'layer/listBaseLayers',
+                success: function(resp){
+                    var bl = Ext.util.JSON.decode(resp.responseText);
+                    baseLayerList = new Array();
+
+                    for(var i = 0; i < bl.length; i++){
+                        var l = new OpenLayers.Layer.WMS(
+                            bl[i].name,
+                            bl[i].server.uri,
+                            {layers: bl[i].layers},
+                            {wrapDateLine: true,
+                                transitionEffect: 'resize',
+                                isBaseLayer: true}
+                        );
+                        baseLayerList.push(l);
+                    }
+
+                    initMap();
+                    initMenusPanel();
+                    initDetailsPanel();
+                    doViewPort();
+                }
+            });
+
         }
-    });
+     });
+
  });
 
  function doViewPort()

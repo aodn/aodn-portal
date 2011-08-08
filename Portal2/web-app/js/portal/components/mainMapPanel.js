@@ -29,26 +29,31 @@ function initMap()
     var options = {
          controls: controls,
          displayProjection: new OpenLayers.Projection("EPSG:4326"),
-         units: "m",
-         prettyStateKeys: true // for pretty permalinks
+         prettyStateKeys: true, // for pretty permalinks,
+         resolutions : [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
      };
 
 
     //make the map
     map = new OpenLayers.Map(options);
 
-    map.restrictedExtent = new OpenLayers.Bounds.fromString("-10000,-90,10000,90");
-    map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
+    map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
+    //map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
-    OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
-
-
+    
      //grab all of the base layers from the database!
      for(var i = 0; i < baseLayerList.length; i++)
      {
         map.addLayer(baseLayerList[i]);
      }
     
+     var scaleLine = new OpenLayers.Control.ScaleLine({});
+
+     var mousePos = new OpenLayers.Control.MousePosition();
+
+
+     map.addControl(scaleLine);
+     map.addControl(mousePos);
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
@@ -61,6 +66,7 @@ function initMap()
             split: true,
             // tbar: setToolbarItems(),
             header: false,
+            extent: [-5, 35, 15, 55],
             //title: 'Map panel',
             items: [{
                 xtype: "gx_zoomslider",
@@ -70,10 +76,9 @@ function initMap()
                 x: 12,
                 y: 120,
                 plugins: new GeoExt.ZoomSliderTip()
-            }
-            ]
+            }]
        });
-
+       
      // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
               // shadow: false,

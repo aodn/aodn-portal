@@ -13,7 +13,7 @@ hibernate {
 environments {
    development {
        dataSource {
-           dbCreate = "update" // one of 'create', 'create-drop','update'
+          // dbCreate = "update" // one of 'create', 'create-drop','update'
           url = "jdbc:postgresql://obsidian.bluenet.utas.edu.au:5432/portalV2Development?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
            //url = "jdbc:postgresql://localhost:5432/publications"
 
