@@ -26,8 +26,7 @@ function initMenusPanel()
         items: [
             contributorTree ,
             { 	region: 'west',
-                title: "WMS Browser",
-                id : 'contributorTree'
+                title: "WMS Browser"
             }
         ]
     });
@@ -161,7 +160,7 @@ function populateMenus() {
             var serverList= Ext.util.JSON.decode(resp.responseText);
             for(var i = 0; i<serverList.length;i++){
 
-                Ext.getCmp('contributorTree').add(
+                contributorTree.add(
                     new Ext.tree.TreePanel({
                         root: new Ext.tree.AsyncTreeNode({
                                 text: serverList[i].name,
@@ -208,7 +207,7 @@ function populateMenus() {
             }  
             // matias: because we are not sure if the tree is rendered alredy
             // this is a
-            Ext.getCmp('contributorTree').doLayout();
+            contributorTree.doLayout();
         }
     });
     

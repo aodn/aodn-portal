@@ -15,6 +15,10 @@ class Server {
         sort "shortAcron"
     }
     
+    static mapping = {
+        sort 'shortAcron'
+    }
+    
     static constraints = {
         uri(unique:true)
         shortAcron(unique:true,size:0..16)
@@ -36,6 +40,6 @@ class Server {
         return "${shortAcron}"
     }
     String toString() {
-        return " ${uri} - ${shortAcron}"
+        return "${shortAcron}"
     }
 }

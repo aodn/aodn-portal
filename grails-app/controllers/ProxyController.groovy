@@ -1,14 +1,14 @@
 
 class ProxyController {
 
-    def DEBUG = true;
+    def DEBUG = true; // todo remove
 
     def index = {
 
         if (params.url) {
 
            //exclude use to certain hosts
-           def hostList = ['geoserver.emii.org.au','geoserverdev.emii.org.au']
+           def hostList = ['geoserver.emii.org.au','geoserverdev.emii.org.au'] // get values from config
            def format
 
            

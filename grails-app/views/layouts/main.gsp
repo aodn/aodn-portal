@@ -17,7 +17,32 @@
         <div id="spinner" class="spinner" style="display:none;">
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
         </div>
-        <div id="logo"><img src="${resource(dir:'images',file:'logo.png')}" alt="Portal Logo" border="0" /></div>
+        
         <g:layoutBody />
+        
+      <div id="controllerMenu">
+      <h2>Portal Config Controllers</h2>
+      <ul>
+                  <li class="controllerMenuItems"><g:link controller="server" action="list" >Server</g:link>
+                    <span class="inline">
+                      <g:link controller="server" action="create" class="" >create</g:link>
+                    </span>
+                  </li>
+                  <li class="controllerMenuItems"><g:link controller="layer" action="list" >Layer</g:link>
+                    <span class="inline">
+                      <g:link controller="layer" action="create" class="" >create</g:link>
+                    </span>
+                  </li>
+                  <li class="controllerMenuItems"><g:link controller="menu" action="list" >Menu</g:link>
+                    <span class="inline">
+                      <g:link controller="menu" action="create" class="" >create</g:link>
+                    </span>
+                  </li>
+                  <li class="controllerMenuItems"><g:link controller="config" action="list" >Config</g:link>
+                  </li>
+      </ul>
+       
+      </div>
+        
     </body>
 </html>

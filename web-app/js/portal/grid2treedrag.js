@@ -22,6 +22,7 @@ Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 var jsonLayers = '/Portal2/layer/list?type=JSON';
 
 
+
 function initMenu() {
     
                 
@@ -113,6 +114,8 @@ Ext.reg('thegrid', Example.Grid);
 
 
 
+
+
 function rightClickMenu(node){
     var treeMenu = undefined;
     treeMenu = new Ext.menu.Menu({plain: false,shadow:'drop', showSeparator: false});  
@@ -185,14 +188,9 @@ function rightClickMenu(node){
         
 }
 
-
-// application main entry point
 function setupgrid2treedrag() {
 
-        // 
-    	// {{{
-	// create DD enabled tree in the east
-	// Note: It can be also an extension as the grid is
+
 	tree = new Ext.tree.TreePanel({
         
         
@@ -254,11 +252,11 @@ function setupgrid2treedrag() {
 					};
                     
                                         // show the submit button
-                                        Ext.get('submitMenu').show();
+                                        Ext.get('submitMenu').fadeIn({duration: 4});
                                         // hide the help with gay ext-js         
                                         var element = Ext.get('message');
                                         element.setVisibilityMode(Ext.Element.DISPLAY);
-                                        element.hide();
+                                        element.fadeOut({duration: 1.5});
 
 
 

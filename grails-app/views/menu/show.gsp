@@ -1,15 +1,103 @@
-
 <%@ page import="au.org.emii.portal.Menu" %>
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="main">        
-       
-		<g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
+          <meta name="layout" content="main">        
+          
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+          <script src="${resource(dir:'js',file:'portal/grid2treedrag.js')}" type="text/javascript"></script>
+          <script src="${resource(dir:'js',file:'portal/treeSerializer.js')}"  type="text/javascript"></script>
+          <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
+          <title><g:message code="default.show.label" args="[entityName]" /></title>
+          <g:if test="${menuInstance?.id}">				
+                   <script>
+                     
+                      Ext.onReady(function(){
+                          buildTree("${menuInstance?.id}");
+                     });
+                     
+                     
+                      // generic tree builder to move out of here latter
+  function buildTree(id) {
+    
+      var layersContainer = new GeoExt.tree.LayerContainer();
+       var testTree = new Ext.tree.TreePanel({
+        layout: "fit",
+        region: "west",
+        title: "Contributors",
+        width: 170,
+        collapsible: false,
+        collapseMode: "mini",
+        split: true,
+        root: layersContainer
+    });
+    var root = new Tree.AsyncTreeNode({
+      text: 'Autos',
+      draggable:false,
+      id:'source',
+      children: '${menuInstance?.json}''
+      });
+    	// create and show the window
+	var win = new Ext.TreePanel({                
+                defaults: {autoScroll: true}, // autoScroll for all items
+                defaultMargins: 10 ,
+		border:false,
+                padding: 25               
+                ,pack: 'start',
+                align: 'stretch'
+		,renderTo:'jsontree'
+
+                ,items:[
+                    contributorTree
+                ]
+                
+	});
+	win.doLayout();    
+    
+      
+      
+	tree = new Ext.tree.TreePanel({
+        
+        
+		// root with some static demo nodes
+		root:{text:'New Layer Menu', id:'root', leaf:false, children: [], expanded: true, expandable: true}
+        
+                //,rootVisible: false     
+
+		// preloads 1st level children
+		,loader:new Ext.tree.TreeLoader({preloadChildren:true})
+
+		// enable DD
+		,enableDD:true
+
+		// set ddGroup - same as for grid
+		,ddGroup:'grid2tree'
+
+		,id:'tree'
+                ,width: 250
+		,border:false
+		,collapsible:false
+                ,padding: 20
+		,autoScroll:true
+		,listeners:{
+
+		}
+	});
+	// }}}
+    
+        //tree.getRootNode().expand();
+ 
+
+  
+  
+  }
+
+                  </script>
+          </g:if>
 	</head>
 	<body>
 		  <div class="nav">
+            <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
@@ -47,15 +135,10 @@
 					
 				</li>
 				</g:if>
+              
+                                <div id="jsontree"></div>
 			
-				<g:if test="${menuInstance?.json}">
-				<li class="fieldcontain">
-					<span id="json-label" class="property-label"><g:message code="menu.json.label" default="Json" /></span>
-					
-						<span class="property-value" aria-labelledby="json-label"><g:fieldValue bean="${menuInstance}" field="json"/></span>
-					
-				</li>
-				</g:if>
+				
 			
 			</ol>
 			<g:form>

@@ -43,8 +43,10 @@ body {
 	background-color: #abbf78;
 }
 #logo {
-    display: none;
+    height: 50px;
+    background: url('../images/grails_logo.png') 0 0 no-repeat;
 }
+
 
 /* replace with .no-boxshadow body if you have modernizr available */
 .ie6 body,
@@ -89,7 +91,21 @@ img {
 	margin: 1em;
 }
 
+#controllerMenu {
+    position: absolute;
+    top: 130px;
+    left: 15px;
+    width: 170px;
+    height: 100%;
+}
+.controllerMenuItems {
+    
+}
+
 .content {
+   position: absolute;
+   top: 130px;
+   left: 200px;
 }
 
 .content h1 {
@@ -228,9 +244,8 @@ fieldset,
 
 .fieldcontain label,
 .fieldcontain .property-label {
-	color: #666666;
-	text-align: right;
-	width: 25%;
+	color: Black;
+	width: 150px;
 }
 
 .fieldcontain .property-label {
@@ -238,8 +253,6 @@ fieldset,
 }
 
 .fieldcontain .property-value {
-	display: block;
-	margin-left: 27%;
 }
 
 label {
@@ -486,10 +499,6 @@ th:hover, tr:hover {
 	margin: 0;
 	padding: 0.3em 0.2em;
 	text-align: center;
-	   -moz-box-shadow: 0 0 3px 1px #AAAAAA;
-	-webkit-box-shadow: 0 0 3px 1px #AAAAAA;
-	        box-shadow: 0 0 3px 1px #AAAAAA;
-	background-color: #EFEFEF;
 }
 
 .pagination a,

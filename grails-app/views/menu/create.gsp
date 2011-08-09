@@ -8,8 +8,6 @@
         
         <g:set var="entityName" value="Menu" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
-
-   
      
         <script>
           
@@ -23,6 +21,9 @@
          
             
          });
+         
+        
+         
                        
        </script>
     </head>
@@ -32,6 +33,7 @@
         <g:form action="save" AUTOCOMPLETE = "off" >
           
          <div class="nav">
+           <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>            
        
