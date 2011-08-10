@@ -9,22 +9,17 @@
         <g:set var="entityName" value="Menu" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
      
-        <script>
-          
+        <script>         
     
-        var tree; // instantiated in grid2treedrag
+       
 
         Ext.onReady(function(){
           
-            initMenu(); // grid2treedrag
+            initMenu(undefined); // grid2treedrag        
             
          
-            
-         });
-         
-        
-         
-                       
+         });  
+                     
        </script>
     </head>
     <body>

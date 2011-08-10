@@ -7,88 +7,44 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
           <script src="${resource(dir:'js',file:'portal/grid2treedrag.js')}" type="text/javascript"></script>
           <script src="${resource(dir:'js',file:'portal/treeSerializer.js')}"  type="text/javascript"></script>
+          
+          
           <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
           <title><g:message code="default.show.label" args="[entityName]" /></title>
           <g:if test="${menuInstance?.id}">				
                    <script>
                      
                       Ext.onReady(function(){
-                          buildTree("${menuInstance?.id}");
+                        
+                        
+                          buildDemoTree(${menuInstanceJson});
                      });
                      
                      
-                      // generic tree builder to move out of here latter
-  function buildTree(id) {
-    
-      var layersContainer = new GeoExt.tree.LayerContainer();
-       var testTree = new Ext.tree.TreePanel({
-        layout: "fit",
-        region: "west",
-        title: "Contributors",
-        width: 170,
-        collapsible: false,
-        collapseMode: "mini",
-        split: true,
-        root: layersContainer
-    });
-    var root = new Tree.AsyncTreeNode({
-      text: 'Autos',
-      draggable:false,
-      id:'source',
-      children: '${menuInstance?.json}''
-      });
-    	// create and show the window
-	var win = new Ext.TreePanel({                
-                defaults: {autoScroll: true}, // autoScroll for all items
-                defaultMargins: 10 ,
-		border:false,
-                padding: 25               
-                ,pack: 'start',
-                align: 'stretch'
-		,renderTo:'jsontree'
+   // generic tree builder to move out of here latter
+   // seperate function for display of the tree only
+  function buildDemoTree(menu) {
 
-                ,items:[
-                    contributorTree
-                ]
-                
-	});
-	win.doLayout();    
-    
+
       
-      
-	tree = new Ext.tree.TreePanel({
-        
-        
-		// root with some static demo nodes
-		root:{text:'New Layer Menu', id:'root', leaf:false, children: [], expanded: true, expandable: true}
-        
-                //,rootVisible: false     
-
-		// preloads 1st level children
-		,loader:new Ext.tree.TreeLoader({preloadChildren:true})
-
-		// enable DD
-		,enableDD:true
-
-		// set ddGroup - same as for grid
-		,ddGroup:'grid2tree'
-
-		,id:'tree'
-                ,width: 250
-		,border:false
-		,collapsible:false
-                ,padding: 20
-		,autoScroll:true
-		,listeners:{
-
-		}
-	});
-	// }}}
+      var rootAsyncTreeNode = new Ext.tree.AsyncTreeNode({
+        text: menu.title,
+        draggable:false,
+        children: JSON.parse(menu.json) // supplied as a string
+      });     
     
-        //tree.getRootNode().expand();
- 
+
+      var tree = new Ext.tree.TreePanel( {
+                            enableDD:false,
+                            loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
+                            renderTo: 'jsontree',
+                            root: rootAsyncTreeNode,
+                            rootVisible:false,
+                            });
 
   
+      tree.getRootNode().expand(true);
+
   
   }
 

@@ -4,8 +4,18 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
-               
+		<title><g:message code="default.list.label" args="[entityName]" /></title>        
+        
+        <script>
+          function showSpinner() {
+            jQuery("#spinner,#ajaxStatus").show();
+          }
+          function hideSpinner() {
+            jQuery("#spinner").hide();
+          }
+          
+          </script>
+                     
 	</head>
 	<body>
 		<div class="nav">
@@ -15,9 +25,11 @@
         </div>
 		<div id="list-menu" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+                        <g:if test="${flash.message}">
+                            <div class="message" role="status">${flash.message}</div>
+                            
 			</g:if>
+            <div id="ajaxStatus" class="message" style="display:none" ></div>
 			<table>
 				<thead>
 					<tr>
@@ -38,7 +50,9 @@
 					
 						<td><g:link action="show" id="${menuInstance.id}">${fieldValue(bean: menuInstance, field: "title")}</g:link></td>
 					
-						<td><g:formatBoolean boolean="${menuInstance.active}" /></td>
+                                                <td>
+                                                         <g:checkBox name="active" value="${menuInstance.active}"   autocomplete="off" onchange="${remoteFunction(action:'setActive',id:menuInstance.id, before:'showSpinner()',after:'hideSpinner()', update:[success:'ajaxStatus', failure: 'ajaxStatus'], params:'\'active=\' + this.checked')}" />
+                                                </td>
 					
 						<td><g:formatDate date="${menuInstance.editDate}" /></td>
 					

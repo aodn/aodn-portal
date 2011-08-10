@@ -33,7 +33,7 @@ var c = false, result = "{";
 
 // Add the id attribute unless the attribute filter rejects it.
 if (!attributeFilter || attributeFilter("id", this.id)) {
-result += '"id:"' + this.id;
+result += '"id":' + this.id;
 c = true;
 }
 

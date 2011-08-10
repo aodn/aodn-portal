@@ -13,7 +13,8 @@ class Menu {
             nullable:false,
             blank: false, 
             maxSize: 40, 
-            unique:true)
+            unique:true
+        )
         json()
     }
 }

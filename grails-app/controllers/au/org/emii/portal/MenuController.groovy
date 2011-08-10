@@ -17,6 +17,21 @@ class MenuController {
         [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]          
         
     }
+    
+    // this method is all about setting the 'active' attribute from the list page
+    def setActive = {
+        
+        def menuInstance = Menu.get(params.id)
+        menuInstance.properties = params
+        if (menuInstance.save(flush: true)) {
+            def state = (menuInstance.active) ? "active" : "inactive"
+            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state              
+        }
+        else {
+            render 'ERROR: Problem saving the new state!'
+        }
+        
+    }
 
 
 
@@ -30,16 +45,10 @@ class MenuController {
 
     def save = {             
    
-        params.active = true
-        params.editDate = new Date()
+        params.active = true        
+        def paramsCleaned = cleanParams(params)
         
-        // strip out the root node and use it as the title
-        def jsonArray = JSON.parse(params.json)        
-        params.title = jsonArray.text        
-        // the JSON string to save and use is the children of the root node
-        params.json = jsonArray.children.toString()
-        
-        def menuInstance = new Menu(params)
+        def menuInstance = new Menu(paramsCleaned)
        
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
@@ -49,6 +58,18 @@ class MenuController {
             render(view: "create", model: [menuInstance: menuInstance])
         }
     }
+    
+    private cleanParams(params) {
+        
+         // strip out the root node and use it as the title
+        def jsonArray = JSON.parse(params.json)    
+        
+        params.editDate = new Date()
+        params.title = jsonArray.text        
+        // the JSON string to save and use is the children of the root node
+        params.json = jsonArray.children.toString()
+        return params
+    }
 
     def show = {
         def menuInstance = Menu.get(params.id)
@@ -57,7 +78,8 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            [menuInstance: menuInstance]
+            def menuInstanceJson =  menuInstance as JSON // can easily create javascript object from this
+            [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
     }
 
@@ -68,12 +90,16 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            return [menuInstance: menuInstance]
+            def menuInstanceJson =  menuInstance as JSON // can easily create javascript object from this
+            [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
     }
 
     def update = {
         def menuInstance = Menu.get(params.id)
+        
+        def paramsCleaned = cleanParams(params)
+        
         if (menuInstance) {
             if (params.version) {
                 def version = params.version.toLong()
@@ -84,7 +110,7 @@ class MenuController {
                     return
                 }
             }
-            menuInstance.properties = params
+            menuInstance.properties = paramsCleaned
             if (!menuInstance.hasErrors() && menuInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
                 redirect(action: "show", id: menuInstance.id)
@@ -108,7 +134,7 @@ class MenuController {
                 redirect(action: "list")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
+                flash.message = "${message(code: 'default.not.deletedmenu.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
                 redirect(action: "show", id: params.id)
             }
         }

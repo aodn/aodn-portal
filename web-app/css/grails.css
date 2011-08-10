@@ -61,8 +61,12 @@ body {
 	height: 100%;
 }
 
-a:link, a:visited, a:hover {
-	color: #666;
+a, a:link {
+    color: #666666;
+} 
+
+a:hover {
+	color: black;
 }
 
 a:hover, a:active {
@@ -92,14 +96,18 @@ img {
 }
 
 #controllerMenu {
-    position: absolute;
-    top: 130px;
+    position: relative;
+    top: 20px;
     left: 15px;
     width: 170px;
     height: 100%;
 }
 .controllerMenuItems {
-    
+    margin: 3px 10px;
+}
+
+#jsontree {
+    margin-top: 20px;
 }
 
 .content {
@@ -262,10 +270,17 @@ label {
 }
 
 input, select, textarea {
-	background-color: #fcfcfc;
-	border: 1px solid #cccccc;
-	font-size: 1em;
-	padding: 0.2em 0.4em;
+	
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    padding: 2px 4px;
+
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 2px 2px 3px 0px #eee;
+    box-shadow: 2px 2px 3px 0px #eee;
 }
 
 select {
@@ -290,12 +305,6 @@ input[type=checkbox], input[type=radio] {
 }
 
 input:focus, select:focus, textarea:focus {
-	background-color: #ffffff;
-	border: 1px solid #eeeeee;
-	outline: 0;
-	   -moz-box-shadow: 0 0 0.5em #ffffff;
-	-webkit-box-shadow: 0 0 0.5em #ffffff;
-	        box-shadow: 0 0 0.5em #ffffff;
 }
 
 .required-indicator {
@@ -414,7 +423,6 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 /* TABLES */
 
 table {
-	border-top: 1px solid #DFDFDF;
 	border-collapse: collapse;
 	width: 100%;
 }
@@ -489,7 +497,7 @@ th.desc a {
 }
 
 th:hover, tr:hover {
-	background: #B7CEDC;
+	background: #DDE9F0;
 }
 
 /* PAGINATION */
@@ -531,20 +539,13 @@ th:hover, tr:hover {
 /* ACTION BUTTONS */
 
 .buttons {
-	background-color: #efefef;
-	overflow: hidden;
 	padding: 0.3em;
-	   -moz-box-shadow: 0 0 3px 1px #aaaaaa;
-	-webkit-box-shadow: 0 0 3px 1px #aaaaaa;
-	        box-shadow: 0 0 3px 1px #aaaaaa;
 	margin: 0.1em 0 0 0;
 	border: none;
 }
 
 .buttons input,
 .buttons a {
-	background-color: transparent;
-	border: 0;
 	color: #666666;
 	cursor: pointer;
 	display: inline-block;
@@ -553,20 +554,13 @@ th:hover, tr:hover {
 	padding: 0.25em 0.7em;
 	text-decoration: none;
 
-	   -moz-border-radius: 0.3em;
-	-webkit-border-radius: 0.3em;
-	        border-radius: 0.3em;
 }
 
 .buttons input:hover, .buttons input:focus,
 .buttons a:hover, .buttons a:focus {
-	background-color: #999999;
-	color: #ffffff;
+	background-color: #eee;
+	color: black;
 	outline: none;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-	   -moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	        box-shadow: none;
 }
 
 .no-borderradius .buttons input:hover, .no-borderradius .buttons input:focus,
