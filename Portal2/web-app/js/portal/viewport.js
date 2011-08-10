@@ -41,14 +41,15 @@ Ext.onReady(function() {
         success: function(resp){
             var bl = Ext.util.JSON.decode(resp.responseText);
             
-            if(bl.length == 0)
-            {
+            
+            if(bl.length == 0)   {                
                 Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
             }
-            else
-            {
-                if(bl[0].enableMOTD)
+            else    {               
+              
+                if(bl[0].enableMOTD) {
                     Ext.MessageBox.alert( bl[0].motdTitle, bl[0].motd);
+                }
             }
 
             Ext.Ajax.request({

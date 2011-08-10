@@ -11,14 +11,16 @@ class ConfigController {
     def index = {
         redirect(action: "list", params: params)
     }
-
-	def list = {
-        if(params.type == 'JSON')
+    
+    def list = {
+        if(params.type == 'JSON') {
             render Config.list(params) as JSON
-	else
+        }
+	else {
             params.max = Math.min(params.max ? params.int('max') : 10, 100)
             [configInstanceList: Config.list(params), configInstanceTotal: Config.count()]
 	}
+}
 
     def create = {
         def configInstance = new Config()

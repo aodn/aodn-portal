@@ -64,13 +64,13 @@
                             <td valign="top" class="value"><g:link controller="menu" action="show" id="${configInstance?.defaultMenu?.id}">${configInstance?.defaultMenu?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
-                    
+                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="config.defaultLayers.label" default="Default Layers" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
-                                <g:each in="${configInstance.defaultLayers}" var="d">
+                                <g:each in="${configInstance?.defaultLayers?}" var="d">
                                     <li><g:link controller="layer" action="show" id="${d.id}">${d?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>

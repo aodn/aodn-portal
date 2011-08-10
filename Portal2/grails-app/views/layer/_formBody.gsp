@@ -97,7 +97,7 @@
                                     <label for="layers"><g:message code="layer.metaUrl.label" default="Metadata Url" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metaUrl', 'errors')}">
-                                    <g:textField name="metaUrl" value="${layerInstance?.layers}" />
+                                    <g:textField name="metaUrl" value="${layerInstance?.metaUrl}" />
                                 </td>
                             </tr>
 
