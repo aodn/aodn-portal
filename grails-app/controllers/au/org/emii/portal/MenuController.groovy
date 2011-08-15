@@ -65,7 +65,8 @@ class MenuController {
         def jsonArray = JSON.parse(params.json)    
         
         params.editDate = new Date()
-        params.title = jsonArray.text        
+        params.title = jsonArray.text       
+        
         // the JSON string to save and use is the children of the root node
         params.json = jsonArray.children.toString()
         return params

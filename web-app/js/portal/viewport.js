@@ -25,6 +25,7 @@ var mapPanel;
 // components in menuPanel.js
 var leftTabPanel;
 var activeLayers;
+var defaultLayersTree; 
 var contributorTree;
 var basePanel;
 var baseLayerList;

@@ -7,6 +7,11 @@ class Menu {
     Boolean active 
     Date editDate 
     
+    static mapping = {
+        sort "title"
+    }
+
+    
 
     static constraints = {
         title(
