@@ -90,13 +90,68 @@ function initMenusPanel()
        nodeType: 'gx_baselayercontainer',
        autoScroll: true,
        header: true,
+       border: false,
        title: 'Base Layers',
        split: true,
-       region: 'center',
+       region: 'north',
        enableDD: true,
-       height: 50,
+       height: 100,
        rootVisible: false,
        root: baseList
+    });
+
+    
+    removeAll = new Ext.Button({
+        text: 'Remove All Layers',
+        listeners:{
+            click: function(button, event)
+                {
+                    var d = new Array();
+                    for(var i = 0; i < map.layers.length; i++)
+                    {
+                        if(!map.layers[i].isBaseLayer)
+                        {
+                            d.push(i);
+                        }
+                    }
+
+                    //reversing the order, so then the index is always valid on map.layers
+                    for(var i = d.length; i > 0; i--)
+                    {
+                        map.layers[i].destroy()
+                    }
+                }
+        }
+    });
+
+    resetLayers = new Ext.Button({
+        text: 'Reset  Layers',
+        listeners:{
+            click: function(button, event)
+                {
+                    alert("reset!");
+                }
+        }
+    });
+
+    buttonPanel = new Ext.Panel({
+        region: 'center',
+        border: false,
+        split: true,
+        height: 50,
+        items:[
+           removeAll,resetLayers
+       ]
+    });
+
+    mapOptionPanel = new Ext.Panel({
+        region: 'center',
+        height: 50,
+        border: false,
+        split: true,
+        items:[
+            basePanel, buttonPanel
+        ]
     });
 
     //Active layer Right Click menu
@@ -132,7 +187,6 @@ function initMenusPanel()
 
 
 
-
 }
 
 
@@ -157,12 +211,16 @@ function visibleLayer() {
 
 function populateMenus() {
 
+    activePanel.on("click",function(node,event){
+                    activePanel.getSelectionModel().select(node);
+                    layerMenu.show(node.ui.getAnchor());
+    });
 
     activePanel.on("contextmenu",function(node,event){
                     activePanel.getSelectionModel().select(node);
                     layerMenu.show(node.ui.getAnchor());
     });
-    
+
     // contributorTree Servers list
     Ext.Ajax.request({
         url: 'server/list?type=JSON',

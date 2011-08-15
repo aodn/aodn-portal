@@ -59,4 +59,8 @@ class Layer {
         isBaseLayer()
 
     }
+
+     String toListString() {
+        return "${server.shortAcron} - ${name}"
+    }
 }

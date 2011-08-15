@@ -73,7 +73,7 @@
                                   <label for="defaultMenu"><g:message code="config.defaultMenu.label" default="Default Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultMenu', 'errors')}">
-                                    <g:select name="defaultMenu.id" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.defaultMenu?.id}"  />
+                                    <g:select name="defaultMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.defaultMenu?.id}"  />
                                 </td>
                             </tr>
                         
@@ -82,7 +82,7 @@
                                   <label for="defaultLayers"><g:message code="config.defaultLayers.label" default="Default Layers" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultLayers', 'errors')}">
-                                    <g:select name="defaultLayers" from="${au.org.emii.portal.Layer.list()}" multiple="yes" optionKey="id" size="5" value="${configInstance?.defaultLayers*.id}" />
+                                    <g:select name="defaultLayers" optionValue="${{it.toListString()}}" from="${au.org.emii.portal.Layer.list()}" multiple="yes" optionKey="id" size="5" value="${configInstance?.defaultLayers*.id}" />
                                 </td>
                             </tr>
                         

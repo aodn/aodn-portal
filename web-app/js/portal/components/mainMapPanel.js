@@ -247,3 +247,31 @@ function setToolbarItems() {
 
 
 }
+
+function loadDefaultLayers(defaultLayers)
+{
+    
+    for(var i = 0; i < defaultLayers.length; i++)
+    {
+        Ext.Ajax.request({
+                    url: 'layer/showLayerByItsId?layerId=' + defaultLayers[i].id,
+                    success: function(resp){
+                        var dl = Ext.util.JSON.decode(resp.responseText);
+                        var l = new OpenLayers.Layer.WMS(
+                            dl.name,
+                            dl.server.uri,
+                            {
+                                layers: dl.layers,
+                                transparent: true,
+                                isBaseLayer: dl.isBaseLayer,
+                                queryable: dl.queryable
+                            },
+                            {
+                                wrapDateLine: true,
+                                transitionEffect: 'resize'
+                            });
+                        map.addLayer(l);
+                    }
+        });
+    }
+}
