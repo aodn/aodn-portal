@@ -29,28 +29,28 @@ var defaultLayersTree;
 var contributorTree;
 var basePanel;
 var baseLayerList;
-
-
+var testing;
+var mapOptionPanel;
 
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 //GeoExt stuff
 Ext.onReady(function() {
 
-     Ext.Ajax.request({
+    Ext.Ajax.request({
         url: 'config/list?type=JSON',
         success: function(resp){
-            var bl = Ext.util.JSON.decode(resp.responseText);
-            
-            
-            if(bl.length == 0)   {                
+            var config = Ext.util.JSON.decode(resp.responseText);
+            var defaultLayersId = new Array();
+
+            if(config.length == 0)
+            {
                 Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
             }
-            else    {               
-              
-                if(bl[0].enableMOTD) {
-                    Ext.MessageBox.alert( bl[0].motdTitle, bl[0].motd);
-                }
+            else
+            {
+                if(config[0].enableMOTD)
+                    Ext.MessageBox.alert( config[0].motdTitle, config[0].motd);
             }
 
             Ext.Ajax.request({
@@ -63,11 +63,14 @@ Ext.onReady(function() {
                         var l = new OpenLayers.Layer.WMS(
                             bl[i].name,
                             bl[i].server.uri,
-                            {layers: bl[i].layers},
-                            {wrapDateLine: true,
+                            {
+                                layers: bl[i].layers
+                            },
+                            {
+                                wrapDateLine: true,
                                 transitionEffect: 'resize',
-                                isBaseLayer: true}
-                        );
+                                isBaseLayer: true
+                            });
                         baseLayerList.push(l);
                     }
 
@@ -75,17 +78,18 @@ Ext.onReady(function() {
                     initMenusPanel();
                     initDetailsPanel();
                     doViewPort();
+                    loadDefaultLayers(config[0].defaultLayers);
                 }
             });
 
         }
-     });
+    });
 
- });
+});
 
- function doViewPort()
- {
-     var viewport = new Ext.Viewport({
+function doViewPort()
+{
+    var viewport = new Ext.Viewport({
         layout: 'border',
         stateful: true,
         items: [
@@ -93,7 +97,7 @@ Ext.onReady(function() {
             title: "Active layers",
             layout: 'border',
             items: [
-                activePanel,basePanel,leftTabPanel
+            activePanel,mapOptionPanel,leftTabPanel
             ],
             region: 'west',
             id: "leftMenus",
@@ -104,8 +108,8 @@ Ext.onReady(function() {
             region:'center',
             layout:'border',
             items: [
-                mapPanel,
-                detailsPanel
+            mapPanel,
+            detailsPanel
             ]
         }]
     });
@@ -117,6 +121,6 @@ Ext.onReady(function() {
     addRamadda();
     Ext.getCmp('leftMenus').doLayout();
     modMapListeners(); // mainMapPanel.js
- }
+}
 
 
