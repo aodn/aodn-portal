@@ -46,7 +46,13 @@ for(var key in this.attributes) {
         } else {
         thisKey = key;
         }
-        result += '"' + thisKey + '":"' + this.attributes[key] + '"';
+        // if true of false dont quote them
+        if (this.attributes[key].toString() == "true" || this.attributes[key].toString()  == "false" ) {
+            result += '"' + thisKey + '":' + this.attributes[key] ;
+        }
+        else {
+            result += '"' + thisKey + '":"' + this.attributes[key] + '"';      
+        }
         c = true;
     }
 }
@@ -62,6 +68,13 @@ if(clen != 0){
         result += children[i].toJsonString(nodeFilter, attributeFilter, attributeMapping);
         }
     result += ']';
+}
+else {
+    // if this is not a leaf give it empty children
+    if (this.attributes['leaf'].toString()  == "false" ) {
+        result += ',"children":[]';
+    }
+    
 }
 return result + "}";
 };

@@ -32,7 +32,7 @@
                       <g:form action="update" AUTOCOMPLETE = "off" >
                           <input id="jsonString" name="json" autocomplete="off" type="hidden" />
                            <input name="id" value="${menuInstance.id}" type="hidden" />
-                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="${message(code: 'default.button.edit.label', default: 'Edit Menu')}" /></span>            
+                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Edit Menu" style="visibility:hidden" /></span>            
                       </g:form>
                   </ul>
           
@@ -47,7 +47,7 @@
             </g:hasErrors>
             <h1><g:message default="[entityName]" /></h1>
             <g:if test="${flash.message}">
-              <div  id="message" class="message">${flash.message}</div>
+              <div  id="message" id="message" class="message">${flash.message}</div>
             </g:if>
             
             

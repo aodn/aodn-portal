@@ -11,7 +11,9 @@
 
           <!-- ExJS-->
           <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>
-          <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all.js')}"   type="text/javascript"></script>
+          
+          <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug-w-comments.js')}"   type="text/javascript"></script>
+          
 
           <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-3.3.1/resources/css/ext-all.css')}" />
           <link rel="stylesheet" type="text/css" href="${resource(dir:'js',file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />

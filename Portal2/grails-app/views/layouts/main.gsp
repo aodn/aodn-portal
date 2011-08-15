@@ -9,7 +9,6 @@
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         
         <g:layoutHead />
-        <g:javascript library="prototype" />
         
         <link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'grails.css')}" />
     </head>

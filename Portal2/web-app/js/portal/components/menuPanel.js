@@ -13,6 +13,17 @@ function initMenusPanel()
         split: true,
         root: layersContainer
     });
+    var defaultLayersContainer = new GeoExt.tree.LayerContainer();
+     //creating the menu tree on the left
+    defaultLayersTree = new Ext.tree.TreePanel({
+        layout: "fit",
+        title: "WMS Browser",
+        width: 170,
+        collapsible: false,
+        collapseMode: "mini",
+        split: true,
+        root: defaultLayersContainer
+    });
 
     // tabbed menu of available layers to add to map
     leftTabPanel = new Ext.TabPanel({
@@ -25,8 +36,9 @@ function initMenusPanel()
         activeTab: 1,
         items: [
             contributorTree ,
-            { 	region: 'west',
-                title: "WMS Browser"
+            { 	//region: 'west',
+                title: "WMS Browser",
+                id: "defaultMenu"
             }
         ]
     });
