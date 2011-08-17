@@ -4,8 +4,11 @@ input, select, textarea {
 	font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
         font-size: 0.8em;
 }
+body {
+	background: #ffffff;
+	color: #333333;
 
-/* BASE LAYOUT */
+}
 
 html {
 	background-color: white;
@@ -16,6 +19,7 @@ html {
 	        box-sizing: border-box;
 }
 
+
 html.no-cssgradients {
 	background-color: #aaa;
 }
@@ -24,20 +28,7 @@ html.no-cssgradients {
 	height: 100%;
 }
 
-html * {
-	margin: 0;
-}
 
-body {
-	background: #ffffff;
-	color: #333333;
-
-}
-
-.body {
-    margin: 0px 10px;
-    padding-bottom: 10px;
-}
 
 #grailsLogo {
 	background-color: #abbf78;
@@ -110,7 +101,7 @@ img {
     margin-top: 20px;
 }
 
-.content {
+.content , .body {
    position: absolute;
    top: 130px;
    left: 200px;
@@ -439,10 +430,39 @@ tr>td:last-child, tr>th:last-child {
 	padding-right: 1.25em;
 }
 
-td, th {
-	padding: 0.2em 0.2em;
+.dialog td, .dialog th , .list td, .list th {
+	padding: 0.3em;
+    padding-right: 1em;
 	text-align: left;
 	vertical-align: top;
+}
+
+.sortableList {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    float: left;
+    height: 150px;
+    padding: 3px;
+    margin: 0 10px 0 0;
+    overflow: auto;
+    width: 350px;
+}
+.ui-icon-circle-close {
+    background-position: -32px -192px;
+}
+.ui-icon {
+    background-image: url("../images/ui-icons_222222_256x240.png");
+    height: 16px;
+    width: 16px;
+}
+.sortableList li {
+    cursor: move;
+}
+.sortableList span {
+    display: inline;
+    margin: 0 4px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 th {

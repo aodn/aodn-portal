@@ -22,4 +22,7 @@ class Menu {
         )
         json()
     }
+    String toString() {
+        return "${title}"
+    }
 }

@@ -28,7 +28,7 @@
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
 
-<title> Portal 2.0</title>
+<title>Portal</title>
 
 <style>
   

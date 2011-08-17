@@ -19,7 +19,7 @@
 Ext.ns('Example');
 Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
-var jsonLayers = '/Portal2/layer/list?type=JSON';
+var jsonLayers = '/Portal2/layer/listNonBaseLayersAsJson';
 var tree; 
 
 

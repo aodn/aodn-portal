@@ -13,18 +13,23 @@ class LayerController {
 
 
     def list = {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        if(params.type == 'JSON')
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        if(params.type == 'JSON') {
             render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
-        else
-            [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]          
-        
+        }
+        else {
+            [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]    
+        }        
     }
 
-    def listBaseLayers = {
+    def listBaseLayersAsJson = {
         def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
-
         render layerInstanceList as JSON
+    }
+    def listNonBaseLayersAsJson = {
+        def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)
+        render layerInstanceList as JSON
+        
     }
 
     def showLayerByItsId = {

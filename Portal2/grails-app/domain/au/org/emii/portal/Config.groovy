@@ -4,15 +4,15 @@ package au.org.emii.portal
 Configuration domain for the portal
 */
 
-
 class Config {
     String name
     String proxy
     Integer proxyPort
     String initialBbox
     Menu defaultMenu
-    String motd         //message of the day
-    String motdTitle
+    Motd motd
+    Date motdStart
+    Date motdEnd
     Boolean enableMOTD  //toggle
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
@@ -27,3 +27,4 @@ class Config {
         defaultLayers(nullable:true)
     }
 }
+

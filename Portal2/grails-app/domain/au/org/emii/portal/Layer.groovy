@@ -63,4 +63,7 @@ class Layer {
      String toListString() {
         return "${server.shortAcron} - ${name}"
     }
+    String toString() {
+        return "${server.shortAcron} - ${name}"
+    }
 }
