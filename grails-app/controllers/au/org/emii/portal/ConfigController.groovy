@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.converters.JSON
+import grails.converters.deep.JSON
 import grails.converters.deep.*
 import groovyx.net.http.*
 
@@ -19,7 +19,6 @@ class ConfigController {
         
         // expect only one Config instance to exist
         def configInstance = Config.list()[0];
-        println configInstance
         
         if(params.type == 'JSON') {
             render configInstance as JSON
@@ -46,8 +45,18 @@ class ConfigController {
 
     def save = {
         def configInstance = new Config(params)
+        // test that this is the first 
+        if (Config.list().size() != 0) {
+            flash.message = "ERROR: New Config not created. There can only be one instance of the configuration"
+        }
+        // test motd dates
+        if (configInstance.enableMOTD) {
+            if (configInstance.motdStart.after(configInstance.motdEnd)) {
+                flash.message = "ERROR: The Message of the day Start Time is after the End Time"
+            }
+        }
         
-        if (Config.list().size() == 0) {
+        if (flash.message == "") {
             if (configInstance.save(flush: true)) {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
                 redirect(action: "show", id: configInstance.id)
@@ -57,7 +66,6 @@ class ConfigController {
             }
         }
         else{
-           flash.message = "ERROR: New Config not created. There can only be one instance of the configuration"
             redirect(action: "list")
         }
     }
@@ -97,13 +105,24 @@ class ConfigController {
                 }
             }
             configInstance.properties = params
-            if (!configInstance.hasErrors() && configInstance.save(flush: true)) {
+            
+            // test motd dates if enabled
+            if (configInstance.enableMOTD) {
+                // insist that end is after the start
+                if (configInstance.motdStart.after(configInstance.motdEnd)) {
+                    flash.message = "ERROR: The Message of the day Start Time is after the End Time"
+                }
+            }
+
+            if (!configInstance.hasErrors() && configInstance.save(flush: true) && flash.message == "") {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
                 redirect(action: "show", id: configInstance.id)
             }
             else {
                 render(view: "edit", model: [configInstance: configInstance])
             }
+         
+            
         }
         else {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
