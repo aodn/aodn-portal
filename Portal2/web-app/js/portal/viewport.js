@@ -49,9 +49,16 @@ Ext.onReady(function() {
             }
             else
             {
-                testing = config.motd;
+                // CHECK THE DATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if(config.enableMOTD)
-                    Ext.MessageBox.alert( config.motd.motdTitle, config.motd);
+                    Ext.MessageBox.show( {
+                        title: config.motd.motdTitle, 
+                        msg: config.motd.motd,
+                        icon: Ext.MessageBox.INFO,
+                        defaultTextHeight: 200,
+                        minWidth: 200,
+                        maxwidth: 300
+                    });                    
             }
 
             Ext.Ajax.request({
