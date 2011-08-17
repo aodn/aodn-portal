@@ -39,7 +39,7 @@ Ext.onReady(function() {
 
     Ext.Ajax.request({
         url: 'config/list?type=JSON',
-        success: function(resp){
+        success: function(resp){            
             var config = Ext.util.JSON.decode(resp.responseText);
             var defaultLayersId = new Array();
 
@@ -49,12 +49,13 @@ Ext.onReady(function() {
             }
             else
             {
-                if(config[0].enableMOTD)
-                    Ext.MessageBox.alert( config[0].motdTitle, config[0].motd);
+                testing = config.motd;
+                if(config.enableMOTD)
+                    Ext.MessageBox.alert( config.motd.motdTitle, config.motd);
             }
 
             Ext.Ajax.request({
-                url: 'layer/listBaseLayers',
+                url: 'layer/listBaseLayersAsJson',
                 success: function(resp){
                     var bl = Ext.util.JSON.decode(resp.responseText);
                     baseLayerList = new Array();
@@ -78,7 +79,7 @@ Ext.onReady(function() {
                     initMenusPanel();
                     initDetailsPanel();
                     doViewPort();
-                    loadDefaultLayers(config[0].defaultLayers);
+                    loadDefaultLayers(config.defaultLayers);
                 }
             });
 

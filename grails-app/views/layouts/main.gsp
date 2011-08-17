@@ -37,7 +37,12 @@
                       <g:link controller="menu" action="create" class="" >create</g:link>
                     </span>
                   </li>
-                  <li class="controllerMenuItems"><g:link controller="config" action="list" >Config</g:link>
+                  <li class="controllerMenuItems"><g:link controller="motd" action="list" >MOTD</g:link>
+                    <span class="inline">
+                      <g:link controller="motd" action="create" class="" >create</g:link>
+                    </span>
+                  </li>
+                  <li class="controllerMenuItems"><g:link controller="config" action="list" >Site Configuration</g:link>
                   </li>
       </ul>
        
