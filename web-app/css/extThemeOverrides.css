@@ -1,3 +1,52 @@
+body, html {
+    font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;
+}
+
+.ext-el-mask {
+    background-color: #666666;
+}
+
+
+h1 {
+    color: #3B6E8F;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h2 {
+    color: #3B6E8F;
+    font-size: 16px;
+    font-weight: bold;
+}
+h3 {
+    color: #3B6E8F;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-top: 0;
+}
+h4 {
+    color: #3B6E8F;
+    font-size: 12px;
+    margin: 0 2px;
+}
+h5 {
+    color: #3B6E8F;
+    font-size: 11px;
+    margin: 0 2px;
+}
+h6 {
+    color: #3B6E8F;
+    display: inline;
+    font-size: 11px;
+    margin: 0 2px;
+}
+
+
+a img{
+	border: none;
+}
+
 
 
 .x-menu-floating {
@@ -6,4 +55,15 @@
 }
 .noborder {
     border: none! important;
+}
+
+.motd {
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    border-radius: 0.3em;
+    background-color: white;
+    padding: 10px;
+    border: none! important;
+    font-size: 12px;
+    
 }

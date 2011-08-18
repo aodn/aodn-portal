@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="nav">
+          <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
@@ -22,11 +23,10 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'motd.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="motdTitle" title="${message(code: 'motd.motdTitle.label', default: 'Motd Title')}" />
                         
                             <g:sortableColumn property="motd" title="${message(code: 'motd.motd.label', default: 'Motd')}" />
                         
-                            <g:sortableColumn property="motdTitle" title="${message(code: 'motd.motdTitle.label', default: 'Motd Title')}" />
                         
                         </tr>
                     </thead>
@@ -34,11 +34,10 @@
                     <g:each in="${motdInstanceList}" status="i" var="motdInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "id")}</g:link></td>
+                            <td><g:link action="show" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "motdTitle")}</g:link></td>
                         
                             <td>${fieldValue(bean: motdInstance, field: "motd")}</td>
                         
-                            <td>${fieldValue(bean: motdInstance, field: "motdTitle")}</td>
                         
                         </tr>
                     </g:each>

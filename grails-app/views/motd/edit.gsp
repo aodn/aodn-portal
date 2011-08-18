@@ -10,6 +10,7 @@
     </head>
     <body>
         <div class="nav">
+          <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
@@ -33,19 +34,19 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="motd"><g:message code="motd.motd.label" default="Motd" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: motdInstance, field: 'motd', 'errors')}">
-                                    <g:textArea  rows="5" cols="40" name="motd" value="${motdInstance?.motd}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="motdTitle"><g:message code="motd.motdTitle.label" default="Motd Title" /></label>
+                                    <label for="motdTitle"><g:message code="motd.motdTitle.label" default="Motd Title" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: motdInstance, field: 'motdTitle', 'errors')}">
                                     <g:textField name="motdTitle" value="${motdInstance?.motdTitle}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="motd"><g:message code="motd.motd.label" default="Motd" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: motdInstance, field: 'motd', 'errors')}">
+                                    <g:textArea  rows="5" cols="40" name="motd" value="${motdInstance?.motd}" />
                                 </td>
                             </tr>
                         

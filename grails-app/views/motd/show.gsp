@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="nav">
+          <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
@@ -22,24 +23,11 @@
                 <table>
                     <tbody>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motd.id.label" default="Id" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motdInstance, field: "id")}</td>
-                            
-                        </tr>
+                                           
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motd.motd.label" default="Motd" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: motdInstance, field: "motd")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motd.motdTitle.label" default="Motd Title" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motdInstance, field: "motdTitle")}</td>
+                            <td valign="top" class="value pretendPopup" style="padding: 20px;"><h2>${fieldValue(bean: motdInstance, field: "motdTitle")}</h2>${motdInstance?.motd}</td>
                             
                         </tr>
                     
