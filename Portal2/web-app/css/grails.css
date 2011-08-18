@@ -171,6 +171,7 @@ img {
 	        border-radius: 0.3em;
 }
 
+
 .nav a:active, .nav a:visited {
 	color: #666666;
 }
@@ -256,7 +257,7 @@ label {
 	margin: 0 0.25em 0 0;
 }
 
-input, select, textarea {
+input, select, textarea, .pretendPopup {
 	
     background-color: #fcfcfc;
     border: 1px solid #ccc;

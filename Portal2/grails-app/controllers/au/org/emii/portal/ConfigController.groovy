@@ -12,13 +12,15 @@ class ConfigController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
-        redirect(action: "list", params: params)
+        redirect(action: "edit")
     }
     
     def list = {
         
         // expect only one Config instance to exist
         def configInstance = Config.list()[0];
+        
+        configInstance = massageConfigInstance(configInstance);
         
         if(params.type == 'JSON') {
             render configInstance as JSON
@@ -34,7 +36,7 @@ class ConfigController {
         if (Config.list().size() > 0) {
            configInstance = Config.list()[0]
            flash.message = "ERROR: New Config cannot be created. There can only be one instance of the configuration"
-           redirect(action: "show", id: configInstance.id)     
+           redirect(action: "edit")     
         }
         else {
             configInstance = new Config()
@@ -82,9 +84,11 @@ class ConfigController {
     }
 
     def edit = {
-        def configInstance = Config.get(params.id)
+        // dont get params get the only instance
+        def configInstance = Config.list()[0]
+        //def configInstance = Config.get(params.id)
         if (!configInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), 'existing config'])
             redirect(action: "list")
         }
         else {
@@ -114,13 +118,12 @@ class ConfigController {
                 }
             }
 
-            if (!configInstance.hasErrors() && configInstance.save(flush: true) && flash.message == "") {
+            if (!configInstance.hasErrors() && configInstance.save(flush: true) && (flash.message == null)) {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
-                redirect(action: "show", id: configInstance.id)
+                
             }
-            else {
-                render(view: "edit", model: [configInstance: configInstance])
-            }
+            render(view: "edit", model: [configInstance: configInstance])
+           
          
             
         }
@@ -151,5 +154,22 @@ class ConfigController {
                 redirect(action: "list")
             }
         }
+    }
+    
+    // Proccess the Motd 
+    // Process the defaultMenu - TODO
+    private Config massageConfigInstance(configInstance) {
+        
+        def now = new Date()
+
+        // test motd dates if enabled
+        if (configInstance.enableMOTD) {
+            // it is so check the dates
+            println (configInstance.motdStart.after(now).toString() + " && " + configInstance.motdEnd.before(now).toString())
+            if (configInstance.motdStart.after(now) || configInstance.motdEnd.before(now)) {
+                configInstance.enableMOTD = false
+            }
+        }
+        return configInstance
     }
 }

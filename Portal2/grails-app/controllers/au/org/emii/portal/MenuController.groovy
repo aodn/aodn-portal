@@ -135,7 +135,7 @@ class MenuController {
                 redirect(action: "list")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
-                flash.message = "${message(code: 'default.not.deletedmenu.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
+                flash.message = "${message(code: 'default.not.deletedFromConfig.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
                 redirect(action: "show", id: params.id)
             }
         }

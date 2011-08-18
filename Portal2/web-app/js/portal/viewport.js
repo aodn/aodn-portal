@@ -50,7 +50,35 @@ Ext.onReady(function() {
             else
             {
                 // CHECK THE DATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                if(config.enableMOTD)
+                if(config.enableMOTD)  {
+
+                    var nav = new Ext.Panel({
+                        labelWidth:100,
+                        frame:false,                      
+                        title: "<h2>"+ config.motd.motdTitle + "</h2>", 
+                        html: config.motd.motd,
+                        padding: 20,
+                        unstyled: true,
+                        width:300
+                    });
+
+                    var dlgPopup = new Ext.Window({  
+                        modal:true,
+                        layout:'fit',
+                        x: 190,
+                        y:60,
+                        unstyled: true, 
+                        cls: "motd",
+                        closable:true,
+                        resizable:false,
+                        plain:true,
+                        items:[nav]
+                    });
+
+                    dlgPopup.show();
+
+
+                    /*
                     Ext.MessageBox.show( {
                         title: config.motd.motdTitle, 
                         msg: config.motd.motd,
@@ -58,7 +86,9 @@ Ext.onReady(function() {
                         defaultTextHeight: 200,
                         minWidth: 200,
                         maxwidth: 300
-                    });                    
+                    });
+                    */
+                }
             }
 
             Ext.Ajax.request({
