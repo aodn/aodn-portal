@@ -17,10 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Instance of OpenLayers map
- */
-//var map;
+
 
 
 
@@ -44,6 +41,7 @@ var testing;//Variable for debug.
 
 // Pop up things
 var popup;
+
 
 function setMapDefaultZoom(map,config) {
     
@@ -77,16 +75,14 @@ function setMapDefaultZoom(map,config) {
                 "\n West > East = " + (map.minx < map.maxx) + 
                 "\n South < North = " +(map.miny < map.maxy) 
             );
-            return false;
         }
         else {
-            zoomToDefaultZoom(map);
+            //zoomToDefaultZoom(map); // no point calling here as layout not done
         } 
     }
     else {
         alert("ERROR: Bounding box is not set in the config");
     }
-    return map;
 }
 
 function zoomToDefaultZoom(map) {
@@ -109,7 +105,6 @@ function zoomToLayer(map, layer){
 }
 
 
-
 function addToPopup(loc,mapPanel,e) {
 		
         
@@ -125,10 +120,11 @@ function addToPopup(loc,mapPanel,e) {
 			if (map.layers[key] != undefined && map.layers[key].id !=undefined) {
 			   url="none";
 			   var layer = map.getLayer(map.layers[key].id);
-				if ((!layer.isBaseLayer) && layer.queryable) {
+               //testing = layer;
+				if ((!layer.params.ISBASELAYER) && layer.params.QUERYABLE) {
 
-                                        //To do add a check box on the interface to get the profile and the time series from ncWMS.
-                                        /*if (layer.showTimeSeriesNcWMS) {
+                    //To do add a check box on the interface to get the profile and the time series from ncWMS.
+                    /*if (layer.showTimeSeriesNcWMS) {
 					   if (layer.tile.bounds.containsLonLat(lonlat)) {
 							url = layer.baseUri +
 							"&EXCEPTIONS=application/vnd.ogc.se_xml" +

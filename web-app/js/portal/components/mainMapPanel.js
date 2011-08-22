@@ -116,7 +116,7 @@ function initMap(config)  {
         var relTarget = ev.getRelatedTarget(); // Gets the related target
     };
     
-    setMapDefaultZoom(mapPanel.map,config);
+    setMapDefaultZoom(mapPanel.map,config); // adds default bbox values to map instance
     mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
 
     mapPanel.add(mapLinks);
