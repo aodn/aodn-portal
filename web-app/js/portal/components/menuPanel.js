@@ -206,7 +206,7 @@ function visibleLayer() {
     bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
     bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
 
-    mapPanel.map.zoomToExtent(bounds);
+   // mapPanel.map.zoomToExtent(bounds);
 }
 
 function populateMenus() {

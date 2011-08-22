@@ -64,6 +64,12 @@
                             <td valign="top" class="value"><g:formatBoolean boolean="${serverInstance?.disable}" /></td>
                             
                         </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.allowDiscoveries.label" default="Allow Discoveries" /></td>                            
+                            <td valign="top" class="value"><g:formatBoolean boolean="${serverInstance?.allowDiscoveries}" /></td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="server.comments.label" default="Comments" /></td>

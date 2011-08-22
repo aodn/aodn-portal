@@ -19,7 +19,7 @@
 Ext.ns('Example');
 Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
-var jsonLayers = '/Portal2/layer/listNonBaseLayersAsJson';
+var jsonLayers = '/Portal2/layer/listNonBaseLayersAsJson/';
 var tree; 
 
 
@@ -30,7 +30,7 @@ function initMenu(menu) {
     // initialize QuickTips
     Ext.QuickTips.init();
     if (menu) {
-        jsonLayers = jsonLayers + "&id=" + menu.id
+        //jsonLayers = jsonLayers + "&id=" + menu.id
         setupgrid2treedrag(menu); 
     }
     else {
@@ -224,7 +224,7 @@ var win = new Ext.Panel({
         ,
         id:'availableLayers'
         ,
-        title:'Drag layers to the tree'  
+        title:'Drag layers or Servers to the tree'  
         ,
         height: 500
         ,
@@ -237,7 +237,8 @@ var win = new Ext.Panel({
     ]
                 
 });
-win.doLayout();    
+win.doLayout(); 
+//Ext.get('thegrid').getColumnModel().setHidden(0, true); 
     
  
  
@@ -261,32 +262,34 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
                 ,{
                     name:'layers'
                 }
-                ,{
+                ,/*{
                     name:'description'
                 }
                 ,{
                     name:'server.shortAcron'
-                }
+                }*/
                 ]
             }),
             width: 600,
-            columns:[{
-                id:'grailsLayerId'
-                ,
-                header:"Id"
-                ,
-                width: 10
-                ,
-                sortable:true
-                ,
+           columns:[{
+                id:'grailsLayerId',
+                header:"Id",
+                width: 10,
+                sortable:true,
                 dataIndex:'id'
-            },{
+            } ,{
                 header:"Name"
                 ,
                 sortable:true
                 ,
                 dataIndex:'name'
             },{
+                header:"WMS Server Layer Name"
+                ,
+                sortable:true
+                ,
+                dataIndex:'layers'
+            }/*,{
                 header:"WMS Server"
                 ,
                 sortable:true
@@ -294,13 +297,7 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
                 width: 30
                 ,
                 dataIndex:'server.shortAcron'
-            },{
-                header:"WMS Server Layer Name"
-                ,
-                sortable:true
-                ,
-                dataIndex:'layers'
-            }]
+            }*/]
             ,
             viewConfig:{
                 forceFit:true

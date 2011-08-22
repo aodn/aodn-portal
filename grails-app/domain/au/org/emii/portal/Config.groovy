@@ -22,7 +22,7 @@ class Config {
         name(size:5..25,unique:true)
         proxy(nullable:true)
         proxyPort(nullable:true)
-        initialBbox(size:20..50)
+        initialBbox(size:10..50)
         defaultMenu()
         defaultLayers(nullable:true)
     }

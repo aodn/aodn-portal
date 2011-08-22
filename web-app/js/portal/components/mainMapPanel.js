@@ -1,10 +1,9 @@
-var map;
+var mapPanel; 
 var layer;
 var navigationHistoryCtrl;
 var automaticZoom=false;
 
-function initMap()
-{
+function initMap(config)  {
 
 
     // Stop the pink tiles appearing on error
@@ -35,7 +34,7 @@ function initMap()
 
 
     //make the map
-    map = new OpenLayers.Map(options);
+    var map = new OpenLayers.Map(options);
 
     map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
     //map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
@@ -57,8 +56,6 @@ function initMap()
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
-            center: new OpenLayers.LonLat(141, -32),
-            zoom: 1,
             id: "map",
             border: false,
             map: map,
@@ -66,7 +63,6 @@ function initMap()
             split: true,
             // tbar: setToolbarItems(),
             header: false,
-            extent: [-5, 35, 15, 55],
             //title: 'Map panel',
             items: [{
                 xtype: "gx_zoomslider",
@@ -78,6 +74,8 @@ function initMap()
                 plugins: new GeoExt.ZoomSliderTip()
             }]
        });
+       
+           
        
      // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
@@ -117,8 +115,9 @@ function initMap()
 
         var relTarget = ev.getRelatedTarget(); // Gets the related target
     };
-
-
+    
+    setMapDefaultZoom(mapPanel.map,config);
+    mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
 
     mapPanel.add(mapLinks);
     mapLinks.setPosition(1,0);
@@ -136,6 +135,7 @@ function initMap()
 
     mapPanel.map.addControl(clickControl);
 
+    
     clickControl.activate();
 
 }
@@ -155,13 +155,15 @@ function setToolbarItems() {
     var toolbarItems = [];
     
 
-    // Navigation history - two "button" controls
+    // Navigation history - and Home  "button" controls
     action = new Ext.Button({
         text:'Home',
-        handler: centreMap //map.js
+        enableToggle: true,
+        handler: zoomToDefaultZoom(mapPanel.map) //map.js
+        
     });
 
-    actions["previous"] = action;
+    actions["home"] = action;
     toolbarItems.push(action);
 
     action = new GeoExt.Action({
@@ -186,7 +188,7 @@ function setToolbarItems() {
          text:'Search repository',
         handler: ramaddaSearchWindow
     });
-    actions["next"] = action;
+    actions["search"] = action;
     toolbarItems.push(action);
     
     //toolbarItems.push("->");
@@ -270,7 +272,7 @@ function loadDefaultLayers(defaultLayers)
                                 wrapDateLine: true,
                                 transitionEffect: 'resize'
                             });
-                        map.addLayer(l);
+                        mapPanel.map.addLayer(l);
                     }
         });
     }

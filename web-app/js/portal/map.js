@@ -45,9 +45,70 @@ var testing;//Variable for debug.
 // Pop up things
 var popup;
 
-function centreMap() {
-    mapPanel.map.setCenter(new OpenLayers.LonLat(141, -32),1,1,1);
+function setMapDefaultZoom(map,config) {
+    
+    /* ---------------
+     * left	{Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
+     * bottom	{Number} The bottom bounds of the box.  Note that for height calculations, this is assumed to be more than the top value.
+     * right	{Number} The right bounds.
+     * top	{Number} The top bounds.
+    */
+    if (config.initialBbox != "") {
+        var bbox = config.initialBbox.split(",");
+        map.minx = parseInt(bbox[0]);
+        map.maxx = parseInt(bbox[2]);
+        map.miny = parseInt(bbox[1]);
+        map.maxy = parseInt(bbox[3]);
+        if (!((map.minx >= -180 && map.minx <= 180)
+                && (map.maxx > -180 && map.maxx <= 180)
+                && (map.miny >= -90 && map.miny <= 90)
+                && (map.maxy >= -90 && map.maxy <= 90)
+                && map.minx < map.maxx
+                && map.miny < map.maxy)) {
+            alert("ERROR: wrong value in bbox ! \n\n" + 
+                map.minx + 
+                ":West = "+(map.minx >= -180 && map.minx <= 180)+"\n" + 
+                map.miny +
+                ":South = "+(map.miny >= -90 && map.miny <= 90) +"\n" + 
+                map.maxx + 
+                ":East = "+ (map.maxx > -180 && map.maxx <= 180)+"\n" + 
+                map.maxy + 
+                ":North = "+(map.maxy >= -90 && map.maxy <= 90) +
+                "\n West > East = " + (map.minx < map.maxx) + 
+                "\n South < North = " +(map.miny < map.maxy) 
+            );
+            return false;
+        }
+        else {
+            zoomToDefaultZoom(map);
+        } 
+    }
+    else {
+        alert("ERROR: Bounding box is not set in the config");
+    }
+    return map;
 }
+
+function zoomToDefaultZoom(map) {
+    map.zoomToExtent(new OpenLayers.Bounds(map.minx,map.miny,map.maxx,map.maxy),true);    
+}
+
+function zoomToLayer(map, layer){
+    var extent = layer.getDataExtent();
+    if (extent && !isNaN(extent.left)) {
+        var width = extent.getWidth() / 2;
+        var height = extent.getHeight() / 2;
+        extent.left -= width;
+        extent.right += width;
+        extent.bottom -= height;
+        extent.top += height;
+        map.zoomToExtent(extent);
+    } else {
+        map.zoomToMaxExtent();
+    }
+}
+
+
 
 function addToPopup(loc,mapPanel,e) {
 		
@@ -60,6 +121,7 @@ function addToPopup(loc,mapPanel,e) {
 		wmsLayers = wmsLayers.concat(imageLayers);
 		
 		for (key in wmsLayers) {
+            
 			if (map.layers[key] != undefined && map.layers[key].id !=undefined) {
 			   url="none";
 			   var layer = map.getLayer(map.layers[key].id);
@@ -75,18 +137,18 @@ function addToPopup(loc,mapPanel,e) {
 							"&J=" + e.xy.y +
 							"&INFO_FORMAT=text/xml" +
 							"&CRS=EPSG:4326" +
-							"&WIDTH=" + map.size.w +
-							"&HEIGHT=" +  map.size.h +
-							"&BBOX=" + map.getExtent().toBBOX();
+							"&WIDTH=" + mapPanel.map.size.w +
+							"&HEIGHT=" +  mapPanel.map.size.h +
+							"&BBOX=" + mapPanel.map.getExtent().toBBOX();
 
 
 							timeSeriesPlotUri =
 							layer.timeSeriesPlotUri +
 							"&I=" + e.xy.x +
 							"&J=" + e.xy.y +
-							"&WIDTH=" + layer.map.size.w +
-							"&HEIGHT=" +  layer.map.size.h +
-							"&BBOX=" + map.getExtent().toBBOX();
+							"&WIDTH=" + layer.mapPanel.map.size.w +
+							"&HEIGHT=" +  layer.mapPanel.map.size.h +
+							"&BBOX=" + mapPanel.map.getExtent().toBBOX();
 
 						}
 					}
@@ -355,18 +417,20 @@ function inArray (array,value) {
 
 
 function is_ncWms(type) {
-    return ((type == parent.ncwms)||
+   /* return ((type == parent.ncwms)||
         (type == parent.thredds));
+    */
 }
 
 function isWms(type) {
-    return (
+   /* return (
         (type == parent.wms100) ||
         (type == parent.wms110) ||
         (type == parent.wms111) ||
         (type == parent.wms130) ||
         (type == parent.ncwms) ||
         (type == parent.thredds));
+    */
 }
 
 
@@ -374,7 +438,7 @@ function getDepth(e) {
 
     var I= e.xy.x; //pixel on map
     var J= e.xy.y; // pixel on map
-    var click = map.getLonLatFromPixel(new OpenLayers.Pixel(I,J));
+    var click = mapPanel.map.getLonLatFromPixel(new OpenLayers.Pixel(I,J));
 
     var url = "DepthServlet?" +
             "lon=" + click.lon +
@@ -507,7 +571,7 @@ function setFeatureInfo(content,line_break) {
         jQuery('#featureinfocontent').prepend(content+br).hide().fadeIn(400);
     }
     if (jQuery('#featureinfocontent').html() != "") {
-        map.popup.setSize(new OpenLayers.Size(popupWidth,popupHeight));
+        mapPanel.map.popup.setSize(new OpenLayers.Size(popupWidth,popupHeight));
         //
     }
 
@@ -519,7 +583,7 @@ function setFeatureInfo(content,line_break) {
 function mkTransectPopup(inf) {
 
     killTransectPopup(); // kill previous unless we can make these popups draggable
-    var posi = map.getLonLatFromViewPortPx(new OpenLayers.Geometry.Point(60,20));
+    var posi = mapPanel.map.getLonLatFromViewPortPx(new OpenLayers.Geometry.Point(60,20));
 
     var html = "<div id=\"transectImageheader\">" +
                 "</div>" +
@@ -535,17 +599,17 @@ function mkTransectPopup(inf) {
         null, true, null);
 
     popup2.autoSize = true;
-    map.popup2 = popup2;
-    map.addPopup(popup2);
+    mapPanel.map.popup2 = popup2;
+    mapPanel.map.addPopup(popup2);
 
 
 }
 
 function killTransectPopup() {
-    if (map.popup2 != null) {
-        map.removePopup(map.popup2);
-        map.popup2.destroy();
-        map.popup2 = null;
+    if (mapPanel.map.popup2 != null) {
+        mapPanel.map.removePopup(mapPanel.map.popup2);
+        mapPanel.map.popup2.destroy();
+        mapPanel.map.popup2 = null;
     }
 }
 
@@ -553,13 +617,13 @@ function killTransectPopup() {
 function mkpopup(e) {
 
     var point = e.xy;
-    var pointclick = map.getLonLatFromViewPortPx(point.add(2,0));
+    var pointclick = mapPanel.map.getLonLatFromViewPortPx(point.add(2,0));
 
     // kill previous popup to startover at new location
-    if (map.popup != null) {
-        map.removePopup(map.popup);
-        map.popup.destroy();
-        map.popup = null;
+    if (mapPanel.map.popup != null) {
+        mapPanel.map.removePopup(mapPanel.map.popup);
+        mapPanel.map.popup.destroy();
+        mapPanel.map.popup = null;
     }
 
     var html = "<div id=\"featureinfoheader\"><h4>New Query:</h4></div>" +
@@ -579,15 +643,15 @@ function mkpopup(e) {
 
     popup.panMapIfOutOfView = true;
     //popup.autoSize = true;
-    map.popup = popup;
-    map.addPopup(popup);
-    map.popup.setOpacity(0.9);
+    mapPanel.map.popup = popup;
+    mapPanel.map.addPopup(popup);
+    mapPanel.map.popup.setOpacity(0.9);
 
     /* shrink back down while searching.
      * popup will always pan into view with previous size.
      * close image always therefore visible
     */
-    map.popup.setSize(new OpenLayers.Size(popupWidth,50));
+    mapPanel.map.popup.setSize(new OpenLayers.Size(popupWidth,50));
 
     // a prompt for stupid people
     if (requestCount == "0") {
@@ -596,15 +660,15 @@ function mkpopup(e) {
 }
 
 function hidepopup() {
-    if ((map.popup != null)) {
+    if ((mapPanel.map.popup != null)) {
          jQuery('div.olPopup').fadeOut(900);
     }
 }
 
 function showpopup() {
 
-    if ((map.popup != null)) {
-        map.popup.setOpacity(1);
+    if ((mapPanel.map.popup != null)) {
+        mapPanel.map.popup.setOpacity(1);
         setTimeout('imgSizer()', 900); // ensure the popup is ready
     }
 
@@ -760,7 +824,7 @@ function centreOnArgo(base_url, argo_id, zoomlevel) {
             var lat = xmlDoc.getElementsByTagName("topp:last_lat")[0].childNodes[0].nodeValue;
             var lon = xmlDoc.getElementsByTagName("topp:last_long")[0].childNodes[0].nodeValue;
 
-            //map.setCenter(new OpenLayers.LonLat(lon,lat),zoomlevel,1,1);
+            //mapPanel.map.setCenter(new OpenLayers.LonLat(lon,lat),zoomlevel,1,1);
 
             // no zooming in
             mapPanel.map.setCenter(new OpenLayers.LonLat(lon,lat),zoomlevel,1,1);
@@ -848,7 +912,7 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 				{wrapDateLine: true,
 				isBaseLayer: false}
 			);
-			map.addLayer(layer);
+			mapPanel.map.addLayer(layer);
 	    }
 }
 

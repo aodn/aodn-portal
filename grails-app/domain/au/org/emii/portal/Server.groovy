@@ -9,6 +9,7 @@ class Server {
     Date parseDate
     String parseFrequency 
     Boolean disable
+    Boolean allowDiscoveries // hide from menus
     String comments
 
     static mapping = {

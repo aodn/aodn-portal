@@ -27,8 +27,23 @@ class LayerController {
         render layerInstanceList as JSON
     }
     def listNonBaseLayersAsJson = {
-        def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)
-        render layerInstanceList as JSON
+        def combinedList = []
+        def layerInstanceList
+        
+        Server.list().each { 
+            
+            combinedList.add(it)
+            def x = it
+            layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)            
+            layerInstanceList.each { 
+                if (it.server.id.equals(x.id)) {                
+                    combinedList.add(it)
+                }
+            }             
+        
+        }
+
+        render combinedList as JSON
         
     }
 
