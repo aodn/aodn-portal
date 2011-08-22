@@ -20,7 +20,6 @@ var toolbarpointer;
 //--------------------------------------------------------------------------------------------
 
 var nodeSelected;
-var mapPanel;
  
 // components in menuPanel.js
 var leftTabPanel;
@@ -112,11 +111,12 @@ Ext.onReady(function() {
                         baseLayerList.push(l);
                     }
 
-                    initMap();
+                    initMap(config);
                     initMenusPanel();
                     initDetailsPanel();
                     doViewPort();
                     loadDefaultLayers(config.defaultLayers);
+                    zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
                 }
             });
 

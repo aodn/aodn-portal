@@ -83,6 +83,11 @@ img {
 	margin: 1em;
 }
 
+.hint {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
 #controllerMenu {
     position: relative;
     top: 20px;

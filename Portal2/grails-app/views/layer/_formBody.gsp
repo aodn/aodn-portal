@@ -115,7 +115,7 @@
                                     <label for="queryable"><g:message code="layer.queryable.label" default="Queryable" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'queryable', 'errors')}">
-                                    <g:checkBox name="queryable" value="${true}"  /> Defaulting to true.
+                                    <g:checkBox name="queryable" value="${true}"  /> <font class="hint">Defaulting to true.</font>
                                 </td>
                             </tr>
                             <tr class="prop">

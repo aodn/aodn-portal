@@ -165,9 +165,8 @@ class ConfigController {
         // test motd dates if enabled
         if (configInstance.enableMOTD) {
             // it is so check the dates
-            println (configInstance.motdStart.after(now).toString() + " && " + configInstance.motdEnd.before(now).toString())
             if (configInstance.motdStart.after(now) || configInstance.motdEnd.before(now)) {
-                configInstance.enableMOTD = false
+                configInstance.enableMOTD = false // value not for persisting
             }
         }
         return configInstance

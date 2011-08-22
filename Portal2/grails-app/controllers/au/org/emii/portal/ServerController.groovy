@@ -27,6 +27,9 @@ class ServerController {
 
     def save = {
         def serverInstance = new Server(params)
+        
+        serverInstance.parseDate = new Date() // Server should now be trawled for layers
+        
         if (serverInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
             redirect(action: "show", id: serverInstance.id)
@@ -70,7 +73,9 @@ class ServerController {
                     return
                 }
             }
-            serverInstance.properties = params
+            serverInstance.properties = params            
+            serverInstance.parseDate = new Date() // Server should now be trawled for layers
+            
             if (!serverInstance.hasErrors() && serverInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
                 redirect(action: "show", id: serverInstance.id)

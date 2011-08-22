@@ -4,6 +4,9 @@ class HomeController {
     //def scaffold = true
 
     def index = { 
-      // nothing to do for Grails here. this is the main portal entry
+      // this is the main portal entry
+      // get the only instance of the config
+      def configInstance = Config.list()[0]
+      [configInstance: configInstance]
     }
 }

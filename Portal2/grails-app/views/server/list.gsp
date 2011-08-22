@@ -34,6 +34,7 @@
                             <g:sortableColumn property="name" title="${message(code: 'server.name.label', default: 'Name')}" />
                         
                             <g:sortableColumn property="disable" title="${message(code: 'server.disable.label', default: 'Disable')}" />
+                            <g:sortableColumn property="allowDiscoveries" title="${message(code: 'server.allowDiscoveries.label', default: 'Allow Discoveries')}" />
                         
                         </tr>
                     </thead>
@@ -52,6 +53,8 @@
                             <td>${fieldValue(bean: serverInstance, field: "name")}</td>
                         
                             <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
+                            
+                            <td><g:formatBoolean boolean="${serverInstance.allowDiscoveries}" /></td>
                         
                         </tr>
                     </g:each>

@@ -28,7 +28,7 @@
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
 
-<title>Portal</title>
+<title>${configInstance?.name}</title>
 
 <style>
   
