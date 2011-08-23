@@ -89,7 +89,7 @@ function setupgrid2treedrag(menu) {
         // get filtered json string
         var json = tree.toJsonString(null,
             function(key, val) {
-                return (key == 'leaf' ||  key == 'grailsLayerId'   || key =='text' );
+                return (key == 'leaf' ||  key == 'grailsLayerId' ||  key == 'grailsServerId'   || key =='text' );
             }, 
             {
                 description: 'name'
@@ -153,9 +153,7 @@ function setupgrid2treedrag(menu) {
             beforenodedrop:{
                 fn:function(e) {
                     
-                    
-                    // leafs should not become folders !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-                    // 
+                     
                     // e.data.selections is the array of selected records
                     if(Ext.isArray(e.data.selections)) {
                         // reset cancel flag
@@ -168,8 +166,19 @@ function setupgrid2treedrag(menu) {
 
                             // get record from selectons
                             r = e.data.selections[i];
-
-                            // create node from record data
+                            
+                            // reservered word here but it works!!!
+                            if (r.json.class == "au.org.emii.portal.Server") {
+                                e.dropNode.push(this.loader.createNode({
+                                text:r.get('name'),
+                                leaf:false,
+                                children: [],
+                                grailsServerId:r.get('id'), // identify grails Server by this variable   
+                                qtip:r.get('json.uri') 
+                            }));                            
+                            }
+                            else {
+                            // create layer node
                             e.dropNode.push(this.loader.createNode({
                                 text:r.get('name')
                                 ,
@@ -179,6 +188,8 @@ function setupgrid2treedrag(menu) {
                                 ,
                                 qtip:r.get('layers') + " - " + r.get('server.shortAcron')
                             }));
+                            
+                            }
                         };
                     
                         showHideButtons();
@@ -243,7 +254,6 @@ win.doLayout();
  
  
 }; 
-
 // {{{
 // example grid extension
 Example.Grid = Ext.extend(Ext.grid.GridPanel, {
@@ -272,12 +282,6 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
             }),
             width: 600,
            columns:[{
-                id:'grailsLayerId',
-                header:"Id",
-                width: 10,
-                sortable:true,
-                dataIndex:'id'
-            } ,{
                 header:"Name"
                 ,
                 sortable:true
@@ -300,7 +304,15 @@ Example.Grid = Ext.extend(Ext.grid.GridPanel, {
             }*/]
             ,
             viewConfig:{
-                forceFit:true
+                forceFit:true,         
+                getRowClass: function(record, index) {
+                    if (record.json.class == "au.org.emii.portal.Server") {
+                        return 'serverRow';
+                    } 
+                    else  {
+                        return 'layerRow';
+                    }
+                }
             }
         }; // eo config object
 

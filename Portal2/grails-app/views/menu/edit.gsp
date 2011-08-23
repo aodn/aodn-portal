@@ -32,7 +32,7 @@
                       <g:form action="update" AUTOCOMPLETE = "off" >
                           <input id="jsonString" name="json" autocomplete="off" type="hidden" />
                            <input name="id" value="${menuInstance.id}" type="hidden" />
-                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Edit Menu" style="visibility:hidden" /></span>            
+                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Save Edited Menu ${menuInstance.id}" style="visibility:hidden" /></span>            
                       </g:form>
                   </ul>
           

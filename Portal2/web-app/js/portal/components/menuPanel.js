@@ -282,7 +282,6 @@ function populateMenus() {
                             // Note that this does not take care of maintaining the layer
                             // order on the map.
                             'checkchange': function(node,checked) {
-                                testing=node;
                                 if (checked === true) {
                                         if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
                                                 node.attributes.layer.yx = true;

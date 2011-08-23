@@ -28,7 +28,6 @@ var defaultLayersTree;
 var contributorTree;
 var basePanel;
 var baseLayerList;
-var testing;
 var mapOptionPanel;
 var defaultLayers;
 

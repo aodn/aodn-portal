@@ -361,7 +361,6 @@ function ramaddaSearchWindow(){
                                   Ext.Ajax.request({
                                         url: proxyURL+encodeURIComponent(ramaddaHost+ramaddaPath+'?entryid='+entry.id+'&output=json&links=true&onlyentry='+groupShow),
                                         success: function(resp){
-                                            testingRamadda=resp;
                                             var node=new Object();
                                             // Compatibility with the other context menu
                                             node.attributes=Ext.util.JSON.decode(resp.responseText)[0];
