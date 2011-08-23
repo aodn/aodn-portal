@@ -79,15 +79,17 @@ function initMap(config)  {
        
      // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
-              // shadow: false,
-              id: 'maptools'
-               ,height: 28
-               ,width:'100%'
-              // ,floating: true
-               ,cls:'semiTransparent noborder'//
-               ,overCls: "fullTransparency"
-               ,unstyled: true               
-               ,items: setToolbarItems()
+                // shadow: false,
+                id: 'maptools',
+                height: 28,
+                width:'100%',
+                // ,floating: true,
+                cls:'semiTransparent noborder',
+                overCls: "fullTransparency",
+                unstyled: true,  
+                items: setToolbarItems()
+        
+   
                
             });
 
@@ -159,7 +161,9 @@ function setToolbarItems() {
     action = new Ext.Button({
         text:'Home',
         enableToggle: true,
-        handler: zoomToDefaultZoom(mapPanel.map) //map.js
+        handler: zoomToDefaultZoom(mapPanel.map), //map.js
+        ctCls: "noBackgroundImage",
+        overCls: "bold"
         
     });
 
@@ -170,7 +174,9 @@ function setToolbarItems() {
         text: "previous",
         control: navigationHistoryCtrl.previous,
         disabled: true,
-        tooltip: "previous in history"
+        tooltip: "Previous",        
+        ctCls: "noBackgroundImage",
+        overCls: "bold"
     });
     actions["previous"] = action;
     toolbarItems.push(action);
@@ -179,14 +185,18 @@ function setToolbarItems() {
         text: "next",
         control: navigationHistoryCtrl.next,
         disabled: true,
-        tooltip: "next in history"
+        tooltip: "Forward",        
+        ctCls: "noBackgroundImage",
+        overCls: "bold"
     });
     actions["next"] = action;
     toolbarItems.push(action);
 
     action = new GeoExt.Action({
-         text:'Search repository',
-        handler: ramaddaSearchWindow
+        text:'Search Repository',
+        handler: ramaddaSearchWindow,        
+        ctCls: "noBackgroundImage",
+        overCls: "bold"
     });
     actions["search"] = action;
     toolbarItems.push(action);
@@ -194,8 +204,8 @@ function setToolbarItems() {
     //toolbarItems.push("->");
 
     // Reuse the GeoExt.Action objects created above
-    // as menu items
-    toolbarItems.push({
+    /* as menu items
+    toolbarItems.push({ 
         text: "History",
         menu: new Ext.menu.Menu({
             items: [
@@ -210,6 +220,7 @@ function setToolbarItems() {
         })
         
     });
+    */
 
 
     toolbarItems.push("->");
@@ -218,8 +229,9 @@ function setToolbarItems() {
         autoEl: {
             tag: 'a',
             href: 'http://www.imos.org.au',
-            cn: ' IMOS ',
-            target: "_blank"
+            cn: 'IMOS',
+            target: "_blank",
+            cls: "external mainlinks"
         }
     });
 
@@ -228,8 +240,9 @@ function setToolbarItems() {
         autoEl: {
             tag: 'a',
             href: 'http://www.imos.org.au/aodn.html',
-            cn: ' AODN ',
-            target: "_blank"
+            cn: 'AODN',
+            target: "_blank",
+            cls: "external mainlinks"
         }
     });
 
@@ -238,8 +251,9 @@ function setToolbarItems() {
         autoEl: {
             tag: 'a',
             href: 'http://www.imos.org.au/aodn.html',
-            cn: ' Help ',
-            target: "_blank"
+            cn: 'Help',
+            target: "_blank",
+            cls: "external mainlinks"
         }
     });
 

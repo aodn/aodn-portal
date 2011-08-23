@@ -27,6 +27,21 @@ padding-right: 15px;
 background: url(../images/extlink.gif) no-repeat 100% 50%;
 zoom: 1;
 }
+.mainlinks {
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    margin-right: 10px;
+}
+a:hover.mainlinks {
+    color: black;
+}
+.noBackgroundImage * {
+    background-image: none! important;
+}
+.bold {
+    font-weight: bold;
+}
 
 /*
 Geoserver default tables
@@ -152,7 +167,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
 .fullTransparency .x-item-disabled * {
     color: #666! important;
 }
-.fullTransparency button {
+.fullTransparency button, .fullTransparency a {
     color: #333;
 }
 
