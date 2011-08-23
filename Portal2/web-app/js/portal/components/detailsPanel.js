@@ -5,10 +5,13 @@ var detailsPanelLayer;
 var legendImage;
 var dimension;
 var dimensionPanel;
+var ncWMSColourScalePanel;
+
 
 function initDetailsPanel()
 {
     legendImage = new GeoExt.LegendImage();
+    ncWMSColourScalePanel = new Ext.Panel();
 
 // create a separate slider bound to the map but displayed elsewhere
     opacitySlider = new GeoExt.LayerOpacitySlider({
@@ -115,6 +118,16 @@ function updateDetailsPanel(node)
     detailsPanel.text = detailsPanelLayer.name;
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
+
+    if(detailsPanelLayer.params.SERVERTYPE == "NCWMS")
+    {
+        makeNcWMSColourScale();
+    }
+}
+
+function makeNcWMSColourScale()
+{
+    
 }
 
 function makeCombo(type)

@@ -1,3 +1,5 @@
+var testing;
+
 function initMenusPanel()
 {
 
@@ -25,6 +27,29 @@ function initMenusPanel()
         root: defaultLayersContainer
     });
 
+    var serverURLField = new Ext.form.TextField({
+        emptyText: "Full GetCapabilities URL"
+    });
+
+    var addServerButton = new Ext.Button({
+        text: 'Add',
+        listeners:{
+            click: function(button, event)
+                {
+                    
+                }
+        }
+    })
+
+    var userDefinedWMSPanel = new Ext.Panel({
+       title: "Add Servers",
+       items: [
+           serverURLField,
+           addServerButton
+       ]
+    });
+
+
     // tabbed menu of available layers to add to map
     leftTabPanel = new Ext.TabPanel({
         defaults: {autoScroll: true}, // autoScroll for all items
@@ -39,7 +64,8 @@ function initMenusPanel()
             { 	//region: 'west',
                 title: "WMS Browser",
                 id: "defaultMenu"
-            }
+            },
+            userDefinedWMSPanel
         ]
     });
 
@@ -106,20 +132,7 @@ function initMenusPanel()
         listeners:{
             click: function(button, event)
                 {
-                    var d = new Array();
-                    for(var i = 0; i < map.layers.length; i++)
-                    {
-                        if(!map.layers[i].isBaseLayer)
-                        {
-                            d.push(i);
-                        }
-                    }
-
-                    //reversing the order, so then the index is always valid on map.layers
-                    for(var i = d.length; i > 0; i--)
-                    {
-                        map.layers[i].destroy()
-                    }
+                    removeAllLayers();
                 }
         }
     });
@@ -129,7 +142,8 @@ function initMenusPanel()
         listeners:{
             click: function(button, event)
                 {
-                    alert("reset!");
+                    removeAllLayers();
+                    loadDefaultLayers();
                 }
         }
     });
@@ -229,21 +243,30 @@ function populateMenus() {
             //alert(resp.responseText);
             var serverList= Ext.util.JSON.decode(resp.responseText);
             for(var i = 0; i<serverList.length;i++){
+                var type = "";
+                var version = "";
+                var splits = serverList[i].type.split("-");
+                if(splits.length == 2)
+                {
+                    type = splits[0];
+                    version = splits[1];
+                }
 
                 contributorTree.add(
                     new Ext.tree.TreePanel({
                         root: new Ext.tree.AsyncTreeNode({
                                 text: serverList[i].name,
                                 loader: new GeoExt.tree.WMSCapabilitiesLoader({
-                                        url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+serverList[i].wmsVersion+"&request=GetCapabilities"),
+                                        url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+version+"&request=GetCapabilities"),
                                         layerOptions: {buffer: 0, singleTile: false, ratio: 1},
-                                        layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : serverList[i].wmsVersion,'serverType':serverList[i].type},
+                                        layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : version,'SERVERTYPE': type},
 
                                         // customize the createNode method to add a checkbox to nodes
                                         createNode: function(attr) {
                                                 attr.checked = attr.leaf ? false : undefined;
                                                 //attr.active=attr.leaf ? false : undefined;;
-                                               
+                                                attr.version = version;
+                                                attr.serverType = type;
                                                 return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
                                         }
 
@@ -263,7 +286,9 @@ function populateMenus() {
                                 if (checked === true) {
                                         if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
                                                 node.attributes.layer.yx = true;
-                                                node.attributes.layer.isncWMS =true;
+                                            node.attributes.layer.isncWMS =true;
+                                            if(node.attributes.layer.params.VERSION == "1.3.0")
+                                                node.attributes.layer.yx = true;
                                         }
                                         mapPanel.map.addLayer(node.attributes.layer);
                                 }
