@@ -10,6 +10,8 @@ class Config {
     Integer proxyPort
     String initialBbox
     Menu defaultMenu
+    Menu contributorMenu
+    Menu regionMenu
     Motd motd
     Date motdStart
     Date motdEnd
@@ -24,6 +26,8 @@ class Config {
         proxyPort(nullable:true)
         initialBbox(size:10..50)
         defaultMenu()
+        contributorMenu()
+        regionMenu()
         defaultLayers(nullable:true)
     }
 }

@@ -30,6 +30,7 @@ var basePanel;
 var baseLayerList;
 var testing;
 var mapOptionPanel;
+var defaultLayers;
 
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -115,7 +116,9 @@ Ext.onReady(function() {
                     initMenusPanel();
                     initDetailsPanel();
                     doViewPort();
-                    loadDefaultLayers(config.defaultLayers);
+                    defaultLayers = config.defaultLayers;
+                    loadDefaultLayers();
+
                     zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
                 }
             });
