@@ -258,7 +258,7 @@ function populateMenus() {
                                 text: serverList[i].name,
                                 loader: new GeoExt.tree.WMSCapabilitiesLoader({
                                         url: proxyURL+encodeURIComponent(serverList[i].uri+"?service=WMS&version="+version+"&request=GetCapabilities"),
-                                        layerOptions: {buffer: 0, singleTile: false, ratio: 1},
+                                        layerOptions: {buffer: 0, singleTile: false, ratio: 1, wrapDateLine: true},
                                         layerParams: {'TRANSPARENT': 'TRUE', 'VERSION' : version,'SERVERTYPE': type},
 
                                         // customize the createNode method to add a checkbox to nodes
