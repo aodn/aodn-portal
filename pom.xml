@@ -325,10 +325,10 @@
         <id>${release.deployment.repository.id}</id>
         <url>${release.deployment.repository.url}</url>
     </repository>
-    <repository>
+    <snapshotRepository>
         <id>${development.deployment.repository.id}</id>
         <url>${development.deployment.repository.url}</id>
-    </repository>
+    </snapshotRepository>
   </distributionManagement>
 
 
