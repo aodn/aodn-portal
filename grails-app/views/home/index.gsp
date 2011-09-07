@@ -65,10 +65,10 @@
 </style>
 
 </head>
-
+<!--
 <body>
-<h1>NOW THATS MAGIC!</h1>
     <div id="blah"></div>
 </body>
-
+-->
+<h1>CHICKA CHICKA CHICK.... SLIM SHADY!</h1>
 </html>
