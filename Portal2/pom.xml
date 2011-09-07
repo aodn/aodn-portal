@@ -6,11 +6,11 @@
   <groupId>org.au.emii</groupId>
   <artifactId>Portal2</artifactId>
   <packaging>war</packaging>
-  <version>0.1_2</version>
+  <version>0.1.3</version>
   
-  <name>A custom grails project</name>
-  <description>A custom grails project</description>
-  <url>http://www.myorganization.org</url>
+  <name>Portal2</name>
+  <description>Portal v2</description>
+  <url>http://www.emii.org.au</url>
   
   <properties>
     <grails.version>1.3.7</grails.version>
