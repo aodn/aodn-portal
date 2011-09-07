@@ -6,7 +6,7 @@
   <groupId>org.au.emii</groupId>
   <artifactId>Portal2</artifactId>
   <packaging>war</packaging>
-  <version>0.1</version>
+  <version>0.1_1</version>
   
   <name>A custom grails project</name>
   <description>A custom grails project</description>
