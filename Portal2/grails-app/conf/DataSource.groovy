@@ -38,8 +38,8 @@ environments {
             // since there is no production DB yet, just use obsidian (geoff)
             // change this when the time comes...
 
-
-           url = "jdbc:postgresql://obsidian.bluenet.utas.edu.au:5432/portalV2Development?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+            driverClassName = "org.postgresql.Driver"
+            url = "jdbc:postgresql://obsidian.bluenet.utas.edu.au:5432/portalV2Development?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
            //url = "jdbc:postgresql://localhost:5432/publications"
 
            username = "portalV2DevelopmentUser"
