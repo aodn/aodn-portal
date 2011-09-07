@@ -67,6 +67,7 @@
 </head>
 
 <body>
+<h1>NOW THATS MAGIC!</h1>
     <div id="blah"></div>
 </body>
 
