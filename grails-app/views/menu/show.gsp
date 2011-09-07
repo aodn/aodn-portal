@@ -21,8 +21,7 @@
                      });
                      
                      
-   // generic tree builder to move out of here latter
-   // seperate function for display of the tree only
+   // generic tree builder to demo the tree only
   function buildDemoTree(menu) {
 
 
@@ -39,7 +38,7 @@
                             loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
                             renderTo: 'jsontree',
                             root: rootAsyncTreeNode,
-                            rootVisible:false,
+                            rootVisible:false
                             });
 
   

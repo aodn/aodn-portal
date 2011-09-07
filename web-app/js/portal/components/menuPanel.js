@@ -1,31 +1,54 @@
-var testing;
 
-function initMenusPanel()
+
+function initMenusPanel(menu)
 {
 
-    var layersContainer = new GeoExt.tree.LayerContainer();
-     //creating the menu tree on the left
+    //creating the menu tree on the left
     contributorTree = new Ext.tree.TreePanel({
-        layout: "fit",
+        id: 'contributorTree', 
         region: "west",
         title: "Contributors",
-        width: 170,
-        collapsible: false,
-        collapseMode: "mini",
-        split: true,
-        root: layersContainer
+        root: new GeoExt.tree.LayerContainer()
     });
-    var defaultLayersContainer = new GeoExt.tree.LayerContainer();
-     //creating the menu tree on the left
-    defaultLayersTree = new Ext.tree.TreePanel({
-        layout: "fit",
-        title: "WMS Browser",
-        width: 170,
-        collapsible: false,
-        collapseMode: "mini",
-        split: true,
-        root: defaultLayersContainer
-    });
+    
+    
+    //var defaultMenuContainer = new GeoExt.tree.LayerContainer();
+
+    var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
+        draggable:false,
+        children: JSON.parse(menu.json) // supplied as a string
+      });    
+    
+
+      defaultMenuTree = new Ext.tree.TreePanel( {
+                title: 'WMS Layers',
+                id: 'defaultMenuTree',
+                loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
+                root: defaultMenuContainer,
+                collapsible: false,
+                collapseMode: "mini",
+                split: true,
+                rootVisible:false,
+                listeners:{
+                    // add layers to map or expand discoveries
+                    click:{
+                        fn:function(node) {
+                            if (node.attributes.grailsLayerId){
+                              alert("a layer " + node.attributes.grailsLayerId) ; 
+                            }
+                            else if (node.attributes.grailsServerId){
+                              alert("a server (discovery)") ; 
+                            }
+                            else {
+                                //this should be a folder
+                                node.expand(); 
+                            }
+                            
+                        }
+                    }
+                }
+      });
+
 
     var serverURLField = new Ext.form.TextField({
         emptyText: "Full GetCapabilities URL"
@@ -51,20 +74,20 @@ function initMenusPanel()
 
 
     // tabbed menu of available layers to add to map
-    leftTabPanel = new Ext.TabPanel({
-        defaults: {autoScroll: true}, // autoScroll for all items
+    leftTabMenuPanel = new Ext.TabPanel({
+        defaults: { // defaults are applied to items, not the container
+            height: 350,
+            padding: 5,
+            autoScroll: true
+        },
         title: 'Layers Tab Panel',
-        region: 'south',
-        split: true,
-        width: 250,
-        height:200,
+        id: 'leftTabMenuPanel',
+        border: false,
+        enableTabScroll : true,
         activeTab: 1,
         items: [
-            contributorTree ,
-            { 	//region: 'west',
-                title: "WMS Browser",
-                id: "defaultMenu"
-            },
+            contributorTree,
+            defaultMenuTree,
             userDefinedWMSPanel
         ]
     });
@@ -106,22 +129,18 @@ function initMenusPanel()
     });
     
     baseList = new GeoExt.tree.BaseLayerContainer({
-        text: 'Base Layers',
         layerStore: mapPanel.layers,
         leaf: false,
         expanded: true
     });
 
-    basePanel = new Ext.tree.TreePanel({
+    baselayerMenuPanel = new Ext.tree.TreePanel({
        nodeType: 'gx_baselayercontainer',
+       id: 'baselayerMenuPanel',
        autoScroll: true,
-       header: true,
        border: false,
        title: 'Base Layers',
-       split: true,
-       region: 'north',
-       enableDD: true,
-       height: 100,
+       height: 60,
        rootVisible: false,
        root: baseList
     });
@@ -138,7 +157,7 @@ function initMenusPanel()
     });
 
     resetLayers = new Ext.Button({
-        text: 'Reset  Layers',
+        text: 'Reset Layers',
         listeners:{
             click: function(button, event)
                 {
@@ -158,13 +177,13 @@ function initMenusPanel()
        ]
     });
 
-    mapOptionPanel = new Ext.Panel({
+    
+    centreMenuPanel = new Ext.Panel({
+        
         region: 'center',
-        height: 50,
-        border: false,
-        split: true,
+        id: 'centreMenuPanel',    
         items:[
-            basePanel, buttonPanel
+            baselayerMenuPanel, buttonPanel,leftTabMenuPanel
         ]
     });
 

@@ -21,6 +21,79 @@ Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
 var jsonLayers = '/Portal2/layer/listNonBaseLayersAsJson/';
 var tree; 
+var theGrid;
+var theGridStore;
+
+Ext.onReady(function(){
+    var reader = new Ext.data.JsonReader({
+        idProperty: '',
+        root: '',
+        fields:[
+                { name:'id'}
+                ,{name:'name'}
+                ,{name:'layers'} 
+                ,{name:'server'}                
+                ]//,
+        //remoteGroup: true // I'm not sure what this does. It's not in the Docs.
+    })
+   //theGridStore = new Ext.data.GroupingStore({
+   theGridStore = new Ext.data.Store({
+                //groupField: 'server',
+                url: jsonLayers,
+                autoLoad: true, 
+                reader: reader
+            }) 
+   theGrid =  new Ext.grid.GridPanel({
+
+                    
+            //id:'availableLayers',
+            title:'Drag layers or Servers to the tree',
+            height: 500,
+            stripeRows : true,
+            enableDragDrop:true,
+            ddGroup:'grid2tree',
+                  
+            store: theGridStore,
+            //view: new Ext.grid.GroupingView({
+            //    forceFit: true//,
+                //groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+            //}),
+            width: 600,
+           //features: [groupingFeature],
+           columns:[{
+                header:"Name",
+                sortable:true,
+                dataIndex:'name'
+            },
+            {
+                header:"WMS Server Layer Name",
+                sortable:true,
+                dataIndex:'layers'
+            }],
+        
+            viewConfig:{
+                forceFit:true, 
+                groupTextTpl: 'text ',
+                getRowClass: function(record, index) {
+                    if (record.json.class == "au.org.emii.portal.Server") {
+                        return 'serverRow';
+                    } 
+                    else  {
+                        return 'layerRow';
+                    }
+                }
+            },
+            bbar: new Ext.PagingToolbar({
+                store: theGridStore,
+                displayInfo:true,   
+                pageSize:50
+            })
+   
+        
+    });
+    
+    
+});
 
 
 
@@ -112,32 +185,20 @@ function setupgrid2treedrag(menu) {
             expanded: true, 
             expandable: true
         },
-
         // preloads 1st level children        
         loader:new Ext.tree.TreeLoader({
             preloadChildren:true
-        })
-
-        // enable DD
-        ,
-        enableDD:true
-
-        // set ddGroup - same as for grid
-        ,
-        ddGroup:'grid2tree'
-        ,
-        id:'tree'
-        ,
-        width: 250
-        ,
-        border:false
-        ,
-        collapsible:false
-        ,
-        padding: 20
-        ,
-        autoScroll:true
-        ,
+        }),
+        // enable DD        
+        enableDD:true,
+        // set ddGroup - same as for grid       
+        ddGroup:'grid2tree',
+        id:'tree',
+        width: 250,
+        border:false,
+        collapsible:false,
+        padding: 20,
+        autoScroll:true,
         listeners:{
             
             'contextmenu': function(node){
@@ -180,12 +241,9 @@ function setupgrid2treedrag(menu) {
                             else {
                             // create layer node
                             e.dropNode.push(this.loader.createNode({
-                                text:r.get('name')
-                                ,
-                                leaf:true
-                                ,
-                                grailsLayerId:r.get('id') // identify grails layers by this variable                            
-                                ,
+                                text:r.get('name'),
+                                leaf:true,
+                                grailsLayerId:r.get('id'), // identify grails layers by this variable
                                 qtip:r.get('layers') + " - " + r.get('server.shortAcron')
                             }));
                             
@@ -215,36 +273,17 @@ var win = new Ext.Panel({
     border:false,
     padding: 25,      
     layout:  {
-        type: 'column'          
-        ,
+        type: 'column',
         align: 'left'
                   
-    }
-                
-    ,
+    },
     pack: 'start',
-    align: 'stretch'
-    ,
-    renderTo:'menuConfigurator'
-
-    ,
+    align: 'stretch',
+    renderTo:'menuConfigurator',
     items:[
-    tree,
-    {                                  
-        xtype:'thegrid'
-        ,
-        id:'availableLayers'
-        ,
-        title:'Drag layers or Servers to the tree'  
-        ,
-        height: 500
-        ,
-        stripeRows : true
-        ,
-        enableDragDrop:true
-        ,
-        ddGroup:'grid2tree'
-    }
+        tree,  
+        theGrid,
+        searchGrid()
     ]
                 
 });
@@ -253,101 +292,25 @@ win.doLayout();
     
  
  
-}; 
+};             
+
+
+  /*  
+= new thegrid({  
+    
+        xtype:'thegrid',
+        id:'availableLayers',
+        title:'Drag layers or Servers to the tree',
+        height: 500,
+        stripeRows : true,
+        enableDragDrop:true,
+        ddGroup:'grid2tree'
+});
+    */
 // {{{
 // example grid extension
-Example.Grid = Ext.extend(Ext.grid.GridPanel, {
-    initComponent:function() {
-        var config = {
-                            
-            store:new Ext.data.JsonStore({
-                url: jsonLayers,
-                fields:[
-                {
-                    name:'id'
-                }
-                ,{
-                    name:'name'
-                }
-                ,{
-                    name:'layers'
-                }
-                ,/*{
-                    name:'description'
-                }
-                ,{
-                    name:'server.shortAcron'
-                }*/
-                ]
-            }),
-            width: 600,
-           columns:[{
-                header:"Name"
-                ,
-                sortable:true
-                ,
-                dataIndex:'name'
-            },{
-                header:"WMS Server Layer Name"
-                ,
-                sortable:true
-                ,
-                dataIndex:'layers'
-            }/*,{
-                header:"WMS Server"
-                ,
-                sortable:true
-                ,
-                width: 30
-                ,
-                dataIndex:'server.shortAcron'
-            }*/]
-            ,
-            viewConfig:{
-                forceFit:true,         
-                getRowClass: function(record, index) {
-                    if (record.json.class == "au.org.emii.portal.Server") {
-                        return 'serverRow';
-                    } 
-                    else  {
-                        return 'layerRow';
-                    }
-                }
-            }
-        }; // eo config object
+//Example.Grid
 
-        // apply config
-        Ext.apply(this, Ext.apply(this.initialConfig, config));
-
-        this.bbar = new Ext.PagingToolbar({
-            store:this.store
-            ,
-            displayInfo:true
-            ,
-            pageSize:50
-        });
-        // call parent
-        Example.Grid.superclass.initComponent.apply(this, arguments);
-    } // eo function initComponent
-
-    ,
-    onRender:function() {
-
-        // call parent
-        Example.Grid.superclass.onRender.apply(this, arguments);
-
-        // load the store
-        this.store.load({
-            params:{
-                start:0, 
-                limit:50
-            }
-        });
-
-} // eo function onRender
-
-});
-Ext.reg('thegrid', Example.Grid); 
 
 
 
@@ -362,23 +325,17 @@ function rightClickMenu(node){
 
     if (!node.isLeaf()) {
         treeMenu.add({
-            text:'Add Menu Branch'
-            ,
-            node:node
-            ,
+            text:'Add Menu Branch',
+            node:node,
             listeners:{
                 click: function(item){
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new branch:', function(status, text) {                           
                         if (text != "") {
                             node.appendChild({
-                                text: text
-                                ,
-                                leaf: false            
-                                ,
-                                expanded: true   
-                                ,
-                                expandable: true
-                                ,
+                                text: text,
+                                leaf: false,
+                                expanded: true,
+                                expandable: true,
                                 children: []                  
 
                             });
@@ -413,11 +370,8 @@ function rightClickMenu(node){
                     ,this
                     ,false
                     ,node.text
-                    );
-                    
-                    showHideButtons();
-                       
-                       
+                    );                    
+                    showHideButtons();           
                 } 
             }
         });
@@ -444,6 +398,86 @@ function rightClickMenu(node){
 }
 
 
+
+function searchGrid() {
+    //setting up the form 
+    var searchForm = new Ext.FormPanel({
+        frame: true, 
+        padding: 20,
+        border: false, 
+        buttonAlign: 'center',
+        url: jsonLayers, 
+        method: 'POST', 
+        id: 'frmRegister',
+        bodyStyle: 'padding:1px;',
+        width: 350,
+        margins: 10,
+        items: [{
+            xtype: 'textfield',
+            id: 'gridFilterPhrase',
+            fieldLabel: 'Filter',
+            name: 'phrase'
+
+        }
+        ],
+        buttons: [
+            { text: 'Reset', handler: function() {
+                    searchForm.getForm().reset();
+                    loadGrid();
+                }
+            },
+            { text: 'Filter', handler: function() {
+                    loadGrid();
+                }
+            }
+            ],
+            keys: [
+            { key: [Ext.EventObject.ENTER], handler: function() {
+                    loadGrid();
+                }
+            }
+        ]
+	});
+    //searchForm.addKeyListener(27, searchForm.getForm().submit(), searchForm);
+
+
+    function loadGrid() {
+        var phrase = searchForm.getForm().findField('phrase').getValue();
+        theGridStore.load({params:{'phrase': phrase }});
+    }
+       
+    return searchForm;
+}
+
+
+ function submitSearchForm() {
+    var fFields=searchForm.getValues();
+    var search = [];
+    var reg;
+    ds.filterBy(function(record,id){
+        for(var f in fFields){     
+            if(fFields[f]!='') {
+                if(f=='company') {
+                    reg = new RegExp(fFields[f], "i");   
+                    if(!reg.test(record.data[f])) return false;
+                }
+                if(f=='price' || f=='change' || f=='pctChange') {
+                    if(record.data[f]>fFields[f]) return false;   
+                }
+            }
+
+        };
+        return true;
+    });
+}
+
+/*
+ds.load();   
+Ext.get('recordslabel').update(ds.getTotalCount()+' records');     
+ds.on('datachanged',function(){
+    Ext.get('recordslabel').update(ds.getCount()+' of '+ds.getTotalCount()+' records');      
+});
+*/
 
 
 

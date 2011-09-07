@@ -26,18 +26,26 @@ class LayerController {
         def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
         render layerInstanceList as JSON
     }
+    
     def listNonBaseLayersAsJson = {
+        
         def combinedList = []
         def layerInstanceList
+        // rock and roll Groovy!
+        if (params.phrase?.size() > 1) {
+            layerInstanceList = Layer.findAllByIsBaseLayerNotEqualAndNameIlike(true, '%'+params.phrase+'%') 
+        }
+        else {            
+           layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)      
+        }
         
         Server.list().each { 
-            
+            def l = layerInstanceList
             combinedList.add(it)
-            def x = it
-            layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)            
-            layerInstanceList.each { 
-                if (it.server.id.equals(x.id)) {                
-                    combinedList.add(it)
+            def x = it     
+            l.each {   
+                if (it.server.id.equals(x.id)) {
+                    combinedList.add(it)   
                 }
             }             
         
