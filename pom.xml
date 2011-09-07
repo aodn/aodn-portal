@@ -327,7 +327,7 @@
     </repository>
     <snapshotRepository>
         <id>${development.deployment.repository.id}</id>
-        <url>${development.deployment.repository.url}</id>
+        <url>${development.deployment.repository.url}</url>
     </snapshotRepository>
   </distributionManagement>
 
