@@ -5,7 +5,7 @@ import groovyx.net.http.*
 
 class MenuController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST", setActive: "POST"]
 
     def index = {
         redirect(action: "list", params: params)
@@ -14,27 +14,10 @@ class MenuController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]          
+        [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]         
         
-    }
+    }    
     
-    // this method is all about setting the 'active' attribute from the list page
-    def setActive = {
-        
-        def menuInstance = Menu.get(params.id)
-        menuInstance.properties = params
-        if (menuInstance.save(flush: true)) {
-            def state = (menuInstance.active) ? "active" : "inactive"
-            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state              
-        }
-        else {
-            render 'ERROR: Problem saving the new state!'
-        }
-        
-    }
-
-
-
     def create = {
         def menuInstance = new Menu()
         menuInstance.properties = params
@@ -58,19 +41,7 @@ class MenuController {
             render(view: "create", model: [menuInstance: menuInstance])
         }
     }
-    
-    private cleanParams(params) {
-        
-         // strip out the root node and use it as the title
-        def jsonArray = JSON.parse(params.json)    
-        
-        params.editDate = new Date()
-        params.title = jsonArray.text       
-        
-        // the JSON string to save and use is the children of the root node
-        params.json = jsonArray.children.toString()
-        return params
-    }
+
 
     def show = {
         def menuInstance = Menu.get(params.id)
@@ -143,6 +114,37 @@ class MenuController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
             redirect(action: "list")
         }
+    }
+    
+    
+    // this method is all about setting the 'active' attribute from the list page
+    def setActive = {
+        
+        def menuInstance = Menu.get(params.id)
+        menuInstance.properties = params
+        if (menuInstance.save(flush: true)) {
+            def state = (menuInstance.active) ? "active" : "inactive"
+            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state              
+        }
+        else {
+            render 'ERROR: Problem saving the new state!'
+        }
+        
+    }
+
+    
+        
+    private cleanParams(params) {
+        
+         // strip out the root node and use it as the title
+        def jsonArray = JSON.parse(params.json)    
+        
+        params.editDate = new Date()
+        params.title = jsonArray.text       
+        
+        // the JSON string to save and use is the children of the root node
+        params.json = jsonArray.children.toString()
+        return params
     }
 }
 

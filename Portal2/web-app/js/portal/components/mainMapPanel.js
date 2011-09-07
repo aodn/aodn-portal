@@ -269,7 +269,9 @@ function loadDefaultLayers()
     
     for(var i = 0; i < defaultLayers.length; i++)
     {
+                
         Ext.Ajax.request({
+            
                     url: 'layer/showLayerByItsId?layerId=' + defaultLayers[i].id,
                     success: function(resp){
                         var dl = Ext.util.JSON.decode(resp.responseText);
@@ -291,6 +293,7 @@ function loadDefaultLayers()
         });
     }
 }
+
 
 function removeAllLayers()
 {

@@ -22,14 +22,15 @@ var toolbarpointer;
 var nodeSelected;
  
 // components in menuPanel.js
-var leftTabPanel;
+var leftTabMenuPanel;
 var activeLayers;
-var defaultLayersTree; 
+var defaultMenuTree; 
+var defaultLayers; // from the config
+var defaultMenu; // from the config
 var contributorTree;
-var basePanel;
+var baselayerMenuPanel;
 var baseLayerList;
-var mapOptionPanel;
-var defaultLayers;
+var centreMenuPanel;
 
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -112,12 +113,13 @@ Ext.onReady(function() {
                     }
 
                     initMap(config);
-                    initMenusPanel();
+                    defaultMenu = config.defaultMenu; // into global space so it can changed latter if required
+                    //loadDefaultMenu(defaultMenu);
+                    initMenusPanel(defaultMenu);
                     initDetailsPanel();
                     doViewPort();
-                    defaultLayers = config.defaultLayers;
+                    defaultLayers = config.defaultLayers; // into global space so it can be recalled
                     loadDefaultLayers();
-
                     zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
                 }
             });
@@ -137,7 +139,7 @@ function doViewPort()
             title: "Active layers",
             layout: 'border',
             items: [
-            activePanel,mapOptionPanel,leftTabPanel
+            activePanel,centreMenuPanel
             ],
             region: 'west',
             id: "leftMenus",
