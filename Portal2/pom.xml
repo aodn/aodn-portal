@@ -6,7 +6,7 @@
   <groupId>org.au.emii</groupId>
   <artifactId>Portal2</artifactId>
   <packaging>war</packaging>
-  <version>0.1.4</version>
+  <version>0.1.4-SNAPSHOT</version>
   
   <name>Portal2</name>
   <description>Portal v2</description>
@@ -319,4 +319,17 @@
       </dependencies>
     </profile>
   </profiles>
+
+  <distributionManagement>
+    <repository>
+        <id>${release.deployment.repository.id}</id>
+        <url>${release.deployment.repository.url}</url>
+    </repository>
+    <repository>
+        <id>${development.deployment.repository.id}</id>
+        <url>${development.deployment.repository.url}</id>
+    </repository>
+  </distributionManagement>
+
+
 </project>
