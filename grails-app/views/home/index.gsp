@@ -28,7 +28,7 @@
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
 
-<title>${configInstance?.name}</title>
+<title>${configInstance?.name} | user: <shiro:user>'<shiro:principal />'</shiro:user><shiro:notUser>anon</shiro:notUser> (<shiro:isLoggedIn>Logged-in this session</shiro:isLoggedIn><shiro:remembered>Remembered from previous session</shiro:remembered><shiro:notUser>Not recognised user</shiro:notUser>)</title>
 
 <style>
   
