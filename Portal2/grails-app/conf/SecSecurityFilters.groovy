@@ -41,13 +41,23 @@ class SecSecurityFilters {
             }
         }
         
+        proxyAccess(controller: "proxy", action: "index") {
+            before = {
+                //println String.format(">> SecSecurityFilters 'proxyAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+        
         all(uri: "/**") {
             before = {
-                //println String.format(">> SecSecurityFilters 'all' filter. controllerName = %s; actionName = %s.\n", controllerName, actionName)               
                                 
                 // Ignore direct views (e.g. the default main index page).
                 if (!controllerName) return true
                 if (request.accessAllowed) return true            
+                
+                println String.format(">> SecSecurityFilters 'all' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
                 
                 // Access control by convention.
                 accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
