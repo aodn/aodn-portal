@@ -7,7 +7,7 @@ class SecSecurityFilters {
         
         homeAccess(controller: "home", action: "*") {
             before = {
-                //println String.format(">> SecSecurityFilters 'homeAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("homeAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
@@ -16,7 +16,7 @@ class SecSecurityFilters {
                
         configAccess(controller: "config", action: "list") {
             before = {
-                //println String.format(">> SecSecurityFilters 'configAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("configAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
@@ -25,7 +25,7 @@ class SecSecurityFilters {
         
         serverAccess(controller: "server", action: "list") {
             before = {
-               //println String.format(">> SecSecurityFilters 'serverAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("serverAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
@@ -34,7 +34,7 @@ class SecSecurityFilters {
         
         layerAccess(controller: "layer", action: "list|listBaseLayersAsJson|listNonBaseLayerAsJson|showLayerByItsId") {
             before = {
-                //println String.format(">> SecSecurityFilters 'layerAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("layerAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
@@ -43,25 +43,43 @@ class SecSecurityFilters {
         
         proxyAccess(controller: "proxy", action: "index") {
             before = {
-                //println String.format(">> SecSecurityFilters 'proxyAccess' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("proxyAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
             }
         }
         
+//        authAccess(controller: "auth", action: "register|forgotPassword") {
+//            before = {
+//                logRequest("authAccess", controllerName, actionName)
+//                
+//                // Allow all access
+//                request.accessAllowed = true
+//            }
+//        }
+        
         all(uri: "/**") {
             before = {
                                 
-                // Ignore direct views (e.g. the default main index page).
-                if (!controllerName) return true
+                // Check if request has been allowed by another filter
                 if (request.accessAllowed) return true            
                 
-                println String.format(">> SecSecurityFilters 'all' filter. controllerName = %s; actionName = %s.", controllerName, actionName)
+                logRequest("all", controllerName, actionName)
                 
+                // Ignore direct views (e.g. the default main index page).
+                if (!controllerName) return true
+                                
                 // Access control by convention.
                 accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
             }
+        }
+    }
+    
+    private void logRequest(String filterName, String controllerName, String actionName) {
+        
+        if( log.debugEnabled ) {
+            log.debug( String.format("SecSecurityFilters %s filter. Request: controllerName = '%s', actionName = '%s'.", filterName, controllerName, actionName) )
         }
     }
 }
