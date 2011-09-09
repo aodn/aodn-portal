@@ -67,21 +67,26 @@ function initDetailsPanel()
 
 function updateStyles(node)
 {
-    var styles = node.layer.metadata.styles;
-    var legendURL = "";
+    // seems to be for ncwms??
+    
 
     detailsPanelLayer = node.layer;
+    
+    var styles = detailsPanelLayer.metadata.styles; // ncwms layers?
+    var legendURL = "";
     var styleList = styleCombo.store;
     var data = new Array();
     styleList.removeAll();
     styleCombo.clearValue();
 
-    for(var i = 0;i < styles.length; i++)
-    {
-        data.push([i, styles[i].legend.href, styles[i].name]);
-    }
+    if (styles) {
+        for(var i = 0;i < styles.length; i++)
+        {
+            data.push([i, styles[i].legend.href, styles[i].name]);
+        }
 
-    styleList.loadData(data);
+        styleList.loadData(data);
+    }
 
 
     if(detailsPanelLayer.params.STYLES != '')
@@ -98,10 +103,11 @@ function updateStyles(node)
     else
     {
         //use some default thingy
-        legendURL = styles[0].legend.href;
+       // legendURL = styles[0].legend.href;
     }
 
     refreshLegend(legendURL);
+    
 }
 
 

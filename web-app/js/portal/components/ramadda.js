@@ -13,8 +13,8 @@ function addRamadda() {
     ramaddaTree=ramaddaFolderToTree('AODN data repository','ramaddaTree',rootId,ramaddaHost,ramaddaPath);
     ramaddaTreeWMS=ramaddaFolderToTree('WMS Servers','ramaddaTreeWMS','f48cd9c1-fee8-42f8-8bfc-aa0cbcea673f',ramaddaHost,ramaddaPath);
     
-    contributorTree.add(ramaddaTree);
-    contributorTree.add(ramaddaTreeWMS);
+    demonstrationContributorTree.add(ramaddaTree);
+    demonstrationContributorTree.add(ramaddaTreeWMS);
    
 }
 
@@ -243,7 +243,7 @@ function ramaddaHandler(url,label){
 
 function addWMStoTree(item){
             attributes=item.node.attributes;
-            contributorTree.add(
+            demonstrationContributorTree.add(
                 new Ext.tree.TreePanel({
                     root: new Ext.tree.AsyncTreeNode({
                             text: attributes.name,
@@ -284,7 +284,7 @@ function addWMStoTree(item){
                 }
             })
        );
-       contributorTree.doLayout();
+       demonstrationContributorTree.doLayout();
 }
 
 // Variables for the search.
