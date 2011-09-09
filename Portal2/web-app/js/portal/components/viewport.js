@@ -27,7 +27,7 @@ var activeLayers;
 var defaultMenuTree; 
 var defaultLayers; // from the config
 var defaultMenu; // from the config
-var contributorTree;
+var demonstrationContributorTree;
 var baselayerMenuPanel;
 var baseLayerList;
 var centreMenuPanel;
@@ -49,7 +49,7 @@ Ext.onReady(function() {
             }
             else
             {
-                // CHECK THE DATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
                 if(config.enableMOTD)  {
 
                     var nav = new Ext.Panel({
@@ -113,12 +113,12 @@ Ext.onReady(function() {
                     }
 
                     initMap(config);
-                    defaultMenu = config.defaultMenu; // into global space so it can changed latter if required
+                    defaultMenu = config.defaultMenu; // into global space so it can be modified later if required
                     //loadDefaultMenu(defaultMenu);
                     initMenusPanel(defaultMenu);
                     initDetailsPanel();
                     doViewPort();
-                    defaultLayers = config.defaultLayers; // into global space so it can be recalled
+                    defaultLayers = config.defaultLayers; // into global space so it can be modified
                     loadDefaultLayers();
                     zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
                 }
@@ -159,7 +159,7 @@ function doViewPort()
     viewport.show();
 
     // now that components are rendered. fill them
-    populateMenus();
+    populateDemoContributorMenu();
     addRamadda();
     Ext.getCmp('leftMenus').doLayout();
     modMapListeners(); // mainMapPanel.js

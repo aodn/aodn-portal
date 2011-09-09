@@ -3,9 +3,9 @@
 function initMenusPanel(menu)
 {
 
-    //creating the menu tree on the left
-    contributorTree = new Ext.tree.TreePanel({
-        id: 'contributorTree', 
+    // CONTRIBUTER TREE TO BE REMOVED
+    demonstrationContributorTree = new Ext.tree.TreePanel({
+        id: 'demonstrationContributorTree', 
         region: "west",
         title: "Contributors",
         root: new GeoExt.tree.LayerContainer()
@@ -34,10 +34,12 @@ function initMenusPanel(menu)
                     click:{
                         fn:function(node) {
                             if (node.attributes.grailsLayerId){
-                              alert("a layer " + node.attributes.grailsLayerId) ; 
+                              addLayer(node.attributes.grailsLayerId);                      
+                              setDefaultMenuTreeNodeActive(node.attributes.grailsLayerId, false);
                             }
                             else if (node.attributes.grailsServerId){
                               alert("a server (discovery)") ; 
+                              // get all layers for this server TODO
                             }
                             else {
                                 //this should be a folder
@@ -86,7 +88,7 @@ function initMenusPanel(menu)
         enableTabScroll : true,
         activeTab: 1,
         items: [
-            contributorTree,
+            demonstrationContributorTree,
             defaultMenuTree,
             userDefinedWMSPanel
         ]
@@ -127,6 +129,17 @@ function initMenusPanel(menu)
             }
         }
     });
+    activePanel.on("click",function(node,event){
+                    activePanel.getSelectionModel().select(node);
+                    layerMenu.show(node.ui.getAnchor());
+    });
+
+    activePanel.on("contextmenu",function(node,event){
+                    activePanel.getSelectionModel().select(node);
+                    layerMenu.show(node.ui.getAnchor());
+    });
+    
+    
     
     baseList = new GeoExt.tree.BaseLayerContainer({
         layerStore: mapPanel.layers,
@@ -193,27 +206,15 @@ function initMenusPanel(menu)
             items: [
                 {
                     text: 'Remove layer',
-                    handler: removeLayer
+                    handler: removeActivePanelLayer
                 },
                 {
                     text: 'Zoom to layer',
                     handler: setExtentLayer
                 },
                 {
-                    text: 'Visible',
-                    checked: true,
-                    handler: visibleLayer
-                }, '-', {
-                    text: 'More Options',
-                    menu: {
-                        items: [{
-                            text: 'Geoext is great'
-                        }, {
-                            text: 'Ext is even better'
-                        }, {
-                            text: 'Matias add menu items!'
-                        }]
-                    }
+                    text: 'Toggle Visibility',
+                    handler: visibilityActivePanelLayer
                 }
             ]
         });
@@ -222,39 +223,63 @@ function initMenusPanel(menu)
 
 }
 
+function setDefaultMenuTreeNodeActive(grailsLayerId, bool) {
+    // enable all menu items that correspond. 
+    // There can be more than one in the menu
+    function checkNode(node)  {          
+        
+      if(node.attributes.grailsLayerId == grailsLayerId) {          
+        (!bool) ? node.disable():  node.enable()        
+      }               
+      Ext.each(node.childNodes, checkNode);
+    }
+    checkNode(defaultMenuTree.getRootNode());
+    
+}
 
 
-function removeLayer() {
-    // Remove layer. First unselect to remove from the tree of WMS Browse
+function removeActivePanelLayer() {
+    
+    // Remove layer from active layers and make matching default menu item active
+    // check if grailsLayerId exists. layer may have been added by user defined discovery
+    var layerId = activePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
+    
+    if (layerId != undefined) { 
+        
+        // see if this grailslayerid is only in the active layers the once
+        var layerCount = 0;
+        Ext.each(activePanel.getRootNode().childNodes, function(node)  {              
+          if(node.attributes.layer.grailsLayerId == layerId) {
+              layerCount ++;
+          }                  
+        });
+        if (layerCount == 1) {            
+             setDefaultMenuTreeNodeActive(layerId, true);
+        }        
+        
+    }
     mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
-}
-function visibleLayer() {
-    // If visible the undo checkchange
-    activePanel.getSelectionModel().getSelectedNode().checked=!activePanel.getSelectionModel().getSelectedNode().checked;
-}
- function setExtentLayer() {
-    // Remove layer. First unselect to remove from the tree of WMS Browse
-    var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.llbbox;
-    bounds = new OpenLayers.Bounds();
-    bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
-    bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
-
-   // mapPanel.map.zoomToExtent(bounds);
+    
 }
 
-function populateMenus() {
+function visibilityActivePanelLayer() {
+    
+    var node =activePanel.getSelectionModel().getSelectedNode();
+    if (node.getUI().checkbox.checked) {
+        node.getUI().checkbox.checked = false;
+    }
+    else {
+        node.getUI().checkbox.checked = true;
+    }
+}
 
-    activePanel.on("click",function(node,event){
-                    activePanel.getSelectionModel().select(node);
-                    layerMenu.show(node.ui.getAnchor());
-    });
 
-    activePanel.on("contextmenu",function(node,event){
-                    activePanel.getSelectionModel().select(node);
-                    layerMenu.show(node.ui.getAnchor());
-    });
+function populateDemoContributorMenu() {
 
-    // contributorTree Servers list
+
+
+    // demonstrationContributorTree Servers list
+    // THIS WILL BE REMOVED. WE DONT WANT TO DO DISCOVERIES THIS WAY
     Ext.Ajax.request({
         url: 'server/list?type=JSON',
         success: function(resp){
@@ -271,7 +296,7 @@ function populateMenus() {
                     version = splits[1];
                 }
 
-                contributorTree.add(
+                demonstrationContributorTree.add(
                     new Ext.tree.TreePanel({
                         root: new Ext.tree.AsyncTreeNode({
                                 text: serverList[i].name,
@@ -320,7 +345,7 @@ function populateMenus() {
             }  
             // matias: because we are not sure if the tree is rendered alredy
             // this is a
-            contributorTree.doLayout();
+            demonstrationContributorTree.doLayout();
         }
     });
     

@@ -70,3 +70,21 @@ a img{
 .x-btn-text {
     font-weight: bold;
 }
+
+.x-tree-lines .x-tree-elbow-plus, .x-tree-lines .x-tree-elbow-end-plus{
+    background-image: url('../img/icons/treePlus.png');
+}
+.x-tree-lines .x-tree-elbow-minus, .x-tree-lines .x-tree-elbow-end-minus{
+    background-image:url('../img/icons/treeMinus.png');
+}
+   
+
+.x-panel-body {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border: 0px;
+    background: none;
+}

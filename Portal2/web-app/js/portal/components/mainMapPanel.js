@@ -288,33 +288,83 @@ function setToolbarItems() {
 
 }
 
-function loadDefaultLayers()
-{
+
+/*
+ * 
+ * This is the add layer method for all layers apart form those added
+ * by user defined WMS server discoveries.
+ * 
+ * 
+ */
+function addLayer(grailsLayerId) {    
     
-    for(var i = 0; i < defaultLayers.length; i++)
-    {
+    Ext.Ajax.request({
+
+            url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
+            success: function(resp){
+                var dl = Ext.util.JSON.decode(resp.responseText);  
                 
-        Ext.Ajax.request({
-            
-                    url: 'layer/showLayerByItsId?layerId=' + defaultLayers[i].id,
-                    success: function(resp){
-                        var dl = Ext.util.JSON.decode(resp.responseText);
-                        var l = new OpenLayers.Layer.WMS(
-                            dl.name,
-                            dl.server.uri,
-                            {
-                                layers: dl.layers,
-                                transparent: true,
-                                isBaseLayer: dl.isBaseLayer,
-                                queryable: dl.queryable
-                            },
-                            {
-                                wrapDateLine: true,
-                                transitionEffect: 'resize'
-                            });
-                        mapPanel.map.addLayer(l);
-                    }
+               /*
+                * Buffer: tiles around the viewport. 1 is enough
+                * Gutter: images wider and taller than the tile size by a value of 2 x gutter
+                        NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
+                        Keep as zero till fixed 
+                */               
+                var params = {
+                    layers: dl.layers,
+                    transparent: true,
+                    format: dl.imageFormat,
+                    queryable: dl.queryable,
+                    buffer: 1, 
+                    gutter: 0
+                }
+                // opacity was stored as a percent 0-100
+                var opacity =  Math.round((dl.opacity / 100)*10)/10;
+                
+                if(dl.server.type == "NCWMS-1.3.0") {
+                    params.yx = true; // fix for the wms standards war
+                }
+                if(dl.cql != "") {
+                    params.CQL_FILTER = dl.cql;
+                }  
+                // may be null from database
+                if(dl.styles == "") {
+                    params.styles = "";
+                }
+                
+                
+                var layer = new OpenLayers.Layer.WMS(
+                    dl.name,
+                    dl.server.uri,
+                    params,
+                    {
+                        isBaseLayer: dl.isBaseLayer,
+                        wrapDateLine: true,   
+                        opacity: opacity,
+                        transitionEffect: 'resize'
+                    });
+                layer.grailsLayerId = grailsLayerId; // keep this info for when removing layers from map
+                mapPanel.map.addLayer(layer);
+            }
         });
+}
+
+/*
+ * Zoom to the layer bounds selected in active layers
+ */
+function setExtentLayer() {
+    
+    var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.llbbox;
+    bounds = new OpenLayers.Bounds();
+    bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
+    bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
+    mapPanel.map.zoomToExtent(bounds);
+}
+
+function loadDefaultLayers()
+{    
+    for(var i = 0; i < defaultLayers.length; i++)   {
+        addLayer(defaultLayers[i].id);   
     }
 }
 

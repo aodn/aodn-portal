@@ -18,7 +18,9 @@
  *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+ #map {
+     background-color: #8AA8C4;
+ }
 
 
 a[rel="external"], a.external {

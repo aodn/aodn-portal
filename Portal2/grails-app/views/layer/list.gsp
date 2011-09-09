@@ -23,10 +23,9 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'layer.id.label', default: 'Id')}" />
 
-                            <g:sortableColumn property="name" title="${message(code: 'layer.layers.label', default: 'Layers')}" />
                             <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name')}" />
+                            <g:sortableColumn property="layers" title="${message(code: 'layer.layers.label', default: 'Layers')}" />
                             <g:sortableColumn property="opacity" title="${message(code: 'layer.opacity.label', default: 'Opacity')}" />
                         
                             <g:sortableColumn property="disabled" title="${message(code: 'layer.disabled.label', default: 'Disabled')}" />
@@ -44,10 +43,9 @@
                     <g:each in="${layerInstanceList}" status="i" var="layerInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "id")}</g:link></td>
 
+                            <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "name")}</g:link></td>
                             <td>${fieldValue(bean: layerInstance, field: "layers")}</td>
-                            <td>${fieldValue(bean: layerInstance, field: "name")}</td>
 
                             <td>${fieldValue(bean: layerInstance, field: "opacity")}</td>
                         
