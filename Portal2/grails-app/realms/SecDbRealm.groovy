@@ -3,6 +3,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.UnknownAccountException
 import org.apache.shiro.authc.SimpleAccount
 import org.apache.shiro.authz.permission.WildcardPermission
+import au.org.emii.portal.User
 
 class SecDbRealm {
     static authTokenClass = org.apache.shiro.authc.UsernamePasswordToken
@@ -12,51 +13,51 @@ class SecDbRealm {
 
     def authenticate(authToken) {
         log.info "Attempting to authenticate ${authToken.username} in DB realm..."
-        def username = authToken.username
-
+        def emailAddress = authToken.username
+        
         // Null username is invalid
-        if (username == null) {
+        if (emailAddress == null) {
             throw new AccountException("Null usernames are not allowed by this realm.")
         }
 
         // Get the user with the given username. If the user is not
         // found, then they don't have an account and we throw an
         // exception.
-        def user = SecUser.findByUsername(username)
+        def user = User.findByEmailAddress(emailAddress)
         if (!user) {
-            throw new UnknownAccountException("No account found for user [${username}]")
+            throw new UnknownAccountException("No account found for user [${emailAddress}]")
         }
 
-        log.info "Found user '${user.username}' in DB"
+        log.info "Found user '${user.emailAddress}' in DB"
 
         // Now check the user's password against the hashed value stored
         // in the database.
-        def account = new SimpleAccount(username, user.passwordHash, "SecDbRealm")
+        def account = new SimpleAccount(emailAddress, user.passwordHash, "SecDbRealm")
         if (!credentialMatcher.doCredentialsMatch(authToken, account)) {
             log.info "Invalid password (DB realm)"
-            throw new IncorrectCredentialsException("Invalid password for user '${username}'")
+            throw new IncorrectCredentialsException("Invalid password for user '${emailAddress}'")
         }
 
         return account
     }
 
     def hasRole(principal, roleName) {
-        def roles = SecUser.withCriteria {
+        def roles = User.withCriteria {
             roles {
                 eq("name", roleName)
             }
-            eq("username", principal)
+            eq("emailAddress", principal)
         }
 
         return roles.size() > 0
     }
 
     def hasAllRoles(principal, roles) {
-        def r = SecUser.withCriteria {
+        def r = User.withCriteria {
             roles {
                 'in'("name", roles)
             }
-            eq("username", principal)
+            eq("emailAddress", principal)
         }
 
         return r.size() == roles.size()
@@ -68,7 +69,7 @@ class SecDbRealm {
         //
         // First find all the permissions that the user has that match
         // the required permission's type and project code.
-        def user = SecUser.findByUsername(principal)
+        def user = User.findByEmailAddress(principal)
         def permissions = user.permissions
 
         // Try each of the permissions found and see whether any of
@@ -97,7 +98,7 @@ class SecDbRealm {
         // If not, does he gain it through a role?
         //
         // Get the permissions from the roles that the user does have.
-        def results = SecUser.executeQuery("select distinct p from SecUser as user join user.roles as role join role.permissions as p where user.username = '$principal'")
+        def results = User.executeQuery("select distinct p from User as user join user.roles as role join role.permissions as p where user.emailAddress = '$principal'")
 
         // There may be some duplicate entries in the results, but
         // at this stage it is not worth trying to remove them. Now,

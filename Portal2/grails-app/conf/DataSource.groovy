@@ -20,7 +20,7 @@ environments {
            username = "portalV2DevelopmentUser"
            password = "portalV2DevelopmentUser"
 
-
+           // logSql = true
        }
    }
     test {
