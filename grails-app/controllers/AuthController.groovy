@@ -75,4 +75,12 @@ class AuthController {
     def unauthorized = {
         render "You do not have permission to access this page."
     }
+    
+    def register = {
+        render "Register new account"
+    }
+    
+    def resetPassword = {
+        render "Reset password and send in email"
+    }
 }
