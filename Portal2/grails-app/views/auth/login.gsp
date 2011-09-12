@@ -5,7 +5,7 @@
   <title>Login</title>
 </head>
 <body>
-  <div class="message"><b>Current logins are:</b><br />
+  <div class="message"><b>Available logins are:</b><br />
   admin/admin<br/>
   user/user<br/></div>
   
