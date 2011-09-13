@@ -11,7 +11,37 @@ class LayerTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
+    void testConstraints() {
 
+		def layer1 = new Layer(name : "layer1", description : "description");
+		mockForConstraintsTests(Layer, [layer1])
+		
+		def testLayer = new Layer()
+		assertFalse testLayer.validate()
+		assertEquals "nullable", testLayer.errors["name"]
+		assertEquals "nullable", testLayer.errors["disabled"]
+		assertEquals "nullable", testLayer.errors["description"]
+		assertEquals "nullable", testLayer.errors["server"]
+		assertEquals "nullable", testLayer.errors["cache"]
+		assertEquals "nullable", testLayer.errors["opacity"]
+		assertEquals "nullable", testLayer.errors["layers"]
+		assertEquals "nullable", testLayer.errors["imageFormat"]
+		assertEquals "nullable", testLayer.errors["queryable"]
+		assertEquals "nullable", testLayer.errors["isBaseLayer"]
+		
+		testLayer = new Layer(name : "layer1", description : "description")
+		assertFalse testLayer.validate()
+		assertEquals "unique", testLayer.errors["name"]
+		assertEquals "unique", testLayer.errors["description"]
+		
+		testLayer = new Layer(description : "")
+		assertFalse testLayer.validate()
+		assertEquals "blank", testLayer.errors["description"]
+		
+		testLayer = new Layer(imageFormat : "image/jpg")
+		assertFalse testLayer.validate()
+		assertEquals "inList", testLayer.errors["imageFormat"]
+
+		
     }
 }
