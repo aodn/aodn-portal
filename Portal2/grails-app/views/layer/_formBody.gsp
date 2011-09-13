@@ -1,4 +1,30 @@
 
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="server"><g:message code="layer.server.label" default="Server" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'server', 'errors')}">
+                                    <g:select name="server.id" from="${au.org.emii.portal.Server.list()}" optionKey="id" value="${layerInstance?.server?.id}"  />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="layers"><g:message code="layer.layers.label" default="Layers" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
+                                    <g:textField name="layers" value="${layerInstance?.layers}" /> Pull these in dynamically when harvesting starts
+                                </td> 
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="isBaseLayer"><g:message code="layer.isBaseLayer.label" default="IsBaseLayer" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'isBaseLayer', 'errors')}">
+                                    <g:checkBox name="isBaseLayer" value="${layerInstance?.isBaseLayer}"  />
+                                </td>
+                            </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="name"><g:message code="layer.name.label" default="Name" /></label>
@@ -36,14 +62,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="server"><g:message code="layer.server.label" default="Server" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'server', 'errors')}">
-                                    <g:select name="server.id" from="${au.org.emii.portal.Server.list()}" optionKey="id" value="${layerInstance?.server?.id}"  />
-                                </td>
-                            </tr>
+                           
 
                           
                             <tr class="prop">
@@ -83,14 +102,7 @@
                             </tr>
 
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="layers"><g:message code="layer.layers.label" default="Layers" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
-                                    <g:textField name="layers" value="${layerInstance?.layers}" />
-                                </td>
-                            </tr>
+                            
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -116,13 +128,5 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'queryable', 'errors')}">
                                     <g:checkBox name="queryable" value="${true}"  /> <font class="hint">Defaulting to true.</font>
-                                </td>
-                            </tr>
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="isBaseLayer"><g:message code="layer.isBaseLayer.label" default="IsBaseLayer" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'isBaseLayer', 'errors')}">
-                                    <g:checkBox name="isBaseLayer" value="${layerInstance?.isBaseLayer}"  />
                                 </td>
                             </tr>

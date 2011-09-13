@@ -88,3 +88,20 @@ a img{
     border: 0px;
     background: none;
 }
+#leftMenus .x-layout-split {
+    background-color: #ccc;
+}
+.floatLeft {
+    float: left;
+}
+.buttonPad {
+    padding: 2px 5px 5px 0px
+}
+.leftMenus {
+    padding-left: 3px;
+}
+.x-tip-body {
+    padding: 200px;
+    margin: 10px! important;
+    background: orange;
+}
