@@ -11,7 +11,8 @@ class MotdTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
-
+    void testToString() {
+		def testMotd = new Motd(motdTitle : "title")
+		assertEquals "title", testMotd.toString()
     }
 }
