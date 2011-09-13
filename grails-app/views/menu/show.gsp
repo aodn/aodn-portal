@@ -5,8 +5,9 @@
           <meta name="layout" content="main">        
           
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-          <script src="${resource(dir:'js',file:'portal/grid2treedrag.js')}" type="text/javascript"></script>
-          <script src="${resource(dir:'js',file:'portal/treeSerializer.js')}"  type="text/javascript"></script>
+        
+    <script src="${resource(dir:'js',file:'portal/configComponents/grid2treedrag.js')}" type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/configComponents/treeSerializer.js')}"  type="text/javascript"></script>
           
           
           <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />

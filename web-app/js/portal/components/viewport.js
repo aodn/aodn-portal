@@ -14,7 +14,7 @@ var layersTree;
 var currentNode;
 var checkNode;
 var proxyURL = "proxy?url=";
-var activePanel, layerList;
+var activePanel;
 
 var toolbarpointer;
 //--------------------------------------------------------------------------------------------
@@ -28,12 +28,14 @@ var defaultMenuTree;
 var defaultLayers; // from the config
 var defaultMenu; // from the config
 var demonstrationContributorTree;
-var baselayerMenuPanel;
 var baseLayerList;
-var centreMenuPanel;
+var topMenuPanel, centreMenuPanel;
 
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+Ext.QuickTips.init();
+
+
 //GeoExt stuff
 Ext.onReady(function() {
 
@@ -131,6 +133,9 @@ Ext.onReady(function() {
 
 function doViewPort()
 {
+    
+
+    
     var viewport = new Ext.Viewport({
         layout: 'border',
         stateful: true,
@@ -139,10 +144,11 @@ function doViewPort()
             title: "Active layers",
             layout: 'border',
             items: [
-            activePanel,centreMenuPanel
+                topMenuPanel,leftTabMenuPanel
             ],
             region: 'west',
             id: "leftMenus",
+            cls: 'leftMenus',
             collapsible: true,
             split: true,
             width: 290

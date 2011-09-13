@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  <script>alert("Your the best!");</script>
+  
    
 </body>
 

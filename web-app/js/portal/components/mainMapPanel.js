@@ -372,9 +372,9 @@ function loadDefaultLayers()
 function removeAllLayers()
 {
     var d = new Array();
-    for(var i = 0; i < map.layers.length; i++)
+    for(var i = 0; i < mapPanel.map.layers.length; i++)
     {
-        if(!map.layers[i].isBaseLayer)
+        if(!mapPanel.map.layers[i].isBaseLayer)
         {
             d.push(i);
         }
@@ -383,6 +383,6 @@ function removeAllLayers()
     //reversing the order, so then the index is always valid on map.layers
     for(var i = d.length; i > 0; i--)
     {
-        map.layers[i].destroy();
+        mapPanel.map.layers[i].destroy();
     }
 }
