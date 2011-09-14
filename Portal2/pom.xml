@@ -305,13 +305,14 @@
         </configuration>
       </plugin>
 
-      
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+          <debug>true</debug>
+          <debugLevel>lines,vars,source</debugLevel>
         </configuration>
       </plugin>
     </plugins>
@@ -348,6 +349,5 @@
         <url>${development.deployment.repository.url}</url>
     </snapshotRepository>
   </distributionManagement>
-
 
 </project>
