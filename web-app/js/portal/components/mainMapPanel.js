@@ -138,14 +138,18 @@ function initMap(config)  {
     mapPanel.map.addControl(clickControl);
 
     
-    clickControl.activate();
+    clickControl.activate();    
+    modMapListeners();
 
 }
-// lsteners modified here after layout
+
+
+// stops the click bubbling to a getFeatureInfo request on the map
+// when clicking on the mapLinks component
 function modMapListeners() {
 
     var el = Ext.get('mapLinks');
-    // stops the click bubbling to a getFeatureInfo request on the map
+    
     el.on('click', function(ev, target){
         ev.stopPropagation(); // Cancels bubbling of the event
     });

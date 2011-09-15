@@ -207,7 +207,6 @@ function doViewPort()
     populateDemoContributorMenu();
     addRamadda();
     Ext.getCmp('leftMenus').doLayout();
-    modMapListeners(); // mainMapPanel.js
 }
 
 
