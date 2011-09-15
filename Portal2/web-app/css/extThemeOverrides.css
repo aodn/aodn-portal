@@ -101,7 +101,6 @@ a img{
     padding-left: 3px;
 }
 .x-tip-body {
-    padding: 200px;
-    margin: 10px! important;
-    background: orange;
+    padding: 5px! important;
+    background : none;
 }

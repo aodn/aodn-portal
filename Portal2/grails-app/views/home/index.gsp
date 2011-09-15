@@ -34,7 +34,8 @@
 </head>
 
 <body>
-  
+  <div id="header">this is text in grails land</div><a href="http://www.google.com.au">sample link in Grails</a>
+
    
 </body>
 
