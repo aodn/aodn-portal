@@ -32,7 +32,7 @@ var baseLayerList;
 var topMenuPanel, centreMenuPanel;
 
 //
-Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.QuickTips.init();
 
 
@@ -134,10 +134,12 @@ Ext.onReady(function() {
 function doViewPort()
 {
     
-
     
-    var viewport = new Ext.Viewport({
+    
+    
+     var mapMainPanel = new Ext.Panel({
         layout: 'border',
+        title: 'Map',
         stateful: true,
         items: [
         {
@@ -160,9 +162,46 @@ function doViewPort()
             detailsPanel
             ]
         }]
+    }); 
+    mapMainPanel.doLayout();
+   
+        
+    var viewport = new Ext.Viewport({
+        layout: 'border',
+        stateful: true,
+        items: [{
+            region: 'north',
+            html: '<h1 >test title in extjs land</h1>',
+            height: 150,
+            border: false,
+        margins: '0 0 5 380'
+    }, {
+        region: 'south',
+        collapsible: true,
+        html: 'Footer goes here',
+        split: true,
+        height: 100,
+        minHeight: 100
+    }, {
+        region: 'center',
+        xtype: 'tabpanel', // TabPanel itself has no title        
+        autoDestroy: false, // wont destroy tab contents when switching        
+        activeTab: 0,
+        items: [            
+            mapMainPanel,
+            {
+            title: 'Search',
+            html: 'A simple tab'
+        }
+        ]
+    }]
     });
 
     viewport.show();
+    
+
+
+    //mapMainPanel.doLayout();
 
     // now that components are rendered. fill them
     populateDemoContributorMenu();

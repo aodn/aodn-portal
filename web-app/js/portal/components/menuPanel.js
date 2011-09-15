@@ -41,8 +41,7 @@ function initMenusPanel(menu)
                         alert("a server (discovery)") ; 
                     // get all layers for this server TODO
                     }
-                    else {
-                        DetailsPanel
+                    else {                        
                         //this should be a folder
                         node.expand(); 
                     }
@@ -114,6 +113,7 @@ function initMenusPanel(menu)
         header: false,
         title: 'Map Layers',
         id: 'activeTreePanel',
+        collapseMode : 'mini',
         enableDD: true,
         rootVisible: false,
         root: layerList,
@@ -184,7 +184,8 @@ function initMenusPanel(menu)
     var mapOptionsPanel = new Ext.Panel({
         title: 'Map Options',
         padding: 10,
-        height: 95,
+        collapseMode : 'mini',
+        height: 97,
         region: 'south',        
         items:[
         buttonPanel,baselayerMenuPanel
@@ -200,8 +201,8 @@ function initMenusPanel(menu)
         padding: 10,
         autoScroll: true,
         region: 'north',
-        height: 350, 
-        minHeight: 150,
+        height: 200, 
+        minHeight: 170,
         items:[
             activePanel  ,mapOptionsPanel
         ]
@@ -210,8 +211,13 @@ function initMenusPanel(menu)
 
     //Active layer Right Click menu
     layerMenu = new Ext.menu.Menu({
-
+        plain: true,
+        showSeparator: false,
         items: [
+        {
+            text: 'Layer Options',
+            handler: showActivePanelLayerOptions
+        },
         {
             text: 'Remove layer',
             handler: removeActivePanelLayer
@@ -245,7 +251,16 @@ function setDefaultMenuTreeNodeActive(grailsLayerId, bool) {
     
 }
 
-
+function showActivePanelLayerOptions() {
+    var layerId = activePanel.getSelectionModel().getSelectedNode().layer;
+    //detailsPanel.enable();
+    //detailsPanel.toggleCollapse();
+    detailsPanel.setVisible(true);
+    detailsPanel.expand();
+    detailsPanel.setPosition(100,100);
+    detailsPanel.syncSize(); // match size to components
+    
+}
 function removeActivePanelLayer() {
     
     // Remove layer from active layers and make matching default menu item active
