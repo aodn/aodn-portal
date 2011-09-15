@@ -221,32 +221,8 @@ function setToolbarItems() {
     });
     */
 
-
     toolbarItems.push("->");
-        toolbarItems.push({
-        xtype: 'box',
-        autoEl: {
-            tag: 'a',
-            href: 'auth/login',
-            cn: 'Log in',
-            target: "_top",
-            cls: "mainlinks",
-            id: "login_link"
-        }
-    });
-    
-    toolbarItems.push({
-        xtype: 'box',
-        autoEl: {
-            tag: 'a',
-            href: 'auth/signOut',
-            cn: 'Log out',
-            target: "_top",
-            cls: "mainlinks",
-            id: "logout_link"
-        }
-    });
-    
+        
     toolbarItems.push({
         xtype: 'box',
         autoEl: {

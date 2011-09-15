@@ -28,16 +28,14 @@
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
 
-<title>${configInstance?.name} | user: <shiro:user>'<shiro:principal />'</shiro:user><shiro:notUser>anon</shiro:notUser> (<shiro:isLoggedIn>Logged-in this session</shiro:isLoggedIn><shiro:remembered>Remembered from previous session</shiro:remembered><shiro:notUser>Not recognised user</shiro:notUser>)</title>
-
-
+<title>${configInstance?.name}</title>
 </head>
 
 <body>
-  <div id="header">this is text in grails land</div><a href="http://www.google.com.au">sample link in Grails</a>
-
-   
+  <div id="header">
+    <shiro:user>Logged-in as: <g:link controller="user" action="updateAccount"><shiro:principal /></g:link> (<g:link controller="auth" action="signOut">Log out</g:link>)</shiro:user>
+    <shiro:notUser>Not logged-in. <g:link controller="auth" action="login">Log in</g:link> or <g:link controller="auth" action="register">register</g:link>.</shiro:notUser>
+  </div>
 </body>
-
 
 </html>
