@@ -106,6 +106,10 @@ function initMap(config)  {
                //,listeners: NOT WORKING HERE
                ,items: mapToolbar
             });
+     // stops the click bubbling to a getFeatureInfo request on the map
+     mapLinks.on('click', function(ev, target){
+        ev.stopPropagation(); // Cancels bubbling of the event
+    });
 
      var onClick2 = function(ev, target){
         alert(target);
@@ -138,22 +142,13 @@ function initMap(config)  {
     mapPanel.map.addControl(clickControl);
 
     
-    clickControl.activate();    
-    modMapListeners();
+    clickControl.activate();  
 
 }
 
 
-// stops the click bubbling to a getFeatureInfo request on the map
-// when clicking on the mapLinks component
-function modMapListeners() {
 
-    var el = Ext.get('mapLinks');
-    
-    el.on('click', function(ev, target){
-        ev.stopPropagation(); // Cancels bubbling of the event
-    });
-}
+
 
 function setToolbarItems() {
 
