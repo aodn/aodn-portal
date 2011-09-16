@@ -14,10 +14,10 @@
   </g:if>
   <g:form action="signIn">
     <input type="hidden" name="targetUri" value="${targetUri}" />
-    <table>
+    <table style="width: 300px;">
       <tbody>
         <tr>
-          <td>Username:</td>
+          <td>Email address:</td>
           <td><input type="text" name="username" value="${username}" /></td>
         </tr>
         <tr>
@@ -31,6 +31,12 @@
         <tr>
           <td />
           <td><input type="submit" value="Sign in" /></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="white-space:nowrap;"><i>Forgot your password? Recover your account <g:link controller="auth" action="forgottenPassword">here</g:link></i>.</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="white-space:nowrap;"><i>Don't have an account? Register a new account <g:link controller="auth" action="register">here</g:link></i>.</td>
         </tr>
       </tbody>
     </table>

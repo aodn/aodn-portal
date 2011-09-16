@@ -35,6 +35,11 @@
   <div id="header">
     <shiro:user>Logged-in as: <g:link controller="user" action="updateAccount"><shiro:principal /></g:link> (<g:link controller="auth" action="signOut">Log out</g:link>)</shiro:user>
     <shiro:notUser>Not logged-in. <g:link controller="auth" action="login">Log in</g:link> or <g:link controller="auth" action="register">register</g:link>.</shiro:notUser>
+    <br/>
+  
+    <g:if test="${flash.message}">
+      <div class="message">${flash.message}</div>
+    </g:if>
   </div>
 </body>
 

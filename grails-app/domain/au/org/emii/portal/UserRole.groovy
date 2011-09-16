@@ -9,4 +9,10 @@ class UserRole {
     static constraints = {
         name(nullable: false, blank: false, unique: true)
     }
+    
+    @Override
+    public String toString() {
+        
+        return name
+    }
 }

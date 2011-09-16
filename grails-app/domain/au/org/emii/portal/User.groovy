@@ -14,14 +14,14 @@ class User {
     String country
     
     String organisation
-    String orgType
+    OrganisationType orgType
     
     // Relationships
     static hasMany = [ roles: UserRole, permissions: String ]
     
     // Field constraints
     static constraints = {
-        emailAddress(unique: true, /*email: true,*/ blank: false)
+        emailAddress(unique: true, email: true, blank: false)
         firstName(nullable: false, blank: false)
         lastName(nullable: false, blank: false)
         passwordHash(nullable: false, blank: false)
@@ -38,5 +38,11 @@ class User {
     // db mapping
     static mapping = {
         table 'portal_user'
+    }
+    
+    @Override
+    public String toString() {
+        
+        return String.format("%s %s (%s)", firstName, lastName, emailAddress)
     }
 }
