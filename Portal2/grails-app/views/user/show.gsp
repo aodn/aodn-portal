@@ -95,7 +95,7 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.orgType.label" default="Org Type" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "orgType")}</td>
+                            <td valign="top" class="value"><g:link controller="organisationType" action="show" id="${userInstance?.orgType?.id}">${userInstance?.orgType?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
                     

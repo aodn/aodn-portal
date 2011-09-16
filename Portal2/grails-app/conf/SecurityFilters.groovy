@@ -50,7 +50,7 @@ class SecurityFilters {
             }
         }
         
-        authAccess(controller: "auth", action: "login|register|resetPassword") {
+        authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
             before = {
                 logRequest("authAccess", controllerName, actionName)
                 
@@ -58,7 +58,7 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        
+      
         all(uri: "/**") {
             before = {
                 

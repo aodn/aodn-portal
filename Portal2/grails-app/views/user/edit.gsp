@@ -117,7 +117,7 @@
                                   <label for="orgType"><g:message code="user.orgType.label" default="Org Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'orgType', 'errors')}">
-                                    <g:textField name="orgType" value="${userInstance?.orgType}" />
+                                    <g:select name="orgType.id" from="${au.org.emii.portal.OrganisationType.list()}" optionKey="id" value="${userInstance?.orgType?.id}" noSelection="['null': '']" />
                                 </td>
                             </tr>
                         

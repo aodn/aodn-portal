@@ -3,6 +3,14 @@ import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.web.util.SavedRequest
 import org.apache.shiro.web.util.WebUtils
+import au.org.emii.portal.Config
+import au.org.emii.portal.User
+import au.org.emii.portal.UserRole
+import au.org.emii.portal.UserAccountCommand
+import org.apache.shiro.crypto.hash.Sha256Hash
+import org.apache.shiro.subject.Subject
+import org.apache.commons.lang.RandomStringUtils
+import org.apache.commons.validator.EmailValidator
 
 class AuthController {
     def shiroSecurityManager
@@ -14,7 +22,7 @@ class AuthController {
     }
 
     def signIn = {
-        def authToken = new UsernamePasswordToken(params.username, params.password as String)
+        def authToken = new UsernamePasswordToken(params.username?.toLowerCase(), params.password as String)
 
         // Support for "remember me"
         if (params.rememberMe) {
@@ -77,10 +85,134 @@ class AuthController {
     }
     
     def register = {
-        render "Register new account"
+        def configInstance = Config.list()[0]
+        def userAccountCmd = UserAccountCommand.from(new User())
+        
+        return [configInstance: configInstance, userAccountCmd: userAccountCmd]
+    }
+    
+    def createUser = { UserAccountCommand userAccountCmd ->
+          
+        // Validate form
+        if (!userAccountCmd.validate()) {
+            render(view: "register", model: [userAccountCmd:userAccountCmd])
+            return
+        }
+        
+        // Get user from form
+        def userInstance = userAccountCmd.createUser()
+        
+        // Add user to "SelfRegisteredUser" role
+        userInstance.addToRoles(UserRole.findByName("SelfRegisteredUser"))
+        
+        // Validate and save user
+        if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
+            
+            // Log in newly-created user
+            Subject currentUser = SecurityUtils.getSubject()
+            currentUser.login(new UsernamePasswordToken(userInstance.emailAddress, userAccountCmd.password))
+            
+            // Email newly-created user
+            sendRegistrationNotifcationEmail(userInstance)
+            
+            redirect(controller: "home")
+        }
+        else {
+            log.error "Could not save User instance during self-registration. params: '${params}'."
+            flash.message = "Could not register. Please try again." // Todo - DN: Add message key
+            render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance)])
+        }        
+    }
+    
+    def forgotPassword = {
+
     }
     
     def resetPassword = {
-        render "Reset password and send in email"
+        
+        UserResetPasswordCommand userResetPasswordCommand ->
+       
+        if (userResetPasswordCommand.validate()) {
+            
+            def resetResult = userResetPasswordCommand.resetPassword()
+            
+            if (user.hasErrors) {
+                log.error "User has errors when trying to reset password"
+                user.errors.allErrors.each{ log.error it }
+            }
+            
+            if (resetResult.user) {
+                
+                sendPasswordResetAdviceEmail(resetResult.user, resetResult.newPassword)
+                
+                flash.message = "${message(code: 'user.password.update', default: 'Password reset. New password has been emailed to ' + resetResult.user.emailAddress)}"
+                redirect(action: "forgotPassword")
+            }
+            else {
+                flash.message = "No user returned from reset password method. What does this mean?" // TODO - DN: add message key
+            }                
+        }
+        else {
+
+            render(view: "forgotPassword", model: [userResetPasswordCommand:userResetPasswordCommand])
+        }
+    }
+    
+    // Email notifications
+    def sendRegistrationNotifcationEmail(user)
+    {
+        sendMail 
+        {  
+            to user?.emailAddress
+            bcc grailsApplication.config.grails.mail.adminEmailAddress
+            from grailsApplication.config.grails.mail.systemEmailAddress
+            subject "${message(code: 'mail.request.user.register.subject')}"     
+            body "${message(code: 'mail.request.user.register.body', args: [user.firstName, createLink(controller:'home', absolute:true), createLink(controller: 'auth', action: 'forgotPassword', absolute:true)])}" 
+        }
+    }
+    
+    def sendPasswordResetAdviceEmail(user, newPassword)
+    {
+        sendMail 
+        {  
+            to user?.emailAddress
+            bcc grailsApplication.config.grails.mail.adminEmailAddress
+            from grailsApplication.config.grails.mail.systemEmailAddress
+            subject "${message(code: 'mail.request.user.passwordReset.subject', args: [user.firstName, user.lastName])}"     
+            body "${message(code: 'mail.request.user.passwordReset.body', args: [user.firstName, newPassword, createLink(controller: 'user', action:'updateAccount', absolute:true)])}" 
+        }
+    }
+}
+
+class UserResetPasswordCommand {
+    
+    def emailAddress
+    
+    static constraints = {
+        emailAddress(email: true, nullable: false, blank: false,
+            validator: {val ->
+            
+                if (!EmailValidator.getInstance().isValid(val)) {
+                    return "user.emailAddress.invalid"
+                }
+
+                if (!User.findByEmailAddress(val.toLowerCase()))
+                {
+                    return "user.emailAddress.notFound" // TODO - DN: Say that this email address does not have a registered account and send them to the register page
+                }
+            })
+    }
+
+    def resetPassword() {
+          
+        def user = User.findByEmailAddress(emailAddress.toLowerCase())
+                
+        String newPassword = RandomStringUtils.randomAlphanumeric(10) // 10 charcter random password
+        user.setPasswordHash(new Sha256Hash(newPassword).toHex())
+        
+        // Save (errors will be checked-for in controller
+        user.save(flush:true)
+                
+        return [user:user, newPassword: newPassword]
     }
 }

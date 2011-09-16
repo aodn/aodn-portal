@@ -74,6 +74,10 @@ log4j = {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
 
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
+    }
+    
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
@@ -85,6 +89,45 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-
+    
     warn   'org.mortbay.log'
+    
+//    info   'grails.app',
+//           'org.apache.shiro'
+    
+//    debug  'grails.app.controller',
+//           'grails.app.filters.SecurityFilters',
+//           //'org.hibernate.SQL',           
+//           'org.hibernate.type',
+//           'grails.app.realm'
+}
+
+// Email configuration.
+environments 
+{
+    production 
+    {
+    }
+    
+    development 
+    {
+        grails 
+        {
+           mail
+           {
+             adminEmailAddress = "dnahodil@utas.edu.au"
+             systemEmailAddress = "dnahodil@utas.edu.au"
+             
+             host = "localhost"
+             port = 25
+             username = "username"
+             //password = "password"
+             props = ["mail.smtp.auth":"false"]
+           }
+        }
+    }
+    
+    test 
+    {
+    }
 }
