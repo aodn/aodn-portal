@@ -136,12 +136,13 @@ class AuthController {
             
             def resetResult = userResetPasswordCommand.resetPassword()
             
-            if (user.hasErrors) {
-                log.error "User has errors when trying to reset password"
-                user.errors.allErrors.each{ log.error it }
-            }
-            
             if (resetResult.user) {
+                
+                if (user.hasErrors) {
+                    log.error "User has errors when trying to reset password"
+                    user.errors.allErrors.each{ log.error it }
+                    redirect(action: "forgotPassword")
+                }
                 
                 sendPasswordResetAdviceEmail(resetResult.user, resetResult.newPassword)
                 
@@ -149,7 +150,7 @@ class AuthController {
                 redirect(action: "forgotPassword")
             }
             else {
-                flash.message = "No user returned from reset password method. What does this mean?" // TODO - DN: add message key
+                flash.message = "Unable to find user with that email address."
             }                
         }
         else {
@@ -198,7 +199,7 @@ class UserResetPasswordCommand {
 
                 if (!User.findByEmailAddress(val.toLowerCase()))
                 {
-                    return "user.emailAddress.notFound" // TODO - DN: Say that this email address does not have a registered account and send them to the register page
+                    return "user.emailAddress.notFound"
                 }
             })
     }

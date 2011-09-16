@@ -5,10 +5,6 @@
   <title>Login</title>
 </head>
 <body>
-  <div class="message"><b>Available logins are:</b><br />
-  admin/admin<br/>
-  user/user<br/></div>
-  
   <g:if test="${flash.message}">
     <div class="message">${flash.message}</div>
   </g:if>

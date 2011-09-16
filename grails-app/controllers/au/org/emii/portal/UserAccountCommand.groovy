@@ -24,9 +24,16 @@ class UserAccountCommand {
     
     // Constraints
     static constraints = {
-        emailAddress(email: true, blank: false, nullable: false, validator:{ val ->
+        emailAddress(email: true, blank: false, nullable: false, validator:{ val, obj ->
                 
             // Check for unique email address? how about changing email address?
+            if (val != obj.previousEmailAddress) {
+                
+                if (User.findByEmailAddress(val.toLowerCase()))
+                {
+                    return "user.emailAddress.alreadyInUse"
+                }
+            }
         })
         previousEmailAddress()
         firstName(nullable: false, blank: false)
