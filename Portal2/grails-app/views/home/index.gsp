@@ -15,8 +15,29 @@
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
 
+<!-- GeoNetwork -->
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/Util.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/lang/en.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/Catalogue.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/util/SearchTools.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/MetadataResultsStore.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js')}" defer="defer" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" defer="defer" type="text/javascript"></script>
 
 <!-- Portal clases-->
+<script src="${resource(dir:'js',file:'portal/data/RefinementList.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/FacetStore.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/FreeText.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/DateRange.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/RefineSearchPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SearchTabPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/config/FacetConfig.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/locale/portal-lang-en.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/map.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/mainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/menuPanel.js')}"  type="text/javascript"></script>

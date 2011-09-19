@@ -190,9 +190,8 @@ function doViewPort()
         items: [            
             mapMainPanel,
             {
-            title: 'Search',
-            html: 'A simple tab'
-        }
+                xtype: 'portal.search.searchtabpanel'
+            }
         ]
     }]
     });
