@@ -13,6 +13,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
    //TODO: Refactor into components
    initComponent: function() {
+      //TODO: allow service url to be configured
+      var opensearchSuggest = 'http://asdddev.emii.org.au/geonetwork/srv/en/main.search.suggest';
+   
       this.items = [
          {
             ref: 'searchFields', 
@@ -50,15 +53,15 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                   data: [
                      [1, 'Date range', false, {xtype: 'portal.search.field.daterange'}],
                      [2, 'Bounding Box', false, {xtype: 'portal.search.field.boundingbox'}],
-                     //TODO: allow service url to be configured
                      //TODO: replace geonetwork opensearch?
                      [3, 'Keyword', true, {
                         fieldLabel: 'Keyword',
                         name: 'themekey',
                         field: 'keyword',
                         minChars: 1,
-                        xtype: 'gn_opensearchsuggestiontextfield',
-                        url: 'http://localhost:8080/geonetwork/srv/en/main.search.suggest',
+                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        proxyUrl: proxyURL,
+                        url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
                      [4, 'Parameter', true, {
@@ -66,8 +69,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         name: 'dataparam',
                         field: 'dplongname',
                         minChars: 1,
-                        xtype: 'gn_opensearchsuggestiontextfield',
-                        url: 'http://localhost:8080/geonetwork/srv/en/main.search.suggest',
+                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        proxyUrl: proxyURL,
+                        url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
                      [5, 'Organisation', true, {
@@ -75,8 +79,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         name: 'orgName',
                         field: 'orgName',
                         minChars: 1,
-                        xtype: 'gn_opensearchsuggestiontextfield',
-                        url: 'http://localhost:8080/geonetwork/srv/en/main.search.suggest',
+                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        proxyUrl: proxyURL,
+                        url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
                      [6, 'Map Layer', false, {fieldLabel: 'Map Layer', name: 'dynamic', xtype: 'checkbox', checked: true, width: 250}]
@@ -94,8 +99,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
       this.buttons = [{
          text: 'Search',
-         iconCls : 'p-img-find',
-         iconAlign: 'right',
          ref: '../searchButton'
       }];
 
