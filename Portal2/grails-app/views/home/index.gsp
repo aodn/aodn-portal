@@ -15,7 +15,8 @@
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
 
-<!-- GeoNetwork -->
+<!-- GeoNetwork - required classes only -->
+<script src="${resource(dir:'js',file:'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}" defer="defer" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/Util.js')}" defer="defer" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/lang/en.js')}" defer="defer" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/Catalogue.js')}" defer="defer" type="text/javascript"></script>
@@ -27,11 +28,14 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" defer="defer" type="text/javascript"></script>
 
 <!-- Portal clases-->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'portal/resources/css/portal-search.css')}" />
+<script src="${resource(dir:'js',file:'portal/application.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/RefinementList.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/FacetStore.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/FreeText.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/DateRange.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/OpenSearchSuggestionTextField.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/RefineSearchPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}" defer="defer"  type="text/javascript"></script>

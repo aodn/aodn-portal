@@ -6,9 +6,13 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    title: 'Search',
 
    initComponent: function() {
+      //TODO: move to application initialisation
+      OpenLayers.ProxyHost = proxyURL;
+      
       this.facetStore = new Portal.data.FacetStore();
       this.resultsStore = GeoNetwork.data.MetadataResultsStore();
-      this.catalogue =  new GeoNetwork.Catalogue({servlet: GeoNetwork.URL});
+      //TODO: move geonetwork url to application configuration
+      this.catalogue =  new GeoNetwork.Catalogue({hostUrl: 'http://asdddev.emii.org.au/geonetwork'});
       this.catalogue.metadataStore = this.resultsStore;
    
       this.items = [{
