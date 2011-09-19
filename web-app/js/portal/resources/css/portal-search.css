@@ -1,0 +1,71 @@
+.p-facet-values li, .p-selected-values li {
+   background-image: url('../images/arrow.gif');
+   background-repeat: no-repeat;
+   background-position: 0 .2em;
+   padding-left: .6em;
+}
+
+.p-facet-values, .p-selected-values {
+   list-style-type: none !important;
+   padding-left: 1em;
+}
+
+.p-facet-name, .p-selected-name {
+   padding-top: 10px;
+   color: #064377;
+   width: 265px;
+   float: left;
+}
+
+a {
+   color: #064377;
+}
+
+.p-facets, .p-refinements {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 75%;
+   color: #064377;
+}
+
+.p-facets {
+   padding: 0px 12px 0px 12px;
+   float: left;
+   font-size: 75%;
+}
+
+.p-refinements {
+   padding: 0px 12px 6px 12px;
+   background-color: #A3D5D4;
+   font-size: 65%;  
+   float: left;
+}
+
+.p-refinements-title {
+   width: 275px;
+}
+
+.p-refinements-label {
+   font-weight: bold;
+   color: #064377;
+}
+
+.p-remove-all, .p-remove-value {
+   font-size: 85%;
+}
+
+.p-remove-all {
+   padding-left: 25px;
+}
+
+.p-remove-value {
+   float: right;
+   padding-right: 35px;
+   padding-left: 15px;
+}
+
+.p-img-find {
+   background-image: url(../images/find.png)  !important;
+}
+
+
+
