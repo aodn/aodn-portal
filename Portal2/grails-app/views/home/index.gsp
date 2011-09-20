@@ -29,7 +29,6 @@
 
 <!-- Portal clases-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'portal/resources/css/portal-search.css')}" />
-<script src="${resource(dir:'js',file:'portal/application.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/RefinementList.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/FacetStore.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/FreeText.js')}" defer="defer"  type="text/javascript"></script>
@@ -40,6 +39,7 @@
 <script src="${resource(dir:'js',file:'portal/search/RefineSearchPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchTabPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/ResultsView.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/config/FacetConfig.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/locale/portal-lang-en.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/map.js')}" defer="defer"  type="text/javascript"></script>
