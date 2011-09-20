@@ -2,6 +2,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
+   cls: 'p-search',
    searchDefaults: {E_hitsperpage: 10, E_dynamic: 'true'},
    title: 'Search',
 

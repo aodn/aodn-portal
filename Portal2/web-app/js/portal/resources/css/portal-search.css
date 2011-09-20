@@ -1,3 +1,21 @@
+.p-search a, .p-search p, .p-search h1 {
+   color: #444;
+   font-size: small;
+}
+
+.p-search h1 {
+   margin-bottom: 5;
+}
+
+.p-results li {
+	margin-bottom: 5;
+	margin-top: 5;
+}
+
+.p-results {
+	margin-left: 10;
+}
+
 .p-facet-values li, .p-selected-values li {
    background-image: url('../images/arrow.gif');
    background-repeat: no-repeat;
@@ -14,10 +32,6 @@
    padding-top: 10px;
    width: 360px;
    float: left;
-}
-
-a {
-   color: black;
 }
 
 .p-facets, .p-refinements {
@@ -63,6 +77,12 @@ a {
 .p-img-find {
    background-image: url(../images/find.png)  !important;
 }
+
+.p-logo img {
+  max-width : 30px;
+  margin-right: 5;
+}
+
 
 
 
