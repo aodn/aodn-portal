@@ -12,7 +12,7 @@
 
 .p-facet-name, .p-selected-name {
    padding-top: 10px;
-   width: 265px;
+   width: 360px;
    float: left;
 }
 
@@ -39,7 +39,7 @@ a {
 }
 
 .p-refinements-title {
-   width: 275px;
+   width: 350px;
 }
 
 .p-refinements-label {
