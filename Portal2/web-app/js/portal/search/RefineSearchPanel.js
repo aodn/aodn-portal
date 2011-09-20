@@ -115,7 +115,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
       if (value) {
          var refinement = this.facetStore.getArray()[value.valueIndex];
          this.facetStore.filters.add(refinement.name, refinement.value);
-         this.fireEvent("filterchange", this.addFilterParams({}));
+         this.fireEvent("filterchange", this.addSearchFilters([]));
       }
 
       value = e.getTarget(this.removeSelector, this.el);
@@ -123,14 +123,14 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
       if (value) {
          var refinement = this.facetStore.filters.getArray()[value.refinementIndex];
          this.facetStore.filters.remove(refinement.name, refinement.value);
-         this.fireEvent("filterchange", this.addFilterParams({}));
+         this.fireEvent("filterchange", this.addSearchFilters([]));
       }
       
       var all = e.getTarget(this.removeAllSelector, this.el);
       
       if (all) {
          this.facetStore.filters.clear();
-         this.fireEvent("filterchange", this.addFilterParams({}));
+         this.fireEvent("filterchange", this.addSearchFilters([]));
       }
 
    },
