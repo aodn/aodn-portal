@@ -2,7 +2,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
-   searchDefaults: {E_hitsperpage: 10},
+   searchDefaults: {E_hitsperpage: 10, E_dynamic: 'true'},
    title: 'Search',
 
    initComponent: function() {
@@ -48,11 +48,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 				       }
                }, {
 		            region: 'center',
-		            layout: 'fit',
-		            html: 'results',
-//                  xtype: 'gn_metadataresultsview',
-//                  catalogue: this.catalogue,
-//                  tpl: GeoNetwork.Templates.SIMPLE,
+		            store: this.resultsStore,
+		            xtype: 'portal.search.resultsview',
 		            ref: '../resultsView'
 	            }]
          }];
@@ -62,13 +59,13 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       // react to changes on Refine Search Panel   
       this.mon(this.refineSearchPanel, {
          scope: this,
-         filterchange: this.refineSearchPanelFilterChange
+         filterchange: this.onSearch
       });
       
       // react to search requested by search form
       this.mon(this.searchForm, {
          scope: this,
-         search: this.searchFormSearch
+         search: this.onSearch
       });
       
       // react to changes in map extent
@@ -83,7 +80,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 
       // Pre-populate refinement panel
-      this.runSearch({E_hitsperpage: 1}, false);
+      this.runSearch({E_hitsperpage: 1, E_dynamic: 'true'}, false);
    },
    
    minimapExtentChange: function(bounds) {
@@ -105,12 +102,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, null, updateStore, this.resultsStore, this.facetStore);
    },
    
-   refineSearchPanelFilterChange: function (filterParams) {
-      // Re-run search with modified selections
-      this.runSearch(Ext.apply(filterParams, this.searchDefaults), true);      
-   },
-   
-   searchFormSearch: function () {
+   onSearch: function () {
       var searchFilters = this.searchForm.addSearchFilters([]);
       searchFilters = this.refineSearchPanel.addSearchFilters(searchFilters);
       var searchParams = this.getCatalogueSearchParams(searchFilters);
