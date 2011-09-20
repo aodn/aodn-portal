@@ -12,30 +12,28 @@
 
 .p-facet-name, .p-selected-name {
    padding-top: 10px;
-   color: #064377;
    width: 265px;
    float: left;
 }
 
 a {
-   color: #064377;
+   color: black;
 }
 
 .p-facets, .p-refinements {
    font-family: Verdana, Arial, Helvetica, sans-serif;
-   font-size: 75%;
-   color: #064377;
+   font-size: 70%;
 }
 
 .p-facets {
    padding: 0px 12px 0px 12px;
    float: left;
-   font-size: 75%;
+   font-size: 70%;
 }
 
 .p-refinements {
    padding: 0px 12px 6px 12px;
-   background-color: #A3D5D4;
+   background-color: #DBDBDB;
    font-size: 65%;  
    float: left;
 }
@@ -46,11 +44,10 @@ a {
 
 .p-refinements-label {
    font-weight: bold;
-   color: #064377;
 }
 
 .p-remove-all, .p-remove-value {
-   font-size: 85%;
+   font-size: 75%;
 }
 
 .p-remove-all {
