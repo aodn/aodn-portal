@@ -7,7 +7,7 @@ Portal.search.ResultsView = Ext.extend(Ext.DataView, {
 	        '<tpl for=".">',
 	            '<li class="md md-simple" title="{abstract}">',
 	                '<table><tr><td style="width:30px;">',  // FIXME
-	                '<div class="md-logo"><img src="http://asdddev.emii.org.au/geonetwork/srv/en/images/logos/{source}.gif"/></div>',
+	                '<div class="md-logo"><img src="http://asdddev.emii.org.au/geonetwork/images/logos/{source}.gif"/></div>',
 	                '</td><td id="{uuid}">',
 	                '<h1><input type="checkbox" <tpl if="selected==\'true\'">checked="true"</tpl> class="selector" onclick="javascript:catalogue.metadataSelect((this.checked?\'add\':\'remove\'), [\'{uuid}\']);"/><a href="#" onclick="javascript:catalogue.metadataShow(\'{uuid}\');">{title}</a>' +
                     '<span class="md-action-menu"> - <a rel="mdMenu">' + OpenLayers.i18n('mdMenu') + '</a></span></h1>',
