@@ -5,15 +5,12 @@ Portal.search.ResultsView = Ext.extend(Ext.DataView, {
 	tpl: [
 	    '<ul>',
 	        '<tpl for=".">',
-	            '<li class="md md-simple" title="{abstract}">',
+	            '<li title="{abstract}">',
 	                '<table><tr><td style="width:30px;">',  // FIXME
 	                '<div class="md-logo"><img src="http://asdddev.emii.org.au/geonetwork/images/logos/{source}.gif"/></div>',
 	                '</td><td id="{uuid}">',
-	                '<h1><input type="checkbox" <tpl if="selected==\'true\'">checked="true"</tpl> class="selector" onclick="javascript:catalogue.metadataSelect((this.checked?\'add\':\'remove\'), [\'{uuid}\']);"/><a href="#" onclick="javascript:catalogue.metadataShow(\'{uuid}\');">{title}</a>' +
-                    '<span class="md-action-menu"> - <a rel="mdMenu">' + OpenLayers.i18n('mdMenu') + '</a></span></h1>',
-	    			'<span class="subject"><tpl for="subject">',
-	                    '{value}{[xindex==xcount?"":", "]}',
-	                '</tpl></span>',
+	                '<p>{title}</p>' +
+                    '<p class="abstract">{[values.abstract.substring(0, 350)]}<tpl if="values.abstract.length &gt; 350"> ...</tpl></p>',    // TODO : 350 as parameter
 	                '</td></tr></table>',
 	            '</li>',
 	        '</tpl>',
