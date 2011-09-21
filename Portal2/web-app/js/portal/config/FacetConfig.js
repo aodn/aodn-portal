@@ -7,6 +7,6 @@ Portal.data.FacetStore.prototype.include = [
 Portal.search.RefineSearchPanel.prototype.parameters = {
    keywords: 'themekey',
    organizationNames: 'orgName',
-   dataParameters: 'dplongname'
+   dataParameters: 'longParamName'
 };
 
