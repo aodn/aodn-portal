@@ -129,5 +129,6 @@ environments
     
     test 
     {
+        grails.mail.disabled=true
     }
 }
