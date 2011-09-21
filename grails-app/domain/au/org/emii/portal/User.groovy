@@ -21,7 +21,7 @@ class User {
     
     // Field constraints
     static constraints = {
-        emailAddress(unique: true, email: true, blank: false)
+        emailAddress(nullable: false, unique: true, email: true, blank: false)
         firstName(nullable: false, blank: false)
         lastName(nullable: false, blank: false)
         passwordHash(nullable: false, blank: false)

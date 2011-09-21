@@ -32,14 +32,7 @@ class AuthController {
         // If a controller redirected to this page, redirect back
         // to it. Otherwise redirect to the root URI.
         def targetUri = params.targetUri ?: "/"
-        
-        // Handle requests saved by Shiro filters.
-        def savedRequest = WebUtils.getSavedRequest(request)
-        if (savedRequest) {
-            targetUri = savedRequest.requestURI - request.contextPath
-            if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
-        }
-        
+               
         try{
             // Perform the actual login. An AuthenticationException
             // will be thrown if the username is unrecognised or the
@@ -114,14 +107,14 @@ class AuthController {
             
             // Email newly-created user
             sendRegistrationNotifcationEmail(userInstance)
-            
+        
             redirect(controller: "home")
         }
         else {
             log.error "Could not save User instance during self-registration. params: '${params}'."
             flash.message = "Could not register. Please try again." // Todo - DN: Add message key
             render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance)])
-        }        
+        }
     }
     
     def forgotPassword = {
@@ -138,15 +131,15 @@ class AuthController {
             
             if (resetResult.user) {
                 
-                if (user.hasErrors) {
+                if (resetResult.user.hasErrors()) {
                     log.error "User has errors when trying to reset password"
-                    user.errors.allErrors.each{ log.error it }
+                    resetResult.user.errors.allErrors.each{ log.error it }
                     redirect(action: "forgotPassword")
                 }
                 
                 sendPasswordResetAdviceEmail(resetResult.user, resetResult.newPassword)
                 
-                flash.message = "${message(code: 'user.password.update', default: 'Password reset. New password has been emailed to ' + resetResult.user.emailAddress)}"
+                flash.message = 'Password reset. New password has been emailed to ' + resetResult.user.emailAddress
                 redirect(action: "forgotPassword")
             }
             else {
@@ -160,10 +153,9 @@ class AuthController {
     }
     
     // Email notifications
-    def sendRegistrationNotifcationEmail(user)
-    {
-        sendMail 
-        {  
+    def sendRegistrationNotifcationEmail(user) {
+        
+        sendMail  {  
             to user?.emailAddress
             bcc grailsApplication.config.grails.mail.adminEmailAddress
             from grailsApplication.config.grails.mail.systemEmailAddress
@@ -172,10 +164,9 @@ class AuthController {
         }
     }
     
-    def sendPasswordResetAdviceEmail(user, newPassword)
-    {
-        sendMail 
-        {  
+    def sendPasswordResetAdviceEmail(user, newPassword) {
+        
+        sendMail {  
             to user?.emailAddress
             bcc grailsApplication.config.grails.mail.adminEmailAddress
             from grailsApplication.config.grails.mail.systemEmailAddress
@@ -194,12 +185,12 @@ class UserResetPasswordCommand {
             validator: {val ->
             
                 if (!EmailValidator.getInstance().isValid(val)) {
-                    return "user.emailAddress.invalid"
+                    return "email"
                 }
 
                 if (!User.findByEmailAddress(val.toLowerCase()))
                 {
-                    return "user.emailAddress.notFound"
+                    return "exists"
                 }
             })
     }
@@ -207,13 +198,21 @@ class UserResetPasswordCommand {
     def resetPassword() {
           
         def user = User.findByEmailAddress(emailAddress.toLowerCase())
-                
-        String newPassword = RandomStringUtils.randomAlphanumeric(10) // 10 charcter random password
+        
+        if (user == null) {
+            return null
+        }
+        
+        String newPassword = newRandomPassword()
         user.setPasswordHash(new Sha256Hash(newPassword).toHex())
         
         // Save (errors will be checked-for in controller
         user.save(flush:true)
-                
+        
         return [user:user, newPassword: newPassword]
+    }
+    
+    static String newRandomPassword() {
+        return RandomStringUtils.randomAlphanumeric(10) // 10 charcter random password
     }
 }
