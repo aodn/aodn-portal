@@ -144,7 +144,7 @@ class UserController {
                 log.debug "userAccountCmd.orgType: " + userAccountCmd.orgType
                 log.debug "userInstance.orgType: " + userInstance.orgType
                 
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
+                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userAccountCmd.emailAddress])}"
                 
                 // Log in again if password has changed (new principle)
                 if (userAccountCmd.emailAddress != userAccountCmd.previousEmailAddress) {

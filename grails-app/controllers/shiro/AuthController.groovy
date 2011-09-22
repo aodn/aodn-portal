@@ -1,3 +1,5 @@
+package shiro
+
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.UsernamePasswordToken
@@ -112,7 +114,8 @@ class AuthController {
         }
         else {
             log.error "Could not save User instance during self-registration. params: '${params}'."
-            flash.message = "Could not register. Please try again." // Todo - DN: Add message key
+            flash.message = "" // Todo - DN: Add message key
+            flash.message = "${message(code: 'auth.account.registerFailed', default: 'Could not register. Please try again.')}"
             render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance)])
         }
     }
@@ -138,12 +141,12 @@ class AuthController {
                 }
                 
                 sendPasswordResetAdviceEmail(resetResult.user, resetResult.newPassword)
-                
-                flash.message = 'Password reset. New password has been emailed to ' + resetResult.user.emailAddress
+
+                flash.message = "${message(code: 'auth.account.passwordReset', default: 'Password reset. New password has been emailed to {0}', args: [resetResult.user.emailAddress])}"
                 redirect(action: "forgotPassword")
             }
             else {
-                flash.message = "Unable to find user with that email address."
+                flash.message = "${message(code: 'auth.account.cantFindUser', default: 'Cannot find account with email address {0}', args: [resetResult.user.emailAddress])}"
             }                
         }
         else {
@@ -185,12 +188,12 @@ class UserResetPasswordCommand {
             validator: {val ->
             
                 if (!EmailValidator.getInstance().isValid(val)) {
-                    return "email"
+                    return "userResetPasswordCommand.emailAddress.invalid"
                 }
 
                 if (!User.findByEmailAddress(val.toLowerCase()))
                 {
-                    return "exists"
+                    return "userResetPasswordCommand.emailAddress.doesntExist"
                 }
             })
     }

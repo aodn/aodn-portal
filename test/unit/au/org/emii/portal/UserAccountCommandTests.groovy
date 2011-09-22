@@ -113,7 +113,7 @@ class UserAccountCommandTests extends GrailsUnitTestCase {
         
         // EmailAddress is unique
         assertFalse "Validation should have failed for duplicate emailAddress", userAcctCmd2.validate()
-        assertEquals "unique", userAcctCmd2.errors.emailAddress
+        assertEquals "userAccountCommand.emailAddress.conflict", userAcctCmd2.errors.emailAddress
         
         // EmailAddress is unique
         assertTrue "Validation should have succeeded for unique emailAddress", userAcctCmd3.validate()
@@ -125,7 +125,7 @@ class UserAccountCommandTests extends GrailsUnitTestCase {
         updateUserCmd.password = null
         
         assertFalse "Validation should have failed for null password on createUserCmd", createUserCmd.validate()
-        assertEquals "nullable", createUserCmd.errors.password
+        assertEquals "userAccountCommand.password.required", createUserCmd.errors.password
         
         assertTrue "Validation should have succeeded for null password on updateUserCmd", updateUserCmd.validate()
     }
@@ -134,7 +134,7 @@ class UserAccountCommandTests extends GrailsUnitTestCase {
         createUserCmd.passwordConfirmation = null
         
         assertFalse "Validation should have failed for null passwordConfirmation on createUserCmd", createUserCmd.validate()
-        assertEquals "nullable", createUserCmd.errors.passwordConfirmation
+        assertEquals "userAccountCommand.passwordConfirmation.required", createUserCmd.errors.passwordConfirmation
     }
     
     void testPasswordConfirmationMatch() {
@@ -142,6 +142,6 @@ class UserAccountCommandTests extends GrailsUnitTestCase {
         updateUserCmd.passwordConfirmation = "notPassword"
         
         assertFalse "Validation should have failed for mismatched password on updateUserCmd", updateUserCmd.validate()
-        assertEquals "mismatch", updateUserCmd.errors.passwordConfirmation
+        assertEquals "userAccountCommand.passwordConfirmation.mismatch", updateUserCmd.errors.passwordConfirmation
     }
 }

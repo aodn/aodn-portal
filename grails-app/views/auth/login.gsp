@@ -29,7 +29,7 @@
           <td><input type="submit" value="Sign in" /></td>
         </tr>
         <tr>
-          <td colspan="2" style="white-space:nowrap;"><i>Forgot your password? Recover your account <g:link controller="auth" action="forgottenPassword">here</g:link></i>.</td>
+          <td colspan="2" style="white-space:nowrap;"><i>Forgot your password? Recover your account <g:link controller="auth" action="forgotPassword">here</g:link></i>.</td>
         </tr>
         <tr>
           <td colspan="2" style="white-space:nowrap;"><i>Don't have an account? Register a new account <g:link controller="auth" action="register">here</g:link></i>.</td>

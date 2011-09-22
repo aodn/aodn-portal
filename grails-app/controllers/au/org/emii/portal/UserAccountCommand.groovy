@@ -31,7 +31,7 @@ class UserAccountCommand {
                 
                 if (User.findByEmailAddress(val.toLowerCase()))
                 {
-                    return "unique"
+                    return "userAccountCommand.emailAddress.conflict"
                 }
             }
         })
@@ -41,18 +41,18 @@ class UserAccountCommand {
         password(validator:{ val, obj ->
             
             if (obj.passwordRequired && !val) {
-                return "nullable"
+                return "userAccountCommand.password.required"
             }
         })
         passwordConfirmation(validator:{ val, obj ->
             
             if (obj.passwordRequired && !val) {
-                return "nullable"
+                return "userAccountCommand.passwordConfirmation.required"
             }
                 
             if (val != obj.password) {
                
-                return "mismatch"
+                return "userAccountCommand.passwordConfirmation.mismatch"
             }
         })
         
@@ -118,7 +118,7 @@ class UserAccountCommand {
     String toString() {
         return String.format("UserAccountCommand(email: '%s'; prevEmail: '%s'; passwdReqd: '%s'. @%s)", emailAddress, previousEmailAddress, passwordRequired, Integer.toHexString(hashCode()))
     }
-    
+        
     static UserAccountCommand from(User user) {
         return new UserAccountCommand([emailAddress: user.emailAddress,
                                        previousEmailAddress: user.emailAddress,

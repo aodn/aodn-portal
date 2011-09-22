@@ -1,3 +1,5 @@
+package shiro
+
 import grails.test.*
 import au.org.emii.portal.User
 import au.org.emii.portal.UserRole
@@ -154,10 +156,14 @@ class AuthControllerTests extends ControllerUnitTestCase {
         // Call register action
         def model = controller.register()
         
-        UserAccountCommand userAccountCmd = UserAccountCommand.from(new User())
+        User emptyUser = new User()
         
         assertEquals "Config instances should be first one in list", firstConfig, model.configInstance
-        assertEquals "UserAccountCommand should be of new User()", userAccountCmd.toString(), model.userAccountCmd.toString()
+        assertEquals "UserAccountCommand emailAddress should be same as new User", emptyUser.emailAddress, model.userAccountCmd.emailAddress
+        assertEquals "UserAccountCommand previousEmailAddress should be null", null, model.userAccountCmd.previousEmailAddress
+        assertEquals "UserAccountCommand firstName should be same as new User", emptyUser.firstName, model.userAccountCmd.firstName
+        assertEquals "UserAccountCommand lastName should be same as new User", emptyUser.lastName, model.userAccountCmd.lastName
+        
     }
     
     void testCreateUserAction() {
@@ -245,7 +251,10 @@ class AuthControllerTests extends ControllerUnitTestCase {
         // Mock out email methods that should not be run
         def authCtrlrMock = mockFor(AuthController) // Mock AuthController behaviour
         authCtrlrMock.demand.static.sendPasswordResetAdviceEmail(0..1) { User user, String newPassword -> }
-            
+                               
+        // Mock up message behaviour
+        controller.metaClass.message = { LinkedHashMap args -> return "${args.code}" }
+        
         // UserResetPasswordCommand variable to test with
         UserResetPasswordCommand cmd
         

@@ -19,7 +19,6 @@
         
       <g:layoutBody />
       
-      <shiro:user>
         <div id="controllerMenu">
           <h2>Portal Config Controllers</h2>
           <ul>
@@ -47,22 +46,5 @@
             </li>
           </ul>
         </div>
-      </shiro:user>
-      <br/>
-      <br/>
-      <br/>
-      <div>
-      <h2>Authentication:</h2>
-        User:<br />
-        <shiro:user>true</shiro:user><shiro:notUser>false</shiro:notUser><br/><br />
-        
-        Logged-in (this session):<br />
-        <shiro:isLoggedIn>true</shiro:isLoggedIn><shiro:isNotLoggedIn>false</shiro:isNotLoggedIn><br/><br />
-        
-        Remembered (from previous session):<br />
-        <shiro:remembered>true</shiro:remembered><shiro:notRemembered>false</shiro:notRemembered><br/><br />
-            
-        <shiro:user><g:link controller="auth" action="signOut">Log out</g:link></shiro:user>
-      </div>
     </body>
 </html>
