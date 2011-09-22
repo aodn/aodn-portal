@@ -19,7 +19,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     def newUserFirstName = "Clarke"
     def newUserLastName = "Kent"
     def newUserEmailAddress = "clarke@thedailyplanet.com"
-    def newUserPasswordHash = "IHateKryptonite"
+    def newUserPassword = "IHateKryptonite"
     def newUserInstanceAsString = newUserFirstName + " " + newUserLastName + " (" + newUserEmailAddress + ")"
     
     protected void setUp() {
@@ -112,7 +112,7 @@ class UserControllerTests extends ControllerUnitTestCase {
         assertEquals "Should still be 2 Users", 2, User.list().size()
         
         // Make params enough for a valid User
-        mockParams.passwordHash = newUserPasswordHash
+        mockParams.password = newUserPassword
         
         // Call save method
         controller.save()
