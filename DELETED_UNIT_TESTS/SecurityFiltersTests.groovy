@@ -5,7 +5,7 @@ import au.org.emii.portal.*
 import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
 
 class SecurityFiltersTests extends FiltersUnitTestCase {
-    /*
+    
     HomeController homeController
     ConfigController configController
     ServerController serverController
@@ -13,12 +13,10 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     // ProxyController proxyController
     AuthController authController
     def otherController
-    */
-		
-	
+    
     protected void setUp() {
         super.setUp()
-        /*
+        
         mockLogging(SecurityFilters)
         
         mockController(HomeController)
@@ -41,14 +39,12 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         mockController(OrganisationTypeController)
         otherController = new OrganisationTypeController()
-        */
     }
 
     protected void tearDown() {
         super.tearDown()
     }
 
-/* Commented out to prevent build failure
     void testHomeControllerFilter() {
 
         checkFilter('homeAccess')
@@ -83,7 +79,6 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         assertTrue "Write tests", false
     }
-
     
     void checkFilter(String filterName) {
         
@@ -116,6 +111,4 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         assertFalse "Write tests", true
     }
-    
-        */
 }
