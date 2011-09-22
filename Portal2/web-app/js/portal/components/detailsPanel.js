@@ -58,77 +58,54 @@ function initDetailsPanel()  {
 
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
-
     
-    
-    
-    detailsPanel = new Ext.Panel({
-        title: 'Layer Options',
-        renderTo: Ext.getBody(),
-        floating: true,
-        baseCls: 'floatingDetailsPanel',
+    detailsPanel =  new Ext.Window({
         shadow: false,
-        //region: 'east',
-        //layout: 'absolute', // this is for the children
-        collapsible : true,
-        animCollapse: true,
-        autoWidth: true,
-        autoHeight: true,
-        border: false,
+        title: 'Layer Options',
+        plain: true,
+        padding: 10,
+        constrainHeader: true,
+        constrain: true,
+        maximizable: true,
+        collapsible: true,
         autoScroll: true,
+        bodyBorder: false,
+        bodyCls: 'floatingDetailsPanel',
+        cls: 'floatingDetailsPanelContent',
+        //layout: 'absolute', // this is for the children
+        //autoWidth: true,
+        //autoHeight: true,
+        closeAction: 'hide',
+        border: false,
         items: [
         opacitySlider, styleCombo, legendImage
-        ],
-        draggable: {
-            constrain: true
-        }
-        /*
-        draggable: {
-        //  Config option of Ext.Panel.DD class.
-        //  It's a floating Panel, so do not show a placeholder proxy in the original position.
-            insertProxy: false,
-            moveOnly: true,
-
-        //  Called for each mousemove event while dragging the DD object.
-            onDrag : function(e){
-        //      Record the x,y position of the drag proxy so that we can
-        //      position the Panel at end of drag.
-                var pel = this.proxy.getEl();
-                this.x = pel.getLeft(true);
-                this.y = pel.getTop(true);
-
-        //      Keep the Shadow aligned if there is one.
-                var s = this.panel.getEl().shadow;
-                if (s) {
-                    s.realign(this.x, this.y, pel.getWidth(), pel.getHeight());
-                }
-            },
-
-        //  Called on the mouseup event.
-            endDrag: function (e) {
-                //if (this.panel.ownerCt) {
-                //    var parentPosition = this.panel.ownerCt.getPosition();
-               //     this.panel.setPosition(this.x - parentPosition[0], this.y - parentPosition[1]);
-                //} else {
-                    this.panel.setPosition(this.x, this.y);
-               // }
-            }
-            
-
-        }
-        */
+        ]
 
     });
+    /*
+    detailsPanel = Ext4.create('Ext4.window.Window', {
+        title: 'Layer Options',
+        //baseCls: 'floatingDetailsPanel',
+        width: 400,
+        height: 400,
+        items: [
+            detailsPanelContent
+        ]
+}).show();
+*/
+    
+    
+
     
 
 }
 function showDetailsPanel() {
-    //var layerId = activePanel.getSelectionModel().getSelectedNode().layer;
-    detailsPanel.doLayout();
+    
+    detailsPanel.show();
     //detailsPanel.enable();  
-    detailsPanel.setPosition(200,40);
-    detailsPanel.expand();
-    detailsPanel.setVisible(true);  
+    //detailsPanel.setPosition(200,40);
+    //detailsPanel.expand();
+    //detailsPanel.setVisible(true);  
     
     
     
@@ -224,6 +201,7 @@ function refreshLegend(url)
 function updateDimensions(node)
 {
     var dims = node.layer.metadata.dimensions;
+    //alert(node.layer.metadata);
     if(dims != undefined)
     {
         for(var d in dims)
@@ -254,6 +232,7 @@ function updateDimensions(node)
             
         }
     }
+    
 }
 
 

@@ -273,8 +273,8 @@ function formatGetFeatureInfo(response) {
             
         if(response.responseXML == null) {
             // strip out all unwanted HTML
-             if ( response.responseTExt.match(/<\/body>/m)) {
-                var html_content  =  response.responseTExt.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
+             if ( response.responseText.match(/<\/body>/m)) {
+                var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
                 if (html_content) {
                     //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
                     html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
