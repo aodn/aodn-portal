@@ -25,8 +25,10 @@ class UserController {
 
     def save = {
         
-        params.passwordHash = new Sha256Hash(params.password).toHex()
-        
+        if (params.password) {
+            params.passwordHash = new Sha256Hash(params.password).toHex()
+        }
+            
         def userInstance = new User(params)
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
