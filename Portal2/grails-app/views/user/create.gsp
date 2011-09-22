@@ -57,10 +57,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="passwordHash"><g:message code="user.passwordHash.label" default="Password Hash" /></label>
+                                    <label for="password"><g:message code="user.passwordHash.label" default="Password" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwordHash', 'errors')}">
-                                    <g:textField name="passwordHash" value="${userInstance?.passwordHash}" />
+                                    <g:passwordField name="password" />
                                 </td>
                             </tr>
                         
