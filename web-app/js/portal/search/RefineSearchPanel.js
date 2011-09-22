@@ -12,6 +12,8 @@ A RefineSearchPanel is used to refine a search on the catalog using search resul
  */
 
 Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
+   autoScroll: true,
+   
    /* Example refinements data
    [
       {name: 'Parameter', values: [

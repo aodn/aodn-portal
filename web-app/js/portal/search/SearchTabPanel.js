@@ -50,8 +50,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
                }, {
 		            region: 'center',
 		            store: this.resultsStore,
-		            xtype: 'portal.search.resultsview',
-		            ref: '../resultsView'
+		            xtype: 'portal.search.resultspanel',
+		            ref: '../resultsPanel'
 	            }]
          }];
 
@@ -75,6 +75,13 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          extentchange: this.minimapExtentChange
       });
       
+      // react to results panel events
+      this.mon(this.resultsPanel, {
+         scope: this,
+         previousPage: this.resultsPanelPreviousPage,
+         nextPage: this.resultsPanelNextPage
+      })
+      
    },
    
    afterRender: function() {
@@ -86,6 +93,21 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    
    minimapExtentChange: function(bounds) {
       this.searchForm.setExtent(bounds);
+   },
+   
+   resultsPanelPreviousPage: function() {
+      if (this.resultsPanel.hitsPerPage < this.resultsPanel.startRecord) {
+         this.resultsPanel.startRecord -= this.resultsPanel.hitsPerPage;
+      } else {
+         this.resultsPanel.startRecord = 1;
+      }
+
+      this.runSearch(this.lastSearch)
+   },
+   
+   resultsPanelNextPage: function() {
+      this.resultsPanel.startRecord += this.resultsStore.getCount();
+      this.runSearch(this.lastSearch)
    },
    
    runSearch: function(parameters, updateStore) {
@@ -100,14 +122,22 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          Ext.Msg.alert('Error: ' + response.status + '-' + response.statusText);
       };
       
-      this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, null, updateStore, this.resultsStore, this.facetStore);
+      this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, this.resultsPanel.startRecord, updateStore, this.resultsStore, this.facetStore);
+      
+      this.lastSearch = parameters;
    },
    
    onSearch: function () {
       var searchFilters = this.searchForm.addSearchFilters([]);
       searchFilters = this.refineSearchPanel.addSearchFilters(searchFilters);
       var searchParams = this.getCatalogueSearchParams(searchFilters);
-      this.runSearch(Ext.apply(searchParams, this.searchDefaults));
+      searchParams = Ext.apply(searchParams, {E_hitsperpage: this.resultsPanel.hitsPerPage});
+      searchParams = Ext.applyIf(searchParams, this.searchDefaults);
+      //TODO: result panel should not store startRecord or hits per page and cursor management should not be performed here
+      // - its a part of the model -  look at how this is meant to work! - extend store if need be - look at moving searching 
+      // there as well )
+      this.resultsPanel.startRecord = 1;
+      this.runSearch(searchParams);
    },
    
    getCatalogueSearchParams: function(searchFilters) {
