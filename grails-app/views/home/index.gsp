@@ -31,7 +31,7 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" defer="defer" type="text/javascript"></script>
 
 <!-- Portal clases-->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'portal/resources/css/portal-search.css')}" />
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
 <script src="${resource(dir:'js',file:'portal/data/RefinementList.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/FacetStore.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/FreeText.js')}" defer="defer"  type="text/javascript"></script>

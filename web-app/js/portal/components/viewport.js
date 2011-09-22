@@ -33,6 +33,7 @@ var topMenuPanel, centreMenuPanel;
 
 //
 //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+Ext.BLANK_IMAGE_URL = 'img/blank.gif'
 Ext.QuickTips.init();
 
 
@@ -41,8 +42,10 @@ Ext.onReady(function() {
 
     Ext.Ajax.request({
         url: 'config/list?type=JSON',
-        success: function(resp){            
+        success: function(resp){        
+            
             var config = Ext.util.JSON.decode(resp.responseText);
+            
             var defaultLayersId = new Array();
 
             if(config.length == 0)
@@ -79,23 +82,13 @@ Ext.onReady(function() {
 
                     dlgPopup.show();
 
-
-                    /*
-                    Ext.MessageBox.show( {
-                        title: config.motd.motdTitle, 
-                        msg: config.motd.motd,
-                        icon: Ext.MessageBox.INFO,
-                        defaultTextHeight: 200,
-                        minWidth: 200,
-                        maxwidth: 300
-                    });
-                    */
                 }
             }
 
             Ext.Ajax.request({
                 url: 'layer/listBaseLayersAsJson',
                 success: function(resp){
+                    
                     var bl = Ext.util.JSON.decode(resp.responseText);
                     baseLayerList = new Array();
 
@@ -134,9 +127,6 @@ Ext.onReady(function() {
 function doViewPort()
 {
     
-    
-    
-    
      var mapMainPanel = new Ext.Panel({
         layout: 'border',
         title: 'Map',
@@ -172,7 +162,7 @@ function doViewPort()
         items: [{
             region: 'north',
             html: '<h1 >test title in extjs land</h1>',
-            height: 150,
+            height: 50,
             border: false,
         margins: '0 0 5 380'
     }, {
