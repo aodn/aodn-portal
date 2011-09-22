@@ -3,6 +3,7 @@ package au.org.emii.portal
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.authc.UsernamePasswordToken
+import org.apache.shiro.crypto.hash.Sha256Hash
 
 class UserController {
 
@@ -23,6 +24,9 @@ class UserController {
     }
 
     def save = {
+        
+        params.passwordHash = new Sha256Hash(params.password).toHex()
+        
         def userInstance = new User(params)
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"

@@ -30,9 +30,7 @@
                         
                             <g:sortableColumn property="lastName" title="${message(code: 'user.lastName.label', default: 'Last Name')}" />
                         
-                            <g:sortableColumn property="passwordHash" title="${message(code: 'user.passwordHash.label', default: 'Password Hash')}" />
-                        
-                            <g:sortableColumn property="address" title="${message(code: 'user.address.label', default: 'Address')}" />
+                            <g:sortableColumn property="organisation" title="${message(code: 'user.organisation.label', default: 'Organisation')}" />
                         
                         </tr>
                     </thead>
@@ -48,10 +46,7 @@
                         
                             <td>${fieldValue(bean: userInstance, field: "lastName")}</td>
                         
-                            <td>${fieldValue(bean: userInstance, field: "passwordHash")}</td>
-                        
-                            <td>${fieldValue(bean: userInstance, field: "address")}</td>
-                        
+                            <td>${fieldValue(bean: userInstance, field: "organisation")}</td>
                         </tr>
                     </g:each>
                     </tbody>
