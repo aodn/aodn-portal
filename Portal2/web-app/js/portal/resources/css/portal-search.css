@@ -16,6 +16,21 @@
 	margin-left: 10;
 }
 
+.p-results-panel .x-toolbar {
+	margin-left: 10;
+	border: none;
+   background-image: none;
+   background-color: white;
+}
+
+.p-results-panel .x-btn button {
+	color: #444;
+}
+
+.p-cursor-text {
+	color: #444;
+}
+
 .p-facet-values li, .p-selected-values li {
    background-image: url('../images/arrow.gif');
    background-repeat: no-repeat;
@@ -78,11 +93,25 @@
    background-image: url(../images/find.png)  !important;
 }
 
-.p-logo img {
-  max-width : 30px;
-  margin-right: 5;
+.p-results img {
+  width : 30px;
 }
 
+.p-logo {
+	width: 35px;
+	padding-right: 5;
+}
 
+.p-results td {
+	vertical-align: top;
+}
 
+.p-results .abstract {
+	width: 100%;
+	padding-right: 10px;
+}
+
+.p-result-action {
+	padding-right: 5;
+}
 
