@@ -10,9 +10,10 @@ var colourScaleMin;
 var colourScaleMax;
 
 
-function initDetailsPanel()
-{
+function initDetailsPanel()  {
+    
     legendImage = new GeoExt.LegendImage();
+    
     ncWMSColourScalePanel = new Ext.Panel();
     colourScaleMin = new Ext.form.TextField({
         fieldLabel: "min",
@@ -39,7 +40,7 @@ function initDetailsPanel()
     // create a separate slider bound to the map but displayed elsewhere
     opacitySlider = new GeoExt.LayerOpacitySlider({
         id: "opacitySlider",
-        layer: layer,
+        layer: "layer",
         width: 200,
         margins: {
             top: 0,
@@ -57,80 +58,148 @@ function initDetailsPanel()
 
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
+
+    
+    
     
     detailsPanel = new Ext.Panel({
-        defaults: {
-            padding: 15
-        },
         title: 'Layer Options',
-        //region: 'east',
-        //layout: 'absolute', // this is for children
-        frame: true,
+        renderTo: Ext.getBody(),
         floating: true,
+        baseCls: 'floatingDetailsPanel',
+        shadow: false,
+        //region: 'east',
+        //layout: 'absolute', // this is for the children
         collapsible : true,
         animCollapse: true,
-        width: 300,
-        height: 200,
+        autoWidth: true,
+        autoHeight: true,
         border: false,
         autoScroll: true,
         items: [
         opacitySlider, styleCombo, legendImage
-        ]
-    });
-    /*
-    detailsPanel = new Ext.Panel({
-        //border: false,
-        //autoScroll: true,
-        //collapsible: true,
-        items: [
-        detailsPanelContent
-        ]
-    });
-    */
+        ],
+        draggable: {
+            constrain: true
+        }
+        /*
+        draggable: {
+        //  Config option of Ext.Panel.DD class.
+        //  It's a floating Panel, so do not show a placeholder proxy in the original position.
+            insertProxy: false,
+            moveOnly: true,
 
+        //  Called for each mousemove event while dragging the DD object.
+            onDrag : function(e){
+        //      Record the x,y position of the drag proxy so that we can
+        //      position the Panel at end of drag.
+                var pel = this.proxy.getEl();
+                this.x = pel.getLeft(true);
+                this.y = pel.getTop(true);
+
+        //      Keep the Shadow aligned if there is one.
+                var s = this.panel.getEl().shadow;
+                if (s) {
+                    s.realign(this.x, this.y, pel.getWidth(), pel.getHeight());
+                }
+            },
+
+        //  Called on the mouseup event.
+            endDrag: function (e) {
+                //if (this.panel.ownerCt) {
+                //    var parentPosition = this.panel.ownerCt.getPosition();
+               //     this.panel.setPosition(this.x - parentPosition[0], this.y - parentPosition[1]);
+                //} else {
+                    this.panel.setPosition(this.x, this.y);
+               // }
+            }
+            
+
+        }
+        */
+
+    });
+    
+
+}
+function showDetailsPanel() {
+    //var layerId = activePanel.getSelectionModel().getSelectedNode().layer;
+    detailsPanel.doLayout();
+    //detailsPanel.enable();  
+    detailsPanel.setPosition(200,40);
+    detailsPanel.expand();
+    detailsPanel.setVisible(true);  
+    
+    
+    
+}
+
+function updateDetailsPanel(node)
+{
+    
+    detailsPanelLayer = node.layer;
+    
+    updateStyles(node);
+    updateDimensions(node);    
+    
+    detailsPanel.text = detailsPanelLayer.name;
+    detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
+    opacitySlider.setLayer(detailsPanelLayer);
+
+    if(detailsPanelLayer.params.SERVERTYPE == "NCWMS")
+    {
+        makeNcWMSColourScale();
+    }
+    
+    showDetailsPanel();
+    
+    //detailsPanel.syncSize(); // match size to components
 }
 
 function updateStyles(node)
 {
-    // seems to be for ncwms??
+       
+    
     
 
-    detailsPanelLayer = node.layer;
+    var legendURL = "";
+    var data = new Array();
+    styleCombo.hide();
     
     var styles = detailsPanelLayer.metadata.styles; // ncwms layers?
-    var legendURL = "";
-    var styleList = styleCombo.store;
-    var data = new Array();
-    styleList.removeAll();
-    styleCombo.clearValue();
-
     if (styles) {
+        
+        var styleList = styleCombo.store;
+        styleList.removeAll();    
+        styleCombo.clearValue();
+        
         for(var i = 0;i < styles.length; i++)
         {
             data.push([i, styles[i].legend.href, styles[i].name]);
         }
 
         styleList.loadData(data);
-    }
-
-
-    if(detailsPanelLayer.params.STYLES != '')
-    {
-        for(var j = 0; j < styles.length; j++)
-        {
-            if(styles[j].name == detailsPanelLayer.params.STYLES)
+        if(detailsPanelLayer.params.STYLES != '')        {
+            for(var j = 0; j < styles.length; j++)
             {
-                legendURL = styles[j].legend.href;
-                styleCombo.select(j);
+                if(styles[j].name == detailsPanelLayer.params.STYLES)
+                {
+                    legendURL = styles[j].legend.href;
+                    styleCombo.select(j);
+                }
             }
         }
+        
+        styleCombo.show();
+    }   
+    // WMS layer
+    else  {        
+        legendURL = detailsPanelLayer.url + "?"
+                + "LEGEND_OPTIONS=forceLabels:on"
+                + "&REQUEST=GetLegendGraphic"
+                + "&LAYER=" + detailsPanelLayer.params.LAYERS
+                + "&FORMAT=" + detailsPanelLayer.params.FORMAT;        
     }
-    else
-    {
-    //use some default thingy
-    // legendURL = styles[0].legend.href;
-    }
-
     refreshLegend(legendURL);
     
 }
@@ -148,9 +217,7 @@ function refreshLegend(url)
         {
             url += "&COLORSCALERANGE=" + detailsPanelLayer.params.COLORSCALERANGE;
         }
-    }
-
-    
+    }    
     legendImage.setUrl(url);
 }
 
@@ -183,26 +250,13 @@ function updateDimensions(node)
                 dimStore.loadData(dimData);
                 detailsPanel.add(dimCombo);
                 detailsPanel.add(ncWMSColourScalePanel);
-                detailsPanel.doLayout();
             }
             
         }
     }
 }
 
-function updateDetailsPanel(node)
-{
-    updateStyles(node);
-    updateDimensions(node);
-    detailsPanel.text = detailsPanelLayer.name;
-    detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
-    opacitySlider.setLayer(detailsPanelLayer);
 
-    if(detailsPanelLayer.params.SERVERTYPE == "NCWMS")
-    {
-        makeNcWMSColourScale();
-    }
-}
 
 function makeNcWMSColourScale()
 {
@@ -226,18 +280,13 @@ function makeNcWMSColourScale()
 function makeCombo(type)
 {
     var valueStore  = new Ext.data.ArrayStore({
-        autoDestroy: true
-        ,
-        itemId: type
-        ,
-        name: type
-        ,
+        autoDestroy: true,
+        itemId: type,
+        name: type,
         fields: [
-        ,
         {
             name: 'myId'
         },
-
         {
             name: 'displayText'
         }
@@ -245,20 +294,13 @@ function makeCombo(type)
     });
 
     var combo = new Ext.form.ComboBox({
-        fieldLabel: type
-        ,
-        triggerAction: 'all'
-        ,
-        lazyRender:true
-        ,
-        mode: 'local'
-        ,
-        store: valueStore
-        ,
-        valueField: 'myId'
-        ,
-        displayField: 'displayText'
-        ,
+        fieldLabel: type,
+        triggerAction: 'all',
+        lazyRender:true,
+        mode: 'local',
+        store: valueStore,
+        valueField: 'myId',
+        displayField: 'displayText',
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')

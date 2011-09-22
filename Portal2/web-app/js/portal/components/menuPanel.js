@@ -1,7 +1,6 @@
 
 
-function initMenusPanel(menu)
-{
+function initMenusPanel(menu) {
 
     // CONTRIBUTER TREE TO BE REMOVED
     demonstrationContributorTree = new Ext.tree.TreePanel({
@@ -11,7 +10,7 @@ function initMenusPanel(menu)
         root: new GeoExt.tree.LayerContainer()
     });
     
-
+    
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
         children: JSON.parse(menu.json) // supplied as a string
@@ -212,12 +211,13 @@ function initMenusPanel(menu)
     //Active layer Right Click menu
     layerMenu = new Ext.menu.Menu({
         plain: true,
+        defaultOffsets: [60, 10],
         showSeparator: false,
         items: [
-        {
+       /* {
             text: 'Layer Options',
-            handler: showActivePanelLayerOptions
-        },
+            handler: showDetailsPanel
+        },*/
         {
             text: 'Remove layer',
             handler: removeActivePanelLayer
@@ -251,16 +251,7 @@ function setDefaultMenuTreeNodeActive(grailsLayerId, bool) {
     
 }
 
-function showActivePanelLayerOptions() {
-    var layerId = activePanel.getSelectionModel().getSelectedNode().layer;
-    //detailsPanel.enable();
-    //detailsPanel.toggleCollapse();
-    detailsPanel.setVisible(true);
-    detailsPanel.expand();
-    detailsPanel.setPosition(100,100);
-    detailsPanel.syncSize(); // match size to components
-    
-}
+
 function removeActivePanelLayer() {
     
     // Remove layer from active layers and make matching default menu item active

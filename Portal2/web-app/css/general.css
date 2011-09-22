@@ -406,3 +406,16 @@ JQUERY AUTO COMPLETE
 .ac_loading {
 	background: white url('indicator.gif') right center no-repeat;
 }
+
+.floatingDetailsPanel {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    box-shadow: 3px 3px 5px 0 #666;
+    margin: 0px;
+    padding: 15px;
+    opacity: 0.8;
+}
+.floatingDetailsPanel-header-text {
+    margin-right: 20px;
+}

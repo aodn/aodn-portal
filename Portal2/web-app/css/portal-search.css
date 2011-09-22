@@ -1,0 +1,88 @@
+.p-search a, .p-search p, .p-search h1 {
+   color: #444;
+   font-size: small;
+}
+
+.p-search h1 {
+   margin-bottom: 5;
+}
+
+.p-results li {
+	margin-bottom: 5;
+	margin-top: 5;
+}
+
+.p-results {
+	margin-left: 10;
+}
+
+.p-facet-values li, .p-selected-values li {
+   background-image: url('../images/arrow.gif');
+   background-repeat: no-repeat;
+   background-position: 0 .2em;
+   padding-left: .6em;
+}
+
+.p-facet-values, .p-selected-values {
+   list-style-type: none !important;
+   padding-left: 1em;
+}
+
+.p-facet-name, .p-selected-name {
+   padding-top: 10px;
+   width: 360px;
+   float: left;
+}
+
+.p-facets, .p-refinements {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 70%;
+}
+
+.p-facets {
+   padding: 0px 12px 0px 12px;
+   float: left;
+   font-size: 70%;
+}
+
+.p-refinements {
+   padding: 0px 12px 6px 12px;
+   background-color: #DBDBDB;
+   font-size: 65%;  
+   float: left;
+}
+
+.p-refinements-title {
+   width: 350px;
+}
+
+.p-refinements-label {
+   font-weight: bold;
+}
+
+.p-remove-all, .p-remove-value {
+   font-size: 75%;
+}
+
+.p-remove-all {
+   padding-left: 25px;
+}
+
+.p-remove-value {
+   float: right;
+   padding-right: 35px;
+   padding-left: 15px;
+}
+
+.p-img-find {
+   background-image: url(../images/find.png)  !important;
+}
+
+.p-logo img {
+  max-width : 30px;
+  margin-right: 5;
+}
+
+
+
+

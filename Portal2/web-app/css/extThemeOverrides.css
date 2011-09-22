@@ -43,3 +43,13 @@
 .x-border-layout-ct {
     background: none! important;
 }
+.x-slider {
+    margin: 10px 3px;
+}
+.x-panel-ghost {
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    box-shadow: 3px 3px 5px 0 #666;
+    margin: 0px;
+    padding: 15px;
+}
