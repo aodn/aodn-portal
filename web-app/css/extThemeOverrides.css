@@ -47,9 +47,23 @@
     margin: 10px 3px;
 }
 .x-panel-ghost {
-    border: 1px solid #CCCCCC;
-    border-radius: 6px;
+    background-color: white! important; 
+    border: 0px;
     box-shadow: 3px 3px 5px 0 #666;
     margin: 0px;
-    padding: 15px;
 }
+.x-window-header-text {
+}
+.x-window-tl .x-window-header {
+    padding: 10px 5px;
+    color: #15428B;
+}
+
+.x-window-ml {  
+  background-color: white! important;  
+}  
+  
+.x-window-mc {  
+  background-color: white! important;  
+  border-width: 0px;  
+} 

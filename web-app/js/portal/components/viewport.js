@@ -32,7 +32,7 @@ var baseLayerList;
 var topMenuPanel, centreMenuPanel;
 
 //
-//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.BLANK_IMAGE_URL = 'img/blank.gif'
 Ext.QuickTips.init();
 
@@ -148,8 +148,7 @@ function doViewPort()
             region:'center',
             layout:'border',
             items: [
-            mapPanel,
-            detailsPanel
+            mapPanel
             ]
         }]
     }); 

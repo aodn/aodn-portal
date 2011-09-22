@@ -412,9 +412,7 @@ JQUERY AUTO COMPLETE
     border: 1px solid #CCCCCC;
     border-radius: 6px;
     box-shadow: 3px 3px 5px 0 #666;
-    margin: 0px;
-    padding: 15px;
-    opacity: 0.8;
+    opacity: 0.5;
 }
 .floatingDetailsPanel-header-text {
     margin-right: 20px;
