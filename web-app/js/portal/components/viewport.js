@@ -106,12 +106,13 @@ Ext.onReady(function() {
                             });
                         baseLayerList.push(l);
                     }
-
+                    
+                    // CAREFULL HERE WITH THE ORDERING!!!
+                    initDetailsPanel();
                     initMap(config);
                     defaultMenu = config.defaultMenu; // into global space so it can be modified later if required
                     //loadDefaultMenu(defaultMenu);
                     initMenusPanel(defaultMenu);
-                    initDetailsPanel();
                     doViewPort();
                     defaultLayers = config.defaultLayers; // into global space so it can be modified
                     loadDefaultLayers();

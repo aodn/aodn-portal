@@ -117,21 +117,24 @@ function initMenusPanel(menu) {
         rootVisible: false,
         root: layerList,
         listeners: {
-            append: function(node,event){
-                node.on("click", function(node,event){
+            append: function(tree,parent,node){
+                //tree.getSelectionModel().select.defer(500, node);
+                //treePanel.selectPath(node0.getPath());
+                //node.select();
+                // be bice to have appended layers become active
+                
+                tree.on("click", function(node,event){
+                    tree.show(node.ui.getAnchor());
                     if(node.isSelected())
                     {
-                        updateDetailsPanel(node);
+                        updateDetailsPanel(node.layer);
                     }
-                });
+                });                
 
             }
         }
     });
-    activePanel.on("click",function(node,event){
-        activePanel.getSelectionModel().select(node);
-        layerMenu.show(node.ui.getAnchor());
-    });
+
 
     activePanel.on("contextmenu",function(node,event){
         activePanel.getSelectionModel().select(node);
@@ -175,7 +178,8 @@ function initMenusPanel(menu) {
     var buttonPanel = new Ext.Panel({        
         border: false,      
         items:[
-        removeAll,resetLayers
+        //removeAll,
+        resetLayers
         ]
     });
     

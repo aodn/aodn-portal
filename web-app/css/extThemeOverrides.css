@@ -53,6 +53,8 @@
     margin: 0px;
 }
 .x-window-header-text {
+    margin-right: 8px;
+    margin-top : 4px;
 }
 .x-window-tl .x-window-header {
     padding: 10px 5px;

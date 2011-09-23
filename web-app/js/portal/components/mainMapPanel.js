@@ -1,5 +1,5 @@
 var mapPanel; 
-var layer;
+var mapLayers = []; // Array of OpenLayers Layers. This allows us to access/mod layers after creation
 var navigationHistoryCtrl;
 var automaticZoom=false;
 
@@ -296,6 +296,7 @@ function addLayer(grailsLayerId) {
                 // opacity was stored as a percent 0-100
                 var opacity =  Math.round((dl.opacity / 100)*10)/10;
                 
+                
                 if(dl.server.type == "NCWMS-1.3.0") {
                     params.yx = true; // fix for the wms standards war
                 }
@@ -318,10 +319,82 @@ function addLayer(grailsLayerId) {
                         opacity: opacity,
                         transitionEffect: 'resize'
                     });
-                layer.grailsLayerId = grailsLayerId; // keep this info for when removing layers from map
-                mapPanel.map.addLayer(layer);
+                
+                
+                //
+                // extra info to keep
+                layer.grailsLayerId = grailsLayerId; 
+                layer.server= dl.server;
+                // get ncWMS metadata info for animation and style switching
+                if(dl.server.type.search("NCWMS") > -1) {
+                    getLayerMetadata(layer)
+                }                
+                // store the OpenLayers layer so we can retreive it latter
+                mapLayers[getUniqueLayerId(layer)] = layer;
+                
+                mapPanel.map.addLayer(layer); 
+                
+                
             }
         });
+        
+        
+}
+
+
+function getUniqueLayerId(layer){
+    
+    return (layer.name + "::" + layer.grailsLayerId).replace(/\s/g, "");
+}
+
+function getLayerMetadata(layer) {
+        
+    Ext.Ajax.request({
+            // time=current
+            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=current&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+            success: function(resp){
+                layer.metadata = Ext.util.JSON.decode(resp.responseText); 
+                
+            } 
+    });
+    
+    
+     // TIMESTEPS URI
+    //http://obsidian:8080/ncWMS/wms?item=timesteps&layerName=67%2Fu&day=2006-09-19T00%3A00%3A00Z&request=GetMetadata
+    // this is  timestrings we can use in the uri to control animation
+    // based on timestepss
+    //http://obsidian:8080/ncWMS/wms?item=animationTimesteps&layerName=67%2FTemperature_layer_between_two_pressure_difference_from_ground&start=2002-12-02T22%3A00%3A00.000Z&end=2002-12-03T01%3A00%3A00.000Z&request=GetMetadata
+    /**
+     * Support for parsing JSON animation parameters from NCWMS JSON responses
+     *
+     * Example JSON response string:
+     * {
+     * 	"units":"m/sec",
+     * 	"bbox":[146.80064392089844,-43.80047607421875,163.8016815185547,-10.000572204589844],
+     * 	"scaleRange":[-0.99646884,1.2169001],
+     * 	"supportedStyles":["BOXFILL"],
+     * 	"zaxis":{
+     * 		"units":"meters",
+     * 		"positive":false,
+     * 		"values":[-5]
+     * 	},
+     * 	"datesWithData":{
+     * 		"2006":{
+     * 			"8":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+     * 		}
+     * 	},
+     * 	"nearestTimeIso":"2006-09-01T12:00:00.000Z",
+     * 	"moreInfo":"",
+     * 	"copyright":"",
+     * 	"palettes":["redblue","alg","ncview","greyscale","alg2","occam","rainbow","sst_36","ferret","occam_pastel-30"],
+     * 	"defaultPalette":"rainbow",
+     * 	"logScaling":false
+     * }
+     */
+    
+    return false;
+    
+    
 }
 
 /*
@@ -329,7 +402,7 @@ function addLayer(grailsLayerId) {
  */
 function setExtentLayer() {
     
-    var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.llbbox;
+    var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.bbox;
     bounds = new OpenLayers.Bounds();
     bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
     bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
@@ -340,24 +413,35 @@ function loadDefaultLayers()
 {    
     for(var i = 0; i < defaultLayers.length; i++)   {
         addLayer(defaultLayers[i].id);   
+        setDefaultMenuTreeNodeActive(defaultLayers[i].id,false);
     }
 }
 
 
 function removeAllLayers()
-{
-    var d = new Array();
+{    
+    var d = [];
     for(var i = 0; i < mapPanel.map.layers.length; i++)
     {
         if(!mapPanel.map.layers[i].isBaseLayer)
         {
-            d.push(i);
+            d.push(getUniqueLayerId(mapPanel.map.layers[i]));            
         }
     }
 
-    //reversing the order, so then the index is always valid on map.layers
-    for(var i = d.length; i > 0; i--)
+    for(var j = d.length; j > 0; j++)
     {
-        mapPanel.map.layers[i].destroy();
+        console.log("item "  + j + " removed") 
+        var theLayer = mapLayers[j];
+        console.log(theLayer.name);
+        setDefaultMenuTreeNodeActive(theLayer.grailsLayerId,true);
+        
+        theLayer.destroy();  
+        
+        // cleanup mapLayers?? or just start again?
+        
     }
+    
+    
+    
 }
