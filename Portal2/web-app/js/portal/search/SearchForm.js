@@ -7,7 +7,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    padding: '15px 0px 0px 15px',
    layout: 'hbox',
    autoHeight: true,
-   autoWidth: true,
+   width: 800,
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
 
@@ -32,10 +32,10 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             xtype: 'container',
             width: 230,
             layout: 'form',
-            labelWidth: 120,
+            labelWidth: 80,
             items: [{
                ref: '../advancedSearchCombo',
-               fieldLabel: 'Advanced criteria',
+               fieldLabel: 'Add criteria',
                submitValue: false,
                xtype: 'combo',
                width: 100,
@@ -54,7 +54,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                      [1, 'Date range', false, {xtype: 'portal.search.field.daterange'}],
                      [2, 'Bounding Box', false, {xtype: 'portal.search.field.boundingbox'}],
                      //TODO: replace geonetwork opensearch?
-                     [3, 'Keyword', true, {
+                     [3, 'Keyword', false, {
                         fieldLabel: 'Keyword',
                         name: 'themekey',
                         field: 'keyword',
@@ -64,7 +64,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
-                     [4, 'Parameter', true, {
+                     [4, 'Parameter', false, {
                         fieldLabel: 'Parameter',
                         name: 'dataparam',
                         field: 'dplongname',
@@ -74,7 +74,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
-                     [5, 'Organisation', true, {
+                     [5, 'Organisation', false, {
                         fieldLabel: 'Organisation',
                         name: 'orgName',
                         field: 'orgName',

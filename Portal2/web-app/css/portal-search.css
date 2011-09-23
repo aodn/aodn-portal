@@ -74,13 +74,37 @@
    padding-left: 15px;
 }
 
-.p-img-find {
-   background-image: url(../images/find.png)  !important;
+.p-result-map-add {
+   background-image: url(../images/map-add-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-info {
+   background-image: url(../images/information-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
 }
 
 .p-logo img {
   max-width : 30px;
-  margin-right: 5;
+}
+
+.p-logo {
+	width: 40px;
+}
+
+.p-abstract {
+	width: 800px;
+}
+
+.p-results table {
+	width: 100%;
+}
+
+.p-result-action {
+	float: right;
+	margin-right: 5;
 }
 
 
