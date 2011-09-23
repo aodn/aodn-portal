@@ -82,34 +82,12 @@ function initDetailsPanel()  {
         ]
 
     });
-    /*
-    detailsPanel = Ext4.create('Ext4.window.Window', {
-        title: 'Layer Options',
-        //baseCls: 'floatingDetailsPanel',
-        width: 400,
-        height: 400,
-        items: [
-            detailsPanelContent
-        ]
-}).show();
-*/
-    
-    
+
 
     
 
 }
-function showDetailsPanel() {
-    
-    detailsPanel.show();
-    //detailsPanel.enable();  
-    //detailsPanel.setPosition(200,40);
-    //detailsPanel.expand();
-    //detailsPanel.setVisible(true);  
-    
-    
-    
-}
+
 
 function updateDetailsPanel(layer)
 {
@@ -127,8 +105,7 @@ function updateDetailsPanel(layer)
     {
         makeNcWMSColourScale();
     }
-    
-    showDetailsPanel();
+    detailsPanel.show();
     
 }
 
@@ -136,9 +113,10 @@ function updateStyles(layer)
 {
      
 
-    var legendURL = "";
     var data = new Array();
+    
     styleCombo.hide();
+    
     var ncWMSOptions = "";
     
     /*
@@ -160,43 +138,42 @@ function updateStyles(layer)
         {
             for(var j = 0; j < palettes.length; j++)
             {
-                data.push([i, supportedStyles[i] + "/" + palettes[j] ]);
+                data.push([palettes[j] , supportedStyles[i] + "/" + palettes[j] ]);
             }
             
         }
         // populate the stylecombo picker
         styleCombo.store.loadData(data);
         
-        //COLORBARONLY=true&HEIGHT=200&NUMCOLORBANDS=254&PALETTE=redblue
-        
-        /*
-        if(detailsPanelLayer.params.STYLES != '')        {
-            for(var j = 0; j < styles.length; j++)
-            {
-                if(styles[j].name == detailsPanelLayer.params.STYLES)
-                {
-                    legendURL = styles[j].legend.href;
-                    styleCombo.select(j);
-                }
-            }
-        }*/
+        //COLORBARONLY=true&HEIGHT=200&NUMCOLORBANDS=254&PALETTE=redblue        
         
         styleCombo.show();
     }
     
-    
-    legendURL = detailsPanelLayer.url + "?"
-                + "LEGEND_OPTIONS=forceLabels:on"
-                + "&REQUEST=GetLegendGraphic"
-                + "&LAYER=" + detailsPanelLayer.params.LAYERS
-                + "&FORMAT=" + detailsPanelLayer.params.FORMAT; 
-    refreshLegend(legendURL);
+
+    refreshLegend();
     
 }
 
 
-function refreshLegend(url)
+function refreshLegend()
 {
+    
+    var url = detailsPanelLayer.url;
+    var defaultPalette = "";
+        
+    // a style may have been set this session or from the server
+    if (detailsPanelLayer.metadata.defaultPalette != "") {
+        defaultPalette = "PALETTE=" + detailsPanelLayer.metadata.defaultPalette + "&";
+    }
+    
+    
+    url +=  "?" + defaultPalette 
+                + "LEGEND_OPTIONS=forceLabels:on"
+                + "&REQUEST=GetLegendGraphic"
+                + "&LAYER=" + detailsPanelLayer.params.LAYERS
+                + "&FORMAT=" + detailsPanelLayer.params.FORMAT; 
+    
     if(detailsPanelLayer.params.COLORSCALERANGE != undefined)
     {
         if(url.contains("COLORSCALERANGE"))
@@ -300,6 +277,11 @@ function makeCombo(type)
                     detailsPanelLayer.mergeNewParams({
                         styles : record.get('displayText')
                     });
+                    detailsPanelLayer.metadata.defaultPalette = record.get('myId');
+                    refreshLegend();
+                    
+                    // update value on layer so this is defualt
+                    //console.log()
                 }
                 else if(cbbox.fieldLabel == 'time')
                 {
