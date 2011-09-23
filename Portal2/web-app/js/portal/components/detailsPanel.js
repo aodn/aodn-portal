@@ -111,51 +111,65 @@ function showDetailsPanel() {
     
 }
 
-function updateDetailsPanel(node)
+function updateDetailsPanel(layer)
 {
     
-    detailsPanelLayer = node.layer;
+    detailsPanelLayer = layer;
     
-    updateStyles(node);
-    updateDimensions(node);    
+    updateStyles(layer);
+    updateDimensions(layer);    
     
     detailsPanel.text = detailsPanelLayer.name;
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
 
-    if(detailsPanelLayer.params.SERVERTYPE == "NCWMS")
+    if(detailsPanelLayer.server.type.search("NCWMS") > -1)
     {
         makeNcWMSColourScale();
     }
     
     showDetailsPanel();
     
-    //detailsPanel.syncSize(); // match size to components
 }
 
-function updateStyles(node)
+function updateStyles(layer)
 {
-       
-    
-    
+     
 
     var legendURL = "";
     var data = new Array();
     styleCombo.hide();
+    var ncWMSOptions = "";
     
-    var styles = detailsPanelLayer.metadata.styles; // ncwms layers?
-    if (styles) {
+    /*
+     *Each layer advertises a number of STYLEs, 
+     *each of which contains the name of the palette file, 
+     *e.g. STYLES=boxfill/rainbow
+    */
+    var supportedStyles = detailsPanelLayer.metadata.supportedStyles;
+    var palettes = detailsPanelLayer.metadata.palettes; 
+    
+    // for ncWMS layers most likely
+    if (supportedStyles) {
         
-        var styleList = styleCombo.store;
-        styleList.removeAll();    
+        styleCombo.store.removeAll();    
         styleCombo.clearValue();
         
-        for(var i = 0;i < styles.length; i++)
+        // supportedStyles is probably only one item 'boxfill'
+        for(var i = 0;i < supportedStyles.length; i++)
         {
-            data.push([i, styles[i].legend.href, styles[i].name]);
+            for(var j = 0; j < palettes.length; j++)
+            {
+                data.push([i, supportedStyles[i] + "/" + palettes[j] ]);
+            }
+            
         }
-
-        styleList.loadData(data);
+        // populate the stylecombo picker
+        styleCombo.store.loadData(data);
+        
+        //COLORBARONLY=true&HEIGHT=200&NUMCOLORBANDS=254&PALETTE=redblue
+        
+        /*
         if(detailsPanelLayer.params.STYLES != '')        {
             for(var j = 0; j < styles.length; j++)
             {
@@ -165,18 +179,17 @@ function updateStyles(node)
                     styleCombo.select(j);
                 }
             }
-        }
+        }*/
         
         styleCombo.show();
-    }   
-    // WMS layer
-    else  {        
-        legendURL = detailsPanelLayer.url + "?"
+    }
+    
+    
+    legendURL = detailsPanelLayer.url + "?"
                 + "LEGEND_OPTIONS=forceLabels:on"
                 + "&REQUEST=GetLegendGraphic"
                 + "&LAYER=" + detailsPanelLayer.params.LAYERS
-                + "&FORMAT=" + detailsPanelLayer.params.FORMAT;        
-    }
+                + "&FORMAT=" + detailsPanelLayer.params.FORMAT; 
     refreshLegend(legendURL);
     
 }
@@ -198,10 +211,10 @@ function refreshLegend(url)
     legendImage.setUrl(url);
 }
 
-function updateDimensions(node)
+function updateDimensions(layer)
 {
-    var dims = node.layer.metadata.dimensions;
-    //alert(node.layer.metadata);
+    var dims = layer.metadata.dimensions;
+    //alert(layer.metadata);
     if(dims != undefined)
     {
         for(var d in dims)
