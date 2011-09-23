@@ -1,0 +1,7 @@
+map-add-icon.png, information-icon.png
+
+Artist: Fatcow Web Hosting
+Iconset: Farm Fresh Icons (2000 icons)
+License: CC Attribution 3.0
+Commercial usage: Allowed (Backlink required)
+URL: http://www.iconarchive.com/show/farm-fresh-icons-by-fatcow.html

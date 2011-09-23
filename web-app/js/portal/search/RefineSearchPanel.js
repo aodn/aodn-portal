@@ -28,7 +28,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
       '<tpl if="length &gt; 0">',
          '<div class="p-refinements">',
             '<div class="p-refinements-title">',
-               '<p><span class="p-refinements-label">Refinements</span><a class="p-remove-all" href="">Clear</a></p>',
+               '<p><span class="p-refinements-label">Filters</span><a class="p-remove-all" href="">Clear</a></p>',
             '</div>',
             '<tpl for=".">',
                '<div class="p-selected-name">',

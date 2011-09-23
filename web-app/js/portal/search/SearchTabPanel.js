@@ -3,7 +3,7 @@ Ext.namespace('Portal.search');
 Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
    cls: 'p-search',
-   searchDefaults: {E_hitsperpage: 10, E_dynamic: 'true'},
+   searchDefaults: {E_hitsperpage: 15, E_dynamic: 'true'},
    title: 'Search',
 
    initComponent: function() {
@@ -50,8 +50,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
                }, {
 		            region: 'center',
 		            store: this.resultsStore,
-		            xtype: 'portal.search.resultspanel',
-		            ref: '../resultsPanel'
+		            xtype: 'portal.search.resultsgrid',
+		            ref: '../resultsGrid'
 	            }]
          }];
 
@@ -76,11 +76,16 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       });
       
       // react to results panel events
-      this.mon(this.resultsPanel, {
+      this.mon(this.resultsGrid.getBottomToolbar(), {
          scope: this,
-         previousPage: this.resultsPanelPreviousPage,
-         nextPage: this.resultsPanelNextPage
-      })
+         beforechange: this.resultsGridBbarBeforeChange
+      });
+      
+      // react to store events
+      this.mon(this.resultsStore, {
+         scope: this,
+         load: this.resultsStoreLoad
+      });
       
    },
    
@@ -88,29 +93,27 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 
       // Pre-populate refinement panel
-      this.runSearch({E_hitsperpage: 1, E_dynamic: 'true'}, false);
+      this.runSearch({E_hitsperpage: 1, E_dynamic: 'true'}, 1, false);
+      // Update paging toolbar manually for the moment 
+      this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
    },
    
    minimapExtentChange: function(bounds) {
       this.searchForm.setExtent(bounds);
    },
    
-   resultsPanelPreviousPage: function() {
-      if (this.resultsPanel.hitsPerPage < this.resultsPanel.startRecord) {
-         this.resultsPanel.startRecord -= this.resultsPanel.hitsPerPage;
-      } else {
-         this.resultsPanel.startRecord = 1;
-      }
-
-      this.runSearch(this.lastSearch)
+   resultsGridBbarBeforeChange: function(bbar, params) {
+      this.runSearch(Ext.apply(this.lastSearch, {E_hitsperpage: params.limit}), params.start);
+      //Stop paging control from doing anything itself for the moment
+      // TODO: replace with store driven paging 
+      return false;
    },
    
-   resultsPanelNextPage: function() {
-      this.resultsPanel.startRecord += this.resultsStore.getCount();
-      this.runSearch(this.lastSearch)
+   resultsStoreLoad: function() {
+      this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: this.resultsStore.startRecord, limit: 15}});
    },
    
-   runSearch: function(parameters, updateStore) {
+   runSearch: function(parameters, startrecord, updateStore) {
       var onSuccess = function(result) {
          var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
          var currentRecords = getRecordsFormat.read(result.responseText);
@@ -122,7 +125,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          Ext.Msg.alert('Error: ' + response.status + '-' + response.statusText);
       };
       
-      this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, this.resultsPanel.startRecord, updateStore, this.resultsStore, this.facetStore);
+      this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, startrecord, updateStore, this.resultsStore, this.facetStore);
+
+      this.resultsStore.startRecord = startrecord - 1;
       
       this.lastSearch = parameters;
    },
@@ -131,13 +136,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       var searchFilters = this.searchForm.addSearchFilters([]);
       searchFilters = this.refineSearchPanel.addSearchFilters(searchFilters);
       var searchParams = this.getCatalogueSearchParams(searchFilters);
-      searchParams = Ext.apply(searchParams, {E_hitsperpage: this.resultsPanel.hitsPerPage});
+      searchParams = Ext.apply(searchParams, {E_hitsperpage: this.resultsGrid.bbar.pageSize});
       searchParams = Ext.applyIf(searchParams, this.searchDefaults);
-      //TODO: result panel should not store startRecord or hits per page and cursor management should not be performed here
-      // - its a part of the model -  look at how this is meant to work! - extend store if need be - look at moving searching 
-      // there as well )
-      this.resultsPanel.startRecord = 1;
-      this.runSearch(searchParams);
+      this.runSearch(searchParams, 1);
    },
    
    getCatalogueSearchParams: function(searchFilters) {
