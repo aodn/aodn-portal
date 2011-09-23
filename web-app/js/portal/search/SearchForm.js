@@ -111,12 +111,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    
    setExtent: function(bounds) {
       this.bounds = bounds;
-      
-      this.searchFields.items.each(function (item) {
-         if (item.xtype == 'portal.search.field.boundingbox') {
-            item.setBox(bounds);
-         }
-      });
+
+      var bboxes = this.searchFields.findByType('portal.search.field.boundingbox');
+
+      for (var i = 0; i<bboxes.length; i++){
+          bboxes[i].setBox(bounds);
+      };      
    },
    
    //TODO: Create new search critera wrapper component?
