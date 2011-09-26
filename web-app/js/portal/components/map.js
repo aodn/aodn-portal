@@ -506,50 +506,6 @@ function setHTML2(response) {
 }
 
 
-// if units label is known as fahrenheit or kelvin, convert val to celcius
-function getCelsius(val,src_units) {
-     var cel = "";
-     var c = "&#176;C";
-     var ret = [];
-     var old = "";
-     src_units = src_units.toLowerCase();
-     src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
-     // arrays hold all posiible names for farenheight or kelvin and celcius
-     var celNameArray = ["c","celcius","cel","deg_c"];
-     var farNameArray = ["f","fahrenheit"];
-     var kelNameArray = ["k","kelvin","kel"]
-
-
-     // fahrenheit
-      if (inArray(farNameArray,src_units)) {
-        cel = (val - 32) / 1.8;
-        old = " (<b>"+toNSigFigs(val,4) +"</b>fahrenheit)";
-        ret = [toNSigFigs(cel,4),c,old];
-      }
-      // kelvin
-      else if (inArray(kelNameArray,src_units)) {
-        cel = val - 272.15;
-        old = " (<b>" + toNSigFigs(val,4) + "</b>kelvin)";
-        ret = [toNSigFigs(cel,4),c,old];
-      }
-      // celcius
-      else if (inArray(celNameArray,src_units)) {
-         ret = [toNSigFigs(val,4),c,""];
-         cel = "himum";
-      }
-
-
-      // if cel empty then the unit wasnt temperature
-      // or we cant even anticipate..
-      if (cel == "") {
-          cel = val;
-          return [toNSigFigs(cel,4),src_units,""];
-      }
-      else {
-          return ret;
-      }
-
-}
 
 function getCurrentFeatureInfo() {
     return jQuery('#featureinfocontent').html();
@@ -712,22 +668,7 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 }
 
-//Formats the given value to numSigFigs significant figures
-//WARNING: Javascript 1.5 only!
-function toNSigFigs(value, numSigFigs) {
-    if (!value.toPrecision) {
-        return value;
-    } else {
-        return value.toPrecision(numSigFigs);
-    }
-}
 
-function ucwords( str ) {
-    // Uppercase the first character of every word in a string
-    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) {
-        return $1.toUpperCase ( );
-    } );
-}
 
 
  function imgSizer(){
@@ -968,21 +909,6 @@ function IsInt(sText) {
 }
 
 
-// Move this to Extjs framework
-
-function getXML(request_string) {
-
-        if (window.XMLHttpRequest)  {
-            xhttp=new XMLHttpRequest();
-        }
-        else {// Internet Explorer 5/6
-            xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhttp.open("GET",proxyURL+encodeURIComponent(request_string)+"&format=xml",false);
-        xhttp.send("");
-       return xhttp.responseXML;
-
-}
 
 
 
@@ -1019,93 +945,3 @@ function acornHistory(request_string,div,data) {
     return false;
 }
 
-
-
-function formatISO8601Date(dateString) {
-
-    var d_names = new Array("Sun", "Mon", "Tues",
-    "Wed", "Thur", "Fri", "Sat");
-
-    var m_names = new Array("Jan", "Feb", "Mar",
-    "Apr", "May", "Jun", "Jul", "Aug", "Sep",
-    "Oct", "Nov", "Dec");
-
-    var a_p = "";
-    var d = new Date();
-	d.setISO8601(dateString);
-
-    var curr_date = d.getDate();
-    var curr_year = d.getFullYear();
-    var curr_month = d.getMonth();
-    var curr_day = d.getDay();
-    var curr_min = d.getMinutes();
-    var curr_hour = d.getHours();
-
-    var sup = "";
-    if (curr_date == 1 || curr_date == 21 || curr_date ==31)  {
-       sup = "st";
-       }
-    else if (curr_date == 2 || curr_date == 22)  {
-       sup = "nd";
-       }
-    else if (curr_date == 3 || curr_date == 23)   {
-       sup = "rd";
-       }
-    else   {
-       sup = "th";
-       }
-
-
-    var date = (d_names[curr_day] + " " + curr_date + ""
-    + sup + " " + m_names[curr_month] + " " + curr_year);
-
-    if (curr_hour < 12)   {
-       a_p = "AM";
-       }
-    else  {
-       a_p = "PM";
-       }
-    if (curr_hour == 0)   {
-       curr_hour = 12;
-       }
-    if (curr_hour > 12)   {
-       curr_hour = curr_hour - 12;
-       }
-
-    curr_min = curr_min + "";
-
-    if (curr_min.length == 1)      {
-       curr_min = "0" + curr_min;
-       }
-
-    var time =  curr_hour + ":" + curr_min + "" + a_p;
-    return (date + " " + time);
-
-}
-// Not handling timezone offset correctly
-Date.prototype.setISO8601 = function (string) {
-    var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
-        "(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
-        "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
-    var d = string.match(new RegExp(regexp));
-
-    var offset = 0;
-    var date = new Date(d[1], 0, 1);
-
-    if (d[3]) {date.setMonth(d[3] - 1);}
-    if (d[5]) {date.setDate(d[5]);}
-    if (d[7]) {date.setHours(d[7]);}
-    if (d[8]) {date.setMinutes(d[8]);}
-    if (d[10]) {date.setSeconds(d[10]);}
-
-
-    //if (d[12]) {date.setMilliseconds(Number("0." + d[12]) * 1000);}
-    //if (d[14]) {
-    //    offset = (Number(d[16]) * 60) + Number(d[17]);
-    //    offset *= ((d[15] == '-') ? 1 : -1);
-    //}
-
-    //offset -= date.getTimezoneOffset();
-    time = (Number(date) + (offset * 60 * 1000));
-    this.setTime(Number(time));
-}

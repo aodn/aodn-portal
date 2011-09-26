@@ -60,6 +60,9 @@ function initDetailsPanel()  {
     styleCombo = makeCombo("styles");
     
     detailsPanel =  new Ext.Window({
+        defaults: {            
+            margin: 10
+        },
         shadow: false,
         title: 'Layer Options',
         plain: true,
@@ -128,7 +131,7 @@ function updateStyles(layer)
     var palettes = detailsPanelLayer.metadata.palettes; 
     
     // for ncWMS layers most likely
-    if (supportedStyles) {
+    if (supportedStyles != undefined) {
         
         styleCombo.store.removeAll();    
         styleCombo.clearValue();
@@ -138,14 +141,13 @@ function updateStyles(layer)
         {
             for(var j = 0; j < palettes.length; j++)
             {
-                data.push([palettes[j] , supportedStyles[i] + "/" + palettes[j] ]);
+                var imageUrl = buildGetLegend(layer,palettes[j], true);                
+                data.push([palettes[j] , supportedStyles[i] + "/" + palettes[j], imageUrl ]);
             }
             
         }
         // populate the stylecombo picker
-        styleCombo.store.loadData(data);
-        
-        //COLORBARONLY=true&HEIGHT=200&NUMCOLORBANDS=254&PALETTE=redblue        
+        styleCombo.store.loadData(data);    
         
         styleCombo.show();
     }
@@ -157,36 +159,53 @@ function updateStyles(layer)
 
 
 function refreshLegend()
-{
+{    
+    var url = buildGetLegend(detailsPanelLayer,"",false)  
+    legendImage.setUrl(url);
+}
+function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
-    var url = detailsPanelLayer.url;
-    var defaultPalette = "";
+    var url = layer.url;
+    var opts = "";
         
-    // a style may have been set this session or from the server
-    if (detailsPanelLayer.metadata.defaultPalette != "") {
-        defaultPalette = "PALETTE=" + detailsPanelLayer.metadata.defaultPalette + "&";
+    // thisPalette used for once off. eg combobox picker
+    if (thisPalette == "") {
+        // a style may have been set this session or from the server
+        if (layer.metadata.defaultPalette != undefined) {
+            opts = "PALETTE=" + layer.metadata.defaultPalette;
+        }        
+        opts += "&LEGEND_OPTIONS=forceLabels:on";
+    }
+    else {
+        opts = "PALETTE=" + thisPalette;
+    }
+    
+    if (colorbaronly) {
+        
+        opts += "&COLORBARONLY=" + colorbaronly;
     }
     
     
-    url +=  "?" + defaultPalette 
-                + "LEGEND_OPTIONS=forceLabels:on"
+    url +=  "?" + opts 
                 + "&REQUEST=GetLegendGraphic"
-                + "&LAYER=" + detailsPanelLayer.params.LAYERS
-                + "&FORMAT=" + detailsPanelLayer.params.FORMAT; 
+                + "&LAYER=" + layer.params.LAYERS
+                + "&FORMAT=" + layer.params.FORMAT; 
     
-    if(detailsPanelLayer.params.COLORSCALERANGE != undefined)
+    
+    if(layer.params.COLORSCALERANGE != undefined)
     {
         if(url.contains("COLORSCALERANGE"))
         {
-            url = url.replace(/COLORSCALERANGE=([^\&]*)/, "COLORSCALERANGE=" + detailsPanelLayer.params.COLORSCALERANGE);
+            url = url.replace(/COLORSCALERANGE=([^\&]*)/, "COLORSCALERANGE=" + layer.params.COLORSCALERANGE);
         }
         else
         {
-            url += "&COLORSCALERANGE=" + detailsPanelLayer.params.COLORSCALERANGE;
+            url += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
         }
     }    
-    legendImage.setUrl(url);
+   return url
 }
+
 
 function updateDimensions(layer)
 {
@@ -258,6 +277,9 @@ function makeCombo(type)
         },
         {
             name: 'displayText'
+        },
+        {
+            name: 'displayImage'
         }
         ]
     });
@@ -268,8 +290,10 @@ function makeCombo(type)
         lazyRender:true,
         mode: 'local',
         store: valueStore,
+        emptyText: 'Layer Style...',
         valueField: 'myId',
-        displayField: 'displayText',
+        displayField: 'displayText',        
+        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>',
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
@@ -280,7 +304,7 @@ function makeCombo(type)
                     detailsPanelLayer.metadata.defaultPalette = record.get('myId');
                     refreshLegend();
                     
-                    // update value on layer so this is defualt
+                    // update value on layer so this is default
                     //console.log()
                 }
                 else if(cbbox.fieldLabel == 'time')

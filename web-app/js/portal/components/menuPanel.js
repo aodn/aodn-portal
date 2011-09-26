@@ -118,16 +118,14 @@ function initMenusPanel(menu) {
         root: layerList,
         listeners: {
             append: function(tree,parent,node){
-                //tree.getSelectionModel().select.defer(500, node);
-                //treePanel.selectPath(node0.getPath());
-                //node.select();
-                // be bice to have appended layers become active
                 
                 tree.on("click", function(node,event){
                     tree.show(node.ui.getAnchor());
                     if(node.isSelected())
                     {
-                        updateDetailsPanel(node.layer);
+                        updateDetailsPanel(node.layer);                        
+                        //coordinates are from getMouseXY in helpers.js
+                        detailsPanel.setPosition(tempX+250,tempY-20);
                     }
                 });                
 
