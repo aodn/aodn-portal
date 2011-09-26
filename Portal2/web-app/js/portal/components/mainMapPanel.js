@@ -429,29 +429,29 @@ function loadDefaultLayers()
 }
 
 
-function removeAllLayers()
-{    
-    var d = [];
+function removeAllLayers()   {  
+    
+    var allLayers = [];
     for(var i = 0; i < mapPanel.map.layers.length; i++)
     {
         if(!mapPanel.map.layers[i].isBaseLayer)
         {
-            d.push(getUniqueLayerId(mapPanel.map.layers[i]));            
+            allLayers.push(getUniqueLayerId(mapPanel.map.layers[i]));            
         }
     }
 
-    for(var j = d.length; j > 0; j++)
+    for(var j = 0; j < allLayers.length; j++)
     {
-        console.log("item "  + j + " removed") 
-        var theLayer = mapLayers[j];
-        console.log(theLayer.name);
-        setDefaultMenuTreeNodeActive(theLayer.grailsLayerId,true);
-        
-        theLayer.destroy();  
-        
-        // cleanup mapLayers?? or just start again?
+        console.log("item "  + allLayers[j] + " removed") 
+        var theLayer = mapLayers[allLayers[j]];
+        setDefaultMenuTreeNodeActive(theLayer.grailsLayerId,true);        
+        theLayer.destroy(); 
         
     }
+    // no layers- no details needed
+    detailsPanel.hide();
+    // cleanup mapLayers?? or just start again?
+    mapLayers = [];
     
     
     

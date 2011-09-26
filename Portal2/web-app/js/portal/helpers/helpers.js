@@ -26,10 +26,6 @@ function getMouseXY(e) {
   // catch possible negative values in NS4
   if (tempX < 0){tempX = 0}
   if (tempY < 0){tempY = 0}  
-  // show the position values in the form named Show
-  // in the text fields named MouseX and MouseY
-  document.Show.MouseX.value = tempX
-  document.Show.MouseY.value = tempY
   return true
 }
 
