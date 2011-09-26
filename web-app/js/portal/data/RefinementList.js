@@ -1,79 +1,84 @@
 Ext.namespace('Portal.data');
 
-/** api: (define) 
- *  module = Portal.data
- *  class = RefinementList
+/**
+ * api: (define) module = Portal.data class = RefinementList
  */
-/** api: method[RefinementList] 
- *
- *   Class used to maintain a list of refinements
- *
-*/
+/**
+ * api: method[RefinementList]
+ * 
+ * Class used to maintain a list of refinements
+ * 
+ */
 
-Portal.data.RefinementList = function() {};
+Portal.data.RefinementList = function() {
+	this.refinements = {};
+};
 
-Portal.data.RefinementList.prototype = function () {
-   var refinements = {};
-   
-   return {
-      add: function(facet, value) {
-         if (!refinements[facet]) {
-            refinements[facet] = {};
-         }
-         refinements[facet][value] = null;
-      },
-      
-      remove: function(facet, value) {
-         if (!refinements[facet]) return;
-         delete refinements[facet][value];
-         if (this.isEmptyObject(refinements[facet])) {
-            delete refinements[facet];
-         }
-      },
-      
-      clear: function() {
-         refinements = {};
-      },
-      
-      contains: function(facet, value) {
-         return refinements.hasOwnProperty(facet) && refinements[facet].hasOwnProperty(value);
-      },
-      
-      getJson: function() {
-         var jsonData = [];
-         for (var facet in refinements) {
-            var values = refinements[facet];
-            var jsonValues = [];
-            for (var value in values) {
-               jsonValues.push({value: value});
-            }
-            jsonData.push({name: facet, values: jsonValues});
-         }
-         return jsonData;
-      },
+Portal.data.RefinementList.prototype = {
+	add : function(facet, value) {
+		if (!this.refinements[facet]) {
+			this.refinements[facet] = {};
+		}
+		this.refinements[facet][value] = null;
+	},
+	
+	remove : function(facet, value) {
+		if (!this.refinements[facet])
+			return;
+		delete this.refinements[facet][value];
+		if (this.isEmptyObject(this.refinements[facet])) {
+			delete this.refinements[facet];
+		}
+	},
 
-      getArray: function() {
-         var arrayData = [];
-         for (var facet in refinements) {
-            var values = refinements[facet];
-            for (var value in values) {
-               arrayData.push({name: facet, value: value});
-            }
-         }
-         return arrayData;
-      },
+	clear : function() {
+		this.refinements = {};
+	},
 
-      isEmptyObject: function(obj) {
-         for (var prop in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-               return false;
-            }
-         }
-         return true;
-      }
-      
-   };
-     
-} ();
+	contains : function(facet, value) {
+		return this.refinements.hasOwnProperty(facet)
+				&& this.refinements[facet].hasOwnProperty(value);
+	},
 
+	getJson : function() {
+		var jsonData = [];
+		for (var facet in this.refinements) {
+			var values = this.refinements[facet];
+			var jsonValues = [];
+			for (var value in values) {
+				jsonValues.push({
+							value : value
+						});
+			}
+			jsonData.push({
+						name : facet,
+						values : jsonValues
+					});
+		}
+		return jsonData;
+	},
 
+	getArray : function() {
+		var arrayData = [];
+		for (var facet in this.refinements) {
+			var values = this.refinements[facet];
+			for (var value in values) {
+				arrayData.push({
+							name : facet,
+							value : value
+						});
+			}
+		}
+		return arrayData;
+	},
+
+	isEmptyObject : function(obj) {
+		for (var prop in obj) {
+			if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+};

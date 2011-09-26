@@ -6,15 +6,12 @@
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>
  
- <!--  Ext user extensions -->
-<script src="${resource(dir:'js',file:'ext-ux/ComponentDataView.js')}" defer="defer" type="text/javascript"></script>
- 
- <!-- Open Layers-->
+<!-- Open Layers-->
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" defer="defer" type="text/javascript"></script>
 <link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'general.css')}" />
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
  
- <!--- GeoExt (Has to be after Openlayers and ExJS) -->
+<!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}" defer="defer"  type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
 
@@ -30,7 +27,7 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js')}" defer="defer" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" defer="defer" type="text/javascript"></script>
 
-<!-- Portal clases-->
+<!-- Portal classes-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
 <script src="${resource(dir:'js',file:'portal/data/RefinementList.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/FacetStore.js')}" defer="defer"  type="text/javascript"></script>
