@@ -13,6 +13,7 @@
           <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all.js')}"   type="text/javascript"></script>
           
           <script src="${resource(dir:'js/portal/helpers',file:'GeoExt.ux.BaseLayerCombobox.js')}"   type="text/javascript"></script>
+          <script src="${resource(dir:'js/portal/helpers',file:'helpers.js')}"   type="text/javascript"></script>
          
           
 

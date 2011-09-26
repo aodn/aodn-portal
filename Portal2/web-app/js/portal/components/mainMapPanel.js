@@ -325,14 +325,25 @@ function addLayer(grailsLayerId) {
                 // extra info to keep
                 layer.grailsLayerId = grailsLayerId; 
                 layer.server= dl.server;
-                // get ncWMS metadata info for animation and style switching
+                
+                
                 if(dl.server.type.search("NCWMS") > -1) {
-                    getLayerMetadata(layer)
-                }                
+                    // get ncWMS Json metadata info for animation and style switching
+                    // update detailsPanel after Json request
+                    getLayerMetadata(layer);
+                } 
+                else {
+                    // update detailsPanel without Json request needed
+                    updateDetailsPanel(layer);
+                }
                 // store the OpenLayers layer so we can retreive it latter
                 mapLayers[getUniqueLayerId(layer)] = layer;
                 
                 mapPanel.map.addLayer(layer); 
+                
+                
+                
+                
                 
                 
             }
@@ -341,7 +352,7 @@ function addLayer(grailsLayerId) {
         
 }
 
-
+// used in getters and setters
 function getUniqueLayerId(layer){
     
     return (layer.name + "::" + layer.grailsLayerId).replace(/\s/g, "");
@@ -350,11 +361,11 @@ function getUniqueLayerId(layer){
 function getLayerMetadata(layer) {
         
     Ext.Ajax.request({
-            // time=current
-            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=current&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+        
+            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
             success: function(resp){
-                layer.metadata = Ext.util.JSON.decode(resp.responseText); 
-                
+                layer.metadata = Ext.util.JSON.decode(resp.responseText);
+                updateDetailsPanel(layer);
             } 
     });
     
