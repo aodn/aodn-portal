@@ -125,7 +125,7 @@ function initMenusPanel(menu) {
                     {
                         updateDetailsPanel(node.layer);                        
                         //coordinates are from getMouseXY in helpers.js
-                        detailsPanel.setPosition(tempX+250,tempY-20);
+                        detailsPanel.setPosition(340,tempY-20);
                     }
                 });                
 
@@ -176,7 +176,7 @@ function initMenusPanel(menu) {
     var buttonPanel = new Ext.Panel({        
         border: false,      
         items:[
-        //removeAll,
+        removeAll,
         resetLayers
         ]
     });

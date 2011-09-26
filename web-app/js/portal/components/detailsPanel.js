@@ -15,6 +15,7 @@ function initDetailsPanel()  {
     legendImage = new GeoExt.LegendImage();
     
     ncWMSColourScalePanel = new Ext.Panel();
+    
     colourScaleMin = new Ext.form.TextField({
         fieldLabel: "min",
         enableKeyEvents: true,
@@ -81,7 +82,10 @@ function initDetailsPanel()  {
         closeAction: 'hide',
         border: false,
         items: [
-        opacitySlider, styleCombo, legendImage
+            opacitySlider, 
+            styleCombo, 
+            legendImage,
+            ncWMSColourScalePanel
         ]
 
     });
@@ -104,6 +108,8 @@ function updateDetailsPanel(layer)
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
 
+
+    ncWMSColourScalePanel.hide();
     if(detailsPanelLayer.server.type.search("NCWMS") > -1)
     {
         makeNcWMSColourScale();
@@ -163,6 +169,7 @@ function refreshLegend()
     var url = buildGetLegend(detailsPanelLayer,"",false)  
     legendImage.setUrl(url);
 }
+
 function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     var url = layer.url;
@@ -249,7 +256,7 @@ function updateDimensions(layer)
 function makeNcWMSColourScale()
 {
     //Example: http://ncwms.emii.org.au/ncWMS/wms?item=layerDetails&layerName=ACORN_raw_data_SAG%2FSPEED&time=2006-09-19T12%3A00%3A00.000Z&request=GetMetadata
-    
+    /*
     if(detailsPanelLayer.params.colourScale == undefined)
     {
         Ext.Ajax.request({
@@ -261,27 +268,41 @@ function makeNcWMSColourScale()
             }
         });
     }
+    */
+    colourScaleMin.setValue(detailsPanelLayer.metadata.scaleRange[0]);
+    colourScaleMax.setValue(detailsPanelLayer.metadata.scaleRange[1]);
+    ncWMSColourScalePanel.show();
+    
 
      
 }
 
-function makeCombo(type)
-{
+
+function makeCombo(type) {
+    
+    var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
+    var fields;
+    
+    if (type == "styles") {
+        tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>'
+        fields = [
+            {name: 'myId'},
+            {name: 'displayText'},
+            {name: 'displayImage'}
+        ];
+    }
+    else {
+        fields = [
+            {name: 'myId'},
+            {name: 'displayText'}
+        ];
+    }
+    
     var valueStore  = new Ext.data.ArrayStore({
         autoDestroy: true,
         itemId: type,
         name: type,
-        fields: [
-        {
-            name: 'myId'
-        },
-        {
-            name: 'displayText'
-        },
-        {
-            name: 'displayImage'
-        }
-        ]
+        fields: fields
     });
 
     var combo = new Ext.form.ComboBox({
@@ -290,22 +311,18 @@ function makeCombo(type)
         lazyRender:true,
         mode: 'local',
         store: valueStore,
-        emptyText: 'Layer Style...',
+        emptyText: 'Layer '+ type +'...',
         valueField: 'myId',
-        displayField: 'displayText',        
-        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>',
+        displayField: 'displayText',     
+        tpl: tpl,
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
-                {
-                    detailsPanelLayer.mergeNewParams({
+                {    detailsPanelLayer.mergeNewParams({
                         styles : record.get('displayText')
                     });
                     detailsPanelLayer.metadata.defaultPalette = record.get('myId');
-                    refreshLegend();
-                    
-                    // update value on layer so this is default
-                    //console.log()
+                    refreshLegend(); 
                 }
                 else if(cbbox.fieldLabel == 'time')
                 {
