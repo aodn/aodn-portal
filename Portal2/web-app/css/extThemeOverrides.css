@@ -29,7 +29,7 @@
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     border: 0px;
-    background: none;
+    /*background: none;*/
 }
 #leftMenus .x-layout-split {
     background-color: #ccc;
@@ -77,4 +77,7 @@
 }
 .x-combo-list-item p {
     float: left;
+}
+.legendImage {
+    margin: 10px 0px;
 }

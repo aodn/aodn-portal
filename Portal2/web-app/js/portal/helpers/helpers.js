@@ -1,5 +1,5 @@
 
-// getMouseXY
+/* getMouseXY
 // 
 // Detect if the browser is IE or not.
 // If it is not IE, we assume that the browser is NS.
@@ -28,6 +28,7 @@ function getMouseXY(e) {
   if (tempY < 0){tempY = 0}  
   return true
 }
+*/
 
 //Formats the given value to numSigFigs significant figures
 //WARNING: Javascript 1.5 only!

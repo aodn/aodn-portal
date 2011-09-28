@@ -66,6 +66,7 @@
       <div class="message">${flash.message}</div>
     </g:if>
   </div>
+
 </body>
 
 </html>
