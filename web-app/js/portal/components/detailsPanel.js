@@ -1,7 +1,10 @@
 var styleCombo;
 var detailsPanel;
-var opacitySlider;
+var detailsPanelInitX = 340;
+var detailsPanelInitY = 140;
+var detailsPanelItems;
 var detailsPanelLayer;
+var opacitySlider;
 var legendImage;
 var dimension;
 var dimensionPanel;
@@ -12,13 +15,30 @@ var colourScaleMax;
 
 function initDetailsPanel()  {
     
-    legendImage = new GeoExt.LegendImage();
+    legendImage = new GeoExt.LegendImage({
+        imgCls: 'legendImage'
+    });
     
-    ncWMSColourScalePanel = new Ext.Panel();
     
+    var t = new Ext.Template([
+        '<div name="{id}">',
+            '<span class="{cls}">{name:trim} {value:ellipsis(10)}</span>',
+        '</div>',
+    ]);
+    //t.compile();
+    //t.append('some-element', {id: 'myid', cls: 'myclass', name: 'foo', value: 'bar'});
+    
+    var colourScaleHeader = new Ext.form.Label({
+        html: "<h4>Set Parameter Range</h4>"
+    });
     colourScaleMin = new Ext.form.TextField({
-        fieldLabel: "min",
+        fieldLabel: "Min",
+        layout:'form',
         enableKeyEvents: true,
+        labelStyle: "width:30px",
+        //style: {paddingLeft:"55px"}, // only on input 
+        ctCls: 'smallIndentInputBox',
+        grow: true,
         listeners: {
             keydown: function(textfield, event){
                 updateScale(textfield, event);
@@ -27,16 +47,28 @@ function initDetailsPanel()  {
     });
 
     colourScaleMax = new Ext.form.TextField({
-        fieldLabel: "max",
+        fieldLabel: "Max",
+        layout:'form',
         enableKeyEvents: true,
+        labelStyle: "width:30px",
+        //labelStyle: "",   
+        //style: {paddingLeft:"55px"}, // only on input         
+        ctCls: 'smallIndentInputBox',
+        grow: true,
         listeners: {
             keydown: function(textfield, event){
                 updateScale(textfield, event);
             }
         }
     });
-
-    ncWMSColourScalePanel.add(colourScaleMin, colourScaleMax);
+    
+    
+    ncWMSColourScalePanel = new Ext.Panel({
+        layout: 'form',
+        height: 'auto',
+        width: 200
+    });
+    ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMin, colourScaleMax);
 
     // create a separate slider bound to the map but displayed elsewhere
     opacitySlider = new GeoExt.LayerOpacitySlider({
@@ -60,33 +92,54 @@ function initDetailsPanel()  {
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
     
-    detailsPanel =  new Ext.Window({
+    
+    detailsPanelItems = new Ext.Container({  
+        id: 'detailsPanelItems',
         defaults: {            
-            margin: 10
-        },
-        shadow: false,
-        title: 'Layer Options',
-        plain: true,
-        padding: 10,
-        constrainHeader: true,
-        constrain: true,
-        maximizable: true,
-        collapsible: true,
-        autoScroll: true,
-        bodyBorder: false,
-        bodyCls: 'floatingDetailsPanel',
+            bodyStyle:'padding:5px 2px'
+        },        
         cls: 'floatingDetailsPanelContent',
-        //layout: 'absolute', // this is for the children
-        //autoWidth: true,
-        //autoHeight: true,
-        closeAction: 'hide',
-        border: false,
-        items: [
+         items: [
             opacitySlider, 
             styleCombo, 
             legendImage,
             ncWMSColourScalePanel
-        ]
+         ]
+    });
+    
+
+    
+    detailsPanel =  new Ext.Window({
+        id: 'detailsPanel',
+        shadow: false,
+        title: 'Layer Options',
+        plain: true,
+        autoDestroy: false,
+        padding: 10,
+        constrainHeader: true,
+        constrain: true,
+        //collapsible: true,
+        autoScroll: true,
+        bodyBorder: false,
+        bodyCls: 'floatingDetailsPanel',
+        //layout: 'absolute', // this is for the children
+        //autoWidth: true,
+        //autoHeight: true,
+        closable: false,
+        closeAction: 'hide',
+        border: false,
+        x: detailsPanelInitX,
+        y: detailsPanelInitY,
+        items: [
+            detailsPanelItems
+        ],
+        tools:[{
+            id:'pin',
+            qtip: 'Pin options to the right hand side of the window',
+            handler: function(event, toolEl, panel){
+                toggleDetailsLocation();
+            }
+        }]
 
     });
 
@@ -96,8 +149,32 @@ function initDetailsPanel()  {
 }
 
 
-function updateDetailsPanel(layer)
-{
+function toggleDetailsLocation() {
+    
+    var rdp = viewport.getComponent('rightDetailsPanel');
+    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
+ 
+        rdp.add(detailsPanel.remove(detailsPanelItems, false));
+        rdp.expand(true);
+        rdp.doLayout();
+        rdp.show();
+        detailsPanel.hide();
+    }
+    else {        
+        
+        detailsPanel.add(rdp.remove(detailsPanelItems, false));
+        // disable the opening of the righthand panel
+        rdp.collapse(false);
+        rdp.hide();
+        updateDetailsPanelPosition();
+        detailsPanel.doLayout();     
+        detailsPanel.show();
+        
+    }
+}
+
+
+function updateDetailsPanel(layer) {
     
     detailsPanelLayer = layer;
     
@@ -114,8 +191,24 @@ function updateDetailsPanel(layer)
     {
         makeNcWMSColourScale();
     }
-    detailsPanel.show();
     
+    // display popup if that where the detailsPanelItems items are
+    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
+        updateDetailsPanelPosition();
+    }
+    
+    
+}
+function updateDetailsPanelPosition() {
+    
+    detailsPanel.show();        
+
+    //if a user has resized or moved the popup then leave it alone
+    console.log((detailsPanel.lastSize.height!= undefined)+" && "+((detailsPanel.x != detailsPanelInitX) ||(detailsPanel.y != detailsPanelInitY)));
+    if (detailsPanel.lastSize.height != undefined && (detailsPanel.x != detailsPanelInitX || detailsPanel.y != detailsPanelInitY)) {
+        console.log("set postion");
+        detailsPanel.setPosition(detailsPanelInitX,detailsPanelInitY);
+    }
 }
 
 function updateStyles(layer)
@@ -352,6 +445,6 @@ function updateScale(textfield, event)
             COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
         });
 
-        refreshLegend(legendImage.url);
+        refreshLegend();
     }
 }

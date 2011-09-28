@@ -123,9 +123,7 @@ function initMenusPanel(menu) {
                     tree.show(node.ui.getAnchor());
                     if(node.isSelected())
                     {
-                        updateDetailsPanel(node.layer);                        
-                        //coordinates are from getMouseXY in helpers.js
-                        detailsPanel.setPosition(340,tempY-20);
+                        updateDetailsPanel(node.layer);           
                     }
                 });                
 
@@ -216,10 +214,6 @@ function initMenusPanel(menu) {
         defaultOffsets: [60, 10],
         showSeparator: false,
         items: [
-       /* {
-            text: 'Layer Options',
-            handler: showDetailsPanel
-        },*/
         {
             text: 'Remove layer',
             handler: removeActivePanelLayer

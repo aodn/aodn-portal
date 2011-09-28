@@ -3,7 +3,7 @@
 var MAX_WIDTH = 1024;
 var MAX_HEIGHT = 1024;
 
-var testViewport;
+var viewport;
 
 //--------------------------------------------------------------------------------------------
 //Some JSON stuff
@@ -32,7 +32,7 @@ var baseLayerList;
 var topMenuPanel, centreMenuPanel;
 
 //
-Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.BLANK_IMAGE_URL = 'img/blank.gif'
 Ext.QuickTips.init();
 
@@ -156,7 +156,7 @@ function doViewPort()
     mapMainPanel.doLayout();
    
         
-    var viewport = new Ext.Viewport({
+    viewport = new Ext.Viewport({
         layout: 'border',
         stateful: true,
         items: [{
@@ -172,6 +172,27 @@ function doViewPort()
         split: true,
         height: 100,
         minHeight: 100
+    }, {
+        id: 'rightDetailsPanel',
+        region: 'east',
+        hideMode: 'offsets',
+        hidden: true,
+        collapsible: true,
+        collapsed: true,
+        //html: 'ActiveLayers Details panel here',
+        split: true,
+        width: 350,
+        minWidth: 200,
+        closeAction: 'hide',
+        autoDestroy: false,
+        tools:[{
+            id:'unpin',
+            qtip: 'Make these options appear in a popup again',
+            // hidden:true,
+            handler: function(event, toolEl, panel){
+                toggleDetailsLocation();
+            }
+        }]
     }, {
         region: 'center',
         xtype: 'tabpanel', // TabPanel itself has no title        
