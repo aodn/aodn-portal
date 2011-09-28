@@ -4,6 +4,7 @@ var MAX_WIDTH = 1024;
 var MAX_HEIGHT = 1024;
 
 var viewport;
+var mapMainPanel;
 
 //--------------------------------------------------------------------------------------------
 //Some JSON stuff
@@ -128,7 +129,7 @@ Ext.onReady(function() {
 function doViewPort()
 {
     
-     var mapMainPanel = new Ext.Panel({
+      mapMainPanel = new Ext.Panel({
         layout: 'border',
         title: 'Map',
         stateful: true,
@@ -151,6 +152,38 @@ function doViewPort()
             items: [
             mapPanel
             ]
+        },
+        {
+            id: 'rightDetailsPanel',
+            region: 'east',
+            hideMode: 'offsets',
+            hidden: true,
+            collapsible: true,
+            collapsed: true,
+            //html: 'ActiveLayers Details panel here',
+            split: true,
+            width: 350,
+            minWidth: 200,
+            closeAction: 'hide',
+            autoDestroy: false,
+            tools:[{
+                id:'unpin',
+                qtip: 'Make these options appear in a popup again',
+                // hidden:true,
+                handler: function(event, toolEl, panel){
+                    toggleDetailsLocation();
+                }
+            }],
+            listeners: {
+                // a user might expand while the popup is open
+                beforeexpand: function(panel, animate){
+
+                    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
+                         toggleDetailsLocation();
+                    }                
+
+                }
+            }
         }]
     }); 
     mapMainPanel.doLayout();
@@ -172,28 +205,7 @@ function doViewPort()
         split: true,
         height: 100,
         minHeight: 100
-    }, {
-        id: 'rightDetailsPanel',
-        region: 'east',
-        hideMode: 'offsets',
-        hidden: true,
-        collapsible: true,
-        collapsed: true,
-        //html: 'ActiveLayers Details panel here',
-        split: true,
-        width: 350,
-        minWidth: 200,
-        closeAction: 'hide',
-        autoDestroy: false,
-        tools:[{
-            id:'unpin',
-            qtip: 'Make these options appear in a popup again',
-            // hidden:true,
-            handler: function(event, toolEl, panel){
-                toggleDetailsLocation();
-            }
-        }]
-    }, {
+    },{
         region: 'center',
         xtype: 'tabpanel', // TabPanel itself has no title        
         autoDestroy: false, // wont destroy tab contents when switching        
