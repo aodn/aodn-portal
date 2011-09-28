@@ -1,7 +1,7 @@
 var styleCombo;
 var detailsPanel;
 var detailsPanelInitX = 340;
-var detailsPanelInitY = 140;
+var detailsPanelInitY = 150;
 var detailsPanelItems;
 var detailsPanelLayer;
 var opacitySlider;
@@ -118,6 +118,7 @@ function initDetailsPanel()  {
         padding: 10,
         constrainHeader: true,
         constrain: true,
+        animCollapse: false,
         //collapsible: true,
         autoScroll: true,
         bodyBorder: false,
@@ -151,7 +152,7 @@ function initDetailsPanel()  {
 
 function toggleDetailsLocation() {
     
-    var rdp = viewport.getComponent('rightDetailsPanel');
+    var rdp = mapMainPanel.getComponent('rightDetailsPanel');
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
  
         rdp.add(detailsPanel.remove(detailsPanelItems, false));
@@ -165,7 +166,7 @@ function toggleDetailsLocation() {
         detailsPanel.add(rdp.remove(detailsPanelItems, false));
         // disable the opening of the righthand panel
         rdp.collapse(false);
-        rdp.hide();
+        //rdp.hide();
         updateDetailsPanelPosition();
         detailsPanel.doLayout();     
         detailsPanel.show();
@@ -183,6 +184,7 @@ function updateDetailsPanel(layer) {
     
     detailsPanel.text = detailsPanelLayer.name;
     detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
+    mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + detailsPanelLayer.name);
     opacitySlider.setLayer(detailsPanelLayer);
 
 
@@ -202,11 +204,7 @@ function updateDetailsPanel(layer) {
 function updateDetailsPanelPosition() {
     
     detailsPanel.show();        
-
-    //if a user has resized or moved the popup then leave it alone
-    console.log((detailsPanel.lastSize.height!= undefined)+" && "+((detailsPanel.x != detailsPanelInitX) ||(detailsPanel.y != detailsPanelInitY)));
     if (detailsPanel.lastSize.height != undefined && (detailsPanel.x != detailsPanelInitX || detailsPanel.y != detailsPanelInitY)) {
-        console.log("set postion");
         detailsPanel.setPosition(detailsPanelInitX,detailsPanelInitY);
     }
 }

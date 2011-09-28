@@ -93,8 +93,11 @@
 
 ul.x-tab-strip-top{
     background-color:#dbdbdb;
-	background-image: url(../images/gray/tabs/tab-strip-bg.gif);
+background-image: url(../images/gray/window/top-bottom.png);
+background: none;
+background-color: #ffffff;
 	border-bottom-color:#d0d0d0;
+        padding-top: 10px;
 }
 
 ul.x-tab-strip-bottom{
@@ -1347,12 +1350,12 @@ a.x-menu-item {
 }
 
 .x-panel-header {
-    color:#333;
+    color:#15428B;
 	font-weight:bold; 
     font-size: 11px;
     font-family: tahoma,arial,verdana,sans-serif;
     border-color:#d0d0d0;
-    background-image: url(../images/gray/panel/white-top-bottom.gif);
+    background-image: url(../images/gray/window/top-bottom.png);
 }
 
 .x-panel-body {
@@ -1378,7 +1381,7 @@ a.x-menu-item {
 }
 
 .x-panel-tc {
-	background-image: url(../images/gray/panel/top-bottom.gif);
+	background-image: url(../images/gray/window/top-bottom.png);
 }
 
 .x-panel-tl, .x-panel-tr, .x-panel-bl,  .x-panel-br{
@@ -1429,7 +1432,7 @@ a.x-menu-item {
 }
 
 .x-window-tl .x-window-header {
-    color:#555;
+    color:#15428B;
 	font:bold 11px tahoma,arial,verdana,sans-serif;
 }
 
