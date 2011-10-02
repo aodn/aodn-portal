@@ -41,6 +41,12 @@
                             <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxyPort")}</td>
                             
                         </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="config.catalogUrl.label" default="Catalog Url" /></td>                            
+                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "catalogUrl")}</td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="config.initialBbox.label" default="Initial Bbox" /></td>                            

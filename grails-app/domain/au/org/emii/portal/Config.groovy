@@ -9,6 +9,7 @@ class Config {
     String proxy
     Integer proxyPort
     String initialBbox
+    String catalogUrl
     Menu defaultMenu
     Menu contributorMenu
     Menu regionMenu
@@ -25,6 +26,7 @@ class Config {
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
+        catalogUrl(url: true)
         defaultMenu()
         contributorMenu()
         regionMenu()

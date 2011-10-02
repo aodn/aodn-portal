@@ -46,6 +46,7 @@
 <script src="${resource(dir:'js',file:'portal/components/mainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/menuPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/detailsPanel.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/components/ncWMSAnimation.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/components/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/components/ramadda.js')}"  type="text/javascript"></script>
