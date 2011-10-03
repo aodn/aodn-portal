@@ -8,34 +8,34 @@
 
 
 h1 {
-    color: #3B6E8F;
+    color: #15428B;
     font-size: 20px;
     font-weight: bold;
 }
 
 h2 {
-    color: #3B6E8F;
+    color: #15428B;
     font-size: 16px;
     font-weight: bold;
 }
 h3 {
-    color: #3B6E8F;
+    color: #15428B;
     font-size: 14px;
     font-weight: bold;
     margin: 2px 0 ;
 }
 h4 {
-    color: #3B6E8F;
+    color: #15428B;
     font-size: 12px;
     margin: 2px 0px;
 }
 h5 {
-    color: #3B6E8F;
+    color: #15428B;
     font-size: 11px;
     margin: 2px 0 ;
 }
 h6 {
-    color: #3B6E8F;
+    color: #15428B;
     display: inline;
     font-size: 11px;
     margin: 2px 0 ;
@@ -64,7 +64,7 @@ a img{
     -webkit-border-radius: 0.3em;
     border-radius: 0.3em;
     background-color: white;
-    padding: 10px;
+    padding: 30px;
     border: none! important;
     font-size: 12px;
     
@@ -293,7 +293,7 @@ border: 1px solid #ddd;
 	padding: 10px 5px;
 }
 #featureinfocontent b { 
-	color:#3B6E8F; 
+	color:#15428B; 
 	font-weight: bold;
 }
 #featureinfocontent ul { 
@@ -423,3 +423,5 @@ JQUERY AUTO COMPLETE
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
+
+#detailsPanel {z-index: 900 !important} 

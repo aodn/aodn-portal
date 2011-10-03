@@ -5,7 +5,7 @@
  * http://www.sencha.com/license
  */
 .ext-el-mask {
-    background-color: #ccc;
+    background-color: #333;
 }
 
 .ext-el-mask-msg {
@@ -27,7 +27,8 @@
 }
 
 .x-item-disabled {
-    color: gray;
+    color: inherit;
+    border: none! important;
 }
 
 .x-item-disabled * {
@@ -209,10 +210,20 @@ ul.x-tab-strip-bottom{
 }
 
 .x-form-text, textarea.x-form-field{
-    background-color:#fff;
-    background-image:url(../images/default/form/text-bg.gif);
-    border-color:#C1C1C1;
+    background-image:none;
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 0px 0;
+    margin-right: 2px;
+    padding: 2px 4px! important;
+
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 2px 2px 3px 0px #eee;
+    box-shadow: 2px 2px 3px 0px #eee;
 }
+
 
 .x-form-select-one {
     background-color:#fff;
@@ -229,8 +240,16 @@ ul.x-tab-strip-bottom{
 }
 
 .x-form-field-wrap .x-form-trigger{
+    height: 19px;
+    margin-bottom: 2px;
     background-image:url(../images/gray/form/trigger.gif);
-    border-bottom-color:#b5b8c8;
+    border: 1px solid #d0d0d0;    
+    border-bottom: 2px solid #d0d0d0;
+    background-position: 1px -1px;  
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 2px 2px 3px 0px #eee;
+    box-shadow: 2px 2px 3px 0px #eee;
 }
 
 .x-form-field-wrap .x-form-date-trigger{
@@ -1433,7 +1452,7 @@ a.x-menu-item {
 
 .x-window-tl .x-window-header {
     color:#15428B;
-	font:bold 11px tahoma,arial,verdana,sans-serif;
+	font:bold 12px tahoma,arial,verdana,sans-serif;
 }
 
 .x-window-tc {
