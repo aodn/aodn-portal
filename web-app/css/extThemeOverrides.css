@@ -17,8 +17,8 @@
     background-image:url('../img/icons/treeMinus.png');
 }
 
-.ext-el-mask {
-    background-color: #666666;
+.ext-el-mask, .x4-mask{
+    background-color: #333333;
 }
    
 
@@ -80,3 +80,5 @@
 .legendImage {
     margin: 10px 0px;
 }
+
+
