@@ -14,11 +14,9 @@ environments {
    development {
        dataSource {
           // dbCreate = "update" // one of 'create', 'create-drop','update'
-          url = "jdbc:postgresql://obsidian.bluenet.utas.edu.au:5432/portalV2Development?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-           //url = "jdbc:postgresql://localhost:5432/publications"
-
-           username = "portalV2DevelopmentUser"
-           password = "portalV2DevelopmentUser"
+            url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+            username = "portal2user"
+            password = "wtingzgsfdbat"
 
            // logSql = true
        }
@@ -39,11 +37,9 @@ environments {
             // change this when the time comes...
 
             driverClassName = "org.postgresql.Driver"
-            url = "jdbc:postgresql://obsidian.bluenet.utas.edu.au:5432/portalV2Development?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-           //url = "jdbc:postgresql://localhost:5432/publications"
-
-           username = "portalV2DevelopmentUser"
-           password = "portalV2DevelopmentUser"
+            url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+            username = "portal2user"
+            password = "wtingzgsfdbat"
 
         }
     }
