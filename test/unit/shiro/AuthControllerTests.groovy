@@ -60,14 +60,20 @@ class AuthControllerTests extends ControllerUnitTestCase {
     
     void testLoginAction() {
         
-        def model
+         // Mock domain for test
+        Config firstConfig = new Config(name : "FirstConfig")
+        Config secondConfig = new Config(name : "SecondConfig")
+        mockDomain(Config, [firstConfig, secondConfig])
+                 
+        def returnedMap
         
         // Call login with no params
-        model = controller.login()
+        returnedMap = controller.login()
 
-        assertEquals "Username should be preserved", null, model.username
-        assertEquals "RememberMe should be false when null is passed-in", false, model.rememberMe
-        assertEquals "TtargetUri should be preserved", null, model.targetUri
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
+        assertEquals "Username should be preserved", null, returnedMap.username
+        assertEquals "RememberMe should be false when null is passed-in", false, returnedMap.rememberMe
+        assertEquals "TtargetUri should be preserved", null, returnedMap.targetUri
         
         // Set up params for next call
         mockParams.username = "un"
@@ -75,11 +81,12 @@ class AuthControllerTests extends ControllerUnitTestCase {
         mockParams.targetUri = 'http://www.google.com/'
         
         // Call again (not-null params)
-        model = controller.login()
+        returnedMap = controller.login()
         
-        assertEquals "Username should be preserved", "un", model.username
-        assertEquals "RememberMe should be true if not-null value passed in", true, model.rememberMe
-        assertEquals "TtargetUri should be preserved", "http://www.google.com/", model.targetUri
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
+        assertEquals "Username should be preserved", "un", returnedMap.username
+        assertEquals "RememberMe should be true if not-null value passed in", true, returnedMap.rememberMe
+        assertEquals "TtargetUri should be preserved", "http://www.google.com/", returnedMap.targetUri
     }
     
     void testSignInAction() {
@@ -146,27 +153,26 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "You do not have permission to access this page.", controller.response.contentAsString
     }
     
-	       /*  Commented out to prevent build failure
     void testRegisterAction() {
 
         // Mock domain for test
         Config firstConfig = new Config(name : "FirstConfig")
-        mockDomain(Config, [firstConfig])
+        Config secondConfig = new Config(name : "SecondConfig")
+        mockDomain(Config, [firstConfig, secondConfig])
         mockForConstraintsTests(UserAccountCommand)
         
         // Call register action
-        def model = controller.register()
+        def returnedMap = controller.register()
         
         User emptyUser = new User()
         
-        assertEquals "Config instances should be first one in list", firstConfig, model.configInstance
-        assertEquals "UserAccountCommand emailAddress should be same as new User", emptyUser.emailAddress, model.userAccountCmd.emailAddress
-        assertEquals "UserAccountCommand previousEmailAddress should be null", null, model.userAccountCmd.previousEmailAddress
-        assertEquals "UserAccountCommand firstName should be same as new User", emptyUser.firstName, model.userAccountCmd.firstName
-        assertEquals "UserAccountCommand lastName should be same as new User", emptyUser.lastName, model.userAccountCmd.lastName
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
+        assertEquals "UserAccountCommand emailAddress should be same as new User", emptyUser.emailAddress, returnedMap.userAccountCmd.emailAddress
+        assertEquals "UserAccountCommand previousEmailAddress should be null", null, returnedMap.userAccountCmd.previousEmailAddress
+        assertEquals "UserAccountCommand firstName should be same as new User", emptyUser.firstName, returnedMap.userAccountCmd.firstName
+        assertEquals "UserAccountCommand lastName should be same as new User", emptyUser.lastName, returnedMap.userAccountCmd.lastName
        
     }
-    */
 	
     void testCreateUserAction() {
         
@@ -230,8 +236,16 @@ class AuthControllerTests extends ControllerUnitTestCase {
     
     void testForgotPasswordAction() {
         
-        controller.forgotPassword()
+        // Mock domain for test
+        Config firstConfig = new Config(name : "FirstConfig")
+        Config secondConfig = new Config(name : "SecondConfig")
+        mockDomain(Config, [firstConfig, secondConfig])
         
+        def returnedMap
+        
+        returnedMap = controller.forgotPassword()
+        
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
         assertEquals "No redirect should take place", 0, redirectArgs.size()
         assertEquals "No model etc. should be returned", 0, renderArgs.size()
     }
