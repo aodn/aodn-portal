@@ -20,7 +20,8 @@ class AuthController {
     def index = { redirect(action: "login", params: params) }
 
     def login = {
-        return [ username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri ]
+        def configInstance = Config.list()[0]
+        return [ username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri, configInstance: configInstance ]
     }
 
     def signIn = {
@@ -121,7 +122,8 @@ class AuthController {
     }
     
     def forgotPassword = {
-
+        def configInstance = Config.list()[0]
+        return [configInstance: configInstance]
     }
     
     def resetPassword = {
