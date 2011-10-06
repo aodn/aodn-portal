@@ -14,7 +14,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       this.facetStore = new Portal.search.data.FacetStore();
       this.resultsStore = GeoNetwork.data.MetadataResultsStore();
       //TODO: move geonetwork url to application configuration
-      this.catalogue =  new GeoNetwork.Catalogue({hostUrl: 'http://asdddev.emii.org.au/geonetwork'});
+      this.catalogue =  new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
       this.catalogue.metadataStore = this.resultsStore;
    
       this.items = [{

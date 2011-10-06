@@ -12,7 +12,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   width: 50,
                   xtype: 'templatecolumn',
                   //TODO: Use configurable geonetwork url
-                  tpl: '<img class="p-logo" src="http://asdddev.emii.org.au/geonetwork/images/logos/{source}.gif"/>',
+                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'images/logos/{source}.gif"/>',
                   dataIndex: 'source'
                },{
                   header: 'Description',
@@ -65,7 +65,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   viewMetadataExecute: function(grid, rowIndex, colIndex) {
      var rec = this.store.getAt(rowIndex);
      //TODO: allow service url to be configured
-     var viewmetadata = 'http://asdddev.emii.org.au/geonetwork/srv/en/metadata.show\?uuid\='+rec.get('uuid');
+     var viewmetadata = Portal.app.config.catalogUrl + 'srv/en/metadata.show\?uuid\='+rec.get('uuid');
      
      window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
            
