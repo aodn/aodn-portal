@@ -6,7 +6,6 @@ class HomeController {
     def index = { 
       // this is the main portal entry
       // get the only instance of the config
-      def configInstance = Config.list()[0]
-      [configInstance: configInstance]
+      [configInstance: Config.activeInstance()]
     }
 }

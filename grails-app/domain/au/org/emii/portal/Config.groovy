@@ -32,5 +32,9 @@ class Config {
         regionMenu()
         defaultLayers(nullable:true)
     }
+    
+    static Config activeInstance() {
+        return Config.list()[0]
+    }
 }
 

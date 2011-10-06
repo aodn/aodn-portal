@@ -20,8 +20,7 @@ class AuthController {
     def index = { redirect(action: "login", params: params) }
 
     def login = {
-        def configInstance = Config.list()[0]
-        return [ username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri, configInstance: configInstance ]
+        return [ username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri, configInstance: Config.activeInstance() ]
     }
 
     def signIn = {
@@ -81,7 +80,7 @@ class AuthController {
     }
     
     def register = {
-        def configInstance = Config.list()[0]
+        def configInstance = Config.activeInstance()
         def userAccountCmd = UserAccountCommand.from(new User())
         
         return [configInstance: configInstance, userAccountCmd: userAccountCmd]
@@ -122,7 +121,7 @@ class AuthController {
     }
     
     def forgotPassword = {
-        def configInstance = Config.list()[0]
+        def configInstance = Config.activeInstance()
         return [configInstance: configInstance]
     }
     
