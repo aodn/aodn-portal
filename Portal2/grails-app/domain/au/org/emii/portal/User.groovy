@@ -43,6 +43,6 @@ class User {
     @Override
     public String toString() {
         
-        return String.format("%s %s (%s)", firstName, lastName, emailAddress)
+        return "${firstName} ${lastName} (${emailAddress})"
     }
 }
