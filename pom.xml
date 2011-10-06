@@ -309,7 +309,7 @@
 	          	<include>ext-4.0.2a/builds/ext-all-sandbox-debug.js</include>
 	          	<include>ext-3.3.1/adapter/ext/ext-base.js</include>
 	          	<include>ext-3.3.1/ext-all.js</include>
-	          	<include>js/portal/helpers/GeoExt.ux.BaseLayerCombobox.js</include>
+	          	<include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
 	          	<include>OpenLayers-2.10/OpenLayers.js</include>
 	          	<include>GeoExt/script/GeoExt.js</include>
 	          	<include>Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js</include>
