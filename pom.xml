@@ -335,12 +335,12 @@
 	          	<include>portal/search/ResultsGrid.js</include>
 	          	<include>portal/config/FacetConfig.js</include>
 	          	<include>portal/locale/portal-lang-en.js</include>
-	          	<include>portal/components/map.js</include>
-	          	<include>portal/components/mainMapPanel.js</include>
-	          	<include>portal/components/menuPanel.js</include>
-	          	<include>portal/components/detailsPanel.js</include>>
-	          	<include>portal/components/viewport.js</include>
-	          	<include>portal/components/ramadda.js</include>
+	          	<include>portal/mainMap/map.js</include>
+	          	<include>portal/mainMap/mainMapPanel.js</include>
+	          	<include>portal/mainMap/menuPanel.js</include>
+	          	<include>portal/mainMap/detailsPanel.js</include>>
+	          	<include>portal/viewport.js</include>
+	          	<include>portal/mainMap/ramadda.js</include>
 	          </sourceIncludes>
 	        </configuration>
       </plugin>

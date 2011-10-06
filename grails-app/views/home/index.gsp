@@ -42,14 +42,14 @@
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/config/FacetConfig.js')}" defer="defer"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/locale/portal-lang-en.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/map.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/mainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/menuPanel.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/detailsPanel.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/ncWMSAnimation.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/components/viewport.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/map.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/mainMapPanel.js')}" defer="defer"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/menuPanel.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/ncWMSAnimation.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/viewport.js')}" defer="defer"  type="text/javascript"></script>
 
-<script src="${resource(dir:'js',file:'portal/components/ramadda.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
 
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
