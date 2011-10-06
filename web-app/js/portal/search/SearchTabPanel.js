@@ -3,7 +3,8 @@ Ext.namespace('Portal.search');
 Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
    cls: 'p-search',
-   searchDefaults: {E_hitsperpage: 15, E_dynamic: 'true'},
+   //TODO: create config value for map layer search filter?
+   searchDefaults: {E_hitsperpage: 15, E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'},
    title: 'Search',
 
    initComponent: function() {
@@ -93,7 +94,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 
       // Pre-populate refinement panel
-      this.runSearch({E_hitsperpage: 1, E_dynamic: 'true'}, 1, false);
+      this.runSearch({E_hitsperpage: 1, E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'}, 1, false);
       // Update paging toolbar manually for the moment 
       this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
    },

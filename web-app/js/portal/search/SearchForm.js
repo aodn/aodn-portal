@@ -84,7 +84,13 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         url: opensearchSuggest,
                         hideLabel: false,
                         width: 250}],
-                     [6, 'Map Layer', false, {fieldLabel: 'Map Layer', name: 'dynamic', xtype: 'checkbox', checked: true, width: 250}]
+                     [6, 'Map Layer', false, {
+                    	fieldLabel: 'Map Layer',
+                    	name: 'protocol',
+                    	xtype: 'checkbox',
+                    	checked: true,
+                    	getValue: function() {return this.checked?"OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map":"";},
+                    	width: 250}]
                   ]
                }),
                valueField: 'xtype',
