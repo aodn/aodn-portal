@@ -34,97 +34,101 @@ var topMenuPanel, centreMenuPanel;
 
 //
 //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-Ext.BLANK_IMAGE_URL = 'img/blank.gif'
+Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
 
+//--------------------------------------------------------------------------------------------
+Ext.ns('Portal');
+
+Portal.app = {
+	init: function() {
+	    Ext.Ajax.request({
+	        url: 'config/list?type=JSON',
+	        scope: this,
+	        success: function(resp) {        
+	            
+	            this.config = Ext.util.JSON.decode(resp.responseText);
+	            
+	            if(this.config.length == 0)
+	            {
+	                Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
+	            }
+	            else
+	            {
+	                
+	                if(this.config.enableMOTD)  {
+	
+	                    var nav = new Ext.Panel({
+	                        labelWidth:100,
+	                        frame:false,                      
+	                        title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
+	                        html: this.config.motd.motd,
+	                        padding: 20,
+	                        unstyled: true,
+	                        width:300
+	                    });
+	
+	                    var dlgPopup = new Ext.Window({  
+	                        modal:true,
+	                        layout:'fit',
+	                        x: 190,
+	                        y:60,
+	                        unstyled: true, 
+	                        cls: "motd",
+	                        closable:true,
+	                        resizable:false,
+	                        plain:true,
+	                        items:[nav]
+	                    });
+	
+	                    dlgPopup.show();
+	
+	                };
+	            };
+	
+	            Ext.Ajax.request({
+	                url: 'layer/listBaseLayersAsJson',
+	                scope: this,
+	                success: function(resp){
+	                    
+	                    var bl = Ext.util.JSON.decode(resp.responseText);
+	                    baseLayerList = new Array();
+	
+	                    for(var i = 0; i < bl.length; i++){
+	                        var l = new OpenLayers.Layer.WMS(
+	                            bl[i].name,
+	                            bl[i].server.uri,
+	                            {
+	                                layers: bl[i].layers
+	                            },
+	                            {
+	                                wrapDateLine: true,
+	                                transitionEffect: 'resize',
+	                                isBaseLayer: true
+	                            });
+	                        baseLayerList.push(l);
+	                    }
+	                    
+	                    // CAREFULL HERE WITH THE ORDERING!!!
+	                    initDetailsPanel();
+	                    initMap(this.config);
+	                    defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
+	                    //loadDefaultMenu(defaultMenu);
+	                    initMenusPanel(defaultMenu);
+	                    doViewPort();
+	                    defaultLayers = this.config.defaultLayers; // into global space so it can be modified
+	                    loadDefaultLayers();
+	                    zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
+	                }
+	            });
+	
+	        }
+	    });
+	}
+};
 
 //GeoExt stuff
-Ext.onReady(function() {
-
-    Ext.Ajax.request({
-        url: 'config/list?type=JSON',
-        success: function(resp){        
-            
-            var config = Ext.util.JSON.decode(resp.responseText);
-            
-            var defaultLayersId = new Array();
-
-            if(config.length == 0)
-            {
-                Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
-            }
-            else
-            {
-                
-                if(config.enableMOTD)  {
-
-                    var nav = new Ext.Panel({
-                        labelWidth:100,
-                        frame:false,                      
-                        title: "<h2>"+ config.motd.motdTitle + "</h2>", 
-                        html: config.motd.motd,
-                        padding: 20,
-                        unstyled: true,
-                        width:300
-                    });
-
-                    var dlgPopup = new Ext.Window({  
-                        modal:true,
-                        layout:'fit',
-                        x: 190,
-                        y:60,
-                        unstyled: true, 
-                        cls: "motd",
-                        closable:true,
-                        resizable:false,
-                        plain:true,
-                        items:[nav]
-                    });
-
-                    dlgPopup.show();
-
-                }
-            }
-
-            Ext.Ajax.request({
-                url: 'layer/listBaseLayersAsJson',
-                success: function(resp){
-                    
-                    var bl = Ext.util.JSON.decode(resp.responseText);
-                    baseLayerList = new Array();
-
-                    for(var i = 0; i < bl.length; i++){
-                        var l = new OpenLayers.Layer.WMS(
-                            bl[i].name,
-                            bl[i].server.uri,
-                            {
-                                layers: bl[i].layers
-                            },
-                            {
-                                wrapDateLine: true,
-                                transitionEffect: 'resize',
-                                isBaseLayer: true
-                            });
-                        baseLayerList.push(l);
-                    }
-                    
-                    // CAREFULL HERE WITH THE ORDERING!!!
-                    initDetailsPanel();
-                    initMap(config);
-                    defaultMenu = config.defaultMenu; // into global space so it can be modified later if required
-                    //loadDefaultMenu(defaultMenu);
-                    initMenusPanel(defaultMenu);
-                    doViewPort();
-                    defaultLayers = config.defaultLayers; // into global space so it can be modified
-                    loadDefaultLayers();
-                    zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
-                }
-            });
-
-        }
-    });
-
-});
+Ext.onReady(Portal.app.init, Portal.app);
 
 function doViewPort()
 {
