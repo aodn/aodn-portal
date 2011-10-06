@@ -1,9 +1,9 @@
-describe("Portal.data.RefinementList", function() {
+describe("Portal.search.data.RefinementList", function() {
 
    describe("instantiation", function() {
 
       it('Should create an empty list', function() {
-         var refinementList = new Portal.data.RefinementList();
+         var refinementList = new Portal.search.data.RefinementList();
 
          var json = refinementList.getJson();
          
@@ -15,7 +15,7 @@ describe("Portal.data.RefinementList", function() {
    describe("addition", function() {
 
       it('Should add facet and value to the list', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           
@@ -31,7 +31,7 @@ describe("Portal.data.RefinementList", function() {
       });
       
       it('Should add new value for facet to existing facet values', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet1', 'value2');
@@ -48,7 +48,7 @@ describe("Portal.data.RefinementList", function() {
       });
       
       it('Should add new facet to existing facets', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet1', 'value2');
@@ -71,7 +71,7 @@ describe("Portal.data.RefinementList", function() {
    describe("removal", function() {
 
       it('Should remove a facet value from the list', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet2', 'value1');
@@ -98,7 +98,7 @@ describe("Portal.data.RefinementList", function() {
        });
        
       it('Should remove last facet on list', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           
@@ -110,7 +110,7 @@ describe("Portal.data.RefinementList", function() {
        });
        
       it('Should remove last facet value from a facet', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet2', 'value1');
@@ -138,7 +138,7 @@ describe("Portal.data.RefinementList", function() {
    describe("clear", function() {
 
 	      it('Should clear the list', function() {
-	          var refinementList = new Portal.data.RefinementList();
+	          var refinementList = new Portal.search.data.RefinementList();
 	          
 	          refinementList.add('facet1', 'value1');
 	          refinementList.add('facet2', 'value1');
@@ -159,7 +159,7 @@ describe("Portal.data.RefinementList", function() {
    describe("contains", function() {
 
       it('Should find facet value in the list', function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet2', 'value1');
@@ -174,7 +174,7 @@ describe("Portal.data.RefinementList", function() {
        });
 	        
 	   it("Shouldn't find value not in the list", function() {
-          var refinementList = new Portal.data.RefinementList();
+          var refinementList = new Portal.search.data.RefinementList();
           
           refinementList.add('facet1', 'value1');
           refinementList.add('facet2', 'value1');
@@ -191,7 +191,7 @@ describe("Portal.data.RefinementList", function() {
    
    describe("getArray", function() {
 	   it("Should return array containing all facets", function() {
-	       var refinementList = new Portal.data.RefinementList();
+	       var refinementList = new Portal.search.data.RefinementList();
 	       
 	       refinementList.add('facet1', 'value1');
 	       refinementList.add('facet2', 'value1');

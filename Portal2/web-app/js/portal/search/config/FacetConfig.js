@@ -1,7 +1,7 @@
 // List geonetwork facets that should be displayed
 // Note: facets returned by geonetwork are defined in geonetwork WEB-INF/config-summary.xml
 
-Portal.data.FacetStore.prototype.include = [
+Portal.search.data.FacetStore.prototype.include = [
    'keywords',
    'organizationNames',
    'dataParameters'

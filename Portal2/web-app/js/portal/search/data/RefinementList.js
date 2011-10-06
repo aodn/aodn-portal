@@ -1,7 +1,7 @@
-Ext.namespace('Portal.data');
+Ext.namespace('Portal.search.data');
 
 /**
- * api: (define) module = Portal.data class = RefinementList
+ * api: (define) module = Portal.search.data class = RefinementList
  */
 /**
  * api: method[RefinementList]
@@ -10,11 +10,11 @@ Ext.namespace('Portal.data');
  * 
  */
 
-Portal.data.RefinementList = function() {
+Portal.search.data.RefinementList = function() {
 	this.refinements = {};
 };
 
-Portal.data.RefinementList.prototype = {
+Portal.search.data.RefinementList.prototype = {
 	add : function(facet, value) {
 		if (!this.refinements[facet]) {
 			this.refinements[facet] = {};

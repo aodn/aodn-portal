@@ -1,7 +1,7 @@
-Ext.namespace('Portal.data');
+Ext.namespace('Portal.search.data');
 
 /** api: (define) 
- *  module = Portal.data
+ *  module = Portal.search.data
  *  class = FacetStore
  */
 /** api: method[FacetStore] 
@@ -10,7 +10,7 @@ Ext.namespace('Portal.data');
  *
 */
 
-Portal.data.FacetStore = Ext.extend(Ext.util.Observable, {
+Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
    /** api: property[data] 
     * ``Object`` Source data object from which search facets were read (Geonetwork search summary)
     */
@@ -21,9 +21,9 @@ Portal.data.FacetStore = Ext.extend(Ext.util.Observable, {
     *
     */
    constructor: function(config){
-      Portal.data.FacetStore.superclass.constructor.call(this, config);
+      Portal.search.data.FacetStore.superclass.constructor.call(this, config);
       
-      this.filters = new Portal.data.RefinementList(),
+      this.filters = new Portal.search.data.RefinementList(),
 
       /** private: event[load] 
        *  Fires after data loaded.
@@ -108,7 +108,7 @@ Portal.data.FacetStore = Ext.extend(Ext.util.Observable, {
     *
     *  Listeners will be called with the following arguments:
     *
-    *    * ``this`` : Portal.data.FacetStore
+    *    * ``this`` : Portal.search.data.FacetStore
     *    * ``Object`` : Summary data formatted as a JSON object
     */
    onLoad: function(){
