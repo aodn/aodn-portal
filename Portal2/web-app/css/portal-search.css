@@ -1,10 +1,10 @@
 .p-search a, .p-search p, .p-search h1 {
-   color: #444;
-   font-size: small;
+   color: black;
 }
 
 .p-search h1 {
    margin-bottom: 5;
+   font-size: 14px;
 }
 
 .p-results li {
@@ -26,29 +26,28 @@
 .p-facet-values, .p-selected-values {
    list-style-type: none !important;
    padding-left: 1em;
+   font-weight: normal;
 }
 
 .p-facet-name, .p-selected-name {
    padding-top: 10px;
    width: 360px;
    float: left;
+   font-weight: bold;
 }
 
 .p-facets, .p-refinements {
-   font-family: Verdana, Arial, Helvetica, sans-serif;
-   font-size: 70%;
+   font: normal 12px tahoma, arial, helvetica, sans-serif;
 }
 
 .p-facets {
    padding: 0px 12px 0px 12px;
    float: left;
-   font-size: 70%;
 }
 
 .p-refinements {
    padding: 0px 12px 6px 12px;
    background-color: #DBDBDB;
-   font-size: 65%;  
    float: left;
 }
 
@@ -58,10 +57,6 @@
 
 .p-refinements-label {
    font-weight: bold;
-}
-
-.p-remove-all, .p-remove-value {
-   font-size: 75%;
 }
 
 .p-remove-all {
