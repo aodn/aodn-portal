@@ -18,7 +18,7 @@ class ConfigController {
     def list = {
         
         // expect only one Config instance to exist
-        def configInstance = Config.list()[0];
+        def configInstance = Config.activeInstance();
         
         configInstance = massageConfigInstance(configInstance);
         
@@ -34,7 +34,7 @@ class ConfigController {
         // only one instance allowed
         def configInstance;        
         if (Config.list().size() > 0) {
-           configInstance = Config.list()[0]
+           configInstance = Config.activeInstance()
            flash.message = "ERROR: New Config cannot be created. There can only be one instance of the configuration"
            redirect(action: "edit")     
         }
@@ -85,7 +85,7 @@ class ConfigController {
 
     def edit = {
         // dont get params get the only instance
-        def configInstance = Config.list()[0]
+        def configInstance = Config.activeInstance()
         //def configInstance = Config.get(params.id)
         if (!configInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), 'existing config'])
