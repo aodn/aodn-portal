@@ -5,8 +5,8 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
         
-    <script src="${resource(dir:'js',file:'portal/configComponents/grid2treedrag.js')}" type="text/javascript"></script>
-    <script src="${resource(dir:'js',file:'portal/configComponents/treeSerializer.js')}"  type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
         
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
                 <script>         
