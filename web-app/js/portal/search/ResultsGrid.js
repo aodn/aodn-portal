@@ -2,6 +2,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
+   autoExpandColumn: 'mdDesc',
    
   initComponent: function() {
      var config = {
@@ -11,10 +12,10 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   header: 'Logo', 
                   width: 50,
                   xtype: 'templatecolumn',
-                  //TODO: Use configurable geonetwork url
                   tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'images/logos/{source}.gif"/>',
                   dataIndex: 'source'
                },{
+            	   id: 'mdDesc',
                   header: 'Description',
                   width: 650,
                   xtype: 'templatecolumn',
