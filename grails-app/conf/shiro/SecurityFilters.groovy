@@ -19,6 +19,7 @@ class SecurityFilters {
                
         configAccess(controller: "config", action: "list") {
             before = {
+                
                 logRequest("configAccess", controllerName, actionName)
                 
                 // Allow all access
@@ -28,6 +29,7 @@ class SecurityFilters {
         
         serverAccess(controller: "server", action: "list") {
             before = {
+                
                 logRequest("serverAccess", controllerName, actionName)
                 
                 // Allow all access
@@ -37,6 +39,7 @@ class SecurityFilters {
         
         layerAccess(controller: "layer", action: "list|listBaseLayersAsJson|listNonBaseLayerAsJson|showLayerByItsId") {
             before = {
+                
                 logRequest("layerAccess", controllerName, actionName)
                 
                 // Allow all access
@@ -46,6 +49,7 @@ class SecurityFilters {
         
         proxyAccess(controller: "proxy", action: "index") {
             before = {
+                
                 logRequest("proxyAccess", controllerName, actionName)
                 
                 // Allow all access
@@ -55,6 +59,7 @@ class SecurityFilters {
         
         authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
             before = {
+                
                 logRequest("authAccess", controllerName, actionName)
                 
                 // Allow all access
@@ -74,13 +79,13 @@ class SecurityFilters {
                 if (!controllerName) return true
                                 
                 // Access control by convention.
-  //              accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
+                accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
             }
         }
     }
     
     private void logRequest(String filterName, String controllerName, String actionName) {
         
-        log.debug( String.format("Request matches %s filter. Request: controllerName = '%s', actionName = '%s'.", filterName, controllerName, actionName) )
+        log.debug "Request matches ${filterName} filter. Request: controllerName = '${controllerName}', actionName = '${actionName}'."
     }
 }
