@@ -65,7 +65,7 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         assertTrue "Filter result should be true (for no controller name)", filterResult
         
-        // Test access allowed for accessAllowed 
+        // Test access allowed for accessAllowed = true
         setControllerName("ControllerNameInTest")
         filter.request.accessAllowed = true
         
