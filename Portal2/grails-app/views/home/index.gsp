@@ -2,6 +2,10 @@
 
 <head>
 
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
 
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>
@@ -59,13 +63,30 @@
 
 <body>
   <div id="header">
-    <shiro:user>Logged-in as: <g:link controller="user" action="updateAccount"><shiro:principal /></g:link> (<g:link controller="auth" action="signOut">Log out</g:link>)</shiro:user>
-    <shiro:notUser>Not logged-in. <g:link controller="auth" action="login">Log in</g:link> or <g:link controller="auth" action="register">register</g:link>.</shiro:notUser>
-    <br/>
-  
-    <g:if test="${flash.message}">
-      <div class="message">${flash.message}</div>
-    </g:if>
+      
+    <img src="images/AODN_logo.png" id="logo" />
+    <h1 id="headerTitle">Australian Oceans Data Network</h1>
+    <div id="freeChoiceLinks" >
+      <a href="nowehereYet">Map</a> 
+      <a href="nowehereYet">Search</a> 
+    </div>
+    
+    <div id="toplinks">
+      <shiro:user>
+          <!--Logged-in as: <g:link controller="user" action="updateAccount">
+          <shiro:principal /></g:link> -->
+           <g:link controller="auth" action="signOut">Log out</g:link>
+      </shiro:user>
+    <shiro:notUser>
+      <g:link controller="auth" action="login">Log in</g:link> or 
+      <g:link controller="auth" action="register">Register</g:link>
+    </shiro:notUser>
+      <a class="external mainlinks" target="_blank"href="http://www.emii.org.au" 
+         title="e-Marine Information Infrastructure" >eMII</a>
+      <a class="external mainlinks" target="_blank"href="http://www.imos.org.au"  
+         title="Integrated Marine Observing System" >IMOS</a>
+      <a  title="IMOS Ocean Portal Help files" >Help</a>
+    </div>
   </div>
 
 </body>

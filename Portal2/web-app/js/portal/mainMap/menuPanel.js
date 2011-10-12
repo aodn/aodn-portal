@@ -34,7 +34,7 @@ function initMenusPanel(menu) {
                 fn:function(node) {
                     if (node.attributes.grailsLayerId){
                         addLayer(node.attributes.grailsLayerId);                      
-                        setDefaultMenuTreeNodeActive(node.attributes.grailsLayerId, false);
+                        setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);
                     }
                     else if (node.attributes.grailsServerId){
                         alert("a server (discovery)") ; 
@@ -45,6 +45,14 @@ function initMenusPanel(menu) {
                         node.expand(); 
                     }
                             
+                }
+            },
+            beforeexpandnode: {
+                fn:function(node) {
+                    //alert("it happened");
+                    if(node != defaultMenuTree.getRootNode()) {
+                        checkDefaultMenuTreeNodeStatus(node);
+                    }
                 }
             }
         }
@@ -170,8 +178,28 @@ function initMenusPanel(menu) {
             }
         }
     });
+    
+    var hideMapOptions = new Ext.form.Checkbox({
+        boxLabel  : 'Hide layer options',
+        inputType : 'radio',
+        listeners: {
+            check: function(thisCheckbox, newValue, oldValue)  {
+                alert("add functionality");
+            }
+        }
+    })
+    var zoomToLayerChooser = new Ext.form.Checkbox({
+        boxLabel  : 'Auto zoom on layer select',
+        inputType : 'radio',
+        checked: Portal.app.config.autoZoom,
+        listeners: {
+            check: function(thisCheckbox, newValue, oldValue)  {                
+                Portal.app.config.autoZoom = newValue;
+            }
+        }
+    })
 
-    var buttonPanel = new Ext.Panel({        
+    var mapOptionsButtonPanel = new Ext.Panel({        
         border: false,      
         items:[
         removeAll,
@@ -181,13 +209,17 @@ function initMenusPanel(menu) {
     
     
     var mapOptionsPanel = new Ext.Panel({
-        title: 'Map Options',
-        padding: 10,
+        //title: 'Map Options',
+        //padding: 10,
+        id : 'mapOptions',
         collapseMode : 'mini',
-        height: 97,
+        height: 115,
         region: 'south',        
         items:[
-        buttonPanel,baselayerMenuPanel
+            hideMapOptions,
+            zoomToLayerChooser,
+            mapOptionsButtonPanel,
+            baselayerMenuPanel
         ]
     });
     
@@ -220,7 +252,7 @@ function initMenusPanel(menu) {
         },
         {
             text: 'Zoom to layer',
-            handler: setExtentLayer
+            handler: zoomToLayer(mapPanel.map, selectedActiveLayer)
         },
         {
             text: 'Toggle Visibility',
@@ -233,7 +265,7 @@ function initMenusPanel(menu) {
 
 }
 
-function setDefaultMenuTreeNodeActive(grailsLayerId, bool) {
+function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     // enable all menu items that correspond. 
     // There can be more than one in the menu
     function checkNode(node)  {          
@@ -244,6 +276,16 @@ function setDefaultMenuTreeNodeActive(grailsLayerId, bool) {
         Ext.each(node.childNodes, checkNode);
     }
     checkNode(defaultMenuTree.getRootNode());
+    
+}
+
+function checkDefaultMenuTreeNodeStatus(node) {
+    
+    // called when activePanel tree nodes are opened
+    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
+        setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
+    });
+
     
 }
 
@@ -264,7 +306,7 @@ function removeActivePanelLayer() {
             }                  
         });
         if (layerCount == 1) {            
-            setDefaultMenuTreeNodeActive(layerId, true);
+            setDefaultMenuTreeNodeStatus(layerId, true);
         }        
         
     }

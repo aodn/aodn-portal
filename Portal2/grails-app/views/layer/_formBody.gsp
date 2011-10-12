@@ -97,7 +97,7 @@
                                     <label for="opacity"><g:message code="layer.opacity.label" default="Opacity" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'opacity', 'errors')}">
-                                    <g:select name="opacity" from="${30..100}" value="${layerInstance?.opacity ?: 100}"  />
+                                    <g:select name="opacity" from="${[30,50,75,100]}" value="${layerInstance?.opacity ?: 100}"  />
                                 </td>
                             </tr>
 

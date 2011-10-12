@@ -1,9 +1,89 @@
 
  body, html {
     font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;
+    background-color: #0165A1;
     
 }
+body {
+    min-width: 950px;
+}
+#header {
+    background: url(../images/portal2header.jpg) no-repeat 0 0;
+    height: 300px;
+    width: 100%;
+}
+#header h1 {
+    color: white;
+    padding: 50px 20px 0px 20px;
+}
+#logo {
+    margin: 3px 5px;
+    float: left;
+}
 
+.footer {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #fafafa;
+    padding: 5px 10px;
+    color: #948A83;
+    border-top: 1px solid #eee;
+}
+
+#freeChoiceLinks  {
+    float: left;
+    position: absolute;
+    left: 600px;
+    top: 50px;
+}
+#freeChoiceLinks a {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;
+    background-color: rgba(73, 176, 224, 0.7);
+    /* RGBa with 0.6 opacity */
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#0165A1, endColorstr=#49B0E0);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#0165A1, endColorstr=#49B0E0)";
+    border-radius: 10px 3px 10px 3px;   
+    box-shadow: 4px 4px 3px 3px #02477E;
+    color: white;
+    padding: 4px 20px;
+    margin-right: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#toplinks {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
+    border-radius: 10px 3px 10px 3px;
+    color: white;
+    float: right;
+    padding: 4px 10px 6px;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+}
+#toplinks a {
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 3px;
+    text-decoration: none;
+}
+#toplinks a:hover {
+    color: #333;
+}
+
+
+.alpha60 {
+/* Fallback for web browsers that doesn't support RGBa */
+background: rgb(0, 0, 0) transparent;
+/* RGBa with 0.6 opacity */
+background: rgba(0, 0, 0, 0.6);
+/* For IE 5.5 - 7*/
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+/* For IE 8*/
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
 
 
 
@@ -54,6 +134,7 @@ a img{
 }
 .leftMenus {
     padding-left: 3px;
+    background-color: white;
 }
 .noborder {
     border: none! important;
@@ -405,7 +486,7 @@ JQUERY AUTO COMPLETE
 .ac_loading {
 	background: white url('indicator.gif') right center no-repeat;
 }
-
+/*
 .floatingDetailsPanel {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -417,11 +498,25 @@ JQUERY AUTO COMPLETE
     margin-right: 20px;
 }
 .floatingDetailsPanelContent {
-    margin: 10px 5px; 
+    margin: 10px; 
 }
+*/
 
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
 
 #detailsPanel {z-index: 900 !important} 
+#mapOptions {
+    margin-right: 3px;
+    margin-bottom: 3px;
+    padding: 10px;
+    background-color: #F1F1F0;    
+    border-radius: 10px;
+    border: 1px solid #CBCED3;
+    box-shadow: 2px 2px 3px 1px #EEEEEE;
+}
+#mapOptions div {
+    background-color: #F1F1F0;
+}
+

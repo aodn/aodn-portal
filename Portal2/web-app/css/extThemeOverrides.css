@@ -31,8 +31,8 @@
     border: 0px;
     /*background: none;*/
 }
-#leftMenus .x-layout-split {
-    background-color: #ccc;
+.x-layout-split {
+    background-color: #FAFAFA;
 }
 
 .x-tip-body {

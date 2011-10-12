@@ -17,6 +17,9 @@ class Config {
     Date motdStart
     Date motdEnd
     Boolean enableMOTD  //toggle
+    Integer westWidth
+    Integer headerHeight
+    Integer footerHeight
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
     
@@ -30,6 +33,9 @@ class Config {
         defaultMenu()
         contributorMenu()
         regionMenu()
+        headerHeight()
+        footerHeight()
+        westWidth()
         defaultLayers(nullable:true)
     }
     

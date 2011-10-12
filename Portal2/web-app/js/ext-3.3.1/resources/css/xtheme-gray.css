@@ -115,7 +115,7 @@ ul.x-tab-strip-bottom{
 
 .x-tab-strip span.x-tab-strip-text {
 	font:normal 11px tahoma,arial,helvetica;
-	color:#333;
+	color:#15428B;
 }
 
 .x-tab-strip-over span.x-tab-strip-text {
@@ -123,7 +123,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-tab-strip-active span.x-tab-strip-text {
-	color:#333;
+	color:#15428B;
     font-weight:bold;
 }
 
@@ -1520,6 +1520,7 @@ a.x-menu-item {
 
 .x-window-plain .x-window-body {
     border-color: #EEEEEE #D0D0D0 #D0D0D0 #EEEEEE;
+    border-width:  1px;
 }
 
 body.x-body-masked .x-window-plain .x-window-mc {
