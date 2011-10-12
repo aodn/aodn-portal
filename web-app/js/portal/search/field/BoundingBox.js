@@ -17,7 +17,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
             items: [{
                xtype: 'label',
                text: 'N',
-               width: 15,
+               width: 15
              },{
                xtype: 'numberfield',
                ref: '../northBL',
