@@ -9,7 +9,7 @@ function initMap(config)  {
     // Stop the pink tiles appearing on error
     OpenLayers.Util.onImageLoadError = function(e) {
         this.style.display = "";
-        this.src="img/blank.gif";
+        this.src="img/layer_error.gif";
     }
 
 
