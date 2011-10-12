@@ -36,14 +36,14 @@ var timestamp; // timestamp for getFeatureInfo requests
 var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
-var testing;//Variable for debug.
+
 
 
 // Pop up things
 var popup;
 
 
-function setMapDefaultZoom(map,config) {
+function setMapDefaultZoom(map) {
     
     /* ---------------
      * left	{Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
@@ -51,8 +51,8 @@ function setMapDefaultZoom(map,config) {
      * right	{Number} The right bounds.
      * top	{Number} The top bounds.
     */
-    if (config.initialBbox != "") {
-        var bbox = config.initialBbox.split(",");
+    if (Portal.app.config.initialBbox != "") {
+        var bbox = Portal.app.config.initialBbox.split(",");
         map.minx = parseInt(bbox[0]);
         map.maxx = parseInt(bbox[2]);
         map.miny = parseInt(bbox[1]);
@@ -90,7 +90,12 @@ function zoomToDefaultZoom(map) {
 }
 
 function zoomToLayer(map, layer){
-    var extent = layer.getDataExtent();
+    
+    var extent;
+    if (layer != undefined) {
+        extent = layer.getDataExtent();
+    }
+    
     if (extent && !isNaN(extent.left)) {
         var width = extent.getWidth() / 2;
         var height = extent.getHeight() / 2;

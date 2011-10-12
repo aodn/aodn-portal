@@ -128,6 +128,33 @@
                                     <g:datePicker  name="motdEnd" precision="minute" value="${configInstance?.motdEnd}"  />
                                 </td>
                             </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="headerHeight"><g:message code="config.headerHeight.label" default="Header Height" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'headerHeight', 'errors')}">
+                                    <g:textField size="4" name="headerHeight" value="${configInstance?.headerHeight}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="footerHeight"><g:message code="config.footerHeight.label" default="Footer Height" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'footerHeight', 'errors')}">
+                                    <g:textField size="4" name="footerHeight" value="${configInstance?.footerHeight}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
+     
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="footerHeight"><g:message code="config.westWidth.label" default="West menus initial width" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'westWidth', 'errors')}">
+                                    <g:textField size="4" name="westWidth" value="${configInstance?.westWidth}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
                         
 
 

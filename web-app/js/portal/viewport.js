@@ -1,8 +1,5 @@
 
 
-var MAX_WIDTH = 1024;
-var MAX_HEIGHT = 1024;
-
 var viewport;
 var mapMainPanel;
 
@@ -24,7 +21,6 @@ var nodeSelected;
  
 // components in menuPanel.js
 var leftTabMenuPanel;
-var activeLayers;
 var defaultMenuTree; 
 var defaultLayers; // from the config
 var defaultMenu; // from the config
@@ -71,8 +67,6 @@ Portal.app = {
 	                    var dlgPopup = new Ext.Window({  
 	                        modal:true,
 	                        layout:'fit',
-	                        x: 190,
-	                        y:60,
 	                        unstyled: true, 
 	                        cls: "motd",
 	                        closable:true,
@@ -111,7 +105,7 @@ Portal.app = {
 	                    
 	                    // CAREFULL HERE WITH THE ORDERING!!!
 	                    initDetailsPanel();
-	                    initMap(this.config);
+	                    initMap();
 	                    defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
 	                    //loadDefaultMenu(defaultMenu);
 	                    initMenusPanel(defaultMenu);
@@ -149,7 +143,7 @@ function doViewPort()
             cls: 'leftMenus',
             collapsible: true,
             split: true,
-            width: 290
+            width: Portal.app.config.westWidth
         },{
             region:'center',
             layout:'border',
@@ -188,32 +182,49 @@ function doViewPort()
 
                 }
             }
-        }]
+        }],
+        listeners: {
+                hide: function(panel) {
+                    if (panel.title == 'Map') {                        
+                        detailsPanel.hide();
+                    }
+                },                
+                show: function(panel) {
+                    if (panel.title == 'Map') {                        
+                        detailsPanel.show();
+                    }
+                }
+        }
+    
     }); 
     mapMainPanel.doLayout();
    
         
     viewport = new Ext.Viewport({
         layout: 'border',
-        stateful: true,
+        boxMinWidth: 900,
         items: [{
+            id: 'viewportHeader',
+            unstyled: true,
             region: 'north',
-            html: '<h1 >test title in extjs land</h1>',
-            height: 50,
-            border: false,
-        margins: '0 0 5 380'
+            height: Portal.app.config.headerHeight,
+            border: false
     }, {
         region: 'south',
-        collapsible: true,
         html: 'Footer goes here',
-        split: true,
-        height: 100,
-        minHeight: 100
+        cls: 'footer',
+        unstyled: true,
+        height: Portal.app.config.footerHeight
     },{
         region: 'center',
         xtype: 'tabpanel', // TabPanel itself has no title        
         autoDestroy: false, // wont destroy tab contents when switching        
         activeTab: 0,
+        unstyled: true,
+        // severe method to hide the usual tab panel header with css
+        headerCfg: {
+            cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
+        },
         items: [            
             mapMainPanel,
             {

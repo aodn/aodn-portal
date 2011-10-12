@@ -1,42 +1,61 @@
 var styleCombo;
 var detailsPanel;
-var detailsPanelInitX = 340;
-var detailsPanelInitY = 150;
 var detailsPanelItems;
-var detailsPanelLayer;
+var selectedActiveLayer;
 var opacitySlider;
 var legendImage;
-var dimension;
+//var dimension;
 var dimensionPanel;
 var ncWMSColourScalePanel;
 var colourScaleMin;
 var colourScaleMax;
 
+var animatePanel;
+
 
 function initDetailsPanel()  {
+
+    var animateLink =  new Ext.Button({  
+        id: 'animateLink',
+        text:'Animations',
+        hidden: true,
+        handler:setupAnimationControl
+    });
+    animatePanel = new Ext.Panel({
+        title: 'Date Picker',
+        plain: true,
+        disabled: true,
+        autoScroll: true,
+        bodyCls: 'floatingDetailsPanel',
+        items: [
+            {
+                ref: 'animatePanelContent',       
+                xtype: 'panel'                
+            }
+        ],
+        listeners: {
+            show: function(slider) {  
+                // the tabpanel needs to be visible before setup below
+                setupAnimationControl();
+            }
+        }
+    });
     
     legendImage = new GeoExt.LegendImage({
         imgCls: 'legendImage'
     });
     
-    
-    var t = new Ext.Template([
-        '<div name="{id}">',
-            '<span class="{cls}">{name:trim} {value:ellipsis(10)}</span>',
-        '</div>',
-    ]);
-    //t.compile();
-    //t.append('some-element', {id: 'myid', cls: 'myclass', name: 'foo', value: 'bar'});
-    
     var colourScaleHeader = new Ext.form.Label({
         html: "<h4>Set Parameter Range</h4>"
     });
+    
+
+    
     colourScaleMin = new Ext.form.TextField({
         fieldLabel: "Min",
-        layout:'form',
+        //layout:'form',
         enableKeyEvents: true,
         labelStyle: "width:30px",
-        //style: {paddingLeft:"55px"}, // only on input 
         ctCls: 'smallIndentInputBox',
         grow: true,
         listeners: {
@@ -48,11 +67,10 @@ function initDetailsPanel()  {
 
     colourScaleMax = new Ext.form.TextField({
         fieldLabel: "Max",
-        layout:'form',
+        //layout:'form',
         enableKeyEvents: true,
         labelStyle: "width:30px",
-        //labelStyle: "",   
-        //style: {paddingLeft:"55px"}, // only on input         
+        //labelStyle: "",        
         ctCls: 'smallIndentInputBox',
         grow: true,
         listeners: {
@@ -68,7 +86,7 @@ function initDetailsPanel()  {
         height: 'auto',
         width: 200
     });
-    ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMin, colourScaleMax);
+    ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMax,colourScaleMin);
 
     // create a separate slider bound to the map but displayed elsewhere
     opacitySlider = new GeoExt.LayerOpacitySlider({
@@ -92,46 +110,65 @@ function initDetailsPanel()  {
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
     
-    
-    detailsPanelItems = new Ext.Container({  
-        id: 'detailsPanelItems',
-        defaults: {            
-            bodyStyle:'padding:5px 2px'
-        },        
-        cls: 'floatingDetailsPanelContent',
-         items: [
-            opacitySlider, 
-            styleCombo, 
+    var stylePanel = new Ext.Panel({
+        title: 'Styles', 
+        items: [
+            opacitySlider,
+            styleCombo,                    
             legendImage,
             ncWMSColourScalePanel
+        ]
+    });
+            
+    var featureInfoPanel = new Ext.Panel({   
+        title: 'Filters',
+         items: [
+            { html: "Filtering latest graphs and stuff"}
+         ]
+    });  
+    
+    detailsPanelItems = new Ext.TabPanel({  
+        id: 'detailsPanelItems',   
+        border: false,
+        width: 300,
+        activeTab: 0,
+        cls: 'floatingDetailsPanelContent',
+         items: [
+             featureInfoPanel,
+             stylePanel,
+             animatePanel
          ]
     });
+      
     
 
-    
+    // a floating popup
     detailsPanel =  new Ext.Window({
+        
+        defaults: {           
+            padding: 10
+        },
         id: 'detailsPanel',
         shadow: false,
         title: 'Layer Options',
         plain: true,
         autoDestroy: false,
-        padding: 10,
+        //padding: 10,
         constrainHeader: true,
         constrain: true,
         animCollapse: false,
         //collapsible: true,
         autoScroll: true,
-        bodyBorder: false,
         bodyCls: 'floatingDetailsPanel',
         //layout: 'absolute', // this is for the children
         //autoWidth: true,
         //autoHeight: true,
         closable: false,
+        resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
         closeAction: 'hide',
         border: false,
-        x: detailsPanelInitX,
-        y: detailsPanelInitY,
-        items: [
+        items: [         
+            animateLink,    
             detailsPanelItems
         ],
         tools:[{
@@ -140,16 +177,32 @@ function initDetailsPanel()  {
             handler: function(event, toolEl, panel){
                 toggleDetailsLocation();
             }
-        }]
+        }],
+        listeners: {
+            //afterrender: function(thisthingy){
+            //    console.log("rendered the details panel");
+            //    updateDetailsPanelPositionSize(false);
+            //},            
+            move: function(thisthingy,x,y){
+                thisthingy.moved = true;
+            },
+            show: function(thisthingy){
+                updateDetailsPanelPositionSize(true);
+            }
+            
+        }
+    
+        
 
     });
-
-
+    
+  
     
 
 }
 
 
+// display in the popup or pin to the right of the main map
 function toggleDetailsLocation() {
     
     var rdp = mapMainPanel.getComponent('rightDetailsPanel');
@@ -167,7 +220,7 @@ function toggleDetailsLocation() {
         // disable the opening of the righthand panel
         rdp.collapse(false);
         //rdp.hide();
-        updateDetailsPanelPosition();
+        updateDetailsPanelPositionSize();
         detailsPanel.doLayout();     
         detailsPanel.show();
         
@@ -177,36 +230,75 @@ function toggleDetailsLocation() {
 
 function updateDetailsPanel(layer) {
     
-    detailsPanelLayer = layer;
+    selectedActiveLayer = layer;
+                    
+                
+    if (Portal.app.config.autoZoom) {
+        zoomToLayer(mapPanel.map, selectedActiveLayer);
+    }
     
     updateStyles(layer);
-    updateDimensions(layer);    
+    updateDimensions(layer); // time and elevation   
     
-    detailsPanel.text = detailsPanelLayer.name;
-    detailsPanel.setTitle("Layer Options: " + detailsPanelLayer.name);
-    mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + detailsPanelLayer.name);
-    opacitySlider.setLayer(detailsPanelLayer);
+    detailsPanel.text = selectedActiveLayer.name;
+    detailsPanel.setTitle("Layer Options: " + selectedActiveLayer.name);
+    mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + selectedActiveLayer.name);
+    opacitySlider.setLayer(selectedActiveLayer);
 
 
     ncWMSColourScalePanel.hide();
-    if(detailsPanelLayer.server.type.search("NCWMS") > -1)
-    {
+    //    
+    if(selectedActiveLayer.server.type.search("NCWMS") > -1)  {
         makeNcWMSColourScale();
     }
     
-    // display popup if that where the detailsPanelItems items are
+    detailsPanelItems.activate(0); // always set the styles active
+    
+    
+    // show the animate tab if we can animate through time
+    if (selectedActiveLayer.metadata.datesWithData != undefined) {
+        //Ext.getCmp('animateLink').show();
+        //detailsPanelItems.doLayout();
+        //animatePanel.doLayout();
+        animatePanel.setDisabled(false);
+        
+        
+    }
+    else {
+        //Ext.getCmp('animateLink').hide();
+        //animateLink.hide();
+        
+        animatePanel.setDisabled(true);
+    }
+    
+       
+    
+    // display popup if that is where the detailsPanelItems items are
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-        updateDetailsPanelPosition();
+        updateDetailsPanelPositionSize();
     }
     
     
 }
-function updateDetailsPanelPosition() {
+
+// move to default spot unless a user has resized or moved the window
+function updateDetailsPanelPositionSize(reset) {
     
-    detailsPanel.show();        
-    if (detailsPanel.lastSize.height != undefined && (detailsPanel.x != detailsPanelInitX || detailsPanel.y != detailsPanelInitY)) {
-        detailsPanel.setPosition(detailsPanelInitX,detailsPanelInitY);
+    var buffer = 60;
+    var x = Portal.app.config.westWidth+buffer;
+    var y = Portal.app.config.headerHeight+buffer+ 40;
+    
+    detailsPanel.show();
+    
+    // set in predefined position unless already set or sized
+    if (detailsPanel.lastSize.height == undefined && detailsPanel.moved == undefined ) {        
+        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
+    }    
+    if (reset) {
+        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
+       // detailsPanel.restore();
     }
+    
 }
 
 function updateStyles(layer)
@@ -224,8 +316,8 @@ function updateStyles(layer)
      *each of which contains the name of the palette file, 
      *e.g. STYLES=boxfill/rainbow
     */
-    var supportedStyles = detailsPanelLayer.metadata.supportedStyles;
-    var palettes = detailsPanelLayer.metadata.palettes; 
+    var supportedStyles = selectedActiveLayer.metadata.supportedStyles;
+    var palettes = selectedActiveLayer.metadata.palettes; 
     
     // for ncWMS layers most likely
     if (supportedStyles != undefined) {
@@ -257,7 +349,7 @@ function updateStyles(layer)
 
 function refreshLegend()
 {    
-    var url = buildGetLegend(detailsPanelLayer,"",false)  
+    var url = buildGetLegend(selectedActiveLayer,"",false)  
     legendImage.setUrl(url);
 }
 
@@ -305,67 +397,20 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
 }
 
 
-function updateDimensions(layer)
-{
-    var dims = layer.metadata.dimensions;
-    //alert(layer.metadata);
-    if(dims != undefined)
-    {
-        for(var d in dims)
-        {
-            if(dims[d].values != undefined)
-            {
-                var valList = dims[d].values;
-                var dimStore, dimData;
-
-                dimData = new Array();
-
-                dimCombo = makeCombo(d);
-                dimStore = dimCombo.store;
-                dimStore.removeAll();
-
-                for(var j = 0; j < valList.length; j++)
-                {
-                    //trimming function thanks to
-                    //http://developer.loftdigital.com/blog/trim-a-string-in-javascript
-                    var trimmed = valList[j].replace(/^\s+|\s+$/g, '') ;
-                    dimData.push([j, trimmed, trimmed]);
-                }
-
-                dimStore.loadData(dimData);
-                detailsPanel.add(dimCombo);
-                detailsPanel.add(ncWMSColourScalePanel);
-            }
-            
-        }
-    }
-    
-}
-
 
 
 function makeNcWMSColourScale()
 {
-    //Example: http://ncwms.emii.org.au/ncWMS/wms?item=layerDetails&layerName=ACORN_raw_data_SAG%2FSPEED&time=2006-09-19T12%3A00%3A00.000Z&request=GetMetadata
-    /*
-    if(detailsPanelLayer.params.colourScale == undefined)
-    {
-        Ext.Ajax.request({
-            url: proxyURL+encodeURIComponent(detailsPanelLayer.url + "?item=layerDetails&request=GetMetadata&layerName=" + detailsPanelLayer.params.LAYERS),
-            success: function(resp){
-                var metadata = Ext.util.JSON.decode(resp.responseText);
-                colourScaleMin.setValue(metadata.scaleRange[0]);
-                colourScaleMax.setValue(metadata.scaleRange[1]);
-            }
-        });
-    }
-    */
-    colourScaleMin.setValue(detailsPanelLayer.metadata.scaleRange[0]);
-    colourScaleMax.setValue(detailsPanelLayer.metadata.scaleRange[1]);
-    ncWMSColourScalePanel.show();
-    
 
-     
+    if (selectedActiveLayer.metadata.scaleRange != undefined) {
+        colourScaleMin.setValue(selectedActiveLayer.metadata.scaleRange[0]);
+        colourScaleMax.setValue(selectedActiveLayer.metadata.scaleRange[1]);
+        ncWMSColourScalePanel.show();      
+    }
+    {
+        ncWMSColourScalePanel.hide();
+    }
+    
 }
 
 
@@ -409,21 +454,21 @@ function makeCombo(type) {
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
-                {    detailsPanelLayer.mergeNewParams({
+                {    selectedActiveLayer.mergeNewParams({
                         styles : record.get('displayText')
                     });
-                    detailsPanelLayer.metadata.defaultPalette = record.get('myId');
+                    selectedActiveLayer.metadata.defaultPalette = record.get('myId');
                     refreshLegend(); 
                 }
                 else if(cbbox.fieldLabel == 'time')
                 {
-                    detailsPanelLayer.mergeNewParams({
+                    selectedActiveLayer.mergeNewParams({
                         time : record.get('myId')
                     });
                 }
                 else if(cbbox.fieldLabel == 'elevation')
                 {
-                    detailsPanelLayer.mergeNewParams({
+                    selectedActiveLayer.mergeNewParams({
                         elevation : record.get('myId')
                     });
                 }
@@ -439,10 +484,55 @@ function updateScale(textfield, event)
     //return key
     if(event.getKey() == 13)
     {
-        detailsPanelLayer.mergeNewParams({
-            COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
-        });
-
-        refreshLegend();
+        if (colourScaleMax.getValue() > colourScaleMin.getValue()) {
+            
+            selectedActiveLayer.mergeNewParams({
+                COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
+            });
+            refreshLegend();
+        }
+        else {
+            alert("The Max Parameter Range value is less than the Min");
+        }
     }
+}
+
+
+
+// for static time and elevation
+// TODO
+function updateDimensions(layer)
+{
+    var dims = layer.metadata.dimensions;
+    //alert(layer.metadata.dimensions);
+    if(dims != undefined)
+    {
+        for(var d in dims)
+        {
+            if(dims[d].values != undefined)
+            {
+                var valList = dims[d].values;
+                var dimStore, dimData;
+
+                dimData = new Array();
+
+                dimCombo = makeCombo(d);
+                dimStore = dimCombo.store;
+                dimStore.removeAll();
+
+                for(var j = 0; j < valList.length; j++)
+                {
+                    //trimming function thanks to
+                    //http://developer.loftdigital.com/blog/trim-a-string-in-javascript
+                    var trimmed = valList[j].replace(/^\s+|\s+$/g, '') ;
+                    dimData.push([j, trimmed, trimmed]);
+                }
+
+                dimStore.loadData(dimData);
+                detailsPanel.add(dimCombo);
+            }
+            
+        }
+    }
+    
 }

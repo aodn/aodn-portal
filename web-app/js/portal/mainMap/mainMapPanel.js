@@ -1,15 +1,15 @@
 var mapPanel; 
-var mapLayers = []; // Array of OpenLayers Layers. This allows us to access/mod layers after creation
+var activeLayers = []; // Array of OpenLayers Layers. This allows us to access/mod layers after creation
 var navigationHistoryCtrl;
 var automaticZoom=false;
 
-function initMap(config)  {
+function initMap()  {
 
 
     // Stop the pink tiles appearing on error
     OpenLayers.Util.onImageLoadError = function(e) {
         this.style.display = "";
-        this.src="img/layer_error.gif";
+        this.src="img/blank.gif";
     }
 
 
@@ -122,7 +122,7 @@ function initMap(config)  {
         var relTarget = ev.getRelatedTarget(); // Gets the related target
     };
     
-    setMapDefaultZoom(mapPanel.map,config); // adds default bbox values to map instance
+    setMapDefaultZoom(mapPanel.map); // adds default bbox values to map instance
     mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
 
     mapPanel.add(mapLinks);
@@ -333,18 +333,15 @@ function addLayer(grailsLayerId) {
                     getLayerMetadata(layer);
                 } 
                 else {
+                    getLayerBbox();
                     // update detailsPanel without Json request needed
                     updateDetailsPanel(layer);
                 }
                 // store the OpenLayers layer so we can retreive it latter
-                mapLayers[getUniqueLayerId(layer)] = layer;
+                activeLayers[getUniqueLayerId(layer)] = layer;
                 
                 mapPanel.map.addLayer(layer); 
-                
-                
-                
-                
-                
+  
                 
             }
         });
@@ -352,17 +349,29 @@ function addLayer(grailsLayerId) {
         
 }
 
-// used in getters and setters
+// used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
     
     return (layer.name + "::" + layer.grailsLayerId).replace(/\s/g, "");
+}
+
+function getLayerBbox(layer) {
+    
+    console.log("getLayerBbox todo");
+    //Ext.Ajax.request({
+            // geoserverdev.emii.org.au:80/geoserver/wms?request=DescribeLayer&version=1.1.1&layers=topp:argo_float
+            //url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=&layerName=" + layer.params.LAYERS + "&request=DescribeLayer"),
+            //success: function(resp){
+               // layer.metadata = Ext.util.JSON.decode(resp.responseText);
+            //} 
+    //});    
 }
 
 function getLayerMetadata(layer) {
         
     Ext.Ajax.request({
         
-            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
             success: function(resp){
                 layer.metadata = Ext.util.JSON.decode(resp.responseText);
                 updateDetailsPanel(layer);
@@ -409,22 +418,27 @@ function getLayerMetadata(layer) {
 }
 
 /*
- * Zoom to the layer bounds selected in active layers
- */
+ * Zoom to the layer bounds selected in active layers or 
+ 
 function setExtentLayer() {
     
+    var bounds = new OpenLayers.Bounds();
     var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.bbox;
-    bounds = new OpenLayers.Bounds();
-    bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
-    bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));
+    if (extent != undefined) {
+        bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
+        bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));        
+    }
+    else {
+        
+    }
     mapPanel.map.zoomToExtent(bounds);
 }
+*/
 
-function loadDefaultLayers()
-{    
+function loadDefaultLayers() {    
     for(var i = 0; i < defaultLayers.length; i++)   {
         addLayer(defaultLayers[i].id);   
-        setDefaultMenuTreeNodeActive(defaultLayers[i].id,false);
+        setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);
     }
 }
 
@@ -442,16 +456,15 @@ function removeAllLayers()   {
 
     for(var j = 0; j < allLayers.length; j++)
     {
-        console.log("item "  + allLayers[j] + " removed") 
-        var theLayer = mapLayers[allLayers[j]];
-        setDefaultMenuTreeNodeActive(theLayer.grailsLayerId,true);        
+        var theLayer = activeLayers[allLayers[j]];
+        setDefaultMenuTreeNodeStatus(theLayer.grailsLayerId,true);        
         theLayer.destroy(); 
         
     }
     // no layers- no details needed
     detailsPanel.hide();
-    // cleanup mapLayers?? or just start again?
-    mapLayers = [];
+    // cleanup activeLayers?? or just start again?
+    activeLayers = [];
     
     
     
