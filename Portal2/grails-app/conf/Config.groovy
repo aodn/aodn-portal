@@ -115,8 +115,7 @@ environments
         {
            mail
            {
-             adminEmailAddress = "dnahodil@utas.edu.au"
-             systemEmailAddress = "dnahodil@utas.edu.au"
+             authenticationFromEmailAddress = "info@aodn.org.au"
              
              host = "localhost"
              port = 25
