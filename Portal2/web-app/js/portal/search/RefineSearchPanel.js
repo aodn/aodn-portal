@@ -70,7 +70,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
       '<div class="p-facets">',
          '<tpl for=".">',
             '<div class="p-facet-name">',
-               '<p>{[Portal.search.RefineSearchPanel.prototype.displayNames[values.name]]}</p>',
+               '<p>{[OpenLayers.i18n("filterNames")[values.name]]}</p>',
                '<ul class="p-facet-values">',
                   '<tpl for="topValues">',
                      '<li>',
