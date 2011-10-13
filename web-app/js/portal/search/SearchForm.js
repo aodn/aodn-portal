@@ -13,7 +13,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
    //TODO: Refactor into components
    initComponent: function() {
-      var opensearchSuggest = Portal.app.config.catalogUrl + 'srv/en/main.search.suggest';
+      var opensearchSuggest = Portal.app.config.catalogUrl + '/srv/en/main.search.suggest';
    
       this.items = [
          {
