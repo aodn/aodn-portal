@@ -161,8 +161,7 @@ class AuthController {
         
         sendMail  {  
             to user?.emailAddress
-            bcc grailsApplication.config.grails.mail.adminEmailAddress
-            from grailsApplication.config.grails.mail.systemEmailAddress
+            from grailsApplication.config.grails.mail.authenticationFromEmailAddress
             subject "${message(code: 'mail.request.user.register.subject')}"     
             body "${message(code: 'mail.request.user.register.body', args: [user.firstName, createLink(controller:'home', absolute:true), createLink(controller: 'auth', action: 'forgotPassword', absolute:true)])}" 
         }
@@ -172,8 +171,7 @@ class AuthController {
         
         sendMail {  
             to user?.emailAddress
-            bcc grailsApplication.config.grails.mail.adminEmailAddress
-            from grailsApplication.config.grails.mail.systemEmailAddress
+            from grailsApplication.config.grails.mail.authenticationFromEmailAddress
             subject "${message(code: 'mail.request.user.passwordReset.subject', args: [user.firstName, user.lastName])}"     
             body "${message(code: 'mail.request.user.passwordReset.body', args: [user.firstName, newPassword, createLink(controller: 'user', action:'updateAccount', absolute:true)])}" 
         }
