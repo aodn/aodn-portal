@@ -16,6 +16,12 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
     */
    data: null,
    
+   include: [
+      'keywords',
+      'organizationNames',
+      'dataParameters'
+   ],
+   
    /** private: method[constructor]
     *  Add 'loaded' event
     *

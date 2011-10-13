@@ -88,6 +88,14 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          load: this.resultsStoreLoad
       });
       
+      // react to results grid events
+     this.mon(this.resultsGrid, {
+         scope: this,
+         showlayer: this.onShowLayer,
+         mouseenter: this.onResultEnter,
+         mouseleave: this.onResultLeave
+      });
+      
    },
    
    afterRender: function() {
@@ -101,6 +109,18 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    
    minimapExtentChange: function(bounds) {
       this.searchForm.setExtent(bounds);
+   },
+   
+   onShowLayer: function(layer) {
+	   this.minimap.showLayer(layer);
+   },
+   
+   onResultEnter: function(grid, rowIndex, rec) {
+	   this.minimap.showBBox(rec.get('bbox'));
+   },
+   
+   onResultLeave: function(grid, rowIndex, rec) {
+	   this.minimap.clearBBox();
    },
    
    resultsGridBbarBeforeChange: function(bbar, params) {
