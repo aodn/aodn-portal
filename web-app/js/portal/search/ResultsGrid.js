@@ -7,17 +7,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    
    initComponent: function() {
      var config = {
-         colModel: new Ext.grid.ColumnModel({
+        colModel: new Ext.grid.ColumnModel({
            columns: [
                {
-                  header: 'Logo', 
+                  header: OpenLayers.i18n('logoHeading'), 
                   width: 50,
                   xtype: 'templatecolumn',
-                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'/images/logos/{source}.gif"/>',
+                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'images/logos/{source}.gif"/>',
                   dataIndex: 'source'
                },{
             	   id: 'mdDesc',
-                  header: 'Description',
+                  header: OpenLayers.i18n('descHeading'),
                   width: 650,
                   xtype: 'templatecolumn',
                   tpl: [
@@ -28,26 +28,26 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   ],
                   dataIndex: 'title'
                },{
-                  header: 'Actions',
+                  header: OpenLayers.i18n('actionsHeading'),
                   width: 140,
                   xtype: 'actioncolumn',
                   items: [{
                      iconCls: 'p-result-info',
-                     tooltip: 'View metadata',
+                     tooltip: OpenLayers.i18n('datasetInfo'),
                      width: 35,
                      height: 35,
                      handler: this.onViewMetadata,
                      scope: this
                   },{
                       getClass: this.getMapGoClass,
-                      tooltip: 'Show on mini-map',
+                      tooltip: OpenLayers.i18n('showOnMinimap'),
                       width: 35,
                       height: 35,
                       handler: this.showOnMiniMapExecute,
                       scope: this
                    },{
                        getClass: this.getMapAddClass,
-                       tooltip: 'Add to map',
+                       tooltip: OpenLayers.i18n('addToMap'),
                        width: 35,
                        height: 35,
                        handler: this.addToMapExecute,
@@ -77,8 +77,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         })
      };
  
-     //TODO: pull strings out into separate file - i18n style 
-    
      Ext.apply(this, Ext.apply(this.initialConfig, config));
  
      Portal.search.ResultsGrid.superclass.initComponent.apply(this, arguments);
@@ -123,7 +121,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
   onViewMetadata: function(grid, rowIndex, colIndex) {
      var rec = this.store.getAt(rowIndex);
-     var viewmetadata = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
+     var viewmetadata = Portal.app.config.catalogUrl + 'srv/en/metadata.show\?uuid\='+rec.get('uuid');
      
      window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
   },
@@ -154,7 +152,24 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      if (linkStore.getCount()==1) { 
     	 this.fireEvent('showlayer', this.getRecord(linkStore.getAt(0)));
      } else {
-    	 Ext.Msg.alert('Multiple layers - not yet implemented');
+    	 if (!this.linkSelectionWindow ) {
+	    	 this.linkSelectionWindow = new Portal.search.LinkSelectionWindow({
+	   			title: OpenLayers.i18n('selectLayer'),
+	    		store: linkStore,
+	    		listeners: {
+	    			scope: this,
+	    			destroy: function() {
+	    				delete this.linkSelectionWindow;
+	    			},
+	    			click: function(comp, index) {
+	    				this.fireEvent('showlayer', this.getRecord(linkStore.getAt(index)));
+	    			}
+	    		}
+	    	 });
+    	 } else {
+    		 this.linkSelectionWindow.bindStore(linkStore);
+    	 };
+    	 this.linkSelectionWindow.show();
      };
   },
   
