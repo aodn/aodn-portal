@@ -30,7 +30,7 @@
                                   <label for="catalogUrl"><g:message code="config.catalogUrl.label" default="Catalog Url" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'catalogUrl', 'errors')}">
-                                    <g:textField size="70" name="catalogUrl" value="${configInstance?.catalogUrl}" />
+                                    <g:textField size="70" name="catalogUrl" value="${configInstance?.catalogUrl}" />&nbsp;<i>Should <b>not</b> end with a '/' character</i>
                                 </td>
                             </tr>
                         

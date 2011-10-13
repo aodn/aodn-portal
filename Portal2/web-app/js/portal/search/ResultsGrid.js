@@ -7,13 +7,13 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    
    initComponent: function() {
      var config = {
-        colModel: new Ext.grid.ColumnModel({
+         colModel: new Ext.grid.ColumnModel({
            columns: [
                {
                   header: 'Logo', 
                   width: 50,
                   xtype: 'templatecolumn',
-                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'images/logos/{source}.gif"/>',
+                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'/images/logos/{source}.gif"/>',
                   dataIndex: 'source'
                },{
             	   id: 'mdDesc',
@@ -29,7 +29,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   dataIndex: 'title'
                },{
                   header: 'Actions',
-                  width: 100,
+                  width: 140,
                   xtype: 'actioncolumn',
                   items: [{
                      iconCls: 'p-result-info',
@@ -52,12 +52,28 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                        height: 35,
                        handler: this.addToMapExecute,
                        scope: this
-                    }]
+                    },{
+                     iconCls: 'p-result-cart-add',
+                     tooltip: 'Add to download cart',
+                     width: 35,
+                     height: 35,
+                     handler: this.addToCartExecute,
+                     scope: this
+                  }]
                }
            ]
        }),
         bbar: new Ext.PagingToolbar({
-           pageSize: 15
+           pageSize: 15,
+           items: [
+               new Ext.Button({
+                text: 'Add all',
+                tooltip: 'Add all to download cart',
+                ctCls: "noBackgroundImage",
+                anchor: 'right',
+                handler: this.addAllToCartExecute
+               }
+            )]
         })
      };
  
@@ -107,7 +123,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
   onViewMetadata: function(grid, rowIndex, colIndex) {
      var rec = this.store.getAt(rowIndex);
-     var viewmetadata = Portal.app.config.catalogUrl + 'srv/en/metadata.show\?uuid\='+rec.get('uuid');
+     var viewmetadata = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
      
      window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
   },
@@ -165,8 +181,15 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
          protocol: rec.get('protocol'),
          title: rec.get('title')
 	  };
-  }
- 
+  },
+  
+  addToCartExecute: function(grid, rowIndex, colIndex) {
+     Ext.Msg.alert('Add to cart\ngrid: ' + grid + '\nrowIndex: ' + rowIndex + '\ncolIndex: ' + colIndex);
+  },
+  
+  addAllToCartExecute: function(grid, rowIndex, colIndex) {
+     Ext.Msg.alert('Add all to cart\ngrid: ' + grid + '\nrowIndex: ' + rowIndex + '\ncolIndex: ' + colIndex);
+  } 
 });
 
 Ext.reg('portal.search.resultsgrid', Portal.search.ResultsGrid);

@@ -92,6 +92,12 @@
    max-width: 30px;
 }
 
+.p-result-cart-add {
+   background-image: url(../images/basket_add.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
 .p-logo img {
   max-width : 30px;
 }
