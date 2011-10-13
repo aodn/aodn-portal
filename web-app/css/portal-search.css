@@ -69,10 +69,21 @@
    padding-left: 15px;
 }
 
-.p-result-map-add {
-   background-image: url(../images/map-add-icon.png);
+.p-result-map-add, .p-result-map-go {
    background-repeat: no-repeat;
    max-width: 30px;
+}
+
+.p-result-disabled {
+   max-width: 0px;
+}
+
+.p-result-map-add {
+   background-image: url(../images/map-add-icon.png);
+}
+
+.p-result-map-go {
+   background-image: url(../images/map-go-icon.png);
 }
 
 .p-result-info {

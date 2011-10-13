@@ -308,7 +308,7 @@
 	          	<include>jquery/jquery.rotate.1-1.js</include>
 	          	<include>ext-4.0.2a/builds/ext-all-sandbox-debug.js</include>
 	          	<include>ext-3.3.1/adapter/ext/ext-base.js</include>
-	          	<include>ext-3.3.1/ext-all.js</include>
+	          	<include>ext-3.3.1/ext-all-debug-w-comments.js</include>
 	          	<include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
 	          	<include>OpenLayers-2.10/OpenLayers.js</include>
 	          	<include>GeoExt/script/GeoExt.js</include>
@@ -322,25 +322,7 @@
 	          	<include>Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js</include>
 	          	<include>Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js</include>
 	          	<include>Geonetwork/lib/GeoNetwork/map/ExtentMap.js</include>
-	          	<include>portal/search/data/RefinementList.js</include>
-	          	<include>portal/search/data/FacetStore.js</include>
-	          	<include>portal/search/field/FreeText.js</include>
-	          	<include>portal/search/field/DateRange.js</include>
-	          	<include>portal/search/field/BoundingBox.js</include>
-	          	<include>portal/search/field/OpenSearchSuggestionTextField.js</include>
-	          	<include>portal/search/MiniMapPanel.js</include>
-	          	<include>portal/search/RefineSearchPanel.js</include>
-	          	<include>portal/search/SearchForm.js</include>
-	          	<include>portal/search/SearchTabPanel.js</include>
-	          	<include>portal/search/ResultsGrid.js</include>
-	          	<include>portal/search/config/FacetConfig.js</include>
-	          	<include>portal/search/locale/portal-lang-en.js</include>
-	          	<include>portal/mainMap/map.js</include>
-	          	<include>portal/mainMap/mainMapPanel.js</include>
-	          	<include>portal/mainMap/menuPanel.js</include>
-	          	<include>portal/mainMap/detailsPanel.js</include>>
-	          	<include>portal/viewport.js</include>
-	          	<include>portal/mainMap/ramadda.js</include>
+	          	<include>portal/**/*.js</include>
 	          </sourceIncludes>
 	        </configuration>
       </plugin>

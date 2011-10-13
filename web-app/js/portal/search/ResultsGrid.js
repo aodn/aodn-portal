@@ -2,9 +2,10 @@ Ext.namespace('Portal.search');
 
 Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
+   disableSelection: true,
    autoExpandColumn: 'mdDesc',
    
-  initComponent: function() {
+   initComponent: function() {
      var config = {
         colModel: new Ext.grid.ColumnModel({
            columns: [
@@ -35,16 +36,23 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                      tooltip: 'View metadata',
                      width: 35,
                      height: 35,
-                     handler: this.viewMetadataExecute,
+                     handler: this.onViewMetadata,
                      scope: this
                   },{
-                     iconCls: 'p-result-map-add',
-                     tooltip: 'Add to map',
-                     width: 35,
-                     height: 35,
-                     handler: this.addToMapExecute,
-                     scope: this
-                  }]
+                      getClass: this.getMapGoClass,
+                      tooltip: 'Show on mini-map',
+                      width: 35,
+                      height: 35,
+                      handler: this.showOnMiniMapExecute,
+                      scope: this
+                   },{
+                       getClass: this.getMapAddClass,
+                       tooltip: 'Add to map',
+                       width: 35,
+                       height: 35,
+                       handler: this.addToMapExecute,
+                       scope: this
+                    }]
                }
            ]
        }),
@@ -59,21 +67,104 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
  
      Portal.search.ResultsGrid.superclass.initComponent.apply(this, arguments);
      
-     // TODO: remove HACK - Set store - don't bind it 
+     // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below 
      this.getBottomToolbar().store = this.store;
+     
+     this.addEvents('showlayer', 'addlayer', 'rowenter', 'rowleave');
+     
   },
   
-  viewMetadataExecute: function(grid, rowIndex, colIndex) {
+  afterRender: function(){
+      Portal.search.ResultsGrid.superclass.afterRender.call(this);
+      
+      this.getView().mainBody.on({
+          scope    : this,
+          mouseover: this.onMouseOver,
+          mouseout : this.onMouseOut
+      });
+  },
+
+  // trigger mouseenter event when applicable
+  onMouseOver: function(e, target) {
+      var row = this.getView().findRow(target);
+      if(row && row !== this.lastRow) {
+    	  var rowIndex = this.getView().findRowIndex(row);
+          this.fireEvent("mouseenter", this, rowIndex, this.store.getAt(rowIndex), e);
+          this.lastRow = row;
+      }
+  },
+
+  // trigger mouseleave event when applicable
+  onMouseOut: function(e, target) {
+      if (this.lastRow) {
+          if(!e.within(this.lastRow, true, true)){
+        	  var lastRowIndex = this.getView().findRowIndex(this.lastRow);
+              this.fireEvent("mouseleave", this, lastRowIndex, this.store.getAt(lastRowIndex), e);
+              delete this.lastRow;
+          }
+      }
+  },
+  
+  onViewMetadata: function(grid, rowIndex, colIndex) {
      var rec = this.store.getAt(rowIndex);
-     //TODO: allow service url to be configured
      var viewmetadata = Portal.app.config.catalogUrl + 'srv/en/metadata.show\?uuid\='+rec.get('uuid');
      
      window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
-           
+  },
+  
+  getMapGoClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+	  if (this.hasProtocol(rec.get('links'), ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'])) {
+		  return 'p-result-map-go';
+	  } else {
+		  return 'p-result-disabled';
+	  };
   },
  
+  getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+	  if (this.hasProtocol(rec.get('links'), ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'])) {
+		  return 'p-result-map-add';
+	  } else {
+		  return 'p-result-disabled';
+	  };
+  },
+ 
+  showOnMiniMapExecute: function(grid, rowIndex, colIndex) {
+     var rec = this.store.getAt(rowIndex);
+     var links = rec.get('links');
+     var linkStore = new Portal.search.data.LinkStore({
+    	data: {links: links} 
+     });
+     linkStore.filter('protocol', /OGC:WMS-.*http-get-map/, true);
+     if (linkStore.getCount()==1) { 
+    	 this.fireEvent('showlayer', this.getRecord(linkStore.getAt(0)));
+     } else {
+    	 Ext.Msg.alert('Multiple layers - not yet implemented');
+     };
+  },
+  
   addToMapExecute: function(grid, rowIndex, colIndex) {
-     Ext.Msg.alert('Not yet implemented');
+	 Ext.Msg.alert('Not yet implemented');
+  },
+  
+  hasProtocol: function(links, values) {
+	 for (var i=0; i<links.length; i++) {
+		for (var j=0; j<values.length; j++) {
+			if (links[i].protocol==values[j]) {
+				return true;
+			};
+	 	};
+	 };
+	 
+	 return false;
+  },
+  
+  getRecord: function(rec) {
+	  return {
+         server: rec.get('url'),
+         layer: rec.get('name'),
+         protocol: rec.get('protocol'),
+         title: rec.get('title')
+	  };
   }
  
 });
