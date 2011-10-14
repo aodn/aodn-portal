@@ -69,7 +69,7 @@
    padding-left: 15px;
 }
 
-.p-result-map-add, .p-result-map-go {
+.p-result-map-add, .p-result-map-go, .p-result-select-layer {
    background-repeat: no-repeat;
    max-width: 30px;
 }
@@ -80,6 +80,10 @@
 
 .p-result-map-add {
    background-image: url(../images/map-add-icon.png);
+}
+
+.p-result-select-layer {
+   background-image: url(../images/layers-map-icon.png);
 }
 
 .p-result-map-go {

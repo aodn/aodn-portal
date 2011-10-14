@@ -1,6 +1,6 @@
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	// Search results 
-	selectLayer: 'Map Layer Selection',
+	selectLayer: 'Select layer',
 	bboxLayer: 'Extent',
 	logoHeading: 'Logo',
 	descHeading: 'Description',
@@ -8,6 +8,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	datasetInfo: 'Dataset information',
 	showOnMinimap: 'Show on mini-map',
 	addToMap: 'Add to map',
+	datasetLayers: 'Dataset layers',
 	
 	// Refine search panel
 	filterNames: {

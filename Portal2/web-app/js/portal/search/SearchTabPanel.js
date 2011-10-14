@@ -95,7 +95,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          mouseenter: this.onResultEnter,
          mouseleave: this.onResultLeave
       });
-      
+
+     // relay add layer event
+     this.relayEvents(['addlayer']);
    },
    
    afterRender: function() {
