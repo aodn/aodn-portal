@@ -4,6 +4,8 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
+   LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
+   LAYER_REGEXP: /OGC:WMS-.*http-get-map/,
    
    initComponent: function() {
      var config = {
@@ -53,6 +55,13 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                        handler: this.addToMapExecute,
                        scope: this
                     },{
+                        getClass: this.getLayerSelectClass,
+                        tooltip: OpenLayers.i18n('selectLayer'),
+                        width: 35,
+                        height: 35,
+                        handler: this.selectLayerExecute,
+                        scope: this
+                     },{
                      iconCls: 'p-result-cart-add',
                      tooltip: 'Add to download cart',
                      width: 35,
@@ -98,7 +107,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       });
   },
 
-  // trigger mouseenter event when applicable
+  // trigger mouseenter event on row when applicable
   onMouseOver: function(e, target) {
       var row = this.getView().findRow(target);
       if(row && row !== this.lastRow) {
@@ -108,7 +117,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       }
   },
 
-  // trigger mouseleave event when applicable
+  // trigger mouseleave event on row when applicable
   onMouseOut: function(e, target) {
       if (this.lastRow) {
           if(!e.within(this.lastRow, true, true)){
@@ -127,7 +136,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   getMapGoClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.hasProtocol(rec.get('links'), ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'])) {
+	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) == 1) {
 		  return 'p-result-map-go';
 	  } else {
 		  return 'p-result-disabled';
@@ -135,67 +144,86 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
  
   getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.hasProtocol(rec.get('links'), ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'])) {
+	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) == 1) {
 		  return 'p-result-map-add';
 	  } else {
 		  return 'p-result-disabled';
 	  };
   },
- 
+
+  getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) > 1) {
+		  return 'p-result-select-layer';
+	  } else {
+		  return 'p-result-disabled';
+	  };
+  },
+
   showOnMiniMapExecute: function(grid, rowIndex, colIndex) {
+   	 this.fireEvent('showlayer', this.getLayerLink(rowIndex));
+  },
+  
+  selectLayerExecute: function(grid, rowIndex, colIndex) {
+	    var rec = this.store.getAt(rowIndex);
+	    var links = rec.get('links');
+	    var linkStore = new Portal.search.data.LinkStore({
+	    	data: {links: links} 
+	    });
+	    linkStore.filter('protocol', this.LAYER_REGEXP, true);
+	     
+    	 if (!this.layerSelectionWindow ) {
+	    	 this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
+    	 } else {
+    		 this.layerSelectionWindow.bindStore(linkStore);
+    	 };
+    	 
+    	 this.layerSelectionWindow.show();
+	  },
+	  
+	buildLayerSelectionWindow: function(linkStore) {
+		return new Portal.search.LayerSelectionWindow({
+	 		store: linkStore,
+	 		listeners: {
+	 			scope: this,
+	 			destroy: function() {
+	 				delete this.layerSelectionWindow;
+	 			},
+	 			showlayer: function(layerLink) {
+	 				this.fireEvent('showlayer', layerLink);
+	 			},
+	 			addlayer: function(layerLink) {
+	 				this.fireEvent('addlayer', layerLink);
+	 			}
+	 		}
+	 	 });
+		},
+	  
+  addToMapExecute: function(grid, rowIndex, colIndex) {
+ 	 this.fireEvent('addlayer', this.getLayerLink(rowIndex));
+  },
+  
+  getProtocolCount: function(links, values) {
+	  var count = 0;
+	 for (var i=0; i<links.length; i++) {
+		for (var j=0; j<values.length; j++) {
+			if (links[i].protocol==values[j]) {
+				count++;
+			};
+	 	};
+	 };
+	 
+	 return count;
+  },
+  
+  getLayerLink: function(rowIndex) {
      var rec = this.store.getAt(rowIndex);
      var links = rec.get('links');
      var linkStore = new Portal.search.data.LinkStore({
     	data: {links: links} 
      });
-     linkStore.filter('protocol', /OGC:WMS-.*http-get-map/, true);
-     if (linkStore.getCount()==1) { 
-    	 this.fireEvent('showlayer', this.getRecord(linkStore.getAt(0)));
-     } else {
-    	 if (!this.linkSelectionWindow ) {
-	    	 this.linkSelectionWindow = new Portal.search.LinkSelectionWindow({
-	   			title: OpenLayers.i18n('selectLayer'),
-	    		store: linkStore,
-	    		listeners: {
-	    			scope: this,
-	    			destroy: function() {
-	    				delete this.linkSelectionWindow;
-	    			},
-	    			click: function(comp, index) {
-	    				this.fireEvent('showlayer', this.getRecord(linkStore.getAt(index)));
-	    			}
-	    		}
-	    	 });
-    	 } else {
-    		 this.linkSelectionWindow.bindStore(linkStore);
-    	 };
-    	 this.linkSelectionWindow.show();
-     };
-  },
-  
-  addToMapExecute: function(grid, rowIndex, colIndex) {
-	 Ext.Msg.alert('Not yet implemented');
-  },
-  
-  hasProtocol: function(links, values) {
-	 for (var i=0; i<links.length; i++) {
-		for (var j=0; j<values.length; j++) {
-			if (links[i].protocol==values[j]) {
-				return true;
-			};
-	 	};
-	 };
-	 
-	 return false;
-  },
-  
-  getRecord: function(rec) {
-	  return {
-         server: rec.get('url'),
-         layer: rec.get('name'),
-         protocol: rec.get('protocol'),
-         title: rec.get('title')
-	  };
+     linkStore.filter('protocol', this.LAYER_REGEXP, true);
+	  
+     return linkStore.getLink(0);
   },
   
   addToCartExecute: function(grid, rowIndex, colIndex) {

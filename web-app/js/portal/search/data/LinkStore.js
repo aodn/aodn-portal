@@ -16,5 +16,20 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		}, cfg);
 		
 		Portal.search.data.LinkStore.superclass.constructor.call(this, config);
+	},
+	
+	getLink: function(index) {
+		var linkRec = this.getAt(index);
+		
+		if (linkRec === undefined) {
+			return undefined;
+		};
+		
+		return {
+			server: linkRec.get('url'),
+			layer: linkRec.get('name'),
+			protocol: linkRec.get('protocol'),
+			title: linkRec.get('title')
+		};
 	}
 });

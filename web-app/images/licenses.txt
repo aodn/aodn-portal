@@ -1,4 +1,4 @@
-map-add-icon.png, map-go-icon.png, information-icon.png
+map-add-icon.png, map-go-icon.png, information-icon.png, layers-map-icon.png
 
 Artist: Fatcow Web Hosting
 Iconset: Farm Fresh Icons (2000 icons)
