@@ -18,5 +18,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	},
 	
 	//Search form
-	fullTextSearch: 'Free Text'
+	fullTextSearch: 'Free Text',
+        
+        // Aggregate Download
+        ttAddToDownload: 'Add to download cart',
+        ttAddAllToDownload: 'Add all to download cart',
+        btnAddAllToDownload: 'Add all'
 }); 
