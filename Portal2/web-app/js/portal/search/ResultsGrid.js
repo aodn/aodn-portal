@@ -15,7 +15,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   header: OpenLayers.i18n('logoHeading'), 
                   width: 50,
                   xtype: 'templatecolumn',
-                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'images/logos/{source}.gif"/>',
+                  tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'/images/logos/{source}.gif"/>',
                   dataIndex: 'source'
                },{
             	   id: 'mdDesc',
@@ -63,7 +63,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         scope: this
                      },{
                      iconCls: 'p-result-cart-add',
-                     tooltip: 'Add to download cart',
+                     tooltip: OpenLayers.i18n('ttAddToDownload'),
                      width: 35,
                      height: 35,
                      handler: this.addToCartExecute,
@@ -76,11 +76,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
            pageSize: 15,
            items: [
                new Ext.Button({
-                text: 'Add all',
-                tooltip: 'Add all to download cart',
+                text: OpenLayers.i18n('btnAddAllToDownload'),
+                tooltip: OpenLayers.i18n('ttAddAllToDownload'),
                 ctCls: "noBackgroundImage",
                 anchor: 'right',
-                handler: this.addAllToCartExecute
+                handler: this.addAllToCartExecute,
+                scope: this
                }
             )]
         })
@@ -150,7 +151,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 		  return 'p-result-disabled';
 	  };
   },
-
+ 
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) > 1) {
 		  return 'p-result-select-layer';
@@ -164,16 +165,16 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   selectLayerExecute: function(grid, rowIndex, colIndex) {
-	    var rec = this.store.getAt(rowIndex);
-	    var links = rec.get('links');
-	    var linkStore = new Portal.search.data.LinkStore({
-	    	data: {links: links} 
-	    });
+     var rec = this.store.getAt(rowIndex);
+     var links = rec.get('links');
+     var linkStore = new Portal.search.data.LinkStore({
+    	data: {links: links} 
+     });
 	    linkStore.filter('protocol', this.LAYER_REGEXP, true);
 	     
     	 if (!this.layerSelectionWindow ) {
 	    	 this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
-    	 } else {
+     } else {
     		 this.layerSelectionWindow.bindStore(linkStore);
     	 };
     	 
@@ -182,22 +183,22 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	  
 	buildLayerSelectionWindow: function(linkStore) {
 		return new Portal.search.LayerSelectionWindow({
-	 		store: linkStore,
-	 		listeners: {
-	 			scope: this,
-	 			destroy: function() {
+	    		store: linkStore,
+	    		listeners: {
+	    			scope: this,
+	    			destroy: function() {
 	 				delete this.layerSelectionWindow;
-	 			},
+	    			},
 	 			showlayer: function(layerLink) {
 	 				this.fireEvent('showlayer', layerLink);
 	 			},
 	 			addlayer: function(layerLink) {
 	 				this.fireEvent('addlayer', layerLink);
-	 			}
-	 		}
-	 	 });
-		},
-	  
+	    			}
+	    		}
+	    	 });
+  },
+  
   addToMapExecute: function(grid, rowIndex, colIndex) {
  	 this.fireEvent('addlayer', this.getLayerLink(rowIndex));
   },
@@ -226,13 +227,44 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      return linkStore.getLink(0);
   },
   
-  addToCartExecute: function(grid, rowIndex, colIndex) {
-     Ext.Msg.alert('Add to cart\ngrid: ' + grid + '\nrowIndex: ' + rowIndex + '\ncolIndex: ' + colIndex);
+ addToCartExecute: function(grid, rowIndex, colIndex) {
+     
+     var msg = 'Add to cart: grid: ' + grid + ' -- rowIndex: ' + rowIndex + ' -- colIndex: ' + colIndex
+     
+     var stateValue = Ext.state.Manager.get("AggregationItems", [])
+     
+     msg += '<br>State was: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+     
+     stateValue.push('<br>Item [' + rowIndex + ', ' + colIndex + ']')
+     
+     msg += '<br>State now: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+     
+     Ext.state.Manager.set("AggregationItems", stateValue)
+     
+     Ext.Msg.alert('Add to cart', msg)
   },
   
-  addAllToCartExecute: function(grid, rowIndex, colIndex) {
-     Ext.Msg.alert('Add all to cart\ngrid: ' + grid + '\nrowIndex: ' + rowIndex + '\ncolIndex: ' + colIndex);
-  } 
+  addAllToCartExecute: function(button, event) {
+      
+        var msg = 'Add all to cart'
+
+        var stateValue = Ext.state.Manager.get("AggregationItems", [])
+
+        stateValue = [] // Clear (for teting)
+
+        msg += '<br>State was: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+
+        this.getStore().each(function(rec){
+
+            stateValue.push('<br>Item [' + rec.id + ']')
+        });
+
+        msg += '<br>State now: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+
+        Ext.state.Manager.set("AggregationItems", stateValue)
+
+        Ext.Msg.alert('Add all to cart', msg)
+    }
 });
 
 Ext.reg('portal.search.resultsgrid', Portal.search.ResultsGrid);
