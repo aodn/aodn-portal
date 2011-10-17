@@ -6,6 +6,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    autoExpandColumn: 'mdDesc',
    LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
    LAYER_REGEXP: /OGC:WMS-.*http-get-map/,
+   DOWNLOADABLE_PROTOCOLS: ['WWW:DOWNLOAD-1.0-http--download', 'WWW:LINK-1.0-http--link'],
    
    initComponent: function() {
      var config = {
@@ -62,7 +63,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         handler: this.selectLayerExecute,
                         scope: this
                      },{
-                     iconCls: 'p-result-cart-add',
+                     getClass: this.getAddToDownloadClass,
                      tooltip: OpenLayers.i18n('ttAddToDownload'),
                      width: 35,
                      height: 35,
@@ -160,6 +161,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	  };
   },
 
+  getAddToDownloadClass: function() { // v, metadata, rec, rowIndex, colIndex, store
+      if (this.getProtocolCount(rec.get('links'), this.DOWNLOADABLE_PROTOCOLS) > 1) {
+              return 'p-result-cart-add';
+      } else {
+              return 'p-result-disabled';
+      };
+  },
+
   showOnMiniMapExecute: function(grid, rowIndex, colIndex) {
    	 this.fireEvent('showlayer', this.getLayerLink(rowIndex));
   },
@@ -204,7 +213,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   getProtocolCount: function(links, values) {
-	  var count = 0;
+	 var count = 0;
 	 for (var i=0; i<links.length; i++) {
 		for (var j=0; j<values.length; j++) {
 			if (links[i].protocol==values[j]) {
@@ -214,6 +223,18 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	 };
 	 
 	 return count;
+  },
+    
+  containsProtocol: function(protocolArray, protocolName) {
+	 
+         for (var i=0; i < protocolArray.length; i++) {
+
+            if (protocolArray[i] == protocolName) {
+                return true;
+            }
+	 }
+	 
+	 return false;
   },
   
   getLayerLink: function(rowIndex) {
@@ -229,41 +250,73 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
  addToCartExecute: function(grid, rowIndex, colIndex) {
      
-     var msg = 'Add to cart: grid: ' + grid + ' -- rowIndex: ' + rowIndex + ' -- colIndex: ' + colIndex
+     var msg = 'Add to cart: grid: ' + grid + ' -- rowIndex: ' + rowIndex + ' -- colIndex: ' + colIndex;
      
-     var stateValue = Ext.state.Manager.get("AggregationItems", [])
+     var workingCart = this.getDownloadCart();
      
-     msg += '<br>State was: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+     msg += '<br>State was: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>';
      
-     stateValue.push('<br>Item [' + rowIndex + ', ' + colIndex + ']')
+     workingCart.push('<br>Item [' + rowIndex + ', ' + colIndex + ']');
      
-     msg += '<br>State now: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+     msg += '<br>State now: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>';
      
-     Ext.state.Manager.set("AggregationItems", stateValue)
+     this.setDownloadCart(workingCart);
      
-     Ext.Msg.alert('Add to cart', msg)
+     Ext.Msg.alert('Add to cart', msg);
   },
   
-  addAllToCartExecute: function(button, event) {
+  addAllToCartExecute: function() { // button, event
       
-        var msg = 'Add all to cart'
+        var msg = 'Add all to cart';
+        
+        var workingCart = this.getDownloadCart();
 
-        var stateValue = Ext.state.Manager.get("AggregationItems", [])
+        workingCart = []; // Clear (for teting)
 
-        stateValue = [] // Clear (for teting)
+        msg += '<br>DownloadCart was: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>'
 
-        msg += '<br>State was: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
-
+        var parent = this;
         this.getStore().each(function(rec){
-
-            stateValue.push('<br>Item [' + rec.id + ']')
+            
+            var links = rec.get('links');
+                                    
+            for (var i = 0; i < links.length; i++) {
+                
+                var link = links[i];
+                
+                var data = {title: links[i].title,
+                            type: links[i].type,
+                            href: links[i].href,
+                            protocol: links[i].protocol};
+                
+                if ( parent.containsProtocol( parent.DOWNLOADABLE_PROTOCOLS, link.protocol ) ) {
+                    workingCart.push( data );
+                }
+            }
         });
 
-        msg += '<br>State now: (' + stateValue.length + ' item(s))<br>' + stateValue + '<br>'
+        this.setDownloadCart( workingCart );
 
-        Ext.state.Manager.set("AggregationItems", stateValue)
+        msg += '<br>State now: (' + workingCart.length + ' item(s))<br>' + Ext.encode( workingCart ) + '<br>';
 
-        Ext.Msg.alert('Add all to cart', msg)
+        Ext.Msg.alert( 'Add all to cart', msg );
+    },
+    
+    getDownloadCart: function() {
+        var encStateValue = Ext.state.Manager.get( "AggregationItems" );
+        
+        if (encStateValue == undefined) {
+            return [];
+        }
+        else {
+            return Ext.decode( encStateValue );
+        }        
+    },
+    
+    setDownloadCart: function(newCart) {
+        var encStateValue = Ext.encode( newCart );
+        
+        Ext.state.Manager.set( "AggregationItems", encStateValue );
     }
 });
 
