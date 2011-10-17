@@ -23,5 +23,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         // Aggregate Download
         ttAddToDownload: 'Add to download cart',
         ttAddAllToDownload: 'Add all to download cart',
-        btnAddAllToDownload: 'Add all'
+        btnAddAllToDownload: 'Add all',
+        
+   //mainMapPanel
+        layerExistsTitle: 'Add layer',
+        layerExistsMsg: 'This layer has already been added to the map',
+        layerAddedTitle: 'Add layer',
+        layerAddedMsg: ' has been added to the map'
 }); 
