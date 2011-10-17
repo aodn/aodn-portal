@@ -228,7 +228,14 @@ function doViewPort()
         items: [            
             mapMainPanel,
             {
-                xtype: 'portal.search.searchtabpanel'
+                xtype: 'portal.search.searchtabpanel',
+                listeners: {
+               	 addLayer: {
+               		 fn: function(layerDef) {
+               			 addLayer(layerDef);
+               		 }
+               	 }
+                }
             }
         ]
     }]

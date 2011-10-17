@@ -271,83 +271,103 @@ function setToolbarItems() {
  * 
  * 
  */
-function addLayer(grailsLayerId) {    
+function addGrailsLayer(grailsLayerId) {    
     
     Ext.Ajax.request({
 
             url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
             success: function(resp){
                 var dl = Ext.util.JSON.decode(resp.responseText);  
-                
-               /*
-                * Buffer: tiles around the viewport. 1 is enough
-                * Gutter: images wider and taller than the tile size by a value of 2 x gutter
-                        NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
-                        Keep as zero till fixed 
-                */               
-                var params = {
-                    layers: dl.layers,
-                    transparent: true,
-                    format: dl.imageFormat,
-                    queryable: dl.queryable,
-                    buffer: 1, 
-                    gutter: 0
-                }
-                // opacity was stored as a percent 0-100
-                var opacity =  Math.round((dl.opacity / 100)*10)/10;
-                
-                
-                if(dl.server.type == "NCWMS-1.3.0") {
-                    params.yx = true; // fix for the wms standards war
-                }
-                if(dl.cql != "") {
-                    params.CQL_FILTER = dl.cql;
-                }  
-                // may be null from database
-                if(dl.styles == "") {
-                    params.styles = "";
-                }
-                
-                
-                var layer = new OpenLayers.Layer.WMS(
-                    dl.name,
-                    dl.server.uri,
-                    params,
-                    {
-                        isBaseLayer: dl.isBaseLayer,
-                        wrapDateLine: true,   
-                        opacity: opacity,
-                        transitionEffect: 'resize'
-                    });
-                
-                
-                //
-                // extra info to keep
-                layer.grailsLayerId = grailsLayerId; 
-                layer.server= dl.server;
-                
-                
-                if(dl.server.type.search("NCWMS") > -1) {
-                    // get ncWMS Json metadata info for animation and style switching
-                    // update detailsPanel after Json request
-                    getLayerMetadata(layer);
-                } 
-                else {
-                    getLayerBbox();
-                    // update detailsPanel without Json request needed
-                    updateDetailsPanel(layer);
-                }
-                // store the OpenLayers layer so we can retreive it latter
-                activeLayers[getUniqueLayerId(layer)] = layer;
-                
-                mapPanel.map.addLayer(layer); 
-  
+                addLayer(dl);  
                 
             }
         });
         
         
 }
+
+/*
+ * 
+ * This is the internal add layer method used to add all layers
+ * 
+ */
+
+function addLayer(dl) {    
+   
+     /*
+      * Buffer: tiles around the viewport. 1 is enough
+      * Gutter: images wider and taller than the tile size by a value of 2 x gutter
+              NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
+              Keep as zero till fixed 
+      */               
+      var params = {
+          layers: dl.layers,
+          transparent: true,
+          buffer: 1, 
+          gutter: 0
+      };
+      
+      if (dl.imageFormat) {
+      	params.format = dl.imageFormat;
+      }
+
+      if (dl.queryable) {
+      	params.queryable = dl.queryable;
+      }
+      
+      // opacity was stored as a percent 0-100
+      var opacity =  Math.round((dl.opacity / 100)*10)/10;
+      
+      if(dl.server.type == "NCWMS-1.3.0") {
+          params.yx = true; // fix for the wms standards war
+      }
+      
+      if(dl.cql != "") {
+          params.CQL_FILTER = dl.cql;
+      }
+      
+      // may be null from database
+      if(dl.styles == "") {
+          params.styles = "";
+      }
+      
+      var options =           {
+            wrapDateLine: true,   
+            opacity: opacity,
+            transitionEffect: 'resize'
+      };
+
+      if (dl.isBaselayer) {
+      	options.isBaseLayer = dl.isBaseLayer;
+      }
+
+      var layer = new OpenLayers.Layer.WMS(
+          dl.name,
+          dl.server.uri,
+          params,
+          options
+      );
+      
+      //
+      // extra info to keep
+      layer.grailsLayerId = dl.grailsLayerId; 
+      layer.server= dl.server;
+      
+      if(dl.server.type.search("NCWMS") > -1) {
+          // get ncWMS Json metadata info for animation and style switching
+          // update detailsPanel after Json request
+          getLayerMetadata(layer);
+      } 
+      else {
+          getLayerBbox();
+          // update detailsPanel without Json request needed
+          updateDetailsPanel(layer);
+      }
+      // store the OpenLayers layer so we can retreive it latter
+      activeLayers[getUniqueLayerId(layer)] = layer;
+      
+      mapPanel.map.addLayer(layer); 
+};
 
 // used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
@@ -437,7 +457,7 @@ function setExtentLayer() {
 
 function loadDefaultLayers() {    
     for(var i = 0; i < defaultLayers.length; i++)   {
-        addLayer(defaultLayers[i].id);   
+        addGrailsLayer(defaultLayers[i].id);   
         setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);
     }
 }

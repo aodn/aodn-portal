@@ -26,10 +26,13 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		};
 		
 		return {
-			server: linkRec.get('url'),
-			layer: linkRec.get('name'),
-			protocol: linkRec.get('protocol'),
-			title: linkRec.get('title')
+			name: linkRec.get('title'),
+			server: {
+				uri: linkRec.get('url'),
+				type: 'WMS'
+			},
+			layers: linkRec.get('name'),
+			protocol: linkRec.get('protocol')
 		};
 	}
 });
