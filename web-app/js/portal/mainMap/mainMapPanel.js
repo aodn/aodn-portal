@@ -352,6 +352,12 @@ function addLayer(dl) {
       // extra info to keep
       layer.grailsLayerId = dl.grailsLayerId; 
       layer.server= dl.server;
+      layer.cql = dl.cql;
+      
+      // don't add layer twice 
+      if (layerAlreadyAdded(layer)) {
+      	Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
+      };
       
       if(dl.server.type.search("NCWMS") > -1) {
           // get ncWMS Json metadata info for animation and style switching
@@ -363,6 +369,7 @@ function addLayer(dl) {
           // update detailsPanel without Json request needed
           updateDetailsPanel(layer);
       }
+      
       // store the OpenLayers layer so we can retreive it latter
       activeLayers[getUniqueLayerId(layer)] = layer;
       
@@ -371,8 +378,16 @@ function addLayer(dl) {
 
 // used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
-    
-    return (layer.name + "::" + layer.grailsLayerId).replace(/\s/g, "");
+    return (layer.server.uri + "::" + layer.name + "::" + layer.cql);
+}
+
+// return whether the layer has already been added to the map
+function layerAlreadyAdded(layer){
+	var previousLayer = activeLayers[getUniqueLayerId(layer)];
+	
+	if (previousLayer == undefined) return false;
+	
+   return mapPanel.map.getLayer(previousLayer.id) !== null;
 }
 
 function getLayerBbox(layer) {
