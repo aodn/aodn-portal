@@ -33,7 +33,7 @@ function initMenusPanel(menu) {
             click:{
                 fn:function(node) {
                     if (node.attributes.grailsLayerId){
-                        addLayer(node.attributes.grailsLayerId);                      
+                        addGrailsLayer(node.attributes.grailsLayerId);                      
                         setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);
                     }
                     else if (node.attributes.grailsServerId){
