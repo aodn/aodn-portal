@@ -92,17 +92,17 @@ describe("Portal.search.data.LinkStore", function() {
 	         
          var firstLink = testStore.getLink(0);
          
-         expect(firstLink.server).toEqual('http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&');
-         expect(firstLink.layer).toEqual('topp:xbt_realtime');
+         expect(firstLink.server.uri).toEqual('http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&');
+         expect(firstLink.layers).toEqual('topp:xbt_realtime');
          expect(firstLink.protocol).toEqual('OGC:WMS-1.1.1-http-get-map');
-         expect(firstLink.title).toEqual('xbt_realtime');
+         expect(firstLink.name).toEqual('xbt_realtime');
 
          var secondLink = testStore.getLink(1);
          
-         expect(secondLink.server).toEqual('http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime');
-         expect(secondLink.layer).toEqual('topp:xbt_realtime');
+         expect(secondLink.server.uri).toEqual('http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime');
+         expect(secondLink.layers).toEqual('topp:xbt_realtime');
          expect(secondLink.protocol).toEqual('');
-         expect(secondLink.title).toEqual('xbt_realtime');
+         expect(secondLink.name).toEqual('xbt_realtime');
 
 		});
       
