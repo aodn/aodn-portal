@@ -161,7 +161,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	  };
   },
 
-  getAddToDownloadClass: function() { // v, metadata, rec, rowIndex, colIndex, store
+  getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
       if (this.getProtocolCount(rec.get('links'), this.DOWNLOADABLE_PROTOCOLS) > 1) {
               return 'p-result-cart-add';
       } else {
