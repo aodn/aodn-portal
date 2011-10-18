@@ -33,3 +33,7 @@ coverage {
     enabledByDefault = true
     xml = true
 }
+grails.war.resources = { stagingDir ->
+    
+    delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.2.jar")
+}
