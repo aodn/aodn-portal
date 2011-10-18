@@ -1,0 +1,34 @@
+
+<%@ page import="au.org.emii.portal.Server" %>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="layout" content="main" />
+        <g:set var="entityName" value="${message(code: 'server.label', default: 'Select Server to Check for Broken Links')}" />
+        <title><g:message code="default.list.label" args="[entityName]" /></title>
+    </head>
+    <body>
+        <div class="nav">
+          <div id="logo"></div>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+        </div>
+        <div class="body">
+            <h1>Check server for broken links</h1>
+            <g:if test="${flash.message}">
+            <div class="message">${flash.message}</div>
+            </g:if>
+
+			<g:form action="checkForBrokenLinks">  
+				<g:select name="server" from="${au.org.emii.portal.Server.list()}"
+												optionKey="id"
+												optionValue="name"
+												noSelection="noSelection="['':'Please Select...']" />
+				
+		       	<g:actionSubmit value="Check" action="checkForBrokenLinks"/>
+	       	</g:form>
+	       	<br/>
+	       	n.b. the broken links report will be sent to 
+
+        </div>
+    </body>
+</html>

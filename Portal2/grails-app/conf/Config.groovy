@@ -95,11 +95,11 @@ log4j = {
 //    info   'grails.app',
 //           'org.apache.shiro'
     
-//    debug  'grails.app.controller',
-//           'grails.app.filters.SecurityFilters',
-//           //'org.hibernate.SQL',           
-//           'org.hibernate.type',
-//           'grails.app.realm'
+    debug  'grails.app.controller',
+           'grails.app.filters.SecurityFilters',
+           //'org.hibernate.SQL',           
+           'org.hibernate.type',
+           'grails.app.realm'
 }
 
 // Email configuration.
