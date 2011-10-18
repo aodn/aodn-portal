@@ -324,6 +324,10 @@
 	          	<include>Geonetwork/lib/GeoNetwork/map/ExtentMap.js</include>
 	          	<include>portal/**/*.js</include>
 	          </sourceIncludes>
+	          <sourceExcludes>
+	          	<exclude>portal/viewport.js</exclude>
+	          	<exclude>portal/config/grid2treedrag.js</exclude>
+	          </sourceExcludes>
 	        </configuration>
       </plugin>
 
