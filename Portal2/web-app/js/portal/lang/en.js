@@ -24,6 +24,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         ttAddToDownload: 'Add to download cart',
         ttAddAllToDownload: 'Add all to download cart',
         btnAddAllToDownload: 'Add all',
+        ttClearDownload: 'Clear download cart',
+        btnClearDownload: 'Clear',
         
    //mainMapPanel
         layerExistsTitle: 'Add layer',

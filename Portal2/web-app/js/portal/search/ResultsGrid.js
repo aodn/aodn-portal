@@ -83,8 +83,16 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 anchor: 'right',
                 handler: this.addAllToCartExecute,
                 scope: this
-               }
-            )]
+               }),
+               new Ext.Button({
+                text: OpenLayers.i18n('btnClearDownload'),
+                tooltip: OpenLayers.i18n('ttClearDownload'),
+                ctCls: "noBackgroundImage",
+                anchor: 'right',
+                handler: this.clearCartExecute,
+                scope: this
+               })
+            ]
         })
      };
  
@@ -162,7 +170,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-      if (this.getProtocolCount(rec.get('links'), this.DOWNLOADABLE_PROTOCOLS) > 1) {
+      if (this.getProtocolCount(rec.get('links'), this.DOWNLOADABLE_PROTOCOLS) > 0) {
               return 'p-result-cart-add';
       } else {
               return 'p-result-disabled';
@@ -237,6 +245,25 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	 return false;
   },
   
+  addLinkDataToCart: function(rec, cart) {
+      
+    var links = rec.get('links');
+
+    for (var i = 0; i < links.length; i++) {
+
+        var link = links[i];
+
+        var linkData = {title: link.title,
+                        type: link.type,
+                        href: link.href,
+                        protocol: link.protocol};
+
+        if ( this.containsProtocol( this.DOWNLOADABLE_PROTOCOLS, linkData.protocol ) ) {
+            cart.push( linkData );
+        }
+    }
+  },
+  
   getLayerLink: function(rowIndex) {
      var rec = this.store.getAt(rowIndex);
      var links = rec.get('links');
@@ -249,16 +276,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
  addToCartExecute: function(grid, rowIndex, colIndex) {
-     
-     var msg = 'Add to cart: grid: ' + grid + ' -- rowIndex: ' + rowIndex + ' -- colIndex: ' + colIndex;
-     
+          
      var workingCart = this.getDownloadCart();
      
-     msg += '<br>State was: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>';
+     var msg = 'Add to cart: item @ rowIndex ' + rowIndex;
+     msg += '<br>Cart had ' + workingCart.length + ' item(s)';     
      
-     workingCart.push('<br>Item [' + rowIndex + ', ' + colIndex + ']');
+     var rec = grid.store.getAt(rowIndex)
      
-     msg += '<br>State now: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>';
+     this.addLinkDataToCart(rec, workingCart);
+     
+     msg += '<br>Cart now has ' + workingCart.length + ' item(s)';
      
      this.setDownloadCart(workingCart);
      
@@ -267,39 +295,36 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
   addAllToCartExecute: function() { // button, event
       
+        alert('Only adds all on page. Fix');
+      
         var msg = 'Add all to cart';
         
         var workingCart = this.getDownloadCart();
 
-        workingCart = []; // Clear (for teting)
-
-        msg += '<br>DownloadCart was: (' + workingCart.length + ' item(s))<br>' + workingCart + '<br>'
+        msg += '<br>Cart had ' + workingCart.length + ' item(s)';
 
         var parent = this;
         this.getStore().each(function(rec){
             
-            var links = rec.get('links');
-                                    
-            for (var i = 0; i < links.length; i++) {
-                
-                var link = links[i];
-                
-                var data = {title: links[i].title,
-                            type: links[i].type,
-                            href: links[i].href,
-                            protocol: links[i].protocol};
-                
-                if ( parent.containsProtocol( parent.DOWNLOADABLE_PROTOCOLS, link.protocol ) ) {
-                    workingCart.push( data );
-                }
-            }
+            parent.addLinkDataToCart(rec, workingCart);
         });
 
         this.setDownloadCart( workingCart );
 
-        msg += '<br>State now: (' + workingCart.length + ' item(s))<br>' + Ext.encode( workingCart ) + '<br>';
+        msg += '<br>Cart now has ' + workingCart.length + ' item(s)';
 
         Ext.Msg.alert( 'Add all to cart', msg );
+    },
+    
+    clearCartExecute: function() {
+        
+        var workingCart = this.getDownloadCart();
+
+        var msg = 'Cart cleared of ' + workingCart.length + ' item(s)'
+
+        this.setDownloadCart( [] );
+
+        Ext.Msg.alert( 'Clear cart', msg );
     },
     
     getDownloadCart: function() {
