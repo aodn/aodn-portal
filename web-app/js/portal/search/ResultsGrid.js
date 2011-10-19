@@ -295,19 +295,16 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
   addAllToCartExecute: function() { // button, event
       
-        alert('Only adds all on page. Fix');
-      
         var msg = 'Add all to cart';
         
         var workingCart = this.getDownloadCart();
 
         msg += '<br>Cart had ' + workingCart.length + ' item(s)';
 
-        var parent = this;
         this.getStore().each(function(rec){
             
-            parent.addLinkDataToCart(rec, workingCart);
-        });
+            this.addLinkDataToCart(rec, workingCart);
+        }, this);
 
         this.setDownloadCart( workingCart );
 
