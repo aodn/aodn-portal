@@ -140,7 +140,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
   onViewMetadata: function(grid, rowIndex, colIndex) {
      var rec = this.store.getAt(rowIndex);
-     var viewmetadata = Portal.app.config.catalogUrl + 'srv/en/metadata.show\?uuid\='+rec.get('uuid');
+     var viewmetadata = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
      
      window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
   },
