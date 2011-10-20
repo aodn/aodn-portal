@@ -10,6 +10,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    width: 800,
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
+   
+   LAYER_FILTER: "OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map",
 
    //TODO: Refactor into components
    initComponent: function() {
@@ -88,7 +90,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                     	name: 'protocol',
                     	xtype: 'checkbox',
                     	checked: true,
-                    	getValue: function() {return this.checked?"OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map":"";},
+                    	getValue: function() {return this.checked?this.LAYER_FILTER:"";},
                     	width: 250}]
                   ]
                }),
@@ -218,7 +220,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    },
    
    addSearchFilters: function(searchFilters) {
-      var fieldValues = this.getForm().getFieldValues();
+      var fieldValues = this.getForm().getFieldValues(), protocolFilter=false;
       
       for (var fieldName in fieldValues) {
          var values = fieldValues[fieldName];
@@ -228,8 +230,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             }
          } else {
             searchFilters.push({name: fieldName, value: values});
+            if (fieldName=="protocol") protocolFilter=true;
          }
       }
+      
+      // default is to show layers only
+      if (!protocolFilter) searchFilters.push({name: "protocol", value: this.LAYER_FILTER});
       
       return searchFilters;
    }    

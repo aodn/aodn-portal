@@ -4,8 +4,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
    cls: 'p-search',
    //TODO: create config value for map layer search filter?
-   searchDefaults: {E_hitsperpage: 15, E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'},
+   searchDefaults: {E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'},
    title: 'Search',
+   HITS_PER_PAGE: 15,
 
    initComponent: function() {
       //TODO: move to application initialisation
@@ -103,7 +104,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 
       // Pre-populate refinement panel
-      this.runSearch({E_hitsperpage: 1, E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'}, 1, false);
+      this.runSearch(["summaryOnly=true", "protocol=" + escape("OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map")], 1, false);
       // Update paging toolbar manually for the moment 
       this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
    },
@@ -125,7 +126,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    },
    
    resultsGridBbarBeforeChange: function(bbar, params) {
-      this.runSearch(Ext.apply(this.lastSearch, {E_hitsperpage: params.limit}), params.start);
+      this.runSearch(this.lastSearch, params.start + 1);
       //Stop paging control from doing anything itself for the moment
       // TODO: replace with store driven paging 
       return false;
@@ -135,7 +136,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: this.resultsStore.startRecord, limit: 15}});
    },
    
-   runSearch: function(parameters, startrecord, updateStore) {
+   runSearch: function(filters, startRecord, updateStore) {
       var onSuccess = function(result) {
          var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
          var currentRecords = getRecordsFormat.read(result.responseText);
@@ -147,19 +148,36 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          Ext.Msg.alert('Error: ' + response.status + '-' + response.statusText);
       };
       
-      this.catalogue.search(parameters, Ext.createDelegate(onSuccess, this), onFailure, startrecord, updateStore, this.resultsStore, this.facetStore);
+      if (updateStore !== false) {
+         updateStore = true;
+      };
 
-      this.resultsStore.startRecord = startrecord - 1;
+      if (updateStore) {
+         this.resultsStore.removeAll();
+      };
       
-      this.lastSearch = parameters;
+      var queryParams = filters.slice(0);
+
+      // Add paging params
+      
+      var to = startRecord + this.HITS_PER_PAGE - 1;
+      
+      queryParams.push("from=" + startRecord);
+      queryParams.push("to=" + to);
+      
+      var query = GeoNetwork.util.SearchTools.buildQueryGET(queryParams, startRecord, 
+                  GeoNetwork.util.SearchTools.sortBy, this.resultsStore.fast);
+      
+      GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), onFailure, updateStore, this.resultsStore, this.facetStore);
+
+      this.resultsStore.startRecord = startRecord - 1;
+      this.lastSearch = filters;
    },
    
    onSearch: function () {
       var searchFilters = this.searchForm.addSearchFilters([]);
       searchFilters = this.refineSearchPanel.addSearchFilters(searchFilters);
       var searchParams = this.getCatalogueSearchParams(searchFilters);
-      searchParams = Ext.apply(searchParams, {E_hitsperpage: this.resultsGrid.bbar.pageSize});
-      searchParams = Ext.applyIf(searchParams, this.searchDefaults);
       this.runSearch(searchParams, 1);
    },
    
@@ -167,14 +185,11 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       var format = function(value) {
          return Ext.isDate(value)?value.format('Y-m-d'):value;
       };
-      var searchParams = {};
+      var searchParams = [];
       for (var i = 0; i < searchFilters.length; i++) {
          var value = format(searchFilters[i].value);
-         if (searchParams['E_'+searchFilters[i].name]) {
-            searchParams['E_'+searchFilters[i].name] += ' or ' + value;
-         } else {
-            searchParams['E_'+searchFilters[i].name] = value;
-         };
+         var name = searchFilters[i].name;
+         searchParams.push(name + "=" + escape(value));
       }
       return searchParams;
    }

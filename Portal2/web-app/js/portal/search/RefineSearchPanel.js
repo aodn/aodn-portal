@@ -38,7 +38,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
             '</div>',
             '<tpl for=".">',
                '<div class="p-selected-name">',
-                  '<p>{[Portal.search.RefineSearchPanel.prototype.displayNames[values.name]]}</p>',
+                  '<p>{[OpenLayers.i18n("filterNames")[values.name]]}</p>',
                   '<tpl for="values">',
                      '<ul class="p-selected-values">',
                            '<li>',
