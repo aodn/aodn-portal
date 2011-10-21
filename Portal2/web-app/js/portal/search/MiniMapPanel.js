@@ -27,7 +27,8 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
       this.map.addLayer(layer);
       this.map.addControl(new OpenLayers.Control.LayerSwitcher());
       
-      this.map.events.register('zoomend', this, this.mapZoomEnd);
+      this.map.events.register('zoomend', this, this.extentChange);
+      this.map.events.register('moveend', this, this.extentChange);
       
       this.bboxLayer = new OpenLayers.Layer.Vector(OpenLayers.i18n("bboxLayer"), this.bboxLayerStyle);
       this.map.addLayer(this.bboxLayer);
@@ -37,7 +38,7 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
       this.addEvents('extentchange');
    },
    
-   mapZoomEnd: function() {
+   extentChange: function() {
       var bounds = this.map.getExtent();
       this.fireEvent('extentchange', {northBL: bounds.top, westBL: bounds.left, eastBL: bounds.right, southBL: bounds.bottom});
    },
