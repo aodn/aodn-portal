@@ -8,10 +8,7 @@ function setupAnimationControl() {
         return false;
     }    
 
-    
-    if (selectedActiveLayer.dates == undefined) {
-        selectedActiveLayer.dates = selectedActiveLayerDates();
-    } 
+     
     
     
     animatePanel.animatePanelContent.removeAll(true); 
@@ -44,7 +41,9 @@ function setupAnimationControl() {
     }
     
     
-    animatePanel.animatePanelContent.doLayout();    
+    animatePanel.animatePanelContent.doLayout();  
+    
+
     
 
 }
@@ -54,28 +53,7 @@ function renderAnimatePanelContents() {
 
 }
 
-// get all the dates for the aselected active layer
-function selectedActiveLayerDates(){
-    
-    var dates = [];   
-    var datesWithData = selectedActiveLayer.metadata.datesWithData; 
-    //var selectedDate = selectedActiveLayer.nearestTime;
-    
-    for (var year in datesWithData) {
-        for (var month in datesWithData[year]) {            
-            for (var day in datesWithData[year][month]) {
-                // add 1 to the month and number as datesWithData uses a zero-based months
-                // take the value at the index day if its a number
-                if (!isNaN(parseInt(datesWithData[year][month][day]))) {
-                    
-                    dates.push(year + "-" + pad(parseInt(month)+1, 2 ) +"-" + pad(datesWithData[year][month][day], 2));
-                }
-            }
-        }        
-    }
-    return dates;
-    
-}
+
 
 
 
@@ -104,7 +82,7 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                                     if (slider.index != 0) {
                                         thumbName = "End";
                                     }
-                                    return String.format('<b>{0}:</b> {1}', thumbName,  selectedActiveLayer.dates[slider.value]);
+                                    return String.format('<b>{0}:</b> {1}', thumbName,  selectedActiveLayer.dates[slider.value].date);
                                 }
                             })
                         ,
@@ -113,27 +91,16 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                             changecomplete: function(slider,val,thumb) { 
                                                               
                                 
-                               // which ever thumb was moved, update the selectedActiveLayer
-                               // getMetadata gave us the days but not the times of the day
-                               Ext.Ajax.request({
-                                    url: proxyURL+encodeURIComponent(selectedActiveLayer.url + 
-                                        "?request=GetMetadata&item=timesteps&layerName=" + 
-                                        selectedActiveLayer.params.LAYERS + 
-                                        "&day=" + selectedActiveLayer.dates[val]),        
-                                    success: function(resp) { 
-                                        selectedActiveLayer.selectedDayTimesteps = Ext.util.JSON.decode(resp.responseText);
-                                        mergeNewTime(selectedActiveLayer.dates[val]);
-                                    }
-                                }); 
-                                
-                                this.setTimeVals(slider);                               
-                                
+                               // which ever thumb was moved, update the selectedActiveLayer                                                              
+                               this.setTimeVals(slider);  
+                               //console.log(thumb.value);
+                               //console.log(selectedActiveLayer.dates[thumb.value].date);
+                               mergeNewTime(selectedActiveLayer.dates[thumb.value].date);  
                                 
                                 
                             },
                             afterrender: function(slider) {  
                                 this.setTimeVals(this.timePanelSlider);
-                                //renderAnimatePanelContents();
                             }
                         }
                     },
@@ -168,10 +135,13 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                     },
                     {
                         xtype: 'button',
+                        id: 'startNCAnimationButton',
                         text:'Start',
-                        //disabled: true, // readonly
+                        disabled: true, // readonly
                         //hidden: true,
-                        handler:animateTimePeriod(this)
+                        handler: function(button,event) {
+                            animateTimePeriod();
+                        }
                     }
                     
                 ]
@@ -179,34 +149,32 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                 
             },
             listeners: {
-
-            },
-            
-
-            
-            resetSlider: function(slider) {
-                
-                slider.setValue(0,0,true);
-                slider.setValue(1,0,true);
-                slider.setMinValue(0);
-                slider.setMaxValue(0);
-                
-                if (selectedActiveLayer.dates.length > 1) {
-                    slider.setMaxValue(selectedActiveLayer.dates.length-1);
-                    slider.setValue(1,selectedActiveLayer.dates.length-1,true);
+                afterrender: function(whateva) {
+                    
+                    // do this only once for each layer
+                    // selectedActiveLayer.metadata.datesWithData will already be defined at this point
+                    if (selectedActiveLayer.dates == undefined) {
+                        setLayerDates(selectedActiveLayer); // pass in the layer as there are going to be many async Json requests
+                        // disable the 'Start' button as we need all the available dates to be loaded first
+                        Ext.getCmp('startNCAnimationButton').disable();
+                    }
+                    else {
+                        //console.log("setting the startNCAnimationButton enabled");
+                        // after a successful animation the 'Start' button is disabled
+                        // the dates have been set previously for this layer so enable the button
+                        Ext.getCmp('startNCAnimationButton').enable();
+                    }
+                    
                 }
-                
-               
-                
             },
             
             setTimeVals: function(slider) {
                 
                 var dates = selectedActiveLayer.dates;
-                this.timeMin.setValue(dates[slider.getValues()[0]]);
+                this.timeMin.setValue(dates[slider.getValues()[0]].date);
                 
                 if (slider.getValues()[1] != undefined) {
-                    this.timeMax.setValue(dates[slider.getValues()[1]]);
+                    this.timeMax.setValue(dates[slider.getValues()[1]].date);
                     this.frameCount.setValue(slider.getValues()[1] -  slider.getValues()[0] + 1); // + item at zero
                 }
                 else {
@@ -222,21 +190,155 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
 Ext.reg('animations.timePanel', Animations.TimePanel);
 
 
+// merge time = YYYY-MM-DD for getMap requests
+function mergeNewTime(day) {     
+    
+    
+    for(var i=0; i<selectedActiveLayer.dates.length; i++) {
+        if (selectedActiveLayer.dates[i].date == day) {
+            selectedActiveLayer.mergeNewParams({
+                        time : day
+                    });
+        } 
+    }
+    
+   
+}
+       
+// set all the date/times for the layer
+// creates an array (dates) of objects {date,datetimes} for a layer
+function setLayerDates(layer){ 
+
+    
+    // add this new attribute to the layer
+    layer.dates = []; 
+    
+    var datesWithData = layer.metadata.datesWithData; 
+    //var selectedDate = selectedActiveLayer.nearestTime;
+    
+    
+    var dayCounter = 0; // count of how many days
+    
+    for (var year in datesWithData) {
+        for (var month in datesWithData[year]) {            
+            for (var day in datesWithData[year][month]) {
+                // add 1 to the month and number as datesWithData uses a zero-based months
+                // take the value at the index day if its a number
+                if (!isNaN(parseInt(datesWithData[year][month][day]))) {
+                    
+                    var newDay = year + "-" + pad(parseInt(month)+1, 2 ) +"-" + pad(datesWithData[year][month][day], 2);                    
+                    layer.dates.push({
+                        date: newDay
+                    });                    
+                    // start off a Ajax request to add the dateTimes for this date
+                    setDatetimesForDate(layer, newDay);
+                    dayCounter ++;
+                }
+            }
+        }        
+    }
+    // store with the layer.
+    // set null when setDatetimesForDate return a result for every day
+    layer.dayCounter = dayCounter;
+    
+}
+
+// WTF happened to this function!!
+// SVN Aghhhh!!
+function pad(numNumber, numLength){
+	var strString = '' + numNumber;
+	while(strString.length<numLength){
+		strString = '0' + strString;
+	}
+	return strString;
+}
+
+function setDatetimesForDate(layer, day) {
+    
+   // getMetadata gave us the days but not the times of the day
+   Ext.Ajax.request({
+        url: proxyURL+encodeURIComponent(layer.url + 
+            "?request=GetMetadata&item=timesteps&layerName=" + 
+            layer.params.LAYERS + 
+            "&day=" + day),
+        success: function(resp) { 
+            
+            var res = Ext.util.JSON.decode(resp.responseText);
+            var dateTimes = [];
+            res.timesteps.forEach(function (index) {
+                
+                 dateTimes.push(day +  "T" + index);
+                
+                
+            });  
+            // store the datetimes for each day
+            for(var i=0; i<layer.dates.length; i++) {
+                if (layer.dates[i].date == day) {
+                    layer.dates[i].dateTimes = dateTimes;
+                } 
+            }
+            
+            layer.dayCounter--;
+            // set null when setDatetimesForDate return a result for every day
+            // now we are safe to allow animation
+            if (layer.dayCounter == 0) {
+                layer.dayCounter = undefined;
+                // The 'Start' button can be shown, but it may not be rendered yet
+                // try to enable in the render listener as well
+                // then animation can then procede
+                if (Ext.getCmp('startNCAnimationButton') != undefined) {
+                    Ext.getCmp('startNCAnimationButton').enable();
+                }
+            }
+            
+        }
+    });
+}
+
+// use to get the allready stored dateTimes for date
+// for the selectedActiveLayer
+function getDateTimesForDate(day) {
+    var dateTimes = [];
+    for(var i=0; i<selectedActiveLayer.dates.length; i++) {
+        if (selectedActiveLayer.dates[i].date == day) {
+            // console.log(selectedActiveLayer.dates[i]);
+            dateTimes = selectedActiveLayer.dates[i].dateTimes;
+        } 
+    }
+    return dateTimes;
+    
+}
+
+
 
 // divide up the total amount of possible days into no more than thirty days
 // the ncWMS server has trouble calculating an animated gif with more than 30 frames
-function animateTimePeriod(thisTimePanel) {
+function animateTimePeriod() {
     
-    if (animatePanel.animatePanelContent.theOnlyTimePanel == undefined) {
+    // disable the 'Start' button for the next possible layer
+    Ext.getCmp('startNCAnimationButton').disable();
+    
+    if (animatePanel.animatePanelContent.theOnlyTimePanel != undefined) {
+        //var maxFrames = 8;
+        var chosenTimes = [];
         
-        //
-        var p = animatePanel.animatePanelContent.theOnlyTimePanel;
-        //console.log(p);
-        var timeArray = [];
-        //timeArray.push(thisTimePanel.timeMin.getvalue());    
-        //timeArray.push(thisTimePanel.timeMax.getvalue());
-
+        var p = animatePanel.animatePanelContent.theOnlyTimePanel; 
         
+        /*****************
+         * 
+         * hard coded to two frames. start and end for the mo.
+         * 
+         */
+        chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]); 
+        chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]); 
+        // get all the times between user selected range
+        //var dates = setAnimationTimesteps(params);     
+        
+        selectedActiveLayer.chosenTimes = chosenTimes.join(",");
+        
+        addNCWMSLayer(selectedActiveLayer);
+  
+                
         
     }  
 
@@ -244,44 +346,4 @@ function animateTimePeriod(thisTimePanel) {
 }
 
 
-
-/**
- * Gets the list of animation timesteps from the given layer ncWMS.
- * @param Object containing parameters, which must include:
- *        start Start time for the animation in ISO8601
- *        start End time for the animation in ISO8601
- */
-function getAnimationTimesteps(url, params) {
-    makeAjaxRequest(url, {
-        urlparams: {
-            item: 'animationTimesteps',
-            layerName: params.layerName,
-            start: params.startTime,
-            end: params.endTime
-        },
-        onSuccess: function(timestrings) {
-            return timestrings.timeStrings;
-        }
-    });
-}
-
-// called after ajax request to get the timesteps for a given date
-function mergeNewTime(dateTime) {
-    
-   
-   var salsdtt = selectedActiveLayer.selectedDayTimesteps.timesteps;
-   // take the first one for now !!!!!!!!!!!!!!!!!!!!!!!!!!
-   if (salsdtt != undefined) {
-       dateTime = dateTime + "T" + salsdtt[0];
-   }
-   else {
-       // Dont know what to do at this stage ?????????? todo       
-       console.log('non-standard  response to getmetadat timesteps!!!');
-       return false;
-   }     
-    
-   selectedActiveLayer.mergeNewParams({
-                        time : dateTime
-                    });
-}
 

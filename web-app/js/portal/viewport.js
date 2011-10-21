@@ -9,15 +9,10 @@ var ready = false;
 var my_JSON_object = {};
 
 var layersTree;
-var currentNode;
-var checkNode;
 var proxyURL = "proxy?url=";
 var activePanel;
 
 var toolbarpointer;
-//--------------------------------------------------------------------------------------------
-
-var nodeSelected;
  
 // components in menuPanel.js
 var leftTabMenuPanel;
@@ -26,7 +21,7 @@ var defaultLayers; // from the config
 var defaultMenu; // from the config
 var demonstrationContributorTree;
 var baseLayerList;
-var topMenuPanel, centreMenuPanel;
+var topMenuPanel;
 
 //
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -187,11 +182,6 @@ function doViewPort()
                 hide: function(panel) {
                     if (panel.title == 'Map') {                        
                         detailsPanel.hide();
-                    }
-                },                
-                show: function(panel) {
-                    if (panel.title == 'Map') {                        
-                        detailsPanel.show();
                     }
                 }
         }
