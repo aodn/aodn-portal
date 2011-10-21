@@ -2,8 +2,8 @@ var styleCombo;
 var detailsPanel;
 var detailsPanelItems;
 var selectedActiveLayer;
-var opacitySlider;
-var legendImage;
+//var opacitySlider;
+//var legendImage;
 //var dimension;
 var dimensionPanel;
 var ncWMSColourScalePanel;
@@ -37,11 +37,40 @@ function initDetailsPanel()  {
             show: function(slider) {  
                 // the tabpanel needs to be visible before setup below
                 setupAnimationControl();
+                
+
             }
         }
     });
     
-    legendImage = new GeoExt.LegendImage({
+    var opacitySlider = new GeoExt.LayerOpacitySlider({
+        id: "opacitySlider",
+        title: 'Opacity',
+        layer: "layer",
+        margins: {
+            top: 0,
+            right: 10,
+            bottom: 10,
+            left: 10
+        },
+        inverse: false,
+        fieldLabel: "opacity",
+        plugins: new GeoExt.LayerOpacitySliderTip({
+            template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
+        })
+    });
+    
+    var opacitySliderContainer = new Ext.Panel({ 
+        height: 'auto',
+        layout: 'form',
+        width: 300,
+        items: [
+           opacitySlider 
+        ]
+    });
+    
+    var legendImage = new GeoExt.LegendImage({
+        id: 'legendImage',
         imgCls: 'legendImage'
     });
     
@@ -88,23 +117,7 @@ function initDetailsPanel()  {
     });
     ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMax,colourScaleMin);
 
-    // create a separate slider bound to the map but displayed elsewhere
-    opacitySlider = new GeoExt.LayerOpacitySlider({
-        id: "opacitySlider",
-        layer: "layer",
-        width: 200,
-        margins: {
-            top: 0,
-            right: 10,
-            bottom: 10,
-            left: 10
-        },
-        inverse: false,
-        fieldLabel: "opacity",
-        plugins: new GeoExt.LayerOpacitySliderTip({
-            template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-        })
-    });
+
 
 
     // create the styleCombo instance
@@ -112,13 +125,14 @@ function initDetailsPanel()  {
     
     var stylePanel = new Ext.Panel({
         title: 'Styles', 
+        id: 'stylePanel',
         items: [
-            opacitySlider,
             styleCombo,                    
             legendImage,
             ncWMSColourScalePanel
         ]
     });
+    
             
     var featureInfoPanel = new Ext.Panel({   
         title: 'Filters',
@@ -151,8 +165,9 @@ function initDetailsPanel()  {
         id: 'detailsPanel',
         shadow: false,
         title: 'Layer Options',
-        plain: true,
+        //plain: true,
         autoDestroy: false,
+        hidden: true, // not visible until a user clicks a layer in active layers
         //padding: 10,
         constrainHeader: true,
         constrain: true,
@@ -167,7 +182,21 @@ function initDetailsPanel()  {
         resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
         closeAction: 'hide',
         border: false,
-        items: [         
+        items: [      
+            opacitySliderContainer,
+            {
+                xtype: 'button',
+                id: 'stopNCAnimationButton',
+                style: {
+                    padding: '10px'
+                },
+                text:'Stop Animation',
+                //disabled: true, // readonly
+                hidden: true,
+                handler: function(button,event) {
+                    stopAnimateTimePeriod();
+                }
+            },
             animateLink,    
             detailsPanelItems
         ],
@@ -180,14 +209,13 @@ function initDetailsPanel()  {
         }],
         listeners: {
             //afterrender: function(thisthingy){
-            //    console.log("rendered the details panel");
             //    updateDetailsPanelPositionSize(false);
             //},            
             move: function(thisthingy,x,y){
                 thisthingy.moved = true;
             },
             show: function(thisthingy){
-                updateDetailsPanelPositionSize(true);
+                //updateDetailsPanelPositionSize(true);      
             }
             
         }
@@ -215,7 +243,6 @@ function toggleDetailsLocation() {
         detailsPanel.hide();
     }
     else {        
-        
         detailsPanel.add(rdp.remove(detailsPanelItems, false));
         // disable the opening of the righthand panel
         rdp.collapse(false);
@@ -237,41 +264,53 @@ function updateDetailsPanel(layer) {
         zoomToLayer(mapPanel.map, selectedActiveLayer);
     }
     
-    updateStyles(layer);
-    updateDimensions(layer); // time and elevation   
+    
+    ncWMSColourScalePanel.hide();
+    animatePanel.setDisabled(true);
+    
+    
+    
+    // if this layer is a WMS layer
+    // images layers do not have params
+    if (layer.params != undefined) {
+        
+        updateStyles(layer);
+        updateDimensions(layer); // time and elevation    
+        if(selectedActiveLayer.server.type.search("NCWMS") > -1)  {
+            
+            makeNcWMSColourScale(); 
+            // show the animate tab if we can animate through time
+            if (selectedActiveLayer.metadata.datesWithData != undefined) {
+
+                if (selectedActiveLayer.dates == undefined) {
+                    setLayerDates(selectedActiveLayer); // pass in the layer as there are going to be many async Json requests
+                }
+                animatePanel.setDisabled(false);            
+                // ensure to 're-set' the Start Stop buttons (if rendered);
+                if (Ext.getCmp('startNCAnimationButton') != undefined) {
+                    Ext.getCmp('startNCAnimationButton').setVisible(true);
+                }
+                Ext.getCmp('stopNCAnimationButton').setVisible(false);     
+
+            } 
+        }
+    }
+    // it may be an animated image layer
+    else if (layer.originalWMSLayer != undefined) {
+        //console.log( "todo handle animated layers. show the animate panel" );
+        // set the Start Stop buttons;
+        Ext.getCmp('startNCAnimationButton').setVisible(false);
+        Ext.getCmp('stopNCAnimationButton').setVisible(true);
+    }
+
     
     detailsPanel.text = selectedActiveLayer.name;
     detailsPanel.setTitle("Layer Options: " + selectedActiveLayer.name);
     mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + selectedActiveLayer.name);
-    opacitySlider.setLayer(selectedActiveLayer);
+    Ext.getCmp('opacitySlider').setLayer(selectedActiveLayer);
 
-
-    ncWMSColourScalePanel.hide();
-    //    
-    if(selectedActiveLayer.server.type.search("NCWMS") > -1)  {
-        makeNcWMSColourScale();
-    }
-    
-    detailsPanelItems.activate(0); // always set the styles active
-    
-    
-    // show the animate tab if we can animate through time
-    if (selectedActiveLayer.metadata.datesWithData != undefined) {
-        //Ext.getCmp('animateLink').show();
-        //detailsPanelItems.doLayout();
-        //animatePanel.doLayout();
-        animatePanel.setDisabled(false);
-        
-        
-    }
-    else {
-        //Ext.getCmp('animateLink').hide();
-        //animateLink.hide();
-        
-        animatePanel.setDisabled(true);
-    }
-    
-       
+    detailsPanelItems.activate(0); // always set the first item active
+     
     
     // display popup if that is where the detailsPanelItems items are
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
@@ -287,7 +326,6 @@ function updateDetailsPanelPositionSize(reset) {
     var buffer = 60;
     var x = Portal.app.config.westWidth+buffer;
     var y = Portal.app.config.headerHeight+buffer+ 40;
-    
     detailsPanel.show();
     
     // set in predefined position unless already set or sized
@@ -300,7 +338,24 @@ function updateDetailsPanelPositionSize(reset) {
     }
     
 }
+function setStyle(layer,record) {
+    
+    if (layer.originalWMSLayer == undefined) {
+        // its a standard WMS layer
+        selectedActiveLayer.mergeNewParams({
+            styles : record.get('displayText')
+        });        
+        selectedActiveLayer.metadata.defaultPalette = record.get('myId');
+        refreshLegend();
+    }
+    else {
+        // its an animated openlayers image
+        layer.originalWMSLayer.params.STYLES = record.get('displayText');
+        addNCWMSLayer(layer);      
+        
+    }
 
+}
 function updateStyles(layer)
 {
      
@@ -350,9 +405,10 @@ function updateStyles(layer)
 function refreshLegend()
 {    
     var url = buildGetLegend(selectedActiveLayer,"",false)  
-    legendImage.setUrl(url);
+    Ext.getCmp('legendImage').setUrl(url);
 }
 
+// for WMS layers only 
 function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     var url = layer.url;
@@ -454,11 +510,8 @@ function makeCombo(type) {
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
-                {    selectedActiveLayer.mergeNewParams({
-                        styles : record.get('displayText')
-                    });
-                    selectedActiveLayer.metadata.defaultPalette = record.get('myId');
-                    refreshLegend(); 
+                {    
+                    setStyle(selectedActiveLayer,record); 
                 }
                 else if(cbbox.fieldLabel == 'time')
                 {

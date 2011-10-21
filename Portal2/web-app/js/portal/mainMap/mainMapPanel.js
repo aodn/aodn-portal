@@ -111,7 +111,7 @@ function initMap()  {
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
-     var onClick2 = function(ev, target){
+    /* var onClick2 = function(ev, target){
         alert(target);
         ev.preventDefault(); // Prevents the browsers default handling of the event
         ev.stopPropagation(); // Cancels bubbling of the event
@@ -121,6 +121,7 @@ function initMap()  {
 
         var relTarget = ev.getRelatedTarget(); // Gets the related target
     };
+     */
     
     setMapDefaultZoom(mapPanel.map); // adds default bbox values to map instance
     mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
@@ -272,18 +273,229 @@ function setToolbarItems() {
  * 
  */
 function addGrailsLayer(grailsLayerId) {    
-    
+    //console.log(grailsLayerId);
     Ext.Ajax.request({
 
             url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
             success: function(resp){
                 var dl = Ext.util.JSON.decode(resp.responseText);  
+
+                
+               /*
+                * Buffer: tiles around the viewport. 1 is enough
+                * Gutter: images wider and taller than the tile size by a value of 2 x gutter
+                        NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
+                        Keep as zero till fixed 
+                */ 
+               
+               /*
+                var params = {
+                    layers: dl.layers,
+                    transparent: true,
+                    format: dl.imageFormat,
+                    queryable: dl.queryable,
+                    buffer: 1, 
+                    gutter: 0
+                }
+                // opacity was stored as a percent 0-100
+                var opacity =  Math.round((dl.opacity / 100)*10)/10;
+                
+                
+                if(dl.server.type == "NCWMS-1.3.0") {
+                    params.yx = true; // fix for the wms standards war
+                }
+                if(dl.cql != "") {
+                    params.CQL_FILTER = dl.cql;
+                }  
+                // may be null from database
+                if(dl.styles == "") {
+                    params.styles = "";
+                }
+                
+                
+                
+                var layer = new OpenLayers.Layer.WMS(
+                    dl.name,
+                    dl.server.uri,
+                    params,
+                    {
+                        isBaseLayer: dl.isBaseLayer,
+                        wrapDateLine: true,   
+                        opacity: opacity,
+                        transitionEffect: 'resize'
+                    });
+                
+                
+                //
+                // extra info to keep
+                layer.grailsLayerId = grailsLayerId; 
+                layer.server= dl.server;
+                
+                
+                // store the OpenLayers layer so we can retreive it latter
+                activeLayers[getUniqueLayerId(layer)] = layer;
+                
+                mapPanel.map.addLayer(layer);
+                
+                // get the extras
+                if(layer.server.type.search("NCWMS") > -1) {
+                    // get ncWMS Json metadata info for animation and style switching
+                    getLayerMetadata(layer);
+                } 
+                else {
+                    //getLayerBbox();
+                }
+                
+                */
+
                 addLayer(dl);  
+
                 
             }
         });
         
         
+}
+
+
+
+function getVersionString(layer) {
+        var versionStr;
+        if (layer.server.type.indexOf("1.3.0") != -1) {
+                versionStr = "VERSION=1.3.0&CRS=EPSG%3A4326";
+        } else {
+                versionStr = "VERSION=1.1.1&SRS=EPSG%3A4326";
+        }
+        return versionStr;
+                
+}
+
+function removeLayer(uniqueLayerId) {
+    
+    if (activeLayers[uniqueLayerId] != undefined) {
+        mapPanel.map.removeLayer(activeLayers[uniqueLayerId]);    
+        activeLayers[uniqueLayerId] = null;        
+    } 
+    else {
+        console.log("trying to remove a layer that is undefined");
+    }
+}
+function processBounds(openlayersBounds) {
+    var size = openlayersBounds.getSize();
+    // increase the size if tiny
+    var w= size.w;
+    var h= size.h;
+    var min = 512;
+    var multiplier = 1;
+    
+    var smaller = (w<h) ? w : h;
+    if (smaller < min) {
+        multiplier = min/smaller;
+    }
+    
+    w = w * multiplier;    
+    h = h * multiplier;    
+    
+    // the size variables must be integers
+    return new OpenLayers.Size(parseInt(w),parseInt(h));
+    
+}
+// Gets the current map extent, check for out-of-range values
+function getMapExtent()  {
+    var bounds = mapPanel.map.getExtent();
+    var maxBounds = mapPanel.map.maxExtent;
+    var top = Math.min(bounds.top, maxBounds.top);
+    var bottom = Math.max(bounds.bottom, maxBounds.bottom);
+    var left = Math.max(bounds.left, maxBounds.left);
+    var right = Math.min(bounds.right, maxBounds.right);
+    return new OpenLayers.Bounds(left, bottom, right, top);
+}
+
+
+
+// replace OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
+// or reload the image. 
+// Reloading may be called from reloading a style or changing zoomlevel
+function addNCWMSLayer(currentLayer) {
+    
+    var layer;
+    var layerLevelIndex;
+    var bbox = getMapExtent();//.getSize()
+    //
+    // if originalWMSLayer is set then it is already an Openlayers.Image
+    if (currentLayer.originalWMSLayer != undefined) {  
+        layer = currentLayer.originalWMSLayer;
+        layer.map = mapPanel.map;
+    }
+    else {
+        layer = currentLayer;
+    }
+    // 
+    var newUrl = layer.getFullRequestString( {
+        TIME: layer.chosenTimes,
+        TRANSPARENT:true,
+        WIDTH: 1024,
+        HEIGHT: 1024,
+        BBOX: bbox.toArray(),
+        FORMAT: "image/gif"
+    });
+         
+    
+    newUrl = newUrl + "&" + getVersionString(layer);
+    
+    
+    // params.times = array times to animate
+    // use maxExtent always
+    var newNCWMS = new OpenLayers.Layer.Image(
+        layer.name + " (Animated)",
+        newUrl,
+        //mapPanel.map.getExtent(),
+        bbox,
+        bbox.getSize(), 
+        {
+            format: 'image/gif', 
+            opacity: layer.opacity,
+            isBaseLayer : false,
+            maxResolution: mapPanel.map.baseLayer.maxResolution,
+            minResolution: mapPanel.map.baseLayer.minResolution,
+            resolutions: mapPanel.map.baseLayer.resolutions,
+            
+            
+            
+            // baseUri: 
+            // timeSeriesPlotUri:
+            // featureInfoResponseType
+        });  
+        
+    // exchange new for old
+    layerLevelIndex = mapPanel.map.getLayerIndex(currentLayer);
+    removeLayer(getUniqueLayerId(currentLayer));
+
+    mapPanel.map.addLayer(newNCWMS);     
+    mapPanel.map.setLayerIndex(newNCWMS,layerLevelIndex);
+    
+    // close the detailsPanel
+    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+    detailsPanel.hide();
+    
+
+    
+    if (layer.params == undefined) {
+        layer.params = new Object();
+        layer.params.QUERYABLE=false;
+        layer.params.ISBASELAYER=false;
+    }    
+    //newNCWMS.timeSeriesPlotUri 
+    // ".baseUri='" + layerUtilities.getAnimationFeatureInfoUriJS(mapLayer) + "'; "
+    
+    /********************************************************
+     * attach the old WMS layer to the new Image layer !!
+     * if this is set we know its an animated layer
+     * ******************************************************/
+    newNCWMS.originalWMSLayer = layer;
+    
+    activeLayers[getUniqueLayerId(newNCWMS)] = newNCWMS; 
+
 }
 
 /*
@@ -347,6 +559,7 @@ function addLayer(dl) {
           params,
           options
       );
+
       
       //
       // extra info to keep
@@ -354,31 +567,43 @@ function addLayer(dl) {
       layer.server= dl.server;
       layer.cql = dl.cql;
       
+    
       // don't add layer twice 
       if (layerAlreadyAdded(layer)) {
       	Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
-      };
-      
-      if(dl.server.type.search("NCWMS") > -1) {
-          // get ncWMS Json metadata info for animation and style switching
-          // update detailsPanel after Json request
-          getLayerMetadata(layer);
-      } 
+      }
       else {
-          getLayerBbox();
-          // update detailsPanel without Json request needed
-          updateDetailsPanel(layer);
+          mapPanel.map.addLayer(layer);
+          
+          if(dl.server.type.search("NCWMS") > -1) {
+              
+              // get ncWMS Json metadata info for animation and style switching
+              // update detailsPanel after Json request
+              getLayerMetadata(layer);
+          }
+          // store the OpenLayers layer so we can retreive it latter
+          activeLayers[getUniqueLayerId(layer)] = layer;
       }
       
-      // store the OpenLayers layer so we can retreive it latter
-      activeLayers[getUniqueLayerId(layer)] = layer;
       
-      mapPanel.map.addLayer(layer); 
+      
+      
+      
+      
 };
+
 
 // used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
-    return (layer.server.uri + "::" + layer.name + "::" + layer.cql);
+    var cql;
+    if (layer.cql != undefined) {
+        cql = "::" + layer.cql
+    }
+    if (layer.server == undefined){
+        layer.server = layer.originalWMSLayer.server;
+    }
+    
+    return (layer.server.uri + "::" + layer.name + cql);
 }
 
 // return whether the layer has already been added to the map
@@ -390,6 +615,7 @@ function layerAlreadyAdded(layer){
    return mapPanel.map.getLayer(previousLayer.id) !== null;
 }
 
+/*
 function getLayerBbox(layer) {
     
     console.log("getLayerBbox todo");
@@ -401,6 +627,7 @@ function getLayerBbox(layer) {
             //} 
     //});    
 }
+*/ 
 
 function getLayerMetadata(layer) {
         
@@ -409,7 +636,7 @@ function getLayerMetadata(layer) {
             url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
             success: function(resp){
                 layer.metadata = Ext.util.JSON.decode(resp.responseText);
-                updateDetailsPanel(layer);
+                //updateDetailsPanel(layer);
             } 
     });
     
@@ -488,12 +715,12 @@ function removeAllLayers()   {
             allLayers.push(getUniqueLayerId(mapPanel.map.layers[i]));            
         }
     }
-
+    // remove
     for(var j = 0; j < allLayers.length; j++)
     {
-        var theLayer = activeLayers[allLayers[j]];
-        setDefaultMenuTreeNodeStatus(theLayer.grailsLayerId,true);        
-        theLayer.destroy(); 
+        //var theLayer = activeLayers[allLayers[j]];
+        setDefaultMenuTreeNodeStatus(activeLayers[allLayers[j]].grailsLayerId,true);        
+        activeLayers[allLayers[j]].destroy(); 
         
     }
     // no layers- no details needed

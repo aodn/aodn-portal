@@ -34,7 +34,7 @@ function initMenusPanel(menu) {
                 fn:function(node) {
                     if (node.attributes.grailsLayerId){
                         addGrailsLayer(node.attributes.grailsLayerId);                      
-                        setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);
+                        setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);                        
                     }
                     else if (node.attributes.grailsServerId){
                         alert("a server (discovery)") ; 
@@ -103,13 +103,12 @@ function initMenusPanel(menu) {
         ]
     });
 
-    var layerList = new GeoExt.tree.OverlayLayerContainer({
-        
+    // Listens to layer changes in the mapPanel and updates
+    var layerList = new GeoExt.tree.OverlayLayerContainer({        
         text: 'All Active Layers',
         layerStore: mapPanel.layers,
         leaf: false,
         expanded: true
-
     });
 
 
@@ -126,14 +125,16 @@ function initMenusPanel(menu) {
         root: layerList,
         listeners: {
             append: function(tree,parent,node){
-                
                 tree.on("click", function(node,event){
                     tree.show(node.ui.getAnchor());
                     if(node.isSelected())
                     {
-                        updateDetailsPanel(node.layer);           
+                        updateDetailsPanel(node.layer);
+                        node.ui.toggleCheck(true);
                     }
-                });                
+                });
+                
+                 
 
             }
         }
