@@ -246,11 +246,18 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   addLinkDataToCart: function(rec, cart) {
-      
+
     var links = rec.get('links');
 
     for (var i = 0; i < links.length; i++) {
 
+alert('test');
+        if ( cart.length >= Portal.app.config.downloadCartMaxNumFiles ) {
+            
+            alert( 'Maximum number of files now in download cart. Not all selected files were added.')
+            break;
+        }
+        
         var link = links[i];
 
         var linkData = {title: link.title,

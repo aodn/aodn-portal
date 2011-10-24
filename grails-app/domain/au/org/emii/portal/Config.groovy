@@ -20,6 +20,10 @@ class Config {
     Integer westWidth
     Integer headerHeight
     Integer footerHeight
+    String downloadCartFilename
+    Integer downloadCartMaxNumFiles
+    Integer downloadCartMaxFileSize
+    
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
     
@@ -37,6 +41,9 @@ class Config {
         footerHeight()
         westWidth()
         defaultLayers(nullable:true)
+        downloadCartFilename(blank: false)
+        downloadCartMaxNumFiles(min: 1)
+        downloadCartMaxFileSize(min: 1)
     }
     
     static Config activeInstance() {
