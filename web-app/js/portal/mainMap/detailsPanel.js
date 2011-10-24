@@ -194,7 +194,7 @@ function initDetailsPanel()  {
                 //disabled: true, // readonly
                 hidden: true,
                 handler: function(button,event) {
-                    stopAnimateTimePeriod();
+                    stopAnimateTimePeriod(selectedActiveLayer);
                 }
             },
             animateLink,    

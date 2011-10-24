@@ -141,6 +141,8 @@ function initMap()  {
     });
 
     mapPanel.map.addControl(clickControl);
+    
+    
 
     
     clickControl.activate();  
@@ -372,14 +374,22 @@ function getVersionString(layer) {
 
 function removeLayer(uniqueLayerId) {
     
+    
+    //for(thing in activeLayers)   {
+    //    console.log(thing);
+    //}
+    //console.log(uniqueLayerId);
+    
     if (activeLayers[uniqueLayerId] != undefined) {
         mapPanel.map.removeLayer(activeLayers[uniqueLayerId]);    
-        activeLayers[uniqueLayerId] = null;        
+        activeLayers.pop(uniqueLayerId);        
     } 
     else {
         console.log("trying to remove a layer that is undefined");
     }
 }
+
+
 function processBounds(openlayersBounds) {
     var size = openlayersBounds.getSize();
     // increase the size if tiny
@@ -458,21 +468,17 @@ function addNCWMSLayer(currentLayer) {
             isBaseLayer : false,
             maxResolution: mapPanel.map.baseLayer.maxResolution,
             minResolution: mapPanel.map.baseLayer.minResolution,
-            resolutions: mapPanel.map.baseLayer.resolutions,
-            
-            
-            
+            resolutions: mapPanel.map.baseLayer.resolutions
             // baseUri: 
             // timeSeriesPlotUri:
             // featureInfoResponseType
         });  
         
-    // exchange new for old
-    layerLevelIndex = mapPanel.map.getLayerIndex(currentLayer);
-    removeLayer(getUniqueLayerId(currentLayer));
-
-    mapPanel.map.addLayer(newNCWMS);     
-    mapPanel.map.setLayerIndex(newNCWMS,layerLevelIndex);
+    // swap in the new animating layer.
+    // add to map is done here
+    layerSwap(newNCWMS,currentLayer);
+    
+    
     
     // close the detailsPanel
     // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
@@ -503,6 +509,36 @@ function addNCWMSLayer(currentLayer) {
  * This is the internal add layer method used to add all layers
  * 
  */
+
+function layerSwap(newLayer,oldLayer) {
+    
+    
+    
+    
+    // exchange new for old
+    // used to swap animating openlayers.image and standard wms in the main map   
+    var layerLevelIndex = mapPanel.map.getLayerIndex(oldLayer);
+    removeLayer(getUniqueLayerId(oldLayer));
+
+    mapPanel.map.addLayer(newLayer);     
+    mapPanel.map.setLayerIndex(newLayer,layerLevelIndex);
+}
+
+
+function stopAnimateTimePeriod(layer) {
+    var wmslayer;
+    
+    // if originalWMSLayer is set then it is an animated Openlayers.Image
+    if (layer.originalWMSLayer != undefined) {  
+        wmslayer = layer.originalWMSLayer;
+        // get back the plain wms layer
+        layerSwap(wmslayer,layer);
+        
+    }
+    else {
+        console.log("Error: Stop animation button was pressed while a non animating layer was selected");
+    }
+}
 
 function addLayer(dl) {    
    
@@ -595,15 +631,16 @@ function addLayer(dl) {
 
 // used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
-    var cql;
+    
+    var cql = "";
     if (layer.cql != undefined) {
         cql = "::" + layer.cql
     }
     if (layer.server == undefined){
         layer.server = layer.originalWMSLayer.server;
-    }
-    
-    return (layer.server.uri + "::" + layer.name + cql);
+    }   
+    // return whitespaced cleared string
+    return ((layer.server.uri + "::" + layer.name + cql).replace(/ +?/g, '_'));
 }
 
 // return whether the layer has already been added to the map
