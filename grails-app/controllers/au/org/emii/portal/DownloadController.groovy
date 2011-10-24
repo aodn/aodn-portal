@@ -18,10 +18,9 @@ class DownloadController {
         def filename = String.format(config.downloadCartFilename, todaysDate)
         def reportText = """\
 ============================================\r\n
-Download cart processing (${todaysDate})\r\n
+Download cart report (${todaysDate})\r\n
 ============================================\r\n
 \r\n
-Processing:\r\n
 """
         
         def jsonInput = "[{title: \"Tomcat\", href: \"http://localhost:8081/img1.gif\"}," +
@@ -73,11 +72,12 @@ Processing:\r\n
         })
                         
         
-        reportText += """\
-\r\n
+        reportText += """\r\n
+============================================\r\n
 Total size before compression: ${totalSizeBeforeCompression} Bytes\r\n
 Number of files included: ${numberOfFilesAdded}/${numberOfRowsProcessed}\r\n
 Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
+============================================
 """
         
         // Add report to zip file
