@@ -57,6 +57,16 @@ class SecurityFilters {
             }
         }
         
+        downloadAccess(controller: "download", action: "downloadFromCart") {
+            before = {
+                
+                logRequest("downloadAccess", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+        
         authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
             before = {
                 

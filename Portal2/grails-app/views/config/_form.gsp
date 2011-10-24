@@ -156,8 +156,29 @@
                                 </td>
                             </tr>
                         
-
-
-
-                        
-                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadCartFilename"><g:message code="config.downloadCartFilename.label" default="Download cart filename" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartFilename', 'errors')}">
+                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" />
+                                </td>
+                            </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadCartMaxNumFiles"><g:message code="config.downloadCartMaxNumFiles.label" default="Max number of files in download cart" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartMaxNumFiles', 'errors')}">
+                                    <g:textField size="4" name="downloadCartMaxNumFiles" value="${configInstance?.downloadCartMaxNumFiles}" />
+                                </td>
+                            </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadCartMaxFileSize"><g:message code="config.downloadCartMaxFileSize.label" default="Max file size of zip file of download cart" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartMaxFileSize', 'errors')}">
+                                    <g:textField size="8" name="downloadCartMaxFileSize" value="${configInstance?.downloadCartMaxFileSize}" /><font class="hint">in bytes</font>
+                                </td>
+                            </tr>
