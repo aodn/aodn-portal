@@ -139,6 +139,12 @@ function initMap()  {
         }
         
     });
+    
+    // keep the animated image crisp
+    // limit to changes in zoom. moveend is too onerous
+    mapPanel.map.events.register("moveend" , map, function (e) {        
+        redrawAnimatedLayers();
+    });
 
     mapPanel.map.addControl(clickControl);
     
@@ -350,7 +356,7 @@ function addGrailsLayer(grailsLayerId) {
                 
                 */
 
-                addLayer(dl);  
+                addMainMapLayer(dl);  
 
                 
             }
@@ -375,17 +381,12 @@ function getVersionString(layer) {
 function removeLayer(uniqueLayerId) {
     
     
-    //for(thing in activeLayers)   {
-    //    console.log(thing);
-    //}
-    //console.log(uniqueLayerId);
-    
     if (activeLayers[uniqueLayerId] != undefined) {
         mapPanel.map.removeLayer(activeLayers[uniqueLayerId]);    
         activeLayers.pop(uniqueLayerId);        
     } 
     else {
-        console.log("trying to remove a layer that is undefined");
+        console.log("Error: trying to remove a layer that is undefined");
     }
 }
 
@@ -422,25 +423,44 @@ function getMapExtent()  {
 }
 
 
+function redrawAnimatedLayers() {
+    
+    var wmsLayers = mapPanel.map.getLayersByClass("OpenLayers.Layer.WMS");
+    // interesting the animated images are not appearing to be of the class OpenLayers.Layer.Image
+    //var imageLayers = mapPanel.map.getLayersByClass("OpenLayers.Layer.Image");
+    //wmsLayers = wmsLayers.concat(imageLayers);
+    
+    for(var i = 0; i < wmsLayers.length; i++)   {   
+        if (mapPanel.map.layers[i].id != undefined) {
 
-// replace OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
-// or reload the image. 
+            var layer = mapPanel.map.getLayer(mapPanel.map.layers[i].id);       
+            if (layer.originalWMSLayer != undefined) {
+                
+                addNCWMSLayer(layer);
+            }
+        }
+    }
+    
+}
+
+// exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
+// or reload OpenLayers.Layer.Image
 // Reloading may be called from reloading a style or changing zoomlevel
 function addNCWMSLayer(currentLayer) {
     
     var layer;
     var layerLevelIndex;
     var bbox = getMapExtent();//.getSize()
-    //
-    // if originalWMSLayer is set then it is already an Openlayers.Image
-    if (currentLayer.originalWMSLayer != undefined) {  
+    
+    layer = currentLayer;
+    
+    // if originalWMSLayer is set - then it is already an animated Image
+    if (currentLayer.originalWMSLayer != undefined) {      
+       
         layer = currentLayer.originalWMSLayer;
-        layer.map = mapPanel.map;
+        layer.map = mapPanel.map;        
     }
-    else {
-        layer = currentLayer;
-    }
-    // 
+    
     var newUrl = layer.getFullRequestString( {
         TIME: layer.chosenTimes,
         TRANSPARENT:true,
@@ -473,59 +493,56 @@ function addNCWMSLayer(currentLayer) {
             // timeSeriesPlotUri:
             // featureInfoResponseType
         });  
-        
-    // swap in the new animating layer.
-    // add to map is done here
-    layerSwap(newNCWMS,currentLayer);
-    
-    
-    
-    // close the detailsPanel
-    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
-    detailsPanel.hide();
-    
 
-    
-    if (layer.params == undefined) {
-        layer.params = new Object();
-        layer.params.QUERYABLE=false;
-        layer.params.ISBASELAYER=false;
-    }    
-    //newNCWMS.timeSeriesPlotUri 
-    // ".baseUri='" + layerUtilities.getAnimationFeatureInfoUriJS(mapLayer) + "'; "
-    
+    /* no params for animated layers
+    if (newNCWMS.params == undefined) {
+        newNCWMS.params = new Object();
+        newNCWMS.params.QUERYABLE=false;
+        newNCWMS.params.ISBASELAYER=false;
+    } 
+    */
+   
     /********************************************************
      * attach the old WMS layer to the new Image layer !!
      * if this is set we know its an animated layer
      * ******************************************************/
     newNCWMS.originalWMSLayer = layer;
     
-    activeLayers[getUniqueLayerId(newNCWMS)] = newNCWMS; 
+    
+    
+    /*******************************************************
+     * add to map is done here
+     * swap in the new animating layer into openlayers 
+     * keeping the layer position
+     *******************************************************/
+    layerSwap(newNCWMS,currentLayer);    
 
+    
+    
+    // close the detailsPanel
+    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+    detailsPanel.hide();
+    
+    
 }
 
-/*
- * 
- * This is the internal add layer method used to add all layers
- * 
- */
 
-function layerSwap(newLayer,oldLayer) {
+
+function layerSwap(newLayer,oldLayer) { 
     
-    
-    
-    
-    // exchange new for old
-    // used to swap animating openlayers.image and standard wms in the main map   
+    // exchange new for old  
     var layerLevelIndex = mapPanel.map.getLayerIndex(oldLayer);
+    
     removeLayer(getUniqueLayerId(oldLayer));
+    // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
+    activeLayers[getUniqueLayerId(newLayer)] = newLayer; 
 
     mapPanel.map.addLayer(newLayer);     
     mapPanel.map.setLayerIndex(newLayer,layerLevelIndex);
 }
 
 
-function stopAnimateTimePeriod(layer) {
+function stopgetTimePeriod(layer) {
     var wmslayer;
     
     // if originalWMSLayer is set then it is an animated Openlayers.Image
@@ -540,8 +557,13 @@ function stopAnimateTimePeriod(layer) {
     }
 }
 
-function addLayer(dl) {    
-   
+/*
+ * 
+ * This is the internal add layer method used to add all layers
+ * 
+ */
+function addMainMapLayer(dl) {    
+
      /*
       * Buffer: tiles around the viewport. 1 is enough
       * Gutter: images wider and taller than the tile size by a value of 2 x gutter
@@ -609,6 +631,7 @@ function addLayer(dl) {
       	Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
       }
       else {
+          
           mapPanel.map.addLayer(layer);
           
           if(dl.server.type.search("NCWMS") > -1) {
@@ -620,11 +643,6 @@ function addLayer(dl) {
           // store the OpenLayers layer so we can retreive it latter
           activeLayers[getUniqueLayerId(layer)] = layer;
       }
-      
-      
-      
-      
-      
       
 };
 
@@ -652,19 +670,6 @@ function layerAlreadyAdded(layer){
    return mapPanel.map.getLayer(previousLayer.id) !== null;
 }
 
-/*
-function getLayerBbox(layer) {
-    
-    console.log("getLayerBbox todo");
-    //Ext.Ajax.request({
-            // geoserverdev.emii.org.au:80/geoserver/wms?request=DescribeLayer&version=1.1.1&layers=topp:argo_float
-            //url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&time=&layerName=" + layer.params.LAYERS + "&request=DescribeLayer"),
-            //success: function(resp){
-               // layer.metadata = Ext.util.JSON.decode(resp.responseText);
-            //} 
-    //});    
-}
-*/ 
 
 function getLayerMetadata(layer) {
         

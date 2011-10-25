@@ -140,7 +140,7 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                         disabled: true, // readonly
                         //hidden: true,
                         handler: function(button,event) {
-                            animateTimePeriod();
+                            getTimePeriod();
                         }
                     }
                     
@@ -243,15 +243,6 @@ function setLayerDates(layer){
     
 }
 
-// WTF happened to this function!!
-// SVN Aghhhh!!
-function pad(numNumber, numLength){
-	var strString = '' + numNumber;
-	while(strString.length<numLength){
-		strString = '0' + strString;
-	}
-	return strString;
-}
 
 function setDatetimesForDate(layer, day) {
     
@@ -311,9 +302,7 @@ function getDateTimesForDate(day) {
 
 
 
-// divide up the total amount of possible days into no more than thirty days
-// the ncWMS server has trouble calculating an animated gif with more than 30 frames
-function animateTimePeriod() {
+function getTimePeriod() {
     
     // disable the 'Start' button for the next possible layer
     Ext.getCmp('startNCAnimationButton').disable();
@@ -324,25 +313,117 @@ function animateTimePeriod() {
         
         var p = animatePanel.animatePanelContent.theOnlyTimePanel; 
         
-        /*****************
-         * 
-         * hard coded to two frames. start and end for the mo.
-         * 
-         */
-        chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]); 
-        chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]); 
-        // get all the times between user selected range
-        //var dates = setAnimationTimesteps(params);     
-        
-        selectedActiveLayer.chosenTimes = chosenTimes.join(",");
-        
-        addNCWMSLayer(selectedActiveLayer);
+        // get the server to tell us the options
+          Ext.Ajax.request({
+                url: proxyURL+encodeURIComponent(selectedActiveLayer.url + 
+                    "?request=GetMetadata&item=animationTimesteps&layerName=" + 
+                    selectedActiveLayer.params.LAYERS + 
+                    "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
+                    "&end=" + getDateTimesForDate(p.timeMax.value)[0]
+                ),
+                success: function(resp) { 
+
+                    var res = Ext.util.JSON.decode(resp.responseText);
+                    
+                    if (res.timeStrings != undefined) {
+                        // popup a window
+                        showTimestepPicker(res.timeStrings);
+                    }
+                }
+          });
+
   
                 
         
     }  
 
     
+}
+
+// modal timestep picker for animating current layer
+function showTimestepPicker(timeStrings) {
+    
+    // copy to the attributes nedded by the Ext radioGroup
+    for (vars in timeStrings) {
+        timeStrings[vars].boxLabel = timeStrings[vars].title
+        timeStrings[vars].name = "justaname"//,
+        //timeStrings[vars].inputValue = timeStrings[vars].timeString
+    }
+    
+    
+    var timestepWindow =  new Ext.Window({
+        
+        id: 'timestepWindow',
+        modal:true,
+        padding: '5px 10px',
+        shadow: false,
+        title: 'Choose Animation Period',
+        autoDestroy: true,
+        constrainHeader: true,
+        constrain: true,
+        autoScroll: true,
+        border: false,
+        items: [  
+            {
+               xtype: 'label',
+               style: {
+                    padding: '10px'
+               },
+               html: "<p>Please select the number of frames required.<BR>Selecting less frames will result in better performance</p>"
+            },
+            {
+                // Use the default, automatic layout to distribute the controls evenly
+                // across a single row
+                xtype: 'radiogroup',
+                fieldLabel: 'Auto Layout',
+                style: {
+                    padding: '10px'
+                },
+                columns: 1,
+                items: [
+                    timeStrings
+                ],
+                listeners: {
+                    change: function( field, newValue, oldValue, eOpts ) {          
+                        
+                        createNCWMSLayerFromTimesteps(newValue.initialConfig.timeString);
+                        Ext.getCmp('timestepWindow').destroy(); // this components parent window
+                    }
+                }
+            }
+            /*,
+            {
+                xtype: 'button',
+                id: 'animateNowButton',
+                style: {
+                    padding: '10px'
+                },
+                text:'Animate',
+                //disabled: true, // readonly
+                handler: function(button,event) {
+                    
+                   animateTimePeriod(selectedActiveLayer);
+                }
+            }
+            */
+        ]
+    });
+    
+    timestepWindow.show();
+    
+}
+
+
+function createNCWMSLayerFromTimesteps(timeSteps) {              
+        
+        
+        //chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]); 
+        //chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]); 
+        // get all the times between user selected range
+        //var dates = setAnimationTimesteps(params);   
+        
+        selectedActiveLayer.chosenTimes = timeSteps;         
+        addNCWMSLayer(selectedActiveLayer);
 }
 
 
