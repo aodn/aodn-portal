@@ -23,12 +23,18 @@ function addToDownloadCart(title, type, href, protocol) {
     
     if ( cart.length < maxFiles ) {
         
-        cart.push( {title: title,
-                    type: type,
-                    href: href,
-                    protocol: protocol} );
+        var newEntry = {title: title,
+                        type: type,
+                        href: href,
+                        protocol: protocol}
+        
+        // Add if it doesn't exists already
+        if ( !_existsInCart( newEntry, cart ) ) {
             
-        _setDownloadCart( cart );
+            cart.push( newEntry );
+            
+            _setDownloadCart( cart );
+        }
     }
     
     _updateDownloadCartUI();
@@ -72,10 +78,10 @@ function _updateDownloadCartUI() {
             backgroundColor: { from: '#FFFFCC',
                                  to: _getDownloadCartUIOriginalColor() }
         },
-        0.7,       // animation duration
-        null,      // callback
-        'easeOut', // easing method
-        'color'    // animation type ('run','color','motion','scroll')
+        0.7,          // animation duration
+        null,         // callback
+        'bounceBoth', // easing method
+        'color'       // animation type ('run','color','motion','scroll')
     );
 }
 
@@ -88,4 +94,21 @@ function _getDownloadCartUIOriginalColor() {
     }
     
     return _downloadCartOriginalColor;
+}
+
+function _existsInCart(entryToCheck, cart) {
+    
+    for ( var i = 0; i < cart.length; i++ ) {
+        
+        if ( _entryToString(cart[i]) === _entryToString(entryToCheck) ) {
+            
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+function _entryToString(entry) {
+    return entry.title + ' -- ' + entry.href + ' -- ' + entry.protocol + ' -- ' + entry.type;
 }

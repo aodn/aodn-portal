@@ -248,7 +248,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             
             if ( this.maximumFileAlertShown != true ) {
 
-                Ext.Msg.alert( 'Unable to add', 'Maximum number of files now in download cart (' + maxCartSize + '). Not all selected files were added.' );
+                Ext.Msg.alert( OpenLayers.i18n('titlFileLimitReached'), OpenLayers.i18n('msgFileLimitReached', {limit: maxCartSize}) );
             
                 this.maximumFileAlertShown = true;
             }

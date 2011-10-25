@@ -50,6 +50,12 @@ Download cart report (${todaysDate})\r\n
             }
         jsonArray = JSON.parse(jsonData)
         
+        if ( log.isDebugEnabled() ) {
+            
+            log.debug "jsonArray: ${jsonArray.length()} items"
+            log.debug "jsonArray: ${jsonArray}"
+        }
+        
         // Prepare response stream and create zip stream
         response.setHeader("Content-Disposition", "attachment; filename=${filename}")
         response.contentType = "application/octet-stream"
