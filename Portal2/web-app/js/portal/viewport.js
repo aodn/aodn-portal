@@ -222,7 +222,7 @@ function doViewPort()
                 listeners: {
                	 addLayer: {
                		 fn: function(layerDef) {
-               			 addLayer(layerDef);
+               			 addMainMapLayer(layerDef);
                	       Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
                		 }
                	 }
