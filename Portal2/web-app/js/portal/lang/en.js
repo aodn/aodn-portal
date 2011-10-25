@@ -24,10 +24,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         ttAddToDownload: 'Add to download cart',
         ttAddAllToDownload: 'Add all to download cart',
         btnAddAllToDownload: 'Add all',
-        ttClearDownload: 'Clear download cart',
-        btnClearDownload: 'Clear',
+        titlFileLimitReached: 'Unable to add',
+        msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
         
-   //mainMapPanel
+        //mainMapPanel
         layerExistsTitle: 'Add layer',
         layerExistsMsg: 'This layer has already been added to the map',
         layerAddedTitle: 'Add layer',
