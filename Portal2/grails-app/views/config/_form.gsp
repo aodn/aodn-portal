@@ -30,7 +30,7 @@
                                   <label for="catalogUrl"><g:message code="config.catalogUrl.label" default="Catalog Url" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'catalogUrl', 'errors')}">
-                                    <g:textField size="70" name="catalogUrl" value="${configInstance?.catalogUrl}" />&nbsp;<i>Should <b>not</b> end with a '/' character</i>
+                                    <g:textField size="70" name="catalogUrl" value="${configInstance?.catalogUrl}" /><font class="hint">Should <b>not</b> end with a '/' character</font>
                                 </td>
                             </tr>
                         
@@ -161,7 +161,7 @@
                                     <label for="downloadCartFilename"><g:message code="config.downloadCartFilename.label" default="Download cart filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartFilename', 'errors')}">
-                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" />
+                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">include %s where you would like a formatted date to be included in filename</font>
                                 </td>
                             </tr>
    

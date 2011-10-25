@@ -55,6 +55,7 @@
 <script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ncWMSAnimation.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/helpers.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}"    type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
@@ -90,6 +91,9 @@
       <a class="external mainlinks" target="_blank"href="http://www.imos.org.au"  
          title="Integrated Marine Observing System" >IMOS</a>
       <a  title="IMOS Ocean Portal Help files" >Help</a>
+    </div>
+    <div id="downloadCart">
+      Download cart: <b><span id="downloadCartSize">Unk.</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="download" action="downloadFromCart" class="mainLink">Download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
 

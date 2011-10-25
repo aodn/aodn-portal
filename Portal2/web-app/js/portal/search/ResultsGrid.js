@@ -83,14 +83,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 anchor: 'right',
                 handler: this.addAllToCartExecute,
                 scope: this
-               }),
-               new Ext.Button({
-                text: OpenLayers.i18n('btnClearDownload'),
-                tooltip: OpenLayers.i18n('ttClearDownload'),
-                ctCls: "noBackgroundImage",
-                anchor: 'right',
-                handler: this.clearCartExecute,
-                scope: this
                })
             ]
         })
@@ -245,28 +237,30 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	 return false;
   },
   
-  addLinkDataToCart: function(rec, cart) {
+  addLinkDataToCart: function(rec) {
 
     var links = rec.get('links');
+    var maxCartSize = Portal.app.config.downloadCartMaxNumFiles
 
     for (var i = 0; i < links.length; i++) {
 
-alert('test');
-        if ( cart.length >= Portal.app.config.downloadCartMaxNumFiles ) {
+        if ( getDownloadCartSize() >= maxCartSize ) {
             
-            alert( 'Maximum number of files now in download cart. Not all selected files were added.')
+            if ( this.maximumFileAlertShown != true ) {
+
+                Ext.Msg.alert( 'Unable to add', 'Maximum number of files now in download cart (' + maxCartSize + '). Not all selected files were added.' );
+            
+                this.maximumFileAlertShown = true;
+            }
+            
             break;
         }
         
         var link = links[i];
-
-        var linkData = {title: link.title,
-                        type: link.type,
-                        href: link.href,
-                        protocol: link.protocol};
-
-        if ( this.containsProtocol( this.DOWNLOADABLE_PROTOCOLS, linkData.protocol ) ) {
-            cart.push( linkData );
+        
+        if ( this.containsProtocol( this.DOWNLOADABLE_PROTOCOLS, link.protocol ) ) {
+            
+            addToDownloadCart(link.title, link.type, link.href, link.protocol);
         }
     }
   },
@@ -283,69 +277,35 @@ alert('test');
   },
   
  addToCartExecute: function(grid, rowIndex, colIndex) {
-          
-     var workingCart = this.getDownloadCart();
+    
+//     var cartStartingSize = getDownloadCartSize();
+     var rec = grid.store.getAt(rowIndex);
      
-     var msg = 'Add to cart: item @ rowIndex ' + rowIndex;
-     msg += '<br>Cart had ' + workingCart.length + ' item(s)';     
+     this.maximumFileAlertShown = false; // reset message
      
-     var rec = grid.store.getAt(rowIndex)
-     
-     this.addLinkDataToCart(rec, workingCart);
-     
-     msg += '<br>Cart now has ' + workingCart.length + ' item(s)';
-     
-     this.setDownloadCart(workingCart);
-     
-     Ext.Msg.alert('Add to cart', msg);
+     this.addLinkDataToCart(rec);
+
+//     var msg = 'Added links from <b>' + rec.get('title') + '</b>';
+//     msg += '<br>Added <b>' + (getDownloadCartSize() - cartStartingSize) + '</b> links(s) to download cart'; 
+//    
+//     Ext.Msg.alert('Add to cart', msg);
   },
   
   addAllToCartExecute: function() { // button, event
       
-        var msg = 'Add all to cart';
-        
-        var workingCart = this.getDownloadCart();
-
-        msg += '<br>Cart had ' + workingCart.length + ' item(s)';
+//        var cartStartingSize = getDownloadCartSize();
+      
+        this.maximumFileAlertShown = false; // reset message
 
         this.getStore().each(function(rec){
-            
-            this.addLinkDataToCart(rec, workingCart);
+
+            this.addLinkDataToCart(rec);
         }, this);
 
-        this.setDownloadCart( workingCart );
-
-        msg += '<br>Cart now has ' + workingCart.length + ' item(s)';
-
-        Ext.Msg.alert( 'Add all to cart', msg );
-    },
-    
-    clearCartExecute: function() {
-        
-        var workingCart = this.getDownloadCart();
-
-        var msg = 'Cart cleared of ' + workingCart.length + ' item(s)'
-
-        this.setDownloadCart( [] );
-
-        Ext.Msg.alert( 'Clear cart', msg );
-    },
-    
-    getDownloadCart: function() {
-        var encStateValue = Ext.state.Manager.get( "AggregationItems" );
-        
-        if (encStateValue == undefined) {
-            return [];
-        }
-        else {
-            return Ext.decode( encStateValue );
-        }        
-    },
-    
-    setDownloadCart: function(newCart) {
-        var encStateValue = Ext.encode( newCart );
-        
-        Ext.state.Manager.set( "AggregationItems", encStateValue );
+//        var msg = 'Added links from <b>' + this.getStore().getCount() + '</b> source(s)';
+//        msg += '<br>Added <b>' + (getDownloadCartSize() - cartStartingSize) + '</b> links(s) to download cart'; 
+//
+//        Ext.Msg.alert( 'Add all to cart', msg );
     }
 });
 
