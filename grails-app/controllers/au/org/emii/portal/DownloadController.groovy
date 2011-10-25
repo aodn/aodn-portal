@@ -19,10 +19,9 @@ class DownloadController {
         def todaysDate = DateFormat.getDateInstance(DateFormat.LONG, request.getLocale()).format(new Date())
         def filename = String.format(config.downloadCartFilename, todaysDate)
         def reportText = """\
-============================================\r\n
-Download cart report (${todaysDate})\r\n
-============================================\r\n
-\r\n
+============================================
+Download cart report (${todaysDate})
+============================================
 """
         
         // Print cookie debug info
@@ -67,6 +66,16 @@ Download cart report (${todaysDate})\r\n
         def totalSizeBeforeCompression = 0
         jsonArray.each({
             
+            // Write to report
+            reportText += """
+--[ #${numberOfRowsProcessed + 1 /* adjust for 0-based index*/} ]-----------------------------
+Title:                ${it.title}
+URL:                  ${it.href}
+Type:                 ${it.type}
+Filename in zip file: ${it.title}.${extensionFromUrlAndType(it.href, it.type)}
+                      ** File extension based on URL where possible, otherwise based on provided type information.
+Result:               """
+                
             if ( numberOfFilesAdded >= config.downloadCartMaxNumFiles ) {
 
                 reportText += "Unable to add file, maximum number of files allowed reached (${numberOfFilesAdded}/${config.downloadCartMaxNumFiles} files)"
@@ -88,20 +97,19 @@ Download cart report (${todaysDate})\r\n
                     reportText += "Unknown error adding file"
                 }
             }
-            
-            reportText += " -- '${it.title}' from ${it.href}\r\n"
-                    
+
+            reportText += "\n"
+                
             numberOfRowsProcessed++
         })
                         
         
-        reportText += """\r\n
-============================================\r\n
-Total size before compression: ${totalSizeBeforeCompression} Bytes\r\n
-Number of files included: ${numberOfFilesAdded}/${numberOfRowsProcessed}\r\n
-Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
+        reportText += """
 ============================================
-"""
+Total size before compression: ${totalSizeBeforeCompression} Bytes
+Number of files included: ${numberOfFilesAdded}/${numberOfRowsProcessed}
+Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
+============================================"""
         
         // Add report to zip file
         def reportEntry = new ZipEntry("download report.txt")
@@ -137,7 +145,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
         try {
             dataFromUrl = requestUrl.newInputStream()
             
-            def newEntry = new ZipEntry("${info.title}.${info.href[-3..-1]}") // TODO DN - Find best way to determine extension
+            def newEntry = new ZipEntry("${info.title}.${extensionFromUrlAndType(info.href, info.type)}")
             zipOut.putNextEntry(newEntry)
             
             while ((bytesRead = dataFromUrl.read( buffer )) != -1) {
@@ -159,5 +167,36 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
         }
         
         return totalBytesRead
+    }
+    
+    private String extensionFromUrlAndType(String url, String type) {
+       
+        // Check for file extensions on URL
+       
+        if ( url[-4] == "." ) { // 3 char extension
+            
+            return url[-3..-1]
+        }
+        else if ( url[-5] == "." ) { // 4 char extension
+            
+            return url[-4..-1]
+        }
+        
+        // Use mapping to try and guess extension
+        
+        def value = mapping()[type]
+                
+        return value ? value : ""
+    }
+    
+    private JSONObject _mapping;
+    private JSONObject mapping() {
+        
+        if ( _mapping == null ) {
+            
+            _mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping)
+        }
+        
+        return _mapping
     }
 }

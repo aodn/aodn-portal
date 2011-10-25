@@ -182,3 +182,12 @@
                                     <g:textField size="8" name="downloadCartMaxFileSize" value="${configInstance?.downloadCartMaxFileSize}" /><font class="hint">in bytes</font>
                                 </td>
                             </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadCartMimeTypeToExtensionMapping"><g:message code="config.downloadCartMimeTypeToExtensionMapping.label" default="Map from mime types to file extensions for downloads" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartMimeTypeToExtensionMapping', 'errors')}">
+                                    <g:textArea rows="6" cols="25" name="downloadCartMimeTypeToExtensionMapping" value="${configInstance?.downloadCartMimeTypeToExtensionMapping}" /><font class="hint">as Json String</font>
+                                </td>
+                            </tr>
