@@ -61,7 +61,7 @@ class ConfigTests extends GrailsUnitTestCase {
         
         testConfig = new Config(downloadCartMimeTypeToExtensionMapping : "[]")
         assertFalse testConfig.validate()
-        assertEquals "min", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
+        assertEquals "minSize", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
     }
 
     void testActiveInstance() {
