@@ -76,10 +76,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         bbar: new Ext.PagingToolbar({
            pageSize: 15,
            items: [
+               {xtype: 'tbseparator'}, // Separator
                new Ext.Button({
                 text: OpenLayers.i18n('btnAddAllToDownload'),
                 tooltip: OpenLayers.i18n('ttAddAllToDownload'),
-                ctCls: "noBackgroundImage",
+                cls: "x-btn-text-icon",
+                icon: "images/basket_add.png",
                 anchor: 'right',
                 handler: this.addAllToCartExecute,
                 scope: this
@@ -96,7 +98,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      this.getBottomToolbar().store = this.store;
      
      this.addEvents('showlayer', 'addlayer', 'rowenter', 'rowleave');
-     
   },
   
   afterRender: function(){
@@ -238,7 +239,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   addLinkDataToCart: function(rec) {
-
+      
     var links = rec.get('links');
     var maxCartSize = Portal.app.config.downloadCartMaxNumFiles
 

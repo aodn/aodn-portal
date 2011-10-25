@@ -25,6 +25,7 @@ class ConfigTests extends GrailsUnitTestCase {
         assertEquals "nullable", testConfig.errors["downloadCartFilename"]
         assertEquals "nullable", testConfig.errors["downloadCartMaxNumFiles"]
         assertEquals "nullable", testConfig.errors["downloadCartMaxFileSize"]
+        assertEquals "nullable", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
 
         testConfig = new Config(name : "config1")
         assertFalse testConfig.validate()
@@ -57,6 +58,10 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig = new Config(downloadCartMaxFileSize : "0")
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxFileSize"]
+        
+        testConfig = new Config(downloadCartMimeTypeToExtensionMapping : "[]")
+        assertFalse testConfig.validate()
+        assertEquals "min", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
     }
 
     void testActiveInstance() {
