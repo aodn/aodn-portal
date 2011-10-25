@@ -9,6 +9,8 @@ import org.springframework.util.StopWatch
 class DownloadController {
 
     private static int BufferSize = 4096 // 4kB
+    private static String CookieName = "ys-AggregationItems"
+    private static String CookieDataPrefix = "s:"
     
     def downloadFromCart = {
         
@@ -23,15 +25,30 @@ Download cart report (${todaysDate})\r\n
 \r\n
 """
         
-        def jsonInput = "[{title: \"Tomcat\", href: \"http://localhost:8081/img1.gif\"}," +
-                        " {title: \"Rage\",  href: \"http://localhost:8081/img%203.jpg\"}," + // img3.jpg
-                        " {title: \"Facebook\",  href: \"http://s-static.ak.facebook.com/rsrc.php/v1/yv/r/mTnxuar3oIS.png\"}," +
-                        " {title: \"Rhino\",   href: \"http://localhost:8081/img%20too.jpg\"}]" // image too.jpg
+        // Print cookie debug info
+        if ( log.isDebugEnabled() ) {
+            log.debug( "Cookies: ${request.cookies.size()}" )    
+            request.cookies.find{
+                it.getName() == CookieName
+            }.each{
+                log.debug "Cookie: " + it.getValue().decodeURL()
+            }
+        }
         
-        def arrayFromJson = JSON.parse(jsonInput)
-       
-        println "Cookies: ${request.cookies.size()}"
-        request.cookies.find{ it.getName() == "ys-AggregationItems" }.each{println "Cookie: " + it.getValue().decodeURL()}
+        // Read data from cookie
+        def jsonArray
+        def jsonData = "[]"
+        request.cookies.find{
+                it.getName() == CookieName
+            }.each{
+                    
+                jsonData = it.getValue().decodeURL()
+
+                jsonData = jsonData[CookieDataPrefix.length()..-1] // Trim data prefix
+
+                log.debug jsonData
+            }
+        jsonArray = JSON.parse(jsonData)
         
         // Prepare response stream and create zip stream
         response.setHeader("Content-Disposition", "attachment; filename=${filename}")
@@ -42,15 +59,15 @@ Download cart report (${todaysDate})\r\n
         def numberOfFilesAdded = 0
         def bytesAddedForThisFile = 0
         def totalSizeBeforeCompression = 0
-        arrayFromJson.each({
+        jsonArray.each({
             
-            if ( numberOfFilesAdded > config.downloadCartMaxNumFiles ) {
+            if ( numberOfFilesAdded >= config.downloadCartMaxNumFiles ) {
 
-                reportText += "Unable to add file, maximum number of files allowed reached (${config.downloadCartMaxNumFiles})"
+                reportText += "Unable to add file, maximum number of files allowed reached (${numberOfFilesAdded}/${config.downloadCartMaxNumFiles} files)"
             }
-            else if ( totalSizeBeforeCompression > config.downloadCartMaxFileSize ) {
+            else if ( totalSizeBeforeCompression >= config.downloadCartMaxFileSize ) {
                 
-                reportText += "Unable to add file, maximum size of files allowed reached (${config.totalSizeBeforeCompression} Bytes before compression)"
+                reportText += "Unable to add file, maximum size of files allowed reached (${totalSizeBeforeCompression}/${config.downloadCartMaxFileSize} Bytes)"
             }
             else {
                 bytesAddedForThisFile = addToZip( zipOut, it )
@@ -81,7 +98,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
 """
         
         // Add report to zip file
-        def reportEntry = new ZipEntry("report.txt")
+        def reportEntry = new ZipEntry("download report.txt")
         zipOut.putNextEntry(reportEntry)
         byte[] reportData = reportText.getBytes("UTF-8")
         zipOut.write(reportData, 0, reportData.length)
@@ -96,16 +113,16 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
     }
     
     private long addToZip(ZipOutputStream zipOut, JSONObject info) {
-        println "-" * 48
-        println "Adding '${info.title}' from ${info.href}"
+        log.debug "-" * 48
+        log.debug "Adding '${info.title}' from ${info.href}"
 
         def buffer = new byte[BufferSize]        
         def requestUrl = info.href.toURL()
         def con = requestUrl.openConnection()
         def type = con.contentType
         
-        println "info.type: ${info.type}"
-        println "type:      ${type}"
+        log.debug "info.type: ${info.type}"
+        log.debug "type:      ${type}"
         
         // Add to zip
         def bytesRead
@@ -114,7 +131,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
         try {
             dataFromUrl = requestUrl.newInputStream()
             
-            def newEntry = new ZipEntry("${info.title}.${info.href[-3..-1]}") // Extension ??
+            def newEntry = new ZipEntry("${info.title}.${info.href[-3..-1]}") // TODO DN - Find best way to determine extension
             zipOut.putNextEntry(newEntry)
             
             while ((bytesRead = dataFromUrl.read( buffer )) != -1) {
@@ -126,10 +143,10 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds\r\n
             zipOut.closeEntry()
         }
         catch(IOException ioe) {
-            println "ioe: ${ioe}"
+            log.debug "ioe: ${ioe}"
         }
         
-        println "totalBytesRead: ${totalBytesRead}"
+        log.debug "totalBytesRead: ${totalBytesRead}"
         
         if (dataFromUrl) {
             dataFromUrl.close()

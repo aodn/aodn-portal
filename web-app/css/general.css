@@ -74,6 +74,43 @@ body {
     color: #333;
 }
 
+#downloadCart {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
+    border-radius: 10px 3px 10px 3px;
+    color: white;
+    float: right;
+    padding: 4px 10px 6px;
+    position: absolute;
+    right: 6px;
+    top: 70px;
+}
+#downloadCart div {
+    padding-top: 3px;
+}
+#downloadCart a {
+    color: white;
+    font-size: 11px;
+    margin: 0 3px;
+    text-decoration: none;
+}
+#downloadCart .mainLink {
+    font-weight: bold;
+}
+#downloadCart a:hover {
+    color: #333;
+}
+#header .emptyCart {
+    color: #C1CFDC;
+}
+#header .emptyCart a {
+    color: #C1CFDC;
+}
+#downloadCartControls {
+    text-align: right;
+}
+.emptyCart #downloadCartControls {
+    display: none;
+}
 
 .alpha60 {
 /* Fallback for web browsers that doesn't support RGBa */
