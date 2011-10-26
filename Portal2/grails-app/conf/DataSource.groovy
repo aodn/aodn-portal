@@ -9,9 +9,6 @@ dataSource {
 		minEvictableIdleTimeMillis=1800000
 		timeBetweenEvictionRunsMillis=1800000
 		numTestsPerEvictionRun=3
-		
-        testOnBorrow = true
-        validationQuery = "SELECT 1"
 	}
 }
 hibernate {
@@ -31,6 +28,10 @@ environments {
             password = "wtingzgsfdbat"
 
            // logSql = true
+		    properties {
+				testOnBorrow = true
+				validationQuery = "SELECT 1"
+			}
        }
    }
     test {
@@ -54,6 +55,10 @@ environments {
             username = "portal2user"
             password = "wtingzgsfdbat"
 
+		    properties {
+				testOnBorrow = true
+				validationQuery = "SELECT 1"
+			}
         }
     }
 }

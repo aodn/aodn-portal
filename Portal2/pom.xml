@@ -322,11 +322,13 @@
 	          	<include>Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js</include>
 	          	<include>Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js</include>
 	          	<include>Geonetwork/lib/GeoNetwork/map/ExtentMap.js</include>
+	          	<include>ext-ux/**/*.js</include>
 	          	<include>portal/**/*.js</include>
 	          </sourceIncludes>
 	          <sourceExcludes>
 	          	<exclude>portal/viewport.js</exclude>
 	          	<exclude>portal/config/grid2treedrag.js</exclude>
+	          	<exclude>portal/common/DownloadCart.js</exclude>
 	          </sourceExcludes>
 	        </configuration>
       </plugin>
