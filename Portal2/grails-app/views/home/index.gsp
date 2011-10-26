@@ -93,7 +93,7 @@
       <a  title="IMOS Ocean Portal Help files" >Help</a>
     </div>
     <div id="downloadCart">
-      Download cart: <b><span id="downloadCartSize">Unk.</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="download" action="downloadFromCart" class="mainLink">Download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
+      Download cart: <b><span id="downloadCartSize">Unk.</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="download" action="downloadFromCart" class="mainlinks">Download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
 

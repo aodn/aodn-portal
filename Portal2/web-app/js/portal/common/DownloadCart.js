@@ -1,6 +1,6 @@
 Ext.namespace('Portal.common.downloadCart');
 
-Ext.EventManager.addListener(window, 'load', _updateDownloadCartUI);
+Ext.EventManager.addListener( window, 'load', _updateCount );
 
 // Public methods
 function getDownloadCart() {
@@ -37,13 +37,15 @@ function addToDownloadCart(title, type, href, protocol) {
         }
     }
     
-    _updateDownloadCartUI();
+    _updateCount();
+    _flashUI();
 }
 
 function clearDownloadCart() {
     
     _setDownloadCart( [] );
-    _updateDownloadCartUI();
+    _updateCount();
+    _flashUI();
 }
 
 // Internal methods
@@ -54,25 +56,29 @@ function _setDownloadCart(newCart) {
     Ext.state.Manager.set( "AggregationItems", encStateValue );
 }
 
-function _updateDownloadCartUI() {
-   
-   var cartEl = Ext.get('downloadCart');
-   var cartSizeEl = Ext.get('downloadCartSize');
-   
-   var size = getDownloadCartSize();
-   
-   cartSizeEl.update( size + '' );
-   
-   if ( size == 0 ) {
-       
+function _updateCount() {
+    var cartEl = Ext.get('downloadCart');
+    var cartSizeEl = Ext.get('downloadCartSize');
+
+    var size = getDownloadCartSize();
+
+    cartSizeEl.update( size + '' );
+
+    if ( size == 0 ) {
+
        cartEl.addClass('emptyCart');
-   }
-   else {
+    }
+    else {
        cartEl.removeClass('emptyCart');
-   }
-   
-   // Animate UI
-   cartEl.animate(
+    }
+}
+
+function _flashUI() {
+    
+    var cartEl = Ext.get('downloadCart');
+    
+    // Animate UI
+    cartEl.animate(
         // animation control object
         {
             backgroundColor: { from: '#FFFFCC',
