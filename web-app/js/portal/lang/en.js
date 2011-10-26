@@ -18,6 +18,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	},
 	
 	//Search form
+	addCriteria: 'Add criteria',
+	dateRange: 'Date range',
+	boundingBox: 'Bounding Box',
+	keyword: 'Keyword',
+	parameter: 'Parameter',
+	organisation: 'Organisation',
+	mapLayer: 'Map Layer',
+	searchButton: 'Search',
 	fullTextSearch: 'Free Text',
         
         // Aggregate Download

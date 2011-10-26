@@ -36,7 +36,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             labelWidth: 80,
             items: [{
                ref: '../advancedSearchCombo',
-               fieldLabel: 'Add criteria',
+               fieldLabel: OpenLayers.i18n("addCriteria"),
                submitValue: false,
                xtype: 'combo',
                width: 100,
@@ -52,10 +52,10 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                      'field'
                   ],
                   data: [
-                     [1, 'Date range', false, {xtype: 'portal.search.field.daterange'}],
-                     [2, 'Bounding Box', false, {xtype: 'portal.search.field.boundingbox'}],
-                     [3, 'Keyword', true, {
-                        fieldLabel: 'Keyword',
+                     [1, OpenLayers.i18n("dateRange"), false, {xtype: 'portal.search.field.daterange'}],
+                     [2, OpenLayers.i18n("boundingBox"), false, {xtype: 'portal.search.field.boundingbox'}],
+                     [3, OpenLayers.i18n("keyword"), true, {
+                        fieldLabel:OpenLayers.i18n("keyword"),
                         name: 'themekey',
                         field: 'keyword',
                         xtype: 'portal.search.field.multiselect',
@@ -65,8 +65,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         	scope: this,
                         	redraw: this.refreshDisplay
                         }}],
-                     [4, 'Parameter', false, {
-                        fieldLabel: 'Parameter',
+                     [4, OpenLayers.i18n("parameter"), false, {
+                        fieldLabel: OpenLayers.i18n("parameter"),
                         name: 'dataparam',
                         field: 'longParamName',
                         xtype: 'portal.search.field.multiselect',
@@ -76,8 +76,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         	scope: this,
                         	redraw: this.refreshDisplay
                         }}],
-                     [5, 'Organisation', false, {
-                        fieldLabel: 'Organisation',
+                     [5, OpenLayers.i18n("organisation"), false, {
+                        fieldLabel: OpenLayers.i18n("organisation"),
                         name: 'orgName',
                         field: 'orgName',
                         xtype: 'portal.search.field.multiselect',
@@ -87,8 +87,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         	scope: this,
                         	redraw: this.refreshDisplay
                         }}],
-                     [6, 'Map Layer', false, {
-	                    	fieldLabel: 'Map Layer',
+                     [6, OpenLayers.i18n("mapLayer"), false, {
+	                    	fieldLabel: OpenLayers.i18n("mapLayer"),
 	                    	name: 'protocol',
 	                    	xtype: 'checkbox',
 	                    	checked: true,
@@ -108,7 +108,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       ];
 
       this.buttons = [{
-         text: 'Search',
+         text: OpenLayers.i18n("searchButton"),
          ref: '../searchButton'
       }];
 
