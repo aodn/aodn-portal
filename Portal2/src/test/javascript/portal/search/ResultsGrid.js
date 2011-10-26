@@ -59,53 +59,101 @@ describe("Portal.search.ResultsGrid", function() {
 	}]
   });
   
-   var resultGrid = new Portal.search.ResultsGrid({});
+    var recordDownloadableLink = new resultsRecord({
+       links: [{
+                protocol: "WWW:DOWNLOAD-1.0-http--download"
+        },{
+                protocol: "OGC:WMS-1.1.1-http-get-map"			
+        }]
+    });
+
+    var recordNoDownloadableLink = new resultsRecord({
+       links: [{
+                protocol: "OGC:WMS-1.3.0-http-get-map"
+        },{
+                protocol: "OGC:WMS-1.1.1-http-get-map"			
+        }]
+    });
+  
+    var recordNoLinks = new resultsRecord({
+       links: []
+    });
+  
+    var resultGrid = new Portal.search.ResultsGrid({});
 	   
-   describe("getProtocolCount", function() {
+    describe("getProtocolCount", function() {
 
       it('Should handle links containing protocol', function() {
-    	  expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.1.1-http-get-map"])).toEqual(1);
+          expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.1.1-http-get-map"])).toEqual(1);
       });
-      
+
       it('Should handle links containing one of the protocols', function() {
-    	  expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.3.0-http-get-map", "OGC:WMS-1.1.1-http-get-map"])).toEqual(1);
+          expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.3.0-http-get-map", "OGC:WMS-1.1.1-http-get-map"])).toEqual(1);
       });
-      
+
       it('Should handle links not containing protocol', function() {
-    	  expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.2.1-http-get-map"])).toEqual(0);
+          expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.2.1-http-get-map"])).toEqual(0);
       });
-      
+
       it('Should handle links not containing one of the protocols', function() {
-    	  expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.3.0-http-get-map", "OGC:WMS-1.2.1-http-get-map"])).toEqual(0);
+          expect(resultGrid.getProtocolCount(testData, ["OGC:WMS-1.3.0-http-get-map", "OGC:WMS-1.2.1-http-get-map"])).toEqual(0);
       });
-	      
-   });
+
+    });
+
+    describe("getMapGoClass", function() {
+      it('Should identify links containing one instance of the protocol', function() {
+          expect(resultGrid.getMapGoClass('', {}, testRecord1)).toEqual('p-result-map-go');
+      });
+
+      it('Should identify links containing one instance of the protocol', function() {
+          expect(resultGrid.getMapGoClass('', {}, multiProtocolRec)).toEqual('p-result-disabled');
+      });
+
+      it('Should identify links not containing protocol', function() {
+          expect(resultGrid.getMapGoClass('', {}, testRecord2)).toEqual('p-result-disabled');
+      });
+    });
+
+    describe("getMapAddClass", function() {
+      it('Should identify links containing one instance of the protocol', function() {
+          expect(resultGrid.getMapAddClass('', {}, testRecord1)).toEqual('p-result-map-add');
+      });
+
+      it('Should identify links containing one instance of the protocol', function() {
+          expect(resultGrid.getMapAddClass('', {}, multiProtocolRec)).toEqual('p-result-disabled');
+      });
+
+      it('Should identify links not containing protocol', function() {
+          expect(resultGrid.getMapAddClass('', {}, testRecord2)).toEqual('p-result-disabled');
+      });
+    });
    
-   describe("getMapGoClass", function() {
-      it('Should identify links containing one instance of the protocol', function() {
-    	  expect(resultGrid.getMapGoClass('', {}, testRecord1)).toEqual('p-result-map-go');
-      });
-	      
-      it('Should identify links containing one instance of the protocol', function() {
-    	  expect(resultGrid.getMapGoClass('', {}, multiProtocolRec)).toEqual('p-result-disabled');
-      });
-		      
-      it('Should identify links not containing protocol', function() {
-    	  expect(resultGrid.getMapGoClass('', {}, testRecord2)).toEqual('p-result-disabled');
-      });
-   });
-                                          
-   describe("getMapAddClass", function() {
-      it('Should identify links containing one instance of the protocol', function() {
-    	  expect(resultGrid.getMapAddClass('', {}, testRecord1)).toEqual('p-result-map-add');
-      });
-	      
-      it('Should identify links containing one instance of the protocol', function() {
-    	  expect(resultGrid.getMapAddClass('', {}, multiProtocolRec)).toEqual('p-result-disabled');
-      });
-		      
-      it('Should identify links not containing protocol', function() {
-    	  expect(resultGrid.getMapAddClass('', {}, testRecord2)).toEqual('p-result-disabled');
-      });
-   });
+    describe("getAddToDownloadClass", function() {
+        it('Should identify records with downloadable links', function() {
+            expect(resultGrid.getAddToDownloadClass('', {}, recordDownloadableLink)).toEqual('p-result-cart-add');
+        });
+        
+        it('Should identify records with no downloadable links', function() {
+            expect(resultGrid.getAddToDownloadClass('', {}, recordNoDownloadableLink)).toEqual('p-result-disabled');
+        });
+        
+        it('Should identify records with no links', function() {
+            expect(resultGrid.getAddToDownloadClass('', {}, recordNoLinks)).toEqual('p-result-disabled');
+        });
+    });
+    
+    describe("containsProtocol", function() {
+        it('Should find the protocol in the array', function() {
+            expect( resultGrid.containsProtocol( ["FirstProtocolName", "SecondProtocolName"], "FirstProtocolName" )).toEqual( true );
+        });
+        
+        it('Should not find the protocol in the array', function() {
+            expect( resultGrid.containsProtocol( ["FirstProtocolName", "SecondProtocolName"], "ThirdProtocolName" )).toEqual( false );
+        });
+        
+        it('Should not find the protocol in an empty array', function() {
+            expect( resultGrid.containsProtocol( [], "ThirdProtocolName" )).toEqual( false );
+        });
+    });
 });
