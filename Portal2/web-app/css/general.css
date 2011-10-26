@@ -97,10 +97,8 @@ body {
     color: #333;
 }
 #header .emptyCart {
-    color: #C1CFDC;
-}
-#header .emptyCart a {
-    color: #C1CFDC;
+    /* color: #C1CFDC; */
+    display: none;
 }
 #downloadCartControls {
     text-align: right;
