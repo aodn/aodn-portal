@@ -28,8 +28,12 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/MetadataResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
+
+<!-- User extensions -->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
+
+<script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 
 <!-- Portal classes-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
@@ -41,7 +45,7 @@
 <script src="${resource(dir:'js',file:'portal/search/field/FreeText.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/DateRange.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js')}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/field/OpenSearchSuggestionTextField.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/MultiSelectCombo.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/RefineSearchPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}"   type="text/javascript"></script>

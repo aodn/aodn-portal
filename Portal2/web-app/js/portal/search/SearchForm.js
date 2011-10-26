@@ -7,13 +7,13 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    padding: '15px 0px 0px 15px',
    layout: 'hbox',
    autoHeight: true,
-   width: 800,
+   width: 900,
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
+   autoScroll: true,
    
    LAYER_FILTER: "OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map",
 
-   //TODO: Refactor into components
    initComponent: function() {
       var opensearchSuggest = Portal.app.config.catalogUrl + '/srv/en/main.search.suggest';
    
@@ -24,14 +24,14 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             layout: 'form',
             labelWidth: 125,
             autoHeight: true,
-            flex: 1,
+            width: 600,
             items: [{
                xtype: 'portal.search.field.freetext'
             }]                
          },{
             ref: 'searchFieldSelector',
             xtype: 'container',
-            width: 230,
+            flex: 1,
             layout: 'form',
             labelWidth: 80,
             items: [{
@@ -54,44 +54,47 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                   data: [
                      [1, 'Date range', false, {xtype: 'portal.search.field.daterange'}],
                      [2, 'Bounding Box', false, {xtype: 'portal.search.field.boundingbox'}],
-                     //TODO: replace geonetwork opensearch?
-                     [3, 'Keyword', false, {
+                     [3, 'Keyword', true, {
                         fieldLabel: 'Keyword',
                         name: 'themekey',
                         field: 'keyword',
-                        minChars: 1,
-                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        xtype: 'portal.search.field.multiselect',
                         proxyUrl: proxyURL,
                         url: opensearchSuggest,
-                        hideLabel: false,
-                        width: 250}],
+                        listeners: {
+                        	scope: this,
+                        	redraw: this.refreshDisplay
+                        }}],
                      [4, 'Parameter', false, {
                         fieldLabel: 'Parameter',
                         name: 'dataparam',
-                        field: 'dplongname',
-                        minChars: 1,
-                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        field: 'longParamName',
+                        xtype: 'portal.search.field.multiselect',
                         proxyUrl: proxyURL,
                         url: opensearchSuggest,
-                        hideLabel: false,
-                        width: 250}],
+                        listeners: {
+                        	scope: this,
+                        	redraw: this.refreshDisplay
+                        }}],
                      [5, 'Organisation', false, {
                         fieldLabel: 'Organisation',
                         name: 'orgName',
                         field: 'orgName',
-                        minChars: 1,
-                        xtype: 'portal.search.field.opensearchsuggestiontextfield',
+                        xtype: 'portal.search.field.multiselect',
                         proxyUrl: proxyURL,
                         url: opensearchSuggest,
-                        hideLabel: false,
-                        width: 250}],
+                        listeners: {
+                        	scope: this,
+                        	redraw: this.refreshDisplay
+                        }}],
                      [6, 'Map Layer', false, {
-                    	fieldLabel: 'Map Layer',
-                    	name: 'protocol',
-                    	xtype: 'checkbox',
-                    	checked: true,
-                    	getValue: function() {return this.checked?this.LAYER_FILTER:"";},
-                    	width: 250}]
+	                    	fieldLabel: 'Map Layer',
+	                    	name: 'protocol',
+	                    	xtype: 'checkbox',
+	                    	checked: true,
+	                    	getValue: function() {return this.checked?this.LAYER_FILTER:"";},
+	                    	width: 350
+	                   }]
                   ]
                }),
                valueField: 'xtype',
@@ -126,9 +129,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       };      
    },
    
-   //TODO: Create new search critera wrapper component?
    searchFieldSelectorSelect: function(combo, record) {
-      var field = record.get('field');
+      var field = Ext.create(record.get('field'));
       var id = record.get('id');
       var multipleOk = record.get('multipleOk');
       
@@ -137,10 +139,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
          layout: 'hbox',
          fieldId: id,
          labelWidth: 125,
+         autoHeight: true,
          items: [{
                xtype: 'container',
                layout: 'form',
-               width: 400,
+               autoHeight: true,
+               width: 500,
                items: field
             },{
                ref: 'removeField',
@@ -154,7 +158,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
          ]
       });
       
-
       if (!multipleOk) {
          this.advancedSearchCombo.filters.push(id);
          combo.store.filterBy(
