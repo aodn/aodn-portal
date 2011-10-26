@@ -93,9 +93,6 @@ body {
     margin: 0 3px;
     text-decoration: none;
 }
-#downloadCart .mainLink {
-    font-weight: bold;
-}
 #downloadCart a:hover {
     color: #333;
 }
