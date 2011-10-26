@@ -3,6 +3,16 @@ dataSource {
     //driverClassName = "org.hsqldb.jdbcDriver"
     //username = "sa"
     //password = ""
+			
+    //configure DBCP to test connections before using them and evict old connections (as per http://sacharya.com/grails-dbcp-stale-connections/)
+    properties {
+		minEvictableIdleTimeMillis=1800000
+		timeBetweenEvictionRunsMillis=1800000
+		numTestsPerEvictionRun=3
+		
+        testOnBorrow = true
+        validationQuery = "SELECT 1"
+	}
 }
 hibernate {
     cache.use_second_level_cache = true
