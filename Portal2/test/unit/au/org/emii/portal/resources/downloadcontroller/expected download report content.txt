@@ -1,0 +1,33 @@
+============================================
+Download cart report (
+============================================
+
+--[ #1 ]-----------------------------
+Title:                File One
+URL:                  file1.txt
+Type:                 null
+Filename in zip file: File One.txt
+                      ** File extension based on URL where possible, otherwise based on provided type information.
+Result:               File added
+
+--[ #2 ]-----------------------------
+Title:                File Three
+URL:                  file3.jpeg
+Type:                 null
+Filename in zip file: File Three.jpeg
+                      ** File extension based on URL where possible, otherwise based on provided type information.
+Result:               File added
+
+--[ #3 ]-----------------------------
+Title:                File Too
+URL:                  file2.gif
+Type:                 null
+Filename in zip file: File Too.gif
+                      ** File extension based on URL where possible, otherwise based on provided type information.
+Result:               File added
+
+============================================
+Total size before compression: 1526 Bytes
+Number of files included: 3/3
+Time taken: 
+============================================

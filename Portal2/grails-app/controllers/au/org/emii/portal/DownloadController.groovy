@@ -4,7 +4,6 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.util.zip.*
-import org.springframework.util.StopWatch
 
 class DownloadController {
 
@@ -13,7 +12,7 @@ class DownloadController {
     private static String CookieDataPrefix = "s:"
     
     def downloadFromCart = {
-        
+                
         def startTime = System.currentTimeMillis()
         def config = Config.activeInstance()
         def todaysDate = DateFormat.getDateInstance(DateFormat.LONG, request.getLocale()).format(new Date())
@@ -24,24 +23,17 @@ Download cart report (${todaysDate})
 ============================================
 """
         
-        // Print cookie debug info
-        if ( log.isDebugEnabled() ) {
-            log.debug( "Cookies: ${request.cookies.size()}" )    
-            request.cookies.find{
-                it.getName() == CookieName
-            }.each{
-                log.debug "Cookie: " + it.getValue().decodeURL()
-            }
-        }
-        
         // Read data from cookie
         def jsonArray
         def jsonData = "[]"
+        log.debug "Cookies: ${ request.cookies.size() }"
         request.cookies.find{
-                it.getName() == CookieName
+                it.name == CookieName
             }.each{
-                    
-                jsonData = it.getValue().decodeURL()
+
+                log.debug "Cookie: ${ it.value.decodeURL() }"
+            
+                jsonData = it.value.decodeURL()
 
                 jsonData = jsonData[CookieDataPrefix.length()..-1] // Trim data prefix
 
@@ -49,11 +41,8 @@ Download cart report (${todaysDate})
             }
         jsonArray = JSON.parse(jsonData)
         
-        if ( log.isDebugEnabled() ) {
-            
-            log.debug "jsonArray: ${jsonArray.length()} items"
-            log.debug "jsonArray: ${jsonArray}"
-        }
+        log.debug "jsonArray: ${jsonArray.length()} items"
+        log.debug "jsonArray: ${jsonArray}"
         
         // Prepare response stream and create zip stream
         response.setHeader("Content-Disposition", "attachment; filename=${filename}")
@@ -112,17 +101,15 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
 ============================================"""
         
         // Add report to zip file
-        def reportEntry = new ZipEntry("download report.txt")
-        zipOut.putNextEntry(reportEntry)
-        byte[] reportData = reportText.getBytes("UTF-8")
-        zipOut.write(reportData, 0, reportData.length)
+        def reportEntry = new ZipEntry( "download report.txt" )
+        byte[] reportData = reportText.getBytes( "UTF-8" )
+        
+        zipOut.putNextEntry reportEntry
+        zipOut.write reportData, 0, reportData.length
         zipOut.closeEntry()
         
-        // Close file
+        // Close file and finish response
         zipOut.close()
-        
-        // Respond with file
-
         response.outputStream.flush()
     }
     
@@ -130,13 +117,11 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         log.debug "-" * 48
         log.debug "Adding '${info.title}' from ${info.href}"
 
-        def buffer = new byte[BufferSize]        
+        def buffer = new byte[ BufferSize ]
         def requestUrl = info.href.toURL()
-        def con = requestUrl.openConnection()
-        def type = con.contentType
         
+        log.debug "requestUrl: ${requestUrl}"
         log.debug "info.type: ${info.type}"
-        log.debug "type:      ${type}"
         
         // Add to zip
         def bytesRead
@@ -145,24 +130,24 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         try {
             dataFromUrl = requestUrl.newInputStream()
             
-            def newEntry = new ZipEntry("${info.title}.${extensionFromUrlAndType(info.href, info.type)}")
-            zipOut.putNextEntry(newEntry)
+            def newEntry = new ZipEntry( "${info.title}.${extensionFromUrlAndType( info.href, info.type )}" )
+            zipOut.putNextEntry newEntry
             
             while ((bytesRead = dataFromUrl.read( buffer )) != -1) {
 
-                zipOut.write( buffer, 0, bytesRead )
+                zipOut.write buffer, 0, bytesRead
                 totalBytesRead += bytesRead
             }
 
             zipOut.closeEntry()
         }
         catch(IOException ioe) {
-            log.debug "ioe: ${ioe}"
+            log.debug "ioe: $ioe"
         }
         
-        log.debug "totalBytesRead: ${totalBytesRead}"
+        log.debug "totalBytesRead: $totalBytesRead"
         
-        if (dataFromUrl) {
+        if ( dataFromUrl ) {
             dataFromUrl.close()
         }
         
@@ -170,7 +155,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
     }
     
     private String extensionFromUrlAndType(String url, String type) {
-       
+        
         // Check for file extensions on URL
        
         if ( url[-4] == "." ) { // 3 char extension
@@ -194,7 +179,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         
         if ( _mapping == null ) {
             
-            _mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping)
+            _mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping )
         }
         
         return _mapping
