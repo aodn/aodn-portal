@@ -1,7 +1,7 @@
 var styleCombo;
 var detailsPanel;
-var detailsPanelItems;
-var selectedActiveLayer;
+//var detailsPanelItems;
+var selectedLayer;
 //var opacitySlider;
 //var legendImage;
 //var dimension;
@@ -21,6 +21,8 @@ function initDetailsPanel()  {
         hidden: true,
         handler:setupAnimationControl
     });
+    
+    // for user to pick date range to animate
     animatePanel = new Ext.Panel({
         title: 'Date Picker',
         plain: true,
@@ -28,25 +30,28 @@ function initDetailsPanel()  {
         autoScroll: true,
         bodyCls: 'floatingDetailsPanel',
         items: [
-            {
-                ref: 'animatePanelContent',       
-                xtype: 'panel'                
-            }
+        {
+            ref: 'animatePanelContent',       
+            xtype: 'panel'                
+        }
         ],
         listeners: {
-            show: function(slider) {  
+            show: function(thisComponent) {  
                 // the tabpanel needs to be visible before setup below
-                setupAnimationControl();
-                
+                setupAnimationControl();                
 
             }
         }
     });
     
-    var opacitySlider = new GeoExt.LayerOpacitySlider({
+    // forget about GeoExt.LayerOpacitySlider as it cant handle setting a minimum value
+    //var opacitySlider = new GeoExt.LayerOpacitySlider({
+    var opacitySlider = new Ext.slider.SingleSlider({
         id: "opacitySlider",
         title: 'Opacity',
         layer: "layer",
+        minValue: 20, // we dont want a user to be able to give zero vis
+        maxValue: 100,
         margins: {
             top: 0,
             right: 10,
@@ -56,16 +61,25 @@ function initDetailsPanel()  {
         inverse: false,
         fieldLabel: "opacity",
         plugins: new GeoExt.LayerOpacitySliderTip({
+           
             template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-        })
+        }),
+        listeners: {
+            // call show when a layer is chosen so we can access this listener
+            show: function(slider) {
+                slider.setValue(0,selectedLayer.opacity * 100,true);
+            },
+            changeComplete: function(slider, val, thumb){
+                selectedLayer.setOpacity(val / 100);
+            }
+        }
     });
     
     var opacitySliderContainer = new Ext.Panel({ 
         height: 'auto',
         layout: 'form',
-        width: 300,
         items: [
-           opacitySlider 
+        opacitySlider 
         ]
     });
     
@@ -127,31 +141,58 @@ function initDetailsPanel()  {
         title: 'Styles', 
         id: 'stylePanel',
         items: [
-            styleCombo,                    
-            legendImage,
-            ncWMSColourScalePanel
+        styleCombo,                    
+        legendImage,
+        ncWMSColourScalePanel
         ]
     });
     
             
     var featureInfoPanel = new Ext.Panel({   
         title: 'Filters',
-         items: [
-            { html: "Filtering latest graphs and stuff"}
-         ]
+        items: [
+        {
+            html: "Filtering latest graphs and stuff"
+        }
+        ]
     });  
     
-    detailsPanelItems = new Ext.TabPanel({  
-        id: 'detailsPanelItems',   
+    var detailsPanelTabs = new Ext.TabPanel({  
+        defaults: {
+            margin: 10
+        },
+        id: 'detailsPanelTabs',   
         border: false,
-        width: 300,
         activeTab: 0,
         cls: 'floatingDetailsPanelContent',
-         items: [
-             featureInfoPanel,
-             stylePanel,
-             animatePanel
-         ]
+        items: [
+        featureInfoPanel,
+        stylePanel,
+        animatePanel
+        ]
+    });
+    
+    var detailsPanelItems = new Ext.Panel({   
+        id: 'detailsPanelItems', 
+        autoWidth: true,
+        items: [
+        opacitySliderContainer,
+        {
+            xtype: 'button',
+            id: 'stopNCAnimationButton',
+            style: {
+                padding: '10px'
+            },
+            text:'Stop Animation',
+            //disabled: true, // readonly
+            hidden: true,
+            handler: function(button,event) {
+                stopgetTimePeriod(selectedLayer);
+            }
+        },
+        animateLink, 
+        detailsPanelTabs
+        ]
     });
       
     
@@ -163,41 +204,23 @@ function initDetailsPanel()  {
             padding: 10
         },
         id: 'detailsPanel',
+        
+        width: 330, 
+        layout: 'form',
         shadow: false,
         title: 'Layer Options',
-        //plain: true,
         autoDestroy: false,
         hidden: true, // not visible until a user clicks a layer in active layers
-        //padding: 10,
         constrainHeader: true,
         constrain: true,
         animCollapse: false,
-        //collapsible: true,
         autoScroll: true,
         bodyCls: 'floatingDetailsPanel',
-        //layout: 'absolute', // this is for the children
-        //autoWidth: true,
-        //autoHeight: true,
         closable: false,
         resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
         closeAction: 'hide',
         border: false,
-        items: [      
-            opacitySliderContainer,
-            {
-                xtype: 'button',
-                id: 'stopNCAnimationButton',
-                style: {
-                    padding: '10px'
-                },
-                text:'Stop Animation',
-                //disabled: true, // readonly
-                hidden: true,
-                handler: function(button,event) {
-                    stopgetTimePeriod(selectedActiveLayer);
-                }
-            },
-            animateLink,    
+        items: [                     
             detailsPanelItems
         ],
         tools:[{
@@ -207,114 +230,136 @@ function initDetailsPanel()  {
                 toggleDetailsLocation();
             }
         }],
-        listeners: {
-            //afterrender: function(thisthingy){
-            //    updateDetailsPanelPositionSize(false);
-            //},            
-            move: function(thisthingy,x,y){
-                thisthingy.moved = true;
-            },
-            show: function(thisthingy){
-                //updateDetailsPanelPositionSize(true);      
+        listeners: {            
+            move: function(thisPanel,x,y){
+                thisPanel.moved = true;
             }
             
-        }
-    
-        
+        }         
 
-    });
-    
-  
-    
+    }); 
 
 }
 
 
-// display in the popup or pin to the right of the main map
+// display layer details in the popup or pin to the right of the main map
 function toggleDetailsLocation() {
-    
     var rdp = mapMainPanel.getComponent('rightDetailsPanel');
+    var detailsPanelItems = Ext.getCmp('detailsPanelItems');
+    
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
- 
+              
+    console.log("move to the right details panel");        
+        rdp.setVisible(true);
         rdp.add(detailsPanel.remove(detailsPanelItems, false));
-        rdp.expand(true);
-        rdp.doLayout();
-        rdp.show();
         detailsPanel.hide();
+        detailsPanelItems.doLayout();
+        rdp.ownerCt.doLayout();
     }
     else {        
-        detailsPanel.add(rdp.remove(detailsPanelItems, false));
-        // disable the opening of the righthand panel
-        rdp.collapse(false);
-        //rdp.hide();
-        updateDetailsPanelPositionSize();
-        detailsPanel.doLayout();     
+            
         detailsPanel.show();
+        detailsPanel.add(rdp.remove(detailsPanelItems, false));
+        detailsPanel.doLayout(); 
+        updateDetailsPanelPositionSize();
+        rdp.setVisible(false);  
+        rdp.doLayout();
+        rdp.ownerCt.doLayout(); // map will resize to fill empty space
         
     }
+}
+
+// The details panel may be in the right panel or in the detailsPanel popup
+// simply hide the panel leaving it to the next updateDetailsPanel to reset things
+function closeNHideDetailsPanel() {
+    
+    console.log("closeNHideDetailsPanel");
+    
+    if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {        
+        detailsPanel.hide();
+    }
+    else {      
+        var rdp = mapMainPanel.getComponent('rightDetailsPanel');
+        rdp.hide();
+        rdp.ownerCt.doLayout(); // map will resize to fill empty space        
+    }    
 }
 
 
 function updateDetailsPanel(layer) {
     
-    selectedActiveLayer = layer;
+    selectedLayer = layer;
+    Ext.getCmp('opacitySlider').show(); // reset slider
                     
                 
     if (Portal.app.config.autoZoom) {
-        zoomToLayer(mapPanel.map, selectedActiveLayer);
+        zoomToLayer(mapPanel.map, selectedLayer);
     }
     
     
     ncWMSColourScalePanel.hide();
+    
+    
+    // set default visibility of components in this panel     
+    // disabled until all dates are loaded for the layer if applicable      
     animatePanel.setDisabled(true);
+    // assume its not an animated image
+    Ext.getCmp('stopNCAnimationButton').setVisible(false);
     
     
-    
-    // if this layer is a WMS layer
-    // images layers do not have params
-    if (layer.params != undefined) {
-        
-        updateStyles(layer);
-        updateDimensions(layer); // time and elevation    
-        if(selectedActiveLayer.server.type.search("NCWMS") > -1)  {
-            
-            makeNcWMSColourScale(); 
-            // show the animate tab if we can animate through time
-            if (selectedActiveLayer.metadata.datesWithData != undefined) {
-
-                if (selectedActiveLayer.dates == undefined) {
-                    setLayerDates(selectedActiveLayer); // pass in the layer as there are going to be many async Json requests
-                }
-                animatePanel.setDisabled(false);            
-                // ensure to 're-set' the Start Stop buttons (if rendered);
-                if (Ext.getCmp('startNCAnimationButton') != undefined) {
-                    Ext.getCmp('startNCAnimationButton').setVisible(true);
-                }
-                Ext.getCmp('stopNCAnimationButton').setVisible(false);     
-
-            } 
-        }
-    }
     // it may be an animated image layer
-    else if (layer.originalWMSLayer != undefined) {
-        //console.log( "todo handle animated layers. show the animate panel" );
+    if (layer.originalWMSLayer != undefined) {
+        
         // set the Start Stop buttons;
         Ext.getCmp('startNCAnimationButton').setVisible(false);
         Ext.getCmp('stopNCAnimationButton').setVisible(true);
     }
-
+      
+    updateStyles(layer);
+    updateDimensions(layer); // time and elevation   
     
-    detailsPanel.text = selectedActiveLayer.name;
-    detailsPanel.setTitle("Layer Options: " + selectedActiveLayer.name);
-    mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + selectedActiveLayer.name);
-    Ext.getCmp('opacitySlider').setLayer(selectedActiveLayer);
-
-    detailsPanelItems.activate(0); // always set the first item active
-     
     
-    // display popup if that is where the detailsPanelItems items are
-    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-        updateDetailsPanelPositionSize();
+    if(selectedLayer.server.type.search("NCWMS") > -1)  {
+
+        makeNcWMSColourScale(); 
+        // show the animate tab if we can animate through time
+        if (selectedLayer.metadata.datesWithData != undefined) {
+
+            if (selectedLayer.dates == undefined) {
+                setLayerDates(selectedLayer); // pass in the layer as there are going to be many async Json requests
+            }
+            else {
+               animatePanel.setDisabled(false); 
+            }
+
+            // ensure to 're-set' the Start Stop buttons (if rendered);
+            if (Ext.getCmp('startNCAnimationButton') != undefined) {
+                Ext.getCmp('startNCAnimationButton').setVisible(true);
+            }
+            Ext.getCmp('stopNCAnimationButton').setVisible(false);     
+
+        } 
+    }
+       
+
+    if (Portal.app.config.hideLayerOptions === true) {
+        
+        closeNHideDetailsPanel();
+        
+    }
+    else {    
+        
+        detailsPanel.text = selectedLayer.name;
+        detailsPanel.setTitle("Layer Options: " + selectedLayer.name);
+        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + selectedLayer.name);
+        Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active   
+        // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
+        if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {
+            updateDetailsPanelPositionSize();
+        }
+        else{
+            mapMainPanel.getComponent('rightDetailsPanel').setVisible(true);            
+        }
     }
     
     
@@ -323,9 +368,10 @@ function updateDetailsPanel(layer) {
 // move to default spot unless a user has resized or moved the window
 function updateDetailsPanelPositionSize(reset) {
     
-    var buffer = 60;
-    var x = Portal.app.config.westWidth+buffer;
-    var y = Portal.app.config.headerHeight+buffer+ 40;
+    var widthBuffer = 60;
+    var heightBuffer = 40;
+    var x = Portal.app.config.westWidth+ widthBuffer;
+    var y = Portal.app.config.headerHeight+ heightBuffer;
     detailsPanel.show();
     
     // set in predefined position unless already set or sized
@@ -334,22 +380,24 @@ function updateDetailsPanelPositionSize(reset) {
     }    
     if (reset) {
         detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
-       // detailsPanel.restore();
+    // detailsPanel.restore();
     }
     
 }
-function setStyle(layer,record) {
+
+function setChosenStyle(layer,record) {
     
     if (layer.originalWMSLayer == undefined) {
         // its a standard WMS layer
-        selectedActiveLayer.mergeNewParams({
+        selectedLayer.mergeNewParams({
             styles : record.get('displayText')
         });        
-        selectedActiveLayer.metadata.defaultPalette = record.get('myId');
+        selectedLayer.metadata.defaultPalette = record.get('myId');
         refreshLegend();
     }
     else {
         // its an animated openlayers image
+        // set the style on the original layer. the style will 'stick' to both
         layer.originalWMSLayer.params.STYLES = record.get('displayText');
         addNCWMSLayer(layer);      
         
@@ -364,17 +412,17 @@ function updateStyles(layer)
     
     styleCombo.hide();
     
-    var ncWMSOptions = "";
     
     /*
      *Each layer advertises a number of STYLEs, 
      *each of which contains the name of the palette file, 
      *e.g. STYLES=boxfill/rainbow
     */
-    var supportedStyles = selectedActiveLayer.metadata.supportedStyles;
-    var palettes = selectedActiveLayer.metadata.palettes; 
+    var supportedStyles = layer.metadata.supportedStyles;
+    var palettes = layer.metadata.palettes; 
     
-    // for ncWMS layers most likely
+   
+    // for ncWMS layers most likely and after getLayerMetadata has run
     if (supportedStyles != undefined) {
         
         styleCombo.store.removeAll();    
@@ -396,22 +444,34 @@ function updateStyles(layer)
         styleCombo.show();
     }
     
-
-    refreshLegend();
+    refreshLegend(layer);
     
 }
 
 
-function refreshLegend()
+function refreshLegend(layer)
 {    
-    var url = buildGetLegend(selectedActiveLayer,"",false)  
+    var url = buildGetLegend(layer,"",false)  
     Ext.getCmp('legendImage').setUrl(url);
 }
 
-// for WMS layers only 
+// builds a getLegend image request for the combobox form and the selected palette
 function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
-    var url = layer.url;
+    var url = "";
+    
+    // if this is an animated image then use the originals details
+    // the params object is not set for animating images
+    // the layer.url is for the whole animated gif
+    if (layer.originalWMSLayer != undefined) { 
+        layer.params = layer.originalWMSLayer.params;
+        url = layer.originalWMSLayer.url;
+    }
+    else {
+        url = layer.url;
+    }
+    
+    
     var opts = "";
         
     // thisPalette used for once off. eg combobox picker
@@ -433,9 +493,9 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     
     url +=  "?" + opts 
-                + "&REQUEST=GetLegendGraphic"
-                + "&LAYER=" + layer.params.LAYERS
-                + "&FORMAT=" + layer.params.FORMAT; 
+    + "&REQUEST=GetLegendGraphic"
+    + "&LAYER=" + layer.params.LAYERS
+    + "&FORMAT=" + layer.params.FORMAT; 
     
     
     if(layer.params.COLORSCALERANGE != undefined)
@@ -449,7 +509,7 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
             url += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
         }
     }    
-   return url
+    return url
 }
 
 
@@ -458,9 +518,9 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
 function makeNcWMSColourScale()
 {
 
-    if (selectedActiveLayer.metadata.scaleRange != undefined) {
-        colourScaleMin.setValue(selectedActiveLayer.metadata.scaleRange[0]);
-        colourScaleMax.setValue(selectedActiveLayer.metadata.scaleRange[1]);
+    if (selectedLayer.metadata.scaleRange != undefined) {
+        colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
+        colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);
         ncWMSColourScalePanel.show();      
     }
     {
@@ -478,15 +538,28 @@ function makeCombo(type) {
     if (type == "styles") {
         tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>'
         fields = [
-            {name: 'myId'},
-            {name: 'displayText'},
-            {name: 'displayImage'}
+        {
+            name: 'myId'
+        },
+
+        {
+            name: 'displayText'
+        },
+
+        {
+            name: 'displayImage'
+        }
         ];
     }
     else {
         fields = [
-            {name: 'myId'},
-            {name: 'displayText'}
+        {
+            name: 'myId'
+        },
+
+        {
+            name: 'displayText'
+        }
         ];
     }
     
@@ -511,17 +584,17 @@ function makeCombo(type) {
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
                 {    
-                    setStyle(selectedActiveLayer,record); 
+                    setChosenStyle(selectedLayer,record); 
                 }
                 else if(cbbox.fieldLabel == 'time')
                 {
-                    selectedActiveLayer.mergeNewParams({
+                    selectedLayer.mergeNewParams({
                         time : record.get('myId')
                     });
                 }
                 else if(cbbox.fieldLabel == 'elevation')
                 {
-                    selectedActiveLayer.mergeNewParams({
+                    selectedLayer.mergeNewParams({
                         elevation : record.get('myId')
                     });
                 }
@@ -539,7 +612,7 @@ function updateScale(textfield, event)
     {
         if (colourScaleMax.getValue() > colourScaleMin.getValue()) {
             
-            selectedActiveLayer.mergeNewParams({
+            selectedLayer.mergeNewParams({
                 COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
             });
             refreshLegend();

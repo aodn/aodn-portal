@@ -86,12 +86,17 @@ function initMap()  {
                 // ,floating: true,
                 cls:'semiTransparent noborder',
                 overCls: "fullTransparency",
-                unstyled: true,  
-                items: setToolbarItems()
+                unstyled: true//,  
+                //items: setToolbarItems()
         
    
                
             });
+     // stops the click bubbling to a getFeatureInfo request on the map
+     mapToolbar.on('click', function(ev, target){
+        console.log("stop bubble?");
+        ev.stopPropagation(); // Cancels bubbling of the event
+    });
 
 
      // put the toobar in a panel as the toolbar wont float
@@ -108,6 +113,7 @@ function initMap()  {
             });
      // stops the click bubbling to a getFeatureInfo request on the map
      mapLinks.on('click', function(ev, target){
+        console.log("stop bubble?");
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
@@ -164,7 +170,8 @@ function setToolbarItems() {
     var action, actions = {};
     var toolbarItems = [];
     
-
+    toolbarItems.push("->");
+    
     // Navigation history - and Home  "button" controls
     action = new Ext.Button({
         text:'Home',
@@ -176,7 +183,7 @@ function setToolbarItems() {
     });
 
     actions["home"] = action;
-    toolbarItems.push(action);
+    //toolbarItems.push(action);
 
     action = new GeoExt.Action({
         text: "previous",
@@ -187,7 +194,7 @@ function setToolbarItems() {
         overCls: "bold"
     });
     actions["previous"] = action;
-    toolbarItems.push(action);
+    //toolbarItems.push(action);
 
     action = new GeoExt.Action({
         text: "next",
@@ -198,7 +205,7 @@ function setToolbarItems() {
         overCls: "bold"
     });
     actions["next"] = action;
-    toolbarItems.push(action);
+    //toolbarItems.push(action);
 
     action = new GeoExt.Action({
         text:'Search Repository',
@@ -207,12 +214,12 @@ function setToolbarItems() {
         overCls: "bold"
     });
     actions["search"] = action;
-    toolbarItems.push(action);
+    //toolbarItems.push(action);
     
     //toolbarItems.push("->");
 
     // Reuse the GeoExt.Action objects created above
-    /* as menu items
+    // as menu items
     toolbarItems.push({ 
         text: "History",
         menu: new Ext.menu.Menu({
@@ -228,42 +235,10 @@ function setToolbarItems() {
         })
         
     });
-    */
+    
 
-    toolbarItems.push("->");
-        
-    toolbarItems.push({
-        xtype: 'box',
-        autoEl: {
-            tag: 'a',
-            href: 'http://www.imos.org.au',
-            cn: 'IMOS',
-            target: "_blank",
-            cls: "external mainlinks"
-        }
-    });
-
-    toolbarItems.push({
-        xtype: 'box',
-        autoEl: {
-            tag: 'a',
-            href: 'http://www.imos.org.au/aodn.html',
-            cn: 'AODN',
-            target: "_blank",
-            cls: "external mainlinks"
-        }
-    });
-
-        toolbarItems.push({
-        xtype: 'box',
-        autoEl: {
-            tag: 'a',
-            href: 'http://www.imos.org.au/aodn.html',
-            cn: 'Help',
-            target: "_blank",
-            cls: "external mainlinks"
-        }
-    });
+    
+    
 
   return toolbarItems;
 
@@ -280,8 +255,11 @@ function setToolbarItems() {
  * 
  * 
  */
-function addGrailsLayer(grailsLayerId) {    
-    //console.log(grailsLayerId);
+function addGrailsLayer(grailsLayerId) {   
+    
+      
+
+    
     Ext.Ajax.request({
 
             url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
@@ -435,7 +413,7 @@ function redrawAnimatedLayers() {
 
             var layer = mapPanel.map.getLayer(mapPanel.map.layers[i].id);       
             if (layer.originalWMSLayer != undefined) {
-                
+                // redraw
                 addNCWMSLayer(layer);
             }
         }
@@ -464,6 +442,7 @@ function addNCWMSLayer(currentLayer) {
     var newUrl = layer.getFullRequestString( {
         TIME: layer.chosenTimes,
         TRANSPARENT:true,
+        STYLE: layer.params.STYLES, // use the style of the original WMS layer
         WIDTH: 1024,
         HEIGHT: 1024,
         BBOX: bbox.toArray(),
@@ -521,7 +500,7 @@ function addNCWMSLayer(currentLayer) {
     
     // close the detailsPanel
     // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
-    detailsPanel.hide();
+    closeNHideDetailsPanel();
     
     
 }
@@ -550,6 +529,9 @@ function stopgetTimePeriod(layer) {
         wmslayer = layer.originalWMSLayer;
         // get back the plain wms layer
         layerSwap(wmslayer,layer);
+        // close the detailsPanel
+        // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+        closeNHideDetailsPanel();
         
     }
     else {
@@ -678,7 +660,16 @@ function getLayerMetadata(layer) {
             url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
             success: function(resp){
                 layer.metadata = Ext.util.JSON.decode(resp.responseText);
-                //updateDetailsPanel(layer);
+                
+                // if this layer has been user selected before loading the metadata
+                // reload,  as the date picker details/ form  will be wrong at the very least!
+                if (selectedLayer != undefined) {   
+                   if (selectedLayer.id == layer.id) {
+                      updateDetailsPanel(layer); 
+                      console.log("getting metadata");
+                   }
+                }
+                
             } 
     });
     
@@ -739,11 +730,15 @@ function setExtentLayer() {
 }
 */
 
-function loadDefaultLayers() {    
+function loadDefaultLayers() {  
+
+    
     for(var i = 0; i < defaultLayers.length; i++)   {
         addGrailsLayer(defaultLayers[i].id);   
-        setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);
-    }
+        setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);        
+    }  
+    
+
 }
 
 
@@ -766,7 +761,7 @@ function removeAllLayers()   {
         
     }
     // no layers- no details needed
-    detailsPanel.hide();
+    closeNHideDetailsPanel();
     // cleanup activeLayers?? or just start again?
     activeLayers = [];
     

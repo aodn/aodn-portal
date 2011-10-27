@@ -23,8 +23,10 @@ var demonstrationContributorTree;
 var baseLayerList;
 var topMenuPanel;
 
-//
-Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+// COOKIE CAUSES PROBLEMS
+// set for individual components?
+// Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
 Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
 
@@ -119,6 +121,11 @@ Portal.app = {
 //GeoExt stuff
 Ext.onReady(Portal.app.init, Portal.app);
 
+// sets the tab from the external links in the header
+function setViewPortTab(tabIndex){ 
+    Ext.getCmp('centerTabPanel').setActiveTab(tabIndex);
+}
+
 function doViewPort()
 {
     
@@ -147,41 +154,61 @@ function doViewPort()
             ]
         },
         {
+            xtype: 'panel',
             id: 'rightDetailsPanel',
             region: 'east',
             hideMode: 'offsets',
             hidden: true,
-            collapsible: true,
-            collapsed: true,
+            collapsible: false,
             //html: 'ActiveLayers Details panel here',
             split: true,
             width: 350,
-            minWidth: 200,
+            minWidth: 250,
             closeAction: 'hide',
             autoDestroy: false,
-            tools:[{
-                id:'unpin',
-                qtip: 'Make these options appear in a popup again',
-                // hidden:true,
-                handler: function(event, toolEl, panel){
-                    toggleDetailsLocation();
-                }
-            }],
-            listeners: {
-                // a user might expand while the popup is open
+            tools:[
+                {
+                    id:'unpin',
+                    qtip: 'Make these options appear in a popup again',
+                    // hidden:true,
+                    handler: function(event, toolEl, panel){
+
+                        toggleDetailsLocation();
+                    }
+                },
+                {
+                    id:'close',
+                    qtip: 'Note: there is an option to keep this panel closed',
+                    // hidden:true,
+                    handler: function(event, toolEl, panel){
+
+                        closeNHideDetailsPanel();
+                    }
+                },
+                
+        ]
+        }],
+        listeners: {
+                // a user might expand after having changed the selectedActivelayer
                 beforeexpand: function(panel, animate){
 
                     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-                         toggleDetailsLocation();
+                        
+                        // there must be a selectedLayer to be in this situation right?
+                        if (selectedLayer != undefined) {
+                         updateDetailsPanel(selectedLayer);
+                         console.log("beforeexpand");
+                        }
+                        else {
+                            console.log("Error: There was no selectedLayer for the panel to show!!");                       
+                            closeNHideDetailsPanel();
+                        }
                     }                
 
-                }
-            }
-        }],
-        listeners: {
+                },
                 hide: function(panel) {
                     if (panel.title == 'Map') {                        
-                        detailsPanel.hide();
+                        closeNHideDetailsPanel();
                     }
                 }
         }
@@ -189,7 +216,8 @@ function doViewPort()
     }); 
     mapMainPanel.doLayout();
    
-        
+      
+    
     viewport = new Ext.Viewport({
         layout: 'border',
         boxMinWidth: 900,
@@ -207,11 +235,12 @@ function doViewPort()
         height: Portal.app.config.footerHeight
     },{
         region: 'center',
+        id: 'centerTabPanel',
         xtype: 'tabpanel', // TabPanel itself has no title        
         autoDestroy: false, // wont destroy tab contents when switching        
         activeTab: 0,
         unstyled: true,
-        // severe method to hide the usual tab panel header with css
+        // method to hide the usual tab panel header with css
         headerCfg: {
             cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
         },

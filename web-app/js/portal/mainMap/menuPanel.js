@@ -103,10 +103,11 @@ function initMenusPanel(menu) {
         ]
     });
 
+    
     // Listens to layer changes in the mapPanel and updates
     var layerList = new GeoExt.tree.OverlayLayerContainer({        
-        text: 'All Active Layers',
-        layerStore: mapPanel.layers,
+        //text: 'All Active Layers',
+        layerStore: mapPanel.layers, 
         leaf: false,
         expanded: true
     });
@@ -124,19 +125,23 @@ function initMenusPanel(menu) {
         rootVisible: false,
         root: layerList,
         listeners: {
-            append: function(tree,parent,node){
-                tree.on("click", function(node,event){
-                    tree.show(node.ui.getAnchor());
-                    if(node.isSelected())
-                    {
-                        updateDetailsPanel(node.layer);
-                        node.ui.toggleCheck(true);
-                    }
-                });
+            append: function(tree,parent,node){                
+                // run this once only
+                // seems to run again when animated images are added
+                if (!tree.root.hashadtheclickactionadded) {                    
                 
-                 
-
-            }
+                    //console.log(node.layer.id);
+                    tree.on("click", function(node,event){
+                        tree.show(node.ui.getAnchor());
+                        if(node.isSelected())
+                        {
+                            updateDetailsPanel(node.layer);
+                            node.ui.toggleCheck(true);
+                        }
+                    });
+                    tree.root.hashadtheclickactionadded = true;
+                }
+             }
         }
     });
 
@@ -180,21 +185,24 @@ function initMenusPanel(menu) {
         }
     });
     
-    var hideMapOptions = new Ext.form.Checkbox({
+    var hideLayerOptions = new Ext.form.Checkbox({
         boxLabel  : 'Hide layer options',
-        inputType : 'radio',
+        inputType : 'checkbox',
         listeners: {
-            check: function(thisCheckbox, newValue, oldValue)  {
-                alert("add functionality");
+            check: function(thisCheckbox, newValue)  {
+                Portal.app.config.hideLayerOptions = newValue;
+                if (newValue == true) {
+                    closeNHideDetailsPanel();
+                }
             }
         }
     })
     var zoomToLayerChooser = new Ext.form.Checkbox({
         boxLabel  : 'Auto zoom on layer select',
-        inputType : 'radio',
-        checked: Portal.app.config.autoZoom,
+        inputType : 'checkbox',
+        //checked: Portal.app.config.autoZoom,
         listeners: {
-            check: function(thisCheckbox, newValue, oldValue)  {                
+            check: function(thisCheckbox, newValue)  {                
                 Portal.app.config.autoZoom = newValue;
             }
         }
@@ -217,14 +225,13 @@ function initMenusPanel(menu) {
         height: 115,
         region: 'south',        
         items:[
-            hideMapOptions,
+            hideLayerOptions,
             zoomToLayerChooser,
             mapOptionsButtonPanel,
             baselayerMenuPanel
         ]
     });
-    
-    
+        
     // rendered in 'viewport' border layout
     topMenuPanel = new Ext.Panel({
         id: 'topMenuPanel',
@@ -233,7 +240,7 @@ function initMenusPanel(menu) {
         padding: 10,
         autoScroll: true,
         region: 'north',
-        height: 200, 
+        height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
         items:[
             activePanel  ,mapOptionsPanel
@@ -253,7 +260,7 @@ function initMenusPanel(menu) {
         },
         {
             text: 'Zoom to layer',
-            handler: zoomToLayer(mapPanel.map, selectedActiveLayer)
+            handler: zoomToLayer(mapPanel.map, selectedLayer)
         },
         {
             text: 'Toggle Visibility',
@@ -314,6 +321,7 @@ function removeActivePanelLayer() {
     mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
     
 }
+
 
 function visibilityActivePanelLayer() {
     

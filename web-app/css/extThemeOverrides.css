@@ -78,5 +78,9 @@
 .legendImage {
     margin: 10px 0px;
 }
+.x-item-disabled {
+    box-shadow: 0 0 0 0 white! important;
+    background-color: inherit! important;
+}
 
 
