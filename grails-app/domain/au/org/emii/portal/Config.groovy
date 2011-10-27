@@ -44,7 +44,7 @@ class Config {
         downloadCartFilename(blank: false)
         downloadCartMaxNumFiles(min: 1)
         downloadCartMaxFileSize(min: 1)
-        downloadCartMimeTypeToExtensionMapping(minSize: 3)
+        downloadCartMimeTypeToExtensionMapping(size: 2..2000)
     }
     
     static Config activeInstance() {
