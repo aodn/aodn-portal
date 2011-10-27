@@ -114,7 +114,6 @@ class AuthController {
         }
         else {
             log.error "Could not save User instance during self-registration. params: '${params}'."
-            flash.message = "" // Todo - DN: Add message key
             flash.message = "${message(code: 'auth.account.registerFailed', default: 'Could not register. Please try again.')}"
             render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance)])
         }
