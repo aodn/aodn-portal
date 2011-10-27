@@ -20,6 +20,7 @@ class Config {
     Integer westWidth
     Integer headerHeight
     Integer footerHeight
+    Integer activeLayersHeight
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
@@ -39,6 +40,7 @@ class Config {
         regionMenu()
         headerHeight()
         footerHeight()
+        activeLayersHeight()
         westWidth()
         defaultLayers(nullable:true)
         downloadCartFilename(blank: false)

@@ -76,11 +76,11 @@
     <img src="images/AODN_logo.png" id="logo" />
     <h1 id="headerTitle">Australian Oceans Data Network</h1>
     <div id="freeChoiceLinks" >
-      <a href="nowehereYet">Map</a> 
-      <a href="nowehereYet">Search</a> 
+      <a href="" class="toplinksBackground" onClick="setViewPortTab(0);return false;" >Map</a> 
+      <a href="" class="toplinksBackground" onClick="setViewPortTab(1);return false;" >Search</a> 
     </div>
     
-    <div id="toplinks">
+    <div id="toplinks" >
       <shiro:user>
           <!--Logged-in as: <g:link controller="user" action="updateAccount">
           <shiro:principal /></g:link> -->

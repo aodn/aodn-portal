@@ -146,6 +146,14 @@
                                     <g:textField size="4" name="footerHeight" value="${configInstance?.footerHeight}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="activeLayersHeight"><g:message code="config.activeLayersHeight.label" default="Active Layers Height" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'activeLayersHeight', 'errors')}">
+                                    <g:textField size="4" name="activeLayersHeight" value="${configInstance?.activeLayersHeight}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
      
                             <tr class="prop">
                                 <td valign="top" class="name">
