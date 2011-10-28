@@ -34,88 +34,88 @@ Ext.QuickTips.init();
 Ext.ns('Portal');
 
 Portal.app = {
-	init: function() {
-	    Ext.Ajax.request({
-	        url: 'config/list?type=JSON',
-	        scope: this,
-	        success: function(resp) {        
+    init: function() {
+        Ext.Ajax.request({
+            url: 'config/list?type=JSON',
+            scope: this,
+            success: function(resp) {        
 	            
-	            this.config = Ext.util.JSON.decode(resp.responseText);
+                this.config = Ext.util.JSON.decode(resp.responseText);
 	            
-	            if(this.config.length == 0)
-	            {
-	                Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
-	            }
-	            else
-	            {
+                if(this.config.length == 0)
+                {
+                    Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
+                }
+                else
+                {
 	                
-	                if(this.config.enableMOTD)  {
+                    if(this.config.enableMOTD)  {
 	
-	                    var nav = new Ext.Panel({
-	                        labelWidth:100,
-	                        frame:false,                      
-	                        title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
-	                        html: this.config.motd.motd,
-	                        padding: 20,
-	                        unstyled: true,
-	                        width:300
-	                    });
+                        var nav = new Ext.Panel({
+                            labelWidth:100,
+                            frame:false,                      
+                            title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
+                            html: this.config.motd.motd,
+                            padding: 20,
+                            unstyled: true,
+                            width:300
+                        });
 	
-	                    var dlgPopup = new Ext.Window({  
-	                        modal:true,
-	                        layout:'fit',
-	                        unstyled: true, 
-	                        cls: "motd",
-	                        closable:true,
-	                        resizable:false,
-	                        plain:true,
-	                        items:[nav]
-	                    });
+                        var dlgPopup = new Ext.Window({  
+                            modal:true,
+                            layout:'fit',
+                            unstyled: true, 
+                            cls: "motd",
+                            closable:true,
+                            resizable:false,
+                            plain:true,
+                            items:[nav]
+                        });
 	
-	                    dlgPopup.show();
+                        dlgPopup.show();
 	
-	                };
-	            };
+                    };
+                };
 	
-	            Ext.Ajax.request({
-	                url: 'layer/listBaseLayersAsJson',
-	                scope: this,
-	                success: function(resp){
+                Ext.Ajax.request({
+                    url: 'layer/listBaseLayersAsJson',
+                    scope: this,
+                    success: function(resp){
 	                    
-	                    var bl = Ext.util.JSON.decode(resp.responseText);
-	                    baseLayerList = new Array();
+                        var bl = Ext.util.JSON.decode(resp.responseText);
+                        baseLayerList = new Array();
 	
-	                    for(var i = 0; i < bl.length; i++){
-	                        var l = new OpenLayers.Layer.WMS(
-	                            bl[i].name,
-	                            bl[i].server.uri,
-	                            {
-	                                layers: bl[i].layers
-	                            },
-	                            {
-	                                wrapDateLine: true,
-	                                transitionEffect: 'resize',
-	                                isBaseLayer: true
-	                            });
-	                        baseLayerList.push(l);
-	                    }
+                        for(var i = 0; i < bl.length; i++){
+                            var l = new OpenLayers.Layer.WMS(
+                                bl[i].name,
+                                bl[i].server.uri,
+                                {
+                                    layers: bl[i].layers
+                                },
+                                {
+                                    wrapDateLine: true,
+                                    transitionEffect: 'resize',
+                                    isBaseLayer: true
+                                });
+                            baseLayerList.push(l);
+                        }
 	                    
-	                    // CAREFULL HERE WITH THE ORDERING!!!
-	                    initDetailsPanel();
-	                    initMap();
-	                    defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
-	                    //loadDefaultMenu(defaultMenu);
-	                    initMenusPanel(defaultMenu);
-	                    doViewPort();
-	                    defaultLayers = this.config.defaultLayers; // into global space so it can be modified
-	                    loadDefaultLayers();
-	                    zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
-	                }
-	            });
+                        // CAREFULL HERE WITH THE ORDERING!!!
+                        initDetailsPanel();
+                        initMap();
+                        defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
+                        //loadDefaultMenu(defaultMenu);
+                        initMenusPanel(defaultMenu);
+                        doViewPort();
+                        defaultLayers = this.config.defaultLayers; // into global space so it can be modified
+                        loadDefaultLayers();
+                        zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
+                    }
+                });
 	
-	        }
-	    });
-	}
+            }
+        });
+    }
 };
 
 //GeoExt stuff
@@ -129,7 +129,7 @@ function setViewPortTab(tabIndex){
 function doViewPort()
 {
     
-      mapMainPanel = new Ext.Panel({
+    mapMainPanel = new Ext.Panel({
         layout: 'border',
         title: 'Map',
         stateful: true,
@@ -138,7 +138,7 @@ function doViewPort()
             title: "Active layers",
             layout: 'border',
             items: [
-                topMenuPanel,leftTabMenuPanel
+            topMenuPanel,leftTabMenuPanel
             ],
             region: 'west',
             id: "leftMenus",
@@ -167,50 +167,50 @@ function doViewPort()
             closeAction: 'hide',
             autoDestroy: false,
             tools:[
-                {
-                    id:'unpin',
-                    qtip: 'Make these options appear in a popup again',
-                    // hidden:true,
-                    handler: function(event, toolEl, panel){
+            {
+                id:'unpin',
+                qtip: 'Make these options appear in a popup again',
+                // hidden:true,
+                handler: function(event, toolEl, panel){
 
-                        toggleDetailsLocation();
-                    }
-                },
-                {
-                    id:'close',
-                    qtip: 'Note: there is an option to keep this panel closed',
-                    // hidden:true,
-                    handler: function(event, toolEl, panel){
+                    toggleDetailsLocation();
+                }
+            },
+            {
+                id:'close',
+                qtip: 'Note: select "Hide layer options" to keep this panel closed',
+                // hidden:true,
+                handler: function(event, toolEl, panel){
 
-                        closeNHideDetailsPanel();
-                    }
-                },
+                    closeNHideDetailsPanel();
+                }
+            },
                 
-        ]
+            ]
         }],
         listeners: {
-                // a user might expand after having changed the selectedActivelayer
-                beforeexpand: function(panel, animate){
+            // a user might expand after having changed the selectedActivelayer
+            beforeexpand: function(panel, animate){
 
-                    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
+                if (detailsPanelItems.ownerCt.id == "detailsPanel") {
                         
-                        // there must be a selectedLayer to be in this situation right?
-                        if (selectedLayer != undefined) {
-                         updateDetailsPanel(selectedLayer);
-                         console.log("beforeexpand");
-                        }
-                        else {
-                            console.log("Error: There was no selectedLayer for the panel to show!!");                       
-                            closeNHideDetailsPanel();
-                        }
-                    }                
-
-                },
-                hide: function(panel) {
-                    if (panel.title == 'Map') {                        
+                    // there must be a selectedLayer to be in this situation right?
+                    if (selectedLayer != undefined) {
+                        updateDetailsPanel(selectedLayer);
+                        console.log("beforeexpand");
+                    }
+                    else {
+                        console.log("Error: There was no selectedLayer for the panel to show!!");                       
                         closeNHideDetailsPanel();
                     }
+                }                
+
+            },
+            hide: function(panel) {
+                if (panel.title == 'Map') {                        
+                    closeNHideDetailsPanel();
                 }
+            }
         }
     
     }); 
@@ -227,38 +227,38 @@ function doViewPort()
             region: 'north',
             height: Portal.app.config.headerHeight,
             border: false
-    }, {
-        region: 'south',
-        html: 'Footer goes here',
-        cls: 'footer',
-        unstyled: true,
-        height: Portal.app.config.footerHeight
-    },{
-        region: 'center',
-        id: 'centerTabPanel',
-        xtype: 'tabpanel', // TabPanel itself has no title        
-        autoDestroy: false, // wont destroy tab contents when switching        
-        activeTab: 0,
-        unstyled: true,
-        // method to hide the usual tab panel header with css
-        headerCfg: {
-            cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
-        },
-        items: [            
+        }, {
+            region: 'south',
+            html: 'Footer goes here',
+            cls: 'footer',
+            unstyled: true,
+            height: Portal.app.config.footerHeight
+        },{
+            region: 'center',
+            id: 'centerTabPanel',
+            xtype: 'tabpanel', // TabPanel itself has no title        
+            autoDestroy: false, // wont destroy tab contents when switching        
+            activeTab: 0,
+            unstyled: true,
+            // method to hide the usual tab panel header with css
+            headerCfg: {
+                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
+            },
+            items: [            
             mapMainPanel,
             {
                 xtype: 'portal.search.searchtabpanel',
                 listeners: {
-               	 addLayer: {
-               		 fn: function(layerDef) {
-               			 addMainMapLayer(layerDef);
-               	       Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
-               		 }
-               	 }
+                    addLayer: {
+                        fn: function(layerDef) {
+                            addMainMapLayer(layerDef);
+                            Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+                        }
+                    }
                 }
             }
-        ]
-    }]
+            ]
+        }]
     });
 
     viewport.show();
@@ -274,3 +274,41 @@ function doViewPort()
 }
 
 
+//
+// Fix for closing animation time period window after selection
+// http://www.sencha.com/forum/archive/index.php/t-98338.html
+// Bug in Ext.form.MessageTargets in connection with using compositeFields
+//The problem is, that composite fields doesn't have the "dom" node and that is why the clear functions of Ext.form.MessageTargets.qtip 
+//and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
+Ext.onReady(function() {
+
+    Ext.apply(Ext.form.MessageTargets.qtip, {
+        clear: function(field){
+            field.el.removeClass(field.invalidClass);
+            // fix
+
+            if(field.el.dom) {
+                field.el.dom.qtip = '';
+            }
+        }
+    });
+
+
+    Ext.apply(Ext.form.MessageTargets.side, {
+        clear: function(field){
+            field.el.removeClass(field.invalidClass);
+            // fix
+
+            if(field.errorIcon && field.errorIcon.dom){
+                field.errorIcon.dom.qtip = '';
+                field.errorIcon.hide();
+            }else{
+                // fix
+
+                if(field.el.dom) {
+                    field.el.dom.title = '';
+                }
+            }
+        }
+    });
+});

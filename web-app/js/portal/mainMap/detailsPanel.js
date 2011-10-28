@@ -292,7 +292,8 @@ function updateDetailsPanel(layer) {
     Ext.getCmp('opacitySlider').show(); // reset slider
                     
                 
-    if (Portal.app.config.autoZoom) {
+    if (Portal.app.config.autoZoom === true) {
+        console.log("will do auto zoom");
         zoomToLayer(mapPanel.map, selectedLayer);
     }
     
