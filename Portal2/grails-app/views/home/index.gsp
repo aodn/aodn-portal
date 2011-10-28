@@ -7,17 +7,27 @@
 
 
 
-<!--- common styles and JavaScript for the map page and Grails admin pages -->
- <g:render template="/common_includes"></g:render>
+
  
 <!-- Open Layers-->
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
-<link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'general.css')}" />
-<!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
- 
+
+
+<!-- ExJS4-->
+<!--script src="${resource(dir:'js',file:'ext-4.0.2a/builds/ext-all-sandbox-debug.js')}"   type="text/javascript"></script-->
+ <!-- ExJS3-->
+<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
+<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}"  type="text/javascript"></script>
+
+
+<!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
+<!-- User extensions -->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
+<!-- Portal classes-->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
 
 <!-- GeoNetwork - required classes only -->
 <script src="${resource(dir:'js',file:'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}" type="text/javascript"></script>
@@ -30,13 +40,10 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
 
-<!-- User extensions -->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
 
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 
-<!-- Portal classes-->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
+
 
 <script src="${resource(dir:'js',file:'portal/lang/en.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
@@ -58,13 +65,16 @@
 <script src="${resource(dir:'js',file:'portal/mainMap/menuPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ncWMSAnimation.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/common/helpers.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}"    type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"   type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
 
 <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
+
+<!--- common styles and JavaScript for the map page and Grails admin pages -->
+ <g:render template="/common_includes"></g:render>
 
 
 <title>${configInstance?.name}</title>

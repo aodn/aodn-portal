@@ -1,15 +1,4 @@
 
-body,
-input, select, textarea {
-	font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
-        font-size: 0.8em;
-}
-body {
-	background: #ffffff;
-	color: #333333;
-
-}
-
 
 html {
 	background-color: white;
@@ -19,6 +8,18 @@ html {
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
+
+body {
+	background: #ffffff;
+	color: #333333;
+        font-size: 12px;
+
+}
+input, select, textarea {
+	font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 0.8em;
+}
+
 
 
 html.no-cssgradients {
