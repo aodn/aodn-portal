@@ -9,7 +9,7 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     protected void setUp() {
         super.setUp()
         
-        SecurityFilters.metaClass.logRequest = {String a, String b, String c -> }
+        MockUtils.mockLogging SecurityFilters, true
     }
 
     protected void tearDown() {
@@ -18,55 +18,60 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
 
     void testHomeControllerFilter() {
 
-        checkFilter('homeAccess')
+        checkFilter "homeAccess"
     }
     
     void testConfigControllerFilter() {
         
-        checkFilter('configAccess')
+        checkFilter "configAccess"
     }
     
     void testServerControllerFilter() {
         
-        checkFilter('serverAccess')
+        checkFilter "serverAccess"
     }
     
     void testLayerControllerFilter() {
         
-        checkFilter('layerAccess')
+        checkFilter "layerAccess" 
     }
     
     void testProxyControllerFilter() {
         
-        checkFilter('proxyAccess')
+        checkFilter "proxyAccess"
+    }
+    
+    void testDownloadControllerFilter() {
+        
+        checkFilter "downloadAccess"
     }
     
     void testAuthControllerFilter() {
         
-        checkFilter('authAccess')
+        checkFilter "authAccess"
     }
     
     void testAllFilter() {
         
-        FilterConfig filter = initFilter("all")
-        setActionName("ActionNameInTest")
-        FilterConfig.metaClass.accessControl = {args -> return false}
+        FilterConfig filter = initFilter( "all" )
+        setActionName "ActionNameInTest"
+        FilterConfig.metaClass.accessControl = { args -> return false }
 
         // Check filter
         assertNotNull "'all' filter should exist", filter
-        assertExistsBefore("all")
+        assertExistsBefore "all"
         
         def filterResult
         
         // Test access allowed for null controller name
-        setControllerName(null)
+        setControllerName null
         
         filterResult = filter.before()
         
         assertTrue "Filter result should be true (for no controller name)", filterResult
         
         // Test access allowed for accessAllowed = true
-        setControllerName("ControllerNameInTest")
+        setControllerName "ControllerNameInTest"
         filter.request.accessAllowed = true
         
         filterResult = filter.before()
@@ -83,12 +88,12 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     
     void checkFilter(String filterName) {
         
-        setControllerName("ControllerNameInTest")
-        setActionName("ActionNameInTest")
+        setControllerName "ControllerNameInTest"
+        setActionName "ActionNameInTest"
         
-        FilterConfig filter = initFilter(filterName)
+        FilterConfig filter = initFilter( filterName )
         assertNotNull filterName + " filter should exist", filter
-        assertExistsBefore(filterName)
+        assertExistsBefore filterName
         
         assertEquals "accessAllowed should be null to start with", null, filter.request.accessAllowed
         
