@@ -72,12 +72,10 @@ class AuthControllerTests extends ControllerUnitTestCase {
 
         assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
         assertEquals "Username should be preserved", null, returnedMap.username
-        assertEquals "RememberMe should be false when null is passed-in", false, returnedMap.rememberMe
         assertEquals "TtargetUri should be preserved", null, returnedMap.targetUri
         
         // Set up params for next call
         mockParams.username = "un"
-        mockParams.rememberMe = true
         mockParams.targetUri = 'http://www.google.com/'
         
         // Call again (not-null params)
@@ -85,7 +83,6 @@ class AuthControllerTests extends ControllerUnitTestCase {
         
         assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
         assertEquals "Username should be preserved", "un", returnedMap.username
-        assertEquals "RememberMe should be true if not-null value passed in", true, returnedMap.rememberMe
         assertEquals "TtargetUri should be preserved", "http://www.google.com/", returnedMap.targetUri
     }
     
@@ -108,7 +105,6 @@ class AuthControllerTests extends ControllerUnitTestCase {
         // Set up invalid credentials
         mockParams.username = "invalidUsername"
         mockParams.password = "password"
-        mockParams.rememberMe = true
         mockParams.targetUri = "http://www.google.com/"
         
         // test with wrong credentials
@@ -117,14 +113,12 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "Should redirect to login", "login", redirectArgs.action
         assertEquals "Should have same username param", "invalidUsername", redirectArgs.params.username
         assertEquals "Should have null password param", null, redirectArgs.params.password
-        assertEquals "Should have same rememberMe param", true, redirectArgs.params.rememberMe
         assertEquals "Should have same targetUri param", "http://www.google.com/", redirectArgs.params.targetUri
         assertEquals "Subject principal should be null", null, SecurityUtils.getSubject().getPrincipal()
 
         // Set up valid credentials
         mockParams.username = "username"
         mockParams.password = "password"
-        mockParams.rememberMe = true
         mockParams.targetUri = "http://www.google.com/"
         
         // Test with correct credentials
