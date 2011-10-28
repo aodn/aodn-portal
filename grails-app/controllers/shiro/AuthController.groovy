@@ -20,16 +20,13 @@ class AuthController {
     def index = { redirect(action: "login", params: params) }
 
     def login = {
-        return [ username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri, configInstance: Config.activeInstance() ]
+        return [ username: params.username, targetUri: params.targetUri, configInstance: Config.activeInstance() ]
     }
 
     def signIn = {
         def authToken = new UsernamePasswordToken(params.username?.toLowerCase(), params.password as String)
-
-        // Support for "remember me"
-        if (params.rememberMe) {
-            authToken.rememberMe = true
-        }
+        
+        authToken.rememberMe = true // Always remember user
         
         // If a controller redirected to this page, redirect back
         // to it. Otherwise redirect to the root URI.
@@ -50,12 +47,8 @@ class AuthController {
             log.info "Authentication failure for user '${params.username}'."
             flash.message = message(code: "login.failed")
 
-            // Keep the username and "remember me" setting so that the
-            // user doesn't have to enter them again.
+            // Keep the username so the user doesn't have to enter it again
             def m = [ username: params.username ]
-            if (params.rememberMe) {
-                m["rememberMe"] = true
-            }
 
             // Remember the target URI too.
             if (params.targetUri) {

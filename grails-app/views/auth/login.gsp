@@ -1,12 +1,14 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="layout" content="main" />
+  <g:render template="../common_includes" />
   
   <title>${configInstance?.name} - Login</title>
 </head>
 <body>
-  <div class="body">
+  <g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />
+  <div class="body authentication-form">
+    <h2>Log in</h2>
     <g:if test="${flash.message}">
       <div class="message">${flash.message}</div>
     </g:if>
@@ -23,21 +25,15 @@
             <td><input type="password" name="password" value="" /></td>
           </tr>
           <tr>
-            <td>Remember me?:</td>
-            <td><g:checkBox name="rememberMe" value="${rememberMe}" /></td>
-          </tr>
-          <tr>
             <td />
-            <td><input type="submit" value="Sign in" /></td>
-          </tr>
-          <tr>
-            <td colspan="2" style="white-space:nowrap;"><i>Forgot your password? Recover your account <g:link controller="auth" action="forgotPassword">here</g:link></i>.</td>
-          </tr>
-          <tr>
-            <td colspan="2" style="white-space:nowrap;"><i>Don't have an account? Register a new account <g:link controller="auth" action="register">here</g:link></i>.</td>
+            <td><input type="submit" value="Log in" /></td>
           </tr>
         </tbody>
       </table>
+      <div class="authentication-hints">
+        Forgot your password? Recover your account <g:link controller="auth" action="forgotPassword">here</g:link>.<br/>
+        Don't have an account? Register a new account <g:link controller="auth" action="register">here</g:link>.
+      </div>
     </g:form>
   </div>
 </body>
