@@ -23,7 +23,7 @@
       <g:form action="createUser" >
 
         <div class="dialog">
-          <g:render template="/user_form_body"/>
+          <g:render template="/userFormBody"/>
 
           <div class="buttons">
               <span class="button"><g:submitButton name="register" class="save" value="${message(code: 'default.button.create.label', default: 'Register')}" /></span>
