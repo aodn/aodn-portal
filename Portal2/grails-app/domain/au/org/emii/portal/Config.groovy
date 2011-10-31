@@ -25,6 +25,7 @@ class Config {
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
     String downloadCartMimeTypeToExtensionMapping
+    String downloadCartDownloadableProtocols
 
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
@@ -47,6 +48,7 @@ class Config {
         downloadCartMaxNumFiles(min: 1)
         downloadCartMaxFileSize(min: 1)
         downloadCartMimeTypeToExtensionMapping(size: 2..2000)
+        downloadCartDownloadableProtocols(size: 0..255)
     }
     
     static Config activeInstance() {

@@ -6,7 +6,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    autoExpandColumn: 'mdDesc',
    LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
    LAYER_REGEXP: /OGC:WMS-.*http-get-map/,
-   DOWNLOADABLE_PROTOCOLS: ['WWW:DOWNLOAD-1.0-http--download', 'WWW:LINK-1.0-http--link'],
    
    initComponent: function() {
      var config = {
@@ -163,7 +162,10 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-      if (this.getProtocolCount(rec.get('links'), this.DOWNLOADABLE_PROTOCOLS) > 0) {
+      
+      var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
+      
+      if (this.getProtocolCount(rec.get('links'), downloadableProtocols) > 0) {
               return 'p-result-cart-add';
       } else {
               return 'p-result-disabled';
@@ -241,7 +243,8 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   addLinkDataToCart: function(rec) {
       
     var links = rec.get('links');
-    var maxCartSize = Portal.app.config.downloadCartMaxNumFiles
+    var maxCartSize = Portal.app.config.downloadCartMaxNumFiles;
+    var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
 
     for (var i = 0; i < links.length; i++) {
 
@@ -259,7 +262,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         
         var link = links[i];
         
-        if ( this.containsProtocol( this.DOWNLOADABLE_PROTOCOLS, link.protocol ) ) {
+        if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
             
             addToDownloadCart(link.title, link.type, link.href, link.protocol);
         }

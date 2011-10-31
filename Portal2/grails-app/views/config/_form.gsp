@@ -199,3 +199,12 @@
                                     <g:textArea rows="8" style="width: 400px;" name="downloadCartMimeTypeToExtensionMapping" value="${configInstance?.downloadCartMimeTypeToExtensionMapping}" /><font class="hint">as Json String</font>
                                 </td>
                             </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadCartDownloadableProtocols"><g:message code="config.downloadCartDownloadableProtocols.label" default="Which protocols allow links to be added to download cart" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartDownloadableProtocols', 'errors')}">
+                                    <g:textArea rows="8" style="width: 400px;" name="downloadCartDownloadableProtocols" value="${configInstance?.downloadCartDownloadableProtocols}" /><font class="hint">Put each protocol on a separate line</font>
+                                </td>
+                            </tr>
