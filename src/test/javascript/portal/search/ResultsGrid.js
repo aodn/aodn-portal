@@ -3,7 +3,8 @@ describe("Portal.search.ResultsGrid", function() {
    //Mock relevant config settings
    Ext.namespace('Portal.app.config');
    Portal.app.config.catalogUrl = 'http://dummy.org.au';
-   
+   Portal.app.config.downloadCartDownloadableProtocols = "WWW:DOWNLOAD-1.0-http--download\nWWW:LINK-1.0-http--link"
+      
    var testData = [{
 		href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
 		name: "topp:xbt_realtime",
