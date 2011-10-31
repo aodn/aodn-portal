@@ -22,7 +22,7 @@
             </g:hasErrors>
             <g:form action="userUpdateAccount" >
                 
-                <g:render template="/user_form_body"/>
+                <g:render template="/userFormBody"/>
                 
                 <div class="buttons">
                     <span class="button"><g:submitButton name="update" class="save" value="${message(code: 'default.button.update.label', default: 'Update account')}" /></span>
