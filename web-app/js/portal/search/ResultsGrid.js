@@ -5,7 +5,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
    LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
-   LAYER_REGEXP: /OGC:WMS-.*http-get-map/,
+   LINK_PROTOCOLS: ['WWW:LINK-1.0-http--link'],
    
    initComponent: function() {
      var config = {
@@ -31,7 +31,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   dataIndex: 'title'
                },{
                   header: OpenLayers.i18n('actionsHeading'),
-                  width: 140,
+                  width: 150,
                   xtype: 'actioncolumn',
                   items: [{
                      iconCls: 'p-result-info',
@@ -62,13 +62,27 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         handler: this.selectLayerExecute,
                         scope: this
                      },{
-                     getClass: this.getAddToDownloadClass,
-                     tooltip: OpenLayers.i18n('ttAddToDownload'),
-                     width: 35,
-                     height: 35,
-                     handler: this.addToCartExecute,
-                     scope: this
-                  }]
+                        getClass: this.getAddToDownloadClass,
+                        tooltip: OpenLayers.i18n('ttAddToDownload'),
+                        width: 35,
+                        height: 35,
+                        handler: this.addToCartExecute,
+                        scope: this
+                     },{
+                       getClass: this.getShowLinkClass,
+                       tooltip: OpenLayers.i18n('showLink'),
+                       width: 35,
+                       height: 35,
+                       handler: this.showLink,
+                       scope: this
+                    },{
+                      getClass: this.getSelectLinkClass,
+                      tooltip: OpenLayers.i18n('selectLink'),
+                      width: 35,
+                      height: 35,
+                      handler: this.selectLink,
+                      scope: this
+                   }]
                }
            ]
        }),
@@ -100,41 +114,42 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   afterRender: function(){
-      Portal.search.ResultsGrid.superclass.afterRender.call(this);
-      
-      this.getView().mainBody.on({
-          scope    : this,
-          mouseover: this.onMouseOver,
-          mouseout : this.onMouseOut
-      });
+    Portal.search.ResultsGrid.superclass.afterRender.call(this);
+
+    this.getView().mainBody.on({
+      scope    : this,
+      mouseover: this.onMouseOver,
+      mouseout : this.onMouseOut
+    });
   },
 
   // trigger mouseenter event on row when applicable
-  onMouseOver: function(e, target) {
-      var row = this.getView().findRow(target);
-      if(row && row !== this.lastRow) {
-    	  var rowIndex = this.getView().findRowIndex(row);
-          this.fireEvent("mouseenter", this, rowIndex, this.store.getAt(rowIndex), e);
-          this.lastRow = row;
-      }
+  onMouseOver : function(e, target) {
+    var row = this.getView().findRow(target);
+    if (row && row !== this.lastRow) {
+      var rowIndex = this.getView().findRowIndex(row);
+      this.fireEvent("mouseenter", this, rowIndex, this.store
+          .getAt(rowIndex), e);
+      this.lastRow = row;
+    }
   },
 
   // trigger mouseleave event on row when applicable
   onMouseOut: function(e, target) {
-      if (this.lastRow) {
-          if(!e.within(this.lastRow, true, true)){
-        	  var lastRowIndex = this.getView().findRowIndex(this.lastRow);
-              this.fireEvent("mouseleave", this, lastRowIndex, this.store.getAt(lastRowIndex), e);
-              delete this.lastRow;
-          }
+    if (this.lastRow) {
+      if(!e.within(this.lastRow, true, true)){
+        var lastRowIndex = this.getView().findRowIndex(this.lastRow);
+        this.fireEvent("mouseleave", this, lastRowIndex, this.store.getAt(lastRowIndex), e);
+        delete this.lastRow;
       }
+    }
   },
   
   onViewMetadata: function(grid, rowIndex, colIndex) {
-     var rec = this.store.getAt(rowIndex);
-     var viewmetadata = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
-     
-     window.open(viewmetadata,'_blank','width=1000,height=800,toolbar=yes,resizable=yes');
+    var rec = this.store.getAt(rowIndex);
+    var viewMetadataUrl = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
+
+    Portal.common.BrowserWindow.open(viewMetadataUrl);
   },
   
   getMapGoClass: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -151,6 +166,22 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	  } else {
 		  return 'p-result-disabled';
 	  };
+  },
+ 
+  getShowLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+    if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) == 1) {
+      return 'p-result-show-link';
+    } else {
+      return 'p-result-disabled';
+    };
+  },
+ 
+  getSelectLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+    if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) > 1) {
+      return 'p-result-select-link';
+    } else {
+      return 'p-result-disabled';
+    };
   },
  
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -177,38 +208,81 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   selectLayerExecute: function(grid, rowIndex, colIndex) {
-     var rec = this.store.getAt(rowIndex);
-     var links = rec.get('links');
-     var linkStore = new Portal.search.data.LinkStore({
-    	data: {links: links} 
-     });
-	    linkStore.filter('protocol', this.LAYER_REGEXP, true);
-	     
-    	 if (!this.layerSelectionWindow ) {
-	    	 this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
-     } else {
-    		 this.layerSelectionWindow.bindStore(linkStore);
-    	 };
-    	 
-    	 this.layerSelectionWindow.show();
-	  },
+    var rec = this.store.getAt(rowIndex);
+    var links = rec.get('links');
+    var linkStore = new Portal.search.data.LinkStore({
+      data: {links: links} 
+    });
+    linkStore.filterByProtocols(this.LAYER_PROTOCOLS);
+
+    if (!this.layerSelectionWindow ) {
+      this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
+    } else {
+      this.layerSelectionWindow.bindStore(linkStore);
+    };
+
+    this.layerSelectionWindow.show();
+  },
 	  
-	buildLayerSelectionWindow: function(linkStore) {
-		return new Portal.search.LayerSelectionWindow({
-	    		store: linkStore,
-	    		listeners: {
-	    			scope: this,
-	    			destroy: function() {
-	 				delete this.layerSelectionWindow;
-	    			},
-	 			showlayer: function(layerLink) {
-	 				this.fireEvent('showlayer', layerLink);
-	 			},
-	 			addlayer: function(layerLink) {
-	 				this.fireEvent('addlayer', layerLink);
-	    			}
-	    		}
-	    	 });
+  buildLayerSelectionWindow: function(linkStore) {
+    return new Portal.search.LayerSelectionWindow({
+      store: linkStore,
+      listeners: {
+        scope: this,
+        destroy: function() {
+          delete this.layerSelectionWindow;
+        },
+        showlayer: function(layerLink) {
+          this.fireEvent('showlayer', layerLink);
+        },
+        addlayer: function(layerLink) {
+          this.fireEvent('addlayer', layerLink);
+        }
+      }
+    });
+  },
+  
+  showLink: function(grid, rowIndex, colIndex) {
+    var rec = this.store.getAt(rowIndex);
+    var links = rec.get('links');
+    var linkStore = new Portal.search.data.LinkStore({
+      data: {links: links} 
+    });
+
+    linkStore.filterByProtocols(this.LINK_PROTOCOLS);
+    var linkRec = linkStore.getAt(0);
+
+    Portal.common.BrowserWindow.open(linkRec.get('url'));
+  },
+    
+  selectLink: function(grid, rowIndex, colIndex) {
+    var rec = this.store.getAt(rowIndex);
+    var links = rec.get('links');
+    var linkStore = new Portal.search.data.LinkStore({
+      data: {links: links} 
+    });
+
+    linkStore.filterByProtocols(this.LINK_PROTOCOLS);
+
+    if (!this.linkSelectionWindow ) {
+      this.linkSelectionWindow = this.buildLinkSelectionWindow(linkStore);
+    } else {
+      this.linkSelectionWindow.bindStore(linkStore);
+    };
+
+    this.linkSelectionWindow.show();
+  },
+    
+  buildLinkSelectionWindow: function(linkStore) {
+    return new Portal.search.LinkSelectionWindow({
+      store: linkStore,
+      listeners: {
+        scope: this,
+        destroy: function() {
+          delete this.linkSelectionWindow;
+        }
+      }
+    });
   },
   
   addToMapExecute: function(grid, rowIndex, colIndex) {
@@ -216,16 +290,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   getProtocolCount: function(links, values) {
-	 var count = 0;
-	 for (var i=0; i<links.length; i++) {
-		for (var j=0; j<values.length; j++) {
-			if (links[i].protocol==values[j]) {
-				count++;
-			};
-	 	};
-	 };
-	 
-	 return count;
+    var count = 0;
+
+    for (var i=0; i<links.length; i++) {
+      for (var j=0; j<values.length; j++) {
+        if (links[i].protocol==values[j]) {
+          count++;
+        };
+      };
+    };
+
+    return count;
   },
     
   containsProtocol: function(protocolArray, protocolName) {
@@ -275,7 +350,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      var linkStore = new Portal.search.data.LinkStore({
     	data: {links: links} 
      });
-     linkStore.filter('protocol', this.LAYER_REGEXP, true);
+     linkStore.filterByProtocols(this.LAYER_PROTOCOLS);
 	  
      return linkStore.getLink(0);
   },

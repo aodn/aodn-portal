@@ -1,4 +1,10 @@
-map-add-icon.png, map-go-icon.png, information-icon.png, layers-map-icon.png
+Icons used as is:
+
+map-add-icon.png, map-go-icon.png, information-icon.png, layers-map-icon.png, link-icon.png
+
+Icons derived from published icons:
+
+select-link-icon.png (derived from link-icon.png)
 
 Artist: Fatcow Web Hosting
 Iconset: Farm Fresh Icons (2000 icons)

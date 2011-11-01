@@ -3,17 +3,17 @@
 }
 
 .p-search h1 {
-   margin-bottom: 5;
+   margin-bottom: 5px;
    font-size: 14px;
 }
 
 .p-results li {
-	margin-bottom: 5;
-	margin-top: 5;
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .p-results {
-	margin-left: 10;
+	margin-left: 10px;
 }
 
 .p-facet-values li, .p-selected-values li {
@@ -96,6 +96,18 @@
    max-width: 30px;
 }
 
+.p-result-show-link {
+   background-image: url(../images/link-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-select-link {
+   background-image: url(../images/select-link-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
 .p-result-cart-add {
    background-image: url(../images/basket_add.png);
    background-repeat: no-repeat;
@@ -120,7 +132,7 @@
 
 .p-result-action {
 	float: right;
-	margin-right: 5;
+	margin-right: 5px;
 }
 
 

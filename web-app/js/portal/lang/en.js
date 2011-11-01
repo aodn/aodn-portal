@@ -9,6 +9,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	showOnMinimap: 'Show on mini-map',
 	addToMap: 'Add to map',
 	datasetLayers: 'Dataset layers',
+	showLink: 'Display related page',
+	selectLink: 'Select related page',
 	
 	// Refine search panel
 	filterNames: {

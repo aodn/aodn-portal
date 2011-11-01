@@ -35,6 +35,9 @@ Ext.ns('Portal');
 
 Portal.app = {
     init: function() {
+   	 //Set open layers proxyhost
+       OpenLayers.ProxyHost = proxyURL;
+
         Ext.Ajax.request({
             url: 'config/list?type=JSON',
             scope: this,
