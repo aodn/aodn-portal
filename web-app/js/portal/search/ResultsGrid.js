@@ -32,7 +32,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                },{
                   header: OpenLayers.i18n('actionsHeading'),
                   width: 150,
-                  xtype: 'actioncolumn',
+                  xtype: 'portal.common.actioncolumn',
                   items: [{
                      iconCls: 'p-result-info',
                      tooltip: OpenLayers.i18n('datasetInfo'),
@@ -42,14 +42,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                      scope: this
                   },{
                       getClass: this.getMapGoClass,
-                      tooltip: OpenLayers.i18n('showOnMinimap'),
+                      getTooltip: this.getMapGoTooltip,
                       width: 35,
                       height: 35,
                       handler: this.showOnMiniMapExecute,
                       scope: this
                    },{
                        getClass: this.getMapAddClass,
-                       tooltip: OpenLayers.i18n('addToMap'),
+                       getTooltip: this.getAddMapTooltip,
                        width: 35,
                        height: 35,
                        handler: this.addToMapExecute,
@@ -70,7 +70,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         scope: this
                      },{
                        getClass: this.getShowLinkClass,
-                       tooltip: OpenLayers.i18n('showLink'),
+                       getTooltip: this.getShowLinkTooltip,
                        width: 35,
                        height: 35,
                        handler: this.showLink,
@@ -160,6 +160,13 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	  };
   },
  
+  getMapGoTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
+    var linkRec = this.getLinkRec(rowIndex, this.LAYER_PROTOCOLS);
+    if (!linkRec) return '';
+    var layerDesc = linkRec.get('title');
+    return OpenLayers.i18n('showOnMinimap', {layerDesc: layerDesc});
+  },
+
   getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) == 1) {
 		  return 'p-result-map-add';
@@ -167,7 +174,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 		  return 'p-result-disabled';
 	  };
   },
- 
+
+  getAddMapTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
+    var linkRec = this.getLinkRec(rowIndex, this.LAYER_PROTOCOLS);
+    if (!linkRec) return '';
+    var layerDesc = linkRec.get('title');
+    return OpenLayers.i18n('addToMap', {layerDesc: layerDesc});
+  },
+
   getShowLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
     if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) == 1) {
       return 'p-result-show-link';
@@ -176,6 +190,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     };
   },
  
+  getShowLinkTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
+    var linkRec = this.getLinkRec(rowIndex, this.LINK_PROTOCOLS);
+    if (!linkRec) return '';
+    var linkDesc = linkRec.get('title');
+    if (linkDesc.trim() == '') linkDesc = linkRec.get('name');
+    return linkDesc;
+  },
+
   getSelectLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
     if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) > 1) {
       return 'p-result-select-link';
@@ -243,15 +265,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   showLink: function(grid, rowIndex, colIndex) {
-    var rec = this.store.getAt(rowIndex);
-    var links = rec.get('links');
-    var linkStore = new Portal.search.data.LinkStore({
-      data: {links: links} 
-    });
-
-    linkStore.filterByProtocols(this.LINK_PROTOCOLS);
-    var linkRec = linkStore.getAt(0);
-
+    var linkRec = this.getLinkRec(rowIndex, this.LINK_PROTOCOLS);
     Portal.common.BrowserWindow.open(linkRec.get('url'));
   },
     
@@ -385,7 +399,18 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 //        msg += '<br>Added <b>' + (getDownloadCartSize() - cartStartingSize) + '</b> links(s) to download cart'; 
 //
 //        Ext.Msg.alert( 'Add all to cart', msg );
-    }
+  },
+    
+  getLinkRec: function(rowIndex, protocols) {
+    var rec = this.store.getAt(rowIndex);
+    var links = rec.get('links');
+    var linkStore = new Portal.search.data.LinkStore({
+      data: {links: links} 
+    });
+
+    linkStore.filterByProtocols(protocols);
+    return linkStore.getAt(0);
+  }
 });
 
 Ext.reg('portal.search.resultsgrid', Portal.search.ResultsGrid);
