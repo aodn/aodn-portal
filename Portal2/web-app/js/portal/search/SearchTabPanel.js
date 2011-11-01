@@ -8,10 +8,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    title: 'Search',
    HITS_PER_PAGE: 15,
 
-   initComponent: function() {
-      //TODO: move to application initialisation
-      OpenLayers.ProxyHost = proxyURL;
-      
+   initComponent: function() {     
       this.facetStore = new Portal.search.data.FacetStore();
       this.resultsStore = GeoNetwork.data.MetadataResultsStore();
       this.catalogue =  new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
