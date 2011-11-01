@@ -47,6 +47,7 @@
 
 <script src="${resource(dir:'js',file:'portal/lang/en.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/RefinementList.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/FacetStore.js')}"   type="text/javascript"></script>

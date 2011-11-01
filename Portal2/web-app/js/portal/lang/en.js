@@ -6,11 +6,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	descHeading: 'Description',
 	actionsHeading: 'Actions',
 	datasetInfo: 'Dataset information',
-	showOnMinimap: 'Show on mini-map',
-	addToMap: 'Add to map',
+	showOnMinimap: "Show '${layerDesc}' on mini-map",
+	addToMap: "Add '${layerDesc}' to map",
 	datasetLayers: 'Dataset layers',
-	showLink: 'Display related page',
-	selectLink: 'Select related page',
+	selectLink: 'Select linked page',
 	
 	// Refine search panel
 	filterNames: {
