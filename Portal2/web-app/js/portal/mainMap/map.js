@@ -18,9 +18,6 @@
  *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 var proxyURL = "proxy?url=";
 //var tmp_response;
 
@@ -36,12 +33,13 @@ var timestamp; // timestamp for getFeatureInfo requests
 var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
-
-
+// Get feature info dialog
+var loadingTabId = "LoadingTab";
+var numLayersToLoad;
+var numLayersLoaded;
 
 // Pop up things
 var popup;
-
 
 function setMapDefaultZoom(map) {
     
@@ -109,136 +107,241 @@ function zoomToLayer(map, layer){
     }
 }
 
+function addToPopup(loc, mapPanel, e) {
+	
+        var map = mapPanel.map;
+        var wmsLayers = map.getLayersByClass("OpenLayers.Layer.WMS");
+        var imageLayers = map.getLayersByClass("OpenLayers.Layer.Image");
 
-function addToPopup(loc,mapPanel,e) {
-		
+        wmsLayers = wmsLayers.concat(imageLayers);
         
+        numLayersToLoad = 0; // Reset count
+        numLayersLoaded = 0;
 
-		var map = mapPanel.map;
-		var wmsLayers = map.getLayersByClass("OpenLayers.Layer.WMS");
-		var imageLayers = map.getLayersByClass("OpenLayers.Layer.Image");
+        // create the popup if it doesn't exist
+        if ( !popup ) {
+            popup = new GeoExt.Popup({
+                title: "Features at your click point",
+                width: 450,
+                height: 380,
+                maximizable: true,
+               // collapsible: true,
+                map: mapPanel.map,
+                anchored: true,
+                border: false,
+                margins: 10,
+                constrainHeader: true,
+                panIn: true,
+                autoScroll: true,
+                listeners: {
+                    close: function() {
+                        // closing a popup destroys it, but our reference is truthy
+                        popup = null;
+                    }
+                }
+            });
 
-		wmsLayers = wmsLayers.concat(imageLayers);
-		
-		for (key in wmsLayers) {
-            
-			if (map.layers[key] != undefined && map.layers[key].id !=undefined) {
-			   url="none";
-			   var layer = map.getLayer(map.layers[key].id);
-               //testing = layer;
-				if ((!layer.params.ISBASELAYER) && layer.params.QUERYABLE) {
+            // Add 'Loading' panel
+            popup.add( new Ext.TabPanel({
+                    activeTab: 0,
+                    enableTabScroll : true,
+                    items: [newLoadingTab()]
+                })
+            );
 
-                    //To do add a check box on the interface to get the profile and the time series from ncWMS.
-                    /*if (layer.showTimeSeriesNcWMS) {
-					   if (layer.tile.bounds.containsLonLat(lonlat)) {
-							url = layer.baseUri +
-							"&EXCEPTIONS=application/vnd.ogc.se_xml" +
-							"&BBOX=" + layer.getExtent().toBBOX() +
-							"&I=" + e.xy.x +
-							"&J=" + e.xy.y +
-							"&INFO_FORMAT=text/xml" +
-							"&CRS=EPSG:4326" +
-							"&WIDTH=" + mapPanel.map.size.w +
-							"&HEIGHT=" +  mapPanel.map.size.h +
-							"&BBOX=" + mapPanel.map.getExtent().toBBOX();
+            // reset the popup's location
+            popup.location = loc;
+            popup.doLayout();
+            popup.show(); // since the popup is anchored, calling show will move popup to this location
+        }
+        else {
+            alert (' Remove all old tabs. Re-add loading tab. doLayout(), show(), anything else to display popup correctly ');
+        }
+
+        // For each layer...
+        for (key in wmsLayers) {
+
+            if (map.layers[key] != undefined && map.layers[key].id !=undefined) {
+               url = "none";
+               var layer = map.getLayer(map.layers[key].id);
+
+                if ((!layer.params.ISBASELAYER) && layer.params.QUERYABLE) { // What about isVisible ??
+
+                //To do add a check box on the interface to get the profile and the time series from ncWMS.
+                /*if (layer.showTimeSeriesNcWMS) {
+                       if (layer.tile.bounds.containsLonLat(lonlat)) {
+                                    url = layer.baseUri +
+                                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+                                    "&BBOX=" + layer.getExtent().toBBOX() +
+                                    "&I=" + e.xy.x +
+                                    "&J=" + e.xy.y +
+                                    "&INFO_FORMAT=text/xml" +
+                                    "&CRS=EPSG:4326" +
+                                    "&WIDTH=" + mapPanel.map.size.w +
+                                    "&HEIGHT=" +  mapPanel.map.size.h +
+                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
 
 
-							timeSeriesPlotUri =
-							layer.timeSeriesPlotUri +
-							"&I=" + e.xy.x +
-							"&J=" + e.xy.y +
-							"&WIDTH=" + layer.mapPanel.map.size.w +
-							"&HEIGHT=" +  layer.mapPanel.map.size.h +
-							"&BBOX=" + mapPanel.map.getExtent().toBBOX();
-
-						}
-					}
-					else*/ if (layer.params.VERSION == "1.1.1") {
-						url = layer.getFullRequestString({
-							REQUEST: "GetFeatureInfo",
-							EXCEPTIONS: "application/vnd.ogc.se_xml",
-							BBOX: layer.getExtent().toBBOX(),
-							X: e.xy.x,
-							Y: e.xy.y,
-							INFO_FORMAT: 'text/html',
-							QUERY_LAYERS: layer.params.LAYERS,
-							FEATURE_COUNT: 100,
-							BUFFER: layer.getFeatureInfoBuffer,
-							SRS: 'EPSG:4326',
-							WIDTH: layer.map.size.w,
-							HEIGHT: layer.map.size.h
-						});
-					}
-					else if (layer.params.VERSION == "1.3.0") {
-						url = layer.getFullRequestString({
-
-							REQUEST: "GetFeatureInfo",
-							EXCEPTIONS: "application/vnd.ogc.se_xml",
-							BBOX: layer.getExtent().toBBOX(),
-							I: e.xy.x,
-							J: e.xy.y,
-							INFO_FORMAT: 'text/xml',
-							QUERY_LAYERS: layer.params.LAYERS,
-							//Styles: '',
-							CRS: 'EPSG:4326',
-							BUFFER: layer.getFeatureInfoBuffer,
-							WIDTH: layer.map.size.w,
-							HEIGHT: layer.map.size.h
-						});
-					}
-			}
-                       
-            if(url!="none"){
-                    // create the popup if it doesn't exist
-                    if (!popup) {
-                        popup = new GeoExt.Popup({
-                            title: "Features at your click point",
-                            width: 450,
-                                            height: 380,
-                            maximizable: true,
-                           // collapsible: true,
-                            map: mapPanel.map,
-                            anchored: true,
-                            border: false,
-                            margins: 10,
-                            constrainHeader: true,
-                            panIn: true,
-                                            autoScroll: true,
-                            listeners: {
-                                close: function() {
-                                    // closing a popup destroys it, but our reference is truthy
-                                    popup = null;
-                                }
+                                    timeSeriesPlotUri =
+                                    layer.timeSeriesPlotUri +
+                                    "&I=" + e.xy.x +
+                                    "&J=" + e.xy.y +
+                                    "&WIDTH=" + layer.mapPanel.map.size.w +
+                                    "&HEIGHT=" +  layer.mapPanel.map.size.h +
+                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
                             }
+                    }
+                    else*/
+                    if (layer.params.VERSION == "1.1.1") {
+                        url = layer.getFullRequestString({
+                            REQUEST: "GetFeatureInfo",
+                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                            BBOX: layer.getExtent().toBBOX(),
+                            X: e.xy.x,
+                            Y: e.xy.y,
+                            INFO_FORMAT: 'text/html',
+                            QUERY_LAYERS: layer.params.LAYERS,
+                            FEATURE_COUNT: 100,
+                            BUFFER: layer.getFeatureInfoBuffer,
+                            SRS: 'EPSG:4326',
+                            WIDTH: layer.map.size.w,
+                            HEIGHT: layer.map.size.h
                         });
                     }
+                    else if (layer.params.VERSION == "1.3.0") {
+                        url = layer.getFullRequestString({
 
-                    format = "html";
-                    if(layer.isncWMS==true) format = "xml";
-                    Ext.Ajax.request({
-                       url: proxyURL+encodeURIComponent(url) + "&format=" + format ,
-                       success: function(resp){
-                              // add some content to the popup (this can be any Ext component)
-                                popup.add({
-                                    xtype: "box",
-                                    padding: 30,
-                                    cls: "featureinfocontent",
-                                    autoEl: {
-                                        html: formatGetFeatureInfo(resp)
-                                    }
-                                });
-
-                                // reset the popup's location
-                                popup.location = loc;
-
-                                popup.doLayout();
-                                // since the popup is anchored, calling show will move popup to this location
-                                popup.show();
-                                }
+                            REQUEST: "GetFeatureInfo",
+                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                            BBOX: layer.getExtent().toBBOX(),
+                            I: e.xy.x,
+                            J: e.xy.y,
+                            INFO_FORMAT: 'text/xml',
+                            QUERY_LAYERS: layer.params.LAYERS,
+                            //Styles: '',
+                            CRS: 'EPSG:4326',
+                            BUFFER: layer.getFeatureInfoBuffer,
+                            WIDTH: layer.map.size.w,
+                            HEIGHT: layer.map.size.h
                         });
-		}
-	  }
+                    }
+            }
+                       
+            if ( url != "none" ) {
+                format = "html";
+                if ( layer.isncWMS == true ) format = "xml";
+                
+                numLayersToLoad++; // Record layer requested
+
+                Ext.Ajax.request({
+                    url: proxyURL + encodeURIComponent( "http://geoserver.emii.org.au/geoserver/wms?STYLES=&LAYERS=topp%3Aanfog_glider&FORMAT=image%2Fpng&TRANSPARENT=TRUE&CQL_FILTER=deploy_id%20like%20'SOT_1'&VERSION=1.1.1&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SERVICE=WMS&REQUEST=GetFeatureInfo&SRS=EPSG%3A4326&BBOX=125.227051%2C-48.247559%2C158.625488%2C-34.756348&X=922&Y=399&INFO_FORMAT=text%2Fhtml&QUERY_LAYERS=topp%3Aanfog_glider&FEATURE_COUNT=100&BUFFER=5&WIDTH=1520&HEIGHT=614" ) + "&format=" + format,
+                    success: function(resp, options){
+                        // add some content to the popup (this can be any Ext component)
+
+                        updateLoadingTab( popup );
+                        
+                        for(p in resp) {
+                            console.log( p );
+                        }
+                        
+                        addTab( popup, {
+                            xtype: "box",
+                            title: numLayersLoaded + '. ',
+                            padding: 30,
+                            cls: "featureinfocontent",
+                            autoEl: {
+                                html: formatGetFeatureInfo(resp, options)
+                            }
+                        } );
+                            
+                        // reset the popup's location
+                        popup.location = loc;
+                        popup.doLayout();
+                        popup.show(); // since the popup is anchored, calling show will move popup to this location
+                    },
+
+                    failure: function(resp) {
+                        
+                        updateLoadingTab( popup );
+                        
+                        popup.add({
+                            xtype: "box",
+                            title: numLayersLoaded + '. ',
+                            padding: 30,
+                            cls: "featureinfocontent",
+                            autoEl: {
+                                html: "<i>An error occurred retrieving this feature info</i>"
+                            }
+                        });
+                        
+                        // reset the popup's location
+                        popup.location = loc;
+                        popup.doLayout();
+                        popup.show(); // since the popup is anchored, calling show will move popup to this location
+                    }
+                });
+            }
+        }
     }
+}
+
+function addTab(popup, newTab) {
+    
+    tabsFromPopup( popup ).add( newTab );
+}
+
+function updateLoadingTab(popup) {
+    
+    numLayersLoaded++;
+    
+    var tabs = tabsFromPopup( popup );
+  
+    console.log(numLayersLoaded + "/" + numLayersToLoad);
+    
+    if ( numLayersLoaded < numLayersToLoad ) {
+        
+        var currentLoadingTab = tabs.getItem( loadingTabId );
+        
+        // Update message
+        currentLoadingTab.update( getLoadingTabHtml() );
+        currentLoadingTab.doLayout();
+    }
+    else {
+        
+        // Remove tab
+        tabs.remove( loadingTabId );    
+    }
+    
+    tabs.doLayout();
+}
+
+function tabsFromPopup(popup) {
+    
+    return popup.getComponent( 0 );
+}
+
+function newLoadingTab() {
+           
+    var loadingTab = new Ext.Panel({
+        id: loadingTabId,
+//        xtype: "panel",
+        padding: 30,
+        cls: "featureinfocontent",
+        title: "Loading...",
+        autoEl: {                                    
+            html: getLoadingTabHtml()
+        }
+    })
+    
+    return loadingTab;
+}
+
+function getLoadingTabHtml() {
+    
+    var fractionPart = numLayersToLoad == 0 ? ''
+                                            : '/' + numLayersToLoad;
+    
+    return '<img src="images/spinner.gif" alt="Loading..." />&nbsp;<b>Loading features from layers...</b><br />' + numLayersLoaded + fractionPart + ' loaded.';
 }
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
@@ -269,33 +372,37 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     },
     
     CLASS_NAME: "OpenLayers.Control.Click"
-
 });
   
 
 // if its XML then ncWMS is assumed. TODO
-function formatGetFeatureInfo(response) {
+function formatGetFeatureInfo(response, options) {
             
-        if(response.responseXML == null) {
-            // strip out all unwanted HTML
-             if ( response.responseText.match(/<\/body>/m)) {
-                var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
-                if (html_content) {
-                    //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
-                    html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
-                }
+    if(response.responseXML == null) {
+        // strip out all unwanted HTML
+         if ( response.responseText.match(/<\/body>/m)) {
+            var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
+            if (html_content) {
+                //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
+                html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
+
+                if ( html_content.length == 0 ) {
+                    html_content = "<b>No data returned (1)</b><br />url: " + options.url
+                }    
             }
+
             return html_content;
-            
         }
-        else{
-            return setHTML_ncWMS(response);
-        }
+
+        return "<b>No data returned (2)</b><br />url: " + options.url
+    }
+    else{
+        return setHTML_ncWMS(response);
+    }
 }
 
 
 function setHTML_ncWMS(response) {
-
     
     var xmldoc = response.responseXML;
     if (xmldoc==null) return "response not in xmls";
@@ -375,16 +482,15 @@ function setHTML_ncWMS(response) {
             lat = toNSigFigs(lat, 7);
 
             
-            html = "<h3>"+layer_type+"</h3>";
-
+            html = "<h3>" + layer_type + "</h3>";
             
             html +=        "<div class=\"feature\">";
 
-            html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<BR />" + extras;
+            html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
 
                 // to do add transect drawing here
                 //
-           html += "<BR><h6>Get a graph of the data along a transect via layer options!</h6>\n";
+           html += "<br><h6>Get a graph of the data along a transect via layer options!</h6>\n";
            //html = html +" <div  ><a href="#" onclick=\"addLineDrawingLayer('ocean_east_aus_temp/temp','http://emii3.its.utas.edu.au/ncWMS/wms')\" >Turn on transect graphing for this layer </a></div>";
 
           if(copyright.length > 0)
@@ -401,21 +507,20 @@ function setHTML_ncWMS(response) {
         html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
     }
 
-	return html;
+    return html;
 }
 
-
-
+    
+        
 function inArray (array,value) {
 	var i;
 	for (i=0; i < array.length; i++) {
-		if (array[i] === value) {
-			return true;
-		}
-	}
-	return false;
+        if (array[i] === value) {
+                return true;
+        }
+    }
+    return false;
 }
-
 
 function is_ncWms(type) {
    /* return ((type == parent.ncwms)||
@@ -433,7 +538,6 @@ function isWms(type) {
         (type == parent.thredds));
     */
 }
-
 
 function getDepth(e) {
 
@@ -477,8 +581,6 @@ function setDepth(response) {
       jQuery('#featureinfoGeneral').html(str).fadeIn(400);
       jQuery('#featureinfodepth').hide();
     }
-
-
 }
 
 // designed for Geoserver valid response
@@ -507,10 +609,7 @@ function setHTML2(response) {
     if (handleQueryStatus(this)) {
         setFeatureInfo(html_content,true);
     }
-
 }
-
-
 
 function getCurrentFeatureInfo() {
     return jQuery('#featureinfocontent').html();
@@ -558,8 +657,6 @@ function mkTransectPopup(inf) {
     popup2.autoSize = true;
     mapPanel.map.popup2 = popup2;
     mapPanel.map.addPopup(popup2);
-
-
 }
 
 function killTransectPopup() {
@@ -628,7 +725,6 @@ function showpopup() {
         mapPanel.map.popup.setOpacity(1);
         setTimeout('imgSizer()', 900); // ensure the popup is ready
     }
-
 }
 
 //server might be down
@@ -673,9 +769,6 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 }
 
-
-
-
  function imgSizer(){
     //Configuration Options
     var max_width = popupWidth -70 ; 	//Sets the max width, in pixels, for every image
@@ -708,14 +801,11 @@ Date.prototype.setISO8601 = function (string) {
 
         } //ends if statement
     }); //ends each function
-
-
 }
 
 function destroy_imagePopup(imagePopup) {
     jQuery("#" + imagePopup ).hide();
 }
-
 
 /*jQuery showhide (toggle visibility of element)
  *  param: the dom element
@@ -724,6 +814,7 @@ function destroy_imagePopup(imagePopup) {
 function showhide(css_id) {
       $(css_id).toggle(450);
 }
+
 /*jQuery show
  *  param: the dom element
  *  ie: #theId or .theClass
@@ -777,7 +868,6 @@ function centreOnArgo(base_url, argo_id, zoomlevel) {
     else {
         alert("Please enter an Argo ID number");
     }
-
 }
 
 // This function gets over the Firefox 4096 character limit for XML nodes using 'textContent''
@@ -789,13 +879,11 @@ function getNodeText(xmlNode)
     return xmlNode.firstChild.nodeValue;
 }
 
-
 /*
 * Opens the form area
 * Populates argos[]
 */
 function getArgo(base_url,inputId) {
-
 
     show('#argo_find');
     getArgoList(base_url);
@@ -804,58 +892,57 @@ function getArgo(base_url,inputId) {
     if (argos.length > 0) {
         $("input#" + inputId).autocomplete(argos);
     }
-
 }
 
 function isArgoExisting (base_url,argo_id) {
 
-     var status = false;
+    var status = false;
 
-     if (!IsInt(argo_id)) {
+    if (!IsInt(argo_id)) {
         alert("Please enter an Argo ID number");
     }
     else {
 
-            getArgoList(base_url) ;
-            
-            if(argos.length > 0) {
-                if ( inArray(argos,argo_id))  {
-                    status = true;
-                 }
-                 //
-                else {
-                    alert("Your supplied Argo ID number is not known in this region");
-                }
-            }
-            else {
-                // gracefully forget about it if the list of argos failed
-                status = true;
-            }
+        getArgoList(base_url) ;
 
+        if(argos.length > 0) {
+            if ( inArray(argos,argo_id))  {
+                status = true;
+             }
+             //
+            else {
+                alert("Your supplied Argo ID number is not known in this region");
+            }
+        }
+        else {
+            // gracefully forget about it if the list of argos failed
+            status = true;
+        }
     }
+    
     return status;
 }
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 
-        // options are comma delimited to include a unique label from a single value such as a dropdown box
-         if (options.length > 1) {
-            var opts = options.split(",");
-            var cql = opts[0];
-            var newLabel = label;
-            if (opts.length > 1) {
-                newLabel = label + " " + opts[1];
-            }
-			
-			layer = new OpenLayers.Layer.WMS(
-				newLabel,
-				url,
-				{layers: layer, transparent: true, CQL_FILTER: cql, STYLE: style},
-				{wrapDateLine: true,
-				isBaseLayer: false}
-			);
-			mapPanel.map.addLayer(layer);
-	    }
+    // options are comma delimited to include a unique label from a single value such as a dropdown box
+    if (options.length > 1) {
+    var opts = options.split(",");
+    var cql = opts[0];
+    var newLabel = label;
+    if (opts.length > 1) {
+        newLabel = label + " " + opts[1];
+    }
+
+        layer = new OpenLayers.Layer.WMS(
+                newLabel,
+                url,
+                {layers: layer, transparent: true, CQL_FILTER: cql, STYLE: style},
+                {wrapDateLine: true,
+                isBaseLayer: false}
+        );
+        mapPanel.map.addLayer(layer);
+    }
 }
 
 // called via argo getfeatureinfo results
@@ -865,57 +952,48 @@ function drawSingleArgo(base_url, argo_id, zoomlevel) {
         setExtWmsLayer(base_url +'/geoserver/wms','Argo - ' + argo_id + '','1.1.1','argo_float','','platform_number = '+ argo_id + '','argo_large');
         centreOnArgo(base_url, argo_id, null);
     }
-
 }
 
 function getArgoList(base_url) {
-
        
-        if (argos == null) {
-            argos =  Array();
-            var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=platform_number&version=1.0.0');
-            if(xmlDoc!=null){
-                var x= xmlDoc.getElementsByTagName('topp:argo_float');
-                if (x.length > 0) {
-                     for (i=0;i<x.length;i++) {
-                        argos[i]= x[i].getElementsByTagName("topp:platform_number")[0].childNodes[0].nodeValue;
-                     }
-                }
-                else {
-                    // tried once and failed leave it alone
-                    argos =  Array();
-                }
+    if (argos == null) {
+        argos =  Array();
+        var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=platform_number&version=1.0.0');
+        if(xmlDoc!=null){
+            var x= xmlDoc.getElementsByTagName('topp:argo_float');
+            if (x.length > 0) {
+                 for (i=0;i<x.length;i++) {
+                    argos[i]= x[i].getElementsByTagName("topp:platform_number")[0].childNodes[0].nodeValue;
+                 }
             }
-
+            else {
+                // tried once and failed leave it alone
+                argos =  Array();
+            }
         }
-
+    }
 }
-
 
 function IsInt(sText) {
 
-   var ValidChars = "0123456789";
-   var IsInt= true;
-   sText = sTExt.trim();
-   var Char;
-   if (sTExt.length == "0") {
+    var ValidChars = "0123456789";
+    var IsInt= true;
+    sText = sTExt.trim();
+    var Char;
+    if (sTExt.length == "0") {
          IsInt = false;
-   }
-   else {
+    }
+    else {
        for (i = 0; i < sTExt.length && IsInt == true; i++) {
           Char = sTExt.charAt(i);
           if (ValidChars.indexOf(Char) == -1) {
              IsInt = false;
           }
        }
-   }
+    }
    return IsInt;
 
 }
-
-
-
-
 
 function acornHistory(request_string,div,data) {
 
@@ -949,4 +1027,3 @@ function acornHistory(request_string,div,data) {
 
     return false;
 }
-
