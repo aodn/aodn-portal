@@ -400,27 +400,38 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
    /* width:100%;*/
     background-color: #fafafa;
     background-image:url(../images/mapshadow.png);
-background-position:left top;
-background-repeat:repeat-x;
-border: 1px solid #ddd;
+    background-position:left top;
+    background-repeat:repeat-x;
+    border: 1px solid #ddd;
 }
 .nofeature {
-	margin: 2px 0px 5px 0px;
-	padding: 5px;
-	width:100%;
-	background-color: #fafafa;
+    margin: 2px 0px 5px 0px;
+    padding: 5px;
+    width:100%;
+    background-color: #fafafa;
 }
 .featurewhite {
-	margin: 2px ;
-	padding: 5px;
-	background-color: white;
+    margin: 2px ;
+    padding: 5px;
+    background-color: white;
 }
 
 
 .feature ul li{
-	margin-left: 1em;
+    margin-left: 1em;
 }
-
+.featureinfocontent .info {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #6D889C;
+    background: #B6C3CD;
+}
+.featureinfocontent .error {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #ACAC0C;
+    background: #FCFCCF;
+}
                   
 
 #featureinfocontent {

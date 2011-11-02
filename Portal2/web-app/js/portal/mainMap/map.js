@@ -34,9 +34,8 @@ var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
 // Get feature info dialog
-var loadingTabId = "LoadingTab";
-var numLayersToLoad;
-var numLayersLoaded;
+var numFeatureTabsToLoad;
+var numFeatureTabsLoaded;
 
 // Pop up things
 var popup;
@@ -115,8 +114,8 @@ function addToPopup(loc, mapPanel, e) {
 
         wmsLayers = wmsLayers.concat(imageLayers);
         
-        numLayersToLoad = 0; // Reset count
-        numLayersLoaded = 0;
+        numFeatureTabsToLoad = 0; // Reset count
+        numFeatureTabsLoaded = 0;
 
         // create the popup if it doesn't exist
         if ( !popup ) {
@@ -141,148 +140,156 @@ function addToPopup(loc, mapPanel, e) {
                 }
             });
 
-            // Add 'Loading' panel
+            // Add tab panel (empty for now)
             popup.add( new Ext.TabPanel({
-                    activeTab: 0,
                     enableTabScroll : true,
-                    items: [newLoadingTab()]
+                    deferredRender: false
                 })
             );
+        }
+        else {
+            
+            tabsFromPopup( popup ).removeAll();
+        }
+
+        // reset the popup's location
+        popup.location = loc;
+        popup.doLayout();
+        popup.show(); // since the popup is anchored, calling show will move popup to this location
+
+        // For each layer...
+        for (var i = 0; i < wmsLayers.length; i++ ) {
+
+            var layer = wmsLayers[i];
+            url = "none";
+
+            if ((!layer.params.ISBASELAYER) && layer.params.QUERYABLE) { // What about isVisible ??
+
+            //To do add a check box on the interface to get the profile and the time series from ncWMS.
+            /*if (layer.showTimeSeriesNcWMS) {
+                   if (layer.tile.bounds.containsLonLat(lonlat)) {
+                                url = layer.baseUri +
+                                "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+                                "&BBOX=" + layer.getExtent().toBBOX() +
+                                "&I=" + e.xy.x +
+                                "&J=" + e.xy.y +
+                                "&INFO_FORMAT=text/xml" +
+                                "&CRS=EPSG:4326" +
+                                "&WIDTH=" + mapPanel.map.size.w +
+                                "&HEIGHT=" +  mapPanel.map.size.h +
+                                "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+
+
+                                timeSeriesPlotUri =
+                                layer.timeSeriesPlotUri +
+                                "&I=" + e.xy.x +
+                                "&J=" + e.xy.y +
+                                "&WIDTH=" + layer.mapPanel.map.size.w +
+                                "&HEIGHT=" +  layer.mapPanel.map.size.h +
+                                "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+                        }
+                }
+                else*/
+                if (layer.params.VERSION == "1.1.1") {
+                    url = layer.getFullRequestString({
+                        REQUEST: "GetFeatureInfo",
+                        EXCEPTIONS: "application/vnd.ogc.se_xml",
+                        BBOX: layer.getExtent().toBBOX(),
+                        X: e.xy.x,
+                        Y: e.xy.y,
+                        INFO_FORMAT: 'text/html',
+                        QUERY_LAYERS: layer.params.LAYERS,
+                        FEATURE_COUNT: 100,
+                        BUFFER: layer.getFeatureInfoBuffer,
+                        SRS: 'EPSG:4326',
+                        WIDTH: layer.map.size.w,
+                        HEIGHT: layer.map.size.h
+                    });
+                }
+                else if (layer.params.VERSION == "1.3.0") {
+                    url = layer.getFullRequestString({
+
+                        REQUEST: "GetFeatureInfo",
+                        EXCEPTIONS: "application/vnd.ogc.se_xml",
+                        BBOX: layer.getExtent().toBBOX(),
+                        I: e.xy.x,
+                        J: e.xy.y,
+                        INFO_FORMAT: 'text/xml',
+                        QUERY_LAYERS: layer.params.LAYERS,
+                        //Styles: '',
+                        CRS: 'EPSG:4326',
+                        BUFFER: layer.getFeatureInfoBuffer,
+                        WIDTH: layer.map.size.w,
+                        HEIGHT: layer.map.size.h
+                    });
+                }
+        }
+
+        if ( url != "none" ) {
+            format = layer.isncWMS ? "xml"
+                                   : "html";
+
+            numFeatureTabsToLoad++; // Record layer requested
+
+            addTab( popup, {
+                xtype: "box",
+                id: layer.id,
+                title: layer.name,
+                padding: 30,
+                autoHeight: true,
+                cls: "featureinfocontent",
+                autoEl: {
+                    html: '<img src="images/spinner.gif" alt="Loading..." style="vertical-align: middle;" />&nbsp;Loading from remote server...'
+                }
+            } );
 
             // reset the popup's location
             popup.location = loc;
             popup.doLayout();
             popup.show(); // since the popup is anchored, calling show will move popup to this location
-        }
-        else {
-            alert (' Remove all old tabs. Re-add loading tab. doLayout(), show(), anything else to display popup correctly ');
-        }
 
-        // For each layer...
-        for (key in wmsLayers) {
+            Ext.Ajax.request({
+                url: proxyURL + encodeURIComponent( url ) + "&format=" + format,
+                params: {name: layer.name, id: layer.id},
+                success: function(resp, options){
 
-            if (map.layers[key] != undefined && map.layers[key].id !=undefined) {
-               url = "none";
-               var layer = map.getLayer(map.layers[key].id);
+                    if ( popup ) { // Popup may have been closed since request was sent
+                        
+                        // Replace content of tab
+                        var tab = getTab( popup, options.params.id );
 
-                if ((!layer.params.ISBASELAYER) && layer.params.QUERYABLE) { // What about isVisible ??
+                        tab.update( formatGetFeatureInfo( resp, options ) );
+                    }                    
+                },
 
-                //To do add a check box on the interface to get the profile and the time series from ncWMS.
-                /*if (layer.showTimeSeriesNcWMS) {
-                       if (layer.tile.bounds.containsLonLat(lonlat)) {
-                                    url = layer.baseUri +
-                                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
-                                    "&BBOX=" + layer.getExtent().toBBOX() +
-                                    "&I=" + e.xy.x +
-                                    "&J=" + e.xy.y +
-                                    "&INFO_FORMAT=text/xml" +
-                                    "&CRS=EPSG:4326" +
-                                    "&WIDTH=" + mapPanel.map.size.w +
-                                    "&HEIGHT=" +  mapPanel.map.size.h +
-                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+                failure: function(resp, options) { // Popup may have been closed since request was sent
 
+                    if ( popup ) {
 
-                                    timeSeriesPlotUri =
-                                    layer.timeSeriesPlotUri +
-                                    "&I=" + e.xy.x +
-                                    "&J=" + e.xy.y +
-                                    "&WIDTH=" + layer.mapPanel.map.size.w +
-                                    "&HEIGHT=" +  layer.mapPanel.map.size.h +
-                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
-                            }
+                        var tab = getTab( popup, options.params.id );
+
+                        tab.update( '<span class="error">An error occurred retrieving this feature info</span>' );
                     }
-                    else*/
-                    if (layer.params.VERSION == "1.1.1") {
-                        url = layer.getFullRequestString({
-                            REQUEST: "GetFeatureInfo",
-                            EXCEPTIONS: "application/vnd.ogc.se_xml",
-                            BBOX: layer.getExtent().toBBOX(),
-                            X: e.xy.x,
-                            Y: e.xy.y,
-                            INFO_FORMAT: 'text/html',
-                            QUERY_LAYERS: layer.params.LAYERS,
-                            FEATURE_COUNT: 100,
-                            BUFFER: layer.getFeatureInfoBuffer,
-                            SRS: 'EPSG:4326',
-                            WIDTH: layer.map.size.w,
-                            HEIGHT: layer.map.size.h
-                        });
-                    }
-                    else if (layer.params.VERSION == "1.3.0") {
-                        url = layer.getFullRequestString({
-
-                            REQUEST: "GetFeatureInfo",
-                            EXCEPTIONS: "application/vnd.ogc.se_xml",
-                            BBOX: layer.getExtent().toBBOX(),
-                            I: e.xy.x,
-                            J: e.xy.y,
-                            INFO_FORMAT: 'text/xml',
-                            QUERY_LAYERS: layer.params.LAYERS,
-                            //Styles: '',
-                            CRS: 'EPSG:4326',
-                            BUFFER: layer.getFeatureInfoBuffer,
-                            WIDTH: layer.map.size.w,
-                            HEIGHT: layer.map.size.h
-                        });
-                    }
-            }
-                       
-            if ( url != "none" ) {
-                format = "html";
-                if ( layer.isncWMS == true ) format = "xml";
-                
-                numLayersToLoad++; // Record layer requested
-
-                Ext.Ajax.request({
-                    url: proxyURL + encodeURIComponent( "http://geoserver.emii.org.au/geoserver/wms?STYLES=&LAYERS=topp%3Aanfog_glider&FORMAT=image%2Fpng&TRANSPARENT=TRUE&CQL_FILTER=deploy_id%20like%20'SOT_1'&VERSION=1.1.1&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SERVICE=WMS&REQUEST=GetFeatureInfo&SRS=EPSG%3A4326&BBOX=125.227051%2C-48.247559%2C158.625488%2C-34.756348&X=922&Y=399&INFO_FORMAT=text%2Fhtml&QUERY_LAYERS=topp%3Aanfog_glider&FEATURE_COUNT=100&BUFFER=5&WIDTH=1520&HEIGHT=614" ) + "&format=" + format,
-                    success: function(resp, options){
-                        // add some content to the popup (this can be any Ext component)
-
-                        updateLoadingTab( popup );
-                        
-                        for(p in resp) {
-                            console.log( p );
-                        }
-                        
-                        addTab( popup, {
-                            xtype: "box",
-                            title: numLayersLoaded + '. ',
-                            padding: 30,
-                            cls: "featureinfocontent",
-                            autoEl: {
-                                html: formatGetFeatureInfo(resp, options)
-                            }
-                        } );
-                            
-                        // reset the popup's location
-                        popup.location = loc;
-                        popup.doLayout();
-                        popup.show(); // since the popup is anchored, calling show will move popup to this location
-                    },
-
-                    failure: function(resp) {
-                        
-                        updateLoadingTab( popup );
-                        
-                        popup.add({
-                            xtype: "box",
-                            title: numLayersLoaded + '. ',
-                            padding: 30,
-                            cls: "featureinfocontent",
-                            autoEl: {
-                                html: "<i>An error occurred retrieving this feature info</i>"
-                            }
-                        });
-                        
-                        // reset the popup's location
-                        popup.location = loc;
-                        popup.doLayout();
-                        popup.show(); // since the popup is anchored, calling show will move popup to this location
-                    }
-                });
-            }
+                }
+            });
         }
     }
+    
+    if ( numFeatureTabsToLoad == 0 ) {
+        
+        addTab( popup, {
+            xtype: "box",
+            title: 'Nothing to load',
+            padding: 30,
+            cls: "featureinfocontent",
+            autoEl: {
+                html: '<span class="error">None of the selected layers have metadata that can be retrieved.</span>'
+            }
+        } );
+    }
+    
+    // Make first tab active
+    tabsFromPopup( popup ).setActiveTab( 0 );
 }
 
 function addTab(popup, newTab) {
@@ -290,58 +297,14 @@ function addTab(popup, newTab) {
     tabsFromPopup( popup ).add( newTab );
 }
 
-function updateLoadingTab(popup) {
+function getTab(popup, tabId) {
     
-    numLayersLoaded++;
-    
-    var tabs = tabsFromPopup( popup );
-  
-    console.log(numLayersLoaded + "/" + numLayersToLoad);
-    
-    if ( numLayersLoaded < numLayersToLoad ) {
-        
-        var currentLoadingTab = tabs.getItem( loadingTabId );
-        
-        // Update message
-        currentLoadingTab.update( getLoadingTabHtml() );
-        currentLoadingTab.doLayout();
-    }
-    else {
-        
-        // Remove tab
-        tabs.remove( loadingTabId );    
-    }
-    
-    tabs.doLayout();
+    return tabsFromPopup( popup ).getItem( tabId );
 }
 
 function tabsFromPopup(popup) {
     
     return popup.getComponent( 0 );
-}
-
-function newLoadingTab() {
-           
-    var loadingTab = new Ext.Panel({
-        id: loadingTabId,
-//        xtype: "panel",
-        padding: 30,
-        cls: "featureinfocontent",
-        title: "Loading...",
-        autoEl: {                                    
-            html: getLoadingTabHtml()
-        }
-    })
-    
-    return loadingTab;
-}
-
-function getLoadingTabHtml() {
-    
-    var fractionPart = numLayersToLoad == 0 ? ''
-                                            : '/' + numLayersToLoad;
-    
-    return '<img src="images/spinner.gif" alt="Loading..." />&nbsp;<b>Loading features from layers...</b><br />' + numLayersLoaded + fractionPart + ' loaded.';
 }
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
@@ -387,14 +350,14 @@ function formatGetFeatureInfo(response, options) {
                 html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
 
                 if ( html_content.length == 0 ) {
-                    html_content = "<b>No data returned (1)</b><br />url: " + options.url
+                    html_content = '<span class="info">No feature info found near click point<sup>1</sup></span>'
                 }    
             }
 
             return html_content;
         }
 
-        return "<b>No data returned (2)</b><br />url: " + options.url
+        return '<span class="info">No feature info found near click point<sup>2</sup></span>'
     }
     else{
         return setHTML_ncWMS(response);
@@ -405,7 +368,9 @@ function formatGetFeatureInfo(response, options) {
 function setHTML_ncWMS(response) {
     
     var xmldoc = response.responseXML;
-    if (xmldoc==null) return "response not in xmls";
+    
+    if ( xmldoc == null ) return "response not in xmls";
+    
     var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
     var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
     var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
