@@ -4,8 +4,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
-   LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
-   LINK_PROTOCOLS: ['WWW:LINK-1.0-http--link'],
+   //LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
    
    initComponent: function() {
      var config = {
@@ -153,7 +152,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   getMapGoClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) == 1) {
+	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) == 1) {
 		  return 'p-result-map-go';
 	  } else {
 		  return 'p-result-disabled';
@@ -161,14 +160,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
  
   getMapGoTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
-    var linkRec = this.getLinkRec(rowIndex, this.LAYER_PROTOCOLS);
+    var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLayerProtocols);
     if (!linkRec) return '';
     var layerDesc = linkRec.get('title');
     return OpenLayers.i18n('showOnMinimap', {layerDesc: layerDesc});
   },
 
   getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) == 1) {
+	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) == 1) {
 		  return 'p-result-map-add';
 	  } else {
 		  return 'p-result-disabled';
@@ -176,14 +175,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   getAddMapTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
-    var linkRec = this.getLinkRec(rowIndex, this.LAYER_PROTOCOLS);
+    var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLayerProtocols);
     if (!linkRec) return '';
     var layerDesc = linkRec.get('title');
     return OpenLayers.i18n('addToMap', {layerDesc: layerDesc});
   },
 
   getShowLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-    if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) == 1) {
+    if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLinkProtocols) == 1) {
       return 'p-result-show-link';
     } else {
       return 'p-result-disabled';
@@ -191,7 +190,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
  
   getShowLinkTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
-    var linkRec = this.getLinkRec(rowIndex, this.LINK_PROTOCOLS);
+    var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLinkProtocols);
     if (!linkRec) return '';
     var linkDesc = linkRec.get('title');
     if (linkDesc.trim() == '') linkDesc = linkRec.get('name');
@@ -199,7 +198,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   getSelectLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-    if (this.getProtocolCount(rec.get('links'), this.LINK_PROTOCOLS) > 1) {
+    if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLinkProtocols) > 1) {
       return 'p-result-select-link';
     } else {
       return 'p-result-disabled';
@@ -207,7 +206,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
  
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.getProtocolCount(rec.get('links'), this.LAYER_PROTOCOLS) > 1) {
+	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) > 1) {
 		  return 'p-result-select-layer';
 	  } else {
 		  return 'p-result-disabled';
@@ -235,7 +234,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     var linkStore = new Portal.search.data.LinkStore({
       data: {links: links} 
     });
-    linkStore.filterByProtocols(this.LAYER_PROTOCOLS);
+    linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
     if (!this.layerSelectionWindow ) {
       this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
@@ -265,7 +264,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   showLink: function(grid, rowIndex, colIndex) {
-    var linkRec = this.getLinkRec(rowIndex, this.LINK_PROTOCOLS);
+    var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLinkProtocols);
     Portal.common.BrowserWindow.open(linkRec.get('url'));
   },
     
@@ -276,7 +275,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       data: {links: links} 
     });
 
-    linkStore.filterByProtocols(this.LINK_PROTOCOLS);
+    linkStore.filterByProtocols(Portal.app.config.metadataLinkProtocols);
 
     if (!this.linkSelectionWindow ) {
       this.linkSelectionWindow = this.buildLinkSelectionWindow(linkStore);
@@ -304,11 +303,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   getProtocolCount: function(links, values) {
+    var protocols = Ext.isString(values)?values.split('\n'):values;
     var count = 0;
 
     for (var i=0; i<links.length; i++) {
-      for (var j=0; j<values.length; j++) {
-        if (links[i].protocol==values[j]) {
+      for (var j=0; j<protocols.length; j++) {
+        if (links[i].protocol==protocols[j].trim()) {
           count++;
         };
       };
@@ -364,7 +364,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      var linkStore = new Portal.search.data.LinkStore({
     	data: {links: links} 
      });
-     linkStore.filterByProtocols(this.LAYER_PROTOCOLS);
+     linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 	  
      return linkStore.getLink(0);
   },

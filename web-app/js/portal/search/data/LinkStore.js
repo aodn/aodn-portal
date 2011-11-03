@@ -23,10 +23,11 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		Portal.search.data.LinkStore.superclass.constructor.call(this, config);
 	},
 
-	filterByProtocols : function(protocols) {
+	filterByProtocols : function(values) {
+	  var protocols = Ext.isString(values)?values.split('\n'):values;
 		this.filterBy(function(record, id) {
 			for (var i = 0; i < protocols.length; i++) {
-				if (record.get('protocol') == protocols[i])
+				if (record.get('protocol') == protocols[i].trim())
 					return true;
 			}
 			return false;
