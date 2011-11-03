@@ -27,7 +27,9 @@ class ConfigTests extends GrailsUnitTestCase {
         assertEquals "nullable", testConfig.errors["downloadCartMaxFileSize"]
         assertEquals "nullable", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
         assertEquals "nullable", testConfig.errors["downloadCartDownloadableProtocols"]
-
+		assertEquals "nullable", testConfig.errors["metadataLinkProtocols"]
+		assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
+		
         testConfig = new Config(name : "config1")
         assertFalse testConfig.validate()
         assertEquals "unique", testConfig.errors["name"]
@@ -71,6 +73,14 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig = new Config(downloadCartDownloadableProtocols: "[" * 256)
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["downloadCartDownloadableProtocols"]
+
+        testConfig = new Config(metadataLinkProtocols: "[" * 256)
+        assertFalse testConfig.validate()
+        assertEquals "size", testConfig.errors["metadataLinkProtocols"]
+
+        testConfig = new Config(metadataLayerProtocols: "[" * 256)
+        assertFalse testConfig.validate()
+        assertEquals "size", testConfig.errors["metadataLayerProtocols"]
     }
 
     void testActiveInstance() {

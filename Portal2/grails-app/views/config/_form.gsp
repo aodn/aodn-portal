@@ -208,3 +208,21 @@
                                     <g:textArea rows="8" style="width: 400px;" name="downloadCartDownloadableProtocols" value="${configInstance?.downloadCartDownloadableProtocols}" /><font class="hint">Put each protocol on a separate line</font>
                                 </td>
                             </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="metadataLinkProtocols"><g:message code="config.metadataLinkProtocols.label" default="Which protocols are links to related pages" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'metadataLinkProtocols', 'errors')}">
+                                    <g:textArea rows="8" style="width: 400px;" name="metadataLinkProtocols" value="${configInstance?.metadataLinkProtocols}" /><font class="hint">Put each protocol on a separate line</font>
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="metadataLayerProtocols"><g:message code="config.metadataLayerProtocols.label" default="Which protocols are displayable on the map" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'metadataLayerProtocols', 'errors')}">
+                                    <g:textArea rows="8" style="width: 400px;" name="metadataLayerProtocols" value="${configInstance?.metadataLayerProtocols}" /><font class="hint">Put each protocol on a separate line</font>
+                                </td>
+                            </tr>

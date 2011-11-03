@@ -3,7 +3,9 @@ describe("Portal.search.ResultsGrid", function() {
    //Mock relevant config settings
    Ext.namespace('Portal.app.config');
    Portal.app.config.catalogUrl = 'http://dummy.org.au';
-   Portal.app.config.downloadCartDownloadableProtocols = "WWW:DOWNLOAD-1.0-http--download\nWWW:LINK-1.0-http--link"
+   Portal.app.config.downloadCartDownloadableProtocols = "WWW:DOWNLOAD-1.0-http--download\nWWW:LINK-1.0-http--link";
+   Portal.app.config.metadataLinkProtocols = "WWW:LINK-1.0-http--link";
+   Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
       
    var testData = [{
 		href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
