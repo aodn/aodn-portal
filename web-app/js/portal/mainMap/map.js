@@ -190,6 +190,7 @@ function addToPopup(loc, mapPanel, e) {
                         }
                 }
                 else*/
+                
                 if (layer.params.VERSION == "1.1.1") {
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
@@ -268,7 +269,7 @@ function addToPopup(loc, mapPanel, e) {
 
                         var tab = getTab( popup, options.params.id );
 
-                        tab.update( '<span class="error">An error occurred retrieving this feature info</span>' );
+                        tab.update( '<span class="error">An error occurred retrieving this feature info</span><br />' );
                     }
                 }
             });
@@ -283,7 +284,7 @@ function addToPopup(loc, mapPanel, e) {
             padding: 30,
             cls: "featureinfocontent",
             autoEl: {
-                html: '<span class="error">None of the selected layers have metadata that can be retrieved.</span>'
+                html: '<span class="error">None of the selected layers have features that can be retrieved.</span><br />'
             }
         } );
     }
@@ -292,16 +293,19 @@ function addToPopup(loc, mapPanel, e) {
     tabsFromPopup( popup ).setActiveTab( 0 );
 }
 
+// Add tab to featureInfo popup
 function addTab(popup, newTab) {
     
     tabsFromPopup( popup ).add( newTab );
 }
 
+// Get tab from featureInfo popup
 function getTab(popup, tabId) {
     
     return tabsFromPopup( popup ).getItem( tabId );
 }
 
+// Get tabs from featureInfo popup
 function tabsFromPopup(popup) {
     
     return popup.getComponent( 0 );
@@ -337,7 +341,6 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     CLASS_NAME: "OpenLayers.Control.Click"
 });
   
-
 // if its XML then ncWMS is assumed. TODO
 function formatGetFeatureInfo(response, options) {
             
@@ -350,20 +353,19 @@ function formatGetFeatureInfo(response, options) {
                 html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
 
                 if ( html_content.length == 0 ) {
-                    html_content = '<span class="info">No feature info found near click point<sup>1</sup></span>'
-                }    
+                    html_content = '<span class="info">No feature info found near click point</span><br />'
+                }
             }
 
             return html_content;
         }
 
-        return '<span class="info">No feature info found near click point<sup>2</sup></span>'
+        return '<span class="info">No feature info found near click point</span><br />'
     }
     else{
         return setHTML_ncWMS(response);
     }
 }
-
 
 function setHTML_ncWMS(response) {
     
@@ -474,26 +476,32 @@ function setHTML_ncWMS(response) {
 
     return html;
 }
-
-    
-        
+  
 function inArray (array,value) {
-	var i;
-	for (i=0; i < array.length; i++) {
+    
+    for (var i = 0; i < array.length; i++) {
+        
         if (array[i] === value) {
                 return true;
         }
     }
+    
     return false;
 }
 
 function is_ncWms(type) {
+   
+   alert( 'is_ncWms(' + type + ')' );
+   
    /* return ((type == parent.ncwms)||
         (type == parent.thredds));
     */
 }
 
 function isWms(type) {
+    
+    alert( 'isWms(' + type + ')' );
+   
    /* return (
         (type == parent.wms100) ||
         (type == parent.wms110) ||
@@ -548,58 +556,6 @@ function setDepth(response) {
     }
 }
 
-// designed for Geoserver valid response
-function setHTML2(response) {
-
-        var pointInfo_str = '';
-
-        var tmp_response = response.responseText;
-        var html_content = "";
-
-        if (tmp_response.match(/<\/body>/m)) {
-
-            html_content  = tmp_response.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
-            if (html_content) {
-                //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
-                html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
-            }
-        }
-
-        if (html_content.length > 0) {
-            // at least one valid query
-            queries_valid_content = true;
-            this.layer_data = true;
-        }
-
-    if (handleQueryStatus(this)) {
-        setFeatureInfo(html_content,true);
-    }
-}
-
-function getCurrentFeatureInfo() {
-    return jQuery('#featureinfocontent').html();
-}
-
-function setFeatureInfo(content,line_break) {
-
-    showpopup();
-    var br = "";
-    if (line_break == true ) {
-        br = "<hr>\n\n";
-    }
-    //jQuery('#featureinfocontent').html(content).hide();
-    if (content.length > 0 ) {
-        jQuery('#featureinfocontent').prepend(content+br).hide().fadeIn(400);
-    }
-    if (jQuery('#featureinfocontent').html() != "") {
-        mapPanel.map.popup.setSize(new OpenLayers.Size(popupWidth,popupHeight));
-        //
-    }
-
-    jQuery('#featureinfocontent').fadeIn(400);
-
-}
-
 // Special popup for ncwms transects
 function mkTransectPopup(inf) {
 
@@ -630,71 +586,6 @@ function killTransectPopup() {
         mapPanel.map.popup2.destroy();
         mapPanel.map.popup2 = null;
     }
-}
-
-// called when a click is made
-function mkpopup(e) {
-
-    var point = e.xy;
-    var pointclick = mapPanel.map.getLonLatFromViewPortPx(point.add(2,0));
-
-    // kill previous popup to startover at new location
-    if (mapPanel.map.popup != null) {
-        mapPanel.map.removePopup(mapPanel.map.popup);
-        mapPanel.map.popup.destroy();
-        mapPanel.map.popup = null;
-    }
-
-    var html = "<div id=\"featureinfoheader\"><h4>New Query:</h4></div>" +
-    "<div id=\"featureinfostatus\">" +
-    "Waiting on the response for <b>" + requestCount + "</b> layers..." +
-    "<img class=\"small_loader\" src=\"/webportal/img/loading_small.gif\" /></div>"  +
-    "<div id=\"featureinfodepth\"></div>" +
-    "<div class=\"spacer\" style=\"clear:both;height:2px;\">&nbsp;</div>" +
-    "<div id=\"featureinfocontent_topborder\"><img id=\"featureinfocontent_topborderimg\" src=\"img/mapshadow.png\" />\n" +
-    "<div id=\"featureinfocontent\"></div>\n</div>" ;
-    popup = new OpenLayers.Popup.AnchoredBubble( "getfeaturepopup",
-        pointclick,
-        new OpenLayers.Size(popupWidth,popupHeight),
-        html,
-        null, true, null);
-
-
-    popup.panMapIfOutOfView = true;
-    //popup.autoSize = true;
-    mapPanel.map.popup = popup;
-    mapPanel.map.addPopup(popup);
-    mapPanel.map.popup.setOpacity(0.9);
-
-    /* shrink back down while searching.
-     * popup will always pan into view with previous size.
-     * close image always therefore visible
-    */
-    mapPanel.map.popup.setSize(new OpenLayers.Size(popupWidth,50));
-
-    // a prompt for stupid people
-    if (requestCount == "0") {
-        jQuery('#featureinfostatus').html("<font class=\"error\">Please choose a queryable layer from the menu..</font>").fadeIn(400);
-    }
-}
-
-function hidepopup() {
-    if ((mapPanel.map.popup != null)) {
-         jQuery('div.olPopup').fadeOut(900);
-    }
-}
-
-function showpopup() {
-
-    if ((mapPanel.map.popup != null)) {
-        mapPanel.map.popup.setOpacity(1);
-        setTimeout('imgSizer()', 900); // ensure the popup is ready
-    }
-}
-
-//server might be down
-function setError(response) {
-    alert("The server is unavailable");
 }
 
 Date.prototype.setISO8601 = function (string) {
