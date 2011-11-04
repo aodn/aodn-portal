@@ -27,8 +27,9 @@ class ConfigTests extends GrailsUnitTestCase {
         assertEquals "nullable", testConfig.errors["downloadCartMaxFileSize"]
         assertEquals "nullable", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
         assertEquals "nullable", testConfig.errors["downloadCartDownloadableProtocols"]
-		assertEquals "nullable", testConfig.errors["metadataLinkProtocols"]
-		assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
+        assertEquals "nullable", testConfig.errors["metadataLinkProtocols"]
+        assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
+        assertEquals "nullable", testConfig.errors["mapGetFeatureInfoBuffer"]
 		
         testConfig = new Config(name : "config1")
         assertFalse testConfig.validate()
