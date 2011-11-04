@@ -28,6 +28,7 @@ class Config {
     String downloadCartDownloadableProtocols
     String metadataLinkProtocols
     String metadataLayerProtocols
+    Integer mapGetFeatureInfoBuffer
     
     List defaultLayers
     static hasMany = [defaultLayers:Layer]
@@ -53,6 +54,7 @@ class Config {
         downloadCartDownloadableProtocols(size: 0..255)
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
+        mapGetFeatureInfoBuffer(min: 0)
     }
     
     static Config activeInstance() {
