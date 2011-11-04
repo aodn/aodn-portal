@@ -81,6 +81,10 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig = new Config(metadataLayerProtocols: "[" * 256)
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["metadataLayerProtocols"]
+        
+        testConfig = new Config(mapGetFeatureInfoBuffer: -1)
+        assertFalse testConfig.validate()
+        assertEquals "min", testConfig.errors["mapGetFeatureInfoBuffer"]
     }
 
     void testActiveInstance() {
