@@ -190,7 +190,7 @@ function addToPopup(loc, mapPanel, e) {
                         }
                 }
                 else*/
-                
+                               
                 if (layer.params.VERSION == "1.1.1") {
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
@@ -201,7 +201,7 @@ function addToPopup(loc, mapPanel, e) {
                         INFO_FORMAT: 'text/html',
                         QUERY_LAYERS: layer.params.LAYERS,
                         FEATURE_COUNT: 100,
-                        BUFFER: layer.getFeatureInfoBuffer,
+                        BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
                         SRS: 'EPSG:4326',
                         WIDTH: layer.map.size.w,
                         HEIGHT: layer.map.size.h
@@ -219,7 +219,7 @@ function addToPopup(loc, mapPanel, e) {
                         QUERY_LAYERS: layer.params.LAYERS,
                         //Styles: '',
                         CRS: 'EPSG:4326',
-                        BUFFER: layer.getFeatureInfoBuffer,
+                        BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
                         WIDTH: layer.map.size.w,
                         HEIGHT: layer.map.size.h
                     });
@@ -427,7 +427,7 @@ function setHTML_ncWMS(response) {
 
                     var human_endtime = new Date();
                     human_endtime.setISO8601(endtime);
-                    var endval =getCelsius(endval, this.unit);
+                    endval = getCelsius(endval, this.unit);
                     
                     if(isSD)
                     {
