@@ -161,10 +161,6 @@ function initMap()  {
 
 }
 
-
-
-
-
 function setToolbarItems() {
 
     var action, actions = {};
@@ -247,7 +243,6 @@ function setToolbarItems() {
 
 }
 
-
 /*
  * 
  * This is the add layer method for all layers apart form those added
@@ -256,9 +251,6 @@ function setToolbarItems() {
  * 
  */
 function addGrailsLayer(grailsLayerId) {   
-    
-      
-
     
     Ext.Ajax.request({
 
@@ -334,16 +326,12 @@ function addGrailsLayer(grailsLayerId) {
                 
                 */
 
-                addMainMapLayer(dl);  
-
-                
+                addMainMapLayer( dl );
             }
         });
         
         
 }
-
-
 
 function getVersionString(layer) {
         var versionStr;
@@ -357,8 +345,7 @@ function getVersionString(layer) {
 }
 
 function removeLayer(uniqueLayerId) {
-    
-    
+       
     if (activeLayers[uniqueLayerId] != undefined) {
         mapPanel.map.removeLayer(activeLayers[uniqueLayerId]);    
         activeLayers.pop(uniqueLayerId);        
@@ -367,7 +354,6 @@ function removeLayer(uniqueLayerId) {
         console.log("Error: trying to remove a layer that is undefined");
     }
 }
-
 
 function processBounds(openlayersBounds) {
     var size = openlayersBounds.getSize();
@@ -399,7 +385,6 @@ function getMapExtent()  {
     var right = Math.min(bounds.right, maxBounds.right);
     return new OpenLayers.Bounds(left, bottom, right, top);
 }
-
 
 function redrawAnimatedLayers() {
     
@@ -505,8 +490,6 @@ function addNCWMSLayer(currentLayer) {
     
 }
 
-
-
 function layerSwap(newLayer,oldLayer) { 
     
     // exchange new for old  
@@ -519,7 +502,6 @@ function layerSwap(newLayer,oldLayer) {
     mapPanel.map.addLayer(newLayer);     
     mapPanel.map.setLayerIndex(newLayer,layerLevelIndex);
 }
-
 
 function stopgetTimePeriod(layer) {
     var wmslayer;
@@ -614,6 +596,8 @@ function addMainMapLayer(dl) {
       }
       else {
           
+          registerLayer( layer );
+          
           mapPanel.map.addLayer(layer);
           
           if(dl.server.type.search("NCWMS") > -1) {
@@ -622,12 +606,11 @@ function addMainMapLayer(dl) {
               // update detailsPanel after Json request
               getLayerMetadata(layer);
           }
-          // store the OpenLayers layer so we can retreive it latter
+          // store the OpenLayers layer so we can retreive it later
           activeLayers[getUniqueLayerId(layer)] = layer;
       }
       
 };
-
 
 // used as a unique id for the activeLayers array of openlayers layers
 function getUniqueLayerId(layer){
@@ -651,7 +634,6 @@ function layerAlreadyAdded(layer){
 	
    return mapPanel.map.getLayer(previousLayer.id) !== null;
 }
-
 
 function getLayerMetadata(layer) {
         
@@ -732,13 +714,10 @@ function setExtentLayer() {
 
 function loadDefaultLayers() {  
 
-    
-    for(var i = 0; i < defaultLayers.length; i++)   {
+        for(var i = 0; i < defaultLayers.length; i++)   {
         addGrailsLayer(defaultLayers[i].id);   
         setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);        
-    }  
-    
-
+    }     
 }
 
 

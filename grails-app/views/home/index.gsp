@@ -86,7 +86,11 @@
 <body>
   
   <g:render template="/mainPortalHeader" model="['showLinks':true,'showLogin':true,'configInstance':configInstance]"></g:render>
-
+  
+  <div id="loader" style="position:absolute; top:50%; left:50%; z-index: 99;" style="display: none;">
+    <img src="images/spinner large.gif" alt="Loading..." />
+  </div>
+  
 </body>
 
 </html>
