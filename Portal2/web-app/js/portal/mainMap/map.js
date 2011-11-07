@@ -33,6 +33,9 @@ var timestamp; // timestamp for getFeatureInfo requests
 var X,Y; // getfeatureInfo Click point
 var clickEventHandler; // single click handler
 
+// Layer loading activity indicator
+var layersLoading = 0;
+
 // Get feature info dialog
 var numFeatureTabsToLoad;
 var numFeatureTabsLoaded;
@@ -882,4 +885,49 @@ function acornHistory(request_string,div,data) {
 
 
     return false;
+}
+
+
+// Layer loading icon
+function registerLayer(layer) {
+        
+    layer.events.register('loadstart', this, loadStart);
+    layer.events.register('loadend', this, loadEnd);
+}
+
+function loadStart() {
+    
+    if ( layersLoading == 0 ) {
+        updateLoadingImage( "block" );
+    }
+    
+    layersLoading++;
+}
+
+function loadEnd() {
+    
+    layersLoading = Math.max( --layersLoading, 0 );
+    
+    if ( layersLoading == 0 ) {
+        updateLoadingImage( "none" );
+    }
+}
+
+function updateLoadingImage(display) {
+    
+    var div = document.getElementById( "loader" );
+    
+    if ( div != null ) {
+        
+        if ( display == "none" ) {
+            jQuery("#loader").hide( 2000 );
+        }
+        else {
+            setTimeout(function(){
+                if ( layersLoading > 0 ) {
+                    div.style.display = display;
+                }
+            }, 2000);
+        }
+    }
 }
