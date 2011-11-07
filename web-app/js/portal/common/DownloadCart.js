@@ -19,14 +19,14 @@ function addToDownloadCart(title, type, href, protocol) {
     
     var cart = getDownloadCart();
     
-    var maxFiles = Portal.app.config.downloadCartMaxNumFiles
+    var maxFiles = Portal.app.config.downloadCartMaxNumFiles;
     
     if ( cart.length < maxFiles ) {
         
         var newEntry = {title: title,
                         type: type,
                         href: href,
-                        protocol: protocol}
+                        protocol: protocol};
         
         // Add if it doesn't exists already
         if ( !_existsInCart( newEntry, cart ) ) {
