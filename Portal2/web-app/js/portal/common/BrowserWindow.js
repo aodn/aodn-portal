@@ -10,7 +10,7 @@ Portal.common.BrowserWindow = {
       var left = parseInt((screen.availWidth/2) - (width/2));
       var top = parseInt((screen.availHeight/2) - (height/2));
       
-      var windowFeatures = "width=" + width + ",height=" + height + ",toolbar,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+      var windowFeatures = "width=" + width + ",height=" + height + ",toolbar,resizable,scrollbars,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
       
       window.open(url, '_blank', windowFeatures);
     }
