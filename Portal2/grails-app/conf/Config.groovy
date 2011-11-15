@@ -107,6 +107,18 @@ environments
 {
     production 
     {
+        grails
+        {
+            mail
+            {
+                authenticationFromEmailAddress = "info@aodn.org.au"
+
+                host = "postoffice.utas.edu.au"
+                port = 25
+                username = "info@aodn.org.au"
+                props = ["mail.smtp.auth":"false"]
+            }
+        }
     }
     
     development 
@@ -115,13 +127,13 @@ environments
         {
            mail
            {
-             authenticationFromEmailAddress = "info@aodn.org.au"
-             
-             host = "localhost"
-             port = 25
-             username = "username"
-             //password = "password"
-             props = ["mail.smtp.auth":"false"]
+                authenticationFromEmailAddress = "info@aodn.org.au"
+
+                host = "localhost"
+                port = 25
+
+                username = "username"
+                props = ["mail.smtp.auth":"false"]
            }
         }
     }
