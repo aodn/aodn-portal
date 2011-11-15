@@ -22,7 +22,9 @@ function setupAnimationControl() {
         newAnimatePanelContents = new Ext.Panel({
             layout: 'form',
             items: [
-                new Ext.form.Label({html:"<p>Only one day is available - " + selectedLayer.dates[0] + "</p>"} )
+            new Ext.form.Label({
+                html:"<p>Only one day is available - " + selectedLayer.dates[0] + "</p>"
+                } )
             ]
         });
          
@@ -37,8 +39,8 @@ function setupAnimationControl() {
         else {
             // update it
             x.theOnlyTimePanel.setTimeVals(x.theOnlyTimePanel.timePanelSlider);
-            //console.log("the dates are set. should reneable the start animation button");
-            //Ext.getCmp('startNCAnimationButton').enable();
+        //console.log("the dates are set. should reneable the start animation button");
+        //Ext.getCmp('startNCAnimationButton').enable();
         }
     }
     
@@ -51,7 +53,7 @@ function setupAnimationControl() {
 }
 function renderAnimatePanelContents() {
      
-    //newAnimatePanelContents.doLayout(); 
+//newAnimatePanelContents.doLayout(); 
 
 }
 
@@ -61,129 +63,129 @@ function renderAnimatePanelContents() {
 
 Ext.namespace('Animations');
 Animations.TimePanel = Ext.extend(Ext.Panel, {
-            ref: 'theOnlyTimePanel',
-            layout: 'form',
-            initComponent: function() {
+    ref: 'theOnlyTimePanel',
+    layout: 'form',
+    initComponent: function() {
                 
 
-                this.items = [
-                    {
-                        xtype: 'label',
-                        html: "<h4>Select Time Period</h4>"
-                    },
-                    {
-                        xtype: 'slider',
-                        ref: 'timePanelSlider',
-                        width: 250,
-                        values: [0,selectedLayer.dates.length-1],
-                        minValue: 0,
-                        maxValue: selectedLayer.dates.length-1,
-                        plugins:  new Ext.ux.SliderTip({
-                                getText: function(slider){  
-                                    var thumbName = "Start";
-                                    if (slider.index != 0) {
-                                        thumbName = "End";
-                                    }
-                                    return String.format('<b>{0}:</b> {1}', thumbName,  selectedLayer.dates[slider.value].date);
-                                }
-                            })
-                        ,
-                        listeners: {
-                            scope: this,
-                            changecomplete: function(slider,val,thumb) { 
+        this.items = [
+        {
+            xtype: 'label',
+            html: "<h4>Select Time Period</h4>"
+        },
+        {
+            xtype: 'slider',
+            ref: 'timePanelSlider',
+            width: 250,
+            values: [0,selectedLayer.dates.length-1],
+            minValue: 0,
+            maxValue: selectedLayer.dates.length-1,
+            plugins:  new Ext.ux.SliderTip({
+                getText: function(slider){  
+                    var thumbName = "Start";
+                    if (slider.index != 0) {
+                        thumbName = "End";
+                    }
+                    return String.format('<b>{0}:</b> {1}', thumbName,  selectedLayer.dates[slider.value].date);
+                }
+            })
+            ,
+            listeners: {
+                scope: this,
+                changecomplete: function(slider,val,thumb) { 
                                                               
                                 
-                               // which ever thumb was moved, update the selectedLayer                                                              
-                               this.setTimeVals(slider);  
-                               //console.log(thumb.value);
-                               //console.log(selectedLayer.dates[thumb.value].date);
-                               mergeNewTime(selectedLayer.dates[thumb.value].date);  
+                    // which ever thumb was moved, update the selectedLayer                                                              
+                    this.setTimeVals(slider);  
+                    //console.log(thumb.value);
+                    //console.log(selectedLayer.dates[thumb.value].date);
+                    mergeNewTime(selectedLayer.dates[thumb.value].date);  
                                 
                                 
-                            },
-                            afterrender: function(slider) {  
-                                this.setTimeVals(this.timePanelSlider);
-                            }
-                        }
-                    },
-                    {                  
-                        xtype: 'textfield',      
-                        ref: 'timeMax',
-                        fieldLabel: "End ",
-                        disabled: true, // readonly
-                        grow: true,
-                        labelStyle: "width:50px",        
-                        ctCls: 'smallIndentInputBox'
-                    },
-                    {
-                        xtype: 'textfield',
-                        ref: 'timeMin',
-                        fieldLabel: "Start ",
-                        disabled: true, // readonly
-                        grow: true,
-                        labelStyle: "width:50px",
-                        ctCls: 'smallIndentInputBox'
-                    },
-                    {
-                        xtype: 'textfield',
-                        ref: 'frameCount',
-                        fieldLabel: "Days",
-                        disabled: true, // readonly            
-                        grow: true,
-                        text: selectedLayer.dates.length,
-                        labelStyle: "width:50px",
-                        //labelStyle: "",        
-                        ctCls: 'smallIndentInputBox'
-                    },
-                    {
-                        xtype: 'button',
-                        id: 'startNCAnimationButton',
-                        text:'Start',
-                        disabled: true, // readonly
-                        //hidden: true,
-                        handler: function(button,event) {
-                            getTimePeriod();
-                        }
-                    }
-                    
-                ]
-                Animations.TimePanel.superclass.initComponent.apply(this, arguments);
-                
-            },
-            listeners: {
-                afterrender: function(whateva) {
-                    
-                    // do this only once for each layer
-                    // selectedLayer.metadata.datesWithData will already be defined at this point
-                    if (selectedLayer.dates == undefined) {
-                        setLayerDates(selectedLayer); // pass in the layer as there are going to be many async Json requests
-                        // disable the 'Start' button as we need all the available dates to be loaded first
-                        Ext.getCmp('startNCAnimationButton').disable();
-                    }
-                    else {
-                        // after a successful animation the 'Start' button is disabled
-                        // the dates have been set previously for this layer so enable the button
-                        Ext.getCmp('startNCAnimationButton').enable();
-                    }
-                    
+                },
+                afterrender: function(slider) {  
+                    this.setTimeVals(this.timePanelSlider);
                 }
-            },
-            
-            setTimeVals: function(slider) {
-                
-                var dates = selectedLayer.dates;
-                this.timeMin.setValue(dates[slider.getValues()[0]].date);
-                
-                if (slider.getValues()[1] != undefined) {
-                    this.timeMax.setValue(dates[slider.getValues()[1]].date);
-                    this.frameCount.setValue(slider.getValues()[1] -  slider.getValues()[0] + 1); // + item at zero
-                }
-                else {
-                    this.timeMax.setValue(undefined);
-                    this.frameCount.setValue(undefined);
-                }
-                
             }
+        },
+        {                  
+            xtype: 'textfield',      
+            ref: 'timeMax',
+            fieldLabel: "End ",
+            disabled: true, // readonly
+            grow: true,
+            labelStyle: "width:50px",        
+            ctCls: 'smallIndentInputBox'
+        },
+        {
+            xtype: 'textfield',
+            ref: 'timeMin',
+            fieldLabel: "Start ",
+            disabled: true, // readonly
+            grow: true,
+            labelStyle: "width:50px",
+            ctCls: 'smallIndentInputBox'
+        },
+        {
+            xtype: 'textfield',
+            ref: 'frameCount',
+            fieldLabel: "Days",
+            disabled: true, // readonly            
+            grow: true,
+            text: selectedLayer.dates.length,
+            labelStyle: "width:50px",
+            //labelStyle: "",        
+            ctCls: 'smallIndentInputBox'
+        },
+        {
+            xtype: 'button',
+            id: 'startNCAnimationButton',
+            text:'Start',
+            disabled: true, // readonly
+            //hidden: true,
+            handler: function(button,event) {
+                getTimePeriod();
+            }
+        }
+                    
+        ]
+        Animations.TimePanel.superclass.initComponent.apply(this, arguments);
+                
+    },
+    listeners: {
+        afterrender: function(whateva) {
+                    
+            // do this only once for each layer
+            // selectedLayer.metadata.datesWithData will already be defined at this point
+            if (selectedLayer.dates == undefined) {
+                setLayerDates(selectedLayer); // pass in the layer as there are going to be many async Json requests
+                // disable the 'Start' button as we need all the available dates to be loaded first
+                Ext.getCmp('startNCAnimationButton').disable();
+            }
+            else {
+                // after a successful animation the 'Start' button is disabled
+                // the dates have been set previously for this layer so enable the button
+                Ext.getCmp('startNCAnimationButton').enable();
+            }
+                    
+        }
+    },
+            
+    setTimeVals: function(slider) {
+                
+        var dates = selectedLayer.dates;
+        this.timeMin.setValue(dates[slider.getValues()[0]].date);
+                
+        if (slider.getValues()[1] != undefined) {
+            this.timeMax.setValue(dates[slider.getValues()[1]].date);
+            this.frameCount.setValue(slider.getValues()[1] -  slider.getValues()[0] + 1); // + item at zero
+        }
+        else {
+            this.timeMax.setValue(undefined);
+            this.frameCount.setValue(undefined);
+        }
+                
+    }
             
             
       
@@ -198,8 +200,8 @@ function mergeNewTime(day) {
     for(var i=0; i<selectedLayer.dates.length; i++) {
         if (selectedLayer.dates[i].date == day) {
             selectedLayer.mergeNewParams({
-                        time : day
-                    });
+                time : day
+            });
         } 
     }
     
@@ -247,8 +249,8 @@ function setLayerDates(layer){
 
 function setDatetimesForDate(layer, day) {
     
-   // getMetadata gave us the days but not the times of the day
-   Ext.Ajax.request({
+    // getMetadata gave us the days but not the times of the day
+    Ext.Ajax.request({
         url: proxyURL+encodeURIComponent(layer.url + 
             "?request=GetMetadata&item=timesteps&layerName=" + 
             layer.params.LAYERS + 
@@ -257,12 +259,10 @@ function setDatetimesForDate(layer, day) {
             
             var res = Ext.util.JSON.decode(resp.responseText);
             var dateTimes = [];
-            res.timesteps.forEach(function (index) {
-                
-                 dateTimes.push(day +  "T" + index);
-                
-                
-            });  
+            
+            for(var i=0; i<res.timesteps.length; i++) {            
+                dateTimes.push(day +  "T" + res.timesteps[i]);          
+            }  
             // store the datetimes for each day
             for(var i=0; i<layer.dates.length; i++) {
                 if (layer.dates[i].date == day) {
@@ -317,25 +317,25 @@ function getTimePeriod() {
         var chosenTimes = [];
         
         var p = animatePanel.animatePanelContent.theOnlyTimePanel; 
-        
+        //alert(p);
         // get the server to tell us the options
-          Ext.Ajax.request({
-                url: proxyURL+encodeURIComponent(selectedLayer.url + 
-                    "?request=GetMetadata&item=animationTimesteps&layerName=" + 
-                    selectedLayer.params.LAYERS + 
-                    "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
-                    "&end=" + getDateTimesForDate(p.timeMax.value)[0]
+        Ext.Ajax.request({
+            url: proxyURL+encodeURIComponent(selectedLayer.url + 
+                "?request=GetMetadata&item=animationTimesteps&layerName=" + 
+                selectedLayer.params.LAYERS + 
+                "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
+                "&end=" + getDateTimesForDate(p.timeMax.value)[0]
                 ),
-                success: function(resp) { 
+            success: function(resp) { 
 
-                    var res = Ext.util.JSON.decode(resp.responseText);
+                var res = Ext.util.JSON.decode(resp.responseText);
                     
-                    if (res.timeStrings != undefined) {
-                        // popup a window
-                        showTimestepPicker(res.timeStrings);
-                    }
+                if (res.timeStrings != undefined) {
+                    // popup a window
+                    showTimestepPicker(res.timeStrings);
                 }
-          });
+            }
+        });
 
   
                 
@@ -352,7 +352,7 @@ function showTimestepPicker(timeStrings) {
     for (vars in timeStrings) {
         timeStrings[vars].boxLabel = timeStrings[vars].title
         timeStrings[vars].name = "justaname"//,
-        //timeStrings[vars].inputValue = timeStrings[vars].timeString
+    //timeStrings[vars].inputValue = timeStrings[vars].timeString
     }
     
     
@@ -369,34 +369,34 @@ function showTimestepPicker(timeStrings) {
         autoScroll: true,
         border: false,
         items: [  
-            {
-               xtype: 'label',
-               style: {
-                    padding: '10px'
-               },
-               html: "<p>Please select the number of frames required.<BR>Selecting less frames will result in better performance</p>"
+        {
+            xtype: 'label',
+            style: {
+                padding: '10px'
             },
-            {
-                // Use the default, automatic layout to distribute the controls evenly
-                // across a single row
-                xtype: 'radiogroup',
-                fieldLabel: 'Auto Layout',
-                style: {
-                    padding: '10px'
-                },
-                columns: 1,
-                items: [
-                    timeStrings
-                ],
-                listeners: {
-                    change: function( field, newValue, oldValue, eOpts ) {          
+            html: "<p>Please select the number of frames required.<BR>Selecting less frames will result in better performance</p>"
+        },
+        {
+            // Use the default, automatic layout to distribute the controls evenly
+            // across a single row
+            xtype: 'radiogroup',
+            fieldLabel: 'Auto Layout',
+            style: {
+                padding: '10px'
+            },
+            columns: 1,
+            items: [
+            timeStrings
+            ],
+            listeners: {
+                change: function( field, newValue, oldValue, eOpts ) {          
                         
-                        createNCWMSLayerFromTimesteps(newValue.initialConfig.timeString);
-                        Ext.getCmp('timestepWindow').destroy(); // this components parent window
-                    }
+                    createNCWMSLayerFromTimesteps(newValue.initialConfig.timeString);
+                    Ext.getCmp('timestepWindow').destroy(); // this components parent window
                 }
             }
-            /*,
+        }
+        /*,
             {
                 xtype: 'button',
                 id: 'animateNowButton',
@@ -422,13 +422,13 @@ function showTimestepPicker(timeStrings) {
 function createNCWMSLayerFromTimesteps(timeSteps) {              
         
         
-        //chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]); 
-        //chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]); 
-        // get all the times between user selected range
-        //var dates = setAnimationTimesteps(params);   
+    //chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]); 
+    //chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]); 
+    // get all the times between user selected range
+    //var dates = setAnimationTimesteps(params);   
         
-        selectedLayer.chosenTimes = timeSteps;         
-        addNCWMSLayer(selectedLayer);
+    selectedLayer.chosenTimes = timeSteps;         
+    addNCWMSLayer(selectedLayer);
 }
 
 

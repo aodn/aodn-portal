@@ -94,7 +94,6 @@ function initMap()  {
             });
      // stops the click bubbling to a getFeatureInfo request on the map
      mapToolbar.on('click', function(ev, target){
-        console.log("stop bubble?");
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
@@ -113,7 +112,6 @@ function initMap()  {
             });
      // stops the click bubbling to a getFeatureInfo request on the map
      mapLinks.on('click', function(ev, target){
-        console.log("stop bubble?");
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
@@ -648,7 +646,6 @@ function getLayerMetadata(layer) {
                 if (selectedLayer != undefined) {   
                    if (selectedLayer.id == layer.id) {
                       updateDetailsPanel(layer); 
-                      console.log("getting metadata");
                    }
                 }
                 

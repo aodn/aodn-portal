@@ -31,3 +31,5 @@
       Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="download" action="downloadFromCart" class="mainlinks">Download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
+
+<div id="headerTail" >&nbsp;</div>

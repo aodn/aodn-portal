@@ -1,7 +1,7 @@
 
  body, html {
     font: 11px arial,tahoma,helvetica,sans-serif;
-    background-color: #0165A1;    
+    background-color: #34546E;    
 }
 
 /* the main tabPanel for the portal */
@@ -20,9 +20,14 @@ body {
     min-width: 950px;
 }
 #header {
-    background: url(../images/portal2header.jpg) no-repeat 0 0;
+    background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;
     height: 300px;
     width: 100%;
+    
+}
+#headerTail {   
+    height: 30px;
+    background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;
 }
 #header h1 {
     color: white;
@@ -31,6 +36,10 @@ body {
 #logo {
     margin: 3px 5px;
     float: left;
+}
+
+#centerTabPanel, map {
+    background-color: whitesmoke;
 }
 
 .footer {
@@ -212,7 +221,7 @@ a img{
     
 }
 
- #map {
+ #mainMapCentrePanel {
      background-color: #8AA8C4;
  }
 

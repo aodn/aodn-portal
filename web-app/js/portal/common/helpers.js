@@ -117,3 +117,17 @@ function pad(numNumber, numLength){
 	}
 	return strString;
 }
+
+// IE 8 throws errors with console not existing
+// Console will exist when using developer tools
+var alertFallback = true;
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+ console = {};
+ //if (alertFallback) {
+     //console.log = function(msg) {
+          //alert(msg); // i never want to see this crap in IE ... never 
+     //};
+ //} else {
+ //    console.log = function() {};
+ //}
+}

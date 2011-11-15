@@ -46,6 +46,7 @@
 
 
 <script src="${resource(dir:'js',file:'portal/lang/en.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/spin.min.js')}"   type="text/javascript"></script>   
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
@@ -88,7 +89,7 @@
   <g:render template="/mainPortalHeader" model="['showLinks':true,'showLogin':true,'configInstance':configInstance]"></g:render>
   
   <div id="loader" style="position:absolute; top:50%; left:50%; z-index: 99;" style="display: none;">
-    <img src="images/spinner large.gif" alt="Loading..." />
+    <!--img src="images/spinner large.gif" alt="Loading..." /-->
   </div>
   
 </body>
