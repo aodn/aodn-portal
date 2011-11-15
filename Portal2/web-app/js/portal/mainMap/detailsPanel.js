@@ -585,6 +585,7 @@ function makeCombo(type) {
     var combo = new Ext.form.ComboBox({
         fieldLabel: type,
         triggerAction: 'all',
+        editable : false,
         lazyRender:true,
         mode: 'local',
         store: valueStore,
@@ -625,7 +626,6 @@ function updateScale(textfield, event)
     //return key
     if(event.getKey() == 13)
     {
-        console.log(parseFloat(colourScaleMax.getValue()) + " > " + parseFloat(colourScaleMin.getValue()));
         if ( parseFloat(colourScaleMax.getValue()) > parseFloat(colourScaleMin.getValue())) {
             
             selectedLayer.mergeNewParams({

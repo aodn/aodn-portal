@@ -515,7 +515,11 @@ p.important {
 
 /* Overview Map wigit */
 .olControlOverviewMapElement {
-	background-color: #3c668d;
+	background-color: #34546E! important;
+}
+
+.olControlLayerSwitcher .layersDiv {
+    background-color: #34546E! important;
 }
 
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
@@ -540,6 +544,7 @@ width: 50px;
 .olControlEditingToolbar div {
 float: left;
 }
+
 
 
 
