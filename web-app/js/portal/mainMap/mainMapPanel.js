@@ -13,16 +13,43 @@ function initMap()  {
     }
 
 
-    navigationHistoryCtrl = new OpenLayers.Control.NavigationHistory();
+    
 
     
     var controls= [];
+    
+    /*
+        new OpenLayers.Control.PanZoomBar({
+            div: document.getElementById('controlPanZoom')
+            }),
+        ,
+
+    //new OpenLayers.Control.KeyboardDefaults(),
+    new OpenLayers.Control.Attribution(),
+        new OpenLayers.Control.MousePosition({
+            div: document.getElementById('mapcoords'),
+            prefix: '<b>Lon:</b> ',
+            separator: ' <BR><b>Lat:</b> '
+        })
+     */
 
     controls.push(
         new OpenLayers.Control.Navigation(),
         new OpenLayers.Control.Attribution(),
         new OpenLayers.Control.PanPanel(),
-        navigationHistoryCtrl
+        new OpenLayers.Control.MousePosition(),
+        new OpenLayers.Control.ScaleLine(),
+        new OpenLayers.Control.NavigationHistory(),
+        //new OpenLayers.Control.LayerSwitcher(),
+        new OpenLayers.Control.OverviewMap({
+            autoPan: true,
+            minRectSize: 30,
+            mapOptions:{
+                resolutions: [  0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625
+                , 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125
+                ]
+                }
+            })
         //new OpenLayers.Control.ZoomPanel()
     );
     var options = {
@@ -46,13 +73,7 @@ function initMap()  {
         map.addLayer(baseLayerList[i]);
      }
     
-     var scaleLine = new OpenLayers.Control.ScaleLine({});
 
-     var mousePos = new OpenLayers.Control.MousePosition();
-
-
-     map.addControl(scaleLine);
-     map.addControl(mousePos);
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({

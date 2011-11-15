@@ -148,7 +148,19 @@ function doViewPort()
             cls: 'leftMenus',
             collapsible: true,
             split: true,
-            width: Portal.app.config.westWidth
+            width: Portal.app.config.westWidth,
+            listeners: {
+                // show the little expand button on map right.
+                beforeexpand: function(){                    
+                    var ls = mapPanel.map.getControlsByClass('OpenLayers.Control.LayerSwitcher')[0];
+                    ls.destroy();
+                },                
+                beforecollapse: function(){                    
+                    mapPanel.map.addControl(new OpenLayers.Control.LayerSwitcher({
+                        roundedCornerColor: '#34546E' // bloody openlayers!!
+                    }));
+                }
+            }
         },{
             region:'center',
             id: 'mainMapCentrePanel',

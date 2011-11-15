@@ -155,6 +155,7 @@ function initMenusPanel(menu) {
     // should get all layers 
     var baselayerMenuPanel = new GeoExt.ux.BaseLayerComboBox({
         map: mapPanel.map,           
+        editable :false,
         padding: 20,
         emptyText: 'Choose a Base Layer'
     });
