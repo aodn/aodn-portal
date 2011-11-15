@@ -837,14 +837,14 @@ function IsInt(sText) {
 
     var ValidChars = "0123456789";
     var IsInt= true;
-    sText = sTExt.trim();
+    sText = sText.trim();
     var Char;
-    if (sTExt.length == "0") {
+    if (sText.length == "0") {
          IsInt = false;
     }
     else {
-       for (i = 0; i < sTExt.length && IsInt == true; i++) {
-          Char = sTExt.charAt(i);
+       for (i = 0; i < sText.length && IsInt == true; i++) {
+          Char = sText.charAt(i);
           if (ValidChars.indexOf(Char) == -1) {
              IsInt = false;
           }
@@ -899,33 +899,45 @@ function loadStart() {
     
     if ( layersLoading == 0 ) {
         updateLoadingImage( "block" );
-    }
-    
+    }    
     layersLoading++;
 }
 
 function loadEnd() {
     
     layersLoading = Math.max( --layersLoading, 0 );
-    
     if ( layersLoading == 0 ) {
         updateLoadingImage( "none" );
     }
 }
 
 function updateLoadingImage(display) {
+
     
     var div = document.getElementById( "loader" );
-    
     if ( div != null ) {
         
         if ( display == "none" ) {
-            jQuery("#loader").hide( 2000 );
+            jQuery("#loader").hide();
         }
         else {
             setTimeout(function(){
                 if ( layersLoading > 0 ) {
+                    
                     div.style.display = display;
+                    var opts = {
+                      lines: 12, // The number of lines to draw
+                      length: 16, // The length of each line
+                      width: 4, // The line thickness
+                      radius: 12, // The radius of the inner circle
+                      color: '#CCC', // #rgb or #rrggbb
+                      speed: 1, // Rounds per second
+                      trail: 60, // Afterglow percentage
+                      shadow: true // Whether to render a shadow
+                    };
+                    var target = document.getElementById('loader');
+                    var spinner = new Spinner(opts).spin(target);
+                    
                 }
             }, 2000);
         }

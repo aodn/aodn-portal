@@ -151,6 +151,7 @@ function doViewPort()
             width: Portal.app.config.westWidth
         },{
             region:'center',
+            id: 'mainMapCentrePanel',
             layout:'border',
             items: [
             mapPanel
@@ -187,7 +188,7 @@ function doViewPort()
 
                     closeNHideDetailsPanel();
                 }
-            },
+            }
                 
             ]
         }],
@@ -200,7 +201,6 @@ function doViewPort()
                     // there must be a selectedLayer to be in this situation right?
                     if (selectedLayer != undefined) {
                         updateDetailsPanel(selectedLayer);
-                        console.log("beforeexpand");
                     }
                     else {
                         console.log("Error: There was no selectedLayer for the panel to show!!");                       
@@ -219,24 +219,21 @@ function doViewPort()
     }); 
     mapMainPanel.doLayout();
    
-      
     
     viewport = new Ext.Viewport({
         layout: 'border',
         boxMinWidth: 900,
         items: [{
-            id: 'viewportHeader',
+            //
             unstyled: true,
             region: 'north',
-            height: Portal.app.config.headerHeight,
-            border: false
-        }, {
-            region: 'south',
-            html: 'Footer goes here',
-            cls: 'footer',
-            unstyled: true,
-            height: Portal.app.config.footerHeight
-        },{
+            height: Portal.app.config.headerHeight//,
+            //border: false,
+            //items: [{
+            //   html: "this is some text"     
+            //}]
+        },
+        {
             region: 'center',
             id: 'centerTabPanel',
             xtype: 'tabpanel', // TabPanel itself has no title        
@@ -261,6 +258,13 @@ function doViewPort()
                 }
             }
             ]
+        },
+        {
+            region: 'south',
+            html: 'Footer goes here',
+            cls: 'footer',
+            unstyled: true,
+            height: Portal.app.config.footerHeight
         }]
     });
 

@@ -24,7 +24,7 @@ function initDetailsPanel()  {
     
     // for user to pick date range to animate
     animatePanel = new Ext.Panel({
-        title: 'Date Picker',
+        title: 'Date Animate',
         plain: true,
         disabled: true,
         autoScroll: true,
@@ -85,7 +85,8 @@ function initDetailsPanel()  {
     
     var legendImage = new GeoExt.LegendImage({
         id: 'legendImage',
-        imgCls: 'legendImage'
+        imgCls: 'legendImage',
+        flex: 1
     });
     
     var colourScaleHeader = new Ext.form.Label({
@@ -125,34 +126,47 @@ function initDetailsPanel()  {
     
     
     ncWMSColourScalePanel = new Ext.Panel({
-        layout: 'form',
-        height: 'auto',
-        width: 200
+        layout: 'form'
     });
     ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMax,colourScaleMin);
 
-
+    
 
 
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
     
     var stylePanel = new Ext.Panel({
-        title: 'Styles', 
         id: 'stylePanel',
+        title: 'Styles', 
+        style: {margin: 5}, 
+        autoHeight: 250,
         items: [
-        styleCombo,                    
-        legendImage,
-        ncWMSColourScalePanel
+        styleCombo,   
+        {
+            xtype: 'panel',
+            layout: 'hbox',
+            autoScroll:true,
+            align: 'stretch',
+            items: [
+            {
+                xtype: 'panel',                    
+                width: 130,
+                margin: 10,
+                items: [legendImage ]
+                },
+                ncWMSColourScalePanel
+            ]
+        }
         ]
     });
     
             
     var featureInfoPanel = new Ext.Panel({   
-        title: 'Filters',
+        title: 'Info',
         items: [
         {
-            html: "Filtering latest graphs and stuff"
+            html: "latest graphs and stuff"
         }
         ]
     });  
@@ -175,14 +189,14 @@ function initDetailsPanel()  {
     var detailsPanelItems = new Ext.Panel({   
         id: 'detailsPanelItems', 
         autoWidth: true,
+        //    style: {
+        //        padding: '10px'
+        //    },
         items: [
         opacitySliderContainer,
         {
             xtype: 'button',
             id: 'stopNCAnimationButton',
-            style: {
-                padding: '10px'
-            },
             text:'Stop Animation',
             //disabled: true, // readonly
             hidden: true,
@@ -221,7 +235,7 @@ function initDetailsPanel()  {
         closeAction: 'hide',
         border: false,
         items: [                     
-            detailsPanelItems
+        detailsPanelItems
         ],
         tools:[{
             id:'pin',
@@ -248,8 +262,7 @@ function toggleDetailsLocation() {
     var detailsPanelItems = Ext.getCmp('detailsPanelItems');
     
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-              
-    console.log("move to the right details panel");        
+                    
         rdp.setVisible(true);
         rdp.add(detailsPanel.remove(detailsPanelItems, false));
         detailsPanel.hide();
@@ -273,7 +286,6 @@ function toggleDetailsLocation() {
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
     
-    console.log("closeNHideDetailsPanel");
     
     if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {        
         detailsPanel.hide();
@@ -293,8 +305,7 @@ function updateDetailsPanel(layer) {
                     
                 
     if (Portal.app.config.autoZoom === true) {
-        console.log("will do auto zoom");
-        zoomToLayer(mapPanel.map, selectedLayer);
+        zoomToLayer(mapPanel.map, layer);
     }
     
     
@@ -320,17 +331,17 @@ function updateDetailsPanel(layer) {
     updateDimensions(layer); // time and elevation   
     
     
-    if(selectedLayer.server.type.search("NCWMS") > -1)  {
+    if(layer.server.type.search("NCWMS") > -1)  {
 
-        makeNcWMSColourScale(); 
+        makeNcWMSColourScale(layer); 
         // show the animate tab if we can animate through time
-        if (selectedLayer.metadata.datesWithData != undefined) {
+        if (layer.metadata.datesWithData != undefined) {
 
-            if (selectedLayer.dates == undefined) {
-                setLayerDates(selectedLayer); // pass in the layer as there are going to be many async Json requests
+            if (layer.dates == undefined) {
+                setLayerDates(layer); // pass in the layer as there are going to be many async Json requests
             }
             else {
-               animatePanel.setDisabled(false); 
+                animatePanel.setDisabled(false); 
             }
 
             // ensure to 're-set' the Start Stop buttons (if rendered);
@@ -350,9 +361,9 @@ function updateDetailsPanel(layer) {
     }
     else {    
         
-        detailsPanel.text = selectedLayer.name;
-        detailsPanel.setTitle("Layer Options: " + selectedLayer.name);
-        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + selectedLayer.name);
+        detailsPanel.text = layer.name;
+        detailsPanel.setTitle("Layer Options: " + layer.name);
+        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active   
         // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
         if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {
@@ -394,7 +405,7 @@ function setChosenStyle(layer,record) {
             styles : record.get('displayText')
         });        
         selectedLayer.metadata.defaultPalette = record.get('myId');
-        refreshLegend();
+        refreshLegend(selectedLayer);
     }
     else {
         // its an animated openlayers image
@@ -450,10 +461,12 @@ function updateStyles(layer)
 }
 
 
-function refreshLegend(layer)
-{    
-    var url = buildGetLegend(layer,"",false)  
-    Ext.getCmp('legendImage').setUrl(url);
+function refreshLegend(layer) {    
+    
+    var url = buildGetLegend(layer,"",false) ; 
+    Ext.getCmp('legendImage').setUrl(url); 
+    Ext.getCmp('stylePanel').doLayout();
+    //
 }
 
 // builds a getLegend image request for the combobox form and the selected palette
@@ -516,17 +529,15 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
 
 
 
-function makeNcWMSColourScale()
+function makeNcWMSColourScale(layer)
 {
 
-    if (selectedLayer.metadata.scaleRange != undefined) {
+    if (layer.metadata.scaleRange != undefined) {
         colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
         colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);
         ncWMSColourScalePanel.show();      
     }
-    {
-        ncWMSColourScalePanel.hide();
-    }
+    
     
 }
 
@@ -581,6 +592,9 @@ function makeCombo(type) {
         valueField: 'myId',
         displayField: 'displayText',     
         tpl: tpl,
+        style: {
+           // marginTop: '10px'
+        },
         listeners:{
             select: function(cbbox, record, index){
                 if(cbbox.fieldLabel == 'styles')
@@ -611,12 +625,13 @@ function updateScale(textfield, event)
     //return key
     if(event.getKey() == 13)
     {
-        if (colourScaleMax.getValue() > colourScaleMin.getValue()) {
+        console.log(parseFloat(colourScaleMax.getValue()) + " > " + parseFloat(colourScaleMin.getValue()));
+        if ( parseFloat(colourScaleMax.getValue()) > parseFloat(colourScaleMin.getValue())) {
             
             selectedLayer.mergeNewParams({
                 COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
             });
-            refreshLegend();
+            refreshLegend(selectedLayer);
         }
         else {
             alert("The Max Parameter Range value is less than the Min");
