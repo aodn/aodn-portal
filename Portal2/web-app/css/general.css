@@ -47,7 +47,14 @@ body {
     padding: 5px 10px;
     color: #CCC;
 }
-
+#mapLinks {
+    top: auto! important;
+    bottom: 0px! important;
+    z-index: 1000;
+}
+.olControlScaleLine {
+    bottom: 3px! important;
+}
 
 
 .toplinksBackground {
