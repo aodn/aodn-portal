@@ -10,6 +10,7 @@ class Config {
     Integer proxyPort
     String initialBbox
     String catalogUrl
+    Menu baselayerMenu
     Menu defaultMenu
     Menu contributorMenu
     Menu regionMenu
@@ -28,10 +29,17 @@ class Config {
     String downloadCartDownloadableProtocols
     String metadataLinkProtocols
     String metadataLayerProtocols
-    Integer mapGetFeatureInfoBuffer
+    Integer mapGetFeatureInfoBuffer    
+    String baselayerList    
+    static transients = [ 
+        "baselayerList" // baselayerMenu can be expanded to baselayers
+    ] 
     
     List defaultLayers
-    static hasMany = [defaultLayers:Layer]
+    static hasMany = [defaultLayers:Layer]    
+    
+    
+    
     
     static constraints = {
         name(size:5..25,unique:true)
@@ -39,6 +47,7 @@ class Config {
         proxyPort(nullable:true)
         initialBbox(size:10..50)
         catalogUrl(url: true)
+        baselayerMenu()
         defaultMenu()
         contributorMenu()
         regionMenu()

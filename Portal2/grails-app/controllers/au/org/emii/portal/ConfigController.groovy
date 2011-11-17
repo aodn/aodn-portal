@@ -1,8 +1,13 @@
 package au.org.emii.portal
 
+import grails.converters.*
 import grails.converters.deep.JSON
-import grails.converters.deep.*
+//import org.codehaus.groovy.grails.web.json.*;
 import groovyx.net.http.*
+//import org.codehaus.groovy.grails.web.converters.marshaller.json.GroovyBeanMarshaller
+//import org.codehaus.groovy.grails.web.converters.marshaller.ClosureOjectMarshaller
+
+//import grails.json.ConfigClassJSONMarshaller
 
 
     
@@ -15,15 +20,34 @@ class ConfigController {
         redirect(action: "edit")
     }
     
+    
+    private getConfigAsJSON = {
+        return (Config.activeInstance() as JSON).toString()
+    }
+    
     def list = {
         
         // expect only one Config instance to exist
         def configInstance = Config.activeInstance();
         
         configInstance = massageConfigInstance(configInstance);
+        //def baselayerList = new Object()         
+        def baselayerList = []
         
         if(params.type == 'JSON') {
-            render configInstance as JSON
+            
+            // expand the baselayers menu into baselayers
+            def baselayerJson =  JSON.parse(configInstance.baselayerMenu.json)
+            baselayerJson.each() {
+                def res = (Layer.get(it.grailsLayerId) as JSON).toString()
+                baselayerList.add(JSON.parse(res))
+            }            
+            
+            def instanceAsGenericObj = JSON.parse(getConfigAsJSON())
+            instanceAsGenericObj['baselayerList'] = baselayerList
+            
+            
+            render(contentType: "application/json", text:  instanceAsGenericObj)
         }
         else {
             render(view: "show", model: [configInstance: configInstance])

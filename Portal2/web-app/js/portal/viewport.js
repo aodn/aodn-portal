@@ -20,7 +20,7 @@ var defaultMenuTree;
 var defaultLayers; // from the config
 var defaultMenu; // from the config
 var demonstrationContributorTree;
-var baseLayerList;
+var baseLayerList; // array of baselayers used in map and baselayer picker
 var topMenuPanel;
 
 // COOKIE CAUSES PROBLEMS
@@ -80,41 +80,21 @@ Portal.app = {
                     };
                 };
 	
-                Ext.Ajax.request({
-                    url: 'layer/listBaseLayersAsJson',
-                    scope: this,
-                    success: function(resp){
+                    
+
 	                    
-                        var bl = Ext.util.JSON.decode(resp.responseText);
-                        baseLayerList = new Array();
-	
-                        for(var i = 0; i < bl.length; i++){
-                            var l = new OpenLayers.Layer.WMS(
-                                bl[i].name,
-                                bl[i].server.uri,
-                                {
-                                    layers: bl[i].layers
-                                },
-                                {
-                                    wrapDateLine: true,
-                                    transitionEffect: 'resize',
-                                    isBaseLayer: true
-                                });
-                            baseLayerList.push(l);
-                        }
-	                    
-                        // CAREFULL HERE WITH THE ORDERING!!!
-                        initDetailsPanel();
-                        initMap();
-                        defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
-                        //loadDefaultMenu(defaultMenu);
-                        initMenusPanel(defaultMenu);
-                        doViewPort();
-                        defaultLayers = this.config.defaultLayers; // into global space so it can be modified
-                        loadDefaultLayers();
-                        zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
-                    }
-                });
+                // CAREFULL HERE WITH THE ORDERING!!!
+                initDetailsPanel();
+                setBaseLayers(this.config); // build baselayers into baseLayerList before map creation
+                initMap();
+                defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
+                //loadDefaultMenu(defaultMenu);
+                initMenusPanel(defaultMenu);
+                doViewPort();
+                defaultLayers = this.config.defaultLayers; // into global space so it can be modified
+                loadDefaultLayers();
+                zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
+
 	
             }
         });
@@ -123,6 +103,9 @@ Portal.app = {
 
 //GeoExt stuff
 Ext.onReady(Portal.app.init, Portal.app);
+
+
+
 
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex){ 
