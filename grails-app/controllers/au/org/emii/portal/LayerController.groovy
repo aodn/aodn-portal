@@ -27,6 +27,30 @@ class LayerController {
         render layerInstanceList as JSON
     }
     
+    def listLayersAsJson = {
+        
+        def combinedList = []    
+        def layerInstanceList = []
+        if (params.phrase?.size() > 1) {
+            layerInstanceList = Layer.findByNameIlike('%'+params.phrase+'%') 
+        }
+        else {
+            layerInstanceList = Layer.list(params)
+        }        
+        
+        Server.list().each { 
+            def l = layerInstanceList
+            combinedList.add(it)
+            def x = it     
+            l.each {   
+                if (it.server.id.equals(x.id)) {
+                    combinedList.add(it)   
+                }
+            }            
+        }
+        render combinedList as JSON
+    }
+    
     def listNonBaseLayersAsJson = {
         
         def combinedList = []

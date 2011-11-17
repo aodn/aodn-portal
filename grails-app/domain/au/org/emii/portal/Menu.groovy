@@ -12,7 +12,6 @@ class Menu {
     }
 
     
-
     static constraints = {
         title(
             nullable:false,

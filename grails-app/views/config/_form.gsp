@@ -42,10 +42,19 @@
                             <g:textField name="initialBbox" maxlength="50" value="${configInstance?.initialBbox}" /> <font class="hint">(left,bottom,right,top)</font>
                                 </td>
                             </tr>
-                        
+    
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="defaultMenu"><g:message code="config.defaultMenu.label" default="Default Menu" /></label>
+                                    <label for="baselayerMenu"><g:message code="config.contributorMenu.label" default="Default Base Layer Menu" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'baselayerMenu', 'errors')}">
+                                    <g:select name="baselayerMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.baselayerMenu?.id}"  />
+                                    <font class="hint"></font>
+                                </td>
+                            </tr>                       
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="defaultMenu"><g:message code="config.defaultMenu.label" default="Default Layers Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultMenu', 'errors')}">
                                     <g:select name="defaultMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.defaultMenu?.id}"  />
@@ -58,8 +67,10 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'contributorMenu', 'errors')}">
                                     <g:select name="contributorMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.contributorMenu?.id}"  />
+                                    <font class="hint">(not utilised)</font>
                                 </td>
                             </tr>
+
 
                             <tr class="prop">
                                 <td valign="top" class="name">

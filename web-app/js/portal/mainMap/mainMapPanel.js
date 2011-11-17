@@ -67,7 +67,7 @@ function initMap()  {
     //map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
     
-     //grab all of the base layers from the database!
+     // baseLayerList has layers from config
      for(var i = 0; i < baseLayerList.length; i++)
      {
         map.addLayer(baseLayerList[i]);
@@ -259,6 +259,33 @@ function setToolbarItems() {
 
   
 
+
+}
+
+// creates an array of openlayers layers. add to map latter
+function setBaseLayers(config) {
+        
+    var blm = Ext.util.JSON.decode(config.baselayerList);
+    //console.log(blm);
+    
+    baseLayerList = new Array();
+    
+    for(var i = 0; i < blm.length; i++){        
+ 
+        var l = new OpenLayers.Layer.WMS(
+            blm[i].name,
+            blm[i].server.uri,
+            {
+                layers: blm[i].layers
+            },
+            {
+                wrapDateLine: true,
+                transitionEffect: 'resize',
+                isBaseLayer: true
+            });
+        baseLayerList.push(l);    
+        
+    }
 
 }
 

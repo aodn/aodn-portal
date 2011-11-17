@@ -19,12 +19,15 @@
 Ext.ns('Example');
 Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
-var jsonLayers = '/Portal2/layer/listNonBaseLayersAsJson/';
+
 var tree; 
 var theGrid;
 var theGridStore;
 
-Ext.onReady(function(){
+var jsonLayers = '/Portal2/layer/listLayersAsJson'
+
+function createGrid(layerType){
+    
     var reader = new Ext.data.JsonReader({
         idProperty: '',
         root: '',
@@ -32,11 +35,11 @@ Ext.onReady(function(){
                 { name:'id'}
                 ,{name:'name'}
                 ,{name:'layers'} 
-                ,{name:'server'}                
-                ]//,
-        //remoteGroup: true // I'm not sure what this does. It's not in the Docs.
+                ,{name:'server'} 
+                ,{name:'isBaseLayer'}                
+                ]
     })
-   //theGridStore = new Ext.data.GroupingStore({
+    
    theGridStore = new Ext.data.Store({
                 //groupField: 'server',
                 url: jsonLayers,
@@ -69,6 +72,11 @@ Ext.onReady(function(){
                 header:"WMS Server Layer Name",
                 sortable:true,
                 dataIndex:'layers'
+            },
+            {
+                header:"Base Layer",
+                sortable:true,
+                dataIndex:'isBaseLayer'
             }],
         
             viewConfig:{
@@ -93,7 +101,7 @@ Ext.onReady(function(){
     });
     
     
-});
+};
 
 
 
@@ -102,6 +110,9 @@ function initMenu(menu) {
     
     // initialize QuickTips
     Ext.QuickTips.init();
+    
+    createGrid(false); // create non baselayer picker
+    
     if (menu) {
         //jsonLayers = jsonLayers + "&id=" + menu.id
         setupgrid2treedrag(menu); 
@@ -400,7 +411,7 @@ function rightClickMenu(node){
 
 
 function searchGrid() {
-    //setting up the form 
+    
     var searchForm = new Ext.FormPanel({
         frame: true, 
         padding: 20,
@@ -443,7 +454,10 @@ function searchGrid() {
 
     function loadGrid() {
         var phrase = searchForm.getForm().findField('phrase').getValue();
-        theGridStore.load({params:{'phrase': phrase }});
+        theGridStore.load({
+            params:{'phrase': phrase }
+        });
+        theGrid.doLayout();
     }
        
     return searchForm;
