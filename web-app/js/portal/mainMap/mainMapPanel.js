@@ -102,15 +102,13 @@ function initMap()  {
     var mapToolbar=  new Ext.Toolbar({
                 // shadow: false,
                 id: 'maptools',
-                height: 28,
+                height: 35,
                 width:'100%',
                 // ,floating: true,
                 cls:'semiTransparent noborder',
                 overCls: "fullTransparency",
                 unstyled: true//,  
                 //items: setToolbarItems()
-        
-   
                
             });
      // stops the click bubbling to a getFeatureInfo request on the map
@@ -152,7 +150,7 @@ function initMap()  {
     mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
 
     mapPanel.add(mapLinks);
-    mapLinks.setPosition(1,0);
+    mapLinks.setPosition(1,0); // override with css latter
 
 
     // Controll to get feature info or pop up
