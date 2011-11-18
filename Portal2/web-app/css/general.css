@@ -3,6 +3,13 @@
     font: 11px arial,tahoma,helvetica,sans-serif;
     background-color: #34546E;    
 }
+/*
+    map while loading
+*/
+.olMapViewport {
+    background-color: #34546E;
+}
+
 
 /* the main tabPanel for the portal */
 .mainTabPanelHeader .x-tab-strip-wrap 
@@ -13,6 +20,7 @@
 #centerTabPanel {
     border: 2px solid #eee;
     border-width: 2px 4px 4px 2px;
+    background-color: whitesmoke;
 }
 
 
@@ -38,9 +46,6 @@ body {
     float: left;
 }
 
-#centerTabPanel, map {
-    background-color: whitesmoke;
-}
 
 .footer {
     background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;
@@ -50,10 +55,7 @@ body {
 #mapLinks {
     top: auto! important;
     bottom: 0px! important;
-    z-index: 1000;
-}
-.olControlScaleLine {
-    bottom: 3px! important;
+    z-index: 900! important;
 }
 
 
@@ -371,6 +373,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     border: 1px 1px 0 0;
     background-color:#3c668d;
     opacity: 0.0;
+    filter: alpha(opacity = 0);
 }
 
 
@@ -381,6 +384,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     background: inherit! important;
     background-color:#3c668d! important;
     opacity: 0.7;
+    filter: alpha(opacity = 70);
     color: white;
 }
 .semiTransparent button {
@@ -393,6 +397,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     background: inherit! important;
     background-color:white! important; 
     opacity: 0.8! important;
+    filter: alpha(opacity = 80);
 }
 
 .fullTransparency .x-item-disabled * {
@@ -515,12 +520,18 @@ p.important {
     padding: 2px 10px;
 }
 
-
+/* openlayers */
 .olControlPanPanel div {
     margin-top: 45px;
 }
-
-/* Overview Map wigit */
+.olControlScaleLine {
+    bottom: 3px! important;
+}
+div.olControlMousePosition {
+    bottom: 5px! important;
+    left: 120px;
+    right:auto! important;
+}
 .olControlOverviewMapElement {
 	background-color: #34546E! important;
 }
@@ -528,15 +539,6 @@ p.important {
 .olControlLayerSwitcher .layersDiv {
     background-color: #34546E! important;
 }
-
-.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
-	background-color: transparent;
-}
-a.ygtvlabel:hover {
-	text-decoration:underline;
-}
-
- 
 div.olControlScaleLineBottom {
 	margin-top: -1;
 }
@@ -554,7 +556,14 @@ float: left;
 
 
 
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
+	background-color: transparent;
+}
+a.ygtvlabel:hover {
+	text-decoration:underline;
+}
 
+ 
 
 /*
 JQUERY AUTO COMPLETE
@@ -598,27 +607,13 @@ JQUERY AUTO COMPLETE
 .ac_loading {
 	background: white url('indicator.gif') right center no-repeat;
 }
-/*
-.floatingDetailsPanel {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    border-radius: 6px;
-    box-shadow: 3px 3px 5px 0 #666;
-    opacity: 0.5;
-}
-.floatingDetailsPanel-header-text {
-    margin-right: 20px;
-}
-.floatingDetailsPanelContent {
-    margin: 10px; 
-}
-*/
+
 
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
 
-#detailsPanel {z-index: 900 !important} 
+#detailsPanel {z-index: 1200 !important} 
 #mapOptions {
     margin-right: 3px;
     margin-bottom: 3px;
