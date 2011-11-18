@@ -35,16 +35,16 @@ class ProxyController {
                 }
                 catch (Exception e) {                    
                     log.debug "Exception occurred: $e"
-                    //render text: "An error occurred making request to $targetUrl", status: 500
+                    render text: "An error occurred making request to $targetUrl", status: 500
                 }
             }
             else {
                 log.error "Proxy: The url ${params.url} was not allowed"
-                //render text: "Host '${targetUrl.getHost()}' not allowed", contentType: "text/html", encoding: "UTF-8"
+                render text: "Host '${targetUrl.getHost()}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
             }
         }
         else {
-            render( text: "No URL supplied", contentType: "text/html", encoding: "UTF-8" )
+            render( text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500 )
         }
     }
 }
