@@ -2,13 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.*
 import grails.converters.deep.JSON
-//import org.codehaus.groovy.grails.web.json.*;
 import groovyx.net.http.*
-//import org.codehaus.groovy.grails.web.converters.marshaller.json.GroovyBeanMarshaller
-//import org.codehaus.groovy.grails.web.converters.marshaller.ClosureOjectMarshaller
-
-//import grails.json.ConfigClassJSONMarshaller
-
 
     
 class ConfigController {
@@ -21,9 +15,6 @@ class ConfigController {
     }
     
     
-    private getConfigAsJSON = {
-        return (Config.activeInstance() as JSON).toString()
-    }
     
     def list = {
         
@@ -41,9 +32,13 @@ class ConfigController {
             baselayerJson.each() {
                 def res = (Layer.get(it.grailsLayerId) as JSON).toString()
                 baselayerList.add(JSON.parse(res))
-            }            
+            }  
             
-            def instanceAsGenericObj = JSON.parse(getConfigAsJSON())
+            // get instance now with all 'deep' details as a JSON string
+            def x = (Config.activeInstance() as JSON).toString()
+            // convert back to an generic object so we can add what we want
+            def instanceAsGenericObj = JSON.parse(x)
+            // add the fully expanded baselayer menu as layers
             instanceAsGenericObj['baselayerList'] = baselayerList
             
             
