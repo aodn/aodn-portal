@@ -9,15 +9,24 @@ class ProxyController {
         if ( params.url ) {
 
             def validHost = false
+            def allowableServers = []
+            def conf = Config.list()
             
             // Get the domain name from the target uri
             def targetUrl = params.url.toURL()
-            // allow only hosts we consider valid. from our list of wms servers
             
+            // allow hosts we consider valid. from our list of wms servers first        
             Server.list().each {
-                if (it.uri.contains( targetUrl.getHost())) {
+                allowableServers.add(it.uri)                              
+            }
+            // add the current mest url
+            println conf
+            allowableServers.add(conf[0].catalogUrl)
+            println allowableServers
+            
+            allowableServers.each {
+                if (it.contains( targetUrl.getHost())) {
                     validHost = true 
-                    println validHost
                 }                
             }
             
@@ -29,7 +38,6 @@ class ProxyController {
                                                      : "text/html"
                 
                 //log.debug "TargetUrl: $targetUrl (expected type: $format)"
-              
                 try {
                     render( text: targetUrl.text, contentType: format, encoding: "UTF-8" )
                 }
