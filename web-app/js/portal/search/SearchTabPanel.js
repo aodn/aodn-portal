@@ -3,8 +3,6 @@ Ext.namespace('Portal.search');
 Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    layout:'border',
    cls: 'p-search',
-   //TODO: create config value for map layer search filter?
-   searchDefaults: {E_protocol: 'OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map'},
    title: 'Search',
    HITS_PER_PAGE: 15,
 
@@ -13,7 +11,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       this.resultsStore = GeoNetwork.data.MetadataResultsStore();
       this.catalogue =  new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
       this.catalogue.metadataStore = this.resultsStore;
-   
+      this.catalogue.services.xmlSearch = this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'xml.search';
+
+      this.searchDefaults = {E_protocol: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')};
+
       this.items = [{
 	         region: 'east',
 	         collapseMode: 'mini',
@@ -101,7 +102,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 
       // Pre-populate refinement panel
-      this.runSearch(["summaryOnly=true", "protocol=" + escape("OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map")], 1, false);
+      this.runSearch(["summaryOnly=true", "protocol=" + escape(Portal.app.config.metadataLayerProtocols.split('\n').join(' or '))], 1, false);
       // Update paging toolbar manually for the moment 
       this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
    },
