@@ -4,7 +4,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
-   //LAYER_PROTOCOLS: ['OGC:WMS-1.1.1-http-get-map', 'OGC:WMS-1.3.0-http-get-map'],
    
    initComponent: function() {
      var config = {

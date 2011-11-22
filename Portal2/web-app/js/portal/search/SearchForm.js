@@ -12,8 +12,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    footerStyle: 'padding:5px 0px 10px 10px',
    autoScroll: true,
    
-   LAYER_FILTER: "OGC:WMS-1.1.1-http-get-map or OGC:WMS-1.3.0-http-get-map",
-
    initComponent: function() {
       var opensearchSuggest = Portal.app.config.catalogUrl + '/srv/en/main.search.suggest';
    
@@ -92,7 +90,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 	                    	name: 'protocol',
 	                    	xtype: 'checkbox',
 	                    	checked: true,
-	                    	getValue: function() {return this.checked?this.LAYER_FILTER:"";},
+	                    	getValue: function() {
+	                    	  return this.checked?Portal.app.config.metadataLayerProtocols.split('\n').join(' or '):"";
+	                    	},
 	                    	width: 350
 	                   }]
                   ]
@@ -172,9 +172,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       combo.clearValue();
       this.refreshDisplay();
 
-      //TODO: must be a better way to do this
       if (field.xtype == 'portal.search.field.boundingbox') {
-         comp.items.itemAt(0).items.itemAt(0).setBox(this.bounds);
+        this.searchFields.findByType('portal.search.field.boundingbox')[0].setBox(this.bounds);
       };
 
    },
@@ -238,7 +237,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       }
       
       // default is to show layers only
-      if (!protocolFilter) searchFilters.push({name: "protocol", value: this.LAYER_FILTER});
+      if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')});
       
       return searchFilters;
    }    
