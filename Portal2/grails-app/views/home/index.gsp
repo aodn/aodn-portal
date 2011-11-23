@@ -35,7 +35,6 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/lang/en.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/Catalogue.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/util/SearchTools.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/MetadataResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
@@ -49,6 +48,7 @@
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js')}"   type="text/javascript"></script>   
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/RefinementList.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/FacetStore.js')}"   type="text/javascript"></script>
