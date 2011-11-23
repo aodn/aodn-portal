@@ -2,7 +2,7 @@ package au.org.emii.portal
 
 import org.codehaus.groovy.grails.web.mapping.UrlMapping;
 import org.cyberneko.html.parsers.SAXParser
-
+ 
 class CheckServerForBrokenLinksJob {
 	// Perform getFeatureInfo for each layer at the server, scan for hyperlinks and check each one.
 	// Only supports WMS 1.1.1 thus far.
