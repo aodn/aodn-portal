@@ -240,22 +240,6 @@
       <version>1.5.3</version>
     </dependency>
     
-    <dependency>
-	    <groupId>net.sourceforge.nekohtml</groupId>
-	    <artifactId>nekohtml</artifactId>
-	    <version>1.9.15</version>
-	    <exclusions>
-			<exclusion>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			</exclusion>
-			<exclusion>
-			<groupId>xerces</groupId>
-			<artifactId>xmlParserAPIs</artifactId>
-			</exclusion>
-		</exclusions>
-	</dependency>
-    
   </dependencies>
   
   <dependencyManagement>
