@@ -8,10 +8,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
    initComponent: function() {     
       this.facetStore = new Portal.search.data.FacetStore();
-      this.resultsStore = GeoNetwork.data.MetadataResultsStore();
+      this.resultsStore = Portal.data.CatalogResultsStore();
       this.catalogue =  new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
       this.catalogue.metadataStore = this.resultsStore;
-      this.catalogue.services.xmlSearch = this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'xml.search';
+      this.catalogue.services.xmlSearch = this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'imos.xml.search';
 
       this.searchDefaults = {E_protocol: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')};
 
