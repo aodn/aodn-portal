@@ -18,6 +18,8 @@ class Config {
     Date motdStart
     Date motdEnd
     Boolean enableMOTD  //toggle
+    Integer popupWidth
+    Integer popupHeight
     Integer westWidth
     Integer headerHeight
     Integer footerHeight
@@ -54,6 +56,8 @@ class Config {
         headerHeight()
         footerHeight()
         activeLayersHeight()
+        popupWidth()
+        popupHeight()
         westWidth()
         defaultLayers(nullable:true)
         downloadCartFilename(blank: false)

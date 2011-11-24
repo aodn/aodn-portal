@@ -13,7 +13,7 @@ class LayerController {
 
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 500, 500)
         if(params.type == 'JSON') {
             render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
         }
@@ -91,7 +91,8 @@ class LayerController {
             render layerInstance as JSON
         }
         else {
-            render  ""
+            log.error "Layer: The layerId does not exist"
+            render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
 

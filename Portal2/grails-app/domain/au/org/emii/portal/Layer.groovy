@@ -42,10 +42,10 @@ class Layer {
     }
 
     static constraints = {
-        name(size:5..225,unique:true)
+        name(size:5..225)
         keywords(nullable:true)
         disabled()
-        description(size:5..455,blank:false,unique:true)
+        description(size:5..455,blank:false)
         server()
         cache()
         cql(nullable:true)

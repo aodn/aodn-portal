@@ -273,14 +273,21 @@ function initMenusPanel(menu) {
 
 
 }
+function checkDefaultMenuTreeNodeStatus(node) {
+    
+    // called when activePanel tree nodes are shown/opened
+    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
+        setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
+    });
 
+    
+}
 function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     // enable all menu items that correspond. 
-    // There can be more than one in the menu
-    function checkNode(node)  {          
-        
+    // There can be more than one in the menu     
+    function checkNode(node)  {        
         if(node.attributes.grailsLayerId == grailsLayerId) {          
-            (!bool) ? node.disable():  node.enable()        
+            (!bool) ? node.disable():  node.enable();
         }               
         Ext.each(node.childNodes, checkNode);
     }
@@ -288,19 +295,15 @@ function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     
 }
 
-function checkDefaultMenuTreeNodeStatus(node) {
-    
-    // called when activePanel tree nodes are opened
-    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
-        setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
-    });
 
-    
-}
 
 
 function removeActivePanelLayer() {
     
+    // removelayer event should cleanup for us
+    mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
+    
+    /*
     // Remove layer from active layers and make matching default menu item active
     // check if grailsLayerId exists. layer may have been added by user defined discovery
     var layerId = activePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
@@ -319,9 +322,11 @@ function removeActivePanelLayer() {
         }        
         
     }
-    mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
+    */
+    
     
 }
+
 
 
 function visibilityActivePanelLayer() {

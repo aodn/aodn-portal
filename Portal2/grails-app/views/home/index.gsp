@@ -1,13 +1,19 @@
 <html>
 
 <head>
-
+<meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 
 
 
+<!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
+<!-- User extensions -->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
+<!-- Portal classes-->
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
  
 <!-- Open Layers-->
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
@@ -22,12 +28,6 @@
 <script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}"  type="text/javascript"></script>
 
 
-<!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
-<!-- User extensions -->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
-<!-- Portal classes-->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
 
 <!-- GeoNetwork - required classes only -->
 <script src="${resource(dir:'js',file:'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}" type="text/javascript"></script>
@@ -85,11 +85,13 @@
 </head>
 
 <body>
-  
+    
   <g:render template="/mainPortalHeader" model="['showLinks':true,'showLogin':true,'configInstance':configInstance]"></g:render>
   
-  <div id="loader" style="position:absolute; top:50%; left:50%; z-index: 99;" style="display: none;">
-    <!--img src="images/spinner large.gif" alt="Loading..." /-->
+<div id="loader" style="position:absolute; top:50%; left:35%; z-index: 100000;">
+  <p>Page Loading ....</p>
+  <div id="jsloader" style="position:relative;left:120px;top:-7px" ></div>
+    <!--img src="images/spinnerLarge.gif" alt="Loading..." /-->
   </div>
   
 </body>

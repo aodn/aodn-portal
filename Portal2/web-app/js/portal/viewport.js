@@ -20,8 +20,9 @@ var defaultMenuTree;
 var defaultLayers; // from the config
 var defaultMenu; // from the config
 var demonstrationContributorTree;
-var baseLayerList; // array of baselayers used in map and baselayer picker
+//var baseLayerList; // array of baselayers used in map and baselayer picker
 var topMenuPanel;
+var spinnerForLayerloading, spinnerForJSONloading;
 
 // COOKIE CAUSES PROBLEMS
 // set for individual components?
@@ -35,7 +36,32 @@ Ext.ns('Portal');
 
 Portal.app = {
     init: function() {
-       OpenLayers.ProxyHost = proxyURL;
+   	//Set open layers proxyhost
+        OpenLayers.ProxyHost = proxyURL;
+        
+        // javascript spinner
+        // create here and there can only be one
+        spinnerForLayerloading = new Spinner({
+            lines: 12, // The number of lines to draw
+            length: 16, // The length of each line
+            width: 4, // The line thickness
+            radius: 12, // The radius of the inner circle
+            color: '#CCC', // #rgb or #rrggbb
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: true // Whether to render a shadow
+        });
+        spinnerForJSONloading = new Spinner({
+            lines: 12, // The number of lines to draw
+            length: 6, // The length of each line
+            width: 2, // The line thickness
+            radius: 12, // The radius of the inner circle
+            color: '#CCC', // #rgb or #rrggbb
+            speed: 1, // Rounds per second
+            trail: 40, // Afterglow percentage
+            shadow: true // Whether to render a shadow
+        });
+
 
         Ext.Ajax.request({
             url: 'config/list?type=JSON',
@@ -84,8 +110,8 @@ Portal.app = {
 	                    
                 // CAREFULL HERE WITH THE ORDERING!!!
                 initDetailsPanel();
-                setBaseLayers(this.config); // build baselayers into baseLayerList before map creation
                 initMap();
+                //addBaseLayers(); // build baselayers into baseLayerList before map render
                 defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
                 //loadDefaultMenu(defaultMenu);
                 initMenusPanel(defaultMenu);
