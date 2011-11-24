@@ -12,9 +12,6 @@ function initMap()  {
         this.src="img/layer_error.gif";
     }
 
-
-    
-
     
     var controls= [];
     
@@ -48,16 +45,16 @@ function initMap()  {
                 resolutions: [  0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625
                 , 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125
                 ]
-                }
-            })
+            }
+        })
         //new OpenLayers.Control.ZoomPanel()
-    );
+        );
     var options = {
-         controls: controls,
-         displayProjection: new OpenLayers.Projection("EPSG:4326"),
-         prettyStateKeys: true, // for pretty permalinks,
-         resolutions : [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-     };
+        controls: controls,
+        displayProjection: new OpenLayers.Projection("EPSG:4326"),
+        prettyStateKeys: true, // for pretty permalinks,
+        resolutions : [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+    };
 
 
     //make the map
@@ -66,71 +63,71 @@ function initMap()  {
     map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
     //map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
-    
-     // baseLayerList has layers from config
-     for(var i = 0; i < baseLayerList.length; i++)
-     {
-        map.addLayer(baseLayerList[i]);
-     }
-    
 
+    addBaseLayers(map);  // add baselayers to map before creation of the mapPanel  
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
-            id: "map",
-            border: false,
-            map: map,
-            region: "center",
-            split: true,
-            // tbar: setToolbarItems(),
-            header: false,
-            //title: 'Map panel',
-            items: [{
-                xtype: "gx_zoomslider",
-                aggressive: false,
-                vertical: true,
-                height: 100,
-                x: 12,
-                y: 120,
-                plugins: new GeoExt.ZoomSliderTip()
-            }]
-       });
+        id: "map",
+        border: false,
+        map: map,
+        region: "center",
+        split: true,
+        // tbar: setToolbarItems(),
+        header: false,
+        //title: 'Map panel',
+        items: [{
+            xtype: "gx_zoomslider",
+            aggressive: false,
+            vertical: true,
+            height: 100,
+            x: 12,
+            y: 120,
+            plugins: new GeoExt.ZoomSliderTip()
+        }]
+    });
+          
        
-           
-       
-     // mapPanel.removeListener('click', this.onClick, this);
+    // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
-                // shadow: false,
-                id: 'maptools',
-                height: 35,
-                width:'100%',
-                // ,floating: true,
-                cls:'semiTransparent noborder',
-                overCls: "fullTransparency",
-                unstyled: true//,  
-                //items: setToolbarItems()
+        // shadow: false,
+        id: 'maptools',
+        height: 35,
+        width:'100%',
+        // ,floating: true,
+        cls:'semiTransparent noborder',
+        overCls: "fullTransparency",
+        unstyled: true//,  
+    //items: setToolbarItems()
                
-            });
-     // stops the click bubbling to a getFeatureInfo request on the map
-     mapToolbar.on('click', function(ev, target){
+    });
+    // stops the click bubbling to a getFeatureInfo request on the map
+    mapToolbar.on('click', function(ev, target){
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
 
-     // put the toobar in a panel as the toolbar wont float
+    // put the toobar in a panel as the toolbar wont float
     var mapLinks=  new Ext.Panel({
-               id: "mapLinks"
-               ,shadow: false
-               ,width:'100%'
-               ,closeAction: 'hide'
-               ,floating: true
-               ,unstyled: true
-               ,closeable: true
-               //,listeners: NOT WORKING HERE
-               ,items: mapToolbar
-            });
-     // stops the click bubbling to a getFeatureInfo request on the map
-     mapLinks.on('click', function(ev, target){
+        id: "mapLinks"
+        ,
+        shadow: false
+        ,
+        width:'100%'
+        ,
+        closeAction: 'hide'
+        ,
+        floating: true
+        ,
+        unstyled: true
+        ,
+        closeable: true
+        //,listeners: NOT WORKING HERE
+        ,
+        items: mapToolbar
+    });
+    // stops the click bubbling to a getFeatureInfo request on the map
+    mapLinks.on('click', function(ev, target){
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
@@ -167,6 +164,23 @@ function initMap()  {
     // limit to changes in zoom. moveend is too onerous
     mapPanel.map.events.register("moveend" , map, function (e) {        
         redrawAnimatedLayers();
+    });
+    
+    // When a layer is removed we want to add it back to menus
+    mapPanel.map.events.register("removelayer" , map, function (e) {  
+        
+        var layer = e.layer;
+        
+        // remove from our own array of layers
+        activeLayers.pop(getUniqueLayerId(layer));   // or this? activeLayers[uniqueLayerId].destroy();  
+        
+        // if its got a grails layer id then its in the menu unless it came from the search
+        if (layer.grailsLayerId != undefined) {
+            setDefaultMenuTreeNodeStatus(layer.grailsLayerId,true); // make matching menu items active
+        }
+        
+        
+          
     });
 
     mapPanel.map.addControl(clickControl);
@@ -237,59 +251,31 @@ function setToolbarItems() {
         text: "History",
         menu: new Ext.menu.Menu({
             items: [
-                // Nav
-                //new Ext.menu.CheckItem(actions["previous"]),
-                // Select control
-                //new Ext.menu.CheckItem(actions["select"]),
-                // Navigation history control
-                actions["previous"],
-                actions["next"]
+            // Nav
+            //new Ext.menu.CheckItem(actions["previous"]),
+            // Select control
+            //new Ext.menu.CheckItem(actions["select"]),
+            // Navigation history control
+            actions["previous"],
+            actions["next"]
             ]
         })
         
     });
     
 
-    
-    
 
-  return toolbarItems;
+    return toolbarItems;
 
   
 
 
 }
 
-// creates an array of openlayers layers. add to map latter
-function setBaseLayers(config) {
-        
-    var blm = Ext.util.JSON.decode(config.baselayerList);
-    //console.log(blm);
-    
-    baseLayerList = new Array();
-    
-    for(var i = 0; i < blm.length; i++){        
- 
-        var l = new OpenLayers.Layer.WMS(
-            blm[i].name,
-            blm[i].server.uri,
-            {
-                layers: blm[i].layers
-            },
-            {
-                wrapDateLine: true,
-                transitionEffect: 'resize',
-                isBaseLayer: true
-            });
-        baseLayerList.push(l);    
-        
-    }
-
-}
 
 /*
  * 
- * This is the add layer method for all layers apart form those added
+ * This is the add layer method for all overlay layers apart form those added
  * by user defined WMS server discoveries.
  * 
  * 
@@ -298,105 +284,80 @@ function addGrailsLayer(grailsLayerId) {
     
     Ext.Ajax.request({
 
-            url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
-            success: function(resp){
-                var dl = Ext.util.JSON.decode(resp.responseText);  
-
-                
-               /*
-                * Buffer: tiles around the viewport. 1 is enough
-                * Gutter: images wider and taller than the tile size by a value of 2 x gutter
-                        NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
-                        Keep as zero till fixed 
-                */ 
-               
-               /*
-                var params = {
-                    layers: dl.layers,
-                    transparent: true,
-                    format: dl.imageFormat,
-                    queryable: dl.queryable,
-                    buffer: 1, 
-                    gutter: 0
-                }
-                // opacity was stored as a percent 0-100
-                var opacity =  Math.round((dl.opacity / 100)*10)/10;
-                
-                
-                if(dl.server.type == "NCWMS-1.3.0") {
-                    params.yx = true; // fix for the wms standards war
-                }
-                if(dl.cql != "") {
-                    params.CQL_FILTER = dl.cql;
-                }  
-                // may be null from database
-                if(dl.styles == "") {
-                    params.styles = "";
-                }
-                
-                
-                
-                var layer = new OpenLayers.Layer.WMS(
-                    dl.name,
-                    dl.server.uri,
-                    params,
-                    {
-                        isBaseLayer: dl.isBaseLayer,
-                        wrapDateLine: true,   
-                        opacity: opacity,
-                        transitionEffect: 'resize'
-                    });
-                
-                
-                //
-                // extra info to keep
-                layer.grailsLayerId = grailsLayerId; 
-                layer.server= dl.server;
-                
-                
-                // store the OpenLayers layer so we can retreive it latter
-                activeLayers[getUniqueLayerId(layer)] = layer;
-                
-                mapPanel.map.addLayer(layer);
-                
-                // get the extras
-                if(layer.server.type.search("NCWMS") > -1) {
-                    // get ncWMS Json metadata info for animation and style switching
-                    getLayerMetadata(layer);
-                } 
-                else {
-                    //getLayerBbox();
-                }
-                
-                */
-
-                addMainMapLayer( dl );
+        url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
+        success: function(resp){
+            var dl = Ext.util.JSON.decode(resp.responseText);  
+            if (dl != "") {
+               addMainMapLayer( dl );                
             }
-        });
+            
+        },
+        failure: function(resp){
+            console.log("ERROR: layer/showLayerByItsId?layerId=" + grailsLayerId + " didnt find layer details");
+        }
+    });
         
         
 }
 
-function getVersionString(layer) {
-        var versionStr;
-        if (layer.server.type.indexOf("1.3.0") != -1) {
-                versionStr = "VERSION=1.3.0&CRS=EPSG%3A4326";
-        } else {
-                versionStr = "VERSION=1.1.1&SRS=EPSG%3A4326";
-        }
-        return versionStr;
+function getWMSVersionString(layer) {
+    
+    // list needs to match Server.groovy
+    var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"] 
+    var version;
+    for(var i = 0; i < versionList.length; i++){  
+        if (layer.server.type.indexOf(versionList[i]) != -1) {
+            version = versionList[i];
+        } 
+    }
+    return version;
                 
 }
 
-function removeLayer(uniqueLayerId) {
-       
-    if (activeLayers[uniqueLayerId] != undefined) {
-        mapPanel.map.removeLayer(activeLayers[uniqueLayerId]);    
-        activeLayers.pop(uniqueLayerId);        
+function layerSwap(newLayer,oldLayer) { 
+    
+    // exchange new for old  
+    var layerLevelIndex = mapPanel.map.getLayerIndex(oldLayer);
+    
+    var oldLayerId = getUniqueLayerId(oldLayer);   
+    if (activeLayers[oldLayerId] != undefined) {
+        mapPanel.map.removeLayer(activeLayers[oldLayerId]);    
+        // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
+        activeLayers[getUniqueLayerId(newLayer)] = newLayer; 
+
+        mapPanel.map.addLayer(newLayer);     
+        mapPanel.map.setLayerIndex(newLayer,layerLevelIndex);  
     } 
     else {
-        console.log("Error: trying to remove a layer that is undefined");
+        console.log("ERROR: trying to remove a layer that is undefined");
     }
+
+}
+
+
+
+function removeAllLayers()   {  
+    
+    var allLayers = [];
+    for(var i = 0; i < mapPanel.map.layers.length; i++)
+    {
+        if(!mapPanel.map.layers[i].isBaseLayer)
+        {
+            allLayers.push(getUniqueLayerId(mapPanel.map.layers[i]));            
+        }
+    }
+    // remove
+    for(var j = 0; j < allLayers.length; j++)
+    {     
+        activeLayers[allLayers[j]].destroy();         
+    }
+    // no layers- no details needed
+    closeNHideDetailsPanel();
+    // cleanup activeLayers?? or just start again?
+    activeLayers = [];
+    
+    
+    
 }
 
 function processBounds(openlayersBounds) {
@@ -478,8 +439,16 @@ function addNCWMSLayer(currentLayer) {
         FORMAT: "image/gif"
     });
          
+    //var versionString;
+    //var v = getWMSVersion(layer);
+    //if (v == "1.3.0") {
+    //    versionString =  "VERSION=1.3.0&CRS=EPSG%3A4326";
+    //}
+    //else {
+    //    versionString = "VERSION=" + v + "&SRS=EPSG%3A4326";
+    //}
     
-    newUrl = newUrl + "&" + getVersionString(layer);
+    //newUrl = newUrl + "&" + versionString;
     
     
     // params.times = array times to animate
@@ -497,9 +466,9 @@ function addNCWMSLayer(currentLayer) {
             maxResolution: mapPanel.map.baseLayer.maxResolution,
             minResolution: mapPanel.map.baseLayer.minResolution,
             resolutions: mapPanel.map.baseLayer.resolutions
-            // baseUri: 
-            // timeSeriesPlotUri:
-            // featureInfoResponseType
+        // baseUri: 
+        // timeSeriesPlotUri:
+        // featureInfoResponseType
         });  
 
     /* no params for animated layers
@@ -534,18 +503,7 @@ function addNCWMSLayer(currentLayer) {
     
 }
 
-function layerSwap(newLayer,oldLayer) { 
-    
-    // exchange new for old  
-    var layerLevelIndex = mapPanel.map.getLayerIndex(oldLayer);
-    
-    removeLayer(getUniqueLayerId(oldLayer));
-    // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
-    activeLayers[getUniqueLayerId(newLayer)] = newLayer; 
 
-    mapPanel.map.addLayer(newLayer);     
-    mapPanel.map.setLayerIndex(newLayer,layerLevelIndex);
-}
 
 function stopgetTimePeriod(layer) {
     var wmslayer;
@@ -565,94 +523,134 @@ function stopgetTimePeriod(layer) {
     }
 }
 
-/*
- * 
- * This is the internal add layer method used to add all layers
- * 
- */
-function addMainMapLayer(dl) {    
-
+// create an openlayer wms layer baselayer or overlay layer
+// not adding to a map here
+function createLayer(dl) {
      /*
       * Buffer: tiles around the viewport. 1 is enough
       * Gutter: images wider and taller than the tile size by a value of 2 x gutter
               NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
               Keep as zero till fixed 
-      */               
-      var params = {
-          layers: dl.layers,
-          transparent: true,
-          buffer: 1, 
-          gutter: 0
-      };
+    */
+    var params = {
+        layers: dl.layers,
+        transparent: 'TRUE',
+        buffer: 1, 
+        gutter: 0
+    };
+    var ver = getWMSVersionString(dl);
+    params.version = ver;
+    
       
-      if (dl.imageFormat) {
-      	params.format = dl.imageFormat;
-      }
+    if (dl.imageFormat) {
+        params.format = dl.imageFormat;
+    }  
+    if(dl.cql != "") {
+        params.CQL_FILTER = dl.cql;
+    }
+    if (dl.queryable) {
+        params.queryable = dl.queryable;
+    }      
+    // may be null from database
+    if(dl.styles == "") {
+        params.styles = "";
+    }
+    
+          
+    // opacity was stored as a percent 0-100
+    var opacity =  Math.round((dl.opacity / 100)*10)/10;
+    var options =           {
+        wrapDateLine: true,   
+        opacity: opacity,
+        //version : getWMSVersionString(dl),
+        transitionEffect: 'resize'
+    };
 
-      if (dl.queryable) {
-      	params.queryable = dl.queryable;
-      }
-      
-      // opacity was stored as a percent 0-100
-      var opacity =  Math.round((dl.opacity / 100)*10)/10;
-      
-      if(dl.server.type == "NCWMS-1.3.0") {
-          params.yx = true; // fix for the wms standards war
-      }
-      
-      if(dl.cql != "") {
-          params.CQL_FILTER = dl.cql;
-      }
-      
-      // may be null from database
-      if(dl.styles == "") {
-          params.styles = "";
-      }
-      
-      var options =           {
-            wrapDateLine: true,   
-            opacity: opacity,
-            transitionEffect: 'resize'
-      };
+    if(dl.server.type == "NCWMS-1.3.0") {
+        options.yx = []; // fix for the wms standards war
+    }
+    if (dl.isBaselayer) {
+        options.isBaseLayer = dl.isBaseLayer;
+    }
 
-      if (dl.isBaselayer) {
-      	options.isBaseLayer = dl.isBaseLayer;
-      }
-
-      var layer = new OpenLayers.Layer.WMS(
-          dl.name,
-          dl.server.uri,
-          params,
-          options
-      );
-
-      
-      //
-      // extra info to keep
-      layer.grailsLayerId = dl.grailsLayerId; 
-      layer.server= dl.server;
-      layer.cql = dl.cql;
+    var layer = new OpenLayers.Layer.WMS(
+        dl.name,
+        dl.server.uri,
+        params,
+        options
+        );
+    
+    //
+    // extra info to keep
+    layer.grailsLayerId = dl.id; // grails layer id
+        console.log(dl.id);
+    layer.server= dl.server;
+    layer.cql = dl.cql;
       
     
-      // don't add layer twice 
-      if (layerAlreadyAdded(layer)) {
-      	Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
-      }
-      else {
+    // don't add layer twice 
+    if (layerAlreadyAdded(layer)) {
+        Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
+    }
+    else {
+        return layer;
+    }
+}
+
+
+
+// add baselayers to the map
+function addBaseLayers(map) {
+        
+    var blm = Ext.util.JSON.decode(Portal.app.config.baselayerList);
+    //console.log(blm);
+    
+    for(var i = 0; i < blm.length; i++){        
+ 
+        var layer = blm[i]
+        
+        // override these setting as they are now baselayers
+        // regardless of config settings
+        layer.isBaselayer = true;
+        layer.queryable   = false
+        
+        var wmsLayer = createLayer(layer);
+        
+        if (wmsLayer != undefined) {
+            map.addLayer(wmsLayer);
+        }
+        
+    }
+
+}
+/*
+ * 
+ * This is the internal add layer method used to add all overlay layers
+ * 
+ */
+function addMainMapLayer(dl) {    
+
+    var layer = createLayer(dl);
+
+    if (layer != undefined) {
           
-          registerLayer( layer );
+        registerLayer( layer );
           
-          mapPanel.map.addLayer(layer);
+        mapPanel.map.addLayer(layer);
           
-          if(dl.server.type.search("NCWMS") > -1) {
-              
-              // get ncWMS Json metadata info for animation and style switching
-              // update detailsPanel after Json request
-              getLayerMetadata(layer);
-          }
-          // store the OpenLayers layer so we can retreive it later
-          activeLayers[getUniqueLayerId(layer)] = layer;
-      }
+        if(dl.server.type.search("NCWMS") > -1) {
+            // get ncWMS Json metadata info for animation and style switching
+            // update detailsPanel after Json request
+            // timeout to reduce clientside processing on page load
+            setTimeout(function(){
+                getLayerMetadata(layer);
+            }, 3000 );
+        }
+        // store the OpenLayers layer so we can retreive it later
+        activeLayers[getUniqueLayerId(layer)] = layer;
+        
+    }
+   
       
 };
 
@@ -672,34 +670,34 @@ function getUniqueLayerId(layer){
 
 // return whether the layer has already been added to the map
 function layerAlreadyAdded(layer){
-	var previousLayer = activeLayers[getUniqueLayerId(layer)];
+    var previousLayer = activeLayers[getUniqueLayerId(layer)];
 	
-	if (previousLayer == undefined) return false;
+    if (previousLayer == undefined) return false;
 	
-   return mapPanel.map.getLayer(previousLayer.id) !== null;
+    return mapPanel.map.getLayer(previousLayer.id) !== null;
 }
 
 function getLayerMetadata(layer) {
         
     Ext.Ajax.request({
         
-            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
-            success: function(resp){
-                layer.metadata = Ext.util.JSON.decode(resp.responseText);
+        url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+        success: function(resp){
+            layer.metadata = Ext.util.JSON.decode(resp.responseText);
                 
-                // if this layer has been user selected before loading the metadata
-                // reload,  as the date picker details/ form  will be wrong at the very least!
-                if (selectedLayer != undefined) {   
-                   if (selectedLayer.id == layer.id) {
-                      updateDetailsPanel(layer); 
-                   }
+            // if this layer has been user selected before loading the metadata
+            // reload,  as the date picker details/ form  will be wrong at the very least!
+            if (selectedLayer != undefined) {   
+                if (selectedLayer.id == layer.id) {
+                    updateDetailsPanel(layer); 
                 }
+            }
                 
-            } 
+        } 
     });
     
     
-     // TIMESTEPS URI
+    // TIMESTEPS URI
     //http://obsidian:8080/ncWMS/wms?item=timesteps&layerName=67%2Fu&day=2006-09-19T00%3A00%3A00Z&request=GetMetadata
     // this is  timestrings we can use in the uri to control animation
     // based on timestepss
@@ -757,36 +755,9 @@ function setExtentLayer() {
 
 function loadDefaultLayers() {  
 
-        for(var i = 0; i < defaultLayers.length; i++)   {
+    for(var i = 0; i < defaultLayers.length; i++)   {
         addGrailsLayer(defaultLayers[i].id);   
         setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);        
     }     
 }
 
-
-function removeAllLayers()   {  
-    
-    var allLayers = [];
-    for(var i = 0; i < mapPanel.map.layers.length; i++)
-    {
-        if(!mapPanel.map.layers[i].isBaseLayer)
-        {
-            allLayers.push(getUniqueLayerId(mapPanel.map.layers[i]));            
-        }
-    }
-    // remove
-    for(var j = 0; j < allLayers.length; j++)
-    {
-        //var theLayer = activeLayers[allLayers[j]];
-        setDefaultMenuTreeNodeStatus(activeLayers[allLayers[j]].grailsLayerId,true);        
-        activeLayers[allLayers[j]].destroy(); 
-        
-    }
-    // no layers- no details needed
-    closeNHideDetailsPanel();
-    // cleanup activeLayers?? or just start again?
-    activeLayers = [];
-    
-    
-    
-}

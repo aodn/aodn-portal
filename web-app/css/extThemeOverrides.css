@@ -20,6 +20,19 @@
 .ext-el-mask, .x4-mask{
     background-color: #333333;
 }
+/* getfeatureinfo popup */
+.gx-popup .x-tab-panel-header {
+    border-width: 0px;
+    background-color: #F4F4F4;
+}
+.gx-popup .x-tab-panel-header ul.x-tab-strip-top {
+    background: none! important;
+    background-color: #F4F4F4! important;
+}
+
+.gx-popup .x-tab-panel-body {
+    border: none;
+}
    
 
 .x-panel-body {

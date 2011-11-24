@@ -7,7 +7,7 @@
     map while loading
 */
 .olMapViewport {
-    background-color: #34546E;
+    background-color: #7391AD;
 }
 
 
@@ -44,6 +44,13 @@ body {
 #logo {
     margin: 3px 5px;
     float: left;
+}
+
+#loader p {
+   color: white;
+   font-weight: bold;
+   font-size: 14px;
+   text-shadow: 2px 1px 3px #333333;
 }
 
 
@@ -93,7 +100,7 @@ body {
     outline: 0;
 }
 #freeChoiceLinks a:hover {
-    color: #15428B
+    color: #6A6A6A
 }
 #toplinks {
     color: white;
@@ -163,34 +170,34 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endCo
 
 
 h1 {
-    color: #15428B;
+    color: #6A6A6A;
     font-size: 20px;
     font-weight: bold;
 }
 
 h2 {
-    color: #15428B;
+    color: #6A6A6A;
     font-size: 16px;
     font-weight: bold;
 }
 h3 {
-    color: #15428B;
+    color: #6A6A6A;
     font-size: 14px;
     font-weight: bold;
     margin: 2px 0 ;
 }
 h4 {
-    color: #15428B;
+    color: #6A6A6A;
     font-size: 12px;
     margin: 2px 0px;
 }
 h5 {
-    color: #15428B;
+    color: #6A6A6A;
     font-size: 11px;
     margin: 2px 0 ;
 }
 h6 {
-    color: #15428B;
+    color: #6A6A6A;
     display: inline;
     font-size: 11px;
     margin: 2px 0 ;
@@ -407,23 +414,30 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     color: #333;
 }
 
+/* getFeatureInfo popup
+*/
 
+.popupHtml {
+    color:#6A6A6A;
+    font-weight: bold;
+    background-color: #F4F4F4; /*#F1F1F0;*/
+}
 
 .featureinfocontent {
     padding: 10px 3px 3px 10px;
     background-color: white;
 }
+
 .feature {
-    margin: 2px 0px 5px 0px;
-    padding: 8px;
-    padding-right: 12px;
-    padding-top: 10px;
-   /* width:100%;*/
+  /*  margin: 2px 0px 5px 0px;
+
     background-color: #fafafa;
     background-image:url(../images/mapshadow.png);
     background-position:left top;
     background-repeat:repeat-x;
-    border: 1px solid #ddd;
+  */
+    padding: 8px 5px;
+   
 }
 .nofeature {
     margin: 2px 0px 5px 0px;
@@ -431,11 +445,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     width:100%;
     background-color: #fafafa;
 }
-.featurewhite {
-    margin: 2px ;
-    padding: 5px;
-    background-color: white;
-}
+
 
 
 .feature ul li{
@@ -455,7 +465,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
 }
                   
 
-#featureinfocontent {
+.featureinfocontent {
     padding: 3px;
     padding-top: 10px;
     padding-left: 10px;
@@ -466,39 +476,39 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     position: relative;
     top:10px;
 }
+.featureinfocontent a {
+    color: #15428B;
+    color: #6A6A6A;
+}
 
-
-#featureinfocontent_topborder {
+.featureinfocontent_topborder {
     margin-top: 10px;
     clear: both;
 }
-#featureinfocontent_topborderimg {
+.featureinfocontent_topborderimg {
     width:100%;
     position:absolute;
 }
 
 
-#featureinfocontent .feature {
-	width: 93%;
-	
-}
-#featureinfocontent img {
+.featureinfocontent img {
 	padding: 10px 5px;
 }
-#featureinfocontent b { 
-	color:#15428B; 
+.featureinfocontent b { 
+	color:#6A6A6A; 
 	font-weight: bold;
 }
-#featureinfocontent ul { 
+.featureinfocontent ul { 
 	margin: 5px 0px;
 	padding-left: 2px; 
 	list-style-type: circle;
 }
-#featureinfocontent li { 
+.featureinfocontent li { 
 	margin-left: 2px; 
 	padding-left: 2px; 
 	list-style-position: inside;
 }
+
 
 
 .block h3 {
@@ -530,7 +540,10 @@ p.important {
 div.olControlMousePosition {
     bottom: 5px! important;
     left: 120px;
+    font-size: 11px! important;
+    font-weight: bold;
     right:auto! important;
+    color: #253745;
 }
 .olControlOverviewMapElement {
 	background-color: #34546E! important;
@@ -543,7 +556,9 @@ div.olControlScaleLineBottom {
 	margin-top: -1;
 }
 div.olControlScaleLineTop, div.olControlScaleLineBottom {
-	border-color: white;
+    border-color: #253745;        
+    color: #253745;
+    font-weight: bold;
 }
 
 

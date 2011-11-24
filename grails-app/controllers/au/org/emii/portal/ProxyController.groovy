@@ -20,9 +20,7 @@ class ProxyController {
                 allowableServers.add(it.uri)                              
             }
             // add the current mest url
-            println conf
             allowableServers.add(conf[0].catalogUrl)
-            println allowableServers
             
             allowableServers.each {
                 if (it.contains( targetUrl.getHost())) {
@@ -34,7 +32,7 @@ class ProxyController {
 
                 def conn = targetUrl.openConnection()
                 
-                def format = params.format == "xml" ? "text/xml" \
+                def format = params.format == "text/xml" ? "text/xml" \
                                                      : "text/html"
                 
                 //log.debug "TargetUrl: $targetUrl (expected type: $format)"

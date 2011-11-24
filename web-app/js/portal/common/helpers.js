@@ -31,13 +31,9 @@ function getMouseXY(e) {
 */
 
 //Formats the given value to numSigFigs significant figures
-//WARNING: Javascript 1.5 only!
-function toNSigFigs(value, numSigFigs) {
-    if (!value.toPrecision) {
-        return value;
-    } else {
-        return value.toPrecision(numSigFigs);
-    }
+function toNSigFigs(num, dec) {
+    	var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+	return result;
 }
 
 function ucwords( str ) {
@@ -120,14 +116,10 @@ function pad(numNumber, numLength){
 
 // IE 8 throws errors with console not existing
 // Console will exist when using developer tools
-var alertFallback = true;
 if (typeof console === "undefined" || typeof console.log === "undefined") {
  console = {};
- //if (alertFallback) {
-     //console.log = function(msg) {
-          //alert(msg); // i never want to see this crap in IE ... never 
-     //};
- //} else {
- //    console.log = function() {};
- //}
+ console.log = function(msg) {
+      //alert(msg); // never want to develop in IE ... never 
+ };
+ 
 }

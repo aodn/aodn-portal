@@ -168,6 +168,24 @@
      
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="popupWidth"><g:message code="config.popupWidth.label" default="Popup box width" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'popupWidth', 'errors')}">
+                                    <g:textField size="4" name="popupWidth" value="${configInstance?.popupWidth}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="popupHeight"><g:message code="config.popupHeight.label" default="Popup box height" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'popupHeight', 'errors')}">
+                                    <g:textField size="4" name="popupHeight" value="${configInstance?.popupHeight}" /><font class="hint">in pixels</font>
+                                </td>
+                            </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="footerHeight"><g:message code="config.westWidth.label" default="West menus initial width" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'westWidth', 'errors')}">
