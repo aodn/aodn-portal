@@ -13,7 +13,7 @@ class CheckServerForBrokenLinksJob {
 	File file = new File("Broken Links Report ${new Date()}.txt")
 	static CONNECT_TIMEOUT = 5000
 	static READ_TIMEOUT = 5000
-	static FEATURE_COUNT = 1
+	static FEATURE_COUNT = 10000
 	static MINIMUM_RESPONSE_CODE = 399
 	def summaryMap = new HashMap()
 
