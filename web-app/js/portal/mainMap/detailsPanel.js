@@ -330,7 +330,6 @@ function updateDetailsPanel(layer) {
     updateStyles(layer);
     updateDimensions(layer); // time and elevation   
     
-    
     if(layer.server.type.search("NCWMS") > -1)  {
 
         makeNcWMSColourScale(layer); 

@@ -403,13 +403,32 @@ function populateDemoContributorMenu() {
                             // order on the map.
                             'checkchange': function(node,checked) {
                                 if (checked === true) {
-                                    if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
-                                        node.attributes.layer.yx = true;
-                                        node.attributes.layer.isncWMS =true;
-                                        if(node.attributes.layer.params.VERSION == "1.3.0")
-                                            node.attributes.layer.yx = true;
+                                    
+                                    
+                                    var layer = node.attributes.layer;
+                                    layer.layers = layer.params.LAYERS
+                                    
+                                    // params need to match the server domain
+                                    layer.server = new Object({
+                                        type: layer.params.SERVERTYPE + "-" + layer.params.VERSION,
+                                        uri: layer.url
+                                    });
+                                    if (layer.params.SERVERTYPE=='NCWMS'){
+                                        
+                                        layer.isncWMS =true; 
+                                        if(layer.params.VERSION == "1.3.0") {
+                                            layer.yx = true;
+                                        }                                            
                                     }
-                                    mapPanel.map.addLayer(node.attributes.layer);
+                                    /*
+                                     * expects an object like a layer domain object in grails
+                                     * more work to do her if this code is utilised                                   * 
+                                     * 
+                                     * 
+                                     */ 
+                                    
+                                    addMainMapLayer(layer);
+                                    
                                 }
                                 else {
                                     mapPanel.map.removeLayer(node.attributes.layer);
