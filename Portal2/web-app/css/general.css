@@ -45,6 +45,16 @@ body {
     margin: 3px 5px;
     float: left;
 }
+#loader {
+    background-color: #34546E;
+    border: 0px solid #CBCED3;
+    border-radius: 6px ;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 10px;
+    
+    
+}
 
 #loader p {
    color: white;
