@@ -240,7 +240,7 @@ function addToPopup(loc, mapPanel, e) {
                 }
                 */
             var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
-            var featureCount = isncWMS(layer) ? 0 : 10;
+            var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
             
                                
             if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                

@@ -565,7 +565,7 @@ function createLayer(dl) {
         //version : getWMSVersionString(dl),
         transitionEffect: 'resize'
     };
-console.log(dl.server.type);
+    
     if(dl.server.type == "NCWMS-1.3.0") {        
         options.yx = []; // fix for the wms standards war
     }
