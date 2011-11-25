@@ -142,6 +142,7 @@ function doViewPort()
     
     mapMainPanel = new Ext.Panel({
         layout: 'border',
+        id: 'mainMapPanel',
         title: 'Map',
         stateful: true,
         items: [
@@ -238,10 +239,13 @@ function doViewPort()
             },
             */
             hide: function(panel) {
-                    console.log("todo: close the getfeatureinfo popup");
-                if (panel.title == 'Map') {                        
+                
+                
+                if (panel.id == 'mainMapPanel') {                        
                     closeNHideDetailsPanel();
-                    // close get feature info popup
+                    
+                    // close the getfeatureinfo popup
+                    popup.close();
                 }
             }
         }
