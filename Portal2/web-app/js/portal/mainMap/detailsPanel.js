@@ -363,13 +363,16 @@ function updateDetailsPanel(layer) {
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name);
-        Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active   
+        Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active  
+         
         // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
         if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {
             updateDetailsPanelPositionSize();
         }
         else{
-            mapMainPanel.getComponent('rightDetailsPanel').setVisible(true);            
+            mapMainPanel.getComponent('rightDetailsPanel').show(true);  
+            // resize the map so the panel isnt on top
+            //mapMainPanel.doLayout();
         }
     }
     

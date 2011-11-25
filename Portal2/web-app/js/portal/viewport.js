@@ -191,30 +191,37 @@ function doViewPort()
             closeAction: 'hide',
             autoDestroy: false,
             tools:[
-            {
-                id:'unpin',
-                qtip: 'Make these options appear in a popup again',
-                // hidden:true,
-                handler: function(event, toolEl, panel){
+                {
+                    id:'unpin',
+                    qtip: 'Make these options appear in a popup again',
+                    // hidden:true,
+                    handler: function(event, toolEl, panel){
 
-                    toggleDetailsLocation();
-                }
-            },
-            {
-                id:'close',
-                qtip: 'Note: select "Hide layer options" to keep this panel closed',
-                // hidden:true,
-                handler: function(event, toolEl, panel){
+                        toggleDetailsLocation();
+                    }
+                },
+                {
+                    id:'close',
+                    qtip: 'Note: select "Hide layer options" to keep this panel closed',
+                    // hidden:true,
+                    handler: function(event, toolEl, panel){
 
-                    closeNHideDetailsPanel();
+                        closeNHideDetailsPanel();
+                    }
+                }                
+            ],
+            listeners: {
+                // ensure it dosent overlay the map
+                show: function(panel) {                    
+                    mapMainPanel.doLayout();
                 }
             }
-                
-            ]
         }],
         listeners: {
-            // a user might expand after having changed the selectedActivelayer
+            /* a user might expand after having changed the selectedActivelayer
             beforeexpand: function(panel, animate){
+                
+                console.log("right panel opening");
 
                 if (detailsPanelItems.ownerCt.id == "detailsPanel") {
                         
@@ -229,9 +236,12 @@ function doViewPort()
                 }                
 
             },
+            */
             hide: function(panel) {
+                    console.log("todo: close the getfeatureinfo popup");
                 if (panel.title == 'Map') {                        
                     closeNHideDetailsPanel();
+                    // close get feature info popup
                 }
             }
         }
