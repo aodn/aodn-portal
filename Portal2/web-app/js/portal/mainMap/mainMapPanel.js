@@ -565,8 +565,8 @@ function createLayer(dl) {
         //version : getWMSVersionString(dl),
         transitionEffect: 'resize'
     };
-
-    if(dl.server.type == "NCWMS-1.3.0") {
+console.log(dl.server.type);
+    if(dl.server.type == "NCWMS-1.3.0") {        
         options.yx = []; // fix for the wms standards war
     }
     if (dl.isBaselayer) {
@@ -583,7 +583,6 @@ function createLayer(dl) {
     //
     // extra info to keep
     layer.grailsLayerId = dl.id; // grails layer id
-        console.log(dl.id);
     layer.server= dl.server;
     layer.cql = dl.cql;
       
@@ -637,11 +636,11 @@ function addMainMapLayer(dl) {
         registerLayer( layer );
           
         mapPanel.map.addLayer(layer);
-          
         if(dl.server.type.search("NCWMS") > -1) {
             // get ncWMS Json metadata info for animation and style switching
             // update detailsPanel after Json request
-            // timeout to reduce clientside processing on page load
+            
+            // timeout to try to reduce clientside processing on page load
             setTimeout(function(){
                 getLayerMetadata(layer);
             }, 3000 );
