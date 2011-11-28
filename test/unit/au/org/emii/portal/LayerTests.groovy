@@ -28,20 +28,18 @@ class LayerTests extends GrailsUnitTestCase {
 		assertEquals "nullable", testLayer.errors["imageFormat"]
 		assertEquals "nullable", testLayer.errors["queryable"]
 		assertEquals "nullable", testLayer.errors["isBaseLayer"]
+                assertEquals "nullable", testLayer.errors["source"]
 		
-		testLayer = new Layer(name : "layer1", description : "description")
-		assertFalse testLayer.validate()
-		assertEquals "unique", testLayer.errors["name"]
-		assertEquals "unique", testLayer.errors["description"]
-		
-		testLayer = new Layer(description : "")
+		testLayer = new Layer(description: "")
 		assertFalse testLayer.validate()
 		assertEquals "blank", testLayer.errors["description"]
 		
+                testLayer = new Layer(source: "")
+		assertFalse testLayer.validate()
+		assertEquals "blank", testLayer.errors["source"]
+        
 		testLayer = new Layer(imageFormat : "image/jpg")
 		assertFalse testLayer.validate()
 		assertEquals "inList", testLayer.errors["imageFormat"]
-
-		
     }
 }

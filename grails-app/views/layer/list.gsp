@@ -30,6 +30,9 @@
                         
                             <g:sortableColumn property="disabled" title="${message(code: 'layer.disabled.label', default: 'Disabled')}" />
                         
+                            <g:sortableColumn property="source" title="${message(code: 'layer.source.label', default: 'Source')}" />
+                            <g:sortableColumn property="currentlyActive" title="${message(code: 'layer.currentlyActive.label', default: 'Currently Active')}" />
+                            
                             <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
                         
                             <th><g:message code="layer.server.label" default="Server" /></th>
@@ -51,6 +54,9 @@
                         
                             <td><g:formatBoolean boolean="${layerInstance.disabled}" /></td>
                         
+                            <td>${fieldValue(bean: layerInstance, field: "source")}</td>
+                            <td>${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
+                            
                             <td>${fieldValue(bean: layerInstance, field: "description")}</td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>

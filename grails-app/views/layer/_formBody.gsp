@@ -10,6 +10,26 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                   <g:message code="layer.source.label" default="Source" />
+                                </td>
+                                <td valign="top">
+                                    ${layerInstance?.source}
+                                    <g:hiddenField name="source" value="${layerInstance?.source}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                   <g:message code="layer.currentlyActive.label" default="Currently Active" />
+                                </td>
+                                <td valign="top">
+                                    ${layerInstance?.currentlyActive}
+                                    <g:hiddenField name="currentlyActive" value="${layerInstance?.currentlyActive}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="layers"><g:message code="layer.layers.label" default="Layers" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">

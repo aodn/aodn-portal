@@ -3,7 +3,6 @@ package au.org.emii.portal
 import grails.converters.deep.*
 import groovyx.net.http.*
 
-
 class Layer {
 
     String name
@@ -21,7 +20,10 @@ class Layer {
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
-
+    
+    // Extra info useful for WMS scanner
+    String source
+    boolean currentlyActive
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -57,7 +59,9 @@ class Layer {
         imageFormat( inList:['image/png','image/gif'] )
         queryable()
         isBaseLayer()
-
+        
+        source(blank:false)
+        currentlyActive()
     }
 
      String toListString() {

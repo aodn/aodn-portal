@@ -51,6 +51,18 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="layer.source.label" default="Source" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "source")}</td>
+                        </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="layer.currentlyActive.label" default="Currently Active" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
+                        </tr>
+                        
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="layer.description.label" default="Description" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "description")}</td>
