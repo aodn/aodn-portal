@@ -76,7 +76,6 @@ class LayerController {
         }
 
         render combinedList as JSON
-        
     }
 
     def showLayerByItsId = {
@@ -96,12 +95,13 @@ class LayerController {
         }
     }
 
-
     def create = {
         def layerInstance = new Layer()
-        layerInstance.properties = params
-        return [layerInstance: layerInstance]
 
+        layerInstance.properties = params
+        layerInstance.source = "Manual"
+
+        return [layerInstance: layerInstance]
     }
 
     def save = {
@@ -181,5 +181,122 @@ class LayerController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
             redirect(action: "list")
         }
+    }
+    
+    def saveOrUpdate = {
+        
+        println "\n" * 15
+        
+        /*
+         * -- Params --
+         * 
+         * PK:
+         * layers
+         * serverUrl
+         * 
+         * Required:
+         * currentlyActive
+         * description
+         * 
+         * Optional:
+         * name
+         * disabled
+         * cache
+         * keywords
+         * style
+         * opacity
+         * bbox
+         * imageFormat
+         * queryable
+         * isBaseLayer
+         * 
+         */
+        
+        params.with{
+            if ( !layers?.trim() ) {
+                
+                render status: 400, test: "Parameter 'layers' must be present and not empty"
+                return
+            }
+            
+            if ( !serverUrl.trim() ) {
+                
+                render status: 400, test: "Parameter 'serverUrl' must be present and not empty"
+                return
+            }
+            
+            if ( currentlyActive == null ) {
+                
+                render status: 400, test: "Parameter 'currentlyActive' must be present"
+                return
+            }
+        
+            println "layers: ${layers}"
+            println "serverUrl: ${serverUrl}"
+            println "currentlyActive: $currentlyActive"
+        }
+                
+        /*
+         * Find target leyer(s) using layers and serverUrl
+         * 
+         * if doesn't exists, create new one
+         * 
+         * fill-in fields with params
+         *  - might be some retrieving from db or creating records required?
+         * 
+         * save
+         *
+         * What to return?
+         * 
+         * [!] Write Unit Tests [!]
+         *
+         */
+
+        def server = Server.findByUri( params.serverUrl )
+                
+        if ( !server ) {
+            
+            render status: 500, text: "No server found with url: ${params.serverUrl}"
+            return
+        }
+                
+        println "server: $server"
+        
+        // Find layer
+        def layer = Layer.findByLayersAndServer( params.layers, server )
+        
+        // Create layer if it doesn't exist already
+        if ( !layer ) {
+            
+            // Create new layer
+            println "Creating new layer"
+            layer = new Layer()
+            layer.server = server
+        }
+        else {
+            
+            println "layer found: $layer"
+        }
+                
+        // Copy values
+        layer.properties = params
+               
+        if ( !layer.hasErrors() && layer.save( flush: true ) ) {
+            
+            println "Saved with new values"
+            println "------------------------------"
+            layer.properties.each{ println it }
+            println "------------------------------"
+        }
+        else {
+                       
+            def message = "Layer had errors or could not save."
+            layer.errors.each{ message += "$it\n" }
+            
+            render status: 500, text: message
+            return
+        }
+        
+        render status: 200, text: "Complete (saved)"
     }
 }
