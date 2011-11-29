@@ -7,7 +7,7 @@ td {
     font-size: 12px;
 }
 body {
-    min-width: 950px;
+    min-width: 850px;
 }
 /*
     map while loading
@@ -311,18 +311,12 @@ a:hover.mainlinks {
 }
 
 .authentication-form {
-    float: left;
-    height: 50%;
-    width: 100%;
 }
 .authentication-form-floated {
 
     position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 30%;
-    width: 50%;
-    margin: -10% 0 0 -25%;
+    top: 150px;
+    left: 210px;
 }
 
 .authentication-form h2 {
