@@ -90,14 +90,18 @@ body {
 
 
 .toplinksBackground {
+    float: left;
+    padding: 5px;
+    margin-right: 5px;
     background: url("../images/mapshadow.png") repeat-x scroll left top rgba(73, 176, 224, 0.4);
     border-radius: 10px 3px 10px 3px;
     background-color: rgba(73, 176, 224, 0.4);
     /* RGBa with 0.6 opacity */
     /* For IE 5.5 - 7*/
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#0165A1, endColorstr=#49B0E0);
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr="#400165A1", endColorstr="#4049B0E0");
     /* For IE 8*/
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#0165A1, endColorstr=#49B0E0)";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#400165A1, endColorstr=#4049B0E0)";
+
     border-radius: 10px 3px 10px 3px;   
     /*box-shadow: 4px 4px 7px 2px  #02477E;*/ 
 }
