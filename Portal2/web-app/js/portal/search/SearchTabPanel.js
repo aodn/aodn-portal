@@ -11,7 +11,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       this.resultsStore = Portal.data.CatalogResultsStore();
       this.catalogue =  new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
       this.catalogue.metadataStore = this.resultsStore;
-      this.catalogue.services.xmlSearch = this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'imos.xml.search';
+      this.catalogue.services.xmlSearch = appConfigStore.getById('spatialsearch.url').data.value; //this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'imos.xml.search';
+      alert(this.catalogue.services.xmlSearch);
+      //this.catalogue.services.xmlSearch = 'http://localhost:8000/spatialsearch/search/index';//this.catalogue.URL + '/srv/' + this.catalogue.LANG + "/" + 'imos.xml.search';
 
       this.searchDefaults = {E_protocol: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')};
 

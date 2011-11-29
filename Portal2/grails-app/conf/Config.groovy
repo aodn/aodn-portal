@@ -55,12 +55,41 @@ grails.exceptionresolver.params.exclude = ['password']
 environments {
     production {
         grails.serverURL = "http://www.changeme.com"
+		spatialsearch.url = "http://spatialsearch.emii.org.au"
+		grails
+		{
+			mail
+			{
+				authenticationFromEmailAddress = "info@aodn.org.au"
+
+				host = "postoffice.utas.edu.au"
+				port = 25
+				username = "info@aodn.org.au"
+				props = ["mail.smtp.auth":"false"]
+			}
+		}
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au"
+		grails
+		{
+		   mail
+		   {
+				authenticationFromEmailAddress = "info@aodn.org.au"
+
+				host = "localhost"
+				port = 25
+
+				username = "username"
+				props = ["mail.smtp.auth":"false"]
+		   }
+		}
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au"
+		grails.mail.disabled=true
     }
 
 }
@@ -100,46 +129,4 @@ log4j = {
            //'org.hibernate.SQL',           
            'org.hibernate.type',
            'grails.app.realm'
-}
-
-// Email configuration.
-environments 
-{
-    production 
-    {
-        grails
-        {
-            mail
-            {
-                authenticationFromEmailAddress = "info@aodn.org.au"
-
-                host = "postoffice.utas.edu.au"
-                port = 25
-                username = "info@aodn.org.au"
-                props = ["mail.smtp.auth":"false"]
-            }
-        }
-    }
-    
-    development 
-    {
-        grails 
-        {
-           mail
-           {
-                authenticationFromEmailAddress = "info@aodn.org.au"
-
-                host = "localhost"
-                port = 25
-
-                username = "username"
-                props = ["mail.smtp.auth":"false"]
-           }
-        }
-    }
-    
-    test 
-    {
-        grails.mail.disabled=true
-    }
 }
