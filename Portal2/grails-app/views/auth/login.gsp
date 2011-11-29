@@ -1,18 +1,19 @@
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <g:render template="../common_includes" />
-  
+
   <title>${configInstance?.name} - Login</title>
   <style type="text/css">
-      html, body, #headerTail {
-        background-color: white;
-      }      
-    </style>
+    html, body, #headerTail {
+      background-color: white;
+    }      
+  </style>
 </head>
 <body>
-  <g:render template="../mainPortalHeader" model="['configInstance':configInstance, 'showLinks': true]" />
-  <div class="authentication-form auth">
+<g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />
+<div class="authentication-form auth">    
+  <div class="authentication-form-floated">
     <h2>Log in</h2>
     <g:if test="${flash.message}">
       <div class="message">${flash.message}</div>
@@ -32,12 +33,12 @@
           <tr>
             <td>&nbsp;</td>
             <td align="right" ><div class="buttons"><span class="button">
-                <input type="button" name="cancel" value="Cancel" onCLick="window.location='${createLinkTo(dir:'/')}'" /></span>
-                    <span class="button"><input type="submit" value="Log in" /></span>
-                </div>
+                  <input type="button" name="cancel" value="Cancel" onCLick="window.location='${createLinkTo(dir:'/')}'" /></span>
+                <span class="button"><input type="submit" value="Log in" /></span>
+              </div>
             </td>
           </tr>
-          
+
         </tbody>
       </table>
       <div class="authentication-hints">
@@ -46,5 +47,6 @@
       </div>
     </g:form>
   </div>
+</div>
 </body>
 </html>

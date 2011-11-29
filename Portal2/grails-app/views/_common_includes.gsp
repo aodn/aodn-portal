@@ -1,6 +1,17 @@
 
       <!-- First import JQUERY -->  
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-1.4.1.min.js')}"></script>
+      <script>
+        jQuery('.button input').live('hover',  
+          function () {
+            //$(this).append($("<span> ***</span>"));
+            jQuery(this).toggleClass("hover")
+              .next().stop(true, true).slideToggle();
+
+          }
+
+        );
+      </script>
       <!-- Import extra pluggins-->
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-autocomplete1.1.js')}"></script>
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery.rotate.1-1.js')}"></script>
