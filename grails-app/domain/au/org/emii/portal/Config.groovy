@@ -9,6 +9,7 @@ class Config {
     String proxy
     Integer proxyPort
     String initialBbox
+    Boolean autoZoom
     String catalogUrl
     Menu baselayerMenu
     Menu defaultMenu
@@ -48,6 +49,7 @@ class Config {
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
+        autoZoom()
         catalogUrl(url: true)
         baselayerMenu()
         defaultMenu()

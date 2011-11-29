@@ -75,7 +75,6 @@
 
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
 
-<link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>

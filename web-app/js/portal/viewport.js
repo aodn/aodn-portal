@@ -245,7 +245,9 @@ function doViewPort()
                     closeNHideDetailsPanel();
                     
                     // close the getfeatureinfo popup
-                    popup.close();
+                    if (popup) {
+                        popup.close();
+                    }
                 }
             }
         }

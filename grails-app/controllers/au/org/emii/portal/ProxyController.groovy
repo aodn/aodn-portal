@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 class ProxyController {
 
-    //def REMOVE_THIS_TO_ENABLE_HOST_LIST_FILTERING = true
     
     def index = {
 

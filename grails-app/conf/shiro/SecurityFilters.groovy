@@ -27,7 +27,7 @@ class SecurityFilters {
             }
         }
         
-        serverAccess(controller: "server", action: "list") {
+        serverAccess(controller: "server", action: "list|listAllowDiscoveriesAsJson") {
             before = {
                 
                 logRequest("serverAccess", controllerName, actionName)

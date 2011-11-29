@@ -56,7 +56,7 @@ class AuthController {
             }
 
             // Now redirect back to the login page.
-            redirect(action: "login", params: m)
+            redirect(action: "login", params: m, configInstance: Config.activeInstance())
         }
     }
 
@@ -83,7 +83,7 @@ class AuthController {
           
         // Validate form
         if (!userAccountCmd.validate()) {
-            render(view: "register", model: [userAccountCmd:userAccountCmd])
+            render(view: "register", model: [userAccountCmd:userAccountCmd, configInstance: Config.activeInstance()])
             return
         }
         
@@ -108,7 +108,7 @@ class AuthController {
         else {
             log.error "Could not save User instance during self-registration. params: '${params}'."
             flash.message = "${message(code: 'auth.account.registerFailed', default: 'Could not register. Please try again.')}"
-            render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance)])
+            render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance), configInstance: Config.activeInstance()])
         }
     }
     

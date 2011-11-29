@@ -20,6 +20,11 @@ class ServerController {
 		else
 			[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
 	}
+        
+        def listAllowDiscoveriesAsJson = {
+            def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
+            render layerInstanceList as JSON
+        }
 
 
 	def create = {

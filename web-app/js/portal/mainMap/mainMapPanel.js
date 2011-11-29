@@ -1,7 +1,6 @@
 var mapPanel; 
 var activeLayers = []; // Array of OpenLayers Layers. This allows us to access/mod layers after creation
 var navigationHistoryCtrl;
-var automaticZoom=false;
 
 function initMap()  {
 
@@ -182,6 +181,8 @@ function initMap()  {
         
           
     });
+    
+    
 
     mapPanel.map.addControl(clickControl);
     
@@ -634,8 +635,14 @@ function addMainMapLayer(dl) {
     if (layer != undefined) {
           
         registerLayer( layer );
-          
+        
+        // zoom map first. may request less wms tiles first off
+        if (Portal.app.config.autoZoom = true) {
+            zoomToLayer(mapPanel.map, layer);
+        }  
+        
         mapPanel.map.addLayer(layer);
+        
         if(dl.server.type.search("NCWMS") > -1) {
             // get ncWMS Json metadata info for animation and style switching
             // update detailsPanel after Json request
@@ -643,7 +650,8 @@ function addMainMapLayer(dl) {
             // timeout to try to reduce clientside processing on page load
             setTimeout(function(){
                 getLayerMetadata(layer);
-            }, 3000 );
+            }, 2000 );
+            
         }
         // store the OpenLayers layer so we can retreive it later
         activeLayers[getUniqueLayerId(layer)] = layer;
@@ -660,8 +668,23 @@ function getUniqueLayerId(layer){
     if (layer.cql != undefined) {
         cql = "::" + layer.cql
     }
+    
+    
     if (layer.server == undefined){
-        layer.server = layer.originalWMSLayer.server;
+        
+        console.log(layer);
+        
+        // may currently be an animating layer 
+        if (layer.originalWMSLayer) {
+            layer.server = layer.originalWMSLayer.server;
+        }
+        else if(layer.url) {
+            layer.server = {uri: layer.url}
+        }
+        else {
+            layer.server = {uri: "UNKNOWN"}
+            console.log("ERROR: layer '" + layer.name + "'. cant find the server attribute");
+        }
     }   
     // return whitespaced cleared string
     return ((layer.server.uri + "::" + layer.name + cql).replace(/ +?/g, '_'));
@@ -686,7 +709,7 @@ function getLayerMetadata(layer) {
                 
             // if this layer has been user selected before loading the metadata
             // reload,  as the date picker details/ form  will be wrong at the very least!
-            if (selectedLayer != undefined) {   
+            if (selectedLayer != undefined ) {   
                 if (selectedLayer.id == layer.id) {
                     updateDetailsPanel(layer); 
                 }

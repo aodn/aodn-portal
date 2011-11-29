@@ -141,7 +141,7 @@ function initMenusPanel(menu) {
                     });
                     tree.root.hashadtheclickactionadded = true;
                 }
-             }
+            }
         }
     });
 
@@ -197,17 +197,18 @@ function initMenusPanel(menu) {
                 }
             }
         }
-    })
+    });
+    
     var zoomToLayerChooser = new Ext.form.Checkbox({
         boxLabel  : 'Auto zoom on layer select',
         inputType : 'checkbox',
-        //checked: Portal.app.config.autoZoom,
+        checked: (Portal.app.config.autoZoom) ? Portal.app.config.autoZoom : false,
         listeners: {
             check: function(thisCheckbox, newValue)  {                
                 Portal.app.config.autoZoom = newValue;
             }
         }
-    })
+    });
 
     var mapOptionsButtonPanel = new Ext.Panel({        
         border: false,      
@@ -226,10 +227,10 @@ function initMenusPanel(menu) {
         height: 115,
         region: 'south',        
         items:[
-            hideLayerOptions,
-            zoomToLayerChooser,
-            mapOptionsButtonPanel,
-            baselayerMenuPanel
+        hideLayerOptions,
+        zoomToLayerChooser,
+        mapOptionsButtonPanel,
+        baselayerMenuPanel
         ]
     });
         
@@ -244,7 +245,7 @@ function initMenusPanel(menu) {
         height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
         items:[
-            activePanel  ,mapOptionsPanel
+        activePanel  ,mapOptionsPanel
         ]
     }); 
 
@@ -273,21 +274,14 @@ function initMenusPanel(menu) {
 
 
 }
-function checkDefaultMenuTreeNodeStatus(node) {
-    
-    // called when activePanel tree nodes are shown/opened
-    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
-        setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
-    });
 
-    
-}
 function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     // enable all menu items that correspond. 
-    // There can be more than one in the menu     
-    function checkNode(node)  {        
+    // There can be more than one in the menu
+    function checkNode(node)  {          
+        
         if(node.attributes.grailsLayerId == grailsLayerId) {          
-            (!bool) ? node.disable():  node.enable();
+            (!bool) ? node.disable():  node.enable()        
         }               
         Ext.each(node.childNodes, checkNode);
     }
@@ -295,15 +289,19 @@ function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     
 }
 
+function checkDefaultMenuTreeNodeStatus(node) {
+    
+    // called when activePanel tree nodes are opened
+    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
+        setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
+    });
 
+    
+}
 
 
 function removeActivePanelLayer() {
     
-    // removelayer event should cleanup for us
-    mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
-    
-    /*
     // Remove layer from active layers and make matching default menu item active
     // check if grailsLayerId exists. layer may have been added by user defined discovery
     var layerId = activePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
@@ -322,11 +320,9 @@ function removeActivePanelLayer() {
         }        
         
     }
-    */
-    
+    mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
     
 }
-
 
 
 function visibilityActivePanelLayer() {
@@ -348,7 +344,7 @@ function populateDemoContributorMenu() {
     // demonstrationContributorTree Servers list
     // THIS WILL BE REMOVED. WE DONT WANT TO DO DISCOVERIES THIS WAY
     Ext.Ajax.request({
-        url: 'server/list?type=JSON',
+        url: 'server/listAllowDiscoveriesAsJson',
         success: function(resp){
 
             //alert(resp.responseText);
@@ -398,43 +394,40 @@ function populateDemoContributorMenu() {
                         border: false,
                         rootVisible: true,
                         listeners: {
+                        
                             // Add layers to the map when ckecked, remove when unchecked.
                             // Note that this does not take care of maintaining the layer
-                            // order on the map.
+                            // order on the map.                                  
+                                    
                             'checkchange': function(node,checked) {
                                 if (checked === true) {
-                                    
-                                    
-                                    var layer = node.attributes.layer;
-                                    layer.layers = layer.params.LAYERS
-                                    
-                                    // params need to match the server domain
-                                    layer.server = new Object({
-                                        type: layer.params.SERVERTYPE + "-" + layer.params.VERSION,
-                                        uri: layer.url
-                                    });
-                                    if (layer.params.SERVERTYPE=='NCWMS'){
-                                        
-                                        layer.isncWMS =true; 
-                                        if(layer.params.VERSION == "1.3.0") {
-                                            layer.yx = true;
-                                        }                                            
+                                    if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
+                                        node.attributes.layer.yx = true;
+                                        node.attributes.layer.isncWMS =true;
+                                        if(node.attributes.layer.params.VERSION == "1.3.0") {
+                                            node.attributes.layer.yx = true;
+                                        }
                                     }
-                                    /*
-                                     * expects an object like a layer domain object in grails
-                                     * more work to do her if this code is utilised                                   * 
-                                     * 
-                                     * 
-                                     */ 
+                                
+                                    mapPanel.map.addLayer(node.attributes.layer);
+                                    // store the OpenLayers layer so we can retreive it later
+                                    activeLayers[getUniqueLayerId(node.attributes.layer)] = node.attributes.layer;
                                     
-                                    addMainMapLayer(layer);
                                     
+                                    if (node.attributes.layer.params.SERVERTYPE=='NCWMS') {
+                                        // get ncWMS Json metadata info for animation and style switching
+                                        getLayerMetadata(activeLayers[getUniqueLayerId(node.attributes.layer)]);                            
+                                    }                                   
+                                
                                 }
                                 else {
                                     mapPanel.map.removeLayer(node.attributes.layer);
                                 }
+ 	
+                                    
                             }
                         }
+                
                     })
                     );                
             }  
