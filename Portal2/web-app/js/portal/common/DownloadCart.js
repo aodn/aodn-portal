@@ -92,6 +92,7 @@ function _flashUI() {
 }
 
 var _downloadCartOriginalColor;
+
 function _getDownloadCartUIOriginalColor() {
     
     if ( _downloadCartOriginalColor == undefined ) {

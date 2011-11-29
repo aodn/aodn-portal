@@ -24,13 +24,6 @@ var proxyURL = "proxy?url=";
 var argos = null; // array of existing argo platform_numbers
 
 
-var requestCount = 0; // getFeatureInfo request count
-var queries = new Object(); // current getFeatureInfo requests
-var queries_valid_content = false;
-var timestamp; // timestamp for getFeatureInfo requests
-var X,Y; // getfeatureInfo Click point
-var clickEventHandler; // single click handler
-
 // Layer loading activity indicator
 var layersLoading = 0;
 
@@ -121,22 +114,28 @@ function zoomToDefaultZoom(map) {
 
 function zoomToLayer(map, layer){
     
+    console.log(layer);
+    
     var extent;
     if (layer != undefined) {
-        extent = layer.getDataExtent();
+        extent = layer.getDataExtent();  
+        
+        console.log(extent);
+        if (extent && !isNaN(extent.left)) {
+            
+            var width = extent.getWidth() / 2;
+            var height = extent.getHeight() / 2;
+            extent.left -= width;
+            extent.right += width;
+            extent.bottom -= height;
+            extent.top += height;
+            map.zoomToExtent(extent);
+        } else {
+            //map.zoomToMaxExtent();
+        }
     }
     
-    if (extent && !isNaN(extent.left)) {
-        var width = extent.getWidth() / 2;
-        var height = extent.getHeight() / 2;
-        extent.left -= width;
-        extent.right += width;
-        extent.bottom -= height;
-        extent.top += height;
-        map.zoomToExtent(extent);
-    } else {
-        map.zoomToMaxExtent();
-    }
+
 }
 
 function addToPopup(loc, mapPanel, e) {

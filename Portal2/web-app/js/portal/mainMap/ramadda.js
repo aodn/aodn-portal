@@ -304,20 +304,7 @@ function addWMStoTree(item){
                 'checkchange': function(node,checked) {
                     if (checked === true) {
                                 
-                        var layer = node.attributes.layer;
-                                    
-                        layer.server = new Object({
-                            type: layer.params.SERVERTYPE + "-" + layer.params.VERSION,
-                            url: layer.url
-                        });
-                        if (layer.params.SERVERTYPE=='ncWMS'){
-                                        
-                            layer.isncWMS =true; 
-                            if(node.attributes.layer.params.VERSION == "1.3.0") {
-                                layer.yx = true;
-                            }                                            
-                        }
-                        addMainMapLayer(layer);
+                        // copy from menuPanel.js populateDemoContributorMenu
                     } else {
                         mapPanel.map.removeLayer(node.attributes.layer);
                     }

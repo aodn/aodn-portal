@@ -1,7 +1,13 @@
 
- body, html {
-    font: 11px arial,tahoma,helvetica,sans-serif;
+ body, html{
+    font: 12px arial,tahoma,helvetica,sans-serif;
     background-color: #34546E;    
+}
+td {
+    font-size: 12px;
+}
+body {
+    min-width: 950px;
 }
 /*
     map while loading
@@ -24,9 +30,7 @@
 }
 
 
-body {
-    min-width: 950px;
-}
+
 #header {
     background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;
     height: 300px;
@@ -52,6 +56,8 @@ body {
     margin-bottom: 3px;
     margin-right: 3px;
     padding: 10px;
+    height: 20px;    
+    width: 150px;
     
     
 }
@@ -213,9 +219,24 @@ h6 {
     margin: 2px 0 ;
 }
 
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana,arial,helvetica,sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
+    
+}
 
 input.readonlyInput {
     border: none;
+}
+
+a {
+    color: #6A6A6A;
 }
 
 a img{
@@ -274,16 +295,23 @@ a:hover.mainlinks {
     font-weight: bold;
 }
 
+/* login register forgotten password */
+.auth table {
+    border:0;
+    border-spacing: 4px;
+}
+
 .authentication-form {
-    border-radius: 4px;
     width: 400px;
     margin: 4em auto;
-    background: white;
-    padding: 5px;
 }
 
 .authentication-form h2 {
     padding-bottom: 0.8em;
+}
+.authentication-form td {
+    font-weight: bold;
+    font-size: 13px;
 }
 
 .authentication-form .authentication-hints {
@@ -292,6 +320,52 @@ a:hover.mainlinks {
     white-space: nowrap;
     padding-top: 0.8em;
 }
+
+/* MESSAGES AND ERRORS */
+
+.errors,
+.message {
+	font-size: 0.9em;
+	line-height: 2;
+	margin: 1em 2em;
+	padding: 0.5em;
+}
+
+.message {
+	background: #f3f3ff;
+	border: 1px solid #b2d1ff;
+	color: #006dba;
+	   -moz-box-shadow: 0 0 0.25em #b2d1ff;
+	-webkit-box-shadow: 0 0 0.25em #b2d1ff;
+	        box-shadow: 0 0 0.25em #b2d1ff;
+}
+
+.errors {
+	background: #fff3f3;
+	border: 1px solid #ffaaaa;
+	color: #cc0000;
+	   -moz-box-shadow: 0 0 0.25em #ff8888;
+	-webkit-box-shadow: 0 0 0.25em #ff8888;
+	        box-shadow: 0 0 0.25em #ff8888;
+}
+
+.errors ul,
+.message {
+	padding: 0;
+}
+
+.errors li {
+	list-style: none;
+	background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
+	text-indent: 22px;
+}
+
+.message {
+	background: transparent url(../images/skin/information.png) 3px 5px no-repeat;
+	text-indent: 22px;
+        padding: 5px;
+}
+
 
 /*
 Geoserver default tables
@@ -486,10 +560,7 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     position: relative;
     top:10px;
 }
-.featureinfocontent a {
-    color: #15428B;
-    color: #6A6A6A;
-}
+
 
 .featureinfocontent_topborder {
     margin-top: 10px;

@@ -42,6 +42,16 @@
                             <g:textField name="initialBbox" maxlength="50" value="${configInstance?.initialBbox}" /> <font class="hint">(left,bottom,right,top)</font>
                                 </td>
                             </tr>
+   
+   
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="autoZoom"><g:message code="config.autoZoom.label" default="Auto Zoom" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'autoZoom', 'errors')}">
+                                    <g:checkBox name="autoZoom" value="${configInstance?.autoZoom}" />
+                                </td>
+                            </tr>
     
                             <tr class="prop">
                                 <td valign="top" class="name">
