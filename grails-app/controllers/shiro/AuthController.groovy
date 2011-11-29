@@ -144,7 +144,7 @@ class AuthController {
         }
         else {
 
-            render(view: "forgotPassword", model: [userResetPasswordCommand:userResetPasswordCommand])
+            render(view: "forgotPassword", model: [userResetPasswordCommand:userResetPasswordCommand, configInstance: Config.activeInstance()])
         }
     }
     
