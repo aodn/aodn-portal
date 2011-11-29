@@ -4,8 +4,8 @@
     <h1 id="headerTitle">Australian Ocean Data Network</h1>
     <g:if test="${showLinks}">
     <div id="freeChoiceLinks" >
-      <a href="" class="toplinksBackground" onClick="setViewPortTab(0);return false;" >Map</a> 
-      <a href="" class="toplinksBackground" onClick="setViewPortTab(1);return false;" >Search</a> 
+      <div class="toplinksBackground"><a href="" onClick="setViewPortTab(0);return false;" >Map</a></div>
+        <div class="toplinksBackground"><a href="" onClick="setViewPortTab(1);return false;" >Search</a></div>
     </div>
     </g:if>
     
