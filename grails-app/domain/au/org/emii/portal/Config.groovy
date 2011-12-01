@@ -34,15 +34,14 @@ class Config {
     String metadataLayerProtocols
     Integer mapGetFeatureInfoBuffer    
     String baselayerList    
+    List defaultLayers
+    String wmsScannerBaseUrl
+    
+    static hasMany = [defaultLayers:Layer]    
+        
     static transients = [ 
         "baselayerList" // baselayerMenu can be expanded to baselayers
     ] 
-    
-    List defaultLayers
-    static hasMany = [defaultLayers:Layer]    
-    
-    
-    
     
     static constraints = {
         name(size:5..25,unique:true)
@@ -70,6 +69,7 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
+        wmsScannerBaseUrl(url: true)
     }
     
     static Config activeInstance() {
