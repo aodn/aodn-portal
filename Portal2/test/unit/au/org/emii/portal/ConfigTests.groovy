@@ -86,6 +86,10 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig = new Config(mapGetFeatureInfoBuffer: -1)
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["mapGetFeatureInfoBuffer"]
+        
+        testConfig = new Config(wmsScannerBaseUrl: "http://invalidUrl")
+        assertFalse testConfig.validate()
+        assertEquals "url", testConfig.errors["wmsScannerBaseUrl"]
     }
 
     void testActiveInstance() {
