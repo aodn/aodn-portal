@@ -143,8 +143,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       };
       
       var onFailure = function(response) {
-         Ext.Msg.alert('Error: ' + response.status + '-' + response.statusText);
-      };
+         
+         Ext.Msg.alert('Error', response.status + ': ' + response.statusText + '<br />' + response.responseText);
+      }
       
       if (updateStore !== false) {
          updateStore = true;

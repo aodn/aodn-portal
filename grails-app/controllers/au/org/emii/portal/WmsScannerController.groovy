@@ -15,6 +15,7 @@ class WmsScannerController {
         catch (Exception e) {
             
             flash.message = "Exception: ${e.toString()}"
+            scanJobList = [] // Empty list
         }        
         
         return [scanJobList: scanJobList, serversToList: Server.findAllByTypeInList(["WMS-1.1.1", "WMS-1.3.0"], [sort: "name"])]
