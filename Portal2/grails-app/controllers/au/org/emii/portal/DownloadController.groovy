@@ -118,16 +118,17 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         log.debug "Adding '${info.title}' from ${info.href}"
 
         def buffer = new byte[ BufferSize ]
-        def requestUrl = info.href.toURL()
-        
-        log.debug "requestUrl: ${requestUrl}"
-        log.debug "info.type: ${info.type}"
-        
+                
         // Add to zip
         def bytesRead
         long totalBytesRead = 0
         def dataFromUrl
         try {
+            def requestUrl = info.href.toURL()
+        
+            log.debug "requestUrl: ${requestUrl}"
+            log.debug "info.type: ${info.type}"
+            
             dataFromUrl = requestUrl.newInputStream()
             
             def newEntry = new ZipEntry( "${info.title}.${extensionFromUrlAndType( info.href, info.type )}" )

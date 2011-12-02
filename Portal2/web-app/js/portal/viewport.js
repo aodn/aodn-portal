@@ -24,9 +24,7 @@ var demonstrationContributorTree;
 var topMenuPanel;
 var spinnerForLayerloading, spinnerForJSONloading;
 
-// COOKIE CAUSES PROBLEMS
-// set for individual components?
-// Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
 
 Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
