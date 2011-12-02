@@ -318,9 +318,11 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     
   containsProtocol: function(protocolArray, protocolName) {
 	 
+         if ( protocolName == undefined ) return false
+         
          for (var i=0; i < protocolArray.length; i++) {
 
-            if (protocolArray[i] == protocolName) {
+            if (protocolArray[i].trim() == protocolName.trim()) {
                 return true;
             }
 	 }
