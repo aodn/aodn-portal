@@ -112,16 +112,6 @@
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="opacity"><g:message code="layer.opacity.label" default="Opacity" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'opacity', 'errors')}">
-                                    <g:select name="opacity" from="${[30,50,75,100]}" value="${layerInstance?.opacity ?: 100}"  />
-                                </td>
-                            </tr>
-
-
                             
                             
                             <tr class="prop">
@@ -133,14 +123,6 @@
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="imageFormat"><g:message code="layer.imageFormat.label" default="Image Format" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'imageFormat', 'errors')}">
-                                    <g:select name="imageFormat" from="${layerInstance.constraints.imageFormat.inList}" value="${layerInstance?.imageFormat}" valueMessagePrefix="layer.imageFormat"  />
-                                </td>
-                            </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">

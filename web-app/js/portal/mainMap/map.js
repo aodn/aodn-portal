@@ -114,13 +114,14 @@ function zoomToDefaultZoom(map) {
 
 function zoomToLayer(map, layer){
     
-    console.log(layer);
+    
+    //console.log(layer);
     
     var extent;
     if (layer != undefined) {
         extent = layer.getDataExtent();  
         
-        console.log(extent);
+        //console.log(extent);
         if (extent && !isNaN(extent.left)) {
             
             var width = extent.getWidth() / 2;

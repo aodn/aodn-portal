@@ -77,6 +77,20 @@
                             <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "comments")}</td>
                             
                         </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.opacity.label" default="Opacity" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "opacity")}%</td>
+                            
+                        </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.imageFormat.label" default="imageFormat" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "imageFormat")}</td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="server.parseDate.label" default="Parse Date" /></td>

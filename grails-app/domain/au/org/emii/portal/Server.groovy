@@ -9,7 +9,9 @@ class Server {
     Date parseDate
     String parseFrequency 
     Boolean disable
-    Boolean allowDiscoveries // hide from menus
+    Boolean allowDiscoveries // hide from menus    
+    Integer opacity // layer opacity
+    String imageFormat
     String comments
 
     static mapping = {
@@ -37,6 +39,9 @@ class Server {
         ])
         name(unique:true)
         disable()
+        allowDiscoveries()
+        opacity()
+        imageFormat( inList:['image/png','image/gif'] )
         comments(nullable:true)
     }
     String toIdString() {

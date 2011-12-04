@@ -40,7 +40,10 @@
                     </thead>
                     <tbody>
                     <g:each in="${serverInstanceList}" status="i" var="serverInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        <tr class="${(serverInstanceList[i].disable) ?
+                                        'disable' : '' }
+                            ${(serverInstanceList[i].allowDiscoveries) ?
+                                        '' : 'disable' }">
                         
                             <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "id")}</g:link></td>
                         

@@ -543,8 +543,8 @@ function createLayer(dl) {
     params.version = ver;
     
       
-    if (dl.imageFormat) {
-        params.format = dl.imageFormat;
+    if (dl.server.imageFormat) {
+        params.format = dl.server.imageFormat;
     }  
     if(dl.cql != "") {
         params.CQL_FILTER = dl.cql;
