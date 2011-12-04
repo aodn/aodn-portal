@@ -53,6 +53,24 @@
                                 </td>
                             </tr>
                             
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="opacity"><g:message code="server.opacity.label" default="Opacity" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:serverInstance, field: 'opacity', 'errors')}">
+                                    <g:select name="opacity" from="${[30,50,75,100]}" value="${serverInstance?.opacity ?: 100}"  />
+                                </td>
+                            </tr>
+                            
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="imageFormat"><g:message code="server.imageFormat.label" default="Image Format" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'imageFormat', 'errors')}">
+                                    <g:select name="imageFormat" from="${serverInstance.constraints.imageFormat.inList}" value="${serverInstance?.imageFormat}" valueMessagePrefix="server.imageFormat"  />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
