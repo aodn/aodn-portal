@@ -64,7 +64,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         Config firstConfig = new Config(name : "FirstConfig")
         Config secondConfig = new Config(name : "SecondConfig")
         mockDomain(Config, [firstConfig, secondConfig])
-                 
+                         
         def returnedMap
         
         // Call login with no params
@@ -87,6 +87,8 @@ class AuthControllerTests extends ControllerUnitTestCase {
     }
     
     void testSignInAction() {
+        
+        mockDomain(Config)
         
         // Mock up message behaviour
         controller.metaClass.message = { LinkedHashMap args -> return "${args.code}" }
@@ -181,6 +183,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         mockForConstraintsTests(UserAccountCommand)
         mockDomain(User, [])
         mockDomain(UserRole, [selfRegisteredUser, admin])
+        mockDomain(Config)
         
         // Mock out email methods that should not be run
         def authCtrlrMock = mockFor(AuthController) // Mock AuthController behaviour
@@ -252,6 +255,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
                               passwordHash: "somePasswordHash")
         
         mockDomain(User, [user1])
+        mockDomain(Config)
         mockForConstraintsTests(UserResetPasswordCommand)
         
         // Mock in method so we can check that new password is really created and hashed
