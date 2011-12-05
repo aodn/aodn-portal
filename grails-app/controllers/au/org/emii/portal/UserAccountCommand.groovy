@@ -37,12 +37,7 @@ class UserAccountCommand {
         })
         previousEmailAddress()
         firstName(nullable: false, blank: false)
-        lastName(nullable: false, blank: false, validator:{ val, obj ->
-            
-            if (obj.lastNameRequired && !val) {
-                return "userAccountCommand.lastName.required"
-            }
-        })
+        lastName(nullable: false, blank: false)
         password(validator:{ val, obj ->
             
             if (obj.passwordRequired && !val) {
