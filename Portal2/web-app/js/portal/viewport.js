@@ -134,6 +134,9 @@ Ext.onReady(Portal.app.init, Portal.app);
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex){ 
     Ext.getCmp('centerTabPanel').setActiveTab(tabIndex);
+    
+    jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
+    jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
 }
 
 function doViewPort()
@@ -250,6 +253,7 @@ function doViewPort()
                         popup.close();
                     }
                 }
+                
             }
         }
     
@@ -282,19 +286,24 @@ function doViewPort()
                 cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
             },
             items: [            
-            mapMainPanel,
-            {
-                xtype: 'portal.search.searchtabpanel',
-                listeners: {
-                    addLayer: {
-                        fn: function(layerDef) {
-                            addMainMapLayer(layerDef);
-                            Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+                mapMainPanel,
+                {
+                    xtype: 'portal.search.searchtabpanel',
+                    listeners: {
+                        addLayer: {
+                            fn: function(layerDef) {
+                                addMainMapLayer(layerDef);
+                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+                            }
                         }
                     }
+                }            
+            ],
+            listeners: {            
+                tabchange: function( thisTabPanel, tab ) {
+                    //console.log(thisTabPanel.activeTab);
                 }
-            }            
-            ]
+            }
         },
         {
             region: 'south',
