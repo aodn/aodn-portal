@@ -7,28 +7,34 @@ Portal.search.LinkSelectionWindow = Ext.extend(Ext.Window, {
   
   initComponent: function() {
     this.items = {
-        ref: 'listView',
-        xtype: 'listview',
+        ref: 'grid',
+        xtype: 'grid',
         store: this.store,
         hideHeaders: true,
         disableSelection: true,
         autoExpandColumn: 'title',
         columns: [{
           id: 'title',
-          dataIndex: 'title'
+          dataIndex: 'title',
+          renderer: this.linkDescRenderer
         }],
         listeners: {
-          click: {
+          rowclick: {
             fn: this.showLink,
             scope: this
           }
         }
     };
 
-    Portal.search.LinkSelectionWindow.superclass.initComponent.apply(this, arguments); 
+    Portal.search.LinkSelectionWindow.superclass.initComponent.apply(this, arguments);
+    
+  },
+  
+  linkDescRenderer: function(val, x, rec){
+    return val.trim()!=''?val:rec.get('name');
   },
 
-  showLink: function(listView, rowIndex) {
+  showLink: function(grid, rowIndex) {
     var linkRec = this.store.getAt(rowIndex);
 
     Portal.common.BrowserWindow.open(linkRec.get('url'));

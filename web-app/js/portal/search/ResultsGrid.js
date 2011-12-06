@@ -367,7 +367,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      });
      linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 	  
-     return linkStore.getLink(0);
+     return linkStore.getLayerLink(0);
   },
   
  addToCartExecute: function(grid, rowIndex, colIndex) {

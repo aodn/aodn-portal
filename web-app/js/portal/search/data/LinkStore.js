@@ -34,7 +34,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		});
 	},
 
-	getLink : function(index) {
+	getLayerLink : function(index) {
 		var linkRec = this.getAt(index);
 
 		if (linkRec === undefined) {
