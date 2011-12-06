@@ -43,13 +43,13 @@ Portal.search.LayerSelectionWindow = Ext.extend(Ext.Window, {
    },
    
    onShowOnMinimap: function(grid, rowIndex, colIndex) {
-      var linkRec = this.store.getLink(rowIndex);
-      this.fireEvent('showlayer', linkRec);
+      var layerRec = this.store.getLayerLink(rowIndex);
+      this.fireEvent('showlayer', layerRec);
    },
    
    onAddToMap: function(grid, rowIndex, colIndex) {
-      var linkRec = this.store.getLink(rowIndex);
-      this.fireEvent('addlayer', linkRec);
+      var layerRec = this.store.getLayerLink(rowIndex);
+      this.fireEvent('addlayer', layerRec);
    },
    
    bindStore: function(store) {
