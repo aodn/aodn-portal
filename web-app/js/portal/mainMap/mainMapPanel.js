@@ -700,23 +700,27 @@ function layerAlreadyAdded(layer){
 }
 
 function getLayerMetadata(layer) {
-        
-    Ext.Ajax.request({
-        
-        url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
-        success: function(resp){
-            layer.metadata = Ext.util.JSON.decode(resp.responseText);
-                
-            // if this layer has been user selected before loading the metadata
-            // reload,  as the date picker details/ form  will be wrong at the very least!
-            if (selectedLayer != undefined ) {   
-                if (selectedLayer.id == layer.id) {
-                    updateDetailsPanel(layer); 
+    
+    
+    if (layer.params.LAYERS) {
+        Ext.Ajax.request({
+
+
+            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+            success: function(resp){
+                layer.metadata = Ext.util.JSON.decode(resp.responseText);
+
+                // if this layer has been user selected before loading the metadata
+                // reload,  as the date picker details/ form  will be wrong at the very least!
+                if (selectedLayer != undefined ) {   
+                    if (selectedLayer.id == layer.id) {
+                        updateDetailsPanel(layer); 
+                    }
                 }
-            }
-                
-        } 
-    });
+
+            } 
+        });
+    }
     
     
     // TIMESTEPS URI

@@ -89,51 +89,42 @@ body {
 }
 
 
-.toplinksBackground {
-    float: left;
-    padding: 5px;
-    margin-right: 5px;
-    background: url("../images/mapshadow.png") repeat-x scroll left top rgba(73, 176, 224, 0.4);
-    border-radius: 10px 3px 10px 3px;
-    background-color: rgba(73, 176, 224, 0.4);
-    /* RGBa with 0.6 opacity */
-    /* For IE 5.5 - 7*/
-    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr="#400165A1", endColorstr="#4049B0E0");
-    /* For IE 8*/
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#400165A1, endColorstr=#4049B0E0)";
-
-    border-radius: 10px 3px 10px 3px;   
-    /*box-shadow: 4px 4px 7px 2px  #02477E;*/ 
-}
-#headerTitle {
-
-    text-shadow: 3px 3px 3px #014582;
-}
-
-#freeChoiceLinks  {
+#viewPortLinks  {
     float: left;
     position: absolute;
-    left: 570px;
-    top: 50px;
+    left: 550px;
+    top: 48px;
 }
-#freeChoiceLinks a {
+#viewPortLinks a {
     color: white;
     text-shadow: 2px 2px 6px #014582;
-    padding: 8px 24px;
+    padding: 8px 14px;
     margin-right: 5px;
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
     outline: 0;
 }
-#freeChoiceLinks a:hover {
-    color: black;
+#viewPortLinks a:hover {
+    color: #999;
     text-shadow: none;
 }
+
+.viewPortLinksBackground {
+    float: left;
+    padding: 4px 10px;
+    margin-right: 5px;
+    background: url("../images/mapshadow.png") repeat-x scroll left top #02629E; ;
+    border-radius: 14px;   
+}
+
+#headerTitle {
+    text-shadow: 3px 3px 3px #014582;
+}
+
 #toplinks {
     color: white;
     float: right;
-    padding: 8px 12px ;
     position: absolute;
     right: 6px;
     top: 6px;
@@ -150,6 +141,15 @@ body {
 #toplinks a:hover {
     color: black;
     text-shadow: none;
+}
+
+.viewPortTabActive {        
+    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;  
+    color: #333333;  
+}
+.viewPortTabActive a {      
+    color: #333333! important;     
+    text-shadow: none! important;
 }
 
 #downloadCart {
@@ -243,6 +243,11 @@ input, select, textarea {
     /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
 
 }
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
 
 input.readonlyInput {
     border: none;

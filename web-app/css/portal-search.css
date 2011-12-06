@@ -2,6 +2,15 @@
    color: black;
 }
 
+.p-search a {   
+    text-decoration: none;
+    color: #333333;
+}
+.p-search a:hover {   
+    text-decoration: underline;
+    color: black;
+}
+
 .p-search h1 {
    margin-bottom: 5px;
    font-size: 14px;
@@ -37,7 +46,6 @@
 }
 
 .p-facets, .p-refinements {
-   font: normal 12px tahoma, arial, helvetica, sans-serif;
 }
 
 .p-facets {

@@ -428,9 +428,9 @@ function setHTML_ncWMS(response) {
             var vals = "";
             var origStartVal = startval;
 
-            var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
+            //var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
             var timeList = xmldoc.getElementsByTagName('time').length;
-            time = null;
+            var time = null;
 
             if(timeList > 0){
                 time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;

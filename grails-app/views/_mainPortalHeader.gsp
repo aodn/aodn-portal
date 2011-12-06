@@ -3,9 +3,9 @@
     <img src="../../Portal2/images/AODN_logo.png" id="logo" />
     <h1 id="headerTitle">Australian Ocean Data Network</h1>
     <g:if test="${showLinks}">
-    <div id="freeChoiceLinks" >
-      <div class="toplinksBackground"><a href="" onClick="setViewPortTab(0);return false;" >Map</a></div>
-        <div class="toplinksBackground"><a href="" onClick="setViewPortTab(1);return false;" >Search</a></div>
+    <div id="viewPortLinks" >
+      <div class="viewPortLinksBackground" id="viewPortTab0"><a href="" onClick="setViewPortTab(0);return false;" >Map</a></div>
+        <div class="viewPortLinksBackground" id="viewPortTab1"><a href="" onClick="setViewPortTab(1);return false;" >Search</a></div>
     </div>
     </g:if>
     
