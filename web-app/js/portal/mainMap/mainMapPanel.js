@@ -451,7 +451,6 @@ function addNCWMSLayer(currentLayer) {
     
     //newUrl = newUrl + "&" + versionString;
     
-    
     // params.times = array times to animate
     // use maxExtent always
     var newNCWMS = new OpenLayers.Layer.Image(
@@ -462,7 +461,7 @@ function addNCWMSLayer(currentLayer) {
         bbox.getSize(), 
         {
             format: 'image/gif', 
-            opacity: layer.opacity,
+            opacity: layer.server.opacity,
             isBaseLayer : false,
             maxResolution: mapPanel.map.baseLayer.maxResolution,
             minResolution: mapPanel.map.baseLayer.minResolution,
@@ -559,7 +558,7 @@ function createLayer(dl) {
     
           
     // opacity was stored as a percent 0-100
-    var opacity =  Math.round((dl.opacity / 100)*10)/10;
+    var opacity =  Math.round((dl.server.opacity / 100)*10)/10;
     var options =           {
         wrapDateLine: true,   
         opacity: opacity,
