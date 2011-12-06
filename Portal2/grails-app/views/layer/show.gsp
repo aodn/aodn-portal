@@ -98,12 +98,6 @@
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.opacity.label" default="Opacity" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "opacity")}</td>
-                            
-                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="layer.layers.label" default="Layers" /></td>

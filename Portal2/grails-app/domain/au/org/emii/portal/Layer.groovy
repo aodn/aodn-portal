@@ -13,10 +13,8 @@ class Layer {
     String keywords
     String cql
     String style
-    Integer opacity
     String layers
     String bbox
-    String imageFormat
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
@@ -53,10 +51,8 @@ class Layer {
         cql(nullable:true)
         style(nullable:true)
         metaUrl(nullable:true)
-        opacity(range:30..100)
         layers()
         bbox(nullable:true)
-        imageFormat( inList:['image/png','image/gif'] )
         queryable()
         isBaseLayer()
         
