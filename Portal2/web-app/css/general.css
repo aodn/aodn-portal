@@ -301,7 +301,9 @@ a[rel="external"], a.external {
     font-size: 13px;
     font-weight: bold;
     color: white;
-    margin-right: 10px;
+    margin-right: 10px;    
+    padding-left: 10px;
+    border-left: 1px solid #99CCFF;
 }
 a:hover.mainlinks {
     color: black;
