@@ -23,9 +23,7 @@ class LayerTests extends GrailsUnitTestCase {
 		assertEquals "nullable", testLayer.errors["description"]
 		assertEquals "nullable", testLayer.errors["server"]
 		assertEquals "nullable", testLayer.errors["cache"]
-		assertEquals "nullable", testLayer.errors["opacity"]
 		assertEquals "nullable", testLayer.errors["layers"]
-		assertEquals "nullable", testLayer.errors["imageFormat"]
 		assertEquals "nullable", testLayer.errors["queryable"]
 		assertEquals "nullable", testLayer.errors["isBaseLayer"]
                 assertEquals "nullable", testLayer.errors["source"]
@@ -38,8 +36,5 @@ class LayerTests extends GrailsUnitTestCase {
 		assertFalse testLayer.validate()
 		assertEquals "blank", testLayer.errors["source"]
         
-		testLayer = new Layer(imageFormat : "image/jpg")
-		assertFalse testLayer.validate()
-		assertEquals "inList", testLayer.errors["imageFormat"]
     }
 }
