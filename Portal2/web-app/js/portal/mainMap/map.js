@@ -980,15 +980,21 @@ function updateLoadingImage(display) {
             jQuery("#loader").hide(1000);
         }
         else {
-            
-            setTimeout(function(){
+            // only show the spinner if we are still on the map
+            if (mapMainPanel.isVisible()) {
+                setTimeout(function(){
                 if ( layersLoading > 0 ) {
                     
                     jQuery("#loader").show();
                     spinnerForLayerloading.spin(document.getElementById( "jsloader" ));
-                    
-                }
-            }, 2000);
+
+                    }
+                }, 2000);
+            }
+            else {
+                jQuery("#loader").hide(1000);
+            }
+            
         }
     }
 }
