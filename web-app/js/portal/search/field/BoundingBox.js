@@ -1,12 +1,16 @@
 Ext.namespace('Portal.search.field');
 
 Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
-   fieldLabel: 'Bounding Box',
+   fieldLabel: OpenLayers.i18n('boundingBox'),
+   labelSeparator: '',
    layout: 'form',
    
    initComponent: function() { 
       this.items = [
          {
+            xtype: 'spacer',
+            height: 5
+         },{
             xtype: 'container',
             layout: {
                type: 'hbox',
@@ -16,7 +20,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
             width: 250,
             items: [{
                xtype: 'label',
-               text: 'N',
+               text: OpenLayers.i18n('northBL'),
                width: 15
              },{
                xtype: 'numberfield',
@@ -35,7 +39,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
             items: [
                {
                xtype: 'label',
-               text: 'W',
+               text: OpenLayers.i18n('westBL'),
                width: 15
              },{
                xtype: 'numberfield',
@@ -55,7 +59,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
                width: 50
             },{
                xtype: 'label',
-               text: 'E',
+               text: OpenLayers.i18n('eastBL'),
                margins: '0 0 0 5',
                width: 15
              }
@@ -70,7 +74,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
             width: 250,
             items: [{
                xtype: 'label',
-               text: 'S',
+               text: OpenLayers.i18n('southBL'),
                width: 15
              },{
                xtype: 'numberfield',
@@ -79,6 +83,16 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
                decimalPrecision: 2,
                width: 50
             }]
+         },{
+           xtype: 'spacer',
+           height: 8
+         },{
+           xtype: 'label',
+           text: OpenLayers.i18n('bboxHint'),
+           style: 'font-style: italic'
+         },{
+           xtype: 'spacer',
+           height: 5
          }
       ];
 
