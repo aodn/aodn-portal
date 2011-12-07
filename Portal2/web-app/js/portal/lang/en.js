@@ -21,7 +21,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	//Search form
 	addCriteria: 'Add criteria',
 	dateRange: 'Date range',
-	boundingBox: 'Bounding Box',
+  boundingBox: 'Bounding Box',
+  northBL: 'N',
+  eastBL: 'E',
+  westBL: 'W',
+  southBL: 'S',
+  bboxHint: 'Hint: changing the mini-map extent updates the bounding box!',
 	keyword: 'Keyword',
 	parameter: 'Parameter',
 	organisation: 'Organisation',

@@ -21,6 +21,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             xtype: 'container',
             layout: 'form',
             labelWidth: 125,
+            labelSeparator: '',
             autoHeight: true,
             width: 600,
             items: [{
@@ -32,6 +33,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             flex: 1,
             layout: 'form',
             labelWidth: 80,
+            labelSeparator: '',
             items: [{
                ref: '../advancedSearchCombo',
                fieldLabel: OpenLayers.i18n("addCriteria"),
@@ -55,6 +57,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                      [2, OpenLayers.i18n("boundingBox"), false, {xtype: 'portal.search.field.boundingbox'}],
                      [3, OpenLayers.i18n("keyword"), true, {
                         fieldLabel:OpenLayers.i18n("keyword"),
+                        labelSeparator: '',
                         name: 'themekey',
                         field: 'keyword',
                         xtype: 'portal.search.field.multiselect',
@@ -66,6 +69,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         }}],
                      [4, OpenLayers.i18n("parameter"), false, {
                         fieldLabel: OpenLayers.i18n("parameter"),
+                        labelSeparator: '',
                         name: 'dataparam',
                         field: 'longParamName',
                         xtype: 'portal.search.field.multiselect',
@@ -77,6 +81,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         }}],
                      [5, OpenLayers.i18n("organisation"), false, {
                         fieldLabel: OpenLayers.i18n("organisation"),
+                        labelSeparator: '',
                         name: 'orgName',
                         field: 'orgName',
                         xtype: 'portal.search.field.multiselect',
@@ -88,6 +93,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         }}],
                      [6, OpenLayers.i18n("mapLayer"), false, {
 	                    	fieldLabel: OpenLayers.i18n("mapLayer"),
+	                      labelSeparator: '',
 	                    	name: 'protocol',
 	                    	xtype: 'checkbox',
 	                    	checked: true,
