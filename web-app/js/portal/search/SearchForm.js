@@ -40,6 +40,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                width: 100,
                mode: 'local',
                editable: false,
+               cls: 'p-selector',
                filters: [],
                store: new Ext.data.ArrayStore({
                   id: 0,
