@@ -143,6 +143,8 @@
 	margin-right: 5px;
 }
 
-
+input.p-selector {
+  background-image:url(../images/grey_bg.png);
+}
 
 
