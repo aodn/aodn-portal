@@ -48,6 +48,7 @@
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js')}"   type="text/javascript"></script>   
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/LoadMask.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>

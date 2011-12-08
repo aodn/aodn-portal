@@ -135,17 +135,20 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
    },
    
    runSearch: function(filters, startRecord, updateStore) {
+     this.resultsGrid.showMask();
+
       var onSuccess = function(result) {
          var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
          var currentRecords = getRecordsFormat.read(result.responseText);
          var summary = currentRecords.summary;
          this.facetStore.loadData(summary);
+         this.resultsGrid.hideMask();
       };
       
       var onFailure = function(response) {
-         
+        this.resultsGrid.hideMask();
          Ext.Msg.alert('Error', response.status + ': ' + response.statusText + '<br />' + response.responseText);
-      }
+      };
       
       if (updateStore !== false) {
          updateStore = true;
