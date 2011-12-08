@@ -287,18 +287,18 @@ function addToPopup(loc, mapPanel, e) {
 
 
             Ext.Ajax.request({
-                url: proxyURL + encodeURIComponent( url ) + "&format=" + encodeURIComponent(expectedFormat),
+                url: proxyURL + encodeURIComponent( url ) + "&format=" + encodeURIComponent(expectedFormat), // add format for grails proxy
                 params: {
                     name: layer.name, 
-                    id: layer.id
+                    id: layer.id,
+                    expectedFormat: expectedFormat 
                 },
                 success: function(resp, options){
-
                     if ( popup ) { // Popup may have been closed since request was sent
                         
                         
                         var res = formatGetFeatureInfo( resp, options );
-                        //console.log(res);
+                        
                         
                         if (res) {
                             popup.numGoodResults++;
@@ -340,6 +340,8 @@ function addToPopup(loc, mapPanel, e) {
 
                 failure: function(resp, options) { // Popup may have been closed since request was sent
                     updatePopupStatus(popup);
+                    // got a fail but its still a result
+                    popup.numResultQueries++;
                 }
             });
         }
@@ -380,8 +382,10 @@ function tabsFromPopup(popup) {
   
 // if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
-    //console.log(response);
-    if(response.responseXML == null) {
+    
+    
+    //if(response.responseXML.xml.length == 0) {
+    if(options.params.expectedFormat == 'text/html') {
         // strip out all unwanted HTML
         if ( response.responseText.match(/<\/body>/m)) {
             var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
@@ -399,23 +403,20 @@ function formatGetFeatureInfo(response, options) {
         }   
        
     }
-    else{
+    else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response);
+    }
+    else {
+        console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
 }
 
 function setHTML_ncWMS(response) {
     
-    var xmldoc = response.responseXML;
-    if (!xmldoc.getElementsByTagName('longitude')[0]) {
-        console.log("ERROR: getFeatureInfo xml response should have longitude element. response following:");
-        console.log(response.responseXML)
-    }
+    var xmldoc = response.responseXML;  
     
-    if ( xmldoc != null && xmldoc.getElementsByTagName('longitude')[0]) { 
+    if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 
         
-        
-
         var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
         
 
@@ -424,7 +425,7 @@ function setHTML_ncWMS(response) {
             var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
             var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
             var x    = xmldoc.getElementsByTagName('value');
-            var copyright = xmldoc.getElementsByTagName('copyright');
+            var copyright = xmldoc.getElementsByTagName('copyright')[0];
             var vals = "";
             var origStartVal = startval;
 
@@ -501,9 +502,8 @@ function setHTML_ncWMS(response) {
                 //html += "<br><h6>Get a graph of the data along a transect via layer options!</h6>\n";
                 //html = html +" <div  ><a href="#" onclick=\"addLineDrawingLayer('ocean_east_aus_temp/temp','http://emii3.its.utas.edu.au/ncWMS/wms')\" >Turn on transect graphing for this layer </a></div>";
 
-                if(copyright.length > 0)
-                {
-                    html += "<p>" + copyright[0].firstChild.nodeValue + "</p>";
+                if(copyright != undefined) {
+                    html += "<p>" + copyright.childNodes[0].nodeValue + "</p>";
                 }
 
 
@@ -514,6 +514,10 @@ function setHTML_ncWMS(response) {
         else {
             html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
         }
+    }
+    else {
+        console.log("ERROR: getFeatureInfo xml response empty or should have longitude element. response following:");
+        console.log(response.responseXML);
     }
 
     return html;
@@ -741,7 +745,11 @@ function centreOnArgo(base_url, argo_id, zoomlevel) {
     if (IsInt(argo_id)) {
 
         var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=last_lat,last_long&version=1.0.0&CQL_FILTER=platform_number='+ argo_id + '&MAXFEATURES=1');
-        var x= xmlDoc.getElementsByTagName('topp:argo_float');
+        var x = "";
+        
+        if (xmlDoc) {            
+            x = xmlDoc.getElementsByTagName('topp:argo_float');
+        }
 
         if (x.length > 0) {
 
