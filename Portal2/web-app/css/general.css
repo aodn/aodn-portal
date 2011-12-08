@@ -253,6 +253,11 @@ input.readonlyInput {
     border: none;
 }
 
+#activeTreePanel input{
+    margin: 0;
+    
+}
+
 a {
     color: #6A6A6A;
 }
