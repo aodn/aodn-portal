@@ -4,8 +4,6 @@ import grails.converters.deep.*
 import groovyx.net.http.*
 
 class Layer {
-
-    I am deliberately breaking the build, y'all
     
     static {
         println "[!!!!!] ## Layer class loaded ##"
