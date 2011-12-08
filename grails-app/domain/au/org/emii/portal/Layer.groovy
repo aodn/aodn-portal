@@ -6,7 +6,7 @@ import groovyx.net.http.*
 class Layer {
 
     static {
-        println "## Layer class loaded ##"
+        println "[!!!!!] ## Layer class loaded ##"
     }
     
     String name
