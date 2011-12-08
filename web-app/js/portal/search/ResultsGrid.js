@@ -114,6 +114,8 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   afterRender: function(){
     Portal.search.ResultsGrid.superclass.afterRender.call(this);
 
+    this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
+    
     this.getView().mainBody.on({
       scope    : this,
       mouseover: this.onMouseOver,
@@ -121,6 +123,18 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     });
   },
 
+  showMask: function(){
+    if (this.rendered) {
+      this.loadMask.show();
+    }
+  },
+  
+  hideMask: function(){
+    if (this.rendered) {
+      this.loadMask.hide();
+    }
+  },
+  
   // trigger mouseenter event on row when applicable
   onMouseOver : function(e, target) {
     var row = this.getView().findRow(target);
