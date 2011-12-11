@@ -7,6 +7,7 @@ class Layer {
     
     static {
         println "[!!!!!] ## Layer class loaded ##"
+        System.err.println "LLLLL Layer class loaded"
     }
     
     String name
