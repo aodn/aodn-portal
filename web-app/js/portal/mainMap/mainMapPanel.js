@@ -420,7 +420,7 @@ function addNCWMSLayer(currentLayer) {
     var layer;
     var layerLevelIndex;
     var bbox = getMapExtent();//.getSize()
-    
+        
     layer = currentLayer;
     
     // if originalWMSLayer is set - then it is already an animated Image
@@ -461,7 +461,7 @@ function addNCWMSLayer(currentLayer) {
         bbox.getSize(), 
         {
             format: 'image/gif', 
-            opacity: layer.server.opacity,
+            opacity: layer.server.opacity / 100,
             isBaseLayer : false,
             maxResolution: mapPanel.map.baseLayer.maxResolution,
             minResolution: mapPanel.map.baseLayer.minResolution,
@@ -671,7 +671,7 @@ function getUniqueLayerId(layer){
     
     if (layer.server == undefined){
         
-        console.log(layer);
+        //console.log(layer);
         
         // may currently be an animating layer 
         if (layer.originalWMSLayer) {
