@@ -81,7 +81,7 @@ function initMap()  {
             vertical: true,
             height: 100,
             x: 12,
-            y: 120,
+            y: 70,
             plugins: new GeoExt.ZoomSliderTip()
         }]
     });
