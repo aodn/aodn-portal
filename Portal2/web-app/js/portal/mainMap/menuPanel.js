@@ -201,7 +201,7 @@ function initMenusPanel(menu) {
     
     var zoomToLayerChooser = new Ext.form.Checkbox({
         boxLabel  : 'Auto zoom on layer select',
-        inputType : 'checkbox',
+        inputType : 'checkbox', 
         checked: (Portal.app.config.autoZoom) ? Portal.app.config.autoZoom : false,
         listeners: {
             check: function(thisCheckbox, newValue)  {                
@@ -211,12 +211,23 @@ function initMenusPanel(menu) {
     });
 
     var mapOptionsButtonPanel = new Ext.Panel({        
-        border: false,      
+        border: true, 
+        flex: 1,
         items:[
         removeAll,
         resetLayers
         ]
     });
+    var mapSpinnerPanel = new Ext.BoxComponent({        
+        border: true,
+        id: 'mapSpinnerPanel',
+        html: '<div class="extAjaxLoading">' +
+                '<div class="loading-indicator"> Loading...</div>' +
+               '</div>'
+
+    });
+    
+    
     
     
     var mapOptionsPanel = new Ext.Panel({
@@ -227,12 +238,25 @@ function initMenusPanel(menu) {
         height: 115,
         region: 'south',        
         items:[
-        hideLayerOptions,
-        zoomToLayerChooser,
-        mapOptionsButtonPanel,
-        baselayerMenuPanel
+            new Ext.Container({
+                layout: 'hbox',
+                items: [                
+                    new Ext.Panel({
+                        flex: 2,
+                        items: [ 
+                            hideLayerOptions,
+                            zoomToLayerChooser 
+                        ]
+                    }),
+                    mapSpinnerPanel
+                ]
+            }),
+            mapOptionsButtonPanel,
+            baselayerMenuPanel
         ]
     });
+    
+    
         
     // rendered in 'viewport' border layout
     topMenuPanel = new Ext.Panel({
@@ -241,6 +265,7 @@ function initMenusPanel(menu) {
         split: true,
         padding: 10,
         autoScroll: true,
+        collapseMode: 'mini',
         region: 'north',
         height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
@@ -248,7 +273,7 @@ function initMenusPanel(menu) {
         activePanel  ,mapOptionsPanel
         ]
     }); 
-
+    
 
     //Active layer Right Click menu
     layerMenu = new Ext.menu.Menu({

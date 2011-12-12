@@ -23,12 +23,16 @@ var demonstrationContributorTree;
 //var baseLayerList; // array of baselayers used in map and baselayer picker
 var topMenuPanel;
 var spinnerForLayerloading, spinnerForJSONloading;
+var progressCount = 0;
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
 
 
+
+
 Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
+
 
 //--------------------------------------------------------------------------------------------
 Ext.ns('Portal');
@@ -37,6 +41,24 @@ Portal.app = {
     init: function() {
    	//Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
+        
+        
+        // Global Ajax events can be handled on every request!
+        Ext.Ajax.on('beforerequest', function(conn, options){
+            if(progressCount == 0) {
+                ajaxAction('show');
+            }
+            progressCount++;
+        }, this);
+
+        Ext.Ajax.on('requestcomplete', function(conn, response, options){    
+            progressCount--;
+            if(progressCount == 0) {
+                ajaxAction('hide');
+            }
+        }, this);
+        
+
         
         // javascript spinner
         // create here and there can only be one
@@ -158,8 +180,10 @@ function doViewPort()
             id: "leftMenus",
             cls: 'leftMenus',
             collapsible: true,
+            collapseMode: 'mini',
             split: true,
             width: Portal.app.config.westWidth,
+            minWidth: 260,
             listeners: {
                 // show the little expand button on map right.
                 beforeexpand: function(){                    
@@ -192,6 +216,7 @@ function doViewPort()
             width: 350,
             minWidth: 250,
             closeAction: 'hide',
+            collapseMode: 'mini',
             autoDestroy: false,
             tools:[
                 {
@@ -365,3 +390,14 @@ Ext.onReady(function() {
         }
     });
 });
+
+
+function ajaxAction(request) {
+    
+    if (request == 'show') {        
+        jQuery('.extAjaxLoading').show(100);
+    }
+    else {
+        jQuery('.extAjaxLoading').hide('slow');
+    }
+}
