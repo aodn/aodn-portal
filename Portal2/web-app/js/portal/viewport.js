@@ -168,7 +168,7 @@ function doViewPort()
         layout: 'border',
         id: 'mainMapPanel',
         title: 'Map',
-        stateful: true,
+        stateful: false,
         items: [
         {
             title: "Active layers",
@@ -181,6 +181,7 @@ function doViewPort()
             cls: 'leftMenus',
             collapsible: true,
             collapseMode: 'mini',
+            stateful: false,
             split: true,
             width: Portal.app.config.westWidth,
             minWidth: 260,
@@ -200,6 +201,7 @@ function doViewPort()
             region:'center',
             id: 'mainMapCentrePanel',
             layout:'border',
+            stateful: false,
             items: [
             mapPanel
             ]
@@ -210,7 +212,8 @@ function doViewPort()
             region: 'east',
             hideMode: 'offsets',
             hidden: true,
-            collapsible: false,
+            collapsible: false,            
+            stateful: false,
             //html: 'ActiveLayers Details panel here',
             split: true,
             width: 350,
