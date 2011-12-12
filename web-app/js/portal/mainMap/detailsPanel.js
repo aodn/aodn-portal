@@ -27,6 +27,7 @@ function initDetailsPanel()  {
         title: 'Date Animate',
         plain: true,
         disabled: true,
+        stateful: false,
         autoScroll: true,
         bodyCls: 'floatingDetailsPanel',
         items: [
@@ -223,6 +224,7 @@ function initDetailsPanel()  {
         layout: 'form',
         shadow: false,
         title: 'Layer Options',
+        stateful: false,
         autoDestroy: false,
         hidden: true, // not visible until a user clicks a layer in active layers
         constrainHeader: true,
