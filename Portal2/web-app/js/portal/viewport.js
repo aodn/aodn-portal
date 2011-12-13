@@ -19,9 +19,9 @@ var leftTabMenuPanel;
 var defaultMenuTree; 
 var defaultLayers; // from the config
 var defaultMenu; // from the config
-var demonstrationContributorTree;
+
 //var baseLayerList; // array of baselayers used in map and baselayer picker
-var topMenuPanel;
+var activeMenuPanel;
 var spinnerForLayerloading, spinnerForJSONloading;
 var progressCount = 0;
 
@@ -170,14 +170,14 @@ function doViewPort()
         title: 'Map',
         stateful: false,
         items: [
-        {
-            title: "Active layers",
-            layout: 'border',
-            items: [
-            topMenuPanel,leftTabMenuPanel
-            ],
+        {            
             region: 'west',
             id: "leftMenus",
+            title: 'Layer Chooser',
+            layout: 'border',
+            items: [
+            activeMenuPanel,leftTabMenuPanel
+            ],
             cls: 'leftMenus',
             collapsible: true,
             collapseMode: 'mini',
@@ -345,12 +345,9 @@ function doViewPort()
     viewport.show();
     
 
-
-    //mapMainPanel.doLayout();
-
     // now that components are rendered. fill them
-    populateDemoContributorMenu();
-    addRamadda();
+    //populateDemoContributorMenu();
+    //addRamadda();
     Ext.getCmp('leftMenus').doLayout();
 }
 
@@ -396,7 +393,7 @@ Ext.onReady(function() {
 
 
 function ajaxAction(request) {
-    
+    //console.log(request);
     if (request == 'show') {        
         jQuery('.extAjaxLoading').show(100);
     }

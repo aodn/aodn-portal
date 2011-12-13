@@ -991,11 +991,9 @@ function updateLoadingImage(display) {
             // only show the spinner if we are still on the map
             if (mapMainPanel.isVisible()) {
                 setTimeout(function(){
-                if ( layersLoading > 0 ) {
-                    
-                    jQuery("#loader").show();
-                    spinnerForLayerloading.spin(document.getElementById( "jsloader" ));
-
+                    if ( layersLoading > 0 ) {                    
+                        jQuery("#loader").show();
+                        spinnerForLayerloading.spin(document.getElementById( "jsloader" ));
                     }
                 }, 2000);
             }
