@@ -89,7 +89,7 @@
     
   <g:render template="/mainPortalHeader" model="['showLinks':true,'showLogin':true,'configInstance':configInstance]"></g:render>
   
-<div id="loader" style="position:absolute; top:50%; left:35%; z-index: 100000;">
+<div id="loader" style="position:absolute; top:50%; left:43%; z-index: 9000;">
   <p>Page Loading ....</p>
   <div id="jsloader" style="position:relative;left:120px;top:-7px" ></div>
     <!--img src="images/spinnerLarge.gif" alt="Loading..." /-->
