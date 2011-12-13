@@ -17,6 +17,7 @@
     background-image:url('../img/icons/treeMinus.png');
 }
 
+
 .ext-el-mask, .x4-mask{
     background-color: #333333;
 }
@@ -103,7 +104,13 @@
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 13px;
     font-weight: bold;
-    padding: 5px 3px 4px 10px;
+    padding: 10px 3px 4px 10px;
 }
+
+a.x-menu-item {
+    padding-left: 3px! important;
+}
+
+
 
 
