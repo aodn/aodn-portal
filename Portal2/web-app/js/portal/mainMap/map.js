@@ -985,7 +985,7 @@ function updateLoadingImage(display) {
     if ( div != null ) {
         
         if ( display == "none" ) {
-            jQuery("#loader").hide(1000);
+            jQuery("#loader").hide('slow');
         }
         else {
             // only show the spinner if we are still on the map
@@ -998,7 +998,7 @@ function updateLoadingImage(display) {
                 }, 2000);
             }
             else {
-                jQuery("#loader").hide(1000);
+                jQuery("#loader").hide('slow');
             }
             
         }

@@ -642,6 +642,8 @@ function addMainMapLayer(dl) {
         
         mapPanel.map.addLayer(layer);
         
+        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+        
         if(dl.server.type.search("NCWMS") > -1) {
             // get ncWMS Json metadata info for animation and style switching
             // update detailsPanel after Json request
@@ -779,10 +781,24 @@ function setExtentLayer() {
 */
 
 function loadDefaultLayers() {  
+    
+    if (defaultLayers.length < 1) {
+                
+        // the layer loading spinners will need to be deactivated manually        
+        jQuery('.extAjaxLoading').hide('slow');
+        jQuery("#loader").hide('slow');
+        
+    }
+    else {
+        
+        for(var i = 0; i < defaultLayers.length; i++)   {
+            addGrailsLayer(defaultLayers[i].id);   
+            setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);        
+        } 
+        
+    }
+    
 
-    for(var i = 0; i < defaultLayers.length; i++)   {
-        addGrailsLayer(defaultLayers[i].id);   
-        setDefaultMenuTreeNodeStatus(defaultLayers[i].id,false);        
-    }     
+        
 }
 

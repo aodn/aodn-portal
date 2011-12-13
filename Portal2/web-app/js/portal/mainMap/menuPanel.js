@@ -95,14 +95,15 @@ function initMenusPanel(menu) {
         },
         id: 'leftTabMenuPanel',
         region: 'center',
-        minHeight: 150,
+        height: Portal.app.config.activeLayersHeight, 
+        minHeight: 170,
         border: false,
         enableTabScroll : true,
         activeTab: 0,
         items: [
-        //demonstrationContributorTree,
-        defaultMenuTree,
-        userDefinedWMSPanel
+            //demonstrationContributorTree,
+            defaultMenuTree,
+            userDefinedWMSPanel
         ]
     });
 
@@ -116,43 +117,6 @@ function initMenusPanel(menu) {
     });
 
 
-    // set up active map layers panel
-    activePanel = new Ext.tree.TreePanel({
-        autoScroll: true,
-        title: "Active layers",
-        region: 'center',  
-        id: 'activeTreePanel',
-        collapseMode : 'mini',
-        enableDD: true,
-        rootVisible: false,
-        root: layerList,
-        listeners: {
-            append: function(tree,parent,node){                
-                // run this once only
-                // seems to run again when animated images are added
-                if (!tree.root.hashadtheclickactionadded) {                    
-                
-                    //console.log(node.layer.id);
-                    tree.on("click", function(node,event){
-                        tree.show(node.ui.getAnchor());
-                        if(node.isSelected())
-                        {
-                            updateDetailsPanel(node.layer);
-                            node.ui.toggleCheck(true);
-                        }
-                    });
-                    tree.root.hashadtheclickactionadded = true;
-                }
-            }
-        }
-    });
-
-
-    activePanel.on("contextmenu",function(node,event){
-        activePanel.getSelectionModel().select(node);
-        layerMenu.show(node.ui.getAnchor());
-    });
-    
 
     // should get all layers 
     var baselayerMenuPanel = new GeoExt.ux.BaseLayerComboBox({
@@ -264,6 +228,57 @@ function initMenusPanel(menu) {
         ]
     });
     
+     // set up active map layers panel
+    var activeLayerTreePanel = new Ext.tree.TreePanel({
+        id: 'activeTreePanel',
+        enableDD: true,
+        autoScroll: true,
+        rootVisible: false,
+        root: layerList,
+        listeners: {
+            append: function(tree,parent,node){                
+                // run this once only
+                // seems to run again when animated images are added
+                if (!tree.root.hashadtheclickactionadded) {                    
+                
+                    //console.log(node.layer.id);
+                    tree.on("click", function(node,event){
+                        tree.show(node.ui.getAnchor());
+                        if(node.isSelected())
+                        {
+                            updateDetailsPanel(node.layer);
+                            node.ui.toggleCheck(true);
+                        }
+                    });
+                    tree.root.hashadtheclickactionadded = true;
+                }
+            }
+        }
+    });
+
+
+    activeLayerTreePanel.on("contextmenu",function(node,event){
+        activeLayerTreePanel.getSelectionModel().select(node);
+        layerMenu.show(node.ui.getAnchor());
+    });
+    
+    var emptyActiveLayerTreePanelText = new Ext.Container({
+        autoEl: 'div',  // This is the default
+        cls: 'emptyActiveLayerTreePanelText',
+        html: "<p>Choose a layer from the layer chooser above, or use the search feature.</p>"        
+    });
+    var activeLayerPanel = new Ext.Panel({
+        title: "Active layers",
+        region: 'center',
+        items : [
+            emptyActiveLayerTreePanelText,
+            activeLayerTreePanel
+        ]
+        
+    });
+    
+    
+    
     
         
     // rendered in 'viewport' border layout
@@ -275,11 +290,10 @@ function initMenusPanel(menu) {
         autoScroll: true,
         collapseMode: 'mini',
         region: 'south',
-        height: Portal.app.config.activeLayersHeight, 
-        minHeight: 170,
+        minHeight: 100,
         items:[
-            mapOptionsPanel,
-            activePanel
+            mapOptionsPanel,            
+            activeLayerPanel
         ]
     }); 
     
