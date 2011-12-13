@@ -9,6 +9,89 @@ td {
 body {
     min-width: 850px;
 }
+
+
+h1 {
+    color: #6A6A6A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h2 {
+    color: #6A6A6A;
+    font-size: 16px;
+    font-weight: bold;
+}
+h3 {
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 2px 0 ;
+}
+h4 {
+    color: #6A6A6A;
+    font-size: 12px;
+    margin: 2px 0px;
+}
+h5 {
+    color: #6A6A6A;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+h6 {
+    color: #6A6A6A;
+    display: inline;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana,arial,helvetica,sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
+
+}
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
+
+input.readonlyInput {
+    border: none;
+}
+
+#activeTreePanel input{
+    margin: 0;
+    
+}
+
+a {
+    color: #6A6A6A;
+}
+
+a img{
+    border: none;
+}
+
+.floatLeft {
+    float: left;
+}
+.buttonPad {
+    padding: 2px 5px 5px 0px
+}
+.leftMenus {
+    background-color: white;
+}
+.noborder {
+    border: none! important;
+}
+
 /*
     map while loading
 */
@@ -195,87 +278,6 @@ body {
 }
 
 
-
-h1 {
-    color: #6A6A6A;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-h2 {
-    color: #6A6A6A;
-    font-size: 16px;
-    font-weight: bold;
-}
-h3 {
-    color: #6A6A6A;
-    font-size: 14px;
-    font-weight: bold;
-    margin: 2px 0 ;
-}
-h4 {
-    color: #6A6A6A;
-    font-size: 12px;
-    margin: 2px 0px;
-}
-h5 {
-    color: #6A6A6A;
-    font-size: 11px;
-    margin: 2px 0 ;
-}
-h6 {
-    color: #6A6A6A;
-    display: inline;
-    font-size: 11px;
-    margin: 2px 0 ;
-}
-
-input, select, textarea {
-    background-color: #FCFCFC;
-    border: 1px solid #CCCCCC;
-    font: 11px verdana,arial,helvetica,sans-serif;
-    margin: 2px 0;
-    margin-right: 5px;
-    padding: 2px 4px;
-    border-radius: 3px 3px 3px 3px;
-    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
-
-}
-input[type="checkbox"], input[type="radio"]{
-    background: transparent;
-    border: 0;
-}
-
-
-input.readonlyInput {
-    border: none;
-}
-
-#activeTreePanel input{
-    margin: 0;
-    
-}
-
-a {
-    color: #6A6A6A;
-}
-
-a img{
-    border: none;
-}
-
-.floatLeft {
-    float: left;
-}
-.buttonPad {
-    padding: 2px 5px 5px 0px
-}
-.leftMenus {
-    background-color: white;
-}
-.noborder {
-    border: none! important;
-}
 
 .motd {
     -moz-border-radius: 6px;
@@ -751,6 +753,12 @@ JQUERY AUTO COMPLETE
 
 #mapOptions div {
     background-color: #F1F1F0;
+}
+.emptyActiveLayerTreePanelText {
+    margin: 10px;
+    font-size: 12px;
+    font-family: serif;
+    font-weight: normal;
 }
 
 
