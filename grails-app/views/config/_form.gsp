@@ -202,6 +202,15 @@
                                     <g:textField size="4" name="westWidth" value="${configInstance?.westWidth}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="mapGetFeatureInfoBuffer"><g:message code="config.mapGetFeatureInfoBuffer.label" default="Pixel radius to use for map clicks with GetFeatureInfo dialog" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'mapGetFeatureInfoBuffer', 'errors')}">
+                                    <g:textField size="2" name="mapGetFeatureInfoBuffer" value="${configInstance?.mapGetFeatureInfoBuffer}" />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -229,6 +238,16 @@
                                     <g:textField size="8" name="downloadCartMaxFileSize" value="${configInstance?.downloadCartMaxFileSize}" /><font class="hint">in bytes</font>
                                 </td>
                             </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="wmsScannerBaseUrl"><g:message code="config.wmsScannerBaseUrl.label" default="WMS Scanner Base Url" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerBaseUrl', 'errors')}">
+                                    <g:textField size="30" name="wmsScannerBaseUrl" value="${configInstance?.wmsScannerBaseUrl}" /><font class="hint">Full url</font>
+                                </td>
+                            </tr>
+   
    
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -266,11 +285,4 @@
                                 </td>
                             </tr>
    
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="mapGetFeatureInfoBuffer"><g:message code="config.mapGetFeatureInfoBuffer.label" default="Pixel radius to use for map clicks with GetFeatureInfo dialog" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'mapGetFeatureInfoBuffer', 'errors')}">
-                                    <g:textField size="2" name="mapGetFeatureInfoBuffer" value="${configInstance?.mapGetFeatureInfoBuffer}" />
-                                </td>
-                            </tr>
+                            
