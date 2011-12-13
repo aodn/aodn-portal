@@ -5,14 +5,10 @@ var mapMainPanel;
 
 //--------------------------------------------------------------------------------------------
 //Some JSON stuff
-var ready = false;
-var my_JSON_object = {};
+//var ready = false;
 
-var layersTree;
 var proxyURL = "proxy?url=";
-var activePanel;
 
-var toolbarpointer;
  
 // components in menuPanel.js
 var leftTabMenuPanel;
@@ -20,8 +16,7 @@ var defaultMenuTree;
 var defaultLayers; // from the config
 var defaultMenu; // from the config
 
-//var baseLayerList; // array of baselayers used in map and baselayer picker
-var activeMenuPanel;
+var activeMenuPanel;//, activePanel;//, activeTreePanel;
 var spinnerForLayerloading, spinnerForJSONloading;
 var progressCount = 0;
 
@@ -101,8 +96,8 @@ Portal.app = {
                     if(this.config.enableMOTD)  {
 	
                         var nav = new Ext.Panel({
-                            labelWidth:100,
-                            frame:false,                      
+                            labelWidth:400,
+                            //frame:false,                      
                             title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
                             html: this.config.motd.motd,
                             padding: 20,
