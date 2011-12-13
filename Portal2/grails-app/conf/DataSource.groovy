@@ -22,7 +22,6 @@ environments {
        dataSource {
            dbCreate = "update" // one of 'create', 'create-drop','update'
             url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-
             //url = "jdbc:postgresql://localhost:5432/portal2?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
             username = "portal2user"
             password = "wtingzgsfdbat"
