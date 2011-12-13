@@ -273,7 +273,6 @@ a img{
     padding: 2px 5px 5px 0px
 }
 .leftMenus {
-    padding-left: 3px;
     background-color: white;
 }
 .noborder {
@@ -741,17 +740,17 @@ JQUERY AUTO COMPLETE
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
-
 #detailsPanel {z-index: 1200 !important} 
+
 #mapOptions {
-    margin-right: 3px;
-    margin-bottom: 3px;
+    margin: 4px 6px 0px 4px;
     padding: 10px;
     background-color: #F1F1F0;    
     border-radius: 10px;
     border: 1px solid #CBCED3;
     box-shadow: 2px 2px 3px 1px #EEEEEE;
 }
+
 #mapOptions div {
     background-color: #F1F1F0;
 }

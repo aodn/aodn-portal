@@ -1,14 +1,18 @@
+//
+//var demonstrationContributorTree;
+//
 
 
 function initMenusPanel(menu) {
 
-    // CONTRIBUTER TREE TO BE REMOVED
+    /* CONTRIBUTER TREE TO BE REMOVED
     demonstrationContributorTree = new Ext.tree.TreePanel({
         id: 'demonstrationContributorTree', 
         region: "west",
         title: "Contributors",
         root: new GeoExt.tree.LayerContainer()
     });
+    */
     
     
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
@@ -89,15 +93,14 @@ function initMenusPanel(menu) {
             padding: 5,
             autoScroll: true
         },
-        title: 'Layers Tab Panel',
         id: 'leftTabMenuPanel',
         region: 'center',
         minHeight: 150,
         border: false,
         enableTabScroll : true,
-        activeTab: 1,
+        activeTab: 0,
         items: [
-        demonstrationContributorTree,
+        //demonstrationContributorTree,
         defaultMenuTree,
         userDefinedWMSPanel
         ]
@@ -116,9 +119,8 @@ function initMenusPanel(menu) {
     // set up active map layers panel
     activePanel = new Ext.tree.TreePanel({
         autoScroll: true,
-        region: 'center',        
-        header: false,
-        title: 'Map Layers',
+        title: "Active layers",
+        region: 'center',  
         id: 'activeTreePanel',
         collapseMode : 'mini',
         enableDD: true,
@@ -233,44 +235,51 @@ function initMenusPanel(menu) {
     var mapOptionsPanel = new Ext.Panel({
         //title: 'Map Options',
         //padding: 10,
-        id : 'mapOptions',
         collapseMode : 'mini',
-        height: 115,
-        region: 'south',        
+        height: 120,
+        region: 'north',        
         items:[
-            new Ext.Container({
-                layout: 'hbox',
-                items: [                
-                    new Ext.Panel({
-                        flex: 2,
-                        items: [ 
-                            hideLayerOptions,
-                            zoomToLayerChooser 
+            {
+                // place the map options into a panel so that margin can be placed on the inner mapOptions
+                id : 'mapOptions',
+                items: [
+                    new Ext.Container({
+                        layout: 'hbox',
+                        items: [                
+                            new Ext.Panel({
+                                flex: 2,
+                                items: [ 
+                                    hideLayerOptions,
+                                    zoomToLayerChooser 
+                                ]
+                            }),
+                            mapSpinnerPanel
                         ]
                     }),
-                    mapSpinnerPanel
+                    mapOptionsButtonPanel,
+                    baselayerMenuPanel
                 ]
-            }),
-            mapOptionsButtonPanel,
-            baselayerMenuPanel
+            }
+            
         ]
     });
     
     
         
     // rendered in 'viewport' border layout
-    topMenuPanel = new Ext.Panel({
-        id: 'topMenuPanel',
+    activeMenuPanel = new Ext.Panel({
+        id: 'activeMenuPanel',
         layout: 'border',
         split: true,
         padding: 10,
         autoScroll: true,
         collapseMode: 'mini',
-        region: 'north',
+        region: 'south',
         height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
         items:[
-        activePanel  ,mapOptionsPanel
+            mapOptionsPanel,
+            activePanel
         ]
     }); 
     
@@ -361,7 +370,7 @@ function visibilityActivePanelLayer() {
     }
 }
 
-
+// UNUSED FOR DEMONSTRATION PURPOSES
 function populateDemoContributorMenu() {
 
 

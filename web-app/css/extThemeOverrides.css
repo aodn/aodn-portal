@@ -45,7 +45,7 @@
     /*background: none;*/
 }
 .x-layout-split {
-    background-color: #FAFAFA;
+    background-color: #f3f3f3;
 }
 
 .x-tip-body {
@@ -94,6 +94,16 @@
 .x-item-disabled {
     box-shadow: 0 0 0 0 white! important;
     background-color: inherit! important;
+}
+
+.x-panel-header {
+    background-image: none;
+    border: none;
+    color: #15428B;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px 3px 4px 10px;
 }
 
 
