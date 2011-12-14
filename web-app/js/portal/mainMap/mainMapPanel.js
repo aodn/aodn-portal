@@ -170,8 +170,10 @@ function initMap()  {
         
         var layer = e.layer;
         
-        // remove from our own array of layers
-        activeLayers.pop(getUniqueLayerId(layer));   // or this? activeLayers[uniqueLayerId].destroy();  
+        // remove from our own array of layers (ignore transect drawing layers)
+        if (layer.name!='OpenLayers.Handler.Path') {
+          activeLayers.pop(getUniqueLayerId(layer));   // or this? activeLayers[uniqueLayerId].destroy();
+        }
         
         // if its got a grails layer id then its in the menu unless it came from the search
         if (layer.grailsLayerId != undefined) {
