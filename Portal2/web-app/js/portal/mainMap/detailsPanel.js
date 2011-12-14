@@ -60,7 +60,7 @@ function initDetailsPanel()  {
             left: 10
         },
         inverse: false,
-        fieldLabel: "opacity",
+        fieldLabel: "Opacity",
         plugins: new GeoExt.LayerOpacitySliderTip({
            
             template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
@@ -176,9 +176,11 @@ function initDetailsPanel()  {
         defaults: {
             margin: 10
         },
-        id: 'detailsPanelTabs',   
+        id: 'detailsPanelTabs',
+        ref: 'detailsPanelTabs',
         border: false,
         activeTab: 0,
+        enableTabScroll: true,
         cls: 'floatingDetailsPanelContent',
         items: [
         featureInfoPanel,
@@ -187,14 +189,39 @@ function initDetailsPanel()  {
         ]
     });
     
+    var transectControl = new Portal.mainMap.TransectControl({
+      ref: 'transectControl',
+      listeners: {
+        transect: function(inf) {
+          var newTab = detailsPanelTabs.add({
+            title: OpenLayers.i18n('transectTab'),
+            autoHeight: true,
+            closable: true,
+            html: "<div id=\"transectinfostatus\">" +
+            "<h5>Data along the transect: </h5>" + inf.line +  " " +
+            "<BR><img src=\"" + inf.transectUrl + "\" />" +
+            "</div>"
+          });
+          
+          if (detailsPanelItems.ownerCt.width <  430) {
+            detailsPanelItems.ownerCt.setWidth(430);
+            if (detailsPanelItems.ownerCt.ownerCt) detailsPanelItems.ownerCt.ownerCt.doLayout();
+          }
+          
+          detailsPanelTabs.setActiveTab(detailsPanelTabs.items.indexOf(newTab));
+       }
+      }
+    });
+    
     var detailsPanelItems = new Ext.Panel({   
-        id: 'detailsPanelItems', 
+        id: 'detailsPanelItems',
         autoWidth: true,
         //    style: {
         //        padding: '10px'
         //    },
         items: [
         opacitySliderContainer,
+        transectControl,
         {
             xtype: 'button',
             id: 'stopNCAnimationButton',
@@ -313,6 +340,15 @@ function updateDetailsPanel(layer) {
     
     ncWMSColourScalePanel.hide();
     
+    var transectControl = Ext.getCmp('detailsPanelItems').transectControl;
+    transectControl.hide();
+    
+    // remove any transect tabs for previous layer
+    var detailsPanelTabs = Ext.getCmp('detailsPanelItems').detailsPanelTabs;
+    var transectTabs = detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
+    for (var i=0;i<transectTabs.length;i++) {
+      detailsPanelTabs.remove(transectTabs[i]);
+    }
     
     // set default visibility of components in this panel     
     // disabled until all dates are loaded for the layer if applicable      
@@ -335,6 +371,11 @@ function updateDetailsPanel(layer) {
     if(layer.server.type.search("NCWMS") > -1)  {
 
         makeNcWMSColourScale(layer); 
+        
+        transectControl.setMapPanel(mapPanel);
+        transectControl.layer = layer;
+        transectControl.show();
+        
         // show the animate tab if we can animate through time
         if (layer.metadata.datesWithData != undefined) {
 

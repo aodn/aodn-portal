@@ -761,4 +761,6 @@ JQUERY AUTO COMPLETE
     font-weight: normal;
 }
 
-
+.p-btn-transect {
+   background-image: url(../images/draw.png);
+}

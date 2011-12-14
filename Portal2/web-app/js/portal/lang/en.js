@@ -34,16 +34,22 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	searchButton: 'Search',
 	fullTextSearch: 'Free Text',
         
-        // Aggregate Download
-        ttAddToDownload: 'Add to download cart',
-        ttAddAllToDownload: 'Add all to download cart',
-        btnAddAllToDownload: 'Add all',
-        titlFileLimitReached: 'Unable to add',
-        msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
-        
-        //mainMapPanel
-        layerExistsTitle: 'Add layer',
-        layerExistsMsg: 'This layer has already been added to the map',
-        layerAddedTitle: 'Add layer',
-        layerAddedMsg: ' has been added to the map'
+  // Aggregate Download
+  ttAddToDownload: 'Add to download cart',
+  ttAddAllToDownload: 'Add all to download cart',
+  btnAddAllToDownload: 'Add all',
+  titlFileLimitReached: 'Unable to add',
+  msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
+  
+  //mainMapPanel
+  layerExistsTitle: 'Add layer',
+  layerExistsMsg: 'This layer has already been added to the map',
+  layerAddedTitle: 'Add layer',
+  layerAddedMsg: ' has been added to the map',
+  
+  //Options Panel
+  turnOnTransect: 'Turn on transect graphing for this layer:',
+  drawing: 'Drawing',
+  drawingTitle: 'Draw a transect line',
+  transectTab: 'Transect'
 }); 

@@ -69,6 +69,7 @@
 <script src="${resource(dir:'js',file:'portal/mainMap/mainMapPanel.js')}"   type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/mainMap/menuPanel.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ncWMSAnimation.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
