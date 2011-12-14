@@ -764,3 +764,16 @@ JQUERY AUTO COMPLETE
 .p-btn-transect {
    background-image: url(../images/draw.png);
 }
+
+.olControlDrawFeatureActive .olControlDrawFeature {
+    position: absolute;
+    float: left;
+    width: 42px;
+    z-index: 1001;
+    margin-top: 180px;
+    height: 22px;
+    background-image: url("../images/draw.png?");
+    background-position:12px 1px;
+    background-repeat: no-repeat;
+    display: block;
+}
