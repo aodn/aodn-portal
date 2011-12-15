@@ -8,28 +8,41 @@ class Config {
     String name
     String proxy
     Integer proxyPort
+    String catalogUrl
+    // Map behaviour
     String initialBbox
     Boolean autoZoom
-    String catalogUrl
+    // Depth service database configuration
+    Boolean useDepthService
+    String depthUrl
+    String depthUser
+    String depthPassword
+    String depthSchema
+    String depthTable
+    // Menus
     Menu baselayerMenu
     Menu defaultMenu
     Menu contributorMenu
     Menu regionMenu
+    // Message of the day
+    Boolean enableMOTD  //toggle
     Motd motd
     Date motdStart
     Date motdEnd
-    Boolean enableMOTD  //toggle
+    // heights and widths
     Integer popupWidth
     Integer popupHeight
     Integer westWidth
     Integer headerHeight
     Integer footerHeight
     Integer activeLayersHeight
+    
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
     String downloadCartMimeTypeToExtensionMapping
     String downloadCartDownloadableProtocols
+    
     String metadataLinkProtocols
     String metadataLayerProtocols
     Integer mapGetFeatureInfoBuffer    
@@ -49,6 +62,12 @@ class Config {
         proxyPort(nullable:true)
         initialBbox(size:10..50)
         autoZoom()
+        useDepthService()
+        depthUrl()
+        depthUser()
+        depthPassword()
+        depthSchema()
+        depthTable()
         catalogUrl(url: true)
         baselayerMenu()
         defaultMenu()
