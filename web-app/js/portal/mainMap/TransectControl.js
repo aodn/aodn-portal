@@ -51,6 +51,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     var label = this.layer.name,
         layerName = this.layer.params['LAYERS'],
         serverUrl = this.escapeProxy(this.layer.server.uri),
+        dimensionValues = {},
         dimensionParams = '';
 
     // Destroy previously-added line string
@@ -61,8 +62,14 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     var line = e.feature.geometry.toString();
     // we strip off the "LINESTRING(" and the trailing ")"
     line = line.substring(11, line.length - 1);
-
-
+    
+    //HACK: Pass time parameter if specified for layer
+    //TODO: replace this with loop on dimensions when this info is available from GetCapabilities statement 
+    if (this.layer.params.TIME != undefined) {
+      dimensionValues.TIME =  this.layer.params.TIME;
+      dimensionParams = '&TIME=' + dimensionValues.TIME;
+    }
+    
     // Load an image of the transect
     var transectUrl =   serverUrl +
         'REQUEST=GetTransect' +
@@ -76,7 +83,9 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     inf.transectUrl = transectUrl;
     inf.line = dressUpMyLine(line);
     inf.label = label;
+    inf.dimensionValues = this.format(dimensionValues);
     inf.layerName = layerName;
+    
     this.fireEvent('transect', inf);
 
     this.drawingControl.deactivate();
@@ -87,6 +96,16 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     //clickEventHandler.deactivate();
     //clickEventHandler.activate();
     //pan.activate();
+  },
+  
+  format: function(dimensionValues) {
+    var result = '';
+    
+    Ext.iterate(dimensionValues, function(key, value) {
+      result += key + ': ' + value + '<BR>';
+    });
+    
+    return result;
   },
   
   escapeProxy: function(serverUrl) {
