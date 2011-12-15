@@ -16,23 +16,35 @@ hibernate {
     cache.use_query_cache = true
     cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
 }
+
 // environment specific settings
 environments {
+	
    development {
        dataSource {
-           dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-            //url = "jdbc:postgresql://localhost:5432/portal2?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-            username = "portal2user"
-            password = "wtingzgsfdbat"
+            driverClassName = "org.postgresql.Driver"
+		    url = "jdbc:postgresql://localhost:5432/portal2"
+            username = "postgres"
+            password = "postgres"
 
-           // logSql = true
-		    properties {
-				testOnBorrow = true
-				validationQuery = "SELECT 1"
-			}
-       }
+     
+			// logSql = true
+			testOnBorrow = true
+			validationQuery = "SELECT 1"
+	   }
    }
+   
+   // This is purely here for liquibase's use when generating changelogs.
+   dbdiff {
+	   dataSource {
+		   dbCreate = "create-drop"
+		   driverClassName = "org.postgresql.Driver"
+		   url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2_diff?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+		   username = "portal2user"
+		   password = "wtingzgsfdbat"
+	   }
+   }
+
     test {
         dataSource {
             //dbCreate = "update"
@@ -53,11 +65,10 @@ environments {
 
             username = "portal2user"
             password = "wtingzgsfdbat"
-
-		    properties {
-				testOnBorrow = true
-				validationQuery = "SELECT 1"
-			}
+     
+			// logSql = true
+			testOnBorrow = true
+			validationQuery = "SELECT 1"
         }
     }
 }

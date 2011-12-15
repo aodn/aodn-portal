@@ -51,6 +51,10 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
+// Database migration.
+grails.plugin.databasemigration.updateOnStart = true
+grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
@@ -90,6 +94,7 @@ environments {
         grails.serverURL = "http://localhost:8080/${appName}"
 		spatialsearch.url = "http://spatialsearchtest.emii.org.au"
 		grails.mail.disabled=true
+		grails.plugin.databasemigration.updateOnStart = false
     }
 
 }
