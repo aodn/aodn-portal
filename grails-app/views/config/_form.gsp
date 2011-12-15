@@ -52,6 +52,62 @@
                                     <g:checkBox name="autoZoom" value="${configInstance?.autoZoom}" />
                                 </td>
                             </tr>
+                            
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="useDepthService"><g:message code="config.useDepthService.label" default="Use Depth Service" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'useDepthService', 'errors')}">
+                                    <g:checkBox name="useDepthService" value="${configInstance?.useDepthService}" /><font class="hint">A PostGIS database with point depth/elevation data needs to exist for this service.</font>
+                                </td>
+                            </tr>                            
+                               
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="depthUrl"><g:message code="config.depthUrl.label" default="depth database server domain name + port + database name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'depthUrl', 'errors')}">
+                                    <g:textField size="30" name="depthUrl" value="${configInstance?.depthUrl}" /><font class="hint">eg: db.emii.org.au:5432/maplayers</font>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="depthSchema"><g:message code="config.depthSchema.label" default="Depth database Schema" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'depthSchema', 'errors')}">
+                                    <g:textField size="20" name="depthSchema" value="${configInstance?.depthSchema ?: 'public'}" onclick="if (this.value=='public') {this.value = '';}" /><font class="hint">The Postgres schema if not the public schema</font>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="depthTable"><g:message code="config.depthTable.label" default="Depth database table" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'depthTable', 'errors')}">
+                                    <g:textField size="20" name="depthTable" value="${configInstance?.depthTable}" /><font class="hint"></font>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="depthUser"><g:message code="config.depthUser.label" default="Depth database username" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'depthUser', 'errors')}">
+                                    <g:textField size="20" name="depthUser" value="${configInstance?.depthUser}" /><font class="hint">a readonly user</font>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="depthPassword"><g:message code="config.depthPassword.label" default="Depth database password" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'depthPassword', 'errors')}">
+                                    <g:passwordField name="depthPassword" value="${configInstance?.depthPassword}" /><font class="hint"></font>
+                                </td>
+                            </tr>
+                            
+                            
+                            
+                            
+                            
     
                             <tr class="prop">
                                 <td valign="top" class="name">
