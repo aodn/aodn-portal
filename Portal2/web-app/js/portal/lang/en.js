@@ -51,5 +51,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
   turnOnTransect: 'Turn on transect graphing for this layer:',
   drawing: 'Drawing',
   drawingTitle: 'Draw a transect line',
-  transectTab: 'Transect'
+  transectTab: 'Transect',
+  transectDataHeading: 'Data along the transect: ',
+  dimensionValuesHeading: 'For dimension values: '
 }); 

@@ -197,10 +197,24 @@ function initDetailsPanel()  {
             title: OpenLayers.i18n('transectTab'),
             autoHeight: true,
             closable: true,
-            html: "<div id=\"transectinfostatus\">" +
-            "<h5>Data along the transect: </h5>" + inf.line +  " " +
-            "<BR><img src=\"" + inf.transectUrl + "\" />" +
-            "</div>"
+            items: [{
+              layout: 'hbox',
+              items: [{
+                autoHeight: true,
+                width: 200,
+                //TODO: use template
+                html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " " 
+              },{
+                autoHeight: true,
+                hidden: inf.dimensionValues == '',
+                //TODO: use template
+                html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
+              }]
+            },{
+              autoHeight: true,
+              //TODO: use template
+              html: "<img src=\"" + inf.transectUrl + "\" />"
+            }],
           });
           
           if (detailsPanelItems.ownerCt.width <  430) {
