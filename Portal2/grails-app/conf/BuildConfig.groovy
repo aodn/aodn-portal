@@ -28,11 +28,16 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
+	
+	// Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
+	pom true
 }
+
 coverage {
     enabledByDefault = true
     xml = true
 }
+
 grails.war.resources = { stagingDir ->
     
     delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.2.jar")
