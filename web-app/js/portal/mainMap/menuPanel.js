@@ -94,9 +94,12 @@ function initMenusPanel(menu) {
             autoScroll: true
         },
         id: 'leftTabMenuPanel',
-        region: 'center',
+        region: 'north',        
         height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
+        stateful: false,        
+        split: true,
+        collapseMode: 'mini',
         border: false,
         enableTabScroll : true,
         activeTab: 0,
@@ -231,8 +234,7 @@ function initMenusPanel(menu) {
      // set up active map layers panel
     var activeLayerTreePanel = new Ext.tree.TreePanel({
         id: 'activeTreePanel',
-        enableDD: true,
-        autoScroll: true,
+        //enableDD: true,
         rootVisible: false,
         root: layerList,
         listeners: {
@@ -270,6 +272,7 @@ function initMenusPanel(menu) {
     var activeLayerPanel = new Ext.Panel({
         title: "Active layers",
         region: 'center',
+        padding: 10,
         items : [
             emptyActiveLayerTreePanelText,
             activeLayerTreePanel
@@ -285,11 +288,8 @@ function initMenusPanel(menu) {
     activeMenuPanel = new Ext.Panel({
         id: 'activeMenuPanel',
         layout: 'border',
-        split: true,
-        padding: 10,
         autoScroll: true,
-        collapseMode: 'mini',
-        region: 'south',
+        region: 'center',
         minHeight: 100,
         items:[
             mapOptionsPanel,            
