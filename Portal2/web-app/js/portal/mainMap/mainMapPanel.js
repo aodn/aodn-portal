@@ -770,7 +770,7 @@ function getLayerMetadata(layer) {
 function setExtentLayer() {
     
     var bounds = new OpenLayers.Bounds();
-    var extent=activePanel.getSelectionModel().getSelectedNode().layer.metadata.bbox;
+    var extent=activeLayerTreePanel.getSelectionModel().getSelectedNode().layer.metadata.bbox;
     if (extent != undefined) {
         bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
         bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));        

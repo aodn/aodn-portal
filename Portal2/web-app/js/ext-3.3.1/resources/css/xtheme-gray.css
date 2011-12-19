@@ -953,7 +953,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 
 .x-tree-node{
 	color:#000;
-	font: normal 11px arial, tahoma, helvetica, sans-serif;
+	font: 11px "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,"Myriad Pro",Myriad,Geneva,Arial,"Lucida Grande",sans-serif;
 }
 
 .x-tree-node a, .x-dd-drag-ghost a{

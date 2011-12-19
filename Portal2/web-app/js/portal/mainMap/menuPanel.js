@@ -1,6 +1,4 @@
-//
-//var demonstrationContributorTree;
-//
+
 
 
 function initMenusPanel(menu) {
@@ -29,8 +27,7 @@ function initMenusPanel(menu) {
         }), 
         root: defaultMenuContainer,
         collapsible: false,
-        collapseMode: "mini",
-        split: true,
+        autoHeight: true,
         rootVisible:false,
         listeners:{
             // add layers to map or expand discoveries
@@ -50,6 +47,12 @@ function initMenusPanel(menu) {
                     }
                             
                 }
+            },
+            bodyresize: { 
+                fn:function(panel) {
+                    panel.doLayout();
+                    leftTabMenuPanel.doLayout();
+                }                
             },
             beforeexpandnode: {
                 fn:function(node) {
@@ -86,29 +89,7 @@ function initMenusPanel(menu) {
     });
 
 
-    // tabbed menu of available layers to add to map
-    // rendered in 'viewport' border layout
-    leftTabMenuPanel = new Ext.TabPanel({
-        defaults: { // defaults are applied to items, not the container
-            padding: 5,
-            autoScroll: true
-        },
-        id: 'leftTabMenuPanel',
-        region: 'north',        
-        height: Portal.app.config.activeLayersHeight, 
-        minHeight: 170,
-        stateful: false,        
-        split: true,
-        collapseMode: 'mini',
-        border: false,
-        enableTabScroll : true,
-        activeTab: 0,
-        items: [
-            //demonstrationContributorTree,
-            defaultMenuTree,
-            userDefinedWMSPanel
-        ]
-    });
+
 
     
     // Listens to layer changes in the mapPanel and updates
@@ -232,8 +213,8 @@ function initMenusPanel(menu) {
     });
     
      // set up active map layers panel
-    var activeLayerTreePanel = new Ext.tree.TreePanel({
-        id: 'activeTreePanel',
+    activeLayerTreePanel = new Ext.tree.TreePanel({
+        id: 'activeLayerTreePanel',
         //enableDD: true,
         rootVisible: false,
         root: layerList,
@@ -271,8 +252,10 @@ function initMenusPanel(menu) {
     });
     var activeLayerPanel = new Ext.Panel({
         title: "Active layers",
-        region: 'center',
-        padding: 10,
+        id: 'activeLayersPanel',
+        //region: 'center',
+        
+        //margins: {top:0, right:0, bottom:40, left:0},
         items : [
             emptyActiveLayerTreePanelText,
             activeLayerTreePanel
@@ -281,15 +264,39 @@ function initMenusPanel(menu) {
     });
     
     
-    
+        // tabbed menu of available layers to add to map
+    // rendered in 'viewport' border layout
+    leftTabMenuPanel = new Ext.TabPanel({
+        defaults: { // defaults are applied to items, not the container
+            padding: 5//,
+            //autoScroll: true
+        },
+        id: 'leftTabMenuPanel',
+        //flex: 2,
+        //region: 'north',        
+        //height: Portal.app.config.activeLayersHeight, 
+        minHeight: 170,
+        stateful: false,        
+        split: true,
+        collapseMode: 'mini',
+        border: false,
+        enableTabScroll : true,
+        activeTab: 0,
+        items: [
+            //demonstrationContributorTree,
+            defaultMenuTree,
+            userDefinedWMSPanel
+        ]
+    });
     
         
     // rendered in 'viewport' border layout
     activeMenuPanel = new Ext.Panel({
         id: 'activeMenuPanel',
-        layout: 'border',
-        autoScroll: true,
-        region: 'center',
+        flex: 1,
+        //region: 'center',
+        //layout: 'auto',
+        padding: '0px 0px 20px 0px',
         minHeight: 100,
         items:[
             mapOptionsPanel,            
@@ -306,7 +313,7 @@ function initMenusPanel(menu) {
         items: [
         {
             text: 'Remove layer',
-            handler: removeActivePanelLayer
+            handler: removeActiveLayer
         },
         {
             text: 'Zoom to layer',
@@ -314,7 +321,7 @@ function initMenusPanel(menu) {
         },
         {
             text: 'Toggle Visibility',
-            handler: visibilityActivePanelLayer
+            handler: visibilityActiveLayer
         }
         ]
     });
@@ -339,8 +346,8 @@ function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
 
 function checkDefaultMenuTreeNodeStatus(node) {
     
-    // called when activePanel tree nodes are opened
-    Ext.each(activePanel.getRootNode().childNodes, function(node)  {
+    // called when activeTreePanel tree nodes are opened
+    Ext.each(activeLayerTreePanel.getRootNode().childNodes, function(node)  {
         setDefaultMenuTreeNodeStatus(node.attributes.layer.grailsLayerId, false);
     });
 
@@ -348,17 +355,17 @@ function checkDefaultMenuTreeNodeStatus(node) {
 }
 
 
-function removeActivePanelLayer() {
+function removeActiveLayer() {
     
-    // Remove layer from active layers and make matching default menu item active
+    // Remove layer from activeLayers, and make matching default menu item active
     // check if grailsLayerId exists. layer may have been added by user defined discovery
-    var layerId = activePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
+    var layerId = activeLayerTreePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
     
     if (layerId != undefined) { 
         
         // see if this grailslayerid is only in the active layers the once
         var layerCount = 0;
-        Ext.each(activePanel.getRootNode().childNodes, function(node)  {              
+        Ext.each(activeLayerTreePanel.getRootNode().childNodes, function(node)  {              
             if(node.attributes.layer.grailsLayerId == layerId) {
                 layerCount ++;
             }                  
@@ -368,14 +375,16 @@ function removeActivePanelLayer() {
         }        
         
     }
-    mapPanel.map.removeLayer(activePanel.getSelectionModel().getSelectedNode().layer);
+    // remove from the activeLayers array
+    activeLayers[getUniqueLayerId(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer)].destroy();
+    mapPanel.map.removeLayer(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);
     
 }
 
 
-function visibilityActivePanelLayer() {
+function visibilityActiveLayer() {
     
-    var node =activePanel.getSelectionModel().getSelectedNode();
+    var node= activeLayerTreePanel.getSelectionModel().getSelectedNode();
     if (node.getUI().checkbox.checked) {
         node.getUI().checkbox.checked = false;
     }

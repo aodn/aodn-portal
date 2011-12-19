@@ -111,6 +111,10 @@ a.x-menu-item {
     padding-left: 3px! important;
 }
 
+input.x-tree-node-cb {
+    margin: 0px;
+}
+
 
 
 
