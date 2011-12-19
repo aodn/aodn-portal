@@ -153,8 +153,7 @@ function initMap()  {
     var clickControl = new OpenLayers.Control.Click2({
 
         trigger: function(evt) {
-            var loc = mapPanel.map.getLonLatFromViewPortPx(evt.xy);
-            addToPopup(loc,mapPanel,evt);
+            addToPopup(mapPanel,evt);
         }
         
     });

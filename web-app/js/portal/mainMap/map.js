@@ -139,7 +139,7 @@ function zoomToLayer(map, layer){
 
 }
 
-function addToPopup(loc, mapPanel, e) {
+function addToPopup(mapPanel, e) {
 	
     var map = mapPanel.map;
     var wmsLayers = map.getLayersByClass("OpenLayers.Layer.WMS");
@@ -160,7 +160,7 @@ function addToPopup(loc, mapPanel, e) {
     popup = new GeoExt.Popup({
         title: "Searching for Features at your click point",
         width: Portal.app.config.popupWidth,
-        height: 92, // set height when there are results
+        height: 80, // set height when there are results
         maximizable: true,
         // collapsible: true,
         map: mapPanel.map,
@@ -169,7 +169,8 @@ function addToPopup(loc, mapPanel, e) {
         margins: 10,
         constrainHeader: true,
         panIn: true,
-        autoScroll: true
+        autoScroll: true,
+        padding: "0px 0px 12px 12px"
     });
 
     // Add container for html (empty for now)
@@ -177,10 +178,7 @@ function addToPopup(loc, mapPanel, e) {
     popup.add( new Ext.Container({
         html: "Loading ...",
         cls: 'popupHtml',
-        ref: 'popupHtml',
-        style: {
-            padding: '10px'
-        }
+        ref: 'popupHtml'
     })
     );
     // Add tab panel (empty for now)
@@ -188,7 +186,8 @@ function addToPopup(loc, mapPanel, e) {
         ref: 'popupTab',
         enableTabScroll : true,
         deferredRender: true,
-        hidden: true
+        hidden: true//,        
+        //padding: "10px 3px 3px 10px"
     })
     );
         
@@ -197,14 +196,29 @@ function addToPopup(loc, mapPanel, e) {
     popup.numGoodResults = 0;
     popup.numResultQueries = 0;
     
+    
+    var loc = mapPanel.map.getLonLatFromViewPortPx(e.xy);
     // do all this work to reduce the length of the mouse click precision for the popup title
     var locArray = loc.toShortString().split(",");
-    popup.locationString = "Lat:" + toNSigFigs(locArray[0], 4) + " Lon:" + toNSigFigs(locArray[1], 4);
+    popup.locationString = "<b>Lat:</b>" + toNSigFigs(locArray[1], 4) + " <b>Lon:</b>" + toNSigFigs(locArray[0], 4);
 
     // reset the popup's location
     popup.location = loc;    
     popup.doLayout();
     popup.show(); // since the popup is anchored, calling show will move popup to this location  
+    
+    Ext.Ajax.request({
+        url: 'depth' , 
+        params: {
+            lat: locArray[1],
+            lon: locArray[0]
+        },
+        success: function(resp, options){
+            if ( popup ) { // Popup may have been closed since request was sent
+                updatePopupDepthStatus(resp);
+            } 
+        }
+    });
 
     // For each layer...
     for (var i = 0; i < wmsLayers.length; i++ ) {
@@ -349,30 +363,38 @@ function addToPopup(loc, mapPanel, e) {
     
     // no layers to query
     if ( popup.numResultsToLoad == 0 ) {
-        popup.setTitle("Features at " + popup.locationString);
-        statusFromPopup( popup ).update("No layers selected");
+        popup.setTitle("No features found. No layers selected");
     }
     
 
     
+}
+
+function updatePopupDepthStatus(response) {   
+    
+    if (response.responseXML != undefined) {
+        var xmldoc = response.responseXML;  
+
+        if (xmldoc.getElementsByTagName('depth') != undefined) {
+            var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
+            var str =  (depth <= 0) ?  "Depth: " : "Altitude ";  
+            popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + depth + "m");
+        }
+    }
 }
 
 function updatePopupStatus(popup) {
     
-    popup.setTitle("Features at " + popup.locationString);
+    //popup.setTitle("Features at " + popup.locationString);
     if (popup.numGoodResults > 0) {
-        statusFromPopup( popup ).update("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
+        popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
     }
     else if (popup.numResultQueries == popup.numResultsToLoad) {
         var layerStr = (popup.numResultsToLoad == 1) ? "layer" : "layers";
-        statusFromPopup( popup ).update("No features found for " + popup.numResultsToLoad + " queryable " + layerStr);
+        popup.setTitle("No features found for " + popup.numResultsToLoad + " queryable " + layerStr);
     }
 }
 
-// Get status area from getFeatureInfo popup
-function statusFromPopup(popup) {    
-    return popup.popupHtml;
-}
 // Get tabs from getFeatureInfo popup
 function tabsFromPopup(popup) {    
     return popup.popupTab;
