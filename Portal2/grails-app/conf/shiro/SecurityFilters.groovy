@@ -27,6 +27,16 @@ class SecurityFilters {
             }
         }
         
+        depthAccess(controller: "depth", action: "*") {
+            before = {
+                
+                logRequest("depthAccess", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+        
         serverAccess(controller: "server", action: "list|listAllowDiscoveriesAsJson") {
             before = {
                 
