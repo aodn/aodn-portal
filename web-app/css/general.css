@@ -1,6 +1,7 @@
 
 body, html{
-    font: 12px arial,tahoma,helvetica,sans-serif;
+    font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,"Myriad Pro",Myriad,Geneva,Arial,"Lucida Grande",sans-serif;
+    font-size: 11px;
     background-color: #34546E;    
 }
 td {
@@ -756,8 +757,8 @@ JQUERY AUTO COMPLETE
 }
 .emptyActiveLayerTreePanelText {
     margin: 10px;
-    font-size: 12px;
-    font-family: serif;
+    font-size: 13px;
+    font-family: Tahoma, Georgia;
     font-weight: normal;
 }
 
@@ -776,4 +777,19 @@ JQUERY AUTO COMPLETE
     background-position:12px 1px;
     background-repeat: no-repeat;
     display: block;
+}
+
+.menuHeader {
+    background: url(../images/menuHeader.png) 0px -13px repeat-x;
+    border: medium none;
+    
+    color: #15428B;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 1px 10px 10px;
+}
+
+#menuHeaderTail{
+    background: url(../images/menuHeader.png) 0px -13px repeat-x;
 }

@@ -16,7 +16,7 @@ var defaultMenuTree;
 var defaultLayers; // from the config
 var defaultMenu; // from the config
 
-var activeMenuPanel;//, activePanel;//, activeTreePanel;
+var activeMenuPanel, activeLayerTreePanel;
 var spinnerForLayerloading, spinnerForJSONloading;
 var progressCount = 0;
 
@@ -168,10 +168,20 @@ function doViewPort()
         {            
             region: 'west',
             id: "leftMenus",
+            headerCfg:  {
+                cls: 'menuHeader',  // Default class not applied if Custom element specified
+                html: 'Message'
+            },
             title: 'Layer Chooser',
-            layout: 'border',
+            /*layout: {
+                type: 'vbox',
+                align : 'stretch',
+                pack  : 'start'
+            },*/
+            autoScroll: true,
             items: [
-            activeMenuPanel,leftTabMenuPanel
+                leftTabMenuPanel,
+                activeMenuPanel
             ],
             cls: 'leftMenus',
             collapsible: true,
@@ -197,8 +207,15 @@ function doViewPort()
             id: 'mainMapCentrePanel',
             layout:'border',
             stateful: false,
-            items: [
-            mapPanel
+            items: [                
+                mapPanel,            
+                {
+                    region: 'south',
+                    html: 'Footer goes here',
+                    cls: 'footer',
+                    unstyled: true,
+                    height: Portal.app.config.footerHeight
+                }
             ]
         },
         {
@@ -327,13 +344,6 @@ function doViewPort()
                     //console.log(thisTabPanel.activeTab);
                 }
             }
-        },
-        {
-            region: 'south',
-            html: 'Footer goes here',
-            cls: 'footer',
-            unstyled: true,
-            height: Portal.app.config.footerHeight
         }]
     });
 
