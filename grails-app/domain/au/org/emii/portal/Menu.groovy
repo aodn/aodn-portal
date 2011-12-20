@@ -9,6 +9,7 @@ class Menu {
     
     static mapping = {
         sort "title"
+		json type:'text'
     }
 
     
