@@ -217,6 +217,15 @@
    
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="footerContentWidth"><g:message code="config.footerContentWidth.label" default="Footer Content Width" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'footerContentWidth', 'errors')}">
+                                    <g:textField size="4" name="footerContentWidth" value="${configInstance?.footerContentWidth}" /><font class="hint">Adjust size to suit content</font>
+                                </td>
+                            </tr>
+   
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="headerHeight"><g:message code="config.headerHeight.label" default="Header Height" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'headerHeight', 'errors')}">

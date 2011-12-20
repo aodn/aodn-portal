@@ -30,6 +30,7 @@ class Config {
     Date motdStart
     Date motdEnd
     String footerContent
+    Integer footerContentWidth
     
     // heights and widths
     Integer popupWidth
@@ -71,7 +72,8 @@ class Config {
         motd(nullable:true,maxSize: 4000)
         motdStart(nullable:true)
         motdEnd(nullable:true)
-        footerContent(nullable:true,maxSize: 4000)
+        footerContent(nullable:true,maxSize: 4000)        
+        footerContentWidth(nullable:true,size: 150..1000)
         useDepthService(nullable:true)
         depthUrl(nullable:true)
         depthUser(nullable:true)

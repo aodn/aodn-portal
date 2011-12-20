@@ -225,7 +225,7 @@ function doViewPort()
                             xtype: 'container',
                             html: Portal.app.config.footerContent,
                             cls: 'footerText',
-                            width: 950
+                            width: Portal.app.config.footerContentWidth
                         }
                     ]
                     
