@@ -160,9 +160,18 @@ a img{
 
 
 .footer {
-    background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;
-    padding: 5px 10px;
-    color: #CCC;
+    background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;    
+    color: white;
+    font-size: 10px;
+}
+.footerText {
+    padding-top:  13px;    
+}
+.footer .x-box-inner {
+    overflow: visible;
+}
+.footer a{
+    color: white;
 }
 #mapLinks {
     top: auto! important;

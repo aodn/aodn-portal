@@ -29,6 +29,8 @@ class Config {
     Motd motd
     Date motdStart
     Date motdEnd
+    String footerContent
+    
     // heights and widths
     Integer popupWidth
     Integer popupHeight
@@ -55,19 +57,27 @@ class Config {
     static transients = [ 
         "baselayerList" // baselayerMenu can be expanded to baselayers
     ] 
+    static mapping = {
+        footerContent type:'text'
+    }
     
     static constraints = {
         name(size:5..25,unique:true)
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
-        autoZoom()
-        useDepthService()
-        depthUrl()
-        depthUser()
-        depthPassword()
-        depthSchema()
-        depthTable()
+        autoZoom()    
+        enableMOTD(nullable:true)
+        motd(nullable:true,maxSize: 4000)
+        motdStart(nullable:true)
+        motdEnd(nullable:true)
+        footerContent(nullable:true,maxSize: 4000)
+        useDepthService(nullable:true)
+        depthUrl(nullable:true)
+        depthUser(nullable:true)
+        depthPassword(nullable:true)
+        depthSchema(nullable:true)
+        depthTable(nullable:true)
         catalogUrl(url: true)
         baselayerMenu()
         defaultMenu()
