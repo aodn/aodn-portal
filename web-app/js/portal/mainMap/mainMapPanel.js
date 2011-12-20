@@ -781,8 +781,11 @@ function setExtentLayer() {
 }
 */
 
-function loadDefaultLayers() {  
+
+// this method called onload and on demand of the user
+function reloadDefaultLayers() {  
     
+    var defaultLayers = Portal.app.config.defaultLayers;
     if (defaultLayers.length < 1) {
                 
         // the layer loading spinners will need to be deactivated manually        
@@ -798,6 +801,8 @@ function loadDefaultLayers() {
         } 
         
     }
+    
+    zoomToDefaultZoom(mapPanel.map); // zoom to default extent
     
 
         
