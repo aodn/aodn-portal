@@ -9,16 +9,20 @@ class WmsScannerController {
         def baseUrl = Config.activeInstance().wmsScannerBaseUrl
         def scanJobList
         
+        def url
+        
         try {
-            scanJobList = JSON.parse( "$baseUrl/list".toURL().text )
+            url = "$baseUrl/list".toURL()
+            
+            scanJobList = JSON.parse( url.text )
         }
         catch (Exception e) {
             
-            flash.message = "Exception: ${e.toString()}"
+            setFlashMessage e, url
             scanJobList = [] // Empty list
         }        
         
-        return [scanJobList: scanJobList, serversToList: Server.findAllByTypeInList(["WMS-1.1.1", "WMS-1.3.0"], [sort: "name"])]
+        return [scanJobList: scanJobList, serversToList: Server.findAllByTypeInList(["WMS-1.1.1", "WMS-1.3.0"], [sort: "name"])] // Todo DN - put WMS versions list in config
     }
     
     def callDeleteById = {
@@ -29,11 +33,13 @@ class WmsScannerController {
         def url = address.toURL()        
         
         try {
-            flash.message = "Response: ${url.text}"
+            def response = url.text // Executes command
+            
+            setFlashMessage response
         }
         catch (Exception e) {
             
-            flash.message = "Exception: ${e.toString()}"
+            setFlashMessage e, url
         }        
         
         redirect(action: controls)
@@ -42,7 +48,9 @@ class WmsScannerController {
     def callRegister = {
         
         def baseUrl = Config.activeInstance().wmsScannerBaseUrl
-                    
+
+        def url
+        
         try {
             Server server = Server.get(params.id)
         
@@ -55,15 +63,35 @@ class WmsScannerController {
             // Perform action
             def address = "$baseUrl/register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&version=$version&uri=$uri"
         
-            def url = address.toURL()        
-        
-            flash.message = "Response: ${url.text}"
+            url = address.toURL()   
+            
+            def response = url.text // Executes command
+            
+            setFlashMessage response
         }
         catch (Exception e) {
             
-            flash.message = "Exception: ${e.toString()}"
-        }        
+            setFlashMessage e, url
+        }
         
         redirect(action: controls)
+    }
+    
+    private void setFlashMessage(String response) {
+        
+        flash.message = "Response: ${response}"
+    }
+    
+    private void setFlashMessage(Exception e, URL commandUrl) {
+        
+        def msg = "Exception: ${ e.toString() }<br />Command url: $commandUrl"
+        
+        if ( flash.message?.trim() ) {
+            
+            flash.message += "<hr>$msg"
+        }
+        else {
+            flash.message = msg
+        }
     }
 }
