@@ -183,7 +183,7 @@ function initDetailsPanel()  {
         enableTabScroll: true,
         cls: 'floatingDetailsPanelContent',
         items: [
-        featureInfoPanel,
+        //featureInfoPanel, // implement when there is something to see
         stylePanel,
         animatePanel
         ]
