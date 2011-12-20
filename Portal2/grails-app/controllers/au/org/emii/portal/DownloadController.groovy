@@ -7,9 +7,12 @@ import java.util.zip.*
 
 class DownloadController {
 
-    private static int BufferSize = 4096 // 4kB
-    private static String CookieName = "ys-AggregationItems"
-    private static String CookieDataPrefix = "s:"
+    private static final int BufferSize = 4096 // 4kB
+    private static final String CookieName = "ys-AggregationItems"
+    private static final String CookieDataPrefix = "s:"
+    
+    private static final int MinFileExtensionLength = 2
+    private static final int MaxFileExtensionLength = 4
     
     def downloadFromCart = {
                 
@@ -159,13 +162,16 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         
         // Check for file extensions on URL
        
-        if ( url[-4] == "." ) { // 3 char extension
+        for (i in MinFileExtensionLength..MaxFileExtensionLength) {
             
-            return url[-3..-1]
-        }
-        else if ( url[-5] == "." ) { // 4 char extension
+            int startOfExtensionIndex = (-1 * i)
+            int endOfExtensionIndex = -1
+            int previousCharIndex = startOfExtensionIndex - 1
             
-            return url[-4..-1]
+            if ( url[ previousCharIndex ] == "." ) {
+                
+                return url[startOfExtensionIndex..endOfExtensionIndex]
+            }
         }
         
         // Use mapping to try and guess extension

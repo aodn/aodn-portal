@@ -148,11 +148,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
         
     void testExtensionFromUrlAndType() {
-        
-        assertEquals "Extension should be 'xml'",  "xml",  controller.extensionFromUrlAndType("someFile.xml", "text/html" /* ignored */ )
-        assertEquals "Extension should be 'jpeg'", "jpeg", controller.extensionFromUrlAndType("someFile.jpeg", "text/xml" /* ignored */ )
+                
         assertEquals "Extension should be 'html'", "html", controller.extensionFromUrlAndType("someFile", "text/html" )
         assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile", "text/xml" )
+        assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile.z", "text/xml" )
+        assertEquals "Extension should be 'nc'",   "nc",   controller.extensionFromUrlAndType("someFile.nc", "text/html" /* ignored */ )
+        assertEquals "Extension should be 'jpeg'", "jpeg", controller.extensionFromUrlAndType("someFile.jpeg", "text/xml" /* ignored */ )
+        assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile.image", "text/xml" /* ignored */ )
     }
     
     void testMappings() {
