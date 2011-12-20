@@ -2439,4 +2439,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: 'depth_service_and_gorm_sync.groovy'
 
 	include file: 'footerContentPhil.groovy'
+
+	include file: 'footerContentWidth.groovy'
 }
