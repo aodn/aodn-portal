@@ -124,14 +124,14 @@ function initMenusPanel(menu) {
     });
 
     var resetLayers = new Ext.Button({
-        text: 'Reset Layers',
-        tooltip:  'This will load the default set of map overlay layers',   
+        text: 'Reset Map',
+        tooltip:  'This will load the default set of map overlay layers and reset the map location and zoom level',   
         cls: "floatLeft buttonPad",
         listeners:{
             click: function(button, event)
             {
                 removeAllLayers();
-                loadDefaultLayers();
+                reloadDefaultLayers();
             }
         }
     });

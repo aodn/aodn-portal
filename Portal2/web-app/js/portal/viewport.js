@@ -13,7 +13,7 @@ var proxyURL = "proxy?url=";
 // components in menuPanel.js
 var leftTabMenuPanel;
 var defaultMenuTree; 
-var defaultLayers; // from the config
+//var defaultLayers; // from the config
 var defaultMenu; // from the config
 
 var activeMenuPanel, activeLayerTreePanel;
@@ -129,12 +129,10 @@ Portal.app = {
                 initMap();
                 //addBaseLayers(); // build baselayers into baseLayerList before map render
                 defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
-                //loadDefaultMenu(defaultMenu);
                 initMenusPanel(defaultMenu);
                 doViewPort();
-                defaultLayers = this.config.defaultLayers; // into global space so it can be modified
-                loadDefaultLayers();
-                zoomToDefaultZoom(mapPanel.map); // layout done so zoom to default extent
+                reloadDefaultLayers();
+                
 
 	
             }
