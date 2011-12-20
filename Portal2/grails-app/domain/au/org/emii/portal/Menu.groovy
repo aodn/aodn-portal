@@ -20,7 +20,7 @@ class Menu {
             maxSize: 40, 
             unique:true
         )
-        json()
+        json(maxSize: 4000)
     }
     String toString() {
         return "${title}"

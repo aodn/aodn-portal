@@ -211,10 +211,26 @@ function doViewPort()
                 mapPanel,            
                 {
                     region: 'south',
-                    html: 'Footer goes here',
+                    layout: 'hbox',
                     cls: 'footer',
+                    padding:  '7px 0px 0px 15px',
                     unstyled: true,
-                    height: Portal.app.config.footerHeight
+                    height: Portal.app.config.footerHeight,
+                    items: [
+                        {
+                            // this is not a configured item as wont change and will need tailoring for every instance
+                            xtype: 'container',
+                            html: "<img src=\"images/NCRIS_Initiative_inline_white.png\" />",
+                            width: 300
+                        },
+                        {
+                            xtype: 'container',
+                            html: Portal.app.config.footerContent,
+                            cls: 'footerText',
+                            width: 950
+                        }
+                    ]
+                    
                 }
             ]
         },
@@ -261,25 +277,7 @@ function doViewPort()
             }
         }],
         listeners: {
-            /* a user might expand after having changed the selectedActivelayer
-            beforeexpand: function(panel, animate){
-                
-                console.log("right panel opening");
-
-                if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-                        
-                    // there must be a selectedLayer to be in this situation right?
-                    if (selectedLayer != undefined) {
-                        updateDetailsPanel(selectedLayer);
-                    }
-                    else {
-                        console.log("Error: There was no selectedLayer for the panel to show!!");                       
-                        closeNHideDetailsPanel();
-                    }
-                }                
-
-            },
-            */
+  
             hide: function(panel) {
                 
                 

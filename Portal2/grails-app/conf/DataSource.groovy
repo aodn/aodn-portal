@@ -22,6 +22,7 @@ environments {
 	
    development {
        dataSource {
+            //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
 		    url = "jdbc:postgresql://localhost:5432/portal2"
             username = "postgres"
