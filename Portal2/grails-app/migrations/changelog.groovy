@@ -2435,4 +2435,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	changeSet(author: "jburgess (generated)", id: "1323929544776-42") {
 		createSequence(schemaName: "public", sequenceName: "hibernate_sequence")
 	}
+
+	include file: 'depth_service_and_gorm_sync.groovy'
 }
