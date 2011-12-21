@@ -100,7 +100,7 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
-        wmsScannerBaseUrl(url: true)
+        wmsScannerBaseUrl()
     }
     
     static Config activeInstance() {

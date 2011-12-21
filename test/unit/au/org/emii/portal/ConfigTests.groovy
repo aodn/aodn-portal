@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class ConfigTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -55,11 +55,11 @@ class ConfigTests extends GrailsUnitTestCase {
         assertFalse testConfig.validate()
         assertEquals "blank", testConfig.errors["downloadCartFilename"]
         
-        testConfig = new Config(downloadCartMaxNumFiles : "0")
+        testConfig = new Config(downloadCartMaxNumFiles : 0)
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxNumFiles"]
         
-        testConfig = new Config(downloadCartMaxFileSize : "0")
+        testConfig = new Config(downloadCartMaxFileSize : 0)
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxFileSize"]
         
@@ -86,10 +86,6 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig = new Config(mapGetFeatureInfoBuffer: -1)
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["mapGetFeatureInfoBuffer"]
-        
-        testConfig = new Config(wmsScannerBaseUrl: "http://invalidUrl")
-        assertFalse testConfig.validate()
-        assertEquals "url", testConfig.errors["wmsScannerBaseUrl"]
     }
 
     void testActiveInstance() {

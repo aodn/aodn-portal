@@ -34,7 +34,7 @@ grails.project.dependency.resolution = {
 }
 
 coverage {
-    enabledByDefault = true
+    enabledByDefault = false
     xml = true
 }
 
