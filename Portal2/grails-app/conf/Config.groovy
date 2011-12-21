@@ -59,7 +59,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 environments {
     production {
         grails.serverURL = "http://www.changeme.com"
-		spatialsearch.url = "http://spatialsearch.emii.org.au/search/search/index"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 		grails
 		{
 			mail
