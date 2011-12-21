@@ -48,7 +48,7 @@
 
                             <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "name")}</g:link></td>
 
-                            <td>${fieldValue(bean: layerInstance, field: "opacity")}</td>
+                            <td>${fieldValue(bean: layerInstance, field: "layers")}</td>
                         
                             <td><g:formatBoolean boolean="${layerInstance.disabled}" /></td>
                         

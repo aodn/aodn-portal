@@ -23,7 +23,6 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'server.id.label', default: 'Id')}" />
                         
                             <g:sortableColumn property="uri" title="${message(code: 'server.uri.label', default: 'Uri')}" />
                         
@@ -45,9 +44,8 @@
                             ${(serverInstanceList[i].allowDiscoveries) ?
                                         '' : 'disable' }">
                         
-                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "id")}</g:link></td>
                         
-                            <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
+                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "uri")}</g:link></td>
                         
                             <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
                         
