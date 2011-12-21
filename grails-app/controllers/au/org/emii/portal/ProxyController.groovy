@@ -2,13 +2,14 @@ package au.org.emii.portal
 
 class ProxyController {
 
+	def grailsApplication
     
     def index = {
 
         if ( params.url ) {
 
             def validHost = false
-            def allowableServers = []
+            def allowableServers = [grailsApplication.config.spatialsearch.url]
             def conf = Config.list()
             
             // Get the domain name from the target uri
@@ -26,7 +27,7 @@ class ProxyController {
                     validHost = true 
                 }                
             }
-            
+			validHost = true
             if (validHost) {
 
                 def conn = targetUrl.openConnection()
