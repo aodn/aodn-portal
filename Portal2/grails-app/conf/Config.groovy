@@ -59,7 +59,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 environments {
     production {
         grails.serverURL = "http://www.changeme.com"
-		spatialsearch.url = "http://spatialsearch.emii.org.au"
+		spatialsearch.url = "http://spatialsearch.emii.org.au/search/search/index"
 		grails
 		{
 			mail
@@ -75,7 +75,7 @@ environments {
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 		grails
 		{
 		   mail
@@ -92,7 +92,7 @@ environments {
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 		grails.mail.disabled=true
 		grails.plugin.databasemigration.updateOnStart = false
     }
