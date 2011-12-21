@@ -6,6 +6,15 @@ databaseChangeLog = {
 		}
 	}
 
+    changeSet(author: "jburgess", id: "1324362496992-1-1")
+    {
+        update(tableName: "config")
+        {
+            column(name:"footer_content_width", valueNumeric:461)
+            where "id = 19"
+        }
+	}
+
 	changeSet(author: "pmbohm (generated)", id: "1324362496992-2") {
 		modifyDataType(columnName: "motd_end", newDataType: "TIMESTAMP WITH TIME ZONE", tableName: "config")
 	}
