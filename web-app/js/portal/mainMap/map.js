@@ -166,18 +166,18 @@ function addToPopup(mapPanel, e) {
         map: mapPanel.map,
         anchored: true,
         border: false,
-        margins: 10,
+        //margins: 10,
         constrainHeader: true,
         panIn: true,
-        autoScroll: true,
-        padding: "0px 0px 12px 12px"
+        autoScroll: true//,
+        //padding: "0px 0px 12px 12px"
     });
 
     // Add container for html (empty for now)
     // 
     popup.add( new Ext.Container({
         html: "Loading ...",
-        cls: 'popupHtml',
+        cls: 'popupHtml',      
         ref: 'popupHtml'
     })
     );
@@ -207,18 +207,22 @@ function addToPopup(mapPanel, e) {
     popup.doLayout();
     popup.show(); // since the popup is anchored, calling show will move popup to this location  
     
-    Ext.Ajax.request({
-        url: 'depth' , 
-        params: {
-            lat: locArray[1],
-            lon: locArray[0]
-        },
-        success: function(resp, options){
-            if ( popup ) { // Popup may have been closed since request was sent
-                updatePopupDepthStatus(resp);
-            } 
-        }
-    });
+    // if depthservice is enabled, make it live!
+    if (Portal.app.config.useDepthService) {
+        Ext.Ajax.request({
+            url: 'depth' , 
+            params: {
+                lat: locArray[1],
+                lon: locArray[0]
+            },
+            success: function(resp, options){
+                    updatePopupDepthStatus(resp);                
+            }
+        });
+    }
+    else{
+       updatePopupDepthStatus(); 
+    }
 
     // For each layer...
     for (var i = 0; i < wmsLayers.length; i++ ) {
@@ -372,14 +376,20 @@ function addToPopup(mapPanel, e) {
 
 function updatePopupDepthStatus(response) {   
     
-    if (response.responseXML != undefined) {
+    if (response != undefined) {
         var xmldoc = response.responseXML;  
 
         if (xmldoc.getElementsByTagName('depth') != undefined) {
             var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-            var str =  (depth <= 0) ?  "Depth: " : "Altitude ";  
-            popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + depth + "m");
+            var str =  (depth <= 0) ?  "Depth: " : "Altitude ";              
+            if ( popup ) { // Popup may have been closed since request was sent
+                popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + depth + "m");
+            }
         }
+    }
+    else {
+        // clear out any placeholder 'loading' text
+        popup.popupHtml.update("");
     }
 }
 

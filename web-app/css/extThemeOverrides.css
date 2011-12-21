@@ -23,7 +23,7 @@
 }
 /* getfeatureinfo popup */
 .gx-popup .x-window-body {
-    background-color: #F4F4F4! important;
+    /*background-color: #F4F4F4! important;*/
 }
 .gx-popup .x-tab-panel-header {
     border-width: 0px;

@@ -539,7 +539,9 @@ table.featureInfo caption{
 
 .popupHtml {
     color:#6A6A6A;
-    background-color: #F4F4F4; /*#F1F1F0;*/
+    background-color: #F4F4F4; 
+    padding: 0px 0px 10px 10px; 
+    
 }
 
 .featureinfocontent {
