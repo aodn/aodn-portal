@@ -124,16 +124,38 @@ class SnapshotController
             try {
                 snapshotInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
-                redirect(action: "list")
+				
+				if (params.type == 'JSON')
+				{
+					render text: flash.message, status: 200	
+				}
+				else
+				{
+					redirect(action: "list")
+				}
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
-                redirect(action: "show", id: params.id)
+				if (params.type == 'JSON')
+				{
+					render text: flash.message, status: 500	
+				}
+				else
+				{
+					redirect(action: "show", id: params.id)
+				}
             }
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
-            redirect(action: "list")
+			if (params.type == 'JSON')
+			{
+				render text: flash.message, status: 404	
+			}
+			else
+			{
+				redirect(action: "list")
+			}
         }
     }
 }
