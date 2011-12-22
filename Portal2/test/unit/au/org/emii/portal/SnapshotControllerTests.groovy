@@ -142,13 +142,37 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 	
 	void testDeleteAsJSON()
 	{
+		def snapshotList = createSnapshots(2, owner)
 		
+		assertTrue(Snapshot.list()*.id.contains(snapshotList[0].id))
+
+		controller.params.id = snapshotList[0].id
+		callDelete()
+		
+		assertFalse(Snapshot.list()*.id.contains(snapshotList[0].id))
+		assertEquals(200, controller.renderArgs.status)
+		assertEquals([code:"default.deleted.message", args:[[code:"snapshot.label", default:"Snapshot"], snapshotList[0].id]], flashMsgParams)
 	}
-	
+
+	void testDeleteAsJSONError()
+	{
+		controller.params.id = 123
+		callDelete()
+		
+		assertEquals(404, controller.renderArgs.status)
+		assertEquals([code:"default.not.found.message", args:[[code:"snapshot.label", default:"Snapshot"], 123]], flashMsgParams)
+	}
+
 	private def callList() 
 	{
 		controller.params.type = 'JSON'
 		controller.list()
+	}
+	
+	private def callDelete() 
+	{
+		controller.params.type = 'JSON'
+		controller.delete()
 	}
 	
 	private def callShow() 
