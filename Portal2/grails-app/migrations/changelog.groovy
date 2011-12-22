@@ -2443,4 +2443,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: 'footerContentPhil.groovy'
 
 	include file: 'footerContentWidth.groovy'
+
+	include file: '20111222-JB-snapshot.groovy'
 }
