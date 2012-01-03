@@ -185,7 +185,7 @@ class LayerController {
     
     def saveOrUpdate = {
         
-        println "\n" * 15
+        log.debug("\n" * 15)
         
         /*
          * -- Params --
@@ -231,9 +231,9 @@ class LayerController {
                 return
             }
         
-            println "layers: ${layers}"
-            println "serverUrl: ${serverUrl}"
-            println "currentlyActive: $currentlyActive"
+            log.debug "layers: ${layers}"
+            log.debug "serverUrl: ${serverUrl}"
+            log.debug "currentlyActive: $currentlyActive"
         }
                 
         /*
@@ -260,7 +260,7 @@ class LayerController {
             return
         }
                 
-        println "server: $server"
+        log.debug "server: $server"
         
         // Find layer
         def layer = Layer.findByLayersAndServer( params.layers, server )
@@ -269,13 +269,13 @@ class LayerController {
         if ( !layer ) {
             
             // Create new layer
-            println "Creating new layer"
+            log.debug "Creating new layer"
             layer = new Layer()
             layer.server = server
         }
         else {
             
-            println "layer found: $layer"
+            log.debug "layer found: $layer"
         }
                 
         // Copy values
@@ -283,10 +283,10 @@ class LayerController {
                
         if ( !layer.hasErrors() && layer.save( flush: true ) ) {
             
-            println "Saved with new values"
-            println "------------------------------"
+            log.debug "Saved with new values"
+            log.debug "------------------------------"
             layer.properties.each{ println it }
-            println "------------------------------"
+            log.debug "------------------------------"
         }
         else {
                        
