@@ -1,3 +1,4 @@
+
 databaseChangeLog = {
 
 	changeSet(author: "jburgess (generated)", id: "1323929544776-1") {
@@ -2442,7 +2443,9 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	
 	include file: 'footerContentPhil.groovy'
 
-	include file: 'footerContentWidth.groovy'
-
+	include file: 'footerContentWidth.groovy'        
+    
 	include file: '20111222-JB-snapshot.groovy'
+
+	include file: 'config_increasedLengthOfName.groovy'
 }

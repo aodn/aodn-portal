@@ -63,7 +63,7 @@ class Config {
     }
     
     static constraints = {
-        name(size:5..25,unique:true)
+        name(size:5..255,nullable:true)
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
