@@ -3,21 +3,70 @@ package au.org.emii.portal
 import grails.test.GrailsUnitTestCase
 
 class ConfigTests extends GrailsUnitTestCase {
+    
+    
+    
+    
     protected void setUp() {
-        super.setUp()
+        
+        super.setUp()        
+        mockForConstraintsTests(Config)
     }
 
     protected void tearDown() {
         super.tearDown()
     }
 	
+    Config getValidInstance() {
+                
+   
+        def menu1 = new Menu()
+        
+        mockDomain(Menu, [menu1])
+        def validInstance = new Config(
+            
+            defaultMenu: menu1,
+            initialBbox: "120,20,120,20", // character varying,  lat,lon might be shite? 
+            name: "The aMazing Portal",
+            contributorMenu: menu1,
+            regionMenu: menu1,
+            catalogUrl: "http://www.google.com/",
+            footerHeight: 500,
+            headerHeight: 600,
+            westWidth: 250,
+            downloadCartMaxFileSize: 200,
+            downloadCartMaxNumFiles: 200,
+            downloadCartFilename: "a super string",
+            activeLayersHeight: 200,
+            downloadCartMimeTypeToExtensionMapping: "really long string 2000 characters..",
+            downloadCartDownloadableProtocols: "a super string",
+            metadataLayerProtocols: "a super string",
+            metadataLinkProtocols: "a super string",
+            mapGetFeatureInfoBuffer: 200,
+            baselayerMenu: menu1,
+            popupHeight: 200,
+            popupWidth: 200,
+            autoZoom: true, // boolean
+            wmsScannerBaseUrl: "http://www.google.com/"
+        );
+        
+        
+        return validInstance;    
+        
+        
+    }
+    
     void testConstraints() {
-        def config1 = new Config(name : "config1");
-        mockForConstraintsTests(Config, [config1])
-
+        
+        def x
+        
+        // Test valid instance
+        x = getValidInstance()
+        assertTrue x.validate()
+        
+        // Test invalid instance
         def testConfig = new Config()
         assertFalse testConfig.validate()
-        assertEquals "nullable", testConfig.errors["name"]
         assertEquals "nullable", testConfig.errors["initialBbox"]
         assertEquals "nullable", testConfig.errors["defaultMenu"]
         assertEquals "nullable", testConfig.errors["contributorMenu"]
@@ -31,68 +80,83 @@ class ConfigTests extends GrailsUnitTestCase {
         assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
         assertEquals "nullable", testConfig.errors["mapGetFeatureInfoBuffer"]
 		
-        testConfig = new Config(name : "config1")
-        assertFalse testConfig.validate()
-        assertEquals "unique", testConfig.errors["name"]
 
-        testConfig = new Config(name : "1234")
+        testConfig = getValidInstance()
+        testConfig.name = "1234"
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["name"]
 
-        testConfig = new Config(name : "12345678901234567890123456")
-        assertFalse testConfig.validate()
-        assertEquals "size", testConfig.errors["name"]
+        testConfig = getValidInstance()
+        testConfig.name = "seriouslythisshouldbelongenoughasthisstringapearsinthebrowsertitleanditwontbeabletoshowmorethanthis"
+        assertTrue testConfig.validate()
 
-        testConfig = new Config(initialBbox : "123456789")
+        testConfig = getValidInstance()
+        testConfig.name = "asdf" * 200 
         assertFalse testConfig.validate()
-        assertEquals "size", testConfig.errors["initialBbox"]
+        assertEquals "name size is too small", "size", testConfig.errors["name"]
 
-        testConfig = new Config(initialBbox : "123456789012345678901234567890123456789012345678901")
+        testConfig = getValidInstance()
+        testConfig.initialBbox = "123456789"
         assertFalse testConfig.validate()
-        assertEquals "size", testConfig.errors["initialBbox"]
+        assertEquals "bbox size is too small", "size", testConfig.errors["initialBbox"]
 
-        testConfig = new Config(downloadCartFilename : "")
+        testConfig = getValidInstance()
+        testConfig.initialBbox = "123456789012345678901234567890123456789012345678901"
+        assertFalse testConfig.validate()
+        assertEquals "bbox size is too large", "size", testConfig.errors["initialBbox"]
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartFilename= ""
         assertFalse testConfig.validate()
         assertEquals "blank", testConfig.errors["downloadCartFilename"]
-        
-        testConfig = new Config(downloadCartMaxNumFiles : 0)
+
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartMaxNumFiles= 0
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxNumFiles"]
-        
-        testConfig = new Config(downloadCartMaxFileSize : 0)
+
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartMaxFileSize=  0
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxFileSize"]
-        
-        testConfig = new Config(downloadCartMimeTypeToExtensionMapping: "[")
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartMimeTypeToExtensionMapping =  "["
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
-        
-        testConfig = new Config(downloadCartMimeTypeToExtensionMapping: "[" * 2001)
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartMimeTypeToExtensionMapping = "[" * 2001
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
-         
-        testConfig = new Config(downloadCartDownloadableProtocols: "[" * 256)
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartDownloadableProtocols = "[" * 256
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["downloadCartDownloadableProtocols"]
 
-        testConfig = new Config(metadataLinkProtocols: "[" * 256)
+        testConfig = getValidInstance()
+        testConfig.metadataLinkProtocols = "[" * 256
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["metadataLinkProtocols"]
 
-        testConfig = new Config(metadataLayerProtocols: "[" * 256)
+        testConfig = getValidInstance()
+        testConfig.metadataLayerProtocols = "[" * 256
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["metadataLayerProtocols"]
-        
-        testConfig = new Config(mapGetFeatureInfoBuffer: -1)
+
+        testConfig = getValidInstance()
+        testConfig.mapGetFeatureInfoBuffer = -1
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["mapGetFeatureInfoBuffer"]
+
+        //testConfig = getValidInstance()
+        //testConfig.wmsScannerBaseUrl = "http://invalidUrl"
+        //assertFalse testConfig.validate()
+        //assertEquals "url", testConfig.errors["wmsScannerBaseUrl"]
     }
 
-    void testActiveInstance() {
-        def config1 = new Config(name: "config1");
-        def config2 = new Config(name: "config2");
-        mockDomain(Config, [config1, config2])
-        
-        assertEquals "Should return first config", config1, Config.activeInstance()
-    }
+
 }

@@ -3,7 +3,7 @@
                                   <label for="name"><g:message code="config.name.label" default="Site Name" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" maxlength="25" value="${configInstance?.name}" />
+                                    <g:textField name="name" maxlength="255" value="${configInstance?.name}" />
                                 </td>
                             </tr>
                         
