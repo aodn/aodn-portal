@@ -6,14 +6,13 @@ import groovyx.net.http.*
 class Layer {
     
     String name
+	String title
     Boolean disabled
     String description
     Server server
     Boolean cache
-    String keywords
     String cql
     String style
-    String layers
     String bbox
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
@@ -22,6 +21,7 @@ class Layer {
     // Extra info useful for WMS scanner
     String source
     boolean currentlyActive
+	Date lastUpdated
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -40,10 +40,12 @@ class Layer {
     static mapping = {
         sort "server"
     }
+	
+	static belongsTo = [parent: Layer]
+	static hasMany = [layers: Layer]
 
     static constraints = {
         name(size:5..225)
-        keywords(nullable:true)
         disabled()
         description(size:5..455,blank:false)
         server()
@@ -51,7 +53,6 @@ class Layer {
         cql(nullable:true)
         style(nullable:true)
         metaUrl(nullable:true)
-        layers()
         bbox(nullable:true)
         queryable()
         isBaseLayer()
@@ -59,8 +60,12 @@ class Layer {
         source(blank:false)
         currentlyActive()
     }
+	
+	Layer() {
+		layers = []
+	}
 
-     String toListString() {
+    String toListString() {
         return "${server.shortAcron} - ${name}"
     }
     String toString() {
