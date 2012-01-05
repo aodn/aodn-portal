@@ -25,8 +25,6 @@
                   <th>${message(code: 'scanJob.jobType.label', default: 'Type')}</th>
                   <th>${message(code: 'scanJob.version.label', default: 'Version')}</th>
                   <th>${message(code: 'scanJob.uri.label', default: 'URI')}</th>
-                  <th>${message(code: 'scanJob.status.label', default: 'Status')}</th>
-                  <th>${message(code: 'scanJob.disabled.label', default: 'Disabled')}</th>
                   <th></th>
                 </tr>
               </thead>
@@ -36,10 +34,8 @@
                   <td>${scanJobInstance.name}</td>
                   <td>${scanJobInstance.description}</td>
                   <td>${scanJobInstance.jobType}</td>
-                  <td>${scanJobInstance.version}</td>
+                  <td>${scanJobInstance.wmsVersion}</td>
                   <td>${scanJobInstance.uri}</td>
-                  <td>${scanJobInstance.status}</td>
-                  <td>${scanJobInstance.disabled}</td>
                   <td><g:link action="callDeleteById" id="${scanJobInstance.id}">${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link></td>
                 </tr>
               </g:each>
