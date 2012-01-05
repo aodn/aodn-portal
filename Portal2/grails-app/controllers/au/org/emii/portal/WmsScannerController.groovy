@@ -57,11 +57,11 @@ class WmsScannerController {
             def jobName = URLEncoder.encode( "Server scan for '${server.name}'" )
             def jobDesc = URLEncoder.encode( "Created by Portal, ${new Date()}" )
             def jobType = "WMS"
-            def version = URLEncoder.encode( server.type.replace("WMS-", "") )
+            def wmsVersion = URLEncoder.encode( server.type.replace("WMS-", "") )
             def uri = URLEncoder.encode( server.uri )
             
             // Perform action
-            def address = "$baseUrl/register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&version=$version&uri=$uri"
+            def address = "$baseUrl/register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri"
         
             url = address.toURL()   
             
