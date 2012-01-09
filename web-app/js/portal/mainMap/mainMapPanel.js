@@ -9,26 +9,10 @@ function initMap()  {
     OpenLayers.Util.onImageLoadError = function(e) {
         this.style.display = "";
         this.src="img/layer_error.gif";
-    }
-
+    };
     
     var controls= [];
     
-    /*
-        new OpenLayers.Control.PanZoomBar({
-            div: document.getElementById('controlPanZoom')
-            }),
-        ,
-
-    //new OpenLayers.Control.KeyboardDefaults(),
-    new OpenLayers.Control.Attribution(),
-        new OpenLayers.Control.MousePosition({
-            div: document.getElementById('mapcoords'),
-            prefix: '<b>Lon:</b> ',
-            separator: ' <BR><b>Lat:</b> '
-        })
-     */
-
     controls.push(
         new OpenLayers.Control.Navigation(),
         new OpenLayers.Control.Attribution(),
@@ -46,7 +30,6 @@ function initMap()  {
                 ]
             }
         })
-        //new OpenLayers.Control.ZoomPanel()
         );
     var options = {
         controls: controls,
@@ -62,8 +45,7 @@ function initMap()  {
     map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
     //map.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
 
-
-    addBaseLayers(map);  // add baselayers to map before creation of the mapPanel  
+    addBaseOpenLayersToMap(map);
 
     //creating the map panel in the center
     mapPanel = new GeoExt.MapPanel({
@@ -86,7 +68,6 @@ function initMap()  {
         }]
     });
           
-       
     // mapPanel.removeListener('click', this.onClick, this);
     var mapToolbar=  new Ext.Toolbar({
         // shadow: false,
@@ -183,15 +164,8 @@ function initMap()  {
           
     });
     
-    
-
     mapPanel.map.addControl(clickControl);
-    
-    
-
-    
     clickControl.activate();  
-
 }
 
 function setToolbarItems() {
@@ -305,8 +279,8 @@ function addGrailsLayer(grailsLayerId) {
 function getWMSVersionString(layer) {
     
     // list needs to match Server.groovy
-    var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"] 
-    var version;
+    var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
+    var version = "undefined";
     for(var i = 0; i < versionList.length; i++){  
         if (layer.server.type.indexOf(versionList[i]) != -1) {
             version = versionList[i];
@@ -419,7 +393,6 @@ function redrawAnimatedLayers() {
 function addNCWMSLayer(currentLayer) {
     
     var layer;
-    var layerLevelIndex;
     var bbox = getMapExtent();//.getSize()
         
     layer = currentLayer;
@@ -570,7 +543,7 @@ function createLayer(dl) {
     if(dl.server.type == "NCWMS-1.3.0") {        
         options.yx = []; // fix for the wms standards war
     }
-    if (dl.isBaselayer) {
+    if (dl.isBaseLayer) {
         options.isBaseLayer = dl.isBaseLayer;
     }
 
@@ -597,32 +570,31 @@ function createLayer(dl) {
     }
 }
 
-
-
-// add baselayers to the map
-function addBaseLayers(map) {
-        
-    var blm = Ext.util.JSON.decode(Portal.app.config.baselayerList);
-    //console.log(blm);
-    
-    for(var i = 0; i < blm.length; i++){        
- 
-        var layer = blm[i]
-        
-        // override these setting as they are now baselayers
+function getBaseOpenLayers()
+{
+	var baseOpenLayers = [];
+	
+	Ext.each(Ext.util.JSON.decode(Portal.app.config.baselayerList), function(layerDescriptor, index)
+	{
+		// override these setting as they are now baselayers
         // regardless of config settings
-        layer.isBaselayer = true;
-        layer.queryable   = false
+    	layerDescriptor.isBaseLayer = true;
+    	layerDescriptor.queryable = false;
         
-        var wmsLayer = createLayer(layer);
-        
-        if (wmsLayer != undefined) {
-            map.addLayer(wmsLayer);
-        }
-        
-    }
-
+        baseOpenLayers.push(createLayer(layerDescriptor));
+	});	
+	
+	return baseOpenLayers;
 }
+
+function addBaseOpenLayersToMap(map) 
+{
+	Ext.each(getBaseOpenLayers(), function(baseOpenLayer, index)
+	{
+        map.addLayer(baseOpenLayer);
+	});
+}
+
 /*
  * 
  * This is the internal add layer method used to add all overlay layers
@@ -668,7 +640,7 @@ function getUniqueLayerId(layer){
     
     var cql = "";
     if (layer.cql != undefined) {
-        cql = "::" + layer.cql
+        cql = "::" + layer.cql;
     }
     
     
@@ -681,10 +653,10 @@ function getUniqueLayerId(layer){
             layer.server = layer.originalWMSLayer.server;
         }
         else if(layer.url) {
-            layer.server = {uri: layer.url}
+            layer.server = {uri: layer.url};
         }
         else {
-            layer.server = {uri: "UNKNOWN"}
+            layer.server = {uri: "UNKNOWN"};
             console.log("ERROR: layer '" + layer.name + "'. cant find the server attribute");
         }
     }   

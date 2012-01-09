@@ -40,7 +40,7 @@ class ProxyController {
                     render( text: targetUrl.text, contentType: format, encoding: "UTF-8" )
                 }
                 catch (Exception e) {                    
-                    log.debug "Exception occurred: $e"
+                    log.debug "Exception occurred contacting $targetUrl", e
                     render text: "An error occurred making request to $targetUrl", status: 500
                 }
             }
