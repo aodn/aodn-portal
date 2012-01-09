@@ -6,7 +6,7 @@ import groovyx.net.http.*
 class Layer {
     
     String name
-	String title
+    String title
     Boolean disabled
     String description
     Server server
@@ -21,7 +21,7 @@ class Layer {
     // Extra info useful for WMS scanner
     String source
     boolean currentlyActive
-	Date lastUpdated
+    Date lastUpdated
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -41,8 +41,8 @@ class Layer {
         sort "server"
     }
 	
-	static belongsTo = [parent: Layer]
-	static hasMany = [layers: Layer]
+    static belongsTo = [parent: Layer]
+    static hasMany = [layers: Layer]
 
     static constraints = {
         name(size:5..225)
@@ -61,14 +61,29 @@ class Layer {
         currentlyActive()
     }
 	
-	Layer() {
-		layers = []
-	}
+    Layer() {
+            layers = []
+    }
 
     String toListString() {
         return "${server.shortAcron} - ${name}"
     }
+    
     String toString() {
         return "${server.shortAcron} - ${name}"
+    }
+    
+    void printTree(int depth = 0) {
+
+        if ( depth == 0 ) println "\n-- Layer Tree --"
+
+        println "   " * depth + "${name} (server: '${server}'; desc: '${description}';)"
+
+        layers.each{
+
+            it.printTree depth + 1
+        }
+
+        if ( depth == 0 ) println()
     }
 }

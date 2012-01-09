@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.apache.shiro.*
+import org.apache.shiro.authc.*
 import grails.converters.deep.*
 import groovyx.net.http.*
 
@@ -7,10 +9,11 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def layerDeserializeService
+    
     def index = {
         redirect(action: "list", params: params)
     }
-
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 500, 500)
@@ -185,83 +188,124 @@ class LayerController {
     
     def saveOrUpdate = {
         
-        log.debug("\n" * 15)
-        
-        /*
-         * -- Params --
-         * 
-         * PK:
-         * layers
-         * serverUrl
-         * 
-         * Required:
-         * currentlyActive
-         * description
-         * 
-         * Optional:
-         * name
-         * disabled
-         * cache
-         * keywords
-         * style
-         * opacity
-         * bbox
-         * imageFormat
-         * queryable
-         * isBaseLayer
-         * 
-         */
-        
-        params.with{
-            if ( !layers?.trim() ) {
-                
-                render status: 400, test: "Parameter 'layers' must be present and not empty"
-                return
-            }
-            
-            if ( !serverUrl.trim() ) {
-                
-                render status: 400, test: "Parameter 'serverUrl' must be present and not empty"
-                return
-            }
-            
-            if ( currentlyActive == null ) {
-                
-                render status: 400, test: "Parameter 'currentlyActive' must be present"
-                return
-            }
-        
-            log.debug "layers: ${layers}"
-            log.debug "serverUrl: ${serverUrl}"
-            log.debug "currentlyActive: $currentlyActive"
-        }
-                
-        /*
-         * Find target leyer(s) using layers and serverUrl
-         * 
-         * if doesn't exists, create new one
-         * 
-         * fill-in fields with params
-         *  - might be some retrieving from db or creating records required?
-         * 
-         * save
-         *
-         * What to return?
-         * 
-         * [!] Write Unit Tests [!]
-         *
-         */
+        try {
+             /*
+             * -- Params --
+             * 
+             * PK:
+             * layers
+             * serverUrl
+             * 
+             * Required:
+             * currentlyActive
+             * description
+             * 
+             * Optional:
+             * name
+             * disabled
+             * cache
+             * keywords
+             * style
+             * opacity
+             * bbox
+             * imageFormat
+             * queryable
+             * isBaseLayer
+             * 
+             */
 
-        def server = Server.findByUri( params.serverUrl )
-                
-        if ( !server ) {
-            
-            render status: 500, text: "No server found with url: ${params.serverUrl}"
-            return
+            println "controllerName: $controllerName"
+            println "username: ${params.username}"
+            println "password: " + ("*" * params.password.length())
+            println "metadata: ${params.metadata}"
+            println "layerData: ${params.layerData.toString()[0..100]}..."
+
+            // Check credentials
+            try {
+                _validateCredentialsAndAuthenticate params
+            }
+            catch(Exception e) {
+
+                println "$e"
+
+                render status: 401, text: "Credentials missing or incorrect"
+                return
+            }
+
+            // Check metadata
+            def metadata = JSON.parse( params.metadata )
+            _validateMetadata metadata
+
+            // Check layer data
+            def layerData = params.layerData
+            _validateLayerData layerData
+
+            // Get server w/ metdata
+            def server = Server.findByUri( metadata.serverUri )
+
+            println "server: $server.name (${server.uri})"
+
+            Layer layerFromJson = layerDeserializeService.fromJson( JSON.parse( layerData ), server )
+
+            layerFromJson.printTree()
+
+            _updateLayers layerFromJson
+
+            render status: 200, text: "Complete (saved)"
         }
-                
-        log.debug "server: $server"
+        catch (Exception e) {
+
+            println "$e"
+
+            render status: 500, text: "Error processing request"
+        }
+    }
+    
+    void _validateCredentialsAndAuthenticate(def params) {
         
+        println "controllerName: $controllerName"
+        
+        def un = params.username
+        def pwd = params.password
+        
+        if ( !un ) throw new IllegalArgumentException( "Value for username is invalid. username: '$un'" )
+        if ( !pwd ) throw new IllegalArgumentException( "Value for password is invalid." )
+        
+        def authToken = new UsernamePasswordToken( un.toLowerCase(), pwd as String)
+        
+        SecurityUtils.subject.login authToken
+        
+        def permissionString = "${controllerName}:${actionName}"
+        println "Checking permissions: $permissionString"
+        
+        if ( !SecurityUtils.subject.isPermitted( permissionString ) ) throw new Exception( "User $un does not have correct permissions" )
+    }
+    
+    void _validateMetadata(def metadata) {
+        
+        if ( !metadata ) throw new IllegalArgumentException( "Metadata must be present" )
+        if ( !metadata.serverUri ) throw new IllegalArgumentException( "serverUri must be specified in metadata" )
+    }
+    
+    void _validateLayerData(def layerData) {
+        
+        if ( !layerData ) throw new IllegalArgumentException( "LayerData must be present" )
+    }
+    
+    void _updateLayers(Layer rootLayer) {
+        
+        throw new Exception( "Finishing writing" )
+        
+        // Record URIs of layers being updated
+        
+        // Deactivate all layers on server (recursive)
+        
+        // Update all layers (recursive)
+        
+        // Commit changes
+        
+        
+        // ------------------------------------------------------
         // Find layer
         def layer = Layer.findByLayersAndServer( params.layers, server )
         
@@ -280,7 +324,9 @@ class LayerController {
                 
         // Copy values
         layer.properties = params
-               
+
+        // Need to process whole tree
+        
         if ( !layer.hasErrors() && layer.save( flush: true ) ) {
             
             log.debug "Saved with new values"
@@ -296,7 +342,5 @@ class LayerController {
             render status: 500, text: message
             return
         }
-        
-        render status: 200, text: "Complete (saved)"
     }
 }
