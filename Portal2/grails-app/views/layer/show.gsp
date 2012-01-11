@@ -36,12 +36,6 @@
                             <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "name")}</td>
                             
                         </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.type.label" default="Keywords" /></td>
-
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "keywords")}</td>
-
-                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="layer.disabled.label" default="Disabled" /></td>
@@ -98,6 +92,13 @@
                             
                         </tr>
                     
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="layer.parent.label" default="Parent" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "parent")}</td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="layer.layers.label" default="Layers" /></td>

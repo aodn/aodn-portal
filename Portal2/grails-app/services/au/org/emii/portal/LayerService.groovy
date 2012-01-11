@@ -17,34 +17,56 @@ class LayerService {
             // Traverse existing layers
             // - Disable layer
             // - Store layer is map for later update
-            log.debug "layerAsJson.title ${layerAsJson.title}"
-            println "layerAsJson.title ${layerAsJson.title}"
-            def rootLayer = Layer.findByServerAndTitle( server, layerAsJson.title )
+            
+            def rootLayer = Layer.findWhere(
+                server: server,
+                title: layerAsJson.title,
+                source: dataSource
+            )
+            
+            println "== Find Root Layer =="
+            println "server: $server"
+            println "title:  ${layerAsJson.title}"
+            println "source: $dataSource"
+            println "found:  $rootLayer"
+            println "== =============== =="
             
             println "rootLayer: ${rootLayer?.getClass()}"
             
             if ( rootLayer ) {
                 
                 _traverseLayerTree rootLayer, {
-                    println "> $it"
+                    
+                    println "Disabling existing layer $it"
+                    
+                    it.disabled = true
                     existingLayers[it.title] = it
                 }
             }
             
             // Traverse incoming JSON and create or update layers (update if they are in existingLayers[])
-            def newLayer = _traverseJsonLayerTree( layerAsJson, null, { newData, parent ->
+            def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
+                newData, parent ->
                     
                 def layerToUpdate = existingLayers[ newData.title ]
 
-                if ( !layerToUpdate ) {
+                if ( layerToUpdate ) {
+                    
+                    println "Found existing layer eith name. $layerToUpdate"
+                }
+                else {
 
+                    println "Could not find existing layer with title: ${newData.title}. Creating new..."
+                        
                     // Doesn't exist, create
                     layerToUpdate = new Layer(parent: parent, server: server)
                 }
 
+                //println "New data: $newData"
+                    
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = newData.name ? newData.name : newData.title
-                layerToUpdate.description = newData.description
+                layerToUpdate.description = newData.description ? newData : "<No description> Updated: ${new Date()}"
                 layerToUpdate.bbox = newData.bbox
                 layerToUpdate.metaUrl = newData.metaUrl
                 layerToUpdate.queryable = newData.queryable
@@ -91,7 +113,7 @@ class LayerService {
         
         if ( parent ) {
             
-            parent.addToLayers newLayer
+            parent.layers << newLayer
         }
         
         return newLayer
