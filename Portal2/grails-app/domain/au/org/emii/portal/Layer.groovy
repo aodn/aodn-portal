@@ -62,26 +62,27 @@ class Layer {
     }
 	
     Layer() {
-            layers = []
+        layers = []
     }
 
     String toListString() {
-        return "${server.shortAcron} - ${name}"
+        return "${server?.shortAcron} - ${name}"
     }
     
     String toString() {
-        return "${server.shortAcron} - ${name}"
+        return "${server?.shortAcron} - ${name}"
     }
     
     void printTree(int depth = 0) {
 
         if ( depth == 0 ) println "\n-- Layer Tree --"
 
-        println "   " * depth + "${name} (server: '${server}'; desc: '${description}';)"
+        print "   " * depth
+        println "${name} (parent: '$parent'; layers: '${layers?.size()}'; server: '${server}';)"
 
         layers.each{
 
-            it.printTree depth + 1
+            it.printTree (depth + 1)
         }
 
         if ( depth == 0 ) println()
