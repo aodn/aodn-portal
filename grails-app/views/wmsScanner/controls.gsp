@@ -13,14 +13,15 @@
       <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
       </g:if>
-      
+           
       <h3>Current scan jobs (${scanJobList?.size()})</h3>
       <g:if test="${scanJobList != '[]'}">
         <div class="list">
           <table>
               <thead>
                 <tr>
-                  <th>${message(code: 'scanJob.name.label', default: 'Name')}</th>  
+                  <th>${message(code: 'scanJob.name.label', default: 'Name')}</th> 
+                  <th>${message(code: 'scanJob.status.label', default: 'Status')}</th>
                   <th>${message(code: 'scanJob.description.label', default: 'Description')}</th>
                   <th>${message(code: 'scanJob.jobType.label', default: 'Type')}</th>
                   <th>${message(code: 'scanJob.version.label', default: 'Version')}</th>
@@ -32,12 +33,21 @@
               <g:each in="${scanJobList}" status="i" var="scanJobInstance">
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                   <td>${scanJobInstance.name}</td>
+                  <td>${scanJobInstance.status}</td>
                   <td>${scanJobInstance.description}</td>
                   <td>${scanJobInstance.jobType}</td>
                   <td>${scanJobInstance.wmsVersion}</td>
                   <td>${scanJobInstance.uri}</td>
                   <td><g:link action="callDeleteById" id="${scanJobInstance.id}">${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link></td>
                 </tr>
+                <g:if test="${ scanJobInstance.numErrors != 0 }">
+                  <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                    <td colspan="7">
+                      ${message(code: 'scanJob.numErrors.label', default: '# errors')}: ${ scanJobInstance.numErrors }<br />
+                      ${message(code: 'scanJob.lastError.label', default: 'Last error')}: ${ scanJobInstance.lastError }
+                    </td>
+                  </tr>
+                </g:if>
               </g:each>
               </tbody>
           </table>

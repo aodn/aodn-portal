@@ -9,7 +9,7 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def layerDeserializeService
+    def layerService
     
     def index = {
         redirect(action: "list", params: params)
@@ -185,7 +185,7 @@ class LayerController {
             redirect(action: "list")
         }
     }
-    
+
     def saveOrUpdate = {
         
         try {
@@ -214,19 +214,23 @@ class LayerController {
              * 
              */
 
-            println "controllerName: $controllerName"
+            def passwordPrint = "*" * params.password.length()
+            def layerDataPrint = JSON.parse( params.layerData )
+            layerDataPrint.children = "[...]"
+            layerDataPrint.supportedProjections = "[...]"
+            
             println "username: ${params.username}"
-            println "password: " + ("*" * params.password.length())
+            println "password: $passwordPrint"
             println "metadata: ${params.metadata}"
-            println "layerData: ${params.layerData.toString()[0..100]}..."
-
+            println "layerData: $layerDataPrint"
+            
             // Check credentials
             try {
                 _validateCredentialsAndAuthenticate params
             }
             catch(Exception e) {
 
-                println "$e"
+                println "${e.message}"
 
                 render status: 401, text: "Credentials missing or incorrect"
                 return
@@ -243,20 +247,17 @@ class LayerController {
             // Get server w/ metdata
             def server = Server.findByUri( metadata.serverUri )
 
-            println "server: $server.name (${server.uri})"
-
-            Layer layerFromJson = layerDeserializeService.fromJson( JSON.parse( layerData ), server )
-
-            layerFromJson.printTree()
-
-            _updateLayers layerFromJson
+            if ( !server ) IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
+            
+            layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
 
             render status: 200, text: "Complete (saved)"
         }
         catch (Exception e) {
 
-            println "$e"
-
+            println "${e.message}"
+            e.printStackTrace()
+            
             render status: 500, text: "Error processing request"
         }
     }
@@ -284,63 +285,14 @@ class LayerController {
     void _validateMetadata(def metadata) {
         
         if ( !metadata ) throw new IllegalArgumentException( "Metadata must be present" )
-        if ( !metadata.serverUri ) throw new IllegalArgumentException( "serverUri must be specified in metadata" )
+        if ( !metadata.serverUri ) throw new IllegalArgumentException( "serverUri must be specified in the metadata" )
+        if ( !metadata.dataSource ) throw new IllegalArgumentException( "dataSource must be specified in the metadata" )
     }
     
     void _validateLayerData(def layerData) {
         
         if ( !layerData ) throw new IllegalArgumentException( "LayerData must be present" )
-    }
-    
-    void _updateLayers(Layer rootLayer) {
         
-        throw new Exception( "Finishing writing" )
-        
-        // Record URIs of layers being updated
-        
-        // Deactivate all layers on server (recursive)
-        
-        // Update all layers (recursive)
-        
-        // Commit changes
-        
-        
-        // ------------------------------------------------------
-        // Find layer
-        def layer = Layer.findByLayersAndServer( params.layers, server )
-        
-        // Create layer if it doesn't exist already
-        if ( !layer ) {
-            
-            // Create new layer
-            log.debug "Creating new layer"
-            layer = new Layer()
-            layer.server = server
-        }
-        else {
-            
-            log.debug "layer found: $layer"
-        }
-                
-        // Copy values
-        layer.properties = params
-
-        // Need to process whole tree
-        
-        if ( !layer.hasErrors() && layer.save( flush: true ) ) {
-            
-            log.debug "Saved with new values"
-            log.debug "------------------------------"
-            layer.properties.each{ println it }
-            log.debug "------------------------------"
-        }
-        else {
-                       
-            def message = "Layer had errors or could not save."
-            layer.errors.each{ message += "$it\n" }
-            
-            render status: 500, text: message
-            return
-        }
+        // Validate fields
     }
 }
