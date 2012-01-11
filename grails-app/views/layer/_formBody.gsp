@@ -56,16 +56,6 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="layer.keywords.label" default="Keywords" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'keywords', 'errors')}">
-                                    <g:textField name="keywords" value="${layerInstance?.keywords}" />
-                                </td>
-                            </tr>
-
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                     <label for="disabled"><g:message code="layer.disabled.label" default="Disabled" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'disabled', 'errors')}">
