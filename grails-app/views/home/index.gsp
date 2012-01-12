@@ -39,10 +39,7 @@
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
 
-
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
-
-
 
 <script src="${resource(dir:'js',file:'portal/lang/en.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js')}"   type="text/javascript"></script>   
@@ -65,13 +62,11 @@
 <script src="${resource(dir:'js',file:'portal/search/LinkSelectionWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LayerSelectionWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js')}"   type="text/javascript"></script>
-
+<script src="${resource(dir:'js',file:'portal/data/ServerNodeLayerDescriptorStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/Snapshot.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotButtonGroup.js')}"   type="text/javascript"></script>
-
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/mainMapPanel.js')}"   type="text/javascript"></script>
-
 <script src="${resource(dir:'js',file:'portal/mainMap/menuPanel.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
@@ -79,7 +74,6 @@
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/viewport.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"   type="text/javascript"></script>
-
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
 
 
