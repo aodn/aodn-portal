@@ -1,8 +1,8 @@
 package au.org.emii.portal
 
+import grails.converters.JSON;
 import org.apache.shiro.*
 import org.apache.shiro.authc.*
-import grails.converters.deep.*
 import groovyx.net.http.*
 
 class LayerController {
@@ -295,4 +295,26 @@ class LayerController {
         
         // Validate fields
     }
+	
+	def server = {
+		def layerDescriptors = []
+		def server = _getServer(params)
+		if (server) {
+			def criteria = Layer.createCriteria()
+			layerDescriptors = criteria.list() {
+				isNull 'parent'
+				eq 'server.id', server.id
+			}
+		}
+		
+		def result = [layerDescriptors: layerDescriptors]
+		render result as JSON
+	}
+	
+	def _getServer(params) {
+		if (params.server) {
+			return Server.get(params.server)
+		}
+		return null
+	}
 }

@@ -12,13 +12,11 @@ function initMenusPanel(menu) {
     });
     */
     
-    
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
         children: JSON.parse(menu.json) // supplied as a string
     });    
     
-
     defaultMenuTree = new Ext.tree.TreePanel( {
         title: 'WMS Layers',
         id: 'defaultMenuTree',
@@ -33,13 +31,15 @@ function initMenusPanel(menu) {
             // add layers to map or expand discoveries
             click:{
                 fn:function(node) {
-                    if (node.attributes.grailsLayerId){
+                    if (node.attributes.grailsServerId){
+                    	if (!node.isExpanded()) {
+                    		var serverLayerDescriptorStore = new Portal.data.ServerNodeLayerDescriptorStore({node: node, treePanel: this});
+	                        serverLayerDescriptorStore.load();
+                        }
+                    }
+                    else if (node.attributes.grailsLayerId){
                         addGrailsLayer(node.attributes.grailsLayerId);                      
                         setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);                        
-                    }
-                    else if (node.attributes.grailsServerId){
-                        alert("a server (discovery)") ; 
-                    // get all layers for this server TODO
                     }
                     else {                        
                         //this should be a folder
@@ -56,7 +56,6 @@ function initMenusPanel(menu) {
             },
             beforeexpandnode: {
                 fn:function(node) {
-                    //alert("it happened");
                     if(node != defaultMenuTree.getRootNode()) {
                         checkDefaultMenuTreeNodeStatus(node);
                     }
@@ -64,7 +63,6 @@ function initMenusPanel(menu) {
             }
         }
     });
-
 
     var serverURLField = new Ext.form.TextField({
         emptyText: "Full GetCapabilities URL"
