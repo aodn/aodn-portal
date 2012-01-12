@@ -4,6 +4,7 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 	
 	node: undefined,
 	sorter: undefined,
+	loaded: false,
 	
 	constructor: function(cfg) {
 		// This store can't function without a TreeNode
@@ -16,10 +17,10 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 		if (cfg.treePanel) {
 			this.sorter = new Ext.tree.TreeSorter(cfg.treePanel, {folderSort: true});
 		}
-
+		
 		var config = Ext.apply({
 			url: 'layer/server?server=' + this.node.attributes.grailsServerId,
-            storeId: 'layerDescriptorStore' + this.node.attributes.grailsServerId,
+            storeId: Portal.data.ServerNodeLayerDescriptorStore.StoreId(this.node),
         	root: 'layerDescriptors',
         	fields: ['id', 'title', {name: 'server', mapping: 'server.id' }, 'layers' ]
 		}, cfg);
@@ -30,6 +31,7 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 			this.beginNodeUpdate();
             this.updateNode(store);
             this.endNodeUpdate();
+            this.loaded = true;
 		}, this);
 	},
 	
@@ -79,5 +81,32 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 		if (this.sorter) {
 			this.sorter.doSort(node);
 		}
+	},
+	
+	isLoaded: function() {
+		return this.loaded;
 	}
 });
+
+Portal.data.ServerNodeLayerDescriptorStore.StoreId = function(node) {
+	return 'layerDescriptorStore' + node.attributes.grailsServerId;
+};
+
+Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores = [];
+
+Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore = function(node, treePanel) {
+	var storeId = Portal.data.ServerNodeLayerDescriptorStore.StoreId(node);
+	var serverLayerDescriptorStore = Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores[storeId];
+	if (!serverLayerDescriptorStore) {
+		serverLayerDescriptorStore = new Portal.data.ServerNodeLayerDescriptorStore({node: node, treePanel: treePanel});
+		Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores[storeId] = serverLayerDescriptorStore;
+	}
+	return serverLayerDescriptorStore;
+}
+
+Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad = function(node, treePanel) {
+	var serverLayerDescriptorStore = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node, treePanel);
+	if (!serverLayerDescriptorStore.isLoaded()) {
+		serverLayerDescriptorStore.load();
+	}
+}

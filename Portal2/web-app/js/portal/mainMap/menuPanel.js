@@ -1,6 +1,3 @@
-
-
-
 function initMenusPanel(menu) {
 
     /* CONTRIBUTER TREE TO BE REMOVED
@@ -31,21 +28,17 @@ function initMenusPanel(menu) {
             // add layers to map or expand discoveries
             click:{
                 fn:function(node) {
-                    if (node.attributes.grailsServerId){
-                    	if (!node.isExpanded()) {
-                    		var serverLayerDescriptorStore = new Portal.data.ServerNodeLayerDescriptorStore({node: node, treePanel: this});
-	                        serverLayerDescriptorStore.load();
-                        }
+                    if (node.attributes.grailsServerId) {
+                    	Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad(node, this);
                     }
                     else if (node.attributes.grailsLayerId){
-                        addGrailsLayer(node.attributes.grailsLayerId);                      
+                    	addGrailsLayer(node.attributes.grailsLayerId);
                         setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);                        
                     }
                     else {                        
                         //this should be a folder
                         node.expand(); 
                     }
-                            
                 }
             },
             bodyresize: { 
@@ -59,6 +52,11 @@ function initMenusPanel(menu) {
                     if(node != defaultMenuTree.getRootNode()) {
                         checkDefaultMenuTreeNodeStatus(node);
                     }
+                }
+            },
+            expandnode: function(node) {
+            	if (node.attributes.grailsServerId) {
+            		Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad(node, this);
                 }
             }
         }
@@ -86,10 +84,6 @@ function initMenusPanel(menu) {
         ]
     });
 
-
-
-
-    
     // Listens to layer changes in the mapPanel and updates
     var layerList = new GeoExt.tree.OverlayLayerContainer({        
         //text: 'All Active Layers',
