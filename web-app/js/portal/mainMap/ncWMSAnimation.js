@@ -193,14 +193,17 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
 Ext.reg('animations.timePanel', Animations.TimePanel);
 
 
-// merge time = YYYY-MM-DD for getMap requests
+// merge time = YYYY-MM-DDTblaghblagh for getMap requests
+// some servers require the date and time rather than day
 function mergeNewTime(day) {     
     
     
     for(var i=0; i<selectedLayer.dates.length; i++) {
         if (selectedLayer.dates[i].date == day) {
+            
+            var lastTime = selectedLayer.dates[i].dateTimes[selectedLayer.dates[i].dateTimes.length -1];
             selectedLayer.mergeNewParams({
-                time : day
+                time : lastTime
             });
         } 
     }
@@ -249,12 +252,21 @@ function setLayerDates(layer){
 
 function setDatetimesForDate(layer, day) {
     
+    var url;
+    // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
+    //console.log(layer);
+    if (layer.cache === true) {
+       url = layer.server.uri;
+    }
+    else {
+       url = layer.url;
+    }
+        
     // getMetadata gave us the days but not the times of the day
-    Ext.Ajax.request({
-        url: proxyURL+encodeURIComponent(layer.url + 
-            "?request=GetMetadata&item=timesteps&layerName=" + 
-            layer.params.LAYERS + 
-            "&day=" + day),
+    Ext.Ajax.request({        
+        
+        
+        url: proxyURL+encodeURIComponent(url +  "?request=GetMetadata&item=timesteps&layerName=" +  layer.params.LAYERS +   "&day=" + day),
         success: function(resp) { 
             
             var res = Ext.util.JSON.decode(resp.responseText);
@@ -316,11 +328,21 @@ function getTimePeriod() {
         //var maxFrames = 8;
         var chosenTimes = [];
         
+        var url;
+        // see if this layer is flagged a 'cached' layer. a Cached layer is already requested through our proxy
+        //console.log(layer);
+        if (selectedLayer.cache === true) {
+           url = selectedLayer.server.uri;
+        }
+        else {
+           url = selectedLayer.url;
+        }
+        
         var p = animatePanel.animatePanelContent.theOnlyTimePanel; 
         //alert(p);
         // get the server to tell us the options
         Ext.Ajax.request({
-            url: proxyURL+encodeURIComponent(selectedLayer.url + 
+            url: proxyURL+encodeURIComponent(url + 
                 "?request=GetMetadata&item=animationTimesteps&layerName=" + 
                 selectedLayer.params.LAYERS + 
                 "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
@@ -348,7 +370,7 @@ function getTimePeriod() {
 // modal timestep picker for animating current layer
 function showTimestepPicker(timeStrings) {
     
-    // copy to the attributes nedded by the Ext radioGroup
+    // copy to the attributes needed by the Ext radioGroup
     for (vars in timeStrings) {
         timeStrings[vars].boxLabel = timeStrings[vars].title
         timeStrings[vars].name = "justaname"//,

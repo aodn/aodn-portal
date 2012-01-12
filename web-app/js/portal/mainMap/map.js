@@ -19,6 +19,8 @@
  */
 
 var proxyURL = "proxy?url=";
+var proxyCachedURL = "proxy/cache?URL=";
+
 //var tmp_response;
 
 var argos = null; // array of existing argo platform_numbers

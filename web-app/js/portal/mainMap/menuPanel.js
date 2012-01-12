@@ -215,7 +215,7 @@ function initMenusPanel(menu) {
      // set up active map layers panel
     activeLayerTreePanel = new Ext.tree.TreePanel({
         id: 'activeLayerTreePanel',
-        //enableDD: true,
+        enableDD: true,
         rootVisible: false,
         root: layerList,
         listeners: {
