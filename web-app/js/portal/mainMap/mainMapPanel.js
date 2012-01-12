@@ -507,7 +507,7 @@ function createLayer(dl) {
               Keep as zero till fixed 
     */
     var params = {
-        layers: dl.layers,
+        layers: dl.name,
         transparent: 'TRUE',
         buffer: 1, 
         gutter: 0
