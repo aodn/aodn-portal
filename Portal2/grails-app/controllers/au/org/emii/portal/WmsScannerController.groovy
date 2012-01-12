@@ -16,7 +16,7 @@ class WmsScannerController {
         def url
         
         try {
-            url = "$baseUrl/list?callbackUrl=$callbackUrl".toURL()
+            url = "${baseUrl}list?callbackUrl=$callbackUrl".toURL()
             
             scanJobList = JSON.parse( url.text )
         }
@@ -33,7 +33,7 @@ class WmsScannerController {
         
         def baseUrl = Config.activeInstance().wmsScannerBaseUrl
         def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
-        def address = "$baseUrl/deleteById?id=${params.id}&callbackUrl=$callbackUrl"
+        def address = "${baseUrl}deleteById?id=${params.id}&callbackUrl=$callbackUrl"
         
         def url = address.toURL()        
         
@@ -67,7 +67,7 @@ class WmsScannerController {
             def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
             
             // Perform action
-            def address = "$baseUrl/register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl"
+            def address = "${baseUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl"
         
             url = address.toURL()   
             
