@@ -26,6 +26,8 @@ class ServerTests extends GrailsUnitTestCase {
 		assertEquals "nullable", testServer.errors["parseFrequency"]
 		assertEquals "nullable", testServer.errors["disable"]
 		assertEquals "nullable", testServer.errors["allowDiscoveries"]
+		assertEquals "nullable", testServer.errors["opacity"]
+		assertEquals "nullable", testServer.errors["imageFormat"]
 		
 		testServer = new Server(uri : "uri1", shortAcron : "A1", name : "name1")
 		assertFalse testServer.validate()

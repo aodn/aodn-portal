@@ -530,6 +530,8 @@ function createLayer(dl) {
         params.styles = "";
     }
     
+    
+    
           
     // opacity was stored as a percent 0-100
     var opacity =  Math.round((dl.server.opacity / 100)*10)/10;
@@ -546,10 +548,20 @@ function createLayer(dl) {
     if (dl.isBaseLayer) {
         options.isBaseLayer = dl.isBaseLayer;
     }
+    
+    var serverUri;
+    // proxy to use so that this layer is cached
+    
+    if (dl.cache == true) {
+        serverUri =  "http://localhost:8086/Portal2/" + proxyCachedURL + dl.server.uri; 
+    }
+    else {
+        serverUri = dl.server.uri;
+    }
 
     var layer = new OpenLayers.Layer.WMS(
         dl.name,
-        dl.server.uri,
+        serverUri,
         params,
         options
         );
@@ -559,6 +571,7 @@ function createLayer(dl) {
     layer.grailsLayerId = dl.id; // grails layer id
     layer.server= dl.server;
     layer.cql = dl.cql;
+    layer.cache = dl.cache;
       
     
     // don't add layer twice 
@@ -677,10 +690,24 @@ function getLayerMetadata(layer) {
     
     
     if (layer.params.LAYERS) {
+        
+        var url;
+        // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
+        //console.log(layer);
+        if (layer.cache === true) {
+           // all parameters passed along here will get added to URL 
+           // proxyCachedURL = "proxy/cache?URL="
+           url = proxyCachedURL + encodeURIComponent(layer.server.uri) + "&item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata";
+        }
+        else {
+           url = proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata");
+        }
+        
+        
+        
         Ext.Ajax.request({
-
-
-            url: proxyURL+ encodeURIComponent(layer.url + "?item=layerDetails&layerName=" + layer.params.LAYERS + "&request=GetMetadata"),
+            
+            url: url,
             success: function(resp){
                 layer.metadata = Ext.util.JSON.decode(resp.responseText);
 

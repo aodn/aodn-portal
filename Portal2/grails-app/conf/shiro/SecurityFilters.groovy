@@ -66,6 +66,15 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
+        proxyAccess(controller: "proxy", action: "cache") {
+            before = {
+                
+                logRequest("proxyAccess", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
         
         downloadAccess(controller: "download", action: "downloadFromCart") {
             before = {

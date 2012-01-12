@@ -532,16 +532,30 @@ function refreshLegend(layer) {
 function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     var url = "";
+    var useProxy = false;
     
     // if this is an animated image then use the originals details
     // the params object is not set for animating images
     // the layer.url is for the whole animated gif
     if (layer.originalWMSLayer != undefined) { 
         layer.params = layer.originalWMSLayer.params;
-        url = layer.originalWMSLayer.url;
+        if (layer.originalWMSLayer.cache === true) {
+             url = layer.originalWMSLayer.server.uri;
+             useProxy = true;
+        }
+        else {
+            url = layer.originalWMSLayer.url;
+        }
+        
     }
     else {
-        url = layer.url;
+        if (layer.cache === true) {
+             url = layer.server.uri;             
+             useProxy = true;
+        }
+        else {
+            url = layer.url;
+        }
     }
     
     
@@ -564,24 +578,35 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
         opts += "&COLORBARONLY=" + colorbaronly;
     }
     
-    
-    url +=  "?" + opts 
-    + "&REQUEST=GetLegendGraphic"
-    + "&LAYER=" + layer.params.LAYERS
-    + "&FORMAT=" + layer.params.FORMAT; 
-    
-    
+       
     if(layer.params.COLORSCALERANGE != undefined)
     {
-        if(url.contains("COLORSCALERANGE"))
-        {
-            url = url.replace(/COLORSCALERANGE=([^\&]*)/, "COLORSCALERANGE=" + layer.params.COLORSCALERANGE);
+        if(url.contains("COLORSCALERANGE"))  {
+            
+            url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
+            opts += "COLORSCALERANGE=" + layer.params.COLORSCALERANGE
         }
-        else
-        {
-            url += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
+        else  {
+            
+            opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
         }
     }    
+    
+    if (useProxy) {
+        // FORMAT here is for the proxy, so that it knows its a binary image required
+        url = proxyCachedURL+ encodeURIComponent(url) +  "&"
+    }
+    else {
+        url +=  "?" 
+    }
+    
+    url +=  opts 
+        + "&REQUEST=GetLegendGraphic"
+        + "&LAYER=" + layer.params.LAYERS
+        + "&FORMAT=" + layer.params.FORMAT;
+    
+    console.log(layer.cache + " " + url)
+    
     return url
 }
 
