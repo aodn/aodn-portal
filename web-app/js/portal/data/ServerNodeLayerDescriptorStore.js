@@ -92,7 +92,7 @@ Portal.data.ServerNodeLayerDescriptorStore.StoreId = function(node) {
 	return 'layerDescriptorStore' + node.attributes.grailsServerId;
 };
 
-Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores = [];
+Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores = {};
 
 Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore = function(node, treePanel) {
 	var storeId = Portal.data.ServerNodeLayerDescriptorStore.StoreId(node);
