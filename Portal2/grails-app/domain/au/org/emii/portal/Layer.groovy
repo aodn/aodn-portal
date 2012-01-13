@@ -22,6 +22,7 @@ class Layer {
     String source
     boolean currentlyActive
     Date lastUpdated
+    Boolean titleUsedAsName
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -48,7 +49,7 @@ class Layer {
     static constraints = {
         name(size:1..225)
         disabled()
-        description(size:1..455,blank:false)
+        description(size:1..455, blank:false)
         server()
         cache()
         cql(nullable:true)
@@ -60,6 +61,8 @@ class Layer {
         
         source(blank:false)
         currentlyActive()
+        lastUpdated(nullable:true)
+        titleUsedAsName(nullable: true)
     }
 	
     Layer() {

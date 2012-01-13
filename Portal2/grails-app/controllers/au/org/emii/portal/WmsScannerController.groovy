@@ -26,7 +26,13 @@ class WmsScannerController {
             scanJobList = [] // Empty list
         }        
         
-        return [scanJobList: scanJobList, serversToList: Server.findAllByTypeInList(["WMS-1.1.1", "WMS-1.3.0"], [sort: "name"])] // Todo DN - put WMS versions list in config
+        // Status text
+        def statusText = [(0): "Running", (-1): "Running<br>(with&nbsp;errors)", (-2): "Stopped<br>(too&nbsp;many&nbsp;errors)"]
+        
+        return [configInstance: Config.activeInstance(),
+                scanJobList: scanJobList,
+                statusText: statusText,
+                serversToList: Server.findAllByTypeInList(["WMS-1.1.1", "WMS-1.3.0"], [sort: "name"])] // Todo DN - put WMS versions list in config
     }
     
     def callDeleteById = {

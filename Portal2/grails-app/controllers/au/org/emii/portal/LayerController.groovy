@@ -189,31 +189,7 @@ class LayerController {
     def saveOrUpdate = {
         
         try {
-             /*
-             * -- Params --
-             * 
-             * PK:
-             * layers
-             * serverUrl
-             * 
-             * Required:
-             * currentlyActive
-             * description
-             * 
-             * Optional:
-             * name
-             * disabled
-             * cache
-             * keywords
-             * style
-             * opacity
-             * bbox
-             * imageFormat
-             * queryable
-             * isBaseLayer
-             * 
-             */
-
+            // Logging output
             def passwordPrint = "*" * params.password.length()
             def layerDataPrint = JSON.parse( params.layerData )
             layerDataPrint.children = "[...]"
@@ -247,7 +223,7 @@ class LayerController {
             // Get server w/ metdata
             def server = Server.findByUri( metadata.serverUri )
 
-            if ( !server ) IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
+            if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
             
             layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
 
@@ -296,25 +272,25 @@ class LayerController {
         // Validate fields
     }
 	
-	def server = {
-		def layerDescriptors = []
-		def server = _getServer(params)
-		if (server) {
-			def criteria = Layer.createCriteria()
-			layerDescriptors = criteria.list() {
-				isNull 'parent'
-				eq 'server.id', server.id
-			}
-		}
-		
-		def result = [layerDescriptors: layerDescriptors]
-		render result as JSON
-	}
-	
-	def _getServer(params) {
-		if (params.server) {
-			return Server.get(params.server)
-		}
-		return null
-	}
+    def server = {
+            def layerDescriptors = []
+            def server = _getServer(params)
+            if (server) {
+                    def criteria = Layer.createCriteria()
+                    layerDescriptors = criteria.list() {
+                            isNull 'parent'
+                            eq 'server.id', server.id
+                    }
+            }
+
+            def result = [layerDescriptors: layerDescriptors]
+            render result as JSON
+    }
+
+    def _getServer(params) {
+            if (params.server) {
+                    return Server.get(params.server)
+            }
+            return null
+    }
 }
