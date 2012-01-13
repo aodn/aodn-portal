@@ -23,11 +23,13 @@
                     <thead>
                         <tr>
                             <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name')}" />
-                            <g:sortableColumn property="layers" title="${message(code: 'layer.layers.label', default: 'Layers')}" />
-                        
+                            
                             <g:sortableColumn property="disabled" title="${message(code: 'layer.disabled.label', default: 'Disabled')}" />
                         
                             <g:sortableColumn property="source" title="${message(code: 'layer.source.label', default: 'Source')}" />
+                            
+                            <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
+                            
                             <g:sortableColumn property="currentlyActive" title="${message(code: 'layer.currentlyActive.label', default: 'Currently Active')}" />
                             
                             <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
@@ -46,11 +48,12 @@
 
                             <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "name")}</g:link></td>
 
-                            <td>${fieldValue(bean: layerInstance, field: "layers")}</td>
-                        
                             <td><g:formatBoolean boolean="${layerInstance.disabled}" /></td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "source")}</td>
+                            
+                            <td>${fieldValue(bean: layerInstance, field: "lastUpdated")}</td>
+                            
                             <td>${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
                             
                             <td>${fieldValue(bean: layerInstance, field: "description")}</td>

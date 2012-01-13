@@ -63,12 +63,20 @@ class LayerService {
                 }
 
                 //println "New data: $newData"
+                
+                def nameVal = newData.name
+                def titleUsedAsName = false
+                    
+                if ( !nameVal ) {
+                    nameVal = newData.title
+                    titleUsedAsName = true
+                }
                     
                 layerToUpdate.title = newData.title
-                layerToUpdate.name = newData.name ? newData.name : newData.title
-                layerToUpdate.description = newData.description ? newData : "<No description> Updated: ${new Date()}"
+                layerToUpdate.name = nameVal
+                layerToUpdate.description = newData.abstractText ? newData.abstractText : "<No description>"
                 layerToUpdate.bbox = newData.bbox
-                layerToUpdate.metaUrl = newData.metaUrl
+                layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable
 
                 // Some defaults
@@ -79,6 +87,7 @@ class LayerService {
                 layerToUpdate.source = dataSource
                 layerToUpdate.currentlyActive = true
                 layerToUpdate.lastUpdated = new Date()
+                layerToUpdate.titleUsedAsName = titleUsedAsName
 
                 return layerToUpdate
             })
