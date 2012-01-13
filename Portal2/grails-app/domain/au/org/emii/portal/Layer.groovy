@@ -46,9 +46,9 @@ class Layer {
     static hasMany = [layers: Layer]
 
     static constraints = {
-        name(size:5..225)
+        name(size:1..225)
         disabled()
-        description(size:5..455,blank:false)
+        description(size:1..455,blank:false)
         server()
         cache()
         cql(nullable:true)
