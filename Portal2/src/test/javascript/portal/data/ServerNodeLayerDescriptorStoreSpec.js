@@ -9,6 +9,14 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 		node.childNodes = [];
 	}
 	
+	function countEnumerableProperties(o) {
+		var i = 0;
+		for (var item in o) {
+			i++;
+		}
+		return i;
+	}
+	
 	describe('instantiation', function() {
 		it("throws an error when no config is passed", function () {
 			var noCfg = function () {  
@@ -128,13 +136,13 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 			expect(store.node.childNodes[0].childNodes.length).toEqual(5);
 		});
 		
-		// The below test fails because the length property remains set to zero
-		// even though when you inspect the array there is a single store in there
-//		it('checks that only one store is made for a particular node', function() {
-//			clearChildren();
-//			var store1 = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node);
-//			var store2 = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node);
-//			expect(Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores.length).toEqual(1);
-//		});
+		it('checks that only one store is made for a particular node', function() {
+			clearChildren();
+			var store1 = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node);
+			var items1 = countEnumerableProperties(Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores);
+			var store2 = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node);
+			var items2 = countEnumerableProperties(Portal.data.ServerNodeLayerDescriptorStore.ServerLayerDescriptorStores);
+			expect(items2).toEqual(items1);
+		});
 	});
 });
