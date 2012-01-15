@@ -7,7 +7,7 @@ class Server {
     String name
     String type // no need for another class
     Date parseDate
-    String parseFrequency 
+    Integer parseFrequency = 0
     Boolean disable
     Boolean allowDiscoveries // hide from menus    
     Integer opacity // layer opacity
@@ -37,6 +37,8 @@ class Server {
                        "RAMADDA",
                        "AUTO" 
         ])
+        parseDate()
+        parseFrequency()
         name(unique:true)
         disable()
         allowDiscoveries()
@@ -44,9 +46,11 @@ class Server {
         imageFormat( inList:['image/png','image/gif'] )
         comments(nullable:true)
     }
+    
     String toIdString() {
         return "${shortAcron}"
     }
+    
     String toString() {
         return "${shortAcron}"
     }

@@ -30,9 +30,7 @@
     </g:hasErrors>
     <g:form action="createUser" >
 
-      <div class="auth">
-        <g:render template="/userFormBody"/>
-
+      <g:render template="/userFormBody" model="[actionButtonLabel:'Register']" />
 
     </g:form>
   </div>

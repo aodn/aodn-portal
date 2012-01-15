@@ -1,4 +1,4 @@
-<div>
+<div class="auth">
   <table >
       <tbody>
           <tr class="prop">
@@ -7,7 +7,7 @@
                   <span class="required-indicator">*</span>
               </td>
               <td valign="top"  align="right" class="value ${hasErrors(bean: userAccountCmd, field: 'emailAddress', 'errors')}">
-                  <g:textField name="emailAddress" value="${userAccountCmd?.emailAddress}" />
+                  <g:textField name="emailAddress" value="${userAccountCmd?.emailAddress}" /><g:if test="${!userAccountCmd?.passwordRequired}"><br /><span class="authentication-hints">Changing your password will cause you to be logged-out.</span></g:if>
                   <g:hiddenField name="previousEmailAddress" value="${userAccountCmd?.previousEmailAddress}" />
               </td>
           </tr>
@@ -38,7 +38,7 @@
                 <g:if test="${userAccountCmd?.passwordRequired}"><span class="required-indicator">*</span></g:if>
             </td>
             <td valign="top"  align="right"  class="value ${hasErrors(bean: userAccountCmd, field: 'password', 'errors')}">
-              <g:passwordField name="password" value="${userAccountCmd?.password}" /><g:if test="${!userAccountCmd?.passwordRequired}">&nbsp;<i>Leave blank to keep existing password.</i></g:if>
+              <g:passwordField name="password" value="${userAccountCmd?.password}" /><g:if test="${!userAccountCmd?.passwordRequired}"><br /><span class="authentication-hints">Leave blank to keep existing password.</span></g:if>
               <g:hiddenField name="passwordRequired" value="${userAccountCmd?.passwordRequired}" />
             </td>
           </tr>
@@ -119,20 +119,16 @@
               </td>
           </tr>
           <tr class="prop">
-              <td valign="top" class="name">&nbsp;
-                
+              <td valign="top" class="name">
+                &nbsp;                
               </td>
               <td valign="top" align="right" >
-                 <div class="buttons"><span class="button">
-                      <input type="button" name="cancel" value="Cancel" onCLick="window.location='${createLinkTo(dir:'/')}'" /></span>
-                    <span class="button"><g:submitButton name="register" class="save" value="${message(code: 'default.button.register.label', default: 'Register')}" /></span>
-
+                 <div class="buttons">
+                    <span class="button"><input type="button" name="cancel" value="Cancel" onClick="window.location='${createLinkTo(dir:'/')}'" /></span>
+                    <span class="button"><g:submitButton name="action" class="save" value="${actionButtonLabel}" /></span>
                 </div>
               </td>
           </tr>
-          
-          
-          
         </tbody>
     </table>
 </div>

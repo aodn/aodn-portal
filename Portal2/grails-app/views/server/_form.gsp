@@ -86,7 +86,7 @@
                                     <label for="parseFrequency"><g:message code="server.parseFrequency.label" default="Parse Frequency" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'parseFrequency', 'errors')}">
-                                    <g:textField name="parseFrequency" value="${serverInstance?.parseFrequency}" />
+                                    <g:textField name="parseFrequency" value="${serverInstance?.parseFrequency}" /><font class="hint">in minutes</font>
                                 </td>
                             </tr>
                         
