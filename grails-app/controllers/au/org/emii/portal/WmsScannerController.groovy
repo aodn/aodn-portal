@@ -65,15 +65,18 @@ class WmsScannerController {
         try {
             Server server = Server.get(params.id)
         
+            def typeVal = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
+            
             def jobName     = URLEncoder.encode( "Server scan for '${server.name}'" )
             def jobDesc     = URLEncoder.encode( "Created by Portal, ${new Date()}" )
             def jobType     = "WMS"
-            def wmsVersion  = URLEncoder.encode( server.type.replace("WMS-", "") )
+            def wmsVersion  = URLEncoder.encode( typeVal )
             def uri         = URLEncoder.encode( server.uri )
             def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
+            def scanFrequency = server.parseFrequency
             
             // Perform action
-            def address = "${baseUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl"
+            def address = "${baseUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&scanFrequency=$scanFrequency"
         
             url = address.toURL()   
             

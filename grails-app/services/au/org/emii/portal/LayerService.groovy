@@ -24,20 +24,20 @@ class LayerService {
                 source: dataSource
             )
             
-            println "== Find Root Layer =="
-            println "server: $server"
-            println "title:  ${layerAsJson.title}"
-            println "source: $dataSource"
-            println "found:  $rootLayer"
-            println "== =============== =="
+            log.debug "== Find Root Layer =="
+            log.debug "server: $server"
+            log.debug "title:  ${layerAsJson.title}"
+            log.debug "source: $dataSource"
+            log.debug "found:  $rootLayer"
+            log.debug "== =============== =="
             
-            println "rootLayer: ${rootLayer?.getClass()}"
+            log.debug "rootLayer: ${rootLayer?.getClass()}"
             
             if ( rootLayer ) {
                 
                 _traverseLayerTree rootLayer, {
                     
-                    println "Disabling existing layer $it"
+                    log.debug "Disabling existing layer $it"
                     
                     it.disabled = true
                     existingLayers[it.title] = it
@@ -52,17 +52,17 @@ class LayerService {
 
                 if ( layerToUpdate ) {
                     
-                    println "Found existing layer eith name. $layerToUpdate"
+                    log.debug "Found existing layer with name. $layerToUpdate"
                 }
                 else {
 
-                    println "Could not find existing layer with title: ${newData.title}. Creating new..."
+                    log.debug "Could not find existing layer with title: ${newData.title}. Creating new..."
                         
                     // Doesn't exist, create
                     layerToUpdate = new Layer(parent: parent, server: server)
                 }
 
-                //println "New data: $newData"
+                //log.debug "New data: $newData"
                 
                 def nameVal = newData.name
                 def titleUsedAsName = false

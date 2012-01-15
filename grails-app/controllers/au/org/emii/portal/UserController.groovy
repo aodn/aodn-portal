@@ -117,7 +117,7 @@ class UserController {
         log.debug "Sending to updateAccount page for currentUser: " + currentUser
         log.debug "userAccountCmd: " + userAccountCmd
         
-        return [userAccountCmd: userAccountCmd]
+        return [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()]
     }
     
     def userUpdateAccount = { UserAccountCommand userAccountCmd ->

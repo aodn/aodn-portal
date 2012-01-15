@@ -142,7 +142,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             lineCount++
         }
             
-        println reportDataToCheck
+        // println reportDataToCheck
         
         assertEquals "'download report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportDataToCheck
     }

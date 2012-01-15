@@ -195,10 +195,10 @@ class LayerController {
             layerDataPrint.children = "[...]"
             layerDataPrint.supportedProjections = "[...]"
             
-            println "username: ${params.username}"
-            println "password: $passwordPrint"
-            println "metadata: ${params.metadata}"
-            println "layerData: $layerDataPrint"
+            log.debug "username: ${params.username}"
+            log.debug "password: $passwordPrint"
+            log.debug "metadata: ${params.metadata}"
+            log.debug "layerData: $layerDataPrint"
             
             // Check credentials
             try {
@@ -206,7 +206,7 @@ class LayerController {
             }
             catch(Exception e) {
 
-                println "${e.message}"
+                log.info "Problem validating credentials", e
 
                 render status: 401, text: "Credentials missing or incorrect"
                 return
@@ -227,20 +227,20 @@ class LayerController {
             
             layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
 
+            server.parseDate = new Date()
+            server.save()
+            
             render status: 200, text: "Complete (saved)"
         }
         catch (Exception e) {
 
-            println "${e.message}"
-            e.printStackTrace()
+            log.info "Error processing layer/saveOrUpdate request", e
             
             render status: 500, text: "Error processing request"
         }
     }
     
     void _validateCredentialsAndAuthenticate(def params) {
-        
-        println "controllerName: $controllerName"
         
         def un = params.username
         def pwd = params.password
@@ -253,7 +253,7 @@ class LayerController {
         SecurityUtils.subject.login authToken
         
         def permissionString = "${controllerName}:${actionName}"
-        println "Checking permissions: $permissionString"
+        log.debug "Checking permissions: $permissionString"
         
         if ( !SecurityUtils.subject.isPermitted( permissionString ) ) throw new Exception( "User $un does not have correct permissions" )
     }

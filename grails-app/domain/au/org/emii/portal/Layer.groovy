@@ -79,16 +79,14 @@ class Layer {
     
     void printTree(int depth = 0) {
 
-        if ( depth == 0 ) println "\n-- Layer Tree --"
+        if ( depth == 0 ) log.info "\n-- Layer Tree --"
 
-        print "   " * depth
-        println "${name} (parent: '$parent'; layers: '${layers?.size()}'; server: '${server}';)"
+        log.info "   " * depth
+        log.info "${name} (parent: '$parent'; layers: '${layers?.size()}'; server: '${server}';)"
 
         layers.each{
 
             it.printTree (depth + 1)
         }
-
-        if ( depth == 0 ) println()
     }
 }

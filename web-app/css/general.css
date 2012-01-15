@@ -120,8 +120,6 @@ a img{
     background-color: whitesmoke;
 }
 
-
-
 #header {
     background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;
     height: 300px;
@@ -342,6 +340,7 @@ a:hover.mainlinks {
 
 .authentication-form {
 }
+
 .authentication-form-floated {
 
     position: absolute;
@@ -352,7 +351,7 @@ a:hover.mainlinks {
 .authentication-form h2 {
     padding-bottom: 0.8em;
 }
-.authentication-form td {
+.authentication-form label {
     font-weight: bold;
     font-size: 13px;
 }
