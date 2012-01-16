@@ -28,10 +28,10 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 		Portal.data.ServerNodeLayerDescriptorStore.superclass.constructor.call(this, config);
 		
 		this.on('load',  function(store, recs, opt) {
+			this.loaded = true;
 			this.beginNodeUpdate();
             this.updateNode(store);
             this.endNodeUpdate();
-            this.loaded = true;
 		}, this);
 	},
 	
