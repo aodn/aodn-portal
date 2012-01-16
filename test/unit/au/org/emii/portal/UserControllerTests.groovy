@@ -36,6 +36,7 @@ class UserControllerTests extends ControllerUnitTestCase {
                          lastName: "Nurk",
                          passwordHash: 'xxxxxxxxxxxxxxxxxx')
         
+        mockDomain(Config)
         mockDomain(User, [user1, user2])
         mockForConstraintsTests(UserAccountCommand)
         

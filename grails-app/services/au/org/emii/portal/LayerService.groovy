@@ -62,8 +62,7 @@ class LayerService {
                     layerToUpdate = new Layer(parent: parent, server: server)
                 }
 
-                //log.debug "New data: $newData"
-                
+                // Process name from title value
                 def nameVal = newData.name
                 def titleUsedAsName = false
                     
@@ -71,10 +70,27 @@ class LayerService {
                     nameVal = newData.title
                     titleUsedAsName = true
                 }
+                else {
+                    // Trim namespace
+                    def separatorIdx = nameVal.lastIndexOf( ":" )
                     
+                    if ( separatorIdx >= 0 ) {
+
+                        nameVal = nameVal[separatorIdx..-1]
+                    }
+                }
+                    
+                // Process abstractText value
+                def abstractVal = newData.abstractText
+                
+                if ( abstractVal?.length() > 455 ) {
+                    abstractVal = abstractVal[0..451] + "..."
+                }
+                    
+                // Move data over
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
-                layerToUpdate.description = newData.abstractText ? newData.abstractText : "<No description>"
+                layerToUpdate.description = abstractVal
                 layerToUpdate.bbox = newData.bbox
                 layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable

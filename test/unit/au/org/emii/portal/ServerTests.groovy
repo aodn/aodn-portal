@@ -23,7 +23,6 @@ class ServerTests extends GrailsUnitTestCase {
 		assertEquals "nullable", testServer.errors["name"]
 		assertEquals "nullable", testServer.errors["type"]
 		assertEquals "nullable", testServer.errors["parseDate"]
-		assertEquals "nullable", testServer.errors["parseFrequency"]
 		assertEquals "nullable", testServer.errors["disable"]
 		assertEquals "nullable", testServer.errors["allowDiscoveries"]
 		assertEquals "nullable", testServer.errors["opacity"]
