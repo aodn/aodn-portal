@@ -134,6 +134,8 @@ log4j = {
 //           'org.apache.shiro'
     
     debug  'grails.app.controller',
+           'grails.app.job',
+           'grails.app.service',
            'grails.app.filters.SecurityFilters',
            //'org.hibernate.SQL',           
            'org.hibernate.type',
