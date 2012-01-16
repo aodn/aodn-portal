@@ -51,7 +51,6 @@ Portal.snapshot.SnapshotButtonGroup = Ext.extend(Ext.ButtonGroup,
     
     showSaveDialog : function()
     {
-    	console.log("showLoadDialog");
+    	new Ext.Window({title: 'Save Snapshot', modal: true}).show();
     }
-    
 });

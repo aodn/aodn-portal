@@ -102,7 +102,8 @@ function initMenusPanel(menu) {
         emptyText: 'Choose a Base Layer'
     });
 
-    
+    var snapshotButtonGroup = new Portal.snapshot.SnapshotButtonGroup({});
+
     var removeAll = new Ext.Button({
         text: 'Remove All Layers',
         cls: "floatLeft buttonPad",   
@@ -156,8 +157,9 @@ function initMenusPanel(menu) {
         border: true, 
         flex: 1,
         items:[
-        removeAll,
-        resetLayers
+			snapshotButtonGroup,
+	        removeAll,
+	        resetLayers
         ]
     });
     var mapSpinnerPanel = new Ext.BoxComponent({        
