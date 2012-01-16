@@ -136,6 +136,7 @@ log4j = {
     debug  'grails.app.controller',
            'grails.app.job',
            'grails.app.service',
+           'grails.app.tagLib',
            'grails.app.filters.SecurityFilters',
            //'org.hibernate.SQL',           
            'org.hibernate.type',
