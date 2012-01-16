@@ -86,7 +86,7 @@
 
 <body>
     
-  <g:render template="/mainPortalHeader" model="['showLinks':true,'showLogin':true,'configInstance':configInstance]"></g:render>
+  <g:render template="/mainPortalHeader" model="['showLinks':true,'configInstance':configInstance]"></g:render>
   
 <div id="loader" style="position:absolute; top:50%; left:43%; z-index: 9000;">
   <p>Page Loading ....</p>

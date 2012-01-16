@@ -11,15 +11,12 @@
     
     <div id="toplinks" >
       <shiro:user>
-          <!--Logged-in as: <g:link controller="user" action="updateAccount">
-          <shiro:principal /></g:link> -->
-           <g:link controller="auth" action="signOut">Log out</g:link>
+          Welcome, <g:link controller="user" action="updateAccount"><user:loggedInUser property="firstName" /></g:link>.
+          <g:link controller="auth" action="signOut">Log out</g:link>
       </shiro:user>
     <shiro:notUser>
-      <g:if test="${showLogin}">
         <g:link controller="auth" action="login">Log in</g:link> or 
         <g:link controller="auth" action="register">Register</g:link>
-      </g:if>
     </shiro:notUser>
       <a class="external mainlinks" target="_blank"href="http://www.emii.org.au" 
          title="e-Marine Information Infrastructure" >eMII</a>
@@ -31,5 +28,4 @@
       Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="download" action="downloadFromCart" >download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
-
 <div id="headerTail" >&nbsp;</div>

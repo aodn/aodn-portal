@@ -125,7 +125,7 @@ class UserController {
         log.debug "userAccountCmd: " + userAccountCmd
 
         if (!userAccountCmd.validate()) {
-            render(view: "updateAccount", model: [userAccountCmd:userAccountCmd])
+            render(view: "updateAccount", model: [userAccountCmd:userAccountCmd, configInstance: Config.activeInstance()])
             return
         }
         
@@ -139,7 +139,7 @@ class UserController {
                 if (userInstance.version > version) {
 
                     userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated your account while you were editing it")
-                    render(view: "updateAccount", model: [userAccountCmd: userAccountCmd])
+                    render(view: "updateAccount", model: [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()])
                     return
                 }
             }
@@ -164,7 +164,7 @@ class UserController {
                 redirect(controller: 'home')
             }
             else {
-                render(view: "updateAccount", model: [userAccountCmd: userAccountCmd])
+                render(view: "updateAccount", model: [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()])
             }
         }
         else {
