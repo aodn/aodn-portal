@@ -28,10 +28,7 @@ function initMenusPanel(menu) {
             // add layers to map or expand discoveries
             click:{
                 fn:function(node) {
-                    if (node.attributes.grailsServerId) {
-                    	Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad(node, this);
-                    }
-                    else if (node.attributes.grailsLayerId){
+                    if (node.attributes.grailsLayerId){
                     	addGrailsLayer(node.attributes.grailsLayerId);
                         setDefaultMenuTreeNodeStatus(node.attributes.grailsLayerId, false);                        
                     }
