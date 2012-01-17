@@ -107,4 +107,3 @@ class Config {
         return Config.list()[0]
     }
 }
-

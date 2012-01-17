@@ -26,7 +26,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         )
         
         mockDomain Config, [config]
-        mockLogging(DownloadController, true)
+        mockLogging DownloadController, true
     }
 
     protected void tearDown() {

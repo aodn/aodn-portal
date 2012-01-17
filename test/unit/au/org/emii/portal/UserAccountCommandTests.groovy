@@ -12,8 +12,8 @@ class UserAccountCommandTests extends GrailsUnitTestCase {
         
         def user = new User(emailAddress: "admin@utas.edu.au", firstName: "Fred", lastName: "Nurk", passwordHash: "Not null, Not Blank")
         
-        mockForConstraintsTests(UserAccountCommand)
-        mockDomain(User, [user])
+        mockForConstraintsTests UserAccountCommand
+        mockDomain User, [user]
         
         createUserCmd = new UserAccountCommand(emailAddress: "admin@utas.edu.au",
                                                previousEmailAddress: "admin@utas.edu.au",

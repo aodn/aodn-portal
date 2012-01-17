@@ -22,7 +22,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         super.setUp()
         
         def anonSubjectPrincipal = null
-        def authdSubjectPrincipal = "dnahodil@utas.edu.au"
+        def authdSubjectPrincipal = "sys.admin@emii.org.au"
         
         anonSubject = [ getPrincipal: { anonSubjectPrincipal },
                         toString: { return "anonSubject" },
@@ -134,7 +134,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         
         logInSubject(authdSubject)
         
-        assertEquals "authdSubject should be logged-in", SecurityUtils.getSubject().getPrincipal(), "dnahodil@utas.edu.au"
+        assertEquals "authdSubject should be logged-in", SecurityUtils.getSubject().getPrincipal(), "sys.admin@emii.org.au"
         
         controller.signOut()
         
@@ -249,7 +249,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
     
     void testResetPasswordAction() {
         
-        User user1 = new User(emailAddress: "dnahodil@utas.edu.au",
+        User user1 = new User(emailAddress: "sys.admin@emii.org.au",
                               firstName: "Joe",
                               lastName: "Bloggs",
                               passwordHash: "somePasswordHash")
@@ -283,7 +283,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "Should have same UserResetPasswordCommand object", cmd, renderArgs.model.userResetPasswordCommand
         
         // Valid command object instance
-        cmd = new UserResetPasswordCommand(emailAddress: "dnahodil@utas.edu.au")
+        cmd = new UserResetPasswordCommand(emailAddress: "sys.admin@emii.org.au")
         
         // Try resetPassword action
         controller.resetPassword(cmd)
