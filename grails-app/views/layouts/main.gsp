@@ -42,6 +42,14 @@
                 <g:link controller="motd" action="create" class="" >create</g:link>
               </span>
             </li>
+            <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Control</g:link>
+              
+            </li>
+            <li class="controllerMenuItems"><g:link controller="user"  >Users</g:link><span class="inline">
+                <g:link controller="user" action="create" class="" >create</g:link>
+              </span>
+              
+            </li>
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link>
             </li>
           </ul>
