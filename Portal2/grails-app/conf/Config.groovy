@@ -78,7 +78,7 @@ environments {
         }
     }
     development {
-        grails.serverURL = "http://localhost:8080/${appName}"
+        grails.serverURL = "http://localhost:8086/${appName}"
 		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 		grails
 		{

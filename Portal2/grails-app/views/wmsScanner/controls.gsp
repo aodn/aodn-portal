@@ -2,19 +2,34 @@
 
 <html>
   <head>
+    <meta name="layout" content="main">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="layout" content="main" />
     <meta http-equiv="refresh" content="300">
-    <title>WMS Scanner Controls</title>
+    
+		<g:set var="entityName" value="${message(code: 'wmsScanner.label', default: 'WMS Scanner')}" />
+		<title><g:message code="default.list.label" args="[entityName]" /></title>  
   </head>
   <body>
+  	<div class="nav">
+          <div id="logo"></div>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+        </div>
+        <div id="list-menu" class="list" role="main">
+                
+                <g:if test="${flash.message}">
+                    <div class="message" role="status">${flash.message}</div>
+
+                </g:if>
+            <div id="ajaxStatus" class="message" style="display:none" ></div>
+            
+            
     <div class="content">
       <h2>WMS Scanner Controls</h2>
       <div>WMS Scanner located @ <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a><br /><br /></div>
       
-      <g:if test="${flash.message}">
-        <div class="message">${flash.message}</div>
-      </g:if>
+
            
       <h3>Current scan jobs (${scanJobList?.size()})</h3>
       <g:if test="${scanJobList != '[]'}">
@@ -77,6 +92,7 @@
             </tbody>
         </table>
       </div>
+    </div>
     </div>
   </body>
 </html>
