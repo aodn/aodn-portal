@@ -8,7 +8,7 @@ function initMap()  {
     // Stop the pink tiles appearing on error
     OpenLayers.Util.onImageLoadError = function(e) {
         this.style.display = "";
-        this.src="img/layer_error.gif";
+        this.src="img/blank.png";
     };
     
     var controls= [];
@@ -587,14 +587,14 @@ function getBaseOpenLayers()
 {
 	var baseOpenLayers = [];
 	
-	Ext.each(Ext.util.JSON.decode(Portal.app.config.baselayerList), function(layerDescriptor, index)
-	{
-		// override these setting as they are now baselayers
-        // regardless of config settings
-    	layerDescriptor.isBaseLayer = true;
-    	layerDescriptor.queryable = false;
-        
-        baseOpenLayers.push(createLayer(layerDescriptor));
+	Ext.each(Ext.util.JSON.decode(Portal.app.config.baselayerList), function(layerDescriptor, index)  {
+            
+            // override these setting as they are now baselayers
+            // regardless of config settings
+            layerDescriptor.isBaseLayer = true;
+            layerDescriptor.queryable = false;
+
+            baseOpenLayers.push(createLayer(layerDescriptor));
 	});	
 	
 	return baseOpenLayers;
