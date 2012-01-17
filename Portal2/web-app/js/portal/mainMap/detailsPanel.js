@@ -214,7 +214,7 @@ function initDetailsPanel()  {
               autoHeight: true,
               //TODO: use template
               html: "<img src=\"" + inf.transectUrl + "\" />"
-            }],
+            }]
           });
           
           if (detailsPanelItems.ownerCt.width <  430) {
@@ -605,7 +605,7 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
         + "&LAYER=" + layer.params.LAYERS
         + "&FORMAT=" + layer.params.FORMAT;
     
-    console.log(layer.cache + " " + url)
+    //console.log(layer.cache + " " + url)
     
     return url
 }
@@ -615,7 +615,6 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
 
 function makeNcWMSColourScale(layer)
 {
-
     if (layer.metadata.scaleRange != undefined) {
         colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
         colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);

@@ -22,7 +22,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name')}" />
+                            <g:sortableColumn property="title" title="${message(code: 'layer.title.label', default: 'Title')}" />
+                            <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name (WMS ID)')}" />
+                            <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
                             
                             <g:sortableColumn property="disabled" title="${message(code: 'layer.disabled.label', default: 'Disabled')}" />
                         
@@ -32,11 +34,11 @@
                             
                             <g:sortableColumn property="currentlyActive" title="${message(code: 'layer.currentlyActive.label', default: 'Currently Active')}" />
                             
-                            <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
                         
                             <th><g:message code="layer.server.label" default="Server" /></th>
 
                             <th><g:message code="layer.server.label" default="Is Base Layer" /></th>
+                            <th><g:message code="layer.cache.label" default="Cache" /></th>
                         
                         
                         </tr>
@@ -46,8 +48,10 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
 
-                            <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "name")}</g:link></td>
-
+                            <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
+                            <td>${fieldValue(bean: layerInstance, field: "name")}</td>
+                            <td>${fieldValue(bean: layerInstance, field: "description")}</td>
+                            
                             <td><g:formatBoolean boolean="${layerInstance.disabled}" /></td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "source")}</td>
@@ -56,11 +60,11 @@
                             
                             <td>${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
                             
-                            <td>${fieldValue(bean: layerInstance, field: "description")}</td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "isBaseLayer")}</td>
+                            <td>${fieldValue(bean: layerInstance, field: "cache")}</td>
 
                             
                         </tr>

@@ -218,8 +218,8 @@ function doViewPort()
                         {
                             // this is not a configured item as wont change and will need tailoring for every instance
                             xtype: 'container',
-                            html: "<img src=\"images/NCRIS_Initiative_inline_white.png\" />",
-                            width: 300
+                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
+                            width: 330
                         },
                         {
                             xtype: 'container',
