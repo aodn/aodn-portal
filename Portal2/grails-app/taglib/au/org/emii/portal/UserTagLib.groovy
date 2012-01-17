@@ -16,19 +16,16 @@ class UserTagLib {
         
         log.debug "Found principal: $principal"
         
+        if ( !principal ) return // No-one logged-in
+        
         def user = User.findByEmailAddress( principal )
         
         if ( !user ) return
         
         log.debug "Found user: $user"
-        
-        def s
 
-        if ( attrs?.property ) {
-            
-            s = user[attrs.property] 
-        }
+        def prop = user[attrs.property]
         
-        out << s ? s : user.toString()
+        if ( prop ) out << prop
     }
 }

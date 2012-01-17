@@ -318,7 +318,7 @@
                                     <label for="wmsScannerBaseUrl"><g:message code="config.wmsScannerBaseUrl.label" default="WMS Scanner Base Url" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerBaseUrl', 'errors')}">
-                                    <g:textField size="30" name="wmsScannerBaseUrl" value="${configInstance?.wmsScannerBaseUrl}" /><font class="hint">Full url, should end with 'scanJob/'. <g:link controller="wmsScanner" action="controls">View controls</g:link>.</font>
+                                    <g:textField size="30" name="wmsScannerBaseUrl" value="${configInstance?.wmsScannerBaseUrl}" /><font class="hint">Full url, should end with a '/'. <g:link controller="wmsScanner" action="controls">View controls</g:link>.</font>
                                 </td>
                             </tr>
    

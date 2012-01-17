@@ -4,12 +4,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="layout" content="main" />
+    <meta http-equiv="refresh" content="300">
     <title>WMS Scanner Controls</title>
   </head>
   <body>
     <div class="content">
       <h2>WMS Scanner Controls</h2>
-      <div>WMS Scanner located @ ${ configInstance.wmsScannerBaseUrl }<br /><br /></div>
+      <div>WMS Scanner located @ <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a><br /><br /></div>
       
       <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
@@ -55,23 +56,21 @@
             <thead>
                 <tr>
                   <th>${message(code: 'server.name.label', default: 'Name')}</th>  
-                  <th>${message(code: 'server.shortAcron.label', default: 'Short Acron')}</th>
                   <th>${message(code: 'server.type.label', default: 'Type')}</th>
                   <th>${message(code: 'server.uri.label', default: 'Uri')}</th>
-                  <th>${message(code: 'server.disable.label', default: 'Disable')}</th>
-                  <th>${message(code: 'server.allowDiscoveries.label', default: 'Allow Discoveries')}</th>
+                  <th>${message(code: 'server.parseFrequency.label', default: 'Scan Frequency')}</th>
+                  <th>${message(code: 'server.parseDate.label', default: 'Last scan date')}</th>
                   <th></th>
                 </tr>
             </thead>
             <tbody>
             <g:each in="${serversToList}" status="i" var="serverInstance">
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                    <td>${fieldValue(bean: serverInstance, field: "name")}</td>
-                    <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
+                    <td><g:link controller="server" action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "name")}</g:link></td>
                     <td>${fieldValue(bean: serverInstance, field: "type")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
-                    <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
-                    <td><g:formatBoolean boolean="${serverInstance.allowDiscoveries}" /></td>
+                    <td>${fieldValue(bean: serverInstance, field: "parseFrequency")} min</td>
+                    <td><g:if test="${serverInstance.parseDate}"><g:formatDate format="dd/MM/yy HH:mm" date="${fieldValue(bean: serverInstance, field: "parseDate")}"/></g:if></td>
                     <td><g:link action="callRegister" id="${serverInstance.id}">${message(code: 'server.createScanJob.label', default: 'Create Scan Job')}</g:link></td>
                 </tr>
             </g:each>

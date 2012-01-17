@@ -76,7 +76,7 @@ class LayerService {
                     
                     if ( separatorIdx >= 0 ) {
 
-                        nameVal = nameVal[separatorIdx..-1]
+                        nameVal = nameVal[ separatorIdx + 1 .. -1 ]
                     }
                 }
                     

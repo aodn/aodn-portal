@@ -37,7 +37,7 @@ class Server {
                        "RAMADDA",
                        "AUTO" 
         ])
-        parseDate()
+        parseDate( nullable:true )
         parseFrequency()
         name(unique:true)
         disable()

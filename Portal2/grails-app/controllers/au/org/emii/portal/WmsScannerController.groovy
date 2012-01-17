@@ -9,20 +9,23 @@ class WmsScannerController {
     
     def controls = {
         
-        def baseUrl = Config.activeInstance().wmsScannerBaseUrl
+        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
         def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
         def scanJobList
         
         def url
+        def conn
         
         try {
-            url = "${baseUrl}list?callbackUrl=$callbackUrl".toURL()
+            url = "${apiUrl}list?callbackUrl=$callbackUrl".toURL()
+            conn = url.openConnection()
+            conn.connect()
             
-            scanJobList = JSON.parse( url.text )
+            scanJobList = JSON.parse( conn.content.text ) // Makes the call
         }
         catch (Exception e) {
             
-            setFlashMessage e, url
+            setFlashMessage e, url, conn
             scanJobList = [] // Empty list
         }        
         
@@ -37,20 +40,25 @@ class WmsScannerController {
     
     def callDeleteById = {
         
-        def baseUrl = Config.activeInstance().wmsScannerBaseUrl
+        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
         def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
-        def address = "${baseUrl}deleteById?id=${params.id}&callbackUrl=$callbackUrl"
+        def address = "${apiUrl}deleteById?id=${params.id}&callbackUrl=$callbackUrl"
         
-        def url = address.toURL()        
+        def url
+        def conn
         
         try {
-            def response = url.text // Executes command
+            url = address.toURL()
+            conn = url.openConnection()
+            conn.connect()
+            
+            def response = conn.content.text // Executes command
             
             setFlashMessage response
         }
         catch (Exception e) {
             
-            setFlashMessage e, url
+            setFlashMessage e, url, conn
         }        
         
         redirect(action: controls)
@@ -58,9 +66,10 @@ class WmsScannerController {
     
     def callRegister = {
         
-        def baseUrl = Config.activeInstance().wmsScannerBaseUrl
+        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
 
         def url
+        def conn
         
         try {
             Server server = Server.get(params.id)
@@ -76,17 +85,19 @@ class WmsScannerController {
             def scanFrequency = server.parseFrequency
             
             // Perform action
-            def address = "${baseUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&scanFrequency=$scanFrequency"
+            def address = "${apiUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&scanFrequency=$scanFrequency"
         
             url = address.toURL()   
+            conn = url.openConnection()
+            conn.connect()
             
-            def response = url.text // Executes command
+            def response = conn.content.text // Executes command
             
             setFlashMessage response
         }
         catch (Exception e) {
             
-            setFlashMessage e, url
+            setFlashMessage e, url, conn
         }
         
         redirect(action: controls)
@@ -97,9 +108,22 @@ class WmsScannerController {
         flash.message = "Response: ${response}"
     }
     
-    private void setFlashMessage(Exception e, URL commandUrl) {
+    private void setFlashMessage(e, commandUrl, connection) {
         
-        def msg = "Exception: ${ e.toString() }<br />Command url: $commandUrl"
+        def msg = "Exception: ${ e.toString() }"
+        
+        if ( connection?.errorStream ) {
+
+            Reader reader = new BufferedReader( new InputStreamReader( connection.errorStream ) )
+            def currentLine
+
+            msg += "<br />Response: "
+            
+            while ( ( currentLine = reader.readLine() ) != null ) {
+
+                msg += "<br /><b>$currentLine</b>"
+            }
+        }
         
         if ( flash.message?.trim() ) {
             
