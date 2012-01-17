@@ -18,12 +18,12 @@ class ServerControllerTests extends ControllerUnitTestCase {
 	
 
 	void testShowServerByItsId() {
-		mockDomain(Server, [new Server(id : 10, uri : "uri1", shortAcron : "A", name : "name1", type : "WMS-1.1.1", parseDate: null, parseFrequency : "", disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", comments : "" )])
+		mockDomain(Server, [new Server(id : 10, uri : "uri1", shortAcron : "A", name : "name1", type : "WMS-1.1.1", parseDate: null, parseFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", comments : "" )])
 		this.controller.params.serverId = "10_10"
 		this.controller.showServerByItsId()
 		String scum = this.controller.response.contentAsString
 		scum = this.controller.response.contentAsString
-		assertTrue this.controller.response.contentAsString.equals('{"allowDiscoveries":true,"class":"au.org.emii.portal.Server","comments":"","disable":false,"id":10,"imageFormat":"image/png","name":"name1","opacity":3,"parseDate":null,"parseFrequency":"","shortAcron":"A","type":"WMS-1.1.1","uri":"uri1","version":null}')
+		assertTrue this.controller.response.contentAsString.equals('{"allowDiscoveries":true,"class":"au.org.emii.portal.Server","comments":"","disable":false,"id":10,"imageFormat":"image/png","name":"name1","opacity":3,"parseDate":null,"parseFrequency":0,"shortAcron":"A","type":"WMS-1.1.1","uri":"uri1","version":null}')
 	}
 	
 	
