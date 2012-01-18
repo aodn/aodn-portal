@@ -628,16 +628,6 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
 
 
 
-function makeNcWMSColourScale(layer)
-{
-    if (layer.metadata.scaleRange != undefined) {
-        colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
-        colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);
-        ncWMSColourScalePanel.show();      
-    }
-    
-    
-}
 
 
 function makeCombo(type) {
@@ -730,6 +720,9 @@ function updateScale(textfield, event)
                 COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
             });
             refreshLegend(selectedLayer);
+            
+            // set the user selected range
+            selectedLayer.metadata.userScaleRange = [colourScaleMin.getValue(),colourScaleMax.getValue()];
         }
         else {
             alert("The Max Parameter Range value is less than the Min");
@@ -738,6 +731,19 @@ function updateScale(textfield, event)
 }
 
 
+function makeNcWMSColourScale(layer) {
+    // see if the user has changed these values
+    if (layer.metadata.userScaleRange != undefined) {
+        colourScaleMin.setValue(selectedLayer.metadata.userScaleRange[0]);
+        colourScaleMax.setValue(selectedLayer.metadata.userScaleRange[1]);
+    }
+    else if (layer.metadata.scaleRange != undefined) {
+        colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
+        colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);     
+    }
+    ncWMSColourScalePanel.show(); 
+    
+}
 
 // for static time and elevation
 // TODO
