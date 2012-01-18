@@ -18,17 +18,14 @@
         </div>
         <div id="list-menu" class="list" role="main">
                 
-                <g:if test="${flash.message}">
-                    <div class="message" role="status">${flash.message}</div>
-
-                </g:if>
+                
             <div id="ajaxStatus" class="message" style="display:none" ></div>
             
             
     <div class="content">
       <h2>WMS Scanner Controls</h2>
       <div>WMS Scanner located @ <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a><br /><br /></div>
-      
+
 
            
       <h3>Current scan jobs (${scanJobList?.size()})</h3>
@@ -64,6 +61,11 @@
         </div>
       </g:if>
       <br />
+      
+            <g:if test="${flash.message}">
+                    <div class="message" role="status">${flash.message}</div>
+
+                </g:if>
       <br />
       <h3>Applicable Servers (${serversToList?.size()})</h3>
       <div class="list">

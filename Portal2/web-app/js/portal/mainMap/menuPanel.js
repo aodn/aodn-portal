@@ -303,15 +303,20 @@ function initMenusPanel(menu) {
         showSeparator: false,
         items: [
         {
-            text: 'Remove layer',
+            text: 'Remove Layer',
             handler: removeActiveLayer
+            
         },
         {
-            text: 'Zoom to layer',
+            text: 'Show Layer Options',
+            handler: showActiveLayerOptions
+        },
+        {
+            text: 'Zoom to Layer',
             handler: zoomToLayer(mapPanel.map, selectedLayer)
         },
         {
-            text: 'Toggle Visibility',
+            text: 'Toggle Layer Visibility',
             handler: visibilityActiveLayer
         }
         ]
@@ -350,7 +355,8 @@ function removeActiveLayer() {
     
     // Remove layer from activeLayers, and make matching default menu item active
     // check if grailsLayerId exists. layer may have been added by user defined discovery
-    var layerId = activeLayerTreePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
+    var layer   = activeLayerTreePanel.getSelectionModel().getSelectedNode().layer;
+    var layerId = layer.grailsLayerId;
     
     if (layerId != undefined) { 
         
@@ -366,9 +372,8 @@ function removeActiveLayer() {
         }        
         
     }
-    // remove from the activeLayers array
-    activeLayers[getUniqueLayerId(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer)].destroy();
-    mapPanel.map.removeLayer(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);
+    // remove from the activeLayers array at the same time as remove from the map
+    activeLayers[getUniqueLayerId(layer)].destroy();
     
 }
 
@@ -382,6 +387,21 @@ function visibilityActiveLayer() {
     else {
         node.getUI().checkbox.checked = true;
     }
+}
+
+// show the layer options regardless of the global 'Hide Layer options'
+function showActiveLayerOptions() {    
+    
+    var opts = Portal.app.config.hideLayerOptions;
+    if (opts == true) {
+        // suspend this config option
+        Portal.app.config.hideLayerOptions = false;
+    }
+    updateDetailsPanel(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);    
+    if (opts == true) {
+        Portal.app.config.hideLayerOptions = true;
+    }
+    
 }
 
 // UNUSED FOR DEMONSTRATION PURPOSES

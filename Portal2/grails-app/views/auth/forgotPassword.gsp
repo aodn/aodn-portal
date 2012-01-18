@@ -14,6 +14,9 @@
 <body>
 <g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />
 <div class="authentication-form">
+   <div class="authentication-formLinks">
+   <g:link controller="home" >Home Page</g:link>
+  </div>
   <div class="authentication-form-floated">
     <h2>Forgot password</h2>
     <g:if test="${flash.message}">
