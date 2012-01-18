@@ -154,7 +154,7 @@ function initMenusPanel(menu) {
         border: true, 
         flex: 1,
         items:[
-			snapshotButtonGroup,
+		//snapshotButtonGroup,
 	        removeAll,
 	        resetLayers
         ]
