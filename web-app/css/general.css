@@ -237,6 +237,12 @@ a img{
     text-shadow: none;
 }
 
+a.userlink {
+    font-size: inherit! important;
+    text-decoration: underline! important;
+    margin-right: 15px! important;
+}
+
 .viewPortTabActive {        
     background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;  
     color: #333333;  
@@ -338,7 +344,11 @@ a:hover.mainlinks {
     border-spacing: 4px;
 }
 
-.authentication-form {
+.authentication-formLinks {
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    font-size: 14px;
 }
 
 .authentication-form-floated {
@@ -755,7 +765,14 @@ JQUERY AUTO COMPLETE
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
+
+
 #detailsPanel {z-index: 1200 !important} 
+
+#detailsPanelTabs .x-tab-panel-header {
+    background-color: white;
+}
+
 
 #mapOptions {
     margin: 4px 6px 0px 4px;

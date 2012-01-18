@@ -273,7 +273,7 @@ function initDetailsPanel()  {
         animCollapse: false,
         autoScroll: true,
         bodyCls: 'floatingDetailsPanel',
-        closable: false,
+        closable: true,
         resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
         closeAction: 'hide',
         border: false,
@@ -344,6 +344,9 @@ function closeNHideDetailsPanel() {
 function updateDetailsPanel(layer) {
     
     selectedLayer = layer;
+    
+    updateStyles(layer);
+    
     Ext.getCmp('opacitySlider').show(); // reset slider
                     
                 
@@ -379,7 +382,7 @@ function updateDetailsPanel(layer) {
         Ext.getCmp('stopNCAnimationButton').setVisible(true);
     }
       
-    updateStyles(layer);
+    
     updateDimensions(layer); // time and elevation   
     
     if(layer.server.type.search("NCWMS") > -1)  {
@@ -419,7 +422,6 @@ function updateDetailsPanel(layer) {
         
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
-        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active  
          
         // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
@@ -427,6 +429,7 @@ function updateDetailsPanel(layer) {
             updateDetailsPanelPositionSize();
         }
         else{
+            mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name);
             mapMainPanel.getComponent('rightDetailsPanel').show(true);  
             // resize the map so the panel isnt on top
             //mapMainPanel.doLayout();
@@ -443,8 +446,8 @@ function updateDetailsPanelPositionSize(reset) {
     var heightBuffer = 40;
     var x = Portal.app.config.westWidth+ widthBuffer;
     var y = Portal.app.config.headerHeight+ heightBuffer;
-    detailsPanel.show();
     
+    detailsPanel.show();
     // set in predefined position unless already set or sized
     if (detailsPanel.lastSize.height == undefined && detailsPanel.moved == undefined ) {        
         detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
@@ -453,6 +456,9 @@ function updateDetailsPanelPositionSize(reset) {
         detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
     // detailsPanel.restore();
     }
+    
+    
+    
     
 }
 
@@ -522,11 +528,20 @@ function updateStyles(layer)
 
 function refreshLegend(layer) {    
     
-    var url = buildGetLegend(layer,"",false) ; 
+    var url = buildGetLegend(layer,"",false) ;
+    
     Ext.getCmp('legendImage').setUrl(url); 
-    Ext.getCmp('stylePanel').doLayout();
+    
+    setTimeout(function(){
+            Ext.getCmp('stylePanel').doLayout();
+            detailsPanel.doLayout();
+       }, 1000 );
+    
+    
     //
 }
+
+
 
 // builds a getLegend image request for the combobox form and the selected palette
 function buildGetLegend(layer,thisPalette,colorbaronly)   {

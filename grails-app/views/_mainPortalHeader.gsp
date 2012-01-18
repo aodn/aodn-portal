@@ -11,7 +11,7 @@
     
     <div id="toplinks" >
       <shiro:user>
-          Welcome, <g:link controller="user" action="updateAccount"><user:loggedInUser property="firstName" /></g:link>.
+          Welcome <g:link controller="user" action="updateAccount" class="userlink" ><user:loggedInUser property="firstName" /></g:link>
           <g:link controller="auth" action="signOut">Log out</g:link>
       </shiro:user>
     <shiro:notUser>
