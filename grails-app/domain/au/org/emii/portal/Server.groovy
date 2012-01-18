@@ -6,13 +6,14 @@ class Server {
     String shortAcron
     String name
     String type // no need for another class
-    Date parseDate
-    Integer parseFrequency = 0
     Boolean disable
     Boolean allowDiscoveries // hide from menus    
     Integer opacity // layer opacity
     String imageFormat
     String comments
+    
+    Date lastScanDate
+    Integer scanFrequency = 120 // 2 hours
 
     static mapping = {
         sort "shortAcron"
@@ -37,8 +38,8 @@ class Server {
                        "RAMADDA",
                        "AUTO" 
         ])
-        parseDate( nullable:true )
-        parseFrequency()
+        lastScanDate( nullable:true )
+        scanFrequency()
         name(unique:true)
         disable()
         allowDiscoveries()

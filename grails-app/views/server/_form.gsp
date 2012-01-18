@@ -83,10 +83,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="parseFrequency"><g:message code="server.parseFrequency.label" default="Parse Frequency" /></label>
+                                    <label for="scanFrequency"><g:message code="server.scanFrequency.label" default="Scan Frequency" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'parseFrequency', 'errors')}">
-                                    <g:textField name="parseFrequency" value="${serverInstance?.parseFrequency}" /><font class="hint">in minutes</font>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'scanFrequency', 'errors')}">
+                                    <g:textField name="scanFrequency" value="${serverInstance?.scanFrequency}" /><font class="hint">in minutes</font>
                                 </td>
                             </tr>
                         

@@ -7,6 +7,14 @@
                                 </td>
                             </tr>
                         
+                            <td valign="top" class="name">
+                                  <label for="applicationBaseUrl"><g:message code="config.applicationBaseUrl.label" default="Application base Url" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'applicationBaseUrl', 'errors')}">
+                                    <g:textField name="applicationBaseUrl" maxlength="255" value="${configInstance?.applicationBaseUrl}" /><font class="hint">Should end with a '/' character and be remotely-contactable (ie. not localhost)</font>
+                                </td>
+                            </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="proxy"><g:message code="config.proxy.label" default="Proxy" /></label>

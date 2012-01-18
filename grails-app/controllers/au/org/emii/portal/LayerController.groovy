@@ -190,7 +190,7 @@ class LayerController {
         
         try {
             // Logging output
-            def passwordPrint = "*" * params.password.length()
+            def passwordPrint = "*" * params.password?.length()
             def layerDataPrint = JSON.parse( params.layerData )
             layerDataPrint.children = "[...]"
             layerDataPrint.supportedProjections = "[...]"
@@ -227,7 +227,7 @@ class LayerController {
             
             layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
 
-            server.parseDate = new Date()
+            server.lastScanDate = new Date()
             server.save()
             
             render status: 200, text: "Complete (saved)"
@@ -236,7 +236,7 @@ class LayerController {
 
             log.info "Error processing layer/saveOrUpdate request", e
             
-            render status: 500, text: "Error processing request"
+            render status: 500, text: "Error processing request: ${e.message}"
         }
     }
     

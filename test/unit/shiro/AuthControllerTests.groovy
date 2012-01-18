@@ -167,7 +167,6 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "UserAccountCommand previousEmailAddress should be null", null, returnedMap.userAccountCmd.previousEmailAddress
         assertEquals "UserAccountCommand firstName should be same as new User", emptyUser.firstName, returnedMap.userAccountCmd.firstName
         assertEquals "UserAccountCommand lastName should be same as new User", emptyUser.lastName, returnedMap.userAccountCmd.lastName
-       
     }
 	
     void testCreateUserAction() {

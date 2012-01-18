@@ -154,8 +154,11 @@ class AuthController {
         sendMail  {  
             to user?.emailAddress
             from grailsApplication.config.grails.mail.authenticationFromEmailAddress
-            subject "${message(code: 'mail.request.user.register.subject')}"     
-            body "${message(code: 'mail.request.user.register.body', args: [user.firstName, createLink(controller:'home', absolute:true), createLink(controller: 'auth', action: 'forgotPassword', absolute:true)])}" 
+            subject message(code: 'mail.request.user.register.subject')
+            body message(code: 'mail.request.user.register.body',
+                         args: [user.firstName,
+                                createLink(controller:'home', baseUrl: Config.activeInstance().applicationBaseUrl, absolute: true),
+                                createLink(controller: 'auth', action: 'forgotPassword', baseUrl: Config.activeInstance().applicationBaseUrl, absolute: true)])
         }
     }
     
@@ -164,8 +167,12 @@ class AuthController {
         sendMail {  
             to user?.emailAddress
             from grailsApplication.config.grails.mail.authenticationFromEmailAddress
-            subject "${message(code: 'mail.request.user.passwordReset.subject', args: [user.firstName, user.lastName])}"     
-            body "${message(code: 'mail.request.user.passwordReset.body', args: [user.firstName, newPassword, createLink(controller: 'user', action:'updateAccount', absolute:true)])}" 
+            subject message(code: 'mail.request.user.passwordReset.subject',
+                            args: [user.firstName, user.lastName])
+            body message(code: 'mail.request.user.passwordReset.body',
+                         args: [user.firstName,
+                                newPassword,
+                                createLink(controller: 'user', action:'updateAccount', baseUrl: Config.activeInstance().applicationBaseUrl, absolute: true)])
         }
     }
 }
