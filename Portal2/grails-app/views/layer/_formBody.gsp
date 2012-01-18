@@ -20,11 +20,11 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                   <g:message code="layer.currentlyActive.label" default="Currently Active" />
+                                   <g:message code="layer.activeInLastScan.label" default="Active in last scan" />
                                 </td>
                                 <td valign="top">
-                                    ${layerInstance?.currentlyActive}
-                                    <g:hiddenField name="currentlyActive" value="${layerInstance?.currentlyActive}" />
+                                    ${layerInstance?.activeInLastScan}
+                                    <g:hiddenField name="activeInLastScan" value="${layerInstance?.activeInLastScan}" />
                                 </td>
                             </tr>
                             
@@ -33,9 +33,28 @@
                                     <label for="layers"><g:message code="layer.layers.label" default="Layers" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
-                                    <g:textField name="layers" value="${layerInstance?.layers}" /> Pull these in dynamically when harvesting starts
+                                    ${layerInstance?.layers} Pull these in dynamically when harvesting starts
                                 </td> 
                             </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="bbox"><g:message code="layer.bbox.label" default="Bounding Box" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bbox', 'errors')}">
+                                    <g:textField name="bbox" maxlength="455" value="${layerInstance?.bbox}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="projection"><g:message code="layer.projection.label" default="Projection" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'projection', 'errors')}">
+                                    <g:textField name="projection" maxlength="455" value="${layerInstance?.projection}" />
+                                </td>
+                            </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="isBaseLayer"><g:message code="layer.isBaseLayer.label" default="IsBaseLayer" /></label>
@@ -56,25 +75,22 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="disabled"><g:message code="layer.disabled.label" default="Disabled" /></label>
+                                    <label for="blacklisted"><g:message code="layer.blacklisted.label" default="Blacklisted" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'disabled', 'errors')}">
-                                    <g:checkBox name="disabled" value="${layerInstance?.disabled}" />
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'blacklisted', 'errors')}">
+                                    <g:checkBox name="disabled" value="${layerInstance?.blacklisted}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="layer.description.label" default="Description" /></label>
+                                    <label for="abstractTrimmed"><g:message code="layer.abstractTrimmed.label" default="Abstract (trimmed)" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'description', 'errors')}">
-                                    <g:textField name="description" maxlength="55" value="${layerInstance?.description}" />
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'abstractTrimmed', 'errors')}">
+                                    <g:textField name="abstractTrimmed" maxlength="455" value="${layerInstance?.abstractTrimmed}" />
                                 </td>
                             </tr>
-
-                           
-
-                          
+                         
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="cache"><g:message code="layer.cache.label" default="Cache" /></label>

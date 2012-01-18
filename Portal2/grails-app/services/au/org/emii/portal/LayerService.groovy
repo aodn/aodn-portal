@@ -39,7 +39,7 @@ class LayerService {
                     
                     log.debug "Disabling existing layer $it"
                     
-                    it.disabled = true
+                    it.activeInLastScan = false
                     existingLayers[it.title] = it
                 }
             }
@@ -83,32 +83,30 @@ class LayerService {
                 // Process abstractText value
                 def abstractVal = newData.abstractText
                 
-                if ( abstractVal?.length() > 455 ) {
+                if ( abstractVal?.length() > 455 ) { // 455 is current max length of this field
                     abstractVal = abstractVal[0..451] + "..."
                 }
                     
                 // Move data over
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
-                layerToUpdate.description = abstractVal
+                layerToUpdate.abstractTrimmed = abstractVal
                 layerToUpdate.bbox = newData.bbox
                 layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable
-
-                // Some defaults
-                layerToUpdate.cache = false
-                layerToUpdate.disabled = false
-                layerToUpdate.isBaseLayer = false
-
+                layerToUpdate.bbox = "${newData.bboxMinX},${newData.bboxMinY},${newData.bboxMaxX},${newData.bboxMaxY}"
+                layerToUpdate.projection = newData.projection
+                    
+                // Scan info
                 layerToUpdate.source = dataSource
-                layerToUpdate.currentlyActive = true
+                layerToUpdate.activeInLastScan = true
                 layerToUpdate.lastUpdated = new Date()
                 layerToUpdate.titleUsedAsName = titleUsedAsName
 
                 return layerToUpdate
             })
             
-            newLayer.printTree()
+            //newLayer.printTree()
             
             newLayer.save( failOnError: true )
         }

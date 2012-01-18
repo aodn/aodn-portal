@@ -7,20 +7,21 @@ class Layer {
     
     String name
     String title
-    Boolean disabled
-    String description
+    String abstractTrimmed
     Server server
     Boolean cache
     String cql
     String style
     String bbox
+    String projection
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
     
-    // Extra info useful for WMS scanner
+    // Extra info
     String source
-    boolean currentlyActive
+    Boolean activeInLastScan
+    Boolean blacklisted
     Date lastUpdated
     Boolean titleUsedAsName
 
@@ -48,25 +49,34 @@ class Layer {
 
     static constraints = {
         name(size:1..225)
-        disabled()
-        description(size:0..455, blank:true)
+        blacklisted()
+        abstractTrimmed(size:0..455, blank:true)
         server()
         cache()
         cql(nullable:true)
         style(nullable:true)
         metaUrl(nullable:true)
         bbox(nullable:true)
+        projection(nullable: true)
         queryable()
         isBaseLayer()
         
         source(blank:false)
-        currentlyActive()
+        activeInLastScan()
         lastUpdated(nullable:true)
         titleUsedAsName(nullable: true)
     }
 	
     Layer() {
         layers = []
+        
+        // Defaults
+        abstractTrimmed = ""
+        blacklisted = false
+        cache = false
+        queryable = false
+        isBaseLayer = false
+        activeInLastScan = true
     }
 
     String toListString() {

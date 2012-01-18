@@ -24,23 +24,21 @@
                         <tr>
                             <g:sortableColumn property="title" title="${message(code: 'layer.title.label', default: 'Title')}" />
                             <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name (WMS ID)')}" />
-                            <g:sortableColumn property="description" title="${message(code: 'layer.description.label', default: 'Description')}" />
+                            <g:sortableColumn property="abstractTrimmed" title="${message(code: 'layer.abstractTrimmed.label', default: 'Abstract (trimmed)')}" />
                             
-                            <g:sortableColumn property="disabled" title="${message(code: 'layer.disabled.label', default: 'Disabled')}" />
+                            <th><g:message code="layer.server.label" default="Server" /></th>
                         
                             <g:sortableColumn property="source" title="${message(code: 'layer.source.label', default: 'Source')}" />
                             
                             <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
                             
-                            <g:sortableColumn property="currentlyActive" title="${message(code: 'layer.currentlyActive.label', default: 'Currently Active')}" />
+                            <g:sortableColumn property="activeInLastScan" title="${message(code: 'layer.activeInLastScan.label', default: 'Active in last scan')}" />
+                        
+                            <g:sortableColumn property="blacklisted" title="${message(code: 'layer.blacklisted.label', default: 'Blacklisted')}" />
                             
-                        
-                            <th><g:message code="layer.server.label" default="Server" /></th>
-
-                            <th><g:message code="layer.server.label" default="Is Base Layer" /></th>
+                            <th><g:message code="layer.isBaseLayer.label" default="Is Base Layer" /></th>
+                            
                             <th><g:message code="layer.cache.label" default="Cache" /></th>
-                        
-                        
                         </tr>
                     </thead>
                     <tbody>
@@ -50,23 +48,21 @@
 
                             <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
                             <td>${fieldValue(bean: layerInstance, field: "name")}</td>
-                            <td>${fieldValue(bean: layerInstance, field: "description")}</td>
+                            <td>${fieldValue(bean: layerInstance, field: "abstractTrimmed")}</td>
                             
-                            <td><g:formatBoolean boolean="${layerInstance.disabled}" /></td>
+                            <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
                             <td>${fieldValue(bean: layerInstance, field: "source")}</td>
                             
-                            <td>${fieldValue(bean: layerInstance, field: "lastUpdated")}</td>
+                            <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${fieldValue(bean: layerInstance, field: "lastUpdated")}"/></g:if></td>
                             
-                            <td>${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
-                            
+                            <td><g:formatBoolean boolean="${layerInstance.activeInLastScan}" /></td>
                         
-                            <td>${fieldValue(bean: layerInstance, field: "server")}</td>
-                        
-                            <td>${fieldValue(bean: layerInstance, field: "isBaseLayer")}</td>
-                            <td>${fieldValue(bean: layerInstance, field: "cache")}</td>
-
+                            <td><g:formatBoolean boolean="${layerInstance.blacklisted}" /></td>
                             
+                            <td><g:formatBoolean boolean="${layerInstance.isBaseLayer}" /></td>
+                            
+                            <td><g:formatBoolean boolean="${layerInstance.cache}" /></td>
                         </tr>
                     </g:each>
                     </tbody>

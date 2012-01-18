@@ -13,18 +13,13 @@ class LayerTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
-        def layer1 = new Layer(name : "layer1", description : "description");
+        def layer1 = new Layer(name : "layer1", abstractTrimmed : "description");
         mockForConstraintsTests(Layer, [layer1])
 
         def testLayer = new Layer()
         assertFalse testLayer.validate()
         assertEquals "nullable", testLayer.errors["name"]
-        assertEquals "nullable", testLayer.errors["disabled"]
-        assertEquals "nullable", testLayer.errors["description"]
         assertEquals "nullable", testLayer.errors["server"]
-        assertEquals "nullable", testLayer.errors["cache"]
-        assertEquals "nullable", testLayer.errors["queryable"]
-        assertEquals "nullable", testLayer.errors["isBaseLayer"]
         assertEquals "nullable", testLayer.errors["source"]
 
         assertNotNull testLayer.layers

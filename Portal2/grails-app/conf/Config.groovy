@@ -64,10 +64,9 @@ environments {
     production {
         grails.serverURL = "http://portaldev.aodn.org.au/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-        grails
-        {
-            mail
-            {
+
+        grails {
+            mail {
                 authenticationFromEmailAddress = "info@aodn.org.au"
 
                 host = "postoffice.utas.edu.au"
@@ -79,28 +78,26 @@ environments {
     }
     development {
         grails.serverURL = "http://localhost:8086/${appName}"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-		grails
-		{
-		   mail
-		   {
-				authenticationFromEmailAddress = "info@aodn.org.au"
+        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+    
+        grails {
+            mail {
+                authenticationFromEmailAddress = "info@aodn.org.au"
 
-				host = "localhost"
-				port = 25
+                host = "localhost"
+                port = 25
 
-				username = "username"
-				props = ["mail.smtp.auth":"false"]
-		   }
-		}
+                username = "username"
+                props = ["mail.smtp.auth":"false"]
+            }
+        }
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-		grails.mail.disabled=true
-		grails.plugin.databasemigration.updateOnStart = false
+        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+        grails.mail.disabled = true
+        grails.plugin.databasemigration.updateOnStart = false
     }
-
 }
 
 // log4j configuration

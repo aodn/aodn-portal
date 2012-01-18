@@ -4,13 +4,12 @@ import grails.converters.JSON
 
 class WmsScannerController {
 
-    def grailsApplication
     def layerApiPath = "/layer/saveOrUpdate"
     
     def controls = {
         
         def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
+        def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
         def scanJobList
         
         def url
@@ -41,7 +40,7 @@ class WmsScannerController {
     def callDeleteById = {
         
         def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
+        def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
         def address = "${apiUrl}deleteById?id=${params.id}&callbackUrl=$callbackUrl"
         
         def url
@@ -81,8 +80,8 @@ class WmsScannerController {
             def jobType     = "WMS"
             def wmsVersion  = URLEncoder.encode( typeVal )
             def uri         = URLEncoder.encode( server.uri )
-            def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
-            def scanFrequency = server.parseFrequency
+            def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
+            def scanFrequency = server.scanFrequency
             
             // Perform action
             def address = "${apiUrl}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&scanFrequency=$scanFrequency"

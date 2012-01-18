@@ -4,9 +4,6 @@ import grails.test.GrailsUnitTestCase
 
 class ConfigTests extends GrailsUnitTestCase {
     
-    
-    
-    
     protected void setUp() {
         
         super.setUp()        
@@ -18,8 +15,7 @@ class ConfigTests extends GrailsUnitTestCase {
     }
 	
     Config getValidInstance() {
-                
-   
+    
         def menu1 = new Menu()
         
         mockDomain(Menu, [menu1])
@@ -28,6 +24,7 @@ class ConfigTests extends GrailsUnitTestCase {
             defaultMenu: menu1,
             initialBbox: "120,20,120,20", // character varying,  lat,lon might be shite? 
             name: "The aMazing Portal",
+            applicationBaseUrl: "http://imos.org.au/",
             contributorMenu: menu1,
             regionMenu: menu1,
             catalogUrl: "http://www.google.com/",
@@ -50,10 +47,7 @@ class ConfigTests extends GrailsUnitTestCase {
             wmsScannerBaseUrl: "http://www.google.com/"
         );
         
-        
         return validInstance;    
-        
-        
     }
     
     void testConstraints() {
@@ -110,12 +104,10 @@ class ConfigTests extends GrailsUnitTestCase {
         assertFalse testConfig.validate()
         assertEquals "blank", testConfig.errors["downloadCartFilename"]
 
-
         testConfig = getValidInstance()
         testConfig.downloadCartMaxNumFiles= 0
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["downloadCartMaxNumFiles"]
-
 
         testConfig = getValidInstance()
         testConfig.downloadCartMaxFileSize=  0
@@ -157,6 +149,4 @@ class ConfigTests extends GrailsUnitTestCase {
         //assertFalse testConfig.validate()
         //assertEquals "url", testConfig.errors["wmsScannerBaseUrl"]
     }
-
-
 }

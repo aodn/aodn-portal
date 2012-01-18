@@ -2459,5 +2459,9 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 
 	include file: '1326687165000.groovy'
 
-	include file: '20100117-DN-ServerChanges.groovy'
+	include file: '20110117-DN-ServerChanges.groovy'
+
+	include file: '20120118-DN-ManyFieldRenamings.groovy'
+
+	include file: '20120118-DN-NewBaseUrlSetting.groovy'
 }

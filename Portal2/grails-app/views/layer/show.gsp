@@ -38,9 +38,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.disabled.label" default="Disabled" /></td>
+                            <td valign="top" class="name"><g:message code="layer.blacklisted.label" default="Blacklisted" /></td>
                             
-                            <td valign="top" class="value"><g:formatBoolean boolean="${layerInstance?.disabled}" /></td>
+                            <td valign="top" class="value"><g:formatBoolean boolean="${layerInstance?.blacklisted}" /></td>
                             
                         </tr>
                     
@@ -51,15 +51,15 @@
                         </tr>
                         
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.currentlyActive.label" default="Currently Active" /></td>
+                            <td valign="top" class="name"><g:message code="layer.activeInLastScan.label" default="Active in last scan" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "currentlyActive")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "activeInLastScan")}</td>
                         </tr>
                         
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.description.label" default="Description" /></td>
+                            <td valign="top" class="name"><g:message code="layer.abstractTrimmed.label" default="Abstract (trimmed)" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "description")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "abstractTrimmed")}</td>
                             
                         </tr>
                     
@@ -112,6 +112,13 @@
                             <td valign="top" class="name"><g:message code="layer.bbox.label" default="Bounding Box" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "bbox")}</td>
+                            
+                        </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="layer.projection.label" default="Projection" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "projection")}</td>
                             
                         </tr>
                         

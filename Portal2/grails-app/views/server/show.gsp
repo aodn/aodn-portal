@@ -93,16 +93,16 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="server.parseDate.label" default="Parse Date" /></td>
+                            <td valign="top" class="name"><g:message code="server.lastScanDate.label" default="Last Scan Date" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${serverInstance?.parseDate}" /></td>
+                            <td valign="top" class="value"><g:formatDate date="${serverInstance?.lastScanDate}" /></td>
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="server.parseFrequency.label" default="Parse Frequency" /></td>
+                            <td valign="top" class="name"><g:message code="server.scanFrequency.label" default="Scan Frequency" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "parseFrequency")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "scanFrequency")}</td>
                             
                         </tr>
                     
