@@ -29,10 +29,7 @@ class LayerService {
             log.debug "title:  ${layerAsJson.title}"
             log.debug "source: $dataSource"
             log.debug "found:  $rootLayer"
-            log.debug "== =============== =="
-            
-            log.debug "rootLayer: ${rootLayer?.getClass()}"
-            
+                        
             if ( rootLayer ) {
                 
                 _traverseLayerTree rootLayer, {
@@ -62,6 +59,8 @@ class LayerService {
                     layerToUpdate = new Layer(parent: parent, server: server)
                 }
 
+                log.debug "Applying new values to layer: $newData"
+                    
                 // Process name from title value
                 def nameVal = newData.name
                 def titleUsedAsName = false
@@ -95,7 +94,7 @@ class LayerService {
                 layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable
                 layerToUpdate.bbox = "${newData.bboxMinX},${newData.bboxMinY},${newData.bboxMaxX},${newData.bboxMaxY}"
-                layerToUpdate.projection = newData.projection
+                layerToUpdate.projection = newData.bboxProjection
                     
                 // Scan info
                 layerToUpdate.source = dataSource

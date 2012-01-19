@@ -14,20 +14,20 @@
   	<div class="nav">
           <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><a class="refresh" href="${createLink(uri: '/wmsScanner/controls')}">Refresh</a></span>
+
         </div>
-        <div id="list-menu" class="list" role="main">
-                
-                
-            <div id="ajaxStatus" class="message" style="display:none" ></div>
-            
+        <div id="list-menu" class="list" role="main"></div>
+        <div id="ajaxStatus" class="message" style="display:none" ></div>
             
     <div class="content">
       <h2>WMS Scanner Controls</h2>
       <div>WMS Scanner located @ <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a><br /><br /></div>
 
+      <g:if test="${flash.message}">
+        <div class="message" role="status">${flash.message}</div>
+      </g:if>
 
-           
       <h3>Current scan jobs (${scanJobList?.size()})</h3>
       <g:if test="${scanJobList != '[]'}">
         <div class="list">
@@ -61,12 +61,6 @@
         </div>
       </g:if>
       <br />
-      
-            <g:if test="${flash.message}">
-                    <div class="message" role="status">${flash.message}</div>
-
-                </g:if>
-      <br />
       <h3>Applicable Servers (${serversToList?.size()})</h3>
       <div class="list">
         <table>
@@ -87,7 +81,7 @@
                     <td>${fieldValue(bean: serverInstance, field: "type")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "scanFrequency")} min</td>
-                    <td><g:if test="${serverInstance.lastScanDate}"><g:formatDate format="dd/MM/yy HH:mm" date="${fieldValue(bean: serverInstance, field: "lastScanDate")}"/></g:if></td>
+                    <td><g:if test="${serverInstance.lastScanDate}"><g:formatDate format="dd/MM/yy HH:mm" date="${serverInstance.lastScanDate}"/></g:if></td>
                     <td><g:link action="callRegister" id="${serverInstance.id}">${message(code: 'server.createScanJob.label', default: 'Create Scan Job')}</g:link></td>
                 </tr>
             </g:each>

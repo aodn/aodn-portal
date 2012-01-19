@@ -4,7 +4,7 @@ import grails.converters.JSON
 
 class WmsScannerController {
 
-    def layerApiPath = "/layer/saveOrUpdate"
+    def layerApiPath = "layer/saveOrUpdate"
     
     def controls = {
         
