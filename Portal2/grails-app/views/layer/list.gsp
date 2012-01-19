@@ -54,7 +54,7 @@
                         
                             <td>${fieldValue(bean: layerInstance, field: "source")}</td>
                             
-                            <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${fieldValue(bean: layerInstance, field: "lastUpdated")}"/></g:if></td>
+                            <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${layerInstance.lastUpdated}"/></g:if></td>
                             
                             <td><g:formatBoolean boolean="${layerInstance.activeInLastScan}" /></td>
                         

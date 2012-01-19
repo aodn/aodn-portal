@@ -201,7 +201,7 @@ img {
     text-decoration: underline;
 }
 
-.nav a.home, .nav a.list, .nav a.create {
+.nav a.home, .nav a.list, .nav a.create, .nav a.refresh {
     background-position: 0.7em center;
     background-repeat: no-repeat;
 }
@@ -218,7 +218,11 @@ img {
     background-image: url(../images/skin/database_add.png);
 }
 
-span.menuButton     a.edit {
+.nav a.refresh {
+    background-image: url(../images/arrow_refresh.png);
+}
+
+span.menuButton a.edit {
     color: #666666;
     padding: 0.5em 0.5em 0.5em 2.5em;
     text-decoration: none;

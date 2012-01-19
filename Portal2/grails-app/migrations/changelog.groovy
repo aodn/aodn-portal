@@ -2464,4 +2464,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '20120118-DN-ManyFieldRenamings.groovy'
 
 	include file: '20120118-DN-NewBaseUrlSetting.groovy'
+
+	include file: '20120119-DN-FixingDefaultColumnValue.groovy'
 }

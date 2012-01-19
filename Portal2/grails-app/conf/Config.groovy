@@ -136,6 +136,7 @@ log4j = {
            'grails.app.tagLib',
            'grails.app.filters.SecurityFilters',
            //'org.hibernate.SQL',           
-           'org.hibernate.type',
+           //'org.hibernate.type',
+           //'liquibase',
            'grails.app.realm'
 }
