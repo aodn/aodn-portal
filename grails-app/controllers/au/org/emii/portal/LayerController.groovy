@@ -211,7 +211,9 @@ class LayerController {
                 render status: 401, text: "Credentials missing or incorrect"
                 return
             }
-
+            
+            // Should control be handed-off to layerService as soon as the credentials are checked?
+            
             // Check metadata
             def metadata = JSON.parse( params.metadata )
             _validateMetadata metadata
@@ -269,9 +271,9 @@ class LayerController {
         
         if ( !layerData ) throw new IllegalArgumentException( "LayerData must be present" )
         
-        // Validate fields
+        // Validate required fields
     }
-	
+
     def server = {
             def layerDescriptors = []
             def server = _getServer(params)

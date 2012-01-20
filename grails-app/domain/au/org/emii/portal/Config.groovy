@@ -65,7 +65,7 @@ class Config {
     
     static constraints = {
         name(size:5..255,nullable:true)
-        applicationBaseUrl(url: true)
+        applicationBaseUrl()
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
