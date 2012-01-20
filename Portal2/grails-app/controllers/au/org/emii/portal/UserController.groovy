@@ -150,7 +150,7 @@ class UserController {
                 log.debug "userAccountCmd.orgType: " + userAccountCmd.orgType
                 log.debug "userInstance.orgType: " + userInstance.orgType
                 
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userAccountCmd.emailAddress])}"
+                flash.message = "${message(code: 'user.updated.noEmailChange')}"
                 
                 // Log in again if password has changed (new principle)
                 if (userAccountCmd.emailAddress != userAccountCmd.previousEmailAddress) {
@@ -158,7 +158,7 @@ class UserController {
                     Subject currentUser = SecurityUtils.getSubject()
                     currentUser.logout()
                     
-                    flash.message = "You account (including email address) has been updated. Please log-in with new email address and password." // Todo - DN: Use message key
+                    flash.message = "${message(code: 'user.updated.withEmailChange')}"
                 }
                 
                 redirect(controller: 'home')

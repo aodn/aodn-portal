@@ -76,11 +76,9 @@
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>
 
-
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>
-
-
+ 
 <title>${configInstance?.name}</title>
 </head>
 
@@ -93,6 +91,13 @@
   <div id="jsloader" style="position:relative;left:120px;top:-7px" ></div>
     <!--img src="images/spinnerLarge.gif" alt="Loading..." /-->
   </div>
+
+<%-- Display message from Grails app --%>
+<g:if test="${flash.message}">
+  <script type="text/javascript">
+    Ext.Msg.alert( "Message", "${flash.message.encodeAsHTML()}" );
+  </script>
+</g:if>
   
 </body>
 
