@@ -24,9 +24,25 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
             labelSeparator: '',
             autoHeight: true,
             width: 600,
-            items: [{
-               xtype: 'portal.search.field.freetext'
-            }]                
+            items: [
+				{
+					xtype: 'portal.search.field.freetext'
+				},
+				{
+					fieldLabel: '',
+					labelSeparator: '',
+					name: 'protocolCombo',
+					xtype: 'combo',
+					mode: 'local',
+					submitValue: false,
+					forceSelection: true,
+					triggerAction: 'all',
+					store: [[Portal.app.config.metadataLayerProtocols.split('\n').join(' or '), 'Show me results with map layers only'], ['', 'Show me all results']],
+				    hiddenName: 'protocol',
+					value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or '),
+					width: 350
+				}
+           ]
          },{
             ref: 'searchFieldSelector',
             xtype: 'container',
@@ -90,18 +106,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                         listeners: {
                         	scope: this,
                         	redraw: this.refreshDisplay
-                        }}],
-                     [6, OpenLayers.i18n("mapLayer"), false, {
-	                    	fieldLabel: OpenLayers.i18n("mapLayer"),
-	                      labelSeparator: '',
-	                    	name: 'protocol',
-	                    	xtype: 'checkbox',
-	                    	checked: true,
-	                    	getValue: function() {
-	                    	  return this.checked?Portal.app.config.metadataLayerProtocols.split('\n').join(' or '):"";
-	                    	},
-	                    	width: 350
-	                   }]
+                        }}]
                   ]
                }),
                valueField: 'xtype',
@@ -191,7 +196,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       //TODO: use contentChange event - this sucks
       this.ownerCt.syncSize();
       this.ownerCt.ownerCt.syncSize();
-      this.doLayout();      
+      this.doLayout();
    },
    
    removeFieldClick: function(btn) {
