@@ -560,7 +560,7 @@ function createLayer(dl) {
     }
 
     var layer = new OpenLayers.Layer.WMS(
-        dl.name,
+        dl.title,
         serverUri,
         params,
         options
