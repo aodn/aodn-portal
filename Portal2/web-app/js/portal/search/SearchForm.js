@@ -34,6 +34,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 					name: 'protocolCombo',
 					xtype: 'combo',
 					mode: 'local',
+					editable: false,
 					submitValue: false,
 					forceSelection: true,
 					triggerAction: 'all',
