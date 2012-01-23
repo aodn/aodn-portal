@@ -259,7 +259,7 @@ class UserControllerTests extends ControllerUnitTestCase {
         
         ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY, 
                            [ getSubject: { subject } ] as SecurityManager )
-                
+        
         SecurityUtils.metaClass.static.getSubject = { subject }
     }
 }
