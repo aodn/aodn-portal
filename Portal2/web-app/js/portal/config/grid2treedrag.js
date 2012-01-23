@@ -33,8 +33,8 @@ function createGrid(layerType){
         root: '',
         fields:[
                 { name:'id'}
-                ,{name:'name'}
-                ,{name:'layers'} 
+                ,{name:'title'}
+                ,{name:'name'} 
                 ,{name:'server'} 
                 ,{name:'isBaseLayer'}                
                 ]
@@ -66,12 +66,12 @@ function createGrid(layerType){
            columns:[{
                 header:"Name",
                 sortable:true,
-                dataIndex:'name'
+                dataIndex:'title'
             },
             {
                 header:"WMS Server Layer Name",
                 sortable:true,
-                dataIndex:'layers'
+                dataIndex:'name'
             },
             {
                 header:"Base Layer",
