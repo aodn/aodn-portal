@@ -110,7 +110,15 @@ log4j = {
     //}
 
     appenders {
-        console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
+        development {
+            console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
+        }
+        test {
+            console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
+        }
+        production {
+            console name:'stdout', layout:pattern(conversionPattern: '%d [%-12.12t] [%-5p] %30.30c{3} - %m asdf %n')
+        }
     }
     
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
