@@ -17,7 +17,9 @@ import org.apache.commons.validator.EmailValidator
 class AuthController {
     def shiroSecurityManager
 
-    def index = { redirect(action: "login", params: params) }
+    def index = {
+        redirect(action: "login", params: params)
+    }
 
     def login = {
         return [ username: params.username, targetUri: params.targetUri, configInstance: Config.activeInstance() ]

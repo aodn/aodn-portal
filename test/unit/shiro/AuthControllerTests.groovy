@@ -1,47 +1,17 @@
 package shiro
 
 import grails.test.*
-import au.org.emii.portal.User
-import au.org.emii.portal.UserRole
-import au.org.emii.portal.UserAccountCommand
-import au.org.emii.portal.Config
+import au.org.emii.portal.*
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.util.ThreadContext
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
-import org.apache.shiro.authc.AuthenticationException
-import org.apache.shiro.authc.UsernamePasswordToken
+import org.apache.shiro.authc.*
 
 class AuthControllerTests extends ControllerUnitTestCase {
     
-    // Subjects for Shiro
-    def anonSubject                       
-    def authdSubject
-    
     protected void setUp() {
         super.setUp()
-        
-        def anonSubjectPrincipal = null
-        def authdSubjectPrincipal = "sys.admin@emii.org.au"
-        
-        anonSubject = [ getPrincipal: { anonSubjectPrincipal },
-                        toString: { return "anonSubject" },
-                        login: { UsernamePasswordToken token ->
-                            if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
-                                anonSubjectPrincipal = token.username
-                            }
-                            else {
-                                throw new AuthenticationException("No username provided (credentials treated as invalid)")
-                            }
-                        }
-                      ] as Subject
-                                             
-        authdSubject = [ getPrincipal: { authdSubjectPrincipal },
-                         isAuthenticated: { true },
-                         hasRole: { true } ,
-                         toString: { return "authdSubject" },
-                         logout: { authdSubjectPrincipal = null }
-                       ] as Subject
     }
 
     protected void tearDown() {
@@ -86,14 +56,27 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "TtargetUri should be preserved", "http://www.google.com/", returnedMap.targetUri
     }
     
-    void testSignInAction() {
+    void testSignInAction_NoCredentials() {
         
-        mockDomain(Config)
+        // Subject info
+        def anonSubjectPrincipal = null
+        def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
+                            toString: { return "anonSubject" },
+                            login: { UsernamePasswordToken token ->
+                                if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
+                                    anonSubjectPrincipal = token.username
+                                }
+                                else {
+                                    throw new AuthenticationException("No username provided (credentials treated as invalid)")
+                                }
+                            }
+                          ] as Subject
         
-        // Mock up message behaviour
+        // Mock domain and message behaviour
+        mockDomain Config
         controller.metaClass.message = { LinkedHashMap args -> return "${args.code}" }
         
-        logInSubject(anonSubject)
+        logInSubject anonSubject
         
         assertEquals "Subject principal should be null", null, SecurityUtils.getSubject().getPrincipal()
         
@@ -103,6 +86,30 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "Should redirect to login", "login", redirectArgs.action
         assertEquals "Should have no params", [username: null], redirectArgs.params
         assertEquals "Subject principal should be null", null, SecurityUtils.getSubject().getPrincipal()
+    }
+    
+     void testSignInAction_InvalidCredentials() {
+        
+        // Subject info
+        def anonSubjectPrincipal = null
+        def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
+                            toString: { return "anonSubject" },
+                            login: { UsernamePasswordToken token ->
+                                if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
+                                    anonSubjectPrincipal = token.username
+                                }
+                                else {
+                                    throw new AuthenticationException("No username provided (credentials treated as invalid)")
+                                }
+                            }
+                          ] as Subject
+        
+        // Current Subject
+        logInSubject anonSubject
+        
+        mockDomain Config
+        
+        controller.metaClass.message = { LinkedHashMap args -> return "${args.code}" }
         
         // Set up invalid credentials
         mockParams.username = "invalidUsername"
@@ -117,7 +124,29 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "Should have null password param", null, redirectArgs.params.password
         assertEquals "Should have same targetUri param", "http://www.google.com/", redirectArgs.params.targetUri
         assertEquals "Subject principal should be null", null, SecurityUtils.getSubject().getPrincipal()
+    }
+    
+     void testSignInAction_ValidCredentials() {
 
+        // Subject info
+        def anonSubjectPrincipal = null
+        def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
+                            toString: { return "anonSubject" },
+                            login: { UsernamePasswordToken token ->
+                                if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
+                                    anonSubjectPrincipal = token.username
+                                }
+                                else {
+                                    throw new AuthenticationException("No username provided (credentials treated as invalid)")
+                                }
+                            }
+                          ] as Subject
+        
+        // Current Subject
+        logInSubject anonSubject
+        
+        mockDomain Config
+        
         // Set up valid credentials
         mockParams.username = "username"
         mockParams.password = "password"
@@ -132,7 +161,16 @@ class AuthControllerTests extends ControllerUnitTestCase {
     
     void testSignOutAction() {
         
-        logInSubject(authdSubject)
+        // Set up Subject info
+        def authdSubjectPrincipal = "sys.admin@emii.org.au"
+        def authdSubject = [ getPrincipal: { authdSubjectPrincipal },
+                             isAuthenticated: { true },
+                             hasRole: { true } ,
+                             toString: { return "authdSubject" },
+                             logout: { authdSubjectPrincipal = null }
+                           ] as Subject
+        
+        logInSubject authdSubject
         
         assertEquals "authdSubject should be logged-in", SecurityUtils.getSubject().getPrincipal(), "sys.admin@emii.org.au"
         
@@ -171,21 +209,35 @@ class AuthControllerTests extends ControllerUnitTestCase {
 	
     void testCreateUserAction() {
         
-        // Roles
-        UserRole selfRegisteredUser = new UserRole(name: "SelfRegisteredUser")
-        UserRole admin = new UserRole(name: "Admin")
+        // Subject info
+        def anonSubjectPrincipal = null
+        def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
+                            toString: { return "anonSubject" },
+                            login: { UsernamePasswordToken token ->
+                                if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
+                                    anonSubjectPrincipal = token.username
+                                }
+                                else {
+                                    throw new AuthenticationException("No username provided (credentials treated as invalid)")
+                                }
+                            }
+                          ] as Subject
         
         // Current Subject
-        logInSubject(anonSubject)
+        logInSubject anonSubject
+        
+        // Roles
+        UserRole selfRegisteredUser = new UserRole( name: "SelfRegisteredUser" )
+        UserRole admin = new UserRole( name: "Admin" )
         
         // Mock Classes
-        mockForConstraintsTests(UserAccountCommand)
-        mockDomain(User, [])
-        mockDomain(UserRole, [selfRegisteredUser, admin])
-        mockDomain(Config)
+        mockForConstraintsTests UserAccountCommand
+        mockDomain User, []
+        mockDomain UserRole, [selfRegisteredUser, admin]
+        mockDomain Config
         
         // Mock out email methods that should not be run
-        def authCtrlrMock = mockFor(AuthController) // Mock AuthController behaviour
+        def authCtrlrMock = mockFor( AuthController ) // Mock AuthController behaviour
         authCtrlrMock.demand.static.sendRegistrationNotifcationEmail(0..1) { User user -> }
         
         // Create userAccountCommand for testing
@@ -292,7 +344,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "Should have been sent back to forgotPassword action", "forgotPassword", redirectArgs.action
     }
     
-    private static logInSubject(Subject subject) {
+    private logInSubject(Subject subject) {
         
         ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY, 
                            [ getSubject: { subject } ] as SecurityManager )
