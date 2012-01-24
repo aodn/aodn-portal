@@ -102,7 +102,7 @@ class LayerController {
         def layerInstance = new Layer()
 
         layerInstance.properties = params
-        layerInstance.source = "Manual"
+        layerInstance.dataSource = "Manual"
 
         return [layerInstance: layerInstance]
     }
@@ -270,8 +270,6 @@ class LayerController {
     void _validateLayerData(def layerData) {
         
         if ( !layerData ) throw new IllegalArgumentException( "LayerData must be present" )
-        
-        // Validate required fields
     }
 
     def server = {

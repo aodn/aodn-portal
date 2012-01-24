@@ -45,9 +45,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.source.label" default="Source" /></td>
+                            <td valign="top" class="name"><g:message code="layer.dataSource.label" default="Data Source" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "source")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "dataSource")}</td>
                         </tr>
                         
                         <tr class="prop">
