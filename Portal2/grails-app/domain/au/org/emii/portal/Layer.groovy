@@ -19,7 +19,7 @@ class Layer {
     Boolean isBaseLayer
     
     // Extra info
-    String source
+    String dataSource
     Boolean activeInLastScan
     Boolean blacklisted
     Date lastUpdated
@@ -49,6 +49,7 @@ class Layer {
 
     static constraints = {
         name(size:1..225)
+        title()
         blacklisted()
         abstractTrimmed(size:0..455, blank:true)
         server()
@@ -61,7 +62,7 @@ class Layer {
         queryable()
         isBaseLayer()
         
-        source(blank:false)
+        dataSource(blank:false)
         activeInLastScan()
         lastUpdated(nullable:true)
         titleUsedAsName(nullable: true)

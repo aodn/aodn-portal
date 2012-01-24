@@ -28,7 +28,7 @@
                             
                             <th><g:message code="layer.server.label" default="Server" /></th>
                         
-                            <g:sortableColumn property="source" title="${message(code: 'layer.source.label', default: 'Source')}" />
+                            <g:sortableColumn property="dataSource" title="${message(code: 'layer.dataSource.label', default: 'Data Source')}" />
                             
                             <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
                             

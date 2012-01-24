@@ -118,6 +118,8 @@ log4j = {
         }
         production {
             console name:'stdout', layout:pattern(conversionPattern: '%d [%-12.12t] [%-5p] %30.30c{3} - %m asdf %n')
+            
+            //smtp name: 'mail', from: "sys.admin@emii.org.au", to: "dnahodil@utas.edu.au", subject: "Error from Portal app", smtpHost: "localhost", layout: pattern(conversionPattern: "[%r] %c{2} %m%n")
         }
     }
     
@@ -143,8 +145,10 @@ log4j = {
            'grails.app.service',
            'grails.app.tagLib',
            'grails.app.filters.SecurityFilters',
+           //'org.apache.shiro',
            //'org.hibernate.SQL',           
            //'org.hibernate.type',
            //'liquibase',
-           'grails.app.realm'
+           'grails.app.realm',
+           'grails'
 }

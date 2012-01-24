@@ -10,11 +10,11 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                   <g:message code="layer.source.label" default="Source" />
+                                   <g:message code="layer.dataSource.label" default="Data Source" />
                                 </td>
                                 <td valign="top">
-                                    ${layerInstance?.source}
-                                    <g:hiddenField name="source" value="${layerInstance?.source}" />
+                                    ${layerInstance?.dataSource}
+                                    <g:hiddenField name="source" value="${layerInstance?.dataSource}" />
                                 </td>
                             </tr>
                             

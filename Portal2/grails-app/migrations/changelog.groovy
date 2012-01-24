@@ -2468,4 +2468,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '20120119-DN-FixingDefaultColumnValue.groovy'
 	
 	include file: '1327020352000.groovy'
+
+	include file: '20120124-DN-RenameLayerSourceProperty.groovy'
 }

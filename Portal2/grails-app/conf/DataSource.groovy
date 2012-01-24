@@ -27,11 +27,10 @@ environments {
 		    url = "jdbc:postgresql://localhost:5432/portal2"
             username = "postgres"
             password = "postgres"
-
      
-			// logSql = true
-			testOnBorrow = true
-			validationQuery = "SELECT 1"
+            // logSql = true
+            testOnBorrow = true
+            validationQuery = "SELECT 1"
 	   }
    }
    
@@ -48,8 +47,8 @@ environments {
 
     test {
         dataSource {
-            //dbCreate = "update"
-            //url = "jdbc:hsqldb:mem:testDb"
+            dbCreate = "create-drop"
+            url = "jdbc:hsqldb:mem:testDb"
         }
     }
     production {
