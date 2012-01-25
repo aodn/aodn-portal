@@ -553,7 +553,8 @@ function createLayer(dl) {
     // proxy to use so that this layer is cached
     
     if (dl.cache == true) {
-        serverUri =  "http://localhost:8086/Portal2/" + proxyCachedURL + dl.server.uri; 
+        alert(window.location.href);
+        serverUri =  window.location.href + proxyCachedURL + URLEncode(dl.server.uri); 
     }
     else {
         serverUri = dl.server.uri;
