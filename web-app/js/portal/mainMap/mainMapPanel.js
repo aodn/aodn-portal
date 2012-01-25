@@ -553,7 +553,6 @@ function createLayer(dl) {
     // proxy to use so that this layer is cached
     
     if (dl.cache == true) {
-        alert(window.location.href);
         serverUri =  window.location.href + proxyCachedURL + URLEncode(dl.server.uri); 
     }
     else {
