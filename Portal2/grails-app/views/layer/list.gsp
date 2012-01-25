@@ -27,9 +27,7 @@
                             <g:sortableColumn property="abstractTrimmed" title="${message(code: 'layer.abstractTrimmed.label', default: 'Abstract (trimmed)')}" />
                             
                             <th><g:message code="layer.server.label" default="Server" /></th>
-                        
-                            <g:sortableColumn property="dataSource" title="${message(code: 'layer.dataSource.label', default: 'Data Source')}" />
-                            
+                                                    
                             <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
                             
                             <g:sortableColumn property="activeInLastScan" title="${message(code: 'layer.activeInLastScan.label', default: 'Active in last scan')}" />
@@ -52,7 +50,6 @@
                             
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
-                            <td>${fieldValue(bean: layerInstance, field: "source")}</td>
                             
                             <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${layerInstance.lastUpdated}"/></g:if></td>
                             
