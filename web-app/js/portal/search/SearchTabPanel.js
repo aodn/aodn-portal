@@ -152,6 +152,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			var summary = currentRecords.summary;
 			this.facetStore.loadData(summary);
 			this.resultsGrid.hideMask();
+
+			// This makes sure that the paging toolbar updates on a zero result set
+			this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
 		};
 		
 		var onFailure = function(response) {
@@ -179,12 +182,13 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		var query = GeoNetwork.util.SearchTools.buildQueryGET(queryParams, startRecord, GeoNetwork.util.SearchTools.sortBy, this.resultsStore.fast);
 		
 		GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), Ext.createDelegate(onFailure,this), updateStore, this.resultsStore, this.facetStore);
-
+	
 		this.resultsStore.startRecord = startRecord - 1;
 		this.lastSearch = filters;
 	},
 	
 	onSearch: function () {
+		this.resultsStore.totalLength = 0 // This makes sure that the paging toolbar updates on a zero result set
 		var searchParams = this.getCatalogueSearchParams(this.getSearchFilters());
 		this.runSearch(searchParams, 1);
 	},
