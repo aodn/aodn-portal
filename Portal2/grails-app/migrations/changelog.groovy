@@ -2472,4 +2472,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '20120124-DN-RenameLayerSourceProperty.groovy'
 
 	include file: '20120130-DN-NewConfigFields.groovy'
+
+	include file: '20120130-DN-AddingDefaultsToConfigFields.groovy'
 }
