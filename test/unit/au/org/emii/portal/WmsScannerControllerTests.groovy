@@ -84,18 +84,18 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Error Line 1</b><br /><b>Error Line 2</b>", controller.flash.message
     }
     
-//    void testControls_InvalidConfig_EmptyListReturned() {
-//        
-//        mockDomain Config, [invalidConfig]
-//        
-//        def returnParams = controller.controls() // Make the call
-//         
-//        assertEquals "Active Config instance should be returned", invalidConfig, returnParams.configInstance
-//        assertEquals "Empty scan Job list should be returned", [], returnParams.scanJobList
-//        assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
-//        assertEquals "Empty list should be returned", [], returnParams.serversToList
-//        assertEquals "Flash message should indicate errors", "Response: Registered", controller.flash.message
-//    }
+    void testControls_InvalidConfig_EmptyListReturned() {
+        
+        mockDomain Config, [invalidConfig]
+        
+        def returnParams = controller.controls() // Make the call
+         
+        assertEquals "Active Config instance should be returned", invalidConfig, returnParams.configInstance
+        assertEquals "Empty scan Job list should be returned", [], returnParams.scanJobList
+        assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
+        assertEquals "Empty list should be returned", [], returnParams.serversToList
+        assertEquals "Flash message should indicate errors", "All three settings: 'WmsScannerBaseUrl', 'WmsScannerCallbackUsername', and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner.", controller.flash.message
+    }
     
     void testCallRegister_NoProblem_RedirectedWithMessage() {
        

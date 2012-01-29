@@ -10,11 +10,25 @@ class WmsScannerController {
                               "WMS-1.3.0",
                               "NCWMS-1.1.1",
                               "NCWMS-1.3.0" ]
+
+    def statusText = [ (0): "Running",
+                      (-1): "Running<br>(with&nbsp;errors)",
+                      (-2): "Stopped<br>(too&nbsp;many&nbsp;errors)" ]
     
     def controls = {
         
-        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
+        def conf = Config.activeInstance()
+        
+        // Check if WMS Scanner settings are valid
+        if ( !conf.wmsScannerBaseUrl || !conf.wmsScannerCallbackUsername || !conf.wmsScannerCallbackPassword ) {
+            
+            flash.message = "All three settings: 'WmsScannerBaseUrl', 'WmsScannerCallbackUsername', and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
+            
+            return [ configInstance: conf, scanJobList: [], statusText: statusText, serversToList: [] ]
+        }
+        
+        def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
+        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
         def scanJobList
         
         def url
@@ -31,14 +45,9 @@ class WmsScannerController {
             
             setFlashMessage e, url, conn
             scanJobList = [] // Empty list
-        }        
+        }
         
-        // Status text
-        def statusText = [ (0): "Running",
-                          (-1): "Running<br>(with&nbsp;errors)",
-                          (-2): "Stopped<br>(too&nbsp;many&nbsp;errors)" ]
-        
-        return [ configInstance: Config.activeInstance(),
+        return [ configInstance: conf,
                  scanJobList: scanJobList,
                  statusText: statusText,
                  serversToList: Server.findAllByTypeInList( serverTypesToShow,
@@ -47,7 +56,9 @@ class WmsScannerController {
 
     def callRegister = {
         
-        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
+        def conf = Config.activeInstance()
+        
+        def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
 
         def url
         def conn
@@ -62,9 +73,9 @@ class WmsScannerController {
             def jobType     = "WMS"
             def wmsVersion  = URLEncoder.encode( versionVal )
             def uri         = URLEncoder.encode( server.uri )
-            def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
-            def callbackUsername = URLEncoder.encode( Config.activeInstance().wmsScannerCallbackUsername )
-            def callbackPassword = URLEncoder.encode( Config.activeInstance().wmsScannerCallbackPassword )
+            def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+            def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
+            def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
             
             // Perform action
@@ -88,6 +99,8 @@ class WmsScannerController {
 
     def callUpdate = {
 
+        def conf = Config.activeInstance()
+        
         def server = Server.findWhere( uri: params.scanJobUri )
         
         def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
@@ -95,9 +108,9 @@ class WmsScannerController {
         def jobType     = "WMS"
         def wmsVersion  = URLEncoder.encode( versionVal )
         def uri         = URLEncoder.encode( server.uri )
-        def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
-        def callbackUsername = URLEncoder.encode( Config.activeInstance().wmsScannerCallbackUsername )
-        def callbackPassword = URLEncoder.encode( Config.activeInstance().wmsScannerCallbackPassword )
+        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+        def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
+        def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
         
         def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
@@ -125,8 +138,11 @@ class WmsScannerController {
     
     def callDelete = {
         
-        def apiUrl = Config.activeInstance().wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( Config.activeInstance().applicationBaseUrl + layerApiPath )
+        def conf = Config.activeInstance()
+        
+        
+        def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
+        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
         def address = "${apiUrl}delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
         
         def url
