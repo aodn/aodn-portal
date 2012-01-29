@@ -330,6 +330,23 @@
                                 </td>
                             </tr>
    
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="wmsScannerCallbackUsername"><g:message code="config.wmsScannerCallbackUsername.label" default="WMS Scanner Callback Username" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerCallbackUsername', 'errors')}">
+                                    <g:textField size="30" name="wmsScannerCallbackUsername" value="${configInstance?.wmsScannerCallbackUsername}" /><font class="hint">Must match the email address of a User with the 'LayerApiUser' role</font>
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="wmsScannerCallbackPassword"><g:message code="config.wmsScannerCallbackPassword.label" default="WMS Scanner Callback Password" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerCallbackPassword', 'errors')}">
+                                    <g:textField size="30" name="wmsScannerCallbackPassword" value="${configInstance?.wmsScannerCallbackPassword}" /><font class="hint">The password for the user listed above.</font>
+                                </td>
+                            </tr>
    
                             <tr class="prop">
                                 <td valign="top" class="name">

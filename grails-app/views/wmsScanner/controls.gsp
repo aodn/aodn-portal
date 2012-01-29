@@ -39,7 +39,9 @@
                   <th>Errors</th>
                   <th>${message(code: 'scanJob.jobType.label', default: 'Type')}</th>
                   <th>${message(code: 'scanJob.version.label', default: 'Version')}</th>
+                  <th>${message(code: 'scanJob.scanFrequency.label', default: 'Scan Frequency')}</th>
                   <th>${message(code: 'scanJob.uri.label', default: 'URI')}</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -52,8 +54,10 @@
                       <g:if test="${ scanJobInstance.numErrors != 0 }"><br />${message(code: 'scanJob.lastError.label', default: 'Last error')}: ${ scanJobInstance.lastError }</g:if></td>
                   <td>${scanJobInstance.jobType}</td>
                   <td>${scanJobInstance.wmsVersion}</td>
+                  <td>${scanJobInstance.scanFrequency} min</td>
                   <td>${scanJobInstance.uri}</td>
-                  <td><g:link action="callDeleteById" id="${scanJobInstance.id}">${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link></td>
+                  <td><g:link action="callUpdate" params="[scanJobId: scanJobInstance.id, scanJobUri: scanJobInstance.uri]">${message(code: 'scanJob.update.label', default: 'Update')}</g:link></td>
+                  <td><g:link action="callDelete" params="[scanJobId: scanJobInstance.id]" >${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link></td>
                 </tr>
               </g:each>
               </tbody>
@@ -82,7 +86,7 @@
                     <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "scanFrequency")} min</td>
                     <td><g:if test="${serverInstance.lastScanDate}"><g:formatDate format="dd/MM/yy HH:mm" date="${serverInstance.lastScanDate}"/></g:if></td>
-                    <td><g:link action="callRegister" id="${serverInstance.id}">${message(code: 'server.createScanJob.label', default: 'Create Scan Job')}</g:link></td>
+                    <td><g:link action="callRegister" params="[serverId: serverInstance.id]">${message(code: 'server.createScanJob.label', default: 'Create Scan Job')}</g:link></td>
                 </tr>
             </g:each>
             </tbody>

@@ -52,7 +52,10 @@ class Config {
     Integer mapGetFeatureInfoBuffer    
     String baselayerList    
     List defaultLayers
+    
     String wmsScannerBaseUrl
+    String wmsScannerCallbackUsername
+    String wmsScannerCallbackPassword
     
     static hasMany = [defaultLayers:Layer]    
         
@@ -102,7 +105,9 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
-        wmsScannerBaseUrl()
+        wmsScannerBaseUrl(nullable: true)
+        wmsScannerCallbackUsername(nullable: true)
+        wmsScannerCallbackPassword(nullable: true)
     }
     
     static Config activeInstance() {

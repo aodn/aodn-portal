@@ -43,8 +43,7 @@ class ConfigTests extends GrailsUnitTestCase {
             baselayerMenu: menu1,
             popupHeight: 200,
             popupWidth: 200,
-            autoZoom: true, // boolean
-            wmsScannerBaseUrl: "http://www.google.com/"
+            autoZoom: true // boolean
         );
         
         return validInstance;    
@@ -73,7 +72,8 @@ class ConfigTests extends GrailsUnitTestCase {
         assertEquals "nullable", testConfig.errors["metadataLinkProtocols"]
         assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
         assertEquals "nullable", testConfig.errors["mapGetFeatureInfoBuffer"]
-		
+        assertEquals "nullable", testConfig.errors["metadataLayerProtocols"]
+        assertEquals "nullable", testConfig.errors["mapGetFeatureInfoBuffer"]
 
         testConfig = getValidInstance()
         testConfig.name = "1234"
@@ -143,10 +143,5 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig.mapGetFeatureInfoBuffer = -1
         assertFalse testConfig.validate()
         assertEquals "min", testConfig.errors["mapGetFeatureInfoBuffer"]
-
-        //testConfig = getValidInstance()
-        //testConfig.wmsScannerBaseUrl = "http://invalidUrl"
-        //assertFalse testConfig.validate()
-        //assertEquals "url", testConfig.errors["wmsScannerBaseUrl"]
     }
 }
