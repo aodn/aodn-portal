@@ -157,7 +157,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
 			
 			if (this.resultsStore.totalLength == 0) {
-			//	this.resultsStore.add({title: 'No results', abstract:'', uuid:'', links:'', source:'', bbox: ''});
 				Ext.Msg.alert('Info', 'The search returned no results.'); //Provide feedback to user
 			}   
 		};
