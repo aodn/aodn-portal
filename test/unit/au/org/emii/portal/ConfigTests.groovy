@@ -29,6 +29,7 @@ class ConfigTests extends GrailsUnitTestCase {
             regionMenu: menu1,
             catalogUrl: "http://www.google.com/",
             footerHeight: 500,
+            footerContentWidth: 500,
             headerHeight: 600,
             westWidth: 250,
             downloadCartMaxFileSize: 200,

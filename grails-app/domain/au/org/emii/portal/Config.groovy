@@ -78,7 +78,7 @@ class Config {
         motdStart(nullable:true)
         motdEnd(nullable:true)
         footerContent(nullable:true,maxSize: 4000)        
-        footerContentWidth(nullable:true,size: 150..1000)
+        footerContentWidth(size: 150..1000)
         useDepthService(nullable:true)
         depthUrl(nullable:true)
         depthUser(nullable:true)
