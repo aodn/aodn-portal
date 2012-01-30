@@ -75,6 +75,7 @@ function initMenusPanel(menu) {
 
     var userDefinedWMSPanel = new Ext.Panel({
         title: "Add Servers",
+        height: 50,
         items: [
         serverURLField,
         addServerButton
@@ -276,7 +277,8 @@ function initMenusPanel(menu) {
         items: [
             //demonstrationContributorTree,
             defaultMenuTree,
-            userDefinedWMSPanel
+         // Add Server tab commented out until it can be completed:
+         //   userDefinedWMSPanel  
         ]
     });
     
