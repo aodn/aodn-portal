@@ -5,7 +5,7 @@
     <meta name="layout" content="main">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="layout" content="main" />
-    <meta http-equiv="refresh" content="300">
+    <meta http-equiv="refresh" content="180">
     
 		<g:set var="entityName" value="${message(code: 'wmsScanner.label', default: 'WMS Scanner')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>  
@@ -22,8 +22,13 @@
             
     <div class="content">
       <h2>WMS Scanner Controls</h2>
-      <div>WMS Scanner located @ <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a><br /><br /></div>
 
+      <div style="margin: 1em">
+        <b>Configuration</b><br />
+        WMS Scanner url: <a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl ?: "<i>Not set</i>" }</a><br />
+        Callback url is: <a href="${ configInstance.applicationBaseUrl }" target="_blank">${ configInstance.applicationBaseUrl }</a> NB. must be resolvable from the WMS Scanner host
+      </div>
+      
       <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
       </g:if>
@@ -42,7 +47,6 @@
                   <th>${message(code: 'scanJob.scanFrequency.label', default: 'Scan Frequency')}</th>
                   <th>${message(code: 'scanJob.uri.label', default: 'URI')}</th>
                   <th></th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -56,8 +60,10 @@
                   <td>${scanJobInstance.wmsVersion}</td>
                   <td>${scanJobInstance.scanFrequency} min</td>
                   <td>${scanJobInstance.uri}</td>
-                  <td><g:link action="callUpdate" params="[scanJobId: scanJobInstance.id, scanJobUri: scanJobInstance.uri]">${message(code: 'scanJob.update.label', default: 'Update')}</g:link></td>
-                  <td><g:link action="callDelete" params="[scanJobId: scanJobInstance.id]" >${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link></td>
+                  <td>
+                    <g:link action="callUpdate" params="[scanJobId: scanJobInstance.id, scanJobUri: scanJobInstance.uri]">${message(code: 'scanJob.update.label', default: 'Update')}</g:link> |
+                    <g:link action="callDelete" params="[scanJobId: scanJobInstance.id]" >${message(code: 'scanJob.delete.label', default: 'Delete')}</g:link>
+                  </td>
                 </tr>
               </g:each>
               </tbody>
