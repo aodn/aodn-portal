@@ -132,9 +132,7 @@ Portal.app = {
                 initMenusPanel(defaultMenu);
                 doViewPort();
                 reloadDefaultLayers();
-                
-
-	
+                setViewPortTab( 0 ); // Select default tab
             }
         });
     }
@@ -225,7 +223,7 @@ function doViewPort()
                             xtype: 'container',
                             html: Portal.app.config.footerContent,
                             cls: 'footerText',
-                            width: (Portal.app.config.footerContentWidth) ? Portal.app.config.footerContentWidth : 600 // would break if null 
+                            width: Portal.app.config.footerContentWidth
                         }
                     ]
                     
