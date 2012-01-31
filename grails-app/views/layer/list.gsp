@@ -23,18 +23,20 @@
                     <thead>
                         <tr>
                             <g:sortableColumn property="title" title="${message(code: 'layer.title.label', default: 'Title')}" />
+                            
                             <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name (WMS ID)')}" />
-                            <g:sortableColumn property="abstractTrimmed" title="${message(code: 'layer.abstractTrimmed.label', default: 'Abstract (trimmed)')}" />
                             
                             <th><g:message code="layer.server.label" default="Server" /></th>
-                                                    
+                            
+                            <g:sortableColumn property="dataSource" title="${message(code: 'layer.dataSource.label', default: 'Data Source')}" />
+                            
                             <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
                             
-                            <g:sortableColumn property="activeInLastScan" title="${message(code: 'layer.activeInLastScan.label', default: 'Active in last scan')}" />
+                            <g:sortableColumn property="activeInLastScan" title="${message(code: 'layer.activeInLastScan.label', default: 'Active')}" />
                         
                             <g:sortableColumn property="blacklisted" title="${message(code: 'layer.blacklisted.label', default: 'Blacklisted')}" />
                             
-                            <th><g:message code="layer.isBaseLayer.label" default="Is Base Layer" /></th>
+                            <th><g:message code="layer.isBaseLayer.label" default="Base Layer" /></th>
                             
                             <th><g:message code="layer.cache.label" default="Cache" /></th>
                         </tr>
@@ -45,11 +47,12 @@
                         
 
                             <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
+                            
                             <td>${fieldValue(bean: layerInstance, field: "name")}</td>
-                            <td>${fieldValue(bean: layerInstance, field: "abstractTrimmed")}</td>
                             
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
+                            <td>${fieldValue(bean: layerInstance, field: "dataSource")}</td>
                             
                             <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${layerInstance.lastUpdated}"/></g:if></td>
                             
