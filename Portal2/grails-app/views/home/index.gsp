@@ -9,7 +9,7 @@
 
 
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt/resources/css/geoext-all.css')}" />
+<link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt1.1/resources/css/geoext-all.css')}" />
 <!-- User extensions -->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
 <!-- Portal classes-->
@@ -25,7 +25,7 @@
 <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
 <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
-<script src="${resource(dir:'js',file:'GeoExt/script/GeoExt.js')}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'GeoExt1.1/script/GeoExt.js')}"  type="text/javascript"></script>
 
 
 

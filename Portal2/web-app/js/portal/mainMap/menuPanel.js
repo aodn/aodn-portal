@@ -9,6 +9,8 @@ function initMenusPanel(menu) {
     });
     */
    
+   //console.log(appConfigStore.getById('grails.serverURL').data.value);
+   
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
         children: JSON.parse(menu.json) // supplied as a string
@@ -245,9 +247,6 @@ function initMenusPanel(menu) {
     var activeLayerPanel = new Ext.Panel({
         title: "Active layers",
         id: 'activeLayersPanel',
-        //region: 'center',
-        
-        //margins: {top:0, right:0, bottom:40, left:0},
         items : [
             emptyActiveLayerTreePanelText,
             activeLayerTreePanel
@@ -264,9 +263,6 @@ function initMenusPanel(menu) {
             //autoScroll: true
         },
         id: 'leftTabMenuPanel',
-        //flex: 2,
-        //region: 'north',        
-        //height: Portal.app.config.activeLayersHeight, 
         minHeight: 170,
         stateful: false,        
         split: true,

@@ -175,7 +175,7 @@ function initDetailsPanel()  {
     var detailsPanelTabs = new Ext.TabPanel({  
         defaults: {
             margin: 10
-        },
+        }, 
         id: 'detailsPanelTabs',
         ref: 'detailsPanelTabs',
         border: false,

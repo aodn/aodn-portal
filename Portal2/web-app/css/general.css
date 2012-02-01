@@ -89,6 +89,10 @@ a img{
 .leftMenus {
     background-color: white;
 }
+#leftMenuTabPanel {
+    background-color: red;
+}
+
 .noborder {
     border: none! important;
 }
