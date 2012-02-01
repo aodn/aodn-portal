@@ -343,98 +343,111 @@ function closeNHideDetailsPanel() {
 
 function updateDetailsPanel(layer) {
     
-    selectedLayer = layer;
-    
-    updateStyles(layer);
-    
-    Ext.getCmp('opacitySlider').show(); // reset slider
-                    
-                
-    if (Portal.app.config.autoZoom === true) {
-        zoomToLayer(mapPanel.map, layer);
-    }
-    
-    
-    ncWMSColourScalePanel.hide();
-    
-    var transectControl = Ext.getCmp('detailsPanelItems').transectControl;
-    transectControl.hide();
-    
-    // remove any transect tabs for previous layer
-    var detailsPanelTabs = Ext.getCmp('detailsPanelItems').detailsPanelTabs;
-    var transectTabs = detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
-    for (var i=0;i<transectTabs.length;i++) {
-      detailsPanelTabs.remove(transectTabs[i]);
-    }
-    
-    // set default visibility of components in this panel     
-    // disabled until all dates are loaded for the layer if applicable      
-    animatePanel.setDisabled(true);
-    // assume its not an animated image
-    Ext.getCmp('stopNCAnimationButton').setVisible(false);
-    
-    
-    // it may be an animated image layer
-    if (layer.originalWMSLayer != undefined) {
-        
-        // set the Start Stop buttons;
-        Ext.getCmp('startNCAnimationButton').setVisible(false);
-        Ext.getCmp('stopNCAnimationButton').setVisible(true);
-    }
-      
-    
-    updateDimensions(layer); // time and elevation   
-    
-    if(layer.server.type.search("NCWMS") > -1)  {
-
-        makeNcWMSColourScale(layer); 
-        
-        transectControl.setMapPanel(mapPanel);
-        transectControl.layer = layer;
-        transectControl.show();
-        
-        // show the animate tab if we can animate through time
-        if (layer.metadata.datesWithData != undefined) {
-
-            if (layer.dates == undefined) {
-                setLayerDates(layer); // pass in the layer as there are going to be many async Json requests
-            }
-            else {
-                animatePanel.setDisabled(false); 
-            }
-
-            // ensure to 're-set' the Start Stop buttons (if rendered);
-            if (Ext.getCmp('startNCAnimationButton') != undefined) {
-                Ext.getCmp('startNCAnimationButton').setVisible(true);
-            }
-            Ext.getCmp('stopNCAnimationButton').setVisible(false);     
-
-        } 
-    }
-       
-
-    if (Portal.app.config.hideLayerOptions === true) {
+    // hide if user requested 'hideLayerOptions' or
+    // check if the map is still in focus - not the search
+    if (Portal.app.config.hideLayerOptions === true || viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
         
         closeNHideDetailsPanel();
         
     }
-    else {    
-        
+    else {  
+
+
+        selectedLayer = layer;
+
+        updateStyles(layer);
+
+        Ext.getCmp('opacitySlider').show(); // reset slider
+
+
+        if (Portal.app.config.autoZoom === true) {
+            zoomToLayer(mapPanel.map, layer);
+        }
+
+
+        ncWMSColourScalePanel.hide();
+
+        var transectControl = Ext.getCmp('detailsPanelItems').transectControl;
+        transectControl.hide();
+
+        // remove any transect tabs for previous layer
+        var detailsPanelTabs = Ext.getCmp('detailsPanelItems').detailsPanelTabs;
+        var transectTabs = detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
+        for (var i=0;i<transectTabs.length;i++) {
+          detailsPanelTabs.remove(transectTabs[i]);
+        }
+
+        // set default visibility of components in this panel     
+        // disabled until all dates are loaded for the layer if applicable      
+        animatePanel.setDisabled(true);
+        // assume its not an animated image
+        Ext.getCmp('stopNCAnimationButton').setVisible(false);
+
+
+        // it may be an animated image layer
+        if (layer.originalWMSLayer != undefined) {
+
+            // set the Start Stop buttons;
+            Ext.getCmp('startNCAnimationButton').setVisible(false);
+            Ext.getCmp('stopNCAnimationButton').setVisible(true);
+        }
+
+
+        updateDimensions(layer); // time and elevation   
+
+        if(layer.server.type.search("NCWMS") > -1)  {
+
+            makeNcWMSColourScale(layer); 
+
+            transectControl.setMapPanel(mapPanel);
+            transectControl.layer = layer;
+            transectControl.show();
+
+            // show the animate tab if we can animate through time
+            if (layer.metadata.datesWithData != undefined) {
+
+                if (layer.dates == undefined) {
+                    setLayerDates(layer); // pass in the layer as there are going to be many async Json requests
+                }
+                else {
+                    animatePanel.setDisabled(false); 
+                }
+
+                // ensure to 're-set' the Start Stop buttons (if rendered);
+                if (Ext.getCmp('startNCAnimationButton') != undefined) {
+                    Ext.getCmp('startNCAnimationButton').setVisible(true);
+                }
+                Ext.getCmp('stopNCAnimationButton').setVisible(false);     
+
+            } 
+        }
+
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
-        Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active  
-         
-        // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
-        if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {
-            updateDetailsPanelPositionSize();
+        Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
+        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name); 
+
+
+        // as it may have taken a second or two to get to here, check that map is still visible
+        if ( viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
+            closeNHideDetailsPanel();
         }
-        else{
-            mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name);
-            mapMainPanel.getComponent('rightDetailsPanel').show(true);  
-            // resize the map so the panel isnt on top
-            //mapMainPanel.doLayout();
+        else {
+            // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
+            if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {         
+                updateDetailsPanelPositionSize();
+            }
+            else{
+                mapMainPanel.getComponent('rightDetailsPanel').show(true);  
+                // resize the map so the panel isnt on top
+                //mapMainPanel.doLayout();
+            }
         }
     }
+    
+    
+    
+    
     
     
 }
