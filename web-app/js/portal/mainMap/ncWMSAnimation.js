@@ -257,16 +257,18 @@ function setDatetimesForDate(layer, day) {
     //console.log(layer);
     if (layer.cache === true) {
        url = layer.server.uri;
+       url = proxyCachedURL + encodeURIComponent(layer.server.uri) +  "?request=GetMetadata&item=timesteps&layerName=" +  layer.params.LAYERS +   "&day=" + day;
     }
     else {
        url = layer.url;
+       url = proxyURL+encodeURIComponent(url +  "?request=GetMetadata&item=timesteps&layerName=" +  layer.params.LAYERS +   "&day=" + day);
     }
         
     // getMetadata gave us the days but not the times of the day
     Ext.Ajax.request({        
         
         
-        url: proxyURL+encodeURIComponent(url +  "?request=GetMetadata&item=timesteps&layerName=" +  layer.params.LAYERS +   "&day=" + day),
+        url: url,
         success: function(resp) { 
             
             var res = Ext.util.JSON.decode(resp.responseText);

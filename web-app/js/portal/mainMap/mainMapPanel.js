@@ -538,22 +538,28 @@ function createLayer(dl) {
     var options =           {
         wrapDateLine: true,   
         opacity: opacity,
-        //version : getWMSVersionString(dl),
+        version : getWMSVersionString(dl),
         transitionEffect: 'resize'
     };
     
-    if(dl.server.type == "NCWMS-1.3.0") {        
-        options.yx = []; // fix for the wms standards war
+    if(dl.server.type == "NCWMS-1.3.0") {   
+        // incomplete fix for the wms standards war 
+        options.yx = [];
     }
     if (dl.isBaseLayer) {
         options.isBaseLayer = dl.isBaseLayer;
+    }    
+    
+    if (dl.projection) {
+        options.projection = new OpenLayers.Projection(dl.projection);
+   
     }
+
     
     var serverUri;
-    // proxy to use so that this layer is cached
-    
+    // proxy to use if this layer is cached    
     if (dl.cache == true) {
-        serverUri =  window.location.href + proxyCachedURL + URLEncode(dl.server.uri); 
+        serverUri =  window.location.href + proxyCachedURL + URLEncode(dl.server.uri);         
     }
     else {
         serverUri = dl.server.uri;
@@ -565,13 +571,24 @@ function createLayer(dl) {
         params,
         options
         );
+            
+    var parentLayerId; // useful when the same server has layers named the same yet in subfolders
+    if (dl.parent) {
+        parentLayerId = dl.parent.id
+        layer.parentLayerName = dl.parent.name; 
+    }
     
     //
     // extra info to keep
     layer.grailsLayerId = dl.id; // grails layer id
     layer.server= dl.server;
     layer.cql = dl.cql;
+    layer.bbox = dl.bbox;    
     layer.cache = dl.cache;
+    layer.projection = dl.projection;
+    layer.parentLayerId = parentLayerId;
+    layer.blacklist = dl.blacklist; // shouldn't really see blacklisted layers here
+    layer.abstractTrimmed = dl.abstractTrimmed;
       
     
     // don't add layer twice 
@@ -619,14 +636,23 @@ function addMainMapLayer(dl) {
 
     if (layer != undefined) {
           
-        registerLayer( layer );
+        registerLayer( layer );  
         
+        
+        // show open layer options 
+        // this also calls zoomToLayer
+        if (!Portal.app.config.hideLayerOptions) {
+            updateDetailsPanel(layer);
+        }        
         // zoom map first. may request less wms tiles first off
-        if (Portal.app.config.autoZoom = true) {
+        else if (Portal.app.config.autoZoom === true) {
             zoomToLayer(mapPanel.map, layer);
-        }  
+        }
         
         mapPanel.map.addLayer(layer);
+        
+        
+        
         
         jQuery('.emptyActiveLayerTreePanelText').hide('slow');
         
@@ -674,7 +700,7 @@ function getUniqueLayerId(layer){
         }
     }   
     // return whitespaced cleared string
-    return ((layer.server.uri + "::" + layer.name + cql).replace(/ +?/g, '_'));
+    return ((layer.server.uri + "::" +  layer.name + cql).replace(/ +?/g, '_'));
 }
 
 // return whether the layer has already been added to the map
@@ -693,7 +719,7 @@ function getLayerMetadata(layer) {
         
         var url;
         // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
-        //console.log(layer);
+        
         if (layer.cache === true) {
            // all parameters passed along here will get added to URL 
            // proxyCachedURL = "proxy/cache?URL="

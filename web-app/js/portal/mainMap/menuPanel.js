@@ -8,7 +8,7 @@ function initMenusPanel(menu) {
         root: new GeoExt.tree.LayerContainer()
     });
     */
-    
+   
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
         children: JSON.parse(menu.json) // supplied as a string
@@ -315,7 +315,7 @@ function initMenusPanel(menu) {
         },
         {
             text: 'Zoom to Layer',
-            handler: zoomToLayer(mapPanel.map, selectedLayer)
+            handler: zoomToSelectedLayer
         },
         {
             text: 'Toggle Layer Visibility',
@@ -326,6 +326,10 @@ function initMenusPanel(menu) {
 
 
 
+}
+
+function zoomToSelectedLayer() {
+    zoomToLayer(mapPanel.map, activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);
 }
 
 function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
