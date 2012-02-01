@@ -27,7 +27,7 @@ environments {
 		    url = "jdbc:postgresql://localhost:5432/portal2"
             username = "postgres"
             password = "postgres"
-     
+            
             // logSql = true
             testOnBorrow = true
             validationQuery = "SELECT 1"

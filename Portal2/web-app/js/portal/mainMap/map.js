@@ -117,29 +117,33 @@ function zoomToDefaultZoom(map) {
 function zoomToLayer(map, layer){
     
     
-    //console.log(layer);
-    
-    var extent;
-    if (layer != undefined) {
-        extent = layer.getDataExtent();  
+    if (layer!= undefined) {
         
-        //console.log(extent);
-        if (extent && !isNaN(extent.left)) {
+          
+        if (layer.bbox != undefined) {
+            // build openlayer bounding box            
+            var bounds = new OpenLayers.Bounds.fromString(layer.bbox);            
+            // ensure converted into this maps projection. convert metres into lat/lon etc
+            bounds.transform( new OpenLayers.Projection(layer.projection), mapPanel.map.getProjectionObject()); 
             
-            var width = extent.getWidth() / 2;
-            var height = extent.getHeight() / 2;
-            extent.left -= width;
-            extent.right += width;
-            extent.bottom -= height;
-            extent.top += height;
-            map.zoomToExtent(extent);
-        } else {
-            //map.zoomToMaxExtent();
+            // openlayers wants left, bottom, right, top 
+            
+            // // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
+            //if(layer.server.type == "NCWMS-1.3.0") { 
+            //    bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
+            //}
+            //
+            
+            if (bounds) {
+                mapPanel.map.zoomToExtent(bounds);
+            } 
         }
     }
-    
+        
 
 }
+
+
 
 function addToPopup(mapPanel, e) {
 	
@@ -231,71 +235,79 @@ function addToPopup(mapPanel, e) {
 
         var layer = wmsLayers[i];
         var url = "none";
+        var params;
         
-        if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) { 
+        // this is an animated image
+        if (layer.originalWMSLayer) {
+                //To do add a check box on the interface to get the profile and the time series from ncWMS.
+                /*if (layer.showTimeSeriesNcWMS) {
+                       if (layer.tile.bounds.containsLonLat(lonlat)) {
+                                    url = layer.baseUri +
+                                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+                                    "&BBOX=" + layer.getExtent().toBBOX() +
+                                    "&I=" + e.xy.x +
+                                    "&J=" + e.xy.y +
+                                    "&INFO_FORMAT=text/xml" +
+                                    "&CRS=EPSG:4326" +
+                                    "&WIDTH=" + mapPanel.map.size.w +
+                                    "&HEIGHT=" +  mapPanel.map.size.h +
+                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
 
-            //To do add a check box on the interface to get the profile and the time series from ncWMS.
-            /*if (layer.showTimeSeriesNcWMS) {
-                   if (layer.tile.bounds.containsLonLat(lonlat)) {
-                                url = layer.baseUri +
-                                "&EXCEPTIONS=application/vnd.ogc.se_xml" +
-                                "&BBOX=" + layer.getExtent().toBBOX() +
-                                "&I=" + e.xy.x +
-                                "&J=" + e.xy.y +
-                                "&INFO_FORMAT=text/xml" +
-                                "&CRS=EPSG:4326" +
-                                "&WIDTH=" + mapPanel.map.size.w +
-                                "&HEIGHT=" +  mapPanel.map.size.h +
-                                "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+
+                                    timeSeriesPlotUri =
+                                    layer.timeSeriesPlotUri +
+                                    "&I=" + e.xy.x +
+                                    "&J=" + e.xy.y +
+                                    "&WIDTH=" + layer.mapPanel.map.size.w +
+                                    "&HEIGHT=" +  layer.mapPanel.map.size.h +
+                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+                            }
+                    }
+                    */
+        }
+        else {
+
+            if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) { 
 
 
-                                timeSeriesPlotUri =
-                                layer.timeSeriesPlotUri +
-                                "&I=" + e.xy.x +
-                                "&J=" + e.xy.y +
-                                "&WIDTH=" + layer.mapPanel.map.size.w +
-                                "&HEIGHT=" +  layer.mapPanel.map.size.h +
-                                "&BBOX=" + mapPanel.map.getExtent().toBBOX();
-                        }
+                var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
+                var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
+
+
+                if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
+                    url = layer.getFullRequestString({
+                        REQUEST: "GetFeatureInfo",
+                        EXCEPTIONS: "application/vnd.ogc.se_xml",
+                        BBOX: layer.getExtent().toBBOX(),
+                        X: e.xy.x,
+                        Y: e.xy.y,
+                        INFO_FORMAT: expectedFormat,
+                        QUERY_LAYERS: layer.params.LAYERS,
+                        FEATURE_COUNT: featureCount,
+                        BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
+                        SRS: 'EPSG:4326',
+                        WIDTH: layer.map.size.w,
+                        HEIGHT: layer.map.size.h
+                    });
                 }
-                */
-            var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
-            var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
-            
-                               
-            if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
-                url = layer.getFullRequestString({
-                    REQUEST: "GetFeatureInfo",
-                    EXCEPTIONS: "application/vnd.ogc.se_xml",
-                    BBOX: layer.getExtent().toBBOX(),
-                    X: e.xy.x,
-                    Y: e.xy.y,
-                    INFO_FORMAT: expectedFormat,
-                    QUERY_LAYERS: layer.params.LAYERS,
-                    FEATURE_COUNT: featureCount,
-                    BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
-                    SRS: 'EPSG:4326',
-                    WIDTH: layer.map.size.w,
-                    HEIGHT: layer.map.size.h
-                });
-            }
-            else if (layer.params.VERSION == "1.3.0") {
-                url = layer.getFullRequestString({
+                else if (layer.params.VERSION == "1.3.0") {
+                    url = layer.getFullRequestString({
 
-                    REQUEST: "GetFeatureInfo",
-                    EXCEPTIONS: "application/vnd.ogc.se_xml",
-                    BBOX: layer.getExtent().toBBOX(),
-                    I: e.xy.x,
-                    J: e.xy.y,
-                    INFO_FORMAT: expectedFormat,
-                    QUERY_LAYERS: layer.params.LAYERS,
-                    FEATURE_COUNT: featureCount,
-                    //Styles: '',
-                    CRS: 'EPSG:4326',
-                    BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
-                    WIDTH: layer.map.size.w,
-                    HEIGHT: layer.map.size.h
-                });
+                        REQUEST: "GetFeatureInfo",
+                        EXCEPTIONS: "application/vnd.ogc.se_xml",
+                        BBOX: layer.getExtent().toBBOX(),
+                        I: e.xy.x,
+                        J: e.xy.y,
+                        INFO_FORMAT: expectedFormat,
+                        QUERY_LAYERS: layer.params.LAYERS,
+                        FEATURE_COUNT: featureCount,
+                        //Styles: '',
+                        CRS: 'EPSG:4326',
+                        BUFFER: Portal.app.config.mapGetFeatureInfoBuffer,
+                        WIDTH: layer.map.size.w,
+                        HEIGHT: layer.map.size.h
+                    });
+                }
             }
         }
 
