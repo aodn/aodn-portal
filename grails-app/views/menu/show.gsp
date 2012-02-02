@@ -11,6 +11,7 @@
         
     <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
           
           
           <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
@@ -28,12 +29,13 @@
    // generic tree builder to demo the tree only
   function buildDemoTree(menu) {
 
-
+	  	var builder = new Portal.data.MenuItemToNodeBuilder();
+    	var children = builder.build(menu);
       
-      var rootAsyncTreeNode = new Ext.tree.AsyncTreeNode({
+      var rootNode = new Ext.tree.AsyncTreeNode({
         text: menu.title,
         draggable:false,
-        children: JSON.parse(menu.json) // supplied as a string
+        children: children
       });     
     
 
@@ -41,14 +43,10 @@
                             enableDD:false,
                             loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
                             renderTo: 'jsontree',
-                            root: rootAsyncTreeNode,
+                            root: rootNode,
                             rootVisible:false
                             });
-
-  
-      tree.getRootNode().expand(true);
-
-  
+      rootNode.expand(true);
   }
 
                   </script>

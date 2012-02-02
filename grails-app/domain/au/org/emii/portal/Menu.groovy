@@ -1,18 +1,20 @@
 package au.org.emii.portal
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
+import grails.converters.JSON
+
 class Menu {
     
     String title
-    String json
     Boolean active 
-    Date editDate 
+    Date editDate
+	SortedSet menuItems
     
     static mapping = {
         sort "title"
-		json type:'text'
     }
 
-    
     static constraints = {
         title(
             nullable:false,
@@ -20,9 +22,98 @@ class Menu {
             maxSize: 40, 
             unique:true
         )
-        json(maxSize: 4000)
+		
+		menuItems cascade: 'all-delete-orphan'
     }
+	
+	static hasMany = [menuItems: MenuItem]
+	
+	boolean equals(Object o) {
+		if (is(o)) {
+			return true
+		}
+		if (!(o instanceof Menu)) {
+			return false
+		}
+		
+		Menu rhs = (Menu)o
+		return new EqualsBuilder()
+			.append(id, rhs.id)
+			.isEquals()
+	}
+	
     String toString() {
         return "${title}"
     }
+	
+	def edited() {
+		editDate = new Date()
+	}
+	
+	def getBaseLayers() {
+		def baseLayers = []
+		getMenuItems().each { item ->
+			baseLayers.addAll(item.getBaseLayers())
+		}
+		return baseLayers
+	}
+	
+	def getItemsForShallowJson() {
+		def items = [] as Set
+		getMenuItems().each { item ->
+			items.addAll(item.getItemsForShallowJson())
+		}
+		return items
+	}
+	
+	def parseJson(json) {
+		def menuJsonArray = JSON.use("deep") {
+			JSON.parse(json)
+		}
+		title = menuJsonArray.title ?: menuJsonArray.text
+		if (menuJsonArray.children) {
+			_parseMenuItems(menuJsonArray.children.toString())
+		}
+		else if (menuJsonArray.json) {
+			_parseMenuItems(menuJsonArray.json.toString())
+		}
+	}
+	
+	def _parseMenuItems(itemJson) {
+		def tmpItems = [] as Set
+		def itemJsonArray = JSON.use("deep") {
+			JSON.parse(itemJson)
+		}
+		itemJsonArray.eachWithIndex { item, index ->
+			def menuItem = _findItem(item.id)
+			//menuItem.menu = this
+			menuItem.parseJson(item.toString(), index)
+			tmpItems << menuItem
+			if (!menuItem.id) {
+				addToMenuItems(menuItem)
+			}
+		}
+		_purge(tmpItems)
+	}
+	
+	def _findItem(id) {
+		def item
+		if (id && !getMenuItems().isEmpty()) {
+			item = getMenuItems().find { it.id == id }
+		}
+		return item ?: new MenuItem()
+	}
+	
+	def _purge(keepers) {
+		def discards = [] as Set
+		getMenuItems().each { item ->
+			if (!keepers.contains(item)) {
+				discards << item
+			}
+		}
+		discards.each { item ->
+			log.debug("Removing $item")
+			removeFromMenuItems(item)
+		}
+	}
 }

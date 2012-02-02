@@ -24,13 +24,13 @@ var tree;
 var theGrid;
 var theGridStore;
 
-var jsonLayers = '/Portal2/layer/listLayersAsJson'
+var jsonLayers = '/Portal2/layer/listForMenuEdit'
 
 function createGrid(layerType){
     
     var reader = new Ext.data.JsonReader({
         idProperty: '',
-        root: '',
+        root: 'data',
         fields:[
                 { name:'id'}
                 ,{name:'title'}
@@ -44,7 +44,10 @@ function createGrid(layerType){
                 //groupField: 'server',
                 url: jsonLayers,
                 autoLoad: true, 
-                reader: reader
+                reader: reader,
+                baseParams: {
+                	
+                }
             }) 
    theGrid =  new Ext.grid.GridPanel({
 
@@ -83,7 +86,7 @@ function createGrid(layerType){
                 forceFit:true, 
                 groupTextTpl: 'text ',
                 getRowClass: function(record, index) {
-                    if (record.json.class == "au.org.emii.portal.Server") {
+                    if (record.json['class'] == "au.org.emii.portal.Server") {
                         return 'serverRow';
                     } 
                     else  {
@@ -103,7 +106,15 @@ function createGrid(layerType){
     
 };
 
-
+function dataPanel() {
+	return new Ext.Panel({
+		width: 600,
+		items: [
+	        theGrid,
+	        searchGrid()
+		]
+	});
+}
 
 
 function initMenu(menu) {
@@ -114,8 +125,8 @@ function initMenu(menu) {
     createGrid(false); // create non baselayer picker
     
     if (menu) {
-        //jsonLayers = jsonLayers + "&id=" + menu.id
-        setupgrid2treedrag(menu); 
+        setupgrid2treedrag(menu);
+        tree.getRootNode().expand(true);
     }
     else {
         menu = new Object();  
@@ -154,14 +165,12 @@ function showHideButtons() {
 
 // for new and editing menu trees
 function setupgrid2treedrag(menu) {
-    
-    // only menu.title is guarenteed to be set
+	
+    // only menu.title is guaranteed to be set
     var rootLabel = menu.title;
-    var children = [];
-    if (menu.json) {
-        children = JSON.parse(menu.json); // supplied as a string  
-    }
-    
+    var builder = new Portal.data.MenuItemToNodeBuilder();
+    var children = builder.build(menu);
+	
     // any msg's from grails
     if (Ext.get('message')) {
         Ext.get('message').show()
@@ -173,7 +182,7 @@ function setupgrid2treedrag(menu) {
         // get filtered json string
         var json = tree.toJsonString(null,
             function(key, val) {
-                return (key == 'leaf' ||  key == 'grailsLayerId' ||  key == 'grailsServerId'   || key =='text' );
+                return (key == 'leaf' || ((key == 'grailsLayerId' || key == 'grailsServerId') && val) || key == 'text' || key == 'id');
             }, 
             {
                 description: 'name'
@@ -191,15 +200,11 @@ function setupgrid2treedrag(menu) {
         // root with some static demo nodes
         root: {
             text: rootLabel,  
-            id: 'root', 
-            children: children, 
-            expanded: true, 
+            id: 'root',
+            children: children,
+            //expanded: true, 
             expandable: true
         },
-        // preloads 1st level children        
-        loader:new Ext.tree.TreeLoader({
-            preloadChildren:true
-        }),
         // enable DD        
         enableDD:true,
         // set ddGroup - same as for grid       
@@ -210,6 +215,7 @@ function setupgrid2treedrag(menu) {
         collapsible:false,
         padding: 20,
         autoScroll:true,
+        loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
         listeners:{
             
             'contextmenu': function(node){
@@ -240,7 +246,7 @@ function setupgrid2treedrag(menu) {
                             r = e.data.selections[i];
                             
                             // reservered word here but it works!!!
-                            if (r.json.class == "au.org.emii.portal.Server") {
+                            if (r.json['class'] == "au.org.emii.portal.Server") {
                                 e.dropNode.push(this.loader.createNode({
                                 text:r.get('name'),
                                 leaf:false,
@@ -252,7 +258,7 @@ function setupgrid2treedrag(menu) {
                             else {
                             // create layer node
                             e.dropNode.push(this.loader.createNode({
-                                text:r.get('name'),
+                                text:r.get('title'),
                                 leaf:true,
                                 grailsLayerId:r.get('id'), // identify grails layers by this variable
                                 qtip:r.get('layers') + " - " + r.get('server.shortAcron')
@@ -273,6 +279,10 @@ function setupgrid2treedrag(menu) {
             }
     }
     });
+//    Ext.each(children, function(child, index, all) {
+//    	this.getRootNode().appendChild(child);
+//    }, tree);
+//    tree.getRootNode().expand(true);
 // }}}
 
     
@@ -286,46 +296,18 @@ var win = new Ext.Panel({
     layout:  {
         type: 'column',
         align: 'left'
-                  
     },
     pack: 'start',
     align: 'stretch',
     renderTo:'menuConfigurator',
     items:[
         tree,  
-        theGrid,
-        searchGrid()
+        dataPanel()
     ]
                 
 });
 win.doLayout(); 
-//Ext.get('thegrid').getColumnModel().setHidden(0, true); 
-    
- 
- 
 };             
-
-
-  /*  
-= new thegrid({  
-    
-        xtype:'thegrid',
-        id:'availableLayers',
-        title:'Drag layers or Servers to the tree',
-        height: 500,
-        stripeRows : true,
-        enableDragDrop:true,
-        ddGroup:'grid2tree'
-});
-    */
-// {{{
-// example grid extension
-//Example.Grid
-
-
-
-
-
 
 function rightClickMenu(node){
     var treeMenu = new Ext.menu.Menu({
@@ -363,24 +345,23 @@ function rightClickMenu(node){
         });
         
         treeMenu.add({
-            text:'Rename'
-            ,
-            node:node
-            ,
+            text:'Rename',
+            node:node,
             listeners:{
                 click: function(item){
-                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:', function(status, text) {
+                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:', 
+                		function(status, text) {
                         // dont allow the label to be empty   
-                        if (text != "") {
-                            node.setText(text);
-                        }
-                        else {                            
-                            Ext.MessageBox.alert('Node not created','You must supply a name for a new node');
-                        }
-                    }
-                    ,this
-                    ,false
-                    ,node.text
+	                        if (text != "") {
+	                            node.setText(text);
+	                        }
+	                        else {                            
+	                            Ext.MessageBox.alert('Node not created', 'You must supply a name for a new node');
+	                        }
+	                    },
+	                    this,
+	                    false,
+	                    node.text
                     );                    
                     showHideButtons();           
                 } 
@@ -391,10 +372,8 @@ function rightClickMenu(node){
     }
     if (node.id != "root") {
         treeMenu.add({
-            text:'Remove'
-            ,
-            node:node
-            ,
+            text:'Remove',
+            node:node,
             listeners:{
                 click: function(){
                     node.destroy();   
@@ -414,35 +393,43 @@ function searchGrid() {
     
     var searchForm = new Ext.FormPanel({
         frame: true, 
-        padding: 20,
+        //padding: 20,
         border: false, 
         buttonAlign: 'center',
         url: jsonLayers, 
         method: 'POST', 
         id: 'frmRegister',
         bodyStyle: 'padding:1px;',
-        width: 350,
-        margins: 10,
-        items: [{
-            xtype: 'textfield',
-            id: 'gridFilterPhrase',
-            fieldLabel: 'Filter',
-            name: 'phrase'
-
-        }
-        ],
-        buttons: [
-            { text: 'Reset', handler: function() {
-                    searchForm.getForm().reset();
-                    loadGrid();
-                }
+        width: 600,
+        //margins: 10,
+        layout: 'hbox',
+        items: [
+        	{
+        		xtype: 'textfield',
+        		width: 480,
+        		id: 'gridFilterPhrase',
+        		fieldLabel: 'Filter',
+        		name: 'phrase'
+        	},
+        	{
+    			xtype: 'button',
+        		text: 'Reset', 
+        		width: 50,
+        		handler: function() {
+        			searchForm.getForm().reset();
+        			loadGrid();
+        		}
             },
-            { text: 'Filter', handler: function() {
-                    loadGrid();
-                }
+            { 
+        		xtype: 'button',
+            	text: 'Filter',
+            	width: 50,
+            	handler: function() {
+            		loadGrid();
+            	}
             }
-            ],
-            keys: [
+        ],
+        keys: [
             { key: [Ext.EventObject.ENTER], handler: function() {
                     loadGrid();
                 }
@@ -453,47 +440,17 @@ function searchGrid() {
 
 
     function loadGrid() {
-        var phrase = searchForm.getForm().findField('phrase').getValue();
+        theGridStore.baseParams = {
+    		phrase: searchForm.getForm().findField('phrase').getValue()
+        }
         theGridStore.load({
-            params:{'phrase': phrase }
+            params: {
+        		start: 0,
+        		limit: 50
+        	}
         });
         theGrid.doLayout();
     }
        
     return searchForm;
 }
-
-
- function submitSearchForm() {
-    var fFields=searchForm.getValues();
-    var search = [];
-    var reg;
-    ds.filterBy(function(record,id){
-        for(var f in fFields){     
-            if(fFields[f]!='') {
-                if(f=='company') {
-                    reg = new RegExp(fFields[f], "i");   
-                    if(!reg.test(record.data[f])) return false;
-                }
-                if(f=='price' || f=='change' || f=='pctChange') {
-                    if(record.data[f]>fFields[f]) return false;   
-                }
-            }
-
-        };
-        return true;
-    });
-}
-
-/*
-ds.load();   
-Ext.get('recordslabel').update(ds.getTotalCount()+' records');     
-ds.on('datachanged',function(){
-    Ext.get('recordslabel').update(ds.getCount()+' of '+ds.getTotalCount()+' records');      
-});
-*/
-
-
-
- 
-// eof

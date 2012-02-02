@@ -40,7 +40,7 @@ class Layer {
      */
     static mapping = {
         sort "server"
-	layers sort: "title"
+		layers sort: "title"
     }
 	
     static belongsTo = [parent: Layer]

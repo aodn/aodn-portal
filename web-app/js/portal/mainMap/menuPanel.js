@@ -8,13 +8,13 @@ function initMenusPanel(menu) {
         root: new GeoExt.tree.LayerContainer()
     });
     */
-   
-   //console.log(appConfigStore.getById('grails.serverURL').data.value);
-   
+	var menuItems = JSON.parse(menu);
+	var builder = new Portal.data.MenuItemToNodeBuilder();
+	var children = builder.build(menuItems);
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
-        children: JSON.parse(menu.json) // supplied as a string
-    });    
+        children: children
+    });
     
     defaultMenuTree = new Ext.tree.TreePanel( {
         title: 'WMS Layers',

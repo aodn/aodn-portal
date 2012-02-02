@@ -1,15 +1,20 @@
 package au.org.emii.portal
 
-import grails.converters.JSON;
+import grails.converters.JSON
+import groovyx.net.http.*
+
 import org.apache.shiro.*
 import org.apache.shiro.authc.*
-import groovyx.net.http.*
+import org.hibernate.criterion.MatchMode
+import org.hibernate.criterion.Restrictions
+import org.springframework.jdbc.core.JdbcTemplate
 
 class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def layerService
+	def dataSource
     
     def index = {
         redirect(action: "list", params: params)
@@ -18,7 +23,9 @@ class LayerController {
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 500, 500)
         if(params.type == 'JSON') {
-            render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
+			JSON.use("deep") {
+				render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
+			}
         }
         else {
             [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]    
@@ -27,40 +34,106 @@ class LayerController {
 
     def listBaseLayersAsJson = {
         def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
-        render layerInstanceList as JSON
+		JSON.use("deep") {
+			render layerInstanceList as JSON
+        }
     }
     
     def listLayersAsJson = {
         
         def combinedList = []    
         def layerInstanceList = []
-        if (params.phrase?.size() > 1) {
-            layerInstanceList = Layer.findByNameIlike('%'+params.phrase+'%') 
-        }
-        else {
-            layerInstanceList = Layer.list(params)
-        }        
+		
+		def max = params.limit?.toInteger() ?: 50
+		def offset = params.start?.toInteger() ?: 0
+		
+		def criteria = Layer.createCriteria();
+		layerInstanceList = criteria.list(max: max, offset: offset) {
+			if (params.phrase?.size() > 1) {
+				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
+			}
+			order("server.id")
+			order("title")
+		}
+		
+		// Collect the servers
+		def server
+		layerInstanceList.each { layer ->
+			if (combinedList.size() < max) {
+				if (!server || server != layer.server) {
+					server = layer.server
+					combinedList.add(server)
+				}
+				combinedList.add(layer)
+			}
+		}
+		
+		// Get the total number of layers to be used by the paging toolbar of
+		// the gridpanel
+		def total = layerInstanceList.totalCount + _countServers(params)
         
-        Server.list().each { 
-            def l = layerInstanceList
-            combinedList.add(it)
-            def x = it     
-            l.each {   
-                if (it.server.id.equals(x.id)) {
-                    combinedList.add(it)   
-                }
-            }            
-        }
-        render combinedList as JSON
+		def result = [data: combinedList, total: total]
+		render result as JSON
     }
-    
+	
+	def listForMenuEdit = {
+		
+		def combinedList = []
+		def layerInstanceList = []
+		
+		def max = params.limit?.toInteger() ?: 50
+		def offset = params.start?.toInteger() ?: 0
+		
+		def criteria = Layer.createCriteria();
+		layerInstanceList = criteria.list(max: max, offset: offset) {
+			if (params.phrase?.size() > 1) {
+				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
+			}
+			add(Restrictions.isEmpty("layers"))
+			eq 'blacklisted', false
+			eq 'activeInLastScan', true
+			order("server.id")
+			order("title")
+		}
+		
+		// Collect the servers
+		def server
+		layerInstanceList.each { layer ->
+			if (!server || server != layer.server) {
+				server = layer.server
+				combinedList.add(server)
+			}
+			combinedList.add(layer)
+		}
+		
+		// Get the total number of layers to be used by the paging toolbar of
+		// the gridpanel
+		def total = layerInstanceList.totalCount
+		
+		def result = [data: combinedList, total: total]
+		render result as JSON
+	}
+	
+	def _countServers(params) {
+		if (params.phrase) {
+			// Until we map the relationship between servers and layers this is
+			// calculated via jdbc
+			JdbcTemplate template = new JdbcTemplate(dataSource)
+			return template.queryForInt("select count(*) from (select server_id from layer where title ilike '%'||?||'%' group by server_id) server", [params.phrase].toArray())
+		}
+		return Server.count() 
+	}
+	
+	// I don't think this is currently being used so I am going to mark it as
+	// deprecated and then maybe we can remove it
+	@Deprecated
     def listNonBaseLayersAsJson = {
         
         def combinedList = []
         def layerInstanceList
         // rock and roll Groovy!
         if (params.phrase?.size() > 1) {
-            layerInstanceList = Layer.findAllByIsBaseLayerNotEqualAndNameIlike(true, '%'+params.phrase+'%') 
+            layerInstanceList = Layer.findAllByIsBaseLayerNotEqualAndTitleIlike(true, '%'+params.phrase+'%') 
         }
         else {            
            layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)      
@@ -90,7 +163,9 @@ class LayerController {
             layerInstance = Layer.get( layerIdArr[ layerIdArr.size() - 1 ])
         }
         if (layerInstance) {
-            render layerInstance as JSON
+			JSON.use("deep") {
+				render layerInstance as JSON
+			}
         }
         else {
             log.error "Layer: The layerId does not exist"
@@ -273,24 +348,28 @@ class LayerController {
     }
 
     def server = {
-            def layerDescriptors = []
-            def server = _getServer(params)
-            if (server) {
-                    def criteria = Layer.createCriteria()
-                    layerDescriptors = criteria.list() {
-                            isNull 'parent'
-                            eq 'server.id', server.id
-                    }
+        def layerDescriptors = []
+        def server = _getServer(params)
+        if (server) {
+            def criteria = Layer.createCriteria()
+            layerDescriptors = criteria.list() {
+                    isNull 'parent'
+					eq 'blacklisted', false
+					eq 'activeInLastScan', true
+                    eq 'server.id', server.id
             }
+        }
 
-            def result = [layerDescriptors: layerDescriptors]
-            render result as JSON
+        def result = [layerDescriptors: layerDescriptors]
+		JSON.use("deep") {
+			render result as JSON
+        }
     }
 
     def _getServer(params) {
-            if (params.server) {
-                    return Server.get(params.server)
-            }
-            return null
+        if (params.server) {
+            return Server.get(params.server)
+        }
+        return null
     }
 }

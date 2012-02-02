@@ -18,7 +18,7 @@ class Server {
     static mapping = {
         sort "shortAcron"
     }
-    
+	
     static constraints = {
         uri(unique:true)
         shortAcron(unique:true,size:0..16)

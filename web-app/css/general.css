@@ -831,3 +831,11 @@ JQUERY AUTO COMPLETE
 #menuHeaderTail{
     background: url(../images/menuHeader.png) 0px -13px repeat-x;
 }
+
+.layer_blacklisted {
+	background-color: #333333;
+}
+
+.layer_inactive {
+	background-color: #FF0000;
+}

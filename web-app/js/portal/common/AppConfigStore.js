@@ -6,4 +6,4 @@ var appConfigStore = new Ext.data.JsonStore({
     idProperty: 'name',
     fields: ['name', 'value']
 });
-appConfigStore.load()
+appConfigStore.load();

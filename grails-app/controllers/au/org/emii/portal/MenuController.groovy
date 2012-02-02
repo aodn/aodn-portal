@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.converters.deep.*
+import grails.converters.JSON;
 import groovyx.net.http.*
 
 class MenuController {
@@ -29,7 +29,7 @@ class MenuController {
     def save = {             
    
         params.active = true        
-        def paramsCleaned = cleanParams(params)
+        def paramsCleaned = _cleanParams(params)
         
         def menuInstance = new Menu(paramsCleaned)
        
@@ -50,7 +50,9 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            def menuInstanceJson =  menuInstance as JSON // can easily create javascript object from this
+            def menuInstanceJson = JSON.use("deep") { 
+				menuInstance as JSON
+            } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
     }
@@ -62,15 +64,16 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            def menuInstanceJson =  menuInstance as JSON // can easily create javascript object from this
+            def menuInstanceJson = JSON.use("deep") { 
+				menuInstance as JSON
+            } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
     }
 
     def update = {
+		
         def menuInstance = Menu.get(params.id)
-        
-        def paramsCleaned = cleanParams(params)
         
         if (menuInstance) {
             if (params.version) {
@@ -82,14 +85,17 @@ class MenuController {
                     return
                 }
             }
-            menuInstance.properties = paramsCleaned
-            if (!menuInstance.hasErrors() && menuInstance.save(flush: true)) {
+            log.debug(params.json)
+			menuInstance.parseJson(params.json)
+			menuInstance.edited()
+            if (!menuInstance.hasErrors() && menuInstance.save(flush: true, failOnError: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
                 redirect(action: "show", id: menuInstance.id)
             }
             else {
                 render(view: "edit", model: [menuInstance: menuInstance])
             }
+			
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
@@ -134,7 +140,7 @@ class MenuController {
 
     
         
-    private cleanParams(params) {
+    private _cleanParams(params) {
         
          // strip out the root node and use it as the title
         def jsonArray = JSON.parse(params.json)    
