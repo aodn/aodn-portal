@@ -41,6 +41,10 @@ class MenuItem implements Comparable<MenuItem> {
 		parentId insertable: false
 	}
 	
+	MenuItem() {
+		childItems = [] as SortedSet
+	}
+	
 	int compareTo(MenuItem other) {
 		return new CompareToBuilder()
 			.append(menuPosition, other.menuPosition)
@@ -102,20 +106,6 @@ class MenuItem implements Comparable<MenuItem> {
 		return baseLayers
 	}
 	
-	def getItemsForShallowJson() {
-		def items = [] as Set
-		if (layer) {
-			items << layer
-		}
-		if (server) {
-			items << server
-		}
-		getChildItems().each { item ->
-			items.addAll(item.getItemsForShallowJson())
-		}
-		return items
-	}
-	
 	def _parseChildren(json) {
 		def itemsJsonArray = JSON.use("deep") {
 			JSON.parse(json)
@@ -125,7 +115,6 @@ class MenuItem implements Comparable<MenuItem> {
 		
 		itemsJsonArray.eachWithIndex { item, index ->
 			def menuItem = _findItem(item.id)
-			//menuItem.menu = this.menu
 			menuItem.parseJson(item.toString(), menuPosition, index)
 			tmpItems << menuItem
 			if (!menuItem.id) {
@@ -151,7 +140,6 @@ class MenuItem implements Comparable<MenuItem> {
 			}
 		}
 		discards.each { item ->
-			log.debug("Removing child $item")
 			removeFromChildItems(item)
 		}
 	}
