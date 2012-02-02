@@ -18,7 +18,6 @@ class LayerTests extends GrailsUnitTestCase {
 
         def testLayer = new Layer()
         assertFalse testLayer.validate()
-        assertEquals "nullable", testLayer.errors["name"]
         assertEquals "nullable", testLayer.errors["server"]
         assertEquals "nullable", testLayer.errors["dataSource"]
 

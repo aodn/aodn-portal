@@ -20,24 +20,39 @@ class LayerService {
 
             def rootLayer = Layer.findWhere(
                 server: server,
-                name: layerAsJson.name,
+                parent: null,
                 dataSource: dataSource
             )
 
             log.debug "== Find Root Layer =="
             log.debug "server: $server"
-            log.debug "title:  ${layerAsJson.title}"
+            log.debug "parent: null"
             log.debug "source: $dataSource"
             log.debug "found:  $rootLayer"
+            log.debug "====================="
 
             if ( rootLayer ) {
                 
                 _traverseLayerTree rootLayer, {
                     
-                    log.debug "Disabling existing layer $it"
+                    // Only modify layers created by the scanner
+                    if ( it.dataSource == dataSource ) {
                     
-                    it.activeInLastScan = false
-                    existingLayers[it.name] = it
+                        def uid = _uniqueIdentifier( it )
+                        
+                        log.debug "Disabling existing layer and sotring for later ($uid)"
+                        
+                        // Check for duplicates
+                        if ( existingLayers[ uid ] ) {
+                            
+                            log.warn "*********************************"
+                            log.warn "*** Duplicate name + title id: $uid"
+                            log.warn "*********************************"
+                        }
+                        
+                        it.activeInLastScan = false
+                        existingLayers[ uid ] = it
+                    }
                 }
             }
             
@@ -45,42 +60,38 @@ class LayerService {
             def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
                 newData, parent ->
 
-                def layerToUpdate = existingLayers[ newData.name ]
+                def uid = _uniqueIdentifier( newData )
+                def layerToUpdate = existingLayers[ uid ]
 
                 if ( layerToUpdate ) {
                     
-                    log.debug "Found existing layer with name. $layerToUpdate"
+                    log.debug "Found existing layer with details: '$uid'"
                 }
                 else {
 
-                    log.debug "Could not find existing layer with name: ${newData.name}. Creating new..."
+                    log.debug "Could not find existing layer with details: '$uid'. Creating new..."
                         
                     // Doesn't exist, create
                     layerToUpdate = new Layer()
-                    layerToUpdate.setParent parent
-                    layerToUpdate.setServer server
+                    layerToUpdate.parent = parent
+                    layerToUpdate.server = server
                 }
 
                 log.debug "Applying new values to layer: $newData"
 
                 // Process name from title value
                 def nameVal = newData.name
-                def titleUsedAsName = false
 
-                if ( !nameVal ) {
-                    nameVal = newData.title
-                    titleUsedAsName = true
-                }
-                else {
-                    // Trim namespace
+                // Trim namespace
+                if ( nameVal ) {
                     def separatorIdx = nameVal.lastIndexOf( ":" )
-                    
+
                     if ( separatorIdx >= 0 ) {
 
                         nameVal = nameVal[ separatorIdx + 1 .. -1 ]
                     }
                 }
-
+                
                 // Process abstractText value
                 def abstractVal = newData.abstractText
 
@@ -100,7 +111,7 @@ class LayerService {
                 }
                     
                 // Move data over
-                layerToUpdate.title = newData.title ? newData.title : newData.name
+                layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
                 layerToUpdate.abstractTrimmed = abstractVal
                 layerToUpdate.metaUrl = newData.metadataUrl
@@ -112,18 +123,17 @@ class LayerService {
                 layerToUpdate.dataSource = dataSource
                 layerToUpdate.activeInLastScan = true
                 layerToUpdate.lastUpdated = new Date()
-                layerToUpdate.titleUsedAsName = titleUsedAsName
 
                 return layerToUpdate
             })
 
-            //newLayer.printTree()
+//            newLayer.printTree()
 
             newLayer.save( failOnError: true )
         }
         catch(Exception e) {
 
-            throw new RuntimeException("Failure in updateWithNewData(...)", e)
+            throw new RuntimeException("Failure in updateWithNewData()", e)
         }
     }
 
@@ -151,5 +161,13 @@ class LayerService {
         }
 
         return newLayer
+    }
+    
+    def _uniqueIdentifier( layer ) {
+
+        def namePart = layer.name ?: "<no name>"
+        def titlePart = layer.title ?: "<no title>"
+            
+        return "$namePart @@ $titlePart" 
     }
 }
