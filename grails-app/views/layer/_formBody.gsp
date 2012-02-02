@@ -1,3 +1,20 @@
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="layer.name.label" default="Name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'name', 'errors')}">
+                                    <g:textField name="name" maxlength="25" value="${layerInstance?.name}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="namespace"><g:message code="layer.namespace.label" default="Namespace" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'namespace', 'errors')}">
+                                    <g:textField name="namespace" value="${layerInstance?.namespace}" />
+                                </td>
+                            </tr>
 
                              <tr class="prop">
                                 <td valign="top" class="name">
@@ -66,15 +83,6 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="layer.name.label" default="Name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" maxlength="25" value="${layerInstance?.name}" />
-                                </td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                     <label for="blacklisted"><g:message code="layer.blacklisted.label" default="Blacklisted" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'blacklisted', 'errors')}">
@@ -117,8 +125,6 @@
                                     <g:textField name="style" value="${layerInstance?.style}" />
                                 </td>
                             </tr>
-
-                            
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -128,7 +134,6 @@
                                     <g:textField name="metaUrl" value="${layerInstance?.metaUrl}" />
                                 </td>
                             </tr>
-
 
                             <tr class="prop">
                                 <td valign="top" class="name">

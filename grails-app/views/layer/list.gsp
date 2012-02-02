@@ -25,6 +25,8 @@
                             <g:sortableColumn property="title" title="${message(code: 'layer.title.label', default: 'Title')}" />
                             
                             <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name (WMS ID)')}" />
+
+                            <g:sortableColumn property="namespace" title="${message(code: 'layer.namespace.label', default: 'Namespace')}" />
                             
                             <th><g:message code="layer.server.label" default="Server" /></th>
                             
@@ -45,10 +47,11 @@
                     <g:each in="${layerInstanceList}" status="i" var="layerInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-
-                            <td><g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
+                            <td>${ layerInstance.parentId ? "" : "(R) " }<g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
                             
                             <td>${fieldValue(bean: layerInstance, field: "name")}</td>
+                            
+                            <td>${fieldValue(bean: layerInstance, field: "namespace")}</td>
                             
                             <td>${fieldValue(bean: layerInstance, field: "server")}</td>
                         
