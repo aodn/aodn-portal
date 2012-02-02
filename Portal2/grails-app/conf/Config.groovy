@@ -144,11 +144,11 @@ log4j = {
            'grails.app.job',
            'grails.app.service',
            'grails.app.tagLib',
-           'grails.app.filters.SecurityFilters',
+           //'grails.app.filters.SecurityFilters',
            //'org.apache.shiro',
            //'org.hibernate.SQL',           
            //'org.hibernate.type',
            //'liquibase',
-           'grails.app.realm',
-           'grails'
+           'grails.app.realm'
+           //'grails'
 }

@@ -228,9 +228,9 @@ class LayerController {
             if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
             
             layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
-
+            
             server.lastScanDate = new Date()
-            server.save()
+            server.save( failOnError: true )
             
             render status: 200, text: "Complete (saved)"
         }

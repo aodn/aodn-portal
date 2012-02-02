@@ -26,7 +26,6 @@ class Layer {
     Boolean activeInLastScan
     Boolean blacklisted
     Date lastUpdated
-    Boolean titleUsedAsName
 
     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -51,8 +50,8 @@ class Layer {
     static hasMany = [layers: Layer]
 
     static constraints = {
-        name(size:1..225)
-        title()
+        name( nullable: true, size:1..225 )
+        title( nullable: true )
         blacklisted()
         abstractTrimmed(size:0..455, blank:true)
         server()
@@ -68,7 +67,6 @@ class Layer {
         dataSource(blank:false)
         activeInLastScan()
         lastUpdated(nullable:true)
-        titleUsedAsName(nullable: true)
     }
 	
     Layer() {

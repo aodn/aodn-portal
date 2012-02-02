@@ -17,6 +17,7 @@ class LayerServiceTests extends GroovyTestCase {
     def newData = """\
 {
 name: "layer_a",
+title: "Layer A",
 abstractText: "$fullAbstractText",
 queryable: true,
 bboxMinX: "-90",
@@ -26,7 +27,7 @@ bboxMaxY: "180",
 bboxProjection: "EPSG:2010",
 metadataUrl: "urlA",
 children: [
-    {name: "awesomeSauce:layer_c", title: "Layer C", queryable=false},
+    {name: "awesomeSauce:layer_c", title: "Layer C", queryable: false},
     {title: "Layer D", abstractText: "Just some layer, yo.", queryable: false}
 ]
 }\
@@ -37,13 +38,15 @@ children: [
         
         server = new Server( uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", disable: false, opacity: 100 )
         server.save( failOnError: true )
+        
+        // Todo - DN: Doesn't yet updating an item whose name or title has changed. Old layer hould be marked inactive and new one should exist in its place
     }
 
     protected void tearDown() {
         super.tearDown()
     }
 
-void testUpdateWithNewData_NoExistingLayers() {
+    void testUpdateWithNewData_NoExistingLayers() {
         
         assertEquals "Should be 0 layers to start with", 0, Layer.count()
         
@@ -54,8 +57,8 @@ void testUpdateWithNewData_NoExistingLayers() {
     
     void testUpdateWithNewData_ExistingHierarchy() {
         
-        def layerA = new Layer(title: "Layer A", name: "layer_a", dataSource: "testCode", server: server)
-        def layerB = new Layer(title: "Layer B", name: "layer_b", dataSource: "testCode", server: server)
+        def layerA = new Layer( title: "Layer A", name: "layer_a", dataSource: "testCode", server: server )
+        def layerB = new Layer( title: "Layer B", name: "layer_b", dataSource: "testCode", server: server )
         
         layerB.save( failOnError: true )
         layerA.addToLayers layerB
@@ -64,6 +67,8 @@ void testUpdateWithNewData_NoExistingLayers() {
         assertEquals "Should be 2 layers to start with", 2, Layer.count()
         
         layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
+        
+        println Layer.list()
         
         _verifyHierarchy true
     }
@@ -79,7 +84,7 @@ void testUpdateWithNewData_NoExistingLayers() {
         def layerA = Layer.findWhere( server: server, name: "layer_a" )
         
         assertNotNull "layer_a should exist", layerA
-        assertEquals "layer_a property title", "layer_a", layerA.title
+        assertEquals "layer_a property title", "Layer A", layerA.title
         assertEquals "layer_a property name", "layer_a", layerA.name
         assertEquals "layer_a property abstractTrimmed", trimmedAbstractText, layerA.abstractTrimmed
         assertEquals "layer_a property metaUrl", "urlA", layerA.metaUrl
@@ -90,8 +95,7 @@ void testUpdateWithNewData_NoExistingLayers() {
         assertEquals "layer_a property activeInLastScan", true, layerA.activeInLastScan
         assertNotNull "layer_a property lastUpdated should exist", layerA.lastUpdated
         assertEquals "layer_a property lastUpdated", "java.util.Date", layerA.lastUpdated.class.name
-        assertEquals "layer_a property titleUsedAsName", false, layerA.titleUsedAsName
-        assertNull "layer_a shouldn't have a parent", layerA.parent
+        assertNull   "layer_a shouldn't have a parent", layerA.parent
         assertEquals "layer_a should have $layerAExpectedChildren layers", layerAExpectedChildren, layerA.layers.size()
         
         // Existing child (layer_b) if applicable
@@ -110,7 +114,6 @@ void testUpdateWithNewData_NoExistingLayers() {
             assertEquals "layer_b property activeInLastScan", false, layerB.activeInLastScan
             assertNotNull "layer_b property lastUpdated should exist", layerB.lastUpdated
             assertEquals "layer_b property lastUpdated", "java.util.Date", layerB.lastUpdated.class.name
-            assertEquals "layer_b property titleUsedAsName", null, layerB.titleUsedAsName
             assertEquals "layer_b parent should be layer_a", layerA, layerB.parent
             assertEquals "layer_b should have no layers", 0, layerB.layers.size()
         }
@@ -129,14 +132,13 @@ void testUpdateWithNewData_NoExistingLayers() {
         assertEquals "layer_c property activeInLastScan", true, layerC.activeInLastScan
         assertNotNull "layer_c property lastUpdated should exist", layerC.lastUpdated
         assertEquals "layer_c property lastUpdated", "java.util.Date", layerC.lastUpdated.class.name
-        assertEquals "layer_c property titleUsedAsName", false, layerC.titleUsedAsName
         assertEquals "layer_c parent should be layer_a", layerA, layerC.parent
         assertEquals "layer_c should have no layers", 0, layerC.layers.size()
         
-        def layerD = Layer.findWhere( server: server, name: "Layer D" )
+        def layerD = Layer.findWhere( server: server, title: "Layer D", name: null )
         assertNotNull "layer_d should exist", layerD
         assertEquals "layer_d property title", "Layer D", layerD.title
-        assertEquals "layer_d property name", "Layer D", layerD.name
+        assertNull "layer_d property name should be null", layerD.name
         assertEquals "layer_d property abstractTrimmed", "Just some layer, yo.", layerD.abstractTrimmed
         assertEquals "layer_d property metaUrl", null, layerD.metaUrl
         assertEquals "layer_d property queryable", false, layerD.queryable
@@ -146,8 +148,7 @@ void testUpdateWithNewData_NoExistingLayers() {
         assertEquals "layer_d property activeInLastScan", true, layerD.activeInLastScan
         assertNotNull "layer_d property lastUpdated should exist", layerD.lastUpdated
         assertEquals "layer_d property lastUpdated", "java.util.Date", layerD.lastUpdated.class.name
-        assertEquals "layer_d property titleUsedAsName", true, layerD.titleUsedAsName
         assertEquals "layer_d parent should be layer_a", layerA, layerD.parent
         assertEquals "layer_d should have no layers", 0, layerD.layers.size()
-     }
+    }
 }
