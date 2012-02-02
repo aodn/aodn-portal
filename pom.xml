@@ -300,6 +300,7 @@
 				<version>${grails.version}</version>
 				<extensions>true</extensions>
 				<executions>
+					<!-- 
 					<execution>
 						<goals>
 							<goal>init</goal>
@@ -310,6 +311,39 @@
 							<goal>maven-test</goal>
 							<goal>maven-war</goal>
 							<goal>maven-functional-test</goal>
+						</goals>
+					</execution>
+					-->
+					<execution>
+						<id>execution1</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>init</goal>
+							<goal>maven-clean</goal>
+							<goal>validate</goal>
+							<goal>config-directories</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>execution2</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>maven-compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>execution3</id>
+						<phase>test</phase>
+						<goals>
+							<goal>maven-test</goal>
+							<goal>maven-functional-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>execution4</id>
+						<phase>package</phase>
+						<goals>
+							<goal>maven-war</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -371,10 +405,74 @@
 					<debugLevel>lines,vars,source</debugLevel>
 				</configuration>
 			</plugin>
-
-
-
-
+			<!-- 
+			<plugin>
+			  	<groupId>com.samaxes.maven</groupId>
+			  	<artifactId>maven-minify-plugin</artifactId>
+			  	<version>1.3.5</version>
+			  	<executions>
+			    	<execution>
+			        	<id>minify-geonetwork</id>
+		        		<phase>compile</phase>
+			        	<configuration>
+			            	<webappSourceDir>${project.basedir}/web-app</webappSourceDir>
+			            	<webappTargetDir>${project.basedir}/web-app/</webappTargetDir>
+			            	<jsSourceFiles>
+			                	<jsSourceFile>Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/Util.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/lang/en.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/Catalogue.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/util/SearchTools.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js</jsSourceFile>
+			                	<jsSourceFile>Geonetwork/lib/GeoNetwork/map/ExtentMap.js</jsSourceFile>
+			            	</jsSourceFiles>
+			            	<jsFinalFile>Geonetwork.js</jsFinalFile>
+			            	<suffix>-all</suffix>
+			        	</configuration>
+			        	<goals>
+			            	<goal>minify</goal>
+			        	</goals>
+			    	</execution>
+			    	<execution>
+			        	<id>minify-ext-ux</id>
+		        		<phase>compile</phase>
+			        	<configuration>
+			            	<webappSourceDir>${project.basedir}/web-app</webappSourceDir>
+			            	<webappTargetDir>${project.basedir}/web-app/</webappTargetDir>
+			            	<jsSourceFiles>
+			                	<jsSourceFile>ext-ux/SuperBoxSelect/SuperBoxSelect.js</jsSourceFile>
+			            	</jsSourceFiles>
+			            	<jsFinalFile>ext-ux.js</jsFinalFile>
+			            	<suffix>-all</suffix>
+			        	</configuration>
+			        	<goals>
+			            	<goal>minify</goal>
+			        	</goals>
+			    	</execution>
+			    	<execution>
+			        	<id>minify-portal</id>
+		        		<phase>compile</phase>
+			        	<configuration>
+			            	<webappSourceDir>${project.basedir}/web-app</webappSourceDir>
+			            	<webappTargetDir>${project.basedir}/web-app/</webappTargetDir>
+			            	<jsSourceDir>js</jsSourceDir>
+				            <jsSourceIncludes>
+				                <jsSourceInclude>portal/**/*.js</jsSourceInclude>
+				            </jsSourceIncludes>
+				            <jsSourceExcludes>
+				                <jsSourceExclude>**/*-all.js</jsSourceExclude>
+				            </jsSourceExcludes>
+			            	<jsFinalFile>portal.js</jsFinalFile>
+			            	<suffix>-all</suffix>
+			        	</configuration>
+			        	<goals>
+			            	<goal>minify</goal>
+			        	</goals>
+			    	</execution>
+				</executions>
+			</plugin>
+			-->	
 		</plugins>
 	</build>
 
