@@ -47,7 +47,7 @@ class SnapshotController
     def save = {
         def snapshotInstance
         
-        if (request.contentType == "application/json") {
+        if (request.contentType ==~ "application/json.*") {
             snapshotInstance = new Snapshot()
             bindJSONSnapshotData(snapshotInstance, request.JSON)
         } else {
