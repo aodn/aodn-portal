@@ -338,7 +338,7 @@
 						<include>ext-3.3.1/ext-all-debug-w-comments.js</include>
 						<include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
 						<include>OpenLayers-2.10/OpenLayers.js</include>
-						<include>GeoExt/script/GeoExt.js</include>
+						<include>GeoExt1.1/script/GeoExt.js</include>
 						<include>Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js</include>
 						<include>Geonetwork/lib/GeoNetwork/Util.js</include>
 						<include>Geonetwork/lib/GeoNetwork/lang/en.js</include>

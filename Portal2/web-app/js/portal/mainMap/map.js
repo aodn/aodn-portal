@@ -166,16 +166,16 @@ function addToPopup(mapPanel, e) {
     popup = new GeoExt.Popup({
         title: "Searching for Features at your click point",
         width: Portal.app.config.popupWidth,
-        //height: 80, // set height when there are results
-        //maximizable: true,
+        height: 80, // set height later when there are results
+        maximizable: true,
         // collapsible: true,
         map: mapPanel.map,
-        anchored: true//,
+        anchored: true,
         //border: false,
         //margins: 10,
         //constrainHeader: true,
         //panIn: true,
-        //autoScroll: true//,
+        autoScroll: true//,
         //padding: "0px 0px 12px 12px"
     });
 

@@ -207,6 +207,9 @@ a img{
     color: #999;
     text-shadow: none;
 }
+#mapSpinnerPanel {
+    padding-left: 10px;
+}
 
 .viewPortLinksBackground {
     float: left;

@@ -189,7 +189,7 @@ function initMenusPanel(menu) {
                         layout: 'hbox',
                         items: [                
                             new Ext.Panel({
-                                flex: 2,
+                                //flex: 2,
                                 items: [ 
                                     hideLayerOptions,
                                     zoomToLayerChooser 
