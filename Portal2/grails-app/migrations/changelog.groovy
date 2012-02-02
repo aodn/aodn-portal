@@ -2469,6 +2469,8 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	
 	include file: '1327020352000.groovy'
 
+    include file: '20120123-CJ-SnapshotLayers.groovy'
+    
 	include file: '20120124-DN-RenameLayerSourceProperty.groovy'
 
 	include file: '20120130-DN-NewConfigFields.groovy'

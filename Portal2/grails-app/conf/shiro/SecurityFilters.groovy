@@ -36,7 +36,17 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        
+
+        snapshot(controller: "snapshot", action: "*") {
+            before = {
+                
+                logRequest("snapshot", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+
         serverAccess(controller: "server", action: "list|listAllowDiscoveriesAsJson") {
             before = {
                 

@@ -4,6 +4,9 @@ import grails.converters.deep.*
 import groovyx.net.http.*
 
 class Layer {
+
+    // Following line required to enable return of layer id's in REST services
+    static expose = "layer"
     
     String name
     String title

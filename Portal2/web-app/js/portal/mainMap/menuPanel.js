@@ -98,11 +98,13 @@ function initMenusPanel(menu) {
     var baselayerMenuPanel = new GeoExt.ux.BaseLayerComboBox({
         map: mapPanel.map,           
         editable :false,
+        width: 175,
         padding: 20,
         emptyText: 'Choose a Base Layer'
     });
 
-    var snapshotButtonGroup = new Portal.snapshot.SnapshotButtonGroup({});
+    var snapshotSaveButton = new Portal.snapshot.SnapshotSaveButton({map: mapPanel.map});
+    var snapshotOptionsGroup = new Portal.snapshot.SnapshotOptionsGroup({map: mapPanel.map});
 
     var removeAll = new Ext.Button({
         text: 'Remove All Layers',
@@ -157,9 +159,9 @@ function initMenusPanel(menu) {
         border: true, 
         flex: 1,
         items:[
-		//snapshotButtonGroup,
 	        removeAll,
-	        resetLayers
+	        resetLayers,
+	        snapshotSaveButton
         ]
     });
     var mapSpinnerPanel = new Ext.BoxComponent({        
@@ -178,7 +180,7 @@ function initMenusPanel(menu) {
         //title: 'Map Options',
         //padding: 10,
         collapseMode : 'mini',
-        height: 120,
+        height: 155,
         region: 'north',        
         items:[
             {
@@ -198,7 +200,10 @@ function initMenusPanel(menu) {
                             mapSpinnerPanel
                         ]
                     }),
+                    new Ext.Spacer({height:5}),
                     mapOptionsButtonPanel,
+                    new Ext.Spacer({height: 2}),
+                    snapshotOptionsGroup,
                     baselayerMenuPanel
                 ]
             }
@@ -288,7 +293,7 @@ function initMenusPanel(menu) {
         padding: '0px 0px 20px 0px',
         minHeight: 100,
         items:[
-            mapOptionsPanel,            
+            mapOptionsPanel,
             activeLayerPanel
         ]
     }); 
@@ -301,20 +306,15 @@ function initMenusPanel(menu) {
         showSeparator: false,
         items: [
         {
-            text: 'Remove Layer',
+            text: 'Remove layer',
             handler: removeActiveLayer
-            
         },
         {
-            text: 'Show Layer Options',
-            handler: showActiveLayerOptions
-        },
-        {
-            text: 'Zoom to Layer',
+            text: 'Zoom to layer',
             handler: zoomToSelectedLayer
         },
         {
-            text: 'Toggle Layer Visibility',
+            text: 'Toggle Visibility',
             handler: visibilityActiveLayer
         }
         ]
@@ -357,8 +357,7 @@ function removeActiveLayer() {
     
     // Remove layer from activeLayers, and make matching default menu item active
     // check if grailsLayerId exists. layer may have been added by user defined discovery
-    var layer   = activeLayerTreePanel.getSelectionModel().getSelectedNode().layer;
-    var layerId = layer.grailsLayerId;
+    var layerId = activeLayerTreePanel.getSelectionModel().getSelectedNode().layer.grailsLayerId;
     
     if (layerId != undefined) { 
         
@@ -374,8 +373,9 @@ function removeActiveLayer() {
         }        
         
     }
-    // remove from the activeLayers array at the same time as remove from the map
-    activeLayers[getUniqueLayerId(layer)].destroy();
+    // remove from the activeLayers array
+    activeLayers[getUniqueLayerId(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer)].destroy();
+    mapPanel.map.removeLayer(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);
     
 }
 
@@ -389,21 +389,6 @@ function visibilityActiveLayer() {
     else {
         node.getUI().checkbox.checked = true;
     }
-}
-
-// show the layer options regardless of the global 'Hide Layer options'
-function showActiveLayerOptions() {    
-    
-    var opts = Portal.app.config.hideLayerOptions;
-    if (opts == true) {
-        // suspend this config option
-        Portal.app.config.hideLayerOptions = false;
-    }
-    updateDetailsPanel(activeLayerTreePanel.getSelectionModel().getSelectedNode().layer);    
-    if (opts == true) {
-        Portal.app.config.hideLayerOptions = true;
-    }
-    
 }
 
 // UNUSED FOR DEMONSTRATION PURPOSES

@@ -7,7 +7,7 @@ import grails.converters.JSON
 
 class SnapshotControllerTests extends ControllerUnitTestCase 
 {
-	List<Layer> layers = []
+	List<SnapshotLayer> layers = []
 	int numLayers = 5
 	
 	User owner
@@ -21,11 +21,11 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 		
 		numLayers.times 
 		{
-			Layer layer = new Layer()
+			SnapshotLayer layer = new SnapshotLayer()
 			layers.add(layer)
 		}
 		
-		mockDomain(Layer, layers)
+		mockDomain(SnapshotLayer, layers)
 		layers.each { it.save() }
 		
 		owner = new User()
@@ -46,28 +46,38 @@ class SnapshotControllerTests extends ControllerUnitTestCase
     }
 
     void testSave() 
-	{
-		def snapshotLayers = [layers[0], layers[2], layers[4]]
-		def snapshotName = "SE Australia SST and CPR"
-		
-		controller.params.layers = snapshotLayers
-		controller.params.name = snapshotName
-		controller.params.owner = owner
-		
-		controller.save()
-		
-		assertEquals("show", controller.redirectArgs.action)
-		def snapshotId = controller.redirectArgs.id
-		assertNotNull(snapshotId)
-		
-		def savedSnapshot = Snapshot.get(snapshotId)
-		assertNotNull(savedSnapshot)
-		
-		assertEquals(snapshotLayers.size(), savedSnapshot.layers.size())
-		assertEquals(snapshotName, savedSnapshot.name)
-		assertEquals(owner, savedSnapshot.owner)
+    {
+        def snapshotLayers = [layers[0], layers[2], layers[4]]
+        def snapshotName = "SE Australia SST and CPR"
+        
+        controller.params.layers = snapshotLayers
+        controller.params.name = snapshotName
+        controller.params.owner = owner
+        
+        controller.params.minX = -100
+        controller.params.minY = -60
+        controller.params.maxX = 80
+        controller.params.maxY = 30
+        
+        controller.save()
+        
+        assertEquals("show", controller.redirectArgs.action)
+        def snapshotId = controller.redirectArgs.id
+        assertNotNull(snapshotId)
+        
+        def savedSnapshot = Snapshot.get(snapshotId)
+        assertNotNull(savedSnapshot)
+        
+        assertEquals(snapshotLayers.size(), savedSnapshot.layers.size())
+        assertEquals(snapshotName, savedSnapshot.name)
+        assertEquals(owner, savedSnapshot.owner)
     }
-	
+    
+    void testSaveJSONRequest() {
+        // Moved to SnapshotServiceTests as saving a JSON snapshot
+        // uses bindData which isn't supported in mocked unit testing controllers
+    }
+    
 	void testShowAsJSON()
 	{
 		layers[0].name = "Argos 1"
@@ -83,7 +93,8 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 		controller.params.id = snapshot.id
 		
 		callShow()
-		def snapshotAsJson = JSON.parse(controller.response.contentAsString)
+
+        def snapshotAsJson = JSON.parse(controller.response.contentAsString)
 
 		assertEquals(snapshotName, snapshotAsJson.name)
 		assertEquals(snapshot.id, snapshotAsJson.id)
@@ -102,14 +113,14 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 	void testListAsJSON()
 	{
 		def snapshotsAsJson = createSnapshotsCallListAndParseResult()
-		assertEquals(5, snapshotsAsJson.size())
+		assertEquals(5, snapshotsAsJson.data.size())
 	}
 
 	void testListForOwnerAsJson()
 	{
 		controller.params.owner = owner
 		def snapshotsAsJson = createSnapshotsCallListAndParseResult()
-		assertEquals(2, snapshotsAsJson.size())
+		assertEquals(2, snapshotsAsJson.data.size())
 	}
 	
 	private def createSnapshotsCallListAndParseResult() 
@@ -131,7 +142,7 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 		{
 			i ->
 
-			def snapshot = new Snapshot(owner: theOwner, name: "snapshot " + i, layers:[layers[i], layers[i + 1]])
+			def snapshot = new Snapshot(owner: theOwner, name: "snapshot " + i, minX:-170+i, minY:-60+i, maxX:100+i, maxY:50+i, layers:[layers[i], layers[i + 1]])
 			snapshotList += snapshot
 		}
 
