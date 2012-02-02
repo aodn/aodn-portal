@@ -42,7 +42,7 @@ grails.scaffolding.templates.domainSuffix = 'Instance'
 // Set to false to use the new Grails 1.2 JSONBuilder in the render method
 grails.json.legacy.builder = false
 // The new way to deeply convert
-grails.converters.json.default.deep = true
+//grails.converters.json.default.deep = true
 // This is required to avoid org.codehaus.groovy.grails.web.json.JSONException: Misplaced key.
 grails.converters.json.circular.reference.behaviour = "INSERT_NULL"
 // enabled native2ascii conversion of i18n properties files

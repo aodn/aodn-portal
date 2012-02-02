@@ -63,6 +63,7 @@
 <script src="${resource(dir:'js',file:'portal/search/LayerSelectionWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/ServerNodeLayerDescriptorStore.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/Snapshot.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotSaveButton.js')}"   type="text/javascript"></script>

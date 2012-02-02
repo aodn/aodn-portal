@@ -277,14 +277,13 @@ function addGrailsLayer(grailsLayerId) {
 }
 
 function getWMSVersionString(layer) {
-    
     // list needs to match Server.groovy
     var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
     var version = "undefined";
-    for(var i = 0; i < versionList.length; i++){  
+    for(var i = 0; i < versionList.length; i++){
         if (layer.server.type.indexOf(versionList[i]) != -1) {
             version = versionList[i];
-        } 
+        }
     }
     return version;
                 
@@ -554,7 +553,6 @@ function createLayer(dl) {
         options.projection = new OpenLayers.Projection(dl.projection);
    
     }
-
     
     var serverUri;
     // proxy to use if this layer is cached    
@@ -603,7 +601,6 @@ function createLayer(dl) {
 function getBaseOpenLayers()
 {
 	var baseOpenLayers = [];
-	
 	Ext.each(Ext.util.JSON.decode(Portal.app.config.baselayerList), function(layerDescriptor, index)  {
             
             // override these setting as they are now baselayers
@@ -636,8 +633,7 @@ function addMainMapLayer(dl) {
 
     if (layer != undefined) {
           
-        registerLayer( layer );  
-        
+        registerLayer( layer );
         
         // show open layer options 
         // this also calls zoomToLayer
@@ -647,12 +643,9 @@ function addMainMapLayer(dl) {
         // zoom map first. may request less wms tiles first off
         else if (Portal.app.config.autoZoom === true) {
             zoomToLayer(mapPanel.map, layer);
-        }
+        }  
         
         mapPanel.map.addLayer(layer);
-        
-        
-        
         
         jQuery('.emptyActiveLayerTreePanelText').hide('slow');
         
@@ -684,9 +677,6 @@ function getUniqueLayerId(layer){
     
     
     if (layer.server == undefined){
-        
-        //console.log(layer);
-        
         // may currently be an animating layer 
         if (layer.originalWMSLayer) {
             layer.server = layer.originalWMSLayer.server;
@@ -719,7 +709,6 @@ function getLayerMetadata(layer) {
         
         var url;
         // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
-        
         if (layer.cache === true) {
            // all parameters passed along here will get added to URL 
            // proxyCachedURL = "proxy/cache?URL="

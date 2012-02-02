@@ -1,15 +1,13 @@
 package au.org.emii.portal
 
 import org.apache.shiro.SecurityUtils;
-import org.codehaus.groovy.grails.web.json.JSONObject;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import grails.converters.*
-import grails.converters.deep.JSON
-import groovyx.net.http.*
-
+import grails.converters.JSON
     
 class ConfigController {
 
+	def dataSource
     
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -17,34 +15,27 @@ class ConfigController {
         redirect(action: "edit")
     }
     
-    
-    
     def list = {
         
         // expect only one Config instance to exist
         def configInstance = Config.activeInstance();
         
-        configInstance = massageConfigInstance(configInstance);
-        //def baselayerList = new Object()         
-        def baselayerList = []
-        
         if(params.type == 'JSON') {
-            
-            // expand the baselayers menu into baselayers
-            def baselayerJson =  JSON.parse(configInstance.baselayerMenu.json)
-            baselayerJson.each() {
-                def res = (Layer.get(it.grailsLayerId) as JSON).toString()
-                baselayerList.add(JSON.parse(res))
-            }  
-            
             // get instance now with all 'deep' details as a JSON string
-            def x = (Config.activeInstance() as JSON).toString()
+            def x = (configInstance as JSON).toString()
+			configInstance = massageConfigInstance(configInstance);
             // convert back to an generic object so we can add what we want
             def instanceAsGenericObj = JSON.parse(x)
             // add the fully expanded baselayer menu as layers
-            instanceAsGenericObj['baselayerList'] = baselayerList
-            
-            // add current user details
+            instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
+				configInstance.baselayerMenu.getBaseLayers() as JSON
+            }
+			
+			instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
+				_getDisplayableMenu(configInstance.defaultMenu) as JSON
+			}
+			
+			// add current user details
             def currentUser = SecurityUtils.getSubject()
             def principal = currentUser.getPrincipal()
             
@@ -52,7 +43,7 @@ class ConfigController {
                 def userInstance = User.findByEmailAddress(principal)
                 instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
             }
-    
+			
             render(contentType: "application/json", text:  instanceAsGenericObj)
         }
         else {
@@ -201,4 +192,39 @@ class ConfigController {
         }
         return configInstance
     }
+	
+	def _getDisplayableMenu(menu) {
+		def ids = _getServerIdsWithAvailableLayers()
+		
+		for (def iterator = menu.menuItems.iterator(); iterator.hasNext();) {
+			def item = iterator.next()
+			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
+				iterator.remove()
+			}
+		}
+		return menu
+	}
+	
+	def _isLayerViewable(layer) {
+		return layer.activeInLastScan && !layer.blacklisted
+	}
+	
+	def _getServerIdsWithAvailableLayers() {
+		// We don't explicitly map layers to servers so dropping to JDBC
+		def template = new JdbcTemplate(dataSource)
+		def query = 
+"""\
+select server.id
+from server
+join layer on layer.server_id = server.id
+where not layer.blacklisted and layer.active_in_last_scan
+group by server.id\
+"""
+		
+		def ids = []
+		template.queryForList(query).each { row ->
+			ids << row.id
+		}
+		return ids
+	}
 }
