@@ -9,12 +9,10 @@ import au.org.emii.portal.Config
 import au.org.emii.portal.User
 import au.org.emii.portal.UserRole
 import au.org.emii.portal.UserAccountCommand
-import grails.converters.JSON
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.subject.Subject
 import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.validator.EmailValidator
-import org.codehaus.groovy.grails.web.json.JSONObject;
 
 class AuthController {
     def shiroSecurityManager
@@ -152,14 +150,6 @@ class AuthController {
         }
     }
     
-    def getCurrentUser = {
-        def currentUser = SecurityUtils.getSubject()
-        
-        def userDetails = [isAuthenticated: currentUser.isAuthenticated(), isRemembered: currentUser.isRemembered(), principal: currentUser.getPrincipal()]
-        
-        render text: userDetails as JSON
-    }
-    
     // Email notifications
     def sendRegistrationNotifcationEmail(user) {
         
@@ -187,7 +177,6 @@ class AuthController {
                                 createLink(controller: 'user', action:'updateAccount', baseUrl: Config.activeInstance().applicationBaseUrl, absolute: true)])
         }
     }
-    
 }
 
 class UserResetPasswordCommand {
