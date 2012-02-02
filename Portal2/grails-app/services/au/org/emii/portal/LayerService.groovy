@@ -81,15 +81,17 @@ class LayerService {
 
                 // Process name from title value
                 def nameVal = newData.name
-
+                def namespaceVal
+                    
                 // Trim namespace
                 if ( nameVal ) {
                     def separatorIdx = nameVal.lastIndexOf( ":" )
 
                     if ( separatorIdx >= 0 ) {
 
-                        nameVal = nameVal[ separatorIdx + 1 .. -1 ]
-                    }
+                        nameVal = newData.name[ separatorIdx + 1 .. -1 ]
+                        namespaceVal = newData.name[ 0 .. separatorIdx - 1 ]
+                    } 
                 }
                 
                 // Process abstractText value
@@ -113,6 +115,7 @@ class LayerService {
                 // Move data over
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
+                layerToUpdate.namespace = namespaceVal
                 layerToUpdate.abstractTrimmed = abstractVal
                 layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable
@@ -165,7 +168,18 @@ class LayerService {
     
     def _uniqueIdentifier( layer ) {
 
-        def namePart = layer.name ?: "<no name>"
+        
+        def namePart
+        
+        if ( layer.name ) {
+        
+            namePart = layer.namespace ? "${layer.namespace}:${layer.name}" : layer.name
+        }
+        else {
+            
+            namePart = "<no name>"
+        }
+        
         def titlePart = layer.title ?: "<no title>"
             
         return "$namePart @@ $titlePart" 

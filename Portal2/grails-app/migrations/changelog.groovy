@@ -2484,4 +2484,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '1328160201244.groovy'
 	
 	include file: '1327970556000.groovy'
-}
+    
+	include file: '20120203-DN-AddingNamespaceToLayer.groovy'        
+ }

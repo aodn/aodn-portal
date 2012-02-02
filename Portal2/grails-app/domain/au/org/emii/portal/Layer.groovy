@@ -6,6 +6,7 @@ import groovyx.net.http.*
 class Layer {
 
     String name
+    String namespace
     String title
     String abstractTrimmed
     Server server
@@ -48,6 +49,7 @@ class Layer {
 
     static constraints = {
         name( nullable: true, size:1..225 )
+        namespace( nullable: true )
         title( nullable: true )
         blacklisted()
         abstractTrimmed(size:0..455, blank:true)
