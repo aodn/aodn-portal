@@ -41,11 +41,11 @@ databaseChangeLog = {
 
 			column(name: "download_cart_max_num_files", valueNumeric: "100")
 
-			column(name: "download_cart_filename", value: ""aodn portal download (%s).zip"")
+			column(name: "download_cart_filename", value: "\"aodn portal download (%s).zip\"")
 
 			column(name: "active_layers_height", valueNumeric: "260")
 
-			column(name: "download_cart_mime_type_to_extension_mapping", value: "{
+			column(name: "download_cart_mime_type_to_extension_mapping", value: '''{
 "text/html":"html",
 "text/xhtml":"html",
 "text/plain":"txt",
@@ -61,15 +61,15 @@ databaseChangeLog = {
 "application/vnd.google-earth.kml+xml":"kml",
 "application/vnd.google-earth.kmz":"kmz",
 "application/pdf":"pdf"
-}")
+}''')
 
-			column(name: "download_cart_downloadable_protocols", value: "WWW:DOWNLOAD-1.0-http--download
+			column(name: "download_cart_downloadable_protocols", value: """WWW:DOWNLOAD-1.0-http--download
 WWW:DOWNLOAD-1.0-http--downloaddata
 WWW:DOWNLOAD-1.0-http--downloadother
-WWW:LINK-1.0-http--downloaddata")
+WWW:LINK-1.0-http--downloaddata""")
 
-			column(name: "metadata_layer_protocols", value: "OGC:WMS-1.1.1-http-get-map
-OGC:WMS-1.3.0-http-get-map")
+			column(name: "metadata_layer_protocols", value: """OGC:WMS-1.1.1-http-get-map
+OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "metadata_link_protocols", value: "WWW:LINK-1.0-http--link")
 
@@ -97,7 +97,7 @@ OGC:WMS-1.3.0-http-get-map")
 
 			column(name: "use_depth_service", valueBoolean: "true")
 
-			column(name: "footer_content", value: "<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a> to be directed to the data custodian.</p>")
+			column(name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a> to be directed to the data custodian.</p>''')
 
 			column(name: "footer_content_width", valueNumeric: "550")
 
