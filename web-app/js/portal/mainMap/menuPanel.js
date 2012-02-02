@@ -277,7 +277,7 @@ function initMenusPanel(menu) {
         activeTab: 0,
         items: [
             //demonstrationContributorTree,
-            defaultMenuTree,
+            defaultMenuTree
          // Add Server tab commented out until it can be completed:
          //   userDefinedWMSPanel  
         ]
