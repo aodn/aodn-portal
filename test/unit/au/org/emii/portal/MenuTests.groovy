@@ -19,7 +19,6 @@ class MenuTests extends GrailsUnitTestCase {
 		def testMenu = new Menu()
 		assertFalse testMenu.validate()
 		assertEquals "nullable", testMenu.errors["title"]
-		assertEquals "nullable", testMenu.errors["json"]
 		assertEquals "nullable", testMenu.errors["active"]
 		assertEquals "nullable", testMenu.errors["editDate"]
 		
@@ -43,6 +42,9 @@ class MenuTests extends GrailsUnitTestCase {
 	}
 	
 	void testJsonParsing() {
+		mockDomain(Menu)
+		mockDomain(MenuItem)
+		
 		def json = '{"id":"1","text":"Main","children":[{"id":"1","text":"IVEC ncWMS Server","grailsServerId":"4","leaf":false,"children":[]},{"id":"2","text":"Argo - CQL","grailsLayerId":"35","leaf":true},{"id":"3","text":"argo_aggregation","grailsLayerId":"110","leaf":true},{"id":"4","text":"anfog_glider","grailsLayerId":"109","leaf":true},{"id":"5","text":"ABOS Tracks","grailsLayerId":"12","leaf":true},{"id":"6","text":"soop_xbt","grailsLayerId":"108","leaf":true},{"id":"7","text":"SOTS Locations","grailsLayerId":"13","leaf":true},{"id":"8","text":"Zooview ","grailsLayerId":"7","leaf":true},{"id":"9","text":"INFORMD_STORM/w","grailsLayerId":"75","leaf":true},{"id":"10","text":"NcWMS Layers","leaf":false,"children":[{"id":"11","text":"SST from ivec","grailsLayerId":"26","leaf":true},{"id":"12","text":"ACORN_raw_data_SAG/SPEED","grailsLayerId":"90","leaf":true},{"id":"13","text":"ocean_east_aus_temp/temp","grailsLayerId":"72","leaf":true}]},{"id":"14","text":"eMII development WMS server","grailsServerId":"2","leaf":false,"children":[]},{"id":"15","text":"Tommy CMAR","leaf":false,"grailsServerId":"200","children":[]}]}'
 		def menu = new Menu()
 		menu.parseJson(json)
@@ -51,10 +53,6 @@ class MenuTests extends GrailsUnitTestCase {
 		
 		def l = new ArrayList(menu.menuItems)
 		assertEquals 12, menu.menuItems.size()
-		
-		// Because we only have a hashset in these tests they're not guaranteed
-		// to be added to a list in order so we have to sort them by position
-		Collections.sort(l)
 		
 		assertEquals 3, l[9].childItems.size()
 		assertEquals 35, l[1].layerId
@@ -70,7 +68,7 @@ class MenuTests extends GrailsUnitTestCase {
 		item.layerId = 3
 		item.leaf = true
 		item.menu = menu
-		menu.menuItems << item
+		menu.addToMenuItems(item)
 		
 		assertNull menu._findItem(0).text
 		assertEquals 'Test Text', menu._findItem(99).text

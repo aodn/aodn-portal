@@ -28,6 +28,10 @@ class Menu {
 	
 	static hasMany = [menuItems: MenuItem]
 	
+	Menu() {
+		menuItems = [] as SortedSet
+	}
+	
 	boolean equals(Object o) {
 		if (is(o)) {
 			return true
@@ -56,14 +60,6 @@ class Menu {
 			baseLayers.addAll(item.getBaseLayers())
 		}
 		return baseLayers
-	}
-	
-	def getItemsForShallowJson() {
-		def items = [] as Set
-		getMenuItems().each { item ->
-			items.addAll(item.getItemsForShallowJson())
-		}
-		return items
 	}
 	
 	def parseJson(json) {
@@ -112,7 +108,6 @@ class Menu {
 			}
 		}
 		discards.each { item ->
-			log.debug("Removing $item")
 			removeFromMenuItems(item)
 		}
 	}
