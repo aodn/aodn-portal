@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.codehaus.groovy.grails.web.json.JSONObject;
+
 import grails.converters.JSON
 
 class SnapshotController 
@@ -13,10 +15,11 @@ class SnapshotController
     def list = 
 	{
 		def snapshotList
-		
+        
 		if (params.owner)
 		{
-			snapshotList = Snapshot.findAllByOwner(params.owner)
+            def owner = User.get(params.owner.id)
+			snapshotList = Snapshot.findAllByOwner(owner)
 		}
 		else
 		{
@@ -25,7 +28,8 @@ class SnapshotController
 		
 		if (params.type == 'JSON')
 		{
-			render(snapshotList as JSON)
+            def result = [ success: true, data: snapshotList, count: snapshotList.count() ]
+            render text: result as JSON, contentType:"application/json"
 		}
 		else
 		{
@@ -41,14 +45,35 @@ class SnapshotController
     }
 
     def save = {
-        def snapshotInstance = new Snapshot(params)
-		
-        if (snapshotInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.created.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), snapshotInstance.id])}"
-            redirect(action: "show", id: snapshotInstance.id)
+        def snapshotInstance
+        
+        if (request.contentType == "application/json") {
+            snapshotInstance = new Snapshot()
+            bindJSONSnapshotData(snapshotInstance, request.JSON)
+        } else {
+            snapshotInstance = new Snapshot(params)
         }
-        else {
-            render(view: "create", model: [snapshotInstance: snapshotInstance])
+        
+        if (snapshotInstance.save(flush: true)) {
+            withFormat {
+                html {
+                    flash.message = "${message(code: 'default.created.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), snapshotInstance.id])}"
+                    redirect(action: "show", id: snapshotInstance.id)
+                } 
+                json {
+                    render snapshotInstance as JSON
+                }
+            }
+        } else {
+            def errors = snapshotInstance.errors
+            withFormat {
+                html {
+                    render(view: "create", model: [snapshotInstance: snapshotInstance])
+                }
+                json {
+                    render text: snapshotInstance.errors as JSON, status: 400, contentType: "application/json", encoding: "UTF-8" 
+                }
+            }
         }
     }
 
@@ -71,7 +96,10 @@ class SnapshotController
 		{
 			if (params.type == 'JSON')
 			{
-				render(snapshotInstance as JSON)
+                //TODO: only need down to snapshot layers level
+                JSON.use("deep") {
+                    render(snapshotInstance as JSON)
+                }
 			}
 			else
 			{
@@ -147,6 +175,7 @@ class SnapshotController
             }
         }
         else {
+            
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
 			if (params.type == 'JSON')
 			{
@@ -158,4 +187,17 @@ class SnapshotController
 			}
         }
     }
+    
+    private void bindJSONSnapshotData(Snapshot snapshotInstance, JSONObject jsonSnapshotInstance) {
+        bindData(snapshotInstance, jsonSnapshotInstance, [exclude: ['owner','layers']])
+        snapshotInstance.owner = User.get(jsonSnapshotInstance?.owner)
+                
+        jsonSnapshotInstance.layers.each {
+            def snapshotLayerInstance = new SnapshotLayer()
+            bindData(snapshotLayerInstance, it, [exclude: ['layer']])
+            snapshotLayerInstance.layer = Layer.get(it?.layer)
+            snapshotInstance.addToLayers(snapshotLayerInstance)
+        }
+    }
+
 }

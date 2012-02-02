@@ -1,7 +1,7 @@
 function createSnapshot()
 {
 	var userId = 1;
-	return new Portal.snapshot.Snapshot(userId, "SE biology");
+	return new Portal.snapshot.Snapshot({owner: userId, name:"SE biology"});
 }
 
 describe("Portal.snapshot", function() 
@@ -12,7 +12,7 @@ describe("Portal.snapshot", function()
 		{
 			var snapshot = createSnapshot();
 				
-			expect(snapshot.ownerId).toEqual(1);
+			expect(snapshot.owner).toEqual(1);
 			expect(snapshot.name).toEqual("SE biology");
 		});
 		
@@ -20,7 +20,7 @@ describe("Portal.snapshot", function()
 		{
 			spyOn(Ext.Ajax, "request").andCallFake(function(options)
 			{
-				options.success();
+				options.success(null, options);
 			});
 			
 			var snapshot = createSnapshot();

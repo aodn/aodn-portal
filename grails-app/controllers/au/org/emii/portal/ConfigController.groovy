@@ -1,5 +1,8 @@
 package au.org.emii.portal
 
+import org.apache.shiro.SecurityUtils;
+import org.codehaus.groovy.grails.web.json.JSONObject;
+
 import grails.converters.*
 import grails.converters.deep.JSON
 import groovyx.net.http.*
@@ -41,7 +44,15 @@ class ConfigController {
             // add the fully expanded baselayer menu as layers
             instanceAsGenericObj['baselayerList'] = baselayerList
             
+            // add current user details
+            def currentUser = SecurityUtils.getSubject()
+            def principal = currentUser.getPrincipal()
             
+            if (principal) {
+                def userInstance = User.findByEmailAddress(principal)
+                instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
+            }
+    
             render(contentType: "application/json", text:  instanceAsGenericObj)
         }
         else {
