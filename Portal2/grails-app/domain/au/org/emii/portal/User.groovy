@@ -1,8 +1,6 @@
 package au.org.emii.portal
 
 class User {
-    static expose = 'user'
-    
     // Fields
     String emailAddress
     String firstName
