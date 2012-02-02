@@ -2,8 +2,6 @@ package au.org.emii.portal
 
 class SnapshotLayer {
     
-    static expose = 'snapshotlayer' 
-
     static belongsTo = [snapshot: Snapshot]
     
     // Configured layer
