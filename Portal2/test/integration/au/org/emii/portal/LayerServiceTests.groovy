@@ -123,6 +123,7 @@ children: [
         assertNotNull "layer_c should exist", layerC
         assertEquals "layer_c property title", "Layer C", layerC.title
         assertEquals "layer_c property name", "layer_c", layerC.name
+        assertEquals "layer_c property namespace", "awesomeSauce", layerC.namespace
         assertEquals "layer_c property abstractTrimmed", "", layerC.abstractTrimmed
         assertEquals "layer_c property metaUrl", null, layerC.metaUrl
         assertEquals "layer_c property queryable", false, layerC.queryable
