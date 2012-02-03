@@ -181,7 +181,7 @@ function initMenusPanel(menu) {
         //title: 'Map Options',
         //padding: 10,
         collapseMode : 'mini',
-        height: 155,
+        autoHeight: true,
         region: 'north',        
         items:[
             {
