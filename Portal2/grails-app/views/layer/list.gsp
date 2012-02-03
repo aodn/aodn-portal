@@ -47,7 +47,7 @@
                     <g:each in="${layerInstanceList}" status="i" var="layerInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td>${ layerInstance.parentId ? "" : "(R) " }<g:link action="show" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
+                            <td>${ layerInstance.parentId ? "" : "(R) " }<g:link action="edit" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
                             
                             <td>${fieldValue(bean: layerInstance, field: "name")}</td>
                             

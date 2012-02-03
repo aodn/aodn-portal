@@ -230,7 +230,7 @@ class LayerController {
             layerInstance.properties = params
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
-                redirect(action: "show", id: layerInstance.id)
+                redirect(action: "list", id: layerInstance.id)
             }
             else {
                 render(view: "edit", model: [layerInstance: layerInstance])
