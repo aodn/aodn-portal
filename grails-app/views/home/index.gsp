@@ -64,10 +64,11 @@
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/ServerNodeLayerDescriptorStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/snapshot/Snapshot.js')}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotWindow.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/snapshot/SnapshotProxy.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/snapshot/SnapshotController.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotDialog.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotSaveButton.js')}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsGroup.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/mainMapPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/menuPanel.js')}"  type="text/javascript"></script>

@@ -103,8 +103,9 @@ function initMenusPanel(menu) {
         emptyText: 'Choose a Base Layer'
     });
 
-    var snapshotSaveButton = new Portal.snapshot.SnapshotSaveButton({map: mapPanel.map});
-    var snapshotOptionsGroup = new Portal.snapshot.SnapshotOptionsGroup({map: mapPanel.map});
+    var snapshotController = new Portal.snapshot.SnapshotController({map: mapPanel.map});
+    var snapshotSaveButton = new Portal.snapshot.SnapshotSaveButton({controller: snapshotController});
+    var snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({controller: snapshotController});
 
     var removeAll = new Ext.Button({
         text: 'Remove All Layers',
@@ -203,7 +204,7 @@ function initMenusPanel(menu) {
                     new Ext.Spacer({height:5}),
                     mapOptionsButtonPanel,
                     new Ext.Spacer({height: 2}),
-                    snapshotOptionsGroup,
+                    snapshotOptionsPanel,
                     baselayerMenuPanel
                 ]
             }
