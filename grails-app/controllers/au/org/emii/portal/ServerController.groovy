@@ -102,6 +102,7 @@ class ServerController {
 		def serverInstance = Server.get(params.id)
 		if (serverInstance) {
 			try {
+				serverInstance.onDelete()
 				serverInstance.delete(flush: true)
 				flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
 				redirect(action: "list")
