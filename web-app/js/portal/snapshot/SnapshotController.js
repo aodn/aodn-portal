@@ -59,7 +59,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     
     var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
     
-    this.map.zoomToExtent(bounds);
+    this.map.zoomToExtent(bounds, true);
     
     for (var i=0; i< snapshot.layers.length; i++) {
       var snapshotLayer = snapshot.layers[i];
