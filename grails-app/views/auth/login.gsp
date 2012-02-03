@@ -37,7 +37,7 @@
             <tr>
               <td>&nbsp;</td>
               <td align="right" ><div class="buttons"><span class="button">
-                    <input type="button" name="cancel" value="Cancel" onCLick="window.location='${createLinkTo(dir:'/')}'" /></span>
+                    <input type="button" name="cancel" value="Cancel" onClick="history.go(-1)" /></span>
                   <span class="button"><input type="submit" value="Log in" /></span>
                 </div>
               </td>

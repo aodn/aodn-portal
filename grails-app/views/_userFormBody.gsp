@@ -124,7 +124,7 @@
               </td>
               <td valign="top" align="right" >
                  <div class="buttons">
-                    <span class="button"><input type="button" name="cancel" value="Cancel" onClick="window.location='${createLinkTo(dir:'/')}'" /></span>
+                    <span class="button"><input type="button" name="cancel" value="Cancel" onClick="history.go(-1)" /></span>
                     <span class="button"><g:submitButton name="action" class="save" value="${actionButtonLabel}" /></span>
                 </div>
               </td>
