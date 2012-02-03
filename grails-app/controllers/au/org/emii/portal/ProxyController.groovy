@@ -54,10 +54,8 @@ class ProxyController {
     }
     
     Boolean allowedHost (url) {
-            def validHost = false
-            
             def allowableServers = [grailsApplication.config.spatialsearch.url]
-            def conf = Config.list()
+            def conf = Config.activeInstance()
             
             // Get the domain name from the target uri
             def targetUrl = url.toURL()
@@ -70,17 +68,15 @@ class ProxyController {
             // add localhost
             allowableServers.add(request.getHeader("host"))
             // add the current mest url
-            allowableServers.add(conf[0].catalogUrl)
+            allowableServers.add(conf.catalogUrl)
 
             
-            allowableServers.each {              
-                
-                if (it.contains( targetUrl.getHost() )) {
-                    
-                    validHost = true 
-                }                
+            allowableServers.each { 
+				if (it.contains( targetUrl.getHost() )) {
+					return true
+				}
             }
-            return validHost
+            return false
     }
     
     // this action is intended to always be cached by squid
