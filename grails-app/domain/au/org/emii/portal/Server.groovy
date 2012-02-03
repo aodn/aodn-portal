@@ -57,7 +57,7 @@ class Server {
     }
 	
 	def onDelete() {
-		Server.executeUpdate("delete Layer l where l.server_id = :serverId", [serverId: id])
-		Server.executeUpdate("delete MenuItem mi where mi.server_id = :serverId", [serverId: id])
+		Server.executeUpdate("delete Layer l where l.serverId = :serverId", [serverId: id])
+		Server.executeUpdate("delete MenuItem mi where mi.serverId = :serverId", [serverId: id])
 	}
 }

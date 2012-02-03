@@ -87,10 +87,10 @@ class Layer {
     String toString() {
         return "${server?.shortAcron} - ${name}"
     }
-	
-	def onDelete() {
-		Layer.executeUpdate("delete MenuItem mi where mi.layer_id = :layerId", [layerId: id])
-	}
+
+    def onDelete() {
+        Layer.executeUpdate("delete MenuItem mi where mi.layerId = :layerId", [layerId: id])
+    }
 	
     void printTree(int depth = 0) {
 
