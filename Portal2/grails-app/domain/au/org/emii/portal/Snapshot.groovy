@@ -21,10 +21,10 @@ class Snapshot
 	String description
     
     //Bounding box
-    Integer minX
-    Integer minY
-    Integer maxX
-    Integer maxY
+    Float minX
+    Float minY
+    Float maxX
+    Float maxY
 	
 	static mapping =
 	{
