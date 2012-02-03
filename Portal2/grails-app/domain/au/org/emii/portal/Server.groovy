@@ -55,4 +55,9 @@ class Server {
     String toString() {
         return "${shortAcron}"
     }
+	
+	def onDelete() {
+		Server.executeUpdate("delete Layer l where l.server_id = :serverId", [serverId: id])
+		Server.executeUpdate("delete MenuItem mi where mi.server_id = :serverId", [serverId: id])
+	}
 }
