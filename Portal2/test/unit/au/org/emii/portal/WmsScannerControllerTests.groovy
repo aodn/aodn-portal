@@ -7,9 +7,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
  
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
     
-    def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri" )
-    def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45 )
-    def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120 )
+    def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true )
+    def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
+    def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true )
     
     def validConfig = new Config( applicationBaseUrl: "appBaseUrl/", wmsScannerBaseUrl: "scannerBaseUrl/", wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
     def invalidConfig = new Config()
@@ -33,8 +33,8 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockDomain Config, [validConfig]
         
         // Prepare for calls
-        Server.metaClass.static.findAllByTypeInList = {
-            serverTypes, sort ->
+        Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
+            serverTypes, allowDiscoveries, sort ->
             
             assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
@@ -53,7 +53,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Active Config instance should be returned", validConfig, returnParams.configInstance
         assertEquals "Matching scan Job list should be returned", sampleScanJobList, returnParams.scanJobList
         assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
-        assertEquals "Servders to list should match", [], returnParams.serversToList
+        assertEquals "Servers to list should match", [], returnParams.serversToList
     }
     
     void testControls_ExceptionThrown_EmptyListReturned() {
@@ -61,13 +61,14 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockDomain Config, [validConfig]
         
         // Prepare for calls
-        Server.metaClass.static.findAllByTypeInList = {
-            serverTypes, sort ->
+        Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
+            serverTypes, allowDiscoveries, sort ->
             
             assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
+            assertEquals "Allow discoveries should be 'true'", true, allowDiscoveries
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
             
-            return [server1, server3]
+            return [server3]
         }
         
         def expectedQueryString = """\
@@ -80,7 +81,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Active Config instance should be returned", validConfig, returnParams.configInstance
         assertEquals "Matching scan Job list should be returned", [], returnParams.scanJobList
         assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
-        assertEquals "Servers to list should match", [server1, server3], returnParams.serversToList
+        assertEquals "Servers to list should match", [server3], returnParams.serversToList
         assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Error Line 1</b><br /><b>Error Line 2</b>", controller.flash.message
     }
     

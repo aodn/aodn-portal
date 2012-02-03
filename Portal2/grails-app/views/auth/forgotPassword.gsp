@@ -38,24 +38,23 @@
               <td valign="top"class="name">
                 <label for="emailAddress"><g:message code="user.emailAddress.label" default="Email Address" /></label>
               </td>
-              <td  align="right" valign="top" class="value ${hasErrors(bean: userResetPasswordCommand, field: 'emailAddress', 'errors')}">
-          <g:textField name="emailAddress" value="${userResetPasswordCommand?.emailAddress}" />
-          </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td  align="right"><div class="buttons"><span class="button"><input  class="save" type="submit" value="Cancel"  ONCLICK="history.go(-1)"></span>
-                <span class="button"><g:submitButton name="submit" class="save" value="${message(code: 'auth.account.resetPasswordButton', default: 'Reset password')}" /></span>
-              </div>
-            </td>
-          </tr>
+              <td align="right" valign="top" class="value ${hasErrors(bean: userResetPasswordCommand, field: 'emailAddress', 'errors')}">
+                <g:textField name="emailAddress" value="${userResetPasswordCommand?.emailAddress}" />
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td align="right"><div class="buttons"><span class="button"><input type="button" class="save" value="Cancel" onClick="history.go(-1)"></span>
+                  <span class="button"><g:submitButton name="submit" class="save" value="${message(code: 'auth.account.resetPasswordButton', default: 'Reset password')}" /></span>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
         <div class="authentication-hints">
           Don't have an account? Register a new account <g:link controller="auth" action="register">here</g:link>.
         </div>
       </div>
-
     </g:form>
   </div>
 </div>

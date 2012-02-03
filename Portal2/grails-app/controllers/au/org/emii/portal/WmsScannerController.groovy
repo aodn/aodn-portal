@@ -50,8 +50,8 @@ class WmsScannerController {
         return [ configInstance: conf,
                  scanJobList: scanJobList,
                  statusText: statusText,
-                 serversToList: Server.findAllByTypeInList( serverTypesToShow,
-                                                            [ sort: "name" ] ) ]
+                 serversToList: Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ] )
+               ]
     }
 
     def callRegister = {
