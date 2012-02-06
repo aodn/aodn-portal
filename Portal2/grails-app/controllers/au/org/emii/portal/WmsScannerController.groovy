@@ -85,7 +85,7 @@ class WmsScannerController {
             conn = url.openConnection()
             conn.connect()
             
-            def response = conn.content.text // Executes command
+            def response = executeCommand( conn )
             
             setFlashMessage response
         }
@@ -124,7 +124,7 @@ class WmsScannerController {
             conn = url.openConnection()
             conn.connect()
             
-            def response = conn.content.text // Executes command
+            def response = executeCommand( conn )
             
             setFlashMessage response
         }
@@ -153,7 +153,7 @@ class WmsScannerController {
             conn = url.openConnection()
             conn.connect()
             
-            def response = conn.content.text // Executes command
+            def response = executeCommand( conn )
             
             setFlashMessage response
         }
@@ -194,5 +194,17 @@ class WmsScannerController {
         else {
             flash.message = msg
         }
+    }
+    
+    private void executeCommand(conn) {
+        
+        def response = conn.content.text // Executes command
+        
+        if ( response.indexOf( "<html" ) ) {
+            
+            response = "HTML response (Code: ${ conn.responseCode })"
+        }
+        
+        return response
     }
 }
