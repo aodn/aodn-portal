@@ -225,13 +225,19 @@ function setupgrid2treedrag(menu) {
                     treeMenu.show(node.ui.getAnchor());
                 }
             },
+            
+            movenode: {
+                fn:function(e) {
+                    showHideButtons();
+                }
+            },
 
 
             // create nodes based on data from grid
             beforenodedrop:{
                 fn:function(e) {
                     
-                     
+                    
                     // e.data.selections is the array of selected records
                     if(Ext.isArray(e.data.selections)) {
                         // reset cancel flag
