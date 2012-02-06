@@ -40,7 +40,7 @@ class LayerService {
                     
                         def uid = _uniqueIdentifier( it )
                         
-                        log.debug "Disabling existing layer and sotring for later ($uid)"
+                        log.debug "Disabling existing layer and storing for later ($uid)"
                         
                         // Check for duplicates
                         if ( existingLayers[ uid ] ) {
@@ -73,12 +73,11 @@ class LayerService {
                         
                     // Doesn't exist, create
                     layerToUpdate = new Layer()
-                    layerToUpdate.parent = parent
                     layerToUpdate.server = server
                 }
-
+                   
                 log.debug "Applying new values to layer: $newData"
-
+                                    
                 // Process name from title value
                 def nameVal = newData.name
                 def namespaceVal
@@ -113,6 +112,7 @@ class LayerService {
                 }
                     
                 // Move data over
+                layerToUpdate.parent = parent
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
                 layerToUpdate.namespace = namespaceVal
