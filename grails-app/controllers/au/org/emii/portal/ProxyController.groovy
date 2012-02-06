@@ -31,7 +31,7 @@ class ProxyController {
                 // else handle as HTML by default or XML if specified
                 else {
                     def format = params.format == "text/xml" ? "text/xml" \
-                                                     : "text/html"                
+                : "text/html"                
                 
                     //log.debug "TargetUrl: $targetUrl (expected type: $format)"
                     try {
@@ -54,29 +54,32 @@ class ProxyController {
     }
     
     Boolean allowedHost (url) {
-            def allowableServers = [grailsApplication.config.spatialsearch.url]
-            def conf = Config.activeInstance()
+        
+        def allowed = false
+        def allowableServers = [grailsApplication.config.spatialsearch.url]
+        def conf = Config.activeInstance()
             
-            // Get the domain name from the target uri
-            def targetUrl = url.toURL()
+        // Get the domain name from the target uri
+        def targetUrl = url.toURL()
             
-            // allow hosts we consider valid. from our list of wms servers first        
-            Server.list().each {
-                allowableServers.add(it.uri)                              
-            }
+        // allow hosts we consider valid. from our list of wms servers first        
+        Server.list().each {
+            allowableServers.add(it.uri)                              
+        }
             
-            // add localhost
-            allowableServers.add(request.getHeader("host"))
-            // add the current mest url
-            allowableServers.add(conf.catalogUrl)
+        // add localhost
+        allowableServers.add(request.getHeader("host"))
+        // add the current mest url
+        allowableServers.add(conf.catalogUrl)
 
             
-            allowableServers.each { 
-				if (it.contains( targetUrl.getHost() )) {
-					return true
-				}
+        allowableServers.each { 
+        
+            if (it.contains( targetUrl.getHost() )) {                                        
+                allowed = true
             }
-            return false
+        }
+        return allowed
     }
     
     // this action is intended to always be cached by squid
