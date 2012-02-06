@@ -196,7 +196,7 @@ class WmsScannerController {
         }
     }
     
-    private void executeCommand(conn) {
+    private String executeCommand(conn) {
         
         def response = conn.content.text // Executes command
         
