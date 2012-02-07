@@ -52,7 +52,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         })
       ]      
     });
-
+    
     Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
     
     this.mon(this.controller, 'snapshotsChanged', this.onSnapshotsChanged, this);

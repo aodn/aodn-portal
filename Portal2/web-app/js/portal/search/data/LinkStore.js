@@ -42,12 +42,12 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		}
 
 		return {
-			name : linkRec.get('title'),
+			title : linkRec.get('title'),
 			server : {
 				uri : linkRec.get('url'),
 				type : 'WMS'
 			},
-			layers : linkRec.get('name'),
+			name : linkRec.get('name'),
 			protocol : linkRec.get('protocol')
 		};
 	},
