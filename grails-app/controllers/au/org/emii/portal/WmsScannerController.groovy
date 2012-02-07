@@ -200,7 +200,7 @@ class WmsScannerController {
         
         def response = conn.content.text // Executes command
         
-        if ( response.indexOf( "<html" ) ) {
+        if ( response.indexOf( "<html" ) >= 0 ) {
             
             response = "HTML response (Code: ${ conn.responseCode })"
         }
