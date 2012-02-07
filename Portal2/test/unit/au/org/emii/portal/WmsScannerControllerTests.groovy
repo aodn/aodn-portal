@@ -202,18 +202,18 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
     }
     
- void testCallDelete_NoProblem_Redirected() {
+ void testCallDelete_NoProblemHtmlResponse_Redirected() {
          
         mockDomain Config, [validConfig]
         
         def expectedQueryString = "?id=4&callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate"
-        setUpToUrlForResponse "scannerBaseUrl/scanJob/delete$expectedQueryString", "Deleted"
+        setUpToUrlForResponse "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><html>Blah blah blah..."
          
         mockParams.scanJobId = 4
         controller.callDelete() // Make the call
      
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should show response", "Response: Deleted", controller.flash.message
+        assertEquals "Flash message should show response", "Response: HTML response (Code: 200)", controller.flash.message
     }
     
     void testCallDelete_ExceptionThrownWithExistingMessage_RedirectedWithNewAndExistingMessage() {
@@ -239,7 +239,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             
             return [ openConnection: {
                         return [ connect: {},
-                                 content: [ text: responseText ] ]
+                                 content: [ text: responseText ],
+                                 responseCode: 200
+                               ]
                      } ]
         }
     }
