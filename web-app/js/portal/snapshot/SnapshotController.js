@@ -65,12 +65,14 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       var snapshotLayer = snapshot.layers[i];
       
       if (snapshotLayer.isBaseLayer) {
-        if (!snapshotLayer.isHidden) {
+        if (!snapshotLayer.hidden) {
           //select baselayer
         }
       } else {
         if (snapshotLayer.layer) {
-          addGrailsLayer(snapshotLayer.layer.id);
+          addGrailsLayer(snapshotLayer.layer.id, {
+            visibility: !snapshotLayer.hidden
+          });
         } else {
           // add user/search layer
         }

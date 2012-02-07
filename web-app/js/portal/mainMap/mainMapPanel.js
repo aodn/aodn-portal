@@ -256,15 +256,16 @@ function setToolbarItems() {
  * 
  * 
  */
-function addGrailsLayer(grailsLayerId) {   
+function addGrailsLayer(grailsLayerId, layerOptions) {   
     
     Ext.Ajax.request({
 
         url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
-        success: function(resp){
+        layerOptions: layerOptions,
+        success: function(resp, options){
             var dl = Ext.util.JSON.decode(resp.responseText);  
             if (dl != "") {
-               addMainMapLayer( dl );                
+               addMainMapLayer( dl, options.layerOptions );                
             }
             
         },
@@ -498,7 +499,7 @@ function stopgetTimePeriod(layer) {
 
 // create an openlayer wms layer baselayer or overlay layer
 // not adding to a map here
-function createLayer(dl) {
+function createLayer(dl, overrides) {
      /*
       * Buffer: tiles around the viewport. 1 is enough
       * Gutter: images wider and taller than the tile size by a value of 2 x gutter
@@ -552,6 +553,10 @@ function createLayer(dl) {
     if (dl.projection) {
         options.projection = new OpenLayers.Projection(dl.projection);
    
+    }
+    
+    if (overrides) {
+      Ext.apply(options, overrides);
     }
     
     var serverUri;
@@ -627,9 +632,9 @@ function addBaseOpenLayersToMap(map)
  * This is the internal add layer method used to add all overlay layers
  * 
  */
-function addMainMapLayer(dl) {    
+function addMainMapLayer(dl, layerOptions) {    
 
-    var layer = createLayer(dl);
+    var layer = createLayer(dl, layerOptions);
 
     if (layer != undefined) {
           

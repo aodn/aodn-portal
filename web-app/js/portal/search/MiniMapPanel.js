@@ -46,9 +46,9 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
    showLayer: function(layerInfo) {
 	  this.clearOverlays();
       var newLayer = new OpenLayers.Layer.WMS(
-    	         layerInfo.name,
+    	         layerInfo.title,
     	         layerInfo.server.uri, 
-    	         {layers: layerInfo.layers, transparent: true},
+    	         {layers: layerInfo.name, transparent: true},
     	         {isBaseLayer: false, wrapDateLine: true}
     	      );
       this.map.addLayer(newLayer);
