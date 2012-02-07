@@ -236,44 +236,45 @@ function addToPopup(mapPanel, e) {
         var layer = wmsLayers[i];
         var url = "none";
         var params;
-        
+        var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
+        var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''   ]
+        var isAnimatedLayer = layer.originalWMSLayer != undefined;
+
         // this is an animated image
-        if (layer.originalWMSLayer) {
-                //To do add a check box on the interface to get the profile and the time series from ncWMS.
-                /*if (layer.showTimeSeriesNcWMS) {
-                       if (layer.tile.bounds.containsLonLat(lonlat)) {
-                                    url = layer.baseUri +
-                                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
-                                    "&BBOX=" + layer.getExtent().toBBOX() +
-                                    "&I=" + e.xy.x +
-                                    "&J=" + e.xy.y +
-                                    "&INFO_FORMAT=text/xml" +
-                                    "&CRS=EPSG:4326" +
-                                    "&WIDTH=" + mapPanel.map.size.w +
-                                    "&HEIGHT=" +  mapPanel.map.size.h +
-                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
+        if (isAnimatedLayer) {
 
+            var chart_bbox = layer.url.match("BBOX=[^\&]*")[0].substring(5);
+            var chart_time =  layer.url.match("TIME=[^\&]*")[0].substring(5);
+            var chart_style =  layer.url.match("STYLES=[^\&]*")[0].substring(7);
+            var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
 
-                                    timeSeriesPlotUri =
-                                    layer.timeSeriesPlotUri +
-                                    "&I=" + e.xy.x +
-                                    "&J=" + e.xy.y +
-                                    "&WIDTH=" + layer.mapPanel.map.size.w +
-                                    "&HEIGHT=" +  layer.mapPanel.map.size.h +
-                                    "&BBOX=" + mapPanel.map.getExtent().toBBOX();
-                            }
-                    }
-                    */
+            url = layer.url.substring(0, layer.url.indexOf("?")) +
+                    "?SERVICE=WMS&REQUEST=GetFeatureInfo" +
+                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+                    "&BBOX=" + layer.extent.toBBOX() +
+                    "&INFO_FORMAT=image/png" +
+                    "&QUERY_LAYERS=" + layer.originalWMSLayer.params.LAYERS +
+                    "&FEATURE_COUNT=" + featureCount +
+                    "&STYLES=" + chart_style +
+                    "&CRS=EPSG:4326" +
+                    "&BUFFER="+ Portal.app.config.mapGetFeatureInfoBuffer +
+                    "&WIDTH=" +  mapPanel.map.size.w +
+                    "&HEIGHT="  +   mapPanel.map.size.h +
+                    "&TIME=" + chart_time +
+                    "&VERSION=" + layer.originalWMSLayer.params.VERSION;
+
+            if (layer.originalWMSLayer.params.VERSION == "1.1.1" || layer.originalWMSLayer.params.VERSION == "1.1.0")
+            {
+                url += "&X=" + e.xy.x + "&Y=" + e.xy.y;
+            }
+            else
+             {
+                url += "&I=" + e.xy.x + "&J=" + e.xy.y;
+             }
         }
         else {
 
-            if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) { 
-
-
-                var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
-                var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
-
-
+            if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
@@ -312,26 +313,26 @@ function addToPopup(mapPanel, e) {
         }
 
         if ( url != "none" ) {
-            
-            
-
             popup.numResultsToLoad++; // Record layers requested
-
 
             Ext.Ajax.request({
                 url: proxyURL + encodeURIComponent( url ) + "&format=" + encodeURIComponent(expectedFormat), // add format for grails proxy
                 params: {
                     name: layer.name, 
                     id: layer.id,
-                    expectedFormat: expectedFormat 
+                    expectedFormat: expectedFormat,
+                    isAnimatedLayer: isAnimatedLayer
                 },
                 success: function(resp, options){
                     if ( popup ) { // Popup may have been closed since request was sent
-                        
-                        
-                        var res = formatGetFeatureInfo( resp, options );
-                        
-                        
+
+                        var res = "none";
+
+                        if(options.params.isAnimatedLayer)
+                            res = "<div><img src='" + url + "'></div>";
+                        else
+                            res = formatGetFeatureInfo( resp, options );
+
                         if (res) {
                             popup.numGoodResults++;
                             tabsFromPopup( popup ).add( {
@@ -452,7 +453,11 @@ function formatGetFeatureInfo(response, options) {
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response);
     }
-    else {
+    else if(options.params.expectedFormat.indexOf('image') >= 0){
+
+        //console.log("ERROR: as yet unhandled response type for getFeatureInfo");
+    }
+    else{
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
 }
