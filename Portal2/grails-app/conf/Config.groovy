@@ -117,7 +117,7 @@ log4j = {
             console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
         }
         production {
-            console name:'stdout', layout:pattern(conversionPattern: '%d [%-12.12t] [%-5p] %30.30c{3} - %m asdf %n')
+            console name:'stdout', layout:pattern(conversionPattern: '%d [%-12.12t] [%-5p] %30.30c{3} - %m%n')
             
             //smtp name: 'mail', from: "sys.admin@emii.org.au", to: "dnahodil@utas.edu.au", subject: "Error from Portal app", smtpHost: "localhost", layout: pattern(conversionPattern: "[%r] %c{2} %m%n")
         }
