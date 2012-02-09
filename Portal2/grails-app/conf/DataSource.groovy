@@ -39,7 +39,7 @@ environments {
 	   dataSource {
 		   dbCreate = "create-drop"
 		   driverClassName = "org.postgresql.Driver"
-		   url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2_diff?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+		   //url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2_diff?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory" // Taken out for saftey for now (don't ask). Will re-add after. DO NOT USE!!
 		   username = "portal2user"
 		   password = "wtingzgsfdbat"
 	   }
