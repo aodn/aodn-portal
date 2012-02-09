@@ -69,7 +69,7 @@ environments {
             mail {
                 authenticationFromEmailAddress = "info@aodn.org.au"
 
-                host = "postoffice.utas.edu.au"
+                host = "localhost"
                 port = 25
                 username = "info@aodn.org.au"
                 props = ["mail.smtp.auth":"false"]
