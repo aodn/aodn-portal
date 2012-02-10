@@ -17,14 +17,12 @@
  */
  
 Ext.ns('Example');
-Ext.BLANK_IMAGE_URL = '/Portal2/img/blank.gif';
 
 
 var tree; 
 var theGrid;
 var theGridStore;
-
-var jsonLayers = '/Portal2/layer/listForMenuEdit'
+var jsonLayers;
 
 function createGrid(layerType){
     
@@ -39,7 +37,7 @@ function createGrid(layerType){
                 ,{name:'isBaseLayer'}                
                 ]
     })
-    
+
    theGridStore = new Ext.data.Store({
                 //groupField: 'server',
                 url: jsonLayers,
@@ -117,8 +115,11 @@ function dataPanel() {
 }
 
 
-function initMenu(menu) {
-    
+function initMenu(menu, _basePath) {
+    basePath = _basePath;
+    jsonLayers = basePath + 'layer/listForMenuEdit';
+    Ext.BLANK_IMAGE_URL = basePath + 'img/blank.gif';
+
     // initialize QuickTips
     Ext.QuickTips.init();
     
@@ -396,7 +397,10 @@ function rightClickMenu(node){
 
 
 function searchGrid() {
-    
+
+    console.log("searchForm");
+    console.log(jsonLayers);
+
     var searchForm = new Ext.FormPanel({
         frame: true, 
         //padding: 20,

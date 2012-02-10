@@ -66,8 +66,8 @@ function initMenusPanel(menu) {
     });
 
     var addServerButton = new Ext.Button({
-        text: 'Add',
-        listeners:{
+        text: 'Add',        listeners:{
+
             click: function(button, event)
             {
                     
