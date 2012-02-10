@@ -1,7 +1,7 @@
 package au.org.emii.portal
 
 class Server {
-
+    Long id
     String uri
     String shortAcron
     String name
@@ -57,7 +57,7 @@ class Server {
     }
 	
 	def onDelete() {
-		Server.executeUpdate("delete Layer l where l.serverId = :serverId", [serverId: id])
-		Server.executeUpdate("delete MenuItem mi where mi.serverId = :serverId", [serverId: id])
+        Server.executeUpdate("delete MenuItem mi where mi.server.id = :serverId", [serverId: id])
+        Server.executeUpdate("delete Layer l where l.server.id = :serverId", [serverId: id])
 	}
 }
