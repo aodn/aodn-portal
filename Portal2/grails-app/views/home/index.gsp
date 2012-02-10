@@ -56,7 +56,6 @@
 <script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/MultiSelectCombo.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js')}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/RefineSearchPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchTabPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LinkSelectionWindow.js')}"   type="text/javascript"></script>

@@ -12,5 +12,7 @@ class UrlMappings {
                 "/administration"{  controller="config"  }
         
 		"500"(view:'/error')
+		
+		"/robots.txt" (view: "/robots")
 	}
 }

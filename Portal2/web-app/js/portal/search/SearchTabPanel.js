@@ -7,8 +7,13 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	HITS_PER_PAGE: 15,
 
 	initComponent: function() {	 
-		this.facetStore = new Portal.search.data.FacetStore();
 		this.resultsStore = Portal.data.CatalogResultsStore();
+		// Callback to run after the resultsStore is loaded
+		this.resultsStore.on('load',  function(store, recs, opt) {
+			if (this.totalLength == 0) {
+				Ext.Msg.alert('Info', 'The search returned no results.');
+			}
+		}, this.resultsStore);
 		this.catalogue = new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
 		this.catalogue.metadataStore = this.resultsStore;
 		this.catalogue.services.xmlSearch = appConfigStore.getById('spatialsearch.url').data.value;
@@ -31,9 +36,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			     },
 			     {
 			    	 region: 'center',
-			    	 xtype: 'portal.search.refinesearchpanel',
-			    	 facetStore: this.facetStore,
-			    	 ref: '../refineSearchPanel'
+			    	 xtype: 'panel'
 			     }
 		     ]
 		},
@@ -63,12 +66,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		
 		Portal.search.SearchTabPanel.superclass.initComponent.call(this);
 
-		// react to changes on Refine Search Panel	
-		this.mon(this.refineSearchPanel, {
-			scope: this,
-			filterchange: this.onSearch
-		});
-		
 		// react to search requested by search form
 		this.mon(this.searchForm, {
 			scope: this,
@@ -107,8 +104,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	
 	afterRender: function() {
 		Portal.search.SearchTabPanel.superclass.afterRender.call(this);
-		// Pre-populate refinement panel
-		this.runSearch(["summaryOnly=true", "protocol=" + escape(Portal.app.config.metadataLayerProtocols.split('\n').join(' or '))], 1, false);
 		// Update paging toolbar manually for the moment 
 		this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
 		// This results in correct layout of the search form
@@ -149,16 +144,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		var onSuccess = function(result) {
 			var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
 			var currentRecords = getRecordsFormat.read(result.responseText);
-			var summary = currentRecords.summary;
-			this.facetStore.loadData(summary);
 			this.resultsGrid.hideMask();
 
 			// This makes sure that the paging toolbar updates on a zero result set
 			this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
-			
-			if (this.resultsStore.totalLength == 0) {
-				Ext.Msg.alert('Info', 'The search returned no results.'); //Provide feedback to user
-			}   
 		};
 		
 		var onFailure = function(response) {
@@ -185,7 +174,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		
 		var query = GeoNetwork.util.SearchTools.buildQueryGET(queryParams, startRecord, GeoNetwork.util.SearchTools.sortBy, this.resultsStore.fast);
 		
-		GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), Ext.createDelegate(onFailure,this), updateStore, this.resultsStore, this.facetStore);
+		GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), Ext.createDelegate(onFailure,this), updateStore, this.resultsStore);
 	
 		this.resultsStore.startRecord = startRecord - 1;
 		this.lastSearch = filters;
@@ -209,7 +198,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	getSearchFilters: function() {
-		return this.addSearchFilters(this.refineSearchPanel, this.addSearchFilters(this.searchForm, []));
+		return this.addSearchFilters(this.searchForm, []);
 	},
 	
 	addSearchFilters: function(delegate, filters) {

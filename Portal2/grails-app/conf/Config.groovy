@@ -76,8 +76,18 @@ environments {
             }
         }
     }
+	preview {
+		grails.serverURL = "http://preview.emii.org.au/$appName"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+
+		grails {
+			mail {
+				authenticationFromEmailAddress = "info@aodn.org.au"
+			}
+		}
+	}
     development {
-        grails.serverURL = "http://localhost:8086/${appName}"
+        grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
     
         grails {

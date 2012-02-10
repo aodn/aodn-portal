@@ -71,4 +71,19 @@ environments {
 			validationQuery = "SELECT 1"
         }
     }
+	
+	preview {
+		dataSource {
+			jndiName = "java:comp/env/jdbc/portal_preview"
+			
+//			driverClassName = "org.postgresql.Driver"
+//			url = "jdbc:postgresql://db.emii.org.au:5432/portal_preview?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+//
+//			username = "portal_preview"
+//			password = "agreenerfuture"
+//			
+//			testOnBorrow = true
+//			validationQuery = "SELECT 1"
+		}
+	}
 }
