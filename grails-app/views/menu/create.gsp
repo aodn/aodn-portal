@@ -6,25 +6,23 @@
     
     <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
     <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
-    
     <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
 
   <g:set var="entityName" value="Menu" />
   <title><g:message code="default.create.label" args="[entityName]" /></title>
+     <script>
 
-  <script>         
-    
-       
+      Ext.onReady(function(){
+          initMenu(undefined, '${resource(dir:'/')}'); // grid2treedrag
 
-  Ext.onReady(function(){
-          
-      initMenu(undefined); // grid2treedrag        
-            
-         
-   });  
-                     
-  </script>
+
+       });
+
+      </script>
+
+
 </head>
 <body>
 

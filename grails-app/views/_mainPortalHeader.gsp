@@ -1,6 +1,5 @@
   <div id="header" style="height:${configInstance?.headerHeight}px">
-      
-    <img src="../../Portal2/images/AODN_logo.png" id="logo" />
+    <img src="${resource(dir:'images',file:'AODN_logo.png')}" id="logo" />
     <h1 id="headerTitle">Australian Ocean Data Network</h1>
     <g:if test="${showLinks}">
     <div id="viewPortLinks" >
