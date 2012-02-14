@@ -1,6 +1,6 @@
 databaseChangeLog = {
 
-	changeSet(author: "tfotak (generated)", id: "1328227661000") {
+	changeSet(author: "tfotak (generated)", id: "1328227661000", runAlways: true) {
 		sql("""\
 delete from menu_item where id in (
 	select m.id from menu_item m
