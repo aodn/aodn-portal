@@ -68,8 +68,6 @@ children: [
         
         layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
         
-        println Layer.list()
-        
         _verifyHierarchy true
     }
     

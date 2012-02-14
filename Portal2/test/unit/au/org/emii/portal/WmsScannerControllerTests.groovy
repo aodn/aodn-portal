@@ -25,7 +25,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         
         super.tearDown()
         
-        String.metaClass.toURL = { -> return null }
+        String.metaClass = null
     }
 
     void testControls_NoProblems_ScanJobListReturned() {
@@ -255,10 +255,10 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             def errorStream = errorText ? new ByteArrayInputStream( errorText.getBytes() ) : null
             
             return [ openConnection: {
-                    return [ connect: {  throw new Exception( "Test Exception" ) },
-                             errorStream: errorStream ]
-                    }
-                  ]
+                        return [ connect: {  throw new Exception( "Test Exception" ) },
+                                 errorStream: errorStream ]
+                        }
+                   ]
         }
     }
 }

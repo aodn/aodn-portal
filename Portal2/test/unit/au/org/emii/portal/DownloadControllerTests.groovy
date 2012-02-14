@@ -16,6 +16,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     def resourcesDir = System.getProperty( "user.dir" ) + "/test/unit/au/org/emii/portal/resources/downloadcontroller"
     
     protected void setUp() {
+        
         super.setUp()
         
         config = new Config(
@@ -30,7 +31,10 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     protected void tearDown() {
+        
         super.tearDown()
+        
+        String.metaClass = null
     }
 
     void testDownloadFromCart() {
@@ -141,8 +145,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             reportDataToCheck += "\n"
             lineCount++
         }
-            
-        // println reportDataToCheck
         
         assertEquals "'download report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportDataToCheck
     }

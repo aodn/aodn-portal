@@ -31,6 +31,8 @@ class UserTagLibTests extends TagLibUnitTestCase {
     protected void tearDown() {
         
         super.tearDown()
+        
+        SecurityUtils.metaClass = null
     }
 
     void testLoggedInUser_NoUserLoggedIn_EmptyOutput() {

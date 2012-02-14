@@ -7,13 +7,17 @@ import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
 class SecurityFiltersTests extends FiltersUnitTestCase {
     
     protected void setUp() {
+        
         super.setUp()
         
         MockUtils.mockLogging SecurityFilters, true
     }
 
     protected void tearDown() {
+        
         super.tearDown()
+        
+        FilterConfig.metaClass = null
     }
 
     void testHomeControllerFilter() {
