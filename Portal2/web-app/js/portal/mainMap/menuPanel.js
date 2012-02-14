@@ -269,7 +269,8 @@ function initMenusPanel(menu) {
             //autoScroll: true
         },
         id: 'leftTabMenuPanel',
-        minHeight: 170,
+        minHeight: 170,        
+        boxMaxHeight : 200,
         stateful: false,        
         split: true,
         collapseMode: 'mini',

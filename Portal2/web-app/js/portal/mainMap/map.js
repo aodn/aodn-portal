@@ -874,6 +874,23 @@ function isArgoExisting (base_url,argo_id) {
 }
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
+    
+    var dl = {}
+    var server = {}
+    
+    server.uri = url;
+    server.type = type;    
+    server.opacity = 100;
+    dl.server = server;
+    
+    dl.queryable = true; // must be to get here
+    
+    //dl.sld = sld; //comment out until required from the setExtWmsLayer function
+    
+    // style in .ftl's but should be styles
+    dl.styles = style;
+    
+    dl.name = layer; // layer id on server  
 
     // options are comma delimited to include a unique label from a single value such as a dropdown box
     if (options.length > 1) {
@@ -883,23 +900,16 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
         if (opts.length > 1) {
             newLabel = label + " " + opts[1];
         }
+        
+        dl.cql = cql;
+        
+        dl.title = label; 
+        if (newLabel.length > 0) {
+            dl.title = newLabel;
+        } 
+        
 
-        layer = new OpenLayers.Layer.WMS(
-            newLabel,
-            url,
-            {
-                layers: layer, 
-                transparent: true, 
-                CQL_FILTER: cql, 
-                STYLE: style
-            },
-
-            {
-                wrapDateLine: true,
-                isBaseLayer: false
-            }
-            );
-        mapPanel.map.addLayer(layer);
+        addMainMapLayer(dl);
     }
 }
 

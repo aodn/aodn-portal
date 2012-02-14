@@ -28,6 +28,10 @@ environments {
             username = "postgres"
             password = "postgres"
             
+            //url = "jdbc:postgresql://db.emii.org.au:5432/portal_preview?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+            //username = "portal2user"
+            //password = "wtingzgsfdbat"
+            
             // logSql = true
             testOnBorrow = true
             validationQuery = "SELECT 1"
