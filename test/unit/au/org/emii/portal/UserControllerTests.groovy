@@ -56,9 +56,9 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     protected void tearDown() {
         
-        SecurityUtils.metaClass.static.getSubject = null
-        
         super.tearDown()
+                        
+        SecurityUtils.metaClass = null
     }
 
     void testIndexAction() {

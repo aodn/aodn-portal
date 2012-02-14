@@ -11,14 +11,15 @@ import org.apache.shiro.authc.*
 class AuthControllerTests extends ControllerUnitTestCase {
     
     protected void setUp() {
+        
         super.setUp()
     }
 
     protected void tearDown() {
         
-        SecurityUtils.metaClass.static.getSubject = null
-        
         super.tearDown()
+        
+        SecurityUtils.metaClass = null
     }
 
     void testIndexAction() {
