@@ -27,11 +27,10 @@ class MenuController {
     }
 
     def save = {             
-   
-        params.active = true        
-        def paramsCleaned = _cleanParams(params)
-        
-        def menuInstance = new Menu(paramsCleaned)
+        def menuInstance = new Menu()
+		menuInstance.parseJson(params.json)
+		menuInstance.edited()
+		menuInstance.active = true
        
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"

@@ -36,9 +36,8 @@
 
     <input id="jsonString" name="json" autocomplete="off" type="hidden" />
     <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
-
+  </div>
 </g:form>
-</div>
 
 <div class="content"> 
   <g:hasErrors bean="${menuInstance}">

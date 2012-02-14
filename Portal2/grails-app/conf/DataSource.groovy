@@ -57,22 +57,16 @@ environments {
     }
     production {
         dataSource {
-            //dbCreate = "update"
-            //url = "jdbc:hsqldb:file:prodDb;shutdown=true"
-
-    
-            // since there is no production DB yet, just use obsidian (geoff)
-            // change this when the time comes...
-
-            driverClassName = "org.postgresql.Driver"
-            url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-
-            username = "portal2user"
-            password = "wtingzgsfdbat"
-     
-			// logSql = true
-			testOnBorrow = true
-			validationQuery = "SELECT 1"
+			jndiName = "java:comp/env/jdbc/portal"
+//            driverClassName = "org.postgresql.Driver"
+//            url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+//
+//            username = "portal2user"
+//            password = "wtingzgsfdbat"
+//     
+//			// logSql = true
+//			testOnBorrow = true
+//			validationQuery = "SELECT 1"
         }
     }
 	

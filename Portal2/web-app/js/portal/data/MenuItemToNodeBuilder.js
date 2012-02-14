@@ -3,7 +3,10 @@ Ext.namespace('Portal.data');
 Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
 
 	build: function(menu) {
-		return this.addDetail(menu.menuItems);
+		if (menu && menu.menuItems) {
+			return this.addDetail(menu.menuItems);
+		}
+		return [];
 	},
 	
 	addDetail: function(menuItems) {
