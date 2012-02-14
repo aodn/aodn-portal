@@ -333,11 +333,12 @@ function zoomToSelectedLayer() {
 function setDefaultMenuTreeNodeStatus(grailsLayerId, bool) {
     // enable all menu items that correspond. 
     // There can be more than one in the menu
-    function checkNode(node)  {          
-        
-        if(node.attributes.grailsLayerId == grailsLayerId) {          
-            (!bool) ? node.disable():  node.enable()        
-        }               
+    function checkNode(node)  {  
+        if (grailsLayerId != undefined) {
+            if(node.attributes.grailsLayerId == grailsLayerId) {          
+                (!bool) ? node.disable():  node.enable()        
+            }  
+        }
         Ext.each(node.childNodes, checkNode);
     }
     checkNode(defaultMenuTree.getRootNode());
