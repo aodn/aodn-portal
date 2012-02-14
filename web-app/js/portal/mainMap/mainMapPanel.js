@@ -512,6 +512,7 @@ function createLayer(dl, overrides) {
         buffer: 1, 
         gutter: 0
     };
+    
     var ver = getWMSVersionString(dl);
     params.version = ver;
     
@@ -519,16 +520,18 @@ function createLayer(dl, overrides) {
     if (dl.server.imageFormat) {
         params.format = dl.server.imageFormat;
     }  
+    else {
+        params.format = "image/png";
+    }
     if(dl.cql != "") {
         params.CQL_FILTER = dl.cql;
     }
     if (dl.queryable) {
         params.queryable = dl.queryable;
-    }      
-    // may be null from database
-    if(dl.styles == "") {
-        params.styles = "";
-    }
+    } 
+    
+    
+    params.styles = (dl.styles == "") ? "" : dl.styles;
     
     
     
@@ -538,7 +541,7 @@ function createLayer(dl, overrides) {
     var options =           {
         wrapDateLine: true,   
         opacity: opacity,
-        version : getWMSVersionString(dl),
+        version : ver,
         transitionEffect: 'resize'
     };
     

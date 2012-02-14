@@ -795,9 +795,8 @@ JQUERY AUTO COMPLETE
 }
 .emptyActiveLayerTreePanelText {
     margin: 10px;
-    font-size: 13px;
-    font-family: Tahoma, Georgia;
     font-weight: normal;
+    font-style: italic;
 }
 
 .p-btn-transect {
