@@ -93,16 +93,16 @@ describe("Portal.search.data.LinkStore", function() {
          var firstLink = testStore.getLayerLink(0);
          
          expect(firstLink.server.uri).toEqual('http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&');
-         expect(firstLink.layers).toEqual('topp:xbt_realtime');
+         expect(firstLink.name).toEqual('topp:xbt_realtime');
          expect(firstLink.protocol).toEqual('OGC:WMS-1.1.1-http-get-map');
-         expect(firstLink.name).toEqual('xbt_realtime');
+         expect(firstLink.title).toEqual('xbt_realtime');
 
          var secondLink = testStore.getLayerLink(1);
          
          expect(secondLink.server.uri).toEqual('http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime');
-         expect(secondLink.layers).toEqual('topp:xbt_realtime');
+         expect(secondLink.name).toEqual('topp:xbt_realtime');
          expect(secondLink.protocol).toEqual('');
-         expect(secondLink.name).toEqual('xbt_realtime');
+         expect(secondLink.title).toEqual('xbt_realtime');
 
 		});
       
@@ -149,9 +149,9 @@ describe("Portal.search.data.LinkStore", function() {
          var firstLink = testStore.getLayerLink(0);
          
          expect(firstLink.server.uri).toEqual('http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime');
-         expect(firstLink.layers).toEqual('topp:xbt_realtime');
+         expect(firstLink.name).toEqual('topp:xbt_realtime');
          expect(firstLink.protocol).toEqual('GOOGLE:KML');
-         expect(firstLink.name).toEqual('xbt_realtime');
+         expect(firstLink.title).toEqual('xbt_realtime');
 
 			testStore.filterByProtocols(['GOOGLE:KML', 'OGC:WMS-1.1.1-http-get-map']);
 
@@ -160,16 +160,16 @@ describe("Portal.search.data.LinkStore", function() {
          firstLink = testStore.getLayerLink(0);
          
          expect(firstLink.server.uri).toEqual('http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&');
-         expect(firstLink.layers).toEqual('topp:xbt_realtime');
+         expect(firstLink.name).toEqual('topp:xbt_realtime');
          expect(firstLink.protocol).toEqual('OGC:WMS-1.1.1-http-get-map');
-         expect(firstLink.name).toEqual('xbt_realtime');
+         expect(firstLink.title).toEqual('xbt_realtime');
          
 			var secondLink = testStore.getLayerLink(1);
          
          expect(secondLink.server.uri).toEqual('http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime');
-         expect(secondLink.layers).toEqual('topp:xbt_realtime');
+         expect(secondLink.name).toEqual('topp:xbt_realtime');
          expect(secondLink.protocol).toEqual('GOOGLE:KML');
-         expect(secondLink.name).toEqual('xbt_realtime');
+         expect(secondLink.title).toEqual('xbt_realtime');
 
 		});
       
