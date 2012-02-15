@@ -1,9 +1,5 @@
 databaseChangeLog = {
 
-	preConditions {
-		changeSetExecuted(id: "1327970556000-5", author: "tfotak (generated)", changeLogFile: "1327970556000.groovy")
-	}
-	
 	changeSet(author: "tfotak (generated)", id: "1329200026000-1", failOnError: true) {
 		addNotNullConstraint(columnDataType: "int4", columnName: "menu_position", tableName: "menu_item")
 	}
@@ -17,6 +13,9 @@ databaseChangeLog = {
 	}
 
 	changeSet(author: "tfotak (generated)", id: "1329200026000-4", failOnError: true) {
+		preConditions {
+			changeSetExecuted(id: "1327970556000-5", author: "tfotak (generated)", changeLogFile: "1327970556000.groovy")
+		}
 		dropColumn(columnName: "json", tableName: "menu")
 	}
 }
