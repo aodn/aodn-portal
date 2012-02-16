@@ -64,29 +64,20 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		assertFalse this.controller._isServerCollectable(null, null)
 		
 		def server1 = new Server()
-		server1.disable = false
 		server1.id  = 1
 		assertTrue this.controller._isServerCollectable(null, server1)
 		assertFalse this.controller._isServerCollectable(server1, server1)
 		assertFalse this.controller._isServerCollectable(server1, null)
 		
 		def server2 = new Server()
-		server2.disable = false
 		server2.id  = 2
 		assertTrue this.controller._isServerCollectable(server1, server2)
-		
-		def server3 = new Server()
-		server3.disable = true
-		server3.id  = 3
-		assertFalse this.controller._isServerCollectable(server2, server3)
-		assertFalse this.controller._isServerCollectable(server3, server3)
 	}
 	
 	void testCollectServer() {
 		def items = []
 		
 		def server1 = new Server()
-		server1.disable = false
 		server1.id  = 1
 		def result = this.controller._collectServer(null, server1, items)
 		assertEquals result, server1
@@ -97,16 +88,8 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		assertEquals 1, items.size()
 		
 		def server2 = new Server()
-		server2.disable = false
 		server2.id  = 2
 		result = this.controller._collectServer(result, server2, items)
-		assertEquals result, server2
-		assertEquals 2, items.size()
-		
-		def server3 = new Server()
-		server3.disable = true
-		server3.id  = 3
-		result = this.controller._collectServer(result, server3, items)
 		assertEquals result, server2
 		assertEquals 2, items.size()
 	}
@@ -120,15 +103,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		
 		def result = this.controller._collectLayersAndServers(layers)
 		assertEquals 44, result.size()
-	}
-	
-	void testIsServerEnabled() {
-		assertFalse this.controller._isServerEnabled(null)
-		def server = new Server()
-		server.disable = false
-		assertTrue this.controller._isServerEnabled(server)
-		server.disable = true
-		assertFalse this.controller._isServerEnabled(server)
 	}
 	
 	def _buildServers(sId, number) {
