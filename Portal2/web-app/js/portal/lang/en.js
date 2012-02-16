@@ -47,6 +47,17 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
   layerAddedTitle: 'Add layer',
   layerAddedMsg: ' has been added to the map',
   
+  //snapshots 
+  saveMapButton: 'Save Map',
+  saveMapButtonTip: 'Save the current state of the map',
+  saveSnapshotDialogTitle: 'Save Snapshot',
+  saveSnapshotName: 'Name',
+  btnSave: 'Save',
+  btnCancel: 'Cancel',
+  chooseSavedMap: 'Choose a Saved Map',
+  deleteSnapshot: 'Delete',
+  deleteSnapshotTip: 'Delete a saved map',
+  
   //Options Panel
   turnOnTransect: 'Turn on transect graphing for this layer:',
   drawing: 'Drawing',

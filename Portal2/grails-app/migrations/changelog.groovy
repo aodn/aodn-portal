@@ -2492,4 +2492,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '20120203-CJ-MakeSnapshotBboxFloat.groovy'
 	
 	include file: '1329200026000.groovy'
+
+	include file: '20120216-CJ-Additional-SnapshotLayer-Options.groovy'
  }

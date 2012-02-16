@@ -27,7 +27,7 @@ class SnapshotServiceTests extends GroovyTestCase {
         
         controller.request.method = "POST"
         controller.request.contentType = "application/json"
-        controller.request.content = '{"name":"test","owner":'+user.id+',"minX":-100,"minY":-60,"maxX":80,"maxY":85,"layers":[{"name":"topp:seabird","serviceUrl":"http://www.google.com.au"},{"name":"topp:bird","serviceUrl":"http://www.google.com.au"}]}'
+        controller.request.content = '{"name":"test","owner":'+user.id+',"minX":-100,"minY":-60,"maxX":80,"maxY":85,"layers":[{"name":"topp:seabird","title":"Seabird","serviceUrl":"http://www.google.com.au"},{"name":"topp:bird","title":"Bird","serviceUrl":"http://www.google.com.au"}]}'
         
         controller.save()
 
@@ -107,7 +107,7 @@ class SnapshotServiceTests extends GroovyTestCase {
         
         controller.request.method = "POST"
         controller.request.contentType = "application/json"
-        controller.request.content = '{"class":"au.org.emii.portal.Snapshot","name":"test","minX":-100,"minY":-60,"maxX":80,"maxY":85,"layers":[{"class":"au.org.emii.portal.SnapshotLayer","name":"topp:seabird","serviceUrl":"http://www.google.com.au"},{"class":"au.org.emii.portal.SnapshotLayer","name":"topp:bird","serviceUrl":"http://www.google.com.au"}]}'
+        controller.request.content = '{"class":"au.org.emii.portal.Snapshot","name":"test","minX":-100,"minY":-60,"maxX":80,"maxY":85,"layers":[{"class":"au.org.emii.portal.SnapshotLayer","name":"topp:seabird","title":"Seabird","serviceUrl":"http://www.google.com.au"},{"class":"au.org.emii.portal.SnapshotLayer","name":"topp:bird","title":"Bird","serviceUrl":"http://www.google.com.au"}]}'
         
         controller.save()
 

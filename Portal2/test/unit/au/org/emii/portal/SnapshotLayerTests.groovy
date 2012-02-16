@@ -8,6 +8,7 @@ class SnapshotLayerTests extends GrailsUnitTestCase {
     static final String INVALID_SERVER_URL = "http://localhost:/geoserver/wms"
     
     static final String VALID_LAYER_NAME = "topp:seabirds"
+    static final String VALID_TITLE = "Seabirds"
     
     Snapshot snapshot
     Layer layer
@@ -36,7 +37,7 @@ class SnapshotLayerTests extends GrailsUnitTestCase {
     }
     
     void testValidSnapshotLayerUsingServiceReference() {
-        SnapshotLayer snapshotLayer = new SnapshotLayer(snapshot: snapshot, serviceUrl: VALID_SERVER_URL, name: VALID_LAYER_NAME)
+        SnapshotLayer snapshotLayer = new SnapshotLayer(snapshot: snapshot, serviceUrl: VALID_SERVER_URL, name: VALID_LAYER_NAME, title: VALID_TITLE)
         snapshotLayer.save()
         
         assertFalse(snapshotLayer.hasErrors())
