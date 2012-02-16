@@ -90,19 +90,15 @@ class LayerController {
 			add(Restrictions.isEmpty("layers"))
 			eq 'blacklisted', false
 			eq 'activeInLastScan', true
+			server {
+				eq 'disable', false
+			}
 			order("server.id")
 			order("title")
 		}
 		
-		// Collect the servers
 		def combinedList = _collectLayersAndServers(layers)
-		
-		// Get the total number of layers to be used by the paging toolbar of
-		// the gridpanel
-		def total = layers.totalCount
-		
-		//def result = _toResponseMap(combinedList, total)
-		render _toResponseMap(combinedList, total) as JSON
+		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
 	
 	/*
@@ -374,9 +370,7 @@ class LayerController {
 		def server
 		layers.each { layer ->
 			server = _collectServer(server, layer.server, items)
-			if (_isServerEnabled(layer.server)) {
-				items.add(layer)
-			}
+			items.add(layer)
 		}
 		return items
 	}
@@ -391,14 +385,10 @@ class LayerController {
 	}
 	
 	def _isServerCollectable(server1, server2) {
-		return (!server1 || server1 != server2) && server2 && !server2.disable
+		return server2 && (!server1 || server1 != server2)
 	}
 	
 	def _toResponseMap(data, total) {
 		return [data: data, total: total]
-	}
-	
-	def _isServerEnabled(server) {
-		return server && !server.disable
 	}
 }
