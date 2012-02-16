@@ -4,9 +4,9 @@ Portal.snapshot.SnapshotSaveButton = Ext.extend(Ext.Button, {
    
   initComponent: function() {
     Ext.apply(this, {
-      text: 'Save Map',
+      text: OpenLayers.i18n('saveMapButton'),
       cls: "floatLeft buttonPad",   
-      tooltip: "Save the current state of the map",
+      tooltip: OpenLayers.i18n('saveMapButtonTip'),
       hidden: !Portal.app.config.currentUser,
       listeners: {
         click: this.onShowSaveDialog,

@@ -11,7 +11,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
           editable :false,
           padding: 20,
           ref: 'snapshotCombo',
-          emptyText: 'Choose a Saved Map',
+          emptyText: OpenLayers.i18n('chooseSavedMap'),
           minChars: 0,
           displayField: 'name',
           valueField: 'id',
@@ -41,9 +41,9 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         }),
         new Ext.Spacer({width: 7}),
         new Ext.Button({
-          text: "Delete",
+          text: OpenLayers.i18n('deleteSnapshot'),
           cls: "floatLeft buttonPad",   
-          tooltip: "Delete a saved map",
+          tooltip: OpenLayers.i18n('deleteSnapshotTip'),
           listeners:
           {
             scope: this,

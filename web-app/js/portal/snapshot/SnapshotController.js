@@ -30,13 +30,19 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     var mapLayers = this.map.layers;
 
     for (var i=0; i < mapLayers.length; i++) {
+      var layer = {};
       if (mapLayers[i].grailsLayerId) {
-        snapshot.layers.push({
-          layer: mapLayers[i].grailsLayerId,
-          isBaseLayer: mapLayers[i].isBaseLayer,
-          hidden: !mapLayers[i].getVisibility()
-        });
+        // layers sourced from server
+        layer.layer = mapLayers[i].grailsLayerId;
+      } else {
+        // layers added from search
+        layer.name = mapLayers[i].params.LAYERS;
+        layer.title = mapLayers[i].name;
+        layer.serviceUrl = mapLayers[i].server.uri;
       }
+      layer.isBaseLayer= mapLayers[i].isBaseLayer;
+      layer.hidden= !mapLayers[i].getVisibility();
+      snapshot.layers.push(layer);
     };
 
     this.proxy.save(snapshot, this.onSuccessfulSave.createDelegate(this,[successCallback],true), failureCallback);
@@ -64,17 +70,27 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     for (var i=0; i< snapshot.layers.length; i++) {
       var snapshotLayer = snapshot.layers[i];
       
+      var options = {
+          visibility: !snapshotLayer.hidden
+      };
+      
       if (snapshotLayer.isBaseLayer) {
         if (!snapshotLayer.hidden) {
           //select baselayer
         }
       } else {
         if (snapshotLayer.layer) {
-          addGrailsLayer(snapshotLayer.layer.id, {
-            visibility: !snapshotLayer.hidden
-          });
+          addGrailsLayer(snapshotLayer.layer.id, options);
         } else {
-          // add user/search layer
+          var layerDef = {
+            title: snapshotLayer.title,
+            server: {
+              uri: snapshotLayer.serviceUrl,
+              type: 'WMS'
+            },
+            name: snapshotLayer.name
+          };
+          addMainMapLayer(layerDef, options);
         }
       }
     }

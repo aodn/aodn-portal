@@ -3,7 +3,7 @@ Ext.namespace('Portal.snapshot');
 Portal.snapshot.SaveSnapshotDialog = Ext.extend(Ext.Window, {
   initComponent: function() {
     Ext.apply(this, {
-      title: 'Save Snapshot',
+      title: OpenLayers.i18n('saveSnapshotDialogTitle'),
       modal: true,
       layout: 'fit',
       items: {
@@ -14,15 +14,15 @@ Portal.snapshot.SaveSnapshotDialog = Ext.extend(Ext.Window, {
         items: [{
           ref: '../nameField',
           name: 'name',
-          fieldLabel: 'Name',
+          fieldLabel: OpenLayers.i18n('saveSnapshotName'),
           xtype: 'textfield'        
         }],
         buttons: [{
-          text: 'Save',
+          text: OpenLayers.i18n('btnSave'),
           handler: this.onSave,
           scope: this
         },{
-          text: 'Cancel',
+          text: OpenLayers.i18n('btnCancel'),
           handler: this.onCancel,
           scope: this
         }],
