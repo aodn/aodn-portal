@@ -1,11 +1,11 @@
 package au.org.emii.portal
 
 import grails.test.*
+
 import org.apache.shiro.*
-import org.apache.shiro.subject.*
 import org.apache.shiro.authc.*
+import org.apache.shiro.subject.*
 import org.codehaus.groovy.grails.web.json.JSONElement
-import grails.converters.deep.JSON
 
 class LayerControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
@@ -41,11 +41,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def securityUtilsControl = mockFor(SecurityUtils)
         securityUtilsControl.demand.static.getSubject(2..2) { -> mockSubject}
 
-        def mockMetadata = JSON.parse(metadata)
-
-        def JSONControler = mockFor(JSON)
-        JSONControler.demand.static.parse(2..2) {String layerData -> mockMetadata}
-
         def mockLayer = new Layer()
         def layerServiceControl = mockFor(LayerService)
         layerServiceControl.demand.updateWithNewData(1..1) { JSONElement e, Server s, String ds -> mockLayer }
@@ -57,4 +52,103 @@ class LayerControllerTests extends ControllerUnitTestCase {
         
         assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
     }
+	
+	void testToResponseMap() {
+		def data = ['a', 'b', 'c', 'd', 'e', 'f']
+		def response = this.controller._toResponseMap(data, data.size())
+		assertEquals data, response.data
+		assertEquals data.size(), response.total
+	}
+	
+	void testIsServerCollectable() {
+		assertFalse this.controller._isServerCollectable(null, null)
+		
+		def server1 = new Server()
+		server1.disable = false
+		server1.id  = 1
+		assertTrue this.controller._isServerCollectable(null, server1)
+		assertFalse this.controller._isServerCollectable(server1, server1)
+		assertFalse this.controller._isServerCollectable(server1, null)
+		
+		def server2 = new Server()
+		server2.disable = false
+		server2.id  = 2
+		assertTrue this.controller._isServerCollectable(server1, server2)
+		
+		def server3 = new Server()
+		server3.disable = true
+		server3.id  = 3
+		assertFalse this.controller._isServerCollectable(server2, server3)
+		assertFalse this.controller._isServerCollectable(server3, server3)
+	}
+	
+	void testCollectServer() {
+		def items = []
+		
+		def server1 = new Server()
+		server1.disable = false
+		server1.id  = 1
+		def result = this.controller._collectServer(null, server1, items)
+		assertEquals result, server1
+		assertEquals 1, items.size()
+		
+		result = this.controller._collectServer(result, server1, items)
+		assertEquals result, server1
+		assertEquals 1, items.size()
+		
+		def server2 = new Server()
+		server2.disable = false
+		server2.id  = 2
+		result = this.controller._collectServer(result, server2, items)
+		assertEquals result, server2
+		assertEquals 2, items.size()
+		
+		def server3 = new Server()
+		server3.disable = true
+		server3.id  = 3
+		result = this.controller._collectServer(result, server3, items)
+		assertEquals result, server2
+		assertEquals 2, items.size()
+	}
+	
+	void testCollectLayersAndServers() {
+		def servers = _buildServers(1, 4)
+		def layers = []
+		servers.eachWithIndex { server, i ->
+			layers.addAll(_buildLayers(1 + (i * 10), server, 10))
+		}
+		
+		def result = this.controller._collectLayersAndServers(layers)
+		assertEquals 44, result.size()
+	}
+	
+	void testIsServerEnabled() {
+		assertFalse this.controller._isServerEnabled(null)
+		def server = new Server()
+		server.disable = false
+		assertTrue this.controller._isServerEnabled(server)
+		server.disable = true
+		assertFalse this.controller._isServerEnabled(server)
+	}
+	
+	def _buildServers(sId, number) {
+		def servers = []
+		for (def i = 0; i < number; i++) {
+			def server = new Server()
+			server.id = sId + i
+			servers.add(server)
+		}
+		return servers
+	}
+	
+	def _buildLayers(sLayerId, server, number) {
+		def layers = []
+		for (def i = 0; i < number; i++) {
+			def layer = new Layer()
+			layer.id = sLayerId + i
+			layer.server = server
+			layers.add(layer)
+		}
+		return layers
+	}
 }

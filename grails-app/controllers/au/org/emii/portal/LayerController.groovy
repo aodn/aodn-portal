@@ -39,53 +39,51 @@ class LayerController {
         }
     }
     
-    def listLayersAsJson = {
-        
-        def combinedList = []    
-        def layerInstanceList = []
-		
-		def max = params.limit?.toInteger() ?: 50
-		def offset = params.start?.toInteger() ?: 0
-		
-		def criteria = Layer.createCriteria();
-		layerInstanceList = criteria.list(max: max, offset: offset) {
-			if (params.phrase?.size() > 1) {
-				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
-			}
-			order("server.id")
-			order("title")
-		}
-		
-		// Collect the servers
-		def server
-		layerInstanceList.each { layer ->
-			if (combinedList.size() < max) {
-				if (!server || server != layer.server) {
-					server = layer.server
-					combinedList.add(server)
-				}
-				combinedList.add(layer)
-			}
-		}
-		
-		// Get the total number of layers to be used by the paging toolbar of
-		// the gridpanel
-		def total = layerInstanceList.totalCount + _countServers(params)
-        
-		def result = [data: combinedList, total: total]
-		render result as JSON
-    }
+	// To be deleted soon
+//	@Deprecated
+//    def listLayersAsJson = {
+//        
+//        def combinedList = []    
+//        def layerInstanceList = []
+//		
+//		def max = params.limit?.toInteger() ?: 50
+//		def offset = params.start?.toInteger() ?: 0
+//		
+//		def criteria = Layer.createCriteria();
+//		layerInstanceList = criteria.list(max: max, offset: offset) {
+//			if (params.phrase?.size() > 1) {
+//				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
+//			}
+//			order("server.id")
+//			order("title")
+//		}
+//		
+//		// Collect the servers
+//		def server
+//		layerInstanceList.each { layer ->
+//			if (combinedList.size() < max) {
+//				if (!server || server != layer.server) {
+//					server = layer.server
+//					combinedList.add(server)
+//				}
+//				combinedList.add(layer)
+//			}
+//		}
+//		
+//		// Get the total number of layers to be used by the paging toolbar of
+//		// the gridpanel
+//		def total = layerInstanceList.totalCount + _countServers(params)
+//        
+//		def result = [data: combinedList, total: total]
+//		render result as JSON
+//    }
 	
 	def listForMenuEdit = {
-		
-		def combinedList = []
-		def layerInstanceList = []
-		
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
 		def criteria = Layer.createCriteria();
-		layerInstanceList = criteria.list(max: max, offset: offset) {
+		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
 			}
@@ -97,62 +95,59 @@ class LayerController {
 		}
 		
 		// Collect the servers
-		def server
-		layerInstanceList.each { layer ->
-			if (!server || server != layer.server) {
-				server = layer.server
-				combinedList.add(server)
-			}
-			combinedList.add(layer)
-		}
+		def combinedList = _collectLayersAndServers(layers)
 		
 		// Get the total number of layers to be used by the paging toolbar of
 		// the gridpanel
-		def total = layerInstanceList.totalCount
+		def total = layers.totalCount
 		
-		def result = [data: combinedList, total: total]
-		render result as JSON
+		//def result = _toResponseMap(combinedList, total)
+		render _toResponseMap(combinedList, total) as JSON
 	}
 	
-	def _countServers(params) {
-		if (params.phrase) {
-			// Until we map the relationship between servers and layers this is
-			// calculated via jdbc
-			JdbcTemplate template = new JdbcTemplate(dataSource)
-			return template.queryForInt("select count(*) from (select server_id from layer where title ilike '%'||?||'%' group by server_id) server", [params.phrase].toArray())
-		}
-		return Server.count() 
-	}
+	/*
+	 * Not used now that other list methods have been deprecated
+	 */
+//	@Deprecated
+//	def _countServers(params) {
+//		if (params.phrase) {
+//			// Until we map the relationship between servers and layers this is
+//			// calculated via jdbc
+//			JdbcTemplate template = new JdbcTemplate(dataSource)
+//			return template.queryForInt("select count(*) from (select server_id from layer where title ilike '%'||?||'%' group by server_id) server", [params.phrase].toArray())
+//		}
+//		return Server.count() 
+//	}
 	
 	// I don't think this is currently being used so I am going to mark it as
 	// deprecated and then maybe we can remove it
-	@Deprecated
-    def listNonBaseLayersAsJson = {
-        
-        def combinedList = []
-        def layerInstanceList
-        // rock and roll Groovy!
-        if (params.phrase?.size() > 1) {
-            layerInstanceList = Layer.findAllByIsBaseLayerNotEqualAndTitleIlike(true, '%'+params.phrase+'%') 
-        }
-        else {            
-           layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)      
-        }
-        
-        Server.list().each { 
-            def l = layerInstanceList
-            combinedList.add(it)
-            def x = it     
-            l.each {   
-                if (it.server.id.equals(x.id)) {
-                    combinedList.add(it)   
-                }
-            }             
-        
-        }
-
-        render combinedList as JSON
-    }
+//	@Deprecated
+//    def listNonBaseLayersAsJson = {
+//        
+//        def combinedList = []
+//        def layerInstanceList
+//        // rock and roll Groovy!
+//        if (params.phrase?.size() > 1) {
+//            layerInstanceList = Layer.findAllByIsBaseLayerNotEqualAndTitleIlike(true, '%'+params.phrase+'%') 
+//        }
+//        else {            
+//           layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(true)      
+//        }
+//        
+//        Server.list().each { 
+//            def l = layerInstanceList
+//            combinedList.add(it)
+//            def x = it     
+//            l.each {   
+//                if (it.server.id.equals(x.id)) {
+//                    combinedList.add(it)   
+//                }
+//            }             
+//        
+//        }
+//
+//        render combinedList as JSON
+//    }
 
     def showLayerByItsId = {
 
@@ -373,4 +368,37 @@ class LayerController {
         }
         return null
     }
+	
+	def _collectLayersAndServers(layers) {
+		def items = []
+		def server
+		layers.each { layer ->
+			server = _collectServer(server, layer.server, items)
+			if (_isServerEnabled(layer.server)) {
+				items.add(layer)
+			}
+		}
+		return items
+	}
+	
+	def _collectServer(previous, current, items) {
+		def result = previous
+		if (_isServerCollectable(result, current)) {
+			result = current
+			items.add(result)
+		}
+		return result
+	}
+	
+	def _isServerCollectable(server1, server2) {
+		return (!server1 || server1 != server2) && server2 && !server2.disable
+	}
+	
+	def _toResponseMap(data, total) {
+		return [data: data, total: total]
+	}
+	
+	def _isServerEnabled(server) {
+		return server && !server.disable
+	}
 }
