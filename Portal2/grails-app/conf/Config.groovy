@@ -154,6 +154,7 @@ log4j = {
            'grails.app.job',
            'grails.app.service',
            'grails.app.tagLib',
+           'grails.app.domain',
            //'grails.app.filters.SecurityFilters',
            //'org.apache.shiro',
            //'org.hibernate.SQL',           

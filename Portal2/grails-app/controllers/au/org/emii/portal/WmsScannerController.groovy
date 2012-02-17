@@ -139,8 +139,7 @@ class WmsScannerController {
     def callDelete = {
         
         def conf = Config.activeInstance()
-        
-        
+
         def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
         def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
         def address = "${apiUrl}delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
@@ -167,25 +166,32 @@ class WmsScannerController {
         
     private void setFlashMessage(String response) {
         
-        flash.message = "Response: ${response}"
+        flash.message = "Response: $response"
     }
     
     private void setFlashMessage(e, commandUrl, connection) {
         
-        def msg = "Exception: ${ e.toString() }"
+        def msg = ""
         
         if ( connection?.errorStream ) {
 
             Reader reader = new BufferedReader( new InputStreamReader( connection.errorStream ) )
             def currentLine
-
-            msg += "<br />Response: "
             
             while ( ( currentLine = reader.readLine() ) != null ) {
 
                 msg += "<br /><b>$currentLine</b>"
             }
+            
+            if ( msg.contains( "<html") ) {
+
+                msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
+            }
+            
+            msg = "<br />Response: $msg"    
         }
+        
+        msg = "$e$msg"
         
         if ( flash.message?.trim() ) {
             
@@ -196,15 +202,15 @@ class WmsScannerController {
         }
     }
     
-    private String executeCommand(conn) {
-        
+    def executeCommand( conn ) {
+
         def response = conn.content.text // Executes command
-        
-        if ( response.indexOf( "<html" ) >= 0 ) {
-            
+
+        if ( response.contains( "<html" ) ) {
+
             response = "HTML response (Code: ${ conn.responseCode })"
         }
-        
+
         return response
     }
 }

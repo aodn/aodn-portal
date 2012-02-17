@@ -55,8 +55,7 @@
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                   <td>${scanJobInstance.name}</td>
                   <td>${ statusText[scanJobInstance.status] }</td>
-                  <td>${message(code: 'scanJob.numErrors.label', default: '# errors')}: ${ scanJobInstance.numErrors }
-                      <g:if test="${ scanJobInstance.numErrors != 0 }"><br />${message(code: 'scanJob.lastError.label', default: 'Last error')}: ${ scanJobInstance.lastError }</g:if></td>
+                  <td>${ scanJobInstance.numErrors } error(s)<g:if test="${ scanJobInstance.numErrors != 0 }">; ${message(code: 'scanJob.lastError.label', default: 'Most recent')}:<br /><pre>${ scanJobInstance.lastError }</pre></g:if></td>
                   <td>${scanJobInstance.jobType}</td>
                   <td>${scanJobInstance.wmsVersion}</td>
                   <td>${scanJobInstance.scanFrequency} min</td>
@@ -83,16 +82,18 @@
                   <th>${message(code: 'server.scanFrequency.label', default: 'Scan Frequency')}</th>
                   <th>${message(code: 'server.lastScanDate.label', default: 'Last scan date')}</th>
                   <th></th>
+                  <th></th>
                 </tr>
             </thead>
             <tbody>
             <g:each in="${serversToList}" status="i" var="serverInstance">
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                    <td><g:link controller="server" action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "name")}</g:link></td>
+                    <td>${fieldValue(bean: serverInstance, field: "name")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "type")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
                     <td>${fieldValue(bean: serverInstance, field: "scanFrequency")} min</td>
                     <td><g:if test="${serverInstance.lastScanDate}"><g:formatDate format="dd/MM/yy HH:mm" date="${serverInstance.lastScanDate}"/></g:if></td>
+                    <td><g:link controller="server" action="edit" id="${serverInstance.id}">Edit Server</g:link></td>        
                     <td><g:link action="callRegister" params="[serverId: serverInstance.id]">${message(code: 'server.createScanJob.label', default: 'Create Scan Job')}</g:link></td>
                 </tr>
             </g:each>

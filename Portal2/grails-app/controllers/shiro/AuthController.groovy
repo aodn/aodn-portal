@@ -132,13 +132,14 @@ class AuthController {
                 if (resetResult.user.hasErrors()) {
                     log.error "User has errors when trying to reset password"
                     resetResult.user.errors.allErrors.each{ log.error it }
+                    
                     redirect(action: "forgotPassword")
                 }
                 
                 sendPasswordResetAdviceEmail(resetResult.user, resetResult.newPassword)
 
                 flash.message = "${message(code: 'auth.account.passwordReset', default: 'Password reset. New password has been emailed to {0}', args: [resetResult.user.emailAddress])}"
-                redirect(action: "forgotPassword")
+                redirect action: "login", params: [ username: userResetPasswordCommand.emailAddress ]
             }
             else {
                 flash.message = "${message(code: 'auth.account.cantFindUser', default: 'Cannot find account with email address {0}', args: [resetResult.user.emailAddress])}"

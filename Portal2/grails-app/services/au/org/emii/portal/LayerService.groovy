@@ -1,8 +1,6 @@
 package au.org.emii.portal
 
-import grails.converters.*
 import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.runtime.*
 
 class LayerService {
 
@@ -38,7 +36,7 @@ class LayerService {
                     // Only modify layers created by the scanner
                     if ( it.dataSource == dataSource ) {
                     
-                        def uid = _uniqueIdentifier( it )
+                        def uid = _uniqueIdentifier( it, it.parent )
                         
                         log.debug "Disabling existing layer and storing for later ($uid)"
                         
@@ -60,12 +58,19 @@ class LayerService {
             def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
                 newData, parent ->
 
-                def uid = _uniqueIdentifier( newData )
+                def uid = _uniqueIdentifier( newData, parent )
                 def layerToUpdate = existingLayers[ uid ]
 
                 if ( layerToUpdate ) {
                     
                     log.debug "Found existing layer with details: '$uid'"
+                    
+                    def currentParent = layerToUpdate.parent
+                    
+                    if ( currentParent && ( currentParent != parent ) ) {
+                            
+                        layerToUpdate.parent.removeFromLayers layerToUpdate
+                    }
                 }
                 else {
 
@@ -80,7 +85,7 @@ class LayerService {
                                     
                 // Process name from title value
                 def nameVal = newData.name
-                def namespaceVal
+                def namespaceVal = null
                     
                 // Trim namespace
                 if ( nameVal ) {
@@ -103,21 +108,34 @@ class LayerService {
                     abstractVal = abstractVal[0..451] + "..."
                 }
 
-                // process bbox data
-                def bboxVal
+                // Process bbox data
+                def bboxVal = null
                     
                 if ( newData.bboxMinX && newData.bboxMinY && newData.bboxMaxX && newData.bboxMaxY ) {
                     
                     bboxVal = "${newData.bboxMinX},${newData.bboxMinY},${newData.bboxMaxX},${newData.bboxMaxY}"
                 }
-                    
+                
+                // Process style info
+                def stylesVal = ""
+
+                newData.styles?.each{
+
+                    if ( stylesVal ) stylesVal += ","
+
+                    stylesVal += it.name
+                }
+
+                // Add as child of parent
+                if ( parent ) parent.addToLayers layerToUpdate
+                
                 // Move data over
-                layerToUpdate.parent = parent
                 layerToUpdate.title = newData.title
                 layerToUpdate.name = nameVal
                 layerToUpdate.namespace = namespaceVal
                 layerToUpdate.abstractTrimmed = abstractVal
                 layerToUpdate.metaUrl = newData.metadataUrl
+                layerToUpdate.styles = stylesVal
                 layerToUpdate.queryable = newData.queryable
                 layerToUpdate.bbox = bboxVal
                 layerToUpdate.projection = newData.bboxProjection
@@ -155,7 +173,7 @@ class LayerService {
 
         layerAsJson.children.each{
 
-            def newChild = _traverseJsonLayerTree( it, newLayer, c )
+            _traverseJsonLayerTree( it, newLayer, c )
         }
 
         if ( parent ) {
@@ -166,8 +184,7 @@ class LayerService {
         return newLayer
     }
     
-    def _uniqueIdentifier( layer ) {
-
+    def _uniqueIdentifier( layer, parent ) {
         
         def namePart
         
@@ -181,7 +198,8 @@ class LayerService {
         }
         
         def titlePart = layer.title ?: "<no title>"
-            
-        return "$namePart @@ $titlePart" 
+        def parentPart = parent ? _uniqueIdentifier( parent, parent.parent ) + " // " : ""
+        
+        return "$parentPart$namePart -- $titlePart" 
     }
 }

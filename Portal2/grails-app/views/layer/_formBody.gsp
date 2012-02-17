@@ -119,10 +119,10 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="style"><g:message code="layer.style.label" default="Style" /></label>
+                                    <label for="styles"><g:message code="layer.styles.label" default="Styles" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'style', 'errors')}">
-                                    <g:textField name="style" value="${layerInstance?.style}" />
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'styles', 'errors')}">
+                                    <g:textField name="styles" value="${layerInstance?.styles}" />
                                 </td>
                             </tr>
                             

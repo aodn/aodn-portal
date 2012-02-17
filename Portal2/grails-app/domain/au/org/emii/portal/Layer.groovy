@@ -1,8 +1,5 @@
 package au.org.emii.portal
 
-import grails.converters.deep.*
-import groovyx.net.http.*
-
 class Layer {
 
     String name
@@ -12,7 +9,7 @@ class Layer {
     Server server
     Boolean cache
     String cql
-    String style
+    String styles
     String bbox
     String projection
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
@@ -42,6 +39,7 @@ class Layer {
     static mapping = {
         sort "server"
 		layers sort: "title"
+        styles type:'text'
     }
 	
     static belongsTo = [parent: Layer]
@@ -56,7 +54,7 @@ class Layer {
         server()
         cache()
         cql(nullable:true)
-        style(nullable:true)
+        styles(blank:true)
         metaUrl(nullable:true)
         bbox(nullable:true)
         projection(nullable: true)
@@ -75,6 +73,7 @@ class Layer {
         abstractTrimmed = ""
         blacklisted = false
         cache = false
+        styles = ""
         queryable = false
         isBaseLayer = false
         activeInLastScan = true
@@ -91,13 +90,21 @@ class Layer {
     def onDelete() {
         Layer.executeUpdate("delete MenuItem mi where mi.layerId = :layerId", [layerId: id])
     }
-	
+
+    String nameOrTitle() {
+        
+        return name ?: title
+    }
+    
     void printTree(int depth = 0) {
 
-        if ( depth == 0 ) log.info "\n-- Layer Tree --"
+        if ( depth == 0 ) {
+            log.info ""
+            log.info "-- Layer Tree --"
+        }
 
-        log.info "   " * depth
-        log.info "${name} (parent: '$parent'; layers: '${layers?.size()}'; server: '${server}';)"
+        def spaces = ( "   " * depth )
+        log.info "$spaces$name [$id] (parent: '$parent' [${parent?.id}]; layers: '${layers.size()}'; active: '$activeInLastScan';)"
 
         layers.each{
 

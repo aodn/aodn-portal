@@ -82,7 +82,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Matching scan Job list should be returned", [], returnParams.scanJobList
         assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
         assertEquals "Servers to list should match", [server3], returnParams.serversToList
-        assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Error Line 1</b><br /><b>Error Line 2</b>", controller.flash.message
+        assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Error Line 1</b><br /><b>Error Line 2</b>", controller.flash.message
     }
     
     void testControls_InvalidConfig_EmptyListReturned() {
@@ -147,7 +147,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         controller.callRegister() // Make the call
         
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Error Text</b>", controller.flash.message
+        assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Error Text</b>", controller.flash.message
     }
     
     void testCallUpdate_NoProblem_RedirectedWithMessage() {
@@ -199,7 +199,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         controller.callUpdate() // Make the call
      
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "Exception: java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
+        assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
     }
     
  void testCallDelete_NoProblemHtmlResponse_Redirected() {
@@ -207,13 +207,13 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockDomain Config, [validConfig]
         
         def expectedQueryString = "?id=4&callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate"
-        setUpToUrlForResponse "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><html>Blah blah blah..."
+        setUpToUrlForException "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><html>Blah blah blah..."
          
         mockParams.scanJobId = 4
         controller.callDelete() // Make the call
      
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should show response", "Response: HTML response (Code: 200)", controller.flash.message
+        assertEquals "Flash message should show response", "java.lang.Exception: Test Exception<br />Response: <br /><i>HTML response (HTTP code: 500)</i>", controller.flash.message
     }
     
     void testCallDelete_ExceptionThrownWithExistingMessage_RedirectedWithNewAndExistingMessage() {
@@ -228,7 +228,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         controller.callDelete() // Make the call
      
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "Existing<br />Message<hr>Exception: java.lang.Exception: Test Exception", controller.flash.message
+        assertEquals "Flash message should contain exception message", "Existing<br />Message<hr>java.lang.Exception: Test Exception", controller.flash.message
     }
     
     void setUpToUrlForResponse( expectedUrl, responseText ) {
@@ -256,7 +256,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             
             return [ openConnection: {
                         return [ connect: {  throw new Exception( "Test Exception" ) },
-                                 errorStream: errorStream ]
+                                 errorStream: errorStream,
+                                 responseCode: 500
+                               ]
                         }
                    ]
         }
