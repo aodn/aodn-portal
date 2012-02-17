@@ -41,7 +41,7 @@ class ConfigController {
             
             if (principal) {
                 def userInstance = User.findByEmailAddress(principal)
-                instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
+                instanceAsGenericObj['currentUser'] = userInstance as JSON
             }
 			
             render(contentType: "application/json", text:  instanceAsGenericObj)
