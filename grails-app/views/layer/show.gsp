@@ -86,9 +86,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="layer.style.label" default="Style" /></td>
+                            <td valign="top" class="name"><g:message code="layer.styles.label" default="Styles" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "style")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: layerInstance, field: "styles")}</td>
                             
                         </tr>
                     

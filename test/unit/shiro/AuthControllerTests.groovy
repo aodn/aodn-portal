@@ -342,7 +342,8 @@ class AuthControllerTests extends ControllerUnitTestCase {
         
         // Check password changed
         assertEquals "PasswordHash should have been updated", user1.passwordHash, new Sha256Hash("newRandomPassword").toHex()
-        assertEquals "Should have been sent back to forgotPassword action", "forgotPassword", redirectArgs.action
+        assertEquals "Should be sent back to login page", "login", redirectArgs.action
+        assertEquals "Should have email address in 'username' field of params", user1.emailAddress, redirectArgs.params.username
     }
     
     private logInSubject(Subject subject) {
