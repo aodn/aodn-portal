@@ -14,7 +14,6 @@ class DepthController {
         else {
           // Portal configuration has connection details about service
           def configInstance = Config.activeInstance()
-          println configInstance
 
           if (configInstance.useDepthService) {
               
