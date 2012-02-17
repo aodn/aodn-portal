@@ -5,7 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
     
     <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
-    <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
+    <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/data/LayerDataPanelStore.js')}"  type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/ui/LayerGridPanel.js')}"  type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
@@ -14,11 +16,9 @@
   <title><g:message code="default.create.label" args="[entityName]" /></title>
      <script>
 
-      Ext.onReady(function(){
+      Ext.onReady(function() {
           initMenu(undefined, '${resource(dir:'/')}'); // grid2treedrag
-
-
-       });
+      });
 
       </script>
 
@@ -27,17 +27,15 @@
 <body>
 
 
-<g:form action="save" AUTOCOMPLETE = "off" >
-
   <div class="nav">
     <div id="logo"></div>
     <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
     <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>            
-
-    <input id="jsonString" name="json" autocomplete="off" type="hidden" />
-    <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
+	<g:form action="save" AUTOCOMPLETE="off">
+    	<input id="jsonString" name="json" autocomplete="off" type="hidden" />
+    	<span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
+    </g:form>
   </div>
-</g:form>
 
 <div class="content"> 
   <g:hasErrors bean="${menuInstance}">
