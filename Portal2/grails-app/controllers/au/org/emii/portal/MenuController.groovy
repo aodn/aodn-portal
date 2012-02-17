@@ -21,7 +21,6 @@ class MenuController {
     def create = {
         def menuInstance = new Menu()
         menuInstance.properties = params
-        flash.message = "Drag layers onto the tree. <BR>The root element of the tree must be renamed. Right click on the tree to see options"
         return [menuInstance: menuInstance]
 
     }
@@ -84,7 +83,6 @@ class MenuController {
                     return
                 }
             }
-            log.debug(params.json)
 			menuInstance.parseJson(params.json)
 			menuInstance.edited()
             if (!menuInstance.hasErrors() && menuInstance.save(flush: true, failOnError: true)) {
