@@ -1,5 +1,10 @@
 package au.org.emii.portal
 
+import grails.converters.deep.*
+import groovyx.net.http.*
+import java.awt.Menu
+import org.apache.commons.lang.builder.EqualsBuilder
+
 class Layer {
 
     String name
@@ -41,7 +46,7 @@ class Layer {
 		layers sort: "title"
         styles type:'text'
     }
-	
+
     static belongsTo = [parent: Layer]
     static hasMany = [layers: Layer]
 
@@ -65,7 +70,7 @@ class Layer {
         activeInLastScan()
         lastUpdated(nullable:true)
     }
-	
+
     Layer() {
         layers = []
         
@@ -79,6 +84,18 @@ class Layer {
         activeInLastScan = true
     }
 
+    boolean equals(other){
+        if(is(other)){
+            return true
+        }    
+        if(!(other instanceof Layer)) {
+            return false
+        }
+        return new EqualsBuilder()
+            .append(id, other.id)
+            .isEquals()
+    }
+    
     String toListString() {
         return "${server?.shortAcron} - ${name}"
     }
@@ -86,16 +103,7 @@ class Layer {
     String toString() {
         return "${server?.shortAcron} - ${name}"
     }
-
-    def onDelete() {
-        Layer.executeUpdate("delete MenuItem mi where mi.layerId = :layerId", [layerId: id])
-    }
-
-    String nameOrTitle() {
-        
-        return name ?: title
-    }
-    
+	
     void printTree(int depth = 0) {
 
         if ( depth == 0 ) {
@@ -110,5 +118,27 @@ class Layer {
 
             it.printTree (depth + 1)
         }
+    }
+
+    void deleteDefaultLayersInConfig(){
+        Config.withNewSession{
+            def configInstance = Config.activeInstance()
+
+            configInstance.defaultLayers.remove(this)
+            configInstance.save()
+        }
+    }
+
+    void deleteLayersFromMenuItems(){
+        MenuItem.withNewSession{
+            MenuItem.findAllByLayer(this)*.delete()
+        }
+    }
+
+
+    void beforeDelete(){
+        //find all layers related to this server
+        deleteDefaultLayersInConfig()
+        deleteLayersFromMenuItems()
     }
 }

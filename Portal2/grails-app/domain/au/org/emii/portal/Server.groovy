@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import javax.swing.text.LayeredHighlighter
+
 class Server {
     Long id
     String uri
@@ -11,7 +13,7 @@ class Server {
     Integer opacity // layer opacity
     String imageFormat
     String comments
-    
+
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
 
@@ -55,9 +57,18 @@ class Server {
     String toString() {
         return "${shortAcron}"
     }
-	
-	def onDelete() {
-        Server.executeUpdate("delete MenuItem mi where mi.server.id = :serverId", [serverId: id])
-        Server.executeUpdate("delete Layer l where l.server.id = :serverId", [serverId: id])
-	}
+
+	def beforeDelete() {
+        //Deleting any menus items where the full server has been added (as oppose to Layers)
+
+        MenuItem.withNewSession{
+            def menuItemServers = MenuItem.findAllByServer(this)
+            menuItemServers*.delete()
+        }
+        Layer.withNewSession {
+            def dels = Layer.findAll("from Layer as l where l.server.id = :serverId", [serverId: id])
+            log.debug(dels)
+            dels*.delete()
+        }
+    }
 }
