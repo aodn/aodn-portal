@@ -119,7 +119,7 @@ class LayerService {
                 // Process style info
                 def stylesVal = ""
 
-                newData.styles?.each{
+                newData.styles?.each {
 
                     if ( stylesVal ) stylesVal += ","
 
@@ -150,11 +150,13 @@ class LayerService {
 
 //            newLayer.printTree()
 
+            log.debug "Updating Layers finished."
+            
             newLayer.save( failOnError: true )
         }
-        catch(Exception e) {
+        catch ( Exception e ) {
 
-            throw new RuntimeException("Failure in updateWithNewData()", e)
+            throw new RuntimeException( "Failure in updateWithNewData()", e )
         }
     }
 
