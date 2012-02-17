@@ -154,8 +154,8 @@ class LayerController {
         def layerInstance = Layer.get(params.id)
         if (layerInstance) {
             try {
-				layerInstance.onDelete()
-                layerInstance.delete(flush: true)
+				//layerInstance.onDelete()
+                layerInstance.delete()
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "list")
             }
