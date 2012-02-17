@@ -18,7 +18,7 @@
 
                              <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="server"><g:message code="layer.server.label" default="Server" /></label>
+                                    <label for="server.id"><g:message code="layer.server.label" default="Server" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'server', 'errors')}">
                                     <g:select name="server.id" from="${au.org.emii.portal.Server.list()}" optionKey="id" value="${layerInstance?.server?.id}"  />
@@ -41,13 +41,12 @@
                                 </td>
                                 <td valign="top">
                                     ${layerInstance?.activeInLastScan}
-                                    <g:hiddenField name="activeInLastScan" value="${layerInstance?.activeInLastScan}" />
                                 </td>
                             </tr>
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="layers"><g:message code="layer.layers.label" default="Layers" /></label>
+                                    <g:message code="layer.layers.label" default="Layers" />
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
                                     ${layerInstance?.layers} Pull these in dynamically when harvesting starts
@@ -86,7 +85,7 @@
                                     <label for="blacklisted"><g:message code="layer.blacklisted.label" default="Blacklisted" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'blacklisted', 'errors')}">
-                                    <g:checkBox name="disabled" value="${layerInstance?.blacklisted}" />
+                                    <g:checkBox name="blacklisted" value="${layerInstance?.blacklisted}" />
                                 </td>
                             </tr>
 
@@ -128,7 +127,7 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="layers"><g:message code="layer.metaUrl.label" default="Metadata Url" /></label>
+                                    <label for="metaUrl"><g:message code="layer.metaUrl.label" default="Metadata Url" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metaUrl', 'errors')}">
                                     <g:textField name="metaUrl" value="${layerInstance?.metaUrl}" />
@@ -140,6 +139,6 @@
                                     <label for="queryable"><g:message code="layer.queryable.label" default="Queryable" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'queryable', 'errors')}">
-                                    <g:checkBox name="queryable" value="${true}"  /> <font class="hint">Defaulting to true.</font>
+                                    <g:checkBox name="queryable" value="${true}"  /> <span class="hint">Defaulting to true.</span>
                                 </td>
                             </tr>
