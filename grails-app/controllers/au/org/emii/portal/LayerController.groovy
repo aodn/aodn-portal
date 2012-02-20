@@ -1,13 +1,11 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-import groovyx.net.http.*
 
 import org.apache.shiro.*
 import org.apache.shiro.authc.*
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
-import org.springframework.jdbc.core.JdbcTemplate
 
 class LayerController {
 
@@ -222,7 +220,7 @@ class LayerController {
 
             log.info "Error processing layer/saveOrUpdate request", e
             
-            render status: 500, text: "Error processing request: ${e.message}"
+            render status: 500, text: "Error processing request: $e"
         }
     }
     
