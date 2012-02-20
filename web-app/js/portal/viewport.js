@@ -80,7 +80,7 @@ Portal.app = {
 
 
         Ext.Ajax.request({
-            url: 'config/list?type=JSON',
+            url: 'config/listForViewport',
             scope: this,
             success: function(resp) {        
 	            

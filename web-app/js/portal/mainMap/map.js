@@ -126,13 +126,11 @@ function zoomToLayer(map, layer){
             // ensure converted into this maps projection. convert metres into lat/lon etc
             bounds.transform( new OpenLayers.Projection(layer.projection), mapPanel.map.getProjectionObject()); 
             
-            // openlayers wants left, bottom, right, top 
-            
-            // // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
-            //if(layer.server.type == "NCWMS-1.3.0") { 
+            // openlayers wants left, bottom, right, top             
+            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
+            //if(layer.server.type == "WMS-1.3.0") { 
             //    bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-            //}
-            //
+            //}            
             
             if (bounds) {
                 mapPanel.map.zoomToExtent(bounds);

@@ -175,9 +175,8 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 	}
 
 	private def callList() 
-	{
-		controller.params.type = 'JSON'
-		controller.list()
+	{		
+		controller.listForSnapshotOptions()
 	}
 	
 	private def callDelete() 

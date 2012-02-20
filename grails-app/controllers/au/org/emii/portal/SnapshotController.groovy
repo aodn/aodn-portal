@@ -12,30 +12,36 @@ class SnapshotController
         redirect(action: "list", params: params)
     }
 
-    def list = 
-	{
+    def list = 	{
 		def snapshotList
         
-		if (params.owner)
-		{
-            def owner = User.get(params.owner.id)
-			snapshotList = Snapshot.findAllByOwner(owner)
+		if (params.owner?.id) {
+                    def owner = User.get(params.owner.id)
+                    snapshotList = Snapshot.findAllByOwner(owner)
 		}
-		else
-		{
-			snapshotList = Snapshot.list(params)
-		}
+		else {
+                    snapshotList = Snapshot.list(params)
+		}		
 		
-		if (params.type == 'JSON')
-		{
-            def result = [ success: true, data: snapshotList, count: snapshotList.count() ]
-            render text: result as JSON, contentType:"application/json"
+                params.max = Math.min(params.max ? params.int('max') : 10, 100)
+                [snapshotInstanceList: snapshotList, snapshotInstanceTotal: Snapshot.count()]
+		
+    }
+    
+    def listForSnapshotOptions = {
+        
+        	def snapshotList
+		if (params.owner?.id) {
+                    def owner = User.get(params.owner.id)
+                    snapshotList = Snapshot.findAllByOwner(owner)
 		}
-		else
-		{
-	        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-	        [snapshotInstanceList: snapshotList, snapshotInstanceTotal: Snapshot.count()]
-		}
+		else {
+                    snapshotList = Snapshot.list(params)
+		}		
+		
+                def result = [ success: true, data: snapshotList, count: snapshotList.count() ]
+                render text: result as JSON, contentType:"application/json"
+		
     }
 
     def create = {

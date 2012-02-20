@@ -1,7 +1,7 @@
 Ext.namespace('Portal.snapshot');
 
 Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
-  initComponent: function() {
+  initComponent: function() { 
     Ext.apply(this, {
       layout: "hbox",
       hidden: true,
@@ -19,10 +19,9 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
             autoLoad: Portal.app.config.currentUser,
             autoDestroy: true,
             remote: true,
-            url: 'snapshot/list',
+            url: 'snapshot/listForSnapshotOptions',
             baseParams: {
-              type: 'JSON',
-              'owner.id': Portal.app.config.currentUser?Portal.app.config.currentUser.id:null
+              'owner.id': Portal.app.config.currentUser ? Portal.app.config.currentUser.id : null
             },
             root: 'data',
             fields: ['id','name'],
