@@ -22,7 +22,7 @@
                                     <label for="type"><g:message code="server.type.label" default="Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'type', 'errors')}">
-                                    <g:select name="type" from="${serverInstance.constraints.type.inList}" value="${serverInstance?.type}" valueMessagePrefix="server.type"  /><font class="hint" >Dont use NCWMS-1.3.0 The XY axis problem may arise.</font>
+                                    <g:select name="type" from="${serverInstance.constraints.type.inList}" value="${serverInstance?.type}" valueMessagePrefix="server.type"  /><font class="hint" >Changing the server version without reloading layers, will result in BBOX being incorrect</font>
                                 </td>
                             </tr>
                         

@@ -280,6 +280,8 @@ function addToPopup(mapPanel, e) {
                         BBOX: layer.getExtent().toBBOX(),
                         X: e.xy.x,
                         Y: e.xy.y,
+                        I: e.xy.x, // buggy IVEC NCWMS-1.1.1
+                        J: e.xy.y, // buggy IVEC NCWMS-1.1.1
                         INFO_FORMAT: expectedFormat,
                         QUERY_LAYERS: layer.params.LAYERS,
                         FEATURE_COUNT: featureCount,

@@ -34,7 +34,7 @@ class ConfigController {
         def x = (configInstance as JSON).toString()
                     configInstance = massageConfigInstance(configInstance);
         // convert back to an generic object so we can add what we want
-        def instanceAsGenericObj = JSON.parse(x)
+        def instanceAsGenericObj = JSON.parse(x)        
         // add the fully expanded baselayer menu as layers
         instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
                             configInstance.baselayerMenu.getBaseLayers() as JSON
