@@ -31,7 +31,7 @@
                                 </td>
                                 <td valign="top">
                                     ${layerInstance?.dataSource}
-                                    <g:hiddenField name="source" value="${layerInstance?.dataSource}" />
+                                    <g:hiddenField name="dataSource" value="${layerInstance?.dataSource}" />
                                 </td>
                             </tr>
                             
@@ -49,7 +49,7 @@
                                     <g:message code="layer.layers.label" default="Layers" />
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
-                                    ${layerInstance?.layers} Pull these in dynamically when harvesting starts
+                                    ${layerInstance?.layers}
                                 </td> 
                             </tr>
                             
