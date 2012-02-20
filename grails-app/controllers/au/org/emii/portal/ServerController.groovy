@@ -15,10 +15,7 @@ class ServerController {
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		if(params.type == 'JSON')
-			render Server.list(params) as JSON
-		else
-			[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
+		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
 	}
         
         def listAllowDiscoveriesAsJson = {
