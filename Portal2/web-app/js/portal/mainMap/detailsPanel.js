@@ -354,7 +354,7 @@ function updateDetailsPanel(layer) {
 
 
         selectedLayer = layer;
-
+        
         updateStyles(layer);
 
         Ext.getCmp('opacitySlider').show(); // reset slider
@@ -612,7 +612,7 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
         if(url.contains("COLORSCALERANGE"))  {
             
             url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
-            opts += "COLORSCALERANGE=" + layer.params.COLORSCALERANGE
+            opts += "COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
         }
         else  {
             
@@ -622,10 +622,10 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     if (useProxy) {
         // FORMAT here is for the proxy, so that it knows its a binary image required
-        url = proxyCachedURL+ encodeURIComponent(url) +  "&"
+        url = proxyCachedURL+ encodeURIComponent(url) +  "&";
     }
     else {
-        url +=  "?" 
+        url +=  "?" ;
     }
     
     url +=  opts 
@@ -635,7 +635,7 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
     
     //console.log(layer.cache + " " + url)
     
-    return url
+    return url;
 }
 
 

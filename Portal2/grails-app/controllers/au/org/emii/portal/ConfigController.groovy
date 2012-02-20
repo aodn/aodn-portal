@@ -20,35 +20,41 @@ class ConfigController {
         // expect only one Config instance to exist
         def configInstance = Config.activeInstance();
         
-        if(params.type == 'JSON') {
-            // get instance now with all 'deep' details as a JSON string
-            def x = (configInstance as JSON).toString()
-			configInstance = massageConfigInstance(configInstance);
-            // convert back to an generic object so we can add what we want
-            def instanceAsGenericObj = JSON.parse(x)
-            // add the fully expanded baselayer menu as layers
-            instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
-				configInstance.baselayerMenu.getBaseLayers() as JSON
-            }
-			
-			instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
-				_getDisplayableMenu(configInstance.defaultMenu) as JSON
-			}
-			
-			// add current user details
-            def currentUser = SecurityUtils.getSubject()
-            def principal = currentUser.getPrincipal()
-            
-            if (principal) {
-                def userInstance = User.findByEmailAddress(principal)
-                instanceAsGenericObj['currentUser'] = userInstance as JSON
-            }
-			
-            render(contentType: "application/json", text:  instanceAsGenericObj)
+         render(view: "show", model: [configInstance: configInstance])
+        
+    }
+    
+    
+    def listForViewport = {
+        
+        
+        def configInstance = Config.activeInstance();
+        
+        // get instance now with all 'deep' details as a JSON string
+        def x = (configInstance as JSON).toString()
+                    configInstance = massageConfigInstance(configInstance);
+        // convert back to an generic object so we can add what we want
+        def instanceAsGenericObj = JSON.parse(x)
+        // add the fully expanded baselayer menu as layers
+        instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
+                            configInstance.baselayerMenu.getBaseLayers() as JSON
         }
-        else {
-            render(view: "show", model: [configInstance: configInstance])
+
+                    instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
+                            _getDisplayableMenu(configInstance.defaultMenu) as JSON
+                    }
+
+                    // add current user details
+        def currentUser = SecurityUtils.getSubject()
+        def principal = currentUser.getPrincipal()
+
+        if (principal) {
+            def userInstance = User.findByEmailAddress(principal)
+            instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
+
+        render(contentType: "application/json", text:  instanceAsGenericObj)
+        
     }
 
     def create = {

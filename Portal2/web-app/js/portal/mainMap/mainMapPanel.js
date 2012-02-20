@@ -545,10 +545,14 @@ function createLayer(dl, overrides) {
         transitionEffect: 'resize'
     };
     
-    if(dl.server.type == "NCWMS-1.3.0") {   
+    // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187   
+    //if(dl.server.type == "NCWMS-1.3.0") {   
         // incomplete fix for the wms standards war 
-        options.yx = [];
-    }
+    //    options.yx = [];
+    //}
+    //               
+       
+    
     if (dl.isBaseLayer) {
         options.isBaseLayer = dl.isBaseLayer;
     }    
@@ -588,8 +592,8 @@ function createLayer(dl, overrides) {
     // extra info to keep
     layer.grailsLayerId = dl.id; // grails layer id
     layer.server= dl.server;
-    layer.cql = dl.cql;
-    layer.bbox = dl.bbox;    
+    layer.cql = dl.cql;  
+    layer.bbox = dl.bbox;
     layer.cache = dl.cache;
     layer.projection = dl.projection;
     layer.parentLayerId = parentLayerId;
@@ -738,7 +742,7 @@ function getLayerMetadata(layer) {
                 // reload,  as the date picker details/ form  will be wrong at the very least!
                 if (selectedLayer != undefined ) {   
                     if (selectedLayer.id == layer.id) {
-                        updateDetailsPanel(layer); 
+                        updateDetailsPanel(layer);                         
                     }
                 }
 
