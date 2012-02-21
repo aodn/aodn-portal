@@ -256,16 +256,19 @@ function setToolbarItems() {
  * 
  * 
  */
-function addGrailsLayer(grailsLayerId, layerOptions) {   
+function addGrailsLayer(grailsLayerId, layerOptions, layerParams, animated, chosenTimes) {   
     
     Ext.Ajax.request({
 
         url: 'layer/showLayerByItsId?layerId=' + grailsLayerId,
         layerOptions: layerOptions,
+        layerParams: layerParams,
+        animated: animated,
+        chosenTimes: chosenTimes,
         success: function(resp, options){
             var dl = Ext.util.JSON.decode(resp.responseText);  
             if (dl != "") {
-               addMainMapLayer( dl, options.layerOptions );                
+               addMainMapLayer( dl, options.layerOptions, options.layerParams, animated, chosenTimes );
             }
             
         },
@@ -499,7 +502,7 @@ function stopgetTimePeriod(layer) {
 
 // create an openlayer wms layer baselayer or overlay layer
 // not adding to a map here
-function createLayer(dl, overrides) {
+function createLayer(dl, optionOverrides, paramOverrides) {
      /*
       * Buffer: tiles around the viewport. 1 is enough
       * Gutter: images wider and taller than the tile size by a value of 2 x gutter
@@ -562,8 +565,12 @@ function createLayer(dl, overrides) {
    
     }
     
-    if (overrides) {
-      Ext.apply(options, overrides);
+    if (optionOverrides) {
+      Ext.apply(options, optionOverrides);
+    }
+    
+    if (paramOverrides) {
+      Ext.apply(params, paramOverrides);
     }
     
     var serverUri;
@@ -639,9 +646,9 @@ function addBaseOpenLayersToMap(map)
  * This is the internal add layer method used to add all overlay layers
  * 
  */
-function addMainMapLayer(dl, layerOptions) {    
+function addMainMapLayer(dl, layerOptions, layerParams, animated, chosenTimes) {    
 
-    var layer = createLayer(dl, layerOptions);
+    var layer = createLayer(dl, layerOptions, layerParams);
 
     if (layer != undefined) {
           
@@ -673,6 +680,11 @@ function addMainMapLayer(dl, layerOptions) {
         }
         // store the OpenLayers layer so we can retreive it later
         activeLayers[getUniqueLayerId(layer)] = layer;
+        
+        if (animated) {
+          layer.chosenTimes = chosenTimes;
+          addNCWMSLayer(layer);
+        }
         
     }
    

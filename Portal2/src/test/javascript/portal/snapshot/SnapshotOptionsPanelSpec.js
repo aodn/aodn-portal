@@ -4,7 +4,8 @@ describe("Portal.snapshot", function()
 	{
 	  var mockController = {
 	      on: jasmine.createSpy(),
-	      loadSnapshot: jasmine.createSpy()
+        loadSnapshot: jasmine.createSpy(),
+        deleteSnapshot: jasmine.createSpy()
 	  };
 
 	  var snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
@@ -16,17 +17,25 @@ describe("Portal.snapshot", function()
 		it("construct", function()
 		{
 			expect(snapshotOptionsPanel.items.length).toEqual(3);
-			expect(snapshotOptionsPanel.items.items[2].text).toEqual("Delete");
+			expect(snapshotOptionsPanel.btnDelete.text).toEqual("Delete");
       expect(mockController.on).toHaveBeenCalled();
 		});
 		
-		it("select snapshot", function()
-		{
-			var comboBox = snapshotOptionsPanel.items.items[0];
-			comboBox.fireEvent('select', comboBox);
-			
-			expect(mockController.loadSnapshot).toHaveBeenCalled();
-		});
-		
+    it("select snapshot", function()
+    {
+      var comboBox = snapshotOptionsPanel.items.items[0];
+      comboBox.fireEvent('select', comboBox);
+      
+      expect(mockController.loadSnapshot).toHaveBeenCalled();
+    });
+        
+    it("delete snapshot", function()
+    {
+      var btnDelete = snapshotOptionsPanel.btnDelete;
+      btnDelete.fireEvent('click', btnDelete);
+      
+      expect(mockController.deleteSnapshot).toHaveBeenCalled();
+    });
+        
 	});
 });		

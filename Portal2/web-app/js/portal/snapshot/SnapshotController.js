@@ -34,11 +34,23 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       if (mapLayers[i].grailsLayerId) {
         // layers sourced from server
         layer.layer = mapLayers[i].grailsLayerId;
+      } else if (mapLayers[i].originalWMSLayer != undefined) {
+        // animated layers
+        layer.layer = mapLayers[i].originalWMSLayer.grailsLayerId;
+        layer.animated = true;
+        layer.chosenTimes = mapLayers[i].originalWMSLayer.chosenTimes; 
+        layer.styles = mapLayers[i].originalWMSLayer.params.STYLES;
       } else {
         // layers added from search
         layer.name = mapLayers[i].params.LAYERS;
         layer.title = mapLayers[i].name;
         layer.serviceUrl = mapLayers[i].server.uri;
+      }
+      if (layer.opacity != undefined) {
+        layer.opacity = mapLayers[i].opacity;
+      }
+      if (mapLayers[i].params != undefined) {
+        layer.styles = mapLayers[i].params.STYLES;
       }
       layer.isBaseLayer= mapLayers[i].isBaseLayer;
       layer.hidden= !mapLayers[i].getVisibility();
@@ -71,7 +83,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       var snapshotLayer = snapshot.layers[i];
       
       var options = {
-          visibility: !snapshotLayer.hidden
+          visibility: !snapshotLayer.hidden,
+          opacity: snapshotLayer.opacity
+      };
+      
+      var params = {
+          styles: snapshotLayer.styles
       };
       
       if (snapshotLayer.isBaseLayer) {
@@ -80,7 +97,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
         }
       } else {
         if (snapshotLayer.layer) {
-          addGrailsLayer(snapshotLayer.layer.id, options);
+          addGrailsLayer(snapshotLayer.layer.id, options, params, snapshotLayer.animated, snapshotLayer.chosenTimes);
         } else {
           var layerDef = {
             title: snapshotLayer.title,
@@ -90,7 +107,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
             },
             name: snapshotLayer.name
           };
-          addMainMapLayer(layerDef, options);
+          addMainMapLayer(layerDef, options, params);
         }
       }
     }
