@@ -19,9 +19,7 @@
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
 
 
-<!-- ExJS4-->
-<!--script src="${resource(dir:'js',file:'ext-4.0.2a/builds/ext-all-sandbox-debug.js')}"   type="text/javascript"></script-->
- <!-- ExJS3-->
+<!-- ExJS3-->
 <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
 <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
