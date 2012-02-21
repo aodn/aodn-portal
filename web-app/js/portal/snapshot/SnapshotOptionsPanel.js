@@ -41,6 +41,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         new Ext.Spacer({width: 7}),
         new Ext.Button({
           text: OpenLayers.i18n('deleteSnapshot'),
+          ref: 'btnDelete',
           cls: "floatLeft buttonPad",   
           tooltip: OpenLayers.i18n('deleteSnapshotTip'),
           listeners:

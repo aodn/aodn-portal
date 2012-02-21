@@ -6,6 +6,10 @@ class SnapshotLayer {
     
     // Configured layer
     Layer layer
+    
+    // Animation details
+    Boolean animated = false
+    String chosenTimes
 
     // Layer added from search     
     String serviceUrl
@@ -15,7 +19,7 @@ class SnapshotLayer {
     Boolean isBaseLayer = false
     Boolean hidden = false
     Float opacity
-    String styles
+    String styles = ""
 
     static constraints = {
         layer(nullable: true)
@@ -30,8 +34,10 @@ class SnapshotLayer {
         })
         isBaseLayer()
         hidden()
+        animated()
+        chosenTimes(nullable:true)
         opacity(nullable:true)
-        styles(nullable: true)
+        styles()
         
     }
 }
