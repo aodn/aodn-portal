@@ -61,47 +61,68 @@ function getXML(request_string) {
 
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
-function getCelsius(val,src_units) {
+function getAussieUnits(val,src_units) {
      var cel = "";
      var c = "&#176;C";
      var ret = [];
+     var toReturn = [];
      var old = "";
-     src_units = src_units.toLowerCase();
-     src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
-     // arrays hold all posiible names for farenheight or kelvin and celcius
-     var celNameArray = ["c","celcius","cel","deg_c"];
-     var farNameArray = ["f","fahrenheit"];
-     var kelNameArray = ["k","kelvin","kel"]
+     
+     if (src_units != undefined) {
+         src_units = src_units.toLowerCase();
+         src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
+         // arrays hold all possible names for a 'type'
+         // 
+         // ALL ARRAY ENTRIES IN LOWER CASE
+         var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
+         var farNameArray = ["f","fahrenheit"];
+         var kelNameArray = ["k","kelvin","kel"];
+         var metresNameArray = ["m","metres","meters","metre"]
+
+         // fahrenheit
+          if (inArray(farNameArray,src_units)) {
+            cel = (val - 32) / 1.8;
+            old = " (<b>"+toNSigFigs(val,4) +"</b> fahrenheit)";
+            ret = [toNSigFigs(cel,4),c,old];
+            //console.log("farren");
+          }
+          // kelvin
+          else if (inArray(kelNameArray,src_units)) {
+            cel = val - 272.15;
+            old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
+            ret = [toNSigFigs(cel,4),c,old];
+            
+           // console.log("kel");
+          }
+          // celcius
+          else if (inArray(celNameArray,src_units)) {
+             ret = [toNSigFigs(val,4),c,""];
+             cel = "success";
+             
+            //console.log("cel");
+          }
+          // metres
+          else if (inArray(metresNameArray,src_units)) {
+             ret = [toNSigFigs(val,2),"m",""];
+             cel = "success";
+          }
 
 
-     // fahrenheit
-      if (inArray(farNameArray,src_units)) {
-        cel = (val - 32) / 1.8;
-        old = " (<b>"+toNSigFigs(val,4) +"</b>fahrenheit)";
-        ret = [toNSigFigs(cel,4),c,old];
-      }
-      // kelvin
-      else if (inArray(kelNameArray,src_units)) {
-        cel = val - 272.15;
-        old = " (<b>" + toNSigFigs(val,4) + "</b>kelvin)";
-        ret = [toNSigFigs(cel,4),c,old];
-      }
-      // celcius
-      else if (inArray(celNameArray,src_units)) {
-         ret = [toNSigFigs(val,4),c,""];
-         cel = "himum";
-      }
-
-
-      // if cel empty then the unit wasnt temperature
-      // or we cant even anticipate..
-      if (cel == "") {
-          cel = val;
-          return [toNSigFigs(cel,4),src_units,""];
-      }
-      else {
-          return ret;
-      }
+          // if cel empty then the unit wasnt suitable
+          // or we cant even anticipate..
+          if (cel == "") {
+              cel = val;
+              toReturn = [toNSigFigs(cel,4),src_units,""];
+          }
+          else {
+              toReturn = ret;
+          }
+     }
+     else {
+         toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
+     }
+     
+     return toReturn;
 
 }
 
