@@ -29,19 +29,24 @@ class ConfigController {
         
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()
-                    configInstance = massageConfigInstance(configInstance);
+        configInstance = _enableDisableMenuOfTheDay(configInstance);
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)        
         // add the fully expanded baselayer menu as layers
-        instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
-                            configInstance.baselayerMenu.getBaseLayers() as JSON
+		instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
+            configInstance.baselayerMenu.getBaseLayers() as JSON
+		}
+
+        instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
+            _getDisplayableMenu(configInstance.defaultMenu) as JSON
         }
+		
+		def tmpJsonObj = JSON.use('deep') {
+			configInstance.defaultLayers as JSON
+		}
+		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
 
-                    instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
-                            _getDisplayableMenu(configInstance.defaultMenu) as JSON
-                    }
-
-                    // add current user details
+        // add current user details
         def currentUser = SecurityUtils.getSubject()
         def principal = currentUser.getPrincipal()
 
@@ -181,7 +186,7 @@ class ConfigController {
     
     // Proccess the Motd 
     // Process the defaultMenu - TODO
-    private Config massageConfigInstance(configInstance) {
+    def _enableDisableMenuOfTheDay(configInstance) {
         
         def now = new Date()
 
