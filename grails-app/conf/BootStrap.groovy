@@ -25,6 +25,9 @@ class BootStrap {
 			result['footerContent'] = cfg.footerContent
 			result['footerContentWidth'] = cfg.footerContentWidth
 			
+			// Depth service settings
+			result['useDepthService'] = cfg.useDepthService
+			
 			// heights and widths
 			result['popupWidth'] = cfg.popupWidth
 			result['popupHeight'] = cfg.popupHeight
@@ -39,8 +42,6 @@ class BootStrap {
 			result['metadataLinkProtocols'] = cfg.metadataLinkProtocols
 			result['metadataLayerProtocols'] = cfg.metadataLayerProtocols
 			result['mapGetFeatureInfoBuffer'] = cfg.mapGetFeatureInfoBuffer
-			result['baselayerList'] = cfg.baselayerList
-			result['defaultLayers'] = cfg.defaultLayers
 			
 			return result
 		}
