@@ -1,7 +1,3 @@
-<div class="pagination">
-    <g:paginate total="${ filteredLayersCount }" />
-</div>
-
 <div class="list">
 
     <table>

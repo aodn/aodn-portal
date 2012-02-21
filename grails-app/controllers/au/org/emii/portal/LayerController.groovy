@@ -47,7 +47,7 @@ class LayerController {
             }
         }
         
-        params.max = Math.min( params.max ? params.int( "max" ) : 100, 500 )
+        params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
         if ( !params.offset ) params.offset = 0
 
         def criteria = Layer.createCriteria()
