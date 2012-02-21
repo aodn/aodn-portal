@@ -321,7 +321,8 @@ function addToPopup(mapPanel, e) {
                     name: layer.name, 
                     id: layer.id,
                     expectedFormat: expectedFormat,
-                    isAnimatedLayer: isAnimatedLayer
+                    isAnimatedLayer: isAnimatedLayer,
+                    units: layer.metadata.units
                 },
                 success: function(resp, options){
                     if ( popup ) { // Popup may have been closed since request was sent
@@ -348,9 +349,7 @@ function addToPopup(mapPanel, e) {
                             });
                             
                             
-                            
-                            if (popup.numGoodResults == 1) {
-                                
+                            if (popup.numGoodResults == 1) {                                
                                 
                                 // set to full height and re-pan
                                 popup.setSize(Portal.app.config.popupWidth,Portal.app.config.popupHeight);               
@@ -451,7 +450,7 @@ function formatGetFeatureInfo(response, options) {
        
     }
     else if(options.params.expectedFormat == 'text/xml') {
-        return setHTML_ncWMS(response);
+        return setHTML_ncWMS(response,options);
     }
     else if(options.params.expectedFormat.indexOf('image') >= 0){
 
@@ -462,14 +461,13 @@ function formatGetFeatureInfo(response, options) {
     }
 }
 
-function setHTML_ncWMS(response) {
+function setHTML_ncWMS(response,options) {
     
     var xmldoc = response.responseXML;  
     
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 
         
         var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
-        
 
         if (lon) {  // We have a successful result
 
@@ -498,37 +496,42 @@ function setHTML_ncWMS(response) {
             var html = "";
             var  extras = "";
 
-            var isSD = true;//this.layername.toLowerCase().indexOf("standard deviation") >= 0;
+            var isSD = options.params.name.toLowerCase().indexOf("standard deviation") >= 0;
 
 
             if (!isNaN(startval) ) {  // may have no data at this point
 
-                if(time != null)
-                {
+                if(time != null)   {
+                    
                     var human_time = new Date();
                     human_time.setISO8601(time);
+                    if (endtime != null) {
+                        var human_endtime = new Date();
+                        human_endtime.setISO8601(endtime);                        
+                        endval = getAussieUnits(endval, options.params.units);
+                    }
+                    
                 } 
-                if(time != null)
-                {
+                
+                var startval = getAussieUnits(startval, options.params.units);
+                
+                if(human_time != null)  {
+                    
                     if (endval == null) {
-                        if(isSD)
-                        {
-                            vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " <b>" + origStartVal + "</b> degrees";
+                        if(isSD)  {
+                            vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
                         }
-                        else{
+                        else {
                             vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                         }
                     }
                     else {
 
-                        var human_endtime = new Date();
-                        human_endtime.setISO8601(endtime);
-                        endval = getCelsius(endval, this.unit);
 
                         if(isSD)
                         {
-                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b>" + origStartVal + "</b> degrees";
-                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ ": <b>" + origEndVal + "</b> degrees";
+                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.params.units;
+                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.params.units;
                             vals += "<BR />";
                         }
                         else
@@ -537,6 +540,14 @@ function setHTML_ncWMS(response) {
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
                             vals += "<BR />";
                         }
+                    }
+                }
+                else {
+                    if(isSD)  {
+                        vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
+                    }
+                    else {
+                        vals = "<br /><b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                     }
                 }
 
@@ -548,10 +559,7 @@ function setHTML_ncWMS(response) {
                 html =  "<div class=\"feature\">";
                 html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
 
-                // to do add transect drawing here
-                //
-                //html += "<br><h6>Get a graph of the data along a transect via layer options!</h6>\n";
-                //html = html +" <div  ><a href="#" onclick=\"addLineDrawingLayer('ocean_east_aus_temp/temp','http://emii3.its.utas.edu.au/ncWMS/wms')\" >Turn on transect graphing for this layer </a></div>";
+                
 
                 if(copyright != undefined) {
                     html += "<p>" + copyright.childNodes[0].nodeValue + "</p>";
