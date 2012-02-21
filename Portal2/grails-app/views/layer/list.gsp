@@ -1,5 +1,5 @@
+<%@ page import="au.org.emii.portal.Server; au.org.emii.portal.Layer" %>
 
-<%@ page import="au.org.emii.portal.Layer" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -14,66 +14,35 @@
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
         <div class="content">
-            <h1><g:message code="default.list.label" args="[entityName]" /> (${layerInstanceList?.size()}/${Layer.count()})</h1>
+            <h1><g:message code="default.list.label" args="[entityName]" /> <span style="font-weight: normal; font-size: 80%;">(Showing ${ params.offset } - ${ params.int( "offset" ) + layersShownCount } / ${ filteredLayersCount })</span></h1>
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+                <div class="message">${flash.message}</div>
             </g:if>
-            <div class="list">
-                <table>
-                    <thead>
-                        <tr>
-                            <g:sortableColumn property="title" title="${message(code: 'layer.title.label', default: 'Title')}" />
-                            
-                            <g:sortableColumn property="name" title="${message(code: 'layer.name.label', default: 'Name (WMS ID)')}" />
 
-                            <g:sortableColumn property="namespace" title="${message(code: 'layer.namespace.label', default: 'Namespace')}" />
-                            
-                            <th><g:message code="layer.server.label" default="Server" /></th>
-                            
-                            <g:sortableColumn property="dataSource" title="${message(code: 'layer.dataSource.label', default: 'Data Source')}" />
-                            
-                            <g:sortableColumn property="lastUpdated" title="${message(code: 'layer.lastUpdated.label', default: 'Last updated')}" />
-                            
-                            <g:sortableColumn property="activeInLastScan" title="${message(code: 'layer.activeInLastScan.label', default: 'Active')}" />
-                        
-                            <g:sortableColumn property="blacklisted" title="${message(code: 'layer.blacklisted.label', default: 'Blacklisted')}" />
-                            
-                            <th><g:message code="layer.isBaseLayer.label" default="Base Layer" /></th>
-                            
-                            <th><g:message code="layer.cache.label" default="Cache" /></th>
+            <div class="filters">
+                <g:form action="list">
+                    <table style="border-width: 0; width: 20%; margin: 0.8em 0;">
+                        <tr>
+                            <th colspan="2">Filter list</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                    <g:each in="${layerInstanceList}" status="i" var="layerInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            <td>${ layerInstance.parentId ? "" : "(R) " }<g:link action="edit" id="${layerInstance.id}">${fieldValue(bean: layerInstance, field: "title")}</g:link></td>
-                            
-                            <td>${fieldValue(bean: layerInstance, field: "name")}</td>
-                            
-                            <td>${fieldValue(bean: layerInstance, field: "namespace")}</td>
-                            
-                            <td>${fieldValue(bean: layerInstance, field: "server")}</td>
-                        
-                            <td>${fieldValue(bean: layerInstance, field: "dataSource")}</td>
-                            
-                            <td><g:if test="${layerInstance.lastUpdated}"><g:formatDate format="dd/MM/yy HH:mm" date="${layerInstance.lastUpdated}"/></g:if></td>
-                            
-                            <td><g:formatBoolean boolean="${layerInstance.activeInLastScan}" /></td>
-                        
-                            <td><g:formatBoolean boolean="${layerInstance.blacklisted}" /></td>
-                            
-                            <td><g:formatBoolean boolean="${layerInstance.isBaseLayer}" /></td>
-                            
-                            <td><g:formatBoolean boolean="${layerInstance.cache}" /></td>
+                        <tr>
+                            <td style="padding-right: 1.25em"><label for="keyword">Keyword</label></td>
+                            <td><g:textField name="keyword" value="${filters?.keyword}" /></td>
                         </tr>
-                    </g:each>
-                    </tbody>
-                </table>
+                        <tr>
+                            <td><label for="serverId">Server</label></td>
+                            <td><g:select name="serverId" from="${Server.list()}" optionKey="id" value="${filters?.serverId}" noSelection="['':'']" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><g:submitButton name="filter" value="Filter" /></td>
+                        </tr>
+                    </table>
+                </g:form>
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${layerInstanceTotal}" />
-            </div>
+
+            <g:render template="listBody" model="$model" />
+
         </div>
     </body>
 </html>

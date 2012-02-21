@@ -1,7 +1,6 @@
 package au.org.emii.portal
 
-import grails.converters.deep.*
-import groovyx.net.http.*
+import grails.converters.deep.JSON
 
 class ServerController {
 
@@ -18,11 +17,10 @@ class ServerController {
 		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
 	}
         
-        def listAllowDiscoveriesAsJson = {
-            def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
-            render layerInstanceList as JSON
-        }
-
+    def listAllowDiscoveriesAsJson = {
+        def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
+        render layerInstanceList as JSON
+    }
 
 	def create = {
 		def serverInstance = new Server()
@@ -41,7 +39,6 @@ class ServerController {
 			render(view: "create", model: [serverInstance: serverInstance])
 		}
 	}
-
 
 	def show = {
 		def serverInstance = Server.get(params.id)
@@ -114,7 +111,6 @@ class ServerController {
 		}
 	}
 
-
 	def showServerByItsId = {
 
 		def serverInstance = null
@@ -131,7 +127,6 @@ class ServerController {
 		}
 	}
 
-
 	def selectServerToCheckLinks = {
 
 	}
@@ -141,6 +136,4 @@ class ServerController {
 		def result = checkLinksService.check(params.server)
 		render result
 	}
-
-	def listAsJSON
 }

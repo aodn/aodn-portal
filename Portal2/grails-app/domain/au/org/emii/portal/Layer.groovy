@@ -1,8 +1,5 @@
 package au.org.emii.portal
 
-import grails.converters.deep.*
-import groovyx.net.http.*
-import java.awt.Menu
 import org.apache.commons.lang.builder.EqualsBuilder
 
 class Layer {
@@ -44,7 +41,7 @@ class Layer {
     static mapping = {
         sort "server"
 		layers sort: "title"
-        styles type:'text'
+        styles type: "text"
     }
 
     static belongsTo = [parent: Layer]
@@ -134,7 +131,6 @@ class Layer {
             MenuItem.findAllByLayer(this)*.delete()
         }
     }
-
 
     void beforeDelete(){
         //find all layers related to this server

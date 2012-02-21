@@ -17,7 +17,7 @@ class SecurityFilters {
             }
         }
                
-        configAccess(controller: "config", action: "list") {
+        configAccess(controller: "config", action: "listForViewport") {
             before = {
                 
                 logRequest("configAccess", controllerName, actionName)
@@ -31,7 +31,8 @@ class SecurityFilters {
             before = {
                 
                 logRequest("depthAccess", controllerName, actionName)
-                
+                logRequest("depthAccess", controllerName, actionName)
+
                 // Allow all access
                 request.accessAllowed = true
             }
@@ -40,14 +41,14 @@ class SecurityFilters {
         snapshot(controller: "snapshot", action: "*") {
             before = {
                 
-                logRequest("snapshot", controllerName, actionName)
+                logRequest("snapshotAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true
             }
         }
 
-        serverAccess(controller: "server", action: "list|listAllowDiscoveriesAsJson") {
+        serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
             before = {
                 
                 logRequest("serverAccess", controllerName, actionName)
@@ -57,7 +58,7 @@ class SecurityFilters {
             }
         }
         
-        layerAccess(controller: "layer", action: "list|listBaseLayersAsJson|listNonBaseLayerAsJson|showLayerByItsId|saveOrUpdate|server") {
+        layerAccess(controller: "layer", action: "listBaseLayersAsJson|listNonBaseLayerAsJson|showLayerByItsId|saveOrUpdate|server") {
             before = {
                 
                 logRequest("layerAccess", controllerName, actionName)
@@ -67,7 +68,7 @@ class SecurityFilters {
             }
         }
         
-        proxyAccess(controller: "proxy", action: "index") {
+        proxyAccess(controller: "proxy", action: "index|cache") {
             before = {
                 
                 logRequest("proxyAccess", controllerName, actionName)
@@ -76,16 +77,7 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        proxyAccess(controller: "proxy", action: "cache") {
-            before = {
-                
-                logRequest("proxyAccess", controllerName, actionName)
-                
-                // Allow all access
-                request.accessAllowed = true
-            }
-        }
-        
+
         downloadAccess(controller: "download", action: "downloadFromCart") {
             before = {
                 

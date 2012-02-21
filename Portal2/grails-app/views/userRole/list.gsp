@@ -1,5 +1,5 @@
-
 <%@ page import="au.org.emii.portal.UserRole" %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -41,7 +41,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
+            <div class="pagination">
                 <g:paginate total="${userRoleInstanceTotal}" />
             </div>
         </div>

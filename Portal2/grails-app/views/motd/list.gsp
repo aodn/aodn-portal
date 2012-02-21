@@ -1,5 +1,5 @@
-
 <%@ page import="au.org.emii.portal.Motd" %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -44,7 +44,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
+            <div class="pagination">
                 <g:paginate total="${motdInstanceTotal}" />
             </div>
         </div>
