@@ -16,18 +16,15 @@ class ConfigController {
     }
     
     def list = {
-        
+
         // expect only one Config instance to exist
         def configInstance = Config.activeInstance();
         
-         render(view: "show", model: [configInstance: configInstance])
-        
+        render(view: "show", model: [configInstance: configInstance])
     }
-    
-    
+
     def listForViewport = {
-        
-        
+
         def configInstance = Config.activeInstance();
         
         // get instance now with all 'deep' details as a JSON string
@@ -54,7 +51,6 @@ class ConfigController {
         }
 
         render(contentType: "application/json", text:  instanceAsGenericObj)
-        
     }
 
     def create = {

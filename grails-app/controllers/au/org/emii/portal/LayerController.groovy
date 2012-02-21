@@ -19,15 +19,57 @@ class LayerController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 500, 500)
-        if(params.type == 'JSON') {
-			JSON.use("deep") {
-				render Layer.findAllByIsBaseLayerNotEqual(true) as JSON
-			}
+
+        def query = {
+
+            and {
+                if ( params.keyword ) {
+
+                    or {
+                        ilike( "name", "%${params.keyword}%" )
+                        ilike( "title", "%${params.keyword}%" )
+                        ilike( "namespace", "%${params.keyword}%" )
+                    }
+                }
+
+                if ( params.serverId ) {
+
+                    eq( "server.id", params.long( "serverId" ) )
+                }
+            }
+
+            if ( params.sort ) {
+                order( params.sort, params.order )
+            }
+            else {
+                order( "server", "asc" )
+                order( "title", "asc" )
+            }
+        }
+        
+        params.max = Math.min( params.max ? params.int( "max" ) : 100, 500 )
+        if ( !params.offset ) params.offset = 0
+
+        def criteria = Layer.createCriteria()
+        def layers = criteria.list( query, max: params.max, offset: params.offset )
+        def filters = [keyword: params.keyword, serverId: params.serverId]
+        
+        def model = [
+            layerInstanceList: layers,
+            layersShownCount: layers.size(),
+            filteredLayersCount: layers.totalCount,
+            filters: filters
+        ]
+
+        if ( request.xhr ) {
+
+            // This is an ajax request
+            render template: "listBody", model: model
         }
         else {
-            [layerInstanceList: Layer.list(params), layerInstanceTotal: Layer.count()]    
-        }        
+
+            return model
+        }
     }
 
     def listBaseLayersAsJson = {
