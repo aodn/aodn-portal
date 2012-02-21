@@ -93,7 +93,9 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       
       if (snapshotLayer.isBaseLayer) {
         if (!snapshotLayer.hidden) {
-          //select baselayer
+          // find and display baselayer if it still exists
+          var matchingLayers = this.map.getLayersBy("grailsLayerId", snapshotLayer.layer.id);
+          if (matchingLayers.length > 0) this.map.setBaseLayer(matchingLayers[0]);          
         }
       } else {
         if (snapshotLayer.layer) {
