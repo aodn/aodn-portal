@@ -534,7 +534,7 @@ function createLayer(dl, optionOverrides, paramOverrides) {
     } 
     
     
-    params.styles = (dl.styles == "") ? "" : dl.styles;
+    //params.styles = (dl.styles == "") ? "" : dl.styles;
     
     
     
