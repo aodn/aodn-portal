@@ -30,37 +30,13 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     var mapLayers = this.map.layers;
 
     for (var i=0; i < mapLayers.length; i++) {
-      var layer = {};
-      if (mapLayers[i].grailsLayerId) {
-        // layers sourced from server
-        layer.layer = mapLayers[i].grailsLayerId;
-      } else if (mapLayers[i].originalWMSLayer != undefined) {
-        // animated layers - save original layer details plus animation settings
-        layer.layer = mapLayers[i].originalWMSLayer.grailsLayerId;
-        layer.animated = true;
-        layer.chosenTimes = mapLayers[i].originalWMSLayer.chosenTimes; 
-        layer.styles = mapLayers[i].originalWMSLayer.params.STYLES;
-      } else {
-        // layers added from search
-        layer.name = mapLayers[i].params.LAYERS;
-        layer.title = mapLayers[i].name;
-        layer.serviceUrl = mapLayers[i].server.uri;
-      }
-      if (layer.opacity != undefined) {
-        layer.opacity = mapLayers[i].opacity;
-      }
-      if (mapLayers[i].params != undefined) {
-        layer.styles = mapLayers[i].params.STYLES;
-      }
-      layer.isBaseLayer= mapLayers[i].isBaseLayer;
-      // using hidden as per OGC WMC spec but visible may make more sense!
-      layer.hidden= !mapLayers[i].getVisibility();
-      snapshot.layers.push(layer);
+      var snapshotLayer = this.getSnapshotLayer(mapLayers[i]);
+      snapshot.layers.push(snapshotLayer);
     };
 
     this.proxy.save(snapshot, this.onSuccessfulSave.createDelegate(this,[successCallback],true), failureCallback);
   },
-  
+
   onSuccessfulSave: function(snapshot, successCallback) {
     this.fireEvent('snapshotsChanged');
     
@@ -81,38 +57,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     this.map.zoomToExtent(bounds, true);
     
     for (var i=0; i< snapshot.layers.length; i++) {
-      var snapshotLayer = snapshot.layers[i];
-      
-      var options = {
-          visibility: !snapshotLayer.hidden,
-          opacity: snapshotLayer.opacity
-      };
-      
-      var params = {
-          styles: snapshotLayer.styles
-      };
-      
-      if (snapshotLayer.isBaseLayer) {
-        if (!snapshotLayer.hidden) {
-          // find and display baselayer if it still exists
-          var matchingLayers = this.map.getLayersBy("grailsLayerId", snapshotLayer.layer.id);
-          if (matchingLayers.length > 0) this.map.setBaseLayer(matchingLayers[0]);          
-        }
-      } else {
-        if (snapshotLayer.layer) {
-          addGrailsLayer(snapshotLayer.layer.id, options, params, snapshotLayer.animated, snapshotLayer.chosenTimes);
-        } else {
-          var layerDef = {
-            title: snapshotLayer.title,
-            server: {
-              uri: snapshotLayer.serviceUrl,
-              type: 'WMS'
-            },
-            name: snapshotLayer.name
-          };
-          addMainMapLayer(layerDef, options, params);
-        }
-      }
+      this.addSnapshotLayer(snapshot.layers[i]);
     }
     
     if (successCallback) {
@@ -131,5 +76,76 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       successCallback();
     }
   },
+  
+  // private functions
+  
+  getSnapshotLayer: function(mapLayer) {
+    var layer = {};
+    if (mapLayer.grailsLayerId) {
+      // layers sourced from server
+      layer.layer = mapLayer.grailsLayerId;
+    } else if (mapLayer.originalWMSLayer != undefined) {
+      // animated layers - save original layer details plus animation settings
+      layer.layer = mapLayer.originalWMSLayer.grailsLayerId;
+      layer.animated = true;
+      layer.chosenTimes = mapLayer.originalWMSLayer.chosenTimes; 
+      layer.styles = mapLayer.originalWMSLayer.params.STYLES;
+    } else {
+      // layers added from search
+      layer.name = mapLayer.params.LAYERS;
+      layer.title = mapLayer.name;
+      layer.serviceUrl = mapLayer.server.uri;
+    }
+    if (layer.opacity != undefined) {
+      layer.opacity = mapLayer.opacity;
+    }
+    if (mapLayer.params != undefined) {
+      layer.styles = mapLayer.params.STYLES;
+    }
+    layer.isBaseLayer= mapLayer.isBaseLayer;
+    // using hidden as per OGC WMC spec but visible may make more sense!
+    layer.hidden= !mapLayer.getVisibility();
+    return layer;
+  },
+  
+  addSnapshotLayer: function(snapshotLayer) {
+    var options = {
+        visibility: !snapshotLayer.hidden,
+    };
+    
+    if (snapshotLayer.opacity) {
+      options.opacity = snapshotLayer.opacity;
+    };
+    
+    var params = {
+        styles: snapshotLayer.styles
+    };
+    
+    if (snapshotLayer.isBaseLayer) {
+      if (!snapshotLayer.hidden) {
+        // find and display baselayer if it still exists
+        var matchingLayers = this.map.getLayersBy("grailsLayerId", snapshotLayer.layer.id);
+        if (matchingLayers.length > 0) this.map.setBaseLayer(matchingLayers[0]);          
+      }
+    } else {
+      if (snapshotLayer.layer) {
+        addGrailsLayer(snapshotLayer.layer.id, options, params, snapshotLayer.animated, snapshotLayer.chosenTimes);
+      } else {
+        var layerDef = this.getLayerDef(snapshotLayer);
+        addMainMapLayer(layerDef, options, params);
+      }
+    }
+  },
+  
+  getLayerDef: function(snapshotLayer) {
+    return   {
+      title: snapshotLayer.title,
+      server: {
+        uri: snapshotLayer.serviceUrl,
+        type: 'WMS'
+      },
+      name: snapshotLayer.name
+    };
+  }
   
 });
