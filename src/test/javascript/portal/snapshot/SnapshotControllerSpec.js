@@ -98,6 +98,37 @@ describe("Portal.snapshot", function()
             
       expect(snapshotId).toEqual(301);
     });
-        
+
+    // test for ncwms opacity problem
+    
+    it("doesn't set opacity if snapshot opacity is null", function() {
+      spyOn(window, 'removeAllLayers');
+      spyOn(window, 'addGrailsLayer');
+
+      var snapshotInstance = {
+          id: 1,
+          name: 'test snapshot',
+          minX: -10,
+          minY: -20,
+          maxX: 10,
+          maxY: 20,
+          layers: [{
+            id: 101,
+            hidden: false,
+            opacity: null,
+            styles: "",
+            layer: {
+              id: 301
+            }
+          }] 
+      };
+      
+      snapshotController.onSuccessfulLoad(snapshotInstance);
+      
+      var options = addGrailsLayer.mostRecentCall.args[1];
+            
+      expect(options.opacity).toBeUndefined();
+    });
+    
 	});
 });		
