@@ -141,7 +141,10 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_a property abstractTrimmed.", trimmedAbstractText, layerA.abstractTrimmed
         assertEquals "layer_a property metaUrl.", "urlA", layerA.metaUrl
         assertEquals "layer_a property queryable.", true, layerA.queryable
-        assertEquals "layer_a property bbox.", "-90,-180,90,180", layerA.bbox
+        assertEquals "layer_a property bboxMinX.", "-90", layerA.bboxMinX
+        assertEquals "layer_a property bboxMinY.", "-180", layerA.bboxMinY
+        assertEquals "layer_a property bboxMaxX.", "90", layerA.bboxMaxX
+        assertEquals "layer_a property bboxMaxY.", "180", layerA.bboxMaxY
         assertEquals "layer_a property projection.", "EPSG:2010", layerA.projection
         assertEquals "layer_a property dataSource.", "testCode", layerA.dataSource
         assertEquals "layer_a property activeInLastScan.", true, layerA.activeInLastScan
@@ -159,7 +162,10 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "layer_b property abstractTrimmed.", "", layerB.abstractTrimmed
             assertEquals "layer_b property metaUrl.", null, layerB.metaUrl
             assertEquals "layer_b property queryable.", false, layerB.queryable
-            assertEquals "layer_b property bbox.", null, layerB.bbox
+            assertEquals "layer_a property bboxMinX.", null, layerB.bboxMinX
+            assertEquals "layer_a property bboxMinY.", null, layerB.bboxMinY
+            assertEquals "layer_a property bboxMaxX.", null, layerB.bboxMaxX
+            assertEquals "layer_a property bboxMaxY.", null, layerB.bboxMaxY
             assertEquals "layer_b property projection.", null, layerB.projection
             assertEquals "layer_b property dataSource.", "testCode", layerB.dataSource
             assertEquals "layer_b property activeInLastScan.", false, layerB.activeInLastScan
@@ -175,7 +181,10 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "Leyar C property abstractTrimmed.", "", existingC.abstractTrimmed
             assertEquals "Leyar C property metaUrl.", null, existingC.metaUrl
             assertEquals "Leyar C property queryable.", false, existingC.queryable
-            assertEquals "Leyar C property bbox.", null, existingC.bbox
+            assertEquals "layer_a property bboxMinX.", null, existingC.bboxMinX
+            assertEquals "layer_a property bboxMinY.", null, existingC.bboxMinY
+            assertEquals "layer_a property bboxMaxX.", null, existingC.bboxMaxX
+            assertEquals "layer_a property bboxMaxY.", null, existingC.bboxMaxY
             assertEquals "Leyar C property projection.", null, existingC.projection
             assertEquals "Leyar C property dataSource.", "testCode", existingC.dataSource
             assertEquals "Leyar C property activeInLastScan.", false, existingC.activeInLastScan
@@ -193,7 +202,10 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_c property abstractTrimmed.", "", layerC.abstractTrimmed
         assertEquals "layer_c property metaUrl.", null, layerC.metaUrl
         assertEquals "layer_c property queryable.", false, layerC.queryable
-        assertEquals "layer_c property bbox.", null, layerC.bbox
+        assertEquals "layer_a property bboxMinX.", null, layerC.bboxMinX
+        assertEquals "layer_a property bboxMinY.", null, layerC.bboxMinY
+        assertEquals "layer_a property bboxMaxX.", null, layerC.bboxMaxX
+        assertEquals "layer_a property bboxMaxY.", null, layerC.bboxMaxY
         assertEquals "layer_c property projection.", null, layerC.projection
         assertEquals "layer_c property dataSource.", "testCode", layerC.dataSource
         assertEquals "layer_c property activeInLastScan.", true, layerC.activeInLastScan
@@ -226,7 +238,10 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_d property abstractTrimmed", "Just some layer, yo.", layerD.abstractTrimmed
         assertEquals "layer_d property metaUrl", null, layerD.metaUrl
         assertEquals "layer_d property queryable", false, layerD.queryable
-        assertEquals "layer_d property bbox", null, layerD.bbox
+        assertEquals "layer_a property bboxMinX.", null, layerD.bboxMinX
+        assertEquals "layer_a property bboxMinY.", null, layerD.bboxMinY
+        assertEquals "layer_a property bboxMaxX.", null, layerD.bboxMaxX
+        assertEquals "layer_a property bboxMaxY.", null, layerD.bboxMaxY
         assertEquals "layer_d property projection", null, layerD.projection
         assertEquals "layer_d property styles", "boxfill/alg,boxfill/redblue", layerD.styles
         assertEquals "layer_d property dataSource", "testCode", layerD.dataSource

@@ -108,14 +108,7 @@ class LayerService {
                     abstractVal = abstractVal[0..451] + "..."
                 }
 
-                // Process bbox data
-                def bboxVal = null
-                    
-                if ( newData.bboxMinX && newData.bboxMinY && newData.bboxMaxX && newData.bboxMaxY ) {
-                    
-                    bboxVal = "${newData.bboxMinX},${newData.bboxMinY},${newData.bboxMaxX},${newData.bboxMaxY}"
-                }
-                
+
                 // Process style info
                 def stylesVal = ""
 
@@ -137,7 +130,10 @@ class LayerService {
                 layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.styles = stylesVal
                 layerToUpdate.queryable = newData.queryable
-                layerToUpdate.bbox = bboxVal
+                layerToUpdate.bboxMinX = newData.bboxMinX
+                layerToUpdate.bboxMinY = newData.bboxMinY
+                layerToUpdate.bboxMaxX = newData.bboxMaxX
+                layerToUpdate.bboxMaxY = newData.bboxMaxY
                 layerToUpdate.projection = newData.bboxProjection
 
                 // Scan info
