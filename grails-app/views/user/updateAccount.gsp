@@ -15,6 +15,9 @@
   <body>
     <g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />
     <div class="authentication-form auth">
+       <div class="authentication-formLinks">
+         <g:link controller="home" >Home Page</g:link>
+        </div>
       <div class="authentication-form-floated">
         <h2>Update account details</h2>
             <g:if test="${flash.message}">
