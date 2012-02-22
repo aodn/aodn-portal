@@ -19,12 +19,18 @@ Portal.snapshot.SaveSnapshotDialog = Ext.extend(Ext.Window, {
         }],
         buttons: [{
           text: OpenLayers.i18n('btnSave'),
-          handler: this.onSave,
-          scope: this
+          ref: '../../btnSave',
+          listeners: {
+            scope: this,
+            click: this.onSave
+          }
         },{
           text: OpenLayers.i18n('btnCancel'),
-          handler: this.onCancel,
-          scope: this
+          ref: '../../btnCancel',
+          listeners: {
+            scope: this,
+            click: this.onCancel
+          }
         }],
         keys: [{
           key: [Ext.EventObject.ENTER], 
