@@ -35,7 +35,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
         // layers sourced from server
         layer.layer = mapLayers[i].grailsLayerId;
       } else if (mapLayers[i].originalWMSLayer != undefined) {
-        // animated layers
+        // animated layers - save original layer details plus animation settings
         layer.layer = mapLayers[i].originalWMSLayer.grailsLayerId;
         layer.animated = true;
         layer.chosenTimes = mapLayers[i].originalWMSLayer.chosenTimes; 
@@ -53,6 +53,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
         layer.styles = mapLayers[i].params.STYLES;
       }
       layer.isBaseLayer= mapLayers[i].isBaseLayer;
+      // using hidden as per OGC WMC spec but visible may make more sense!
       layer.hidden= !mapLayers[i].getVisibility();
       snapshot.layers.push(layer);
     };

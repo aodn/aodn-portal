@@ -2,9 +2,9 @@ describe("Portal.snapshot", function()
 {
   var proxy = new Portal.snapshot.SnapshotProxy();
   
-	describe("Snapshot", function()
+	describe("SnapshotProxy", function()
 	{
-		it("save", function()
+		it("calls successCallback on successful save", function()
 		{
 			spyOn(Ext.Ajax, "request").andCallFake(function(options)
 			{

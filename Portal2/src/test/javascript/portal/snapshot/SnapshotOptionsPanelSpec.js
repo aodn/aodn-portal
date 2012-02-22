@@ -14,14 +14,14 @@ describe("Portal.snapshot", function()
 	  
 	  snapshotOptionsPanel.snapshotCombo.setValue('20');
 		
-		it("construct", function()
+		it("constructs panel with required items", function()
 		{
 			expect(snapshotOptionsPanel.items.length).toEqual(3);
 			expect(snapshotOptionsPanel.btnDelete.text).toEqual("Delete");
       expect(mockController.on).toHaveBeenCalled();
 		});
 		
-    it("select snapshot", function()
+    it("calls loadSnapshot when value in combo box is selected", function()
     {
       var comboBox = snapshotOptionsPanel.items.items[0];
       comboBox.fireEvent('select', comboBox);
@@ -29,7 +29,7 @@ describe("Portal.snapshot", function()
       expect(mockController.loadSnapshot).toHaveBeenCalled();
     });
         
-    it("delete snapshot", function()
+    it("deletes selected snapshot when delete is clicked", function()
     {
       var btnDelete = snapshotOptionsPanel.btnDelete;
       btnDelete.fireEvent('click', btnDelete);
