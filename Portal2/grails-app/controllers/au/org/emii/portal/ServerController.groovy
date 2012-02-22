@@ -13,7 +13,7 @@ class ServerController {
 	}
 
 	def list = {
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
 	}
         

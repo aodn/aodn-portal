@@ -55,13 +55,40 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="bbox"><g:message code="layer.bbox.label" default="Bounding Box" /></label>
+                                    <label for="bboxMinX"><g:message code="layer.bboxMinX.label" default="Bounding Box - Min X" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bbox', 'errors')}">
-                                    <g:textField name="bbox" maxlength="455" value="${layerInstance?.bbox}" />
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bboxMinX', 'errors')}">
+                                    <g:textField name="bboxMinX" maxlength="255" size="6" value="${layerInstance?.bboxMinX}" />
                                 </td>
                             </tr>
-                            
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="bboxMinY"><g:message code="layer.bboxMinY.label" default="Bounding Box - Min Y" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bboxMinY', 'errors')}">
+                                    <g:textField name="bboxMinY" maxlength="255" size="6" value="${layerInstance?.bboxMinY}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="bboxMaxX"><g:message code="layer.bboxMaxX.label" default="Bounding Box - Max X" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bboxMaxX', 'errors')}">
+                                    <g:textField name="bboxMaxX" maxlength="255" size="6" value="${layerInstance?.bboxMaxX}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="bboxMaxY"><g:message code="layer.bboxMaxY.label" default="Bounding Box - Max Y" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'bboxMaxY', 'errors')}">
+                                    <g:textField name="bboxMaxY" maxlength="255" size="6" value="${layerInstance?.bboxMaxY}" />
+                                </td>
+                            </tr>
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="projection"><g:message code="layer.projection.label" default="Projection" /></label>

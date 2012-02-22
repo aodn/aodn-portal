@@ -134,21 +134,10 @@ class LayerController {
         def layerInstance = new Layer(params)
         if (layerInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
-            redirect(action: "show", id: layerInstance.id)
-        }
-        else {
-            render(view: "create", model: [layerInstance: layerInstance])
-        }
-    }
-
-    def show = {
-        def layerInstance = Layer.get(params.id)
-        if (!layerInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
             redirect(action: "list")
         }
         else {
-            [layerInstance: layerInstance]
+            render(view: "create", model: [layerInstance: layerInstance])
         }
     }
 
@@ -201,7 +190,7 @@ class LayerController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
-                redirect(action: "show", id: params.id)
+                redirect(action: "edit", id: params.id)
             }
         }
         else {
@@ -211,7 +200,7 @@ class LayerController {
     }
 
     def saveOrUpdate = {
-        
+
         try {
             // Logging output
             def passwordPrint = "*" * params.password?.length()

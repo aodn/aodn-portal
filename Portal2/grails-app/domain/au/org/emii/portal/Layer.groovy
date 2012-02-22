@@ -12,7 +12,10 @@ class Layer {
     Boolean cache
     String cql
     String styles
-    String bbox
+    String bboxMinX
+    String bboxMinY
+    String bboxMaxX
+    String bboxMaxY
     String projection
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
@@ -58,7 +61,10 @@ class Layer {
         cql(nullable:true)
         styles(blank:true)
         metaUrl(nullable:true)
-        bbox(nullable:true)
+        bboxMinX(nullable:true)
+        bboxMinY(nullable:true)
+        bboxMaxX(nullable:true)
+        bboxMaxY(nullable:true)
         projection(nullable: true)
         queryable()
         isBaseLayer()
