@@ -48,7 +48,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerAddedMsg: ' has been added to the map',
     
     // detailsPanel.js
-    pickAStyle : '*** Pick a stylesssss ***',
+    pickAStyle : '*** Pick a styles ***',
   
     //snapshots 
     saveMapButton: 'Save Map',
