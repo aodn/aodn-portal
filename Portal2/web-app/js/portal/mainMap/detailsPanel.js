@@ -143,22 +143,22 @@ function initDetailsPanel()  {
         style: {margin: 5}, 
         autoHeight: 250,
         items: [
-        styleCombo,   
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            autoScroll:true,
-            align: 'stretch',
-            items: [
+            styleCombo,   
             {
-                xtype: 'panel',                    
-                width: 130,
-                margin: 10,
-                items: [legendImage ]
-                },
-                ncWMSColourScalePanel
-            ]
-        }
+                xtype: 'panel',
+                layout: 'hbox',
+                autoScroll:true,
+                align: 'stretch',
+                items: [
+                {
+                    xtype: 'panel',                    
+                    width: 130,
+                    margin: 10,
+                    items: [legendImage ]
+                    },
+                    ncWMSColourScalePanel
+                ]
+            }
         ]
     });
     
@@ -482,7 +482,9 @@ function setChosenStyle(layer,record) {
         selectedLayer.mergeNewParams({
             styles : record.get('displayText')
         });        
-        selectedLayer.metadata.defaultPalette = record.get('myId');
+        
+        // store the default style         
+        selectedLayer.params.STYLES = record.get('myId');
         refreshLegend(selectedLayer);
     }
     else {
@@ -494,78 +496,110 @@ function setChosenStyle(layer,record) {
     }
 
 }
-function updateStyles(layer)
-{
-     
+function updateStyles(layer) {
 
-    var data = new Array();
-    
+    var data = new Array();    
     styleCombo.hide();
     
+    //var supportedStyles = layer.metadata.supportedStyles;
     
-    /*
-     *Each layer advertises a number of STYLEs, 
-     *each of which contains the name of the palette file, 
-     *e.g. STYLES=boxfill/rainbow
-    */
-    var supportedStyles = layer.metadata.supportedStyles;
-    var palettes = layer.metadata.palettes; 
-    
-   
-    // for ncWMS layers most likely and after getLayerMetadata has run
-    if (supportedStyles != undefined) {
+     // for WMS layers that we have scanned
+    if(layer.styles != undefined) {
         
-        styleCombo.store.removeAll();    
-        styleCombo.clearValue();
-        
-        // supportedStyles is probably only one item 'boxfill'
-        for(var i = 0;i < supportedStyles.length; i++)
-        {
-            for(var j = 0; j < palettes.length; j++)
-            {
-                var imageUrl = buildGetLegend(layer,palettes[j], true);                
-                data.push([palettes[j] , supportedStyles[i] + "/" + palettes[j], imageUrl ]);
-            }
+        // populate 'data' for the style options dropdown
+        var styles = layer.styles.split(",");
+        // do something if the user has more than one option
+        if (styles.length > 1) { 
             
+            for(var j = 0; j < styles.length; j++)  {
+                var params = {
+                    layer: layer,
+                    colorbaronly: true                    
+                }
+                // its a ncwms layer
+                if(layer.server.type.search("NCWMS") > -1)  {
+                    var s = styles[j].split("/");
+                    // if forward slash is found it is in the form  [type]/[palette]
+                    // we only care about the palette part
+                    s = (s.length > 1) ? s[1] : styles[j];
+                    params.palette = s;
+                }
+                else {
+                    params.style = styles[j];
+                }                
+    
+                var imageUrl = buildGetLegend(params);         
+                data.push([styles[j] , styles[j], imageUrl ]);
+            }
         }
-        // populate the stylecombo picker
-        styleCombo.store.loadData(data);    
-        
+    } 
+    
+    
+    if (data.length > 0) {
+        // populate the stylecombo picker    
+        styleCombo.store.loadData(data); 
+        // change the displayed data in the style picker
         styleCombo.show();
     }
+    
     
     refreshLegend(layer);
     
 }
 
-
-function refreshLegend(layer) {    
+// full legend shown in layer option. The current legend
+function refreshLegend(layer) {   
     
-    var url = buildGetLegend(layer,"",false) ;
+    var style = layer.params.STYLES;
+    
+    var params = {
+        layer: layer,
+        colorbaronly: false                    
+    }
+    
+    // its a ncwms layer send 'palette'
+    if(layer.server.type.search("NCWMS") > -1)  {
+        var s = style.split("/");
+        // if forward slash is found it is in the form  [type]/[palette]
+        // we only care about the palette part
+        s = (s.length > 1) ? s[1] : style;
+        params.palette = s;
+    }
+    else {
+        params.style = style;
+    }
+    var url = buildGetLegend(params) ;
     
     Ext.getCmp('legendImage').setUrl(url); 
-    
+    // wait for the image to load
     setTimeout(function(){
             Ext.getCmp('stylePanel').doLayout();
             detailsPanel.doLayout();
        }, 1000 );
     
+    // dont worry if the form is visible here
+    styleCombo.setValue(style);
     
-    //
 }
 
 
 
 // builds a getLegend image request for the combobox form and the selected palette
-function buildGetLegend(layer,thisPalette,colorbaronly)   {
+function buildGetLegend(params)   {
     
     var url = "";
     var useProxy = false;
     
+    var layer = params.layer;
+    var colorbaronly= params.colorbaronly; 
+    var palette = params.palette;
+    var style = params.style;
+    
+    
     // if this is an animated image then use the originals details
     // the params object is not set for animating images
     // the layer.url is for the whole animated gif
-    if (layer.originalWMSLayer != undefined) { 
+    if (layer.originalWMSLayer != undefined) {        
         layer.params = layer.originalWMSLayer.params;
         if (layer.originalWMSLayer.cache === true) {
              url = layer.originalWMSLayer.server.uri;
@@ -586,38 +620,34 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
         }
     }
     
-    
     var opts = "";
         
     // thisPalette used for once off. eg combobox picker
-    if (thisPalette == "") {
-        // a style may have been set this session or from the server
-        if (layer.metadata.defaultPalette != undefined) {
-            opts = "PALETTE=" + layer.metadata.defaultPalette;
-        }        
-        opts += "&LEGEND_OPTIONS=forceLabels:on";
-    }
-    else {
-        opts = "PALETTE=" + thisPalette;
+    if (palette != undefined) {
+        opts += "&PALETTE=" + palette;
+     }        
+   
+    if (style != undefined) {
+        opts += "&STYLE=" + style;
     }
     
     if (colorbaronly) {
-        
+        opts += "&LEGEND_OPTIONS=forceLabels:off";
         opts += "&COLORBARONLY=" + colorbaronly;
+    }
+    else {
+        
+        opts += "&LEGEND_OPTIONS=forceLabels:on";
     }
     
        
     if(layer.params.COLORSCALERANGE != undefined)
     {
-        if(url.contains("COLORSCALERANGE"))  {
-            
+        if(url.contains("COLORSCALERANGE"))  {            
             url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
-            opts += "COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
-        }
-        else  {
-            
-            opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
-        }
+        }            
+        opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
+        
     }    
     
     if (useProxy) {
@@ -625,15 +655,23 @@ function buildGetLegend(layer,thisPalette,colorbaronly)   {
         url = proxyCachedURL+ encodeURIComponent(url) +  "&";
     }
     else {
-        url +=  "?" ;
+        // see if this url already has some parameters on it
+        if(url.contains("?"))  {            
+            url +=  "&" ;
+        }
+        else {
+            url +=  "?" ;
+        }
     }
     
-    url +=  opts 
-        + "&REQUEST=GetLegendGraphic"
+    opts += "&REQUEST=GetLegendGraphic"
         + "&LAYER=" + layer.params.LAYERS
         + "&FORMAT=" + layer.params.FORMAT;
     
-    //console.log(layer.cache + " " + url)
+    // strip off leading '&'
+    opts = opts.replace(/^[&]+/g,"");
+    url = url + opts
+    
     
     return url;
 }
@@ -690,7 +728,7 @@ function makeCombo(type) {
         lazyRender:true,
         mode: 'local',
         store: valueStore,
-        emptyText: 'Layer '+ type +'...',
+        emptyText: OpenLayers.i18n('pickAStyle'),
         valueField: 'myId',
         displayField: 'displayText',     
         tpl: tpl,
