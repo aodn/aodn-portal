@@ -119,18 +119,29 @@ function zoomToLayer(map, layer){
     
     if (layer!= undefined) {
         
-          
-        if (layer.bbox != undefined) {
+            
+        
+        
+        if (layer.bboxMinX != null &&
+            layer.bboxMinY != null &&
+            layer.bboxMaxX != null &&
+            layer.bboxMaxY != null) {
+            
             // build openlayer bounding box            
-            var bounds = new OpenLayers.Bounds.fromString(layer.bbox);            
+            var bounds = new OpenLayers.Bounds(  
+                layer.bboxMinX,
+                layer.bboxMinY,
+                layer.bboxMaxX,
+                layer.bboxMaxY 
+                ); 
+                        
             // ensure converted into this maps projection. convert metres into lat/lon etc
             bounds.transform( new OpenLayers.Projection(layer.projection), mapPanel.map.getProjectionObject()); 
-            
-            // openlayers wants left, bottom, right, top             
+                                     
             // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
-            //if(layer.server.type == "WMS-1.3.0") { 
-            //    bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-            //}            
+            if(layer.server.type == "WMS-1.3.0") { 
+                bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
+            }            
             
             if (bounds) {
                 mapPanel.map.zoomToExtent(bounds);
@@ -174,7 +185,7 @@ function addToPopup(mapPanel, e) {
         //constrainHeader: true,
         //panIn: true,
         autoScroll: true//,
-        //padding: "0px 0px 12px 12px"
+    //padding: "0px 0px 12px 12px"
     });
 
     // Add container for html (empty for now)
@@ -191,7 +202,7 @@ function addToPopup(mapPanel, e) {
         enableTabScroll : true,
         deferredRender: true,
         hidden: true//,        
-        //padding: "10px 3px 3px 10px"
+    //padding: "10px 3px 3px 10px"
     })
     );
         
@@ -220,12 +231,12 @@ function addToPopup(mapPanel, e) {
                 lon: locArray[0]
             },
             success: function(resp, options){
-                    updatePopupDepthStatus(resp);                
+                updatePopupDepthStatus(resp);                
             }
         });
     }
     else{
-       updatePopupDepthStatus(); 
+        updatePopupDepthStatus(); 
     }
 
     // For each layer...
@@ -247,28 +258,28 @@ function addToPopup(mapPanel, e) {
             var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
 
             url = layer.url.substring(0, layer.url.indexOf("?")) +
-                    "?SERVICE=WMS&REQUEST=GetFeatureInfo" +
-                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
-                    "&BBOX=" + layer.extent.toBBOX() +
-                    "&INFO_FORMAT=image/png" +
-                    "&QUERY_LAYERS=" + layer.originalWMSLayer.params.LAYERS +
-                    "&FEATURE_COUNT=" + featureCount +
-                    "&STYLES=" + chart_style +
-                    "&CRS=EPSG:4326" +
-                    "&BUFFER="+ Portal.app.config.mapGetFeatureInfoBuffer +
-                    "&WIDTH=" +  mapPanel.map.size.w +
-                    "&HEIGHT="  +   mapPanel.map.size.h +
-                    "&TIME=" + chart_time +
-                    "&VERSION=" + layer.originalWMSLayer.params.VERSION;
+            "?SERVICE=WMS&REQUEST=GetFeatureInfo" +
+            "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+            "&BBOX=" + layer.extent.toBBOX() +
+            "&INFO_FORMAT=image/png" +
+            "&QUERY_LAYERS=" + layer.originalWMSLayer.params.LAYERS +
+            "&FEATURE_COUNT=" + featureCount +
+            "&STYLES=" + chart_style +
+            "&CRS=EPSG:4326" +
+            "&BUFFER="+ Portal.app.config.mapGetFeatureInfoBuffer +
+            "&WIDTH=" +  mapPanel.map.size.w +
+            "&HEIGHT="  +   mapPanel.map.size.h +
+            "&TIME=" + chart_time +
+            "&VERSION=" + layer.originalWMSLayer.params.VERSION;
 
             if (layer.originalWMSLayer.params.VERSION == "1.1.1" || layer.originalWMSLayer.params.VERSION == "1.1.0")
             {
                 url += "&X=" + e.xy.x + "&Y=" + e.xy.y;
             }
             else
-             {
+            {
                 url += "&I=" + e.xy.x + "&J=" + e.xy.y;
-             }
+            }
         }
         else {
 
@@ -443,8 +454,8 @@ function formatGetFeatureInfo(response, options) {
                     return html_content;
                 }
                 else {
-                    //html_content = '<span class="info">No feature info found near click point</span><br />'
-                }
+            //html_content = '<span class="info">No feature info found near click point</span><br />'
+            }
             }            
         }   
        
@@ -454,7 +465,7 @@ function formatGetFeatureInfo(response, options) {
     }
     else if(options.params.expectedFormat.indexOf('image') >= 0){
 
-        //console.log("ERROR: as yet unhandled response type for getFeatureInfo");
+    //console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
     else{
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
@@ -1075,27 +1086,27 @@ function updateLoadingImage(display) {
 }
 
 function URLEncode (clearString) {
-  var output = '';
-  var x = 0;
- clearString = clearString.toString();
+    var output = '';
+    var x = 0;
+    clearString = clearString.toString();
 
-  var regex = /(^[a-zA-Z0-9_.]*)/;
-  while (x < clearString.length) {
-      var match = regex.exec(clearString.substr(x));
-      if (match != null && match.length > 1 && match[1] != '') {
-          output += match[1];
-          x += match[1].length;
-      } else {
-          if (clearString[x] == ' ')
-              output += '+';
-          else {
-              var charCode = clearString.charCodeAt(x);
-              var hexVal = charCode.toString(16);
-              output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
-          }
-          x++;
-      }
-  }
-  return output;
+    var regex = /(^[a-zA-Z0-9_.]*)/;
+    while (x < clearString.length) {
+        var match = regex.exec(clearString.substr(x));
+        if (match != null && match.length > 1 && match[1] != '') {
+            output += match[1];
+            x += match[1].length;
+        } else {
+            if (clearString[x] == ' ')
+                output += '+';
+            else {
+                var charCode = clearString.charCodeAt(x);
+                var hexVal = charCode.toString(16);
+                output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
+            }
+            x++;
+        }
+    }
+    return output;
 }
 

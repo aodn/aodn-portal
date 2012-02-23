@@ -589,18 +589,22 @@ function createLayer(dl, optionOverrides, paramOverrides) {
         layer.parentLayerName = dl.parent.name; 
     }
     
-    //
     // extra info to keep
     layer.grailsLayerId = dl.id; // grails layer id
     layer.server= dl.server;
     layer.cql = dl.cql;  
-    layer.bbox = dl.bbox;
     layer.cache = dl.cache;
     layer.styles = dl.styles;
     layer.projection = dl.projection;
     layer.parentLayerId = parentLayerId;
     layer.blacklist = dl.blacklist; // shouldn't really see blacklisted layers here
     layer.abstractTrimmed = dl.abstractTrimmed;
+    
+    // bounding box
+    layer.bboxMaxX = dl.bboxMaxX;
+    layer.bboxMinX = dl.bboxMinX;
+    layer.bboxMaxY = dl.bboxMaxY;
+    layer.bboxMinY = dl.bboxMinY;
       
     
     // don't add layer twice 
@@ -709,7 +713,7 @@ function getUniqueLayerId(layer){
         }
     }   
     // return whitespaced cleared string
-    return ((layer.server.uri + "::" +  layer.name + cql).replace(/ +?/g, '_'));
+    return ((layer.server.uri + "::" +  layer.name + layer.id + cql).replace(/ +?/g, '_'));
 }
 
 // return whether the layer has already been added to the map
