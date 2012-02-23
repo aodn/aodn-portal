@@ -532,13 +532,7 @@ function createLayer(dl, optionOverrides, paramOverrides) {
     if (dl.queryable) {
         params.queryable = dl.queryable;
     } 
-    
-    
-    //params.styles = (dl.styles == "") ? "" : dl.styles;
-    
-    
-    
-          
+       
     // opacity was stored as a percent 0-100
     var opacity =  Math.round((dl.server.opacity / 100)*10)/10;
     var options =           {
@@ -602,6 +596,7 @@ function createLayer(dl, optionOverrides, paramOverrides) {
     layer.cql = dl.cql;  
     layer.bbox = dl.bbox;
     layer.cache = dl.cache;
+    layer.styles = dl.styles;
     layer.projection = dl.projection;
     layer.parentLayerId = parentLayerId;
     layer.blacklist = dl.blacklist; // shouldn't really see blacklisted layers here
