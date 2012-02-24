@@ -1,4 +1,4 @@
-import au.org.emii.portal.Menu
+import au.org.emii.portal.migrations.helpers.MenuJsonToMenuItemMigrationHelper
 
 databaseChangeLog = {
 
@@ -51,6 +51,8 @@ databaseChangeLog = {
 		grailsChange {
 			change {
 				
+				def helper = new MenuJsonToMenuItemMigrationHelper()
+				
 				def insert = { menu, item ->
 					def menuId = item.parentId ? null : menu.id
 					sql.execute "insert into menu_item (id, version, menu_id, layer_id, server_id, leaf, text, parent_id, menu_position, parent_position) values ((select nextval('hibernate_sequence')), 0, $menuId, $item.layerId, $item.serverId, $item.leaf, $item.text, $item.parentId, $item.menuPosition, $item.parentPosition)"
@@ -73,9 +75,7 @@ databaseChangeLog = {
 				}
 				
 				sql.eachRow('select id, json from menu') { row ->
-					def menu = new Menu()
-					menu.id = row.id
-					menu._parseMenuItems(row.json)
+					def menu = helper.parseToMenu(row.id, row.json)
 					menu.menuItems.each { 
 						insertItems(menu, it)
 					}
