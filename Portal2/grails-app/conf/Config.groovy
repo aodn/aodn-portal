@@ -103,9 +103,6 @@ environments {
                 props = ["mail.smtp.auth":"false"]
             }
         }
-		
-		// Disable performance optimisations.
-		grails.resources.debug = true
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
