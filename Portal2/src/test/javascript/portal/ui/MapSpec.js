@@ -97,4 +97,51 @@ describe("Portal.ui.Map", function() {
 			expect(options.queryable).toBeFalsy();
 		});
 	});
+	
+	describe('getLayerUid', function() {
+		it('tests layer UID creation', function() {
+			var openLayer = { name: 'test' };
+			expect(map.getLayerUid(openLayer)).toEqual('UNKNOWN::test');
+			
+			openLayer.cql = 'some cql';
+			expect(map.getLayerUid(openLayer)).toEqual('UNKNOWN::test::some cql');
+			
+			openLayer.url = 'http://localhost';
+			expect(map.getLayerUid(openLayer)).toEqual('http://localhost::test::some cql');
+			
+			openLayer.server = { uri: 'http://remotehost' };
+			expect(map.getLayerUid(openLayer)).toEqual('http://remotehost::test::some cql');
+			
+			openLayer.server = undefined;
+			openLayer.originalWMSLayer = { server: { uri: 'http://originalhost' } };
+			expect(map.getLayerUid(openLayer)).toEqual('http://originalhost::test::some cql');
+		});
+	});
+	
+	describe('containsLayer', function() {
+		it('tests contains layer', function() {
+			var openLayer = { name: 'test' };
+			map.activeLayers[map.getLayerUid(openLayer)] = openLayer;
+			// As it isn't actually added to the Map so perhaps this is a rubbish
+			// test? It did lead to me finding an undefined reference however
+			expect(map.containsLayer(openLayer)).toBeFalsy();
+		});
+	});
+	
+	describe('parent layer reference functions', function() {
+		it('tests underlying access to parent', function() {
+			var layerDescriptor = { 
+				title: 'test',
+				parent: {
+					id: 100,
+					name: 'parent layer'
+				}
+			};
+			expect(map.getParentId(layerDescriptor)).toEqual(100);
+			expect(map.getParentName(layerDescriptor)).toEqual('parent layer');
+			layerDescriptor.parent = undefined;
+			expect(map.getParentId(layerDescriptor)).toBeFalsy();
+			expect(map.getParentName(layerDescriptor)).toBeFalsy();
+		});
+	});
 });

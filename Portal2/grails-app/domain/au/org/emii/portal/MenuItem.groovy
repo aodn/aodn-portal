@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import grails.converters.JSON
 
 class MenuItem implements Comparable<MenuItem> {
-
+	
 	Boolean leaf
 	String text
 	Integer menuPosition
@@ -30,9 +30,9 @@ class MenuItem implements Comparable<MenuItem> {
 	static hasMany = [childItems: MenuItem]
 	
 	static mapping = {
-        childItems cascade: 'all-delete-orphan'
-        parentId updateable: false
-        parentId insertable: false
+		childItems cascade: 'all-delete-orphan'
+		parentId updateable: false
+		parentId insertable: false
 	}
 	
 	MenuItem() {
@@ -75,12 +75,8 @@ class MenuItem implements Comparable<MenuItem> {
 			JSON.parse(json)
 		}
 		text = itemsJsonArray.text
-        if (itemsJsonArray.grailsLayerId) {
-		    layer = Layer.get(itemsJsonArray.grailsLayerId)
-        }
-        if (itemsJsonArray.grailsServerId) {
-		    server = Server.get(itemsJsonArray.grailsServerId)
-        }
+		layerId = itemsJsonArray.grailsLayerId?.toLong()
+		serverId = itemsJsonArray.grailsServerId?.toLong()
 		leaf = itemsJsonArray.leaf?.toBoolean()
 		this.menuPosition = menuPosition
 		this.parentPosition = parentPosition

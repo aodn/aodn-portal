@@ -135,7 +135,11 @@ class MenuController {
         
     }
 
-    
+    def json = {
+		JSON.use("deep") {
+			render Menu.get(params.id) as JSON
+		}
+	}
         
     private _cleanParams(params) {
         
