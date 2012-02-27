@@ -15,6 +15,10 @@ class MenuItemTests extends GrailsUnitTestCase {
 
     void testParseChildren() {
 		mockDomain(MenuItem)
+
+        mockDomain(Layer, [new Layer(id:26), new Layer(id: 90), new Layer(id: 3), new Layer(id: 72)])
+        
+
 		def menuItem = new MenuItem()
 		def json = '[{"id":"1","text":"SST from ivec","grailsLayerId":"26","leaf":true},{"id":"2","text":"ACORN_raw_data_SAG/SPEED","grailsLayerId":"90","leaf":true},{"id":"3","text":"ocean_east_aus_temp/temp","grailsLayerId":"72","leaf":true}]'
 		menuItem._parseChildren(json)
@@ -30,28 +34,33 @@ class MenuItemTests extends GrailsUnitTestCase {
 	
 	void testParse() {
 		mockDomain(MenuItem)
+        mockDomain(Layer, [new Layer(id:26), new Layer(id: 90), new Layer(id: 3), new Layer(id: 72)])
 		def menuItem = new MenuItem()
 		def json = '{"id":"1","text":"NcWMS Layers","leaf":false,"children":[{"id":"2","text":"SST from ivec","grailsLayerId":"26","leaf":true},{"id":"3","text":"ACORN_raw_data_SAG/SPEED","grailsLayerId":"90","leaf":true},{"id":"4","text":"ocean_east_aus_temp/temp","grailsLayerId":"72","leaf":true}]}'
 		menuItem.parseJson(json, 0)
 		assertEquals 'NcWMS Layers', menuItem.text
-		assertNull menuItem.layerId
-		assertNull menuItem.serverId
+		assertNull menuItem.layer
+		assertNull menuItem.server
 		
 		def l = new ArrayList(menuItem.childItems)
 		
 		def child = l[0]
-		assertEquals 26, child.layerId
+		assertEquals 26, child.layer.id
 		assertTrue child.leaf
 		assertEquals 'ACORN_raw_data_SAG/SPEED', l[1].text
 	}
 	
 	void testFindItem() {
 		mockDomain(MenuItem)
+        mockDomain(Layer)
 		def parent = new MenuItem()
 		def item = new MenuItem()
+        def layer = new Layer()
+        layer.id = 3
+        
 		item.id = 99
 		item.text = 'Test Text'
-		item.layerId = 3
+		item.layer = layer
 		item.leaf = true
 		item.parent = parent
 		parent.childItems << item
