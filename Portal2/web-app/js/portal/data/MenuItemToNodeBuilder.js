@@ -13,8 +13,12 @@ Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
 		Ext.each(
 			menuItems,
 			function(item, index, all) {
-	    		item.grailsLayerId = item.layerId;
-	    		item.grailsServerId = item.serverId;
+                if (item.layer) {
+                    item.grailsLayerId = item.layer.id;
+                }
+                if (item.server) {
+	    		    item.grailsServerId = item.server.id;
+                }
 	    		item.children = item.childItems;
 	    		if (this.isLayerBlackListed(item.layer)) {
 	    			item.cls = 'layer_blacklisted';
