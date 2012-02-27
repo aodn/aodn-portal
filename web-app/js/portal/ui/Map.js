@@ -28,9 +28,6 @@ Portal.ui.Options = Ext.extend(Object, {
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
-		
-		this.map = new OpenLayers.Map(this.options);
-	    this.map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
 	}	
 });
 
@@ -41,17 +38,92 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		// Stop the pink tiles appearing on error
 	    OpenLayers.Util.onImageLoadError = function(e) {
 	        this.style.display = "";
-	        this.src="img/blank.png";
+	        this.src = "img/blank.png";
 	    };
 		
-		var config = Ext.apply({}, cfg);
-		
+		var config = Ext.apply({
+			id: "map",
+	        border: false,
+	        region: "center",
+	        split: true,
+	        header: false,
+	        items: [{
+	            xtype: "gx_zoomslider",
+	            aggressive: false,
+	            vertical: true,
+	            height: 100,
+	            x: 12,
+	            y: 70,
+	            plugins: new GeoExt.ZoomSliderTip()
+	        }],
+	        autoZoom: cfg.autoZoom,
+	        activeLayers: []
+		}, cfg);
 		Portal.ui.Map.superclass.constructor.call(this, config);
-	},
+		this.initMap();
+	    this.initMapLinks();
 
+	    // TODO tommy
+	    // Control to get feature info or pop up
+//	    var clickControl = new OpenLayers.Control.Click2({
+//	        trigger: function(evt) {
+//	            addToPopup(mapPanel,evt);
+//	        }
+//	    });
+//	    this.map.addControl(clickControl);
+//	    clickControl.activate();  
+	},
+	
+	initMap: function() {
+		this.mapOptions = new Portal.ui.Options();
+		this.map = new OpenLayers.Map(this.mapOptions.options);
+	    this.map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
+	    // keep the animated image crisp
+	    // limit to changes in zoom. moveend is too onerous
+	    this.map.events.register("moveend", this, function (e) {        
+	        this.redrawAnimatedLayers();
+	    });
+	    this.addBaseLayers();
+	},
+	
+	initToolBar: function() {
+		this.mapToolbar = new Ext.Toolbar({
+	        id: 'maptools',
+	        height: 35,
+	        width: '100%',
+	        cls: 'semiTransparent noborder',
+	        overCls: "fullTransparency",
+	        unstyled: true  
+	    });
+		// stops the click bubbling to a getFeatureInfo request on the map
+	    this.mapToolbar.on('click', this.eventStopper)
+	    return this.mapToolbar;
+	},
+	
+	initMapLinks: function() {
+		var mapLinks = new Ext.Panel({
+	        id: "mapLinks",
+	        shadow: false,
+	        width: '100%',
+	        closeAction: 'hide',
+	        floating: true,
+	        unstyled: true,
+	        closeable: true,
+	        items: this.initToolBar()
+	    });
+	    // stops the click bubbling to a getFeatureInfo request on the map
+	    mapLinks.on('click', this.eventStopper);
+	    mapLinks.setPosition(1, 0); // override with CSS later
+	    this.add(mapLinks);
+	},
+	
+	eventStopper: function(ev, target) {
+		ev.stopPropagation(); // Cancels bubbling of the event
+	},
+	
 	addBaseLayers: function() {
 		Ext.Ajax.request({
-	        url: 'layer/configbase',
+	        url: 'layer/configuredbaselayers',
 	        scope: this,
 	        success: function(resp, opts) {        
 	        	var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
@@ -59,17 +131,18 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    			function(layerDescriptor, index, all) {
 		        		layerDescriptor.isBaseLayer = true;
 		                layerDescriptor.queryable = false;
-	        			this.map.addLayer(this.createLayer(layerDescriptor));
+	        			this.map.addLayer(this.getOpenLayer(layerDescriptor));
 	    			},
 	        		this
 	        	);
-	        	this.onAdd();
+	        	this.setMapDefaultZoom(); // adds default bbox values to map instance
+	        	this.zoomToInitialBbox();
 	        }
 	    });
 	},
 	
-	getServer: function(layerDescriptor) {
-		return layerDescriptor.server;
+	getServer: function(item) {
+		return item.server;
 	},
 
 	getServerImageFormat: function (server) {
@@ -99,8 +172,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		return Math.round((opacity / 100)*10)/10;
 	},
 	
-	getOpenLayerOptions: function(layerDescriptor) {
-		return {
+	getOpenLayerOptions: function(layerDescriptor, overrides) {
+		var options = {
 	        wrapDateLine: true,   
 	        opacity: this.getServerOpacity(this.getServer(layerDescriptor)),
 	        version: this.getWmsVersionString(this.getServer(layerDescriptor)),
@@ -108,10 +181,14 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        isBaseLayer: layerDescriptor.isBaseLayer,
 	        projection: new OpenLayers.Projection(layerDescriptor.projection)
 	    };
+	    if (overrides) {
+	    	Ext.apply(options, overrides);
+	    }
+	    return options;
 	},
 	
-	getOpenLayerParams: function (layerDescriptor) {
-		return {
+	getOpenLayerParams: function(layerDescriptor, overrides) {
+		var params = {
 	        layers: layerDescriptor.name,
 	        transparent: 'TRUE',
 	        buffer: 1, 
@@ -122,58 +199,418 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    	queryable: layerDescriptor.queryable,
 	    	styles: layerDescriptor.styles
 	    };
+	    if (overrides) {
+	    	Ext.apply(params, overrides);
+	    }
+	    return params;
 	},
 	
-	createLayer: function(layerDescriptor, overrides) {
-		var server = layerDescriptor.server;
-		var params = this.getOpenLayerParams(layerDescriptor);
-	    var options = this.getOpenLayerOptions(layerDescriptor);
-	    
-	    if (overrides) {
-	    	Ext.apply(options, overrides);
-	    }
-	    
-	    var serverUri;
-	    // proxy to use if this layer is cached    
-	    if (dl.cache == true) {
-	        serverUri =  window.location.href + proxyCachedURL + URLEncode(dl.server.uri);         
-	    }
-	    else {
-	        serverUri = dl.server.uri;
-	    }
+	getUri: function(server) {
+		return server.uri;
+	},
 	
-	    var layer = new OpenLayers.Layer.WMS(
-	        dl.title,
-	        serverUri,
-	        params,
-	        options
-	        );
-	            
-	    var parentLayerId; // useful when the same server has layers named the same yet in subfolders
-	    if (dl.parent) {
-	        parentLayerId = dl.parent.id
-	        layer.parentLayerName = dl.parent.name; 
+	getServerUri: function(layerDescriptor) {
+		var serverUri = this.getUri(this.getServer(layerDescriptor));
+		if (layerDescriptor.cache == true) {
+	        serverUri = window.location.href + proxyCachedURL + URLEncode(serverUri);         
 	    }
+        return serverUri;
+	},
+	
+	getParent: function(layerDescriptor) {
+		return layerDescriptor.parent;
+	},
+	
+	getParentId: function(layerDescriptor) {
+		if (this.getParent(layerDescriptor)) {
+			return this.getParent(layerDescriptor).id;
+		}
+	},
+	
+	getParentName: function(layerDescriptor) {
+		if (this.getParent(layerDescriptor)) {
+			return this.getParent(layerDescriptor).name;
+		}
+	},
+	
+	setDomainLayerProperties: function(openLayer, layerDescriptor) {
+		openLayer.grailsLayerId = layerDescriptor.id;
+		openLayer.server= layerDescriptor.server;
+		openLayer.cql = layerDescriptor.cql;  
+		openLayer.bboxMinX = layerDescriptor.bboxMinX;
+		openLayer.bboxMinY = layerDescriptor.bboxMinY;
+		openLayer.bboxMaxX = layerDescriptor.bboxMaxX;
+		openLayer.bboxMaxY = layerDescriptor.bboxMaxY;
+	    openLayer.cache = layerDescriptor.cache;
+	    openLayer.projection = layerDescriptor.projection;
+	    openLayer.blacklist = layerDescriptor.blacklist;
+	    openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
+    	openLayer.parentLayerId = this.getParentId(layerDescriptor);
+        openLayer.parentLayerName = this.getParentName(layerDescriptor); 
+	},
+	
+	getWmsOpenLayerUri: function(originalWMSLayer) {
+		return this.getUri(this.getServer(originalWMSLayer));
+	},
+	
+	getLayerUid: function(openLayer) {
+		var uri = "UNKNOWN";
+		var server = openLayer.server;
+		if (server) {
+	        uri = server.uri;
+	    }
+		else {
+			// may currently be an animating layer 
+	        if (openLayer.originalWMSLayer) {
+	        	uri = this.getWmsOpenLayerUri(openLayer.originalWMSLayer);
+	        }
+	        else if(openLayer.url) {
+	        	uri = openLayer.url;
+	        }
+		}
+	    return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
+	},
+	
+	containsLayer: function(openLayer) {
+		var previousLayer = this.activeLayers[this.getLayerUid(openLayer)];
+	    if (!previousLayer) {
+	    	return false;
+	    }
+	    return this.map.getLayer(previousLayer.id) !== null;
+	},
+	
+	getOpenLayer: function(layerDescriptor, optionOverrides, paramOverrides) {
+		var server = layerDescriptor.server;
+	    var options = this.getOpenLayerOptions(layerDescriptor, optionOverrides);
 	    
-	    //
-	    // extra info to keep
-	    layer.grailsLayerId = dl.id; // grails layer id
-	    layer.server= dl.server;
-	    layer.cql = dl.cql;  
-	    layer.bbox = dl.bbox;
-	    layer.cache = dl.cache;
-	    layer.projection = dl.projection;
-	    layer.parentLayerId = parentLayerId;
-	    layer.blacklist = dl.blacklist; // shouldn't really see blacklisted layers here
-	    layer.abstractTrimmed = dl.abstractTrimmed;
-	      
+	    var openLayer = new OpenLayers.Layer.WMS(
+    		layerDescriptor.title,
+	        this.getServerUri(layerDescriptor),
+	        this.getOpenLayerParams(layerDescriptor, paramOverrides),
+	        options
+        );
+	    this.setDomainLayerProperties(openLayer, layerDescriptor);
 	    
 	    // don't add layer twice 
-	    if (layerAlreadyAdded(layer)) {
-	        Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'),OpenLayers.i18n('layerExistsMsg'));
+	    if (this.containsLayer(openLayer)) {
+	        Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
+	        return;
+	    }
+        return openLayer;
+	},
+	
+	addLayer: function(openLayer) {
+		if (!this.containsLayer(openLayer)) {
+			this.map.addLayer(openLayer);
+			this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
+		}
+	},
+	
+	setMapDefaultZoom: function() {
+	    /* ---------------
+	     * left	{Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
+	     * bottom	{Number} The bottom bounds of the box.  Note that for height calculations, this is assumed to be more than the top value.
+	     * right	{Number} The right bounds.
+	     * top	{Number} The top bounds.
+	    */
+	    if (this.initialBbox) {
+	        var bbox = this.initialBbox.split(",");
+	        this.map.minx = parseInt(bbox[0]);
+	        this.map.maxx = parseInt(bbox[2]);
+	        this.map.miny = parseInt(bbox[1]);
+	        this.map.maxy = parseInt(bbox[3]);
+	        if (!((this.map.minx >= -180 && this.map.minx <= 180)
+	            && (this.map.maxx > -180 && this.map.maxx <= 180)
+	            && (this.map.miny >= -90 && this.map.miny <= 90)
+	            && (this.map.maxy >= -90 && this.map.maxy <= 90)
+	            && this.map.minx < this.map.maxx
+	            && this.map.miny < this.map.maxy))
+	        {
+	            alert("ERROR: wrong value in bbox ! \n\n" + 
+            		this.map.minx + 
+	                ":West = "+(this.map.minx >= -180 && this.map.minx <= 180)+"\n" + 
+	                this.map.miny +
+	                ":South = "+(this.map.miny >= -90 && this.map.miny <= 90) +"\n" + 
+	                this.map.maxx + 
+	                ":East = "+ (this.map.maxx > -180 && this.map.maxx <= 180)+"\n" + 
+	                this.map.maxy + 
+	                ":North = "+(this.map.maxy >= -90 && this.map.maxy <= 90) +
+	                "\n West > East = " + (this.map.minx < this.map.maxx) + 
+	                "\n South < North = " +(this.map.miny < this.map.maxy) 
+                );
+	        }
 	    }
 	    else {
-	        return layer;
+	        alert("ERROR: There is no bounding box is not set in the site configuration");
 	    }
+	},
+	
+	redrawAnimatedLayers: function() {
+	    var wmsLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
+	    // interesting the animated images are not appearing to be of the class OpenLayers.Layer.Image
+	    for(var i = 0; i < wmsLayers.length; i++)   {   
+	        if (this.map.layers[i].id !== undefined) {
+	            var layer = this.map.getLayer(this.map.layers[i].id);       
+	            if (layer.originalWMSLayer !== undefined) {
+	                // redraw
+	                this.addNCWMSLayer(layer);
+	            }
+	        }
+	    }
+	    
+	},
+	
+	// exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
+	// or reload OpenLayers.Layer.Image
+	// Reloading may be called from reloading a style or changing zoomlevel
+	addNCWMSLayer: function(currentLayer) {
+	    var layer;
+	    var bbox = this.getMapExtent();
+	    layer = currentLayer;
+	    
+	    // if originalWMSLayer is set - then it is already an animated Image
+	    if (currentLayer.originalWMSLayer !== undefined) {      
+	        layer = currentLayer.originalWMSLayer;
+	        layer.map = this.map;        
+	    }
+	    
+	    var newUrl = layer.getFullRequestString({
+	        TIME: layer.chosenTimes,
+	        TRANSPARENT: true,
+	        STYLE: layer.params.STYLES, // use the style of the original WMS layer
+	        WIDTH: 1024,
+	        HEIGHT: 1024,
+	        BBOX: bbox.toArray(),
+	        FORMAT: "image/gif"
+	    });
+	         
+	    var newNCWMS = new OpenLayers.Layer.Image(
+	        layer.name + " (Animated)",
+	        newUrl,
+	        bbox,
+	        bbox.getSize(), 
+	        {
+	            format: 'image/gif', 
+	            opacity: layer.server.opacity / 100,
+	            isBaseLayer : false,
+	            maxResolution: this.map.baseLayer.maxResolution,
+	            minResolution: this.map.baseLayer.minResolution,
+	            resolutions: this.map.baseLayer.resolutions
+	        }
+	    );  
+
+	    /********************************************************
+	     * attach the old WMS layer to the new Image layer !!
+	     * if this is set we know its an animated layer
+	     * ******************************************************/
+	    newNCWMS.originalWMSLayer = layer;
+	    
+	    /*******************************************************
+	     * add to map is done here
+	     * swap in the new animating layer into openlayers 
+	     * keeping the layer position
+	     *******************************************************/
+	    this.swapLayers(newNCWMS, currentLayer);    
+	    
+	    // close the detailsPanel
+	    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+	    closeNHideDetailsPanel();
+	},
+	
+	getMapExtent: function()  {
+	    var bounds = this.map.getExtent();
+	    var maxBounds = this.map.maxExtent;
+	    var top = Math.min(bounds.top, maxBounds.top);
+	    var bottom = Math.max(bounds.bottom, maxBounds.bottom);
+	    var left = Math.max(bounds.left, maxBounds.left);
+	    var right = Math.min(bounds.right, maxBounds.right);
+	    return new OpenLayers.Bounds(left, bottom, right, top);
+	},
+	
+	swapLayers: function(newLayer, oldLayer) { 
+	    // exchange new for old  
+	    var layerLevelIndex = this.map.getLayerIndex(oldLayer);
+	    var oldLayerId = this.getLayerUid(oldLayer);   
+	    if (this.activeLayers[oldLayerId] !== undefined) {
+	        this.map.removeLayer(this.activeLayers[oldLayerId]);    
+	        // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
+	        this.addLayer(newLayer);
+	        this.map.setLayerIndex(newLayer, layerLevelIndex);  
+	    } 
+	},
+	
+	zoomToInitialBbox: function () {
+	    this.zoomTo(new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy), true);
+	},
+	
+	zoomToLayer: function(openLayer) {
+		if (openLayer) {
+	        if (this.hasBoundingBox(openLayer)) {
+	            // build openlayer bounding box            
+	            var bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);            
+	            // ensure converted into this maps projection. convert metres into lat/lon etc
+	            bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject()); 
+	            
+	            // openlayers wants left, bottom, right, top             
+	            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
+	            //if(layer.server.type == "WMS-1.3.0") { 
+	            //    bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
+	            //}            
+	            
+	            if (bounds) {
+	                this.zoomTo(bounds);
+	            } 
+	        }
+	    }
+	},
+	
+	hasBoundingBox: function(openLayer) {
+		return !Ext.isEmpty(openLayer.bboxMinX) && !Ext.isEmpty(openLayer.bboxMinY) && !Ext.isEmpty(openLayer.bboxMaxX) && !Ext.isEmpty(openLayer.bboxMaxY);
+	},
+	
+	zoomTo: function(bounds, closest) {
+		this.map.zoomToExtent(bounds, closest);
+	},
+	
+	addGrailsLayer: function (id, layerOptions, layerParams, animated, chosenTimes) {   
+	    
+	    Ext.Ajax.request({
+
+	        url: 'layer/showLayerByItsId?layerId=' + id,
+	        layerOptions: layerOptions,
+	        layerParams: layerParams,
+	        animated: animated,
+	        chosenTimes: chosenTimes,
+	        scope: this,
+	        success: function(resp, options) {
+	            var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
+	            if (layerDescriptor) {
+	               this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
+	            }
+	        },
+	        failure: function(resp) {
+	        	Ext.MessageBox.alert('Error', "Sorry I could not load the requested layer:\n" + resp.responseText);
+	        }
+	    });
+	},
+	
+	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {    
+
+	    var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
+	    if (openLayer) {
+	    	// TODO tommy
+	        //registerLayer( layer );
+	    	this.addLayer(openLayer);
+	    	
+	        // show open layer options 
+	        // this also calls zoomToLayer
+	    	// TODO tommy
+	        //if (!Portal.app.config.hideLayerOptions) {
+	        //    updateDetailsPanel(layer);
+	        //}        
+	        // zoom map first. may request less wms tiles first off
+	        //else 
+        	if (this.autoZoom === true) {
+	            this.zoomToLayer(openLayer);
+	        }  
+        	// Hides the text above the active layers
+	        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+	        
+	        if (this.isNcwmsServer(layerDescriptor)) {
+	            // update detailsPanel after Json request
+	            
+	            // timeout to try to reduce clientside processing on page load
+	            setTimeout(function() {
+	                this.getLayerMetadata(openLayer);
+	            }, 2000 );
+	            
+	        }
+	        
+	        if (animated) {
+	        	openLayer.chosenTimes = chosenTimes;
+	        	this.addNCWMSLayer(openLayer);
+	        }
+	    }
+	},
+	
+	isNcwmsServer: function(layerDescriptor) {
+		var server = this.getServer(layerDescriptor);
+		if (server && server.type) {
+			return server.type.search("NCWMS") > -1;
+		}
+		return false;
+	},
+	
+	getLayerMetadata: function(openLayer) {
+	    if (openLayer.params.LAYERS) {
+	        var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
+	        // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
+	        if (openLayer.cache === true) {
+	           // all parameters passed along here will get added to URL 
+	           // proxyCachedURL = "proxy/cache?URL="
+	           url = proxyCachedURL + encodeURIComponent(getUri(getServer(openLayer))) + "&item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata";
+	        }
+	        
+	        Ext.Ajax.request({
+	            url: url,
+	            success: function(resp) {
+	                openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
+
+	                // if this layer has been user selected before loading the metadata
+	                // reload,  as the date picker details/ form  will be wrong at the very least!
+	                // TODO tommy - selected layer is in details panel
+	                //if (selectedLayer != undefined ) {   
+	                //    if (selectedLayer.id == openLayer.id) {
+	                    	// TODO tommy
+	                //      updateDetailsPanel(openLayer);                         
+	                //    }
+	                //}
+
+	            } 
+	        });
+	    }
+	    
+	    
+	    // TIMESTEPS URI
+	    //http://obsidian:8080/ncWMS/wms?item=timesteps&layerName=67%2Fu&day=2006-09-19T00%3A00%3A00Z&request=GetMetadata
+	    // this is  timestrings we can use in the uri to control animation
+	    // based on timestepss
+	    //http://obsidian:8080/ncWMS/wms?item=animationTimesteps&layerName=67%2FTemperature_layer_between_two_pressure_difference_from_ground&start=2002-12-02T22%3A00%3A00.000Z&end=2002-12-03T01%3A00%3A00.000Z&request=GetMetadata
+	    /**
+	     * Support for parsing JSON animation parameters from NCWMS JSON responses
+	     *
+	     * Example JSON response string:
+	     * {
+	     * 	"units":"m/sec",
+	     * 	"bbox":[146.80064392089844,-43.80047607421875,163.8016815185547,-10.000572204589844],
+	     * 	"scaleRange":[-0.99646884,1.2169001],
+	     * 	"supportedStyles":["BOXFILL"],
+	     * 	"zaxis":{
+	     * 		"units":"meters",
+	     * 		"positive":false,
+	     * 		"values":[-5]
+	     * 	},
+	     * 	"datesWithData":{
+	     * 		"2006":{
+	     * 			"8":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+	     * 		}
+	     * 	},
+	     * 	"nearestTimeIso":"2006-09-01T12:00:00.000Z",
+	     * 	"moreInfo":"",
+	     * 	"copyright":"",
+	     * 	"palettes":["redblue","alg","ncview","greyscale","alg2","occam","rainbow","sst_36","ferret","occam_pastel-30"],
+	     * 	"defaultPalette":"rainbow",
+	     * 	"logScaling":false
+	     * }
+	     */
+	    
+	    return false;
+	},
+	
+	removeLayer: function(openLayer) {
+		if (openLayer.name != 'OpenLayers.Handler.Path') {
+			this.map.removeLayer(openLayer);
+			delete this.activeLayers[this.getLayerUid(openLayer)];
+        }
 	}
 });

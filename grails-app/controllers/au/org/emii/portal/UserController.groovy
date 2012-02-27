@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import grails.converters.JSON;
+
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.authc.UsernamePasswordToken
@@ -172,4 +174,15 @@ class UserController {
             redirect(controller:'home')
         }
     }
+	
+	def current = {
+		def result
+		def currentUser = SecurityUtils.getSubject()
+		def principal = currentUser.getPrincipal()
+
+		if (principal) {
+			result = User.findByEmailAddress(principal)
+		}
+		render result as JSON
+	}
 }

@@ -83,7 +83,7 @@ class LayerController {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
-		def criteria = Layer.createCriteria();
+		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
@@ -303,6 +303,14 @@ class LayerController {
 			render result as JSON
         }
     }
+	
+	def configuredbaselayers = {
+		def layerIds = Config.activeInstance().baselayerMenu.menuItems.collect { it.layerId } 
+		def defaultBaseLayers = Layer.findAllByIdInList(layerIds)
+		JSON.use("deep") {
+			render defaultBaseLayers as JSON
+		}
+	}
 
     def _getServer(params) {
         if (params.server) {
