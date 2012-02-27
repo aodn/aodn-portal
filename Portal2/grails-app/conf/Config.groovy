@@ -90,8 +90,10 @@ environments {
         grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
     
-        grails {
-            mail {
+        grails 
+		{
+            mail 
+			{
                 authenticationFromEmailAddress = "info@aodn.org.au"
 
                 host = "localhost"
@@ -101,6 +103,9 @@ environments {
                 props = ["mail.smtp.auth":"false"]
             }
         }
+		
+		// Disable performance optimisations.
+		grails.resources.debug = true
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
