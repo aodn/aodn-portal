@@ -59,16 +59,20 @@ class Server {
     }
 
 	def beforeDelete() {
-        //Deleting any menus items where the full server has been added (as oppose to Layers)
-
         MenuItem.withNewSession{
             def menuItemServers = MenuItem.findAllByServer(this)
             menuItemServers*.delete()
         }
+
         Layer.withNewSession {
-            def dels = Layer.findAll("from Layer as l where l.server.id = :serverId", [serverId: id])
-            log.debug(dels)
+            def dels = Layer.findAllByServer(this)
             dels*.delete()
         }
+
+        //For some strange reason, I must include these calls
+        //in order for the activeInstance to be updated with the new
+        //default layers list.
+        Config.activeInstance().refresh()
+        Config.activeInstance().defaultLayers
     }
 }

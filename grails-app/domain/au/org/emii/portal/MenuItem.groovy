@@ -3,12 +3,10 @@ package au.org.emii.portal
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import grails.converters.JSON;
+import grails.converters.JSON
 
 class MenuItem implements Comparable<MenuItem> {
-	
-	Long layerId
-	Long serverId
+
 	Boolean leaf
 	String text
 	Integer menuPosition
@@ -22,8 +20,8 @@ class MenuItem implements Comparable<MenuItem> {
 	Long parentId
 	
     static constraints = {
-		layerId(nullable: true)
-		serverId(nullable: true)
+		layer(nullable: true)
+		server(nullable: true)
 		parentPosition(nullable: true)
 		menu(nullable: true)
     }
@@ -32,13 +30,9 @@ class MenuItem implements Comparable<MenuItem> {
 	static hasMany = [childItems: MenuItem]
 	
 	static mapping = {
-		layer updateable: false
-		layer insertable: false
-		server updateable: false
-		server insertable: false
-		childItems cascade: 'all-delete-orphan'
-		parentId updateable: false
-		parentId insertable: false
+        childItems cascade: 'all-delete-orphan'
+        parentId updateable: false
+        parentId insertable: false
 	}
 	
 	MenuItem() {
@@ -81,8 +75,12 @@ class MenuItem implements Comparable<MenuItem> {
 			JSON.parse(json)
 		}
 		text = itemsJsonArray.text
-		layerId = itemsJsonArray.grailsLayerId?.toLong()
-		serverId = itemsJsonArray.grailsServerId?.toLong()
+        if (itemsJsonArray.grailsLayerId) {
+		    layer = Layer.get(itemsJsonArray.grailsLayerId)
+        }
+        if (itemsJsonArray.grailsServerId) {
+		    server = Server.get(itemsJsonArray.grailsServerId)
+        }
 		leaf = itemsJsonArray.leaf?.toBoolean()
 		this.menuPosition = menuPosition
 		this.parentPosition = parentPosition
