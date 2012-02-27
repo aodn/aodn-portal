@@ -119,14 +119,11 @@ function zoomToLayer(map, layer){
     
     if (layer!= undefined) {
         
-            
-        
-        
         if (layer.bboxMinX != null &&
             layer.bboxMinY != null &&
             layer.bboxMaxX != null &&
             layer.bboxMaxY != null) {
-            
+
             // build openlayer bounding box            
             var bounds = new OpenLayers.Bounds(  
                 layer.bboxMinX,
@@ -134,23 +131,21 @@ function zoomToLayer(map, layer){
                 layer.bboxMaxX,
                 layer.bboxMaxY 
                 ); 
-                        
+
             // ensure converted into this maps projection. convert metres into lat/lon etc
             bounds.transform( new OpenLayers.Projection(layer.projection), mapPanel.map.getProjectionObject()); 
-                                     
+
             // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
             if(layer.server.type == "WMS-1.3.0") { 
                 bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-            }            
-            
-            if (bounds) {
-                mapPanel.map.zoomToExtent(bounds);
             } 
         }
-    }
-        
-
+        if (bounds) {
+            mapPanel.map.zoomToExtent(bounds);
+        }         
+    } 
 }
+
 
 
 
@@ -248,6 +243,8 @@ function addToPopup(mapPanel, e) {
         var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
         var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''   ]
         var isAnimatedLayer = layer.originalWMSLayer != undefined;
+        
+
 
         // this is an animated image
         if (isAnimatedLayer) {
@@ -282,13 +279,19 @@ function addToPopup(mapPanel, e) {
             }
         }
         else {
+            
+            var bboxBounds = layer.getExtent();
+            // only handling WMS-1.3.0 reversing here not ncWMS
+            if(layer.server.type == "WMS-1.3.0") { 
+                bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
+            } 
 
             if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
                         EXCEPTIONS: "application/vnd.ogc.se_xml",
-                        BBOX: layer.getExtent().toBBOX(),
+                        BBOX: bboxBounds.toBBOX(),
                         X: e.xy.x,
                         Y: e.xy.y,
                         I: e.xy.x, // buggy IVEC NCWMS-1.1.1
@@ -300,14 +303,14 @@ function addToPopup(mapPanel, e) {
                         SRS: 'EPSG:4326',
                         WIDTH: layer.map.size.w,
                         HEIGHT: layer.map.size.h
-                    });
+                    });                    
                 }
                 else if (layer.params.VERSION == "1.3.0") {
                     url = layer.getFullRequestString({
 
                         REQUEST: "GetFeatureInfo",
                         EXCEPTIONS: "application/vnd.ogc.se_xml",
-                        BBOX: layer.getExtent().toBBOX(),
+                        BBOX: bboxBounds.toBBOX(),
                         I: e.xy.x,
                         J: e.xy.y,
                         INFO_FORMAT: expectedFormat,
