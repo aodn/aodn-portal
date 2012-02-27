@@ -132,15 +132,16 @@ class Layer {
         }
     }
 
-    void deleteLayersFromMenuItems(){
+    void deleteLayerMenuItems(){
         MenuItem.withNewSession{
-            MenuItem.findAllByLayer(this)*.delete()
+            def dels = MenuItem.findAllByLayer(this)
+            dels*.delete()
         }
     }
 
     void beforeDelete(){
         //find all layers related to this server
         deleteDefaultLayersInConfig()
-        deleteLayersFromMenuItems()
+        deleteLayerMenuItems()
     }
 }
