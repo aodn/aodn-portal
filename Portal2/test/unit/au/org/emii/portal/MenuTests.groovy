@@ -44,6 +44,24 @@ class MenuTests extends GrailsUnitTestCase {
 	void testJsonParsing() {
 		mockDomain(Menu)
 		mockDomain(MenuItem)
+        
+        def layers = []
+        def servers = []
+        
+        for (i in (0..200).toArray()){
+            def l = new Layer()
+            l.id = i
+            layers.add(l)
+        }
+
+        for (i in (0..200).toArray()){
+            def s = new Server()
+            s.id = i
+            servers.add(s)
+        }
+        
+        mockDomain(Layer, layers)
+        mockDomain(Server, servers)
 		
 		def json = '{"id":"1","text":"Main","children":[{"id":"1","text":"IVEC ncWMS Server","grailsServerId":"4","leaf":false,"children":[]},{"id":"2","text":"Argo - CQL","grailsLayerId":"35","leaf":true},{"id":"3","text":"argo_aggregation","grailsLayerId":"110","leaf":true},{"id":"4","text":"anfog_glider","grailsLayerId":"109","leaf":true},{"id":"5","text":"ABOS Tracks","grailsLayerId":"12","leaf":true},{"id":"6","text":"soop_xbt","grailsLayerId":"108","leaf":true},{"id":"7","text":"SOTS Locations","grailsLayerId":"13","leaf":true},{"id":"8","text":"Zooview ","grailsLayerId":"7","leaf":true},{"id":"9","text":"INFORMD_STORM/w","grailsLayerId":"75","leaf":true},{"id":"10","text":"NcWMS Layers","leaf":false,"children":[{"id":"11","text":"SST from ivec","grailsLayerId":"26","leaf":true},{"id":"12","text":"ACORN_raw_data_SAG/SPEED","grailsLayerId":"90","leaf":true},{"id":"13","text":"ocean_east_aus_temp/temp","grailsLayerId":"72","leaf":true}]},{"id":"14","text":"eMII development WMS server","grailsServerId":"2","leaf":false,"children":[]},{"id":"15","text":"Tommy CMAR","leaf":false,"grailsServerId":"200","children":[]}]}'
 		def menu = new Menu()
@@ -55,17 +73,22 @@ class MenuTests extends GrailsUnitTestCase {
 		assertEquals 12, menu.menuItems.size()
 		
 		assertEquals 3, l[9].childItems.size()
-		assertEquals 35, l[1].layerId
+		assertEquals 35, l[1].layer.id
 	}
 	
 	void testFindItem() {
 		mockDomain(Menu)
 		mockDomain(MenuItem)
+        mockDomain(Layer)
+        
+        def layer = new Layer()
+        layer.id = 3
+        
 		def menu = new Menu()
 		def item = new MenuItem()
 		item.id = 99
 		item.text = 'Test Text'
-		item.layerId = 3
+		item.layer = layer
 		item.leaf = true
 		item.menu = menu
 		menu.addToMenuItems(item)
