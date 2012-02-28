@@ -1,22 +1,7 @@
 
 
 var viewport;
-var mapMainPanel;
-
-//--------------------------------------------------------------------------------------------
-//Some JSON stuff
-//var ready = false;
-
 var proxyURL = "proxy?url=";
- 
-// components in menuPanel.js
-var leftTabMenuPanel;
-var defaultMenuTree; 
-//var defaultLayers; // from the config
-var defaultMenu; // from the config
-
-var activeMenuPanel, activeLayerTreePanel;
-var spinnerForLayerloading, spinnerForJSONloading;
 var progressCount = 0;
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
@@ -31,11 +16,10 @@ Portal.app = {
     	// Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
         
-        
         // Global Ajax events can be handled on every request!
         Ext.Ajax.on('beforerequest', function(conn, options){
             if(progressCount == 0) {
-                ajaxAction('show');
+                this.ajaxAction('show');
             }
             progressCount++;
         }, this);
@@ -43,36 +27,10 @@ Portal.app = {
         Ext.Ajax.on('requestcomplete', function(conn, response, options){    
             progressCount--;
             if(progressCount == 0) {
-                ajaxAction('hide');
+                this.ajaxAction('hide');
             }
         }, this);
         
-
-        
-        // javascript spinner
-        // create here and there can only be one
-        spinnerForLayerloading = new Spinner({
-            lines: 12, // The number of lines to draw
-            length: 16, // The length of each line
-            width: 4, // The line thickness
-            radius: 12, // The radius of the inner circle
-            color: '#CCC', // #rgb or #rrggbb
-            speed: 1, // Rounds per second
-            trail: 60, // Afterglow percentage
-            shadow: true // Whether to render a shadow
-        });
-        spinnerForJSONloading = new Spinner({
-            lines: 12, // The number of lines to draw
-            length: 6, // The length of each line
-            width: 2, // The line thickness
-            radius: 12, // The radius of the inner circle
-            color: '#CCC', // #rgb or #rrggbb
-            speed: 1, // Rounds per second
-            trail: 40, // Afterglow percentage
-            shadow: true // Whether to render a shadow
-        });
-
-
         Ext.Ajax.request({
             url: 'config/viewport',
             scope: this,
@@ -107,26 +65,24 @@ Portal.app = {
                         dlgPopup.show();
                     };
                 };
-	
-                // CAREFULL HERE WITH THE ORDERING!!!
-                //initDetailsPanel();
-                //initMap();
-                //addBaseLayers(); // build baselayers into baseLayerList before map render
-                //defaultMenu = this.config.defaultMenu; // into global space so it can be modified later if required
-                //initMenusPanel(defaultMenu);
                 doViewPort();
-                //reloadDefaultLayers();
-                //setViewPortTab( 0 ); // Select default tab
+                setViewPortTab( 0 ); // Select default tab
             }
         });
+    },
+    
+    ajaxAction: function(request) {
+        if (request == 'show') {        
+            jQuery('.extAjaxLoading').show(100);
+        }
+        else {
+            jQuery('.extAjaxLoading').hide('slow');
+        }
     }
 };
 
 //GeoExt stuff
 Ext.onReady(Portal.app.init, Portal.app);
-
-
-
 
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex){ 
@@ -278,7 +234,7 @@ function doViewPort()
 //    }); 
 //    mapMainPanel.doLayout();
    
-    
+    var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
     viewport = new Ext.Viewport({
         layout: 'border',
         boxMinWidth: 900,
@@ -300,18 +256,18 @@ function doViewPort()
 	                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
 	            },
 	            items: [
-                    new Portal.ui.PortalPanel({appConfig: Portal.app.config})
-//                {
-//                    xtype: 'portal.search.searchtabpanel',
-//                    listeners: {
-//                        addLayer: {
-//                            fn: function(layerDef) {
-//                                addMainMapLayer(layerDef);
-//                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
-//                            }
-//                        }
-//                    }
-//                }            
+                    portalPanel,
+	                {
+	                    xtype: 'portal.search.searchtabpanel',
+	                    listeners: {
+	                        addLayer: {
+	                            fn: function(layerDef) {
+	                                portalPanel.addMapLayer(layerDef);
+	                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+	                            }
+	                        }
+	                    }
+	                }
 				],
 	        }
 	    ]
@@ -365,14 +321,3 @@ Ext.onReady(function() {
         }
     });
 });
-
-
-function ajaxAction(request) {
-    //console.log(request);
-    if (request == 'show') {        
-        jQuery('.extAjaxLoading').show(100);
-    }
-    else {
-        jQuery('.extAjaxLoading').hide('slow');
-    }
-}

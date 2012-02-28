@@ -32,6 +32,9 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 			this.beginNodeUpdate();
             this.updateNode(store);
             this.endNodeUpdate();
+            if (Ext.isFunction(this.callback)) {
+    			this.callback.call(this.scope || this);
+    		}
 		}, this);
 	},
 	
@@ -104,9 +107,11 @@ Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore = funct
 	return serverLayerDescriptorStore;
 }
 
-Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad = function(node, treePanel) {
+Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad = function(node, treePanel, callback, scope) {
 	var serverLayerDescriptorStore = Portal.data.ServerNodeLayerDescriptorStore.GetServerLayerDescriptorStore(node, treePanel);
 	if (!serverLayerDescriptorStore.isLoaded()) {
+		serverLayerDescriptorStore.callback = callback;
+		serverLayerDescriptorStore.scope = scope;
 		serverLayerDescriptorStore.load();
 	}
 }
