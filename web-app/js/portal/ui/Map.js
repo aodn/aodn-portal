@@ -2,32 +2,32 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.Options = Ext.extend(Object, {
 	
-	controls: [
-		new OpenLayers.Control.Navigation(),
-		new OpenLayers.Control.Attribution(),
-		new OpenLayers.Control.PanPanel(),
-		new OpenLayers.Control.MousePosition(),
-		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.NavigationHistory(),
-		new OpenLayers.Control.OverviewMap({
-            autoPan: true,
-            minRectSize: 30,
-            mapOptions:{
-            	resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-            }
-        })
-	],
-	
-	options: {
-		controls: this.controls,
-        displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        prettyStateKeys: true, // for pretty permalinks,
-        resolutions : [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-	},
-	
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
+		
+		this.controls = [
+	   		new OpenLayers.Control.Navigation(),
+	   		new OpenLayers.Control.Attribution(),
+	   		new OpenLayers.Control.PanPanel(),
+	   		new OpenLayers.Control.MousePosition(),
+	   		new OpenLayers.Control.ScaleLine(),
+	   		new OpenLayers.Control.NavigationHistory(),
+	   		new OpenLayers.Control.OverviewMap({
+	               autoPan: true,
+	               minRectSize: 30,
+	               mapOptions:{
+	               	resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+	               }
+	           })
+	   	];
+		
+		this.options = {
+			controls: this.controls,
+	        displayProjection: new OpenLayers.Projection("EPSG:4326"),
+	        prettyStateKeys: true, // for pretty permalinks,
+	        resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+		};
 	}	
 });
 
@@ -56,8 +56,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            y: 70,
 	            plugins: new GeoExt.ZoomSliderTip()
 	        }],
-	        autoZoom: cfg.autoZoom,
-	        activeLayers: []
+	        activeLayers: {},
+	        layersLoading: 0
 		}, cfg);
 		Portal.ui.Map.superclass.constructor.call(this, config);
 		this.initMap();
@@ -71,7 +71,22 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 //	        }
 //	    });
 //	    this.map.addControl(clickControl);
-//	    clickControl.activate();  
+//	    clickControl.activate();
+	    
+	    this.spinnerForLayerloading = new Spinner({
+            lines: 12, // The number of lines to draw
+            length: 16, // The length of each line
+            width: 4, // The line thickness
+            radius: 12, // The radius of the inner circle
+            color: '#CCC', // #rgb or #rrggbb
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: true // Whether to render a shadow
+        });
+	    
+	    this.addEvents('baselayersloaded', 'layeradded');
+	    this.bubbleEvents.push('baselayersloaded');
+	    this.bubbleEvents.push('layeradded');
 	},
 	
 	initMap: function() {
@@ -84,6 +99,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        this.redrawAnimatedLayers();
 	    });
 	    this.addBaseLayers();
+	    this.addDefaultLayers();
 	},
 	
 	initToolBar: function() {
@@ -137,6 +153,29 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	);
 	        	this.setMapDefaultZoom(); // adds default bbox values to map instance
 	        	this.zoomToInitialBbox();
+	        	this.fireEvent('baselayersloaded');
+	        }
+	    });
+	},
+	
+	addDefaultLayers: function() {
+		Ext.Ajax.request({
+	        url: 'layer/defaultlayers',
+	        scope: this,
+	        success: function(resp, opts) {        
+	        	var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
+	        	Ext.each(layerDescriptors, 
+	    			function(layerDescriptor, index, all) {
+	        			this.addLayer(this.getOpenLayer(layerDescriptor), true);
+	    			},
+	        		this
+	        	);
+	        	// TODO tommy move to portal panel or another higher UI
+	        	jQuery('.extAjaxLoading').hide('slow');
+	            // Zoom to the top most layer if autoZoom is enabled
+	            if (this.autoZoom === true) {
+		            this.zoomToLayer(this.map.layers[this.map.layers.length - 1]);
+		        }
 	        }
 	    });
 	},
@@ -164,7 +203,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        }
 	    }
 	    return "undefined";
-	                
 	},
 	
 	getServerOpacity: function(server) {
@@ -299,10 +337,18 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         return openLayer;
 	},
 	
-	addLayer: function(openLayer) {
+	addLayer: function(openLayer, showLoading) {
 		if (!this.containsLayer(openLayer)) {
+			if (showLoading === true) {
+				this.registerLayer(openLayer);
+			}
 			this.map.addLayer(openLayer);
 			this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
+			this.fireEvent('layeradded', openLayer);
+			if (!openLayer.isBaseLayer) {
+				// Hides the text above the active layers
+		        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+			}
 		}
 	},
 	
@@ -498,9 +544,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 
 	    var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
 	    if (openLayer) {
-	    	// TODO tommy
-	        //registerLayer( layer );
-	    	this.addLayer(openLayer);
+	    	this.addLayer(openLayer, true);
 	    	
 	        // show open layer options 
 	        // this also calls zoomToLayer
@@ -512,9 +556,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        //else 
         	if (this.autoZoom === true) {
 	            this.zoomToLayer(openLayer);
-	        }  
-        	// Hides the text above the active layers
-	        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+	        }
 	        
 	        if (this.isNcwmsServer(layerDescriptor)) {
 	            // update detailsPanel after Json request
@@ -611,6 +653,74 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		if (openLayer.name != 'OpenLayers.Handler.Path') {
 			this.map.removeLayer(openLayer);
 			delete this.activeLayers[this.getLayerUid(openLayer)];
+        }
+	},
+	
+	removeAllLayers: function() {
+		// Need to collect the layers first and delete outside a loop over
+		// the map.layers property because it updates its internal indices and
+		// accordingly skips layers as the loop progresses
+		var layersToRemove = []
+		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
+			if(openLayer && !openLayer.isBaseLayer) {
+	            layersToRemove.push(openLayer);
+	        }
+		}, this);
+		this.removeAllLayersIn(layersToRemove);
+	},
+	
+	removeAllLayersIn: function(openLayers) {
+		Ext.each(openLayers, function(openLayer, allLayers, index) {
+			this.removeLayer(openLayer);
+		}, this);
+	},
+	
+	getLayerText: function(layerCount) {
+		return layerCount === 1 ? "Layer" : "Layers";
+	},
+	
+	getLayersLoadingText: function(layerCount) {
+		return layerCount === 0 ? "" : layerCount.toString();
+	},
+	
+	registerLayer: function(openLayer) {
+		openLayer.events.register('loadstart', this, this.loadStart);
+		openLayer.events.register('loadend', this, this.loadEnd);
+	},
+
+	buildLayerLoadingString: function(layerCount) {
+	    return "Loading " + this.getLayersLoadingText(layerCount) +"  " + this.getLayerText(layerCount) + "\u2026";
+	},
+
+	loadStart: function() {
+	    if (this.layersLoading == 0) {
+	        this.updateLoadingImage("block");
+	    }
+	    this.layersLoading += 1;
+	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
+	},
+
+	loadEnd: function(ret) {
+		this.layersLoading -= 1;
+	    this.layersLoading = Math.max(this.layersLoading, 0);
+	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
+	    if (this.layersLoading == 0) {
+	        this.updateLoadingImage("none");
+	    }
+	},
+
+	updateLoadingImage: function(display) {
+        if (display == "none" || !this.isVisible()) {
+            jQuery("#loader").hide('slow');
+        }
+        else {
+        	if (this.layersLoading >= 0) {
+        		var spinner = this.spinnerForLayerloading;
+                setTimeout(function() {
+                    jQuery("#loader").show();
+                    spinner.spin(jQuery("#jsloader").get(0));
+                }, 2000);
+        	}
         }
 	}
 });

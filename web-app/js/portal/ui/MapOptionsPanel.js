@@ -19,6 +19,23 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 		
 		this.addEvents('removelayer', 'zoomtolayer', 'togglevisibility');
 		this.relayEvents(this.activeLayersPanel, ['removelayer', 'zoomtolayer', 'togglevisibility']);
+		this.relayEvents(this.mapOptionsPanel, ['removealllayers', 'resetmap', 'hidelayeroptionschecked', 'hidelayeroptionsunchecked', 'autozoomchecked', 'autozoomunchecked']);
+	},
+	
+	initBaseLayerCombo: function() {
+		this.mapOptionsPanel.initBaseLayerCombo();
+	},
+	
+	getActiveLayerNodes: function() {
+		return this.activeLayersPanel.getActiveLayerNodes();
+	},
+	
+	layerOptionsVisible: function() {
+		return this.mapOptionsPanel.layerOptionsVisible();
+	},
+	
+	autoZoomEnabled: function() {
+		return this.mapOptionsPanel.autoZoomEnabled();
 	}
 });
 
@@ -26,11 +43,40 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
 		this.snapshotController = new Portal.snapshot.SnapshotController({map: cfg.map});
+		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
+            map: cfg.map,           
+            editable: false,
+            width: 175,
+            padding: 20,
+            emptyText: 'Choose a Base Layer'
+        });
+		
+		this.hideLayerOptionsCheckbox = new Ext.form.Checkbox({
+	        boxLabel: 'Hide layer options',
+	        inputType: 'checkbox',
+	        checked: cfg.hideLayerOptions 
+	    });
+		this.hideLayerOptionsCheckbox.addEvents('hidelayeroptionschecked', 'hidelayeroptionsunchecked');
+		this.hideLayerOptionsCheckbox.on('check', function(box, checked) {
+			var event = checked ? 'hidelayeroptionschecked' : 'hidelayeroptionsunchecked';
+			box.fireEvent(event, box, checked);
+		}, this);
+		
+		this.autoZoomCheckbox = new Ext.form.Checkbox({
+	        boxLabel: 'Auto zoom on layer select',
+	        inputType: 'checkbox',
+	        checked: cfg.autoZoom
+	    });
+		this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
+		this.autoZoomCheckbox.on('check', function(box, checked) {
+			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
+			box.fireEvent(event, box, checked);
+		}, this);
 		
 		var config = Ext.apply({
 	        collapseMode : 'mini',
 	        autoHeight: true,
-	        region: 'north',        
+	        region: 'north',
 	        items:[
 	            {
 	                // place the map options into a panel so that margin can be placed on the inner mapOptions
@@ -39,36 +85,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                    new Ext.Container({
 	                        layout: 'hbox',
 	                        items: [                
-	                            new Ext.Panel({
-	                                items: [ 
-	                                    // hideLayerOptions
-	                                    new Ext.form.Checkbox({
-									        boxLabel  : 'Hide layer options',
-									        inputType : 'checkbox',
-									        listeners: {
-									        	// TODO tommy
-									            //check: function(thisCheckbox, newValue)  {
-									            //    Portal.app.config.hideLayerOptions = newValue;
-									            //    if (newValue == true) {
-									            //        closeNHideDetailsPanel();
-									            //    }
-									            //}
-									        }
-									    }),
-	                                    // zoomToLayerChooser 
-									    new Ext.form.Checkbox({
-									        boxLabel  : 'Auto zoom on layer select',
-									        inputType : 'checkbox',
-									        // TODO tommy
-									        //checked: (Portal.app.config.autoZoom) ? Portal.app.config.autoZoom : false,
-									        //listeners: {
-									        //    check: function(thisCheckbox, newValue)  {                
-									        //        Portal.app.config.autoZoom = newValue;
-									        //    }
-									        //}
-									    })
-	                                ]
-	                            }),
+	                            new Ext.Panel({ items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ] }),
 	                            // mapSpinnerPanel
 	                            new Ext.BoxComponent({        
 	                                border: true,
@@ -81,13 +98,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                    this.initButtonPanel(),
 	                    new Ext.Spacer({height: 2}),
 	                    new Portal.snapshot.SnapshotOptionsPanel({controller: this.snapshotController}),
-	                    new GeoExt.ux.BaseLayerComboBox({
-	                        map: cfg.map,           
-	                        editable: false,
-	                        width: 175,
-	                        padding: 20,
-	                        emptyText: 'Choose a Base Layer'
-	                    })
+	                    this.baseLayerCombo
 	                ]
 	            }
 	        ]
@@ -96,6 +107,9 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
 		
 		//this.addEvents('transect');
+		this.relayEvents(this.buttonPanel, ['removealllayers', 'resetmap']);
+		this.relayEvents(this.hideLayerOptionsCheckbox, ['hidelayeroptionschecked', 'hidelayeroptionsunchecked']);
+		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
 	},
 	
 	initButtonPanel: function() {
@@ -103,38 +117,39 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	        border: true, 
 	        flex: 1,
 	        items:[
-		        // removeAll
 		        {
 		        	xtype: 'button',
 		        	text: 'Remove All Layers',
 		        	cls: "floatLeft buttonPad",   
 		            tooltip: "Remove all overlay layers from the map",
-		            listeners: {
-		            	// TODO tommy
-		                //click: function(button, event) {
-		                //    removeAllLayers();
-		                //}
-		            }
+		            scope: this,
+		            handler: function() { this.fireEvent('removealllayers'); }
 		        },
-		        // resetLayers
 		        {
 		        	xtype: 'button',
 		        	text: 'Reset Map',
 		            tooltip:  'This will load the default set of map overlay layers and reset the map location and zoom level',   
 		            cls: "floatLeft buttonPad",
-		            listeners: {
-		            	// TODO tommy
-		                //click: function(button, event) {
-		                //    removeAllLayers();
-		                //    reloadDefaultLayers();
-		                //}
-		            }
+		            scope: this,
+		            handler: function() { this.fireEvent('resetmap'); }
 		        },
-		        // snapshotSaveButton
 		        new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
 	        ]
 	    });
+		this.buttonPanel.addEvents('removealllayers', 'resetmap');
 		return this.buttonPanel;
+	},
+	
+	initBaseLayerCombo: function() {
+		this.baseLayerCombo.initComponent();
+	},
+	
+	layerOptionsVisible: function() {
+		return this.hideLayerOptionsCheckbox.getValue();
+	},
+	
+	autoZoomEnabled: function() {
+		return this.autoZoomCheckbox.getValue();
 	}
 });
 
@@ -211,6 +226,23 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        ]
 	    });
 		return this.layerActionsMenu;
+	},
+	
+	getActiveLayerNodes: function() {
+		var leafNodes = [];
+		this.addLeafNodes(this.activeLayers.getRootNode(), leafNodes);
+		return leafNodes;
+	},
+	
+	addLeafNodes: function (node, leafNodes) {
+		Ext.each(node.childNodes, function(child, index, all) {
+			if (child.leaf) {
+				leafNodes.push(child);
+			}
+			else {
+				this.addLeafNodes(child, leafNodes);
+			}
+		}, this);
 	},
 	
 	getSelectedNode: function() {

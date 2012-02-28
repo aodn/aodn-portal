@@ -13,7 +13,7 @@ Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
 		Ext.each(
 			menuItems,
 			function(item, index, all) {
-                if (item.layer) {
+	    		if (item.layer) {
                     item.grailsLayerId = item.layer.id;
                 }
                 if (item.server) {
