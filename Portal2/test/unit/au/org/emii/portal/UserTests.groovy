@@ -7,21 +7,25 @@ class UserTests extends GrailsUnitTestCase {
     def user
     
     protected void setUp() {
+
         super.setUp()
         
-        mockForConstraintsTests(User)
+        mockForConstraintsTests User
         
-        user = new User(emailAddress: "admin@utas.edu.au",
-                        firstName: "Joe",
-                        lastName: "Bloggs",
-                        passwordHash: "some value (not actually Sha256 hashed though...)")
+        user = new User( emailAddress: "admin@utas.edu.au",
+                         firstName: "Joe",
+                         lastName: "Bloggs",
+                         passwordHash: "some value (not actually Sha256 hashed though...)",
+                         passwordSalt: "X" * 44 )
     }
 
     protected void tearDown() {
+
         super.tearDown()
     }
     
     void testValidUser() {
+
         assertTrue "Validation should have succeeded (unchanged, valid instance)", user.validate()
     }
     
@@ -51,8 +55,8 @@ class UserTests extends GrailsUnitTestCase {
     
     void testEmailAddressUnique() {
         
-        def user2 = new User(emailAddress: "admin@utas.edu.au", firstName: "Fred", lastName: "Nurk", passwordHash: "Not null, Not Blank")
-        def user3 = new User(emailAddress: "jorge@utas.edu.au", firstName: "Jorge", lastName: "McTavish", passwordHash: "Not null, Not Blank")
+        def user2 = new User(emailAddress: "admin@utas.edu.au", firstName: "Fred", lastName: "Nurk", passwordHash: "Not null, Not Blank", passwordSalt: "@" * 44 )
+        def user3 = new User(emailAddress: "jorge@utas.edu.au", firstName: "Jorge", lastName: "McTavish", passwordHash: "Not null, Not Blank", passwordSalt: "D" * 44 )
         mockForConstraintsTests(User, [user])
         
         // EmailAddress is unique
@@ -110,7 +114,15 @@ class UserTests extends GrailsUnitTestCase {
         assertFalse "Validation should have failed for empty passwordHash", user.validate()
         assertEquals "blank", user.errors.passwordHash
     }
-    
+
+    void testPasswordSaltNullable() {
+
+        // PasswordSalt is null
+        user.passwordSalt = null
+        assertFalse "Validation should have failed for null passwordSalt", user.validate()
+        assertEquals "nullable", user.errors.passwordSalt
+    }
+
     void testToString() {
         
         assertEquals "Joe Bloggs (admin@utas.edu.au)", user.toString()

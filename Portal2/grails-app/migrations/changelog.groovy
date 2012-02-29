@@ -2502,4 +2502,6 @@ So far this is all exactly as per the Grails docs (which go into much more detai
 	include file: '20120220-CJ-AddAnimatedLayerSnapshotDetails.groovy'
 
 	include file: '20120221-DN-LayerBboxChanges.groovy'
+
+	include file: '20120223-DN-SaltingPasswords.groovy'
  }

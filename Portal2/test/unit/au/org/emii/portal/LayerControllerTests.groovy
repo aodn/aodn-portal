@@ -1,10 +1,8 @@
 package au.org.emii.portal
 
-import grails.test.*
-
-import org.apache.shiro.*
-import org.apache.shiro.authc.*
-import org.apache.shiro.subject.*
+import grails.test.ControllerUnitTestCase
+import org.apache.shiro.SecurityUtils
+import org.apache.shiro.subject.Subject
 import org.codehaus.groovy.grails.web.json.JSONElement
 
 class LayerControllerTests extends ControllerUnitTestCase {
@@ -35,7 +33,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def mockSubject = [ getPrincipal: { "sys.admin@emii.org.au" },
                             isPermitted: { true },
                             toString: { return "mockSubject" },
-                            login: { UsernamePasswordToken authtoken -> }
+                            login: { SaltedUsernamePasswordToken authtoken -> }
                           ] as Subject
 
         def securityUtilsControl = mockFor(SecurityUtils)

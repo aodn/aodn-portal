@@ -1,10 +1,13 @@
 package au.org.emii.portal
 
 class User {
+
     // Fields
     String emailAddress
     String firstName
     String lastName
+    
+    String passwordSalt
     String passwordHash
     
     String address
@@ -23,6 +26,7 @@ class User {
         emailAddress(nullable: false, unique: true, email: true, blank: false)
         firstName(nullable: false, blank: false)
         lastName(nullable: false, blank: false)
+        passwordSalt(nullable: false, blank:  false, size: 44..44)
         passwordHash(nullable: false, blank: false)
         
         address(nullable: true)
@@ -41,7 +45,7 @@ class User {
     
     @Override
     public String toString() {
-        
+
         return "${firstName} ${lastName} (${emailAddress})"
     }
 }

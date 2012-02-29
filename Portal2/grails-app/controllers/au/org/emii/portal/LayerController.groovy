@@ -1,9 +1,7 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-
-import org.apache.shiro.*
-import org.apache.shiro.authc.*
+import org.apache.shiro.SecurityUtils
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 
@@ -13,7 +11,8 @@ class LayerController {
 
     def layerService
 	def dataSource
-    
+    def authService
+
     def index = {
         redirect(action: "list", params: params)
     }
@@ -263,8 +262,8 @@ class LayerController {
         if ( !un ) throw new IllegalArgumentException( "Value for username is invalid. username: '$un'" )
         if ( !pwd ) throw new IllegalArgumentException( "Value for password is invalid." )
         
-        def authToken = new UsernamePasswordToken( un.toLowerCase(), pwd as String)
-        
+        def authToken = new SaltedUsernamePasswordToken( authService, un.toLowerCase(), pwd )
+
         SecurityUtils.subject.login authToken
         
         def permissionString = "${controllerName}:${actionName}"

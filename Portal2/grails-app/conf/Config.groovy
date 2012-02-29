@@ -1,3 +1,5 @@
+import grails.util.Environment
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -114,27 +116,27 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
-
     appenders {
-        development {
-            console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
-        }
-        test {
-            console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %30.30c{3} - %m%n')
-        }
+
+        console name:'stdout', layout:pattern(conversionPattern: '%d [%-12t] [%-5p] %30.30c - %m%n')
+
         production {
-            console name:'stdout', layout:pattern(conversionPattern: '%d [%-12.12t] [%-5p] %30.30c{3} - %m%n')
-            
-            //smtp name: 'mail', from: "sys.admin@emii.org.au", to: "dnahodil@utas.edu.au", subject: "Error from Portal app", smtpHost: "localhost", layout: pattern(conversionPattern: "[%r] %c{2} %m%n")
+            appender new org.apache.log4j.net.SMTPAppender(
+                    name: 'mail',
+                    from: "sys.admin@emii.org.au",
+                    to: "dnahodil@utas.edu.au",
+                    subject: "Error from Portal (${grails.serverURL} | ${Environment.current})",
+                    SMTPHost: "localhost",
+                    bufferSize: 1,
+                    // SMTPDebug: true,
+                    layout: pattern( conversionPattern: "Site: ${grails.serverURL} (environment: ${Environment.current})%nTimestamp: %d%nThread: %t%nLevel: %p%nLogger: %c%nMessage: %m" ) )
         }
     }
-    
+
+    root {
+        error 'stdout', 'mail'
+    }
+
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
@@ -145,23 +147,22 @@ log4j = {
            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate',
+           'org.grails.plugin.resource.ResourceMeta'
     
     warn   'org.mortbay.log'
-    
-//    info   'grails.app',
-//           'org.apache.shiro'
-    
+
+    info   'grails.app.filters.SecurityFilters',
+           'org.apache.shiro'
+
     debug  'grails.app.controller',
            'grails.app.job',
            'grails.app.service',
            'grails.app.tagLib',
            'grails.app.domain',
-           //'grails.app.filters.SecurityFilters',
-           //'org.apache.shiro',
-           //'org.hibernate.SQL',           
+           'grails.app.realm'
+           //'org.hibernate.SQL',
            //'org.hibernate.type',
            //'liquibase',
-           'grails.app.realm'
            //'grails'
 }
