@@ -1,15 +1,14 @@
 package au.org.emii.portal
 
-import grails.converters.JSON;
-
+import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
-import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.crypto.hash.Sha256Hash
 
 class UserController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+    def authService
 
     def index = {
         redirect(action: "list", params: params)
@@ -26,13 +25,18 @@ class UserController {
     }
 
     def save = {
-        
-        if (params.password) {
-            params.passwordHash = new Sha256Hash(params.password).toHex()
+
+        if ( params.password ) {
+
+            def salt = authService.newRandomSalt()
+
+            params.passwordSalt = salt
+            params.passwordHash = authService.generatePasswordHash( salt, params.password )
         }
-            
-        def userInstance = new User(params)
-        if (userInstance.save(flush: true)) {
+
+        def userInstance = new User( params )
+
+        if ( userInstance.save( flush: true ) ) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
             redirect(action: "show", id: userInstance.id)
         }
@@ -131,7 +135,7 @@ class UserController {
             return
         }
         
-        def userInstance = userAccountCmd.updateUser()
+        def userInstance = userAccountCmd.updateUser( authService )
 
         log.debug "userInstance: " + userInstance
 
@@ -147,7 +151,7 @@ class UserController {
             }
             
             // Validate and save
-            if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
+            if ( !userInstance.hasErrors() && userInstance.save( flush: true ) ) {
 
                 log.debug "userAccountCmd.orgType: " + userAccountCmd.orgType
                 log.debug "userInstance.orgType: " + userInstance.orgType
@@ -155,7 +159,7 @@ class UserController {
                 flash.message = "${message(code: 'user.updated.noEmailChange')}"
                 
                 // Log in again if password has changed (new principle)
-                if (userAccountCmd.emailAddress != userAccountCmd.previousEmailAddress) {
+                if ( userAccountCmd.emailAddress != userAccountCmd.previousEmailAddress ) {
                     
                     Subject currentUser = SecurityUtils.getSubject()
                     currentUser.logout()

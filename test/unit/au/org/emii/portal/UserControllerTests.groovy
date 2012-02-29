@@ -21,20 +21,27 @@ class UserControllerTests extends ControllerUnitTestCase {
     def newUserEmailAddress = "clarke@thedailyplanet.com"
     def newUserPassword = "IHateKryptonite"
     def newUserInstanceAsString = newUserFirstName + " " + newUserLastName + " (" + newUserEmailAddress + ")"
-    
+
+    // Password salts
+    def sampleSalt1 = "saltsaltsaltsaltsaltsaltsaltsalt"
+    def sampleSalt2 = "12345678901234567890123456789012"
+
     protected void setUp() {
+
         super.setUp()
         
         // Set up Users
         user1 = new User(emailAddress: "jbloggs@utas.edu.au",
                          firstName: "Joe",
                          lastName: "Bloggs",
-                         passwordHash: 'xxxxxxxxxxxxxxxxxx')
+                         passwordHash: "xxxxxxxxxxxxxxxxxx",
+                         passwordSalt: sampleSalt1 )
                          
         user2 = new User(emailAddress: "fred.nurk@utas.edu.au",
                          firstName: "Fred",
                          lastName: "Nurk",
-                         passwordHash: 'xxxxxxxxxxxxxxxxxx')
+                         passwordHash: "xxxxxxxxxxxxxxxxxx",
+                         passwordSalt: sampleSalt2 )
         
         mockDomain(Config)
         mockDomain(User, [user1, user2])
@@ -55,9 +62,9 @@ class UserControllerTests extends ControllerUnitTestCase {
     }
 
     protected void tearDown() {
-        
+
         super.tearDown()
-                        
+
         SecurityUtils.metaClass = null
     }
 
@@ -98,6 +105,19 @@ class UserControllerTests extends ControllerUnitTestCase {
     
     void testSaveAction() {
 
+        // Mock AuthService
+        def authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomSalt() { -> return sampleSalt1 }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals sampleSalt1, salt
+            assertEquals newUserPassword, password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
         assertEquals "Should be 2 Users to start with", 2, User.list().size()
         
         // Enter params (will be invalid, no passwordHash)
@@ -107,20 +127,29 @@ class UserControllerTests extends ControllerUnitTestCase {
         
         // Call save method
         controller.save()
-        
+
         assertEquals "Should render the 'create' view", "create", renderArgs.view
         assertEquals "Should return userInstance with values from params", newUserInstanceAsString, renderArgs.model.userInstance.toString()
         assertEquals "Should still be 2 Users", 2, User.list().size()
-        
+        assertEquals "Should have errors", true, renderArgs.model.userInstance.hasErrors()
+
         // Make params enough for a valid User
         mockParams.password = newUserPassword
         
         // Call save method
         controller.save()
-        
+
         assertEquals "Should now be 3 Users", 3, User.list().size()
         assertEquals "Should redirect to 'show' action", "show", redirectArgs.action
         assertEquals "Should return new User id", 3, redirectArgs.id
+        
+        def savedUser = User.get( 3 ) 
+        
+        assertNotNull "Saved User should not be null", savedUser
+        assertEquals "PasswordSalt should be set", sampleSalt1, savedUser.passwordSalt
+        assertEquals "PasswordHash should match", "<hashed password and salt>", savedUser.passwordHash
+
+        authServiceControl.verify()
     }
     
     void testShowAction() {
@@ -211,7 +240,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     
     void testUpdateAccountAction() {
 
-        logInSubject(authdSubject)
+        logInSubject authdSubject
                 
         def returnArgs = controller.updateAccount()
         
@@ -220,15 +249,15 @@ class UserControllerTests extends ControllerUnitTestCase {
     
     void testUserUpdateAccountAction() {
 
-        logInSubject(authdSubject)
+        logInSubject authdSubject
         
-        def userAcctCmd = UserAccountCommand.from(user2)
+        def userAcctCmd = UserAccountCommand.from( user2 )
         userAcctCmd.firstName = newUserFirstName
         
         assertFalse "UserAccountCommand should not validate", userAcctCmd.validate()
         
         // Should be invalid as password is required but not given
-        controller.userUpdateAccount(userAcctCmd)
+        controller.userUpdateAccount userAcctCmd
         
         assertEquals "Should render updateAccount page", "updateAccount", renderArgs.view
         assertEquals "Should return same UserAccountCommand", userAcctCmd, renderArgs.model.userAccountCmd
@@ -238,7 +267,7 @@ class UserControllerTests extends ControllerUnitTestCase {
         userAcctCmd.passwordRequired = false
         
         // Valid UserAccountCommand now
-        controller.userUpdateAccount(userAcctCmd)
+        controller.userUpdateAccount userAcctCmd
         
         assertEquals "Should redirect to home page", "home", redirectArgs.controller
         assertEquals "Should be same principal logged-in", SecurityUtils.getSubject().getPrincipal(), user2.emailAddress
@@ -247,7 +276,7 @@ class UserControllerTests extends ControllerUnitTestCase {
         userAcctCmd.emailAddress = newUserEmailAddress
 
         // Now change password with userAccountCommand
-        controller.userUpdateAccount(userAcctCmd)
+        controller.userUpdateAccount userAcctCmd
         
         assertEquals "Should redirect to home page", "home", redirectArgs.controller
         assertEquals "Should be null user logged-in as email address was changed", SecurityUtils.getSubject().getPrincipal(), null

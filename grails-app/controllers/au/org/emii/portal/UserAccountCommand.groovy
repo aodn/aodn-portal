@@ -1,9 +1,11 @@
 package au.org.emii.portal
 
-import org.apache.shiro.crypto.hash.Sha256Hash
+import org.apache.log4j.Logger
 
 class UserAccountCommand {
-    
+
+    private static def log = Logger.getLogger( this )
+
     // Fields
     String emailAddress
     String previousEmailAddress
@@ -13,7 +15,7 @@ class UserAccountCommand {
     boolean passwordRequired = true
     String password
     String passwordConfirmation
-    
+
     String address
     String state
     String postcode
@@ -65,11 +67,15 @@ class UserAccountCommand {
         orgType(nullable: true)
     }
     
-    User createUser() {        
+    User createUser( authService ) {
+
+        def salt = authService.newRandomSalt()
+
         def user = new User(emailAddress: emailAddress.toLowerCase(),
                             firstName: firstName,
                             lastName: lastName,
-                            passwordHash: new Sha256Hash(password).toHex(),
+                            passwordHash: authService.generatePasswordHash( salt, password ),
+                            passwordSalt: salt,
                             address: address,
                             state: state,
                             postcode: postcode,
@@ -80,9 +86,10 @@ class UserAccountCommand {
         return user
     }
     
-    User updateUser() {    
-        
-        if (!previousEmailAddress) {
+    User updateUser( authService ) {
+
+        if ( !previousEmailAddress ) {
+
             log.error "previousEmailAddress is null or empty"
             return null
         }
@@ -90,10 +97,11 @@ class UserAccountCommand {
         previousEmailAddress = previousEmailAddress.toLowerCase()
         
         // Get user to update
-        def user = User.findByEmailAddress(previousEmailAddress)
+        def user = User.findByEmailAddress( previousEmailAddress )
         
-        if (!previousEmailAddress) {
-            log.error String.format("Could not find user for previousEmailAddress: '%s'", previousEmailAddress)
+        if ( !previousEmailAddress ) {
+
+            log.error "Could not find user for previousEmailAddress: '$previousEmailAddress'"
             return null
         }
         
@@ -108,18 +116,23 @@ class UserAccountCommand {
         user.orgType = orgType        
         
         // Change password if it has been supplied
-        if (password) {
-            user.passwordHash = new Sha256Hash(password).toHex()
+        if ( password ) {
+
+            def salt = authService.newRandomSalt()
+
+            user.passwordHash = authService.generatePasswordHash( salt, password )
+            user.passwordSalt = salt
         }
         
         return user
     }
-    
+
     String toString() {
-        return String.format("UserAccountCommand(email: '%s'; prevEmail: '%s'; passwdReqd: '%s'. @%s)", emailAddress, previousEmailAddress, passwordRequired, Integer.toHexString(hashCode()))
+        
+        return "UserAccountCommand(email: '$emailAddress'; prevEmail: '$previousEmailAddress'; passwdReqd: '$passwordRequired'. @${Integer.toHexString( hashCode() )})"
     }
         
-    static UserAccountCommand from(User user) {
+    static UserAccountCommand from( User user ) {
         return new UserAccountCommand([emailAddress: user.emailAddress,
                                        previousEmailAddress: user.emailAddress,
                                        firstName: user.firstName,
@@ -127,7 +140,6 @@ class UserAccountCommand {
                                        address: user.address,
                                        state: user.state,
                                        postcode: user.postcode,
-                                       state: user.state,
                                        country: user.country,
                                        organisation: user.organisation,
                                        orgType: user.orgType])

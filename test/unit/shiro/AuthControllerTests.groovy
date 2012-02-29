@@ -1,18 +1,21 @@
 package shiro
 
-import grails.test.*
-import au.org.emii.portal.*
-import org.apache.shiro.crypto.hash.Sha256Hash
-import org.apache.shiro.util.ThreadContext
+import grails.test.ControllerUnitTestCase
 import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
 import org.apache.shiro.authc.*
+import org.apache.shiro.subject.Subject
+import org.apache.shiro.util.ThreadContext
+import au.org.emii.portal.*
 
 class AuthControllerTests extends ControllerUnitTestCase {
     
     protected void setUp() {
         
         super.setUp()
+
+        // Mock controller methods
+        controller.metaClass.message = { args -> return args.code }
+        controller.metaClass.sendMail = { c -> }
     }
 
     protected void tearDown() {
@@ -63,7 +66,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         def anonSubjectPrincipal = null
         def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
                             toString: { return "anonSubject" },
-                            login: { UsernamePasswordToken token ->
+                            login: { SaltedUsernamePasswordToken token ->
                                 if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
                                     anonSubjectPrincipal = token.username
                                 }
@@ -95,7 +98,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         def anonSubjectPrincipal = null
         def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
                             toString: { return "anonSubject" },
-                            login: { UsernamePasswordToken token ->
+                            login: { SaltedUsernamePasswordToken token ->
                                 if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
                                     anonSubjectPrincipal = token.username
                                 }
@@ -133,7 +136,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         def anonSubjectPrincipal = null
         def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
                             toString: { return "anonSubject" },
-                            login: { UsernamePasswordToken token ->
+                            login: { SaltedUsernamePasswordToken token ->
                                 if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
                                     anonSubjectPrincipal = token.username
                                 }
@@ -209,12 +212,26 @@ class AuthControllerTests extends ControllerUnitTestCase {
     }
 	
     void testCreateUserAction() {
-        
+
+        // Mock AuthService
+        def authServiceControl
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "theSalt", salt
+            assertEquals "password", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
         // Subject info
         def anonSubjectPrincipal = null
         def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
                             toString: { return "anonSubject" },
-                            login: { UsernamePasswordToken token ->
+                            login: { SaltedUsernamePasswordToken token ->
                                 if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
                                     anonSubjectPrincipal = token.username
                                 }
@@ -236,29 +253,38 @@ class AuthControllerTests extends ControllerUnitTestCase {
         mockDomain User, []
         mockDomain UserRole, [selfRegisteredUser, admin]
         mockDomain Config
-        
-        // Mock out email methods that should not be run
-        def authCtrlrMock = mockFor( AuthController ) // Mock AuthController behaviour
-        authCtrlrMock.demand.static.sendRegistrationNotifcationEmail(0..1) { User user -> }
-        
+
         // Create userAccountCommand for testing
-        UserAccountCommand createAcctCmd = new UserAccountCommand(emailAddress: "admin@utas.edu.au",
-                                                                  firstName: "Bob",
-                                                                  lastName: "Brown",
-                                                                  passwordRequired: true,
-                                                                  password: "password",
-                                                                  passwordConfirmation: "")
-                                                              
+        UserAccountCommand createAcctCmd = new UserAccountCommand( emailAddress: "admin@utas.edu.au",
+                                                                   firstName: "Bob",
+                                                                   lastName: "Brown",
+                                                                   passwordRequired: true,
+                                                                   password: "password",
+                                                                   passwordConfirmation: "" )
+
         // Check that it is an invalid instance
         assertFalse "UserAccountCommand shouldn't validate", createAcctCmd.validate()
         
         // Attempt to create User
-        controller.createUser(createAcctCmd)
-        
+        controller.createUser createAcctCmd
+
         // createAcctCmd is invalid, should be sent back to register page
         assertEquals "Should be sent back to register view", "register", renderArgs.view
         assertEquals "Should have same UserAccountCommand object", createAcctCmd, renderArgs.model.userAccountCmd
-        
+
+        // Mock AuthService
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "theSalt", salt
+            assertEquals "password", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
         // Update the UserAccountCommand
         createAcctCmd.passwordConfirmation = "password"
         
@@ -267,7 +293,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "There should be no users yet", 0, User.count()
         assertEquals "There should be 2 Roles", 2, UserRole.count()        
         
-        controller.createUser(createAcctCmd)
+        controller.createUser createAcctCmd
         
         // Valid UserAccountCommand should create User
         assertEquals "There should be a new User now", 1, User.count()
@@ -278,9 +304,13 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "The new User's name should match", "Bob Brown (admin@utas.edu.au)", createdUser.toString()
         assertEquals "New User should be in one Role", 1, createdUser.roles.size()
         assertTrue "New User should be in Role 'SelfRegisteredUser'", createdUser.roles.contains(selfRegisteredUser)
-        assertEquals "Logged-in User should be our new user", createAcctCmd.emailAddress, SecurityUtils.getSubject().getPrincipal()
+        assertEquals "Logged-in User should be our new user", createdUser.emailAddress, SecurityUtils.getSubject().getPrincipal()
+        assertEquals "PasswordHash should match", "<hashed password and salt>", createdUser.passwordHash
+        assertEquals "PasswordSalt should match", "theSalt", createdUser.passwordSalt
         
         assertEquals "Should redirect the user back to the Home controller", "home", redirectArgs.controller
+
+        authServiceControl.verify()
     }
     
     void testForgotPasswordAction() {
@@ -300,27 +330,31 @@ class AuthControllerTests extends ControllerUnitTestCase {
     }
     
     void testResetPasswordAction() {
+
+        // Mock AuthService
+        def authServiceControl
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
+        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "theSalt", salt
+            assertEquals "randomPassword", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
+        User user1 = new User( emailAddress: "sys.admin@emii.org.au",
+                               firstName: "Joe",
+                               lastName: "Bloggs",
+                               passwordHash: "somePasswordHash" )
         
-        User user1 = new User(emailAddress: "sys.admin@emii.org.au",
-                              firstName: "Joe",
-                              lastName: "Bloggs",
-                              passwordHash: "somePasswordHash")
-        
-        mockDomain(User, [user1])
-        mockDomain(Config)
-        mockForConstraintsTests(UserResetPasswordCommand)
-        
-        // Mock in method so we can check that new password is really created and hashed
-        def resetPwdCmdMock = mockFor(UserResetPasswordCommand) // Mock UserResetPasswordCommand behaviour
-        resetPwdCmdMock.demand.static.newRandomPassword(1..1) { -> return "newRandomPassword" }
-        
-        // Mock out email methods that should not be run
-        def authCtrlrMock = mockFor(AuthController) // Mock AuthController behaviour
-        authCtrlrMock.demand.static.sendPasswordResetAdviceEmail(0..1) { User user, String newPassword -> }
-                               
-        // Mock up message behaviour
-        controller.metaClass.message = { LinkedHashMap args -> return "${args.code}" }
-        
+        mockDomain User, [user1]
+        mockDomain Config
+        mockForConstraintsTests UserResetPasswordCommand
+
         // UserResetPasswordCommand variable to test with
         UserResetPasswordCommand cmd
         
@@ -328,22 +362,38 @@ class AuthControllerTests extends ControllerUnitTestCase {
         cmd = new UserResetPasswordCommand()
         
         // Try resetPassword action
-        controller.resetPassword(cmd)
+        controller.resetPassword cmd
         
         // cmd is invalid, should be sent back to forgotPassword page
         assertEquals "Should be sent back to forgotPassword view", "forgotPassword", renderArgs.view
         assertEquals "Should have same UserResetPasswordCommand object", cmd, renderArgs.model.userResetPasswordCommand
-        
+
+        // Mock AuthService
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
+        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "theSalt", salt
+            assertEquals "randomPassword", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
         // Valid command object instance
-        cmd = new UserResetPasswordCommand(emailAddress: "sys.admin@emii.org.au")
-        
+        cmd = new UserResetPasswordCommand( emailAddress: "sys.admin@emii.org.au" )
+
         // Try resetPassword action
-        controller.resetPassword(cmd)
+        controller.resetPassword cmd
         
         // Check password changed
-        assertEquals "PasswordHash should have been updated", user1.passwordHash, new Sha256Hash("newRandomPassword").toHex()
+        assertEquals "PasswordHash should have been updated", "<hashed password and salt>", user1.passwordHash
         assertEquals "Should be sent back to login page", "login", redirectArgs.action
         assertEquals "Should have email address in 'username' field of params", user1.emailAddress, redirectArgs.params.username
+
+        authServiceControl.verify()
     }
     
     private logInSubject(Subject subject) {

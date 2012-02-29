@@ -29,7 +29,7 @@
                         
                             <g:sortableColumn property="lastName" title="${message(code: 'user.lastName.label', default: 'Last Name')}" />
                         
-                            <g:sortableColumn property="roles" title="${message(code: 'user.roles.label', default: 'Roles')}" />
+                            <th>${message(code: 'user.roles.label', default: 'Roles')}</th>
                         </tr>
                     </thead>
                     <tbody>

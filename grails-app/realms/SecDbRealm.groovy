@@ -1,39 +1,36 @@
-import org.apache.shiro.authc.AccountException
-import org.apache.shiro.authc.IncorrectCredentialsException
-import org.apache.shiro.authc.UnknownAccountException
-import org.apache.shiro.authc.SimpleAccount
-import org.apache.shiro.authz.permission.WildcardPermission
 import au.org.emii.portal.User
+import org.apache.shiro.authc.*
 
 class SecDbRealm {
-    static authTokenClass = org.apache.shiro.authc.UsernamePasswordToken
+    static authTokenClass = au.org.emii.portal.SaltedUsernamePasswordToken
+
+    def authService
 
     def credentialMatcher
     def shiroPermissionResolver
 
-    def authenticate(authToken) {
+    def authenticate( authToken ) {
         log.info "Attempting to authenticate ${authToken.username} in DB realm..."
         def emailAddress = authToken.username
         
         // Null username is invalid
-        if (emailAddress == null) {
-            throw new AccountException("Null usernames are not allowed by this realm.")
-        }
+        if ( !emailAddress ) throw new AccountException( "Null usernames are not allowed by this realm." )
 
         // Get the user with the given username. If the user is not
         // found, then they don't have an account and we throw an
         // exception.
-        def user = User.findByEmailAddress(emailAddress)
-        if (!user) {
-            throw new UnknownAccountException("No account found for user [${emailAddress}]")
-        }
+        def user = User.findByEmailAddress( emailAddress )
+        if ( !user ) throw new UnknownAccountException( "No account found for user [${emailAddress}]" )
 
         log.info "Found user '${user.emailAddress}' in DB"
 
+        // Include salt for User
+        authToken.salt = user.passwordSalt
+
         // Now check the user's password against the hashed value stored
         // in the database.
-        def account = new SimpleAccount(emailAddress, user.passwordHash, "SecDbRealm")
-        if (!credentialMatcher.doCredentialsMatch(authToken, account)) {
+        def account = new SimpleAccount( emailAddress, user.passwordHash, "SecDbRealm" )
+        if ( !credentialMatcher.doCredentialsMatch( authToken, account ) ) {
             log.info "Invalid password (DB realm)"
             throw new IncorrectCredentialsException("Invalid password for user '${emailAddress}'")
         }
@@ -120,12 +117,6 @@ class SecDbRealm {
             }
         }
 
-        if (retval != null) {
-            // Found a matching permission!
-            return true
-        }
-        else {
-            return false
-        }
+        return retval != null
     }
 }

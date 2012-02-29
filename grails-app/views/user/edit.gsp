@@ -66,7 +66,16 @@
                                     <g:textField name="passwordHash" value="${userInstance?.passwordHash}" />
                                 </td>
                             </tr>
-                        
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="passwordSalt"><g:message code="user.passwordSalt.label" default="Password Salt" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwordSalt', 'errors')}">
+                                    <g:textField name="passwordSalt" value="${userInstance?.passwordSalt}" />
+                                </td>
+                            </tr>
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="address"><g:message code="user.address.label" default="Address" /></label>
@@ -114,7 +123,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="orgType"><g:message code="user.orgType.label" default="Org Type" /></label>
+                                  <label for="orgType.id"><g:message code="user.orgType.label" default="Org Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'orgType', 'errors')}">
                                     <g:select name="orgType.id" from="${au.org.emii.portal.OrganisationType.list()}" optionKey="id" value="${userInstance?.orgType?.id}" noSelection="['null': '']" />
@@ -123,7 +132,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="permissions"><g:message code="user.permissions.label" default="Permissions" /></label>
+                                  <label><g:message code="user.permissions.label" default="Permissions" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'permissions', 'errors')}">
                                     
