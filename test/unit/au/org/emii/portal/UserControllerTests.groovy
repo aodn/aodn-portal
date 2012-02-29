@@ -23,8 +23,8 @@ class UserControllerTests extends ControllerUnitTestCase {
     def newUserInstanceAsString = newUserFirstName + " " + newUserLastName + " (" + newUserEmailAddress + ")"
 
     // Password salts
-    def sampleSalt1 = "saltsaltsaltsaltsaltsaltsaltsalt"
-    def sampleSalt2 = "12345678901234567890123456789012"
+    def sampleSalt1 = "saltsaltsaltsaltsaltsaltsaltsaltsaltsaltsalt"
+    def sampleSalt2 = "12345678901234567890123456789012345678901234"
 
     protected void setUp() {
 

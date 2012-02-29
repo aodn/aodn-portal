@@ -101,6 +101,7 @@ class AuthController {
             redirect( controller: "home" )
         }
         else {
+
             log.error "Could not save User instance during self-registration. params: '${params}'."
             flash.message = "${message(code: 'auth.account.registerFailed', default: 'Could not register. Please try again.')}"
             render(view: "register", model: [userAccountCmd: UserAccountCommand.from(userInstance), configInstance: Config.activeInstance()])

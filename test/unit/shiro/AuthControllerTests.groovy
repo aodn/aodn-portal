@@ -213,14 +213,16 @@ class AuthControllerTests extends ControllerUnitTestCase {
 	
     void testCreateUserAction() {
 
+
+
         // Mock AuthService
         def authServiceControl
         authServiceControl = mockFor( AuthService )
-        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
         authServiceControl.demand.generatePasswordHash() {
             salt, password ->
 
-            assertEquals "theSalt", salt
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
             assertEquals "password", password
 
             return "<hashed password and salt>"
@@ -274,11 +276,11 @@ class AuthControllerTests extends ControllerUnitTestCase {
 
         // Mock AuthService
         authServiceControl = mockFor( AuthService )
-        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
         authServiceControl.demand.generatePasswordHash() {
             salt, password ->
 
-            assertEquals "theSalt", salt
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
             assertEquals "password", password
 
             return "<hashed password and salt>"
@@ -306,7 +308,7 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertTrue "New User should be in Role 'SelfRegisteredUser'", createdUser.roles.contains(selfRegisteredUser)
         assertEquals "Logged-in User should be our new user", createdUser.emailAddress, SecurityUtils.getSubject().getPrincipal()
         assertEquals "PasswordHash should match", "<hashed password and salt>", createdUser.passwordHash
-        assertEquals "PasswordSalt should match", "theSalt", createdUser.passwordSalt
+        assertEquals "PasswordSalt should match", "[ Fourty Four Character Password Salt      ]", createdUser.passwordSalt
         
         assertEquals "Should redirect the user back to the Home controller", "home", redirectArgs.controller
 
@@ -335,11 +337,11 @@ class AuthControllerTests extends ControllerUnitTestCase {
         def authServiceControl
         authServiceControl = mockFor( AuthService )
         authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
-        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
         authServiceControl.demand.generatePasswordHash() {
             salt, password ->
 
-            assertEquals "theSalt", salt
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
             assertEquals "randomPassword", password
 
             return "<hashed password and salt>"
@@ -371,11 +373,11 @@ class AuthControllerTests extends ControllerUnitTestCase {
         // Mock AuthService
         authServiceControl = mockFor( AuthService )
         authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
-        authServiceControl.demand.newRandomSalt() { -> return "theSalt" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
         authServiceControl.demand.generatePasswordHash() {
             salt, password ->
 
-            assertEquals "theSalt", salt
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
             assertEquals "randomPassword", password
 
             return "<hashed password and salt>"
