@@ -310,6 +310,12 @@ class LayerController {
 			render defaultBaseLayers as JSON
 		}
 	}
+	
+	def defaultlayers = {
+		JSON.use("deep") {
+			render Config.activeInstance().defaultLayers as JSON
+		}
+	}
 
     def _getServer(params) {
         if (params.server) {

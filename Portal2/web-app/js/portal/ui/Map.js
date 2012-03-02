@@ -65,13 +65,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 
 	    // TODO tommy
 	    // Control to get feature info or pop up
-//	    var clickControl = new OpenLayers.Control.Click2({
-//	        trigger: function(evt) {
-//	            addToPopup(mapPanel,evt);
-//	        }
-//	    });
-//	    this.map.addControl(clickControl);
-//	    clickControl.activate();
+	    var clickControl = new OpenLayers.Control.Click2({
+	        trigger: function(event) {
+	            addToPopup(this, event);
+	        }
+	    });
+	    this.map.addControl(clickControl);
+	    clickControl.activate();
 	    
 	    this.spinnerForLayerloading = new Spinner({
             lines: 12, // The number of lines to draw
@@ -250,7 +250,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	getServerUri: function(layerDescriptor) {
 		var serverUri = this.getUri(this.getServer(layerDescriptor));
 		if (layerDescriptor.cache == true) {
-	        serverUri = window.location.href + proxyCachedURL + URLEncode(serverUri);         
+	        serverUri = window.location.href + proxyCachedURL + Ext.urlEncode(serverUri);         
 	    }
         return serverUri;
 	},
@@ -546,26 +546,19 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    if (openLayer) {
 	    	this.addLayer(openLayer, true);
 	    	
-	        // show open layer options 
-	        // this also calls zoomToLayer
-	    	// TODO tommy
-	        //if (!Portal.app.config.hideLayerOptions) {
-	        //    updateDetailsPanel(layer);
-	        //}        
 	        // zoom map first. may request less wms tiles first off
-	        //else 
         	if (this.autoZoom === true) {
 	            this.zoomToLayer(openLayer);
+	        }
+        	
+        	// show open layer options
+        	if (!Portal.app.config.hideLayerOptions) {
+	            updateDetailsPanel(openLayer);
 	        }
 	        
 	        if (this.isNcwmsServer(layerDescriptor)) {
 	            // update detailsPanel after Json request
-	            
-	            // timeout to try to reduce clientside processing on page load
-	            setTimeout(function() {
-	                this.getLayerMetadata(openLayer);
-	            }, 2000 );
-	            
+                this.getLayerMetadata(openLayer);
 	        }
 	        
 	        if (animated) {
@@ -589,7 +582,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
 	        if (openLayer.cache === true) {
 	           // all parameters passed along here will get added to URL 
-	           // proxyCachedURL = "proxy/cache?URL="
 	           url = proxyCachedURL + encodeURIComponent(getUri(getServer(openLayer))) + "&item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata";
 	        }
 	        
@@ -600,14 +592,10 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 
 	                // if this layer has been user selected before loading the metadata
 	                // reload,  as the date picker details/ form  will be wrong at the very least!
-	                // TODO tommy - selected layer is in details panel
-	                //if (selectedLayer != undefined ) {   
-	                //    if (selectedLayer.id == openLayer.id) {
-	                    	// TODO tommy
-	                //      updateDetailsPanel(openLayer);                         
-	                //    }
-	                //}
-
+	                // TODO tommy - refactor selected layer usage, it is declared is in details panel
+	                if (selectedLayer !== undefined && selectedLayer.id == openLayer.id) {   
+                    	updateDetailsPanel(openLayer);                         
+	                }
 	            } 
 	        });
 	    }
@@ -705,6 +693,10 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    this.layersLoading = Math.max(this.layersLoading, 0);
 	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
 	    if (this.layersLoading == 0) {
+	    	if (this.spinnerTimeOut) {
+	    		clearTimeout(this.spinnerTimeOut);
+	    		delete this.spinnerTimeOut;
+	    	}
 	        this.updateLoadingImage("none");
 	    }
 	},
@@ -716,11 +708,22 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         else {
         	if (this.layersLoading >= 0) {
         		var spinner = this.spinnerForLayerloading;
-                setTimeout(function() {
+                this.spinnerTimeOut = setTimeout(function() {
                     jQuery("#loader").show();
                     spinner.spin(jQuery("#jsloader").get(0));
                 }, 2000);
         	}
         }
+	},
+	
+	stopAnimation: function(openLayer) {
+	    // if originalWMSLayer is set then it is an animated Openlayers.Image
+	    if (openLayer.originalWMSLayer !== undefined) {  
+	        // get back the plain wms layer
+	        this.layerSwap(layer.originalWMSLayer, openLayer);
+	        // close the detailsPanel
+	        // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+	        closeNHideDetailsPanel();
+	    }
 	}
 });

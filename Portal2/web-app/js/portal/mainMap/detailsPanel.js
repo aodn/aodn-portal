@@ -241,10 +241,10 @@ function initDetailsPanel()  {
             id: 'stopNCAnimationButton',
             text:'Stop Animation',
             //disabled: true, // readonly
-            hidden: true,
-            handler: function(button,event) {
-                stopgetTimePeriod(selectedLayer);
-            }
+            hidden: true
+//            handler: function(button, event) {
+//                stopgetTimePeriod(selectedLayer);
+//            }
         },
         animateLink, 
         detailsPanelTabs
@@ -301,7 +301,7 @@ function initDetailsPanel()  {
 
 // display layer details in the popup or pin to the right of the main map
 function toggleDetailsLocation() {
-    var rdp = mapMainPanel.getComponent('rightDetailsPanel');
+    var rdp = Ext.getCmp('rightDetailsPanel');
     var detailsPanelItems = Ext.getCmp('detailsPanelItems');
     
     if (detailsPanelItems.ownerCt.id == "detailsPanel") {
@@ -334,7 +334,7 @@ function closeNHideDetailsPanel() {
         detailsPanel.hide();
     }
     else {      
-        var rdp = mapMainPanel.getComponent('rightDetailsPanel');
+        var rdp = Ext.getCmp('rightDetailsPanel');
         rdp.hide();
         rdp.ownerCt.doLayout(); // map will resize to fill empty space        
     }    
@@ -358,12 +358,6 @@ function updateDetailsPanel(layer) {
         updateStyles(layer);
 
         Ext.getCmp('opacitySlider').show(); // reset slider
-
-
-        if (Portal.app.config.autoZoom === true) {
-            zoomToLayer(mapPanel.map, layer);
-        }
-
 
         ncWMSColourScalePanel.hide();
 
@@ -399,7 +393,7 @@ function updateDetailsPanel(layer) {
 
             makeNcWMSColourScale(layer); 
 
-            transectControl.setMapPanel(mapPanel);
+            transectControl.setMapPanel(Ext.getCmp('map'));
             transectControl.layer = layer;
             transectControl.show();
 
@@ -425,7 +419,7 @@ function updateDetailsPanel(layer) {
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
-        mapMainPanel.getComponent('rightDetailsPanel').setTitle("Layer Options: " + layer.name); 
+        Ext.getCmp('rightDetailsPanel').setTitle("Layer Options: " + layer.name); 
 
 
         // as it may have taken a second or two to get to here, check that map is still visible
@@ -438,7 +432,7 @@ function updateDetailsPanel(layer) {
                 updateDetailsPanelPositionSize();
             }
             else{
-                mapMainPanel.getComponent('rightDetailsPanel').show(true);  
+            	Ext.getCmp('rightDetailsPanel').show(true);  
                 // resize the map so the panel isnt on top
                 //mapMainPanel.doLayout();
             }

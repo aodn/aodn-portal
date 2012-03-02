@@ -50,7 +50,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
   },
   
   onSuccessfulLoad: function(snapshot, successCallback) {
-    removeAllLayers();
+    this.fireEvent('snapshotLoaded');
     
     var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
     
@@ -129,10 +129,10 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       }
     } else {
       if (snapshotLayer.layer) {
-        addGrailsLayer(snapshotLayer.layer.id, options, params, snapshotLayer.animated, snapshotLayer.chosenTimes);
+        this.addGrailsLayer(snapshotLayer.layer.id, options, params, snapshotLayer.animated, snapshotLayer.chosenTimes);
       } else {
         var layerDef = this.getLayerDef(snapshotLayer);
-        addMainMapLayer(layerDef, options, params);
+        this.addMapLayer(layerDef, options, params);
       }
     }
   },
@@ -146,6 +146,20 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
       },
       name: snapshotLayer.name
     };
+  },
+  
+  addGrailsLayer: function(id, options, params, animated, chosenTimes) {
+	  if (Ext.isFunction(this.addGrailsLayerFn)) {
+		  var delegate = this.addGrailsLayerFn.createDelegate(this.mapScope, [id, options, params, animated, chosenTimes]);
+		  delegate.call();
+	  }
+  },
+  
+  addMapLayer: function(layerDef, options, params) {
+	  if (Ext.isFunction(this.addMapLayerFn)) {
+		  var delegate = this.addMapLayerFn.createDelegate(this.mapScope, [layerDef, options, params]);
+		  delegate.call();
+	  }
   }
   
 });
