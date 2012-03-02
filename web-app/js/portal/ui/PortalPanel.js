@@ -4,48 +4,12 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
 	constructor: function(cfg) {
 		this.appConfig = cfg.appConfig;
-		this.mapPanel = new Portal.ui.Map({
-			initialBbox: this.appConfig.initialBbox,
-			autoZoom: this.appConfig.autoZoom,
-			hideLayerOptions: this.appConfig.hideLayerOptions
-		});
 		
-		this.leftTabMenuPanel = new Portal.ui.MapMenuPanel({ 
-			menuId: this.appConfig.defaultMenu.id
-		});
-		
-		this.actionsPanel = new Portal.ui.ActionsPanel({
-			map: this.mapPanel.map,
-			layerStore: this.mapPanel.layers,
-			hideLayerOptions: this.appConfig.hideLayerOptions,
-			autoZoom: this.appConfig.autoZoom
-		});
-		
-		this.mapPanel.on('baselayersloaded', function() {
-			this.actionsPanel.initBaseLayerCombo();
-		}, this);
-		
-		this.mapPanel.on('layeradded', function(openLayer) {
-			this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, false);
-		}, this);
-		
-		this.actionsPanel.on('removealllayers', function() {
-			this.mapPanel.removeAllLayers();
-			this.leftTabMenuPanel.toggleNodeBranch(true);
-		}, this);
-		
-		this.actionsPanel.on('resetmap', function() {
-			this.mapPanel.removeAllLayers();
-			this.mapPanel.zoomToInitialBbox();
-			this.leftTabMenuPanel.toggleNodeBranch(true);
-			this.mapPanel.addDefaultLayers();
-		}, this);
-		
-		this.leftTabMenuPanel.on('serverloaded', function(node) {
-			Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
-				this.leftTabMenuPanel.toggleLayerNodes(node.layer.grailsLayerId, false);
-			}, this);
-		}, this);
+		this.initMapPanel(this.appConfig);
+		this.initActionsPanel(this.appConfig, this.mapPanel);
+		this.initLeftTabMenuPanel(this.appConfig);
+		this.initLeftMenuPanel(this.appConfig);
+		this.initRightDetailsPanel(this.appConfig);
 		
 		var config = Ext.apply({
 			layout: 'border',
@@ -53,40 +17,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	        title: 'Map',
 	        stateful: false,
 	        items: [
-                {            
-                    region: 'west',
-                    id: "leftMenus",
-                    headerCfg:  {
-                        cls: 'menuHeader',
-                        html: 'Message'
-                    },
-                    title: 'Layer Chooser',
-                    autoScroll: true,
-                    items: [
-                        this.leftTabMenuPanel,
-                        this.actionsPanel
-                    ],
-                    cls: 'leftMenus',
-                    collapsible: true,
-                    collapseMode: 'mini',
-                    stateful: false,
-                    split: true,
-                    width: this.appConfig.westWidth,
-                    minWidth: 260,
-                    listeners: {
-                    	// TODO tommy
-//                        // show the little expand button on map right.
-//                        beforeexpand: function(){                    
-//                            var ls = mapPanel.map.getControlsByClass('OpenLayers.Control.LayerSwitcher')[0];
-//                            ls.destroy();
-//                        },                
-//                        beforecollapse: function(){                    
-//                            mapPanel.map.addControl(new OpenLayers.Control.LayerSwitcher({
-//                                roundedCornerColor: '#34546E' // bloody openlayers!!
-//                            }));
-//                        }
-                    }
-                },
+            	this.leftMenuPanel,
                 {
                     region:'center',
                     id: 'mainMapCentrePanel',
@@ -118,54 +49,109 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
                             
                         }
                     ]
-                }//,
-//                {
-//                    xtype: 'panel',
-//                    id: 'rightDetailsPanel',
-//                    region: 'east',
-//                    hideMode: 'offsets',
-//                    hidden: true,
-//                    collapsible: false,            
-//                    stateful: false,
-//                    //html: 'ActiveLayers Details panel here',
-//                    split: true,
-//                    width: 350,
-//                    minWidth: 250,
-//                    closeAction: 'hide',
-//                    collapseMode: 'mini',
-//                    autoDestroy: false,
-//                    tools:[
-//                        {
-//                            id:'unpin',
-//                            qtip: 'Make these options appear in a popup again',
-//                            // hidden:true,
-//                            handler: function(event, toolEl, panel){
-//
-//                                toggleDetailsLocation();
-//                            }
-//                        },
-//                        {
-//                            id:'close',
-//                            qtip: 'Note: select "Hide layer options" to keep this panel closed',
-//                            // hidden:true,
-//                            handler: function(event, toolEl, panel){
-//
-//                                closeNHideDetailsPanel();
-//                            }
-//                        }                
-//                    ],
-//                    listeners: {
-//                        // ensure it dosent overlay the map
-//                        show: function(panel) {                    
-//                            mapMainPanel.doLayout();
-//                        }
-//                    }
-//                }
+                },
+                this.rightDetailsPanel
             ]
 		}, cfg);
 	
 		Portal.ui.PortalPanel.superclass.constructor.call(this, config);
 		
+		this.registerEvents();
+	},
+	
+	initMapPanel: function(appConfig) {
+		this.mapPanel = new Portal.ui.Map({
+			initialBbox: appConfig.initialBbox,
+			autoZoom: appConfig.autoZoom,
+			hideLayerOptions: appConfig.hideLayerOptions
+		});
+	},
+	
+	initActionsPanel: function(appConfig, mapPanel) {
+		this.actionsPanel = new Portal.ui.ActionsPanel({
+			map: mapPanel.map,
+			layerStore: mapPanel.layers,
+			hideLayerOptions: appConfig.hideLayerOptions,
+			autoZoom: appConfig.autoZoom,
+			addGrailsLayerFn: mapPanel.addGrailsLayer,
+			mapScope: mapPanel
+		});
+	},
+	
+	initLeftMenuPanel: function(appConfig) {
+		this.leftMenuPanel = new Ext.Panel({            
+            region: 'west',
+            id: "leftMenus",
+            headerCfg:  {
+                cls: 'menuHeader',
+                html: 'Message'
+            },
+            title: 'Layer Chooser',
+            autoScroll: true,
+            items: [
+                this.leftTabMenuPanel,
+                this.actionsPanel
+            ],
+            cls: 'leftMenus',
+            collapsible: true,
+            collapseMode: 'mini',
+            stateful: false,
+            split: true,
+            width: appConfig.westWidth,
+            minWidth: 260
+        });
+		
+	},
+	
+	initLeftTabMenuPanel: function(appConfig) {
+		this.leftTabMenuPanel = new Portal.ui.MapMenuPanel({ 
+			menuId: appConfig.defaultMenu.id
+		});
+	},
+	
+	initRightDetailsPanel: function(appConfig) {
+		this.rightDetailsPanel = new Ext.Panel({
+            id: 'rightDetailsPanel',
+            region: 'east',
+            hideMode: 'offsets',
+            hidden: true,
+            collapsible: false,            
+            stateful: false,
+            split: true,
+            width: 350,
+            minWidth: 250,
+            closeAction: 'hide',
+            collapseMode: 'mini',
+            autoDestroy: false,
+            tools:[
+                {
+                    id:'unpin',
+                    qtip: 'Make these options appear in a popup again',
+                    handler: function(event, toolEl, panel) {
+                        toggleDetailsLocation();
+                    }
+                },
+                {
+                    id:'close',
+                    qtip: 'Note: select "Hide layer options" to keep this panel closed',
+                    handler: function(event, toolEl, panel) {
+                        closeNHideDetailsPanel();
+                    }
+                }                
+            ]
+		});
+	},
+	
+	registerEvents: function() {
+		this.registerMapPanelEvents();
+		this.registerActionPanelEvents();
+		this.registerLeftMenuPanelEvents();
+		this.registerLeftTabMenuPanelEvents();
+		this.registerRightDetailsPanelEvents();
+		this.registerMonitoringEvents();
+	},
+	
+	registerMonitoringEvents: function() {
 		this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
 		this.mon(this.actionsPanel, 'removelayer', this.removeLayer, this);
 		this.mon(this.actionsPanel, 'zoomtolayer', this.zoomToLayer, this);
@@ -173,6 +159,62 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		this.mon(this.actionsPanel, 'hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
 		this.mon(this.actionsPanel, 'autozoomchecked', this.autoZoomCheckboxHandler, this);
 		this.mon(this.actionsPanel, 'autozoomunchecked', this.autoZoomCheckboxHandler, this);
+	},
+	
+	registerMapPanelEvents: function() {
+		this.mapPanel.on('baselayersloaded', function() {
+			this.actionsPanel.initBaseLayerCombo();
+		}, this);
+		
+		this.mapPanel.on('layeradded', function(openLayer) {
+			this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, false);
+		}, this);
+	},
+	
+	registerActionPanelEvents: function() {
+		this.actionsPanel.on('removealllayers', function() {
+			this.mapPanel.removeAllLayers();
+			this.leftTabMenuPanel.toggleNodeBranch(true);
+		}, this);
+		
+		this.actionsPanel.on('resetmap', function() {
+			this.mapPanel.removeAllLayers();
+			this.mapPanel.zoomToInitialBbox();
+			this.leftTabMenuPanel.toggleNodeBranch(true);
+			this.mapPanel.addDefaultLayers();
+		}, this);
+	},
+	
+	registerLeftMenuPanelEvents: function() {
+		this.leftMenuPanel.on('beforeexpand', function() {
+			this.layerSwitcher.destroy();
+		}, this);
+		
+		this.leftMenuPanel.on('beforecollapse', function() {
+			this.layerSwitcher = new OpenLayers.Control.LayerSwitcher({roundedCornerColor: '#34546E'});
+	        this.mapPanel.map.addControl(this.layerSwitcher);
+		}, this);
+	},
+	
+	registerLeftTabMenuPanelEvents: function() {
+		this.leftTabMenuPanel.on('serverloaded', function(node) {
+			Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
+				this.leftTabMenuPanel.toggleLayerNodes(node.layer.grailsLayerId, false);
+			}, this);
+		}, this);
+	},
+	
+	registerRightDetailsPanelEvents: function() {
+		this.rightDetailsPanel.on('show', function(panel) {
+			this.mapPanel.doLayout();
+		}, this);
+		
+		// Until the details panel is refactored just grab a handle via Ext
+		Ext.getCmp('stopNCAnimationButton').on('click', function() {
+			// Note selected layer is a global variable that also should be refactored
+			alert('foo');
+			this.mapPanel.stopAnimation(selectedLayer);
+		}, this);
 	},
 	
 	onMenuNodeClick: function(node) {
@@ -208,8 +250,6 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	autoZoomCheckboxHandler: function(box, checked) {
-        // TODO tommy
-        //checked: (Portal.app.config.autoZoom) ? Portal.app.config.autoZoom : false,
         Portal.app.config.autoZoom = checked;
         this.mapPanel.autoZoom = checked;
 	},

@@ -31,6 +31,13 @@ Portal.app = {
             }
         }, this);
         
+        Ext.Ajax.on('requestexception', function(conn, response, options){    
+            progressCount--;
+            if(progressCount == 0) {
+                this.ajaxAction('hide');
+            }
+        }, this);
+        
         Ext.Ajax.request({
             url: 'config/viewport',
             scope: this,
@@ -45,7 +52,6 @@ Portal.app = {
                     if(this.config.enableMOTD)  {
                         var nav = new Ext.Panel({
                             labelWidth:400,
-                            //frame:false,                      
                             title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
                             html: this.config.motd.motd,
                             padding: 20,
@@ -65,6 +71,7 @@ Portal.app = {
                         dlgPopup.show();
                     };
                 };
+                initDetailsPanel();
                 doViewPort();
                 setViewPortTab( 0 ); // Select default tab
             }
@@ -92,9 +99,7 @@ function setViewPortTab(tabIndex){
     jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
 }
 
-function doViewPort()
-{
-    
+function doViewPort() {    
 //    mapMainPanel = new Ext.Panel({
 //        layout: 'border',
 //        id: 'mainMapPanel',

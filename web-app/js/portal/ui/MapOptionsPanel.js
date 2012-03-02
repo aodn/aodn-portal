@@ -42,7 +42,14 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
-		this.snapshotController = new Portal.snapshot.SnapshotController({map: cfg.map});
+		this.snapshotController = new Portal.snapshot.SnapshotController({
+			map: cfg.map,
+			addGrailsLayerFn: cfg.addGrailsLayerFn,
+			mapScope: cfg.mapScope
+		});
+		this.snapshotController.on('snapshotLoaded', function() {
+			this.fireRemoveAllLayers();
+		}, this);
 		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
             map: cfg.map,           
             editable: false,
@@ -79,14 +86,12 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	        region: 'north',
 	        items:[
 	            {
-	                // place the map options into a panel so that margin can be placed on the inner mapOptions
 	                id : 'mapOptions',
 	                items: [
 	                    new Ext.Container({
 	                        layout: 'hbox',
 	                        items: [                
 	                            new Ext.Panel({ items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ] }),
-	                            // mapSpinnerPanel
 	                            new Ext.BoxComponent({        
 	                                border: true,
 	                                id: 'mapSpinnerPanel',
@@ -123,7 +128,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		        	cls: "floatLeft buttonPad",   
 		            tooltip: "Remove all overlay layers from the map",
 		            scope: this,
-		            handler: function() { this.fireEvent('removealllayers'); }
+		            handler: this.fireRemoveAllLayers
 		        },
 		        {
 		        	xtype: 'button',
@@ -150,6 +155,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	autoZoomEnabled: function() {
 		return this.autoZoomCheckbox.getValue();
+	},
+	
+	fireRemoveAllLayers: function() { 
+		this.fireEvent('removealllayers');
 	}
 });
 
@@ -185,7 +194,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	            expanded: true
 	        }),
 	        listeners: {
-	        	// TODO tommy
+	        	// TODO tommy seems like we need to update the details panel on a node click
 //	            append: function(tree, parent, node){                
 //	                // run this once only
 //	                // seems to run again when animated images are added
@@ -209,6 +218,11 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		this.activeLayers.on("contextmenu", function(node, event) {
 			this.activeLayers.getSelectionModel().select(node);
 	        this.layerActionsMenu.showAt(event.getXY());
+	    }, this);
+		
+		this.activeLayers.on("click", function(node, event) {
+			this.setNodeChecked(node, true);
+			updateDetailsPanel(node.layer);
 	    }, this);
 		
 		return this.activeLayers;
@@ -267,7 +281,11 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	toggleLayerVisibility: function() {
 		if (this.fireEvent('togglevisibility', this.getSelectedLayer())) {
-			this.getSelectedNode().getUI().toggleCheck(!this.getSelectedNode().getUI().isChecked());
+			this.setNodeChecked(this.getSelectedNode(), !this.getSelectedNode().getUI().isChecked());
 		}
+	},
+	
+	setNodeChecked: function(node, checked) {
+		node.getUI().toggleCheck(checked);
 	}
 });

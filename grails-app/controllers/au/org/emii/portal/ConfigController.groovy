@@ -23,7 +23,7 @@ class ConfigController {
         render(view: "show", model: [configInstance: configInstance])
     }
 
-    def listForViewport = {
+    def viewport = {
 
         def configInstance = Config.activeInstance();
         
@@ -37,11 +37,13 @@ class ConfigController {
             configInstance.baselayerMenu.getBaseLayers() as JSON
 		}
 
-        instanceAsGenericObj['defaultMenu'] = JSON.use('deep') {
+		def tmpJsonObj = JSON.use('deep') {
             _getDisplayableMenu(configInstance.defaultMenu) as JSON
         }
 		
-		def tmpJsonObj = JSON.use('deep') {
+		instanceAsGenericObj['defaultMenu'] = JSON.parse(tmpJsonObj.toString());
+		
+		tmpJsonObj = JSON.use('deep') {
 			configInstance.defaultLayers as JSON
 		}
 		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
@@ -55,7 +57,7 @@ class ConfigController {
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
 
-        render(contentType: "application/json", text:  instanceAsGenericObj)
+        render(contentType: "application/json", text: instanceAsGenericObj)
     }
 
     def create = {

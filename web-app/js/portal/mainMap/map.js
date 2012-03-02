@@ -29,11 +29,6 @@ var argos = null; // array of existing argo platform_numbers
 // Layer loading activity indicator
 var layersLoading = 0;
 
-// Get feature info dialog
-var numFeatureTabsToLoad;
-var numFeatureTabsLoaded;
-
-
 // Pop up things
 var popup;
 
@@ -67,87 +62,6 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     
     CLASS_NAME: "OpenLayers.Control.Click"
 });
-
-function setMapDefaultZoom(map) {
-    
-    /* ---------------
-     * left	{Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
-     * bottom	{Number} The bottom bounds of the box.  Note that for height calculations, this is assumed to be more than the top value.
-     * right	{Number} The right bounds.
-     * top	{Number} The top bounds.
-    */
-    if (Portal.app.config.initialBbox != "") {
-        var bbox = Portal.app.config.initialBbox.split(",");
-        map.minx = parseInt(bbox[0]);
-        map.maxx = parseInt(bbox[2]);
-        map.miny = parseInt(bbox[1]);
-        map.maxy = parseInt(bbox[3]);
-        if (!((map.minx >= -180 && map.minx <= 180)
-            && (map.maxx > -180 && map.maxx <= 180)
-            && (map.miny >= -90 && map.miny <= 90)
-            && (map.maxy >= -90 && map.maxy <= 90)
-            && map.minx < map.maxx
-            && map.miny < map.maxy)) {
-            alert("ERROR: wrong value in bbox ! \n\n" + 
-                map.minx + 
-                ":West = "+(map.minx >= -180 && map.minx <= 180)+"\n" + 
-                map.miny +
-                ":South = "+(map.miny >= -90 && map.miny <= 90) +"\n" + 
-                map.maxx + 
-                ":East = "+ (map.maxx > -180 && map.maxx <= 180)+"\n" + 
-                map.maxy + 
-                ":North = "+(map.maxy >= -90 && map.maxy <= 90) +
-                "\n West > East = " + (map.minx < map.maxx) + 
-                "\n South < North = " +(map.miny < map.maxy) 
-                );
-        }
-        else {
-    //zoomToDefaultZoom(map); // no point calling here as layout not done
-    } 
-    }
-    else {
-        alert("ERROR: Bounding box is not set in the config");
-    }
-}
-
-function zoomToDefaultZoom(map) {
-    map.zoomToExtent(new OpenLayers.Bounds(map.minx,map.miny,map.maxx,map.maxy),true);    
-}
-
-function zoomToLayer(map, layer){
-    
-    
-    if (layer!= undefined) {
-        
-        if (layer.bboxMinX != null &&
-            layer.bboxMinY != null &&
-            layer.bboxMaxX != null &&
-            layer.bboxMaxY != null) {
-
-            // build openlayer bounding box            
-            var bounds = new OpenLayers.Bounds(  
-                layer.bboxMinX,
-                layer.bboxMinY,
-                layer.bboxMaxX,
-                layer.bboxMaxY 
-                ); 
-
-            // ensure converted into this maps projection. convert metres into lat/lon etc
-            bounds.transform( new OpenLayers.Projection(layer.projection), mapPanel.map.getProjectionObject()); 
-
-            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
-            if(layer.server.type == "WMS-1.3.0") { 
-                bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-            } 
-        }
-        if (bounds) {
-            mapPanel.map.zoomToExtent(bounds);
-        }         
-    } 
-}
-
-
-
 
 function addToPopup(mapPanel, e) {
 	
@@ -843,7 +757,7 @@ function centreOnArgo(base_url, argo_id, zoomlevel) {
 }
 
 // This function gets over the Firefox 4096 character limit for XML nodes using 'textContent''
-// IE doesn’t support the textContent attribute
+// IE doesn't support the textContent attribute
 function getNodeText(xmlNode)
 {
     if(!xmlNode) return '';
@@ -1016,100 +930,5 @@ function acornHistory(request_string,div,data) {
 
 
     return false;
-}
-
-
-// Layer loading icon
-function registerLayer(layer) {
-        
-    layer.events.register('loadstart', this, loadStart);
-    layer.events.register('loadend', this, loadEnd);
-}
-
-function buildLayerLoadingString() {
-    
-    var layerTxt = "Layers";
-    if (layersLoading === 1) {
-        layerTxt = "Layer";
-    } 
-    var layersLoadingTxt = layersLoading;
-    if (layersLoading === 0) {
-        layersLoadingTxt = "";
-    }
-    return "Loading " + layersLoadingTxt +"  " + layerTxt + " .....";
-}
-
-function loadStart() {
-    
-    if ( layersLoading == 0 ) {
-        
-        updateLoadingImage( "block" );
-    } 
-    
-    layersLoading++;
-    jQuery("#loader p").text( buildLayerLoadingString());
-}
-
-function loadEnd(ret) {
-    
-    //console.log(ret.object.name);
-    
-    layersLoading = Math.max( --layersLoading, 0 );
-    jQuery("#loader p").text(buildLayerLoadingString());
-    if ( layersLoading == 0 ) {
-        updateLoadingImage( "none" );
-    }
-}
-
-function updateLoadingImage(display) {
-
-    
-    var div = document.getElementById( "loader" );
-    if ( div != null ) {
-        
-        if ( display == "none" ) {
-            jQuery("#loader").hide('slow');
-        }
-        else {
-            // only show the spinner if we are still on the map
-            if (mapMainPanel.isVisible()) {
-                setTimeout(function(){
-                    if ( layersLoading > 0 ) {                    
-                        jQuery("#loader").show();
-                        spinnerForLayerloading.spin(document.getElementById( "jsloader" ));
-                    }
-                }, 2000);
-            }
-            else {
-                jQuery("#loader").hide('slow');
-            }
-            
-        }
-    }
-}
-
-function URLEncode (clearString) {
-    var output = '';
-    var x = 0;
-    clearString = clearString.toString();
-
-    var regex = /(^[a-zA-Z0-9_.]*)/;
-    while (x < clearString.length) {
-        var match = regex.exec(clearString.substr(x));
-        if (match != null && match.length > 1 && match[1] != '') {
-            output += match[1];
-            x += match[1].length;
-        } else {
-            if (clearString[x] == ' ')
-                output += '+';
-            else {
-                var charCode = clearString.charCodeAt(x);
-                var hexVal = charCode.toString(16);
-                output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
-            }
-            x++;
-        }
-    }
-    return output;
 }
 
