@@ -1,5 +1,14 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="title"><g:message code="layer.title.label" default="Title" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'title', 'errors')}">
+                                    <g:textField name="title" maxlength="25" value="${layerInstance?.title}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="name"><g:message code="layer.name.label" default="Name" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'name', 'errors')}">
