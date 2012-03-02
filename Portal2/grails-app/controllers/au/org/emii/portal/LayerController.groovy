@@ -297,7 +297,17 @@ class LayerController {
             }
         }
 
-        def result = [layerDescriptors: layerDescriptors]
+        def layersToReturn = layerDescriptors
+
+        // If just one grouping layer, bypass it
+        if ( layerDescriptors.size() == 1 &&
+             layerDescriptors[0].layers.size() ) {
+
+            layersToReturn = layerDescriptors[0].layers
+        }
+
+        def result = [layerDescriptors: layersToReturn]
+
 		JSON.use("deep") {
 			render result as JSON
         }

@@ -156,22 +156,22 @@ class LayerService {
         }
     }
 
-    void _traverseLayerTree(Layer layer, Closure closure) {
+    void _traverseLayerTree(Layer layer, Closure layerProcess) {
 
-        closure layer
+        layerProcess.call( layer )
 
-        layer.layers.each{
-            _traverseLayerTree it, closure
+        layer.layers.each {
+            _traverseLayerTree it, layerProcess
         }
     }
 
-    def _traverseJsonLayerTree(JSONObject layerAsJson, Layer parent, Closure c) {
+    def _traverseJsonLayerTree(JSONObject layerAsJson, Layer parent, Closure layerProcess) {
 
-        def newLayer = c( layerAsJson, parent )
+        def newLayer = layerProcess.call( layerAsJson, parent )
 
-        layerAsJson.children.each{
+        layerAsJson.children.each {
 
-            _traverseJsonLayerTree( it, newLayer, c )
+            _traverseJsonLayerTree( it, newLayer, layerProcess )
         }
 
         if ( parent ) {
