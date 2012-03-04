@@ -2,10 +2,9 @@ package au.org.emii.portal;
 
 import static org.junit.Assert.*
 
-import org.codehaus.groovy.grails.web.json.JSONObject;
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import grails.converters.JSON
-import groovy.util.GroovyTestCase
 
 class SnapshotServiceTests extends GroovyTestCase {
 
@@ -19,10 +18,10 @@ class SnapshotServiceTests extends GroovyTestCase {
 
     void testServiceReferenceSaveJSONRequest() 
     {
-        def user = new User(emailAddress: "Joe.Bloggs@testing.com", firstName: "Joe", lastName: "Bloggs", passwordHash: "its a secret")
+        def user = new User(emailAddress: "Joe.Bloggs@testing.com", firstName: "Joe", lastName: "Bloggs", passwordHash: "its a secret", passwordSalt: "Sodium Chloride......................Get it?")
         
-        user.save()       
-        
+        user.save()
+
         def controller = new SnapshotController()
         
         controller.request.method = "POST"
@@ -54,7 +53,7 @@ class SnapshotServiceTests extends GroovyTestCase {
     
     void testLayerReferenceSaveJSONRequest() 
     {
-        def user = new User(emailAddress: "Joe.Bloggs@testing.com", firstName: "Joe", lastName: "Bloggs", passwordHash: "its a secret")
+        def user = new User(emailAddress: "Joe.Bloggs@testing.com", firstName: "Joe", lastName: "Bloggs", passwordHash: "its a secret", passwordSalt: "*" * 44 )
         
         user.save()
         
