@@ -1,12 +1,11 @@
 package au.org.emii.portal
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.*
 
 import grails.converters.JSON
 
 class MenuItem implements Comparable<MenuItem> {
-	
+
 	Boolean leaf
 	String text
 	Integer menuPosition
@@ -30,9 +29,9 @@ class MenuItem implements Comparable<MenuItem> {
 	static hasMany = [childItems: MenuItem]
 	
 	static mapping = {
-		childItems cascade: 'all-delete-orphan'
-		parentId updateable: false
-		parentId insertable: false
+        childItems cascade: 'all-delete-orphan'
+        parentId updateable: false
+        parentId insertable: false
 	}
 	
 	MenuItem() {
@@ -75,8 +74,12 @@ class MenuItem implements Comparable<MenuItem> {
 			JSON.parse(json)
 		}
 		text = itemsJsonArray.text
-		layerId = itemsJsonArray.grailsLayerId?.toLong()
-		serverId = itemsJsonArray.grailsServerId?.toLong()
+        if (itemsJsonArray.grailsLayerId) {
+		    layer = Layer.get(itemsJsonArray.grailsLayerId)
+        }
+        if (itemsJsonArray.grailsServerId) {
+		    server = Server.get(itemsJsonArray.grailsServerId)
+        }
 		leaf = itemsJsonArray.leaf?.toBoolean()
 		this.menuPosition = menuPosition
 		this.parentPosition = parentPosition
