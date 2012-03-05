@@ -26,9 +26,10 @@ class ServerControllerTests extends ControllerUnitTestCase {
 	
     void testCheckForBrokenLinks() {
         def checkLinksServiceControl = mockFor(CheckLinksService)
-        checkLinksServiceControl.demand.check(1..1) {String serverId -> "Result string"}
+        checkLinksServiceControl.demand.check(1..1) {String serverId, String email -> "Result string"}
         this.controller.checkLinksService = checkLinksServiceControl.createMock()
         this.controller.params.server = "10"
+		this.controller.params.userEmailAddress = "test@test.com"
         this.controller.checkForBrokenLinks()
         assertEquals "Result string", this.controller.response.contentAsString
     }
