@@ -89,6 +89,7 @@ environments {
 		}
 	}
     development {
+		//grails.resources.debug = true
         grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
     
@@ -107,6 +108,7 @@ environments {
         }
     }
     test {
+		grails.resources.debug = true
         grails.serverURL = "http://localhost:8080/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
         grails.mail.disabled = true
