@@ -2,6 +2,8 @@ package au.org.emii.portal
 
 import org.codehaus.groovy.grails.web.mapping.UrlMapping;
 import org.cyberneko.html.parsers.SAXParser
+import org.apache.shiro.SecurityUtils
+
 
 class CheckServerForBrokenLinksJob {
 	// Perform getFeatureInfo for each layer at the server, scan for hyperlinks and check each one.
@@ -16,14 +18,21 @@ class CheckServerForBrokenLinksJob {
 	static FEATURE_COUNT = 10000
 	static MINIMUM_RESPONSE_CODE = 399
 	def summaryMap = new HashMap()
-
+	def mailService 
+	
 	def execute(context) {
 	
+		// Get user details so the report can be emailed
+		
+		
 		if (!context.mergedJobDataMap.get('serverId')) {
 			return
 		}
 
+		def userEmailAddress = context.mergedJobDataMap.get('userEmail')
+				
 		file.append "Broken links report for server with id = ${context.mergedJobDataMap.get('serverId')}${ln}"
+		file.append "For ${userEmailAddress}${ln}"
 
 		def foundServer = Server.get(context.mergedJobDataMap.get('serverId'))
 
@@ -33,8 +42,14 @@ class CheckServerForBrokenLinksJob {
 
 		file.append "uri = ${foundServer.uri} type = ${foundServer.type}${ln}"
 		_getCapabilities(foundServer.uri)
+		
+		sendReportByEmail(userEmailAddress, file)
 	}
 
+
+
+	
+	
 	def _getCapabilities(url) {
 		//Request getCapabilities for the server and extract the layers
 		def getCapabilitiesUrl = url + '?version=1.1.1&request=getcapabilities'
@@ -53,6 +68,7 @@ class CheckServerForBrokenLinksJob {
 		def layerNodeList = capabilityNodeList.getAt('Layer')
 
 		if (layerNodeList.size() > 0) {
+			def scum = layerNodeList.first().toString()
 			layerNodeList.first().children().each {
 				if (it.name() == 'Layer') {
 					def getFeatureInfoUrlString = _constructFeatureInfoRequest(url, it)
@@ -73,11 +89,12 @@ class CheckServerForBrokenLinksJob {
 	def _extractLinks(getFeatureInfoUrlString) {
 		//Extract all the links and check them
 		Set urlSet = new HashSet()
-		def parser = new org.cyberneko.html.parsers.SAXParser()
-		parser.setFeature('http://xml.org/sax/features/namespaces', false)
+		def saxParser = new org.cyberneko.html.parsers.SAXParser()
+		saxParser.setFeature('http://xml.org/sax/features/namespaces', false)
 		def page
 		try {
-			page = new XmlParser(parser).parse(getFeatureInfoUrlString)
+			def xmlParser = new XmlParser(saxParser)
+			page = xmlParser.parse(getFeatureInfoUrlString)
 		} catch (IOException e) {
 			file.append "Error: IO Exception for layer"
 			return
@@ -142,5 +159,17 @@ class CheckServerForBrokenLinksJob {
 		getFeatureInfoUrlString += '&x=0&y=0&width=1&height=1&info_format=text/html&feature_count=' + FEATURE_COUNT
 	}
 
+	
+	// Email notifications
+	def sendReportByEmail(userEmailAddress, file) {
+		
+		mailService.sendMail   {
+			multipart true
+			to userEmailAddress
+			subject "Broken Links Report"
+			body 'Broken Links Report atatched'
+			attachBytes file.toString(),'text/xml', file.readBytes()
+		} 
+	}
 
 }
