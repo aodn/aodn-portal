@@ -7,9 +7,9 @@ class CheckLinksService {
 	def serviceMethod() {
 	}
 
-	String check(String id) {
+	String check(String id, String email) {
 		// wrapper for quartz job
-		CheckServerForBrokenLinksJob.triggerNow([serverId:id])
-		return "Job submitted for server id=${id}"
+		CheckServerForBrokenLinksJob.triggerNow([serverId:id, userEmail:email])
+		return "Job submitted for server id=${id} with report to be emailed to ${email}"
 	}
 }

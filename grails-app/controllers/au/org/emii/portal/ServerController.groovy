@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import grails.converters.deep.JSON
+import org.apache.shiro.SecurityUtils
 
 class ServerController {
 
@@ -128,12 +129,13 @@ class ServerController {
 	}
 
 	def selectServerToCheckLinks = {
-
+		def userEmailAddress = SecurityUtils.getSubject().getPrincipal()
+		[userEmailAddress:userEmailAddress]
 	}
 
 	def checkForBrokenLinks = {
-		log.debug "Preparing to scan server with id=${params.server}"
-		def result = checkLinksService.check(params.server)
+		log.debug "Preparing to scan server with id=${params.server} and user email: ${params.userEmailAddress}"
+		def result = checkLinksService.check(params.server, params.userEmailAddress)
 		render result
 	}
 }

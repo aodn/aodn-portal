@@ -25,9 +25,11 @@
 												noSelection="noSelection="['':'Please Select...']" />
 				
 		       	<g:actionSubmit value="Check" action="checkForBrokenLinks"/>
+		       <br/><br/>
+		    <dt>Email to receive report : </dt>
+	       	<dd><g:textField name="userEmailAddress" value="${userEmailAddress}"/></dd>
 	       	</g:form>
 	       	<br/>
-	       	n.b. the broken links report will be sent to 
 
         </div>
     </body>
