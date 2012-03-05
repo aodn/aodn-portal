@@ -1,5 +1,7 @@
 describe("Portal.ui.Map", function() {
 	
+	Ext.Ajax.request.isSpy = false;
+	spyOn(Ext.Ajax, 'request').andReturn('');
 	var map = new Portal.ui.Map();
 	
 	var layer = {
@@ -144,4 +146,6 @@ describe("Portal.ui.Map", function() {
 			expect(map.getParentName(layerDescriptor)).toBeFalsy();
 		});
 	});
+	
+	Ext.Ajax.request.isSpy = false;
 });

@@ -387,6 +387,7 @@
 					</sourceIncludes>
 					<sourceExcludes>
 						<exclude>portal/viewport.js</exclude>
+						<exclude>portal/viewport2.js</exclude>
 						<exclude>portal/config/grid2treedrag.js</exclude>
 						<exclude>portal/common/DownloadCart.js</exclude>
 						<exclude>portal/common/AppConfigStore.js</exclude>
