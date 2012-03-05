@@ -67,8 +67,8 @@ describe("Portal.snapshot", function()
     });
         
     it("loads snapshot passed when onSuccessfulLoad is called", function() {
-      spyOn(window, 'removeAllLayers');
-      spyOn(window, 'addGrailsLayer');
+      spyOn(snapshotController, 'fireEvent');
+      spyOn(snapshotController, 'addGrailsLayer');
       
       var snapshotInstance = {
           id: 1,
@@ -90,11 +90,12 @@ describe("Portal.snapshot", function()
       
       snapshotController.onSuccessfulLoad(snapshotInstance);
       
-      expect(removeAllLayers).toHaveBeenCalled();
+      expect(snapshotController.fireEvent).toHaveBeenCalled();
+      expect(snapshotController.fireEvent.mostRecentCall.args[0]).toEqual('snapshotLoaded');
       expect(mockMap.zoomToExtent).toHaveBeenCalled();
-      expect(addGrailsLayer).toHaveBeenCalled();
+      expect(snapshotController.addGrailsLayer).toHaveBeenCalled();
       
-      var snapshotId = addGrailsLayer.mostRecentCall.args[0];
+      var snapshotId = snapshotController.addGrailsLayer.mostRecentCall.args[0];
             
       expect(snapshotId).toEqual(301);
     });
@@ -102,9 +103,7 @@ describe("Portal.snapshot", function()
     // test for ncwms opacity problem
     
     it("doesn't set opacity if snapshot opacity is null", function() {
-      spyOn(window, 'removeAllLayers');
-      spyOn(window, 'addGrailsLayer');
-
+    	spyOn(snapshotController, 'addGrailsLayer');
       var snapshotInstance = {
           id: 1,
           name: 'test snapshot',
@@ -125,7 +124,7 @@ describe("Portal.snapshot", function()
       
       snapshotController.onSuccessfulLoad(snapshotInstance);
       
-      var options = addGrailsLayer.mostRecentCall.args[1];
+      var options = snapshotController.addGrailsLayer.mostRecentCall.args[1];
             
       expect(options.opacity).toBeUndefined();
     });
