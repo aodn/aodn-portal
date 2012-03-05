@@ -68,7 +68,11 @@ class UserController {
     }
 
     def update = {
+
         def userInstance = User.get(params.id)
+
+        // todo - DN: Extend for password/salting
+
         if (userInstance) {
             if (params.version) {
                 def version = params.version.toLong()
