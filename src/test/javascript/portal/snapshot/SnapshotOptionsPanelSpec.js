@@ -7,6 +7,8 @@ describe("Portal.snapshot", function()
         loadSnapshot: jasmine.createSpy(),
         deleteSnapshot: jasmine.createSpy()
 	  };
+	  
+	  spyOn(Ext.Ajax, 'request').andReturn();
 
 	  var snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
 	    controller: mockController
@@ -36,6 +38,6 @@ describe("Portal.snapshot", function()
       
       expect(mockController.deleteSnapshot).toHaveBeenCalled();
     });
-        
+    Ext.Ajax.request.isSpy = false;  
 	});
 });		
