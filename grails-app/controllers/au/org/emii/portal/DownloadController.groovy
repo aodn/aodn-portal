@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.util.zip.*
+import java.io.ByteArrayInputStream
 
 class DownloadController {
 
@@ -128,12 +129,21 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         def dataFromUrl
         try {
             def requestUrl = info.href.toURL()
-        
+
             log.debug "requestUrl: ${requestUrl}"
             log.debug "info.type: ${info.type}"
-            
-            dataFromUrl = requestUrl.newInputStream()
-            
+
+            if(info.type.equals("text/html"))
+            {
+                String content = "[InternetShortcut]\r\n";
+                content += "URL=" + requestUrl + "\r\n"
+                dataFromUrl = new ByteArrayInputStream(content.getBytes())
+            }
+            else
+            {
+                dataFromUrl = requestUrl.newInputStream()
+            }
+
             def newEntry = new ZipEntry( "${info.title}.${extensionFromUrlAndType( info.href, info.type )}" )
             zipOut.putNextEntry newEntry
             
@@ -142,6 +152,9 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
                 zipOut.write buffer, 0, bytesRead
                 totalBytesRead += bytesRead
             }
+
+            //always, always close your streams :)
+            dataFromUrl.close()
 
             zipOut.closeEntry()
         }
@@ -159,7 +172,9 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
     }
     
     private String extensionFromUrlAndType(String url, String type) {
-        
+        //short cutting this -- if it's a URL, then this will generate a .url file instead
+        //of downbloading the whole thing.
+
         // Check for file extensions on URL
        
         for (i in MinFileExtensionLength..MaxFileExtensionLength) {
@@ -167,10 +182,20 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
             int startOfExtensionIndex = (-1 * i)
             int endOfExtensionIndex = -1
             int previousCharIndex = startOfExtensionIndex - 1
-            
+
+            def urlExtension = null
+
             if ( url[ previousCharIndex ] == "." ) {
-                
-                return url[startOfExtensionIndex..endOfExtensionIndex]
+                urlExtension = url[startOfExtensionIndex..endOfExtensionIndex]
+            }
+
+            if(urlExtension != null)
+            {
+                if(!urlExtension.equals("html"))
+                    return urlExtension
+                else
+                    return "url"
+
             }
         }
         
