@@ -150,7 +150,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
         
     void testExtensionFromUrlAndType() {
-                
+
+        assertEquals "Extension should be 'url'", "url", controller.extensionFromUrlAndType("someFile.html", "text/html" )
         assertEquals "Extension should be 'html'", "html", controller.extensionFromUrlAndType("someFile", "text/html" )
         assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile", "text/xml" )
         assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile.z", "text/xml" )
