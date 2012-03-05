@@ -168,14 +168,14 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		// Add paging params
 		
 		var to = startRecord + this.HITS_PER_PAGE - 1;
-		
+
 		queryParams.push("from=" + startRecord);
 		queryParams.push("to=" + to);
 		
 		var query = GeoNetwork.util.SearchTools.buildQueryGET(queryParams, startRecord, GeoNetwork.util.SearchTools.sortBy, this.resultsStore.fast);
 		
 		GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), Ext.createDelegate(onFailure,this), updateStore, this.resultsStore);
-	
+
 		this.resultsStore.startRecord = startRecord - 1;
 		this.lastSearch = filters;
 	},

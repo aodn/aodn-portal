@@ -3,7 +3,7 @@ Ext.namespace('Portal.search');
 Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    url: '',
    defaultType: 'textfield',
-
+   resultsGrid: null,
    padding: '15px 0px 0px 15px',
    layout: 'hbox',
    autoHeight: true,
@@ -11,6 +11,14 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
    autoScroll: true,
+
+   setResultsGridText: function(){
+           this.resultsGrid.getBottomToolbar().afterPageText = "of ...?";
+      },
+   resetResultsGridText: function(){
+        this.resultsGrid.getBottomToolbar().afterPageText = "of {0}";
+      },
+
    
    initComponent: function() {
       var opensearchSuggest = Portal.app.config.catalogUrl + '/srv/en/main.search.suggest';
@@ -71,7 +79,14 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                   ],
                   data: [
                      [1, OpenLayers.i18n("dateRange"), false, {xtype: 'portal.search.field.daterange'}],
-                     [2, OpenLayers.i18n("boundingBox"), false, {xtype: 'portal.search.field.boundingbox'}],
+                     [2, OpenLayers.i18n("boundingBox"), false, {
+                        xtype: 'portal.search.field.boundingbox',
+                        listeners: {
+                                scope: this,
+                                beforeRender: this.setResultsGridText,
+                                removed: this.resetResultsGridText
+                            }
+                        }],
                      [3, OpenLayers.i18n("keyword"), true, {
                         fieldLabel:OpenLayers.i18n("keyword"),
                         labelSeparator: '',
@@ -253,7 +268,11 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')});
       
       return searchFilters;
-   }    
+   },
+
+   setResultsGrid: function(rGrid){
+    this.resultsGrid = rGrid;
+   }
    
 });
     
