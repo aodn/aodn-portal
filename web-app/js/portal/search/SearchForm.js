@@ -13,10 +13,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    autoScroll: true,
 
    setResultsGridText: function(){
+        if(this.resultsGrid != null)
            this.resultsGrid.getBottomToolbar().afterPageText = "of ...?";
       },
    resetResultsGridText: function(){
-        this.resultsGrid.getBottomToolbar().afterPageText = "of {0}";
+        if(this.resultsGrid != null)
+            this.resultsGrid.getBottomToolbar().afterPageText = "of {0}";
       },
 
    
@@ -217,7 +219,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    
    removeFieldClick: function(btn) {
       var comp = btn.ownerCt;
-      
+
       this.advancedSearchCombo.filters.remove(comp.fieldId);
       this.advancedSearchCombo.store.filterBy(
          function(record) {
