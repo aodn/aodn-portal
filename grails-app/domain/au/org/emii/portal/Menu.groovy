@@ -1,16 +1,19 @@
 package au.org.emii.portal
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import grails.converters.JSON
 
 class Menu {
+	
+	def dataSource
     
     String title
     Boolean active 
     Date editDate
 	SortedSet menuItems
-    
+	
     static mapping = {
         sort "title"
     }
@@ -110,5 +113,39 @@ class Menu {
 		discards.each { item ->
 			removeFromMenuItems(item)
 		}
+	}
+	
+	def toDisplayableMenu() {
+		def ids = _getServerIdsWithAvailableLayers()
+		
+		for (def iterator = menuItems.iterator(); iterator.hasNext();) {
+			def item = iterator.next()
+			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
+				iterator.remove()
+			}
+		}
+	}
+	
+	def _isLayerViewable(layer) {
+		return layer.activeInLastScan && !layer.blacklisted
+	}
+	
+	def _getServerIdsWithAvailableLayers() {
+		// We don't explicitly map layers to servers so dropping to JDBC
+		def template = new JdbcTemplate(dataSource)
+		def query =
+"""\
+select server.id
+from server
+join layer on layer.server_id = server.id
+where not layer.blacklisted and layer.active_in_last_scan
+group by server.id\
+"""
+		
+		//def ids = []
+		return template.queryForList(query, Long.class)//.each { row ->
+		//	ids << row.id
+		//}
+		//return ids
 	}
 }

@@ -100,146 +100,13 @@ function setViewPortTab(tabIndex){
 }
 
 function doViewPort() {    
-//    mapMainPanel = new Ext.Panel({
-//        layout: 'border',
-//        id: 'mainMapPanel',
-//        title: 'Map',
-//        stateful: false,
-//        items: [
-//        {            
-//            region: 'west',
-//            id: "leftMenus",
-//            headerCfg:  {
-//                cls: 'menuHeader',  // Default class not applied if Custom element specified
-//                html: 'Message'
-//            },
-//            title: 'Layer Chooser',
-//            /*layout: {
-//                type: 'vbox',
-//                align : 'stretch',
-//                pack  : 'start'
-//            },*/
-//            autoScroll: true,
-//            items: [
-//                leftTabMenuPanel,
-//                activeMenuPanel
-//            ],
-//            cls: 'leftMenus',
-//            collapsible: true,
-//            collapseMode: 'mini',
-//            stateful: false,
-//            split: true,
-//            width: Portal.app.config.westWidth,
-//            minWidth: 260,
-//            listeners: {
-//                // show the little expand button on map right.
-//                beforeexpand: function(){                    
-//                    var ls = mapPanel.map.getControlsByClass('OpenLayers.Control.LayerSwitcher')[0];
-//                    ls.destroy();
-//                },                
-//                beforecollapse: function(){                    
-//                    mapPanel.map.addControl(new OpenLayers.Control.LayerSwitcher({
-//                        roundedCornerColor: '#34546E' // bloody openlayers!!
-//                    }));
-//                }
-//            }
-//        },{
-//            region:'center',
-//            id: 'mainMapCentrePanel',
-//            layout:'border',
-//            stateful: false,
-//            items: [                
-//                mapPanel,            
-//                {
-//                    region: 'south',
-//                    layout: 'hbox',
-//                    cls: 'footer',
-//                    padding:  '7px 0px 0px 15px',
-//                    unstyled: true,
-//                    height: Portal.app.config.footerHeight,
-//                    items: [
-//                        {
-//                            // this is not a configured item as wont change and will need tailoring for every instance
-//                            xtype: 'container',
-//                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
-//                            width: 330
-//                        },
-//                        {
-//                            xtype: 'container',
-//                            html: Portal.app.config.footerContent,
-//                            cls: 'footerText',
-//                            width: Portal.app.config.footerContentWidth
-//                        }
-//                    ]
-//                    
-//                }
-//            ]
-//        },
-//        {
-//            xtype: 'panel',
-//            id: 'rightDetailsPanel',
-//            region: 'east',
-//            hideMode: 'offsets',
-//            hidden: true,
-//            collapsible: false,            
-//            stateful: false,
-//            //html: 'ActiveLayers Details panel here',
-//            split: true,
-//            width: 350,
-//            minWidth: 250,
-//            closeAction: 'hide',
-//            collapseMode: 'mini',
-//            autoDestroy: false,
-//            tools:[
-//                {
-//                    id:'unpin',
-//                    qtip: 'Make these options appear in a popup again',
-//                    // hidden:true,
-//                    handler: function(event, toolEl, panel){
-//
-//                        toggleDetailsLocation();
-//                    }
-//                },
-//                {
-//                    id:'close',
-//                    qtip: 'Note: select "Hide layer options" to keep this panel closed',
-//                    // hidden:true,
-//                    handler: function(event, toolEl, panel){
-//
-//                        closeNHideDetailsPanel();
-//                    }
-//                }                
-//            ],
-//            listeners: {
-//                // ensure it dosent overlay the map
-//                show: function(panel) {                    
-//                    mapMainPanel.doLayout();
-//                }
-//            }
-//        }],
-//        listeners: {
-//  
-//            hide: function(panel) {
-//                
-//                
-//                if (panel.id == 'mainMapPanel') {                        
-//                    closeNHideDetailsPanel();
-//                    
-//                    jQuery("#loader").hide(); // close the layer loader
-//                    
-//                    // close the getfeatureinfo popup
-//                    if (popup) {
-//                        popup.close();
-//                    }
-//                }
-//                
-//            }
-//        }
-//    
-//    }); 
-//    mapMainPanel.doLayout();
-   
     var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
+    portalPanel.on('hide', function() {
+    	if (popup) {
+    		popup.close();
+    	}
+    }, this);
+    
     viewport = new Ext.Viewport({
         layout: 'border',
         boxMinWidth: 900,
@@ -273,18 +140,34 @@ function doViewPort() {
 	                        }
 	                    }
 	                }
-				],
-	        }
+				]
+	        },
+	        {
+                region: 'south',
+                layout: 'hbox',
+                cls: 'footer',
+                padding:  '7px 0px 0px 15px',
+                unstyled: true,
+                height: Portal.app.config.footerHeight,
+                items: [
+                    {
+                        // this is not a configured item as wont change and will need tailoring for every instance
+                        xtype: 'container',
+                        html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
+                        width: 330
+                    },
+                    {
+                        xtype: 'container',
+                        html: Portal.app.config.footerContent,
+                        cls: 'footerText',
+                        width: Portal.app.config.footerContentWidth
+                    }
+                ]
+                
+            }
 	    ]
     });
-
     viewport.show();
-    
-
-    // now that components are rendered. fill them
-    //populateDemoContributorMenu();
-    //addRamadda();
-    //Ext.getCmp('leftMenus').doLayout();
 }
 
 

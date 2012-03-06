@@ -63,7 +63,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		this.initMap();
 	    this.initMapLinks();
 
-	    // TODO tommy
 	    // Control to get feature info or pop up
 	    var clickControl = new OpenLayers.Control.Click2({
 	        trigger: function(event) {
@@ -83,6 +82,15 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             trail: 60, // Afterglow percentage
             shadow: true // Whether to render a shadow
         });
+	    
+	    this.on('hide', function() {
+	    	closeNHideDetailsPanel();
+	    	this.updateLoadingImage("none");
+	    	// close the getfeatureinfo popup
+	    	if (popup) {
+	    		popup.close();
+	    	}
+	    }, this);
 	    
 	    this.addEvents('baselayersloaded', 'layeradded');
 	    this.bubbleEvents.push('baselayersloaded');
@@ -250,7 +258,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	getServerUri: function(layerDescriptor) {
 		var serverUri = this.getUri(this.getServer(layerDescriptor));
 		if (layerDescriptor.cache == true) {
-	        serverUri = window.location.href + proxyCachedURL + Ext.urlEncode(serverUri);         
+	        serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
 	    }
         return serverUri;
 	},
@@ -410,9 +418,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	// or reload OpenLayers.Layer.Image
 	// Reloading may be called from reloading a style or changing zoomlevel
 	addNCWMSLayer: function(currentLayer) {
-	    var layer;
 	    var bbox = this.getMapExtent();
-	    layer = currentLayer;
+	    var layer = currentLayer;
 	    
 	    // if originalWMSLayer is set - then it is already an animated Image
 	    if (currentLayer.originalWMSLayer !== undefined) {      
@@ -443,7 +450,16 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            minResolution: this.map.baseLayer.minResolution,
 	            resolutions: this.map.baseLayer.resolutions
 	        }
-	    );  
+	    );
+	    if (!this.getServer(newNCWMS)) {
+	    	newNCWMS.server = this.getServer(layer);
+	    }
+	    if (!newNCWMS.params) {
+	    	newNCWMS.params = layer.params;
+	    }
+	    else {
+	    	newNCWMS.params.STYLES = layer.params.STYLES;
+	    }
 
 	    /********************************************************
 	     * attach the old WMS layer to the new Image layer !!
@@ -457,10 +473,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	     * keeping the layer position
 	     *******************************************************/
 	    this.swapLayers(newNCWMS, currentLayer);    
-	    
-	    // close the detailsPanel
-	    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
-	    closeNHideDetailsPanel();
 	},
 	
 	getMapExtent: function()  {
@@ -499,9 +511,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            
 	            // openlayers wants left, bottom, right, top             
 	            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187        
-	            //if(layer.server.type == "WMS-1.3.0") { 
-	            //    bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-	            //}            
+	            if(this.getServer(openLayer).type == "WMS-1.3.0") { 
+	                bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
+	            }            
 	            
 	            if (bounds) {
 	                this.zoomTo(bounds);
@@ -568,12 +580,12 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    }
 	},
 	
-	isNcwmsServer: function(layerDescriptor) {
-		var server = this.getServer(layerDescriptor);
-		if (server && server.type) {
-			return server.type.search("NCWMS") > -1;
-		}
-		return false;
+	// layerObject might be one of our own descriptors or a WMS layer on a map
+	// might be an idea to wrap/abstract away that difference at some point
+	isNcwmsServer: function(layerObject) {
+		var server = this.getServer(layerObject);
+		var serverTypes =  ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"];
+		return serverTypes.indexOf(server.type) >= 0;
 	},
 	
 	getLayerMetadata: function(openLayer) {
@@ -720,10 +732,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    // if originalWMSLayer is set then it is an animated Openlayers.Image
 	    if (openLayer.originalWMSLayer !== undefined) {  
 	        // get back the plain wms layer
-	        this.layerSwap(layer.originalWMSLayer, openLayer);
-	        // close the detailsPanel
-	        // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
-	        closeNHideDetailsPanel();
+	        this.swapLayers(openLayer.originalWMSLayer, openLayer);
 	    }
 	}
 });

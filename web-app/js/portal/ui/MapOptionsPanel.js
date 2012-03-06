@@ -192,27 +192,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	            layerStore: layerStore, 
 	            leaf: false,
 	            expanded: true
-	        }),
-	        listeners: {
-	        	// TODO tommy seems like we need to update the details panel on a node click
-//	            append: function(tree, parent, node){                
-//	                // run this once only
-//	                // seems to run again when animated images are added
-//	                if (!tree.root.hashadtheclickactionadded) {                    
-//	                
-//	                    //console.log(node.layer.id);
-//	                    tree.on("click", function(node,event){
-//	                        tree.show(node.ui.getAnchor());
-//	                        if(node.isSelected())
-//	                        {
-//	                            updateDetailsPanel(node.layer);
-//	                            node.ui.toggleCheck(true);
-//	                        }
-//	                    });
-//	                    tree.root.hashadtheclickactionadded = true;
-//	                }
-//	            }
-	        }
+	        })
 		});
 		
 		this.activeLayers.on("contextmenu", function(node, event) {

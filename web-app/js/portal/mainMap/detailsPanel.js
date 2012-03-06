@@ -1,5 +1,5 @@
 var styleCombo;
-var detailsPanel;
+//var detailsPanel;
 //var detailsPanelItems;
 var selectedLayer;
 //var opacitySlider;
@@ -11,7 +11,6 @@ var colourScaleMin;
 var colourScaleMax;
 
 var animatePanel;
-
 
 function initDetailsPanel()  {
 
@@ -250,94 +249,93 @@ function initDetailsPanel()  {
         detailsPanelTabs
         ]
     });
-      
     
-
     // a floating popup
-    detailsPanel =  new Ext.Window({
-        
-        defaults: {           
-            padding: 10
-        },
-        id: 'detailsPanel',
-        
-        width: 330, 
-        layout: 'form',
-        shadow: false,
-        title: 'Layer Options',
-        stateful: false,
-        autoDestroy: false,
-        hidden: true, // not visible until a user clicks a layer in active layers
-        constrainHeader: true,
-        constrain: true,
-        animCollapse: false,
-        autoScroll: true,
-        bodyCls: 'floatingDetailsPanel',
-        closable: true,
-        resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
-        closeAction: 'hide',
-        border: false,
-        items: [                     
-        detailsPanelItems
-        ],
-        tools:[{
-            id:'pin',
-            qtip: 'Pin options to the right hand side of the window',
-            handler: function(event, toolEl, panel){
-                toggleDetailsLocation();
-            }
-        }],
-        listeners: {            
-            move: function(thisPanel,x,y){
-                thisPanel.moved = true;
-            }
-            
-        }         
-
-    }); 
+//    detailsPanel =  new Ext.Window({
+//        
+//        defaults: {           
+//            padding: 10
+//        },
+//        id: 'detailsPanel',
+//        
+//        width: 330, 
+//        layout: 'form',
+//        shadow: false,
+//        title: 'Layer Options',
+//        stateful: false,
+//        autoDestroy: false,
+//        hidden: true, // not visible until a user clicks a layer in active layers
+//        constrainHeader: true,
+//        constrain: true,
+//        animCollapse: false,
+//        autoScroll: true,
+//        bodyCls: 'floatingDetailsPanel',
+//        closable: true,
+//        resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
+//        closeAction: 'hide',
+//        border: false,
+//        items: [                     
+//        detailsPanelItems
+//        ],
+//        tools:[{
+//            id:'pin',
+//            qtip: 'Pin options to the right hand side of the window',
+//            handler: function(event, toolEl, panel){
+//                toggleDetailsLocation();
+//            }
+//        }],
+//        listeners: {            
+//            move: function(thisPanel,x,y){
+//                thisPanel.moved = true;
+//            }
+//            
+//        }         
+//
+//    }); 
 
 }
 
 
 // display layer details in the popup or pin to the right of the main map
 function toggleDetailsLocation() {
-    var rdp = Ext.getCmp('rightDetailsPanel');
-    var detailsPanelItems = Ext.getCmp('detailsPanelItems');
-    
-    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-                    
-        rdp.setVisible(true);
-        rdp.add(detailsPanel.remove(detailsPanelItems, false));
-        detailsPanel.hide();
-        detailsPanelItems.doLayout();
-        rdp.ownerCt.doLayout();
-    }
-    else {        
-            
-        detailsPanel.show();
-        detailsPanel.add(rdp.remove(detailsPanelItems, false));
-        detailsPanel.doLayout(); 
-        updateDetailsPanelPositionSize();
-        rdp.setVisible(false);  
-        rdp.doLayout();
-        rdp.ownerCt.doLayout(); // map will resize to fill empty space
-        
-    }
+	// Do nothing now
+//    var rdp = Ext.getCmp('rightDetailsPanel');
+//    var detailsPanelItems = Ext.getCmp('detailsPanelItems');
+//    
+//    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
+//                    
+//        rdp.setVisible(true);
+//        rdp.add(detailsPanel.remove(detailsPanelItems, false));
+//        detailsPanel.hide();
+//        detailsPanelItems.doLayout();
+//        rdp.ownerCt.doLayout();
+//    }
+//    else {        
+//            
+//        detailsPanel.show();
+//        detailsPanel.add(rdp.remove(detailsPanelItems, false));
+//        detailsPanel.doLayout(); 
+//        updateDetailsPanelPositionSize();
+//        rdp.setVisible(false);  
+//        rdp.doLayout();
+//        rdp.ownerCt.doLayout(); // map will resize to fill empty space
+//        
+//    }
 }
 
 // The details panel may be in the right panel or in the detailsPanel popup
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
+    // Do nothing
     
-    
-    if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {        
-        detailsPanel.hide();
-    }
-    else {      
-        var rdp = Ext.getCmp('rightDetailsPanel');
-        rdp.hide();
-        rdp.ownerCt.doLayout(); // map will resize to fill empty space        
-    }    
+//    if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {        
+//        detailsPanel.hide();
+//    }
+//    else {      
+//        var rdp = Ext.getCmp('rightDetailsPanel');
+//        rdp.hide();
+//        rdp.ownerCt.doLayout(); // map will resize to fill empty space        
+//    }    
 }
 
 
@@ -393,7 +391,7 @@ function updateDetailsPanel(layer) {
 
             makeNcWMSColourScale(layer); 
 
-            transectControl.setMapPanel(Ext.getCmp('map'));
+            transectControl.setMapPanel(getMapPanel());
             transectControl.layer = layer;
             transectControl.show();
 
@@ -416,6 +414,7 @@ function updateDetailsPanel(layer) {
             } 
         }
 
+        var detailsPanel = getDetailsPanel();
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
@@ -423,20 +422,20 @@ function updateDetailsPanel(layer) {
 
 
         // as it may have taken a second or two to get to here, check that map is still visible
-        if ( viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
-            closeNHideDetailsPanel();
-        }
-        else {
-            // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
-            if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {         
-                updateDetailsPanelPositionSize();
-            }
-            else{
-            	Ext.getCmp('rightDetailsPanel').show(true);  
-                // resize the map so the panel isnt on top
-                //mapMainPanel.doLayout();
-            }
-        }
+//        if ( viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
+//            closeNHideDetailsPanel();
+//        }
+//        else {
+//            // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
+//            if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {         
+//                updateDetailsPanelPositionSize();
+//            }
+//            else{
+//            	Ext.getCmp('rightDetailsPanel').show(true);  
+//                // resize the map so the panel isnt on top
+//                //mapMainPanel.doLayout();
+//            }
+//        }
     }
     
     
@@ -454,6 +453,7 @@ function updateDetailsPanelPositionSize(reset) {
     var x = Portal.app.config.westWidth+ widthBuffer;
     var y = Portal.app.config.headerHeight+ heightBuffer;
     
+    var detailsPanel = getDetailsPanel();
     detailsPanel.show();
     // set in predefined position unless already set or sized
     if (detailsPanel.lastSize.height == undefined && detailsPanel.moved == undefined ) {        
@@ -535,10 +535,7 @@ function updateStyles(layer) {
         // change the displayed data in the style picker
         styleCombo.show();
     }
-    
-    
     refreshLegend(layer);
-    
 }
 
 // full legend shown in layer option. The current legend
@@ -564,16 +561,18 @@ function refreshLegend(layer) {
     }
     var url = buildGetLegend(params) ;
     
-    Ext.getCmp('legendImage').setUrl(url); 
-    // wait for the image to load
-    setTimeout(function(){
-            Ext.getCmp('stylePanel').doLayout();
-            detailsPanel.doLayout();
-       }, 1000 );
-    
+    var img = Ext.getCmp('legendImage');
+    img.setUrl(url);
+    img.on(
+		'show', 
+		function() {
+	        Ext.getCmp('stylePanel').doLayout();
+	        getDetailsPanel().doLayout();
+    	},
+        this
+    );
     // dont worry if the form is visible here
     styleCombo.setValue(style);
-    
 }
 
 
@@ -826,4 +825,9 @@ function updateDimensions(layer)
         }
     }
     
+}
+
+// Until this is refactored have single global point of return for the details panel
+function getDetailsPanel() {
+	return Ext.getCmp('rightDetailsPanel');
 }

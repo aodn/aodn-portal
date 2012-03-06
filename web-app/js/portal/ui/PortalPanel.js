@@ -24,30 +24,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
                     layout:'border',
                     stateful: false,
                     items: [                
-                        this.mapPanel,    
-                        {
-                            region: 'south',
-                            layout: 'hbox',
-                            cls: 'footer',
-                            padding:  '7px 0px 0px 15px',
-                            unstyled: true,
-                            height: this.appConfig.footerHeight,
-                            items: [
-                                {
-                                    // this is not a configured item as wont change and will need tailoring for every instance
-                                    xtype: 'container',
-                                    html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
-                                    width: 330
-                                },
-                                {
-                                    xtype: 'container',
-                                    html: this.appConfig.footerContent,
-                                    cls: 'footerText',
-                                    width: this.appConfig.footerContentWidth
-                                }
-                            ]
-                            
-                        }
+                        this.mapPanel
                     ]
                 },
                 this.rightDetailsPanel
@@ -113,32 +90,13 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		this.rightDetailsPanel = new Ext.Panel({
             id: 'rightDetailsPanel',
             region: 'east',
-            hideMode: 'offsets',
-            hidden: true,
-            collapsible: false,            
+            collapsible: true,            
             stateful: false,
             split: true,
             width: 350,
             minWidth: 250,
-            closeAction: 'hide',
             collapseMode: 'mini',
-            autoDestroy: false,
-            tools:[
-                {
-                    id:'unpin',
-                    qtip: 'Make these options appear in a popup again',
-                    handler: function(event, toolEl, panel) {
-                        toggleDetailsLocation();
-                    }
-                },
-                {
-                    id:'close',
-                    qtip: 'Note: select "Hide layer options" to keep this panel closed',
-                    handler: function(event, toolEl, panel) {
-                        closeNHideDetailsPanel();
-                    }
-                }                
-            ]
+            items: [Ext.getCmp("detailsPanelItems")]
 		});
 	},
 	
@@ -168,6 +126,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		
 		this.mapPanel.on('layeradded', function(openLayer) {
 			this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, false);
+			updateDetailsPanel(openLayer);
 		}, this);
 	},
 	
@@ -212,7 +171,6 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		// Until the details panel is refactored just grab a handle via Ext
 		Ext.getCmp('stopNCAnimationButton').on('click', function() {
 			// Note selected layer is a global variable that also should be refactored
-			alert('foo');
 			this.mapPanel.stopAnimation(selectedLayer);
 		}, this);
 	},
@@ -241,11 +199,10 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	layerOptionsCheckboxHandler: function(box, checked) {
-    	// TODO tommy
 	    Portal.app.config.hideLayerOptions = checked;
 	    this.mapPanel.hideLayerOptions = checked;
 	    if (checked) {
-	        //closeNHideDetailsPanel();
+	        closeNHideDetailsPanel();
 	    }
 	},
 	

@@ -73,10 +73,10 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     // Load an image of the transect
     var transectUrl =   serverUrl +
         'REQUEST=GetTransect' +
-        '&LAYER=' + Ext.urlEncode(layerName) +
+        '&LAYER=' + encodeURIComponent(layerName) +
         '&CRS=' + this.mapPanel.map.baseLayer.projection.toString() +
         dimensionParams +
-        '&LINESTRING=' + Ext.urlEncode(line) +
+        '&LINESTRING=' + encodeURIComponent(line) +
         '&FORMAT=image/png';
 
     var inf = new Object();

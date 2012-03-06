@@ -21,6 +21,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 	        activeTab: 0,
 	        items: [
 	            this.defaultMenuTree
+	            
 	        ]
 		}, cfg);
 		
@@ -110,7 +111,6 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
 		}, this);
 	},
 	
-	// TODO tommy handle black listed and not active in last scan
 	toggleLayerNodes: function(id, enable, node) {
 		var _enable = this.defaultEnable(enable);
 		var _node = this.defaultNode(node);
