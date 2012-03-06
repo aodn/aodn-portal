@@ -95,8 +95,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             split: true,
             width: 350,
             minWidth: 250,
-            collapseMode: 'mini',
-            items: [Ext.getCmp("detailsPanelItems")]
+            collapseMode: 'mini'
 		});
 	},
 	
@@ -126,6 +125,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		
 		this.mapPanel.on('layeradded', function(openLayer) {
 			this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, false);
+			this.addDetailsPanelItems();
 			updateDetailsPanel(openLayer);
 		}, this);
 	},
@@ -164,10 +164,6 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	registerRightDetailsPanelEvents: function() {
-		this.rightDetailsPanel.on('show', function(panel) {
-			this.mapPanel.doLayout();
-		}, this);
-		
 		// Until the details panel is refactored just grab a handle via Ext
 		Ext.getCmp('stopNCAnimationButton').on('click', function() {
 			// Note selected layer is a global variable that also should be refactored
@@ -213,5 +209,13 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	
 	addMapLayer: function(layerDescriptor, showLoading) {
 		this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
+	},
+	
+	addDetailsPanelItems: function() {
+		var itemsPanel = Ext.getCmp("detailsPanelItems");
+		if (!itemsPanel.isVisible()) {
+			this.rightDetailsPanel.add(itemsPanel);
+			this.rightDetailsPanel.doLayout();
+		}
 	}
 });

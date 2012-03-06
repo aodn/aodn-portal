@@ -44,8 +44,6 @@ function initDetailsPanel()  {
         }
     });
     
-    // forget about GeoExt.LayerOpacitySlider as it cant handle setting a minimum value
-    //var opacitySlider = new GeoExt.LayerOpacitySlider({
     var opacitySlider = new Ext.slider.SingleSlider({
         id: "opacitySlider",
         title: 'Opacity',
@@ -61,7 +59,6 @@ function initDetailsPanel()  {
         inverse: false,
         fieldLabel: "Opacity",
         plugins: new GeoExt.LayerOpacitySliderTip({
-           
             template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
         }),
         listeners: {
@@ -78,9 +75,7 @@ function initDetailsPanel()  {
     var opacitySliderContainer = new Ext.Panel({ 
         height: 'auto',
         layout: 'form',
-        items: [
-        opacitySlider 
-        ]
+        items: [opacitySlider]
     });
     
     var legendImage = new GeoExt.LegendImage({
@@ -124,14 +119,10 @@ function initDetailsPanel()  {
         }
     });
     
-    
     ncWMSColourScalePanel = new Ext.Panel({
         layout: 'form'
     });
     ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMax,colourScaleMin);
-
-    
-
 
     // create the styleCombo instance
     styleCombo = makeCombo("styles");
@@ -239,103 +230,24 @@ function initDetailsPanel()  {
             xtype: 'button',
             id: 'stopNCAnimationButton',
             text:'Stop Animation',
-            //disabled: true, // readonly
             hidden: true
-//            handler: function(button, event) {
-//                stopgetTimePeriod(selectedLayer);
-//            }
         },
         animateLink, 
         detailsPanelTabs
         ]
     });
-    
-    // a floating popup
-//    detailsPanel =  new Ext.Window({
-//        
-//        defaults: {           
-//            padding: 10
-//        },
-//        id: 'detailsPanel',
-//        
-//        width: 330, 
-//        layout: 'form',
-//        shadow: false,
-//        title: 'Layer Options',
-//        stateful: false,
-//        autoDestroy: false,
-//        hidden: true, // not visible until a user clicks a layer in active layers
-//        constrainHeader: true,
-//        constrain: true,
-//        animCollapse: false,
-//        autoScroll: true,
-//        bodyCls: 'floatingDetailsPanel',
-//        closable: true,
-//        resizable: false, // still looking of a way of reinstating autosizing after a user has manual resized
-//        closeAction: 'hide',
-//        border: false,
-//        items: [                     
-//        detailsPanelItems
-//        ],
-//        tools:[{
-//            id:'pin',
-//            qtip: 'Pin options to the right hand side of the window',
-//            handler: function(event, toolEl, panel){
-//                toggleDetailsLocation();
-//            }
-//        }],
-//        listeners: {            
-//            move: function(thisPanel,x,y){
-//                thisPanel.moved = true;
-//            }
-//            
-//        }         
-//
-//    }); 
-
 }
 
 
 // display layer details in the popup or pin to the right of the main map
 function toggleDetailsLocation() {
 	// Do nothing now
-//    var rdp = Ext.getCmp('rightDetailsPanel');
-//    var detailsPanelItems = Ext.getCmp('detailsPanelItems');
-//    
-//    if (detailsPanelItems.ownerCt.id == "detailsPanel") {
-//                    
-//        rdp.setVisible(true);
-//        rdp.add(detailsPanel.remove(detailsPanelItems, false));
-//        detailsPanel.hide();
-//        detailsPanelItems.doLayout();
-//        rdp.ownerCt.doLayout();
-//    }
-//    else {        
-//            
-//        detailsPanel.show();
-//        detailsPanel.add(rdp.remove(detailsPanelItems, false));
-//        detailsPanel.doLayout(); 
-//        updateDetailsPanelPositionSize();
-//        rdp.setVisible(false);  
-//        rdp.doLayout();
-//        rdp.ownerCt.doLayout(); // map will resize to fill empty space
-//        
-//    }
 }
 
 // The details panel may be in the right panel or in the detailsPanel popup
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
     // Do nothing
-    
-//    if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {        
-//        detailsPanel.hide();
-//    }
-//    else {      
-//        var rdp = Ext.getCmp('rightDetailsPanel');
-//        rdp.hide();
-//        rdp.ownerCt.doLayout(); // map will resize to fill empty space        
-//    }    
 }
 
 
@@ -418,31 +330,7 @@ function updateDetailsPanel(layer) {
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
-        Ext.getCmp('rightDetailsPanel').setTitle("Layer Options: " + layer.name); 
-
-
-        // as it may have taken a second or two to get to here, check that map is still visible
-//        if ( viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
-//            closeNHideDetailsPanel();
-//        }
-//        else {
-//            // display popup if that is where the Ext.getCmp('detailsPanelItems') items are
-//            if (Ext.getCmp('detailsPanelItems').ownerCt.id == "detailsPanel") {         
-//                updateDetailsPanelPositionSize();
-//            }
-//            else{
-//            	Ext.getCmp('rightDetailsPanel').show(true);  
-//                // resize the map so the panel isnt on top
-//                //mapMainPanel.doLayout();
-//            }
-//        }
     }
-    
-    
-    
-    
-    
-    
 }
 
 // move to default spot unless a user has resized or moved the window
@@ -463,10 +351,6 @@ function updateDetailsPanelPositionSize(reset) {
         detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
     // detailsPanel.restore();
     }
-    
-    
-    
-    
 }
 
 function setChosenStyle(layer,record) {
