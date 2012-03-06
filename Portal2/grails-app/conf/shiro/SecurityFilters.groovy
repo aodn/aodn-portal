@@ -7,7 +7,7 @@ package shiro
 class SecurityFilters {
     def filters = {
         
-        homeAccess(controller: "home", action: "*") {
+        homeAccess(controller: "home", action: "index|config") {
             before = {
             
                 logRequest("homeAccess", controllerName, actionName)
@@ -27,10 +27,9 @@ class SecurityFilters {
             }
         }
 
-        depthAccess(controller: "depth", action: "*") {
+        depthAccess(controller: "depth", action: "index") {
             before = {
                 
-                logRequest("depthAccess", controllerName, actionName)
                 logRequest("depthAccess", controllerName, actionName)
 
                 // Allow all access
@@ -38,7 +37,7 @@ class SecurityFilters {
             }
         }
 
-        snapshot(controller: "snapshot", action: "*") {
+        snapshotAccess(controller: "snapshot", action: "*") {
             before = {
                 
                 logRequest("snapshotAccess", controllerName, actionName)
