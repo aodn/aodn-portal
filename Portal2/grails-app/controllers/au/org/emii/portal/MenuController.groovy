@@ -137,7 +137,9 @@ class MenuController {
 
     def json = {
 		JSON.use("deep") {
-			render Menu.get(params.id) as JSON
+			def menu = Menu.get(params.id)
+			menu.toDisplayableMenu()
+			render menu as JSON
 		}
 	}
         

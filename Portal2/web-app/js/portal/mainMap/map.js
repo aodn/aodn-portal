@@ -511,17 +511,7 @@ function setHTML_ncWMS(response,options) {
 }
 
 function isncWMS(layer) {
-    
-    var ncWMS = false;
-    var ncWMS_serverTypes =  ["NCWMS-1.1.1","NCWMS-1.3.0","THREDDS"];
-                  
-    for (var i = 0; i < ncWMS_serverTypes.length; i++) {        
-        if (ncWMS_serverTypes[i] === layer.server.type) {
-            ncWMS =  true;
-        }
-    }
-     
-    return ncWMS;   
+    return getMapPanel().isNcwmsServer(layer);   
 }                    
   
 function inArray (array,value) {

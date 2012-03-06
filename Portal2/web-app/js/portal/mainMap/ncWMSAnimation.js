@@ -1,4 +1,14 @@
+function getMapPanel() {
+	return Ext.getCmp('map');
+}
 
+// exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
+// or reload OpenLayers.Layer.Image
+// Reloading may be called from reloading a style or changing zoomlevel
+function addNCWMSLayer(currentLayer) {
+    // Wrap the Map call, this function used to live in mainMapPanel.js
+	getMapPanel().addNCWMSLayer(currentLayer);
+}
 
 function setupAnimationControl() {
     
