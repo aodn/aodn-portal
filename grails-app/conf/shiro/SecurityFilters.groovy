@@ -17,7 +17,7 @@ class SecurityFilters {
             }
         }
                
-        configAccess(controller: "config", action: "listForViewport") {
+        configAccess(controller: "config", action: "viewport") {
             before = {
                 
                 logRequest("configAccess", controllerName, actionName)
@@ -26,7 +26,7 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        
+
         depthAccess(controller: "depth", action: "*") {
             before = {
                 
@@ -58,11 +58,21 @@ class SecurityFilters {
             }
         }
         
-        layerAccess(controller: "layer", action: "listBaseLayersAsJson|listNonBaseLayerAsJson|showLayerByItsId|saveOrUpdate|server") {
+        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|saveOrUpdate|server|configuredbaselayers|defaultlayers") {
             before = {
                 
                 logRequest("layerAccess", controllerName, actionName)
                 
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+        
+        menuAccess(controller: "menu", action: "json") {
+            before = {
+
+                logRequest("menuAccess", controllerName, actionName)
+
                 // Allow all access
                 request.accessAllowed = true
             }
