@@ -224,7 +224,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       this.advancedSearchCombo.store.filterBy(
          function(record) {
             var id = record.get('id');
-            return this.filters.indexOf(comp.fieldId)==-1;
+            return this.filters.indexOf(id)==-1;
          },
          this.advancedSearchCombo
       );
