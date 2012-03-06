@@ -418,7 +418,12 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	// or reload OpenLayers.Layer.Image
 	// Reloading may be called from reloading a style or changing zoomlevel
 	addNCWMSLayer: function(currentLayer) {
-	    var bbox = this.getMapExtent();
+		// Because of the way the ncWMS layer is generated there's not much point
+		// attaching to its load start/end event so we can manually call those
+		// actions here
+		this.loadStart();
+		
+		var bbox = this.getMapExtent();
 	    var layer = currentLayer;
 	    
 	    // if originalWMSLayer is set - then it is already an animated Image
@@ -472,7 +477,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	     * swap in the new animating layer into openlayers 
 	     * keeping the layer position
 	     *******************************************************/
-	    this.swapLayers(newNCWMS, currentLayer);    
+	    this.swapLayers(newNCWMS, currentLayer);
+	    this.loadEnd();
 	},
 	
 	getMapExtent: function()  {
@@ -700,7 +706,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
 	},
 
-	loadEnd: function(ret) {
+	loadEnd: function() {
 		this.layersLoading -= 1;
 	    this.layersLoading = Math.max(this.layersLoading, 0);
 	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));

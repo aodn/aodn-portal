@@ -359,7 +359,7 @@ function getTimePeriod() {
                 selectedLayer.params.LAYERS + 
                 "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
                 "&end=" + getDateTimesForDate(p.timeMax.value)[0]
-                ),
+            ),
             success: function(resp) { 
 
                 var res = Ext.util.JSON.decode(resp.responseText);
@@ -370,13 +370,7 @@ function getTimePeriod() {
                 }
             }
         });
-
-  
-                
-        
     }  
-
-    
 }
 
 // modal timestep picker for animating current layer
@@ -424,9 +418,8 @@ function showTimestepPicker(timeStrings) {
             ],
             listeners: {
                 change: function( field, newValue, oldValue, eOpts ) {          
-                        
+                	Ext.getCmp('timestepWindow').destroy(); // this components parent window
                     createNCWMSLayerFromTimesteps(newValue.initialConfig.timeString);
-                    Ext.getCmp('timestepWindow').destroy(); // this components parent window
                 }
             }
         }
