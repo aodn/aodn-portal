@@ -17,27 +17,17 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             title: 'Map',
             stateful: false,
             items: [
-            this.leftMenuPanel,
-            {
-                region:'center',
-                id: 'mainMapCentrePanel',
-                layout:'border',
-                stateful: false,
-                items: [                
-                    this.mapPanel,    
-                    {
-                        region:'center',
-                        id: 'mainMapCentrePanel',
-                        layout:'border',
-                        stateful: false,
-                        items: [                
-                            this.mapPanel
-                        ]
-
-                    }
-                ]
-            },
-            this.rightDetailsPanel
+                this.leftMenuPanel,
+                {
+                    region:'center',
+                    id: 'mainMapCentrePanel',
+                    layout:'border',
+                    stateful: false,
+                    items: [                
+                        this.mapPanel
+                    ]
+                },
+                this.rightDetailsPanel
             ]
         }, cfg);
 	

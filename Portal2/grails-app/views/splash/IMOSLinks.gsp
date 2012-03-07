@@ -1,6 +1,6 @@
 
 <H1>Links</H1>
-<p><a class="external"  title="IMOS Geonetwork Metadata System" href="http://imosmest.aodn.org.au"  target="_blank">IMOS Geonetwork Metadata System</a>
+<p><a class="external"  title="IMOS GeoNetwork Metadata System" href="http://imosmest.aodn.org.au"  target="_blank">IMOS GeoNetwork Metadata System</a>
 <a href="http://www.arcs.org.au" class="external wrap" title="Australian Research Collaboration Service">Australian Research Collaboration Service (ARCS)</a><br>
 <a href="http://www.aodc.gov.au" class="external wrap" title="Australian Ocean Data Centre Joint Facility">Australian Ocean Data Centre Joint Facility (AODCJF)</a> <br>
 <a href="http://www.pfc.org.au" class="external wrap" title="Platforms for Collaboration">Platforms for Collaboration</a><br>
