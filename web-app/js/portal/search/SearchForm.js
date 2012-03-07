@@ -89,7 +89,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                                 removed: this.resetResultsGridText
                             }
                         }],
-                     [3, OpenLayers.i18n("keyword"), true, {
+                     [3, OpenLayers.i18n("keyword"), false, {
                         fieldLabel:OpenLayers.i18n("keyword"),
                         labelSeparator: '',
                         name: 'themekey',
