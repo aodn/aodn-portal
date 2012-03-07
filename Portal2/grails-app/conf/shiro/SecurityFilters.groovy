@@ -16,7 +16,8 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        homeAccess(controller: "splash", action: "*") {
+
+        splashAccess(controller: "splash", action: "index|links|community") {
             before = {
             
                 logRequest("splashAccess", controllerName, actionName)
