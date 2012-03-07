@@ -3,7 +3,7 @@ package au.org.emii.portal
 import grails.test.*
 import java.util.Date
 
-class ServerControllerTests extends GroovyTestCase {
+class ServerServiceTests extends GroovyTestCase {
 
     protected void setUp() {
         super.setUp()
