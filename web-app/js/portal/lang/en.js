@@ -47,7 +47,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerExistsTitle: 'Add layer',
     layerExistsMsg: 'This layer has already been added to the map',
     layerAddedTitle: 'Add layer',
-    layerAddedMsg: ' has been added to the map',
+    layerAddedMsg: "'${layerDesc}' has been added to the map",
     
     // detailsPanel.js
     pickAStyle : '*** Pick a style ***',
