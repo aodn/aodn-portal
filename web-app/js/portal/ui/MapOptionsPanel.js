@@ -90,12 +90,18 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                items: [
 	                    new Ext.Container({
 	                        layout: 'hbox',
-	                        items: [                
-	                            new Ext.Panel({ items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ] }),
-	                            new Ext.BoxComponent({        
+                                height: 40,
+	                        items: [
+                                    { 
+                                        flex: 1,
+                                        items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ]
+                                    },
+	                            new Ext.BoxComponent({      
+                                        flex: 1,
 	                                border: true,
+                                        padding: 4,
 	                                id: 'mapSpinnerPanel',
-	                                html: '<div class="extAjaxLoading"><div class="loading-indicator"> Loading...</div></div>'
+	                                html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
 	                            })
 	                        ]
 	                    }),
@@ -214,9 +220,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        floating: true,
 	        showSeparator: false,
 	        items: [
-                { text: 'Remove layer', scope: this, handler: this.removeLayer },
-                { text: 'Zoom to layer', scope: this, handler: this.zoomToLayer },
-                { text: 'Toggle Visibility', scope: this, handler: this.toggleLayerVisibility }
+                {text: 'Remove layer', scope: this, handler: this.removeLayer},
+                {text: 'Zoom to layer', scope: this, handler: this.zoomToLayer},
+                {text: 'Toggle Visibility', scope: this, handler: this.toggleLayerVisibility}
 	        ]
 	    });
 		return this.layerActionsMenu;

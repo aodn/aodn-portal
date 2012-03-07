@@ -12,6 +12,14 @@ Ext.QuickTips.init();
 Ext.ns('Portal');
 
 Portal.app = {
+    
+    ajaxComplete: function(conn, response, options) {
+        progressCount--;
+        if(progressCount == 0) {
+            this.ajaxAction('hide');
+        }
+        
+    },
     init: function() {
     	// Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
@@ -24,19 +32,8 @@ Portal.app = {
             progressCount++;
         }, this);
 
-        Ext.Ajax.on('requestcomplete', function(conn, response, options){    
-            progressCount--;
-            if(progressCount == 0) {
-                this.ajaxAction('hide');
-            }
-        }, this);
-        
-        Ext.Ajax.on('requestexception', function(conn, response, options){    
-            progressCount--;
-            if(progressCount == 0) {
-                this.ajaxAction('hide');
-            }
-        }, this);
+        Ext.Ajax.on('requestcomplete',  this.ajaxComplete, this);        
+        Ext.Ajax.on('requestexception',  this.ajaxComplete, this);       
         
         Ext.Ajax.request({
             url: 'config/viewport',
@@ -109,12 +106,12 @@ function doViewPort() {
     
     viewport = new Ext.Viewport({
         layout: 'border',
-        boxMinWidth: 900,
+        boxMinWidth: 1050,
         items: [
             {
 	            unstyled: true,
 	            region: 'north',
-	            height: Portal.app.config.headerHeight
+	            height: Portal.app.config.headerHeight + 15
 	        },
 	        {
 	            region: 'center',
@@ -128,44 +125,35 @@ function doViewPort() {
 	                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
 	            },
 	            items: [
-                    portalPanel,
-	                {
-	                    xtype: 'portal.search.searchtabpanel',
-	                    listeners: {
-	                        addLayer: {
-	                            fn: function(layerDef) {
-	                                portalPanel.addMapLayer(layerDef);
-	                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'), OpenLayers.i18n('layerAddedMsg', {layerDesc: layerDef.title}));
-	                            }
-	                        }
-	                    }
-	                }
-				]
+                            new Portal.ui.HomePanel({appConfig: Portal.app.config}),
+                            portalPanel,
+                                {
+                                    xtype: 'portal.search.searchtabpanel',
+                                    listeners: {
+                                        addLayer: {
+                                            fn: function(layerDef) {
+                                                portalPanel.addMapLayer(layerDef);
+                                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+                                            }
+                                        }
+                                    }
+                                }
+                    ]
 	        },
-	        {
-                region: 'south',
-                layout: 'hbox',
-                cls: 'footer',
-                padding:  '7px 0px 0px 15px',
-                unstyled: true,
-                height: Portal.app.config.footerHeight,
-                items: [
-                    {
-                        // this is not a configured item as wont change and will need tailoring for every instance
-                        xtype: 'container',
-                        html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
-                        width: 330
-                    },
-                    {
-                        xtype: 'container',
-                        html: Portal.app.config.footerContent,
-                        cls: 'footerText',
-                        width: Portal.app.config.footerContentWidth
-                    }
-                ]
+                {
+                    region: 'south',
+                    height: 15,
+                    unstyled: true
+                }
+	    ],
+        listeners: {
+  
+            afterrender: function(panel) {              
+                    
+                    jQuery("#loader").hide('slow'); // close the loader            
                 
             }
-	    ]
+        }
     });
     viewport.show();
 }

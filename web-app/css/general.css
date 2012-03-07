@@ -2,15 +2,19 @@
 body, html{
     font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,"Myriad Pro",Myriad,Geneva,Arial,"Lucida Grande",sans-serif;
     font-size: 11px;
-    background-color: #34546E;    
+    background-color: white;       
+    margin: 5px! important;
+    margin-top: 2px! important; 
+}
+p {    
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
 }
 td {
     font-size: 12px;
 }
 body {
-    min-width: 850px;
+    min-width:  950px;
 }
-
 
 h1 {
     color: #6A6A6A;
@@ -119,9 +123,7 @@ a img{
 }
 
 #centerTabPanel {
-    border: 2px solid #eee;
-    border-width: 2px 4px 4px 2px;
-    background-color: whitesmoke;
+    border: 0px solid white;
 }
 
 #header {
@@ -132,18 +134,19 @@ a img{
 }
 #headerTail {   
     height: 30px;
-    background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;
+    background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
 #header h1 {
     color: white;
     padding: 50px 20px 0px 20px;
+    float: left;
 }
 #logo {
     margin: 3px 5px;
     float: left;
 }
 #loader {
-    background-color: #34546E;
+    background-color: #0B5584;
     border: 0px solid #CBCED3;
     border-radius: 6px ;
     margin-bottom: 3px;
@@ -151,6 +154,7 @@ a img{
     padding: 10px;
     height: 20px;    
     width: 150px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
 
 #loader p {
@@ -159,21 +163,31 @@ a img{
     font-size: 14px;
     text-shadow: 2px 1px 3px #333333;
 }
-
-
-.footer {
-    background: url("../images/shadowLight.png") repeat-x scroll left top #34546E;    
-    color: white;
-    font-size: 10px;
+.mapFooter {
+    background: url("../images/shadowLight.png") repeat-x scroll left top white; 
 }
-.footerText {
-    padding-top:  13px;    
+#mainHomePanel{
+    background-color: whitesmoke;
+   background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px); 
+   background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
+   
+   border-radius: 6px;
+   /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
+}
+
+.footer {       
+    color: #0B5584;
+    font-size: 9px;
+    background-color: white;
+}
+.footerText {   
 }
 .footer .x-box-inner {
     overflow: visible;
 }
 .footer a{
-    color: white;
+    color: #0B5584;
     text-decoration: none;    
 }
 .footer a:hover{
@@ -188,9 +202,7 @@ a img{
 
 
 #viewPortLinks  {
-    float: left;
-    position: absolute;
-    left: 550px;
+   position: relative;
     top: 48px;
 }
 #viewPortLinks a {
@@ -215,7 +227,7 @@ a img{
     float: left;
     padding: 4px 10px;
     margin-right: 5px;
-    background: url("../images/mapshadow.png") repeat-x scroll left top #02629E;
+    background: url("../images/mapshadow.png") repeat-x scroll left top #0B5584;
     border-radius: 14px;   
 }
 
@@ -227,8 +239,8 @@ a img{
     color: white;
     float: right;
     position: absolute;
-    right: 6px;
-    top: 6px;
+    right: 20px;
+    top: 12px;
 }
 #toplinks a {
     color: white;
@@ -248,6 +260,9 @@ a.userlink {
     font-size: inherit! important;
     text-decoration: underline! important;
     margin-right: 15px! important;
+}
+.community {
+    padding: 10px 0;
 }
 
 .viewPortTabActive {        
@@ -662,8 +677,7 @@ p.important {
 }
 
 .extAjaxLoading {  
-    border-radius: 4px;
-    float:right;
+    border-radius: 4px;    
     background-color: #ffffff! important;
 }
 .extAjaxLoading div {       
@@ -817,8 +831,8 @@ JQUERY AUTO COMPLETE
 }
 
 .menuHeader {
-    background: url(../images/menuHeader.png) 0px -13px repeat-x;
-    border: medium none;
+    /*background: url(../images/menuHeader.png) 0px -13px repeat-x;
+    border: medium none;*/
     
     color: #15428B;
     font-family: tahoma,arial,verdana,sans-serif;

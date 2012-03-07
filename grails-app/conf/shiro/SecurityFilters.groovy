@@ -16,6 +16,15 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
+        homeAccess(controller: "splash", action: "*") {
+            before = {
+            
+                logRequest("splashAccess", controllerName, actionName)
+                
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
                
         configAccess(controller: "config", action: "viewport") {
             before = {

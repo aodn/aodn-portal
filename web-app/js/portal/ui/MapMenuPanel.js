@@ -10,7 +10,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 			defaults: {
 	            padding: 5
 	        },
-	        id: 'leftTabMenuPanel',
+	        //id: 'leftTabMenuPanel',
 	        minHeight: 170,        
 	        boxMaxHeight: 200,
 	        stateful: false,        
@@ -48,8 +48,8 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
 	constructor: function(cfg) {
 		
 		var config = Ext.apply({
-			title: 'WMS Layers',
-	        id: 'defaultMenuTree',
+			title: 'Map Layers',
+	        //id: 'defaultMenuTree',
 	        loader: new Portal.data.MenuTreeLoader({
 	            menuId: cfg.menuId
 	        }),
