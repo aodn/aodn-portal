@@ -50,12 +50,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerAddedMsg: "'${layerDesc}' has been added to the map",
     
     // detailsPanel.js
-    pickAStyle : '*** Pick a style ***',
+    pickAStyle : ' ** Pick a style ** ',
   
     //snapshots 
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
-    saveSnapshotDialogTitle: 'Save Snapshot',
+    saveSnapshotDialogTitle: 'Save Map',
     saveSnapshotName: 'Name',
     btnSave: 'Save',
     btnCancel: 'Cancel',

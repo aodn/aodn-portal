@@ -4,12 +4,6 @@
   <g:render template="../common_includes" />
 
   <title>${configInstance?.name} - Forgot password</title>
-
-  <style type="text/css">
-    html, body, #headerTail {
-      background-color: white;
-    }      
-  </style>
 </head>
 <body>
 <g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />

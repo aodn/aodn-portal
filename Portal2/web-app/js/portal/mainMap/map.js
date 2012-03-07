@@ -791,13 +791,12 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
     server.opacity = 100;
     dl.server = server;
     
-    dl.queryable = true; // must be to get here
+    dl.queryable = false; // no more
     
     //dl.sld = sld; //comment out until required from the setExtWmsLayer function
     
     // style in .ftl's but should be styles
     dl.styles = style;
-    
     dl.name = layer; // layer id on server  
 
     // options are comma delimited to include a unique label from a single value such as a dropdown box

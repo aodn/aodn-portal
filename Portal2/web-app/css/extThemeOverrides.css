@@ -1,5 +1,6 @@
-
-
+p, h1, h2, h3 {
+    margin: 0px 0px 8px 0px;
+}
 
 .x-menu-floating {
     -moz-border-radius: 5px;
@@ -15,6 +16,9 @@
 }
 .x-tree-lines .x-tree-elbow-minus, .x-tree-lines .x-tree-elbow-end-minus{
     background-image:url('../img/icons/treeMinus.png');
+}
+.x-tool {
+    margin-right: 4px;
 }
 
 

@@ -1,23 +1,21 @@
-function initMenusPanel(menu) {
+/*
+ *
+ *
+ *
+ *
+ *function initMenusPanel(menu) {
 
-    /* CONTRIBUTER TREE TO BE REMOVED
-    demonstrationContributorTree = new Ext.tree.TreePanel({
-        id: 'demonstrationContributorTree', 
-        region: "west",
-        title: "Contributors",
-        root: new GeoExt.tree.LayerContainer()
-    });
-    */
-	var menuItems = JSON.parse(menu);
-	var builder = new Portal.data.MenuItemToNodeBuilder();
-	var children = builder.build(menuItems);
+  
+    var menuItems = JSON.parse(menu);
+    var builder = new Portal.data.MenuItemToNodeBuilder();
+    var children = builder.build(menuItems);
     var defaultMenuContainer = new Ext.tree.AsyncTreeNode({
         draggable:false,
         children: children
     });
     
     defaultMenuTree = new Ext.tree.TreePanel( {
-        title: 'WMS Layers',
+        title: 'Providers',
         id: 'defaultMenuTree',
         loader: new Ext.tree.TreeLoader({
             preloadChildren:true
@@ -74,15 +72,6 @@ function initMenusPanel(menu) {
             }
         }
     })
-
-    var userDefinedWMSPanel = new Ext.Panel({
-        title: "Add Servers",
-        height: 50,
-        items: [
-        serverURLField,
-        addServerButton
-        ]
-    });
 
     // Listens to layer changes in the mapPanel and updates
     var layerList = new GeoExt.tree.OverlayLayerContainer({        
@@ -168,7 +157,8 @@ function initMenusPanel(menu) {
     var mapSpinnerPanel = new Ext.BoxComponent({        
         border: true,
         id: 'mapSpinnerPanel',
-        html: '<div class="extAjaxLoading">' +
+        flex: 1,
+        html: '<div class="extAjaxLoading" style="display:none" >' +
                 '<div class="loading-indicator"> Loading...</div>' +
                '</div>'
 
@@ -190,9 +180,10 @@ function initMenusPanel(menu) {
                 items: [
                     new Ext.Container({
                         layout: 'hbox',
+                        height: 40,
                         items: [                
                             new Ext.Panel({
-                                //flex: 2,
+                                flex: 1,
                                 items: [ 
                                     hideLayerOptions,
                                     zoomToLayerChooser 
@@ -260,15 +251,22 @@ function initMenusPanel(menu) {
         
     });
     
+    var userDefinedWMSPanel = new Ext.Panel({
+        title: "Add Servers",
+        height: 50,
+        items: [
+        serverURLField,
+        addServerButton
+        ]
+    });
     
-        // tabbed menu of available layers to add to map
+    // tabbed menu of available layers to add to map
     // rendered in 'viewport' border layout
     leftTabMenuPanel = new Ext.TabPanel({
         defaults: { // defaults are applied to items, not the container
-            padding: 5//,
+            //padding: 5//,
             //autoScroll: true
         },
-        id: 'leftTabMenuPanel',
         minHeight: 170,        
         boxMaxHeight : 200,
         stateful: false,        
@@ -496,3 +494,5 @@ function populateDemoContributorMenu() {
     });
     
 }
+
+*/

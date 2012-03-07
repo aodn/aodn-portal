@@ -6,11 +6,7 @@
     <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
     
     <title>${configInstance?.name} - Update account details</title>
-    <style type="text/css">
-      html, body, #headerTail {
-        background-color: white;
-      }
-    </style>
+
   </head>
   <body>
     <g:render template="../mainPortalHeader" model="['configInstance':configInstance]" />

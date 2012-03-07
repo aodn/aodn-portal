@@ -1,4 +1,4 @@
-var mapPanel; 
+/*var mapPanel; 
 var activeLayers = []; // Array of OpenLayers Layers. This allows us to access/mod layers after creation
 var navigationHistoryCtrl;
 
@@ -111,17 +111,7 @@ function initMap()  {
         ev.stopPropagation(); // Cancels bubbling of the event
     });
 
-    /* var onClick2 = function(ev, target){
-        alert(target);
-        ev.preventDefault(); // Prevents the browsers default handling of the event
-        ev.stopPropagation(); // Cancels bubbling of the event
-        ev.stopEvent() // preventDefault + stopPropagation
 
-        var target = ev.getTarget() // Gets the target of the event (same as the argument)
-
-        var relTarget = ev.getRelatedTarget(); // Gets the related target
-    };
-     */
     
     setMapDefaultZoom(mapPanel.map); // adds default bbox values to map instance
     mapPanel.map.zoomToMaxExtent(); // get the map going. will zoom to bbox from the config latter
@@ -249,13 +239,6 @@ function setToolbarItems() {
 }
 
 
-/*
- * 
- * This is the add layer method for all overlay layers apart form those added
- * by user defined WMS server discoveries.
- * 
- * 
- */
 function addGrailsLayer(grailsLayerId, layerOptions, layerParams, animated, chosenTimes) {   
     
     Ext.Ajax.request({
@@ -390,16 +373,78 @@ function redrawAnimatedLayers() {
     
 }
 
-function getMapPanel() {
-	return Ext.getCmp('map');
-}
-
 // exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
 // or reload OpenLayers.Layer.Image
 // Reloading may be called from reloading a style or changing zoomlevel
 function addNCWMSLayer(currentLayer) {
-    // Wrap the Map call
-	getMapPanel().addNCWMSLayer(currentLayer);
+    
+    var layer;
+    var bbox = getMapExtent();//.getSize()
+        
+    layer = currentLayer;
+    
+    // if originalWMSLayer is set - then it is already an animated Image
+    if (currentLayer.originalWMSLayer != undefined) {      
+       
+        layer = currentLayer.originalWMSLayer;
+        layer.map = mapPanel.map;        
+    }
+    
+    var newUrl = layer.getFullRequestString( {
+        TIME: layer.chosenTimes,
+        TRANSPARENT:true,
+        STYLE: layer.params.STYLES, // use the style of the original WMS layer
+        WIDTH: 1024,
+        HEIGHT: 1024,
+        BBOX: bbox.toArray(),
+        FORMAT: "image/gif"
+    });
+         
+    //var versionString;
+    //var v = getWMSVersion(layer);
+    //if (v == "1.3.0") {
+    //    versionString =  "VERSION=1.3.0&CRS=EPSG%3A4326";
+    //}
+    //else {
+    //    versionString = "VERSION=" + v + "&SRS=EPSG%3A4326";
+    //}
+    
+    //newUrl = newUrl + "&" + versionString;
+    
+    // params.times = array times to animate
+    // use maxExtent always
+    var newNCWMS = new OpenLayers.Layer.Image(
+        layer.name + " (Animated)",
+        newUrl,
+        //mapPanel.map.getExtent(),
+        bbox,
+        bbox.getSize(), 
+        {
+            format: 'image/gif', 
+            opacity: layer.server.opacity / 100,
+            isBaseLayer : false,
+            maxResolution: mapPanel.map.baseLayer.maxResolution,
+            minResolution: mapPanel.map.baseLayer.minResolution,
+            resolutions: mapPanel.map.baseLayer.resolutions
+        // baseUri: 
+        // timeSeriesPlotUri:
+        // featureInfoResponseType
+        });  
+    registerLayer(newNCWMS); // layer loader spinner
+   
+
+    newNCWMS.originalWMSLayer = layer;
+    
+
+    layerSwap(newNCWMS,currentLayer);    
+
+    
+    
+    // close the detailsPanel
+    // UNLESS I FIND A WAY TO SELECT THIS NEW LAYER IN THE GeoExt MENU!!!
+    closeNHideDetailsPanel();
+    
+    
 }
 
 
@@ -425,12 +470,7 @@ function stopgetTimePeriod(layer) {
 // create an openlayer wms layer baselayer or overlay layer
 // not adding to a map here
 function createLayer(dl, optionOverrides, paramOverrides) {
-     /*
-      * Buffer: tiles around the viewport. 1 is enough
-      * Gutter: images wider and taller than the tile size by a value of 2 x gutter
-              NOT WORKING  over the date line. incorrect values sent to server or Geoserver not handling send values.
-              Keep as zero till fixed 
-    */
+
     var params = {
         layers: dl.name,
         transparent: 'TRUE',
@@ -562,11 +602,7 @@ function addBaseOpenLayersToMap(map)
 	});
 }
 
-/*
- * 
- * This is the internal add layer method used to add all overlay layers
- * 
- */
+
 function addMainMapLayer(dl, layerOptions, layerParams, animated, chosenTimes) {    
 
     var layer = createLayer(dl, layerOptions, layerParams);
@@ -689,56 +725,13 @@ function getLayerMetadata(layer) {
     // this is  timestrings we can use in the uri to control animation
     // based on timestepss
     //http://obsidian:8080/ncWMS/wms?item=animationTimesteps&layerName=67%2FTemperature_layer_between_two_pressure_difference_from_ground&start=2002-12-02T22%3A00%3A00.000Z&end=2002-12-03T01%3A00%3A00.000Z&request=GetMetadata
-    /**
-     * Support for parsing JSON animation parameters from NCWMS JSON responses
-     *
-     * Example JSON response string:
-     * {
-     * 	"units":"m/sec",
-     * 	"bbox":[146.80064392089844,-43.80047607421875,163.8016815185547,-10.000572204589844],
-     * 	"scaleRange":[-0.99646884,1.2169001],
-     * 	"supportedStyles":["BOXFILL"],
-     * 	"zaxis":{
-     * 		"units":"meters",
-     * 		"positive":false,
-     * 		"values":[-5]
-     * 	},
-     * 	"datesWithData":{
-     * 		"2006":{
-     * 			"8":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-     * 		}
-     * 	},
-     * 	"nearestTimeIso":"2006-09-01T12:00:00.000Z",
-     * 	"moreInfo":"",
-     * 	"copyright":"",
-     * 	"palettes":["redblue","alg","ncview","greyscale","alg2","occam","rainbow","sst_36","ferret","occam_pastel-30"],
-     * 	"defaultPalette":"rainbow",
-     * 	"logScaling":false
-     * }
-     */
+  
     
     return false;
     
     
 }
 
-/*
- * Zoom to the layer bounds selected in active layers or 
- 
-function setExtentLayer() {
-    
-    var bounds = new OpenLayers.Bounds();
-    var extent=activeLayerTreePanel.getSelectionModel().getSelectedNode().layer.metadata.bbox;
-    if (extent != undefined) {
-        bounds.extend(new OpenLayers.LonLat(extent[0],extent[1]));
-        bounds.extend(new OpenLayers.LonLat(extent[2],extent[3]));        
-    }
-    else {
-        
-    }
-    mapPanel.map.zoomToExtent(bounds);
-}
-*/
 
 
 // this method called onload and on demand of the user
@@ -747,8 +740,9 @@ function reloadDefaultLayers() {
     var defaultLayers = Portal.app.config.defaultLayers;
     if (defaultLayers.length < 1) {
                 
-        // the layer loading spinners will need to be deactivated manually        
-        jQuery('.extAjaxLoading').hide('slow');
+        // the layer loading or Ajax spinners will need to be deactivated manually 
+        progressCount = 0;
+        ajaxAction('hide');
         jQuery("#loader").hide('slow');
         
     }
@@ -767,3 +761,4 @@ function reloadDefaultLayers() {
         
 }
 
+*/

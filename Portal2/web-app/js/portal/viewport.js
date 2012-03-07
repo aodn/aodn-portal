@@ -33,6 +33,16 @@ Ext.QuickTips.init();
 Ext.ns('Portal');
 
 Portal.app = {
+    
+    
+    ajaxComplete: function(conn, response, options) {
+        progressCount--;
+        if(progressCount == 0) {
+            ajaxAction('hide');
+        }
+        
+    },
+    
     init: function() {
    	//Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
@@ -46,12 +56,8 @@ Portal.app = {
             progressCount++;
         }, this);
 
-        Ext.Ajax.on('requestcomplete', function(conn, response, options){    
-            progressCount--;
-            if(progressCount == 0) {
-                ajaxAction('hide');
-            }
-        }, this);
+        Ext.Ajax.on('requestcomplete',  this.ajaxComplete, this);        
+        Ext.Ajax.on('requestexception',  this.ajaxComplete, this);
         
 
         
@@ -86,12 +92,10 @@ Portal.app = {
 	            
                 this.config = Ext.util.JSON.decode(resp.responseText);
 	            
-                if(this.config.length == 0)
-                {
+                if(this.config.length == 0)  {
                     Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
                 }
-                else
-                {
+                else  {
 	                
                     if(this.config.enableMOTD)  {
 	
@@ -118,8 +122,8 @@ Portal.app = {
 	
                         dlgPopup.show();
 	
-                    };
-                };
+                    }
+                }
 	
                     
 
@@ -154,7 +158,6 @@ function setViewPortTab(tabIndex){
 
 function doViewPort()
 {
-    
     mapMainPanel = new Ext.Panel({
         layout: 'border',
         id: 'mainMapPanel',
@@ -176,6 +179,7 @@ function doViewPort()
             },*/
             autoScroll: true,
             items: [
+                //new Portal.ui.MapMenuPanel({appConfig: Portal.app.config, menuId: Portal.app.config.menuId}),
                 leftTabMenuPanel,
                 activeMenuPanel
             ],
@@ -208,22 +212,22 @@ function doViewPort()
                 {
                     region: 'south',
                     layout: 'hbox',
-                    cls: 'footer',
-                    padding:  '7px 0px 0px 15px',
+                    cls: 'footer mapFooter',
+                    padding:  '7px 20px 5px 20px',
                     unstyled: true,
                     height: Portal.app.config.footerHeight,
                     items: [
                         {
                             // this is not a configured item as wont change and will need tailoring for every instance
                             xtype: 'container',
-                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
+                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png?really\" />",
                             width: 330
                         },
                         {
                             xtype: 'container',
                             html: Portal.app.config.footerContent,
-                            cls: 'footerText',
-                            width: Portal.app.config.footerContentWidth
+                            cls: 'footerText'//,
+                            //width: Portal.app.config.footerContentWidth
                         }
                     ]
                     
@@ -294,51 +298,50 @@ function doViewPort()
     }); 
     mapMainPanel.doLayout();
    
+   
     
     viewport = new Ext.Viewport({
         layout: 'border',
-        boxMinWidth: 900,
+        //boxMinWidth: 1050,
+        //boxMinHeight : 800,
         items: [{
-            //
-            unstyled: true,
-            region: 'north',
-            height: Portal.app.config.headerHeight//,
-            //border: false,
-            //items: [{
-            //   html: "this is some text"     
-            //}]
-        },
-        {
-            region: 'center',
-            id: 'centerTabPanel',
-            xtype: 'tabpanel', // TabPanel itself has no title        
-            autoDestroy: false, // wont destroy tab contents when switching        
-            activeTab: 0,
-            unstyled: true,
-            // method to hide the usual tab panel header with css
-            headerCfg: {
-                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
+                unstyled: true,
+                region: 'north',
+                height: Portal.app.config.headerHeight + 15
             },
-            items: [            
-                mapMainPanel,
-                {
-                    xtype: 'portal.search.searchtabpanel',
-                    listeners: {
-                        addLayer: {
-                            fn: function(layerDef) {
-                                addMainMapLayer(layerDef);
-                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+            {
+                region: 'center',
+                id: 'centerTabPanel',
+                xtype: 'tabpanel', // TabPanel itself has no title        
+                autoDestroy: false, // wont destroy tab contents when switching        
+                activeTab: 0,
+                unstyled: true,
+                // method to hide the usual tab panel header with css
+                headerCfg: {
+                    cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
+                },
+                items: [  
+                    new Portal.ui.HomePanel({appConfig: Portal.app.config}),
+                    mapMainPanel,
+                    {
+                        xtype: 'portal.search.searchtabpanel',
+                        listeners: {
+                            addLayer: {
+                                fn: function(layerDef) {
+                                    addMainMapLayer(layerDef);
+                                    Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+                                }
                             }
                         }
-                    }
-                }            
-            ],
-            listeners: {            
-                tabchange: function( thisTabPanel, tab ) {
-                    //console.log(thisTabPanel.activeTab);
-                }
+                    }            
+                ]
+            },
+            {
+                region: 'south',
+                height: 15,
+                unstyled: true
             }
-        }]
+        ]
     });
 
     viewport.show();
@@ -391,8 +394,7 @@ Ext.onReady(function() {
 });
 
 
-function ajaxAction(request) {
-    //console.log(request);
+function ajaxAction(request) {    
     if (request == 'show') {        
         jQuery('.extAjaxLoading').show(100);
     }
