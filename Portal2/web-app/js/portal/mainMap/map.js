@@ -70,10 +70,6 @@ function addToPopup(mapPanel, e) {
     var imageLayers = map.getLayersByClass("OpenLayers.Layer.Image");
 
     wmsLayers = wmsLayers.concat(imageLayers);
-
-    
-
-
     
     // create a new popup each time.
     // ols query results 'should' become orphaned
@@ -86,15 +82,9 @@ function addToPopup(mapPanel, e) {
         width: Portal.app.config.popupWidth,
         height: 80, // set height later when there are results
         maximizable: true,
-        // collapsible: true,
         map: mapPanel.map,
         anchored: true,
-        //border: false,
-        //margins: 10,
-        //constrainHeader: true,
-        //panIn: true,
-        autoScroll: true//,
-    //padding: "0px 0px 12px 12px"
+        autoScroll: true
     });
 
     // Add container for html (empty for now)
@@ -103,23 +93,18 @@ function addToPopup(mapPanel, e) {
         html: "Loading ...",
         cls: 'popupHtml',      
         ref: 'popupHtml'
-    })
-    );
+	}));
     // Add tab panel (empty for now)
     popup.add( new Ext.TabPanel({
         ref: 'popupTab',
         enableTabScroll : true,
         deferredRender: true,
-        hidden: true//,        
-    //padding: "10px 3px 3px 10px"
-    })
-    );
-        
+        hidden: true
+    }));
                 
     popup.numResultsToLoad = 0; // Reset count
     popup.numGoodResults = 0;
     popup.numResultQueries = 0;
-    
     
     var loc = mapPanel.map.getLonLatFromViewPortPx(e.xy);
     // do all this work to reduce the length of the mouse click precision for the popup title
@@ -157,8 +142,6 @@ function addToPopup(mapPanel, e) {
         var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
         var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''   ]
         var isAnimatedLayer = layer.originalWMSLayer != undefined;
-        
-
 
         // this is an animated image
         if (isAnimatedLayer) {
@@ -200,7 +183,7 @@ function addToPopup(mapPanel, e) {
                 bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
             } 
 
-            if ((!layer.params.ISBASELAYER)  && layer.params.QUERYABLE  && layer.getVisibility()) {
+            if ((!layer.params.ISBASELAYER) && layer.getVisibility()) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
@@ -221,7 +204,6 @@ function addToPopup(mapPanel, e) {
                 }
                 else if (layer.params.VERSION == "1.3.0") {
                     url = layer.getFullRequestString({
-
                         REQUEST: "GetFeatureInfo",
                         EXCEPTIONS: "application/vnd.ogc.se_xml",
                         BBOX: bboxBounds.toBBOX(),

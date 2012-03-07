@@ -175,6 +175,72 @@ describe("Portal.search.data.LinkStore", function() {
       
    });
    
-   
+   describe('getVersionFromProtocol', function() {
+	   var testStore = new Portal.search.data.LinkStore({ 
+			data: {
+				links: [{
+					href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
+					name: "topp:xbt_realtime",
+					protocol: "OGC:WMS-1.1.1-http-get-map",
+					title: "xbt_realtime",
+					type: "application/vnd.ogc.wms_xml",
+					value: ""			
+				},{
+					href: "http://localhost:8080/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime",
+					name: "topp:xbt_realtime",
+					protocol: "GOOGLE:KML",
+					title: "xbt_realtime",
+					type: "application/vnd.google-earth.kml+xml",
+					value: ""
+				},{
+					type: "wms",
+					value: "javascript:addWMSLayer([['topp:xbt_realtime','http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&', 'topp:xbt_realtime','311836']])"
+				},{
+					type: "googleearth",
+					value: "/geonetwork/srv/en/google.kml?uuid=5adf6c9b-6550-4232-a8db-6a1acca8f05b&layers=topp:xbt_realtime"
+				},{
+					href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
+					name: "topp:xbt_realtime",
+					protocol: "OGC:WMS-1.1.0-http-get-map",
+					title: "xbt_realtime",
+					type: "application/vnd.ogc.wms_xml",
+					value: ""			
+				},{
+					href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
+					name: "topp:xbt_realtime",
+					protocol: "OGC:WMS-1.3.0-http-get-map",
+					title: "xbt_realtime",
+					type: "application/vnd.ogc.wms_xml",
+					value: ""			
+				},{
+					href: "http://geoserverdev.emii.org.au:80/geoserver/wms?SERVICE=WMS&",
+					name: "topp:xbt_realtime",
+					protocol: "OGC:NCWMS-1.1.1-http-get-map",
+					title: "xbt_realtime",
+					type: "application/vnd.ogc.wms_xml",
+					value: ""			
+				}]
+		}});
+	   
+	   it('Should extract a version from an OGC:WMS protocol', function() {
+		   var link = testStore.getLayerLink(0);
+		   expect(link.server.type).toEqual('WMS-1.1.1');
+		   
+		   link = testStore.getLayerLink(1);
+		   expect(link.server.type).toEqual('WMS');
+		   
+		   link = testStore.getLayerLink(2);
+		   expect(link.server.type).toEqual('WMS');
+		   
+		   link = testStore.getLayerLink(4);
+		   expect(link.server.type).toEqual('WMS-1.1.0');
+		   
+		   link = testStore.getLayerLink(5);
+		   expect(link.server.type).toEqual('WMS-1.3.0');
+		   
+		   link = testStore.getLayerLink(6);
+		   expect(link.server.type).toEqual('NCWMS-1.1.1');
+	   });
+   }); 
 	      
 });

@@ -8,6 +8,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     datasetInfo: 'Dataset information',
     showOnMinimap: "Show '${layerDesc}' on mini-map",
     addToMap: "Add '${layerDesc}' to map",
+    layerSelectionWindowShowOnMinimap: "Show on mini-map",
+    layerSelectionWindowAddToMap: "Add to map",
     datasetLayers: 'Dataset layers',
     selectLink: 'Select linked page',
 	
