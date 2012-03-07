@@ -92,6 +92,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             region: 'east',
             collapsible: true,            
             stateful: false,
+            padding: 10,
             split: true,
             width: 350,
             minWidth: 250,
