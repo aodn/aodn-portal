@@ -337,7 +337,6 @@ a.userlink {
 
 
 a[rel="external"], a.external {
-    white-space: nowrap;
     padding-right: 15px;
     background: url(../images/extlink.gif) no-repeat 100% 50%;
     zoom: 1;
