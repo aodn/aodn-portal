@@ -45,11 +45,21 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 			title : linkRec.get('title'),
 			server : {
 				uri : linkRec.get('url'),
-				type : 'WMS'
+				type : this.getServerTypeFromProtocol(linkRec.get('protocol'))
 			},
 			name : linkRec.get('name'),
 			protocol : linkRec.get('protocol')
 		};
 	},
+	
+	getServerTypeFromProtocol: function(protocol) {
+		if (protocol) {
+			var match = protocol.match(/^(OGC:)((NC)*WMS-\d\.\d\.\d)/);
+			if (match) {
+				return match[2];
+			}
+		}
+		return 'WMS';
+	}
 
 });

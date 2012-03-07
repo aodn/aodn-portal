@@ -558,8 +558,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    });
 	},
 	
-	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {    
-
+	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
 	    var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
 	    if (openLayer) {
 	    	this.addLayer(openLayer, true);
