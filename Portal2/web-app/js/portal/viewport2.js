@@ -135,7 +135,7 @@ function doViewPort() {
 	                        addLayer: {
 	                            fn: function(layerDef) {
 	                                portalPanel.addMapLayer(layerDef);
-	                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+	                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'), OpenLayers.i18n('layerAddedMsg', {layerDesc: layerDef.title}));
 	                            }
 	                        }
 	                    }
