@@ -11,5 +11,8 @@ class CommunityControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
+	void testSomething() {
+		
+	}
     
 }
