@@ -15,7 +15,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                {
                   fieldLabel: 'Date from',
                   labelSeparator: '',
-                  name: 'ext-From',
+                  name: 'extFrom',
                   xtype: 'datefield',
                   format: 'd/m/Y',
                   anchor: '100%'
@@ -30,7 +30,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                {
                   fieldLabel: 'to',
                   labelSeparator: '',
-                  name: 'ext-To',
+                  name: 'extTo',
                   xtype: 'datefield',
                   format: 'd/m/Y',
                   anchor: '100%'
