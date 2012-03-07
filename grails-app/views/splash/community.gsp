@@ -9,24 +9,18 @@
         
         
       </div>
-      
-      
-       <iframe
-                src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FAODN%2F159760824066030&amp;width=310&amp;colorscheme=light&amp;connections=12&amp;stream=true&amp;header=false&amp;height=587"
-                style="border:0; overflow:hidden; width:310px; height:587px;">
-            </iframe>
+
+      <div class="fb-like-box" data-href="http://www.facebook.com/AusOceanDataNet" data-width="292"  data-show-faces="true" data-border-color="white" data-stream="true" ></div>
     </div>
-    
-    <script id="z_0i_bb" type="text/javascript">
-var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-20216708-2']);
-          _gaq.push(['_trackPageview']);
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = '${resource(dir:'js',file:'facebook/ga.js')}';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=159760824066030";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 </script>
 
