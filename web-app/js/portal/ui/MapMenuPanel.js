@@ -5,12 +5,10 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 	constructor: function(cfg) {
 		
 		this.defaultMenuTree = new Portal.ui.MenuPanel({ menuId: cfg.menuId });
-		
 		var config = Ext.apply({
 			defaults: {
 	            padding: 5
 	        },
-	        //id: 'leftTabMenuPanel',
 	        minHeight: 170,        
 	        boxMaxHeight: 200,
 	        stateful: false,        

@@ -41,9 +41,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        this.src = "img/blank.png";
 	    };
 		
-		var config = Ext.apply({
-			id: "map",
-	        border: false,
+            var config = Ext.apply({
+		id: "map",
 	        region: "center",
 	        split: true,
 	        header: false,
@@ -110,7 +109,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	initMap: function() {
 		this.mapOptions = new Portal.ui.Options();
 		this.map = new OpenLayers.Map(this.mapOptions.options);
-	    this.map.restrictedExtent = new OpenLayers.Bounds.fromString("-360,-90,360,90");
+	    this.map.restrictedExtent = new OpenLayers.Bounds.fromString("-180,-90,180,90");
 	    // keep the animated image crisp
 	    // limit to changes in zoom. moveend is too onerous
 	    this.map.events.register("moveend", this, function (e) {        
@@ -512,7 +511,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 	
 	zoomToInitialBbox: function () {
-	    this.zoomTo(new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy), true);
+	    this.map.zoomTo(new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy), true);
 	},
 	
 	zoomToLayer: function(openLayer) {
