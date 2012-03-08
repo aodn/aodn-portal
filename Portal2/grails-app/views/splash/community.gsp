@@ -10,7 +10,7 @@
         
       </div>
 
-      <div class="fb-like-box" data-href="http://www.facebook.com/AusOceanDataNet" data-width="292"  data-show-faces="true" data-border-color="white" data-stream="true" ></div>
+      <div class="fb-like-box" data-href="http://www.facebook.com/AusOceanDataNet" data-width="292"  data-show-faces="true" data-header="false" data-border-color="white" data-stream="true" ></div>
     </div>
 
 

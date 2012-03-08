@@ -84,6 +84,17 @@ a img{
     border: none;
 }
 
+hr {
+border: 0;
+height: 1px;
+margin-top: 10px; 
+margin-bottom: 15px; 
+background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+
 .floatLeft {
     float: left;
 }
@@ -677,6 +688,7 @@ p.important {
 
 .extAjaxLoading {  
     border-radius: 4px;    
+    padding: 3px;
     background-color: #ffffff! important;
 }
 .extAjaxLoading div {       

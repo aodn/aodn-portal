@@ -5,9 +5,9 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         
-        this.appConfig = cfg.appConfig;
         // containers
         //this.actionsPanel = new Portal.ui.ActionsPanel({map: this.mapPanel.map, layerStore: this.mapPanel.layers});
+        
 		
         var config = Ext.apply({
 
@@ -23,17 +23,16 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                     cls: 'menuHeader',  // Default class not applied if Custom element specified
                     html: 'Message'
                 },
-                title: 'Choose a data layer to view on our map',
+                title: 'Choose a layer to view on our map',
                 autoScroll: true,
                 cls: 'leftMenus',
                 collapsible: false,
                 collapseMode: 'mini',
                 stateful: false,
                 split: false,
-                width: this.appConfig.westWidth,
+                width: cfg.appConfig.westWidth,
                 items: [
-            //new Portal.ui.MapMenuPanel({appConfig: Portal.app.config, menuId: Portal.app.config.menuId}),
-            ]
+                ]
             },
             {
                 region:'center',
@@ -47,91 +46,102 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                     autoEl: 'vbox',
                     unstyled: true,                    
                     autoScroll: true, // finally in the right place!!
+                    
                     items: [
                     {
 
                         unstyled: true,
-                        padding:  '7px 20px 30px 20px',
+                        padding:  '7px 20px 30px 20px', 
                         autoLoad:{
                             url:'splash',
-                            scripts:true
-                        }
-                    },
-                    {
-                        layout: 'hbox',
-                        cls: 'footer',
-                        padding:  '7px 20px 5px 20px',
-                        unstyled: true,
-                        height: this.appConfig.footerHeight,
-                        items: [
-                        {
-                            // this is not a configured item as wont change and will need tailoring for every instance
-                            xtype: 'container',
-                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
-                            width: 220
-                            
+                            renderer: 'html',
+                            scripts:true,
+                            extraParams:{
+                                showLoadIndicator: false
+                      
+                            }
                         },
-                        {
-                            xtype: 'container',
-                            html: this.appConfig.footerContent,
-                            cls: 'footerText'
+                        listeners: {
+                            beforerender: function(obj) {
+                               // Ext.Updater.defaults.showLoadIndicator =false;
+                            }    
                         }
-                        ]
-
-                    }
-                    ]
-                }
-                    
-                ]
-            },
-            {
-                //xtype: 'panel',
-                id: 'rightHomePanel',
-                region: 'east',          
-                stateful: false,
-                unstyled: true,                   
-                autoScroll: true,
-                padding:  '0px 20px 5px 20px',
-                //html: 'ActiveLayers Details panel here',
-                width: 360,
-                items: [
-                {
-                    autoLoad:{
-                        url:'splash/links',
-                        scripts:true
-                    }
                 },
                 {
-                    autoLoad:{
-                        url:'splash/community',
-                        scripts:true
+                    layout: 'hbox',
+                    cls: 'footer',
+                    padding:  '7px 20px 5px 20px',
+                    unstyled: true,
+                    height: cfg.appConfig.footerHeight,
+                    items: [
+                    {
+                        // this is not a configured item as wont change and will need tailoring for every instance
+                        xtype: 'container',
+                        html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
+                        width: 220
+                            
+                    },
+                    {
+                        xtype: 'container',
+                        html: cfg.appConfig.footerContent,
+                        cls: 'footerText'
                     }
-                }
+                    ]
 
+                }
                 ]
-            }],
-            listeners: {
-  
-                hide: function(panel) {
-                
-                
-                    if (panel.id == 'mainMapPanel') {                        
-                        closeNHideDetailsPanel();
+            }
                     
-                        jQuery("#loader").hide(); // close the layer loader
-                    
-                        // close the getfeatureinfo popup
-                        if (popup) {
-                            popup.close();
-                        }
-                    }
-                
+            ]
+        },
+        {
+            //xtype: 'panel',
+            id: 'rightHomePanel',
+            region: 'east',          
+            stateful: false,
+            unstyled: true,                   
+            autoScroll: true,
+            padding:  '0px 20px 5px 20px',
+            //html: 'ActiveLayers Details panel here',
+            width: 360,
+            items: [
+            {
+                autoLoad:{
+                    url:'splash/links',
+                    scripts:true
+                }
+            },
+            {
+                autoLoad:{
+                    url:'splash/community',
+                    scripts:true
                 }
             }
+
+            ]
+        }],
+        listeners: {
+  
+            hide: function(panel) {
+                
+                
+                if (panel.id == 'mainMapPanel') {                        
+                    closeNHideDetailsPanel();
+                    
+                    jQuery("#loader").hide(); // close the layer loader
+                    
+                    // close the getfeatureinfo popup
+                    if (popup) {
+                        popup.close();
+                    }
+                }
+                
+            }
+        }
     
         }, cfg);
         
-        Portal.ui.HomePanel.superclass.constructor.call(this, config);
-    }
+    Portal.ui.HomePanel.superclass.constructor.call(this, config);
+}
 });
 
