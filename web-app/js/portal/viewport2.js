@@ -97,7 +97,7 @@ function setViewPortTab(tabIndex){
 }
 
 function doViewPort() {    
-    var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
+	var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
     portalPanel.on('hide', function() {
     	if (popup) {
     		popup.close();
@@ -125,33 +125,30 @@ function doViewPort() {
 	                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
 	            },
 	            items: [
-                            new Portal.ui.HomePanel({appConfig: Portal.app.config}),
-                            portalPanel,
-                                {
-                                    xtype: 'portal.search.searchtabpanel',
-                                    listeners: {
-                                        addLayer: {
-                                            fn: function(layerDef) {
-                                                portalPanel.addMapLayer(layerDef);
-                                                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
-                                            }
-                                        }
-                                    }
+                    new Portal.ui.HomePanel({appConfig: Portal.app.config}),
+                    portalPanel,
+                    {
+                        xtype: 'portal.search.searchtabpanel',
+                        listeners: {
+                            addLayer: {
+                                fn: function(layerDef) {
+                                    portalPanel.addMapLayer(layerDef);
+                                    Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
                                 }
-                    ]
+                            }
+                        }
+                    }
+                ]
 	        },
-                {
-                    region: 'south',
-                    height: 15,
-                    unstyled: true
-                }
+	        {
+                region: 'south',
+                height: 15,
+                unstyled: true
+            }
 	    ],
         listeners: {
-  
             afterrender: function(panel) {              
-                    
-                    jQuery("#loader").hide('slow'); // close the loader            
-                
+                jQuery("#loader").hide('slow'); // close the loader            
             }
         }
     });

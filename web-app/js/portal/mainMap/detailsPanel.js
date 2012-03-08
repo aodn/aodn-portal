@@ -334,24 +334,24 @@ function updateDetailsPanel(layer) {
 }
 
 // move to default spot unless a user has resized or moved the window
-function updateDetailsPanelPositionSize(reset) {
-    
-    var widthBuffer = 60;
-    var heightBuffer = 40;
-    var x = Portal.app.config.westWidth+ widthBuffer;
-    var y = Portal.app.config.headerHeight+ heightBuffer;
-    
-    var detailsPanel = getDetailsPanel();
-    detailsPanel.show();
-    // set in predefined position unless already set or sized
-    if (detailsPanel.lastSize.height == undefined && detailsPanel.moved == undefined ) {        
-        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
-    }    
-    if (reset) {
-        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
-    // detailsPanel.restore();
-    }
-}
+//function updateDetailsPanelPositionSize(reset) {
+//    
+//    var widthBuffer = 60;
+//    var heightBuffer = 40;
+//    var x = Portal.app.config.westWidth+ widthBuffer;
+//    var y = Portal.app.config.headerHeight+ heightBuffer;
+//    
+//    var detailsPanel = getDetailsPanel();
+//    detailsPanel.show();
+//    // set in predefined position unless already set or sized
+//    if (detailsPanel.lastSize.height == undefined && detailsPanel.moved == undefined ) {        
+//        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
+//    }    
+//    if (reset) {
+//        detailsPanel.setPosition(x,y);  // this will cause detailsPanel.moved to be set 
+//    // detailsPanel.restore();
+//    }
+//}
 
 function setChosenStyle(layer,record) {
     

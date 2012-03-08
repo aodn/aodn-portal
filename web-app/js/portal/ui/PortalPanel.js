@@ -173,7 +173,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 			this.mapPanel.stopAnimation(selectedLayer);
 		}, this);
 	},
-	    onMenuNodeClick: function(node) {
+    
+	onMenuNodeClick: function(node) {
         if (node.attributes.grailsLayerId) {
             this.mapPanel.addGrailsLayer(node.attributes.grailsLayerId);
         }
@@ -187,7 +188,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
     zoomToLayer: function(openLayer) {
         this.mapPanel.zoomToLayer(openLayer);
     },
-	
+    
     layerOptionsVisible: function() {
         return this.actionsPanel.layerOptionsVisible();
     },
@@ -195,6 +196,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
     autoZoomEnabled: function() {
         this.actionsPanel.autoZoomEnabled();
     },
+    
     autoZoomCheckboxHandler: function(box, checked) {
         Portal.app.config.autoZoom = checked;
         this.mapPanel.autoZoom = checked;

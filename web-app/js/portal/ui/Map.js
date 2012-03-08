@@ -92,6 +92,16 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    	}
 	    }, this);
 	    
+	    this.on('afterlayout', function() {
+	    	// Sadly have to maintain a first time layout state to ensure
+	    	// correct rendering on first view
+	    	if (!this.firstLayout) {
+	    		this.addBaseLayers();
+	    	    this.addDefaultLayers();
+	    	    this.firstLayout = true;
+	    	}
+	    }, this);
+	    
 	    this.addEvents('baselayersloaded', 'layeradded');
 	    this.bubbleEvents.push('baselayersloaded');
 	    this.bubbleEvents.push('layeradded');
@@ -106,8 +116,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    this.map.events.register("moveend", this, function (e) {        
 	        this.redrawAnimatedLayers();
 	    });
-	    this.addBaseLayers();
-	    this.addDefaultLayers();
 	},
 	
 	initToolBar: function() {
