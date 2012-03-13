@@ -105,6 +105,9 @@ function doViewPort() {
     	}
     }, this);
     
+    var homePanel = new Portal.ui.HomePanel({appConfig: Portal.app.config});
+    var centreTabPanel = initCentreTabPanel(homePanel, portalPanel);
+    
     viewport = new Ext.Viewport({
         layout: 'border',
         boxMinWidth: 1050,
@@ -114,38 +117,17 @@ function doViewPort() {
 	            region: 'north',
 	            height: Portal.app.config.headerHeight + 15
 	        },
-	        {
-	            region: 'center',
-	            id: 'centerTabPanel',
-	            xtype: 'tabpanel', // TabPanel itself has no title        
-	            autoDestroy: false, // wont destroy tab contents when switching        
-	            activeTab: 0,
-	            unstyled: true,
-	            // method to hide the usual tab panel header with css
-	            headerCfg: {
-	                cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
-	            },
-	            items: [
-                    new Portal.ui.HomePanel({appConfig: Portal.app.config}),
-                    portalPanel,
-                    {
-                        xtype: 'portal.search.searchtabpanel',
-                        listeners: {
-                            addLayer: {
-                                fn: function(layerDef) {
-                                    portalPanel.addMapLayer(layerDef);
-                                    Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
-                                }
-                            }
-                        }
-                    }
-                ]
-	        },
+	        centreTabPanel,
 	        {
                 region: 'south',
                 height: 15,
                 unstyled: true
-            }
+            },
+            new Portal.ui.LayerChooserPanel({ 
+            	region: 'west', 
+            	appConfig: Portal.app.config, 
+            	mapPanel: portalPanel.getMapPanel()
+        	})
 	    ],
         listeners: {
             afterrender: function(panel) {              
@@ -153,9 +135,42 @@ function doViewPort() {
             }
         }
     });
+    
     viewport.show();
 }
 
+function initCentreTabPanel(homePanel, portalPanel) {
+	return new Ext.TabPanel({
+        region: 'center',
+        id: 'centerTabPanel',
+        xtype: 'tabpanel', // TabPanel itself has no title        
+        autoDestroy: false, // wont destroy tab contents when switching        
+        activeTab: 0,
+        unstyled: true,
+        // method to hide the usual tab panel header with css
+        headerCfg: {
+            cls: 'mainTabPanelHeader'  // Default class not applied if Custom element specified
+        },
+        items: [
+            homePanel,
+            portalPanel,
+            initSearchTabPanel()
+        ]
+    });
+}
+
+function initSearchTabPanel() {
+	return new Portal.search.SearchTabPanel({
+	    listeners: {
+	        addLayer: {
+	            fn: function(layerDef) {
+	                portalPanel.addMapLayer(layerDef);
+	                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+	            }
+	        }
+	    }
+	});
+}
 
 //
 // Fix for closing animation time period window after selection

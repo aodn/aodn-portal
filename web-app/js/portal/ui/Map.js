@@ -92,14 +92,10 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    }, this);
 	    
 	    this.on('afterlayout', function() {
-	    	// Sadly have to maintain a first time layout state to ensure
-	    	// correct rendering on first view
-	    	if (!this.firstLayout) {
-	    		this.addBaseLayers();
-	    	    this.addDefaultLayers();
-	    	    this.firstLayout = true;
-	    	}
+    		this.addBaseLayers();
 	    }, this);
+	    
+	    this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 	    
 	    this.addEvents('baselayersloaded', 'layeradded');
 	    this.bubbleEvents.push('baselayersloaded');
@@ -153,6 +149,10 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 	
 	addBaseLayers: function() {
+		if (this.baseLayersLoaded || this.baseLayersLoading) {
+			return;
+		}
+		this.baseLayersLoading = true;
 		Ext.Ajax.request({
 	        url: 'layer/configuredbaselayers',
 	        scope: this,
@@ -167,13 +167,23 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        		this
 	        	);
 	        	this.setMapDefaultZoom(); // adds default bbox values to map instance
+	        	delete this.baseLayersLoading;
 	        	this.zoomToInitialBbox();
+	        	this.baseLayersLoaded = true;
 	        	this.fireEvent('baselayersloaded');
 	        }
 	    });
 	},
 	
+	onBaseLayersLoaded: function() {
+		this.addDefaultLayers();
+	},
+	
 	addDefaultLayers: function() {
+		if (this.defaultLayersLoaded || this.defaultLayersLoading) {
+			return;
+		}
+		this.defaultLayersLoading = true;
 		Ext.Ajax.request({
 	        url: 'layer/defaultlayers',
 	        scope: this,
@@ -181,7 +191,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
 	        	Ext.each(layerDescriptors, 
 	    			function(layerDescriptor, index, all) {
-	        			this.addLayer(this.getOpenLayer(layerDescriptor), true);
+	        			this._addLayer(this.getOpenLayer(layerDescriptor), true);
 	    			},
 	        		this
 	        	);
@@ -191,6 +201,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            if (this.autoZoom === true) {
 		            this.zoomToLayer(this.map.layers[this.map.layers.length - 1]);
 		        }
+	            this.defaultLayersLoaded = true;
+	            delete this.defaultLayersLoading;
+	            this.fireEvent('defaultlayersloaded');
 	        }
 	    });
 	},
@@ -352,17 +365,30 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         return openLayer;
 	},
 	
+	waitForDefaultLayers: function(openLayer, showLoading) {
+		this.on('defaultlayersloaded', function() {
+			this.addLayer(openLayer, showLoading);
+		}, this);
+	},
+	
 	addLayer: function(openLayer, showLoading) {
 		if (!this.containsLayer(openLayer)) {
-			if (showLoading === true) {
-				this.registerLayer(openLayer);
+			
+			if (!this.defaultLayersLoaded) {
+				this.addBaseLayers();
+				this.waitForDefaultLayers(openLayer, showLoading);
 			}
-			this.map.addLayer(openLayer);
-			this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
-			this.fireEvent('layeradded', openLayer);
-			if (!openLayer.isBaseLayer) {
-				// Hides the text above the active layers
-		        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+			else {
+				if (showLoading === true) {
+					this.registerLayer(openLayer);
+				}
+				this.map.addLayer(openLayer);
+				this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
+				this.fireEvent('layeradded', openLayer);
+				if (!openLayer.isBaseLayer) {
+					// Hides the text above the active layers
+			        jQuery('.emptyActiveLayerTreePanelText').hide('slow');
+				}
 			}
 		}
 	},

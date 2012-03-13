@@ -19,7 +19,6 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 	        activeTab: 0,
 	        items: [
 	            this.defaultMenuTree
-	            
 	        ]
 		}, cfg);
 		
@@ -41,13 +40,14 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 	}
 });
 
+Ext.reg('portal.ui.mapmenupanel', Portal.ui.MapMenuPanel);
+
 Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
 	
 	constructor: function(cfg) {
 		
 		var config = Ext.apply({
 			title: 'Map Layers',
-	        //id: 'defaultMenuTree',
 	        loader: new Portal.data.MenuTreeLoader({
 	            menuId: cfg.menuId
 	        }),
@@ -59,7 +59,7 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
 	            // add layers to map or expand discoveries
 	            click: function(node) {
                     if (node.attributes.grailsLayerId) {
-                        this.toggleNode(true, node);
+                        this.toggleNode(false, node);
                     }
                     else {                        
                         //this should be a folder
