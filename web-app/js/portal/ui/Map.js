@@ -191,7 +191,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
 	        	Ext.each(layerDescriptors, 
 	    			function(layerDescriptor, index, all) {
-	        			this._addLayer(this.getOpenLayer(layerDescriptor), true);
+	        			this.addLayer(this.getOpenLayer(layerDescriptor), true);
 	    			},
 	        		this
 	        	);
