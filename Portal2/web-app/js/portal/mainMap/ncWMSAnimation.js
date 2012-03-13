@@ -1,6 +1,4 @@
-function getMapPanel() {
-	return Ext.getCmp('map');
-}
+
 
 // exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
 // or reload OpenLayers.Layer.Image
