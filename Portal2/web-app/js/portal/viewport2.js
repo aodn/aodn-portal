@@ -71,7 +71,7 @@ Portal.app = {
                 };
                 initDetailsPanel();
                 doViewPort();
-                setViewPortTab( 0 ); // Select default tab
+                setViewPortTab( 0 ); // Select default tab                
             }
         });
     },
@@ -98,7 +98,7 @@ function setViewPortTab(tabIndex){
 }
 
 function doViewPort() {    
-	var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
+    var portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
     portalPanel.on('hide', function() {
     	if (popup) {
     		popup.close();
