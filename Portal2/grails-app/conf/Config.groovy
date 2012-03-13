@@ -1,5 +1,3 @@
-import grails.util.Environment
-
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -71,44 +69,58 @@ environments {
             mail {
                 authenticationFromEmailAddress = "info@aodn.org.au"
 
-                host = "localhost"
+                host = "postoffice.utas.edu.au"
                 port = 25
                 username = "info@aodn.org.au"
                 props = ["mail.smtp.auth":"false"]
             }
         }
     }
-	preview {
-		grails.serverURL = "http://preview.emii.org.au/$appName"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 
-		grails {
-			mail {
-				authenticationFromEmailAddress = "info@aodn.org.au"
-			}
-		}
-	}
+    waodn {
+        grails.config.locations = [ "file:${basedir}/waodn-application.properties"]
+        grails.config.locations = [ "file:${basedir}/waodn-config.groovy"]
+        grails.serverURL = "http://localhost:8080/${appName}"
+        spatialsearch.url = "http://localhost:8090/spatialsearch/search/index"
+
+        grails
+                {
+                    mail
+                            {
+                                authenticationFromEmailAddress = "pauline.mak@utas.edu.au"
+
+                                host = "postoffice.utas.edu.au"
+                                port = 25
+
+                                username = "username"
+                                props = ["mail.smtp.auth":"false"]
+                            }
+                }
+    }
+    preview {
+        grails.serverURL = "http://preview.emii.org.au/$appName"
+        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+    }
+
     development {
-		//grails.resources.debug = true
         grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-    
-        grails 
-		{
-            mail 
-			{
-                authenticationFromEmailAddress = "info@aodn.org.au"
 
-                host = "localhost"
-                port = 25
+        grails
+                {
+                    mail
+                            {
+                                authenticationFromEmailAddress = "info@aodn.org.au"
 
-                username = "username"
-                props = ["mail.smtp.auth":"false"]
-            }
-        }
+                                host = "localhost"
+                                port = 25
+
+                                username = "username"
+                                props = ["mail.smtp.auth":"false"]
+                            }
+                }
     }
     test {
-		grails.resources.debug = true
         grails.serverURL = "http://localhost:8080/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
         grails.mail.disabled = true
@@ -140,31 +152,72 @@ log4j = {
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate',
-           'org.grails.plugin.resource.ResourceMeta'
-    
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.plugins', // plugins
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate',
+            'org.grails.plugin.resource.ResourceMeta'
+
     warn   'org.mortbay.log'
 
     info   'grails.app.filters.SecurityFilters',
-           'org.apache.shiro'
+            'org.apache.shiro'
 
     debug  'grails.app.controller',
-           'grails.app.job',
-           'grails.app.service',
-           'grails.app.tagLib',
-           'grails.app.domain',
-           'grails.app.realm'
-           //'org.hibernate.SQL',
-           //'org.hibernate.type',
-           //'liquibase',
-           //'grails'
+            'grails.app.job',
+            'grails.app.service',
+            'grails.app.tagLib',
+            'grails.app.domain',
+            'grails.app.realm'
+    //'org.hibernate.SQL',
+    //'org.hibernate.type',
+    //'liquibase',
+    'grails.app.realm'
+    //'grails'
+}
+
+/**
+ * Instance specific customisation, clearly stolen from:
+ * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
+ *
+ * To use set for a specific instance, either set the environment variable "INSTANCE_NAME", or add this in the grails
+ * commandline like so:
+ *
+ * grails -DINSTANCE_NAME=WA run-app
+ *
+ * Instance specific config files are located in $project_home/instances/
+ *
+ * Any configuration found in these instance specific file will OVERRIDE values set in Config.groovy and
+ * application.properties.
+ *
+ * NOTE: app.name and version is ignored in external application.properties
+ */
+
+def INSTANCE_NAME = "INSTANCE_NAME"
+
+def instanceName = "AODN" //default
+
+if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+    grails.config.locations = []
+}
+if(System.getenv(INSTANCE_NAME)) {
+    instanceName = System.getenv(INSTANCE_NAME)
+    println "Including configuration file specified in environment: " + System.getenv(INSTANCE_NAME);
+    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-application.properties"
+    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
+
+} else if(System.getProperty(INSTANCE_NAME)) {
+    instanceName = System.getProperty(INSTANCE_NAME)
+    println "Including configuration file specified on command line: " + System.getProperty(INSTANCE_NAME);
+    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-application.properties"
+    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
+
+} else {
+    println "No external configuration file defined."
 }
