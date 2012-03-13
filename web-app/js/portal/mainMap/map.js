@@ -697,36 +697,6 @@ function dressUpMyLine(line){
     return newString;
 }
 
-function centreOnArgo(base_url, argo_id, zoomlevel) {
-
-    getArgoList(base_url);
-
-    if (IsInt(argo_id)) {
-
-        var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=last_lat,last_long&version=1.0.0&CQL_FILTER=platform_number='+ argo_id + '&MAXFEATURES=1');
-        var x = "";
-        
-        if (xmlDoc) {            
-            x = xmlDoc.getElementsByTagName('topp:argo_float');
-        }
-
-        if (x.length > 0) {
-
-            var lat = xmlDoc.getElementsByTagName("topp:last_lat")[0].childNodes[0].nodeValue;
-            var lon = xmlDoc.getElementsByTagName("topp:last_long")[0].childNodes[0].nodeValue;
-
-            //mapPanel.map.setCenter(new OpenLayers.LonLat(lon,lat),zoomlevel,1,1);
-
-            // no zooming in
-            mapPanel.map.setCenter(new OpenLayers.LonLat(lon,lat),zoomlevel,1,1);
-            hidepopup(); // clear the popup out of users face
-        }
-
-    }
-    else {
-        alert("Please enter an Argo ID number");
-    }
-}
 
 // This function gets over the Firefox 4096 character limit for XML nodes using 'textContent''
 // IE doesn't support the textContent attribute
@@ -737,49 +707,6 @@ function getNodeText(xmlNode)
     return xmlNode.firstChild.nodeValue;
 }
 
-/*
-* Opens the form area
-* Populates argos[]
-*/
-function getArgo(base_url,inputId) {
-
-    show('#argo_find');
-    getArgoList(base_url);
-
-    // turn on auto complete
-    if (argos.length > 0) {
-        $("input#" + inputId).autocomplete(argos);
-    }
-}
-
-function isArgoExisting (base_url,argo_id) {
-
-    var status = false;
-
-    if (!IsInt(argo_id)) {
-        alert("Please enter an Argo ID number");
-    }
-    else {
-
-        getArgoList(base_url) ;
-
-        if(argos.length > 0) {
-            if ( inArray(argos,argo_id))  {
-                status = true;
-            }
-            //
-            else {
-                alert("Your supplied Argo ID number is not known in this region");
-            }
-        }
-        else {
-            // gracefully forget about it if the list of argos failed
-            status = true;
-        }
-    }
-    
-    return status;
-}
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
     
@@ -816,38 +743,10 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
         } 
         
 
-        addMainMapLayer(dl);
+        Ext.getCmp('map').addMapLayer(dl);
     }
 }
 
-// called via argo getfeatureinfo results
-function drawSingleArgo(base_url, argo_id, zoomlevel) {
-
-    if (isArgoExisting(base_url,argo_id)) {
-        setExtWmsLayer(base_url +'/geoserver/wms','Argo - ' + argo_id + '','1.1.1','argo_float','','platform_number = '+ argo_id + '','argo_large');
-        centreOnArgo(base_url, argo_id, null);
-    }
-}
-
-function getArgoList(base_url) {
-       
-    if (argos == null) {
-        argos =  Array();
-        var xmlDoc = getXML(base_url + '/geoserver/wfs?request=GetFeature&typeName=topp:argo_float&propertyName=platform_number&version=1.0.0');
-        if(xmlDoc!=null){
-            var x= xmlDoc.getElementsByTagName('topp:argo_float');
-            if (x.length > 0) {
-                for (i=0;i<x.length;i++) {
-                    argos[i]= x[i].getElementsByTagName("topp:platform_number")[0].childNodes[0].nodeValue;
-                }
-            }
-            else {
-                // tried once and failed leave it alone
-                argos =  Array();
-            }
-        }
-    }
-}
 
 function IsInt(sText) {
 
