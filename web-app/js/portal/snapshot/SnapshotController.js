@@ -6,7 +6,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
     Ext.apply(this, config);
     
     this.addEvents({
-      snapshotsChanged: true,
+      snapshotsChanged: true
     });
     
     this.proxy = new Portal.snapshot.SnapshotProxy();
@@ -110,7 +110,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
   
   addSnapshotLayer: function(snapshotLayer) {
     var options = {
-        visibility: !snapshotLayer.hidden,
+        visibility: !snapshotLayer.hidden
     };
     
     if (snapshotLayer.opacity) {
