@@ -363,6 +363,7 @@
 				</executions>
 				<configuration>
 					<jsSrcDir>${project.basedir}/web-app/js</jsSrcDir>
+					<browserVersion>INTERNET_EXPLORER_8</browserVersion>
 					<sourceIncludes>
 						<include>jquery/jquery-1.4.1.min.js</include>
 						<include>jquery/jquery-autocomplete1.1.js</include>
