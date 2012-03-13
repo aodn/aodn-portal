@@ -29,8 +29,13 @@ var argos = null; // array of existing argo platform_numbers
 // Layer loading activity indicator
 var layersLoading = 0;
 
-// Pop up things
 var popup;
+
+
+
+function getMapPanel() {
+	return Ext.getCmp('map');
+}
 
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
@@ -297,6 +302,8 @@ function addToPopup(mapPanel, e) {
 
     
 }
+
+
 
 function updatePopupDepthStatus(response) {   
     
@@ -743,7 +750,7 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
         } 
         
 
-        Ext.getCmp('map').addMapLayer(dl);
+        getMapPanel().addMapLayer(dl);
     }
 }
 
