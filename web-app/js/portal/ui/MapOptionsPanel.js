@@ -9,6 +9,8 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 			id: 'activeMenuPanel',
 		    flex: 1,
 		    padding: '0px 0px 20px 0px',
+                      
+                    autoScroll: true,
 		    minHeight: 100,
 		    items:[
 		        this.mapOptionsPanel,
@@ -51,18 +53,18 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			this.fireRemoveAllLayers();
 		}, this);
 		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
-            map: cfg.map,           
-            editable: false,
-            width: 175,
-            padding: 20,
-            emptyText: 'Choose a Base Layer'
-        });
+                    map: cfg.map,           
+                    editable: false,
+                    width: 175,
+                    padding: 20,
+                    emptyText: 'Choose a Base Layer'
+                });
 		
 		this.hideLayerOptionsCheckbox = new Ext.form.Checkbox({
-	        boxLabel: 'Hide layer options',
-	        inputType: 'checkbox',
-	        checked: cfg.hideLayerOptions 
-	    });
+                    boxLabel: 'Hide layer options',
+                    inputType: 'checkbox',
+                    checked: cfg.hideLayerOptions 
+                });
 		this.hideLayerOptionsCheckbox.addEvents('hidelayeroptionschecked', 'hidelayeroptionsunchecked');
 		this.hideLayerOptionsCheckbox.on('check', function(box, checked) {
 			var event = checked ? 'hidelayeroptionschecked' : 'hidelayeroptionsunchecked';
@@ -70,10 +72,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		}, this);
 		
 		this.autoZoomCheckbox = new Ext.form.Checkbox({
-	        boxLabel: 'Auto zoom on layer select',
-	        inputType: 'checkbox',
-	        checked: cfg.autoZoom
-	    });
+                    boxLabel: 'Auto zoom on layer select',
+                    inputType: 'checkbox',
+                    checked: cfg.autoZoom
+                });
 		this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
 		this.autoZoomCheckbox.on('check', function(box, checked) {
 			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
@@ -142,7 +144,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		            tooltip:  'This will load the default set of map overlay layers and reset the map location and zoom level',   
 		            cls: "floatLeft buttonPad",
 		            scope: this,
-		            handler: function() { this.fireEvent('resetmap'); }
+		            handler: function() {this.fireEvent('resetmap');}
 		        },
 		        new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
 	        ]

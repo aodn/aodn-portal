@@ -2,9 +2,9 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 	
-	constructor: function(cfg) {
+    constructor: function(cfg) {
         this.appConfig = cfg.appConfig;
-		this.mapPanel = cfg.mapPanel;
+	this.mapPanel = cfg.mapPanel;
         this.initActionsPanel(this.appConfig, this.mapPanel);
         this.initLeftTabMenuPanel(this.appConfig);
 		
@@ -15,6 +15,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
                 html: 'Message'
             },
             title: 'Layer Chooser',
+            layout: 'vbox',
             autoScroll: true,
             items: [
                 this.leftTabMenuPanel,
