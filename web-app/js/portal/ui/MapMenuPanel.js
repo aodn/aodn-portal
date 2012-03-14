@@ -8,14 +8,10 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 		var config = Ext.apply({
 			defaults: {
 	            padding: 5,
-                    //height: 20,    
-                    autoScroll: true                
-                    //boxMinHeight: 100,
-                    //boxMaxHeight: 200
+                autoScroll: true                
 	        },
 	        stateful: false,        
-	        //split: true,
-                flex: 1,
+            flex: 1,
 	        border: false,
 	        enableTabScroll: true,
 	        activeTab: 0,
@@ -55,7 +51,6 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
 	        }),
 	        root: new Ext.tree.AsyncTreeNode({ draggable: false }),
 	        collapsible: false,
-	        //autoHeight: true,
 	        rootVisible: false,
 	        listeners: {
 	            // add layers to map or expand discoveries
@@ -67,10 +62,6 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
                         //this should be a folder
                         node.expand(); 
                     }
-	            },
-	            bodyresize: function(panel) {
-                    //panel.doLayout();
-                    //this.doLayout();
 	            },
 	            expandnode: function(node) {
 	            	if (node.attributes.grailsServerId) {

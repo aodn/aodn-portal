@@ -4,7 +4,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 	
     constructor: function(cfg) {
         this.appConfig = cfg.appConfig;
-	this.mapPanel = cfg.mapPanel;
+        this.mapPanel = cfg.mapPanel;
         this.initActionsPanel(this.appConfig, this.mapPanel);
         this.initLeftTabMenuPanel(this.appConfig);
 		
