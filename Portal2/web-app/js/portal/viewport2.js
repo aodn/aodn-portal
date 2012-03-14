@@ -125,6 +125,7 @@ function doViewPort() {
             },
             new Portal.ui.LayerChooserPanel({ 
             	region: 'west', 
+                id: 'leftLayerChooserPanel',
             	appConfig: Portal.app.config, 
             	mapPanel: portalPanel.getMapPanel()
         	})
@@ -155,7 +156,25 @@ function initCentreTabPanel(homePanel, portalPanel) {
             homePanel,
             portalPanel,
             initSearchTabPanel()
-        ]
+        ],
+        listeners: {
+            beforetabchange: function(thisTabPanel, newTab, currentTab) {  
+                if (newTab.id == "mainMapPanel") {
+                    // show the map options and active layers
+                    //console.log(newTab) ;
+                    Ext.getCmp('activeMenuPanel').show();
+                    //Ext.getCmp('activeMenuPanel').setHeight(300);
+                    Ext.getCmp('leftLayerChooserPanel').doLayout();
+                }
+                else {
+                    // hide the map options and active layers
+                    Ext.getCmp('activeMenuPanel').hide();
+                    //Ext.getCmp('activeMenuPanel').setHeight(0);
+                    
+                }
+                          
+            }
+        }
     });
 }
 
