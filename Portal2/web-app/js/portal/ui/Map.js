@@ -9,7 +9,7 @@ Portal.ui.Options = Ext.extend(Object, {
 		this.controls = [
 	   		new OpenLayers.Control.Navigation(),
 	   		new OpenLayers.Control.Attribution(),
-	   		new OpenLayers.Control.PanPanel(),
+	   		new OpenLayers.Control.PanZoomBar(),
 	   		new OpenLayers.Control.MousePosition(),
 	   		new OpenLayers.Control.ScaleLine(),
 	   		new OpenLayers.Control.NavigationHistory(),
@@ -46,7 +46,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        region: "center",
 	        split: true,
 	        header: false,
-	        items: [{
+	        items: [/*{
 	            xtype: "gx_zoomslider",
 	            aggressive: false,
 	            vertical: true,
@@ -54,7 +54,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            x: 12,
 	            y: 70,
 	            plugins: new GeoExt.ZoomSliderTip()
-	        }],
+	        }*/],
 	        activeLayers: {},
 	        layersLoading: 0
 		}, cfg);
