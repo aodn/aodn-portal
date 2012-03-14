@@ -105,7 +105,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	initMap: function() {
 		this.mapOptions = new Portal.ui.Options();
 		this.map = new OpenLayers.Map(this.mapOptions.options);
-	    this.map.restrictedExtent = new OpenLayers.Bounds.fromString("-180,-90,180,90");
+	    this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
 	    // keep the animated image crisp
 	    // limit to changes in zoom. moveend is too onerous
 	    this.map.events.register("moveend", this, function (e) {        
