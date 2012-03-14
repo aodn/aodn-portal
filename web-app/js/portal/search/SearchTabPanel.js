@@ -25,6 +25,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			 collapseMode: 'mini',
 			 split: true,
 			 width: 400,
+                         maxWidth: 500,
 			 layout:'border',
 			 items: [
 			     {
@@ -47,12 +48,15 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			items: [
 			    {
 			    	region: 'north',
-					autoHeight: true,
+				autoHeight: true,   
+                                autoScroll: true,                               
+  
 					items: {
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
 						border: false,
-						bodyStyle: 'padding:5px 5px 0'
+						bodyStyle: 'padding:5px 5px 0',
+                                                width: 700
 					}
 				},
 				{

@@ -20,6 +20,10 @@ p, h1, h2, h3 {
 .x-tool {
     margin-right: 4px;
 }
+.x-form-item {
+    font: inherit;
+}
+
 
 
 .ext-el-mask, .x4-mask{

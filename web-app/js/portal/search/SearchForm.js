@@ -7,10 +7,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    padding: '15px 0px 0px 15px',
    layout: 'hbox',
    autoHeight: true,
-   width: 900,
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
-   autoScroll: true,
 
    setResultsGridText: function(){
         if(this.resultsGrid != null)
@@ -29,44 +27,46 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
          {
             ref: 'searchFields', 
             xtype: 'container',
+            defaults: {
+                width: 250,                
+                labelSeparator: ''
+            },
+            width: 270,
+            //autoScroll: true,
             layout: 'form',
-            labelWidth: 125,
-            labelSeparator: '',
-            autoHeight: true,
-            width: 600,
             items: [
-				{
-					xtype: 'portal.search.field.freetext'
-				},
-				{
-					fieldLabel: '',
-					labelSeparator: '',
-					name: 'protocolCombo',
-					xtype: 'combo',
-					mode: 'local',
-					editable: false,
-					submitValue: false,
-					forceSelection: true,
-					triggerAction: 'all',
-					store: [[Portal.app.config.metadataLayerProtocols.split('\n').join(' or '), 'Show me results with map layers only'], ['', 'Show me all results']],
-				    hiddenName: 'protocol',
-					value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or '),
-					width: 350
-				}
+                    {
+                            xtype: 'portal.search.field.freetext'
+                    },
+                    {
+                        hideLabel: true,
+                        name: 'protocolCombo',
+                        xtype: 'combo',
+                        mode: 'local',
+                        editable: false,
+                        submitValue: false,
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        store: [[Portal.app.config.metadataLayerProtocols.split('\n').join(' or '), 'Show me results with map layers only'], ['', 'Show me all results']],
+                        hiddenName: 'protocol',
+                        value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')
+                    }
            ]
          },{
             ref: 'searchFieldSelector',
             xtype: 'container',
-            flex: 1,
+            flex: 1,            
             layout: 'form',
-            labelWidth: 80,
-            labelSeparator: '',
+            labelWidth: 85,              
+            padding: '60px 0px 20px 0px',
+            autoHeight: true,                
+            //autoScroll: true,
             items: [{
                ref: '../advancedSearchCombo',
                fieldLabel: OpenLayers.i18n("addCriteria"),
                submitValue: false,
                xtype: 'combo',
-               width: 100,
+               width: 150,
                mode: 'local',
                editable: false,
                cls: 'p-selector',
@@ -164,17 +164,21 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       var id = record.get('id');
       var multipleOk = record.get('multipleOk');
       
-      var comp = this.searchFields.add({
+      this.setWidth(800);
+      
+      var comp = this.searchFieldSelector.add({
          xtype: 'container',
          layout: 'hbox',
          fieldId: id,
-         labelWidth: 125,
+         labelWidth: 75, 
+         padding: '10px 0px 20px 0px',
+         cls: 'searchFieldSelectors',
          autoHeight: true,
          items: [{
                xtype: 'container',
                layout: 'form',
                autoHeight: true,
-               width: 500,
+               width: 450,
                items: field
             },{
                ref: 'removeField',
@@ -203,18 +207,18 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       this.refreshDisplay();
 
       if (field.xtype == 'portal.search.field.boundingbox') {
-        this.searchFields.findByType('portal.search.field.boundingbox')[0].setBox(this.bounds);
+        this.searchFieldSelector.findByType('portal.search.field.boundingbox')[0].setBox(this.bounds);
       };
 
    },
    
    refreshDisplay: function() {
+      this.doLayout();
       this.syncSize();
-      
       //TODO: use contentChange event - this sucks
       this.ownerCt.syncSize();
       this.ownerCt.ownerCt.syncSize();
-      this.doLayout();
+      
    },
    
    removeFieldClick: function(btn) {
@@ -228,7 +232,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
          },
          this.advancedSearchCombo
       );
-      this.searchFields.remove(comp.getId());
+      this.searchFieldSelector.remove(comp.getId());
       
       this.refreshDisplay();
    },

@@ -13,7 +13,7 @@ td {
     font-size: 12px;
 }
 body {
-    min-width:  1050px;
+    min-width:  1020px;
 }
 
 h1 {
@@ -71,6 +71,21 @@ input.readonlyInput {
     border: none;
 }
 
+.searchInput {
+    display: block;
+    padding: 15px;
+    margin: 0px 0px 10px 0px! important;
+    font-size: 16px;
+    color: inherit;
+}
+.searchInput.x-form-empty-field {
+    color: #15428B;
+    font-size: inherit;
+}
+.x-form-item-label {
+    color: #15428B;
+}
+
 #activeTreePanel input{
     margin: 0;
     
@@ -106,6 +121,12 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
 }
 #leftMenuTabPanel {
     background-color: red;
+}
+
+.searchFieldSelectors {
+    padding: 5px;
+    margin: 3px 0px;
+    background-color: #fafafa;
 }
 
 .noborder {

@@ -21,7 +21,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     },
 	
     //Search form
-    addCriteria: 'Add criteria',
+    addCriteria: 'Limit search to',
     dateRange: 'Date range',
     boundingBox: 'Bounding Box',
     northBL: 'N',
@@ -34,7 +34,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     mapLayer: 'Map Layer',
     searchButton: 'Search',
-    fullTextSearch: 'Free Text',
+    fullTextSearch: ' ** Free text search **',
         
     // Aggregate Download
     ttAddToDownload: 'Add to download cart',

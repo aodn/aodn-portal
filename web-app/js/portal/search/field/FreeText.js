@@ -1,9 +1,9 @@
 Ext.namespace('Portal.search.field');
 
 Portal.search.field.FreeText = Ext.extend(Ext.form.TextField, {
-   width: 350,
-   fieldLabel: OpenLayers.i18n('fullTextSearch'),
-   labelSeparator: '',
+   hideLabel: true,
+   emptyText: OpenLayers.i18n('fullTextSearch'),
+   fieldClass: "searchInput",
    name: 'any'   
 });
 
