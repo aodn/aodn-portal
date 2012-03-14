@@ -53,18 +53,18 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			this.fireRemoveAllLayers();
 		}, this);
 		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
-                    map: cfg.map,           
-                    editable: false,
-                    width: 175,
-                    padding: 20,
-                    emptyText: 'Choose a Base Layer'
-                });
+            map: cfg.map,           
+            editable: false,
+            width: 175,
+            padding: 20,
+            emptyText: 'Choose a Base Layer'
+        });
 		
 		this.hideLayerOptionsCheckbox = new Ext.form.Checkbox({
-                    boxLabel: 'Hide layer options',
-                    inputType: 'checkbox',
-                    checked: cfg.hideLayerOptions 
-                });
+            boxLabel: 'Hide layer options',
+            inputType: 'checkbox',
+            checked: cfg.hideLayerOptions 
+        });
 		this.hideLayerOptionsCheckbox.addEvents('hidelayeroptionschecked', 'hidelayeroptionsunchecked');
 		this.hideLayerOptionsCheckbox.on('check', function(box, checked) {
 			var event = checked ? 'hidelayeroptionschecked' : 'hidelayeroptionsunchecked';
@@ -72,10 +72,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		}, this);
 		
 		this.autoZoomCheckbox = new Ext.form.Checkbox({
-                    boxLabel: 'Auto zoom on layer select',
-                    inputType: 'checkbox',
-                    checked: cfg.autoZoom
-                });
+            boxLabel: 'Auto zoom on layer select',
+            inputType: 'checkbox',
+            checked: cfg.autoZoom
+        });
 		this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
 		this.autoZoomCheckbox.on('check', function(box, checked) {
 			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
@@ -94,16 +94,16 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                        layout: 'hbox',
                                 height: 40,
 	                        items: [
-                                    { 
-                                        flex: 1,
-                                        items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ]
-                                    },
+                                { 
+                                    flex: 1,
+                                    items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ]
+                                },
 	                            new Ext.BoxComponent({      
-                                        flex: 1,
-	                                border: true,
-                                        padding: 4,
-	                                id: 'mapSpinnerPanel',
-	                                html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
+                                    flex: 1,
+                                    border: true,
+                                    padding: 4,
+                                    id: 'mapSpinnerPanel',
+                                    html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
 	                            })
 	                        ]
 	                    }),

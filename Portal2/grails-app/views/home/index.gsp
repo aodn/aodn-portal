@@ -14,18 +14,21 @@
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
 <!-- Portal classes-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
- 
-<!-- Open Layers-->
+
+<g:if env="development">
+<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base-debug.js')}"  type="text/javascript"></script>          
+<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
-
-
-<!-- ExJS3-->
+<!--- GeoExt (Has to be after Openlayers and ExJS) -->
+<script src="${resource(dir:'js',file:'GeoExt1.1/lib/GeoExt.js')}"  type="text/javascript"></script>
+</g:if>
+<g:else>
 <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
-<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script> 
+<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt1.1/script/GeoExt.js')}"  type="text/javascript"></script>
-
-
+</g:else>
 
 <!-- GeoNetwork - required classes only -->
 <script src="${resource(dir:'js',file:'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}" type="text/javascript"></script>
