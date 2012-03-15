@@ -237,53 +237,7 @@ class UserControllerTests extends ControllerUnitTestCase {
         assertEquals "Should now be 1 User", 1, User.list().size()
         assertEquals "Valid id should redirect to 'list' action", "list", redirectArgs.action
     }
-    
-    void testUpdateAccountAction() {
 
-        logInSubject authdSubject
-                
-        def returnArgs = controller.updateAccount()
-        
-        assertEquals "Email address of UserAccountCommand should be the same", SecurityUtils.getSubject().getPrincipal(), returnArgs.userAccountCmd.emailAddress
-     }
-    
-    void testUserUpdateAccountAction() {
-
-        logInSubject authdSubject
-        
-        def userAcctCmd = UserAccountCommand.from( user2 )
-        userAcctCmd.firstName = newUserFirstName
-        
-        assertFalse "UserAccountCommand should not validate", userAcctCmd.validate()
-        
-        // Should be invalid as password is required but not given
-        controller.userUpdateAccount userAcctCmd
-        
-        assertEquals "Should render updateAccount page", "updateAccount", renderArgs.view
-        assertEquals "Should return same UserAccountCommand", userAcctCmd, renderArgs.model.userAccountCmd
-        assertEquals "Should have same name still", user2.firstName, "Fred"
-        
-        // Make UserAccountCommand valid
-        userAcctCmd.passwordRequired = false
-        
-        // Valid UserAccountCommand now
-        controller.userUpdateAccount userAcctCmd
-        
-        assertEquals "Should redirect to home page", "home", redirectArgs.controller
-        assertEquals "Should be same principal logged-in", SecurityUtils.getSubject().getPrincipal(), user2.emailAddress
-        assertEquals "Should have new name now", user2.firstName, newUserFirstName
-        
-        userAcctCmd.emailAddress = newUserEmailAddress
-
-        // Now change password with userAccountCommand
-        controller.userUpdateAccount userAcctCmd
-        
-        assertEquals "Should redirect to home page", "home", redirectArgs.controller
-        assertEquals "Should be null user logged-in as email address was changed", SecurityUtils.getSubject().getPrincipal(), null
-        assertEquals "Should still have new name", user2.firstName, newUserFirstName
-        assertEquals "Should have new emailAddress", user2.emailAddress, newUserEmailAddress
-    }
-            
     private static logInSubject(Subject subject) {
         
         ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY, 
