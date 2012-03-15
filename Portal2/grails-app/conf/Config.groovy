@@ -138,7 +138,7 @@ log4j = {
             appender new org.apache.log4j.net.SMTPAppender(
                     name: 'mail',
                     from: "sys.admin@emii.org.au",
-                    to: "dnahodil@utas.edu.au",
+                    to: "developers@emii.org.au",
                     subject: "Error from Portal (${grails.serverURL} | ${Environment.current})",
                     SMTPHost: "localhost",
                     bufferSize: 1,
