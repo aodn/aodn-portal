@@ -181,6 +181,9 @@ log4j = {
     //'grails'
 }
 
+// Subversion revision number
+grails.project.sourceControl.revisionNumber = System.getenv( "SVN_REVISION" ) ?: "Unk."
+
 /**
  * Instance specific customisation, clearly stolen from:
  * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
