@@ -66,6 +66,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    var clickControl = new OpenLayers.Control.Click2({
 	        trigger: function(event) {
 	            addToPopup(this, event);
+                    //imgSizer(); // not working!!
 	        }
 	    });
 	    this.map.addControl(clickControl);

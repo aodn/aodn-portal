@@ -127,7 +127,14 @@ function doViewPort() {
             	region: 'west', 
                 id: 'leftLayerChooserPanel',
             	appConfig: Portal.app.config, 
-            	mapPanel: portalPanel.getMapPanel()
+            	mapPanel: portalPanel.getMapPanel(),
+                width: Portal.app.config.westWidth,
+                minWidth: 260,
+                maxWidth: 450,
+                collapsible: true,
+                collapseMode: 'mini',
+                stateful: false,
+                split: true
         	})
 	    ],
         listeners: {

@@ -16,18 +16,15 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             },
             title: 'Layer Chooser',
             layout: 'vbox',
+            layoutConfig: {
+              align: 'stretch'
+            },
             autoScroll: true,
             items: [
                 this.leftTabMenuPanel,
                 this.actionsPanel
             ],
-            cls: 'leftMenus',
-            collapsible: true,
-            collapseMode: 'mini',
-            stateful: false,
-            split: true,
-            width: this.appConfig.westWidth,
-            minWidth: 260
+            cls: 'leftMenus'
         }, cfg);
 	
         Portal.ui.LayerChooserPanel.superclass.constructor.call(this, config);
@@ -60,10 +57,11 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     },
     
     registerOwnEvents: function() {
+        
         this.on('beforeexpand', function() {
             this.layerSwitcher.destroy();
         }, this);
-		
+        	
         this.on('beforecollapse', function() {
             this.layerSwitcher = new OpenLayers.Control.LayerSwitcher({
                 roundedCornerColor: '#34546E'
@@ -106,7 +104,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     
     registerMonitoringEvents: function() {
         this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
-        this.mon(this.actionsPanel, 'removelayer', this.removeLayer, this);
+        this.mon(this.actionsPanel, 'removelayer', this.removeLayer, this);   
         this.mon(this.actionsPanel, 'zoomtolayer', this.zoomToLayer, this);
         this.mon(this.actionsPanel, 'hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
         this.mon(this.actionsPanel, 'hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
@@ -125,7 +123,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.mapPanel.removeLayer(openLayer);
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     },
-	
+    	
     zoomToLayer: function(openLayer) {
         this.mapPanel.zoomToLayer(openLayer);
     },
@@ -143,21 +141,14 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.mapPanel.autoZoom = checked;
     },
 	
-	layerOptionsCheckboxHandler: function(box, checked) {
-	    Portal.app.config.hideLayerOptions = checked;
-	    this.mapPanel.hideLayerOptions = checked;
-            
-            closeNHideDetailsPanel();
-	    /*if (checked) {
-	        //
-                Ext.getCmp('rightDetailsPanel').collapse(true);
-	    }
-            else {
-                Ext.getCmp('rightDetailsPanel').expand(true);
-            }*/
-	},
+    layerOptionsCheckboxHandler: function(box, checked) {
+        Portal.app.config.hideLayerOptions = checked;
+        this.mapPanel.hideLayerOptions = checked;
 
-	addMapLayer: function(layerDescriptor, showLoading) {
-		this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
-	}
+        closeNHideDetailsPanel();
+    },
+
+    addMapLayer: function(layerDescriptor, showLoading) {
+            this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
+    }
 });

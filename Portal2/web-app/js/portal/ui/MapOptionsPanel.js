@@ -72,7 +72,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		}, this);
 		
 		this.autoZoomCheckbox = new Ext.form.Checkbox({
-            boxLabel: 'Auto zoom on layer select',
+            boxLabel: 'Auto zoom to layer',
             inputType: 'checkbox',
             checked: cfg.autoZoom
         });
@@ -95,11 +95,11 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                                 height: 40,
 	                        items: [
                                 { 
-                                    flex: 1,
+                                    flex: 3,
                                     items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ]
                                 },
 	                            new Ext.BoxComponent({      
-                                    flex: 1,
+                                    flex: 2,
                                     border: true,
                                     padding: 4,
                                     id: 'mapSpinnerPanel',
