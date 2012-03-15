@@ -24,7 +24,6 @@ class ConfigTests extends GrailsUnitTestCase {
             defaultMenu: menu1,
             initialBbox: "120,20,120,20", // character varying,  lat,lon might be shite? 
             name: "The aMazing Portal",
-            applicationBaseUrl: "http://imos.org.au/",
             contributorMenu: menu1,
             regionMenu: menu1,
             catalogUrl: "http://www.google.com/",

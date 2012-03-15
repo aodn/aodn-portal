@@ -3,6 +3,7 @@ package au.org.emii.portal
 import grails.converters.JSON
 
 class WmsScannerController {
+    def grailsApplication
 
     def layerApiPath = "layer/saveOrUpdate"
 
@@ -28,7 +29,7 @@ class WmsScannerController {
         }
         
         def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+        def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
         def scanJobList
         
         def url
@@ -73,7 +74,7 @@ class WmsScannerController {
             def jobType     = "WMS"
             def wmsVersion  = URLEncoder.encode( versionVal )
             def uri         = URLEncoder.encode( server.uri )
-            def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+            def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
             def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
             def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
@@ -108,7 +109,7 @@ class WmsScannerController {
         def jobType     = "WMS"
         def wmsVersion  = URLEncoder.encode( versionVal )
         def uri         = URLEncoder.encode( server.uri )
-        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+        def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
         def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
         def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
@@ -141,7 +142,7 @@ class WmsScannerController {
         def conf = Config.activeInstance()
 
         def apiUrl = conf.wmsScannerBaseUrl + "scanJob/"
-        def callbackUrl = URLEncoder.encode( conf.applicationBaseUrl + layerApiPath )
+        def callbackUrl = URLEncoder.encode( grailsApplication.config.grails.serverURL + layerApiPath )
         def address = "${apiUrl}delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
         
         def url

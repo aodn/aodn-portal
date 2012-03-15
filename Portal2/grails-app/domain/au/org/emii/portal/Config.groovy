@@ -6,7 +6,6 @@ Configuration domain for the portal
 
 class Config {
     String name
-    String applicationBaseUrl
     String proxy
     Integer proxyPort
     String catalogUrl
@@ -68,7 +67,6 @@ class Config {
     
     static constraints = {
         name(size:5..255,nullable:true)
-        applicationBaseUrl()
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)

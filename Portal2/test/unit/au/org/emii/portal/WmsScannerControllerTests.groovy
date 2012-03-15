@@ -4,14 +4,14 @@ import grails.test.*
 import java.net.URLConnection
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
- 
+    //grailsApplication.config.
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
     
     def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true )
     def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
     def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true )
     
-    def validConfig = new Config( applicationBaseUrl: "appBaseUrl/", wmsScannerBaseUrl: "scannerBaseUrl/", wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
+    def validConfig = new Config( wmsScannerBaseUrl: "scannerBaseUrl/", wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
     def invalidConfig = new Config()
     
     protected void setUp() {
@@ -19,6 +19,12 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         super.setUp()
         
         mockDomain Server, [server1, server2, server3]
+
+
+
+        controller.grailsApplication = [config: new ConfigSlurper().parse("""
+                grails.serverURL = "appBaseUrl/"
+                """)]
     }
 
     protected void tearDown() {
@@ -45,7 +51,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def expectedQueryString = """\
 ?callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 """
-        
         setUpToUrlForResponse "scannerBaseUrl/scanJob/list$expectedQueryString", "[Scan Job 1, Scan Job 2]"
         
         def returnParams = controller.controls() // Make the call
@@ -75,6 +80,8 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 ?callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 """
         setUpToUrlForException "scannerBaseUrl/scanJob/list$expectedQueryString", "Error Line 1\nError Line 2"
+
+        println "config serverURL: ${controller.grailsApplication.config.grails.serverURL}"
         
         def returnParams = controller.controls() // Make the call
         
@@ -86,7 +93,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     }
     
     void testControls_InvalidConfig_EmptyListReturned() {
-        
+
         mockDomain Config, [invalidConfig]
         
         def returnParams = controller.controls() // Make the call
