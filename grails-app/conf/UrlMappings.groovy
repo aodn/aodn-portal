@@ -8,9 +8,9 @@ class UrlMappings {
 		}
 
 		"/"{  controller="home"  }
-                "/admin"{  controller="config"  }
-                "/administration"{  controller="config"  }
-        
+        "/admin"{  controller="config"  }
+        "/administration"{  controller="config"  }
+
 		"500"(view:'/error')
 		
 		"/robots.txt" (view: "/robots")
