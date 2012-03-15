@@ -166,19 +166,18 @@ log4j = {
 
     warn   'org.mortbay.log'
 
-    info   'grails.app.filters.SecurityFilters',
+    info    'grails.app.filters.shiro.SecurityFilters',
             'org.apache.shiro'
 
-    debug  'grails.app.controller',
+    debug   'grails.app.controller',
             'grails.app.job',
             'grails.app.service',
             'grails.app.tagLib',
             'grails.app.domain',
-            'grails.app.realm'
+            'grails.app.realms'
     //'org.hibernate.SQL',
     //'org.hibernate.type',
     //'liquibase',
-    'grails.app.realm'
     //'grails'
 }
 

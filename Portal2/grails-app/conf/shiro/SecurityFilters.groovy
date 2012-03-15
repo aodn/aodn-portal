@@ -97,7 +97,7 @@ class SecurityFilters {
             }
         }
         
-        authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
+        authAccess(controller: "auth", action: "login") {
             before = {
                 
                 logRequest("authAccess", controllerName, actionName)
@@ -117,7 +117,7 @@ class SecurityFilters {
                 
                 // Ignore direct views (e.g. the default main index page).
                 if (!controllerName) return true
-                                
+
                 // Access control by convention.
                 accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
             }

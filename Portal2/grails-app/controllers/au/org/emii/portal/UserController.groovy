@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
 
 class UserController {
 
@@ -71,8 +70,6 @@ class UserController {
 
         def userInstance = User.get(params.id)
 
-        // todo - DN: Extend for password/salting
-
         if (userInstance) {
             if (params.version) {
                 def version = params.version.toLong()
@@ -116,73 +113,7 @@ class UserController {
             redirect(action: "list")
         }
     }
-    
-    def updateAccount = {
-    
-        def userEmailAddress = SecurityUtils.getSubject().getPrincipal()
-        def currentUser = User.findByEmailAddress(userEmailAddress.toLowerCase())
-        def userAccountCmd = UserAccountCommand.from(currentUser)
-        userAccountCmd.passwordRequired = false
-        
-        log.debug "Sending to updateAccount page for currentUser: " + currentUser
-        log.debug "userAccountCmd: " + userAccountCmd
-        
-        return [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()]
-    }
-    
-    def userUpdateAccount = { UserAccountCommand userAccountCmd ->
 
-        log.debug "userAccountCmd: " + userAccountCmd
-
-        if (!userAccountCmd.validate()) {
-            render(view: "updateAccount", model: [userAccountCmd:userAccountCmd, configInstance: Config.activeInstance()])
-            return
-        }
-        
-        def userInstance = userAccountCmd.updateUser( authService )
-
-        log.debug "userInstance: " + userInstance
-
-        if (userInstance) {
-            if (params.version) {
-                def version = params.version.toLong()
-                if (userInstance.version > version) {
-
-                    userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated your account while you were editing it")
-                    render(view: "updateAccount", model: [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()])
-                    return
-                }
-            }
-            
-            // Validate and save
-            if ( !userInstance.hasErrors() && userInstance.save( flush: true ) ) {
-
-                log.debug "userAccountCmd.orgType: " + userAccountCmd.orgType
-                log.debug "userInstance.orgType: " + userInstance.orgType
-                
-                flash.message = "${message(code: 'user.updated.noEmailChange')}"
-                
-                // Log in again if password has changed (new principle)
-                if ( userAccountCmd.emailAddress != userAccountCmd.previousEmailAddress ) {
-                    
-                    Subject currentUser = SecurityUtils.getSubject()
-                    currentUser.logout()
-                    
-                    flash.message = "${message(code: 'user.updated.withEmailChange')}"
-                }
-                
-                redirect(controller: 'home')
-            }
-            else {
-                render(view: "updateAccount", model: [userAccountCmd: userAccountCmd, configInstance: Config.activeInstance()])
-            }
-        }
-        else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
-            redirect(controller:'home')
-        }
-    }
-	
 	def current = {
 		def result
 		def currentUser = SecurityUtils.getSubject()
