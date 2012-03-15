@@ -1,5 +1,13 @@
   <div id="header" style="height:${configInstance?.headerHeight}px">
-    <img src="${resource(dir:'images',file:'AODN_logo.png')}" alt="AODN Logo" id="logo" />
+
+  
+  <g:if test="${grailsApplication.config.instanceName == 'IMOS'}">
+    <img src="${resource(dir:'images',file:'IMOS-wide-logo-white.png')}" style="position:relative;top:22px" id="logo" />
+   </g:if>
+  <g:else>
+    <img src="${resource(dir:'images',file:'AODN_logo.png')}" id="logo">    
+  </g:else>
+
     <h1 id="headerTitle">${configInstance?.name}</h1>
     <g:if test="${showLinks}">
     <div id="viewPortLinks" >

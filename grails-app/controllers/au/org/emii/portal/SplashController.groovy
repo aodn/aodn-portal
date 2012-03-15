@@ -11,14 +11,23 @@ class SplashController {
     
     // links
      def links = {
-        // switch here for alternate content? 
-        render(view: "IMOSLinks")
+        if (grailsApplication.config.instanceName == 'IMOS') { 
+            render(view: "IMOSLinks")
+        }
+        else {
+            render('')
+        }
      }
      
      // facebook twitter etc
      def community = {
-        // switch here for alternate content? 
-        render(view: "community")
+        if (grailsApplication.config.instanceName == 'IMOS') {
+            render('')
+        }
+        else {
+           render(view: "community") 
+        }
+        
      }
     
     
