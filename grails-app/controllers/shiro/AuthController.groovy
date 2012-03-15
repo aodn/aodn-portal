@@ -154,8 +154,8 @@ class AuthController {
             subject message(code: 'mail.request.user.register.subject')
             body message(code: 'mail.request.user.register.body',
                          args: [user.firstName,
-                                createLink(controller:'home', baseUrl: grailsApplication.config.grails.serverURL, absolute: true),
-                                createLink(controller: 'auth', action: 'forgotPassword', baseUrl: grailsApplication.config.grails.serverURL, absolute: true)])
+                                createLink(controller:'home', absolute: true),
+                                createLink(controller: 'auth', action: 'forgotPassword', absolute: true)])
         }
     }
     
@@ -169,7 +169,7 @@ class AuthController {
             body message(code: 'mail.request.user.passwordReset.body',
                          args: [user.firstName,
                                 newPassword,
-                                createLink(controller: 'user', action:'updateAccount', baseUrl: grailsApplication.config.grails.serverURL, absolute: true)])
+                                createLink(controller: 'user', action:'updateAccount', absolute: true)])
         }
     }
 }
