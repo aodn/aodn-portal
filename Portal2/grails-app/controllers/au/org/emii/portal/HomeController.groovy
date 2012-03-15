@@ -1,10 +1,7 @@
 package au.org.emii.portal
 
-import grails.converters.JSON;
-
 class HomeController {
-    //def scaffold = true
-	
+
 	def grailsApplication
 
     def index = { 
