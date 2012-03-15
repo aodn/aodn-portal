@@ -18,7 +18,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
             enableTabScroll: true,
             activeTab: 0,
             items: [
-            this.defaultMenuTree
+                this.defaultMenuTree
             ]
         }, cfg);
 		
