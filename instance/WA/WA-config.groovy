@@ -1,4 +1,7 @@
-def appName = grails.util.Metadata.current.'app.name'
+def appName = 'WA'
+
+println("${appName}")
+println(${styleName})
 
 environments {
 
@@ -10,8 +13,9 @@ environments {
         println("in WA development environment")
 
         //grails.resources.debug = true
-        grails.serverURL = "http://localhost:8000/${appName}"
+        grails.serverURL = "http://localhost:8080/${appName}"
         spatialsearch.url = "http://localhost:8090/spatialsearch/search/index"
+        style.name='WAODN'
 
         grails {
             mail {
@@ -38,7 +42,7 @@ environments {
     }
 
     test{
-
+        grails.serverURL = "appBaseUrl"
     }
 
 

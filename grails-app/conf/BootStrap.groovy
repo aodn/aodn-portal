@@ -8,7 +8,6 @@ class BootStrap {
 		JSON.registerObjectMarshaller(au.org.emii.portal.Config) { cfg ->
 			def result = [:]
 			result['name'] = cfg.name
-			result['applicationBaseUrl'] = cfg.applicationBaseUrl
 			result['proxy'] = cfg.proxy
 			result['proxyPort'] = cfg.proxyPort
 			result['catalogUrl'] = cfg.catalogUrl
