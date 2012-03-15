@@ -163,7 +163,7 @@ function initCentreTabPanel(homePanel, portalPanel) {
         items: [
             homePanel,
             portalPanel,
-            initSearchTabPanel()
+            initSearchTabPanel(portalPanel.getMapPanel())
         ],
         listeners: {
             beforetabchange: function(thisTabPanel, newTab, currentTab) {  
@@ -185,12 +185,12 @@ function initCentreTabPanel(homePanel, portalPanel) {
     });
 }
 
-function initSearchTabPanel() {
+function initSearchTabPanel(mapPanel) {
 	return new Portal.search.SearchTabPanel({
 	    listeners: {
 	        addLayer: {
 	            fn: function(layerDef) {
-	                portalPanel.addMapLayer(layerDef);
+	                mapPanel.addMapLayer(layerDef);
 	                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
 	            }
 	        }
