@@ -191,7 +191,7 @@ function initSearchTabPanel(mapPanel) {
 	        addLayer: {
 	            fn: function(layerDef) {
 	                mapPanel.addMapLayer(layerDef);
-	                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'),layerDef.name + OpenLayers.i18n('layerAddedMsg'));
+	                Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'), OpenLayers.i18n('layerAddedMsg', {layerDesc: layerDef.title}));
 	            }
 	        }
 	    }
