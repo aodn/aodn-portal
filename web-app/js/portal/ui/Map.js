@@ -708,6 +708,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        }
 		}, this);
 		this.removeAllLayersIn(layersToRemove);
+                Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
 	},
 	
 	removeAllLayersIn: function(openLayers) {
