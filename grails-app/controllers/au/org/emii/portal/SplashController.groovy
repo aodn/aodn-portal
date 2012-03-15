@@ -6,7 +6,6 @@ class SplashController {
     def index = {
         // switch here for alternate content? 
         render(view: "index")
-    
     }
     
     // links
@@ -27,8 +26,5 @@ class SplashController {
         else {
            render(view: "community") 
         }
-        
      }
-    
-    
 }
