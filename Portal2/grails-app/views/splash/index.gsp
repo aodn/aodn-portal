@@ -1,7 +1,7 @@
 
 
 
-    <h1>[content]</h1>
+    <h1>Sample Content</h1>
   <div id="lipsum">
 <p>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac malesuada quam. Donec viverra, urna nec egestas varius, ligula ipsum semper nunc, vitae feugiat justo massa vitae nulla. Aenean nulla sem, porta non molestie non, consequat nec ante. Nulla interdum turpis et nulla tristique vestibulum. Nam interdum condimentum malesuada. Nulla auctor mollis tempor. Donec consequat, orci ac facilisis molestie, quam risus ultrices tellus, sit amet pellentesque lacus lacus in dui. Nam ultricies, sem non pellentesque mattis, eros nisl aliquet leo, a sodales odio nisi et ipsum. Ut tempor libero non felis condimentum pulvinar. Maecenas dictum molestie faucibus.
