@@ -51,8 +51,6 @@
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
           </ul>
-        <br />
-        Portal source version: <i>${ grailsApplication.config.grails.project.sourceControl.revisionNumber }</i>
         </div>
     </body>
 </html>

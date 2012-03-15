@@ -1,4 +1,3 @@
-  <!-- Portal source version: ${ grailsApplication.config.grails.project.sourceControl.revisionNumber } -->
   <div id="header" style="height:${configInstance?.headerHeight}px">
 
   <g:if test="${grailsApplication.config.instanceName == 'IMOS'}">
