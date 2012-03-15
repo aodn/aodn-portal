@@ -247,21 +247,25 @@ function toggleDetailsLocation() {
 // The details panel may be in the right panel or in the detailsPanel popup
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
-    // Do nothing
+    
+    if (Portal.app.config.hideLayerOptions === true) {
+        //
+        Ext.getCmp('rightDetailsPanel').collapse(true);
+    }
+    else {
+        Ext.getCmp('rightDetailsPanel').expand(true);
+    }
 }
 
 
 function updateDetailsPanel(layer) {
     
-    // hide if user requested 'hideLayerOptions' or
+    closeNHideDetailsPanel();
+    
+    // show new layer unless user requested 'hideLayerOptions' or
     // check if the map is still in focus - not the search
-    if (Portal.app.config.hideLayerOptions === true || viewport.getComponent('centerTabPanel').activeTab.title != "Map" ) {
-        
-        closeNHideDetailsPanel();
-        
-    }
-    else {  
-
+    if (!(Portal.app.config.hideLayerOptions === true || viewport.getComponent('centerTabPanel').activeTab.title != "Map" )) {
+    
 
         selectedLayer = layer;
         

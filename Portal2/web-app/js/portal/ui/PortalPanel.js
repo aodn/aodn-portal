@@ -44,10 +44,10 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         this.rightDetailsPanel = new Ext.Panel({
             id: 'rightDetailsPanel',
             region: 'east',
-            collapsible: true,            
+            collapsible: true, 
+            collapsed: true,
             stateful: false,
-            
-                padding:  '0px 20px 5px 20px',
+            padding:  '0px 20px 5px 20px',
             split: true,
             width: 350,
             minWidth: 250,

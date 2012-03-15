@@ -134,6 +134,7 @@ function doViewPort() {
             afterrender: function(panel) {              
                 jQuery("#loader").hide('slow'); // close the loader            
             }
+            
         }
     });
     
@@ -161,7 +162,6 @@ function initCentreTabPanel(homePanel, portalPanel) {
             beforetabchange: function(thisTabPanel, newTab, currentTab) {  
                 if (newTab.id == "mainMapPanel") {
                     // show the map options and active layers
-                    //console.log(newTab) ;
                     Ext.getCmp('activeMenuPanel').show();
                     //Ext.getCmp('activeMenuPanel').setHeight(300);
                     Ext.getCmp('leftLayerChooserPanel').doLayout();
