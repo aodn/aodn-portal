@@ -136,11 +136,14 @@ class MenuController {
     }
 
     def json = {
-		JSON.use("deep") {
-			def menu = Menu.get(params.id)
-			menu.toDisplayableMenu()
-			render menu as JSON
+		if (params.id && params.id.isNumber()) {
+			JSON.use("deep") {
+				def menu = Menu.get(params.id)
+				menu.toDisplayableMenu()
+				render menu as JSON
+			}
 		}
+		render '{}'
 	}
         
     private _cleanParams(params) {
