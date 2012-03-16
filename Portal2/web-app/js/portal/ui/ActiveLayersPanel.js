@@ -47,17 +47,49 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	initLayerActionsMenu: function() {
+		
+		this.zoomToLayerMenuItem = new Ext.menu.Item({
+        	text: 'Zoom to layer', 
+        	scope: this, 
+        	handler: this.zoomToLayer
+        });
+		
 		this.layerActionsMenu = new Ext.menu.Menu({
 	        plain: true,
 	        floating: true,
 	        showSeparator: false,
 	        items: [
-                {text: 'Remove layer', scope: this, handler: this.removeLayer},
-                {text: 'Zoom to layer', scope: this, handler: this.zoomToLayer},
-                {text: 'Toggle Visibility', scope: this, handler: this.toggleLayerVisibility}
-	        ]
+                {
+                	text: 'Remove layer', 
+                	scope: this, 
+                	handler: this.removeLayer
+                },
+                this.zoomToLayerMenuItem,
+                {
+                	text: 'Toggle Visibility', 
+                	scope: this, 
+                	handler: this.toggleLayerVisibility
+                }
+	        ],
+	        listeners:
+	        {
+        		scope: this,
+        		beforeshow: this.updateZoomToLayerMenuItemVisibility
+	        }
 	    });
 		return this.layerActionsMenu;
+	},
+	
+	updateZoomToLayerMenuItemVisibility: function()
+	{
+		this.zoomToLayerMenuItem.setVisible(this.layerHasBoundingBox(this.getSelectedNode().layer));
+	},
+	
+	layerHasBoundingBox: function(layer)
+	{
+		// TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
+		// Or, can "hasBoundingBox" be made static?
+		return new Portal.ui.Map().hasBoundingBox(layer);
 	},
 	
 	getActiveLayerNodes: function() {
