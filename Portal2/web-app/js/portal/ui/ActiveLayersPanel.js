@@ -16,7 +16,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		    ]
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
-		this.addEvents('removelayer', 'zoomtolayer');
+		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
 		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 	},
 	
@@ -39,6 +39,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	    }, this);
 		
 		this.activeLayers.on("click", this.activeLayersTreePanelClickHandler, this);
+		this.activeLayers.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
 		
 		return this.activeLayers;
 	},
@@ -74,15 +75,17 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 
 	activeLayersTreePanelClickHandler: function(node, event) 
 	{
-		// Different behaviour depending on if the clicked node is currently selected or not
+		// Only toggle if the node is already selected.
 		if (this.getSelectedNode() === node)
 		{
 			node.getUI().toggleCheck();
 		}
-		else
-		{
-			updateDetailsPanel(node.layer);
-		}
+	},
+	
+	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)
+	{
+		this.fireEvent('selectedactivelayerchanged');
+		updateDetailsPanel(node.layer);
 	},
 
 	updateZoomToLayerMenuItemVisibility: function()

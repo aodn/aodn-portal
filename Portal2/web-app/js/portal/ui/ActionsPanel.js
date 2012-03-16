@@ -22,6 +22,24 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 		this.addEvents('removelayer', 'zoomtolayer', 'togglevisibility');
 		this.relayEvents(this.activeLayersPanel, ['removelayer', 'zoomtolayer', 'togglevisibility']);
 		this.relayEvents(this.mapOptionsPanel, ['removealllayers', 'resetmap', 'hidelayeroptionschecked', 'hidelayeroptionsunchecked', 'autozoomchecked', 'autozoomunchecked']);
+		
+		//
+		// This panel (which contains both the MapOptions and the ActiveLayers), needs to
+		// orchestrate event handling between the two child panels, specifically when the
+		// auto zoom check box is toggled and when a different active layer is selected.
+		//
+		this.activeLayersPanel.on('selectedactivelayerchanged', function()
+		{
+			if (this.autoZoomEnabled())
+			{
+				this.activeLayersPanel.zoomToLayer();
+			}
+		}, this);
+		
+		this.mapOptionsPanel.on('autozoomchecked', function()
+		{
+			this.activeLayersPanel.zoomToLayer();
+		}, this);
 	},
 	
 	initBaseLayerCombo: function() {
