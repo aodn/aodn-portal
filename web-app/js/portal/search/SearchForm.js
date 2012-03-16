@@ -144,7 +144,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
       Portal.search.SearchForm.superclass.initComponent.apply(this, arguments);
       
-      this.addEvents('search');
+      this.addEvents('search','contentchange');
+      
+      this.enableBubble('contentchange');
 
       this.mon(this.searchButton, 'click', this.onSearch, this);
    },
@@ -215,10 +217,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    refreshDisplay: function() {
       this.doLayout();
       this.syncSize();
-      //TODO: use contentChange event - this sucks
-      this.ownerCt.syncSize();
-      this.ownerCt.ownerCt.syncSize();
-      
+      // let parent components know that the size of this component may have changed!
+      this.fireEvent('contentchange');
    },
    
    removeFieldClick: function(btn) {

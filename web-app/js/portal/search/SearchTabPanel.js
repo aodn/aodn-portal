@@ -9,7 +9,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	initComponent: function() {	 
 		this.resultsStore = Portal.data.CatalogResultsStore();
 		// Callback to run after the resultsStore is loaded
-		this.resultsStore.on('load',  function(store, recs, opt) {
+		this.resultsStore.on('load',	function(store, recs, opt) {
 			if (this.totalLength == 0) {
 				Ext.Msg.alert('Info', 'The search returned no results.');
 			}
@@ -25,38 +25,40 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			 collapseMode: 'mini',
 			 split: true,
 			 width: 400,
-                         maxWidth: 500,
+			 maxWidth: 500,
 			 layout:'border',
 			 items: [
-			     {
-			    	 region: 'north',
-			    	 xtype: 'portal.search.minimappanel',
-			    	 ref: '../minimap',
-			    	 split: true,
-			    	 height: 300
-			     },
-			     {
-			    	 region: 'center',
-			    	 xtype: 'panel'
-			     }
-		     ]
+					 {
+						 region: 'north',
+						 xtype: 'portal.search.minimappanel',
+						 ref: '../minimap',
+						 split: true,
+						 height: 300
+					 },
+					 {
+						 region: 'center',
+						 xtype: 'panel'
+					 }
+				 ]
 		},
 		{
 			region: 'center',
 			layout: 'border',
 			xtype: 'container',
+			ref: 'searchPanel',
 			items: [
-			    {
-			    	region: 'north',
-				autoHeight: true,   
-                                autoScroll: true,                               
-  
+					{
+					region: 'north',
+					ref: '../searchContainer',
+					height: 120,	 
+					autoScroll: true,															 
+	
 					items: {
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
 						border: false,
 						bodyStyle: 'padding:5px 5px 0',
-                                                width: 700
+						width: 700
 					}
 				},
 				{
@@ -101,6 +103,21 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			mouseenter: this.onResultEnter,
 			mouseleave: this.onResultLeave
 		});
+		
+		// set size of search form based on its content when its content is created and/or
+		// changed or the region containing the search is resized
+		// Ext isn't good at handling panels resizing based on content and scroll bars
+		
+		this.mon(this.searchContainer, {
+			scope: this,
+			resize: this.setSearchContainerHeight
+		});
+		
+		this.mon(this.searchForm, {
+			scope: this,
+			contentchange: this.setSearchContainerHeight,
+			afterrender: this.setSearchContainerHeight
+		});
 
 	 	// relay add layer event
 	 	this.relayEvents(this.resultsGrid, ['addlayer']);
@@ -110,9 +127,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		Portal.search.SearchTabPanel.superclass.afterRender.call(this);
 		// Update paging toolbar manually for the moment 
 		this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
-		// This results in correct layout of the search form
-		this.syncSize();
-		this.doLayout();
 	},
 	
 	minimapExtentChange: function(bounds) {
@@ -129,6 +143,25 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	
 	onResultLeave: function(grid, rowIndex, rec) {
 		this.minimap.clearBBox();
+	},
+	
+	setSearchContainerHeight: function() {
+		// wait a bit for new sizes to be reflected (there's no consistent 
+		// resize event on elements across browsers or provided by Ext!)
+		this.setSearchContainerHeightDeferred.defer(50, this);
+	},
+	
+	setSearchContainerHeightDeferred: function() {
+		var searchFormHeight = this.searchForm.getHeight();
+		var searchFormWidth = this.searchForm.getWidth();
+		var searchContainerWidth = this.searchContainer.getWidth();
+		var newHeight = searchFormHeight;
+		// add space for scroll bar if required
+		if (searchContainerWidth < searchFormWidth) {
+			newHeight += 20;
+		}
+		this.searchContainer.setSize(searchContainerWidth, newHeight);
+		this.searchPanel.doLayout();
 	},
 	
 	resultsGridBbarBeforeChange: function(bbar, params) {
@@ -185,7 +218,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	onSearch: function () {
-		this.resultsStore.totalLength = 0 // This makes sure that the paging toolbar updates on a zero result set
+		this.resultsStore.totalLength = 0; // This makes sure that the paging toolbar updates on a zero result set
 		var searchParams = this.getCatalogueSearchParams(this.getSearchFilters());
 		this.runSearch(searchParams, 1);
 	},
