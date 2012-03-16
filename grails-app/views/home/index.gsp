@@ -71,6 +71,7 @@
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MapOptionsPanel.js')}"   type="text/javascript"></script>
