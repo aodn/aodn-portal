@@ -16,8 +16,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		    ]
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
-		this.addEvents('removelayer', 'zoomtolayer', 'togglevisibility');
-		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer', 'togglevisibility'];
+		this.addEvents('removelayer', 'zoomtolayer');
+		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 	},
 	
 	initActiveLayers: function(layerStore) {
@@ -38,10 +38,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        this.layerActionsMenu.showAt(event.getXY());
 	    }, this);
 		
-		this.activeLayers.on("click", function(node, event) {
-			this.setNodeChecked(node, true);
-			updateDetailsPanel(node.layer);
-	    }, this);
+		this.activeLayers.on("click", this.activeLayersTreePanelClickHandler, this);
 		
 		return this.activeLayers;
 	},
@@ -65,11 +62,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
                 	handler: this.removeLayer
                 },
                 this.zoomToLayerMenuItem,
-                {
-                	text: 'Toggle Visibility', 
-                	scope: this, 
-                	handler: this.toggleLayerVisibility
-                }
 	        ],
 	        listeners:
 	        {
@@ -79,7 +71,20 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	    });
 		return this.layerActionsMenu;
 	},
-	
+
+	activeLayersTreePanelClickHandler: function(node, event) 
+	{
+		// Different behaviour depending on if the clicked node is currently selected or not
+		if (this.getSelectedNode() === node)
+		{
+			node.getUI().toggleCheck();
+		}
+		else
+		{
+			updateDetailsPanel(node.layer);
+		}
+	},
+
 	updateZoomToLayerMenuItemVisibility: function()
 	{
 		this.zoomToLayerMenuItem.setVisible(this.layerHasBoundingBox(this.getSelectedNode().layer));
@@ -127,15 +132,5 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
 			
 		}
-	},
-	
-	toggleLayerVisibility: function() {
-		if (this.fireEvent('togglevisibility', this.getSelectedLayer())) {
-			this.setNodeChecked(this.getSelectedNode(), !this.getSelectedNode().getUI().isChecked());
-		}
-	},
-	
-	setNodeChecked: function(node, checked) {
-		node.getUI().toggleCheck(checked);
 	}
 });
