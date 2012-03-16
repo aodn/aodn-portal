@@ -61,6 +61,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
 // set per-environment serverURL stem for creating absolute links
 environments {
+	
     production {
         grails.serverURL = "http://portaldev.aodn.org.au/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
@@ -77,32 +78,8 @@ environments {
         }
     }
 
-    waodn {
-        grails.config.locations = [ "file:${basedir}/waodn-application.properties"]
-        grails.config.locations = [ "file:${basedir}/waodn-config.groovy"]
-        grails.serverURL = "http://localhost:8080/${appName}"
-        spatialsearch.url = "http://localhost:8090/spatialsearch/search/index"
-
-        grails
-                {
-                    mail
-                            {
-                                authenticationFromEmailAddress = "pauline.mak@utas.edu.au"
-
-                                host = "postoffice.utas.edu.au"
-                                port = 25
-
-                                username = "username"
-                                props = ["mail.smtp.auth":"false"]
-                            }
-                }
-    }
-    preview {
-        grails.serverURL = "http://preview.emii.org.au/$appName"
-        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-    }
-
     development {
+		//grails.resources.debug = true
         grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 
@@ -200,26 +177,16 @@ grails.project.sourceControl.revisionNumber = System.getenv( "SVN_REVISION" ) ?:
  *
  * NOTE: app.name and version is ignored in external application.properties
  */
-
-def INSTANCE_NAME = "INSTANCE_NAME"
-
-def instanceName = "AODN" //default
-
 if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
-if(System.getenv(INSTANCE_NAME)) {
-    instanceName = System.getenv(INSTANCE_NAME)
-    println "Including configuration file specified in environment: " + System.getenv(INSTANCE_NAME);
-    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-application.properties"
-    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
 
-} else if(System.getProperty(INSTANCE_NAME)) {
-    instanceName = System.getProperty(INSTANCE_NAME)
-    println "Including configuration file specified on command line: " + System.getProperty(INSTANCE_NAME);
-    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-application.properties"
+def INSTANCE_NAME = "INSTANCE_NAME"
+def instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_NAME)
+instanceName = instanceName ?: "AODN"
+if(instanceName) {
+    println "Including configuration file specified in environment: " + instanceName;
     grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
-
 } else {
     println "No external configuration file defined."
 }

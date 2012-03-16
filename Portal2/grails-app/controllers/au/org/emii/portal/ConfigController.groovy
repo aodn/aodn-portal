@@ -32,11 +32,11 @@ class ConfigController {
         def instanceAsGenericObj = JSON.parse(x)        
         // add the fully expanded baselayer menu as layers
 		instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
-            configInstance.baselayerMenu.getBaseLayers() as JSON
+            configInstance.baselayerMenu?.getBaseLayers() as JSON
 		}
 
 		def tmpJsonObj = JSON.use('deep') {
-			configInstance.defaultMenu.toDisplayableMenu()
+			configInstance.defaultMenu?.toDisplayableMenu()
             configInstance.defaultMenu as JSON
         }
 		
@@ -49,7 +49,7 @@ class ConfigController {
 
         // add current user details
         def currentUser = SecurityUtils.getSubject()
-        def principal = currentUser.getPrincipal()
+        def principal = currentUser?.getPrincipal()
 
         if (principal) {
             def userInstance = User.findByEmailAddress(principal)

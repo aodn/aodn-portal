@@ -20,33 +20,34 @@ hibernate {
 // environment specific settings
 environments {
 	
-   development {
-       dataSource {
+	development {
+		dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
 		    url = "jdbc:postgresql://localhost:5432/portal2"
             username = "postgres"
             password = "postgres"
-	   }
-   }
-   
-   // This is purely here for liquibase's use when generating changelogs.
-   dbdiff {
-	   dataSource {
+		}
+	}
+	
+   	// This is purely here for liquibase's use when generating changelogs.
+	dbdiff {
+		dataSource {
 		   dbCreate = "create-drop"
 		   driverClassName = "org.postgresql.Driver"
 		   url = "jdbc:postgresql://dbdev.emii.org.au:5432/portal2_diff?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
 		   username = "portal2user"
 		   password = "wtingzgsfdbat"
-	   }
-   }
-
+		}
+	}
+	
     test {
         dataSource {
             dbCreate = "create-drop"
             url = "jdbc:hsqldb:mem:testDb"
         }
     }
+	
     production {
         dataSource {
 			jndiName = "java:comp/env/jdbc/portal"
@@ -61,19 +62,4 @@ environments {
 //			validationQuery = "SELECT 1"
         }
     }
-
-	preview {
-		dataSource {
-			jndiName = "java:comp/env/jdbc/portal_preview"
-
-//			driverClassName = "org.postgresql.Driver"
-//			url = "jdbc:postgresql://db.emii.org.au:5432/portal_preview?ssl=true&tcpKeepAlive=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-//
-//			username = "portal_preview"
-//			password = "agreenerfuture"
-//
-//			testOnBorrow = true
-//			validationQuery = "SELECT 1"
-		}
-	}
 }
