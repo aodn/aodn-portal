@@ -50,9 +50,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 					{
 					region: 'north',
 					ref: '../searchContainer',
-					height: 120,	 
-					autoScroll: true,															 
-	
+					height: 120,
+					autoScroll: true,
+
 					items: {
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
@@ -103,16 +103,16 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			mouseenter: this.onResultEnter,
 			mouseleave: this.onResultLeave
 		});
-		
+
 		// set size of search form based on its content when its content is created and/or
 		// changed or the region containing the search is resized
 		// Ext isn't good at handling panels resizing based on content and scroll bars
-		
+
 		this.mon(this.searchContainer, {
 			scope: this,
 			resize: this.setSearchContainerHeight
 		});
-		
+
 		this.mon(this.searchForm, {
 			scope: this,
 			contentchange: this.setSearchContainerHeight,
@@ -121,6 +121,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
 	 	// relay add layer event
 	 	this.relayEvents(this.resultsGrid, ['addlayer']);
+
+	 	this.searchForm.setResultsGrid(this.resultsGrid);
+
 	},
 	
 	afterRender: function() {
@@ -146,11 +149,11 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	setSearchContainerHeight: function() {
-		// wait a bit for new sizes to be reflected (there's no consistent 
+		// wait a bit for new sizes to be reflected (there's no consistent
 		// resize event on elements across browsers or provided by Ext!)
 		this.setSearchContainerHeightDeferred.defer(50, this);
 	},
-	
+
 	setSearchContainerHeightDeferred: function() {
 		var searchFormHeight = this.searchForm.getHeight();
 		var searchFormWidth = this.searchForm.getWidth();
@@ -163,9 +166,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		this.searchContainer.setSize(searchContainerWidth, newHeight);
 		this.searchPanel.doLayout();
 	},
-	
+
 	resultsGridBbarBeforeChange: function(bbar, params) {
-		this.runSearch(this.lastSearch, params.start + 1);
+
+	    this.runSearch(this.lastSearch, parseInt(this.resultsStore.searchedUpTo + 1));
 		//Stop paging control from doing anything itself for the moment
 		// TODO: replace with store driven paging 
 		return false;
@@ -182,6 +186,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
 			var currentRecords = getRecordsFormat.read(result.responseText);
 			this.resultsGrid.hideMask();
+
+			this.resultsStore.searchedUpTo = currentRecords.to;
 
 			// This makes sure that the paging toolbar updates on a zero result set
 			this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
