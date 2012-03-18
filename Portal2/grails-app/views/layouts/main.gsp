@@ -51,6 +51,8 @@
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
           </ul>
+          <br />
+          <g:render template="/projectInfo"></g:render>
         </div>
     </body>
 </html>
