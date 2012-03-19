@@ -96,17 +96,7 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
-        
-        authAccess(controller: "auth", action: "login") {
-            before = {
-                
-                logRequest("authAccess", controllerName, actionName)
-                
-                // Allow all access
-                request.accessAllowed = true
-            }
-        }
-      
+
         all(uri: "/**") {
             before = {
                 
