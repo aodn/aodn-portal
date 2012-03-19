@@ -130,7 +130,7 @@ function addToPopup(mapPanel, e) {
                 lon: locArray[0]
             },
             success: function(resp, options){
-                updatePopupDepthStatus(resp);                
+                updatePopupDepthStatus(resp);
             }
         });
     }
@@ -275,6 +275,8 @@ function addToPopup(mapPanel, e) {
                                 poptabs.setActiveTab( 0 );
                                 poptabs.doLayout();
                                 poptabs.show();
+
+                                setTimeout('imgSizer()', 900); // ensure the popup is ready
                             }
                         }
                         // got a result, maybe empty
@@ -633,14 +635,16 @@ Date.prototype.setISO8601 = function (string) {
 function imgSizer(){
     //Configuration Options
     var max_width = Portal.app.config.popupWidth -70 ; 	//Sets the max width, in pixels, for every image
-    var selector = 'div#featureinfocontent .feature img';
+    var selector = 'div > .featureinfocontent .feature img';
+
     //destroy_imagePopup(); // make sure there is no other
     var tics = new Date().getTime();
 
     $(selector).each(function(){
-        var width = $.width();
-        var height = $.height();
-        //alert("here");
+
+        var width = $(this).width();
+        var height = $(this).height();
+
         if (width > max_width) {
 
             //Set variables for manipulation
@@ -650,12 +654,12 @@ function imgSizer(){
             //alert("(popupwidth "+max_width+" "+width + ") " +height+" * "+ratio);
 
             //Shrink the image and add link to full-sized image
-            $.animate({
+            $(this).animate({
                 width: new_width
             }, 'slow').width(new_height);
 
-            $.hover(function(){
-                $.attr("title", "This image has been scaled down.")
+            $(this).hover(function(){
+                $(this).attr("title", "This image has been scaled down.")
             //$(this).css("cursor","pointer");
             });
 
