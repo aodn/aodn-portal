@@ -7,18 +7,21 @@ target( main: "Collects project build info from environment variables and inject
     println "Reading environment variables"
     
     def buildDate = new Date().format( "dd/MM/yyyy hh:mm" )
-    def svnRevision = System.getenv( "SVN_REVISION" ) ?: "Unk."
-    def buildNumber = System.getenv( "BUILD_NUMBER" ) ?: "Unk."
+    def svnRevision = System.getenv( "SVN_REVISION" ) ?: "unk."
+    def buildNumber = System.getenv( "BUILD_NUMBER" ) ?: "unk."
 
     def replacementString = """\
+<%@ page import=\"grails.util.Environment\" %>\
 <b>Portal project build info</b>
+Instance name: \${ grailsApplication.config.instanceName?:"unk." }
+Environment: \${ Environment.current }
 Build date: $buildDate
-Subversion revision: $svnRevision
-Build: $buildNumber
+Subversion revision: #$svnRevision
+Build: #$buildNumber
 App version: <g:meta name=\"app.version\"/>\
 """
     
-    println "replacementString: $replacementString"
+    println "replacementString:\n$replacementString"
 
     def outputFile = new File( "grails-app/views/_projectInfo.gsp" )
 
