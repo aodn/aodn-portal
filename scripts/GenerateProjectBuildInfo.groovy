@@ -6,7 +6,7 @@ target( main: "Collects project build info from environment variables and inject
 
     println "Reading environment variables"
     
-    def buildDate = new Date().format( "dd/MM/yyyy hh:mm" )
+    def buildDate = new Date().format( "dd/MM/yyyy HH:mm" )
     def svnRevision = System.getenv( "SVN_REVISION" ) ?: "unk."
     def buildNumber = System.getenv( "BUILD_NUMBER" ) ?: "unk."
 
