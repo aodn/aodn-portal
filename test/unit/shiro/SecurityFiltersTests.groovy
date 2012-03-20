@@ -1,7 +1,7 @@
 package shiro
 
-import grails.test.*
-import au.org.emii.portal.*
+import grails.test.FiltersUnitTestCase
+import grails.test.MockUtils
 import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
 
 class SecurityFiltersTests extends FiltersUnitTestCase {
@@ -25,11 +25,21 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         checkFilter "homeAccess"
     }
     
+    void testSplashControllerFilter() {
+        
+        checkFilter "splashAccess"
+    }
+    
     void testConfigControllerFilter() {
         
         checkFilter "configAccess"
     }
-    
+
+    void testDepthControllerFilter() {
+
+        checkFilter "depthAccess"
+    }
+
     void testServerControllerFilter() {
         
         checkFilter "serverAccess"
@@ -39,7 +49,12 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         checkFilter "layerAccess" 
     }
-    
+
+    void testMenuControllerFilter() {
+
+        checkFilter "menuAccess"
+    }
+
     void testProxyControllerFilter() {
         
         checkFilter "proxyAccess"
@@ -49,12 +64,7 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         
         checkFilter "downloadAccess"
     }
-    
-    void testAuthControllerFilter() {
-        
-        checkFilter "authAccess"
-    }
-    
+
     void testAllFilter() {
         
         FilterConfig filter = initFilter( "all" )
