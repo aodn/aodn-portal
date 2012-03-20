@@ -79,7 +79,7 @@ environments {
     }
 
     development {
-		//grails.resources.debug = true
+		grails.resources.debug = true
         grails.serverURL = "http://localhost:8000/${appName}"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
 
@@ -158,6 +158,8 @@ log4j = {
     //'grails'
 }
 
+portal.header.logo = "AODN_logo.png"
+
 /**
  * Instance specific customisation, clearly stolen from:
  * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
@@ -183,6 +185,9 @@ def instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_N
 instanceName = instanceName ?: "AODN"
 if(instanceName) {
     println "Including configuration file specified in environment: " + instanceName;
+	// In case the property wasn't pulled from system properties put it there so
+	// migration scripts run correctly
+	System.setProperty(INSTANCE_NAME, instanceName)
     grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
 } else {
     println "No external configuration file defined."

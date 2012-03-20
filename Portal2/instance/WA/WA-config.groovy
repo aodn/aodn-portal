@@ -1,9 +1,5 @@
 def appName = 'WA'
 
-instanceName='WAODN'
-
-grails.plugin.databasemigration.updateOnStartFileNames = ['wa-changelog.groovy']
-
 environments {
 	
 	development {
