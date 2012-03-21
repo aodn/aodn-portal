@@ -56,6 +56,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
     },
 	
     registerEvents: function() {
+        this.on('hide', this.onHidePanel, this);
         this.registerMapPanelEvents();
     	this.registerRightDetailsPanelEvents();
     },
@@ -82,6 +83,13 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 			this.rightDetailsPanel.doLayout();
 		}
 	},
+	
+  onHidePanel: function() {
+    // TODO: popup should belong to this component
+    if (popup) {
+      popup.close();
+    }
+  },
 	
 	getMapPanel: function() {
 		return this.mapPanel;

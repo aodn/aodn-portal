@@ -264,7 +264,7 @@ function updateDetailsPanel(layer) {
     
     // show new layer unless user requested 'hideLayerOptions' or
     // check if the map is still in focus - not the search
-    if (!(Portal.app.config.hideLayerOptions === true || viewport.getComponent('centerTabPanel').activeTab.title != "Map" )) {
+    if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
     
 
         selectedLayer = layer;
