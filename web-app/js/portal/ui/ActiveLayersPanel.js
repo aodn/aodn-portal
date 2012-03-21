@@ -62,7 +62,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
                 	scope: this, 
                 	handler: this.removeLayer
                 },
-                this.zoomToLayerMenuItem,
+                this.zoomToLayerMenuItem
 	        ],
 	        listeners:
 	        {
