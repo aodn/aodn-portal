@@ -102,7 +102,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def returnParams = controller.controls() // Make the call
          
         assertEquals "Active Config instance should be returned", invalidConfig, returnParams.configInstance
-        assertEquals null, returnParams.wmsScannerBaseUrl
+        assertEquals expectedScannerBaseUrl, returnParams.wmsScannerBaseUrl
         assertEquals "Empty scan Job list should be returned", [], returnParams.scanJobList
         assertEquals "Status text should match", expectedStatusText, returnParams.statusText.toString()
         assertEquals "Empty list should be returned", [], returnParams.serversToList
