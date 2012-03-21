@@ -1,7 +1,6 @@
 package au.org.emii.portal
 
-import grails.test.*
-import java.net.URLConnection
+import grails.test.ControllerUnitTestCase
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
     //grailsApplication.config.
@@ -11,19 +10,21 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
     def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true )
     
-    def validConfig = new Config( wmsScannerBaseUrl: "scannerBaseUrl/", wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
+    def validConfig = new Config( wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
     def invalidConfig = new Config()
-    
+
+    def expectedStatusText = "[0:Enabled, -1:Enabled<br />(errors&nbsp;occurred), -2:Stopped<br />(too&nbsp;many&nbsp;errors)]"
+    def expectedScannerBaseUrl = "scannerBaseUrl/"
+
     protected void setUp() {
         
         super.setUp()
         
         mockDomain Server, [server1, server2, server3]
 
-
-
         controller.grailsApplication = [config: new ConfigSlurper().parse("""
                 grails.serverURL = "appBaseUrl/"
+                wmsScanner.url = "$expectedScannerBaseUrl"
                 """)]
     }
 
@@ -44,7 +45,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             
             assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
-            
+
             return [] // Test with empty server list
         }
         
@@ -56,8 +57,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def returnParams = controller.controls() // Make the call
          
         assertEquals "Active Config instance should be returned", validConfig, returnParams.configInstance
+        assertEquals expectedScannerBaseUrl, returnParams.wmsScannerBaseUrl
         assertEquals "Matching scan Job list should be returned", sampleScanJobList, returnParams.scanJobList
-        assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
+        assertEquals "Status text should match", expectedStatusText, returnParams.statusText.toString()
         assertEquals "Servers to list should match", [], returnParams.serversToList
     }
     
@@ -86,8 +88,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def returnParams = controller.controls() // Make the call
         
         assertEquals "Active Config instance should be returned", validConfig, returnParams.configInstance
+        assertEquals expectedScannerBaseUrl, returnParams.wmsScannerBaseUrl
         assertEquals "Matching scan Job list should be returned", [], returnParams.scanJobList
-        assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
+        assertEquals "Status text should match", expectedStatusText, returnParams.statusText.toString()
         assertEquals "Servers to list should match", [server3], returnParams.serversToList
         assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Error Line 1</b><br /><b>Error Line 2</b>", controller.flash.message
     }
@@ -99,8 +102,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def returnParams = controller.controls() // Make the call
          
         assertEquals "Active Config instance should be returned", invalidConfig, returnParams.configInstance
+        assertEquals null, returnParams.wmsScannerBaseUrl
         assertEquals "Empty scan Job list should be returned", [], returnParams.scanJobList
-        assertEquals "Status text should match", "[0:Running, -1:Running<br>(with&nbsp;errors), -2:Stopped<br>(too&nbsp;many&nbsp;errors)]", returnParams.statusText.toString()
+        assertEquals "Status text should match", expectedStatusText, returnParams.statusText.toString()
         assertEquals "Empty list should be returned", [], returnParams.serversToList
         assertEquals "Flash message should indicate errors", "All three settings: 'WmsScannerBaseUrl', 'WmsScannerCallbackUsername', and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner.", controller.flash.message
     }
@@ -209,7 +213,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
     }
     
- void testCallDelete_NoProblemHtmlResponse_Redirected() {
+    void testCallDelete_NoProblemHtmlResponse_Redirected() {
          
         mockDomain Config, [validConfig]
         

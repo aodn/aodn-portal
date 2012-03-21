@@ -314,7 +314,10 @@ class LayerController {
     }
 	
 	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu.menuItems.collect { it.layerId } 
+		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
+
+        if ( !layerIds ) return "[]"
+
 		def defaultBaseLayers = Layer.findAllByIdInList(layerIds)
 		JSON.use("deep") {
 			render defaultBaseLayers as JSON

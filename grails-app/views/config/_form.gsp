@@ -103,18 +103,13 @@
                                     <g:passwordField name="depthPassword" value="${configInstance?.depthPassword}" /><font class="hint"></font>
                                 </td>
                             </tr>
-                            
-                            
-                            
-                            
-                            
-    
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="baselayerMenu"><g:message code="config.contributorMenu.label" default="Default Base Layer Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'baselayerMenu', 'errors')}">
-                                    <g:select name="baselayerMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.baselayerMenu?.id}"  />
+                                    <g:select name="baselayerMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.baselayerMenu?.id}" noSelection="${['null':'- None selected -']}" />
                                     <font class="hint"></font>
                                 </td>
                             </tr>                       
@@ -123,7 +118,7 @@
                                   <label for="defaultMenu"><g:message code="config.defaultMenu.label" default="Default Layers Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultMenu', 'errors')}">
-                                    <g:select name="defaultMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.defaultMenu?.id}"  />
+                                    <g:select name="defaultMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.defaultMenu?.id}" noSelection="${['null':'- None selected -']}" />
                                 </td>
                             </tr>
 
@@ -132,7 +127,7 @@
                                     <label for="contributorMenu"><g:message code="config.contributorMenu.label" default="Contributor Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'contributorMenu', 'errors')}">
-                                    <g:select name="contributorMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.contributorMenu?.id}"  />
+                                    <g:select name="contributorMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.contributorMenu?.id}" noSelection="${['null':'- None selected -']}" />
                                     <font class="hint">(not utilised)</font>
                                 </td>
                             </tr>
@@ -143,7 +138,7 @@
                                     <label for="regionMenu"><g:message code="config.regionMenu.label" default="Region Menu" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'regionMenu', 'errors')}">
-                                    <g:select name="regionMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.regionMenu?.id}"  />
+                                    <g:select name="regionMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.regionMenu?.id}" noSelection="${['null':'- None selected -']}" />
                                 </td>
                             </tr>
 
@@ -312,16 +307,7 @@
                                     <g:textField size="8" name="downloadCartMaxFileSize" value="${configInstance?.downloadCartMaxFileSize}" /><font class="hint">in bytes</font>
                                 </td>
                             </tr>
-   
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="wmsScannerBaseUrl"><g:message code="config.wmsScannerBaseUrl.label" default="WMS Scanner Base Url" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerBaseUrl', 'errors')}">
-                                    <g:textField size="30" name="wmsScannerBaseUrl" value="${configInstance?.wmsScannerBaseUrl}" /><font class="hint">Full url, should end with a '/'. <g:link controller="wmsScanner" action="controls">View controls</g:link>.</font>
-                                </td>
-                            </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="wmsScannerCallbackUsername"><g:message code="config.wmsScannerCallbackUsername.label" default="WMS Scanner Callback Username" /></label>

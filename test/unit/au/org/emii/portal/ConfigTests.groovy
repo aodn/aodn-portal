@@ -24,8 +24,6 @@ class ConfigTests extends GrailsUnitTestCase {
             defaultMenu: menu1,
             initialBbox: "120,20,120,20", // character varying,  lat,lon might be shite? 
             name: "The aMazing Portal",
-            contributorMenu: menu1,
-            regionMenu: menu1,
             catalogUrl: "http://www.google.com/",
             footerHeight: 500,
             footerContentWidth: 500,
@@ -40,7 +38,6 @@ class ConfigTests extends GrailsUnitTestCase {
             metadataLayerProtocols: "a super string",
             metadataLinkProtocols: "a super string",
             mapGetFeatureInfoBuffer: 200,
-            baselayerMenu: menu1,
             popupHeight: 200,
             popupWidth: 200,
             autoZoom: true // boolean
@@ -61,9 +58,6 @@ class ConfigTests extends GrailsUnitTestCase {
         def testConfig = new Config()
         assertFalse testConfig.validate()
         assertEquals "nullable", testConfig.errors["initialBbox"]
-        assertEquals "nullable", testConfig.errors["defaultMenu"]
-        assertEquals "nullable", testConfig.errors["contributorMenu"]
-        assertEquals "nullable", testConfig.errors["regionMenu"]
         assertEquals "nullable", testConfig.errors["downloadCartFilename"]
         assertEquals "nullable", testConfig.errors["downloadCartMaxNumFiles"]
         assertEquals "nullable", testConfig.errors["downloadCartMaxFileSize"]
