@@ -16,9 +16,16 @@ databaseChangeLog = {
 	
 	changeSet(author: "dnahodil", id: "1332223306000-3", failOnError: true) {
 		
+		// Ensure Layer API User (User 10) has the correct Role (UserRole 11)
+		
+		delete(tableName: "portal_user_roles") {
+			
+			where "user_id = 10 AND user_role_id = 11"
+		}
+		
 		insert(tableName: "portal_user_roles") {
+		
 			column(name: "user_id", valueNumeric: "10")
-
 			column(name: "user_role_id", valueNumeric: "11")
 		}
 	}
