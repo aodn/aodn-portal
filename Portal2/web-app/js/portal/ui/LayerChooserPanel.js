@@ -10,6 +10,12 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 		
         var config = Ext.apply({
             id: "leftMenus",
+            minWidth: 260,
+            maxWidth: 450,
+            collapsible: true,
+            collapseMode: 'mini',
+            stateful: false,
+            split: true,
             headerCfg:  {
                 cls: 'menuHeader',
                 html: 'Message'
@@ -150,5 +156,14 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 
     addMapLayer: function(layerDescriptor, showLoading) {
             this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
+    },
+    
+    showActions: function() {
+      this.actionsPanel.show();
+      this.doLayout();
+    },
+    
+    hideActions: function() {
+      this.actionsPanel.hide();
     }
 });
