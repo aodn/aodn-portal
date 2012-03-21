@@ -65,7 +65,7 @@ environments {
     production {
         grails.serverURL = "http://portaldev.aodn.org.au/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
-        wmsScanner.url = "http://wmsscannerdev.emii.org.au/"
+        wmsScanner.url = "http://wmsscannerdev.emii.org.au/wms_scanner"
 
         grails {
             mail {
