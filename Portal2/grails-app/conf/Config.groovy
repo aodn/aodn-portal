@@ -61,10 +61,11 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
 // set per-environment serverURL stem for creating absolute links
 environments {
-	
+
     production {
         grails.serverURL = "http://portaldev.aodn.org.au/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+        wmsScanner.url = "http://wmsscannerdev.emii.org.au/"
 
         grails {
             mail {
@@ -80,8 +81,9 @@ environments {
 
     development {
 		grails.resources.debug = true
-        grails.serverURL = "http://localhost:8000/${appName}"
+        grails.serverURL = "http://localhost:8080/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+        wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
 
         grails
                 {
@@ -98,7 +100,7 @@ environments {
                 }
     }
     test {
-        grails.serverURL = "http://localhost:8080/${appName}"
+        grails.serverURL = "http://localhost:8080/$appName"
         spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
         grails.mail.disabled = true
         grails.plugin.databasemigration.updateOnStart = false

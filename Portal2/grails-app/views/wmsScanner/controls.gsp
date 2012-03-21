@@ -25,9 +25,8 @@
 
       <div style="margin: 1em">
         <b>Configuration</b><br />
-        WMS Scanner url: <g:if test="${ configInstance.wmsScannerBaseUrl }" ><a href="${ configInstance.wmsScannerBaseUrl }" target="_blank">${ configInstance.wmsScannerBaseUrl }</a></g:if>
-                         <g:if test="${ !configInstance.wmsScannerBaseUrl }"><i>Not set</i></g:if><br />
-        Callback url is: ${ grailsApplication.config.grails.serverURL } - <a href="${ configInstance.wmsScannerBaseUrl }utils/testCallbackUrl?callbackUrl=${ URLEncoder.encode( grailsApplication.config.grails.serverURL ) }" target="_blank">Test</a>
+        WMS Scanner url: <g:if test="${ wmsScannerBaseUrl }" ><a href="${ wmsScannerBaseUrl }" target="_blank">${ wmsScannerBaseUrl }</a></g:if><g:else><i>Not set</i></g:else><br />
+        Callback url is: ${ grailsApplication.config.grails.serverURL } - <a href="${ wmsScannerBaseUrl }utils/testCallbackUrl?callbackUrl=${ URLEncoder.encode( grailsApplication.config.grails.serverURL ) }" target="_blank">Test</a>
       </div>
       
       <g:if test="${flash.message}">

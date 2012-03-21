@@ -18,7 +18,6 @@
         <div class="nav">
           <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
         </div>
         <div class="content">
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
@@ -33,6 +32,9 @@
             <g:form method="post" >
                 <g:hiddenField name="id" value="${configInstance?.id}" />
                 <g:hiddenField name="version" value="${configInstance?.version}" />
+                <div class="buttons">
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+                </div>
                 <div class="dialog">
                     <table>
                         <tbody>

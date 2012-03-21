@@ -52,7 +52,6 @@ class Config {
     String baselayerList    
     List defaultLayers
     
-    String wmsScannerBaseUrl
     String wmsScannerCallbackUsername
     String wmsScannerCallbackPassword
     
@@ -84,10 +83,10 @@ class Config {
         depthSchema(nullable:true)
         depthTable(nullable:true)
         catalogUrl(url: true)
-        baselayerMenu()
-        defaultMenu()
-        contributorMenu()
-        regionMenu()
+        baselayerMenu(nullable: true)
+        defaultMenu(nullable: true)
+        contributorMenu(nullable: true)
+        regionMenu(nullable: true)
         headerHeight()
         footerHeight()
         activeLayersHeight()
@@ -103,7 +102,6 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
-        wmsScannerBaseUrl(nullable: true)
         wmsScannerCallbackUsername(nullable: true)
         wmsScannerCallbackPassword(nullable: true)
     }
