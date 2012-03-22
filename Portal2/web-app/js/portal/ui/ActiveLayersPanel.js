@@ -129,9 +129,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	removeLayer: function() {
-	    console.log("removeLayer!!!");
-	    console.log(this.getSelectedLayer());
-		if (this.fireEvent('removelayer', this.getSelectedLayer())) {
+	    if (this.fireEvent('removelayer', this.getSelectedLayer())) {
 			
 		}
 	},
