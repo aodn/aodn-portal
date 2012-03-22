@@ -5,7 +5,8 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			url: 'menu/json/' + cfg.menuId,
-			preloadChildren: true
+			preloadChildren: true,
+			clearOnLoad: false
 		}, cfg);
 		Portal.data.MenuTreeLoader.superclass.constructor.call(this, config);
 		
