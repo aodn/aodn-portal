@@ -118,7 +118,7 @@ function setupgrid2treedrag(menu) {
         collapsible:false,
         padding: 20,
         autoScroll:true,
-        loader: new Ext.tree.TreeLoader({preloadChildren:true}), 
+        loader: new Ext.tree.TreeLoader({preloadChildren:true}),
         listeners:{
             
             'contextmenu': function(node){

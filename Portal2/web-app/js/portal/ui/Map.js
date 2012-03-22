@@ -263,8 +263,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    	version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 	    	format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 	    	CQL_FILTER: layerDescriptor.cql,
-	    	queryable: layerDescriptor.queryable,
-	    	styles: layerDescriptor.styles
+	    	queryable: layerDescriptor.queryable
 	    };
 	    if (overrides) {
 	    	Ext.apply(params, overrides);
@@ -313,7 +312,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    openLayer.blacklist = layerDescriptor.blacklist;
 	    openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
     	openLayer.parentLayerId = this.getParentId(layerDescriptor);
-        openLayer.parentLayerName = this.getParentName(layerDescriptor); 
+        openLayer.parentLayerName = this.getParentName(layerDescriptor);
+        openLayer.allStyles = layerDescriptor.styles;
 	},
 	
 	getWmsOpenLayerUri: function(originalWMSLayer) {
@@ -609,19 +609,19 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         	if (!Portal.app.config.hideLayerOptions) {
 	            updateDetailsPanel(openLayer);
 	        }
-	        
+
 	        if (this.isNcwmsServer(layerDescriptor)) {
 	            // update detailsPanel after Json request
                 this.getLayerMetadata(openLayer);
 	        }
-	        
+
 	        if (animated) {
 	        	openLayer.chosenTimes = chosenTimes;
 	        	this.addNCWMSLayer(openLayer);
 	        }
 	    }
 	},
-	
+
 	// layerObject might be one of our own descriptors or a WMS layer on a map
 	// might be an idea to wrap/abstract away that difference at some point
 	isNcwmsServer: function(layerObject) {
@@ -629,16 +629,16 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		var serverTypes =  ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"];
 		return serverTypes.indexOf(server.type) >= 0;
 	},
-	
+
 	getLayerMetadata: function(openLayer) {
 	    if (openLayer.params.LAYERS) {
 	        var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
 	        // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
 	        if (openLayer.cache === true) {
-	           // all parameters passed along here will get added to URL 
+	           // all parameters passed along here will get added to URL
 	           url = proxyCachedURL + encodeURIComponent(getUri(getServer(openLayer))) + "&item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata";
 	        }
-	        
+
 	        Ext.Ajax.request({
 	            url: url,
 	            success: function(resp) {
@@ -647,8 +647,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	                // if this layer has been user selected before loading the metadata
 	                // reload,  as the date picker details/ form  will be wrong at the very least!
 	                // TODO tommy - refactor selected layer usage, it is declared is in details panel
-	                if (selectedLayer !== undefined && selectedLayer.id == openLayer.id) {   
-                    	updateDetailsPanel(openLayer);                         
+	                if (selectedLayer !== undefined && selectedLayer.id == openLayer.id) {
+                    	updateDetailsPanel(openLayer);
 	                }
 	            } 
 	        });
