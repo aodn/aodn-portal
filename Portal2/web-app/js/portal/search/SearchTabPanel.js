@@ -75,7 +75,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		// react to search requested by search form
 		this.mon(this.searchForm, {
 			scope: this,
-			search: this.onSearch
+			search: this.onSearch,
+			bboxchange: this.onBBoxChange
 		});
 		
 		// react to changes in map extent
@@ -146,6 +147,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	
 	onResultLeave: function(grid, rowIndex, rec) {
 		this.minimap.clearBBox();
+	},
+	
+	onBBoxChange: function(bounds) {
+	  this.minimap.setExtent(bounds);
 	},
 	
 	setSearchContainerHeight: function() {

@@ -39,8 +39,21 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
    },
    
    extentChange: function() {
+     if (this.disableExtentChangeEvents) return;
+     
       var bounds = this.map.getExtent();
       this.fireEvent('extentchange', {northBL: bounds.top, westBL: bounds.left, eastBL: bounds.right, southBL: bounds.bottom});
+   },
+   
+   setExtent: function(bounds) {
+     var olBounds = new OpenLayers.Bounds(bounds.westBL, bounds.southBL, bounds.eastBL, bounds.northBL);
+     
+     // don't trigger extentchange event when setExtent method is used
+     this.disableExtentChangeEvents = true;
+
+     this.map.zoomToExtent(olBounds, false);
+
+     this.disableExtentChangeEvents = false;
    },
    
    showLayer: function(layerInfo) {
