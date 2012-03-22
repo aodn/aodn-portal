@@ -64,7 +64,7 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
                     }
                     else {                        
                         //this should be a folder
-                        node.expand(); 
+                        node.expand();
                     }
                 },
                 expandnode: function(node) {
