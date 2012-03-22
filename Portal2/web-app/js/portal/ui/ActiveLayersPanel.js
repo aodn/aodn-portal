@@ -88,6 +88,10 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        this.fireEvent('selectedactivelayerchanged');
             updateDetailsPanel(node.layer);
 	    }
+	    else if(this.activeLayers.getRootNode().childNodes.length == 1){
+
+	        Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
+	    }
 
 	},
 
