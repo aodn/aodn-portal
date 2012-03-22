@@ -154,7 +154,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    setExtent: function(bounds) {
       this.bounds = bounds;
 
-      var bboxes = this.searchFields.findByType('portal.search.field.boundingbox');
+      var bboxes = this.searchFieldSelector.findByType('portal.search.field.boundingbox');
 
       for (var i = 0; i<bboxes.length; i++){
           bboxes[i].setBox(bounds);
@@ -209,9 +209,15 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       this.refreshDisplay();
 
       if (field.xtype == 'portal.search.field.boundingbox') {
-        this.searchFieldSelector.findByType('portal.search.field.boundingbox')[0].setBox(this.bounds);
+        var bboxField = this.searchFieldSelector.findByType('portal.search.field.boundingbox')[0];
+        bboxField.setBox(this.bounds);
+        this.relayEvents(bboxField, ['bboxchange']);
       };
 
+   },
+   
+   onBBoxChange: function() {
+     this.mini
    },
    
    refreshDisplay: function() {

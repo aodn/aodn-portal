@@ -97,6 +97,24 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
       ];
 
       Portal.search.field.BoundingBox.superclass.initComponent.apply(this, arguments);
+
+      this.mon(this.northBL, 'change', this.onCoordChange, this);
+      this.mon(this.southBL, 'change', this.onCoordChange, this);
+      this.mon(this.eastBL, 'change', this.onCoordChange, this);
+      this.mon(this.westBL, 'change', this.onCoordChange, this);
+   },
+   
+   onCoordChange: function() {
+     this.fireEvent('bboxchange', this.getBounds());
+   },
+   
+   getBounds: function() {
+     return {
+         northBL: this.northBL.getValue(), 
+         westBL: this.westBL.getValue(),
+         eastBL: this.eastBL.getValue(),
+         southBL: this.southBL.getValue()
+     };
    },
    
    setBox: function(boundingBox) {
@@ -113,7 +131,6 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
          this.southBL.setValue(boundingBox.southBL);
       };
    }
-   
    
 });
 
