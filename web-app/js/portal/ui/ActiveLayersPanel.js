@@ -84,8 +84,11 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)
 	{
-		this.fireEvent('selectedactivelayerchanged');
-		updateDetailsPanel(node.layer);
+	    if(node != null){
+	        this.fireEvent('selectedactivelayerchanged');
+            updateDetailsPanel(node.layer);
+	    }
+
 	},
 
 	updateZoomToLayerMenuItemVisibility: function()
@@ -126,6 +129,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	removeLayer: function() {
+	    console.log("removeLayer!!!");
+	    console.log(this.getSelectedLayer());
 		if (this.fireEvent('removelayer', this.getSelectedLayer())) {
 			
 		}

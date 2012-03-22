@@ -358,7 +358,7 @@ function updateDetailsPanel(layer) {
 //}
 
 function setChosenStyle(layer,record) {
-    
+
     if (layer.originalWMSLayer == undefined) {
         // its a standard WMS layer
         selectedLayer.mergeNewParams({
@@ -384,12 +384,11 @@ function updateStyles(layer) {
     styleCombo.hide();
     
     //var supportedStyles = layer.metadata.supportedStyles;
-    
      // for WMS layers that we have scanned
-    if(layer.styles != undefined) {
+    if(layer.allStyles != undefined) {
         
         // populate 'data' for the style options dropdown
-        var styles = layer.styles.split(",");
+        var styles = layer.allStyles.split(",");
         // do something if the user has more than one option
         if (styles.length > 1) { 
             

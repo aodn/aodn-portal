@@ -14,6 +14,9 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
 				// This will now delegate handling to ServerNodeLayerDescriptorStore
 				return false;
 			}
+			else if((node.getDepth() > 0) && !node.attributes.grailsServerId && !node.attributes.grailsLayerId){
+			    return false;
+			}
 			return true;
 		}, this);
 	},
@@ -31,9 +34,11 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
 		
         try {
             node.beginUpdate();
-            node.appendChild(this.parseItems(node, items));
+            this.parseItems(node, items);
+            //node.appendChild();
             node.endUpdate();
-            this.runCallback(callback, scope || node, [node]);
+            //TODO: check childNodes
+            this.runCallback(callback, this || node, [node]);
         }
         catch(e) {
             this.handleFailure(response);
