@@ -18,6 +18,7 @@ class WmsScannerController {
         
         def conf = Config.activeInstance()
         def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
+        wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
         
         // Check if WMS Scanner settings are valid
         if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackUsername || !conf.wmsScannerCallbackPassword ) {
@@ -92,7 +93,7 @@ class WmsScannerController {
             setFlashMessage e, url, conn
         }
 
-        redirect(action: "controls")
+        redirect action: "controls"
     }
 
     def callUpdate = {
@@ -130,7 +131,7 @@ class WmsScannerController {
             setFlashMessage e, url, conn
         }        
         
-        redirect(action: "controls")
+        redirect action: "controls"
     }
     
     def callDelete = {
@@ -157,7 +158,7 @@ class WmsScannerController {
             setFlashMessage e, url, conn
         }        
         
-        redirect(action: "controls")
+        redirect action: "controls"
     }
         
     private void setFlashMessage(String response) {
@@ -226,7 +227,7 @@ class WmsScannerController {
         return "${wmsScannerBaseUrl}${slash}scanJob/"
     }
 
-    def _optionalSlash( url ) {
+    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
 
         return url[-1..-1] != "/" ? "/" : ""
     }
