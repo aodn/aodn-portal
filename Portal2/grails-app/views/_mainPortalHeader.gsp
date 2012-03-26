@@ -11,8 +11,13 @@
     
     <div id="toplinks" >
       <shiro:user>
-          <g:link controller="auth" action="signOut">Log out</g:link>
+        Welcome <g:link controller="user" action="updateAccount" class="userlink" ><user:loggedInUser property="firstName" /></g:link>
+        <g:link controller="auth" action="signOut">Log out</g:link>
       </shiro:user>
+      <shiro:notUser>
+        <g:link controller="auth" action="login">Log in</g:link> or
+        <g:link controller="auth" action="register">Register</g:link>
+      </shiro:notUser>
       <a class="external mainlinks" target="_blank" href="http://www.emii.org.au" title="e-Marine Information Infrastructure">eMII</a>
       <a class="external mainlinks" target="_blank" href="http://imos.org.au/aodn.html" title="Australian Ocean Data Network">IMOS</a>
       <a class="mainlinks" href="http://emii1.its.utas.edu.au/Portal2_help/" title="Portal Help files">Help</a>

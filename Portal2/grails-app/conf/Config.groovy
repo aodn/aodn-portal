@@ -82,7 +82,7 @@ environments {
     development {
 		grails.resources.debug = true
         grails.serverURL = "http://localhost:8080/$appName"
-        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
         wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
 
         grails
@@ -190,7 +190,8 @@ if(instanceName) {
 	// In case the property wasn't pulled from system properties put it there so
 	// migration scripts run correctly
 	System.setProperty(INSTANCE_NAME, instanceName)
-    grails.config.locations << "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
+	grails.config.locations << "classpath:instance/${instanceName}/${instanceName}-config.groovy"
+    grails.config.locations << "file:./instance/${instanceName}/${instanceName}-config.groovy"
 } else {
     println "No external configuration file defined."
 }
