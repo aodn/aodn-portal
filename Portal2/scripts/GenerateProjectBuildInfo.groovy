@@ -12,26 +12,26 @@ target( main: "Collects project build info from environment variables and inject
 
     println "Compiling template"
 
-    def replacementString = """\
-<%@ page import=\"grails.util.Environment\" %>\
-<b>Portal project build info</b>
-Instance name: \${ grailsApplication.config.instanceName ?: "unk." }
-Environment: \${ Environment.current }
-Build date: $buildDate
-Subversion revision: #$svnRevision
-Build: #$buildNumber
+    def templateText = """\
+<%@ page import=\"grails.util.Environment\" %>
+<b>Portal project build info</b><br />
+Instance name: \${ grailsApplication.config.instanceName ?: "<i>None supplied</i>" }<br />
+Environment: \${ Environment.current }<br />
+Build date: $buildDate<br />
+Subversion revision: #$svnRevision<br />
+Build: #$buildNumber<br />
 App version: <g:meta name=\"app.version\"/>\
 """
 
     println "..... Template ${ "." * 61 }"
-    println replacementString
+    println templateText
     println "." * 76
     
     def outputFile = new File( "grails-app/views/_projectInfo.gsp" )
 
     if ( outputFile.canWrite() ) {
 
-        outputFile.text = replacementString.replace( "\n", "<br />\n" )
+        outputFile.text = templateText
         println "Template saved to $outputFile"
     }
     else {
