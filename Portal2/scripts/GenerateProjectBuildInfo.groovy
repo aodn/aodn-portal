@@ -29,14 +29,14 @@ App version: <g:meta name=\"app.version\"/>\
     
     def outputFile = new File( "grails-app/views/_projectInfo.gsp" )
 
-    if ( outputFile ) {
+    if ( outputFile.canWrite() ) {
 
         outputFile.text = replacementString.replace( "\n", "<br />\n" )
         println "Template saved to $outputFile"
     }
     else {
 
-        println "Could not find output file. No changes made."
+        println "Could not write to output file. No changes made."
     }
 
     println "-- Generate Project Build Info script complete --"
