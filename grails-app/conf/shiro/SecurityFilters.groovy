@@ -97,6 +97,16 @@ class SecurityFilters {
             }
         }
 
+        authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
+            before = {
+
+                logRequest("authAccess", controllerName, actionName)
+
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+
         all(uri: "/**") {
             before = {
                 
