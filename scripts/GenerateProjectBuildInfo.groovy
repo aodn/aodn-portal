@@ -32,6 +32,7 @@ App version: <g:meta name=\"app.version\"/>\
     if ( outputFile ) {
 
         outputFile.text = replacementString.replace( "\n", "<br />\n" )
+        println "Template saved to $outputFile"
     }
     else {
 
