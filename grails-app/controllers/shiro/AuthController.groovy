@@ -92,8 +92,9 @@ class AuthController {
         if ( !userInstance.hasErrors() && userInstance.save( flush: true ) ) {
 
             // Log in newly-created user
-            Subject currentUser = SecurityUtils.getSubject()
-            currentUser.login new SaltedUsernamePasswordToken( authService, userAccountCmd.emailAddress, userAccountCmd.password )
+            def currentUser = SecurityUtils.getSubject()
+            def authToken = new SaltedUsernamePasswordToken( authService, userAccountCmd.emailAddress.toLowerCase(), userAccountCmd.password )
+            currentUser.login authToken
 
             // Email newly-created user
             sendRegistrationNotifcationEmail userInstance
