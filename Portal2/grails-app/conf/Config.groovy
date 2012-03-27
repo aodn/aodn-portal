@@ -129,7 +129,7 @@ if(!grails.config.locations || !(grails.config.locations instanceof List)) {
 
 // Determine instance name
 def INSTANCE_NAME = "INSTANCE_NAME"
-def instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_NAME)
+instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_NAME)
 instanceName = instanceName ?: "AODN" // "AODN" is default if none set
 
 // In case the property wasn't pulled from system properties put it there so
@@ -152,7 +152,7 @@ log4j = {
                     name: 'mail',
                     from: "sys.admin@emii.org.au",
                     to: "developers@emii.org.au",
-                    subject: "Error from Portal insatance ${grails.serverURL}",
+                    subject: "Error on Portal instance ${grails.serverURL}",
                     SMTPHost: "localhost",
                     bufferSize: 1,
                     // SMTPDebug: true,

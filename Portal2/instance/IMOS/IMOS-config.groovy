@@ -12,4 +12,7 @@ environments {
 	}
 }
 
+// Change authentication emails for IMOS
+grails.mail.authenticationFromEmailAddress = "info@emii.org.au"
+
 portal.header.logo = "IMOS-wide-logo-white.png"
