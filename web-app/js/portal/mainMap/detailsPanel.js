@@ -265,12 +265,7 @@ function updateDetailsPanel(layer) {
     // show new layer unless user requested 'hideLayerOptions' or
     // check if the map is still in focus - not the search
     if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
-    
-
         selectedLayer = layer;
-        
-        updateStyles(layer);
-
         Ext.getCmp('opacitySlider').show(); // reset slider
 
         ncWMSColourScalePanel.hide();
@@ -301,6 +296,7 @@ function updateDetailsPanel(layer) {
         }
 
 
+        updateStyles(layer);
         updateDimensions(layer); // time and elevation   
 
         if(layer.server.type.search("NCWMS") > -1)  {
@@ -329,11 +325,13 @@ function updateDetailsPanel(layer) {
 
             } 
         }
+        
 
         var detailsPanel = getDetailsPanel();
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
+        detailsPanel.doLayout();
     }
 }
 
@@ -423,6 +421,7 @@ function updateStyles(layer) {
         styleCombo.show();
     }
     refreshLegend(layer);
+
 }
 
 // full legend shown in layer option. The current legend
@@ -450,15 +449,8 @@ function refreshLegend(layer) {
     
     var img = Ext.getCmp('legendImage');
     img.setUrl(url);
-    img.on(
-		'show', 
-		function() {
-	        Ext.getCmp('stylePanel').doLayout();
-	        getDetailsPanel().doLayout();
-    	},
-        this
-    );
-    // dont worry if the form is visible here
+    img.show();
+        // dont worry if the form is visible here
     styleCombo.setValue(style);
 }
 
