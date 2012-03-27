@@ -191,6 +191,216 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertEquals "You do not have permission to access this page.", controller.response.contentAsString
     }
 
+    void testRegisterAction() {
+
+        // Mock domain for test
+        Config firstConfig = new Config(name : "FirstConfig")
+        Config secondConfig = new Config(name : "SecondConfig")
+        mockDomain(Config, [firstConfig, secondConfig])
+        mockForConstraintsTests(UserAccountCommand)
+
+        // Call register action
+        def returnedMap = controller.register()
+
+        User emptyUser = new User()
+
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
+        assertEquals "UserAccountCommand emailAddress should be same as new User", emptyUser.emailAddress, returnedMap.userAccountCmd.emailAddress
+        assertEquals "UserAccountCommand previousEmailAddress should be null", null, returnedMap.userAccountCmd.previousEmailAddress
+        assertEquals "UserAccountCommand firstName should be same as new User", emptyUser.firstName, returnedMap.userAccountCmd.firstName
+        assertEquals "UserAccountCommand lastName should be same as new User", emptyUser.lastName, returnedMap.userAccountCmd.lastName
+    }
+
+    void testCreateUserAction() {
+
+        def expectedSalt = "[ Fourty Four Character Password Salt      ]"
+        def expectedPassword = "password"
+        def hashedPasswordAndSalt = "<hashed password and salt>"
+
+        // Mock AuthService
+        def authServiceControl
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomSalt() { -> return expectedSalt }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals expectedSalt, salt
+            assertEquals expectedPassword, password
+
+            return hashedPasswordAndSalt
+        }
+        controller.authService = authServiceControl.createMock()
+
+        // Subject info
+        def anonSubjectPrincipal = null
+        def anonSubject = [ getPrincipal: { anonSubjectPrincipal },
+                toString: { return "anonSubject" },
+                login: { SaltedUsernamePasswordToken token ->
+                    if (token.username && token.username != "invalidusername") { // Remember usernames are lowercased before being added to the AuthenticationToken
+                        anonSubjectPrincipal = token.username
+                    }
+                    else {
+                        throw new AuthenticationException("No username provided (credentials treated as invalid)")
+                    }
+                }
+        ] as Subject
+
+        // Current Subject
+        logInSubject anonSubject
+
+        // Roles
+        UserRole selfRegisteredUser = new UserRole( name: "SelfRegisteredUser" )
+        UserRole admin = new UserRole( name: "Admin" )
+
+        // Mock Classes
+        mockForConstraintsTests UserAccountCommand
+        mockDomain User, []
+        mockDomain UserRole, [selfRegisteredUser, admin]
+        mockDomain Config
+
+        // Create userAccountCommand for testing
+        UserAccountCommand createAcctCmd = new UserAccountCommand(
+                emailAddress: "aDMin@utas.edu.au",
+                firstName: "Bob",
+                lastName: "Brown",
+                passwordRequired: true,
+                password: expectedPassword,
+                passwordConfirmation: "" )
+
+        // Check that it is an invalid instance
+        assertFalse "UserAccountCommand shouldn't validate", createAcctCmd.validate()
+
+        // Attempt to create User
+        controller.createUser createAcctCmd
+
+        // createAcctCmd is invalid, should be sent back to register page
+        assertEquals "Should be sent back to register view", "register", renderArgs.view
+        assertEquals "Should have same UserAccountCommand object", createAcctCmd, renderArgs.model.userAccountCmd
+
+        // Mock AuthService
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomSalt() { -> return expectedSalt }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals expectedSalt, salt
+            assertEquals expectedPassword, password
+
+            return hashedPasswordAndSalt
+        }
+        controller.authService = authServiceControl.createMock()
+
+        // Update the UserAccountCommand
+        createAcctCmd.passwordConfirmation = expectedPassword
+
+        assertTrue "UserAccountCommand should validate", createAcctCmd.validate()
+
+        assertEquals "There should be no users yet", 0, User.count()
+        assertEquals "There should be 2 Roles", 2, UserRole.count()
+
+        controller.createUser createAcctCmd
+
+        // Valid UserAccountCommand should create User
+        assertEquals "There should be a new User now", 1, User.count()
+
+        // Logged-in User
+        User createdUser = User.list()[0]
+
+        assertEquals "The new User's name should match", "Bob Brown (admin@utas.edu.au)", createdUser.toString()
+        assertEquals "New User should be in one Role", 1, createdUser.roles.size()
+        assertTrue "New User should be in Role 'SelfRegisteredUser'", createdUser.roles.contains(selfRegisteredUser)
+        assertEquals "Logged-in User should be our new user", createdUser.emailAddress, SecurityUtils.getSubject().getPrincipal()
+        assertEquals "PasswordHash should match", hashedPasswordAndSalt, createdUser.passwordHash
+        assertEquals "PasswordSalt should match", expectedSalt, createdUser.passwordSalt
+
+        assertEquals "Should redirect the user back to the Home controller", "home", redirectArgs.controller
+
+        authServiceControl.verify()
+    }
+
+    void testForgotPasswordAction() {
+
+        // Mock domain for test
+        Config firstConfig = new Config(name : "FirstConfig")
+        Config secondConfig = new Config(name : "SecondConfig")
+        mockDomain(Config, [firstConfig, secondConfig])
+
+        def returnedMap
+
+        returnedMap = controller.forgotPassword()
+
+        assertEquals "Config instances should be first one in list", firstConfig, returnedMap.configInstance
+        assertEquals "No redirect should take place", 0, redirectArgs.size()
+        assertEquals "No model etc. should be returned", 0, renderArgs.size()
+    }
+
+    void testResetPasswordAction() {
+
+        // Mock AuthService
+        def authServiceControl
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
+            assertEquals "randomPassword", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
+        User user1 = new User( emailAddress: "sys.admin@emii.org.au",
+                firstName: "Joe",
+                lastName: "Bloggs",
+                passwordHash: "somePasswordHash" )
+
+        mockDomain User, [user1]
+        mockDomain Config
+        mockForConstraintsTests UserResetPasswordCommand
+
+        // UserResetPasswordCommand variable to test with
+        UserResetPasswordCommand cmd
+
+        // Invalid command object instance
+        cmd = new UserResetPasswordCommand()
+
+        // Try resetPassword action
+        controller.resetPassword cmd
+
+        // cmd is invalid, should be sent back to forgotPassword page
+        assertEquals "Should be sent back to forgotPassword view", "forgotPassword", renderArgs.view
+        assertEquals "Should have same UserResetPasswordCommand object", cmd, renderArgs.model.userResetPasswordCommand
+
+        // Mock AuthService
+        authServiceControl = mockFor( AuthService )
+        authServiceControl.demand.newRandomPassword() { -> return "randomPassword" }
+        authServiceControl.demand.newRandomSalt() { -> return "[ Fourty Four Character Password Salt      ]" }
+        authServiceControl.demand.generatePasswordHash() {
+            salt, password ->
+
+            assertEquals "[ Fourty Four Character Password Salt      ]", salt
+            assertEquals "randomPassword", password
+
+            return "<hashed password and salt>"
+        }
+        controller.authService = authServiceControl.createMock()
+
+        // Valid command object instance
+        cmd = new UserResetPasswordCommand( emailAddress: "sys.admin@emii.org.au" )
+
+        // Try resetPassword action
+        controller.resetPassword cmd
+
+        // Check password changed
+        assertEquals "PasswordHash should have been updated", "<hashed password and salt>", user1.passwordHash
+        assertEquals "Should be sent back to login page", "login", redirectArgs.action
+        assertEquals "Should have email address in 'username' field of params", user1.emailAddress, redirectArgs.params.username
+
+        authServiceControl.verify()
+    }
+
     private logInSubject(Subject subject) {
 
         ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY,
