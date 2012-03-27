@@ -82,7 +82,7 @@ environments {
     development {
 		grails.resources.debug = true
         grails.serverURL = "http://localhost:8080/$appName"
-		spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
+        spatialsearch.url = "http://spatialsearchtest.emii.org.au/search/search/index"
         wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
 
         grails
@@ -107,6 +107,40 @@ environments {
     }
 }
 
+/**
+ * Instance specific customisation, clearly stolen from:
+ * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
+ *
+ * To use set for a specific instance, either set the environment variable "INSTANCE_NAME", or add this in the grails
+ * commandline like so:
+ *
+ * grails -DINSTANCE_NAME=WA run-app
+ *
+ * Instance specific config files are located in $project_home/instances/
+ *
+ * Any configuration found in these instance specific file will OVERRIDE values set in Config.groovy and
+ * application.properties.
+ *
+ * NOTE: app.name and version is ignored in external application.properties
+ */
+if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+    grails.config.locations = []
+}
+
+// Determine instance name
+def INSTANCE_NAME = "INSTANCE_NAME"
+def instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_NAME)
+instanceName = instanceName ?: "AODN" // "AODN" is default if none set
+
+// In case the property wasn't pulled from system properties put it there so
+// migration scripts run correctly
+System.setProperty INSTANCE_NAME, instanceName
+
+// Load config file by environment
+def configFilePath = "file:${basedir}/instance/${instanceName}/${instanceName}-config.groovy"
+println "Including configuration file based on environment: $configFilePath"
+grails.config.locations << configFilePath
+
 // log4j configuration
 log4j = {
     appenders {
@@ -118,11 +152,11 @@ log4j = {
                     name: 'mail',
                     from: "sys.admin@emii.org.au",
                     to: "developers@emii.org.au",
-                    subject: "Error from Portal (${grails.serverURL} | ${Environment.current})",
+                    subject: "Error from Portal insatance ${grails.serverURL}",
                     SMTPHost: "localhost",
                     bufferSize: 1,
                     // SMTPDebug: true,
-                    layout: pattern( conversionPattern: "Site: ${grails.serverURL} (environment: ${Environment.current})%nTimestamp: %d%nThread: %t%nLevel: %p%nLogger: %c%nMessage: %m" ) )
+                    layout: pattern( conversionPattern: "Timestamp: %d%nSite: ${grails.serverURL}%nInstance name: $instanceName%nThread: %t%nLevel: %p%nLogger: %c%nMessage: %m" ) )
         }
     }
 
@@ -161,37 +195,3 @@ log4j = {
 }
 
 portal.header.logo = "AODN_logo.png"
-
-/**
- * Instance specific customisation, clearly stolen from:
- * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
- *
- * To use set for a specific instance, either set the environment variable "INSTANCE_NAME", or add this in the grails
- * commandline like so:
- *
- * grails -DINSTANCE_NAME=WA run-app
- *
- * Instance specific config files are located in $project_home/instances/
- *
- * Any configuration found in these instance specific file will OVERRIDE values set in Config.groovy and
- * application.properties.
- *
- * NOTE: app.name and version is ignored in external application.properties
- */
-if(!grails.config.locations || !(grails.config.locations instanceof List)) {
-    grails.config.locations = []
-}
-
-def INSTANCE_NAME = "INSTANCE_NAME"
-def instanceName = System.getenv(INSTANCE_NAME) ?: System.getProperty(INSTANCE_NAME)
-instanceName = instanceName ?: "AODN"
-if(instanceName) {
-    println "Including configuration file specified in environment: " + instanceName;
-	// In case the property wasn't pulled from system properties put it there so
-	// migration scripts run correctly
-	System.setProperty(INSTANCE_NAME, instanceName)
-	grails.config.locations << "classpath:instance/${instanceName}/${instanceName}-config.groovy"
-    grails.config.locations << "file:./instance/${instanceName}/${instanceName}-config.groovy"
-} else {
-    println "No external configuration file defined."
-}

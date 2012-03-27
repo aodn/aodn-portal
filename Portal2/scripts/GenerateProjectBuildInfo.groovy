@@ -15,7 +15,7 @@ target( main: "Collects project build info from environment variables and inject
     def templateText = """\
 <%@ page import=\"grails.util.Environment\" %>
 <b>Portal project build info</b><br />
-Instance name: \${ grailsApplication.config.instanceName ?: "<i>None supplied</i>" }<br />
+Instance name: \${ grailsApplication.config.instanceName ?: '<span style="color: red;">None supplied</span>' }<br />
 Environment: \${ Environment.current }<br />
 Build date: $buildDate<br />
 Subversion revision: #$svnRevision<br />
