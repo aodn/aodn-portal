@@ -216,10 +216,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
    },
    
-   onBBoxChange: function() {
-     this.mini
-   },
-   
    refreshDisplay: function() {
       this.doLayout();
       this.syncSize();
