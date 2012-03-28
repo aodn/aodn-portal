@@ -6,6 +6,13 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    url: null,
    maxCaptionLength: 99999999,
    autoHeight: true,
+   mode: 'local',
+   
+   filterOptions: {
+     anyMatch: true,
+     caseInsensitive: true,
+     exactMatch: false
+   },
    
    minChars: 0,
    queryParam: 'q',
@@ -24,6 +31,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
            name: "value", 
            sortType: Ext.data.SortTypes.asUCString
          }],
+         autoLoad: true,
          baseParams: {
              field: this.field
          },
