@@ -20,9 +20,17 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       this.store = new GeoNetwork.data.OpenSearchSuggestionStore({
          url: this.url,
          rootId: 1,
+         fields: [{
+           name: "value", 
+           sortType: Ext.data.SortTypes.asUCString
+         }],
          baseParams: {
              field: this.field
-         }
+         },
+         sortInfo: {
+           field: "value",
+           direction: 'ASC'
+       }
      });
 
       Portal.search.field.MultiSelectCombo.superclass.initComponent.call(this);
