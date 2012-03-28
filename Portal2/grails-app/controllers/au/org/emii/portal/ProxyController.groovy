@@ -17,25 +17,23 @@ class ProxyController {
                     webImage << new URL(params.url).openStream()
                     
                     if (request.method == 'HEAD') { 
-                        render( text : "", contentType : params.format); 
+                        render text: "", contentType: params.format
                     }
                     else {
                         
-                        response.contentLength = webImage.size();
-                        response.contentType = params.format; 
+                        response.contentLength = webImage.size()
+                        response.contentType = params.format
                         response.outputStream << webImage.toByteArray()
                         response.outputStream.flush()
                     }                    
-                    
                 }
                 // else handle as HTML by default or XML if specified
                 else {
-                    def format = params.format == "text/xml" ? "text/xml" \
-                : "text/html"                
+                    def format = params.format == "text/xml" ? "text/xml" : "text/html"
                 
                     //log.debug "TargetUrl: $targetUrl (expected type: $format)"
                     try {
-                        render( text: targetUrl.text, contentType: format, encoding: "UTF-8" )
+                        render text: targetUrl.text, contentType: format, encoding: "UTF-8"
                     }
                     catch (Exception e) {                    
                         log.debug "Exception occurred: $e"
@@ -49,7 +47,7 @@ class ProxyController {
             }
         }
         else {
-            render( text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500 )
+            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
     
@@ -85,7 +83,6 @@ class ProxyController {
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
-        
 
         // ACCEPTS UPPER URL PARAM ONLY
         if ( allowedHost(params?.URL) ) {            
@@ -107,10 +104,5 @@ class ProxyController {
         else {
             render( text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500 )
         }
-        
     }
-    
-    
-   
-    
 }

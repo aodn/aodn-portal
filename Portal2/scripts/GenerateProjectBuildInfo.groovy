@@ -8,6 +8,7 @@ target( main: "Collects project build info from environment variables and inject
 
     def buildDate = new Date().format( "dd/MM/yyyy HH:mm" )
     def svnRevision = System.getenv( "SVN_REVISION" ) ?: "unk."
+    def svnUrl = System.getenv( "SVN_URL" ) ?: "unk."
     def buildNumber = System.getenv( "BUILD_NUMBER" ) ?: "unk."
 
     println "Compiling template"
@@ -19,6 +20,7 @@ Instance name: \${ grailsApplication.config.instanceName ?: '<span style="color:
 Environment: \${ Environment.current }<br />
 Build date: $buildDate<br />
 Subversion revision: #$svnRevision<br />
+Subversion url: $svnUrl<br />
 Build: #$buildNumber<br />
 App version: <g:meta name=\"app.version\"/>\
 """
