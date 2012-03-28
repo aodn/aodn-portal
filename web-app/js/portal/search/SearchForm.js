@@ -104,7 +104,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
                      [4, OpenLayers.i18n("parameter"), false, {
                         fieldLabel: OpenLayers.i18n("parameter"),
                         labelSeparator: '',
-                        name: 'dataparam',
+                        name: 'longParamName',
                         field: 'longParamName',
                         xtype: 'portal.search.field.multiselect',
                         proxyUrl: proxyURL,
