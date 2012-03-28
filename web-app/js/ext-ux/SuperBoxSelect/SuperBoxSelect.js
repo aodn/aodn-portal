@@ -132,6 +132,15 @@ Ext.ux.form.SuperBoxSelect = Ext.extend(Ext.ux.form.SuperBoxSelect,Ext.form.Comb
     expandBtnCls: '',
 
     /**
+     * @cfg {Boolean} filterOptions When mode is 'local' the filter options to be applied when filtering the store
+     */
+    filterOptions: {
+      anyMatch: false,
+      caseSensitive: false,
+      exactMatch: false
+    },
+
+    /**
      * @cfg {Boolean} fixFocusOnTabSelect When set to true, the component will not lose focus when a list item is selected with the TAB key. Defaults to true.
      */
     fixFocusOnTabSelect: true,
@@ -1544,7 +1553,7 @@ Ext.ux.form.SuperBoxSelect = Ext.extend(Ext.ux.form.SuperBoxSelect,Ext.form.Comb
                     if(forceAll){
                         this.store.clearFilter();
                     }else{
-                        this.store.filter(this.displayField, q);
+                        this.store.filter(this.displayField, q, this.filterOptions.anyMatch, this.filterOptions.caseSensitive, this.filterOptions.exactMatch);
                     }
                     this.onLoad();
                 }else{
