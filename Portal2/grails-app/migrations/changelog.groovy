@@ -10,6 +10,8 @@ databaseChangeLog = {
     
     include file: '20120329-CJ-AddSelfRegisteredUserSnapshotPermissions.groovy'
     
+	include file: '20120329-DN-RemovingTestingServer.groovy'
+	
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 	
 	// Instance-specific changes
