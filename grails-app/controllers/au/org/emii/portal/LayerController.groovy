@@ -285,15 +285,15 @@ class LayerController {
     }
 
     def server = {
-        def layerDescriptors = []
+		def layerDescriptors = []
         def server = _getServer(params)
         if (server) {
             def criteria = Layer.createCriteria()
             layerDescriptors = criteria.list() {
-                    isNull 'parent'
-					eq 'blacklisted', false
-					eq 'activeInLastScan', true
-                    eq 'server.id', server.id
+                isNull 'parent'
+				eq 'blacklisted', false
+				eq 'activeInLastScan', true
+                eq 'server.id', server.id
             }
         }
 
@@ -301,13 +301,14 @@ class LayerController {
 
         // If just one grouping layer, bypass it
         if ( layerDescriptors.size() == 1 &&
-             layerDescriptors[0].layers.size() ) {
-
+             layerDescriptors[0].layers.size() > 0 ) 
+		{
             layersToReturn = layerDescriptors[0].layers
         }
+			 
+		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
 
         def result = [layerDescriptors: layersToReturn]
-
 		JSON.use("deep") {
 			render result as JSON
         }
@@ -362,5 +363,13 @@ class LayerController {
 	
 	def _toResponseMap(data, total) {
 		return [data: data, total: total]
+	}
+	
+	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
+		def filtered = layerDescriptors.findAll { !it.blacklisted && it.activeInLastScan }
+		filtered.each { layerDescriptor ->
+			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
+		}
+		return filtered
 	}
 }
