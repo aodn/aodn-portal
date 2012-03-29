@@ -64,7 +64,7 @@ function initDetailsPanel()  {
         listeners: {
             // call show when a layer is chosen so we can access this listener
             show: function(slider) {
-                slider.setValue(0,selectedLayer.server.opacity,true);
+                slider.setValue(0,selectedLayer.opacity * 100,true);
             },
             changeComplete: function(slider, val, thumb){
                 selectedLayer.setOpacity(val / 100);
