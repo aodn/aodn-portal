@@ -174,7 +174,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
 	resultsGridBbarBeforeChange: function(bbar, params) {
 
-	    this.runSearch(this.lastSearch, parseInt(this.resultsStore.searchedUpTo) + 1);
+        this.runSearch(this.lastSearch, parseInt(params.start) + 1);
 		//Stop paging control from doing anything itself for the moment
 		// TODO: replace with store driven paging 
 		return false;
