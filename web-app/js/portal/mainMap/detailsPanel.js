@@ -247,13 +247,18 @@ function toggleDetailsLocation() {
 // The details panel may be in the right panel or in the detailsPanel popup
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
-    if(Ext.getCmp('rightDetailsPanel').isVisible()){
-        if (Portal.app.config.hideLayerOptions === true) {
-            //
-            Ext.getCmp('rightDetailsPanel').collapse(true);
+    rightPanel = Ext.getCmp('rightDetailsPanel');
+
+    if (Portal.app.config.hideLayerOptions === true) {
+        console.log(rightPanel.getEl());
+        if(rightPanel.getEl() != undefined){
+            rightPanel.collapse(true);
         }
-        else {
-            Ext.getCmp('rightDetailsPanel').expand(true);
+    }
+    else {
+        console.log(rightPanel.getEl());
+        if(rightPanel.getEl() != undefined){
+            rightPanel.expand(true);
         }
     }
 }
@@ -335,6 +340,7 @@ function updateDetailsPanel(layer) {
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
+        detailsPanel.doLayout();
     }
 }
 
@@ -451,14 +457,7 @@ function refreshLegend(layer) {
     
     var img = Ext.getCmp('legendImage');
     img.setUrl(url);
-    img.on(
-		'show', 
-		function() {
-	        Ext.getCmp('stylePanel').doLayout();
-	        getDetailsPanel().doLayout();
-    	},
-        this
-    );
+    img.show();
     // dont worry if the form is visible here
     styleCombo.setValue(style);
 }

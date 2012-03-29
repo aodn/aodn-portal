@@ -204,8 +204,8 @@ Ext.reg('animations.timePanel', Animations.TimePanel);
 // merge time = YYYY-MM-DDTblaghblagh for getMap requests
 // some servers require the date and time rather than day
 function mergeNewTime(day) {     
-    
-    
+
+
     for(var i=0; i<selectedLayer.dates.length; i++) {
         if (selectedLayer.dates[i].date == day) {
             
