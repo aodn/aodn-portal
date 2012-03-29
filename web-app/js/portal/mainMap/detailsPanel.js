@@ -250,13 +250,11 @@ function closeNHideDetailsPanel() {
     rightPanel = Ext.getCmp('rightDetailsPanel');
 
     if (Portal.app.config.hideLayerOptions === true) {
-        console.log(rightPanel.getEl());
         if(rightPanel.getEl() != undefined){
             rightPanel.collapse(true);
         }
     }
     else {
-        console.log(rightPanel.getEl());
         if(rightPanel.getEl() != undefined){
             rightPanel.expand(true);
         }
