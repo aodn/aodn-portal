@@ -18,7 +18,7 @@ Portal.search.LayerSelectionWindow = Ext.extend(Ext.Window, {
 		        dataIndex: 'title'
 		    },{
 		    	xtype: 'actioncolumn',
-		    	width: 60,
+		    	width: 70,
 		    	items: [{
 	                iconCls: 'p-result-map-go',
 	                tooltip: OpenLayers.i18n('layerSelectionWindowShowOnMinimap'),
@@ -45,11 +45,13 @@ Portal.search.LayerSelectionWindow = Ext.extend(Ext.Window, {
    onShowOnMinimap: function(grid, rowIndex, colIndex) {
       var layerRec = this.store.getLayerLink(rowIndex);
       this.fireEvent('showlayer', layerRec);
+      this.close();
    },
    
    onAddToMap: function(grid, rowIndex, colIndex) {
       var layerRec = this.store.getLayerLink(rowIndex);
       this.fireEvent('addlayer', layerRec);
+      this.close();
    },
    
    bindStore: function(store) {
