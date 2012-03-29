@@ -107,7 +107,7 @@ Animations.TimePanel = Ext.extend(Ext.Panel, {
                     this.setTimeVals(slider);  
                     //console.log(thumb.value);
                     //console.log(selectedLayer.dates[thumb.value].date);
-                    mergeNewTime(selectedLayer.dates[thumb.value].date);  
+                    //mergeNewTime(selectedLayer.dates[thumb.value].date);
                                 
                                 
                 },
@@ -330,7 +330,7 @@ function getDateTimesForDate(day) {
 
 
 function getTimePeriod() {
-    
+
     // disable the 'Start' button for the next possible layer
     Ext.getCmp('startNCAnimationButton').disable();
     
@@ -352,14 +352,13 @@ function getTimePeriod() {
         //alert(p);
         // get the server to tell us the options
         Ext.Ajax.request({
-            url: proxyURL+encodeURIComponent(url + 
+            url: proxyURL+encodeURIComponent(url +
                 "?request=GetMetadata&item=animationTimesteps&layerName=" + 
                 selectedLayer.params.LAYERS + 
                 "&start=" + getDateTimesForDate(p.timeMin.value)[0] +
                 "&end=" + getDateTimesForDate(p.timeMax.value)[0]
             ),
             success: function(resp) { 
-
                 var res = Ext.util.JSON.decode(resp.responseText);
                     
                 if (res.timeStrings != undefined) {

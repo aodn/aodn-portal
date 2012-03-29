@@ -330,7 +330,7 @@ function updateDetailsPanel(layer) {
                     Ext.getCmp('startNCAnimationButton').setVisible(true);
                 }
                 Ext.getCmp('stopNCAnimationButton').setVisible(false);     
-
+                animatePanel.doLayout();
             } 
         }
 
