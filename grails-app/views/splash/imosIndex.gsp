@@ -25,6 +25,6 @@ go to our &#8220;<a class="external" title="Ocean Current page" href="http://imo
 <p>There is a technical summary for those interested in the <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18" title="technical summary" target="_blank">information infrastructure</a> behind this portal.</p>
 <p class="welcome">IMOS is a contributor to the Australian Ocean Data Network (AODN). Please see the web site for information on the AODN and how you and your institution can <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/19" target="_blank">contribute data</a>.</p>
 <p class="welcome">IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative.</p>
-<p class="welcome">See description of new features <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18">here</a></p>
+<p class="welcome">See description of new features <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/21">here</a></p>
 <p class="welcome">If you had an user account on the old portal please see <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18">this link</a> for new information affecting your account</p>
 </div>
