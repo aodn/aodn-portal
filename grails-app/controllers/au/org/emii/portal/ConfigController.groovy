@@ -37,7 +37,8 @@ class ConfigController {
 
 		def tmpJsonObj = JSON.use('deep') {
 			configInstance.defaultMenu?.toDisplayableMenu()
-            configInstance.defaultMenu as JSON
+            def displayMenu = new au.org.emii.portal.display.Menu(configInstance.defaultMenu)
+			displayMenu as JSON
         }
 		
 		instanceAsGenericObj['defaultMenu'] = JSON.parse(tmpJsonObj.toString());
