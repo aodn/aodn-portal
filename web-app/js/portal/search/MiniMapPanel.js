@@ -6,6 +6,7 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
    width: 600,
    center: new OpenLayers.LonLat(133, -25),
    zoom: 3,
+   stateful: false,
    
    bboxLayerStyle: OpenLayers.Util.extend({
 	   fillOpacity: 0.3,
