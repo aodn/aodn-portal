@@ -50,8 +50,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             padding:  '0px 20px 5px 20px',
             split: true,
             width: 350,
-            minWidth: 250,
-            collapseMode: 'mini'
+            minWidth: 250
         });
     },
 	
