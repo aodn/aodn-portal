@@ -6,10 +6,6 @@
 		<g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>        
         
-          
-        <g:javascript library="prototype" />
-        <g:javascript library="application" />
-                     
 	</head>
 	<body>
 		<div class="nav">
@@ -44,9 +40,11 @@
 					
 						<td><g:link action="show" id="${menuInstance.id}">${fieldValue(bean: menuInstance, field: "title")}</g:link></td>
 					
-                                                <!--td>
-                                                         <g:checkBox name="active" value="${menuInstance.active}"   autocomplete="off" onchange="${remoteFunction(action:'setActive',id:menuInstance.id, update:[success:'ajaxStatus', failure: 'ajaxStatus'], params:'\'active=\' + this.checked')}" />
-                                                </td-->
+                        <%--
+                        <td>
+                           <g:checkBox name="active" value="${menuInstance.active}"   autocomplete="off" onchange="${remoteFunction(action:'setActive',id:menuInstance.id, update:[success:'ajaxStatus', failure: 'ajaxStatus'], params:'\'active=\' + this.checked')}" />
+                        </td>
+                        --%>
 					
 						<td><g:formatDate date="${menuInstance.editDate}" /></td>
 					

@@ -154,6 +154,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 			return;
 		}
 		this.baseLayersLoading = true;
+
 		Ext.Ajax.request({
 	        url: 'layer/configuredbaselayers',
 	        scope: this,
@@ -375,7 +376,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	addLayer: function(openLayer, showLoading) {
 		if (!this.containsLayer(openLayer)) {
 			if (!this.defaultLayersLoaded) {
-				this.addBaseLayers();
 				this.waitForDefaultLayers(openLayer, showLoading);
 			}
 			else {

@@ -887,3 +887,18 @@ JQUERY AUTO COMPLETE
 .layer_inactive {
 	background-color: #FF0000;
 }
+
+#national_tidal_centre_list li {
+	padding-left: 2em;
+}
+
+#welcome ul {
+	padding: 0px 0px 10px 10px;
+	margin: 0px 0px 10px 10px;
+	list-style-type: disc;
+}
+
+#welcome ul li {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size: 1em;
+}
