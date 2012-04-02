@@ -145,16 +145,14 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         def dataFromUrl
 
         try {
-            def requestUrl = info.href.toURL()
-
-            log.debug "requestUrl: ${requestUrl}"
-            log.debug "info.type:  ${info.type}"
+            log.debug "info.href: ${info.href}"
+            log.debug "info.type: ${info.type}"
 
             // Bypass disclaimer if MEST url
-            def adjustedUrl = adjustIfMestUrl( requestUrl )
+            def address = adjustIfMestUrl( info.href )
 
             // Get data
-            dataFromUrl = adjustedUrl.newInputStream()
+            dataFromUrl = address.toURL().newInputStream()
 
             zipOut.putNextEntry new ZipEntry( entryFilename )
             
@@ -210,16 +208,17 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
 
         if ( !filenameFromUrl ) {
 
-            filenameFromUrl = unnamedData
+            filenameFromUrl = "un-named data"
             fileExtensionFromUrl = extensionFromMimeType( info.type )
         }
 
         // Uniquify filenames
-        def currentCount = includedFileNames[filenameFromUrl]
+        def composedFilename = "$filenameFromUrl$fileExtensionFromUrl"
+        def currentCount = includedFileNames[composedFilename]
 
         if ( !currentCount ) {
 
-            includedFileNames[filenameFromUrl] = 1
+            includedFileNames[composedFilename] = 1
 
             log.debug "$filenameFromUrl$fileExtensionFromUrl"
 
@@ -227,46 +226,33 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         }
 
         currentCount++
-        includedFileNames[filenameFromUrl] = currentCount
+        includedFileNames[composedFilename] = currentCount
 
-        log.debug "$filenameFromUrl($currentCount)$fileExtensionFromUrl"
+        log.debug "$filenameFromUrl ($currentCount)$fileExtensionFromUrl"
         
-        return "$filenameFromUrl($currentCount)$fileExtensionFromUrl"
+        return "$filenameFromUrl ($currentCount)$fileExtensionFromUrl"
     }
     
     private String extensionFromMimeType(type) {
 
-        def extensionToReturn = mapping()[type]
+        def mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping )
+
+        def extensionToReturn = mapping[type]
 
         // Use mapping to try and guess extension
         return ( extensionToReturn ) ? ".$extensionToReturn" : ""
     }
 
-    private URL adjustIfMestUrl( url ) {
+    private def adjustIfMestUrl( address ) {
 
         // Fix for http://redmine.emii.org.au/issues/1287
         // // Todo - DN: Use a more robust solution
-        if ( url ==~ "(.*)file.disclaimer(.*)" ) {
+        if ( address ==~ "(.*)file.disclaimer(.*)" ) {
 
-            def newUrl = url.toString()
-
-            newUrl = newUrl.replaceAll( "file.disclaimer", "resources.get" )
-            newUrl += "&name=Portal%20Download&org=Unknown&email=Unknown&comments=n%2Fa"
-
-            return newUrl.toURL()
+            address = address.replaceFirst( "file.disclaimer", "resources.get" )
+            address += "&name=Portal%20Download&org=Unknown&email=Unknown&comments=n%2Fa"
         }
 
-        return url
-    }
-
-    private JSONObject _mapping
-    private JSONObject mapping() {
-        
-        if ( _mapping == null ) {
-            
-            _mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping )
-        }
-        
-        return _mapping
+        return address
     }
 }

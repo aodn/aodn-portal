@@ -1,13 +1,10 @@
 package au.org.emii.portal
 
-import grails.test.*
-import grails.converters.JSON
-import org.codehaus.groovy.grails.web.json.*
-import au.org.emii.portal.Config
-import javax.servlet.http.*
-import org.apache.commons.codec.net.URLCodec
-import java.util.zip.*
+import grails.test.ControllerUnitTestCase
 import java.text.DateFormat
+import java.util.zip.ZipInputStream
+import javax.servlet.http.Cookie
+import org.apache.commons.codec.net.URLCodec
 
 class DownloadControllerTests extends ControllerUnitTestCase {
     
@@ -41,22 +38,26 @@ class DownloadControllerTests extends ControllerUnitTestCase {
                
         loadCodec(URLCodec)
                 
+        println ("http://example.com/file1.txt" - "http://example.com/") // REMOVE ME BEFORE COMMIT, YO
+        
         String.metaClass.toURL = {
             
             def self = delegate
             
             return [newInputStream: { // new buffered input stream from expected file
-                    
-                        FileInputStream fis = new FileInputStream( "$resourcesDir/$self" )
+
+                        def filename = self - "http://example.com/"
+
+                        FileInputStream fis = new FileInputStream( "$resourcesDir/$filename" )
                         return new BufferedInputStream( fis )
                     }]
             }
         
         // Configure request
         mockRequest.cookies = [new Cookie("ys-AggregationItems",
-                                          "s:[{\"href\":\"file1.txt\",\"title\":\"File One\"}," + \
-                                             "{\"href\":\"file3.jpeg\",\"title\":\"File Three\"}," + \
-                                             "{\"href\":\"file2.gif\",\"title\":\"File Too\"}]")]
+                                        """s:[{"href":"http://example.com/file1.txt", title:"File One"},
+                                              {"href":"http://example.com/file3.jpeg", title:"File Three"},
+                                              {"href":"http://example.com/file2.gif", title:"File Too"}]""")]
         
         // Call action
         controller.downloadFromCart()
@@ -85,33 +86,35 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             // File data
             String filename = entry.getName()
             byte[] bytes = baos.toByteArray()
-            
+
+            println "filename: $filename"
+
             // Count file entry and check size
             switch ( filename ) {
-                case "File One.txt":
+                case "file1.txt":
                     file1Count++
                     assertEquals "File 1 size", 15, bytes.length
                     break;
                               
-                case "File Too.gif":
+                case "file2.gif":
                     file2Count++
                     assertEquals "File 2 size", 877, bytes.length
                     break;
                     
-                case "File Three.jpeg":
+                case "file3.jpeg":
                     file3Count++
                     assertEquals "File 3 size", 634, bytes.length
                     break;
-                    
+
                 case "download report.txt":
                     fileReportCount++
                     reportData = new String( bytes )
                     break;
                     
                 default:
-                    assertTrue "Unknown file entry $filename", false
+                    fail "Unknown file entry: $filename"
             }
-         }
+        }
         
         assertEquals "File 1 count", 1, file1Count
         assertEquals "File 2 count", 1, file2Count
@@ -119,7 +122,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "Report file count", 1, fileReportCount
         
         // Check response paramteres
-        def downloadCartFilename = String.format( Config.activeInstance().downloadCartFilename, DateFormat.getDateInstance(DateFormat.LONG, mockRequest.getLocale()).format(new Date()) )
+        def downloadCartFilename = String.format( Config.activeInstance().downloadCartFilename, DateFormat.getDateInstance(DateFormat.MEDIUM, mockRequest.getLocale()).format(new Date()), DateFormat.getTimeInstance(DateFormat.SHORT, mockRequest.getLocale()).format(new Date()) )
         
         assertEquals "Content disposition header", "attachment; filename=$downloadCartFilename", mockResponse.getHeader( "Content-Disposition" )
         assertEquals "Content Type", "application/octet-stream", mockResponse.getContentType()
@@ -148,21 +151,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         
         assertEquals "'download report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportDataToCheck
     }
-        
-    void testExtensionFromUrlAndType() {
 
-        assertEquals "Extension should be 'url'", "url", controller.extensionFromUrlAndType("someFile.html", "text/html" )
-        assertEquals "Extension should be 'html'", "html", controller.extensionFromUrlAndType("someFile", "text/html" )
-        assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile", "text/xml" )
-        assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile.z", "text/xml" )
-        assertEquals "Extension should be 'nc'",   "nc",   controller.extensionFromUrlAndType("someFile.nc", "text/html" /* ignored */ )
-        assertEquals "Extension should be 'jpeg'", "jpeg", controller.extensionFromUrlAndType("someFile.jpeg", "text/xml" /* ignored */ )
-        assertEquals "Extension should be ''",     "",     controller.extensionFromUrlAndType("someFile.image", "text/xml" /* ignored */ )
-    }
-    
-    void testMappings() {
-        
-        assertEquals "Mapping() should return JSONObject from config", JSONObject, controller.mapping().getClass()
-        assertEquals "Mapping() should return JSONObject from config", JSON.parse(mimeTypeJson), controller.mapping()
-    }
+    // Todo - DN: Test other added methods
 }
