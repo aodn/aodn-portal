@@ -137,10 +137,10 @@ class MenuController {
 
     def json = {
 		if (params.id && params.id.isNumber()) {
+			def menu = Menu.get(params.id)
+			def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
 			JSON.use("deep") {
-				def menu = Menu.get(params.id)
-				menu.toDisplayableMenu()
-				render menu as JSON
+				render displayMenu as JSON
 			}
 		}
 		render '{}'

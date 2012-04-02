@@ -116,7 +116,7 @@ class Menu {
 	}
 	
 	def toDisplayableMenu() {
-		def ids = _getServerIdsWithAvailableLayers()
+		def ids = getServerIdsWithAvailableLayers()
 		
 		for (def iterator = menuItems.iterator(); iterator.hasNext();) {
 			def item = iterator.next()
@@ -124,13 +124,14 @@ class Menu {
 				iterator.remove()
 			}
 		}
+		return this
 	}
 	
 	def _isLayerViewable(layer) {
 		return layer.activeInLastScan && !layer.blacklisted
 	}
 	
-	def _getServerIdsWithAvailableLayers() {
+	def getServerIdsWithAvailableLayers() {
 		// We don't explicitly map layers to servers so dropping to JDBC
 		def template = new JdbcTemplate(dataSource)
 		def query =
@@ -142,10 +143,6 @@ where not layer.blacklisted and layer.active_in_last_scan
 group by server.id\
 """
 		
-		//def ids = []
-		return template.queryForList(query, Long.class)//.each { row ->
-		//	ids << row.id
-		//}
-		//return ids
+		return template.queryForList(query, Long.class)
 	}
 }

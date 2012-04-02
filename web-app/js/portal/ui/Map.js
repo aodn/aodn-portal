@@ -459,7 +459,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		// attaching to its load start/end event so we can manually call those
 		// actions here
 		this.loadStart();
-		
+
 		var bbox = this.getMapExtent();
 	    var layer = currentLayer;
 	    
@@ -478,7 +478,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        BBOX: bbox.toArray(),
 	        FORMAT: "image/gif"
 	    });
-	         
+
 	    var newNCWMS = new OpenLayers.Layer.Image(
 	        layer.name + " (Animated)",
 	        newUrl,
@@ -493,6 +493,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            resolutions: this.map.baseLayer.resolutions
 	        }
 	    );
+
+        newNCWMS.events.register('loadend', this, this.loadEnd);
+
 	    if (!this.getServer(newNCWMS)) {
 	    	newNCWMS.server = this.getServer(layer);
 	    }
@@ -508,14 +511,14 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	     * if this is set we know its an animated layer
 	     * ******************************************************/
 	    newNCWMS.originalWMSLayer = layer;
-	    
+
 	    /*******************************************************
 	     * add to map is done here
-	     * swap in the new animating layer into openlayers 
+	     * swap in the new animating layer into openlayers
 	     * keeping the layer position
 	     *******************************************************/
-	    this.swapLayers(newNCWMS, currentLayer);
-	    this.loadEnd();
+        this.swapLayers(newNCWMS, currentLayer);
+
 	},
 	
 	getMapExtent: function()  {
@@ -536,7 +539,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        this.map.removeLayer(this.activeLayers[oldLayerId]);    
 	        // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
 	        this.addLayer(newLayer);
-	        this.map.setLayerIndex(newLayer, layerLevelIndex);  
+	        this.map.setLayerIndex(newLayer, layerLevelIndex);
 	    } 
 	},
 	
@@ -744,7 +747,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 
 	loadEnd: function() {
-		this.layersLoading -= 1;
+	    this.layersLoading -= 1;
 	    this.layersLoading = Math.max(this.layersLoading, 0);
 	    jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
 	    if (this.layersLoading == 0) {

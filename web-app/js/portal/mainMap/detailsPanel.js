@@ -247,13 +247,16 @@ function toggleDetailsLocation() {
 // The details panel may be in the right panel or in the detailsPanel popup
 // simply hide the panel leaving it to the next updateDetailsPanel to reset things
 function closeNHideDetailsPanel() {
-    if(Ext.getCmp('rightDetailsPanel').isVisible()){
-        if (Portal.app.config.hideLayerOptions === true) {
-            //
-            Ext.getCmp('rightDetailsPanel').collapse(true);
+    rightPanel = Ext.getCmp('rightDetailsPanel');
+
+    if (Portal.app.config.hideLayerOptions === true) {
+        if(rightPanel.getEl() != undefined){
+            rightPanel.collapse(true);
         }
-        else {
-            Ext.getCmp('rightDetailsPanel').expand(true);
+    }
+    else {
+        if(rightPanel.getEl() != undefined){
+            rightPanel.expand(true);
         }
     }
 }
@@ -323,7 +326,7 @@ function updateDetailsPanel(layer) {
                     Ext.getCmp('startNCAnimationButton').setVisible(true);
                 }
                 Ext.getCmp('stopNCAnimationButton').setVisible(false);     
-
+                animatePanel.doLayout();
             } 
         }
         

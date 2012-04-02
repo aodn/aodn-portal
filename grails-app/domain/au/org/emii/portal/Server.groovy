@@ -1,7 +1,5 @@
 package au.org.emii.portal
 
-import javax.swing.text.LayeredHighlighter
-
 class Server {
     Long id
     String uri

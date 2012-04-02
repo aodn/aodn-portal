@@ -1,16 +1,16 @@
 
 body, html{
-    font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,"Myriad Pro",Myriad,Geneva,Arial,"Lucida Grande",sans-serif;
+    font-family: verdana,arial,sans-serif;
     font-size: 11px;
     background-color: white;       
     /*margin: 5px! important;
     margin-top: 2px! important; */
 }
 p {    
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: verdana,arial,sans-serif;
 }
 td {
-    font-size: 12px;
+    font-size: 14px;
 }
 body {
     min-width:  1020px;
@@ -240,7 +240,7 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
    position: relative;
    top: 48px;
 }
-#viewPortLinks a {
+.viewPortLinks a {
     color: white;
     text-shadow: 2px 2px 6px #014582;
     padding: 8px 14px;
@@ -250,7 +250,7 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     text-decoration: none;
     outline: 0;
 }
-#viewPortLinks a:hover {
+.viewPortLinks a:hover {
     color: #999;
     text-shadow: none;
 }
@@ -892,6 +892,11 @@ JQUERY AUTO COMPLETE
 	padding-left: 2em;
 }
 
+#welcome {
+	font-family: verdana,arial,sans-serif;
+	font-size: 1.3em;
+}
+
 #welcome ul {
 	padding: 0px 0px 10px 10px;
 	margin: 0px 0px 10px 10px;
@@ -899,6 +904,13 @@ JQUERY AUTO COMPLETE
 }
 
 #welcome ul li {
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-	font-size: 1em;
+	font-family: verdana,arial,sans-serif;
+}
+
+.clear {
+	clear: both;
+}
+
+.top_padded {
+	padding-top: 1.3em;
 }
