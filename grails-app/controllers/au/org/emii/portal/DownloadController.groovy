@@ -72,7 +72,7 @@ Download cart report ($currentDate $currentTime)
         jsonArray.each({
 
             // Get file details
-            def entryFilename = filenameFromUrl( it, includedFileNames )
+            def entryFilename = _filenameFromUrl( it, includedFileNames )
 
             // Write to report
             reportText += """
@@ -120,7 +120,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
 ============================================"""
         
         // Add report to zip file
-        def reportEntry = new ZipEntry( "download report.txt" )
+        def reportEntry = new ZipEntry( "download_report.txt" )
         def reportData = reportText.getBytes( "UTF-8" )
         
         zipOut.putNextEntry reportEntry
@@ -149,7 +149,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
             log.debug "info.type: ${info.type}"
 
             // Bypass disclaimer if MEST url
-            def address = adjustIfMestUrl( info.href )
+            def address = _adjustIfMestUrl( info.href )
 
             // Get data
             dataFromUrl = address.toURL().newInputStream()
@@ -177,7 +177,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         return totalBytesRead
     }
     
-    private String filenameFromUrl( info, includedFileNames ) {
+    def _filenameFromUrl( info, includedFileNames ) {
 
         // Todo - DN: Can this be tidied up?
 
@@ -192,7 +192,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         if ( matches ) {
             log.debug "matches[0]: ${ matches[0] }"
             filenameFromUrl = matches[0][1]
-            fileExtensionFromUrl = matches[0][2]
+            fileExtensionFromUrl = matches[0][2] ?: ""
         }
 
         if ( !filenameFromUrl ) {
@@ -202,23 +202,22 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
             if ( matches ) {
                 log.debug "matches[0]: ${ matches[0] }"
                 filenameFromUrl = matches[0][1]
-                fileExtensionFromUrl = matches[0][2]
+                fileExtensionFromUrl = matches[0][2] ?: ""
             }
         }
 
         if ( !filenameFromUrl ) {
 
-            filenameFromUrl = "un-named data"
-            fileExtensionFromUrl = extensionFromMimeType( info.type )
+            filenameFromUrl = "un-named_data"
+            fileExtensionFromUrl = _extensionFromMimeType( info.type )
         }
 
         // Uniquify filenames
-        def composedFilename = "$filenameFromUrl$fileExtensionFromUrl"
-        def currentCount = includedFileNames[composedFilename]
+        def currentCount = includedFileNames[filenameFromUrl]
 
         if ( !currentCount ) {
 
-            includedFileNames[composedFilename] = 1
+            includedFileNames[filenameFromUrl] = 1
 
             log.debug "$filenameFromUrl$fileExtensionFromUrl"
 
@@ -226,14 +225,14 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         }
 
         currentCount++
-        includedFileNames[composedFilename] = currentCount
+        includedFileNames[filenameFromUrl] = currentCount
 
         log.debug "$filenameFromUrl ($currentCount)$fileExtensionFromUrl"
         
         return "$filenameFromUrl ($currentCount)$fileExtensionFromUrl"
     }
     
-    private String extensionFromMimeType(type) {
+    def _extensionFromMimeType(type) {
 
         def mapping = JSON.parse( Config.activeInstance().downloadCartMimeTypeToExtensionMapping )
 
@@ -243,7 +242,7 @@ Time taken: ${(System.currentTimeMillis() - startTime) / 1000} seconds
         return ( extensionToReturn ) ? ".$extensionToReturn" : ""
     }
 
-    private def adjustIfMestUrl( address ) {
+    def _adjustIfMestUrl( address ) {
 
         // Fix for http://redmine.emii.org.au/issues/1287
         // // Todo - DN: Use a more robust solution
