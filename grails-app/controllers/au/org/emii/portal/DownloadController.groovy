@@ -76,7 +76,7 @@ Download cart report ($currentDate $currentTime)
 
             // Write to report
             reportText += """
---[ #${numberOfRowsProcessed + 1 /* adjust for 0-based index*/} ]-----------------------------
+--[ #${numberOfRowsProcessed + 1 /* adjust for 0-based index*/} ]------------------------------------
 Title:                ${it.title}
 URL:                  ${it.href}
 Type:                 ${it.type}
