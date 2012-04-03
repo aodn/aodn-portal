@@ -1,0 +1,916 @@
+
+body, html{
+    font-family: verdana,arial,sans-serif;
+    font-size: 11px;
+    background-color: white;       
+    /*margin: 5px! important;
+    margin-top: 2px! important; */
+}
+p {    
+    font-family: verdana,arial,sans-serif;
+}
+td {
+    font-size: 14px;
+}
+body {
+    min-width:  1020px;
+}
+
+h1 {
+    color: #6A6A6A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h2 {
+    color: #6A6A6A;
+    font-size: 16px;
+    font-weight: bold;
+}
+h3 {
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 2px 0 ;
+}
+h4 {
+    color: #6A6A6A;
+    font-size: 12px;
+    margin: 2px 0px;
+}
+h5 {
+    color: #6A6A6A;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+h6 {
+    color: #6A6A6A;
+    display: inline;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana,arial,helvetica,sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
+
+}
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
+
+input.readonlyInput {
+    border: none;
+}
+
+.searchInput {
+    display: block;
+    height: 27px;
+    padding: 15px;
+    margin: 0px 0px 10px 0px! important;
+    font-size: 14px;
+    color: inherit;
+}
+.searchInput.x-form-empty-field {
+    color: #15428B;
+    font-size: inherit;
+}
+.x-form-item-label {
+    color: #15428B;
+}
+
+#activeTreePanel input{
+    margin: 0;
+    
+}
+
+a {
+    color: #6A6A6A;
+}
+
+a img{
+    border: none;
+}
+
+hr {
+border: 0;
+height: 1px;
+margin-top: 10px; 
+margin-bottom: 15px; 
+background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+
+.floatLeft {
+    float: left;
+}
+.buttonPad {
+    padding: 2px 5px 5px 0px
+}
+.leftMenus {
+    background-color: white;
+}
+#leftMenuTabPanel {
+    background-color: red;
+}
+#activeMenuPanel {
+}
+
+.searchFieldSelectors {
+    padding: 5px;
+    margin: 3px 0px;
+    background-color: #fafafa;
+}
+
+.noborder {
+    border: none! important;
+}
+
+/*
+    map while loading
+*/
+.olMapViewport {
+    background-color: #7391AD;
+}
+
+
+/* the main tabPanel for the portal */
+.mainTabPanelHeader .x-tab-strip-wrap 
+{
+    display: none;
+}
+/* added to buttons on hover with jQuery */
+.hover {
+    color: black;
+    background-color: #CCCCCC;
+    border: 1px solid #666;
+    cursor: pointer;
+}
+
+#centerTabPanel {
+    border: 0px solid white;
+}
+
+#header {
+    background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;
+    height: 300px;
+    width: 100%;
+
+}
+#headerTail {   
+    height: 30px;
+    background: url("../images/shadowLight.png") repeat-x scroll left top white;
+}
+#header h1 {
+    color: white;
+    padding: 50px 20px 0px 20px;
+    float: left;
+}
+#logo {
+    margin: 3px 5px;
+    float: left;
+}
+#loader {
+    background-color: #0B5584;
+    border: 0px solid #CBCED3;
+    border-radius: 6px ;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 10px;
+    height: 20px;    
+    width: 150px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;
+}
+
+#loader p {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 2px 1px 3px #333333;
+}
+.mapFooter {
+    background: url("../images/shadowLight.png") repeat-x scroll left top white; 
+}
+#mainHomePanel{
+    background-color: whitesmoke;
+   background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px); 
+   background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
+   
+   border-radius: 6px;
+   /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
+}
+
+.footer {       
+    color: #0B5584;
+    font-size: 9px;
+    background-color: white;
+}
+.footerText {   
+}
+.footer .x-box-inner {
+    overflow: visible;
+}
+.footer a{
+    color: #0B5584;
+    text-decoration: none;    
+}
+.footer a:hover{
+    text-decoration: underline;    
+}
+
+#mapLinks {
+    top: auto! important;
+    bottom: 0px! important;
+    z-index: 900! important;
+}
+
+
+#viewPortLinks  {
+   position: relative;
+   top: 48px;
+}
+.viewPortLinks a {
+    color: white;
+    text-shadow: 2px 2px 6px #014582;
+    padding: 8px 14px;
+    margin-right: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    outline: 0;
+}
+.viewPortLinks a:hover {
+    color: #999;
+    text-shadow: none;
+}
+#mapSpinnerPanel {
+    padding-left: 10px;
+}
+
+.viewPortLinksBackground {
+    float: left;
+    padding: 4px 10px;
+    margin-right: 5px;
+    background: url("../images/mapshadow.png") repeat-x scroll left top #0B5584;
+    border-radius: 14px;   
+}
+
+#headerTitle {
+    text-shadow: 3px 3px 3px #014582;
+}
+
+#toplinks {
+    color: white;
+    float: right;
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+#toplinks a {
+    color: white;
+    text-shadow: 2px 2px 6px #014582;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 3px;
+    text-decoration: none;
+}
+
+#toplinks a:hover {
+    color: black;
+    text-shadow: none;
+}
+
+a.userlink {
+    font-size: inherit! important;
+    text-decoration: underline! important;
+    margin-right: 15px! important;
+}
+.community {
+    padding: 10px 0;
+}
+
+.viewPortTabActive {        
+    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;  
+    color: #333333;  
+}
+.viewPortTabActive a {      
+    color: #333333! important;     
+    text-shadow: none! important;
+}
+
+#downloadCart {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
+    border-radius: 10px 3px 10px 3px;
+    color: white;
+    float: right;
+    padding: 4px 10px 6px;
+    position: absolute;
+    right: 6px;
+    top: 45px;
+}
+#downloadCart div {
+    padding-top: 3px;
+}
+#downloadCart a {
+    color: white;
+    font-size: 11px;
+    margin: 0 3px;
+    text-decoration: none;
+}
+#downloadCart a:hover {
+    font-weight: bold;
+}
+#header .emptyCart {
+    /* color: #C1CFDC; */
+    display: none;
+}
+#downloadCartControls {
+    text-align: right;
+}
+.emptyCart #downloadCartControls {
+    display: none;
+}
+
+.alpha60 {
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0) transparent;
+    /* RGBa with 0.6 opacity */
+    background: rgba(0, 0, 0, 0.6);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+
+
+
+.motd {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color: white;
+    padding: 10px;
+    border: 6px solid #F4F4F4;
+    font-size: 12px;
+
+}
+
+#mainMapCentrePanel {
+    background-color: #8AA8C4;
+}
+
+
+a[rel="external"], a.external {
+    padding-right: 15px;
+    background: url(../images/extlink.gif) no-repeat 100% 50%;
+    zoom: 1;
+}
+.mainlinks {
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    margin-right: 10px;    
+    padding-left: 10px;
+    border-left: 1px solid #99CCFF;
+}
+a:hover.mainlinks {
+    color: black;
+}
+.noBackgroundImage * {
+    background-image: none! important;
+}
+.bold {
+    font-weight: bold;
+}
+
+/* login register forgotten password */
+.auth table {
+    border:0;
+    border-spacing: 4px;
+}
+
+.authentication-formLinks {
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    font-size: 14px;
+}
+
+.authentication-form-floated {
+
+    position: absolute;
+    top: 150px;
+    left: 210px;
+}
+
+.authentication-form h2 {
+    padding-bottom: 0.8em;
+}
+.authentication-form label {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.authentication-form .authentication-hints {
+    font-size: 0.9em;
+    font-style: italic;
+    padding: 10px 5px;
+}
+
+/* MESSAGES AND ERRORS */
+
+.errors, .message {
+    font-size: 0.9em;
+    line-height: 2;
+    margin: 2em 0em;
+    padding: 0.5em;
+}
+
+.message {
+    background: #f3f3ff;
+    border: 1px solid #b2d1ff;
+    color: #006dba;
+    -moz-box-shadow: 0 0 0.25em #b2d1ff;
+    -webkit-box-shadow: 0 0 0.25em #b2d1ff;
+    box-shadow: 0 0 0.25em #b2d1ff;
+}
+
+.errors {
+    background: #fff3f3;
+    border: 1px solid #ffaaaa;
+    color: #cc0000;
+    -moz-box-shadow: 0 0 0.25em #ff8888;
+    -webkit-box-shadow: 0 0 0.25em #ff8888;
+    box-shadow: 0 0 0.25em #ff8888;
+}
+
+.errors ul,
+.message {
+    padding: 0;
+}
+
+.errors li {
+    list-style: none;
+    background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
+    text-indent: 22px;
+}
+
+.message {
+    background: transparent url(../images/skin/information.png) 3px 5px no-repeat;
+    text-indent: 22px;
+    padding: 5px;
+}
+
+
+/*
+Geoserver default tables
+*/
+table.featureInfo, table.featureInfo td, table.featureInfo th {
+    border:1px solid #ddd;
+    border-collapse:collapse;
+    margin:0;
+    padding:0;
+    font-size: 90%;
+    padding:.2em .1em;
+}
+table.featureInfo th {
+    padding:.2em .2em;
+    font-weight:bold;
+    background:#eee;
+}
+table.featureInfo td{
+    background:#fff;
+}
+table.featureInfo tr.odd td{
+    background:#eee;
+}
+table.featureInfo caption{
+    text-align:left;
+    font-size:100%;
+    font-weight:bold;
+    text-transform:uppercase;
+    padding:.2em .2em;
+}
+
+
+
+#mapdiv {
+    position: absolute;	
+    z-index: 1;
+    height: 100%;
+    width:100%;
+}
+
+
+.topdrop  {
+    background-image:url(../images/mapshadow.png);
+    background-position:left top;
+    background-repeat:repeat-x;  
+    z-index: 100;
+    width: 100%;
+    height:10px;
+    position: absolute;
+}
+
+
+
+.leftdrop  {
+    background-image:url(../images/leftshadow.png);
+    background-position:left top;
+    background-repeat:repeat-y;
+    z-index: 101;
+    width:10px ;
+    height:100%;
+    position: absolute;
+}
+
+
+
+#mapscale {
+    width: 90px;
+    z-index: 3;
+    position: relative;
+    float: left;	
+    color: white;
+}
+#mapcoords {
+    width: 90px;
+    z-index: 4;
+    position: relative;
+    float: right;
+    color: white;
+    background: inherit;
+}
+#mapcoords b{
+    background: none;
+}
+
+#mapinfo {
+    bottom: 0em;
+    left: 0px;
+    padding: 10px 15px ;
+    display: block;
+    position: absolute;
+    width: 220px;
+    z-index: 3;
+    font-family: Arial;
+    font-size: smaller;
+    -moz-border-radius: 5! important;
+    border: 1px 1px 0 0;
+    background-color:#3c668d;
+    opacity: 0.0;
+    filter: alpha(opacity = 0);
+}
+
+
+
+/* map toolbar */
+
+.semiTransparent {
+    background: inherit! important;
+    background-color:#3c668d! important;
+    opacity: 0.7;
+    filter: alpha(opacity = 70);
+    color: white;
+}
+.semiTransparent button {
+    color: white;
+}
+.semiTransparent .x-item-disabled * {
+    color:  #eee! important;
+}
+.fullTransparency {
+    background: inherit! important;
+    background-color:white! important; 
+    opacity: 0.8! important;
+    filter: alpha(opacity = 80);
+}
+
+.fullTransparency .x-item-disabled * {
+    color: #666! important;
+}
+.fullTransparency button, .fullTransparency a {
+    color: #333;
+}
+
+/* getFeatureInfo popup
+*/
+
+.popupHtml {
+    color:#6A6A6A;
+    background-color: #F4F4F4; 
+    padding: 0px 0px 10px 10px; 
+    
+}
+
+.featureinfocontent {
+    padding: 10px 3px 3px 10px;
+    background-color: white;
+}
+
+.feature {
+    /*  margin: 2px 0px 5px 0px;
+  
+      background-color: #fafafa;
+      background-image:url(../images/mapshadow.png);
+      background-position:left top;
+      background-repeat:repeat-x;
+    */
+    padding: 8px 5px;
+
+}
+.nofeature {
+    margin: 2px 0px 5px 0px;
+    padding: 5px;
+    width:100%;
+    background-color: #fafafa;
+}
+
+
+
+.feature ul li{
+    margin-left: 1em;
+}
+.featureinfocontent .info {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #6D889C;
+    background: #B6C3CD;
+}
+.featureinfocontent .error {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #ACAC0C;
+    background: #FCFCCF;
+}
+
+
+.featureinfocontent {
+    padding: 3px;
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 420px;
+    height: 240px;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: relative;
+}
+
+
+.featureinfocontent_topborder {
+    margin-top: 10px;
+    clear: both;
+}
+.featureinfocontent_topborderimg {
+    width:100%;
+    position:absolute;
+}
+
+
+.featureinfocontent img {
+    padding: 10px 5px;
+}
+.featureinfocontent b { 
+    color:#6A6A6A; 
+    font-weight: bold;
+}
+.featureinfocontent ul { 
+    margin: 5px 0px;
+    padding-left: 2px; 
+    list-style-type: circle;
+}
+.featureinfocontent li { 
+    margin-left: 2px; 
+    padding-left: 2px; 
+    list-style-position: inside;
+}
+
+
+
+.block h3 {
+    border: solid 1px #cccccc;
+    background-color: #efefef;
+    padding-left: 3px;
+    width: 100%;
+}
+
+p.important {
+    color:#3c668d;
+    font-weight: bold;
+}
+
+.extAjaxLoading {  
+    border-radius: 4px;    
+    padding: 3px;
+    background-color: #ffffff! important;
+}
+.extAjaxLoading div {       
+    background-color: #ffffff! important;
+}
+
+.argodates {
+
+    font-size: .9em;
+    background-color: #ffffff;
+    padding: 2px 10px;
+}
+
+/* openlayers */
+
+.olControlScaleLine {
+    bottom: 3px! important;
+}
+div.olControlMousePosition {
+    bottom: 5px! important;
+    left: 120px;
+    font-size: 11px! important;
+    font-weight: bold;
+    right:auto! important;
+    color: #253745;
+}
+.olControlOverviewMapElement {
+    background-color: #34546E! important;
+}
+
+.olControlLayerSwitcher .layersDiv {
+    background-color: #34546E! important;
+}
+div.olControlScaleLineBottom {
+    margin-top: -1;
+}
+div.olControlScaleLineTop, div.olControlScaleLineBottom {
+    border-color: #253745;        
+    color: #253745;
+    font-weight: bold;
+}
+
+
+.olControlEditingToolbar, .olControlEditingToolbarItemInactive {
+    width: 50px;
+}
+.olControlEditingToolbar div {
+    float: left;
+}
+
+
+
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
+    background-color: transparent;
+}
+a.ygtvlabel:hover {
+    text-decoration:underline;
+}
+
+
+
+/*
+JQUERY AUTO COMPLETE
+*/
+
+.ac_results {
+    padding: 0px;
+    border: 1px solid #999;
+    background-color: white;
+    overflow: hidden;
+    z-index: 99999;
+}
+
+.ac_results ul {
+    width: 100%;
+    list-style-position: outside;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ac_results li {
+    margin: 0px;
+    padding: 2px 5px;
+    cursor: default;
+    display: block;
+    /*
+    if width will be 100% horizontal scrollbar will apear
+    when scroll mode will be used
+    */
+    /*width: 100%;*/
+    font: menu;
+    /*
+    it is very important, if line-height not setted or setted
+    in relative units scroll will be broken in firefox
+    */
+    line-height: 16px;
+    overflow: hidden;
+}
+
+.ac_loading {
+    background: white url('../images/spinner.gif') right center no-repeat;
+}
+
+
+.smallIndentInputBox {
+    padding-left: 0px! important;
+}
+
+
+#detailsPanel {z-index: 1200 !important} 
+
+#detailsPanelTabs .x-tab-panel-header {
+    background-color: white;
+}
+
+
+#mapOptions {
+    margin: 1px 6px 0px 4px;
+    padding: 10px;
+    background-color: #F1F1F0;    
+    border-radius: 10px;
+    border: 1px solid #CBCED3;
+    box-shadow: 2px 2px 3px 1px #EEEEEE;
+}
+
+#mapOptions div {
+    background-color: #F1F1F0;
+}
+.emptyActiveLayerTreePanelText {
+    margin: 10px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.p-btn-transect {
+   background-image: url(../images/draw.png);
+}
+
+.olControlDrawFeatureActive .olControlDrawFeature {
+    position: absolute;
+    float: left;
+    width: 42px;
+    z-index: 1001;
+    margin-top: 180px;
+    height: 22px;
+    background-image: url("../images/draw.png?");
+    background-position:12px 1px;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.menuHeader {
+    /*background: url(../images/menuHeader.png) 0px -13px repeat-x;
+    border: medium none;*/
+    
+    color: #15428B;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 1px 10px 10px;
+}
+
+#menuHeaderTail{
+    background: url(../images/menuHeader.png) 0px -13px repeat-x;
+}
+
+.layer_blacklisted {
+	background-color: #333333;
+}
+
+.layer_inactive {
+	background-color: #FF0000;
+}
+
+#national_tidal_centre_list li {
+	padding-left: 2em;
+}
+
+#welcome {
+	font-family: verdana,arial,sans-serif;
+	font-size: 1.3em;
+}
+
+#welcome ul {
+	padding: 0px 0px 10px 10px;
+	margin: 0px 0px 10px 10px;
+	list-style-type: disc;
+}
+
+#welcome ul li {
+	font-family: verdana,arial,sans-serif;
+}
+
+.clear {
+	clear: both;
+}
+
+.top_padded {
+	padding-top: 1.3em;
+}

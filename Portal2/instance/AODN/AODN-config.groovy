@@ -1,1 +1,0 @@
-def appName = 'AODN'
