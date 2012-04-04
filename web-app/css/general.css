@@ -1,4 +1,3 @@
-
 body, html{
     font-family: verdana,arial,sans-serif;
     font-size: 11px;
@@ -6,12 +5,15 @@ body, html{
     /*margin: 5px! important;
     margin-top: 2px! important; */
 }
+
 p {    
     font-family: verdana,arial,sans-serif;
 }
+
 td {
     font-size: 14px;
 }
+
 body {
     min-width:  1020px;
 }
@@ -27,22 +29,26 @@ h2 {
     font-size: 16px;
     font-weight: bold;
 }
+
 h3 {
     color: #6A6A6A;
     font-size: 14px;
     font-weight: bold;
     margin: 2px 0 ;
 }
+
 h4 {
     color: #6A6A6A;
     font-size: 12px;
     margin: 2px 0px;
 }
+
 h5 {
     color: #6A6A6A;
     font-size: 11px;
     margin: 2px 0 ;
 }
+
 h6 {
     color: #6A6A6A;
     display: inline;
@@ -66,7 +72,6 @@ input[type="checkbox"], input[type="radio"]{
     border: 0;
 }
 
-
 input.readonlyInput {
     border: none;
 }
@@ -89,7 +94,6 @@ input.readonlyInput {
 
 #activeTreePanel input{
     margin: 0;
-    
 }
 
 a {
@@ -101,28 +105,32 @@ a img{
 }
 
 hr {
-border: 0;
-height: 1px;
-margin-top: 10px; 
-margin-bottom: 15px; 
-background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    border: 0;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
 }
 
 .floatLeft {
     float: left;
 }
+
 .buttonPad {
     padding: 2px 5px 5px 0px
 }
+
 .leftMenus {
     background-color: white;
 }
+
 #leftMenuTabPanel {
     background-color: red;
 }
+
 #activeMenuPanel {
 }
 
@@ -143,12 +151,12 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     background-color: #7391AD;
 }
 
-
 /* the main tabPanel for the portal */
 .mainTabPanelHeader .x-tab-strip-wrap 
 {
     display: none;
 }
+
 /* added to buttons on hover with jQuery */
 .hover {
     color: black;
@@ -167,19 +175,23 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     width: 100%;
 
 }
+
 #headerTail {   
     height: 30px;
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
+
 #header h1 {
     color: white;
     padding: 50px 20px 0px 20px;
     float: left;
 }
+
 #logo {
     margin: 3px 5px;
     float: left;
 }
+
 #loader {
     background-color: #0B5584;
     border: 0px solid #CBCED3;
@@ -198,9 +210,11 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     font-size: 14px;
     text-shadow: 2px 1px 3px #333333;
 }
+
 .mapFooter {
     background: url("../images/shadowLight.png") repeat-x scroll left top white; 
 }
+
 #mainHomePanel{
     background-color: whitesmoke;
    background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px); 
@@ -216,15 +230,19 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     font-size: 9px;
     background-color: white;
 }
+
 .footerText {   
 }
+
 .footer .x-box-inner {
     overflow: visible;
 }
+
 .footer a{
     color: #0B5584;
     text-decoration: none;    
 }
+
 .footer a:hover{
     text-decoration: underline;    
 }
@@ -235,11 +253,11 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     z-index: 900! important;
 }
 
-
 #viewPortLinks  {
    position: relative;
    top: 48px;
 }
+
 .viewPortLinks a {
     color: white;
     text-shadow: 2px 2px 6px #014582;
@@ -250,10 +268,12 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     text-decoration: none;
     outline: 0;
 }
+
 .viewPortLinks a:hover {
     color: #999;
     text-shadow: none;
 }
+
 #mapSpinnerPanel {
     padding-left: 10px;
 }
@@ -277,6 +297,7 @@ background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba
     right: 20px;
     top: 12px;
 }
+
 #toplinks a {
     color: white;
     text-shadow: 2px 2px 6px #014582;
@@ -296,6 +317,7 @@ a.userlink {
     text-decoration: underline! important;
     margin-right: 15px! important;
 }
+
 .community {
     padding: 10px 0;
 }
@@ -304,6 +326,7 @@ a.userlink {
     background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;  
     color: #333333;  
 }
+
 .viewPortTabActive a {      
     color: #333333! important;     
     text-shadow: none! important;
@@ -319,25 +342,31 @@ a.userlink {
     right: 6px;
     top: 45px;
 }
+
 #downloadCart div {
     padding-top: 3px;
 }
+
 #downloadCart a {
     color: white;
     font-size: 11px;
     margin: 0 3px;
     text-decoration: none;
 }
+
 #downloadCart a:hover {
     font-weight: bold;
 }
+
 #header .emptyCart {
     /* color: #C1CFDC; */
     display: none;
 }
+
 #downloadCartControls {
     text-align: right;
 }
+
 .emptyCart #downloadCartControls {
     display: none;
 }
@@ -353,8 +382,6 @@ a.userlink {
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 }
 
-
-
 .motd {
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -363,19 +390,18 @@ a.userlink {
     padding: 10px;
     border: 6px solid #F4F4F4;
     font-size: 12px;
-
 }
 
 #mainMapCentrePanel {
     background-color: #8AA8C4;
 }
 
-
 a[rel="external"], a.external {
     padding-right: 15px;
     background: url(../images/extlink.gif) no-repeat 100% 50%;
     zoom: 1;
 }
+
 .mainlinks {
     font-size: 13px;
     font-weight: bold;
@@ -384,12 +410,15 @@ a[rel="external"], a.external {
     padding-left: 10px;
     border-left: 1px solid #99CCFF;
 }
+
 a:hover.mainlinks {
     color: black;
 }
+
 .noBackgroundImage * {
     background-image: none! important;
 }
+
 .bold {
     font-weight: bold;
 }
@@ -472,7 +501,6 @@ a:hover.mainlinks {
     padding: 5px;
 }
 
-
 /*
 Geoserver default tables
 */
@@ -484,17 +512,21 @@ table.featureInfo, table.featureInfo td, table.featureInfo th {
     font-size: 90%;
     padding:.2em .1em;
 }
+
 table.featureInfo th {
     padding:.2em .2em;
     font-weight:bold;
     background:#eee;
 }
+
 table.featureInfo td{
     background:#fff;
 }
+
 table.featureInfo tr.odd td{
     background:#eee;
 }
+
 table.featureInfo caption{
     text-align:left;
     font-size:100%;
@@ -503,15 +535,12 @@ table.featureInfo caption{
     padding:.2em .2em;
 }
 
-
-
 #mapdiv {
     position: absolute;	
     z-index: 1;
     height: 100%;
     width:100%;
 }
-
 
 .topdrop  {
     background-image:url(../images/mapshadow.png);
@@ -523,8 +552,6 @@ table.featureInfo caption{
     position: absolute;
 }
 
-
-
 .leftdrop  {
     background-image:url(../images/leftshadow.png);
     background-position:left top;
@@ -535,8 +562,6 @@ table.featureInfo caption{
     position: absolute;
 }
 
-
-
 #mapscale {
     width: 90px;
     z-index: 3;
@@ -544,6 +569,7 @@ table.featureInfo caption{
     float: left;	
     color: white;
 }
+
 #mapcoords {
     width: 90px;
     z-index: 4;
@@ -552,6 +578,7 @@ table.featureInfo caption{
     color: white;
     background: inherit;
 }
+
 #mapcoords b{
     background: none;
 }
@@ -567,13 +594,11 @@ table.featureInfo caption{
     font-family: Arial;
     font-size: smaller;
     -moz-border-radius: 5! important;
-    border: 1px 1px 0 0;
+    border-width: 1px 1px 0 0;
     background-color:#3c668d;
     opacity: 0.0;
     filter: alpha(opacity = 0);
 }
-
-
 
 /* map toolbar */
 
@@ -584,12 +609,15 @@ table.featureInfo caption{
     filter: alpha(opacity = 70);
     color: white;
 }
+
 .semiTransparent button {
     color: white;
 }
+
 .semiTransparent .x-item-disabled * {
     color:  #eee! important;
 }
+
 .fullTransparency {
     background: inherit! important;
     background-color:white! important; 
@@ -600,6 +628,7 @@ table.featureInfo caption{
 .fullTransparency .x-item-disabled * {
     color: #666! important;
 }
+
 .fullTransparency button, .fullTransparency a {
     color: #333;
 }
@@ -628,8 +657,8 @@ table.featureInfo caption{
       background-repeat:repeat-x;
     */
     padding: 8px 5px;
-
 }
+
 .nofeature {
     margin: 2px 0px 5px 0px;
     padding: 5px;
@@ -637,24 +666,23 @@ table.featureInfo caption{
     background-color: #fafafa;
 }
 
-
-
 .feature ul li{
     margin-left: 1em;
 }
+
 .featureinfocontent .info {
     padding: 5px;
     margin: 4px;
     border: 1px solid #6D889C;
     background: #B6C3CD;
 }
+
 .featureinfocontent .error {
     padding: 5px;
     margin: 4px;
     border: 1px solid #ACAC0C;
     background: #FCFCCF;
 }
-
 
 .featureinfocontent {
     padding: 3px;
@@ -667,36 +695,36 @@ table.featureInfo caption{
     position: relative;
 }
 
-
 .featureinfocontent_topborder {
     margin-top: 10px;
     clear: both;
 }
+
 .featureinfocontent_topborderimg {
     width:100%;
     position:absolute;
 }
 
-
 .featureinfocontent img {
     padding: 10px 5px;
 }
+
 .featureinfocontent b { 
     color:#6A6A6A; 
     font-weight: bold;
 }
+
 .featureinfocontent ul { 
     margin: 5px 0px;
     padding-left: 2px; 
     list-style-type: circle;
 }
+
 .featureinfocontent li { 
     margin-left: 2px; 
     padding-left: 2px; 
     list-style-position: inside;
 }
-
-
 
 .block h3 {
     border: solid 1px #cccccc;
@@ -715,6 +743,7 @@ p.important {
     padding: 3px;
     background-color: #ffffff! important;
 }
+
 .extAjaxLoading div {       
     background-color: #ffffff! important;
 }
@@ -731,6 +760,7 @@ p.important {
 .olControlScaleLine {
     bottom: 3px! important;
 }
+
 div.olControlMousePosition {
     bottom: 5px! important;
     left: 120px;
@@ -739,6 +769,7 @@ div.olControlMousePosition {
     right:auto! important;
     color: #253745;
 }
+
 .olControlOverviewMapElement {
     background-color: #34546E! important;
 }
@@ -746,33 +777,32 @@ div.olControlMousePosition {
 .olControlLayerSwitcher .layersDiv {
     background-color: #34546E! important;
 }
+
 div.olControlScaleLineBottom {
-    margin-top: -1;
+    margin-top: -1px;
 }
+
 div.olControlScaleLineTop, div.olControlScaleLineBottom {
     border-color: #253745;        
     color: #253745;
     font-weight: bold;
 }
 
-
 .olControlEditingToolbar, .olControlEditingToolbarItemInactive {
     width: 50px;
 }
+
 .olControlEditingToolbar div {
     float: left;
 }
 
-
-
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
     background-color: transparent;
 }
+
 a.ygtvlabel:hover {
     text-decoration:underline;
 }
-
-
 
 /*
 JQUERY AUTO COMPLETE
@@ -817,18 +847,15 @@ JQUERY AUTO COMPLETE
     background: white url('../images/spinner.gif') right center no-repeat;
 }
 
-
 .smallIndentInputBox {
     padding-left: 0px! important;
 }
 
-
-#detailsPanel {z-index: 1200 !important} 
+#detailsPanel {z-index: 1200 !important}
 
 #detailsPanelTabs .x-tab-panel-header {
     background-color: white;
 }
-
 
 #mapOptions {
     margin: 1px 6px 0px 4px;
@@ -842,6 +869,7 @@ JQUERY AUTO COMPLETE
 #mapOptions div {
     background-color: #F1F1F0;
 }
+
 .emptyActiveLayerTreePanelText {
     margin: 10px;
     font-weight: normal;

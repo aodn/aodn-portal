@@ -1,5 +1,3 @@
-
-
 html {
     background-color: white;
     height: 100%;
@@ -16,8 +14,6 @@ body {
 
 }
 
-
-
 html.no-cssgradients {
     background-color: #aaa;
 }
@@ -25,10 +21,6 @@ html.no-cssgradients {
 .ie6 html {
     height: 100%;
 }
-
-
-
-
 
 /* replace with .no-boxshadow body if you have modernizr available */
 .ie6 body,
@@ -158,7 +150,6 @@ img {
     -webkit-box-shadow: 0 0 3px 1px #aaaaaa;
     box-shadow: 0 0 3px 1px #aaaaaa;
     zoom: 1;
-
 }
 
 .nav ul {
@@ -184,13 +175,12 @@ img {
     border-radius: 0.3em;
 }
 
-
 .nav a:active, .nav a:visited {
     color: #666666;
 }
 
 .nav a:focus, .nav a:hover {
-    background-color: #white;
+    background-color: white;
     color: black;
     outline: none;
 }
@@ -592,7 +582,6 @@ th:hover, tr:hover {
     overflow: visible;
     padding: 0.25em 0.7em;
     text-decoration: none;
-
 }
 
 .buttons input:hover, .buttons input:focus,
