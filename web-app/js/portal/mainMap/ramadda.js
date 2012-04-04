@@ -352,7 +352,7 @@ function ramaddaSearchWindow(){
         ,{
             name:'icon', 
             type:'string'
-        },
+        }
         ]
         )
 

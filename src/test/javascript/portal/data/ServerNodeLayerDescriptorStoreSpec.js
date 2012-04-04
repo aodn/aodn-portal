@@ -2,7 +2,7 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 
 	var node = new Ext.tree.TreeNode({
 		text: 'My Root Node',
-		grailsServerId: '1',
+		grailsServerId: '1'
 	});
 	
 	function clearChildren() {
@@ -84,7 +84,7 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 			    {id: '99', title: 'Child 99', server: '1'},
 			    {id: '98', title: 'Child 98', server: '1'},
 			    {id: '97', title: 'Child 97', server: '1'},
-			    {id: '96', title: 'Child 96', server: '1'},
+			    {id: '96', title: 'Child 96', server: '1'}
 			];
 			store.addChildren(store.node, layers);
 			expect(store.node.hasChildNodes()).toBeTruthy();
@@ -99,7 +99,7 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 			    {id: '99', title: 'Child 99', server: '1'},
 			    {id: '98', title: 'Child 98', server: '1'},
 			    {id: '97', title: 'Child 97', server: '1'},
-			    {id: '96', title: 'Child 96', server: '1'},
+			    {id: '96', title: 'Child 96', server: '1'}
 			];
 			spyOn(store, 'createChild');
 			store.addChildren(store.node, layers);
@@ -114,7 +114,7 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 			    {id: '99', title: 'Child 99', server: '1'},
 			    {id: '98', title: 'Child 98', server: '1'},
 			    {id: '97', title: 'Child 97', server: '1'},
-			    {id: '96', title: 'Child 96', server: '1'},
+			    {id: '96', title: 'Child 96', server: '1'}
 			];
 			spyOn(store, 'addChildren');
 			store.createChild(store.node, '1', 'First Child', layers, '1');
@@ -129,7 +129,7 @@ describe("Portal.data.ServerNodeLayerDescriptorStore", function() {
 			    {id: '99', title: 'Child 99', server: '1'},
 			    {id: '98', title: 'Child 98', server: '1'},
 			    {id: '97', title: 'Child 97', server: '1'},
-			    {id: '96', title: 'Child 96', server: '1'},
+			    {id: '96', title: 'Child 96', server: '1'}
 			];
 			store.createChild(store.node, '1', 'First Child', layers, '1');
 			expect(store.node.childNodes.length).toEqual(1);

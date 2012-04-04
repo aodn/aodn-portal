@@ -44,7 +44,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
 		this.store.baseParams = { phrase: filter }
 		this.store.load({ params: { start: 0, limit: 50 } });
 		this.doLayout();
-	},
+	}
 });
 
 Portal.ui.LayerSearchPanel = Ext.extend(Ext.FormPanel, {

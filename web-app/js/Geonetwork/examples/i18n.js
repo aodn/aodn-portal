@@ -120,7 +120,7 @@ var GeoNetworkApp = function(){
                 // height : 200,
                 autoScroll: true,
                 layout: 'fit',
-                items: metadataResultsView,
+                items: metadataResultsView
             });
             
         }
