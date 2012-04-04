@@ -10,7 +10,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
       region: 'west', 
       appConfig: cfg.appConfig, 
       mapPanel: this.mainTabPanel.getMapPanel(),
-      width: cfg.appConfig.westWidth,
+      width: cfg.appConfig.westWidth
     });
 
     var config = Ext.apply({

@@ -72,6 +72,5 @@ Portal.snapshot.SaveSnapshotDialog = Ext.extend(Ext.Window, {
   onFailedSave: function(errors) {
     Ext.Msg.alert("Unexpected failure saving snapshot", errors);
     this.close();
-  },
-
+  }
 });
