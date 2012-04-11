@@ -28,7 +28,7 @@ class DownloadController {
 
         def jsonArray = JSON.parse( jsonData )
 
-        log.debug "jsonArray: ${jsonArray.length} items"
+        log.debug "jsonArray: ${jsonArray.length()} items"
         log.debug "jsonArray: ${jsonArray}"
 
         // Prepare response stream and create zip stream
