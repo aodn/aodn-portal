@@ -24,7 +24,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testDownloadFromCartNoCookies() {
 
-        mockRequest.cookies = null
+        mockRequest.cookies = [new Cookie("ThisIsNotTheCookieYouAreLookingFor","")]
 
         controller.downloadFromCart()
 

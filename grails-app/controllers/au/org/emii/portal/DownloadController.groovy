@@ -11,15 +11,16 @@ class DownloadController {
 
     def downloadFromCart = {
 
+        // Read data from cookies
+        def downloadCartCookie = request.cookies?.find{ it.name == CookieName } // Should only be one
+
         // Break early if no cookies
-        if ( !request.cookies ) {
+        if ( !downloadCartCookie ) {
 
             render text: "No data to download", status: 500
             return
         }
 
-        // Read data from cookies
-        def downloadCartCookie = request.cookies.find{ it.name == CookieName } // Should only be one
         def jsonData = downloadCartCookie.value.decodeURL()
         jsonData -= CookieDataPrefix // Trim data prefix
 
