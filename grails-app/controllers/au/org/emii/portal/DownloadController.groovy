@@ -27,17 +27,18 @@ class DownloadController {
 
         def jsonArray = JSON.parse( jsonData )
 
-        log.debug "jsonArray: ${jsonArray.length()} items"
+        log.debug "jsonArray: ${jsonArray.length} items"
         log.debug "jsonArray: ${jsonArray}"
 
         // Prepare response stream and create zip stream
         response.setHeader( "Content-Disposition", "attachment; filename=${bulkDownloadService.getArchiveFilename( request.locale )}" )
         response.contentType = "application/octet-stream"
+        def outputStream = response.outputStream
 
         // Ask Service to create archive to outputStream
-        bulkDownloadService.generateArchiveOfFiles jsonArray, response.outputStream, request.locale
+        bulkDownloadService.generateArchiveOfFiles jsonArray, outputStream, request.locale
 
         // Send response
-        response.outputStream.flush()
+        outputStream.flush()
     }
 }
