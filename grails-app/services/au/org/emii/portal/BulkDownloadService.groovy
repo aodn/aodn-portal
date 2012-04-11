@@ -134,12 +134,11 @@ class BulkDownloadService {
 
         reportBodyText += """
 --[ #$numberOfFilesTried ]------------------------------------
-Title:                ${fileInfo.title}
-URL:                  ${fileInfo.href}
-Type:                 ${fileInfo.type}
-Filename in zip file: ${filenameInArchive}
-                      NB. File extension based on URL where possible, otherwise based on provided type information.
-Result:               $statusMessage
+Title:               ${fileInfo.title}
+URL:                 ${fileInfo.href}
+Type:                ${fileInfo.type}
+Filename in archive: ${filenameInArchive}
+Result:              $statusMessage
 """
     }
 

@@ -3,36 +3,32 @@ Download cart report (January 1, 1900 12:00 AM)
 ========================================================================
 
 --[ #1 ]------------------------------------
-Title:                File One
-URL:                  http://example.com/file1.txt
-Type:                 text/plain
-Filename in zip file: file1.txt
-                      NB. File extension based on URL where possible, otherwise based on provided type information.
-Result:               File added (15 Bytes)
+Title:               File One
+URL:                 http://example.com/file1.txt
+Type:                text/plain
+Filename in archive: file1.txt
+Result:              File added (15 Bytes)
 
 --[ #2 ]------------------------------------
-Title:                File Three
-URL:                  http://example.com/file3.jpeg
-Type:                 image/jpeg
-Filename in zip file: file3.jpeg
-                      NB. File extension based on URL where possible, otherwise based on provided type information.
-Result:               File added (634 Bytes)
+Title:               File Three
+URL:                 http://example.com/file3.jpeg
+Type:                image/jpeg
+Filename in archive: file3.jpeg
+Result:              File added (634 Bytes)
 
 --[ #3 ]------------------------------------
-Title:                File Too
-URL:                  http://example.com/file2.gif
-Type:                 image/gif
-Filename in zip file: file2.gif
-                      NB. File extension based on URL where possible, otherwise based on provided type information.
-Result:               File added (877 Bytes)
+Title:               File Too
+URL:                 http://example.com/file2.gif
+Type:                image/gif
+Filename in archive: file2.gif
+Result:              File added (877 Bytes)
 
 --[ #4 ]------------------------------------
-Title:                Non-existent file
-URL:                  http://example.com/fileX.txt
-Type:                 text/plain
-Filename in zip file: fileX.txt
-                      NB. File extension based on URL where possible, otherwise based on provided type information.
-Result:               Could not obtain filestream for http://example.com/fileX.txt
+Title:               Non-existent file
+URL:                 http://example.com/fileX.txt
+Type:                text/plain
+Filename in archive: fileX.txt
+Result:              Could not obtain filestream for http://example.com/fileX.txt
 
 ========================================================================
 Total size before compression: 1526 Bytes
