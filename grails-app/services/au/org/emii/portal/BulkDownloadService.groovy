@@ -10,15 +10,15 @@ class BulkDownloadService {
     static transactional = true
     static scope = "request"
 
-    private static final int BufferSize = 4096 // 4kB
-    private static final def FileDataFromUrl = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
-    private static final def FileDataFromGeoServerUrl = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
-    private static final def GeoServerDownloadUrl = "(.*)file.disclaimer(.*)"
+    static final int BufferSize = 4096 // 4kB
+    static final def FileDataFromUrl = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
+    static final def FileDataFromGeoServerUrl = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
+    static final def GeoServerDownloadUrl = "(.*)file.disclaimer(.*)"
 
-    private static final def GeoServerDownloadDetailsQueryString = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
+    static final def GeoServerDownloadDetailsQueryString = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
 
     def processingStartTime
-    def cfg
+    def cfg = Config.activeInstance()
     def reportBodyText = ""
     def usedFilenames = [:]
     def totalSizeBeforeCompression = 0
@@ -26,11 +26,9 @@ class BulkDownloadService {
     def numberOfFilesAdded = 0
     def zipStream
 
-    void generateArchiveOfFiles( filesToDownload, outputStream ) {
+    void generateArchiveOfFiles( filesToDownload, outputStream, locale ) {
 
         processingStartTime = System.currentTimeMillis()
-
-        if ( !cfg ) cfg = Config.activeInstance()
 
         // Create Zip archive stream
         zipStream = new ZipOutputStream( outputStream )
@@ -41,7 +39,7 @@ class BulkDownloadService {
             _addFileEntry it
         }
 
-        _addDownloadReportToArchive()
+        _addDownloadReportToArchive( locale )
 
         // Close zip stream
         zipStream.close()
@@ -49,11 +47,8 @@ class BulkDownloadService {
 
     def getArchiveFilename( locale ) {
 
-        if ( !cfg ) cfg = Config.activeInstance()
-
-        def now = new Date()
-        def currentDate = DateFormat.getDateInstance( DateFormat.MEDIUM, locale ).format( now )
-        def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT,  locale ).format( now )
+        def currentDate = DateFormat.getDateInstance( DateFormat.MEDIUM, locale ).format( _currentDate() )
+        def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT,  locale ).format( _currentDate() )
 
         return String.format( cfg.downloadCartFilename, currentDate, currentTime )
     }
@@ -65,26 +60,33 @@ class BulkDownloadService {
         _extractFilenameFromUrl( fileInfo )
 
         def fileStream = _getStreamForFile( fileInfo )
-        def filename = _makeFilenameUnique( fileInfo.filenameUsed, fileInfo.fileExtensionUsed )
+        def filenameToUse = _makeFilenameUnique( fileInfo.filenameUsed, fileInfo.fileExtensionUsed )
 
-        def statusMessage = _writeStreamToArchive( filename, fileStream )
-
-        _writeNewDownloadReportEntry( fileInfo, filename, statusMessage )
-
-        log.debug "Status of attempt: $statusMessage"
+        def statusMessage = _writeStreamToArchive( filenameToUse, fileStream, fileInfo )
 
         numberOfFilesTried++
+
+        _writeNewDownloadReportEntry( fileInfo, filenameToUse, statusMessage )
+
+        log.debug "Status of attempt: $statusMessage"
     }
 
-    def _writeStreamToArchive( entryFilename, stream ) {
+    def _writeStreamToArchive( filenameToUse, stream, fileInfo ) {
+
+        // Check for null stream
+        if ( !stream ) return "Could not obtain filestream for ${ fileInfo.href }"
 
         // Ensure we can add another file
         def restrictionAddingFile = _checkRestrictionAddingFile()
-        if ( restrictionAddingFile ) return restrictionAddingFile
+        if ( restrictionAddingFile ) {
+
+            stream?.close()
+            return restrictionAddingFile
+        }
 
         try {
             // Create new Zip Entry
-            zipStream.putNextEntry new ZipEntry( entryFilename )
+            zipStream.putNextEntry new ZipEntry( filenameToUse )
 
             // Write data to new zip entry
             def buffer = new byte[ BufferSize ]
@@ -104,7 +106,7 @@ class BulkDownloadService {
         }
         catch (Exception e) {
 
-            return "$e" // Todo - DN: What here?
+            return "Unknown error adding file"
         }
         finally {
 
@@ -124,12 +126,14 @@ class BulkDownloadService {
 
             return "Unable to add file, maximum size of files allowed reached (${ totalSizeBeforeCompression }/${ cfg.downloadCartMaxFileSize } Bytes)"
         }
+
+        return null // No restrictions
     }
 
     void _writeNewDownloadReportEntry( fileInfo, filenameInArchive, statusMessage ) {
 
         reportBodyText += """
---[ #$numberOfFilesAdded ]------------------------------------
+--[ #$numberOfFilesTried ]------------------------------------
 Title:                ${fileInfo.title}
 URL:                  ${fileInfo.href}
 Type:                 ${fileInfo.type}
@@ -143,62 +147,68 @@ Result:               $statusMessage
 
         def address = fileInfo.href
 
-        if ( !_isGeoServerDisclaimerAddress( address ) ) {
+        try {
+            if ( !_isGeoServerDisclaimerAddress( address ) ) {
 
-            // Get stream of URL
-            return address.toURL().newInputStream()
+                // Get stream of URL
+                return address.toURL().newInputStream()
+            }
+            else { // Handle special-case GeoServer URLs
+
+                // Request disclaimer page (unmodified URL) first to create session on GeoNetwork
+                def firstRequestConn = address.toURL().openConnection()
+                firstRequestConn.connect()
+
+                // Get cookie header (should only be one)
+                def cookieHeader = firstRequestConn.headerFields.find { it.key == "Set-Cookie" }
+                def cookieHeaderValue = cookieHeader.value.get( 0 ) // Only has one value, a delimeted String of cookies
+
+                // Modify URL to ask for file directly, and pass-in dummy field values
+                def geoServerDownloadAddress = _geoServerDownloadAddress( address )
+                def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
+
+                secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
+                secondRequestConn.connect()
+
+                def contentTypeHeader = secondRequestConn.headerFields.find { it.toString().startsWith( "Content-Type" ) }
+                def contentTypeHeaderValue = contentTypeHeader.value.get( 0 )
+
+                // Update file info as GeoNetwork returns file archives
+                fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
+                fileInfo.fileExtensionUsed = ".zip"
+
+                return secondRequestConn.inputStream
+            }
         }
-        else { // Handle special-case GeoServer URLs
+        catch(Exception e) {
 
-            // Request disclaimer page (unmodified URL) first to create session on GeoNetwork
-            def firstRequestConn = address.toURL().openConnection()
-            firstRequestConn.connect()
-
-            // Get cookie header (should only be one)
-            def cookieHeader = firstRequestConn.headerFields.find { it.key == "Set-Cookie" }
-            def cookieHeaderValue = cookieHeader.value.get( 0 ) // Only has one value, a delimeted String of cookies
-
-            // Modify URL to ask for file directly, and pass-in dummy field values
-            def geoServerDownloadAddress = _geoServerDownloadAddress( address )
-            def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
-
-            secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
-            secondRequestConn.connect()
-
-            def contentTypeHeader = secondRequestConn.headerFields.find { it.toString().startsWith( "Content-Type" ) }
-            def contentTypeHeaderValue = contentTypeHeader.value.get( 0 )
-
-            // Update file info as GeoNetwork returns file archives
-            fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
-            fileInfo.fileExtensionUsed = ".zip"
-
-            return secondRequestConn.inputStream
+            return null
         }
     }
 
-    def _finaliseDownloadReport() {
+    def _finaliseDownloadReport( locale ) {
 
-        def currentDate = 0
-        def currentTime = 0
+        def currentDate = DateFormat.getDateInstance( DateFormat.LONG,  locale ).format( _currentDate() )
+        def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT, locale ).format( _currentDate() )
 
         def finalReportText = """\
-============================================
+========================================================================
 Download cart report ($currentDate $currentTime)
-============================================
+========================================================================
 $reportBodyText
-============================================
+========================================================================
 Total size before compression: $totalSizeBeforeCompression Bytes
 Number of files included: $numberOfFilesAdded/$numberOfFilesTried
-Time taken: ${(System.currentTimeMillis() - processingStartTime) / 1000} seconds
-============================================"""
+Time taken: ${ _timeTaken() } seconds
+========================================================================"""
 
         return finalReportText.getBytes( "UTF-8" )
     }
 
-    void _addDownloadReportToArchive() {
+    void _addDownloadReportToArchive( locale ) {
 
         def reportEntry = new ZipEntry( "download_report.txt" )
-        def bytes = _finaliseDownloadReport()
+        def bytes = _finaliseDownloadReport( locale )
 
         zipStream.putNextEntry reportEntry
         zipStream.write bytes, 0, bytes.length
@@ -295,5 +305,15 @@ Time taken: ${(System.currentTimeMillis() - processingStartTime) / 1000} seconds
 
         // Use mapping to try and guess extension
         return extensionToReturn ? ".$extensionToReturn" : ""
+    }
+
+    def _currentDate() {
+
+        return new Date()
+    }
+
+    def _timeTaken() {
+
+        return ( System.currentTimeMillis() - processingStartTime ) / 1000
     }
 }

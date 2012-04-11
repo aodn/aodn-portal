@@ -1,11 +1,11 @@
-============================================
-Download cart report (
-============================================
+========================================================================
+Download cart report (January 1, 1900 12:00 AM)
+========================================================================
 
 --[ #1 ]------------------------------------
 Title:                File One
 URL:                  http://example.com/file1.txt
-Type:                 null
+Type:                 text/plain
 Filename in zip file: file1.txt
                       NB. File extension based on URL where possible, otherwise based on provided type information.
 Result:               File added (15 Bytes)
@@ -13,7 +13,7 @@ Result:               File added (15 Bytes)
 --[ #2 ]------------------------------------
 Title:                File Three
 URL:                  http://example.com/file3.jpeg
-Type:                 null
+Type:                 image/jpeg
 Filename in zip file: file3.jpeg
                       NB. File extension based on URL where possible, otherwise based on provided type information.
 Result:               File added (634 Bytes)
@@ -21,13 +21,21 @@ Result:               File added (634 Bytes)
 --[ #3 ]------------------------------------
 Title:                File Too
 URL:                  http://example.com/file2.gif
-Type:                 null
+Type:                 image/gif
 Filename in zip file: file2.gif
                       NB. File extension based on URL where possible, otherwise based on provided type information.
 Result:               File added (877 Bytes)
 
-============================================
+--[ #4 ]------------------------------------
+Title:                Non-existent file
+URL:                  http://example.com/fileX.txt
+Type:                 text/plain
+Filename in zip file: fileX.txt
+                      NB. File extension based on URL where possible, otherwise based on provided type information.
+Result:               Could not obtain filestream for http://example.com/fileX.txt
+
+========================================================================
 Total size before compression: 1526 Bytes
-Number of files included: 3/3
-Time taken: 
-============================================
+Number of files included: 3/4
+Time taken: 15 seconds
+========================================================================

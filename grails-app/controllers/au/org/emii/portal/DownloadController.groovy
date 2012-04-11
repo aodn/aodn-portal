@@ -35,7 +35,7 @@ class DownloadController {
         response.contentType = "application/octet-stream"
 
         // Ask Service to create archive to outputStream
-        bulkDownloadService.generateArchiveOfFiles jsonArray, response.outputStream
+        bulkDownloadService.generateArchiveOfFiles jsonArray, response.outputStream, request.locale
 
         // Send response
         response.outputStream.flush()
