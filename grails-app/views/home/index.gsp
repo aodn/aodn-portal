@@ -72,6 +72,10 @@
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/AnimationPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/NCWMSColourScalePanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/StylePanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/DetailsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MapOptionsPanel.js')}"   type="text/javascript"></script>

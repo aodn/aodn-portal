@@ -1,49 +1,7 @@
-var styleCombo;
-//var detailsPanel;
-//var detailsPanelItems;
 var selectedLayer;
-//var opacitySlider;
-//var legendImage;
-//var dimension;
 var dimensionPanel;
-var ncWMSColourScalePanel;
-var colourScaleMin;
-var colourScaleMax;
-
-var animatePanel;
 
 function initDetailsPanel()  {
-
-    var animateLink =  new Ext.Button({  
-        id: 'animateLink',
-        text:'Animations',
-        hidden: true,
-        handler:setupAnimationControl
-    });
-    
-    // for user to pick date range to animate
-    animatePanel = new Ext.Panel({
-        title: 'Date Animate',
-        plain: true,
-        disabled: true,
-        stateful: false,
-        autoScroll: true,
-        bodyCls: 'floatingDetailsPanel',
-        items: [
-        {
-            ref: 'animatePanelContent',       
-            xtype: 'panel'                
-        }
-        ],
-        listeners: {
-            show: function(thisComponent) {  
-                // the tabpanel needs to be visible before setup below
-                setupAnimationControl();                
-
-            }
-        }
-    });
-    
     var opacitySlider = new Ext.slider.SingleSlider({
         id: "opacitySlider",
         title: 'Opacity',
@@ -77,90 +35,19 @@ function initDetailsPanel()  {
         layout: 'form',
         items: [opacitySlider]
     });
-    
-    var legendImage = new GeoExt.LegendImage({
-        id: 'legendImage',
-        imgCls: 'legendImage',
-        flex: 1
-    });
-    
-    var colourScaleHeader = new Ext.form.Label({
-        html: "<h4>Set Parameter Range</h4>"
-    });
-    
 
-    
-    colourScaleMin = new Ext.form.TextField({
-        fieldLabel: "Min",
-        //layout:'form',
-        enableKeyEvents: true,
-        labelStyle: "width:30px",
-        ctCls: 'smallIndentInputBox',
-        grow: true,
-        listeners: {
-            keydown: function(textfield, event){
-                updateScale(textfield, event);
-            }
-        }
-    });
+    var stylePanel = new Portal.details.StylePanel();
 
-    colourScaleMax = new Ext.form.TextField({
-        fieldLabel: "Max",
-        //layout:'form',
-        enableKeyEvents: true,
-        labelStyle: "width:30px",
-        //labelStyle: "",        
-        ctCls: 'smallIndentInputBox',
-        grow: true,
-        listeners: {
-            keydown: function(textfield, event){
-                updateScale(textfield, event);
-            }
-        }
-    });
-    
-    ncWMSColourScalePanel = new Ext.Panel({
-        layout: 'form'
-    });
-    ncWMSColourScalePanel.add(colourScaleHeader,colourScaleMax,colourScaleMin);
-
-    // create the styleCombo instance
-    styleCombo = makeCombo("styles");
-    
-    var stylePanel = new Ext.Panel({
-        id: 'stylePanel',
-        title: 'Styles', 
-        style: {margin: 5}, 
-        autoHeight: 250,
-        items: [
-            styleCombo,   
-            {
-                xtype: 'panel',
-                layout: 'hbox',
-                autoScroll:true,
-                align: 'stretch',
-                items: [
-                {
-                    xtype: 'panel',                    
-                    width: 130,
-                    margin: 10,
-                    items: [legendImage ]
-                    },
-                    ncWMSColourScalePanel
-                ]
-            }
-        ]
-    });
-    
-            
-    var featureInfoPanel = new Ext.Panel({   
+    var featureInfoPanel = new Ext.Panel({
         title: 'Info',
         items: [
         {
             html: "latest graphs and stuff"
         }
         ]
-    });  
+    });
+
+    var animationPanel = new Portal.details.AnimationPanel();
     
     var detailsPanelTabs = new Ext.TabPanel({  
         defaults: {
@@ -175,7 +62,7 @@ function initDetailsPanel()  {
         items: [
         //featureInfoPanel, // implement when there is something to see
         stylePanel,
-        animatePanel
+        animationPanel
         ]
     });
     
@@ -216,8 +103,8 @@ function initDetailsPanel()  {
        }
       }
     });
-    
-    var detailsPanelItems = new Ext.Panel({   
+
+    var detailsPanelItems = new Ext.Panel({
         id: 'detailsPanelItems',
         autoWidth: true,
         //    style: {
@@ -232,7 +119,6 @@ function initDetailsPanel()  {
             text:'Stop Animation',
             hidden: true
         },
-        animateLink, 
         detailsPanelTabs
         ]
     });
@@ -265,14 +151,15 @@ function closeNHideDetailsPanel() {
 function updateDetailsPanel(layer) {
     
     closeNHideDetailsPanel();
-    
+
+
     // show new layer unless user requested 'hideLayerOptions' or
     // check if the map is still in focus - not the search
     if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
         selectedLayer = layer;
         Ext.getCmp('opacitySlider').show(); // reset slider
 
-        ncWMSColourScalePanel.hide();
+        Ext.getCmp('ncWMSColourScalePanel').hide();
 
         var transectControl = Ext.getCmp('detailsPanelItems').transectControl;
         transectControl.hide();
@@ -286,7 +173,7 @@ function updateDetailsPanel(layer) {
 
         // set default visibility of components in this panel     
         // disabled until all dates are loaded for the layer if applicable      
-        animatePanel.setDisabled(true);
+        Ext.getCmp('animationPanel').setDisabled(true);
         // assume its not an animated image
         Ext.getCmp('stopNCAnimationButton').setVisible(false);
 
@@ -300,12 +187,12 @@ function updateDetailsPanel(layer) {
         }
 
 
-        updateStyles(layer);
+        Ext.getCmp('stylePanel').updateStyles(layer);
         updateDimensions(layer); // time and elevation   
 
         if(layer.server.type.search("NCWMS") > -1)  {
 
-            makeNcWMSColourScale(layer); 
+            Ext.getCmp('ncWMSColourScalePanel').makeNcWMSColourScale(layer);
 
             transectControl.setMapPanel(getMapPanel());
             transectControl.layer = layer;
@@ -318,7 +205,8 @@ function updateDetailsPanel(layer) {
                     setLayerDates(layer); // pass in the layer as there are going to be many async Json requests
                 }
                 else {
-                    animatePanel.setDisabled(false); 
+                    Ext.getCmp('animationPanel').setSelectedLayer(layer);
+                    Ext.getCmp('animationPanel').setDisabled(false);
                 }
 
                 // ensure to 're-set' the Start Stop buttons (if rendered);
@@ -326,7 +214,7 @@ function updateDetailsPanel(layer) {
                     Ext.getCmp('startNCAnimationButton').setVisible(true);
                 }
                 Ext.getCmp('stopNCAnimationButton').setVisible(false);     
-                animatePanel.doLayout();
+                Ext.getCmp('animationPanel').doLayout();
             } 
         }
         
@@ -358,203 +246,6 @@ function updateDetailsPanel(layer) {
 //    // detailsPanel.restore();
 //    }
 //}
-
-function setChosenStyle(layer,record) {
-
-    if (layer.originalWMSLayer == undefined) {
-        // its a standard WMS layer
-        selectedLayer.mergeNewParams({
-            styles : record.get('displayText')
-        });        
-        
-        // store the default style         
-        selectedLayer.params.STYLES = record.get('myId');
-        refreshLegend(selectedLayer);
-    }
-    else {
-        // its an animated openlayers image
-        // set the style on the original layer. the style will 'stick' to both
-        layer.originalWMSLayer.params.STYLES = record.get('displayText');
-        addNCWMSLayer(layer);      
-        
-    }
-
-}
-function updateStyles(layer) {
-
-    var data = new Array();    
-    styleCombo.hide();
-    
-    //var supportedStyles = layer.metadata.supportedStyles;
-     // for WMS layers that we have scanned
-    if(layer.allStyles != undefined) {
-        
-        // populate 'data' for the style options dropdown
-        var styles = layer.allStyles.split(",");
-        // do something if the user has more than one option
-        if (styles.length > 1) { 
-            
-            for(var j = 0; j < styles.length; j++)  {
-                var params = {
-                    layer: layer,
-                    colorbaronly: true                    
-                }
-                // its a ncwms layer
-                if(layer.server.type.search("NCWMS") > -1)  {
-                    var s = styles[j].split("/");
-                    // if forward slash is found it is in the form  [type]/[palette]
-                    // we only care about the palette part
-                    s = (s.length > 1) ? s[1] : styles[j];
-                    params.palette = s;
-                }
-                else {
-                    params.style = styles[j];
-                }                
-    
-                var imageUrl = buildGetLegend(params);         
-                data.push([styles[j] , styles[j], imageUrl ]);
-            }
-        }
-    } 
-    
-    
-    if (data.length > 0) {
-        // populate the stylecombo picker    
-        styleCombo.store.loadData(data); 
-        // change the displayed data in the style picker
-        styleCombo.show();
-    }
-    refreshLegend(layer);
-
-}
-
-// full legend shown in layer option. The current legend
-function refreshLegend(layer) {   
-    
-    var style = layer.params.STYLES;
-    
-    var params = {
-        layer: layer,
-        colorbaronly: false                    
-    }
-    
-    // its a ncwms layer send 'palette'
-    if(layer.server.type.search("NCWMS") > -1)  {
-        var s = style.split("/");
-        // if forward slash is found it is in the form  [type]/[palette]
-        // we only care about the palette part
-        s = (s.length > 1) ? s[1] : style;
-        params.palette = s;
-    }
-    else {
-        params.style = style;
-    }
-    var url = buildGetLegend(params) ;
-    
-    var img = Ext.getCmp('legendImage');
-    img.setUrl(url);
-    img.show();
-        // dont worry if the form is visible here
-    styleCombo.setValue(style);
-}
-
-
-
-// builds a getLegend image request for the combobox form and the selected palette
-function buildGetLegend(params)   {
-    
-    var url = "";
-    var useProxy = false;
-    
-    var layer = params.layer;
-    var colorbaronly= params.colorbaronly; 
-    var palette = params.palette;
-    var style = params.style;
-    
-    
-    // if this is an animated image then use the originals details
-    // the params object is not set for animating images
-    // the layer.url is for the whole animated gif
-    if (layer.originalWMSLayer != undefined) {        
-        layer.params = layer.originalWMSLayer.params;
-        if (layer.originalWMSLayer.cache === true) {
-             url = layer.originalWMSLayer.server.uri;
-             useProxy = true;
-        }
-        else {
-            url = layer.originalWMSLayer.url;
-        }
-        
-    }
-    else {
-        if (layer.cache === true) {
-             url = layer.server.uri;             
-             useProxy = true;
-        }
-        else {
-            url = layer.url;
-        }
-    }
-    
-    var opts = "";
-        
-    // thisPalette used for once off. eg combobox picker
-    if (palette != undefined) {
-        opts += "&PALETTE=" + palette;
-     }        
-   
-    if (style != undefined) {
-        opts += "&STYLE=" + style;
-    }
-    
-    if (colorbaronly) {
-        opts += "&LEGEND_OPTIONS=forceLabels:off";
-        opts += "&COLORBARONLY=" + colorbaronly;
-    }
-    else {
-        
-        opts += "&LEGEND_OPTIONS=forceLabels:on";
-    }
-    
-       
-    if(layer.params.COLORSCALERANGE != undefined)
-    {
-        if(url.contains("COLORSCALERANGE"))  {            
-            url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
-        }            
-        opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
-        
-    }    
-    
-    if (useProxy) {
-        // FORMAT here is for the proxy, so that it knows its a binary image required
-        url = proxyCachedURL+ encodeURIComponent(url) +  "&";
-    }
-    else {
-        // see if this url already has some parameters on it
-        if(url.contains("?"))  {            
-            url +=  "&" ;
-        }
-        else {
-            url +=  "?" ;
-        }
-    }
-    
-    opts += "&REQUEST=GetLegendGraphic"
-        + "&LAYER=" + layer.params.LAYERS
-        + "&FORMAT=" + layer.params.FORMAT;
-    
-    // strip off leading '&'
-    opts = opts.replace(/^[&]+/g,"");
-    url = url + opts
-    
-    
-    return url;
-}
-
-
-
-
 
 
 function makeCombo(type) {
@@ -636,41 +327,10 @@ function makeCombo(type) {
     return combo;
 }
 
-function updateScale(textfield, event)
-{
-    //return key
-    if(event.getKey() == 13)
-    {
-        if ( parseFloat(colourScaleMax.getValue()) > parseFloat(colourScaleMin.getValue())) {
-            
-            selectedLayer.mergeNewParams({
-                COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
-            });
-            refreshLegend(selectedLayer);
-            
-            // set the user selected range
-            selectedLayer.metadata.userScaleRange = [colourScaleMin.getValue(),colourScaleMax.getValue()];
-        }
-        else {
-            alert("The Max Parameter Range value is less than the Min");
-        }
-    }
-}
 
 
-function makeNcWMSColourScale(layer) {
-    // see if the user has changed these values
-    if (layer.metadata.userScaleRange != undefined) {
-        colourScaleMin.setValue(selectedLayer.metadata.userScaleRange[0]);
-        colourScaleMax.setValue(selectedLayer.metadata.userScaleRange[1]);
-    }
-    else if (layer.metadata.scaleRange != undefined) {
-        colourScaleMin.setValue(selectedLayer.metadata.scaleRange[0]);
-        colourScaleMax.setValue(selectedLayer.metadata.scaleRange[1]);     
-    }
-    ncWMSColourScalePanel.show(); 
-    
-}
+
+
 
 // for static time and elevation
 // TODO

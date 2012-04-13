@@ -8,24 +8,26 @@ function addNCWMSLayer(currentLayer) {
 	getMapPanel().addNCWMSLayer(currentLayer);
 }
 
+
+/*
 function setupAnimationControl() {
-    
-    
+
+
     if (selectedLayer == undefined) {
         console.log("animation was requested although no layer is active!!");
         return false;
-    }    
+    }
 
-     
-    
-    
-    animatePanel.animatePanelContent.removeAll(true); 
-    
+
+
+
+    animatePanel.animatePanelContent.removeAll(true);
+
     var newAnimatePanelContents = undefined;
-    
-    
+
+
     if (selectedLayer.dates.length == 1) {
-        
+
         // todo animate on todays times
         newAnimatePanelContents = new Ext.Panel({
             layout: 'form',
@@ -35,14 +37,14 @@ function setupAnimationControl() {
                 } )
             ]
         });
-         
+
         animatePanel.animatePanelContent.add(newAnimatePanelContents);
-        
+
     }
     else {
         var x = animatePanel.animatePanelContent;
         if (x.theOnlyTimePanel == undefined) {
-            x.add(new Animations.TimePanel());        
+            x.add(new Animations.TimePanel());
         }
         else {
             // update it
@@ -51,14 +53,14 @@ function setupAnimationControl() {
         //Ext.getCmp('startNCAnimationButton').enable();
         }
     }
-    
-    
-    animatePanel.animatePanelContent.doLayout();  
-    
 
-    
 
-}
+    animatePanel.animatePanelContent.doLayout();
+
+
+
+
+} */
 function renderAnimatePanelContents() {
      
 //newAnimatePanelContents.doLayout(); 
@@ -300,7 +302,7 @@ function setDatetimesForDate(layer, day) {
             if (layer.dayCounter == 0) {
                 layer.dayCounter = undefined;
                 // a user may now try and pick a date to animate  
-                animatePanel.setDisabled(false);
+                Ext.getCmp('animationPanel').setDisabled(false);
                 // The 'Start' button can be shown, but it may not be rendered yet
                 // try to enable in the render listener as well
                 // then animation can then procede
@@ -334,7 +336,7 @@ function getTimePeriod() {
     // disable the 'Start' button for the next possible layer
     Ext.getCmp('startNCAnimationButton').disable();
     
-    if (animatePanel.animatePanelContent.theOnlyTimePanel != undefined) {
+    if (Ext.getCmp('animationPanel').animatePanelContent.theOnlyTimePanel != undefined) {
         //var maxFrames = 8;
         var chosenTimes = [];
         
@@ -348,7 +350,7 @@ function getTimePeriod() {
            url = selectedLayer.url;
         }
         
-        var p = animatePanel.animatePanelContent.theOnlyTimePanel; 
+        var p = Ext.getCmp('animationPanel').animatePanelContent.theOnlyTimePanel;
         //alert(p);
         // get the server to tell us the options
         Ext.Ajax.request({
