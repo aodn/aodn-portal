@@ -169,7 +169,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 		  return 'p-result-map-go';
 	  } else {
 		  return 'p-result-disabled';
-	  };
+	  }
   },
  
   getMapGoTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -184,7 +184,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 		  return 'p-result-map-add';
 	  } else {
 		  return 'p-result-disabled';
-	  };
+	  }
   },
 
   getAddMapTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -199,7 +199,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       return 'p-result-show-link';
     } else {
       return 'p-result-disabled';
-    };
+    }
   },
  
   getShowLinkTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -215,7 +215,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       return 'p-result-select-link';
     } else {
       return 'p-result-disabled';
-    };
+    }
   },
  
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -223,7 +223,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 		  return 'p-result-select-layer';
 	  } else {
 		  return 'p-result-disabled';
-	  };
+	  }
   },
 
   getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
@@ -234,7 +234,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
               return 'p-result-cart-add';
       } else {
               return 'p-result-disabled';
-      };
+      }
   },
 
   showOnMiniMapExecute: function(grid, rowIndex, colIndex) {
@@ -332,7 +332,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     
   containsProtocol: function(protocolArray, protocolName) {
 	 
-         if ( protocolName == undefined ) return false
+         if ( protocolName == undefined ) return false;
          
          for (var i=0; i < protocolArray.length; i++) {
 
@@ -344,33 +344,28 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 	 return false;
   },
   
-  addLinkDataToCart: function(rec) {
-      
-    var links = rec.get('links');
-    var maxCartSize = Portal.app.config.downloadCartMaxNumFiles;
-    var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
+  addLinkDataToCart: function(recs) {
 
-    for (var i = 0; i < links.length; i++) {
+      var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
+      var linksToAdd = new Array();
 
-        if ( getDownloadCartSize() >= maxCartSize ) {
-            
-            if ( this.maximumFileAlertShown != true ) {
+      for (var i = 0; i < recs.length; i++) {
 
-                Ext.Msg.alert( OpenLayers.i18n('titlFileLimitReached'), OpenLayers.i18n('msgFileLimitReached', {limit: maxCartSize}) );
-            
-                this.maximumFileAlertShown = true;
-            }
-            
-            break;
-        }
-        
-        var link = links[i];
-        
-        if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
-            
-            addToDownloadCart(link.title, link.type, link.href, link.protocol);
-        }
-    }
+          var rec = recs[i];
+          var links = rec.get('links');
+
+          for (var j = 0; j < links.length; j++) {
+
+              var link = links[j];
+
+              if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
+
+                  linksToAdd.push( link );
+              }
+          }
+      }
+
+      addToDownloadCart( linksToAdd );
   },
   
   getLayerLink: function(rowIndex) {
@@ -386,34 +381,26 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   
  addToCartExecute: function(grid, rowIndex, colIndex) {
     
-//     var cartStartingSize = getDownloadCartSize();
-     var rec = grid.store.getAt(rowIndex);
-     
-     this.maximumFileAlertShown = false; // reset message
-     
-     this.addLinkDataToCart(rec);
+     var rec = grid.store.getAt( rowIndex );
 
-//     var msg = 'Added links from <b>' + rec.get('title') + '</b>';
-//     msg += '<br>Added <b>' + (getDownloadCartSize() - cartStartingSize) + '</b> links(s) to download cart'; 
-//    
-//     Ext.Msg.alert('Add to cart', msg);
+     var recordsToAdd = [rec];
+
+     this.addLinkDataToCart( recordsToAdd );
   },
   
   addAllToCartExecute: function() { // button, event
-      
-//        var cartStartingSize = getDownloadCartSize();
-      
-        this.maximumFileAlertShown = false; // reset message
 
-        this.getStore().each(function(rec){
+      var recordsToAdd = new Array();
 
-            this.addLinkDataToCart(rec);
-        }, this);
+        this.getStore().each(
+            function( rec ) {
 
-//        var msg = 'Added links from <b>' + this.getStore().getCount() + '</b> source(s)';
-//        msg += '<br>Added <b>' + (getDownloadCartSize() - cartStartingSize) + '</b> links(s) to download cart'; 
-//
-//        Ext.Msg.alert( 'Add all to cart', msg );
+                recordsToAdd.push( rec );
+            },
+            this
+        );
+
+      this.addLinkDataToCart( recordsToAdd );
   },
     
   getLinkRec: function(rowIndex, protocols) {

@@ -358,17 +358,13 @@ a.userlink {
     font-weight: bold;
 }
 
-#header .emptyCart {
-    /* color: #C1CFDC; */
+#header .hiddenCart {
+
     display: none;
 }
 
 #downloadCartControls {
     text-align: right;
-}
-
-.emptyCart #downloadCartControls {
-    display: none;
 }
 
 .alpha60 {

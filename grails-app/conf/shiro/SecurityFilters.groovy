@@ -87,10 +87,10 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "download", action: "downloadFromCart") {
+        downloadCartAccess(controller: "downloadCart", action: "add|clear|getSize|download") {
             before = {
                 
-                logRequest("downloadAccess", controllerName, actionName)
+                logRequest("downloadCartAccess", controllerName, actionName)
                 
                 // Allow all access
                 request.accessAllowed = true

@@ -1,76 +1,138 @@
 Ext.namespace('Portal.common.downloadCart');
 
-Ext.EventManager.addListener( window, 'load', _updateCount );
+Ext.EventManager.addListener( window, 'load', getInitialDownloadCartCount );
 
 // Public methods
-function getDownloadCart() {
+function addToDownloadCart( links ) {
 
-    var encStateValue = Ext.state.Manager.get( "AggregationItems" );
+    var condensedLinks = new Array();
 
-    return encStateValue ? Ext.decode( encStateValue ) : [];
-}
+    // Extract only the fields we need
+    Ext.each( links,
+        function( link ){
 
-function getDownloadCartSize() {
-    
-    return getDownloadCart().length
-}
-
-function addToDownloadCart(title, type, href, protocol) {
-    
-    var cart = getDownloadCart();
-    
-    var maxFiles = Portal.app.config.downloadCartMaxNumFiles;
-    
-    if ( cart.length < maxFiles ) {
-        
-        var newEntry = {title: title,
-                        type: type,
-                        href: href,
-                        protocol: protocol};
-        
-        // Add if it doesn't exists already
-        if ( !_existsInCart( newEntry, cart ) ) {
-            
-            cart.push( newEntry );
-            
-            _setDownloadCart( cart );
+            condensedLinks.push( { title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
         }
-    }
-    
-    _updateCount();
-    _flashUI();
+    );
+
+    var linksAsJson = Ext.util.JSON.encode( condensedLinks );
+
+    Ext.Ajax.request({
+        url: 'downloadCart/add',
+        params: { newEntries: linksAsJson },
+        success: _handleSuccessAndShow,
+        failure: _handleFailureAndShow
+    });
+}
+
+function getInitialDownloadCartCount() {
+
+    Ext.Ajax.request({
+        url: 'downloadCart/getSize',
+        success: function( resp ) {
+
+            var count = resp.responseText;
+
+            if ( !_isValidNumber( count ) ) {
+
+                _handleFailureAndHide( resp );
+            }
+            else if ( count == "0" ) {
+
+                _handleSuccessAndHide( resp );
+            }
+            else {
+
+                _handleSuccessAndShow( resp );
+            }
+        },
+        failure: _handleFailureAndHide
+    });
 }
 
 function clearDownloadCart() {
-    
-    _setDownloadCart( [] );
-    _updateCount();
-    _flashUI();
+
+    Ext.Ajax.request({
+        url: 'downloadCart/clear',
+        success: _handleSuccessAndHide,
+        failure: _handleFailureAndShow
+    });
 }
 
 // Internal methods
-function _setDownloadCart(newCart) {
-    
-    var encStateValue = Ext.encode( newCart );
+function _handleSuccessAndShow( resp ) {
 
-    Ext.state.Manager.set( "AggregationItems", encStateValue );
-}
+    var response = resp.responseText;
 
-function _updateCount() {
-    var cartEl = Ext.get('downloadCart');
-    var cartSizeEl = Ext.get('downloadCartSize');
+    if ( !_isValidNumber( response ) ) {
 
-    var size = getDownloadCartSize();
-
-    cartSizeEl.update( size + '' );
-
-    if ( size == 0 ) {
-
-       cartEl.addClass('emptyCart');
+        console.log( 'Invalid response from server: \'' + response + '\' (but with success code ' + resp.status + ')' );
+        _updateCount( "?" );
     }
     else {
-       cartEl.removeClass('emptyCart');
+
+        _updateCount( response );
     }
+
+    _showCartControl();
+    _flashUI();
+}
+
+function _handleSuccessAndHide( resp ) {
+
+    var response = resp.responseText;
+
+    if ( !_isValidNumber( response ) ) {
+
+        console.log( 'Invalid response from server: \'' + response + '\' (but with success code ' + resp.status + ')' );
+        _updateCount( "?" );
+    }
+    else {
+
+        _updateCount( response );
+    }
+
+    _hideCartControl();
+    _flashUI();
+}
+
+function _handleFailureAndShow( resp ) {
+
+    console.log( 'Server-side failure: \'' + resp.responseText + '\' (status: ' + resp.status + ')' );
+
+    _updateCount( "?" );
+    _showCartControl();
+    _flashUI();
+}
+
+function _handleFailureAndHide( resp ) {
+
+    console.log( 'Server-side failure: \'' + resp.responseText + '\' (status: ' + resp.status + ')' );
+
+    _updateCount( "?" );
+    _hideCartControl();
+    _flashUI();
+}
+
+function _updateCount( count ) {
+
+    var cartSizeEl = Ext.get( 'downloadCartSize' );
+
+    cartSizeEl.update( count + '' );
+}
+
+function _showCartControl() {
+
+    var cartEl = Ext.get( 'downloadCart' );
+
+    cartEl.removeClass( 'hiddenCart' );
+}
+
+function _hideCartControl() {
+
+    var cartEl = Ext.get( 'downloadCart' );
+
+    cartEl.addClass( 'hiddenCart' );
 }
 
 function _flashUI() {
@@ -103,19 +165,7 @@ function _getDownloadCartUIOriginalColor() {
     return _downloadCartOriginalColor;
 }
 
-function _existsInCart(entryToCheck, cart) {
-    
-    for ( var i = 0; i < cart.length; i++ ) {
-        
-        if ( _entryToString(cart[i]) === _entryToString(entryToCheck) ) {
-            
-            return true;
-        }
-    }
-    
-    return false;
-}
+function _isValidNumber( s ) {
 
-function _entryToString(entry) {
-    return entry.title + ' -- ' + entry.href + ' -- ' + entry.protocol + ' -- ' + entry.type;
+    return !isNaN( parseInt( s, 10 /* decimal */ ) );
 }

@@ -20,7 +20,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         def cfg = new Config( downloadCartMimeTypeToExtensionMapping: '{"text/xhtml":"html","text/plain":"txt"}',
                               downloadCartMaxNumFiles: 3,
-                              downloadCartMaxFileSize: 1024,
+                              downloadCartMaxFileSize: 100000,
                               downloadCartFilename: "filename %s %s.zip" )
 
         mockDomain Config, [cfg]
@@ -71,8 +71,9 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         def filesToDownload = JSON.parse( """[{"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
                                               {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"},
-                                              {"href":"http://example.com/file2.gif", title:"File Too", type:"image/gif"},
-                                              {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"}]""" )
+                                              {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
+                                              {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
+                                              {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}]""" )
 
         def responseBaos = new ByteArrayOutputStream()
 
@@ -85,7 +86,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         def file1Count = 0
         def file2Count = 0
         def file3Count = 0
-        def fileXCount = 0
         def fileReportCount = 0
         def reportData
 
@@ -124,8 +124,13 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
                     break;
 
                 case "fileX.txt":
-                    file3Count++
-                    assertEquals "File 3 size", 0, bytes.length
+
+                    fail "fileX.txt should not be included in archive"
+                    break;
+
+                case "file2(2).gif":
+
+                    fail "file2(2).txt should not be included in archive"
                     break;
 
                 case "download_report.txt":
@@ -141,7 +146,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         assertEquals "File 1 count", 1, file1Count
         assertEquals "File 2 count", 1, file2Count
         assertEquals "File 3 count", 1, file3Count
-        assertEquals "File X count", 0, fileXCount
         assertEquals "Report file count", 1, fileReportCount
 
         assertEquals "'download_report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportData
@@ -243,16 +247,16 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         bulkDownloadService.numberOfFilesAdded = 0
         bulkDownloadService.totalSizeBeforeCompression = 0
 
-        assertNull bulkDownloadService._checkRestrictionAddingFile()
+        assertNull bulkDownloadService._getAnyRestrictionsAddingFile()
 
         bulkDownloadService.numberOfFilesAdded = 3
 
-        assertEquals "Unable to add file, maximum number of files allowed reached (3/3 files)", bulkDownloadService._checkRestrictionAddingFile()
+        assertEquals "Unable to add file, maximum number of files allowed reached (3/3 files)", bulkDownloadService._getAnyRestrictionsAddingFile()
 
         bulkDownloadService.numberOfFilesAdded = 0
-        bulkDownloadService.totalSizeBeforeCompression = 1026
+        bulkDownloadService.totalSizeBeforeCompression = 100001
 
-        assertEquals "Unable to add file, maximum size of files allowed reached (1026/1024 Bytes)", bulkDownloadService._checkRestrictionAddingFile()
+        assertEquals "Unable to add file, maximum size of files allowed reached (100001/100000 Bytes)", bulkDownloadService._getAnyRestrictionsAddingFile()
     }
 
     void testCurrentDate() {

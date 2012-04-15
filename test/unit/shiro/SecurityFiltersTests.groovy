@@ -20,6 +20,8 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         FilterConfig.metaClass = null
     }
 
+    // Todo - DN: Automate test for all Controllers and test that required ones have filter? (tests will be more meaningful)
+
     void testHomeControllerFilter() {
 
         checkFilter "homeAccess"
@@ -60,9 +62,9 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         checkFilter "proxyAccess"
     }
     
-    void testDownloadControllerFilter() {
+    void testDownloadCartControllerFilter() {
         
-        checkFilter "downloadAccess"
+        checkFilter "downloadCartAccess"
     }
 
     void testAllFilter() {

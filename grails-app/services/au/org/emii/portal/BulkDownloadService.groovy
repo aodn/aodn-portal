@@ -3,7 +3,8 @@ package au.org.emii.portal
 import grails.converters.JSON
 
 import java.text.DateFormat
-import java.util.zip.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class BulkDownloadService {
 
@@ -57,32 +58,37 @@ class BulkDownloadService {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
 
+        def filenameToUse
         _extractFilenameFromUrl( fileInfo )
 
-        def fileStream = _getStreamForFile( fileInfo )
-        def filenameToUse = _makeFilenameUnique( fileInfo.filenameUsed, fileInfo.fileExtensionUsed )
+        // Ensure we can add another file
+        def resultMessage = _getAnyRestrictionsAddingFile()
 
-        def statusMessage = _writeStreamToArchive( filenameToUse, fileStream, fileInfo )
+        if ( !resultMessage ) {
 
+            def fileStream = _getStreamForFile( fileInfo )
+
+            filenameToUse = _makeFilenameUnique( fileInfo.filenameUsed, fileInfo.fileExtensionUsed ) // MUST occur after _getStreamForFile() as that may change filename (would be nice to refactor this dependancy out)
+
+            resultMessage = _writeStreamToArchive( filenameToUse, fileStream, fileInfo )
+        }
+        else {
+
+            filenameToUse = "N/A - File not added to archive"
+        }
+
+        log.debug "Result of attempt: $resultMessage"
+
+        // Incremement counter and add to report
         numberOfFilesTried++
 
-        _writeNewDownloadReportEntry( fileInfo, filenameToUse, statusMessage )
-
-        log.debug "Status of attempt: $statusMessage"
+        _writeNewDownloadReportEntry( fileInfo, filenameToUse, resultMessage )
     }
 
     def _writeStreamToArchive( filenameToUse, stream, fileInfo ) {
 
         // Check for null stream
         if ( !stream ) return "Could not obtain filestream for ${ fileInfo.href }"
-
-        // Ensure we can add another file
-        def restrictionAddingFile = _checkRestrictionAddingFile()
-        if ( restrictionAddingFile ) {
-
-            stream?.close()
-            return restrictionAddingFile
-        }
 
         try {
             // Create new Zip Entry
@@ -115,7 +121,7 @@ class BulkDownloadService {
         }
     }
 
-    def _checkRestrictionAddingFile() {
+    def _getAnyRestrictionsAddingFile() {
 
         if ( numberOfFilesAdded >= cfg.downloadCartMaxNumFiles ) {
 
