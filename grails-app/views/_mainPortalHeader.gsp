@@ -23,7 +23,7 @@
       <a class="external mainlinks" href="http://emii1.its.utas.edu.au/Portal2_help/" title="Portal Help files" target="_blank">Help</a>
     </div>
     <div id="downloadCart" class="hiddenCart">
-      Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><g:link controller="downloadCart" action="download">download</g:link> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
+      Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="downloadCart/download" onclick="return confirm( 'Please be patient, it can take a while to collect and collate items for a download cart. Continue with download?' );">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
 <div id="headerTail" >&nbsp;</div>

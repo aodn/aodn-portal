@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.apache.catalina.connector.ClientAbortException
 
 class DownloadCartController {
 
@@ -52,11 +53,21 @@ class DownloadCartController {
         def outputStream = response.outputStream
 
         // Ask Service to create archive to outputStream
-        bulkDownloadService.generateArchiveOfFiles _getCart(), outputStream, request.locale // Todo - DN: What if this call fails or throws an Exception?
+        try {
+            bulkDownloadService.generateArchiveOfFiles _getCart(), outputStream, request.locale
 
-        // Send response
-        outputStream.flush()
-    }
+            // Send response
+            outputStream.flush()
+        }
+        catch (ClientAbortException e) {
+
+            log.info "ClientAbortException caught during bulk download", e
+        }
+        catch (Exception e) {
+
+            log.error "Unhandled Exception caught during bulk download", e
+        }
+     }
 
     def _getCart() {
 

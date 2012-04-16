@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.apache.catalina.connector.ClientAbortException
 
 import java.text.DateFormat
 import java.util.zip.ZipEntry
@@ -27,7 +28,7 @@ class BulkDownloadService {
     def numberOfFilesAdded = 0
     def zipStream
 
-    void generateArchiveOfFiles( filesToDownload, outputStream, locale ) {
+    void generateArchiveOfFiles( filesToDownload, outputStream, locale ) throws ClientAbortException {
 
         processingStartTime = System.currentTimeMillis()
 
