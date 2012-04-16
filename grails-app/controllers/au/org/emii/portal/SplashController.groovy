@@ -1,30 +1,21 @@
 package au.org.emii.portal
 
 class SplashController {
+	
+	def cfgInstanceName = grailsApplication.config.instanceName.toLowerCase()
 
     // the home page center content
     def index = {
-        // switch here for alternate content? 
-        render(view: "index")
+        render(view: "${cfgInstanceName}Index")
     }
     
     // links
-     def links = {
-        if (grailsApplication.config.instanceName == 'IMOS') { 
-            render(view: "IMOSLinks")
-        }
-        else {
-            render('')
-        }
-     }
+	def links = {
+		render(view: "${cfgInstanceName}Links")
+	}
      
-     // facebook twitter etc
-     def community = {
-        if (grailsApplication.config.instanceName == 'IMOS') {
-            render('')
-        }
-        else {
-           render(view: "community") 
-        }
-     }
+	// facebook twitter etc
+	def community = {
+		render(view: "${cfgInstanceName}Community") 
+	}
 }
