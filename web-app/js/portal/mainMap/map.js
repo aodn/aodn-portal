@@ -20,23 +20,13 @@
 
 var proxyURL = "proxy?url=";
 var proxyCachedURL = "proxy/cache?URL=";
-
-//var tmp_response;
-
 var argos = null; // array of existing argo platform_numbers
-
-
-// Layer loading activity indicator
-var layersLoading = 0;
-
+var layersLoading = 0; // Layer loading activity indicator
 var popup;
-
-
 
 function getMapPanel() {
 	return Ext.getCmp('map');
 }
-
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
 
@@ -93,12 +83,12 @@ function addToPopup(mapPanel, e) {
     });
 
     // Add container for html (empty for now)
-    // 
     popup.add( new Ext.Container({
         html: "Loading ...",
         cls: 'popupHtml',      
         ref: 'popupHtml'
 	}));
+
     // Add tab panel (empty for now)
     popup.add( new Ext.TabPanel({
         ref: 'popupTab',
@@ -106,21 +96,21 @@ function addToPopup(mapPanel, e) {
         deferredRender: true,
         hidden: true
     }));
-                
+
     popup.numResultsToLoad = 0; // Reset count
     popup.numGoodResults = 0;
     popup.numResultQueries = 0;
-    
+
     var loc = mapPanel.map.getLonLatFromViewPortPx(e.xy);
     // do all this work to reduce the length of the mouse click precision for the popup title
     var locArray = loc.toShortString().split(",");
-    popup.locationString = "<b>Lat:</b>" + toNSigFigs(locArray[1], 4) + " <b>Lon:</b>" + toNSigFigs(locArray[0], 4);
+    popup.locationString = "<b>Lat:</b> " + toNSigFigs(locArray[1], 4) + " <b>Lon:</b> " + toNSigFigs(locArray[0], 4);
 
     // reset the popup's location
     popup.location = loc;    
     popup.doLayout();
     popup.show(); // since the popup is anchored, calling show will move popup to this location  
-    
+
     // if depthservice is enabled, make it live!
     if (Portal.app.config.useDepthService) {
         Ext.Ajax.request({
@@ -134,8 +124,8 @@ function addToPopup(mapPanel, e) {
             }
         });
     }
-    else{
-        updatePopupDepthStatus(); 
+    else {
+        updatePopupDepthStatus( null ); // Update with no info (will still clear 'loading' message)
     }
 
     // For each layer...
@@ -233,7 +223,7 @@ function addToPopup(mapPanel, e) {
             Ext.Ajax.request({
                 url: proxyURL + encodeURIComponent( url ) + "&format=" + encodeURIComponent(expectedFormat), // add format for grails proxy
                 params: {
-                    name: layer.name, 
+                    name: layer.name,
                     id: layer.id,
                     expectedFormat: expectedFormat,
                     isAnimatedLayer: isAnimatedLayer,
@@ -242,15 +232,16 @@ function addToPopup(mapPanel, e) {
                 success: function(resp, options){
                     if ( popup ) { // Popup may have been closed since request was sent
 
-                        var res = "none";
+                        var newTabContent;
 
                         if(options.params.isAnimatedLayer)
-                            res = "<div><img src='" + url + "'></div>";
+                            newTabContent = "<div><img src='" + url + "'></div>";
                         else
-                            res = formatGetFeatureInfo( resp, options );
+                            newTabContent = formatGetFeatureInfo( resp, options );
 
-                        if (res) {
+                        if (newTabContent) {
                             popup.numGoodResults++;
+
                             tabsFromPopup( popup ).add( {
                                 xtype: "box",
                                 id: options.params.id,
@@ -259,17 +250,16 @@ function addToPopup(mapPanel, e) {
                                 autoHeight: true,
                                 cls: "featureinfocontent",
                                 autoEl: {
-                                    html: res
+                                    html: newTabContent
                                 }
                             });
-                            
-                            
+
                             if (popup.numGoodResults == 1) {                                
                                 
                                 // set to full height and re-pan
                                 popup.setSize(Portal.app.config.popupWidth,Portal.app.config.popupHeight);               
                                 popup.show(); // since the popup is anchored, calling show will move popup to this location 
-                                //
+
                                 // Make first tab active
                                 var poptabs = tabsFromPopup( popup );
                                 poptabs.setActiveTab( 0 );
@@ -284,7 +274,6 @@ function addToPopup(mapPanel, e) {
                         
                         updatePopupStatus(popup);
                     } 
-                    
                 },
 
                 failure: function(resp, options) { // Popup may have been closed since request was sent
@@ -300,12 +289,7 @@ function addToPopup(mapPanel, e) {
     if ( popup.numResultsToLoad == 0 ) {
         popup.setTitle("No features found. No layers selected");
     }
-    
-
-    
 }
-
-
 
 function updatePopupDepthStatus(response) {   
     
@@ -313,10 +297,13 @@ function updatePopupDepthStatus(response) {
         var xmldoc = response.responseXML;  
 
         if (xmldoc.getElementsByTagName('depth') != undefined) {
+
             var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-            var str =  (depth <= 0) ?  "Depth: " : "Altitude ";              
+
+            var str =  (depth <= 0) ?  "Depth:" : "Altitude:";
+
             if ( popup ) { // Popup may have been closed since request was sent
-                popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + depth + "m");
+                popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + Math.abs(depth) + "m");
             }
         }
     }
@@ -343,37 +330,31 @@ function tabsFromPopup(popup) {
     return popup.popupTab;
 }
 
-
-  
 // if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
-    
-    
-    //if(response.responseXML.xml.length == 0) {
+
     if(options.params.expectedFormat == 'text/html') {
+
         // strip out all unwanted HTML
         if ( response.responseText.match(/<\/body>/m)) {
+
             var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
             if (html_content) {
-                //trimmed_content= html_content[2].replace(/(\n|\r|\s)/mg, ''); // replace all whitespace
+
                 html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
 
                 if ( html_content.length != 0 ) {
                     return html_content;
                 }
-                else {
-            //html_content = '<span class="info">No feature info found near click point</span><br />'
             }
-            }            
         }   
-       
     }
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
     }
     else if(options.params.expectedFormat.indexOf('image') >= 0){
 
-    //console.log("ERROR: as yet unhandled response type for getFeatureInfo");
+        // todo - So what do we do here?
     }
     else{
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
@@ -390,14 +371,13 @@ function setHTML_ncWMS(response,options) {
 
         if (lon) {  // We have a successful result
 
-            var lat  = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
-            var startval  = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
-            var x    = xmldoc.getElementsByTagName('value');
+            var lat = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
+            var startval = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
+            var x = xmldoc.getElementsByTagName('value');
             var copyright = xmldoc.getElementsByTagName('copyright')[0];
             var vals = "";
             var origStartVal = startval;
 
-            //var time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
             var timeList = xmldoc.getElementsByTagName('time').length;
             var time = null;
 
@@ -417,7 +397,6 @@ function setHTML_ncWMS(response,options) {
 
             var isSD = options.params.name.toLowerCase().indexOf("standard deviation") >= 0;
 
-
             if (!isNaN(startval) ) {  // may have no data at this point
 
                 if(time != null)   {
@@ -429,8 +408,7 @@ function setHTML_ncWMS(response,options) {
                         human_endtime.setISO8601(endtime);                        
                         endval = getAussieUnits(endval, options.params.units);
                     }
-                    
-                } 
+                }
                 
                 var startval = getAussieUnits(startval, options.params.units);
                 
@@ -445,8 +423,6 @@ function setHTML_ncWMS(response,options) {
                         }
                     }
                     else {
-
-
                         if(isSD)
                         {
                             vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.params.units;
@@ -470,24 +446,18 @@ function setHTML_ncWMS(response,options) {
                     }
                 }
 
-
                 lon = toNSigFigs(lon, 5);
                 lat = toNSigFigs(lat, 5);
 
-
                 html =  "<div class=\"feature\">";
                 html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
-
-                
 
                 if(copyright != undefined) {
                     html += "<p>" + copyright.childNodes[0].nodeValue + "</p>";
                 }
 
-
-                html = html +"</div>" ;
+                html = html +"</div>";
             }
-
         }
         else {
             html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
@@ -516,8 +486,6 @@ function inArray (array,value) {
     
     return false;
 }
-
-
 
 function getDepth(e) {
 
@@ -630,7 +598,7 @@ Date.prototype.setISO8601 = function (string) {
     offset -= date.getTimezoneOffset();
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
-}
+};
 
 function imgSizer(){
     //Configuration Options
@@ -707,7 +675,6 @@ function dressUpMyLine(line){
     return newString;
 }
 
-
 // This function gets over the Firefox 4096 character limit for XML nodes using 'textContent''
 // IE doesn't support the textContent attribute
 function getNodeText(xmlNode)
@@ -717,11 +684,10 @@ function getNodeText(xmlNode)
     return xmlNode.firstChild.nodeValue;
 }
 
-
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
     
-    var dl = {}
-    var server = {}
+    var dl = {};
+    var server = {};
     
     server.uri = url;
     server.type = type;    
@@ -751,12 +717,10 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
         if (newLabel.length > 0) {
             dl.title = newLabel;
         } 
-        
 
         getMapPanel().addMapLayer(dl);
     }
 }
-
 
 function IsInt(sText) {
 
@@ -775,8 +739,8 @@ function IsInt(sText) {
             }
         }
     }
-    return IsInt;
 
+    return IsInt;
 }
 
 function acornHistory(request_string,div,data) {
@@ -811,4 +775,3 @@ function acornHistory(request_string,div,data) {
 
     return false;
 }
-
