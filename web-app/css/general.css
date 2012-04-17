@@ -11,7 +11,7 @@ p {
 }
 
 td {
-    font-size: 14px;
+   /* font-size: 14px;*/
 }
 
 body {
@@ -953,8 +953,7 @@ JQUERY AUTO COMPLETE
 }
 
 #welcome {
-	font-family: verdana,arial,sans-serif;
-	font-size: 1.3em;
+	font-size: 1.2em;
 }
 
 #welcome ul {
@@ -964,7 +963,6 @@ JQUERY AUTO COMPLETE
 }
 
 #welcome ul li {
-	font-family: verdana,arial,sans-serif;
 }
 
 .clear {

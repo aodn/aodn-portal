@@ -135,7 +135,7 @@ function addToPopup(mapPanel, e) {
         var url = "none";
         var params;
         var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
-        var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''   ]
+        var featureCount = isncWMS(layer) ? 1 : 100; // some ncWMS servers have a problem with 'FEATURE_COUNT >1 ''   ]
         var isAnimatedLayer = layer.originalWMSLayer != undefined;
 
         // this is an animated image
@@ -177,8 +177,7 @@ function addToPopup(mapPanel, e) {
             if(layer.server.type == "WMS-1.3.0") { 
                 bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
             } 
-
-            if ((!layer.params.ISBASELAYER) && layer.getVisibility()) {
+            if ((!layer.isBaseLayer) && layer.getVisibility()) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
