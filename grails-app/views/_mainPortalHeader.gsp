@@ -19,7 +19,7 @@
         <g:link controller="auth" action="register">Register</g:link>
       </shiro:notUser>
       <a class="external mainlinks" target="_blank" href="http://www.emii.org.au" title="e-Marine Information Infrastructure">eMII</a>
-      <a class="external mainlinks" target="_blank" href="http://imos.org.au" title="Integrated Marine Observing System">IMOS</a>
+      <a class="external mainlinks" target="_blank" href="${ grailsApplication.config.portal.header.organisationLink.url }" title="${ grailsApplication.config.portal.header.organisationLink.tooltipText }">${ grailsApplication.config.portal.header.organisationLink.linkText }</a>
       <a class="external mainlinks" href="http://emii1.its.utas.edu.au/Portal2_help/" title="Portal Help files" target="_blank">Help</a>
     </div>
     <div id="downloadCart" class="hiddenCart">
