@@ -141,33 +141,35 @@ function addToPopup(mapPanel, e) {
         // this is an animated image
         if (isAnimatedLayer) {
 
-            var chart_bbox = layer.url.match("BBOX=[^\&]*")[0].substring(5);
-            var chart_time =  layer.url.match("TIME=[^\&]*")[0].substring(5);
-            var chart_style =  layer.url.match("STYLES=[^\&]*")[0].substring(7);
-            var featureCount = isncWMS(layer) ? 1 : 10; // some ncWMS servers have a problem with 'FEATURE_COUNT=10''
+            if ( layer.getVisibility() ) { // Only show if visible
 
-            url = layer.url.substring(0, layer.url.indexOf("?")) +
-            "?SERVICE=WMS&REQUEST=GetFeatureInfo" +
-            "&EXCEPTIONS=application/vnd.ogc.se_xml" +
-            "&BBOX=" + layer.extent.toBBOX() +
-            "&INFO_FORMAT=image/png" +
-            "&QUERY_LAYERS=" + layer.originalWMSLayer.params.LAYERS +
-            "&FEATURE_COUNT=" + featureCount +
-            "&STYLES=" + chart_style +
-            "&CRS=EPSG:4326" +
-            "&BUFFER="+ Portal.app.config.mapGetFeatureInfoBuffer +
-            "&WIDTH=" +  mapPanel.map.size.w +
-            "&HEIGHT="  +   mapPanel.map.size.h +
-            "&TIME=" + chart_time +
-            "&VERSION=" + layer.originalWMSLayer.params.VERSION;
+                var chart_bbox = layer.url.match("BBOX=[^\&]*")[0].substring(5);
+                var chart_time =  layer.url.match("TIME=[^\&]*")[0].substring(5);
+                var chart_style =  layer.url.match("STYLES=[^\&]*")[0].substring(7);
 
-            if (layer.originalWMSLayer.params.VERSION == "1.1.1" || layer.originalWMSLayer.params.VERSION == "1.1.0")
-            {
-                url += "&X=" + e.xy.x + "&Y=" + e.xy.y;
-            }
-            else
-            {
-                url += "&I=" + e.xy.x + "&J=" + e.xy.y;
+                url = layer.url.substring(0, layer.url.indexOf("?")) +
+                    "?SERVICE=WMS&REQUEST=GetFeatureInfo" +
+                    "&EXCEPTIONS=application/vnd.ogc.se_xml" +
+                    "&BBOX=" + layer.extent.toBBOX() +
+                    "&INFO_FORMAT=image/png" +
+                    "&QUERY_LAYERS=" + layer.originalWMSLayer.params.LAYERS +
+                    "&FEATURE_COUNT=" + featureCount +
+                    "&STYLES=" + chart_style +
+                    "&CRS=EPSG:4326" +
+                    "&BUFFER="+ Portal.app.config.mapGetFeatureInfoBuffer +
+                    "&WIDTH=" +  mapPanel.map.size.w +
+                    "&HEIGHT="  +   mapPanel.map.size.h +
+                    "&TIME=" + chart_time +
+                    "&VERSION=" + layer.originalWMSLayer.params.VERSION;
+
+                if (layer.originalWMSLayer.params.VERSION == "1.1.1" || layer.originalWMSLayer.params.VERSION == "1.1.0")
+                {
+                    url += "&X=" + e.xy.x + "&Y=" + e.xy.y;
+                }
+                else
+                {
+                    url += "&I=" + e.xy.x + "&J=" + e.xy.y;
+                }
             }
         }
         else {
@@ -626,7 +628,7 @@ function imgSizer(){
             }, 'slow').width(new_height);
 
             $(this).hover(function(){
-                $(this).attr("title", "This image has been scaled down.")
+                $(this).attr("title", "This image has been scaled down.");
             //$(this).css("cursor","pointer");
             });
 
