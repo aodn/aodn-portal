@@ -917,7 +917,8 @@ JQUERY AUTO COMPLETE
     float: left;
     width: 42px;
     z-index: 1001;
-    margin-top: 180px;
+    margin-top: 280px;
+    margin-left: 3px;
     height: 22px;
     background-image: url("../images/draw.png?");
     background-position:12px 1px;
