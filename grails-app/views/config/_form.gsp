@@ -155,8 +155,7 @@
                                        <input type="hidden" class="this_is_a_gimp_entry_in_case_of_no_value_from_theselectr_below" name="defaultLayers" />
                                       <select id="showItems1"  multiple="multiple">
                                           <g:each in="${au.org.emii.portal.Layer.findAllByIsBaseLayerNotEqual(true)}">
-                                              <option  value="${it.id}" >${it.toListString()}
-                                              </option>
+                                              <option value="${it.id}">${it}</option>
                                           </g:each>
                                       </select>
                                       </div>

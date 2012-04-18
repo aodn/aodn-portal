@@ -1,6 +1,5 @@
-import grails.converters.JSON
-import au.org.emii.portal.Config
 import au.org.emii.portal.User
+import grails.converters.JSON
 
 class BootStrap {
 

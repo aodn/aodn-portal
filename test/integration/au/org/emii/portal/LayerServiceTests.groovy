@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.converters.*
+import grails.converters.JSON
 
 class LayerServiceTests extends GroovyTestCase {
     
@@ -10,7 +10,12 @@ class LayerServiceTests extends GroovyTestCase {
     // Long abstract text
     def fullAbstractText    = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris volutpat justo a risus mattis sagittis. Duis elementum, nisi quis fringilla bibendum, magna neque vulputate odio, ut malesuada metus quam sit amet enim. Phasellus in libero ipsum, at auctor purus. Integer sodales lobortis vulputate. Sed nibh elit, malesuada ac rhoncus eget, vehicula at ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eleifend aliquet dolor."
     def trimmedAbstractText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris volutpat justo a risus mattis sagittis. Duis elementum, nisi quis fringilla bibendum, magna neque vulputate odio, ut malesuada metus quam sit amet enim. Phasellus in libero ipsum, at auctor purus. Integer sodales lobortis vulputate. Sed nibh elit, malesuada ac rhoncus eget, vehicula at ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. M..."
-    
+
+    // layerHierarchyPaths
+    def layerAHierarchyPath = "existing layer A hierarchy path"
+    def layerBHierarchyPath = "existing layer B hierarchy path"
+    def layerCHierarchyPath = "existing layer C hierarchy path"
+
     def server
     def layerDataSource = "testCode"
     def newData = """
@@ -96,9 +101,9 @@ class LayerServiceTests extends GroovyTestCase {
 
     void testUpdateWithNewData_ExistingHierarchy() {
 
-        def layerA = new Layer( title: "Layer A", name: "layer_a", dataSource: "testCode", server: server )
-        def layerB = new Layer( title: "Layer B", name: "layer_b", dataSource: "testCode", server: server )
-        def layerC = new Layer( title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server )
+        def layerA = new Layer( title: "Layer A", name: "layer_a", dataSource: "testCode", server: server, layerHierarchyPath: layerAHierarchyPath )
+        def layerB = new Layer( title: "Layer B", name: "layer_b", dataSource: "testCode", server: server, layerHierarchyPath: layerBHierarchyPath )
+        def layerC = new Layer( title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server, layerHierarchyPath: layerCHierarchyPath )
 
         layerB.save( failOnError: true )
         layerC.save( failOnError: true )
@@ -152,6 +157,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_a property lastUpdated.", "java.util.Date", layerA.lastUpdated.class.name
         assertNull   "layer_a shouldn't have a parent.", layerA.parent
         assertEquals "layer_a should have $layerAExpectedChildren child layers.", layerAExpectedChildren, layerA.layers.size()
+        assertEquals "layer_a -- Layer A", layerA.layerHierarchyPath
 
         // Existing child (layer_b) if applicable
         if ( hadExistingBAndC ) {
@@ -173,6 +179,7 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "layer_b property lastUpdated.", "java.util.Date", layerB.lastUpdated.class.name
             assertEquals "layer_b parent should be layer_a.", layerA, layerB.parent
             assertEquals "layer_b should have no child layers.", 0, layerB.layers.size()
+            assertEquals layerBHierarchyPath, layerB.layerHierarchyPath
 
             def existingC = Layer.findWhere( server: server, title: "Leyar C (oops, typos)" )
             assertNotNull "Leyar C should exist.", existingC
@@ -192,6 +199,7 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "Leyar C property lastUpdated.", "java.util.Date", existingC.lastUpdated.class.name
             assertEquals "Leyar C parent should be layer_a.", layerA, existingC.parent
             assertEquals "Leyar C should have no child layers.", 0, existingC.layers.size()
+            assertEquals layerCHierarchyPath, existingC.layerHierarchyPath
         }
 
         // New children (layer_c, layer_c_1, layer_d, layer_d_1)
@@ -213,6 +221,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_c property lastUpdated.", "java.util.Date", layerC.lastUpdated.class.name
         assertEquals "layer_c parent should be layer_a.", layerA, layerC.parent
         assertEquals "layer_c should have one child layer.", 1, layerC.layers.size()
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C", layerC.layerHierarchyPath
 
         def groupingUnderC = layerC.layers.toArray()[0]
         assertNotNull "'Grouping' should exist under Layer C.", groupingUnderC
@@ -220,18 +229,21 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull "groupingUnderC property name.", groupingUnderC.name
         assertEquals "groupingUnderC parent should be Layer C.", layerC, groupingUnderC.parent
         assertEquals "groupingUnderC should have two child layers.", 2, groupingUnderC.layers.size()
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping", groupingUnderC.layerHierarchyPath
 
         def layerC1 = Layer.findWhere( server: server, name: "layer_c_1" )
         assertNotNull "layer_c_1 should exist.", layerC1
         assertNull "layer_c_1 property title.", layerC1.title
         assertEquals "layer_c_1 parent should be Grouing (under Layer C).", groupingUnderC, layerC1.parent
         assertEquals "layer_c_1 should have no child layers.", 0, layerC1.layers.size()
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_1 -- <no title>", layerC1.layerHierarchyPath
 
         def layerC2 = Layer.findWhere( server: server, name: "layer_c_2" )
         assertNotNull "layer_c_2 should exist.", layerC2
         assertNull "layer_c_2 property title.", layerC2.title
         assertEquals "layer_c_2 parent should be Grouing (under Layer C).", groupingUnderC, layerC2.parent
         assertEquals "layer_c_2 should have no child layers.", 0, layerC2.layers.size()
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_2 -- <no title>", layerC2.layerHierarchyPath
 
         def layerD = Layer.findWhere( server: server, title: "Layer D", name: null )
         assertNotNull "layer_d should exist", layerD
@@ -250,6 +262,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_d property lastUpdated", "java.util.Date", layerD.lastUpdated.class.name
         assertEquals "layer_d parent should be layer_a.", layerA, layerD.parent
         assertEquals "layer_d should have one child layer.", 1, layerD.layers.size()
+        assertEquals "layer_a -- Layer A // <no name> -- Layer D", layerD.layerHierarchyPath
 
         def groupingUnderD = layerD.layers.toArray()[0]
         assertNotNull "'Grouping' should exist under Layer D.", groupingUnderD
@@ -257,11 +270,13 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull "groupingUnderD property name.", groupingUnderD.name
         assertEquals "groupingUnderD parent should be Layer D.", layerD, groupingUnderD.parent
         assertEquals "groupingUnderD should have one child layer.", 1, groupingUnderD.layers.size()
+        assertEquals "layer_a -- Layer A // <no name> -- Layer D // <no name> -- Grouping", groupingUnderD.layerHierarchyPath
 
         def layerD1 = Layer.findWhere( server: server, name: "layer_d_1" )
         assertNotNull "layer_d_1 should exist.", layerD1
         assertNull "layer_d_1 property title.", layerD1.title
         assertEquals "layer_d_1 parent should be Grouing (under Layer D).", groupingUnderD, layerD1.parent
         assertEquals "layer_d_1 should have no child layers.", 0, layerD1.layers.size()
+        assertEquals "layer_a -- Layer A // <no name> -- Layer D // <no name> -- Grouping // layer_d_1 -- <no title>", layerD1.layerHierarchyPath
     }
 }

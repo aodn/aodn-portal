@@ -152,7 +152,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             unstyled: true  
         });
         // stops the click bubbling to a getFeatureInfo request on the map
-        this.mapToolbar.on('click', this.eventStopper)
+        this.mapToolbar.on('click', this.eventStopper);
         return this.mapToolbar;
     },
 	
@@ -219,7 +219,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             scope: this,
             success: function(resp, opts) {        
                 var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptors, 
+                Ext.each(layerDescriptors,
                     function(layerDescriptor, index, all) {
                         this._addLayer(this.getOpenLayer(layerDescriptor), true);
                     },
@@ -275,7 +275,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             version: this.getWmsVersionString(this.getServer(layerDescriptor)),
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
-            projection: new OpenLayers.Projection(layerDescriptor.projection)
+            projection: new OpenLayers.Projection(layerDescriptor.projection),
+            layerHierarchyPath: layerDescriptor.layerHierarchyPath
         };
         if (overrides) {
             Ext.apply(options, overrides);
@@ -350,8 +351,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
     },
 	
     getLayerUid: function(openLayer) {
+
+        // layerHierarchyPath is the preferred unique identifier for a layer
+        if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
+
         var uri = "UNKNOWN";
         var server = openLayer.server;
+
         if (server) {
             uri = server.uri;
         }
@@ -364,6 +370,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
                 uri = openLayer.url;
             }
         }
+
         return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
     },
 	
@@ -386,7 +393,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             options
             );
         this.setDomainLayerProperties(openLayer, layerDescriptor);
-	    
+
         // don't add layer twice 
         if (this.containsLayer(openLayer)) {
             Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
@@ -615,7 +622,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             chosenTimes: chosenTimes,
             scope: this,
             success: function(resp, options) {
-                var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
+                var layerDescriptor = Ext.util.JSON.decode(resp.responseText);
                 if (layerDescriptor) {
                     this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
                 }
@@ -733,7 +740,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         // Need to collect the layers first and delete outside a loop over
         // the map.layers property because it updates its internal indices and
         // accordingly skips layers as the loop progresses
-        var layersToRemove = []
+        var layersToRemove = [];
         Ext.each(this.map.layers, function(openLayer, allLayers, index) {
             if(openLayer && !openLayer.isBaseLayer) {
                 layersToRemove.push(openLayer);

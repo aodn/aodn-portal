@@ -27,7 +27,9 @@ class Layer {
     Boolean blacklisted
     Date lastUpdated
 
-    /* <tns:name>Argo Oxygen Floats</tns:name>
+    String layerHierarchyPath
+
+     /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
         <tns:description>Oxygen enabled Argo Floats in the Australian region</tns:description>
         <tns:uriIdRef>web-maps-0</tns:uriIdRef>
@@ -42,9 +44,13 @@ class Layer {
 
      */
     static mapping = {
+        // Sorting
         sort "server"
 		layers sort: "title"
+
+        // Column types
         styles type: "text"
+        layerHierarchyPath type: "text"
     }
 
     static belongsTo = [parent: Layer]
@@ -67,11 +73,13 @@ class Layer {
         bboxMaxY(nullable:true)
         projection(nullable: true)
         queryable()
+
         isBaseLayer()
         
         dataSource(blank:false)
         activeInLastScan()
         lastUpdated(nullable:true)
+        layerHierarchyPath(nullable: true)
     }
 
     Layer() {
@@ -98,11 +106,7 @@ class Layer {
             .append(id, other.id)
             .isEquals()
     }
-    
-    String toListString() {
-        return "${server?.shortAcron} - ${name}"
-    }
-    
+
     String toString() {
         return "${server?.shortAcron} - ${name}"
     }
