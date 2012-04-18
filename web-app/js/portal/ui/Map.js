@@ -275,6 +275,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             version: this.getWmsVersionString(this.getServer(layerDescriptor)),
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
+            buffer: 1, 
+            gutter: 0,
             projection: new OpenLayers.Projection(layerDescriptor.projection),
             layerHierarchyPath: layerDescriptor.layerHierarchyPath
         };
@@ -288,8 +290,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         var params = {
             layers: layerDescriptor.name,
             transparent: 'TRUE',
-            buffer: 1, 
-            gutter: 0,
             version: this.getWmsVersionString(this.getServer(layerDescriptor)),
             format: this.getServerImageFormat(this.getServer(layerDescriptor)),
             CQL_FILTER: layerDescriptor.cql,
