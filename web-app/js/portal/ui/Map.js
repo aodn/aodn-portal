@@ -86,6 +86,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         });
         this.map.addControl(clickControl);
         clickControl.activate();
+        clickControl.fallThrough = false;
+
+
 	    
         this.spinnerForLayerloading = new Spinner({
             lines: 12, // The number of lines to draw
@@ -108,7 +111,17 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         }, this);
 	    
         this.on('afterlayout', function() {
-            this.addBaseLayers();
+			this.addBaseLayers();
+			// cursor mods
+			//this.style.cursor="pointer";
+			jQuery("div.olControlZoomBoxItemInactive ").click(function(){
+				//this.style.cursor="crosshair";
+				clickControl.deactivate();
+			});
+			jQuery("div.olControlNavigationItemActive ").click(function(){
+				//this.style.cursor="pointer";
+				clickControl.activate();
+			});
         }, this);
 	    
         this.on('baselayersloaded', this.onBaseLayersLoaded, this);

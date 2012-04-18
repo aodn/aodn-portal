@@ -1,5 +1,5 @@
 body, html{
-    font-family: verdana,arial,sans-serif;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     font-size: 11px;
     background-color: white;       
     /*margin: 5px! important;
@@ -7,7 +7,7 @@ body, html{
 }
 
 p {    
-    font-family: verdana,arial,sans-serif;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
 }
 
 td {
@@ -75,6 +75,10 @@ input[type="checkbox"], input[type="radio"]{
 input.readonlyInput {
     border: none;
 }
+.roundedImages {
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
 
 .searchInput {
     display: block;
@@ -117,6 +121,9 @@ hr {
 
 .floatLeft {
     float: left;
+}
+.homePanelWidget {
+    margin-right: 10px;
 }
 
 .buttonPad {
@@ -256,6 +263,9 @@ hr {
 #viewPortLinks  {
    position: relative;
    top: 48px;
+}
+.spacer  {
+    margin: 25px 0px;
 }
 
 .viewPortLinks a {
