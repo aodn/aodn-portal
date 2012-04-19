@@ -123,7 +123,8 @@ hr {
     float: left;
 }
 .homePanelWidget {
-    margin-right: 10px;
+    margin-right: 10px;	
+	padding-right: 20px;
 }
 
 .buttonPad {

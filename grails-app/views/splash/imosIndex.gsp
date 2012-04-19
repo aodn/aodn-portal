@@ -28,7 +28,7 @@ You can obtain full information about IMOS via the <a class="external" title="IM
     <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent.jpg" /></a>
 	<BR>
   The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
-  go to our &#8220;<a class="external" title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" target="_blank">Ocean Current</a>&#8221; page.
+  go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
   </div>
 
 
