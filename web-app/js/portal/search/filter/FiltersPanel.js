@@ -127,10 +127,19 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
 		
         this.fireEvent('contentchange');
         
+        // TODO: refactor this bounding box specific code out from here.
+        // "bounds" should probably not be a property of SearchTabPanel either.
         if (filterComponent.xtype == 'portal.search.field.boundingbox') {
           var bboxField = this.findByType('portal.search.field.boundingbox')[0];
+          
           bboxField.setBox(this.ownerCt.bounds);
           this.relayEvents(bboxField, ['bboxchange']);
+          
+          // Need to set value again...
+          if (record.filterValue)
+          {
+        	  filterComponent.setFilterValue(record.filterValue);
+          }
         }
 	},
 	
