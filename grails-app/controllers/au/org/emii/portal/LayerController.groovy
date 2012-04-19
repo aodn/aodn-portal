@@ -202,16 +202,17 @@ class LayerController {
 
         try {
             // Logging output
-            def passwordPrint = "*" * params.password?.length()
-            def layerDataPrint = JSON.parse( params.layerData )
-            layerDataPrint.children = "[...]"
-            layerDataPrint.supportedProjections = "[...]"
-            
-            log.debug "username: ${params.username}"
-            log.debug "password: $passwordPrint"
-            log.debug "metadata: ${params.metadata}"
-            log.debug "layerData: $layerDataPrint"
-            
+            if ( log.debugEnabled ) {
+
+                def layerDataPrint = JSON.parse( params.layerData )
+                layerDataPrint.children = "[...]"
+                layerDataPrint.supportedProjections = "[...]"
+
+                log.debug "username:  ${params.username}"
+                log.debug "metadata:  ${params.metadata}"
+                log.debug "layerData: $layerDataPrint"
+            }
+
             // Check credentials
             try {
                 _validateCredentialsAndAuthenticate params
@@ -259,7 +260,7 @@ class LayerController {
         def un = params.username
         def pwd = params.password
         
-        if ( !un ) throw new IllegalArgumentException( "Value for username is invalid. username: '$un'" )
+        if ( !un ) throw new IllegalArgumentException( "Value for username is invalid." )
         if ( !pwd ) throw new IllegalArgumentException( "Value for password is invalid." )
         
         def authToken = new SaltedUsernamePasswordToken( authService, un.toLowerCase(), pwd )

@@ -141,8 +141,6 @@ class LayerService {
                 layerToUpdate.activeInLastScan = true
                 layerToUpdate.lastUpdated = new Date()
 
-                println uniquePath
-
                 layerToUpdate.layerHierarchyPath = uniquePath
 
                 return layerToUpdate
