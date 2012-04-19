@@ -24,6 +24,8 @@ class ConfigController {
     def viewport = {
 
         def configInstance = Config.activeInstance();
+		// Clean ^M characters
+		configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
         
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()
@@ -47,7 +49,7 @@ class ConfigController {
 			configInstance.defaultLayers as JSON
 		}
 		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
-
+		
         // add current user details
         def currentUser = SecurityUtils.getSubject()
         def principal = currentUser?.getPrincipal()

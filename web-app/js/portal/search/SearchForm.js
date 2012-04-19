@@ -118,7 +118,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       }
       
       // default is to show layers only
-      if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')});
+      if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')});
       
       return searchFilters;
    }
