@@ -58,6 +58,23 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       this.addEvents('redraw');
    },
 
+   getFilterValue: function () {
+	   return { value: this.getValue() };
+   },
+   
+   setFilterValue: function(v) {
+	   
+	   // setValue() has to be called *after* the store is loaded, hence the callback.
+	   this.store.load({
+		   callback: function(records, options, success) {
+			   if (success) {
+				   this.setValue(v.value);
+			   }
+		   },
+		   scope: this
+	   });
+   },
+   
    //Limit size of displayed text
    addItemBox: function(val, display, caption, cls, style) {
    	var displayCaption = caption;

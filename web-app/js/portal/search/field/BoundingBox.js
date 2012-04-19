@@ -103,6 +103,15 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
       this.mon(this.eastBL, 'change', this.onCoordChange, this);
       this.mon(this.westBL, 'change', this.onCoordChange, this);
    },
+  
+   getFilterValue: function()
+   {
+	   return this.getBounds();
+   },
+   
+   setFilterValue: function(v) {
+	   this.setBox(v);
+   },
    
    onCoordChange: function() {
      this.fireEvent('bboxchange', this.getBounds());

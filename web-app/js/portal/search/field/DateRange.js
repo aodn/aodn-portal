@@ -17,6 +17,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                   labelSeparator: '',
                   name: 'extFrom',
                   xtype: 'datefield',
+                  ref: '../fromDate',
                   format: 'd/m/Y',
                   anchor: '100%'
                }
@@ -32,6 +33,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                   labelSeparator: '',
                   name: 'extTo',
                   xtype: 'datefield',
+                  ref: '../toDate',
                   format: 'd/m/Y',
                   anchor: '100%'
                }
@@ -40,6 +42,20 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
       ];
 
       Portal.search.field.DateRange.superclass.initComponent.apply(this, arguments);
+   },
+   
+   getFilterValue: function()
+   {
+	   return {
+		   fromDate: this.fromDate.getValue(),
+		   toDate: this.toDate.getValue()
+	   };
+   },
+   
+   setFilterValue: function(v)
+   {
+	   this.fromDate.setValue(new Date(v.fromDate));
+	   this.toDate.setValue(new Date(v.toDate));
    }
 });
 
