@@ -8,6 +8,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     stateful: false,
     autoScroll: true,
     bodyCls: 'floatingDetailsPanel',
+    height: 400,
 
 
     initComponent: function(){
@@ -19,11 +20,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
             this.animatePanelContent
         ];
 
-        this.on('show', function(thisComponent){
-            // the tabpanel needs to be visible before setup below
-            this.setupAnimationControl();
-        }, this);
-
         Portal.details.AnimationPanel.superclass.initComponent.call(this);
     },
 
@@ -32,7 +28,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     setupAnimationControl: function() {
-
+        console.log("setting up aniumation control");
         if (this.selectedLayer == undefined) {
             console.log("animation was requested although no layer is active!!");
             return false;
@@ -42,40 +38,89 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
         var newAnimatePanelContents = undefined;
 
+        console.log(this.selectedLayer.dates);
         if (this.selectedLayer.dates.length == 1) {
-
             // todo animate on todays times
             content = new Ext.Panel({
                 layout: 'form',
                 items: [
                 new Ext.form.Label({
-                    html:"<p>Only one day is available - " + selectedLayer.dates[0] + "</p>"
+                    html:"<p>Only one day is available - " + this.selectedLayer.dates[0] + "</p>"
                     } )
                 ]
             });
 
-            this.animatePanelContent.add(newAnimatePanelContents);
+            this.animatePanelContent.add(content);
 
         }
         else {
-            console.log("there's times!");
-            console.log(this.animatePanelContent.theOnlyTimePanel);
             if (this.animatePanelContent.theOnlyTimePanel == undefined) {
-                this.animatePanelContent.add(new Animations.TimePanel());
+                timePanel = new Animations.TimePanel();
+                this.animatePanelContent.add(timePanel);
             }
-            else {
-                // update it
-                this.animatePanelContent.theOnlyTimePanel.setTimeVals(this.animatePanelContent.theOnlyTimePanel.timePanelSlider);
-            //console.log("the dates are set. should reneable the start animation button");
-            //Ext.getCmp('startNCAnimationButton').enable();
+			// update it\
+			timePanel.setSelectedLayer(this.selectedLayer);
+			this.animatePanelContent.theOnlyTimePanel.setTimeVals(this.animatePanelContent.theOnlyTimePanel.timePanelSlider);
+
+        }
+        //this.setDisabled(false);
+        this.animatePanelContent.doLayout();
+    },
+
+    update: function(){
+        // set default visibility of components in this panel
+        // disabled until all dates are loaded for the layer if applicable
+        //this.setDisabled(true);
+
+        // assume its not an animated image
+        //TODO: add this back in
+        //this.stopNCAnimationButton.setVisible(false);
+
+        if(this.selectedLayer.server.type.search("NCWMS") > -1){
+            this.setLayerDates();
+            this.setupAnimationControl();
+        }
+
+        // it may be an animated image layer
+        if (this.selectedLayer.originalWMSLayer != undefined) {
+
+            // set the Start Stop buttons;
+            //this.stopNCAnimationButton.setVisible(false);
+            //this.stopNCAnimationButton.setVisible(true);
+        }
+    },
+
+    // set all the date/times for the layer
+    // creates an array (dates) of objects {date,datetimes} for a layer
+    setLayerDates: function(){
+		// add this new attribute to the layer
+        this.selectedLayer.dates = [];
+
+        var datesWithData = this.selectedLayer.metadata.datesWithData;
+
+        var dayCounter = 0; // count of how many days
+
+        for (var year in datesWithData) {
+            for (var month in datesWithData[year]) {
+                for (var day in datesWithData[year][month]) {
+                    // add 1 to the month and number as datesWithData uses a zero-based months
+                    // take the value at the index day if its a number
+                    if (!isNaN(parseInt(datesWithData[year][month][day]))) {
+
+                        var newDay = year + "-" + pad(parseInt(month)+1, 2 ) +"-" + pad(datesWithData[year][month][day], 2);
+                        this.selectedLayer.dates.push({
+                            date: newDay
+                        });
+                        // start off a Ajax request to add the dateTimes for this date
+                        setDatetimesForDate(this.selectedLayer, newDay);
+                        dayCounter ++;
+                    }
+                }
             }
         }
 
-
-        this.animatePanelContent.doLayout();
-
-
-
-
+        // store with the layer.
+        // set to undefined when setDatetimesForDate returns a result for every day
+        this.selectedLayer.dayCounter = dayCounter;
     }
 });

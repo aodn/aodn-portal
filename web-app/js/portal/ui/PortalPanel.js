@@ -6,8 +6,13 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         this.appConfig = cfg.appConfig;
 		
         this.initMapPanel(this.appConfig);
-        this.initRightDetailsPanel(this.appConfig);
-		
+        this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
+			region: 'east',
+			collapsible: true,
+			collapsed: true,
+			stateful: false,
+		});
+
         var config = Ext.apply({
             layout: 'border',
             id: 'mainMapPanel',
@@ -39,21 +44,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             hideLayerOptions: appConfig.hideLayerOptions
         });
     },
-	
-    initRightDetailsPanel: function(appConfig) {
-        this.rightDetailsPanel = new Ext.Panel({
-            id: 'rightDetailsPanel',
-            region: 'east',
-            collapsible: true, 
-            collapsed: true,
-            stateful: false,
-            padding:  '0px 20px 5px 20px',
-            split: true,
-            width: 350,
-            minWidth: 250
-        });
-    },
-	
+
     registerEvents: function() {
         this.on('hide', this.onHidePanel, this);
         this.registerMapPanelEvents();
@@ -62,27 +53,18 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
     
     registerMapPanelEvents: function() {
 		this.mapPanel.on('layeradded', function(openLayer) {
-			this.addDetailsPanelItems();
-			updateDetailsPanel(openLayer);
+			this.rightDetailsPanel.update(openLayer);
 		}, this);
 	},
 	
     registerRightDetailsPanelEvents: function() {	
 		// Until the details panel is refactored just grab a handle via Ext
-		Ext.getCmp('stopNCAnimationButton').on('click', function() {
+		//Ext.getCmp('stopNCAnimationButton').on('click', function() {
 			// Note selected layer is a global variable that also should be refactored
-			this.mapPanel.stopAnimation(selectedLayer);
-		}, this);
+		//	this.mapPanel.stopAnimation(selectedLayer);
+		//}, this);
 	},
-	
-	addDetailsPanelItems: function() {
-		var itemsPanel = Ext.getCmp("detailsPanelItems");
-		if (!itemsPanel.isVisible()) {
-			this.rightDetailsPanel.add(itemsPanel);
-			this.rightDetailsPanel.doLayout();
-		}
-	},
-	
+
   onHidePanel: function() {
     // TODO: popup should belong to this component
     if (popup) {

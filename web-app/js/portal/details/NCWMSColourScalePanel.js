@@ -49,6 +49,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     makeNcWMSColourScale: function(layer) {
         this.selectedLayer = layer;
+
         // see if the user has changed these values
         if (layer.metadata.userScaleRange != undefined) {
             this.colourScaleMin.setValue(layer.metadata.userScaleRange[0]);
@@ -58,8 +59,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             this.colourScaleMin.setValue(layer.metadata.scaleRange[0]);
             this.colourScaleMax.setValue(layer.metadata.scaleRange[1]);
         }
-        Ext.getCmp('ncWMSColourScalePanel').show();
-
+        this.show();
     },
 
     updateScale: function(textfield, event){
@@ -67,13 +67,13 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         if(event.getKey() == 13){
             if ( parseFloat(colourScaleMax.getValue()) > parseFloat(colourScaleMin.getValue())) {
 
-                selectedLayer.mergeNewParams({
+                this.selectedLayer.mergeNewParams({
                     COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
                 });
-                refreshLegend(selectedLayer);
+                Ext.getCmp('stylePanel').refreshLegend(this.selectedLayer);
 
                 // set the user selected range
-                selectedLayer.metadata.userScaleRange = [colourScaleMin.getValue(),colourScaleMax.getValue()];
+                this.selectedLayer.metadata.userScaleRange = [colourScaleMin.getValue(),colourScaleMax.getValue()];
             }
             else {
                 alert("The Max Parameter Range value is less than the Min");

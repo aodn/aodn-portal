@@ -600,23 +600,24 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	
 	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
 	    var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
+
 	    if (openLayer) {
 	    	this.addLayer(openLayer, true);
-	    	
-	        // zoom map first. may request less wms tiles first off
+            // zoom map first. may request less wms tiles first off
         	if (this.autoZoom === true) {
 	            this.zoomToLayer(openLayer);
 	        }
-        	
-        	// show open layer options
-        	if (!Portal.app.config.hideLayerOptions) {
-	            updateDetailsPanel(openLayer);
+
+            if (this.isNcwmsServer(layerDescriptor)) {
+	            // update detailsPanel after Json request
+	            this.getLayerMetadata(openLayer);
 	        }
 
-	        if (this.isNcwmsServer(layerDescriptor)) {
-	            // update detailsPanel after Json request
-                this.getLayerMetadata(openLayer);
-	        }
+            // show open layer options
+            if (!Portal.app.config.hideLayerOptions) {
+                Ext.getCmp('detailsPanelItems').updateDetailsPanel(openLayer);
+            }
+
 
 	        if (animated) {
 	        	openLayer.chosenTimes = chosenTimes;
@@ -647,6 +648,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            success: function(resp) {
 	                openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
 
+                    console.log("openLayer.metadata");
+                    console.log(openLayer.metadata);
 	                // if this layer has been user selected before loading the metadata
 	                // reload,  as the date picker details/ form  will be wrong at the very least!
 	                // TODO tommy - refactor selected layer usage, it is declared is in details panel

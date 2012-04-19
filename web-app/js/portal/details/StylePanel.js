@@ -89,7 +89,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
             // store the default style
             this.selectedLayer.params.STYLES = record.get('myId');
-            this.refreshLegend(selectedLayer);
+            this.refreshLegend(this.selectedLayer);
         }
         else {
             // its an animated openlayers image
@@ -99,28 +99,38 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    updateStyles: function(layer) {
+    setSelectedLayer: function(layer){
         this.selectedLayer = layer;
+    },
+
+    updateStyles: function() {
 
         var data = new Array();
         this.styleCombo.hide();
 
+        if(this.selectedLayer.server.type.search("NCWMS") > -1)  {
+            this.ncwmsColourScalePanel.makeNcWMSColourScale(this.selectedLayer);
+        }
+        else{
+            this.ncwmsColourScalePanel.hide();
+        }
+
         //var supportedStyles = layer.metadata.supportedStyles;
          // for WMS layers that we have scanned
-        if(layer.allStyles != undefined) {
+        if(this.selectedLayer.allStyles != undefined) {
 
             // populate 'data' for the style options dropdown
-            var styles = layer.allStyles.split(",");
+            var styles = this.selectedLayer.allStyles.split(",");
             // do something if the user has more than one option
             if (styles.length > 1) {
 
                 for(var j = 0; j < styles.length; j++)  {
                     var params = {
-                        layer: layer,
+                        layer: this.selectedLayer,
                         colorbaronly: true
                     }
                     // its a ncwms layer
-                    if(layer.server.type.search("NCWMS") > -1)  {
+                    if(this.selectedLayer.server.type.search("NCWMS") > -1)  {
                         var s = styles[j].split("/");
                         // if forward slash is found it is in the form  [type]/[palette]
                         // we only care about the palette part
@@ -144,7 +154,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             // change the displayed data in the style picker
             this.styleCombo.show();
         }
-        this.refreshLegend(layer);
+        this.refreshLegend(this.selectedLayer);
 
     },
     // full legend shown in layer option. The current legend
