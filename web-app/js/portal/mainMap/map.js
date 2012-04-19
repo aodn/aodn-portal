@@ -687,40 +687,43 @@ function getNodeText(xmlNode)
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
     
-    var dl = {};
-    var server = {};
-    
-    server.uri = url;
-    server.type = type;    
-    server.opacity = 100;
-    dl.server = server;
-    
-    dl.queryable = false; // no more
-    
-    //dl.sld = sld; //comment out until required from the setExtWmsLayer function
-    
-    // style in .ftl's but should be styles
-    dl.styles = style;
-    dl.name = layer; // layer id on server  
+    var dl = {}
+	var server = {}
 
-    // options are comma delimited to include a unique label from a single value such as a dropdown box
-    if (options.length > 1) {
-        var opts = options.split(",");
-        var cql = opts[0];
-        var newLabel = label;
-        if (opts.length > 1) {
-            newLabel = label + " " + opts[1];
-        }
-        
-        dl.cql = cql;
-        
-        dl.title = label; 
-        if (newLabel.length > 0) {
-            dl.title = newLabel;
-        } 
+	server.uri = url;
+	server.type = type;    
+	server.opacity = 100;
+	dl.server = server;
 
-        getMapPanel().addMapLayer(dl);
-    }
+	dl.queryable = false; // no more
+
+	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
+
+	// style in .ftl's but should be styles
+	dl.styles = style;
+	dl.name = layer; // layer id on server  
+	dl.title = label; 
+
+	// options are comma delimited to include a unique label from a single value such as a dropdown box
+	if (options.length > 1) {
+		var opts = options.split(",");
+		var cql = opts[0];
+		var newLabel = label;
+		if (opts.length > 1) {
+			newLabel = label + " " + opts[1];
+		}
+
+		dl.cql = cql;
+		if (newLabel.length > 0) {
+			dl.title = newLabel;
+		} else {
+			dl.cql = '';
+		}
+
+	}
+
+
+	getMapPanel().addMapLayer(dl);
 }
 
 function IsInt(sText) {

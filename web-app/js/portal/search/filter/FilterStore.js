@@ -32,14 +32,14 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 						triggerAction : 'all',
 						store : 
 							[
+								[ '', 'Show me all results' ],
 								[
 										Portal.app.config.metadataLayerProtocols.split(
 												'\n').join(' or '),
-										'Show me results with map layers only' ],
-								[ '', 'Show me all results' ] 
+										'Show me results with map layers only' ]
 							],
 						hiddenName : 'protocol',
-						value : Portal.app.config.metadataLayerProtocols.split('\n').join(' or '),
+						value : 'Show me all results',
 						getFilterValue: function() {
 							return { value: this.getValue() };
 						},

@@ -52,7 +52,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                         {
                             // this is not a configured item as wont change and will need tailoring for every instance
                             xtype: 'container',
-                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall.png\" />",
+                            html: "<img src=\"images/DIISRTE_Inline-PNGSmall_200.png\" />",
                             width: 220
                             
                         },
