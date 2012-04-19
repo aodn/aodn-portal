@@ -57,6 +57,19 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
         	filterComponent.setFilterValue(record.filterValue);
         }
 
+        // Relay protocol change events (for other filters that are interested in it).
+        this.relayEvents(filterComponent, ['protocolChange']);
+        
+        if (filterComponent.onProtocolChange)
+        {
+        	filterComponent.mon(this, 'protocolChange', filterComponent.onProtocolChange, filterComponent);
+        }
+        
+        if (filterComponent.onContentChange)
+        {
+        	filterComponent.mon(this, 'contentChange', filterComponent.onContentChange, filterComponent);
+        }
+        
 		var items = 
 		[
 		 	{

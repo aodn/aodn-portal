@@ -49,6 +49,8 @@
 <script src="${resource(dir:'js',file:'portal/common/LoadMask.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/SuggestionStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/RefinementList.js')}"   type="text/javascript"></script>
@@ -78,7 +80,6 @@
 <script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotDialog.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotSaveButton.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js')}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js')}"   type="text/javascript"></script>

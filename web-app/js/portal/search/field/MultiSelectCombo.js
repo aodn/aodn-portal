@@ -15,7 +15,6 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    },
    
    minChars: 0,
-   queryParam: 'q',
    hideTrigger: false,
    valueField: 'value',
    displayField: 'value',
@@ -24,22 +23,15 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    maxCaptionLength: 40,
 
    initComponent: function(config) {
-      this.store = new GeoNetwork.data.OpenSearchSuggestionStore({
-         url: this.url,
-         rootId: 1,
-         fields: [{
-           name: "value", 
-           sortType: Ext.data.SortTypes.asUCString
-         }],
-         autoLoad: true,
-         baseParams: {
-             field: this.field
-         },
-         sortInfo: {
-           field: "value",
-           direction: 'ASC'
-       }
-     });
+
+	   this.store = new Portal.data.SuggestionStore({
+	          url: this.url,
+	          autoLoad: true
+	      });
+	 
+	   if (this.baseParams) {
+		   this.store.baseParams = this.baseParams;
+	   }
 
       Portal.search.field.MultiSelectCombo.superclass.initComponent.call(this);
       
@@ -49,15 +41,25 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       });
 
       this.on({
-      	scope: this,
-      	additem: this.onItemChange,
-      	removeitem: this.onItemChange,
-      	clear: this.onItemChange
+      	  scope: this,
+      	  additem: this.onItemChange,
+      	  removeitem: this.onItemChange,
+      	  clear: this.onItemChange
       });
       
       this.addEvents('redraw');
    },
+   
+   onProtocolChange: function(protocol)
+   {
+	   this.setBaseParams({ 'protocol': protocol });
+	   this.store.load();
+   },
 
+   setBaseParams: function(baseParams) {
+	   this.store.baseParams = baseParams;
+   },
+   
    getFilterValue: function () {
 	   return { value: this.getValue() };
    },
@@ -89,7 +91,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    },
    
    proxyBeforeLoad: function(proxy, params) {
-      proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' + Ext.urlEncode(params)));
+      proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' + Ext.urlEncode(params)) + '&format=text/xml');
    }
 });
 

@@ -15,6 +15,7 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 					},
 					true
 				],
+				// TODO: this element could do with refactoring...
 				[
 				 	2,
 				 	'combo',
@@ -44,7 +45,17 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 						},
 						setFilterValue: function(v) {
 							this.setValue(v.value);
-						}
+						},
+						listeners :
+						{
+							'select': function(combo, record, index) {
+								this.fireEvent('protocolChange', record.data.field1);
+							}
+						},
+						onContentChange: function()
+						{
+							this.fireEvent('protocolChange', this.getValue());
+						}	
 					},
 					true
 				]
@@ -60,8 +71,10 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
  */
 Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 {
-    var opensearchSuggest = Portal.app.config.catalogUrl + '/srv/en/main.search.suggest';
-	
+    var keywordSuggestUrl = Portal.app.config.catalogUrl + '/srv/eng/portal.summary.keywords';
+    var paramSuggestUrl = Portal.app.config.catalogUrl + '/srv/eng/portal.summary.longParamNames';
+    var orgSuggestUrl = Portal.app.config.catalogUrl + '/srv/eng/portal.summary.organisations';
+
 	return new Portal.search.filter.FilterStore({
 		data: 
 			[ 
@@ -100,7 +113,7 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						field : 'keyword',
 						xtype : 'portal.search.field.multiselect',
 						proxyUrl : proxyURL,
-						url : opensearchSuggest,
+						url : keywordSuggestUrl,
 						listeners : 
 						{
 							scope : rootContainer,
@@ -120,7 +133,7 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						field : 'longParamName',
 						xtype : 'portal.search.field.multiselect',
 						proxyUrl : proxyURL,
-						url : opensearchSuggest,
+						url : paramSuggestUrl,
 						listeners : 
 						{
 							scope : rootContainer,
@@ -140,7 +153,7 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						field : 'orgName',
 						xtype : 'portal.search.field.multiselect',
 						proxyUrl : proxyURL,
-						url : opensearchSuggest,
+						url : orgSuggestUrl,
 						listeners : 
 						{
 							scope : rootContainer,
