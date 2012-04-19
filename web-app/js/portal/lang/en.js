@@ -35,7 +35,16 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapLayer: 'Map Layer',
     searchButton: 'Search',
     fullTextSearch: ' ** Free text search **',
-        
+    saveSearchButtonText: 'Save...',
+    saveSearchButtonTip: 'Save the current search',
+    deleteSavedSearchButtonText: 'Delete',
+    deleteSavedSearchButtonTip: 'Delete the current saved search',
+    saveSearchDialogTitle: 'Save Search',
+    saveSearchName: 'Name',
+	saveSearchFailureErrMsg: 'Unexpected failure saving search',
+	chooseSavedSearch: 'Choose a Saved Search',
+      
+    
     // Aggregate Download
     ttAddToDownload: 'Add to download cart',
     ttAddAllToDownload: 'Add all to download cart',
@@ -57,6 +66,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     saveMapButtonTip: 'Save the current state of the map',
     saveSnapshotDialogTitle: 'Save Map',
     saveSnapshotName: 'Name',
+	saveSnapshotFailureErrMsg: 'Unexpected failure saving snapshot',
     btnSave: 'Save',
     btnCancel: 'Cancel',
     chooseSavedMap: 'Choose a Saved Map',

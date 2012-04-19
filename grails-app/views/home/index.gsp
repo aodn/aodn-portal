@@ -48,6 +48,7 @@
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/LoadMask.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/SaveDialog.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/RefinementList.js')}"   type="text/javascript"></script>
@@ -56,9 +57,17 @@
 <script src="${resource(dir:'js',file:'portal/search/field/DateRange.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/MultiSelectCombo.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/filter/FilterComboBox.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/filter/FiltersPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/filter/FilterStore.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/ControlPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SavedSearchComboBox.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SaveSearchDialog.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SearchController.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchTabPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SaveSearchPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LinkSelectionWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LayerSelectionWindow.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js')}"   type="text/javascript"></script>
