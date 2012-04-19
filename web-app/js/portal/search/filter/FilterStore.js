@@ -92,13 +92,7 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 				  	'portal.search.field.boundingbox',
 				  	OpenLayers.i18n("boundingBox"), 
 				  	{
-				  		xtype : 'portal.search.field.boundingbox',
-						listeners : 
-						{
-							scope : rootContainer,
-							beforeRender : rootContainer.setResultsGridText,
-							removed : rootContainer.resetResultsGridText
-						}
+				  		xtype : 'portal.search.field.boundingbox'
 				 	},
 				 	false
 				],

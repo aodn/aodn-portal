@@ -40,7 +40,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		if (linkRec === undefined) {
 			return undefined;
 		}
-
+		
 		return {
 			title : linkRec.get('title'),
 			server : {

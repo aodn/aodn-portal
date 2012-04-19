@@ -10,15 +10,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
    buttonAlign: 'left',
    footerStyle: 'padding:5px 0px 10px 10px',
    
-   setResultsGridText: function(){
-        if(this.resultsGrid != null)
-           this.resultsGrid.getBottomToolbar().afterPageText = "of ...?";
-      },
-   resetResultsGridText: function(){
-        if(this.resultsGrid != null)
-            this.resultsGrid.getBottomToolbar().afterPageText = "of {0}";
-      },
-
    initComponent: function() {
    
 	   	var activeFilterStore = Portal.search.filter.newDefaultActiveFilterStore();
@@ -130,12 +121,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split('\n').join(' or ')});
       
       return searchFilters;
-   },
-
-   setResultsGrid: function(rGrid){
-    this.resultsGrid = rGrid;
    }
-   
 });
     
 Ext.reg('portal.search.searchform', Portal.search.SearchForm);

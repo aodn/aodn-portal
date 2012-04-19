@@ -11,10 +11,20 @@ Portal.data.CatalogResultsStore = function(){
     }
     
     function getLinks(v, record){
-        if (record.link) {
-            return record.link;
+        var links = [];
+    	if (record.link) {
+        	Ext.each(record.link, function(link, index, all) {
+        		var elements = link.value.split('|');
+        		links.push({
+        			href: elements[2],
+        			name: elements[0],
+        			protocol: elements[3],
+        			title: elements[1],
+        			type: elements[4]
+        		});
+        	}, this);	
         }
-        return [];
+        return links;
     }
     
     /**
@@ -39,9 +49,7 @@ Portal.data.CatalogResultsStore = function(){
     
     return new Ext.data.JsonStore({
         totalProperty: 'summary.count',
-        searchedUpTo: 'to',
         root: 'records',
-        fast: 'false',
         fields: [{
             name: 'title',
             convert: getTitle
