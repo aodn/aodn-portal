@@ -104,7 +104,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             // remove any transect tabs for previous layer
             var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
             for (var i=0;i<transectTabs.length;i++) {
-                åthis.detailsPanelTabs.remove(transectTabs[i]);
+                this.detailsPanelTabs.remove(transectTabs[i]);
             }
 
 
