@@ -2,10 +2,10 @@
 	<img src="${resource(dir:'images',file: grailsApplication.config.portal.header.logo)}" id="logo" />
 	<h1 id="headerTitle">${configInstance?.name}</h1>
     <g:if test="${showLinks}">
-    <div id="viewPortLinks" class="viewPortLinks">
-      <div class="viewPortLinksBackground" id="viewPortTab0"><a href="" onClick="setViewPortTab(0);return false;" >Home</a></div>
-      <div class="viewPortLinksBackground" id="viewPortTab1"><a href="" onClick="setViewPortTab(1);return false;" >Map</a></div>
-      <div class="viewPortLinksBackground" id="viewPortTab2"><a href="" onClick="setViewPortTab(2);return false;" >Search</a></div>
+    <div id="viewPortLinks" class="">
+      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab0"><a href="" onClick="setViewPortTab(0);return false;" >Home</a></div>
+      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(1);return false;" >Map</a></div>
+      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(2);return false;" >Search</a></div>
     </div>
     </g:if>
     

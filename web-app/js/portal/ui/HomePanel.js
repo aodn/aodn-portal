@@ -18,7 +18,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                 region:'center',
                 layout:'fit',
                 //minHeight: 600,
-                padding:  '0px 10px 30px 10px',
+                padding:  '0px 10px 0px 10px',
                 unstyled: true,
                 stateful: false,
                 items: [  
@@ -74,7 +74,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                 stateful: false,
                 unstyled: true,                   
                 autoScroll: true,
-                padding:  '15px 20px 5px 20px',
+                padding:  '15px 5px 5px 5px',
                 //html: 'ActiveLayers Details panel here',
                 width: 360,
                 items: [
