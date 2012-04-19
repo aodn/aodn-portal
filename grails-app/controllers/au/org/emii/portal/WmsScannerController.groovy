@@ -101,7 +101,14 @@ class WmsScannerController {
         def conf = Config.activeInstance()
         
         def server = Server.findWhere( uri: params.scanJobUri )
-        
+
+        if ( !server ) {
+
+            setFlashMessage "Unable to find server with uri: '${ params.scanJobUri }'"
+            redirect action: "controls"
+            return
+        }
+
         def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
         
         def jobType     = "WMS"

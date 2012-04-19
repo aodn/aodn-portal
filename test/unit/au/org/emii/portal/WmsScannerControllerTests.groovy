@@ -186,7 +186,20 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
         assertEquals "Flash message should show response", "Response: Updated", controller.flash.message
     }
-    
+
+    void testCallUpdate_ServerNotFound_RedirectedWithMessage() {
+
+        mockDomain Config, [validConfig]
+
+        Server.metaClass.static.findWhere = { map -> return null }
+
+        mockParams.scanJobUri = "TheUri"
+        controller.callUpdate() // Make the call
+
+        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+        assertEquals "Flash message should contain exception message", "Response: Unable to find server with uri: 'TheUri'", controller.flash.message
+    }
+
     void testCallUpdate_ExceptionThrown_RedirectedWithMessage() {
              
         mockDomain Config, [validConfig]
