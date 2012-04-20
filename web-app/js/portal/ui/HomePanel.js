@@ -99,7 +99,8 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                 
                 
                     if (panel.id == 'mainMapPanel') {                        
-                        closeNHideDetailsPanel();
+                        //closeNHideDetailsPanel();
+                        Ext.getCmp('')
                     
                         jQuery("#loader").hide(); // close the layer loader
                     

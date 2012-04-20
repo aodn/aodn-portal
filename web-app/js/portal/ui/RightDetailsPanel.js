@@ -28,6 +28,23 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems.updateDetailsPanel(openlayer);
 		this.text = openlayer.name;
 		this.setTitle("Layer Options: " + openlayer.name);
-		this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
+        this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
+
+		if(this.collapsed) {
+			this.expand();
+		}
+	},
+
+	closeNHideDetailsPanel: function() {
+		if (Portal.app.config.hideLayerOptions === true) {
+			if(this.getEl() != undefined){
+				this.collapse(true);
+			}
+		}
+		else {
+			if(this.getEl() != undefined){
+				this.expand(true);
+			}
+		}
 	}
 });

@@ -4,14 +4,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     title: 'Date Animate',
     id: 'animationPanel',
     plain: true,
-    disabled: true,
     stateful: false,
     autoScroll: true,
     bodyCls: 'floatingDetailsPanel',
     height: 400,
 
     initComponent: function(){
-         this.oneDayOnlyLabel = new Ext.form.Label();
+        this.oneDayOnlyLabel = new Ext.form.Label();
+
+        this.noAnimationLabel = new Ext.form.Label({
+        	hidden: true,
+        	html: "This layer cannot be animated"
+        });
 
         this.timeMax = new Ext.form.TextField({
 			ref: 'timeMax',
@@ -61,7 +65,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.stopNCAnimationButton = new Ext.Button({
 			id: 'stopNCAnimationButton',
-			text:'Stop Animation',
+			text:'Stop',
 			hidden: true,
 			listeners:{
 				scope: this,
@@ -69,6 +73,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function() {
 					// Note selected layer is a global variable that also should be refactored
 					Ext.getCmp('map').stopAnimation(this.selectedLayer);
+					this.startAnimationButton.setVisible(true);
+					this.stopNCAnimationButton.hide();
 				}
 			}
 		});
@@ -91,6 +97,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.animatePanelContent = new Ext.Panel({
 			id: 'animatePanelContent',
 			items: [
+				this.noAnimationLabel,
 				this.oneDayOnlyLabel,
 				this.timePanel
 			]
@@ -113,57 +120,52 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
             return false;
         }
 
-		this.timePanel.hide();
-		this.oneDayOnlyLabel.hide();
-        //this.animatePanelContent.removeAll(true);
-
         var newAnimatePanelContents = undefined;
 
         if (this.selectedLayer.dates.length == 1) {
-            this.oneDayOnlyLabel.setText("Only one day is available - " + this.selectedLayer.dates[0]);
+            this.oneDayOnlyLabel.setText("Only one day is available - " + this.selectedLayer.dates[0].date);
             this.oneDayOnlyLabel.show();
         }
         else if (this.selectedLayer.dates.length > 1){
             if (this.animatePanelContent.timePanel == undefined) {
-            	this.timePanel.remove('')
             	this.timePanel.show();
-                //timePanel = new Animations.TimePanel();
-                //this.animatePanelContent.add(this.timePanel);
             }
 			// update it\
 			this.setTimeVals(this.timePanel.timePanelSlider);
-
-
         }
         //this.setDisabled(false);
         this.animatePanelContent.doLayout();
     },
 
     update: function(){
-        // set default visibility of components in this panel
-        // disabled until all dates are loaded for the layer if applicable
-        //this.setDisabled(true);
-
-        // assume its not an animated image
-        //TODO: add this back in
-        //this.stopNCAnimationButton.setVisible(false);
+        //Just hide everything by default
+        this.timePanel.hide();
+		this.oneDayOnlyLabel.hide();
+		this.noAnimationLabel.hide();
 
         if(this.selectedLayer.server.type.search("NCWMS") > -1){
         	if (this.selectedLayer.originalWMSLayer != undefined) {
 				// set the Start Stop buttons;
 				//this.stopNCAnimationButton.setVisible(false);
+				this.timePanel.setVisible(true);
+				this.timeSlider.disable();
+				this.startAnimationButton.hide();
 				this.stopNCAnimationButton.setVisible(true);
 			}
 			else{
+				//if no dates has been fetched, then grab them.  Otherwise, just use the cached
+				//this.selectedLayer.dates.  No need for extra AJAX requests!
+				if(this.selectedLayer.dates == undefined || (this.selectedLayer.dates.length == 0)){
+					this.setLayerDates();
+                }
 
-				this.setLayerDates();
 				this.setupAnimationControl();
 			}
 
         }
-
-        // it may be an animated image layer
-
+        else{
+        	this.noAnimationLabel.setVisible(true);
+        }
     },
 
     // set all the date/times for the layer
@@ -255,7 +257,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		if(this.selectedLayer.originaWMSLayer == undefined){
 			this.timePanel.remove('timePanelSlider');
-
 			var dates = this.selectedLayer.dates;
 
 			if(dates.length > 0){
@@ -266,40 +267,44 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					values:  [0,this.selectedLayer.dates.length-1],
 					minValue: 0,
 					maxValue: this.selectedLayer.dates.length-1,
-					plugin: new Ext.ux.SliderTip({
+					plugins: new Ext.ux.SliderTip({
+						dates: this.selectedLayer.dates,
 						getText: function(slider){
 							var thumbName = "Start";
 							if (slider.index != 0) {
 								thumbName = "End";
 							}
-							return String.format('<b>{0}:</b> {1}', thumbName,  this.selectedLayer.dates[slider.value].date);
+							return String.format('<b>{0}:</b> {1}', thumbName,  dates[slider.value].date);
 						}
 					}),
 					listeners: {
 						scope: this,
 						changecomplete: function(slider,val,thumb) {
 							// which ever thumb was moved, update the selectedLayer
-							this.setTimeVals(slider);
+							this.updateTimeLabels();
 						}
 					}
 				});
 
 				this.timePanel.insert(1, this.timeSlider);
-
-				this.timeMin.setValue(dates[this.timeSlider.getValues()[0]].date);
-
-				if (this.timeSlider.getValues()[1] != undefined) {
-					this.timeMax.setValue(dates[this.timeSlider.getValues()[1]].date);
-					this.frameCount.setValue(this.timeSlider.getValues()[1] -  this.timeSlider.getValues()[0] + 1); // + item at zero
-				}
-				else {
-					this.timeMax.setValue(undefined);
-					this.frameCount.setValue(undefined);
-				}
-				this.enable();
+               	this.updateTimeLabels(dates);
+				this.doLayout();
 			}
 		}
+	},
 
+	updateTimeLabels: function(){
+		dates = this.selectedLayer.dates;
+		this.timeMin.setValue(dates[this.timeSlider.getValues()[0]].date);
+
+		if (this.timeSlider.getValues()[1] != undefined) {
+			this.timeMax.setValue(dates[this.timeSlider.getValues()[1]].date);
+			this.frameCount.setValue(this.timeSlider.getValues()[1] -  this.timeSlider.getValues()[0] + 1); // + item at zero
+		}
+		else {
+			this.timeMax.setValue(undefined);
+			this.frameCount.setValue(undefined);
+		}
 	},
 
 	setSelectedLayer: function(layer){
@@ -307,44 +312,35 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	getTimePeriod: function() {
-		// disable the 'Start' button for the next possible layer
-		this.startAnimationButton.disable();
-		this.stopNCAnimationButton.setVisible(true);
+		var chosenTimes = [];
 
+		var url;
+		// see if this layer is flagged a 'cached' layer. a Cached layer is already requested through our proxy
+		if (this.selectedLayer.cache === true) {
+		   url = this.selectedLayer.server.uri;
+		}
+		else {
+		   url = this.selectedLayer.url;
+		}
 
-		//if (this.animatePanelContent.timePanel != undefined) 	{
-			//var maxFrames = 8;
-			var chosenTimes = [];
+		// get the server to tell us the options
+		Ext.Ajax.request({
+			scope: this,
+			url: proxyURL+encodeURIComponent(url +
+				"?request=GetMetadata&item=animationTimesteps&layerName=" +
+				this.selectedLayer.params.LAYERS +
+				"&start=" + this.getDateTimesForDate(this.timePanel.timeMin.value)[0] +
+				"&end=" + this.getDateTimesForDate(this.timePanel.timeMax.value)[0]
+			),
+			success: function(resp) {
+				var res = Ext.util.JSON.decode(resp.responseText);
 
-			var url;
-			// see if this layer is flagged a 'cached' layer. a Cached layer is already requested through our proxy
-			if (this.selectedLayer.cache === true) {
-			   url = this.selectedLayer.server.uri;
-			}
-			else {
-			   url = this.selectedLayer.url;
-			}
-
-			//alert(p);
-			// get the server to tell us the options
-			Ext.Ajax.request({
-				scope: this,
-				url: proxyURL+encodeURIComponent(url +
-					"?request=GetMetadata&item=animationTimesteps&layerName=" +
-					this.selectedLayer.params.LAYERS +
-					"&start=" + this.getDateTimesForDate(this.timePanel.timeMin.value)[0] +
-					"&end=" + this.getDateTimesForDate(this.timePanel.timeMax.value)[0]
-				),
-				success: function(resp) {
-					var res = Ext.util.JSON.decode(resp.responseText);
-
-					if (res.timeStrings != undefined) {
-						// popup a window
-						this.showTimestepPicker(res.timeStrings);
-					}
+				if (res.timeStrings != undefined) {
+					// popup a window
+					this.showTimestepPicker(res.timeStrings);
 				}
-			});
-		//}
+			}
+		});
 	},
 	// use to get the allready stored dateTimes for date
 	// for the selectedLayer
@@ -352,7 +348,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		var dateTimes = [];
 		for(var i=0; i<this.selectedLayer.dates.length; i++) {
 			if (this.selectedLayer.dates[i].date == day) {
-				// console.log(selectedLayer.dates[i]);
 				dateTimes = this.selectedLayer.dates[i].dateTimes;
 			}
 		}
@@ -366,8 +361,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		// copy to the attributes needed by the Ext radioGroup
 		for (vars in timeStrings) {
 			timeStrings[vars].boxLabel = timeStrings[vars].title
-			timeStrings[vars].name = "justaname"//,
-		//timeStrings[vars].inputValue = timeStrings[vars].timeString
+			timeStrings[vars].name = "justaname"
 		}
 
 		var timestepWindow =  new Ext.Window({
@@ -417,11 +411,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	createNCWMSLayerFromTimesteps: function(timeSteps) {
-		//chosenTimes.push(getDateTimesForDate(p.timeMin.value)[0]);
-		//chosenTimes.push(getDateTimesForDate(p.timeMax.value)[0]);
-		// get all the times between user selected range
-		//var dates = setAnimationTimesteps(params);
-
 		this.selectedLayer.chosenTimes = timeSteps;
 		this.addNCWMSLayer();
 	},

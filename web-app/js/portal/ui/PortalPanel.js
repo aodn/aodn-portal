@@ -55,6 +55,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 		this.mapPanel.on('layeradded', function(openLayer) {
 			this.rightDetailsPanel.update(openLayer);
 		}, this);
+
+
 	},
 	
     registerRightDetailsPanelEvents: function() {	

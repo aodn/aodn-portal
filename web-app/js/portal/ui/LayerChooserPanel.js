@@ -151,7 +151,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         Portal.app.config.hideLayerOptions = checked;
         this.mapPanel.hideLayerOptions = checked;
 
-        closeNHideDetailsPanel();
+        //closeNHideDetailsPanel();
     },
 
     addMapLayer: function(layerDescriptor, showLoading) {

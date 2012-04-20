@@ -5,7 +5,6 @@ Portal.ui.Options = Ext.extend(Object, {
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
-		
 		this.controls = [
 	   		new OpenLayers.Control.Navigation(),
 	   		new OpenLayers.Control.Attribution(),
@@ -84,7 +83,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         });
 	    
 	    this.on('hide', function() {
-	    	closeNHideDetailsPanel();
+	    	//closeNHideDetailsPanel();
 	    	this.updateLoadingImage("none");
 	    	// close the getfeatureinfo popup
 	    	if (popup) {
@@ -600,8 +599,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	
 	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
 	    var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
-
-	    if (openLayer) {
+  	    if (openLayer) {
 	    	this.addLayer(openLayer, true);
             // zoom map first. may request less wms tiles first off
         	if (this.autoZoom === true) {
@@ -635,7 +633,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 
 	getLayerMetadata: function(openLayer) {
-	    if (openLayer.params.LAYERS) {
+		if (openLayer.params.LAYERS) {
 	        var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
 	        // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
 	        if (openLayer.cache === true) {
@@ -647,16 +645,10 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            url: url,
 	            success: function(resp) {
 	                openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
-
-                    console.log("openLayer.metadata");
-                    console.log(openLayer.metadata);
-	                // if this layer has been user selected before loading the metadata
+					// if this layer has been user selected before loading the metadata
 	                // reload,  as the date picker details/ form  will be wrong at the very least!
-	                // TODO tommy - refactor selected layer usage, it is declared is in details panel
-	                if (selectedLayer !== undefined && selectedLayer.id == openLayer.id) {
-                    	updateDetailsPanel(openLayer);
-	                }
-	            } 
+					Ext.getCmp('rightDetailsPanel').update(openLayer);
+	            }
 	        });
 	    }
 	    
@@ -779,6 +771,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	
 	stopAnimation: function(openLayer) {
 	    // if originalWMSLayer is set then it is an animated Openlayers.Image
+	    //if(openLayer.numLoadingTiles > 0)
+		//	this.loadEnd();
+
 	    if (openLayer.originalWMSLayer !== undefined) {  
 	        // get back the plain wms layer
 	        this.swapLayers(openLayer.originalWMSLayer, openLayer);

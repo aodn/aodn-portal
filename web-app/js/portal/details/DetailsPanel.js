@@ -27,7 +27,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                     scope: this,
                     // call show when a layer is chosen so we can access this listener
                     show: function(slider) {
-                        slider.setValue(0,this.selectedLayer.opacity * 100,true);
+                        slider.setValue(this.selectedLayer.opacity * 100,true);
                     },
                     changeComplete: function(slider, val, thumb){
                         this.selectedLayer.setOpacity(val / 100);
@@ -90,7 +90,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     updateDetailsPanel: function(layer){
-    	console.log("updating details panel");
         // show new layer unless user requested 'hideLayerOptions' or
         // check if the map is still in focus - not the search
         if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
@@ -98,7 +97,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.detailsPanelTabs.setSelectedLayer(layer);
             this.detailsPanelTabs.update();
             this.opacitySlider.show(); // reset slider
-
             this.transectControl.hide();
 
             // remove any transect tabs for previous layer
@@ -107,58 +105,72 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                 this.detailsPanelTabs.remove(transectTabs[i]);
             }
 
-
-
-            //TODO:  add this back in
             this.updateDimensions(layer); // time and elevation
 
             if(layer.server.type.search("NCWMS") > -1)  {
-
                 this.transectControl.setMapPanel(getMapPanel());
                 this.transectControl.layer = layer;
                 this.transectControl.show();
-
-                /*Ext.getCmp('animationPanel').setSelectedLayer(layer);
-
-                // show the animate tab if we can animate through time
-                if (layer.metadata.datesWithData != undefined) {
-
-                    if (layer.dates == undefined) {
-                        setLayerDates(layer); // pass in the layer as there are going to be many async Json requests
-                    }
-                    else {
-
-                        Ext.getCmp('animationPanel').setDisabled(false);
-                    }
-
-                    // ensure to 're-set' the Start Stop buttons (if rendered);
-                    if (Ext.getCmp('startNCAnimationButton') != undefined) {
-                        Ext.getCmp('startNCAnimationButton').setVisible(true);
-                    }
-                    this.stopNCAnimationButton.setVisible(false);
-                    Ext.getCmp('animationPanel').doLayout();
-                }*/
             }
 
-            this.detailsPanelTabs.activate(0); // always set the first item active
+            //this.detailsPanelTabs.activate(0); // always set the first item active
 
         }
     },
 
+	//TODO: revisit this method when elevation and other dimensions are passed into javascript
     updateDimensions: function(layer){
         var dims = layer.metadata.dimensions;
         if(dims != undefined)
         {
-            for(var d in dims)
+            for(var dimType in dims)
             {
-                if(dims[d].values != undefined)
+                if(dims[dimType].values != undefined)
                 {
-                    var valList = dims[d].values;
+                    var valList = dims[dimType].values;
                     var dimStore, dimData;
 
-                    dimData = new Array();
+                    var dimData = new Array();
 
-                    dimCombo = makeCombo(d);
+                    var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
+
+					var fields = [{
+						name: 'myId'
+					},{
+						name: 'displayText'
+					}];
+
+					var valueStore  = new Ext.data.ArrayStore({
+						autoDestroy: true,
+						itemId: dimType,
+						name: type,
+						fields: fields
+					});
+
+					var dimCombo = new Ext.form.ComboBox({
+						fieldLabel: dimType,
+						triggerAction: 'all',
+						editable : false,
+						lazyRender:true,
+						mode: 'local',
+						store: valueStore,
+						emptyText: OpenLayers.i18n('pickAStyle'),
+						valueField: 'myId',
+						displayField: 'displayText',
+						tpl: tpl,
+						style: {
+						   // marginTop: '10px'
+						},
+						listeners:{
+							select: function(cbbox, record, index){
+								selectedLayer.mergeNewParams({
+									//Not sure if this works...
+									dimType : record.get('myId')
+								});
+							}
+						}
+					});
+
                     dimStore = dimCombo.store;
                     dimStore.removeAll();
 
@@ -178,5 +190,4 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }
 
     }
-
 });
