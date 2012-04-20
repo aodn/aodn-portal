@@ -1,8 +1,5 @@
 package au.org.emii.portal
 
-import grails.test.*
-import java.util.Date
-
 class ServerServiceTests extends GroovyTestCase {
 
     protected void setUp() {
@@ -13,7 +10,7 @@ class ServerServiceTests extends GroovyTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
+    void testService() {
 
 
         def Server s1 = new Server(uri: "something1", shortAcron: "sa1", id: 1, type:"WMS-1.1.1", scanFrequency: 100,
@@ -71,6 +68,7 @@ class ServerServiceTests extends GroovyTestCase {
                                     poopupMenuHeight: 1, westWidth: 1, downloadCartFilename: "dl", popupHeight: 1,
                                     downloadCartMaxNumFiles: 1, downloadCartMaxFileSize: 1,
                                     downloadCartMimeTypeToExtensionMapping: "asdf",
+                                    downloadCartConfirmationWindowContent: "Content",
                                     mapGetFeatureInfoBuffer: 1,
                                     metadataLinkProtocols: "asdf", metadataLayerProtocols: "adsf",
                                     catalogUrl: "http://www.google.com", downloadCartDownloadableProtocols: "asdf",
