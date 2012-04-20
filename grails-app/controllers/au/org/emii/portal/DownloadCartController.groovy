@@ -43,7 +43,8 @@ class DownloadCartController {
         // Break early if no cookies
         if ( !_getCartSize() ) {
 
-            render text: "No data to download", status: 500
+            flash.message = "No data in cart to download"
+            redirect controller: 'home'
             return
         }
 

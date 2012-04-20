@@ -45,7 +45,8 @@ class Config {
     Integer downloadCartMaxFileSize
     String downloadCartMimeTypeToExtensionMapping
     String downloadCartDownloadableProtocols
-    
+    String downloadCartConfirmationWindowContent
+
     String metadataLinkProtocols
     String metadataLayerProtocols
     Integer mapGetFeatureInfoBuffer    
@@ -54,7 +55,7 @@ class Config {
     
     String wmsScannerCallbackUsername
     String wmsScannerCallbackPassword
-    
+
     static hasMany = [defaultLayers:Layer]    
         
     static transients = [ 
@@ -62,6 +63,7 @@ class Config {
     ] 
     static mapping = {
         footerContent type:'text'
+        downloadCartConfirmationWindowContent type: "text"
     }
     
     static constraints = {
@@ -99,6 +101,7 @@ class Config {
         downloadCartMaxFileSize(min: 1)
         downloadCartMimeTypeToExtensionMapping(size: 2..2000)
         downloadCartDownloadableProtocols(size: 0..255)
+        downloadCartConfirmationWindowContent(blank: false)
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)

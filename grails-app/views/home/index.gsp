@@ -89,6 +89,7 @@
 <script src="${resource(dir:'js',file:'portal/ui/PortalPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/LayerChooserPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js')}"    type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>

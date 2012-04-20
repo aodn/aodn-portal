@@ -129,7 +129,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
 
         controller.download()
 
-        assertEquals "No data to download", mockResponse.contentAsString
-        // assertEquals 500, mockResponse.status // There is a bug in Grails testing code where response is always 200
+        assertEquals "/", controller.redirectArgs.url
+        assertEquals "No data in cart to download", controller.flash.message
     }
 }
