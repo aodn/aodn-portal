@@ -320,6 +320,6 @@ Time taken: ${ _timeTaken() } seconds
 
     def _timeTaken() {
 
-        return ( System.currentTimeMillis() - processingStartTime ) / 1000
+        return Math.round (System.currentTimeMillis() - processingStartTime) / 1000
     }
 }
