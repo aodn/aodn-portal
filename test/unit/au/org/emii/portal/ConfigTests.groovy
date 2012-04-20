@@ -35,6 +35,7 @@ class ConfigTests extends GrailsUnitTestCase {
             activeLayersHeight: 200,
             downloadCartMimeTypeToExtensionMapping: "really long string 2000 characters..",
             downloadCartDownloadableProtocols: "a super string",
+            downloadCartConfirmationWindowContent: "Some Content",
             metadataLayerProtocols: "a super string",
             metadataLinkProtocols: "a super string",
             mapGetFeatureInfoBuffer: 200,
@@ -117,6 +118,11 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig.downloadCartMimeTypeToExtensionMapping = "[" * 2001
         assertFalse testConfig.validate()
         assertEquals "size", testConfig.errors["downloadCartMimeTypeToExtensionMapping"]
+
+        testConfig = getValidInstance()
+        testConfig.downloadCartConfirmationWindowContent = ""
+        assertFalse testConfig.validate()
+        assertEquals "blank", testConfig.errors["downloadCartConfirmationWindowContent"]
 
         testConfig = getValidInstance()
         testConfig.downloadCartDownloadableProtocols = "[" * 256

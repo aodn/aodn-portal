@@ -129,7 +129,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
 
         controller.download()
 
-        assertEquals "/", controller.redirectArgs.url
+        assertEquals "home", controller.redirectArgs.controller
         assertEquals "No data in cart to download", controller.flash.message
     }
 }
