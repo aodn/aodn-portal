@@ -57,7 +57,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
 						border: false,
-						bodyStyle: 'padding:5px 5px 0',
+						bodyStyle: 'padding:5px 5px 0'
 					}
 				},
 				{
@@ -194,7 +194,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		
 		var onFailure = function(response) {
 			this.resultsGrid.hideMask();
-			Ext.Msg.alert('Error', response.status + ': ' + response.statusText + '<br />' + response.responseText);
+			Ext.Msg.alert( 'Error', response.status + ': ' + response.statusText );
 		};
 		
 		if (updateStore !== false) {

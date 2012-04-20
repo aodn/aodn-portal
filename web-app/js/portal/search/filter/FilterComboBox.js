@@ -36,7 +36,7 @@ Portal.search.filter.FilterComboBox = Ext.extend(Ext.form.ComboBox, {
     	this.store.remove(record);
         
         combo.clearValue();
-    },
+    }
 });
 
 Ext.reg('portal.search.filter.filtercombobox', Portal.search.filter.FilterComboBox);
