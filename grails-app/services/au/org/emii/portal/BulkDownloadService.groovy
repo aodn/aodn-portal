@@ -320,6 +320,8 @@ Time taken: ${ _timeTaken() } seconds
 
     def _timeTaken() {
 
-        return Math.round (System.currentTimeMillis() - processingStartTime) / 1000
+        def msTaken = System.currentTimeMillis() - processingStartTime
+
+        return Math.max(Math.round( msTaken / 1000 ), 1) // Return value in whole seconds (min 1 for tidyness)
     }
 }
