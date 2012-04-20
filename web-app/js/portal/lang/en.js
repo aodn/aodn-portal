@@ -45,13 +45,17 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	chooseSavedSearch: 'Choose a Saved Search',
       
     
-    // Aggregate Download
+    // Download Cart
     ttAddToDownload: 'Add to download cart',
     ttAddAllToDownload: 'Add all to download cart',
     btnAddAllToDownload: 'Add all',
     titlFileLimitReached: 'Unable to add',
     msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
-  
+
+    downloadCartConfirmationWindowTitle: 'Download Cart',
+    downloadCartConfirmationDownloadText: 'I understand, download',
+    downloadCartConfirmationCancelText: 'Cancel',
+
     //mainMapPanel
     layerExistsTitle: 'Add layer',
     layerExistsMsg: 'This layer has already been added to the map',

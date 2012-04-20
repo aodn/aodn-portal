@@ -285,7 +285,7 @@
                                     <label for="downloadCartFilename"><g:message code="config.downloadCartFilename.label" default="Download cart filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartFilename', 'errors')}">
-                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">include %s where you would like a formatted date to be included in filename</font>
+                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">The first %s will insert the date into the filename, the second one will insert the time</font>
                                 </td>
                             </tr>
    
@@ -306,6 +306,15 @@
                                     <g:textField size="8" name="downloadCartMaxFileSize" value="${configInstance?.downloadCartMaxFileSize}" /><font class="hint">in bytes</font>
                                 </td>
                             </tr>
+
+                           <tr class="prop">
+                               <td valign="top" class="name">
+                                   <label for="downloadCartConfirmationWindowContent"><g:message code="config.downloadCartConfirmationWindowContent.label" default="Download cart confirmation window content" /></label>
+                               </td>
+                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartConfirmationWindowContent', 'errors')}">
+                                   <g:textArea rows="6"  style="width: 400px;" name="downloadCartConfirmationWindowContent" value="${configInstance?.downloadCartConfirmationWindowContent}" />
+                               </td>
+                           </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">

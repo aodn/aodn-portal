@@ -36,6 +36,7 @@ class BootStrap {
 			
 			result['downloadCartMaxNumFiles'] = cfg.downloadCartMaxNumFiles
 			result['downloadCartDownloadableProtocols'] = cfg.downloadCartDownloadableProtocols
+            result['downloadCartConfirmationWindowContent'] = cfg.downloadCartConfirmationWindowContent
 			
 			result['metadataLinkProtocols'] = cfg.metadataLinkProtocols
 			result['metadataLayerProtocols'] = cfg.metadataLayerProtocols
