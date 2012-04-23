@@ -98,9 +98,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                 hide: function(panel) {
                 
                 
-                    if (panel.id == 'mainMapPanel') {                        
-                        closeNHideDetailsPanel();
-                    
+                    if (panel.id == 'mainMapPanel') {
                         jQuery("#loader").hide(); // close the layer loader
                     
                         // close the getfeatureinfo popup

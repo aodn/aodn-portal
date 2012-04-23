@@ -18,18 +18,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             padding: 20,
             emptyText: 'Choose a Base Layer'
         });
-		
-		this.hideLayerOptionsCheckbox = new Ext.form.Checkbox({
-            boxLabel: 'Hide layer options',
-            inputType: 'checkbox',
-            checked: cfg.hideLayerOptions 
-        });
-		this.hideLayerOptionsCheckbox.addEvents('hidelayeroptionschecked', 'hidelayeroptionsunchecked');
-		this.hideLayerOptionsCheckbox.on('check', function(box, checked) {
-			var event = checked ? 'hidelayeroptionschecked' : 'hidelayeroptionsunchecked';
-			box.fireEvent(event, box, checked);
-		}, this);
-		
+
 		this.autoZoomCheckbox = new Ext.form.Checkbox({
             boxLabel: 'Auto zoom to layer',
             inputType: 'checkbox',
@@ -55,7 +44,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                        items: [
                                 { 
                                     flex: 3,
-                                    items: [ this.hideLayerOptionsCheckbox, this.autoZoomCheckbox ]
+                                    items: [ this.autoZoomCheckbox ]
                                 },
 	                            new Ext.BoxComponent({      
                                     flex: 2,
@@ -80,7 +69,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		
 		//this.addEvents('transect');
 		this.relayEvents(this.buttonPanel, ['removealllayers', 'resetmap']);
-		this.relayEvents(this.hideLayerOptionsCheckbox, ['hidelayeroptionschecked', 'hidelayeroptionsunchecked']);
 		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
 	},
 	
@@ -115,11 +103,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	initBaseLayerCombo: function() {
 		this.baseLayerCombo.initComponent();
 	},
-	
-	layerOptionsVisible: function() {
-		return this.hideLayerOptionsCheckbox.getValue();
-	},
-	
+
 	autoZoomEnabled: function() {
 		return this.autoZoomCheckbox.getValue();
 	},

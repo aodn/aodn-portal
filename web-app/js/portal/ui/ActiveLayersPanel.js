@@ -84,13 +84,13 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)
 	{
-	    if(node != null){
+		//I know, I know... this is probably not the right way to do this.
+		if(node != null){
 	        this.fireEvent('selectedactivelayerchanged');
-            updateDetailsPanel(node.layer);
+            Ext.getCmp('rightDetailsPanel').update(node.layer);
 	    }
 	    else if(this.activeLayers.getRootNode().childNodes.length == 1){
-
-	        Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
+			Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
 	    }
 
 	},

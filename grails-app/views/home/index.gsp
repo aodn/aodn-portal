@@ -82,6 +82,12 @@
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/AnimationPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/NCWMSColourScalePanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/StylePanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/DetailsPanel.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js')}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MapOptionsPanel.js')}"   type="text/javascript"></script>
@@ -92,8 +98,6 @@
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/mainMap/detailsPanel.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/mainMap/ncWMSAnimation.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Viewport.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/portal.js')}"    type="text/javascript"></script>
