@@ -69,7 +69,6 @@ Portal.app = {
                         dlgPopup.show();
                     };
                 };
-                initDetailsPanel();
                 doViewPort();
                 setViewPortTab( 0 ); // Select default tab                
             }
