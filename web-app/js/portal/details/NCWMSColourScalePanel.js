@@ -65,15 +65,15 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     updateScale: function(textfield, event){
         //return key
         if(event.getKey() == 13){
-            if ( parseFloat(colourScaleMax.getValue()) > parseFloat(colourScaleMin.getValue())) {
+            if ( parseFloat(this.colourScaleMax.getValue()) > parseFloat(this.colourScaleMin.getValue())) {
 
                 this.selectedLayer.mergeNewParams({
-                    COLORSCALERANGE: colourScaleMin.getValue() + "," + colourScaleMax.getValue()
+                    COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
                 });
                 Ext.getCmp('stylePanel').refreshLegend(this.selectedLayer);
 
                 // set the user selected range
-                this.selectedLayer.metadata.userScaleRange = [colourScaleMin.getValue(),colourScaleMax.getValue()];
+                this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
             }
             else {
                 alert("The Max Parameter Range value is less than the Min");
