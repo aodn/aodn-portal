@@ -32,10 +32,6 @@ grails.project.dependency.resolution = {
 	// Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
 	pom true
 
-    inherits("global") {
-        excludes "xml-apis"
-    }
-
 }
 
 coverage {
