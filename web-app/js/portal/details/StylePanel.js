@@ -32,7 +32,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                 this.ncwmsColourScalePanel
                 ]
             }
-        ]
+        ];
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
     },
@@ -41,7 +41,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
         var fields;
 
-        tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>'
+        tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>';
         fields = [{
             name: 'myId'
         },{
@@ -128,7 +128,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                     var params = {
                         layer: this.selectedLayer,
                         colorbaronly: true
-                    }
+                    };
                     // its a ncwms layer
                     if(this.selectedLayer.server.type.search("NCWMS") > -1)  {
                         var s = styles[j].split("/");
@@ -164,7 +164,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
          var params = {
              layer: layer,
              colorbaronly: false
-         }
+         };
 
          // its a ncwms layer send 'palette'
          if(layer.server.type.search("NCWMS") > -1)  {
@@ -270,8 +270,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
          // strip off leading '&'
          opts = opts.replace(/^[&]+/g,"");
-         url = url + opts
-
+         url += opts;
 
          return url;
      }

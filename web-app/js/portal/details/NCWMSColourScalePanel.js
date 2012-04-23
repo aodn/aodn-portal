@@ -42,7 +42,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             this.colourScaleHeader,
             this.colourScaleMax,
             this.colourScaleMin
-        ]
+        ];
 
         Portal.details.NCWMSColourScalePanel.superclass.initComponent.call(this);
     },

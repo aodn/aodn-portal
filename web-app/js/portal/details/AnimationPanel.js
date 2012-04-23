@@ -360,8 +360,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		// copy to the attributes needed by the Ext radioGroup
 		for (vars in timeStrings) {
-			timeStrings[vars].boxLabel = timeStrings[vars].title
-			timeStrings[vars].name = "justaname"
+			timeStrings[vars].boxLabel = timeStrings[vars].title;
+			timeStrings[vars].name = "justaname";
 		}
 
 		var timestepWindow =  new Ext.Window({
@@ -419,6 +419,4 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         // Wrap the Map call, this function used to live in mainMapPanel.js
     	getMapPanel().addNCWMSLayer(this.selectedLayer);
     }
-
-
 });

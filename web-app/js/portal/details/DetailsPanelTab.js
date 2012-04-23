@@ -18,7 +18,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.items = [
             this.stylePanel,
             this.animationPanel
-        ]
+        ];
 
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
     },

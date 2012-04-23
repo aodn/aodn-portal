@@ -15,7 +15,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
 	    this.items = [
 			this.detailsPanelItems
-		]
+		];
 
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
 	},

@@ -126,7 +126,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        unstyled: true  
 	    });
 		// stops the click bubbling to a getFeatureInfo request on the map
-	    this.mapToolbar.on('click', this.eventStopper)
+	    this.mapToolbar.on('click', this.eventStopper);
 	    return this.mapToolbar;
 	},
 	
@@ -324,8 +324,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 	
 	getLayerUid: function(openLayer) {
-		var uri = "UNKNOWN";
+
+        // layerHierarchyPath is the preferred unique identifier for a layer
+        if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
+
+        var uri = "UNKNOWN";
 		var server = openLayer.server;
+
 		if (server) {
 	        uri = server.uri;
 	    }
@@ -338,6 +343,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	uri = openLayer.url;
 	        }
 		}
+
 	    return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
 	},
 	
@@ -450,7 +456,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	            }
 	        }
 	    }
-	    
+
 	},
 	
 	// exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
@@ -703,7 +709,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		// Need to collect the layers first and delete outside a loop over
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
-		var layersToRemove = []
+		var layersToRemove = [];
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 	            layersToRemove.push(openLayer);
