@@ -2,7 +2,7 @@ package shiro
 
 import grails.test.ControllerUnitTestCase
 import org.apache.shiro.SecurityUtils
-import org.apache.shiro.authc.*
+import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.util.ThreadContext
 import au.org.emii.portal.*
@@ -182,13 +182,6 @@ class AuthControllerTests extends ControllerUnitTestCase {
 
         assertEquals "Subject principal should now be null", null, SecurityUtils.getSubject().getPrincipal()
         assertEquals "Should redirect back to home page", "/", redirectArgs.uri
-    }
-
-    void testUnauthorizedAction() {
-
-        controller.unauthorized()
-
-        assertEquals "You do not have permission to access this page.", controller.response.contentAsString
     }
 
     void testRegisterAction() {

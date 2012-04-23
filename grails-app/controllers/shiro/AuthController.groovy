@@ -61,7 +61,20 @@ class AuthController {
     }
 
     def unauthorized = {
-        render "You do not have permission to access this page."
+
+        def user = SecurityUtils.subject?.principal
+        def deniedUrl = session.deniedUrl ?: "<unknown>"
+
+        if ( user ) {
+
+            log.info "User $user tried to access '$deniedUrl' but does not have the necessary permissions!"
+        }
+        else {
+
+            log.error "In 'unauthorized' action but there is no Subject logged-in! (deniedUrl: '$deniedUrl')"
+        }
+
+        render text: "You do not have permission to access this page.", status: 401
     }
 
     def register = {

@@ -109,7 +109,7 @@ class SecurityFilters {
 
         all(uri: "/**") {
             before = {
-                
+
                 // Check if request has been allowed by another filter
                 if (request.accessAllowed) return true            
                 
@@ -119,7 +119,13 @@ class SecurityFilters {
                 if (!controllerName) return true
 
                 // Access control by convention.
-                accessControl(auth: false) // "auth: false" means it will accept remembered users as well as those who logged-in in this session
+                if (!accessControl(auth: false)) { // "auth: false" means it will accept remembered users as well as those who logged-in in this session
+
+                    session.deniedUrl = request.forwardURI
+                    return false
+                }
+
+                return true
             }
         }
     }
