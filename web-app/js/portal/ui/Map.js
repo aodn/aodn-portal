@@ -324,8 +324,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	},
 	
 	getLayerUid: function(openLayer) {
+
+        // layerHierarchyPath is the preferred unique identifier for a layer
+        if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
+
 		var uri = "UNKNOWN";
 		var server = openLayer.server;
+
 		if (server) {
 	        uri = server.uri;
 	    }
@@ -338,7 +343,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	uri = openLayer.url;
 	        }
 		}
-	    return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
+
+        return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
 	},
 	
 	containsLayer: function(openLayer) {
