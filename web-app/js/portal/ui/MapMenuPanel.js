@@ -7,6 +7,10 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
         this.defaultMenuTree = new Portal.ui.MenuPanel({
             menuId: cfg.menuId
         });
+		this.userDefinedWMSPanel = new Portal.ui.UserDefinedWMSPanel({
+            //menuId: appConfig.menuId
+        });		
+		
         var config = Ext.apply({
             defaults: {
                 padding: 5,
@@ -18,7 +22,8 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
             enableTabScroll: true,
             activeTab: 0,
             items: [
-                this.defaultMenuTree
+                this.defaultMenuTree,				
+				this.userDefinedWMSPanel
             ]
         }, cfg);
 		

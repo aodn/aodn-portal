@@ -24,15 +24,15 @@ You can obtain full information about IMOS via the <a class="external" title="IM
   <li><a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum" title="forum" target="_blank">Help forum</a></li>
   </ul>
   </div>
-  <div class="spacer floatLeft homePanelWidget"  style="width:330px">  
+  <div class="spacer floatLeft homePanelWidget"  style="width:300px">  
     <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent.jpg" /></a>
 	<BR>
   The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
-  go to our &#8220;<a class="external" title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" target="_blank">Ocean Current</a>&#8221; page.
+  go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
   </div>
 
 
-<div class="spacer floatLeft homePanelWidget"  style="width:250px">IMOS data is made freely available under the <a class="external" href="http://imos.org.au/emii_data.html" title="Conditions of Use" target="_blank">Conditions of Use</a>.
+<div class="spacer floatLeft homePanelWidget"  style="width:210px">IMOS data is made freely available under the <a class="external" href="http://imos.org.au/emii_data.html" title="Conditions of Use" target="_blank">Conditions of Use</a>.
 There is a technical summary for those interested in the <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18" title="technical summary" target="_blank">information infrastructure</a> behind this portal.  IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative. If you had an user account on the old portal please see <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18">this link</a> for new information affecting your account.</div>
 </div>
 <div class="clear"></div>

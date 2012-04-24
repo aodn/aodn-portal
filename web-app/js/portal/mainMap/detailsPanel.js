@@ -335,7 +335,7 @@ function updateDetailsPanel(layer) {
         detailsPanel.text = layer.name;
         detailsPanel.setTitle("Layer Options: " + layer.name);
         Ext.getCmp('detailsPanelTabs').activate(0); // always set the first item active
-        detailsPanel.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
+        detailsPanel.doLayout.defer(50, detailsPanel); // wait for browser to resize autoHeight elements before doing layout
     }
 }
 

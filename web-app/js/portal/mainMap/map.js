@@ -179,7 +179,8 @@ function addToPopup(mapPanel, e) {
             if(layer.server.type == "WMS-1.3.0") { 
                 bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
             } 
-            if ((!layer.isBaseLayer) && layer.getVisibility()) {
+			
+            if ((!layer.isBaseLayer) && layer.getVisibility() && layer.params.QUERYABLE) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
@@ -288,7 +289,7 @@ function addToPopup(mapPanel, e) {
     
     // no layers to query
     if ( popup.numResultsToLoad == 0 ) {
-        popup.setTitle("No features found. No layers selected");
+        popup.setTitle("No features found. No queryable layers selected");
     }
 }
 

@@ -282,7 +282,6 @@ ul.x-tab-strip-bottom{
 
 .x-form-invalid, textarea.x-form-invalid{
     background-color:#fff;
-	background-image:url(../images/default/grid/invalid_line.gif);
 	border-color:#c30;
 }
 

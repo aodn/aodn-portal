@@ -88,7 +88,16 @@ input.readonlyInput {
     font-size: 14px;
     color: inherit;
 }
-.searchInput.x-form-empty-field {
+.userWMSInput {
+    display: block;
+    height: 22px;
+    padding: 10px;
+    margin: 0px 0px 10px 0px! important;
+    font-size: 12px;
+    color: inherit;
+}
+
+.x-form-empty-field {
     color: #15428B;
     font-size: inherit;
 }
@@ -124,6 +133,7 @@ hr {
 }
 .homePanelWidget {
     margin-right: 10px;
+	padding-right: 20px;
 }
 
 .buttonPad {
@@ -266,7 +276,7 @@ hr {
 }
 
 .spacer  {
-    margin: 25px 0px;
+    margin: 30px 0px;
 }
 
 .viewPortLinks a {

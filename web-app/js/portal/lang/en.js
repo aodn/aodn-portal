@@ -60,6 +60,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
+	
+	// UserDefinedWMSPanel
+	addYourURL: ' ** Add your URL ** ',
+	addYourURLHelp: 'Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Due to Javascript restrictions, layer features cant be retrieved when you click on the map. You may also note reduced functionality.',
   
     //snapshots 
     saveMapButton: 'Save Map',
