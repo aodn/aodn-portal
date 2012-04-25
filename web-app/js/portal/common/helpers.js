@@ -126,6 +126,11 @@ function getAussieUnits(val,src_units) {
 
 }
 
+function getKey(data) {
+	  for (var prop in data)
+	    return prop;
+	}
+
 
 function pad(numNumber, numLength){
 	var strString = '' + numNumber;

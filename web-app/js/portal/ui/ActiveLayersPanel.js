@@ -17,7 +17,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
 		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
-		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
+		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer','activeLayerCheckBoxChange'];
 	},
 	
 	initActiveLayers: function(layerStore) {
@@ -39,6 +39,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	    }, this);
 		
 		this.activeLayers.on("click", this.activeLayersTreePanelClickHandler, this);
+		this.activeLayers.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
 		this.activeLayers.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
 		
 		return this.activeLayers;
@@ -79,6 +80,18 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		if (this.getSelectedNode() === node)
 		{
 			node.getUI().toggleCheck();
+			this.activeLayersTreePanelSelectionChangeHandler(null, node);
+		}
+	},
+	
+	activeLayersTreePanelCheckChangeHandler: function(node, checked) 
+	{
+		var checkedLayers = this.activeLayers.getChecked();
+
+		if (checkedLayers.length == 0) {
+			Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no checked active layers
+		} else {
+			this.activeLayersTreePanelSelectionChangeHandler(null, checkedLayers[0]);
 		}
 	},
 	
@@ -86,12 +99,14 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	{
 		//I know, I know... this is probably not the right way to do this.
 		if(node != null){
-	        this.fireEvent('selectedactivelayerchanged');
-            Ext.getCmp('rightDetailsPanel').update(node.layer);
+			if (node.getUI().checkbox.checked) {
+				this.fireEvent('selectedactivelayerchanged');
+				Ext.getCmp('rightDetailsPanel').update(node.layer);
+			}
 	    }
-	    else if(this.activeLayers.getRootNode().childNodes.length == 1){
-			Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
-	    }
+	  //  else if(this.activeLayers.getRootNode().childNodes.length == 1){
+		//	Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
+	//    }
 
 	},
 
@@ -133,7 +148,19 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	removeLayer: function() {
-	    if (this.fireEvent('removelayer', this.getSelectedLayer())) {
+		var selectedLayer = this.getSelectedLayer();
+		var checkedLayers = this.activeLayers.getChecked();
+		//Decide which layer to show in details panel
+		var newDetailsPanelLayer = null;
+		if (checkedLayers.length > 0) {
+			if (checkedLayers[0].layer != selectedLayer) {
+				newDetailsPanelLayer = checkedLayers[0].layer;
+			} else if (checkedLayers.length > 1) {
+				newDetailsPanelLayer = checkedLayers[1].layer;
+			}
+		} 
+		
+	    if (this.fireEvent('removelayer', selectedLayer, newDetailsPanelLayer)) {
 			
 		}
 	},

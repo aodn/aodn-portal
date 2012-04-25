@@ -698,10 +698,18 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    return false;
 	},
 	
-	removeLayer: function(openLayer) {
+	removeLayer: function(openLayer, newDetailsPanelLayer) {
 		if (openLayer.name != 'OpenLayers.Handler.Path') {
-			this.map.removeLayer(openLayer);
+			var undef
+			this.map.removeLayer(openLayer, newDetailsPanelLayer);
+			
 			delete this.activeLayers[this.getLayerUid(openLayer)];
+
+			if (newDetailsPanelLayer == null) {
+				Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers
+			} else {
+				Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
+			}
         }
 	},
 	
@@ -716,12 +724,12 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        }
 		}, this);
 		this.removeAllLayersIn(layersToRemove);
-                Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
+            Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
 	},
 	
 	removeAllLayersIn: function(openLayers) {
 		Ext.each(openLayers, function(openLayer, allLayers, index) {
-			this.removeLayer(openLayer);
+			this.removeLayer(openLayer, null);
 		}, this);
 	},
 	

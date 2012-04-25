@@ -113,11 +113,17 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                 this.transectControl.show();
             }
 
-            //this.detailsPanelTabs.activate(0); // always set the first item active
-
         }
     },
 
+    hideDetailsPanelContents: function(){
+        // clear the details Panel. ie. Don't show any layer options
+            this.detailsPanelTabs.hide();
+            this.opacitySlider.hide(); // reset slider
+            this.transectControl.hide();
+    },
+    
+    
 	//TODO: revisit this method when elevation and other dimensions are passed into javascript
     updateDimensions: function(layer){
         var dims = layer.metadata.dimensions;

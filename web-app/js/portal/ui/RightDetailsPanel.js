@@ -25,6 +25,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	update: function(openlayer){
+		this.detailsPanelItems.show(); 
 		this.detailsPanelItems.updateDetailsPanel(openlayer);
 		this.text = openlayer.name;
 		this.setTitle("Layer Options: " + openlayer.name);
@@ -35,6 +36,13 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
+	collapseAndHide: function(){
+			this.setTitle("No active layers have been selected");
+			this.detailsPanelItems.hide(); 
+			this.collapse(true);
+	},
+	
+	
 	closeNHideDetailsPanel: function() {
 		if (Portal.app.config.hideLayerOptions === true) {
 			if(this.getEl() != undefined){
