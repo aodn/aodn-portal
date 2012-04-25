@@ -17,7 +17,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
 		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
-		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer','activeLayerCheckBoxChange'];
+		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 	},
 	
 	initActiveLayers: function(layerStore) {

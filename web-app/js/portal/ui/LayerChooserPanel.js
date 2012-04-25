@@ -116,7 +116,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.mon(this.actionsPanel, 'hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
         this.mon(this.actionsPanel, 'autozoomchecked', this.autoZoomCheckboxHandler, this);
         this.mon(this.actionsPanel, 'autozoomunchecked', this.autoZoomCheckboxHandler, this);
-        this.mon(this.actionsPanel, 'activeLayerCheckBoxChange', this.activeLayerCheckBoxChange, this);  
     },
     
     onMenuNodeClick: function(node) {
@@ -153,10 +152,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.mapPanel.hideLayerOptions = checked;
     },
 
-    activeLayerCheckBoxChange: function(openLayer, checked) {
-        this.mapPanel.activeLayerCheckBoxChange(openLayer, checked);
-    }, 
-    
+   
     addMapLayer: function(layerDescriptor, showLoading) {
             this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
     },
