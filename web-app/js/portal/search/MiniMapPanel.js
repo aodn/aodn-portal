@@ -35,7 +35,7 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
      this.map.addLayer(this.bboxLayer);
    },
    
-   // Copy layer changes made in main map
+   // Synchronise with main map layer and extent changes
    
    bind: function(mainMap) {
      if (!mainMap) return;
@@ -45,6 +45,8 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
      mainMap.map.events.register('addlayer', this, this.mainMapLayerAdded);
      mainMap.map.events.register('removelayer', this, this.mainMapLayerRemoved);
      mainMap.map.events.register('changelayer', this, this.mainMapLayerChanged);
+     mainMap.map.events.register('zoomend', this, this.mainMapExtentChange);
+     mainMap.map.events.register('moveend', this, this.mainMapExtentChange);
    },
    
    mainMapLayerAdded: function(e) {
@@ -114,6 +116,12 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
      }
      
      return nonMainMapLayerCount;
+   },
+   
+   mainMapExtentChange: function() {
+     var mainMapExtent = this.mainMap.map.getExtent();
+     
+     this.map.zoomToExtent(mainMapExtent, true);
    },
    
    registerExtentChangeEvents: function() {
