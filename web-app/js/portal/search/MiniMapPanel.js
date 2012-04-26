@@ -17,6 +17,8 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
      this.bind(cfg.mainMap);
      
      this.registerExtentChangeEvents();
+     
+     this.doLayout(false, true);
    },
 
    initMap: function() {
@@ -51,6 +53,8 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
    
    mainMapLayerAdded: function(e) {
      var miniMapClone = e.layer.clone();
+     //HACK: clone doesn't clear numloadinglayers causing problems clearing backbuffer tiles
+     miniMapClone.numLoadingTiles = 0;
      miniMapClone.sourceLayer = e.layer;
      this.map.addLayer(miniMapClone);
      this.applyMainMapLayerOrdering();
