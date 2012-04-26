@@ -32,6 +32,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 						 region: 'north',
 						 xtype: 'portal.search.minimappanel',
 						 ref: '../minimap',
+						 mainMap: this.mapPanel,
 						 split: true,
 						 height: 300
 					 },
@@ -184,8 +185,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		this.resultsGrid.showMask();
 
 		var onSuccess = function(result) {
-			var getRecordsFormat = new OpenLayers.Format.GeoNetworkRecords();
-			var currentRecords = getRecordsFormat.read(result.responseText);
 			this.resultsGrid.hideMask();
 
 			// This makes sure that the paging toolbar updates on a zero result set

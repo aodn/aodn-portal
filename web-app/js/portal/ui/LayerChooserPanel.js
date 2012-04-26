@@ -34,7 +34,10 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 	
         Portal.ui.LayerChooserPanel.superclass.constructor.call(this, config);
+        
         this.registerEvents();
+        
+        this.addEvents('addlayerclicked');
     },
     
     initActionsPanel: function(appConfig, mapPanel) {
@@ -120,7 +123,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     
     onMenuNodeClick: function(node) {
         if (node.attributes.grailsLayerId) {
-        	setViewPortTab(1);
+        	this.fireEvent('addlayerclicked');
             this.mapPanel.addGrailsLayer(node.attributes.grailsLayerId);
         }
     },
@@ -164,5 +167,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     
     hideActions: function() {
       this.actionsPanel.hide();
+      this.doLayout();
     }
 });

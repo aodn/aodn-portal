@@ -36,6 +36,8 @@ Portal.app = {
         Ext.Ajax.on('requestcomplete',  this.ajaxComplete, this);        
         Ext.Ajax.on('requestexception',  this.ajaxComplete, this);       
         
+        appConfigStore.load();
+        
         Ext.Ajax.request({
             url: 'config/viewport',
             scope: this,
@@ -73,6 +75,7 @@ Portal.app = {
                 setViewPortTab( 0 ); // Select default tab                
             }
         });
+        
     },
     
     ajaxAction: function(request) {
@@ -91,9 +94,6 @@ Ext.onReady(Portal.app.init, Portal.app);
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex){ 
     viewport.setActiveTab(tabIndex);
-    
-    jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
-    jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
 }
 
 function doViewPort() {    

@@ -3,8 +3,8 @@ Ext.namespace('Portal.ui');
 Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
   
   constructor: function(cfg) {
-    this.searchTabPanel = new Portal.search.SearchTabPanel({});
     this.portalPanel = new Portal.ui.PortalPanel({appConfig: Portal.app.config});
+    this.searchTabPanel = new Portal.search.SearchTabPanel({mapPanel: this.getMapPanel()});
     this.homePanel = new Portal.ui.HomePanel({appConfig: Portal.app.config});
     
     var config = Ext.apply({
@@ -32,6 +32,25 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     return this.portalPanel.getMapPanel();
   },
   
+  homePanelActive: function() {
+    return this.getActiveTab() === this.homePanel;
+  },
+  
+  showPortalPanel: function() {
+    this.setActiveTab(1);
+  },
+  
+  setActiveTab: function(item) {
+    Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
+    
+    // Ensure tab selectors reflect actual tab selected
+    var tabIndex = this.items.indexOf(this.getActiveTab());
+    
+    //TODO: componentise this
+    jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
+    jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
+  },
+  
   isMapVisible: function() {
     return this.isMapSelected();
   },
@@ -42,11 +61,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
   
   onSearchTabPanelAddLayer: function(layerDef) {
     this.getMapPanel().addMapLayer(layerDef);
-    this.displayLayerAddedMessage(layerDef.title);
   },
-  
-  displayLayerAddedMessage: function(layerDescription) {
-      Ext.Msg.alert(OpenLayers.i18n('layerAddedTitle'), OpenLayers.i18n('layerAddedMsg', {layerDesc: layerDescription}));
-  }
   
 });

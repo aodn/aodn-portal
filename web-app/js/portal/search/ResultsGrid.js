@@ -39,13 +39,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                      handler: this.onViewMetadata,
                      scope: this
                   },{
-                      getClass: this.getMapGoClass,
-                      getTooltip: this.getMapGoTooltip,
-                      width: 35,
-                      height: 35,
-                      handler: this.showOnMiniMapExecute,
-                      scope: this
-                   },{
                        getClass: this.getMapAddClass,
                        getTooltip: this.getAddMapTooltip,
                        width: 35,
@@ -164,21 +157,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     Portal.common.BrowserWindow.open(viewMetadataUrl);
   },
   
-  getMapGoClass: function(v, metadata, rec, rowIndex, colIndex, store) {
-	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) == 1) {
-		  return 'p-result-map-go';
-	  } else {
-		  return 'p-result-disabled';
-	  }
-  },
- 
-  getMapGoTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
-    var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLayerProtocols);
-    if (!linkRec) return '';
-    var layerDesc = linkRec.get('title');
-    return OpenLayers.i18n('showOnMinimap', {layerDesc: layerDesc});
-  },
-
   getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) == 1) {
 		  return 'p-result-map-add';

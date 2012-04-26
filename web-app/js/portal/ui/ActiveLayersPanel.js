@@ -119,7 +119,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	{
 		// TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
 		// Or, can "hasBoundingBox" be made static?
-		return new Portal.ui.Map().hasBoundingBox(layer);
+		return this.mapScope.hasBoundingBox(layer);
 	},
 	
 	getActiveLayerNodes: function() {

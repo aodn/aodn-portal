@@ -39,13 +39,16 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             this.style.display = "";
             this.src = "img/blank.png";
         };
+
+        this.initMap();
 		
         var config = Ext.apply({
             id: "map",
             region: "center",
             split: true,
             header: false,
-            items: [/*{
+            extent: this.getInitialBbox(),
+           items: [/*{
 	            xtype: "gx_zoomslider",
 	            aggressive: false,
 	            vertical: true,
@@ -57,8 +60,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             activeLayers: {},
             layersLoading: 0
         }, cfg);
+        
         Portal.ui.Map.superclass.constructor.call(this, config);
-        this.initMap();
         this.initMapLinks();
 
         // Control to get feature info or pop up
@@ -94,15 +97,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    	}
 	    }, this);
 	    
-	    this.on('afterlayout', function() {
-    		this.addBaseLayers();
-	    }, this);
-	    
         this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 	    
         this.addEvents('baselayersloaded', 'layeradded');
         this.bubbleEvents.push('baselayersloaded');
         this.bubbleEvents.push('layeradded');
+        
+        this.addBaseLayers();
     },
 	
     initMap: function() {
@@ -172,7 +173,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        	);
 	        	this.setMapDefaultZoom(); // adds default bbox values to map instance
 	        	delete this.baseLayersLoading;
-	        	this.zoomToInitialBbox();
 	        	this.baseLayersLoaded = true;
 	        	this.fireEvent('baselayersloaded');
 	        }
@@ -249,6 +249,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 	        transitionEffect: 'resize',
 	        isBaseLayer: layerDescriptor.isBaseLayer,
+          buffer: 1, 
+          gutter: 0,
 	        projection: new OpenLayers.Projection(layerDescriptor.projection)
 	    };
 	    if (overrides) {
@@ -261,8 +263,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 		var params = {
 	        layers: layerDescriptor.name,
 	        transparent: 'TRUE',
-	        buffer: 1, 
-	        gutter: 0,
 	    	version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 	    	format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 	    	CQL_FILTER: layerDescriptor.cql,
@@ -551,9 +551,13 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    } 
 	},
 	
-	zoomToInitialBbox: function () {
-	    this.zoomTo(new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy), true);
-	},
+    zoomToInitialBbox: function () {
+        this.zoomTo(this.getInitialBbox(), true);
+    },
+    
+    getInitialBbox: function() {
+      return new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy);
+    },
 	
 	zoomToLayer: function(openLayer) {
 		if (openLayer) {

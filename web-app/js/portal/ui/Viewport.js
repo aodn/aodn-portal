@@ -33,6 +33,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         ]}, cfg);
 
     Portal.ui.Viewport.superclass.constructor.call(this, config);
+    
+    this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
 
   },
   
@@ -46,6 +48,12 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
       jQuery("#loader").hide('slow'); // close the loader            
     });
   },
+  
+  onLayerChooserAddLayerClicked: function() {
+    if (this.mainTabPanel.homePanelActive()) {
+      this.mainTabPanel.showPortalPanel();
+    }
+  },
 
   setActiveTab:  function(tabIndex) {
     this.mainTabPanel.setActiveTab(tabIndex);
@@ -56,17 +64,11 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
   },
 
   onPanelTabChange: function(thisTabPanel, newTab) {
-    if (newTab === this.mainTabPanel.portalPanel) {
-      this.layerChooserPanel.expand();
-      this.layerChooserPanel.showActions();
-    }
-    else if (newTab === this.mainTabPanel.searchTabPanel) {
-      this.layerChooserPanel.collapse();
-    } 
-    else {
-      this.layerChooserPanel.expand();
+    if (newTab === this.mainTabPanel.homePanel) {
       this.layerChooserPanel.hideActions();
-      this.layerChooserPanel.doLayout();
+    }
+    else {
+      this.layerChooserPanel.showActions();
     }
   }
 
