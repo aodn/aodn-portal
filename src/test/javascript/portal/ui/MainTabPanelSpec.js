@@ -2,7 +2,9 @@ describe("Portal.ui.MainTabPanel", function()
 {
   var mockConfig = {};
   var mockSearchTabPanel = {};
-  var mockPortalPanel = {};
+  var mockPortalPanel = {
+      getMapPanel: function() {return {};}
+  };
   var mockHomePanel = {};
   
   var buildMockMainTabPanel = function() {
@@ -11,7 +13,7 @@ describe("Portal.ui.MainTabPanel", function()
     spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
     spyOn(Portal.ui.MainTabPanel.superclass.constructor, "call");
     spyOn(Portal.ui.MainTabPanel.prototype, "mon");
-    
+
     return new Portal.ui.MainTabPanel({appConfig: mockConfig});
   };
   
@@ -28,12 +30,4 @@ describe("Portal.ui.MainTabPanel", function()
     expect(Portal.ui.MainTabPanel.prototype.mon).toHaveBeenCalled();
   });
   
-  it("displays alert when displayLayerAddedMessage is called", function()
-  {
-    var mainTabPanel = buildMockMainTabPanel();
-    
-    spyOn(Ext.Msg, 'alert');
-    mainTabPanel.displayLayerAddedMessage("SST Tas");
-    expect(Ext.Msg.alert).toHaveBeenCalledWith('Add layer', '\'SST Tas\' has been added to the map');
-  });
 });

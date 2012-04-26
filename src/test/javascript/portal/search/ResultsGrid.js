@@ -104,20 +104,6 @@ describe("Portal.search.ResultsGrid", function() {
 
     });
 
-    describe("getMapGoClass", function() {
-      it('Should identify links containing one instance of the protocol', function() {
-          expect(resultGrid.getMapGoClass('', {}, testRecord1)).toEqual('p-result-map-go');
-      });
-
-      it('Should identify links containing one instance of the protocol', function() {
-          expect(resultGrid.getMapGoClass('', {}, multiProtocolRec)).toEqual('p-result-disabled');
-      });
-
-      it('Should identify links not containing protocol', function() {
-          expect(resultGrid.getMapGoClass('', {}, testRecord2)).toEqual('p-result-disabled');
-      });
-    });
-
     describe("getMapAddClass", function() {
       it('Should identify links containing one instance of the protocol', function() {
           expect(resultGrid.getMapAddClass('', {}, testRecord1)).toEqual('p-result-map-add');

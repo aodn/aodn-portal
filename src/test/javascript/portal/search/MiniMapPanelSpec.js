@@ -11,7 +11,17 @@ describe("Portal.search.MiniMapPanel", function() {
   });
   
   it("should change map extent when setExtent called and not trigger extentchange event", function() {
-    var miniMapPanel = new Portal.search.MiniMapPanel();
+    var miniMapPanel = new Portal.search.MiniMapPanel({});
+
+    // add a base layer - required if map is to be rendered 
+    var layer = new OpenLayers.Layer.WMS(
+       "World Bathymetry",
+       "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi", 
+       {layers: "HiRes_aus-group"},
+       {tileSize: new OpenLayers.Size(256,256), buffer: 1 }
+    );
+    
+    miniMapPanel.map.addLayer(layer);
     
     testWindow.add(miniMapPanel);
     testWindow.show();

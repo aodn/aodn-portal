@@ -34,14 +34,13 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     Portal.ui.Viewport.superclass.constructor.call(this, config);
     
-    this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
-
   },
   
   initComponent: function() {
     Portal.ui.Viewport.superclass.initComponent.call(this);
     
     this.mon(this.mainTabPanel, 'tabchange', this.onPanelTabChange, this);
+    this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
 
     //TODO: find a better home for this
     this.on('afterrender', function() {              
