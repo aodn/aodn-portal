@@ -33,6 +33,6 @@ You can obtain full information about IMOS via the <a class="external" title="IM
 
 
 <div class="spacer floatLeft homePanelWidget"  style="width:250px">IMOS data is made freely available under the <a class="external" href="http://imos.org.au/emii_data.html" title="Conditions of Use" target="_blank">Conditions of Use</a>.
-There is a technical summary for those interested in the <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18" title="technical summary" target="_blank">information infrastructure</a> behind this portal.  IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative. If you had an user account on the old portal please see <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18">this link</a> for new information affecting your account.</div>
+There is a technical summary for those interested in the <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=node/51" title="technical summary" target="_blank">information infrastructure</a> behind this portal.  IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative. If you had an user account on the old portal please see <a href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum/18">this link</a> for new information affecting your account.</div>
 </div>
 <div class="clear"></div>
