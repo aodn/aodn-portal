@@ -50,7 +50,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			id: 'startNCAnimationButton',
 			text:'Start',
 			disabled: false, // readonly
-			//hidden: true,
 			listeners: {
 				scope: this,
 				'click': function(button,event){
@@ -133,9 +132,20 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			// update it\
 			this.setTimeVals(this.timePanel.timePanelSlider);
         }
+        else{
+        	//it is an ncWMS layer, not there are NO time associated with it
+        	this.noAnimationLabel.show();
+        }
         //this.setDisabled(false);
         this.animatePanelContent.doLayout();
     },
+
+	//set the stop button, etc
+	setAnimatedButtons: function(){
+		this.timeSlider.disable();
+		this.startAnimationButton.hide();
+		this.stopNCAnimationButton.setVisible(true);
+	},
 
     update: function(){
         //Just hide everything by default
@@ -148,9 +158,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				// set the Start Stop buttons;
 				//this.stopNCAnimationButton.setVisible(false);
 				this.timePanel.setVisible(true);
-				this.timeSlider.disable();
-				this.startAnimationButton.hide();
-				this.stopNCAnimationButton.setVisible(true);
+				this.setAnimatedButtons();
 			}
 			else{
 				//if no dates has been fetched, then grab them.  Otherwise, just use the cached
@@ -418,6 +426,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	addNCWMSLayer: function() {
         // Wrap the Map call, this function used to live in mainMapPanel.js
     	getMapPanel().addNCWMSLayer(this.selectedLayer);
+    	this.setAnimatedButtons();
     }
 
 

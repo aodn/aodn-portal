@@ -526,7 +526,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	     * keeping the layer position
 	     *******************************************************/
         this.swapLayers(newNCWMS, currentLayer);
-
 	},
 	
 	getMapExtent: function()  {
@@ -548,7 +547,9 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
 	        this.addLayer(newLayer);
 	        this.map.setLayerIndex(newLayer, layerLevelIndex);
-	    } 
+	    }
+
+	    Ext.getCmp('rightDetailsPanel').update(newLayer);
 	},
 	
 	zoomToInitialBbox: function () {
