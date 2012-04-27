@@ -58,7 +58,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
 						border: false,
-						bodyStyle: 'padding:5px 5px 0',
+						bodyStyle: 'padding:5px 5px 0'
 					}
 				},
 				{

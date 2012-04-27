@@ -173,8 +173,7 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
    
    clearBBox: function(bbox) {
 	   this.bboxLayer.removeAllFeatures();
-   },
-   
+   }
 });
 
 Ext.reg('portal.search.minimappanel', Portal.search.MiniMapPanel);

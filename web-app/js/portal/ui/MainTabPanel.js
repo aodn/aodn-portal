@@ -61,6 +61,5 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
   
   onSearchTabPanelAddLayer: function(layerDef) {
     this.getMapPanel().addMapLayer(layerDef);
-  },
-  
+  }
 });

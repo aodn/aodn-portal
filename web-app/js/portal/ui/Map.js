@@ -704,7 +704,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	
 	removeLayer: function(openLayer, newDetailsPanelLayer) {
 		if (openLayer.name != 'OpenLayers.Handler.Path') {
-			var undef
+
 			this.map.removeLayer(openLayer, newDetailsPanelLayer);
 			
 			delete this.activeLayers[this.getLayerUid(openLayer)];
