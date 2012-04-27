@@ -13,6 +13,7 @@
       <shiro:user>
         Welcome <g:link controller="user" action="updateAccount" class="userlink" ><user:loggedInUser property="firstName" /></g:link>
         <g:link controller="auth" action="signOut">Log out</g:link>
+        <shiro:hasPermission permission="config:edit"> - <g:link controller="config">Administration</g:link></shiro:hasPermission>
       </shiro:user>
       <shiro:notUser>
         <g:link controller="auth" action="login">Log in</g:link> or
