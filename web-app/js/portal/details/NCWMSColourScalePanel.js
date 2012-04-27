@@ -19,7 +19,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             listeners: {
                 scope: this,
                 keydown: function(textfield, event){
-                    updateScale(textfield, event);
+                    this.updateScale(textfield, event);
                 }
             }
         });
