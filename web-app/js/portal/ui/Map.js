@@ -621,8 +621,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        }
 
             // show open layer options
-            if (!Portal.app.config.hideLayerOptions) {
-                Ext.getCmp('detailsPanelItems').updateDetailsPanel(openLayer);
+            else if(!Portal.app.config.hideLayerOptions) {
+                Ext.getCmp('rightDetailsPanel').update(openLayer);
             }
 
 
