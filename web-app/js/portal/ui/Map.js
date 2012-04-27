@@ -317,6 +317,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
     	openLayer.parentLayerId = this.getParentId(layerDescriptor);
         openLayer.parentLayerName = this.getParentName(layerDescriptor);
         openLayer.allStyles = layerDescriptor.styles;
+        openLayer.dimensions = layerDescriptor.dimensions;
 	},
 	
 	getWmsOpenLayerUri: function(originalWMSLayer) {

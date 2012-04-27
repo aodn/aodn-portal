@@ -231,6 +231,8 @@ class LayerController {
             def metadata = JSON.parse( params.metadata )
             _validateMetadata metadata
 
+
+
             // Check layer data
             def layerData = params.layerData
             _validateLayerData layerData

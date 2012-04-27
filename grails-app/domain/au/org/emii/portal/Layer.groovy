@@ -20,7 +20,7 @@ class Layer {
     String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
-    
+
     // Extra info
     String dataSource
     Boolean activeInLastScan
@@ -51,11 +51,11 @@ class Layer {
         // Column types
         styles type: "text"
         layerHierarchyPath type: "text"
+        dimensions cascade: 'all-delete-orphan'
     }
 
     static belongsTo = [parent: Layer]
-    static hasMany = [layers: Layer]
-
+    static hasMany = [layers: Layer, dimensions: WMSDimension]
     static constraints = {
         name( nullable: true, size:1..225 )
         namespace( nullable: true )
@@ -84,6 +84,7 @@ class Layer {
 
     Layer() {
         layers = []
+        dimensions = []
         
         // Defaults
         abstractTrimmed = ""
