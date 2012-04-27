@@ -47,7 +47,6 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
     registerEvents: function() {
         this.on('hide', this.onHidePanel, this);
-        this.registerMapPanelEvents();
     	this.registerRightDetailsPanelEvents();
     },
 	
