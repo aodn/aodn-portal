@@ -92,9 +92,7 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    	//closeNHideDetailsPanel();
 	    	this.updateLoadingImage("none");
 	    	// close the getfeatureinfo popup
-	    	if (popup) {
-	    		popup.close();
-	    	}
+	    	this.closePopup();
 	    }, this);
 	    
         this.on('baselayersloaded', this.onBaseLayersLoaded, this);
@@ -106,6 +104,12 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
         this.addBaseLayers();
     },
 	
+    closePopup: function() {
+    	if (popup) {
+    		popup.close();
+    	}
+    },
+    
     initMap: function() {
         this.mapOptions = new Portal.ui.Options();
         this.map = new OpenLayers.Map(this.mapOptions.options);

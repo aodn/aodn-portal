@@ -68,9 +68,7 @@ function addToPopup(mapPanel, e) {
     
     // create a new popup each time.
     // ols query results 'should' become orphaned
-    if (popup) {
-        popup.close();
-    }
+    closePopup();
 
     popup = new GeoExt.Popup({
         title: "Searching for Features at your click point",
@@ -289,6 +287,13 @@ function addToPopup(mapPanel, e) {
     // no layers to query
     if ( popup.numResultsToLoad == 0 ) {
         popup.setTitle("No features found. No layers selected");
+    }
+}
+
+
+function closePopup() {
+    if (popup) {
+        popup.close();
     }
 }
 
@@ -532,6 +537,7 @@ function setDepth(response) {
     }
 }
 
+/*  Not used?????
 // Special popup for ncwms transects
 function mkTransectPopup(inf) {
 
@@ -556,6 +562,7 @@ function mkTransectPopup(inf) {
     mapPanel.map.addPopup(popup2);
 }
 
+
 function killTransectPopup() {
     if (mapPanel.map.popup2 != null) {
         mapPanel.map.removePopup(mapPanel.map.popup2);
@@ -563,6 +570,7 @@ function killTransectPopup() {
         mapPanel.map.popup2 = null;
     }
 }
+*/
 
 Date.prototype.setISO8601 = function (string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
