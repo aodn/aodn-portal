@@ -17,8 +17,6 @@ Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
      this.bind(cfg.mainMap);
      
      this.registerExtentChangeEvents();
-     
-     this.doLayout(false, true);
    },
 
    initMap: function() {
