@@ -1,7 +1,8 @@
 body, html{
     font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     font-size: 11px;
-    background-color: white;       
+    background-color: white; 
+	color: #030303;
     /*margin: 5px! important;
     margin-top: 2px! important; */
 }
@@ -19,22 +20,18 @@ body {
 }
 
 h1 {
-    color: #6A6A6A;
     font-size: 20px;
     font-weight: bold;
 }
 
 h2 {
-    color: #6A6A6A;
     font-size: 16px;
     font-weight: bold;
 }
 
 h3 {
-    color: #6A6A6A;
     font-size: 14px;
     font-weight: bold;
-    margin: 2px 0 ;
 }
 
 h4 {
@@ -228,18 +225,19 @@ hr {
    background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px); 
    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
-   
+   font-size: 12px;
    border-radius: 6px;
    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
 }
 
 .footer {       
     color: #0B5584;
-    font-size: 9px;
+    font-size: 10px;
     background-color: white;
 }
 
 .footerText {   
+	padding-right: 10px;
 }
 
 .footer .x-box-inner {
