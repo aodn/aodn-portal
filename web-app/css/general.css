@@ -764,6 +764,10 @@ p.important {
     background-color: #ffffff! important;
 }
 
+.addServerStatusPanel .x-panel-header {
+	padding-top: 0px;
+}
+
 .argodates {
 
     font-size: .9em;

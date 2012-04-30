@@ -108,16 +108,25 @@ class ProxyController {
 	
 	def wmsOnly = {
 		if ( params.url ) {
+			 	
+			def resp = params.url.toURL()
+			def langs = new XmlParser().parseText(resp.text)
+			//def ns = [:]
+			println langs.Service.Name[0]	//.Service.Name
+			//println langs.Service.Name.value	//.Service.Name
 			
-            def targetUrl = params.url 			
+			langs.each{
+				 // println langs
+				}
+				
 			try {
-				targetUrl = params.url.toURL().text
-				// TO BE VALIDATED
-				render text: targetUrl, contentType: "text/xml", encoding: "UTF-8"
+				
+				render text: resp.text, contentType: "text/xml", encoding: "UTF-8"
 			}
 			catch (Exception e) {                    
-				log.debug "Exception occurred: $e"
-				render text: "An error occurred making request to $targetUrl", status: 500
+				log.debug "User added WMS Server error: $e"
+				
+				render text: params.url, status: 500
 			}
 			
 		}

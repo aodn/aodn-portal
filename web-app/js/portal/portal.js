@@ -78,7 +78,7 @@ Portal.app = {
     },
     
     ajaxAction: function(request) {
-        if (request == 'show') {        
+        if (request == 'show') {     
             jQuery('.extAjaxLoading').show(100);
         }
         else {

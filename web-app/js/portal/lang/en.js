@@ -62,8 +62,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pickAStyle : ' ** Pick a style ** ',
 	
 	// UserDefinedWMSPanel
+	searching: 'Searching ...',
 	addYourURL: ' ** Add your URL ** ',
-	addYourURLHelp: 'Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Due to Javascript restrictions, layer features cant be retrieved when you click on the map. You may also note reduced functionality.',
+	addYourLayerSucess: '\'${layerName}\' added to map',
+	addYourURLHelp: '<i>Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Only add required parameters specific to the server such as \'dataset\' or \'namespace\'. The maplayers must also be available from this base URL.<BR>Due to Javascript restrictions, layer features cant be retrieved when you click on the map. You may also note reduced functionality.</i>',	
+	addYourURLSucessful: 'Server sucessfully loaded',
+	addYourURLUnsucessful: 'Unsucessfully tried to load <a class=\"external\" target=\"_blank\" href=\"${url}\">${url}</a><BR>To diagnose the problem, click the link to see the full reponse from the server.',
+	addYourURLUnsucessfulNoResponse: 'No response recieved from the WMS server. Connection timed out',
   
     //snapshots 
     saveMapButton: 'Save Map',
