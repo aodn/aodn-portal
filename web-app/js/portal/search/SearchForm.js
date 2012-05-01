@@ -37,7 +37,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 			xtype: 'portal.search.controlpanel',
 			filterStore: inactiveFilterStore,
 			savedSearchStore: savedSearchStore
-		},
+		}
       ];
 
       this.buttons = [{
@@ -82,7 +82,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 	  // let parent components know that the size of this component may have changed!
 	  this.fireEvent('contentchange');
    },
-   
 
    afterRender: function() {
       Portal.search.SearchForm.superclass.afterRender.call(this);

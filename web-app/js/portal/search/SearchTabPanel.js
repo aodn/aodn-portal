@@ -193,7 +193,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		
 		var onFailure = function(response) {
 			this.resultsGrid.hideMask();
-			Ext.Msg.alert('Error', response.status + ': ' + response.statusText + '<br />' + response.responseText);
+			Ext.Msg.alert( 'Error', response.status + ': ' + response.statusText );
 		};
 		
 		if (updateStore !== false) {

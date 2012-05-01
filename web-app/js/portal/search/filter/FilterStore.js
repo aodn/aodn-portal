@@ -83,7 +83,7 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 				  	'portal.search.field.daterange',
 				  	OpenLayers.i18n("dateRange"), 
 				  	{
-				 		xtype : 'portal.search.field.daterange',
+				 		xtype : 'portal.search.field.daterange'
 				 	},
 					false
 				], 
@@ -172,7 +172,7 @@ Portal.search.filter.FilterStore = Ext.extend(Ext.data.ArrayStore, {
 			
 			// displayedComponentId stores the ID of the component which wraps the filter component (so
 			// we a have a reference for removing later).
-			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'asJson', 'displayedComponentId', 'filterValue' ],
+			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'asJson', 'displayedComponentId', 'filterValue' ]
 		}, cfg);
 
         Portal.search.filter.FilterStore.superclass.constructor.call(this, config);

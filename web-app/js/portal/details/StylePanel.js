@@ -5,6 +5,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     title: 'Styles',
     style: {margin: 5},
     autoHeight: 250,
+    enableTabScroll: true,
 
     initComponent: function(cfg){
         this.legendImage = new GeoExt.LegendImage({
@@ -18,18 +19,17 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         this.items = [
             this.styleCombo,
+            this.ncwmsColourScalePanel,
             {
                 xtype: 'panel',
-                layout: 'hbox',
+                //layout: 'hbox',
                 autoScroll:true,
                 align: 'stretch',
                 items: [{
                     xtype: 'panel',
-                    width: 130,
                     margin: 10,
                     items: [this.legendImage]
-                },
-                this.ncwmsColourScalePanel
+                }
                 ]
             }
         ];

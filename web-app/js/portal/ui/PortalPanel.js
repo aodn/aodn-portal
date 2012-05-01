@@ -47,17 +47,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
     registerEvents: function() {
         this.on('hide', this.onHidePanel, this);
-        this.registerMapPanelEvents();
     	this.registerRightDetailsPanelEvents();
     },
-    
-    registerMapPanelEvents: function() {
-		this.mapPanel.on('layeradded', function(openLayer) {
-			this.rightDetailsPanel.update(openLayer);
-		}, this);
-
-
-	},
 	
     registerRightDetailsPanelEvents: function() {	
 		// Until the details panel is refactored just grab a handle via Ext
