@@ -90,7 +90,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     chooseSavedMap: 'Choose a Saved Map',
     deleteSnapshot: 'Delete',
     deleteSnapshotTip: 'Delete a saved map',
-  
+	
+  	// UserDefinedWMSPanel
+	rourUrl: 'Choose a Saved Map',
+	newattempt: 'hi mum',
+	
     //Options Panel
     turnOnTransect: 'Turn on transect graphing for this layer:',
     drawing: 'Drawing',
