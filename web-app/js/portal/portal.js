@@ -2,6 +2,7 @@
 
 var viewport;
 var proxyURL = "proxy?url=";
+var proxyWMSURL = "proxy/wmsOnly?url=";
 var progressCount = 0;
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
@@ -69,8 +70,8 @@ Portal.app = {
                             items:[nav]
                         });
                         dlgPopup.show();
-                    };
-                };
+                    }
+                }
                 doViewPort();
                 setViewPortTab( 0 ); // Select default tab                
             }
@@ -79,7 +80,7 @@ Portal.app = {
     },
     
     ajaxAction: function(request) {
-        if (request == 'show') {        
+        if (request == 'show') {     
             jQuery('.extAjaxLoading').show(100);
         }
         else {

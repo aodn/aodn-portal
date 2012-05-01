@@ -95,11 +95,12 @@
 <script src="${resource(dir:'js',file:'portal/ui/PortalPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/LayerChooserPanel.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js')}"    type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/Viewport.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js')}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js')}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ui/Viewport.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/portal.js')}"    type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js')}"  type="text/javascript"></script>

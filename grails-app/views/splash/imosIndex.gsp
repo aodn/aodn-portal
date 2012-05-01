@@ -24,7 +24,7 @@ You can obtain full information about IMOS via the <a class="external" title="IM
   <li><a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum" title="forum" target="_blank">Help forum</a></li>
   </ul>
   </div>
-  <div class="spacer floatLeft homePanelWidget"  style="width:330px">  
+  <div class="spacer floatLeft homePanelWidget"  style="width:300px">  
     <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent.jpg" /></a>
 	<BR>
   The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
@@ -32,7 +32,7 @@ You can obtain full information about IMOS via the <a class="external" title="IM
   </div>
 
 
-<div class="spacer floatLeft homePanelWidget"  style="width:250px">IMOS data is made freely available under the <a class="external" href="http://imos.org.au/emii_data.html" title="Conditions of Use" target="_blank">Conditions of Use</a>.
+<div class="spacer floatLeft homePanelWidget"  style="width:210px">IMOS data is made freely available under the <a class="external" href="http://imos.org.au/emii_data.html" title="Conditions of Use" target="_blank">Conditions of Use</a>.
 There is a technical summary for those interested in the <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=node/51" title="technical summary" target="_blank">information infrastructure</a> behind this portal.  IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative. If you had a user account on the old portal there is <a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=node/67" target="_blank">new information affecting your account</a>.</div>
 </div>
 <div class="clear"></div>

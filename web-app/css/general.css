@@ -94,6 +94,15 @@ input.readonlyInput {
     color: #15428B;
 }
 
+.userWMSInput {
+    display: block;
+    height: 22px;
+    padding: 10px;
+    margin: 0px 0px 10px 0px! important;
+    font-size: 12px;
+    color: inherit;
+}
+
 #activeTreePanel input{
     margin: 0;
 }
@@ -752,6 +761,10 @@ p.important {
 
 .extAjaxLoading div {       
     background-color: #ffffff! important;
+}
+
+.addServerStatusPanel .x-panel-header {
+	padding-top: 0px;
 }
 
 .argodates {
