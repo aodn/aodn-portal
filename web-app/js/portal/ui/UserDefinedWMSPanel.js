@@ -4,10 +4,11 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {		
 		
+		this.loadedServerURLS = new Array(); 
 		
 		this.serverURLInputBox = new Ext.form.TextField({
 					
-			id: "userWMSInput",
+			ref: "userWMSInput",
 			fieldClass: "userWMSInput",
 			hideLabel: true,
 			emptyText: OpenLayers.i18n('addYourURL'),
@@ -25,15 +26,41 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							this.addWMStoTree(url,this.statusPanel,this.spinnerPanel);
 						}
 					}
-				}
+				}				
 			}
 		});
-		this.spinnerPanel = new Ext.Panel({   
+		this.spinnerPanel = new Ext.Panel({  
+			ref: "spinnner",
 			hidden: true,
 			//cls: 'extAjaxLoading',
 			html: '<div class="loading-indicator"> Loading...</div>'
 		});
+		this.hbox = new Ext.Container({
+			layout: 'hbox',
+			items: [{
+				html: "<h4>" +  OpenLayers.i18n("addYourURLHeader") + "</h4>",
+				flex: 5
+				
+			},
+			{ 
+				flex: 1,
+				margins: {top:0, right:1, bottom:4, left:0},
+				items: [{
+						
+					ref: 'submitButton',				
+					xtype: 'button',					
+			
+					text: OpenLayers.i18n("addYourURLSubmit"),
+					tooltip: OpenLayers.i18n("addYourURLSubmitTip"),
+					listeners:	{
+						scope: this,
+						'click': this.onSubmitClick
+					}
+				}]
+			}]
+		});
 		this.statusPanel = new Ext.Panel({
+			ref: "status",
 			cls: 'addServerStatusPanel',
 			padding: 10,
 			title: "Note:",
@@ -58,16 +85,22 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 			layout:'form',
 			cls: '',
 			items: [
-			{
-				html: "<h4>WMS Server URL</h4>"
-			},
-			this.serverURLInputBox,
-			this.spinnerPanel,
-			this.statusPanel
+				this.hbox,
+				this.serverURLInputBox,
+				this.spinnerPanel,
+				this.statusPanel
 			]
 		}, cfg);
 		
 		Portal.ui.UserDefinedWMSPanel.superclass.constructor.call(this, config);
+	},
+	
+	onSubmitClick: function() {
+		//console.log(this);
+		var url = this.userWMSInput.getValue();
+		if (url.length > 0) {
+			this.addWMStoTree(url,this.statusPanel,this.spinnerPanel);
+		}
 	},
 	
 	buildURL: function(url){
@@ -127,12 +160,23 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							return GeoExt.tree.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
 						},
 						listeners: {
+							
+							scope: this,
 							beforeload: function() {
 								
-								spinnerPanel.show();
-								setViewPortTab(1); // move to the map tab
-								statusField.setTitle(OpenLayers.i18n('searching'));
-								statusField.hide();
+								// check if loaded previously
+								console.log(this.loadedServerURLS.indexOf(url));
+								if (this.loadedServerURLS.indexOf(url) >= 0) {
+									statusField.setTitle(OpenLayers.i18n('addYourURLDuplicate'));
+									statusField.update(OpenLayers.i18n('addYourURLDuplicateBody'));
+									return false;
+								}
+								else {
+									spinnerPanel.show();
+									setViewPortTab(1); // move to the map tab
+									statusField.setTitle(OpenLayers.i18n('searching'));
+									statusField.hide();
+								}
 							},
 							
 							load: function() {
@@ -140,15 +184,20 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 								spinnerPanel.hide('slow');
 								setViewPortTab(1); // move to the map tab
 								statusField.setTitle(OpenLayers.i18n('addYourURLSucessful'));
+								// ADD TO LIST OF SUCESSFULL SERVERS
 								statusField.update("");
 								statusField.show();
+								// add to sucessfully loaded array
+								this.loadedServerURLS.push(url);
 							},
 							loadexception: function(obj,node,e) {
 								
 								spinnerPanel.hide('slow');
 								statusField.setTitle("ERROR: Server URL Invalid");
 								if (e.responseText != undefined) {
-									statusField.update( OpenLayers.i18n('addYourURLUnsucessful',{url: e.responseText}));
+									statusField.update( OpenLayers.i18n('addYourURLUnsucessful',{
+										url: e.responseText
+										}));
 								}
 								else {
 									statusField.update( OpenLayers.i18n('addYourURLUnsucessfulNoResponse'));
@@ -171,14 +220,17 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 					'click': function(node) {
 						if (node.attributes.layer != null) {
 							var layer = node.attributes.layer;	
-							statusField.setTitle(OpenLayers.i18n('addYourLayerSucess',{layerName: layer.name.replace(/_/gi, " ")}));
+							statusField.setTitle(OpenLayers.i18n('addYourLayerSucess',{
+								layerName: layer.name.replace(/_/gi, " ")
+								}));
+							statusField.update("")
 							statusField.show();
 							layer.server = node.attributes.server;
 							
 							//layer.metadata.dimensions = null; 
 							
 							getMapPanel().addLayer(layer,true);
-							//node.disable();
+						//node.disable();
 						}
 						else {
 							node.expand();

@@ -108,20 +108,40 @@ class ProxyController {
 	
 	def wmsOnly = {
 		if ( params.url ) {
-			 	
-			def resp = params.url.toURL()
-			def langs = new XmlParser().parseText(resp.text)
-			//def ns = [:]
-			println langs.Service.Name[0]	//.Service.Name
-			//println langs.Service.Name.value	//.Service.Name
+
 			
-			langs.each{
-				 // println langs
-				}
-				
 			try {
 				
-				render text: resp.text, contentType: "text/xml", encoding: "UTF-8"
+				def resp = params.url.toURL()
+				def xml = new XmlSlurper().parseText(resp.text)				
+				// get all valid namespaces eg  xmlns:a="http://a.example.com" xmlns:b="http://b.example.com" 
+				def namespaceList = xml.'**'.collect { it.namespaceURI() }.unique()					
+				
+				def isWMS = false
+				def validNSpaceURL = ['http://www.opengis.net/wms','http://www.opengis.net/ogc']
+				namespaceList.each {			
+					if (validNSpaceURL.contains(it)) {
+						isWMS = true
+					}
+				}
+				
+				// might be a WMT_MS_Capabilities doc
+				if (!isWMS) {					
+					// what else is better?
+					if (xml.Service.Name.toString().length() > 0) {
+						isWMS = true
+					}
+				}
+				
+				// exclude to all that dont have the namespace attribute for WMS
+				if (isWMS) {						
+					render text: resp.text, contentType: "text/xml", encoding: "UTF-8"
+				}
+				else {
+					// We dont tell the user the problem or how we valiate a genuine WMS XML doc
+					render text: params.url, status: 500
+				}						
+
 			}
 			catch (Exception e) {                    
 				log.debug "User added WMS Server error: $e"
