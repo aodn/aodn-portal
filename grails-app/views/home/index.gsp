@@ -49,6 +49,7 @@
 <script src="${resource(dir:'js',file:'portal/common/LoadMask.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/MapPanel.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/SuggestionStore.js')}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js')}" type="text/javascript"></script>

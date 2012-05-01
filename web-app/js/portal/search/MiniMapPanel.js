@@ -1,6 +1,6 @@
 Ext.namespace('Portal.search');
 
-Portal.search.MiniMapPanel = Ext.extend(GeoExt.MapPanel, {
+Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
   
    constructor: function(cfg) {
      this.initMap();

@@ -30,7 +30,7 @@ Portal.ui.Options = Ext.extend(Object, {
     }	
 });
 
-Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
+Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
     constructor: function(cfg) {
 		
@@ -47,7 +47,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
             region: "center",
             split: true,
             header: false,
-            extent: this.getInitialBbox(),
            items: [/*{
 	            xtype: "gx_zoomslider",
 	            aggressive: false,
@@ -176,6 +175,8 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	        		this
 	        	);
 	        	this.setMapDefaultZoom(); // adds default bbox values to map instance
+            this.setInitialMapExtent();
+
 	        	delete this.baseLayersLoading;
 	        	this.baseLayersLoaded = true;
 	        	this.fireEvent('baselayersloaded');
@@ -556,14 +557,6 @@ Portal.ui.Map = Ext.extend(GeoExt.MapPanel, {
 	    
 	    Ext.getCmp('rightDetailsPanel').update(newLayer);
 	},
-	
-    zoomToInitialBbox: function () {
-        this.zoomTo(this.getInitialBbox(), true);
-    },
-    
-    getInitialBbox: function() {
-      return new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy);
-    },
 	
 	zoomToLayer: function(openLayer) {
 		if (openLayer) {
