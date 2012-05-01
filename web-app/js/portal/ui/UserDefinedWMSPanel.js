@@ -96,7 +96,6 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	onSubmitClick: function() {
-		//console.log(this);
 		var url = this.userWMSInput.getValue();
 		if (url.length > 0) {
 			this.addWMStoTree(url,this.statusPanel,this.spinnerPanel);
@@ -165,7 +164,6 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							beforeload: function() {
 								
 								// check if loaded previously
-								console.log(this.loadedServerURLS.indexOf(url));
 								if (this.loadedServerURLS.indexOf(url) >= 0) {
 									statusField.setTitle(OpenLayers.i18n('addYourURLDuplicate'));
 									statusField.update(OpenLayers.i18n('addYourURLDuplicateBody'));
