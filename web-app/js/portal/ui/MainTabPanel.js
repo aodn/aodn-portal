@@ -28,6 +28,11 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     this.mon(this.searchTabPanel, 'addLayer', this.onSearchTabPanelAddLayer, this);
   },
   
+ 
+  getPortalPanel: function() {
+	    return this.portalPanel;
+  },
+  
   getMapPanel: function() {
     return this.portalPanel.getMapPanel();
   },

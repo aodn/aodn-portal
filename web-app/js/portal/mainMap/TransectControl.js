@@ -41,10 +41,14 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
   
   toggleDraw: function() {
     if (this.drawingControl.active) {
-      this.drawingControl.deactivate();
+      this.drawingControl.deactivate();  
     } else {
       this.drawingControl.activate();
     }
+  },
+  
+  deactivateDrawingControl: function() {
+	  this.drawingControl.deactivate();
   },
   
   onAddFeature: function(e) {

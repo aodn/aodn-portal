@@ -38,6 +38,8 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.registerEvents();
         
         this.addEvents('addlayerclicked');
+        this.relayEvents(this.actionsPanel, ['resetmap']);
+
     },
     
     initActionsPanel: function(appConfig, mapPanel) {
@@ -101,6 +103,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             this.leftTabMenuPanel.toggleNodeBranch(true);
             this.mapPanel.addDefaultLayers();
             this.mapPanel.closePopup();
+           // Ext.getCmp('detailsPanelItems').deactivateDrawingControl();  //Arrgghh
         }, this);
     },
 	

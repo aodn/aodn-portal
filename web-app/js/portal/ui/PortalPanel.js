@@ -73,6 +73,10 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
       popup.close();
     }
   },
+  
+  getRightDetailsPanel: function() {
+	    return this.rightDetailsPanel;
+	  },
 	
 	getMapPanel: function() {
 		return this.mapPanel;

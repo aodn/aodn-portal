@@ -89,6 +89,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
     },
 
+    
     updateDetailsPanel: function(layer){
         // show new layer unless user requested 'hideLayerOptions' or
         // check if the map is still in focus - not the search
@@ -121,6 +122,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.detailsPanelTabs.hide();
             this.opacitySlider.hide(); // reset slider
             this.transectControl.hide();
+    },
+    
+    deactivateDrawingControl: function() {
+  	  this.transectControl.deactivateDrawingControl();
     },
     
     
