@@ -93,7 +93,7 @@ class BulkDownloadService {
 
         try {
             // Create new Zip Entry
-            zipStream.putNextEntry new ZipEntry( filenameToUse )
+            zipStream.putNextEntry new ZipEntry( filenameToUse as String )
 
             // Write data to new zip entry
             def buffer = new byte[ BufferSize ]
@@ -112,6 +112,8 @@ class BulkDownloadService {
             return "File added ($totalBytesRead Bytes)"
         }
         catch (Exception e) {
+
+            log.info "Exception writing stream to archive", e
 
             return "Unknown error adding file"
         }
@@ -176,9 +178,6 @@ Result:              $statusMessage
                 secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
                 secondRequestConn.connect()
 
-                def contentTypeHeader = secondRequestConn.headerFields.find { it.toString().startsWith( "Content-Type" ) }
-                def contentTypeHeaderValue = contentTypeHeader.value.get( 0 )
-
                 // Update file info as GeoNetwork returns file archives
                 fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
                 fileInfo.fileExtensionUsed = ".zip"
@@ -186,7 +185,9 @@ Result:              $statusMessage
                 return secondRequestConn.inputStream
             }
         }
-        catch(Exception e) {
+        catch (Exception e) {
+
+            log.info "Exception while trying to get stream for '$address'", e
 
             return null
         }
@@ -320,8 +321,8 @@ Time taken: ${ _timeTaken() } seconds
 
     def _timeTaken() {
 
-        def msTaken = System.currentTimeMillis() - processingStartTime
+        long msTaken = System.currentTimeMillis() - processingStartTime
 
-        return Math.max(Math.round( msTaken / 1000 ), 1) // Return value in whole seconds (min 1 for tidyness)
+        return Math.max(Math.round( msTaken / 1000 ), 1) // Return value in whole seconds (min 1 for tidiness)
     }
 }

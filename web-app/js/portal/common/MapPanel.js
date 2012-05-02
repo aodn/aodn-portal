@@ -23,9 +23,8 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         map.zoomToExtent(this.extent, true);
     } else {
         map.zoomToMaxExtent();
-    };
+    }
     this.initialExtentSet = true;
-  },
-    
+  }
 });
 
