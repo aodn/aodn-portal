@@ -4,12 +4,6 @@ Ext.namespace('Portal.common');
 
 Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
 
-  setInitialMapExtent: function() {
-    var initialExtent = new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy);
-
-    this.setExtent(initialExtent);
-  },
-  
   setExtent: function(extent) {
     this.extent = extent;
     

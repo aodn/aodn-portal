@@ -54,5 +54,16 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 				this.expand(true);
 			}
 		}
+	},
+	
+	// check whether the panel has been rendered before calling the default expand method
+	// update the collapsed property otherwise
+	expand: function() {
+	  if (this.rendered) {
+	    Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
+	  } else {
+	    this.collapsed = false;
+	  }
 	}
+	
 });

@@ -101,6 +101,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.bubbleEvents.push('layeradded');
         
         this.addBaseLayers();
+        
+        // make sure layer store reflects loaded layers 
+        // even if the map hasn't been rendered yet
+        this.layers.bind(this.map);
     },
 	
     closePopup: function() {
@@ -184,6 +188,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	    });
 	},
 	
+  setInitialMapExtent: function() {
+    var initialExtent = new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy);
+
+    this.setExtent(initialExtent);
+  },
+  
 	onBaseLayersLoaded: function() {
 		this.addDefaultLayers();
 	},
