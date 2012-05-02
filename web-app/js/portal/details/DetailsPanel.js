@@ -70,10 +70,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                             html: "<img src=\"" + inf.transectUrl + "\" />"
                         }]
                     });
-console.log(this);
-                    if (this.detailsPanelItems.ownerCt.width <  430) {
-                        this.detailsPanelItems.ownerCt.setWidth(430);
-                        if (this.detailsPanelItems.ownerCt.ownerCt) this.detailsPanelItems.ownerCt.ownerCt.doLayout();
+                    if (this.ownerCt.width <  430) {
+                        this.ownerCt.setWidth(430);
+                        if (this.ownerCt.ownerCt) this.ownerCt.ownerCt.doLayout();
                     }
 
                       this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
