@@ -4,6 +4,14 @@ Ext.namespace('Portal.common');
 
 Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
 
+  constructor: function(cfg) {
+    var config = Ext.apply({
+      stateful: false
+    }, cfg);
+    
+    Portal.common.MapPanel.superclass.constructor.call(this, config);
+  },
+
   setExtent: function(extent) {
     this.extent = extent;
     
