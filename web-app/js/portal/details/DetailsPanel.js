@@ -2,6 +2,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     id: 'detailsPanelItems',
+	hidden: true,
     autoWidth: true,
 
     initComponent: function(){
@@ -69,7 +70,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                             html: "<img src=\"" + inf.transectUrl + "\" />"
                         }]
                     });
-
+console.log(this);
                     if (this.detailsPanelItems.ownerCt.width <  430) {
                         this.detailsPanelItems.ownerCt.setWidth(430);
                         if (this.detailsPanelItems.ownerCt.ownerCt) this.detailsPanelItems.ownerCt.ownerCt.doLayout();

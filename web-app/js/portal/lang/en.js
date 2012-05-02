@@ -93,7 +93,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	
   	// UserDefinedWMSPanel
 	rourUrl: 'Choose a Saved Map',
-	newattempt: 'hi mum',
+	
+	// RightDetailsPanel.js
+	noActiveLayersSelected:	"No active layers have been selected",
+	layerOptions: "Layer Options",
 	
     //Options Panel
     turnOnTransect: 'Turn on transect graphing for this layer:',

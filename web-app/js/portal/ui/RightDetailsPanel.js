@@ -4,6 +4,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	id: 'rightDetailsPanel',
 	region: 'east',
+	title: OpenLayers.i18n('noActiveLayersSelected'),
 	collapsed: true,
 	stateful: false,
 	padding:  '0px 20px 5px 20px',
@@ -28,7 +29,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems.show(); 
 		this.detailsPanelItems.updateDetailsPanel(openlayer);
 		this.text = openlayer.name;
-		this.setTitle("Layer Options: " + openlayer.name);
+		this.setTitle(OpenLayers.i18n('layerOptions') + ": " + openlayer.name);
         this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
 
 		if(this.collapsed) {
@@ -37,7 +38,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	collapseAndHide: function(){
-			this.setTitle("No active layers have been selected");
+			this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
 			this.detailsPanelItems.hide(); 
 			this.collapse(true);
 	},
