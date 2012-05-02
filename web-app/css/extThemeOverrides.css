@@ -110,6 +110,7 @@ p, h1, h2, h3 {
 
 .x-panel-header {
     background-image: none;
+	background-color: white;
     border: none;
     color: #15428B;
     font-family: tahoma,arial,verdana,sans-serif;

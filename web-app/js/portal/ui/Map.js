@@ -737,7 +737,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	        }
 		}, this);
 		this.removeAllLayersIn(layersToRemove);
-            Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
+		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
+		closePopup();
 	},
 	
 	removeAllLayersIn: function(openLayers) {
