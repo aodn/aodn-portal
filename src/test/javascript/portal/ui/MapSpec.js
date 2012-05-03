@@ -2,7 +2,7 @@ describe("Portal.ui.Map", function() {
   
   Ext.Ajax.request.isSpy = false;
   spyOn(Ext.Ajax, 'request').andReturn('');
-  var map = new Portal.ui.Map();
+  var map = new Portal.ui.Map({initialBbox: '130,-60,160,-20'});
   
   var layer = {
     'class': "au.org.emii.portal.Layer",

@@ -138,7 +138,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    extentChange: function() {
       var bounds = this.map.getExtent();
       
-      if (this.initialExtentSet && !this._mainMapExtentChange) {
+      if (this.mainMap && this.initialExtentSet && !this._mainMapExtentChange) {
         this._miniMapExtentChange = true;
         this.mainMap.setExtent(bounds);
         delete this._miniMapExtentChange;

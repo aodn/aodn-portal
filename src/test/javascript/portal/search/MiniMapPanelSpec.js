@@ -11,7 +11,7 @@ describe("Portal.search.MiniMapPanel", function() {
   });
   
   it("should change map extent when setExtent called and not trigger extentchange event", function() {
-    var miniMapPanel = new Portal.search.MiniMapPanel({});
+    var miniMapPanel = new Portal.search.MiniMapPanel({initialBbox: '130,-60,160,-20'});
 
     // add a base layer - required if map is to be rendered 
     var layer = new OpenLayers.Layer.WMS(
@@ -30,7 +30,7 @@ describe("Portal.search.MiniMapPanel", function() {
     
     spyOn(miniMapPanel, 'fireEvent');
     
-    miniMapPanel.setExtent({northBL: -22, westBL: -55, eastBL: -20, southBL: -25});
+    miniMapPanel.setBounds({northBL: -22, westBL: -55, eastBL: -20, southBL: -25});
     
     var newBounds = miniMapPanel.map.getExtent();
     
