@@ -7,6 +7,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	HITS_PER_PAGE: 15,
 
 	initComponent: function() {	 
+	  
+	  var appConfig = Portal.app.config;
+	  
 		this.resultsStore = Portal.data.CatalogResultsStore();
 		// Callback to run after the resultsStore is loaded
 		this.resultsStore.on('load',	function(store, recs, opt) {
@@ -14,10 +17,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 				Ext.Msg.alert('Info', 'The search returned no results.');
 			}
 		}, this.resultsStore);
-		this.catalogue = new GeoNetwork.Catalogue({hostUrl: Portal.app.config.catalogUrl});
+		this.catalogue = new GeoNetwork.Catalogue({hostUrl: appConfig.catalogUrl});
 		this.catalogue.metadataStore = this.resultsStore;
 		this.catalogue.services.xmlSearch = appConfigStore.getById('spatialsearch.url').data.value;
-		this.searchDefaults = {E_protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')};
+		this.searchDefaults = {E_protocol: appConfig.metadataLayerProtocols.split("\n").join(' or ')};
 
 		this.items = [
 		{
@@ -32,6 +35,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 						 region: 'north',
 						 xtype: 'portal.search.minimappanel',
 						 ref: '../minimap',
+						 initialBbox: appConfig.initialBbox,
 						 mainMap: this.mapPanel,
 						 split: true,
 						 height: 300
@@ -131,7 +135,11 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	minimapExtentChange: function(bounds) {
-		this.searchForm.setExtent(bounds);
+	  // Don't change the search extent when the minimap extent change was generated
+	  // by the user changing the search extent in the first place
+	  if (!this._changingBounds) {
+	    this.searchForm.setExtent(bounds);
+	  }
 	},
 	
 	onShowLayer: function(layer) {
@@ -147,7 +155,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	onBBoxChange: function(bounds) {
-	  this.minimap.setExtent(bounds);
+	  this._changingBounds = true;
+	  this.minimap.setBounds(bounds);
+	  delete this._changingBounds;
 	},
 	
 	setSearchContainerHeight: function() {

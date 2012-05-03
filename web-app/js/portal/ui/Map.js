@@ -207,9 +207,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 					},
 					this
 					);
-				this.setMapDefaultZoom(); // adds default bbox values to map instance
-				this.setInitialMapExtent();
-
 				delete this.baseLayersLoading;
 				this.baseLayersLoaded = true;
 				this.fireEvent('baselayersloaded');
@@ -217,12 +214,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	},
 	
-	setInitialMapExtent: function() {
-		var initialExtent = new OpenLayers.Bounds(this.map.minx, this.map.miny, this.map.maxx, this.map.maxy);
-
-		this.setExtent(initialExtent);
-	},
-  
 	onBaseLayersLoaded: function() {
 		this.addDefaultLayers();
 	},
@@ -446,45 +437,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if (!openLayer.isBaseLayer) {
 			// Hides the text above the active layers
 			jQuery('.emptyActiveLayerTreePanelText').hide('slow');
-		}
-	},
-	
-	setMapDefaultZoom: function() {
-		/* ---------------
-	     * left	{Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
-	     * bottom	{Number} The bottom bounds of the box.  Note that for height calculations, this is assumed to be more than the top value.
-	     * right	{Number} The right bounds.
-	     * top	{Number} The top bounds.
-	    */
-		if (this.initialBbox) {
-			var bbox = this.initialBbox.split(",");
-			this.map.minx = parseInt(bbox[0]);
-			this.map.maxx = parseInt(bbox[2]);
-			this.map.miny = parseInt(bbox[1]);
-			this.map.maxy = parseInt(bbox[3]);
-			if (!((this.map.minx >= -180 && this.map.minx <= 180)
-				&& (this.map.maxx > -180 && this.map.maxx <= 180)
-				&& (this.map.miny >= -90 && this.map.miny <= 90)
-				&& (this.map.maxy >= -90 && this.map.maxy <= 90)
-				&& this.map.minx < this.map.maxx
-				&& this.map.miny < this.map.maxy))
-				{
-				alert("ERROR: wrong value in bbox ! \n\n" + 
-					this.map.minx + 
-					":West = "+(this.map.minx >= -180 && this.map.minx <= 180)+"\n" + 
-					this.map.miny +
-					":South = "+(this.map.miny >= -90 && this.map.miny <= 90) +"\n" + 
-					this.map.maxx + 
-					":East = "+ (this.map.maxx > -180 && this.map.maxx <= 180)+"\n" + 
-					this.map.maxy + 
-					":North = "+(this.map.maxy >= -90 && this.map.maxy <= 90) +
-					"\n West > East = " + (this.map.minx < this.map.maxx) + 
-					"\n South < North = " +(this.map.miny < this.map.maxy) 
-					);
-			}
-		}
-		else {
-			alert("ERROR: There is no bounding box is not set in the site configuration");
 		}
 	},
 	

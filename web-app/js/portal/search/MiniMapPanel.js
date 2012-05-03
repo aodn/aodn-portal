@@ -7,9 +7,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      
      var config = Ext.apply({
        height: 400,
-       width: 600,
-       center: new OpenLayers.LonLat(133, -25),
-       zoom: 3
+       width: 600
      }, cfg);
      
      Portal.search.MiniMapPanel.superclass.constructor.call(this, config);
@@ -123,7 +121,11 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    mainMapExtentChange: function() {
      var mainMapExtent = this.mainMap.map.getExtent();
      
-     this.map.zoomToExtent(mainMapExtent, true);
+     if (!this._miniMapExtentChange) {
+       this._mainMapExtentChange = true;
+       this.setExtent(mainMapExtent);
+       delete this._mainMapExtentChange;
+     }
    },
    
    registerExtentChangeEvents: function() {
@@ -134,21 +136,20 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    },
    
    extentChange: function() {
-     if (this.disableExtentChangeEvents) return;
-     
       var bounds = this.map.getExtent();
+      
+      if (this.initialExtentSet && !this._mainMapExtentChange) {
+        this._miniMapExtentChange = true;
+        this.mainMap.setExtent(bounds);
+        delete this._miniMapExtentChange;
+      }
+      
       this.fireEvent('extentchange', {northBL: bounds.top, westBL: bounds.left, eastBL: bounds.right, southBL: bounds.bottom});
    },
    
-   setExtent: function(bounds) {
+   setBounds: function(bounds) {
      var olBounds = new OpenLayers.Bounds(bounds.westBL, bounds.southBL, bounds.eastBL, bounds.northBL);
-     
-     // don't trigger extentchange event when setExtent method is used
-     this.disableExtentChangeEvents = true;
-
      this.map.zoomToExtent(olBounds, false);
-
-     this.disableExtentChangeEvents = false;
    },
    
    showBBox: function(bbox) {
