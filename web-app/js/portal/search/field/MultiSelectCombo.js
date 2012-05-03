@@ -21,6 +21,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    hideLabel: false,
    width: 350,
    maxCaptionLength: 40,
+   extraItemCls: 'wrapping-wrapped-field',
 
    initComponent: function(config) {
 
@@ -75,15 +76,6 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 		   },
 		   scope: this
 	   });
-   },
-   
-   //Limit size of displayed text
-   addItemBox: function(val, display, caption, cls, style) {
-   	var displayCaption = caption;
-   	if (caption.length > this.maxCaptionLength) { 
-   		displayCaption = '...' + caption.substring(caption.length - this.maxCaptionLength);
-   	}
-      Portal.search.field.MultiSelectCombo.superclass.addItemBox.call(this, val, display, displayCaption, cls, style);
    },
    
    onItemChange: function() {

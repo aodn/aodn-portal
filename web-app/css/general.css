@@ -996,3 +996,7 @@ JQUERY AUTO COMPLETE
 .top_padded {
 	padding-top: 1.3em;
 }
+
+.wrapping-wrapped-field {
+	white-space: normal;
+}
