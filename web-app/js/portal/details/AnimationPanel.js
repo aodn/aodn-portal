@@ -10,6 +10,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     height: 400,
 
     initComponent: function(){
+    	this.animatedLayers = undefined;
         this.oneDayOnlyLabel = new Ext.form.Label();
 
         this.noAnimationLabel = new Ext.form.Label({
@@ -70,7 +71,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners:{
 				scope: this,
 				// Until the details panel is refactored just grab a handle via Ext
-				'click': function() {
+				'click': function(button,event) {
 					// Note selected layer is a global variable that also should be refactored
 					Ext.getCmp('map').stopAnimation(this.selectedLayer);
 					this.startAnimationButton.setVisible(true);
@@ -94,14 +95,81 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			]
 		});
 
+        this.stepSlider = new Ext.Slider({
+			id: 'stepSlider',
+			ref: 'stepSlider',
+			width: 250
+		});
+
+		var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
+
+		var fields = [{
+			name: 'index'
+		},{
+			name: 'displayText'
+		}];
+
+		var valueStore  = new Ext.data.ArrayStore({
+			autoDestroy: true,
+			name: "time",
+			fields: fields
+		});
+
+		this.startTimeCombo = new Ext.form.ComboBox({
+			id: "startTimePicker",
+			fieldLabel: 'Start: ',
+			triggerAction: 'all',
+			editable : false,
+			lazyRender:true,
+			mode: 'local',
+			store: valueStore,
+			valueField: 'index',
+			displayField: 'displayText',
+			store: valueStore,
+			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
+		});
+
+		this.endTimeCombo = new Ext.form.ComboBox({
+			id: "endTimePicker",
+			fieldLabel: 'End: ',
+			triggerAction: 'all',
+			editable : false,
+			lazyRender:true,
+			mode: 'local',
+			store: valueStore,
+			valueField: 'index',
+			displayField: 'displayText',
+			store: valueStore,
+			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
+		});
+
+		this.playButton = new Ext.Button({
+			id: 'Play',
+			disabled: false, // readonly
+			icon: 'images/animation/play.png',
+			listeners: {
+				scope: this,
+				'click': function(button,event){
+					this.loadAnimation();
+				}
+			}
+		});
+
+
 		this.animatePanelContent = new Ext.Panel({
 			id: 'animatePanelContent',
+			layout: 'form',
 			items: [
 				this.noAnimationLabel,
 				this.oneDayOnlyLabel,
-				this.timePanel
+				this.timePanel,
+				this.startTimeCombo,
+				this.endTimeCombo,
+				this.playButton,
+				this.stepSlider
 			]
 		});
+
 
         this.items = [
             this.animatePanelContent
@@ -113,6 +181,84 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     setSelectedLayer: function(layer){
         this.selectedLayer = layer;
     },
+
+    cycleAnimation: function(){
+        if(this.counter < this.animatedLayers.length){
+        	console.log("cycleAnimation " + this.counter);
+			this.counter++;
+        }
+        else{
+        	this.counter = 0;
+        	console.log("cycleAnimation " + this.counter);
+        }
+
+        index = 0;
+        for(var i = 0; i < this.animatedLayers.length; i++){
+        	if(i == this.counter){
+				this.animatedLayers[i].display(true);
+			}
+			else{
+				this.animatedLayers[i].display(false);
+			}
+			index++;
+		}
+    },
+
+    loadAnimation: function(){
+    	if(this.startTimeCombo.getValue() > this.endTimeCombo.getValue()){
+			alert("You must select an end date that is later than the start date");
+		}
+
+    	else{
+    		if(this.animatedLayers == undefined){
+    			//this will be an Map.  Key = openlayer, value = flag whether a layer has been loaded
+    			this.animatedLayers = new Array();
+    			this.totalSlides = 0;
+
+    			timeDimension = this.getSelectedLayerTimeDimension();
+				map = Ext.getCmp("map");
+
+				if(timeDimension != null){
+					extentValues =  timeDimension.extent.split(",");
+
+					//load each and every layer?
+					startIndex = this.startTimeCombo.getValue();
+					endIndex = this.endTimeCombo.getValue();
+
+					for(var i = startIndex; i <= endIndex; i++){
+						var layer = this.selectedLayer.clone();
+						layer.name = this.selectedLayer.name + " (" + extentValues[i] + ")";
+						layer.mergeNewParams({
+							TIME: extentValues[i]
+						});
+
+						this.animatedLayers.push(layer);
+						console.log(layer);
+						/* TODO: FORGET ABOUT THIS FOR NOW
+						layer.events.register("loadend", this, function(e) {
+							this.animatedLayers[e.object] =  true;
+						});*/
+
+						map.addLayer(layer);
+					}
+
+					var inst = this;
+                    this.counter = 0;
+					this.timerId = setInterval(function(){
+						console.log("setting up intervall..");
+						inst.cycleAnimation();
+					}, 1000);
+
+					//should disable some of the buttons...
+					this.startTimeCombo.disable();
+					this.endTimeCombo.disable();
+					this.playButton.disable();
+				}
+    		}
+		}
+    },
+
+
 
     setupAnimationControl: function() {
 
@@ -157,6 +303,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				//this.selectedLayer.dates.  No need for extra AJAX requests!
 				if(this.selectedLayer.dates == undefined || (this.selectedLayer.dates.length == 0)){
 					this.setLayerDates();
+					this.setLayerDatesByCapability();
                 }
 
 				this.setupAnimationControl();
@@ -166,6 +313,30 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         else{
         	this.noAnimationLabel.setVisible(true);
         }
+    },
+
+    setLayerDatesByCapability: function(){
+
+    	if(this.selectedLayer != null && this.selectedLayer.dimensions != null){
+    		var capDates = new Array();
+    		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
+    			var dim = this.selectedLayer.dimensions[i];
+
+    			if(dim.name == "time"){
+    				splitDates = dim.extent.split(",");
+    				for(var j = 0; j < splitDates.length; j++){
+    					d = Date.parseDate(splitDates[j], "c");
+    					capDates.push([j, splitDates[j]]);
+    				}
+
+                    this.startTimeCombo.store.loadData(capDates);
+                    this.endTimeCombo.store.loadData(capDates);
+    			}
+    		}
+
+
+
+    	}
     },
 
     // set all the date/times for the layer
@@ -259,6 +430,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.timePanel.remove('timePanelSlider');
 			var dates = this.selectedLayer.dates;
 
+			//TODO: maybe use the "update" method instead of recreating the slider bar everytime?!?
 			if(dates.length > 0){
 				this.timeSlider = new Ext.Slider({
 			        id: 'timePanelSlider',
@@ -418,5 +590,16 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	addNCWMSLayer: function() {
         // Wrap the Map call, this function used to live in mainMapPanel.js
     	getMapPanel().addNCWMSLayer(this.selectedLayer);
+    },
+
+    getSelectedLayerTimeDimension: function(){
+    	if((this.selectedLayer != undefined) && (this.selectedLayer.dimensions != undefined)){
+    		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
+    			if(this.selectedLayer.dimensions[i].name == "time"){
+    				return this.selectedLayer.dimensions[i];
+    			}
+    		}
+    	}
+    	return null;
     }
 });
