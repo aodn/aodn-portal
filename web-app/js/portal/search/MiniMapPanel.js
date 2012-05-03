@@ -24,7 +24,9 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      
      var config = Ext.apply({
        height: 400,
-       width: 600
+       width: 600,
+       center: new OpenLayers.LonLat(133, -25),
+       zoom: 0
      }, cfg);
      
      Portal.search.MiniMapPanel.superclass.constructor.call(this, config);
@@ -35,10 +37,17 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    },
 
    initMap: function() {
-	 this.mapOptions = new Portal.search.Options();
-     this.map = new OpenLayers.Map(this.mapOptions.options);
-     
-     this.initBBoxLayer();
+     this.map = new OpenLayers.Map({
+		controls: [			
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.PanZoomBar()//,
+			//new OpenLayers.Control.LayerSwitcher() // show this for testing only
+		],
+		restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
+		displayProjection: new OpenLayers.Projection("EPSG:4326"),
+		resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+	 });
+	 this.initBBoxLayer();
    },
    
    initBBoxLayer: function() {
@@ -66,9 +75,18 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    },
    
    mainMapLayerAdded: function(e) {
+	   
+	   
      var miniMapClone = e.layer.clone();
-     //HACK: clone doesn't clear numloadinglayers causing problems clearing backbuffer tiles
-     miniMapClone.numLoadingTiles = 0;
+	 
+	 // delete attibutes that cause problems in minimap
+	 delete miniMapClone.id;	
+	 delete miniMapClone.map;	
+	 delete miniMapClone.tile;	
+	 delete miniMapClone.scales;
+	 delete miniMapClone.resolutions;
+	 delete miniMapClone.originalWMSLayer;
+	 
      miniMapClone.sourceLayer = e.layer;
      this.map.addLayer(miniMapClone);
      this.applyMainMapLayerOrdering();
@@ -120,6 +138,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
        var miniMapClone = this.map.getLayersBy('sourceLayer', mainLayer)[0];
        // main map layers come after mini map layers (i.e. bbox is displayed on top of main map layers)
        this.map.setLayerIndex(miniMapClone, nonMainMapLayerCount + mainMapLayerIndex);
+	   
      }
    },
    
