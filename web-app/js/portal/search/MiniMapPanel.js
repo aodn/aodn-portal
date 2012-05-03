@@ -86,6 +86,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
 	 delete miniMapClone.scales;
 	 delete miniMapClone.resolutions;
 	 delete miniMapClone.originalWMSLayer;
+	 delete miniMapClone.numLoadingTiles;
 	 
      miniMapClone.sourceLayer = e.layer;
      this.map.addLayer(miniMapClone);
