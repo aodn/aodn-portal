@@ -10,7 +10,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     height: 400,
 
     initComponent: function(){
-    	this.animatedLayers = undefined;
+    	this.animatedLayers = new Array();
         this.oneDayOnlyLabel = new Ext.form.Label();
 
         this.noAnimationLabel = new Ext.form.Label({
@@ -56,6 +56,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				'click': function(button,event){
 					this.getTimePeriod();
+				}
+			}
+		});
+
+		this.speedUp = new Ext.Button({
+         	icon: 'images/animation/last.png',
+         	listeners: {
+				scope: this,
+				'click': function(button,event){
+					this.resetTimer(this.speed / 2);
+				}
+			}
+		});
+
+		this.slowDown = new Ext.Button({
+         	icon: 'images/animation/first.png',
+         	listeners: {
+				scope: this,
+				'click': function(button,event){
+					this.resetTimer(this.speed * 2);
 				}
 			}
 		});
@@ -155,27 +175,106 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
+		this.stopButton = new Ext.Button({
+			id: 'Stop',
+			disabled: true, // readonly
+			icon: 'images/animation/stop.png',
+			iconAlign: 'top',
+			listeners: {
+				scope: this,
+				'click': function(button,event){
+					this.removeAnimation();
+				}
+			}
+		});
 
-		this.animatePanelContent = new Ext.Panel({
-			id: 'animatePanelContent',
-			layout: 'form',
+		this.pauseButton = new Ext.Button({
+			id: 'Pause',
+			disabled: true, // readonly
+			icon: 'images/animation/pause.png',
+			iconAlign: 'top',
+			listeners: {
+				scope: this,
+				'click': function(button,event){
+					clearTimeout(this.timerId);
+				}
+			}
+		});
+
+		this.stepLabel = new Ext.form.Label();
+
+		this.playerControlPanel = new Ext.Panel({
+			id: 'playerControlPanel',
+			layout: 'hbox',
 			items: [
-				this.noAnimationLabel,
-				this.oneDayOnlyLabel,
-				this.timePanel,
-				this.startTimeCombo,
-				this.endTimeCombo,
+				this.slowDown,
 				this.playButton,
-				this.stepSlider
+				this.stopButton,
+				this.pauseButton,
+				this.speedUp
 			]
 		});
 
+		this.timeSelectorPanel = new Ext.Panel({
+		   id: 'timeSelectorPanel',
+		   layout: 'form',
+		   items:[
+				this.noAnimationLabel,
+				this.oneDayOnlyLabel,
+				this.startTimeCombo,
+				this.endTimeCombo,
+			]
+		});
 
         this.items = [
-            this.animatePanelContent
+        	this.timeSelectorPanel,
+            this.playerControlPanel,
+            this.stepLabel,
+            this.stepSlider
         ];
 
+        this.timerId = -1;
+        this.speed = 1000;
+
         Portal.details.AnimationPanel.superclass.initComponent.call(this);
+    },
+
+    toggleButtons: function(playing){
+    	if(playing){
+    		//can't change the time when it's playing
+    		this.startTimeCombo.disable();
+			this.endTimeCombo.disable();
+			this.playButton.disable();
+
+    		this.stopButton.enable();
+			this.pauseButton.enable();
+    	}
+        else{
+        	this.startTimeCombo.enable();
+			this.endTimeCombo.enable();
+			this.playButton.enable();
+
+			//nothing's playing, so stop and pause doesn't make sense
+			this.stopButton.disable();
+			this.pauseButton.disable();
+        }
+    },
+
+    removeAnimation: function(){
+    	if(this.animatedLayers.length > 0){
+			map = Ext.getCmp("map");
+
+			clearTimeout(this.timerId);
+
+			for(var i = 0; i < this.animatedLayers.length; i++){
+				map.removeLayer(this.animatedLayers[i]);
+			}
+
+			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
+			this.animatedLayers.length = 0;
+
+            this.toggleButtons(false);
+		}
     },
 
     setSelectedLayer: function(layer){
@@ -183,25 +282,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     cycleAnimation: function(){
-        if(this.counter < this.animatedLayers.length){
-        	console.log("cycleAnimation " + this.counter);
-			this.counter++;
-        }
-        else{
-        	this.counter = 0;
-        	console.log("cycleAnimation " + this.counter);
-        }
+		if(this.counter >= this.animatedLayers.length)
+			this.counter = 0;
 
-        index = 0;
         for(var i = 0; i < this.animatedLayers.length; i++){
-        	if(i == this.counter){
-				this.animatedLayers[i].display(true);
-			}
-			else{
-				this.animatedLayers[i].display(false);
-			}
-			index++;
+        	showSlide = (i == this.counter);
+        	this.animatedLayers[i].display(showSlide);
+        	if(showSlide){
+        		this.stepLabel.setText(this.animatedLayers[i].params.TIME);
+        		this.stepSlider.setValue(i);
+        	}
 		}
+
+		this.counter++;
     },
 
     loadAnimation: function(){
@@ -210,7 +303,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
 
     	else{
-    		if(this.animatedLayers == undefined){
+    		if(this.animatedLayers.length == 0){
     			//this will be an Map.  Key = openlayer, value = flag whether a layer has been loaded
     			this.animatedLayers = new Array();
     			this.totalSlides = 0;
@@ -233,35 +326,38 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						});
 
 						this.animatedLayers.push(layer);
-						console.log(layer);
-						/* TODO: FORGET ABOUT THIS FOR NOW
-						layer.events.register("loadend", this, function(e) {
-							this.animatedLayers[e.object] =  true;
-						});*/
 
 						map.addLayer(layer);
 					}
 
-					var inst = this;
-                    this.counter = 0;
-					this.timerId = setInterval(function(){
-						console.log("setting up intervall..");
-						inst.cycleAnimation();
-					}, 1000);
+					this.stepSlider.setMinValue(0);
+					this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
 
-					//should disable some of the buttons...
-					this.startTimeCombo.disable();
-					this.endTimeCombo.disable();
-					this.playButton.disable();
+                    this.resetTimer(1000);
+
+					this.toggleButtons(true);
 				}
     		}
 		}
     },
 
+    resetTimer: function(speed){
+    	this.speed = speed;
+    	var inst = this;
+		this.counter = 0;
 
+		if(this.timerId != -1){
+			clearTimeout(this.timerId);
+		}
+
+    	this.timerId = setInterval(function(){
+			inst.cycleAnimation();
+		}, speed);
+
+
+    },
 
     setupAnimationControl: function() {
-
         if (this.selectedLayer == undefined) {
             return false;
         }
@@ -306,7 +402,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this.setLayerDatesByCapability();
                 }
 
-				this.setupAnimationControl();
+				//this.setupAnimationControl();
 			}
 
         }
