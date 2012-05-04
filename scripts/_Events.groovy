@@ -29,6 +29,7 @@ eventCompileStart = { kind ->
 	metadata.'app.buildProfile' = grailsEnv
 
 	// Get subvsersion revision number
+	def revision = "0"
 	try {
 		DAVRepositoryFactory.setup()
 		SVNRepositoryFactoryImpl.setup()
@@ -37,8 +38,7 @@ eventCompileStart = { kind ->
 		SVNWCClient wcClient = clientManager.getWCClient()
 		File baseFile = new File(basedir)
 		SVNInfo svninfo = wcClient.doInfo(baseFile, SVNRevision.WORKING)
-		def revision = svninfo.getRevision() 
-		println "SVN revision: #${revision}"
+		revision = svninfo.getRevision() 
 		metadata.'app.revision' = "${revision}".toString()
 	}
 	catch (SVNException ex) {
@@ -48,6 +48,6 @@ eventCompileStart = { kind ->
 
 	metadata.persist()
 
-	println "Jenkins Build: #${buildNumber}"
+	println "Jenkins Build: #${buildNumber}.  SVN Revision #${revision}."
 }
 
