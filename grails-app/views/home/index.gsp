@@ -1,4 +1,4 @@
-<!-- Application Version: ${grailsApplication.metadata['app.version']} (Build #${grailsApplication.metadata['app.buildNumber']} ${grailsApplication.metadata['app.buildDate']} ${grailsApplication.metadata['app.buildProfile']}) -->
+<!-- Portal Version: ${grailsApplication.metadata['app.version']} (Build #${grailsApplication.metadata['app.buildNumber']}. Revision #${grailsApplication.metadata['app.revision']}. ${grailsApplication.metadata['app.buildDate']} - ${grailsApplication.metadata['app.buildProfile']}) -->
 
 <html>
 
