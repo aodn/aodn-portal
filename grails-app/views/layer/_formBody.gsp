@@ -58,7 +58,9 @@
                                     <g:message code="layer.layers.label" default="Layers" />
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layers', 'errors')}">
-                                    ${layerInstance?.layers}
+                                    <g:each in="${layerInstance?.layers}">
+                                        ${it}<br />
+                                    </g:each>
                                 </td> 
                             </tr>
                             

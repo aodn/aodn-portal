@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                             <td><label for="serverId">Server</label></td>
-                            <td><g:select name="serverId" from="${Server.list()}" optionKey="id" value="${filters?.serverId}" noSelection="['':'- Any -']" /></td>
+                            <td><g:select name="serverId" from="${Server.list()}" optionKey="id" optionValue="name" value="${filters?.serverId}" noSelection="['':'- Any -']" /></td>
                         </tr>
                         <tr>
                             <td></td>
