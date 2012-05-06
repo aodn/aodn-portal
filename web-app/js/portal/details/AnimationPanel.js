@@ -118,7 +118,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.stepSlider = new Ext.Slider({
 			id: 'stepSlider',
 			ref: 'stepSlider',
-			width: 250
+			width: 250,
+			listeners:{
+				scope: this,
+				dragend: function(slider, e){
+					this.setSlide(slider.getValue());
+				}
+			}
 		});
 
 		var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
@@ -197,6 +203,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				'click': function(button,event){
 					clearTimeout(this.timerId);
+					this.toggleButtons(false);
 				}
 			}
 		});
@@ -274,6 +281,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.animatedLayers.length = 0;
 
             this.toggleButtons(false);
+            this.timerId = -1;
 		}
     },
 
@@ -281,19 +289,24 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
     },
 
+    setSlide: function(index){
+   		for(var i = 0; i < this.animatedLayers.length; i++){
+			this.animatedLayers[i].display(i == index);
+		}
+
+		//move slide across, if it's currently animating (otherwise,
+		//this is called by user moving the slider around
+		if(this.timerId > 0){
+			this.stepSlider.setValue(index);
+		}
+
+		this.stepLabel.setText("Time: " + this.animatedLayers[index].params.TIME);
+    },
+
     cycleAnimation: function(){
 		if(this.counter >= this.animatedLayers.length)
 			this.counter = 0;
-
-        for(var i = 0; i < this.animatedLayers.length; i++){
-        	showSlide = (i == this.counter);
-        	this.animatedLayers[i].display(showSlide);
-        	if(showSlide){
-        		this.stepLabel.setText(this.animatedLayers[i].params.TIME);
-        		this.stepSlider.setValue(i);
-        	}
-		}
-
+        this.setSlide(this.counter);
 		this.counter++;
     },
 
@@ -329,15 +342,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 						map.addLayer(layer);
 					}
-
-					this.stepSlider.setMinValue(0);
-					this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
-
-                    this.resetTimer(1000);
-
-					this.toggleButtons(true);
 				}
     		}
+
+			this.stepSlider.setMinValue(0);
+			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
+			this.resetTimer(1000);
+			this.toggleButtons(true);
 		}
     },
 
@@ -354,7 +365,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			inst.cycleAnimation();
 		}, speed);
 
-
+        console.log("timerId: " + this.timerId);
     },
 
     setupAnimationControl: function() {
