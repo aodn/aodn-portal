@@ -144,7 +144,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	getSelectedLayer: function () {
-		return this.getSelectedNode().layer;
+		var node = this.getSelectedNode();
+		return (node != null) ? this.getSelectedNode().layer : null;
 	},
 	
 	removeLayer: function() {
