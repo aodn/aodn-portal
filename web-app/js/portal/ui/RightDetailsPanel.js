@@ -12,6 +12,15 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	width: 350,
 	minWidth: 250,
 
+    listeners: {
+        expand: function() {
+        	//Force the opacity slider to move to correct location on selection of first layer.  
+        	var opacitySlider = this.detailsPanelItems.getOpacitySlider();
+        	opacitySlider.setValue(0,true);
+        	opacitySlider.setValue(this.detailsPanelItems.selectedLayer.opacity * 100,true);
+        }
+    },
+
 	initComponent: function(){
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
 	    this.items = [
