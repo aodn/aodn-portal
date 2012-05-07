@@ -94,6 +94,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
   	// UserDefinedWMSPanel
 	rourUrl: 'Choose a Saved Map',
 	
+	//MapOptionsPanel
+	autozoom: 'Auto zoom to layer',
+	hideDetailsPanel: 'Hide layer details',
+	
 	// RightDetailsPanel.js
 	noActiveLayersSelected:	"No active layers have been selected",
 	layerOptions: "Layer Options",

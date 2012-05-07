@@ -4,7 +4,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
 		var config = Ext.apply({
-			title: "Active layers",
+			title: "Active Layers",
 		    id: 'activeLayersPanel',
 		    items : [
 		        new Ext.Container({

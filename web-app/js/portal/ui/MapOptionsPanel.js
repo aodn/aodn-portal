@@ -20,7 +20,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         });
 
 		this.autoZoomCheckbox = new Ext.form.Checkbox({
-            boxLabel: 'Auto zoom to layer',
+            boxLabel: OpenLayers.i18n('autozoom'),
             inputType: 'checkbox',
             checked: cfg.autoZoom
         });
@@ -29,6 +29,29 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
 			box.fireEvent(event, box, checked);
 		}, this);
+				
+		this.hideDetailsPanelCheckbox = new Ext.form.Checkbox({
+			
+            boxLabel: OpenLayers.i18n('hideDetailsPanel'),
+            inputType: 'checkbox',
+            checked: (Portal.app.config.hideLayerOptions != undefined)? Portal.app.config.hideLayerOptions: false,
+			listeners: {
+				check: function(thisThingy,checked) {
+					Portal.app.config.hideLayerOptions = checked; // change the global option not a copy
+					if (checked) {
+						Ext.getCmp('rightDetailsPanel').hide();
+					}
+					else {
+						Ext.getCmp('rightDetailsPanel').show();
+					}
+					viewport.mainTabPanel.getPortalPanel().doLayout();
+					//Ext.getCmp('rightDetailsPanel').findParentByType('panel').doLayout();
+					// resize map with doLayout??
+					
+				}
+			}
+        });
+		
 		
 		var config = Ext.apply({
 	        collapseMode : 'mini',
@@ -44,7 +67,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	                        items: [
                                 { 
                                     flex: 3,
-                                    items: [ this.autoZoomCheckbox ]
+                                    items: [ 
+										this.autoZoomCheckbox,
+										this.hideDetailsPanelCheckbox
+									]
                                 },
 	                            new Ext.BoxComponent({      
                                     flex: 2,
