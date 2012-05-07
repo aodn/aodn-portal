@@ -7,58 +7,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     stateful: false,
     autoScroll: true,
     bodyCls: 'floatingDetailsPanel',
+    style: {margin: 5},
     height: 400,
 
     initComponent: function(){
     	this.animatedLayers = new Array();
-        this.oneDayOnlyLabel = new Ext.form.Label();
 
         this.noAnimationLabel = new Ext.form.Label({
         	hidden: true,
-        	html: "This layer cannot be animated"
+        	text: "This layer cannot be animated"
         });
 
-        this.timeMax = new Ext.form.TextField({
-			ref: 'timeMax',
-			fieldLabel: "End ",
-			disabled: true, // readonly
-			grow: true,
-			labelStyle: "width:50px",
-			ctCls: 'smallIndentInputBox'
-		});
-
-		this.timeMin = new Ext.form.TextField({
-		   ref: 'timeMin',
-			fieldLabel: "Start ",
-			disabled: true, // readonly
-			grow: true,
-			labelStyle: "width:50px",
-			ctCls: 'smallIndentInputBox'
-		});
-
-		this.frameCount =  new Ext.form.TextField({
-			ref: 'frameCount',
-			fieldLabel: "Days",
-			disabled: true, // readonly
-			grow: true,
-			//text: this.selectedLayer.dates.length,
-			labelStyle: "width:50px",
-			//labelStyle: "",
-			ctCls: 'smallIndentInputBox'
-		});
-
-		this.startAnimationButton = new Ext.Button({
-			id: 'startNCAnimationButton',
-			text:'Start',
-			disabled: false, // readonly
-			//hidden: true,
-			listeners: {
-				scope: this,
-				'click': function(button,event){
-					this.getTimePeriod();
-				}
-			}
-		});
+        this.curAnimationLabel = new Ext.form.Label({
+        	hidden: true,
+        	text: "Currently animating"
+        });
 
 		this.speedUp = new Ext.Button({
          	icon: 'images/animation/last.png',
@@ -67,7 +30,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function(button,event){
 					this.resetTimer(this.speed / 2);
 				}
-			}
+			},
+			tooltip: "Doubles animation speed"
 		});
 
 		this.slowDown = new Ext.Button({
@@ -77,42 +41,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function(button,event){
 					this.resetTimer(this.speed * 2);
 				}
-			}
+			},
+			tooltip: "Halves animation speed"
 		});
 
 		this.label = new Ext.form.Label({
 			html: "<h4>Select Time Period</h4>"
-		});
-
-		this.stopNCAnimationButton = new Ext.Button({
-			id: 'stopNCAnimationButton',
-			text:'Stop',
-			hidden: true,
-			listeners:{
-				scope: this,
-				// Until the details panel is refactored just grab a handle via Ext
-				'click': function(button,event) {
-					// Note selected layer is a global variable that also should be refactored
-					Ext.getCmp('map').stopAnimation(this.selectedLayer);
-					this.startAnimationButton.setVisible(true);
-					this.stopNCAnimationButton.hide();
-				}
-			}
-		});
-
-		this.timePanel = new Ext.Panel({
-			hidden: true,
-			id: 'theOnlyTimePanel',
-			ref: 'theOnlyTimePanel',
-			layout: 'form',
-			items: [
-				this.label,
-				this.timeMax,
-				this.timeMin,
-				this.frameCount,
-				this.startAnimationButton,
-				this.stopNCAnimationButton
-			]
 		});
 
         this.stepSlider = new Ext.Slider({
@@ -135,7 +69,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			name: 'displayText'
 		}];
 
-		var valueStore  = new Ext.data.ArrayStore({
+		var dateStore  = new Ext.data.ArrayStore({
 			autoDestroy: true,
 			name: "time",
 			fields: fields
@@ -148,10 +82,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			lazyRender:true,
 			mode: 'local',
-			store: valueStore,
+			store: dateStore,
 			valueField: 'index',
 			displayField: 'displayText',
-			store: valueStore,
 			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
 		});
 
@@ -162,10 +95,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			lazyRender:true,
 			mode: 'local',
-			store: valueStore,
+			store: dateStore,
 			valueField: 'index',
 			displayField: 'displayText',
-			store: valueStore,
 			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
 		});
 
@@ -191,7 +123,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function(button,event){
 					this.removeAnimation();
 				}
-			}
+			},
+			tooltip: "Stops animation and remove all animated layers from map"
 		});
 
 		this.pauseButton = new Ext.Button({
@@ -205,12 +138,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					clearTimeout(this.timerId);
 					this.toggleButtons(false);
 				}
-			}
+			},
+			tooltip: "Pauses animation and can explore individual time step using the slider below"
 		});
 
-		this.stepLabel = new Ext.form.Label();
+		this.stepLabel = new Ext.form.Label({
+			text: "Time: "
+		});
 
-		this.playerControlPanel = new Ext.Panel({
+		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
 			items: [
@@ -226,22 +162,30 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		   id: 'timeSelectorPanel',
 		   layout: 'form',
 		   items:[
-				this.noAnimationLabel,
-				this.oneDayOnlyLabel,
 				this.startTimeCombo,
 				this.endTimeCombo,
 			]
 		});
 
+        this.controlPanel = new Ext.Panel({
+        	items: [
+				this.timeSelectorPanel,
+				this.buttonsPanel,
+				this.stepLabel,
+				this.stepSlider
+			]
+        });
+
         this.items = [
-        	this.timeSelectorPanel,
-            this.playerControlPanel,
-            this.stepLabel,
-            this.stepSlider
+        	this.noAnimationLabel,
+        	this.curAnimationLabel,
+			this.controlPanel
         ];
 
         this.timerId = -1;
         this.speed = 1000;
+
+        this.map = Ext.getCmp("map");
 
         Portal.details.AnimationPanel.superclass.initComponent.call(this);
     },
@@ -255,6 +199,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     		this.stopButton.enable();
 			this.pauseButton.enable();
+			this.stepSlider.enable();
     	}
         else{
         	this.startTimeCombo.enable();
@@ -264,24 +209,33 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//nothing's playing, so stop and pause doesn't make sense
 			this.stopButton.disable();
 			this.pauseButton.disable();
+
+			//no animation, so disable it
+			if(this.animatedLayers.length == 0)
+				this.stepSlider.disable();
         }
     },
 
     removeAnimation: function(){
     	if(this.animatedLayers.length > 0){
-			map = Ext.getCmp("map");
-
 			clearTimeout(this.timerId);
 
 			for(var i = 0; i < this.animatedLayers.length; i++){
-				map.removeLayer(this.animatedLayers[i]);
+				this.map.removeLayer(this.animatedLayers[i]);
+				this.animatedLayers[i].destroy();
 			}
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
 			this.animatedLayers.length = 0;
+			this.stepLabel.setText("Time: ");
+			this.stepSlider.setValue(0);
+			this.stepSlider.setMaxValue(0);
+			this.stepSlider.setMinValue(0);
 
             this.toggleButtons(false);
+            this.curAnimationLabel.hide();
             this.timerId = -1;
+            this.originalLayer.setVisibility(true);
 		}
     },
 
@@ -290,17 +244,25 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     setSlide: function(index){
-   		for(var i = 0; i < this.animatedLayers.length; i++){
-			this.animatedLayers[i].display(i == index);
-		}
+    	if(this.animatedLayers != undefined){
+    		for(var i = 0; i < this.animatedLayers.length; i++){
+				this.animatedLayers[i].display(i == index);
+			}
 
-		//move slide across, if it's currently animating (otherwise,
-		//this is called by user moving the slider around
-		if(this.timerId > 0){
-			this.stepSlider.setValue(index);
-		}
+			//an animation is already happening.  Just move the slide
+			//to the current index
+			if(this.timerId > 0){
+				this.stepSlider.setValue(index);
+			}
 
-		this.stepLabel.setText("Time: " + this.animatedLayers[index].params.TIME);
+			//also set the label
+			labelStr = "Time: " + this.animatedLayers[index].params.TIME;
+
+			if(this.animatedLayers[index].numLoadingTiles > 0)
+				labelStr = labelStr + " (loading)"
+
+			this.stepLabel.setText(labelStr);
+    	}
     },
 
     cycleAnimation: function(){
@@ -311,18 +273,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     loadAnimation: function(){
+    	if(this.startTimeCombo.getValue() == this.endTimeCombo.getValue()){
+    		alert("The start and end time must not be the same");
+    		return false;
+    	}
+
     	if(this.startTimeCombo.getValue() > this.endTimeCombo.getValue()){
 			alert("You must select an end date that is later than the start date");
+			return false;
 		}
-
-    	else{
+		else{
     		if(this.animatedLayers.length == 0){
+    			this.curAnimationLabel.setText("Currently animating " + this.selectedLayer.name);
+    			this.curAnimationLabel.show();
+    			this.originalLayer = this.selectedLayer;
+
     			//this will be an Map.  Key = openlayer, value = flag whether a layer has been loaded
     			this.animatedLayers = new Array();
     			this.totalSlides = 0;
 
     			timeDimension = this.getSelectedLayerTimeDimension();
-				map = Ext.getCmp("map");
 
 				if(timeDimension != null){
 					extentValues =  timeDimension.extent.split(",");
@@ -338,12 +308,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							TIME: extentValues[i]
 						});
 
+						layer.isAnimated = true;
+
 						this.animatedLayers.push(layer);
 
-						map.addLayer(layer);
+						this.map.addLayer(layer);
 					}
 				}
     		}
+
+			this.selectedLayer.setVisibility(false);
+
 
 			this.stepSlider.setMinValue(0);
 			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
@@ -357,73 +332,51 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	var inst = this;
 		this.counter = 0;
 
-		if(this.timerId != -1){
-			clearTimeout(this.timerId);
+		if(this.animatedLayers.length > 0){
+			if(this.timerId != -1){
+				clearTimeout(this.timerId);
+			}
+
+			this.timerId = setInterval(function(){
+				inst.cycleAnimation();
+			}, speed);
+
+			console.log("timerId: " + this.timerId);
 		}
 
-    	this.timerId = setInterval(function(){
-			inst.cycleAnimation();
-		}, speed);
-
-        console.log("timerId: " + this.timerId);
+        //else no animation is running, so can't change the speed of the animation
     },
 
     setupAnimationControl: function() {
         if (this.selectedLayer == undefined) {
             return false;
         }
-
-        var newAnimatePanelContents = undefined;
-
-        if (this.selectedLayer.dates.length == 1) {
-            this.oneDayOnlyLabel.setText("Only one day is available - " + this.selectedLayer.dates[0].date);
-            this.oneDayOnlyLabel.show();
-        }
-        else if (this.selectedLayer.dates.length > 1){
-            if (this.animatePanelContent.timePanel == undefined) {
-            	this.timePanel.show();
-            }
-			// update it\
-			this.setTimeVals(this.timePanel.timePanelSlider);
-        }
-        //this.setDisabled(false);
-        this.animatePanelContent.doLayout();
     },
 
     update: function(){
-        //Just hide everything by default
-        this.timePanel.hide();
-		this.oneDayOnlyLabel.hide();
+    	//Just hide everything by default
 		this.noAnimationLabel.hide();
+		this.controlPanel.hide();
 
-        if(this.selectedLayer.server.type.search("NCWMS") > -1){
-        	if (this.selectedLayer.originalWMSLayer != undefined) {
-				// set the Start Stop buttons;
-				//this.stopNCAnimationButton.setVisible(false);
-				this.timePanel.setVisible(true);
-				this.timeSlider.disable();
-				this.startAnimationButton.hide();
-				this.stopNCAnimationButton.setVisible(true);
+    	//if it's already animated...
+    	if((this.animatedLayers != undefined) || (this.animatedLayers.length > 0)){
+			if(this.selectedLayer.server.type.search("NCWMS") > -1){
+				this.setLayerDatesByCapability();
+
+				if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
+					this.controlPanel.setVisible(true);
+				}
 			}
 			else{
-				//if no dates has been fetched, then grab them.  Otherwise, just use the cached
-				//this.selectedLayer.dates.  No need for extra AJAX requests!
-				if(this.selectedLayer.dates == undefined || (this.selectedLayer.dates.length == 0)){
-					this.setLayerDates();
-					this.setLayerDatesByCapability();
-                }
-
-				//this.setupAnimationControl();
+				this.noAnimationLabel.setVisible(true);
 			}
-
-        }
-        else{
-        	this.noAnimationLabel.setVisible(true);
-        }
+		}
+		else{
+			this.dateStore.clear();
+		}
     },
 
     setLayerDatesByCapability: function(){
-
     	if(this.selectedLayer != null && this.selectedLayer.dimensions != null){
     		var capDates = new Array();
     		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
@@ -435,269 +388,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     					d = Date.parseDate(splitDates[j], "c");
     					capDates.push([j, splitDates[j]]);
     				}
-
-                    this.startTimeCombo.store.loadData(capDates);
-                    this.endTimeCombo.store.loadData(capDates);
     			}
     		}
 
-
-
+    		if(capDates.length > 0){
+    			this.startTimeCombo.store.loadData(capDates);
+				this.startTimeCombo.setValue(0);
+				this.endTimeCombo.store.loadData(capDates);
+				this.endTimeCombo.setValue(0);
+    		}
     	}
     },
-
-    // set all the date/times for the layer
-    // creates an array (dates) of objects {date,datetimes} for a layer
-    setLayerDates: function(){
-		// add this new attribute to the layer
-        this.selectedLayer.dates = [];
-
-        var datesWithData = this.selectedLayer.metadata.datesWithData;
-
-        var dayCounter = 0; // count of how many days
-
-        for (var year in datesWithData) {
-            for (var month in datesWithData[year]) {
-                for (var day in datesWithData[year][month]) {
-                    // add 1 to the month and number as datesWithData uses a zero-based months
-                    // take the value at the index day if its a number
-                    if (!isNaN(parseInt(datesWithData[year][month][day]))) {
-
-                        var newDay = year + "-" + pad(parseInt(month)+1, 2 ) +"-" + pad(datesWithData[year][month][day], 2);
-                        this.selectedLayer.dates.push({
-                            date: newDay
-                        });
-                        // start off a Ajax request to add the dateTimes for this date
-                        this.setDatetimesForDate(newDay);
-                        dayCounter ++;
-                    }
-                }
-            }
-        }
-
-        // store with the layer.
-        // set to undefined when setDatetimesForDate returns a result for every day
-        this.selectedLayer.dayCounter = dayCounter;
-    },
-
-	setDatetimesForDate: function(day) {
-		var url;
-		// see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
-		if (this.selectedLayer.cache === true) {
-		   url = this.selectedLayer.server.uri;
-		   url = proxyCachedURL + encodeURIComponent(this.selectedLayer.server.uri) +  "?request=GetMetadata&item=timesteps&layerName=" +  this.selectedLayer.params.LAYERS +   "&day=" + day;
-		}
-		else {
-		   url = this.selectedLayer.url;
-		   url = proxyURL+encodeURIComponent(url +  "?request=GetMetadata&item=timesteps&layerName=" +  this.selectedLayer.params.LAYERS +   "&day=" + day);
-		}
-
-		// getMetadata gave us the days but not the times of the day
-		Ext.Ajax.request({
-			scope: this,
-			url: url,
-			success: function(resp) {
-
-				var res = Ext.util.JSON.decode(resp.responseText);
-				var dateTimes = [];
-
-				for(var i=0; i<res.timesteps.length; i++) {
-					dateTimes.push(day +  "T" + res.timesteps[i]);
-				}
-				// store the datetimes for each day
-				for(var i=0; i<this.selectedLayer.dates.length; i++) {
-					if (this.selectedLayer.dates[i].date == day) {
-						this.selectedLayer.dates[i].dateTimes = dateTimes;
-					}
-				}
-
-				this.selectedLayer.dayCounter--;
-
-				// set to undef when setDatetimesForDate returns a result for every day
-				// now we are safe to allow animation
-				if (this.selectedLayer.dayCounter == 0) {
-					this.selectedLayer.dayCounter = undefined;
-					// a user may now try and pick a date to animate
-					this.startAnimationButton.setDisabled(false);
-					// The 'Start' button can be shown, but it may not be rendered yet
-					// try to enable in the render listener as well
-					// then animation can then procede
-					if (this.startAnimationButton != undefined) {
-						this.startAnimationButton.enable();
-					}
-				}
-
-			}
-		});
-	},
-
-	setTimeVals: function(slider) {
-
-		if(this.selectedLayer.originaWMSLayer == undefined){
-			this.timePanel.remove('timePanelSlider');
-			var dates = this.selectedLayer.dates;
-
-			//TODO: maybe use the "update" method instead of recreating the slider bar everytime?!?
-			if(dates.length > 0){
-				this.timeSlider = new Ext.Slider({
-			        id: 'timePanelSlider',
-					ref: 'timePanelSlider',
-					width: 250,
-					values:  [0,this.selectedLayer.dates.length-1],
-					minValue: 0,
-					maxValue: this.selectedLayer.dates.length-1,
-					plugins: new Ext.ux.SliderTip({
-						dates: this.selectedLayer.dates,
-						getText: function(slider){
-							var thumbName = "Start";
-							if (slider.index != 0) {
-								thumbName = "End";
-							}
-							return String.format('<b>{0}:</b> {1}', thumbName,  dates[slider.value].date);
-						}
-					}),
-					listeners: {
-						scope: this,
-						changecomplete: function(slider,val,thumb) {
-							// which ever thumb was moved, update the selectedLayer
-							this.updateTimeLabels();
-						}
-					}
-				});
-
-				this.timePanel.insert(1, this.timeSlider);
-               	this.updateTimeLabels(dates);
-				this.doLayout();
-			}
-		}
-	},
-
-	updateTimeLabels: function(){
-		dates = this.selectedLayer.dates;
-		this.timeMin.setValue(dates[this.timeSlider.getValues()[0]].date);
-
-		if (this.timeSlider.getValues()[1] != undefined) {
-			this.timeMax.setValue(dates[this.timeSlider.getValues()[1]].date);
-			this.frameCount.setValue(this.timeSlider.getValues()[1] -  this.timeSlider.getValues()[0] + 1); // + item at zero
-		}
-		else {
-			this.timeMax.setValue(undefined);
-			this.frameCount.setValue(undefined);
-		}
-	},
 
 	setSelectedLayer: function(layer){
 		this.selectedLayer = layer;
 	},
-
-	getTimePeriod: function() {
-		var chosenTimes = [];
-
-		var url;
-		// see if this layer is flagged a 'cached' layer. a Cached layer is already requested through our proxy
-		if (this.selectedLayer.cache === true) {
-		   url = this.selectedLayer.server.uri;
-		}
-		else {
-		   url = this.selectedLayer.url;
-		}
-
-		// get the server to tell us the options
-		Ext.Ajax.request({
-			scope: this,
-			url: proxyURL+encodeURIComponent(url +
-				"?request=GetMetadata&item=animationTimesteps&layerName=" +
-				this.selectedLayer.params.LAYERS +
-				"&start=" + this.getDateTimesForDate(this.timePanel.timeMin.value)[0] +
-				"&end=" + this.getDateTimesForDate(this.timePanel.timeMax.value)[0]
-			),
-			success: function(resp) {
-				var res = Ext.util.JSON.decode(resp.responseText);
-
-				if (res.timeStrings != undefined) {
-					// popup a window
-					this.showTimestepPicker(res.timeStrings);
-				}
-			}
-		});
-	},
-	// use to get the allready stored dateTimes for date
-	// for the selectedLayer
-	getDateTimesForDate: function(day) {
-		var dateTimes = [];
-		for(var i=0; i<this.selectedLayer.dates.length; i++) {
-			if (this.selectedLayer.dates[i].date == day) {
-				dateTimes = this.selectedLayer.dates[i].dateTimes;
-			}
-		}
-		return dateTimes;
-
-	},
-
-	// modal timestep picker for animating current layer
-	showTimestepPicker: function(timeStrings) {
-
-		// copy to the attributes needed by the Ext radioGroup
-		for (vars in timeStrings) {
-			timeStrings[vars].boxLabel = timeStrings[vars].title;
-			timeStrings[vars].name = "justaname";
-		}
-
-		var timestepWindow =  new Ext.Window({
-
-			id: 'timestepWindow',
-			modal:true,
-			padding: '5px 10px',
-			shadow: false,
-			title: 'Choose Animation Period',
-			autoDestroy: true,
-			constrainHeader: true,
-			constrain: true,
-			autoScroll: true,
-			border: false,
-			items: [
-			{
-				xtype: 'label',
-				style: {
-					padding: '10px'
-				},
-				html: "<p>Please select the number of frames required.<BR>Selecting less frames will result in better performance</p>"
-			},
-			{
-				// Use the default, automatic layout to distribute the controls evenly
-				// across a single row
-				xtype: 'radiogroup',
-				fieldLabel: 'Auto Layout',
-				style: {
-					padding: '10px'
-				},
-				columns: 1,
-				items: [
-				timeStrings
-				],
-				listeners: {
-					scope: this,
-					change: function( field, newValue, oldValue, eOpts ) {
-						Ext.getCmp('timestepWindow').destroy(); // this components parent window
-						this.createNCWMSLayerFromTimesteps(newValue.initialConfig.timeString);
-					}
-				}
-			}
-			]
-		});
-
-		timestepWindow.show();
-	},
-
-	createNCWMSLayerFromTimesteps: function(timeSteps) {
-		this.selectedLayer.chosenTimes = timeSteps;
-		this.addNCWMSLayer();
-	},
-
-	addNCWMSLayer: function() {
-        // Wrap the Map call, this function used to live in mainMapPanel.js
-    	getMapPanel().addNCWMSLayer(this.selectedLayer);
-    },
 
     getSelectedLayerTimeDimension: function(){
     	if((this.selectedLayer != undefined) && (this.selectedLayer.dimensions != undefined)){
