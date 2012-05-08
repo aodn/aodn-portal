@@ -4,10 +4,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     title: 'Date Animate',
     id: 'animationPanel',
     plain: true,
+    layout: 'form',
     stateful: false,
     autoScroll: true,
     bodyCls: 'floatingDetailsPanel',
     style: {margin: 5},
+    padding: 5,
     height: 400,
 
     initComponent: function(){
@@ -18,13 +20,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         	text: "This layer cannot be animated"
         });
 
-        this.curAnimationLabel = new Ext.form.Label({
-        	hidden: true,
-        	text: "Currently animating"
+        this.warn = new Ext.form.Label({
+			padding: 5,
+           	text: "Only one layer can be animated at a time."
+
         });
 
 		this.speedUp = new Ext.Button({
          	icon: 'images/animation/last.png',
+         	padding: 5,
          	listeners: {
 				scope: this,
 				'click': function(button,event){
@@ -36,6 +40,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.slowDown = new Ext.Button({
          	icon: 'images/animation/first.png',
+         	padding: 5,
          	listeners: {
 				scope: this,
 				'click': function(button,event){
@@ -52,10 +57,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.stepSlider = new Ext.Slider({
 			id: 'stepSlider',
 			ref: 'stepSlider',
-			width: 250,
+			width: 280,
 			listeners:{
 				scope: this,
-				dragend: function(slider, e){
+				changecomplete: function(slider, newValue, thumb){
 					this.setSlide(slider.getValue());
 				}
 			}
@@ -69,7 +74,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			name: 'displayText'
 		}];
 
-		var dateStore  = new Ext.data.ArrayStore({
+		this.dateStore  = new Ext.data.ArrayStore({
 			autoDestroy: true,
 			name: "time",
 			fields: fields
@@ -82,10 +87,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			lazyRender:true,
 			mode: 'local',
-			store: dateStore,
+			store: this.dateStore,
 			valueField: 'index',
 			displayField: 'displayText',
-			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
+			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>',
+			width: 170,
+			padding: 5,
 		});
 
 		this.endTimeCombo = new Ext.form.ComboBox({
@@ -95,14 +102,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			lazyRender:true,
 			mode: 'local',
-			store: dateStore,
+			store: this.dateStore,
 			valueField: 'index',
 			displayField: 'displayText',
-			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>'
+			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>',
+			width: 170,
+			padding: 5,
 		});
 
 		this.playButton = new Ext.Button({
 			id: 'Play',
+			padding: 5,
 			disabled: false, // readonly
 			icon: 'images/animation/play.png',
 			listeners: {
@@ -113,10 +123,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
-		this.stopButton = new Ext.Button({
+		this.clearButton = new Ext.Button({
 			id: 'Stop',
+			padding: 5,
 			disabled: true, // readonly
-			icon: 'images/animation/stop.png',
+			text: "Clear animation",
 			iconAlign: 'top',
 			listeners: {
 				scope: this,
@@ -129,6 +140,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.pauseButton = new Ext.Button({
 			id: 'Pause',
+			padding: 5,
 			disabled: true, // readonly
 			icon: 'images/animation/pause.png',
 			iconAlign: 'top',
@@ -139,28 +151,31 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this.toggleButtons(false);
 				}
 			},
-			tooltip: "Pauses animation and can explore individual time step using the slider below"
+			tooltip: "Pauses animation and can explore individual time step using the slider above"
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			text: "Time: "
+			text: "Time: ",
+			style: 'padding-top: 5'
 		});
 
 		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
+			style: 'padding-top: 5',
 			items: [
 				this.slowDown,
 				this.playButton,
-				this.stopButton,
 				this.pauseButton,
-				this.speedUp
+				this.speedUp,
+				this.clearButton
 			]
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
 		   id: 'timeSelectorPanel',
 		   layout: 'form',
+		   style: 'padding-top: 5',
 		   items:[
 				this.startTimeCombo,
 				this.endTimeCombo,
@@ -170,15 +185,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.controlPanel = new Ext.Panel({
         	items: [
 				this.timeSelectorPanel,
-				this.buttonsPanel,
 				this.stepLabel,
-				this.stepSlider
+				this.stepSlider,
+				this.buttonsPanel
 			]
         });
 
         this.items = [
         	this.noAnimationLabel,
-        	this.curAnimationLabel,
+        	this.warn,
 			this.controlPanel
         ];
 
@@ -191,15 +206,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     toggleButtons: function(playing){
+    	if(this.animatedLayers.length > 0){
+			this.clearButton.enable();
+			this.stepSlider.enable();
+    	}
+    	else{
+    		this.stepSlider.disable();
+    	}
+
     	if(playing){
     		//can't change the time when it's playing
     		this.startTimeCombo.disable();
 			this.endTimeCombo.disable();
 			this.playButton.disable();
-
-    		this.stopButton.enable();
 			this.pauseButton.enable();
-			this.stepSlider.enable();
+			this.stepSlider.disable();
     	}
         else{
         	this.startTimeCombo.enable();
@@ -207,12 +228,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.playButton.enable();
 
 			//nothing's playing, so stop and pause doesn't make sense
-			this.stopButton.disable();
 			this.pauseButton.disable();
-
-			//no animation, so disable it
-			if(this.animatedLayers.length == 0)
-				this.stepSlider.disable();
         }
     },
 
@@ -233,9 +249,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.setMinValue(0);
 
             this.toggleButtons(false);
-            this.curAnimationLabel.hide();
             this.timerId = -1;
-            this.originalLayer.setVisibility(true);
+
+            this.originalLayer.setOpacity(this.originalOpacity);
 		}
     },
 
@@ -284,9 +300,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
 		else{
     		if(this.animatedLayers.length == 0){
-    			this.curAnimationLabel.setText("Currently animating " + this.selectedLayer.name);
-    			this.curAnimationLabel.show();
     			this.originalLayer = this.selectedLayer;
+    			this.originalOpacity = this.originalLayer.opacity;
 
     			//this will be an Map.  Key = openlayer, value = flag whether a layer has been loaded
     			this.animatedLayers = new Array();
@@ -317,7 +332,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				}
     		}
 
-			this.selectedLayer.setVisibility(false);
+			this.selectedLayer.setOpacity(0);
 
 
 			this.stepSlider.setMinValue(0);
@@ -341,7 +356,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				inst.cycleAnimation();
 			}, speed);
 
-			console.log("timerId: " + this.timerId);
 		}
 
         //else no animation is running, so can't change the speed of the animation
@@ -358,21 +372,32 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.noAnimationLabel.hide();
 		this.controlPanel.hide();
 
-    	//if it's already animated...
-    	if((this.animatedLayers != undefined) || (this.animatedLayers.length > 0)){
-			if(this.selectedLayer.server.type.search("NCWMS") > -1){
-				this.setLayerDatesByCapability();
 
-				if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
-					this.controlPanel.setVisible(true);
-				}
+		//There's a animation already configured (paused, or playing)
+		if(this.animatedLayers.length > 0){
+			if(this.timerId > 0){
+				//an animation is playing
 			}
 			else{
-				this.noAnimationLabel.setVisible(true);
+				//an animation is set, but paused
 			}
+			this.controlPanel.setVisible(true);
+			this.enable();
+			this.controlPanel.doLayout();
 		}
 		else{
-			this.dateStore.clear();
+			//No animation configured, but this layer does contain a time dimension
+			if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
+				//no animation has been set yet, so configure the
+				this.setLayerDatesByCapability();
+				this.controlPanel.setVisible(true);
+				this.enable();
+			}
+			else{
+				//No time dimension, it's a dud!
+				this.disable();
+				this.ownerCt.setActiveTab(0);
+			}
 		}
     },
 
@@ -396,6 +421,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.startTimeCombo.setValue(0);
 				this.endTimeCombo.store.loadData(capDates);
 				this.endTimeCombo.setValue(0);
+				this.timeSelectorPanel.doLayout();
     		}
     	}
     },
