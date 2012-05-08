@@ -29,7 +29,20 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        root: new GeoExt.tree.OverlayLayerContainer({        
 	            layerStore: layerStore, 
 	            leaf: false,
-	            expanded: true
+	            expanded: true,
+				listeners: {
+					// fake the selected node
+					// initial loading
+					scope: this,
+					append: function( tree, thisNode, node, index ) {
+							node.setCls('x-tree-selected');
+					},
+					// subsequent tree nodes
+					insert: function( tree, thisNode, node, refNode ) {
+						this.setActiveNode(node);
+					}
+				}
+				
 	        })
 		});
 		
@@ -68,46 +81,49 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	        listeners:
 	        {
         		scope: this,
-        		beforeshow: this.updateZoomToLayerMenuItemVisibility
+        		beforeshow: this.updateZoomToLayerMenuItemVisibility								
 	        }
 	    });
 		return this.layerActionsMenu;
 	},
 
-	activeLayersTreePanelClickHandler: function(node, event) 
-	{
-		// Only toggle if the node is already selected.
-		if (this.getSelectedNode() === node)
-		{
-			node.getUI().toggleCheck();
-			this.activeLayersTreePanelSelectionChangeHandler(null, node);
-		}
-	},
+
 	
-	activeLayersTreePanelCheckChangeHandler: function(node, checked) 
-	{
+	setActiveNode: function(node) {		
+		this.activeLayers.getRootNode().eachChild(function(n) {
+			if (n === node) {	
+				n.setCls('x-tree-selected');	
+			}
+			else {		
+				n.setCls('');
+				n.unselect(true);
+			}
+		});
+	},	
+
+	activeLayersTreePanelClickHandler: function(node, event) {		
+		this.setActiveNode(node);
+		node.getUI().toggleCheck(true);		
+		
+	},
+	activeLayersTreePanelCheckChangeHandler: function(node, checked) {	
+		
+		var selectedNode = this.activeLayers.getSelectionModel().select(node);			
 		var checkedLayers = this.activeLayers.getChecked();
 
 		if (checkedLayers.length == 0) {
+			this.setActiveNode(null); // makes nothing active
 			Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no checked active layers
 		} else {
-			this.activeLayersTreePanelSelectionChangeHandler(null, checkedLayers[0]);
+			this.activeLayersTreePanelSelectionChangeHandler(null, selectedNode);
 		}
 	},
-	
-	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)
-	{
-		//I know, I know... this is probably not the right way to do this.
+		
+	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
 		if(node != null){
-			if (node.getUI().checkbox.checked) {
-				this.fireEvent('selectedactivelayerchanged');
-				Ext.getCmp('rightDetailsPanel').update(node.layer);
-			}
-	    }
-	  //  else if(this.activeLayers.getRootNode().childNodes.length == 1){
-		//	Ext.getCmp('rightDetailsPanel').collapse(true); // nothing to see now
-	//    }
-
+			this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
+			Ext.getCmp('rightDetailsPanel').update(node.layer);			
+	    } 
 	},
 
 	updateZoomToLayerMenuItemVisibility: function()
