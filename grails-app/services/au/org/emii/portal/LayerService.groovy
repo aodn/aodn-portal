@@ -1,12 +1,12 @@
 package au.org.emii.portal
 
-import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.json.JSONElement
 
 class LayerService {
 
     static transactional = true
 
-    void updateWithNewData(JSONObject layerAsJson, Server server, String dataSource) {
+    void updateWithNewData(JSONElement layerAsJson, Server server, String dataSource) {
 
         try {
 
@@ -82,59 +82,24 @@ class LayerService {
                 }
                    
                 log.debug "Applying new values to layer: $newData"
-                                    
-                // Process name from title value
-                def nameVal = newData.name
-                def namespaceVal = null
-                    
-                // Trim namespace
-                if ( nameVal ) {
-                    def separatorIdx = nameVal.lastIndexOf( ":" )
-
-                    if ( separatorIdx >= 0 ) {
-
-                        nameVal = newData.name[ separatorIdx + 1 .. -1 ]
-                        namespaceVal = newData.name[ 0 .. separatorIdx - 1 ]
-                    } 
-                }
-                
-                // Process abstractText value
-                def abstractVal = newData.abstractText
-
-                if ( !abstractVal ) {
-                    abstractVal = ""
-                }
-                else if ( abstractVal.length() > 455 ) { // 455 is current max length of this field
-                    abstractVal = abstractVal[0..451] + "..."
-                }
-
-
-                // Process style info
-                def stylesVal = ""
-
-                newData.styles?.each {
-
-                    if ( stylesVal ) stylesVal += ","
-
-                    stylesVal += it.name
-                }
 
                 // Add as child of parent
                 if ( parent ) parent.addToLayers layerToUpdate
                 
                 // Move data over
                 layerToUpdate.title = newData.title
-                layerToUpdate.name = nameVal
-                layerToUpdate.namespace = namespaceVal
-                layerToUpdate.abstractTrimmed = abstractVal
                 layerToUpdate.metaUrl = newData.metadataUrl
-                layerToUpdate.styles = stylesVal
                 layerToUpdate.queryable = newData.queryable
                 layerToUpdate.bboxMinX = newData.bboxMinX
                 layerToUpdate.bboxMinY = newData.bboxMinY
                 layerToUpdate.bboxMaxX = newData.bboxMaxX
                 layerToUpdate.bboxMaxY = newData.bboxMaxY
                 layerToUpdate.projection = newData.bboxProjection
+
+                _attachNameInfo     layerToUpdate, newData
+                _attachAbstractText layerToUpdate, newData
+                _attachStyleInfo    layerToUpdate, newData
+                _attachMetadataUrls layerToUpdate, newData
 
                 // Scan info
                 layerToUpdate.dataSource = dataSource
@@ -167,13 +132,17 @@ class LayerService {
         }
     }
 
-    def _traverseJsonLayerTree(JSONObject layerAsJson, Layer parent, Closure layerProcess) {
+    def _traverseJsonLayerTree(JSONElement layerAsJson, Layer parent, Closure layerProcess) {
 
         def newLayer = layerProcess.call( layerAsJson, parent )
 
         layerAsJson.children.each {
 
-            _traverseJsonLayerTree( it, newLayer, layerProcess )
+            _traverseJsonLayerTree(
+                    it as JSONElement,
+                    newLayer as Layer,
+                    layerProcess
+            )
         }
 
         if ( parent ) {
@@ -201,5 +170,66 @@ class LayerService {
         def parentPart = parent ? _uniquePathIdentifier( parent, parent.parent ) + " // " : ""
         
         return "$parentPart$namePart -- $titlePart" 
+    }
+
+    // More helpers
+
+    def _attachNameInfo( layer, newData ) {
+
+        def newName = newData.name
+
+        if ( !newName ) return
+
+        def hasNamespace = newName.contains( ":" )
+
+        if ( !hasNamespace ) {
+
+            layer.name = newName
+        }
+        else {
+
+            def separatorIdx = newName.lastIndexOf( ":" )
+
+            layer.name = newName[ separatorIdx + 1 .. -1 ]
+            layer.namespace = newName[ 0 .. separatorIdx - 1 ]
+        }
+    }
+
+    def _attachAbstractText( layer, newData ) {
+
+        // Process abstractText value
+        def abstractVal = newData.abstractText ?: ""
+
+        if ( abstractVal.length() > 455 ) { // 455 is current max length of this field
+            abstractVal = abstractVal[0..451] + "..."
+        }
+
+        layer.abstractTrimmed = abstractVal
+    }
+
+    def _attachStyleInfo( layer, newData ) {
+
+        if ( !newData.styles ) return
+
+        def names = newData.styles*.name
+
+        layer.styles = names.join( "," )
+    }
+
+    def _attachMetadataUrls( layer, newData ) {
+
+        layer.metadataUrls.clear()
+
+        newData.metadataUrls.each {
+
+            def metadataUrl = new MetadataUrl( layer )
+
+            metadataUrl.format = it.format
+            metadataUrl.type = it.type
+            metadataUrl.onlineResource.type = it.onlineResource.type
+            metadataUrl.onlineResource.href = it.onlineResource.href
+
+            layer.metadataUrls << metadataUrl
+        }
     }
 }

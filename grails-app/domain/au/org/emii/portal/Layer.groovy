@@ -54,7 +54,7 @@ class Layer {
     }
 
     static belongsTo = [parent: Layer]
-    static hasMany = [layers: Layer]
+    static hasMany = [layers: Layer, metadataUrls: MetadataUrl]
 
     static constraints = {
         name( nullable: true, size:1..225 )
@@ -83,7 +83,10 @@ class Layer {
     }
 
     Layer() {
+
+        // Empty relationships
         layers = []
+        metadataUrls = []
         
         // Defaults
         abstractTrimmed = ""

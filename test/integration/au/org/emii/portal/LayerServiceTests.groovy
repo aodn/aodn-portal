@@ -64,6 +64,24 @@ class LayerServiceTests extends GroovyTestCase {
                     legends: []
                 }
             ],
+            metadataUrls: [
+                {
+                    type: "link1type",
+                    format: "fmt1",
+                    onlineResource: {
+                        type: "simple",
+                        href: "http://www.goofle.com/"
+                    }
+                },
+                {
+                    type: "link2type",
+                    format: "fmt2",
+                    onlineResource: {
+                        type: "complex",
+                        href: "http://www.goofle.com/too"
+                    }
+                }
+            ],
             children: [
                 {
                     title: "Grouping",
@@ -94,7 +112,10 @@ class LayerServiceTests extends GroovyTestCase {
 
         assertEquals "Should be 0 layers to start with", 0, Layer.count()
 
-        layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
+        layerService.updateWithNewData(
+                JSON.parse( newData ),
+                server as Server,
+                layerDataSource as String )
 
         _verifyHierarchy false /* Test didn't have existing Layers */
     }
@@ -263,6 +284,31 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_d parent should be layer_a.", layerA, layerD.parent
         assertEquals "layer_d should have one child layer.", 1, layerD.layers.size()
         assertEquals "layer_a -- Layer A // <no name> -- Layer D", layerD.layerHierarchyPath
+
+        // Test metadataUrls
+        assertEquals 2, layerD.metadataUrls.size()
+
+        layerD.metadataUrls.each {
+
+            switch ( it.onlineResource.href ) {
+
+                case "http://www.goofle.com/":
+
+                    assertEquals "link1type", it.type
+                    assertEquals "fmt1", it.format
+                    assertEquals "simple", it.onlineResource.type
+                    break;
+
+                case "http://www.goofle.com/too":
+
+                    assertEquals "link2type", it.type
+                    assertEquals "fmt2", it.format
+                    assertEquals "complex", it.onlineResource.type
+                    break;
+
+                default: fail "Not one of the expected values"
+            }
+        }
 
         def groupingUnderD = layerD.layers.toArray()[0]
         assertNotNull "'Grouping' should exist under Layer D.", groupingUnderD
