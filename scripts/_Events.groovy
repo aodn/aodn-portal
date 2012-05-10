@@ -15,7 +15,7 @@ eventCompileStart = { kind ->
 
     if ( grailsEnv == 'development' || grailsEnv == 'test' ) {
 
-        println "Skipped gathering metadata as environment is 'development'"
+        println "Skipped gathering metadata as environment is 'development' or 'test'"
     }
     else {
 
