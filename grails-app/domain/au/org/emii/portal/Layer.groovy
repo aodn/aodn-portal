@@ -19,7 +19,7 @@ class Layer {
     String projection
     Boolean queryable
     Boolean isBaseLayer
-    
+
     // Extra info
     String dataSource
     Boolean activeInLastScan
@@ -50,11 +50,11 @@ class Layer {
         // Column types
         styles type: "text"
         layerHierarchyPath type: "text"
+        dimensions cascade: 'all-delete-orphan'
     }
 
     static belongsTo = [parent: Layer]
-    static hasMany = [layers: Layer, metadataUrls: MetadataUrl]
-
+    static hasMany = [layers: Layer, metadataUrls: MetadataUrl, dimensions: WMSDimension]
     static constraints = {
         name( nullable: true, size:1..225 )
         namespace( nullable: true )
@@ -81,10 +81,9 @@ class Layer {
     }
 
     Layer() {
-
-        // Empty relationships
         layers = []
         metadataUrls = []
+        dimensions = []
         
         // Defaults
         abstractTrimmed = ""

@@ -71,6 +71,8 @@ class LayerService {
                             
                         layerToUpdate.parent.removeFromLayers layerToUpdate
                     }
+
+                    layerToUpdate.dimensions*.delete()
                 }
                 else {
 
@@ -82,6 +84,23 @@ class LayerService {
                 }
                    
                 log.debug "Applying new values to layer: $newData"
+                
+                def dimensions = []
+                
+                newData.dimensions?.each{
+                    WMSDimension dim = new WMSDimension()
+                    dim.name = it.name
+                    dim.units = it.units
+                    dim.unitSymbol = it.unitSymbol
+                    dim.defaultValue = it.defaultValue
+                    dim.hasMultipleValues = it.hasMultipleValues
+                    dim.hasNearestValue = it.hasNearestValue
+                    dim.hasCurrent = it.hasCurrent
+                    dim.extent = it.extent
+                    
+                    dim.save();
+                    dimensions.add(dim);
+                }
 
                 // Add as child of parent
                 if ( parent ) parent.addToLayers layerToUpdate
@@ -94,6 +113,8 @@ class LayerService {
                 layerToUpdate.bboxMaxX = newData.bboxMaxX
                 layerToUpdate.bboxMaxY = newData.bboxMaxY
                 layerToUpdate.projection = newData.bboxProjection
+                layerToUpdate.dimensions = dimensions
+
 
                 _attachNameInfo     layerToUpdate, newData
                 _attachAbstractText layerToUpdate, newData

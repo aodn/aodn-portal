@@ -19,7 +19,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
 		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 	},
-	
+
 	initActiveLayers: function(layerStore) {
 		this.initLayerActionsMenu();
 		this.activeLayers = new Ext.tree.TreePanel({
@@ -30,6 +30,15 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	            layerStore: layerStore, 
 	            leaf: false,
 	            expanded: true,
+	            loader: Ext.applyIf({
+					filter: function(record){
+						var layer = record.getLayer();
+						if(layer.isAnimated == undefined){
+							return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
+						}
+						return false;
+					}
+				}),
 				listeners: {
 					// fake the selected node
 					// initial loading

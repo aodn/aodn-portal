@@ -203,7 +203,6 @@ class LayerController {
         try {
             // Logging output
             if ( log.debugEnabled ) {
-
                 def layerDataPrint = JSON.parse( params.layerData )
                 layerDataPrint.children = "[...]"
                 layerDataPrint.supportedProjections = "[...]"
@@ -230,6 +229,8 @@ class LayerController {
             // Check metadata
             def metadata = JSON.parse( params.metadata )
             _validateMetadata metadata
+
+
 
             // Check layer data
             def layerData = params.layerData
