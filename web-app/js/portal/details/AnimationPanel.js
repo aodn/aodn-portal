@@ -22,9 +22,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
         this.warn = new Ext.form.Label({
 			padding: 5,
-           	text: "Only one layer can be animated at a time."
-
+			width: 280,
+           	text: "Only one layer can be animated at a time.  You must remove an existing animation to create " +
+           		  "	a new animation"
         });
+
 
 		this.speedUp = new Ext.Button({
          	icon: 'images/animation/last.png',
@@ -82,7 +84,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.startTimeCombo = new Ext.form.ComboBox({
 			id: "startTimePicker",
-			fieldLabel: 'Start: ',
+			fieldLabel: 'Start',
 			triggerAction: 'all',
 			editable : false,
 			lazyRender:true,
@@ -97,7 +99,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.endTimeCombo = new Ext.form.ComboBox({
 			id: "endTimePicker",
-			fieldLabel: 'End: ',
+			fieldLabel: 'End',
 			triggerAction: 'all',
 			editable : false,
 			lazyRender:true,
@@ -155,7 +157,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			text: "Time: ",
+			html: "Time: <br />",
+			width: 300,
 			style: 'padding-top: 5'
 		});
 
@@ -183,6 +186,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
         this.controlPanel = new Ext.Panel({
+        	layout: 'form',
         	items: [
 				this.timeSelectorPanel,
 				this.stepLabel,
@@ -234,23 +238,33 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     removeAnimation: function(){
     	if(this.animatedLayers.length > 0){
-			clearTimeout(this.timerId);
+    		clearTimeout(this.timerId);
+
+    		if(this.map == null){
+    			this.map = Ext.getCmp("map");
+    		}
 
 			for(var i = 0; i < this.animatedLayers.length; i++){
 				this.map.removeLayer(this.animatedLayers[i]);
-				this.animatedLayers[i].destroy();
+
+				if(this.animatedLayers[i].div != null)
+					this.animatedLayers[i].destroy();
 			}
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
 			this.animatedLayers.length = 0;
-			this.stepLabel.setText("Time: ");
+			this.stepLabel.setText("Time: <br />", false);
 			this.stepSlider.setValue(0);
 			this.stepSlider.setMaxValue(0);
 			this.stepSlider.setMinValue(0);
 
-            this.toggleButtons(false);
+		    this.toggleButtons(false);
             this.timerId = -1;
 
+        	//resetting the array
+            this.animatedLayers = new Array();
+
+            this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
             this.originalLayer.setOpacity(this.originalOpacity);
 		}
     },
@@ -277,7 +291,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			if(this.animatedLayers[index].numLoadingTiles > 0)
 				labelStr = labelStr + " (loading)"
 
-			this.stepLabel.setText(labelStr);
+			this.stepLabel.setText(labelStr + "<br />", false);
     	}
     },
 
@@ -299,9 +313,16 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			return false;
 		}
 		else{
+			if(this.animatedLayers.length > 0){
+				//could prrrrobably work out if any of the existing layers are in the
+				//new animation, but let's make it work for now.
+				this.removeAnimation();
+			}
+
     		if(this.animatedLayers.length == 0){
     			this.originalLayer = this.selectedLayer;
     			this.originalOpacity = this.originalLayer.opacity;
+    			this.originalLayer.name = this.originalLayer.name + " (animated)"
 
     			//this will be an Map.  Key = openlayer, value = flag whether a layer has been loaded
     			this.animatedLayers = new Array();
@@ -372,32 +393,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.noAnimationLabel.hide();
 		this.controlPanel.hide();
 
-
-		//There's a animation already configured (paused, or playing)
-		if(this.animatedLayers.length > 0){
-			if(this.timerId > 0){
-				//an animation is playing
-			}
-			else{
-				//an animation is set, but paused
-			}
-			this.controlPanel.setVisible(true);
-			this.enable();
-			this.controlPanel.doLayout();
-		}
-		else{
-			//No animation configured, but this layer does contain a time dimension
-			if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
-				//no animation has been set yet, so configure the
+		if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
+			//There's a animation already configured (paused, or playing)
+			if(this.animatedLayers.length == 0){
+				//no animation has been set yet, so configure the panel
 				this.setLayerDatesByCapability();
 				this.controlPanel.setVisible(true);
 				this.enable();
 			}
-			else{
-				//No time dimension, it's a dud!
-				this.disable();
-				this.ownerCt.setActiveTab(0);
+			else if(this.selectedLayer.id == this.originalLayer.id){
+				this.controlPanel.setVisible(true);
+				this.enable();
 			}
+			//else{
+			// an animation is already in place, but it is NOT the same as the actively selected layer
+			//}
+		}
+		else{
+			//No time dimension, it's a dud!
+			this.disable();
+			this.ownerCt.setActiveTab(0);
 		}
     },
 
