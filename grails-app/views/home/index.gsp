@@ -1,7 +1,5 @@
-<!-- Portal Version: ${grailsApplication.metadata['app.version']} (Build #${grailsApplication.metadata['app.buildNumber']}. Revision #${grailsApplication.metadata['app.revision']}. ${grailsApplication.metadata['app.buildDate']} - ${grailsApplication.metadata['app.buildProfile']}) -->
-
+${buildInfo}
 <html>
-
 <head>
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />

@@ -1,3 +1,4 @@
+<%@ page import="grails.util.Environment" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,7 +53,14 @@
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
           </ul>
           <br />
-          <g:render template="/projectInfo"></g:render>
+        <b>Portal project build info</b><br />
+        Instance name: ${ grailsApplication.config.instanceName ?: '<span style="color: red;">None supplied</span>' }<br />
+        Environment: ${Environment.current.name}<br />
+        Build date: ${grailsApplication.metadata['app.build.date']}<br />
+        Subversion revision: #${grailsApplication.metadata['app.svn.revision']}<br />
+        Subversion url: ${grailsApplication.metadata['app.svn.url']}<br />
+        Build: #${grailsApplication.metadata['app.build.number']}<br />
+        App version: ${grailsApplication.metadata['app.version']}
         </div>
     </body>
 </html>

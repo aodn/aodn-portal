@@ -1,13 +1,16 @@
 package au.org.emii.portal
 
+import grails.util.Environment
+
 class HomeController {
 
 	def grailsApplication
 
     def index = { 
-      // this is the main portal entry
-      // get the only instance of the config
-      [configInstance: Config.activeInstance()]
+
+        // This is the main portal entry
+
+        [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo()]
     }
 	
 	def config = {
@@ -32,4 +35,26 @@ class HomeController {
 			]
 		}
 	}
+
+    def _appBuildInfo = {
+
+        def md = grailsApplication.metadata
+
+        if ( Environment.current == Environment.PRODUCTION ) {
+
+            return "<!-- Portal version ${md['app.version']}, built ${md['app.build.date']} -->"
+        }
+
+        return """\
+<!--
+    [Portal Build Info]
+    Build date:    ${md['app.build.date']}
+    Version:       ${md['app.version']}
+    Instance name: ${grailsApplication.config.instanceName}
+    Environment:   ${Environment.current.name}
+    Build:         #${md['app.build.number']}
+    SVN revision:  #${md['app.svn.revision']}
+    SVN URL:       ${md['app.svn.url']}
+-->"""
+    }
 }

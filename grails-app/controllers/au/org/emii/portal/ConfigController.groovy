@@ -1,10 +1,8 @@
 package au.org.emii.portal
 
-import org.apache.shiro.SecurityUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import grails.converters.JSON
-    
+import org.apache.shiro.SecurityUtils
+
 class ConfigController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -116,9 +114,9 @@ class ConfigController {
     }
 
     def edit = {
-        // dont get params get the only instance
+
         def configInstance = Config.activeInstance()
-        //def configInstance = Config.get(params.id)
+
         if (!configInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), 'existing config'])
             redirect(action: "list")
