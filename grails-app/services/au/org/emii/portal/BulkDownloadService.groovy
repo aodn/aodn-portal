@@ -209,7 +209,7 @@ Number of files included: $numberOfFilesAdded/$numberOfFilesTried
 Time taken: ${ _timeTaken() } seconds
 ========================================================================"""
 
-        return finalReportText.getBytes( "UTF-8" )
+        return finalReportText.replace("\n","\r\n").getBytes( "UTF-8" )
     }
 
     void _addDownloadReportToArchive( locale ) {

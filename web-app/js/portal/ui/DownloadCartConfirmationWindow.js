@@ -30,6 +30,7 @@ Portal.ui.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
         Ext.apply(this, {
             title: OpenLayers.i18n('downloadCartConfirmationWindowTitle'),
             modal: true,
+			padding: 15,
             layout: 'fit',
             items: {
                 autoHeight: true,

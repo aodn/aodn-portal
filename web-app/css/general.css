@@ -8,13 +8,11 @@ body, html{
     margin-top: 2px! important; */
 }
 
-p {    
+p, td{    
     font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
 }
 
-td {
-   /* font-size: 14px;*/
-}
+
 
 body {
     min-width:  1020px;
