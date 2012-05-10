@@ -162,15 +162,6 @@
                                     <g:textField name="styles" value="${layerInstance?.styles}" />
                                 </td>
                             </tr>
-                            
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="metaUrl"><g:message code="layer.metaUrl.label" default="Metadata Url" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metaUrl', 'errors')}">
-                                    <g:textField name="metaUrl" value="${layerInstance?.metaUrl}" />
-                                </td>
-                            </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">

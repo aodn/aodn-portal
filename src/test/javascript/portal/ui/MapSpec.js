@@ -17,7 +17,6 @@ describe("Portal.ui.Map", function() {
     isBaseLayer: true,
     lastUpdated: "2012-01-16T04:09:30Z",
     layers: [],
-    metaUrl:null,
     name: "satellite",
     namespace: null,
     parent: null,

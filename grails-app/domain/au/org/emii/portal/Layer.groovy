@@ -17,7 +17,6 @@ class Layer {
     String bboxMaxX
     String bboxMaxY
     String projection
-    String metaUrl // store the whole url of mest, ramadda, or whatever end point
     Boolean queryable
     Boolean isBaseLayer
     
@@ -66,7 +65,6 @@ class Layer {
         cache()
         cql(nullable:true)
         styles(nullable:true)
-        metaUrl(nullable:true)
         bboxMinX(nullable:true)
         bboxMinY(nullable:true)
         bboxMaxX(nullable:true)

@@ -88,7 +88,6 @@ class LayerService {
                 
                 // Move data over
                 layerToUpdate.title = newData.title
-                layerToUpdate.metaUrl = newData.metadataUrl
                 layerToUpdate.queryable = newData.queryable
                 layerToUpdate.bboxMinX = newData.bboxMinX
                 layerToUpdate.bboxMinY = newData.bboxMinY

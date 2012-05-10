@@ -29,7 +29,6 @@ class LayerServiceTests extends GroovyTestCase {
     bboxMaxX: "90",
     bboxMaxY: "180",
     bboxProjection: "EPSG:2010",
-    metadataUrl: "urlA",
     children: [
         {
             name: "awesomeSauce:layer_c",
@@ -165,7 +164,6 @@ class LayerServiceTests extends GroovyTestCase {
         assertNotNull "layer_a should exist.", layerA
         assertEquals "layer_a property title.", "Layer A", layerA.title
         assertEquals "layer_a property abstractTrimmed.", trimmedAbstractText, layerA.abstractTrimmed
-        assertEquals "layer_a property metaUrl.", "urlA", layerA.metaUrl
         assertEquals "layer_a property queryable.", true, layerA.queryable
         assertEquals "layer_a property bboxMinX.", "-90", layerA.bboxMinX
         assertEquals "layer_a property bboxMinY.", "-180", layerA.bboxMinY
@@ -187,7 +185,6 @@ class LayerServiceTests extends GroovyTestCase {
             assertNotNull "layer_b should exist.", layerB
             assertEquals "layer_b property title.", "Layer B", layerB.title
             assertEquals "layer_b property abstractTrimmed.", "", layerB.abstractTrimmed
-            assertEquals "layer_b property metaUrl.", null, layerB.metaUrl
             assertEquals "layer_b property queryable.", false, layerB.queryable
             assertEquals "layer_a property bboxMinX.", null, layerB.bboxMinX
             assertEquals "layer_a property bboxMinY.", null, layerB.bboxMinY
@@ -207,7 +204,6 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "Leyar C property name.", "layer_c", existingC.name
             assertEquals "Leyar C property namespace.", null, existingC.namespace
             assertEquals "Leyar C property abstractTrimmed.", "", existingC.abstractTrimmed
-            assertEquals "Leyar C property metaUrl.", null, existingC.metaUrl
             assertEquals "Leyar C property queryable.", false, existingC.queryable
             assertEquals "layer_a property bboxMinX.", null, existingC.bboxMinX
             assertEquals "layer_a property bboxMinY.", null, existingC.bboxMinY
@@ -229,7 +225,6 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_c property name.", "layer_c", layerC.name
         assertEquals "layer_c property namespace.", "awesomeSauce", layerC.namespace
         assertEquals "layer_c property abstractTrimmed.", "", layerC.abstractTrimmed
-        assertEquals "layer_c property metaUrl.", null, layerC.metaUrl
         assertEquals "layer_c property queryable.", false, layerC.queryable
         assertEquals "layer_a property bboxMinX.", null, layerC.bboxMinX
         assertEquals "layer_a property bboxMinY.", null, layerC.bboxMinY
@@ -269,7 +264,6 @@ class LayerServiceTests extends GroovyTestCase {
         def layerD = Layer.findWhere( server: server, title: "Layer D", name: null )
         assertNotNull "layer_d should exist", layerD
         assertEquals "layer_d property abstractTrimmed", "Just some layer, yo.", layerD.abstractTrimmed
-        assertEquals "layer_d property metaUrl", null, layerD.metaUrl
         assertEquals "layer_d property queryable", false, layerD.queryable
         assertEquals "layer_a property bboxMinX.", null, layerD.bboxMinX
         assertEquals "layer_a property bboxMinY.", null, layerD.bboxMinY
