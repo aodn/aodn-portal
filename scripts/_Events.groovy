@@ -13,7 +13,7 @@ eventCreateWarStart = { warname, stagingDir ->
 
 eventCompileStart = { kind ->
 
-    if ( grailsEnv == 'development' ) {
+    if ( grailsEnv == 'development' || grailsEnv == 'test' ) {
 
         println "Skipped gathering metadata as environment is 'development'"
     }
