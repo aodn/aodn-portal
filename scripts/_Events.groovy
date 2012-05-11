@@ -6,6 +6,7 @@ import org.tmatesoft.svn.core.wc.SVNClientManager
 import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
+import org.apache.catalina.connector.Connector;
 
 eventCreateWarStart = { warname, stagingDir ->
 	Ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
@@ -48,5 +49,18 @@ eventCompileStart = { kind ->
         println "App metadata:"
         metadata.collect { k, v -> println "$k: '$v'" }
     }
+}
+
+
+eventConfigureTomcat = {tomcat ->
+    def connector = new Connector("org.apache.coyote.http11.Http11NioProtocol")
+    connector.port = System.getProperty("server.port", "8080").toInteger()
+    connector.redirectPort = 8443
+    connector.protocol = "HTTP/1.1"
+    connector.connectionTimeout = "20000"
+    connector.maxPostSize = "10485760"
+
+    tomcat.connector = connector
+    tomcat.service.addConnector connector
 }
 

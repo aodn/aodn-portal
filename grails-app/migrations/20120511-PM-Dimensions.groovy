@@ -49,19 +49,19 @@ databaseChangeLog = {
             column(name: "units", type: "varchar(255)") {
                 constraints(nullable: "false")
             }
-
-            changeSet(author: "pmak (generated)", id: "1335413200432-1") {
-                dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "units", tableName: "wmsdimension")
-            }
-
-            changeSet(author: "pmak (generated)", id: "1335413270885-1") {
-                dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "default_value", tableName: "wmsdimension")
-            }
-
-            changeSet(author: "pmak (generated)", id: "1335413270885-2") {
-                dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "unit_symbol", tableName: "wmsdimension")
-            }
         }
+    }
+
+    changeSet(author: "pmak (generated)", id: "1335413200432-1") {
+        dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "units", tableName: "wmsdimension")
+    }
+
+    changeSet(author: "pmak (generated)", id: "1335413270885-1") {
+        dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "default_value", tableName: "wmsdimension")
+    }
+
+    changeSet(author: "pmak (generated)", id: "1335413270885-2") {
+        dropNotNullConstraint(columnDataType: "varchar(255)", columnName: "unit_symbol", tableName: "wmsdimension")
     }
 
     changeSet(author: "pmak (generated)", id: "1335409262075-9") {
