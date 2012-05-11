@@ -413,7 +413,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		else{
 			//No time dimension, it's a dud!
 			this.disable();
-			this.ownerCt.setActiveTab(0);
+			
+			this.ownerCt.setActiveTab(Ext.getCmp('stylePanel').getId());
 		}
     },
 

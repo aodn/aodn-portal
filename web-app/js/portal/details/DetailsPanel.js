@@ -4,7 +4,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	id: 'detailsPanelItems',
 	hidden: true,
 	autoWidth: true,
-
+	autoHeight: true,
+	
 	initComponent: function(){
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
 		this.opacitySlider = new Ext.slider.SingleSlider({
@@ -100,7 +101,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
 			this.selectedLayer = layer;
 			this.detailsPanelTabs.setSelectedLayer(layer);
-			this.detailsPanelTabs.update();
+			this.detailsPanelTabs.update(layer);
 			this.opacitySlider.show(); // reset slider
 			this.transectControl.hide();
 

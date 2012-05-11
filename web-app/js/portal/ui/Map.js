@@ -349,6 +349,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.projection = layerDescriptor.projection;
 		openLayer.blacklist = layerDescriptor.blacklist;
 		openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
+		openLayer.metadataUrls = layerDescriptor.metadataUrls;
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;
@@ -610,12 +611,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this.zoomToLayer(openLayer);
 			}
 
+
 			if (this.isNcwmsServer(layerDescriptor)) {
 				// update detailsPanel after Json request
 				this.getLayerMetadata(openLayer);
 			}
 
 			// show open layer options
+			
 			else if(!Portal.app.config.hideLayerOptions) {
 				Ext.getCmp('rightDetailsPanel').update(openLayer);
 			}

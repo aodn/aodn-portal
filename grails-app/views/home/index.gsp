@@ -85,6 +85,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/StylePanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/InfoPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js?')}${jsVerNum}" type="text/javascript"></script>

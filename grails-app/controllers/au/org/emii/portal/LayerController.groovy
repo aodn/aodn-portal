@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
+import org.xml.sax.SAXException
 
 class LayerController {
 
@@ -256,6 +257,35 @@ class LayerController {
         }
     }
     
+	
+	def getFormattedMetadata = {
+		if (params.metaURL != null) {
+			try {
+				//Connect
+				def con = new URL(params.metaURL).openConnection()
+				def xml = new XmlSlurper().parse(con.responseCode == 200 ? con.inputStream : con.errorStream)
+
+				//TODO: Validate schema before proceeding
+				
+				//Extract Abstract and resource links
+				def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
+				def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
+				def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
+				onlineResourcesList.each {
+					def linkText = it.CI_OnlineResource.description.CharacterString.text()
+					def linkUrl = it.CI_OnlineResource.linkage.URL.text()
+					html += "<a href=${linkUrl}>${linkText}</a><BR>"
+				}
+				render text: html, contentType: "text/html", encoding: "UTF-8"
+			} catch(SAXException e) {
+				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
+			}
+		} else {
+			render text: "<BR>This layer has no link to a metadata record", contentType: "text/html", encoding: "UTF-8"
+		}
+	}
+
+	
     void _validateCredentialsAndAuthenticate(def params) {
         
         def un = params.username

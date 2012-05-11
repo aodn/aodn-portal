@@ -38,13 +38,15 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems.show(); 
 		this.detailsPanelItems.updateDetailsPanel(openlayer);
 		this.text = openlayer.name;
-		this.setTitle(OpenLayers.i18n('layerOptions') + ": " + openlayer.name);
+		this.setTitle(openlayer.name);
+		
         this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
 
 		if(this.collapsed) {
 			this.expand();
 		}
 	},
+	
 
 	collapseAndHide: function(){
 			this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
