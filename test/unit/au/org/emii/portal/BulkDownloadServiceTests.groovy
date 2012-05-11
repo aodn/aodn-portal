@@ -12,6 +12,12 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
     def letterMatches = [["A", "B", "C"], ["D", "E", "F"]]
     def nullMatches = [[null, null, null]]
 
+    def filesToDownloadJson = """[{"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
+                                  {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"},
+                                  {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
+                                  {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
+                                  {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}]"""
+
     def resourcesDir = System.getProperty( "user.dir" ) + "/test/unit/au/org/emii/portal/resources/downloadcontroller"
 
     protected void setUp() {
@@ -69,11 +75,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
             }]
         }
 
-        def filesToDownload = JSON.parse( """[{"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
-                                              {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"},
-                                              {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
-                                              {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
-                                              {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}]""" )
+        def filesToDownload = JSON.parse( filesToDownloadJson )
 
         def responseBaos = new ByteArrayOutputStream()
 
@@ -149,6 +151,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         assertEquals "Report file count", 1, fileReportCount
 
         assertEquals "'download_report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportData
+        assertEquals JSON.parse( filesToDownloadJson ), filesToDownload // Ensure original download cart data has not been modified
     }
 
     void testExtensionFromMimeType() {

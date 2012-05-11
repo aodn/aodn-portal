@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import org.apache.catalina.connector.ClientAbortException
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import java.text.DateFormat
 import java.util.zip.ZipEntry
@@ -32,11 +33,14 @@ class BulkDownloadService {
 
         processingStartTime = System.currentTimeMillis()
 
+        // Create a deep copy of filesToDownload to work with
+        def copyOfFilesToDownload = filesToDownload.collect( mapDeepCopyJson )
+
         // Create Zip archive stream
         zipStream = new ZipOutputStream( outputStream )
 
         // Add all files to archive
-        filesToDownload.each {
+        copyOfFilesToDownload.each {
 
             _addFileEntry it
         }
@@ -324,5 +328,18 @@ Time taken: ${ _timeTaken() } seconds
         long msTaken = System.currentTimeMillis() - processingStartTime
 
         return Math.max(Math.round( msTaken / 1000 ), 1) // Return value in whole seconds (min 1 for tidiness)
+    }
+
+    def mapDeepCopyJson = {
+
+        def map = [:]
+
+        it.collect {
+            k, v ->
+
+            map[k] = v
+        }
+
+        return map as JSONObject
     }
 }
