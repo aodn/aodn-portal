@@ -53,14 +53,20 @@ eventCompileStart = { kind ->
 
 
 eventConfigureTomcat = {tomcat ->
-    def connector = new Connector("org.apache.coyote.http11.Http11NioProtocol")
-    connector.port = System.getProperty("server.port", "8080").toInteger()
-    connector.redirectPort = 8443
-    connector.protocol = "HTTP/1.1"
-    connector.connectionTimeout = "20000"
-    connector.maxPostSize = "10485760"
 
-    tomcat.connector = connector
-    tomcat.service.addConnector connector
+    try{
+        def connector = new Connector("org.apache.coyote.http11.Http11Protocol")
+        connector.port = System.getProperty("server.port", "8080").toInteger()
+        connector.redirectPort = 8443
+        connector.protocol = "HTTP/1.1"
+        connector.maxPostSize = 1073741824
+
+        tomcat.connector = connector
+        tomcat.service.addConnector connector
+    }
+    catch(Throwable t){
+        println t
+    }
+
 }
 
