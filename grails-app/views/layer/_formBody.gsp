@@ -171,3 +171,14 @@
                                     <g:checkBox name="queryable" value="${true}"  /> <span class="hint">Defaulting to true.</span>
                                 </td>
                             </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <g:message code="layer.metadataUrls.label" default="Metadata URLs" />
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metadataUrls', 'errors')}">
+                                    <g:each in="${layerInstance?.metadataUrls}">
+                                        ${it}<br />
+                                    </g:each>
+                                </td>
+                            </tr>

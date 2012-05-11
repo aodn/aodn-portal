@@ -51,6 +51,7 @@ class Layer {
         styles type: "text"
         layerHierarchyPath type: "text"
         dimensions cascade: 'all-delete-orphan'
+        metadataUrls cascade: 'all-delete-orphan'
     }
 
     static belongsTo = [parent: Layer]
@@ -81,6 +82,8 @@ class Layer {
     }
 
     Layer() {
+
+        // Empty relationships
         layers = []
         metadataUrls = []
         dimensions = []

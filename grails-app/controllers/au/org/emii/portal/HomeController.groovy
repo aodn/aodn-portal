@@ -6,11 +6,11 @@ class HomeController {
 
 	def grailsApplication
 
-    def index = { 
+    def index = { // This is the main portal entry
 
-        // This is the main portal entry
+        def jsFileVersionNumber = grailsApplication.metadata.'app.svn.revision' ?: System.currentTimeMillis()
 
-        [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo()]
+        [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo(), jsVerNum: jsFileVersionNumber ]
     }
 	
 	def config = {
@@ -42,19 +42,19 @@ class HomeController {
 
         if ( Environment.current == Environment.PRODUCTION ) {
 
-            return "<!-- Portal version ${md['app.version']}, built ${md['app.build.date']} -->"
+            return "<!-- Portal version ${md['app.version']}, built ${md['app.build.date']?:"Unk."} -->"
         }
 
         return """\
 <!--
     [Portal Build Info]
-    Build date:    ${md['app.build.date']}
+    Build date:    ${md['app.build.date'] ?: "Unk."}
     Version:       ${md['app.version']}
     Instance name: ${grailsApplication.config.instanceName}
     Environment:   ${Environment.current.name}
-    Build:         #${md['app.build.number']}
-    SVN revision:  #${md['app.svn.revision']}
-    SVN URL:       ${md['app.svn.url']}
+    Build:         #${md['app.build.number'] ?: "Unk."}
+    SVN revision:  #${md['app.svn.revision'] ?: "Unk."}
+    SVN URL:       ${md['app.svn.url'] ?: "Unk."}
 -->"""
     }
 }

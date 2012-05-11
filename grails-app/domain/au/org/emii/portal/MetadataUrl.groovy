@@ -24,7 +24,7 @@ class MetadataUrl {
 
     @Override
     public String toString() {
-        return "MetadataUrl{type: '$type'; format: '$format'; OnlineResource{type: '$onlineResource.type'; href: '$onlineResource.href'}}";
+        return "MetadataUrl { type: '$type'; format: '$format'; OnlineResource { type: '$onlineResource.type'; href: '$onlineResource.href' } }";
     }
 }
 

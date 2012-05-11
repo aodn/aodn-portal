@@ -14,7 +14,7 @@ class LayerService {
 
             // Traverse existing layers
             // - Disable layer
-            // - Store layer is map for later update
+            // - Store layer in map for later update
 
             def rootLayer = Layer.findWhere(
                 server: server,
@@ -84,42 +84,24 @@ class LayerService {
                 }
                    
                 log.debug "Applying new values to layer: $newData"
-                
-                def dimensions = []
-                
-                newData.dimensions?.each{
-                    WMSDimension dim = new WMSDimension()
-                    dim.name = it.name
-                    dim.units = it.units
-                    dim.unitSymbol = it.unitSymbol
-                    dim.defaultValue = it.defaultValue
-                    dim.hasMultipleValues = it.hasMultipleValues
-                    dim.hasNearestValue = it.hasNearestValue
-                    dim.hasCurrent = it.hasCurrent
-                    dim.extent = it.extent
-                    
-                    dim.save();
-                    dimensions.add(dim);
-                }
 
                 // Add as child of parent
                 if ( parent ) parent.addToLayers layerToUpdate
                 
                 // Move data over
-                layerToUpdate.title = newData.title
-                layerToUpdate.queryable = newData.queryable
-                layerToUpdate.bboxMinX = newData.bboxMinX
-                layerToUpdate.bboxMinY = newData.bboxMinY
-                layerToUpdate.bboxMaxX = newData.bboxMaxX
-                layerToUpdate.bboxMaxY = newData.bboxMaxY
+                layerToUpdate.title      = newData.title
+                layerToUpdate.queryable  = newData.queryable
+                layerToUpdate.bboxMinX   = newData.bboxMinX
+                layerToUpdate.bboxMinY   = newData.bboxMinY
+                layerToUpdate.bboxMaxX   = newData.bboxMaxX
+                layerToUpdate.bboxMaxY   = newData.bboxMaxY
                 layerToUpdate.projection = newData.bboxProjection
-                layerToUpdate.dimensions = dimensions
 
-
-                _attachNameInfo     layerToUpdate, newData
-                _attachAbstractText layerToUpdate, newData
-                _attachStyleInfo    layerToUpdate, newData
-                _attachMetadataUrls layerToUpdate, newData
+                _attachNameInfo      layerToUpdate, newData
+                _attachAbstractText  layerToUpdate, newData
+                _attachStyleInfo     layerToUpdate, newData
+                _attachMetadataUrls  layerToUpdate, newData
+                _attachWmsDimensions layerToUpdate, newData
 
                 // Scan info
                 layerToUpdate.dataSource = dataSource
@@ -251,5 +233,29 @@ class LayerService {
 
             layer.metadataUrls << metadataUrl
         }
+    }
+
+    def _attachWmsDimensions( layer, newData ) {
+
+        def dimensions = []
+
+        newData.dimensions?.each {
+
+            WMSDimension dim = new WMSDimension()
+
+            dim.name = it.name
+            dim.units = it.units
+            dim.unitSymbol = it.unitSymbol
+            dim.defaultValue = it.defaultValue
+            dim.hasMultipleValues = it.hasMultipleValues
+            dim.hasNearestValue = it.hasNearestValue
+            dim.hasCurrent = it.hasCurrent
+            dim.extent = it.extent
+
+            dim.save()
+            dimensions.add dim
+        }
+
+        layer.dimensions = dimensions
     }
 }
