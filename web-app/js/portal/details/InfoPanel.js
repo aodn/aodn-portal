@@ -3,15 +3,10 @@ Ext.namespace('Portal.details');
 Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
     id: 'infoPanel',
     title: 'Info',
- //   style: {margin: 5},
- //   autoHeight: 250,
-    enableTabScroll: true,
-
-  autoHeight: true,
- //   layout: 'fit',
-  //  autoScroll: true,
-    html: "Loading ...",
-
+    layout: 'fit',
+    autoScroll: true,
+    html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>sdasd",
+    
 
     initComponent: function(cfg){
     	Portal.details.InfoPanel.superclass.initComponent.call(this);
@@ -23,7 +18,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
     },
 
     updateInfo: function(metaUrl) {
-
     	this.body.update("Loading...");
         if (metaUrl) {
         	this.updateLayer(metaUrl);
@@ -40,7 +34,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 			scope: this,
 			success: function(resp, options) {
 				this.body.update(resp.responseText);
-				this.body.show();
 			},
 			failure: function(resp) {
 				this.body.update("No information available at this time.");

@@ -3,20 +3,21 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	id: 'detailsPanelItems',
 	hidden: true,
-	autoWidth: true,
-	autoHeight: true,
-	
+	layout: 'vbox',
+	layoutConfig: {
+		align: 'stretch'
+	},
+
 	initComponent: function(){
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
 		this.opacitySlider = new Ext.slider.SingleSlider({
 			id: "opacitySlider",
-			title: 'Opacity',
 			layer: "layer",
 			minValue: 20, // we dont want a user to be able to give zero vis
 			maxValue: 100,
 			margins: {
 				top: 0,
-				right: 10,
+				right: 30,
 				bottom: 10,
 				left: 10
 			},
@@ -38,39 +39,49 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.opacitySliderContainer = new Ext.Panel({
-			height: 'auto',
 			layout: 'form',
 			items: [this.opacitySlider]
 		});
-		
+
+
 		this.transectControl = new Portal.mainMap.TransectControl({
 			ref: 'transectControl',
+			height: 30,
 			listeners: {
 				scope: this,
 				transect: function(inf) {
-					var newTab = this.detailsPanelTabs.add({
-						title: OpenLayers.i18n('transectTab'),
-						autoHeight: true,
-						closable: true,
-						items: [{
-							layout: 'hbox',
-							items: [{
-								autoHeight: true,
-								width: 200,
-								//TODO: use template
-								html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " "
-							},{
-								autoHeight: true,
-								hidden: inf.dimensionValues == '',
-								//TODO: use template
-								html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
-							}]
-						},{
-							autoHeight: true,
-							//TODO: use template
-							html: "<img src=\"" + inf.transectUrl + "\" />"
-						}]
-					});
+					var newTab = this.detailsPanelTabs.add(
+							{
+								title: OpenLayers.i18n('transectTab'),
+								closable: true,
+								layout:'fit',
+								autoScroll: true,
+								items : [{
+									layout: 'vbox',
+									layoutConfig: {
+										align: 'stretch'
+									},
+									items: [
+										{
+											//TODO: use template
+											height: 335,
+											html: "<img src=\"" + inf.transectUrl + "\" />"
+										},
+										
+										{
+											items: [{
+												width: 200,
+												//TODO: use template
+												html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " "
+											},{
+												hidden: inf.dimensionValues == '',
+												//TODO: use template
+												html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
+											}]
+										}]
+								}]
+							}		
+					);
 					if (this.ownerCt.width <  430) {
 						this.ownerCt.setWidth(430);
 						if (this.ownerCt.ownerCt) this.ownerCt.ownerCt.doLayout();
@@ -89,7 +100,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 		Portal.details.DetailsPanel.superclass.initComponent.call(this);
 	},
-	
+
 	getOpacitySlider: function(){
 		return this.opacitySlider;
 	},
@@ -117,8 +128,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				this.transectControl.setMapPanel(getMapPanel());
 				this.transectControl.layer = layer;
 				this.transectControl.show();
+				
 			}
-
+			this.doLayout();
 		}
 	},
 
@@ -138,6 +150,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 //	TODO: revisit this method when elevation and other dimensions are passed into javascript
 	updateDimensions: function(layer){
+
 		var dims = layer.metadata.dimensions;
 		if(dims != undefined)
 		{

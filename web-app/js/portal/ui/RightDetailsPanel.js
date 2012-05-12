@@ -11,6 +11,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	split: true,
 	width: 350,
 	minWidth: 250,
+	layout: 'fit',
 
     listeners: {
         expand: function() {
@@ -23,8 +24,9 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 
 	initComponent: function(){
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
+	
 	    this.items = [
-			this.detailsPanelItems
+			this.detailsPanelItems,
 		];
 
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
@@ -39,8 +41,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems.updateDetailsPanel(openlayer);
 		this.text = openlayer.name;
 		this.setTitle(openlayer.name);
-		
-        this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
+	
+     //   this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
 
 		if(this.collapsed) {
 			this.expand();

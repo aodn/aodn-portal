@@ -3,16 +3,14 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     defaults: {
         margin: 10,
-        autoScroll: true
     },
     id: 'detailsPanelTabs',
     ref: 'detailsPanelTabs',
     border: false,
-    activeTab: 1,
+    activeTab: 0,
     enableTabScroll: true,
-
-
     cls: 'floatingDetailsPanelContent',
+    flex: 1,
 
     initComponent: function(){
     	this.infoPanel = new Portal.details.InfoPanel();

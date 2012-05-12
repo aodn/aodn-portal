@@ -5,7 +5,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     title: 'Styles',
     style: {margin: 5},
     autoHeight: 250,
-    enableTabScroll: true,
+    autoScroll: true,
 
     initComponent: function(cfg){
         this.legendImage = new GeoExt.LegendImage({
@@ -59,6 +59,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         var combo = new Ext.form.ComboBox({
             id: 'styleCombo',
+            width: 200,
             fieldLabel: 'style',
             triggerAction: 'all',
             editable : false,
