@@ -104,7 +104,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	    
 		this.on('hide', function() {
-			//closeNHideDetailsPanel();
+
 			this.updateLoadingImage("none");
 			// close the getfeatureinfo popup
 			this.closePopup();

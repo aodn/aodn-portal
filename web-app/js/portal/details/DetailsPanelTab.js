@@ -2,7 +2,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     defaults: {
-        margin: 10,
+        margin: 10
     },
     id: 'detailsPanelTabs',
     ref: 'detailsPanelTabs',
@@ -20,7 +20,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.items = [
             this.infoPanel,
             this.stylePanel,
-            this.animationPanel, 
+            this.animationPanel
         ];
   
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);

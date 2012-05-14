@@ -26,7 +26,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
 	
 	    this.items = [
-			this.detailsPanelItems,
+			this.detailsPanelItems
 		];
 
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
@@ -48,28 +48,13 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 			this.expand();
 		}
 	},
-	
 
 	collapseAndHide: function(){
 			this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
 			this.detailsPanelItems.hide(); 
 			this.collapse(true);
 	},
-	
-	
-	closeNHideDetailsPanel: function() {
-		if (Portal.app.config.hideLayerOptions === true) {
-			if(this.getEl() != undefined){
-				this.collapse(true);
-			}
-		}
-		else {
-			if(this.getEl() != undefined){
-				this.expand(true);
-			}
-		}
-	},
-	
+
 	// check whether the panel has been rendered before calling the default expand method
 	// update the collapsed property otherwise
 	expand: function() {
@@ -79,5 +64,4 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	    this.collapsed = false;
 	  }
 	}
-	
 });
