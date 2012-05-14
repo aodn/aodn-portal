@@ -45,12 +45,14 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       	  scope: this,
       	  additem: this.onItemChange,
       	  removeitem: this.onItemChange,
-      	  clear: this.onItemChange
+      	  clear: this.onItemChange,
+      	  resize: this.handleResize
       });
       
-      this.addEvents('redraw');
+      this.addEvents('contentchange');
+      this.enableBubble('contentchange');
    },
-   
+
    onProtocolChange: function(protocol)
    {
 	   this.setBaseParams({ 'protocol': protocol });
@@ -79,7 +81,15 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    },
    
    onItemChange: function() {
-   	this.fireEvent('redraw');
+   	this.fireEvent('contentchange');
+   },
+   
+   handleResize: function() {
+     // A resize may result in selected items being wrapped 
+     // increasing the size of the component!
+     // Handle this by signaling that parent containers should adjust for 
+     // a change in content after this sequence of resize events has finished
+     this.fireEvent.defer(50,this,['contentchange']);
    },
    
    proxyBeforeLoad: function(proxy, params) {

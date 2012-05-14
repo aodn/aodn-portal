@@ -13,7 +13,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             minWidth: 260,
             maxWidth: 450,
             collapsible: true,
-            collapseMode: 'mini',
             stateful: false,
             split: true,
             headerCfg:  {

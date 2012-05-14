@@ -21,14 +21,20 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		this.catalogue.metadataStore = this.resultsStore;
 		this.catalogue.services.xmlSearch = appConfigStore.getById('spatialsearch.url').data.value;
 		this.searchDefaults = {E_protocol: appConfig.metadataLayerProtocols.split("\n").join(' or ')};
-
+		
+    this.searchController = new Portal.search.SearchController();
+		
+		this.rightSearchPanel = new Portal.search.RightSearchTabPanel({
+		  region: 'center',
+		  searchController: this.searchController
+		});
+		
 		this.items = [
 		{
 			 region: 'east',
 			 collapseMode: 'mini',
 			 split: true,
 			 width: 400,
-			 maxWidth: 500,
 			 layout:'border',
 			 items: [
 					 {
@@ -40,10 +46,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 						 split: true,
 						 height: 300
 					 },
-					 {
-						 region: 'center',
-						 xtype: 'panel'
-					 }
+					 this.rightSearchPanel
 				 ]
 		},
 		{
@@ -55,21 +58,24 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 					{
 					region: 'north',
 					ref: '../searchContainer',
-					height: 120,
-					autoScroll: true,
-
-					items: {
+					layout: 'ux.centre',
+					autoHeight: true,
+					items: [{					  
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
+            searchController: this.searchController,
+	          boxMaxWidth: 450,
+	          boxMinWidth: 280,
 						border: false,
 						bodyStyle: 'padding:5px 5px 0'
-					}
+					}]
 				},
 				{
 					region: 'center',
 					store: this.resultsStore,
 					xtype: 'portal.search.resultsgrid',
-					ref: '../resultsGrid'
+					ref: '../resultsGrid',
+					hidden: true
 				}
 			]
 		 }];
@@ -167,21 +173,24 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 
 	setSearchContainerHeightDeferred: function() {
-		var searchFormHeight = this.searchForm.getHeight();
-		var searchFormWidth = this.searchForm.getWidth();
-		var searchContainerWidth = this.searchContainer.getWidth();
-		var newHeight = searchFormHeight;
-		// add space for scroll bar if required
-		if (searchContainerWidth < searchFormWidth) {
-			newHeight += 20;
-		}
-		this.searchContainer.setSize(searchContainerWidth, newHeight);
+//		var searchFormHeight = this.searchForm.getHeight();
+//		if (searchFormHeight == this.lastHeight) return;
+//    this.lastHeight = searchFormHeight;
+//		var searchFormWidth = this.searchForm.getWidth();
+//		var searchContainerWidth = this.searchContainer.getWidth();
+//		var newHeight = searchFormHeight;
+//		// add space for scroll bar if required
+//		if (searchContainerWidth < searchFormWidth) {
+//			newHeight += 20;
+//		}
+//    this.searchContainer.setSize(searchContainerWidth, newHeight);
+//    this.searchContainer.setHeight(searchFormHeight);
 		this.searchPanel.doLayout();
 	},
 
 	resultsGridBbarBeforeChange: function(bbar, params) {
 
-        this.runSearch(this.lastSearch, parseInt(params.start) + 1);
+    this.runSearch(this.lastSearch, parseInt(params.start) + 1);
 		//Stop paging control from doing anything itself for the moment
 		// TODO: replace with store driven paging 
 		return false;
@@ -229,6 +238,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	onSearch: function () {
+	  this.changeLayout();
 		this.resultsStore.totalLength = 0; // This makes sure that the paging toolbar updates on a zero result set
 		var searchParams = this.getCatalogueSearchParams(this.getSearchFilters());
 		this.runSearch(searchParams, 1);
@@ -251,6 +261,19 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	
 	addSearchFilters: function(delegate, filters) {
 		return delegate.addSearchFilters(filters);
+	},
+	
+	// Move search form to refine search tab and display results grid instead
+	
+	changeLayout: function() {
+	  var searchForm = this.searchForm;
+    this.searchContainer.remove(searchForm, false);
+    searchForm.setTitle(OpenLayers.i18n('refineSearch'));
+    searchForm.setActionSide('left');
+    this.rightSearchPanel.addTab(searchForm);
+    this.rightSearchPanel.setActiveTab(1);
+    this.resultsGrid.setVisible(true);
+    this.doLayout();
 	}
 	
 });

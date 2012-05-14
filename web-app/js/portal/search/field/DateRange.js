@@ -8,8 +8,8 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
          {
             xtype: 'container',
             layout: 'form',
-            width: 235,
-            labelWidth: 125,
+            width: 190,
+            labelWidth: 75,
             margins: {top: 0, right: 15, bottom:0, left: 0},
             items: [
                {

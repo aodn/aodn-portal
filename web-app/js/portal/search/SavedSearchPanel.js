@@ -1,6 +1,6 @@
 Ext.namespace('Portal.search');
 
-Portal.search.SaveSearchPanel = Ext.extend(Ext.Panel, {
+Portal.search.SavedSearchPanel = Ext.extend(Ext.Panel, {
 	
 	layout: 'hbox',
 	padding: 2,
@@ -8,23 +8,11 @@ Portal.search.SaveSearchPanel = Ext.extend(Ext.Panel, {
 	initComponent: function()
 	{
 		this.items =
-			[
-			 	{
-			 		ref: 'saveButton',
-			 		xtype: 'button',
-			 		text: OpenLayers.i18n("saveSearchButtonText"),
-			 		tooltip: OpenLayers.i18n("saveSearchButtonTip"),
-	                listeners:
-	                {
-	                	scope: this,
-	                    'click': this.onSaveClick
-	                }
-			 	},
-		        new Ext.Spacer({width: 7}),
-		        {
+			[		 	
+		    {
 			 		ref: 'savedSearchComboBox',
 			 		xtype: 'portal.search.savedsearchcombobox',
-			   	  	store: this.savedSearchStore
+			   	  	store: this.searchController.getSavedSearchStore()
 		        },
 		        new Ext.Spacer({width: 7}),
 			 	{
@@ -40,9 +28,8 @@ Portal.search.SaveSearchPanel = Ext.extend(Ext.Panel, {
 			 	}
 			];
 		
-		Portal.search.SaveSearchPanel.superclass.initComponent.apply(this, arguments);
+		Portal.search.SavedSearchPanel.superclass.initComponent.apply(this, arguments);
 		
-		this.addEvents('deletesavedsearch');
 		this.relayEvents(this.savedSearchComboBox, ['loadsavedsearch']);
 		
 		this.deleteButton.disable();
@@ -67,16 +54,6 @@ Portal.search.SaveSearchPanel = Ext.extend(Ext.Panel, {
     	this.deleteButton.enable();
     },
 
-	onSaveClick: function()
-	{
-	    var saveSearchDialog = new Portal.search.SaveSearchDialog({
-	    	filterStore: this.filterStore
-	      });
-	      
-		this.relayEvents(saveSearchDialog, ['savesearch']);
-	    saveSearchDialog.show();
-	},
-
 	onDeleteClick: function()
 	{
 		var selectedVal = this.savedSearchComboBox.getValue();
@@ -86,14 +63,15 @@ Portal.search.SaveSearchPanel = Ext.extend(Ext.Panel, {
 		
 		this.deleteButton.disable();
 		
-		this.fireEvent('deletesavedsearch', selectedRecord);
+		this.searchController.deleteSavedSearch(selectedRecord);
 		
 	},
 	
 	onSavedSearchComboBoxSelect: function(combo, record, index)
 	{
+	  this.searchController.loadSavedSearch(record.id, record.name);
 		this.deleteButton.enable();
 	}
 });
 
-Ext.reg('portal.search.savesearchpanel', Portal.search.SaveSearchPanel);
+Ext.reg('portal.search.savedsearchpanel', Portal.search.SavedSearchPanel);

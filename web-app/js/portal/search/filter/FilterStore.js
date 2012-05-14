@@ -11,7 +11,7 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 				  	null, 
 				  	{
 						xtype : 'portal.search.field.freetext',
-						width : 515
+            anchor: '100%'
 					},
 					true
 				],
@@ -24,7 +24,7 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 						hideLabel : true,
 						name : 'protocolCombo',
 						xtype : 'combo',
-						width : 510,
+            anchor: '-2',
 						mode : 'local',
 						editable : false,
 						submitValue : false,
@@ -66,10 +66,9 @@ Portal.search.filter.newDefaultActiveFilterStore = function()
 /**
  * Convenience method for instantiating a new FilterStore with all the default optional parameters.
  * 
- * @param rootContainer
  * @returns {Portal.search.filter.FilterStore}
  */
-Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
+Portal.search.filter.newDefaultInactiveFilterStore = function()
 {
     var keywordSuggestUrl = Portal.app.config.catalogUrl + '/srv/eng/portal.summary.keywords';
     var paramSuggestUrl = Portal.app.config.catalogUrl + '/srv/eng/portal.summary.longParamNames';
@@ -106,13 +105,9 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						name : 'themekey',
 						field : 'keyword',
 						xtype : 'portal.search.field.multiselect',
+            anchor: '100%',
 						proxyUrl : proxyURL,
-						url : keywordSuggestUrl,
-						listeners : 
-						{
-							scope : rootContainer,
-							redraw : rootContainer.refreshDisplay
-						}
+						url : keywordSuggestUrl
 					},
 					false
 				], 
@@ -126,13 +121,9 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						name : 'longParamName',
 						field : 'longParamName',
 						xtype : 'portal.search.field.multiselect',
+            anchor: '100%',
 						proxyUrl : proxyURL,
-						url : paramSuggestUrl,
-						listeners : 
-						{
-							scope : rootContainer,
-							redraw : rootContainer.refreshDisplay
-						}
+						url : paramSuggestUrl
 					},
 					false
 				], 
@@ -146,13 +137,9 @@ Portal.search.filter.newDefaultInactiveFilterStore = function(rootContainer)
 						name : 'orgName',
 						field : 'orgName',
 						xtype : 'portal.search.field.multiselect',
+            anchor: '100%',
 						proxyUrl : proxyURL,
-						url : orgSuggestUrl,
-						listeners : 
-						{
-							scope : rootContainer,
-							redraw : rootContainer.refreshDisplay
-						}
+						url : orgSuggestUrl
 					},
 					false
 				]
@@ -170,9 +157,7 @@ Portal.search.filter.FilterStore = Ext.extend(Ext.data.ArrayStore, {
 		{
 			id : 0,
 			
-			// displayedComponentId stores the ID of the component which wraps the filter component (so
-			// we a have a reference for removing later).
-			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'asJson', 'displayedComponentId', 'filterValue' ]
+			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'asJson', 'filterValue' ]
 		}, cfg);
 
         Portal.search.filter.FilterStore.superclass.constructor.call(this, config);

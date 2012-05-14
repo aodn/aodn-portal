@@ -6,7 +6,7 @@ Portal.search.filter.FilterComboBox = Ext.extend(Ext.form.ComboBox, {
 	{
     	var config = 
 		 	{
-		        fieldLabel : OpenLayers.i18n("addCriteria"),
+		    fieldLabel : OpenLayers.i18n("addCriteria"),
 				submitValue : false,
 				xtype : 'combo',
 				width : 189,
@@ -25,13 +25,10 @@ Portal.search.filter.FilterComboBox = Ext.extend(Ext.form.ComboBox, {
     	Ext.apply(this, Ext.apply(this.initialConfig, config));
 		Portal.search.filter.FilterComboBox.superclass.initComponent.apply(this, arguments);
 	      
-		this.addEvents('filteradd');
 	},
 	
     filterComboSelect: function(combo, record) 
     {
-    	this.fireEvent('filteradd', record);
-        	
     	// Remove record from this.store
     	this.store.remove(record);
         
