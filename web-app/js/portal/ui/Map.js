@@ -577,7 +577,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	zoomTo: function(bounds, closest) {
-		this.map.zoomToExtent(bounds, closest);
+		if((bounds.left == bounds.right) && (bounds.top == bounds.bottom)){
+		 	this.map.setCenter(bounds.getCenterLonLat(), 3);
+		}
+		else{
+			this.map.zoomToExtent(bounds, closest);
+		}
 	},
 	
 	addGrailsLayer: function (id, layerOptions, layerParams, animated, chosenTimes) {   
