@@ -9,15 +9,9 @@ class MetadataUrl {
 
     static embedded = [ "onlineResource" ]
 
-    static belongsTo = [ layer: Layer ]
-
     static constraints = {}
 
-    MetadataUrl() { /* Empty constructor for Hibernate */ }
-
-    MetadataUrl( layer ) {
-
-        this.layer = layer
+    MetadataUrl() {
 
         onlineResource = new OnlineResource()
     }

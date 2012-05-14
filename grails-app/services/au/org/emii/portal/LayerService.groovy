@@ -225,7 +225,7 @@ class LayerService {
 
         newData.metadataUrls.each {
 
-            def metadataUrl = new MetadataUrl( layer )
+            def metadataUrl = new MetadataUrl()
 
             metadataUrl.format = it.format
             metadataUrl.type = it.type
