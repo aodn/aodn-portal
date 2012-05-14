@@ -220,6 +220,7 @@ class LayerService {
 
     def _attachMetadataUrls( layer, newData ) {
 
+        layer.metadataUrls*.delete()
         layer.metadataUrls.clear()
 
         newData.metadataUrls.each {
