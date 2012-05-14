@@ -244,8 +244,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     			this.map = Ext.getCmp("map");
     		}
 
+
+            this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
+            this.originalLayer.setOpacity(this.originalOpacity);
+
 			for(var i = 0; i < this.animatedLayers.length; i++){
-				this.map.removeLayer(this.animatedLayers[i]);
+				this.map.removeLayer(this.animatedLayers[i], this.originalLayer);
 
 				if(this.animatedLayers[i].div != null)
 					this.animatedLayers[i].destroy();
@@ -263,9 +267,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
         	//resetting the array
             this.animatedLayers = new Array();
-
-            this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
-            this.originalLayer.setOpacity(this.originalOpacity);
 		}
     },
 
