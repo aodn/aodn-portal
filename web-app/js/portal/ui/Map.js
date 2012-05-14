@@ -468,13 +468,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
 		var bbox = this.getMapExtent();
 		var layer = currentLayer;
-	    
+
 		// if originalWMSLayer is set - then it is already an animated Image
-		if (currentLayer.originalWMSLayer !== undefined) {      
+		if (currentLayer.originalWMSLayer !== undefined) {
 			layer = currentLayer.originalWMSLayer;
-			layer.map = this.map;        
+			layer.map = this.map;
 		}
-	    
+
 		var newUrl = layer.getFullRequestString({
 			TIME: layer.chosenTimes,
 			TRANSPARENT: true,
@@ -702,7 +702,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if (openLayer.name != 'OpenLayers.Handler.Path') {
 
 			this.map.removeLayer(openLayer, newDetailsPanelLayer);
-			
+
 			delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			if (newDetailsPanelLayer == null) {
@@ -786,13 +786,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 		}
 	},
-	
+
 	stopAnimation: function(openLayer) {
 		// if originalWMSLayer is set then it is an animated Openlayers.Image
 		//if(openLayer.numLoadingTiles > 0)
 		//	this.loadEnd();
 
-		if (openLayer.originalWMSLayer !== undefined) {  
+		if (openLayer.originalWMSLayer !== undefined) {
 			// get back the plain wms layer
 			this.swapLayers(openLayer.originalWMSLayer, openLayer);
 		}
