@@ -270,6 +270,8 @@ class LayerController {
 				//Extract Abstract and resource links
 				def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
 				def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
+				
+				//TODO: transform to html in a better way. e.g. xslt
 				def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
 				onlineResourcesList.each {
 					def linkText = it.CI_OnlineResource.description.CharacterString.text()
