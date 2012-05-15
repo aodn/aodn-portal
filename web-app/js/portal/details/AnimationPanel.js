@@ -225,11 +225,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.playButton.disable();
 			this.pauseButton.enable();
 			this.stepSlider.disable();
+            this.speedUp.enable();
+            this.slowDown.enable();
     	}
         else{
         	this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
+            this.speedUp.disable();
+            this.slowDown.disable();
 
 			//nothing's playing, so stop and pause doesn't make sense
 			this.pauseButton.disable();
