@@ -94,7 +94,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			displayField: 'displayText',
 			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>',
 			width: 170,
-			padding: 5,
+			padding: 5
 		});
 
 		this.endTimeCombo = new Ext.form.ComboBox({
@@ -109,7 +109,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			displayField: 'displayText',
 			tpl: '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>',
 			width: 170,
-			padding: 5,
+			padding: 5
 		});
 
 		this.playButton = new Ext.Button({
@@ -181,7 +181,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		   style: 'padding-top: 5',
 		   items:[
 				this.startTimeCombo,
-				this.endTimeCombo,
+				this.endTimeCombo
 			]
 		});
 
