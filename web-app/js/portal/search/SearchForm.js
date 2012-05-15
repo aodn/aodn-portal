@@ -19,7 +19,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     
     this.searchButton = new Ext.Button({
       text: OpenLayers.i18n("searchButton"),
-      width: 65,
+      width: 65
     });
     
     this.saveSearchLink = new Portal.search.SaveSearchLink({
@@ -46,7 +46,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
           },
           this.searchButton
         ]
-      },
+      }
     ];
 
     Portal.search.SearchForm.superclass.initComponent.apply(this, arguments);

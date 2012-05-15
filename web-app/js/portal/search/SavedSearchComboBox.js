@@ -15,7 +15,7 @@ Portal.search.SavedSearchComboBox = Ext.extend(Ext.form.ComboBox, {
     	
     	Ext.apply(this, Ext.apply(this.initialConfig, config));
     	Portal.search.SavedSearchComboBox.superclass.initComponent.apply(this, arguments);
-	},
+	}
 
 });
 

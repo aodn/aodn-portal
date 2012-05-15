@@ -98,7 +98,7 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
         labelAlign: this.labelAlign,
         autoHeight: true,
         flex: 1,
-        items: filterComponent,
+        items: filterComponent
     };
 
     var items;
