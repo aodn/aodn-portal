@@ -45,7 +45,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         	metaUrl = layer.metadataUrls[0].onlineResource.href;
         }
 
-        if(metaUrl) {   //TODO: add this back in: || this.selectedLayer.server.type.search("NCWMS") > -1) {
+        if(metaUrl || this.selectedLayer.server.type.search("NCWMS") > -1) {
         	this.setActiveTab(this.infoPanel.getId());
         	this.unhideTabStripItem(this.infoPanel);
         	this.infoPanel.updateInfo(metaUrl);
