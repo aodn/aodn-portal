@@ -135,7 +135,7 @@ class LayerServiceTests extends GroovyTestCase {
         def layerB = new Layer( title: "Layer B", name: "layer_b", dataSource: "testCode", server: server, layerHierarchyPath: layerBHierarchyPath )
         def layerC = new Layer( title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server, layerHierarchyPath: layerCHierarchyPath )
 
-        def layerCMetadataUrl = new MetadataUrl( layerC )
+        def layerCMetadataUrl = new MetadataUrl()
         layerCMetadataUrl.format = "fmt"
         layerCMetadataUrl.type = "type"
         layerCMetadataUrl.onlineResource = new OnlineResource( type: "type", href: "href" )

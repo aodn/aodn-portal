@@ -220,11 +220,12 @@ class LayerService {
 
     def _attachMetadataUrls( layer, newData ) {
 
+        layer.metadataUrls*.delete()
         layer.metadataUrls.clear()
 
         newData.metadataUrls.each {
 
-            def metadataUrl = new MetadataUrl( layer )
+            def metadataUrl = new MetadataUrl()
 
             metadataUrl.format = it.format
             metadataUrl.type = it.type
