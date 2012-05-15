@@ -80,7 +80,6 @@ input.readonlyInput {
     display: block;
     height: 27px;
     padding: 15px;
-    margin: 0px 0px 10px 0px! important;
     font-size: 14px;
     color: inherit;
 }
@@ -147,8 +146,11 @@ hr {
 #activeMenuPanel {
 }
 
+.searchField {
+  padding: 3px 5px 3px 5px;
+}
+
 .searchFieldSelectors {
-    padding: 5px;
     margin: 3px 0px;
     background-color: #fafafa;
 }

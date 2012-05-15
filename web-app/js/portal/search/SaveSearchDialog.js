@@ -17,7 +17,7 @@ Portal.search.SaveSearchDialog = Ext.extend(Portal.common.SaveDialog, {
 	
     onSave: function() {
     	
-    	this.fireEvent('savesearch', this.nameField.getValue());
+    	this.searchController.saveSearch(this.nameField.getValue());
     	this.close();
 	}
 });

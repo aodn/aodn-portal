@@ -20,6 +20,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 	
+    // Refine search panel revised
+    
+    refineSearch: 'Refine Search',
+    
     //Search form
     addCriteria: 'Limit search to',
     dateRange: 'Date range',
@@ -35,7 +39,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapLayer: 'Map Layer',
     searchButton: 'Search',
     fullTextSearch: ' ** Free text search **',
-    saveSearchButtonText: 'Save...',
+    saveSearchButtonText: 'Save',
     saveSearchButtonTip: 'Save the current search',
     deleteSavedSearchButtonText: 'Delete',
     deleteSavedSearchButtonTip: 'Delete the current saved search',
@@ -43,6 +47,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     saveSearchName: 'Name',
 	saveSearchFailureErrMsg: 'Unexpected failure saving search',
 	chooseSavedSearch: 'Choose a Saved Search',
+	mySearches: 'My Searches',
+	registerToSave: 'Register or login to save your searches',
       
     
     // Download Cart

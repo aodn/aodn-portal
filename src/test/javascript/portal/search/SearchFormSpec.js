@@ -3,8 +3,10 @@ describe("Portal.search.SearchForm", function()
 
   var testWindow;
   
-  var buildMockSearchForm = function(cfg) {
-    return new Portal.search.SearchForm(cfg);
+  var buildMockSearchForm = function() {
+    var searchController = new Portal.search.SearchController();
+
+    return new Portal.search.SearchForm({searchController: searchController});
   };
 
   beforeEach(function() {
@@ -18,7 +20,7 @@ describe("Portal.search.SearchForm", function()
   it("creates search form with default options on instantiation", function() {
     var searchForm = buildMockSearchForm();
 
-    expect(searchForm.items.getCount()).toEqual(2);
+    expect(searchForm.items.getCount()).toEqual(4);
   });
   
 // HTMLUnit can't run this (IE mode)  

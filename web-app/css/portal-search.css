@@ -147,4 +147,15 @@ input.p-selector {
   background-image:url(../images/grey_bg.png);
 }
 
+.p-remove-filter {
+   background-image: url(../images/cross.png);
+   background-repeat: no-repeat;
+   max-width: 8px;
+   max-height:8px;
+}
+
+.p-save-icon {
+   background-image: url(../images/save-icon.png);
+   background-repeat: no-repeat;
+}
 
