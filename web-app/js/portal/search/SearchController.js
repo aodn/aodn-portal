@@ -102,8 +102,17 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
 	onSuccessfulSave: function(response, options)
 	{
 		console.log(response);
-		var savedSearch = Ext.decode(response.responseText);
-		this.loadSearchComponent.selectSavedSearch(savedSearch);
+		
+    var savedSearch = Ext.decode(response.responseText);
+    
+    this.savedSearchStore.load({
+      callback: function(records, options, success) {
+        if (success) {
+          this.fireEvent('searchsaved', savedSearch.id);
+        }
+      },
+      scope: this
+    });
 	},
 	
 	onFailedSave: function(response, options)

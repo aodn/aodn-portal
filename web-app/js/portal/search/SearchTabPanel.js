@@ -51,15 +51,14 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		},
 		{
 			region: 'center',
-			layout: 'border',
+			layout: 'card',
 			xtype: 'container',
 			ref: 'searchPanel',
+			activeItem: 0,
 			items: [
 					{
-					region: 'north',
 					ref: '../searchContainer',
 					layout: 'ux.centre',
-					autoHeight: true,
 					items: [{					  
 						xtype: 'portal.search.searchform',
 						ref: '../../searchForm',
@@ -71,11 +70,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 					}]
 				},
 				{
-					region: 'center',
 					store: this.resultsStore,
 					xtype: 'portal.search.resultsgrid',
-					ref: '../resultsGrid',
-					hidden: true
+					ref: '../resultsGrid'
 				}
 			]
 		 }];
@@ -272,7 +269,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
     searchForm.setActionSide('left');
     this.rightSearchPanel.addTab(searchForm);
     this.rightSearchPanel.setActiveTab(1);
-    this.resultsGrid.setVisible(true);
+    this.searchPanel.getLayout().setActiveItem(1);
     this.doLayout();
 	}
 	

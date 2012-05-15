@@ -3,7 +3,7 @@ Ext.namespace('Portal.search');
 Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
   url: '',
   defaultType: 'textfield',
-  autoHeight: true,
+  autoScroll: true,
   buttonAlign: 'left',
   footerStyle: 'padding:5px 0px 10px 10px',
 

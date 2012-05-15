@@ -33,24 +33,13 @@ Portal.search.SavedSearchPanel = Ext.extend(Ext.Panel, {
 		this.relayEvents(this.savedSearchComboBox, ['loadsavedsearch']);
 		
 		this.deleteButton.disable();
-		this.mon(this.savedSearchComboBox, 'select', this.onSavedSearchComboBoxSelect, this);
+    this.mon(this.searchController, 'searchsaved', this.onSearchSaved, this);
+    this.mon(this.savedSearchComboBox, 'select', this.onSavedSearchComboBoxSelect, this);
 	},
 	
-    selectSavedSearch: function(savedSearch)
-    {
-    	// Can't simply call "setValue()" on the combo box, as the new value won't be in the
-    	// combo box's store yet.
-    	var store = this.savedSearchComboBox.getStore();
-    	store.load({
-    		// The new "saved search" should now be in the store.
-    		callback: function(records, options, success) {
-    			if (success) {
-    				this.savedSearchComboBox.setValue(savedSearch.id);
-    			}
-    		},
-    		scope: this
-    	});
-    	
+    onSearchSaved: function(searchId)
+    {   	
+      this.savedSearchComboBox.setValue(searchId);
     	this.deleteButton.enable();
     },
 

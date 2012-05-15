@@ -2,6 +2,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: true,
+   layout: 'fit',
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
    
