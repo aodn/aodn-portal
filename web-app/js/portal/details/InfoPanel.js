@@ -5,7 +5,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
     title: 'Info',
     layout: 'fit',
     autoScroll: true,
-    html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>sdasd",
+    html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>",
     
 
     initComponent: function(cfg){
