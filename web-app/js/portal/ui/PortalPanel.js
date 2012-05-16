@@ -34,7 +34,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	
         Portal.ui.PortalPanel.superclass.constructor.call(this, config);
 		
-        this.registerEvents();
+        this.registerEvents();	
     },
 	
     initMapPanel: function(appConfig) {

@@ -659,8 +659,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 					openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
 					// if this layer has been user selected before loading the metadata
 					// reload,  as the date picker details/ form  will be wrong at the very least!
-	                console.log("got layer metadata");
-	                console.log(openLayer.metadata);
 					Ext.getCmp('rightDetailsPanel').update(openLayer);
 				}
 			});

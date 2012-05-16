@@ -5,22 +5,20 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	id: 'rightDetailsPanel',
 	region: 'east',
 	title: OpenLayers.i18n('noActiveLayersSelected'),
-	collapsed: true,
+	//collapsed: true,
 	stateful: false,
-	padding:  '0px 20px 5px 20px',
+	padding:  '10px 10px 5px 20px',
 	split: true,
 	width: 350,
 	minWidth: 250,
 	layout: 'fit',
 
-    listeners: {
-        expand: function() {
-        	//Force the opacity slider to move to correct location on selection of first layer.  
-        	var opacitySlider = this.detailsPanelItems.getOpacitySlider();
-        	opacitySlider.setValue(0,true);
-        	opacitySlider.setValue(this.detailsPanelItems.selectedLayer.opacity * 100,true);
-        }
-    },
+	// check whether the panel has been rendered before calling the default expand method
+	expand: function() {
+	  if (this.rendered) {
+		Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
+	  }
+	},
 
 	initComponent: function(){
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
@@ -30,38 +28,40 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		];
 
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
+		
 	},
 
 	getDetailsPanelItems: function(){
 		return this.detailsPanelItems;
 	},
-
+	// a new layer has been added
 	update: function(openlayer){
-		this.detailsPanelItems.show(); 
-		this.detailsPanelItems.updateDetailsPanel(openlayer);
-		this.text = openlayer.name;
-		this.setTitle(openlayer.name);
-	
-     //   this.doLayout.defer(50, this); // wait for browser to resize autoHeight elements before doing layout
+		
+		// show new layer unless user requested 'hideLayerOptions' or
+		// check if the map is still in focus - not the search
+		if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
+			if(this.collapsed) {
+				this.expand();
+				//	wait for the expansion for the benefit of the opacity slider		
+				this.detailsPanelItems.updateDetailsPanel.defer(1500,this.detailsPanelItems,[openlayer]);
+			}
+			else {
+				this.detailsPanelItems.updateDetailsPanel(openlayer);
+			}		
 
-		if(this.collapsed) {
-			this.expand();
+			this.text = openlayer.name;
+			this.setTitle(openlayer.name);
 		}
+		else {
+			this.collapseAndHide();			
+		}
+
+		
 	},
 
 	collapseAndHide: function(){
 			this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
-			this.detailsPanelItems.hide(); 
-			this.collapse(true);
-	},
-
-	// check whether the panel has been rendered before calling the default expand method
-	// update the collapsed property otherwise
-	expand: function() {
-	  if (this.rendered) {
-	    Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
-	  } else {
-	    this.collapsed = false;
-	  }
+			this.collapse(true);			
+			this.detailsPanelItems.hideDetailsPanelContents();
 	}
 });

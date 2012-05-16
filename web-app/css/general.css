@@ -1,5 +1,5 @@
 body, html{
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
     background-color: white; 
 	color: #030303;
@@ -9,7 +9,7 @@ body, html{
 }
 
 p, td{    
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: tahoma,verdana,arial,sans-serif;
 }
 
 
@@ -19,16 +19,22 @@ body {
 }
 
 h1 {
-    font-size: 20px;
+	font-family: tahoma,arial,verdana,sans-serif;
+	color: #15428B;
+    font-size: 24px;
     font-weight: bold;
 }
 
 h2 {
+	font-family: tahoma,arial,verdana,sans-serif;
+	color: #15428B;
     font-size: 16px;
     font-weight: bold;
 }
 
 h3 {
+	font-family: tahoma,arial,verdana,sans-serif;
+	color: #15428B;
     font-size: 14px;
     font-weight: bold;
 }
@@ -239,9 +245,15 @@ hr {
    border-radius: 6px;
    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
 }
+#mainHomePanel H1{ 
+	margin: 14px;
+} 
 
 .footer {       
     color: #0B5584;
+	
+	font-family: tahoma,arial,verdana,sans-serif;
+	color: #15428B;
     font-size: 10px;
     background-color: white;
 }
@@ -955,7 +967,7 @@ JQUERY AUTO COMPLETE
     
     color: #15428B;
     font-family: tahoma,arial,verdana,sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     padding: 10px 1px 10px 10px;
 }

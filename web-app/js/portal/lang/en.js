@@ -20,8 +20,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 	
-    // Refine search panel revised
-    
+	// DetailsPanel.js
+	opacity: "Opacity",
+	
+    // Refine search panel revised    
     refineSearch: 'Refine Search',
     
     //Search form

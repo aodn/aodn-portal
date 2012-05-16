@@ -192,8 +192,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	zoomToLayer: function() {
-		console.log("zoom to layter");
-		console.log(this.getSelectedLayer());
 		if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
 			
 		}

@@ -39,7 +39,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 				check: function(thisThingy,checked) {
 					Portal.app.config.hideLayerOptions = checked; // change the global option not a copy
 					if (checked) {
-						Ext.getCmp('rightDetailsPanel').hide();
+						Ext.getCmp('rightDetailsPanel').collapseAndHide();
 					}
 					else {
 						Ext.getCmp('rightDetailsPanel').show();

@@ -1,12 +1,12 @@
 Ext.namespace('Portal.details');
 
 Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
-	id: 'infoPanel',
-	title: 'Info',
-	layout: 'fit',
-	autoScroll: true,
-	html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>",
 
+    id: 'infoPanel',
+    title: 'Info',
+    layout: 'fit',
+    autoScroll: true,
+    html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>",
 
 	initComponent: function(cfg){
 		Portal.details.InfoPanel.superclass.initComponent.call(this);

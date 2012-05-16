@@ -19,7 +19,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
                 cls: 'menuHeader',
                 html: 'Message'
             },
-            title: 'Layer Chooser',
+            title: 'Map Layer Chooser',
             layout: 'vbox',
             layoutConfig: {
               align: 'stretch'
