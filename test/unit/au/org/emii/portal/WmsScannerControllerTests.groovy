@@ -3,14 +3,14 @@ package au.org.emii.portal
 import grails.test.ControllerUnitTestCase
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
-    //grailsApplication.config.
+
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
     
     def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true )
     def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
     def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true )
     
-    def validConfig = new Config( wmsScannerCallbackUsername: "un", wmsScannerCallbackPassword: "pwd" )
+    def validConfig = new Config( wmsScannerCallbackPassword: "pwd" )
     def invalidConfig = new Config()
 
     def expectedStatusText = "[0:Enabled, -1:Enabled<br />(errors&nbsp;occurred), -2:Stopped<br />(too&nbsp;many&nbsp;errors)]"
@@ -106,7 +106,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Empty scan Job list should be returned", [], returnParams.scanJobList
         assertEquals "Status text should match", expectedStatusText, returnParams.statusText.toString()
         assertEquals "Empty list should be returned", [], returnParams.serversToList
-        assertEquals "Flash message should indicate errors", "All three settings: 'WmsScannerBaseUrl', 'WmsScannerCallbackUsername', and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner.", controller.flash.message
+        assertEquals "Flash message should indicate errors", "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner.", controller.flash.message
     }
     
     void testCallRegister_NoProblem_RedirectedWithMessage() {
@@ -120,7 +120,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &wmsVersion=1.1.1\
 &uri=svr2uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackUsername=un\
 &callbackPassword=pwd\
 &scanFrequency=45\
 """
@@ -146,7 +145,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &wmsVersion=1.1.1\
 &uri=svr2uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackUsername=un\
 &callbackPassword=pwd\
 &scanFrequency=45\
 """
@@ -168,7 +166,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def expectedQueryString = """\
 ?id=1\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackUsername=un\
 &callbackPassword=pwd\
 &jobType=WMS\
 &wmsVersion=1.3.0\
@@ -207,7 +204,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         def expectedQueryString = """\
 ?id=1\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackUsername=un\
 &callbackPassword=pwd\
 &jobType=WMS\
 &wmsVersion=1.1.1\

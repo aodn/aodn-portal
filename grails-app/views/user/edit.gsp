@@ -39,97 +39,25 @@
                                     <g:textField name="emailAddress" value="${userInstance?.emailAddress}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="firstName"><g:message code="user.firstName.label" default="First Name" /></label>
+                                    <label for="openIdUrl"><g:message code="user.openIdUrl.label" default="OpenID URL" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'firstName', 'errors')}">
-                                    <g:textField name="firstName" value="${userInstance?.firstName}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="lastName"><g:message code="user.lastName.label" default="Last Name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'lastName', 'errors')}">
-                                    <g:textField name="lastName" value="${userInstance?.lastName}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="passwordHash"><g:message code="user.passwordHash.label" default="Password Hash" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwordHash', 'errors')}">
-                                    <g:textField name="passwordHash" value="${userInstance?.passwordHash}" />
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'openIdUrl', 'errors')}">
+                                    <g:textField name="openIdUrl" value="${userInstance?.openIdUrl}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="passwordSalt"><g:message code="user.passwordSalt.label" default="Password Salt" /></label>
+                                  <label for="fullName"><g:message code="user.fullName.label" default="Name" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwordSalt', 'errors')}">
-                                    <g:textField name="passwordSalt" value="${userInstance?.passwordSalt}" />
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'fullName', 'errors')}">
+                                    <g:textField name="fullName" value="${userInstance?.fullName}" />
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="address"><g:message code="user.address.label" default="Address" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'address', 'errors')}">
-                                    <g:textField name="address" value="${userInstance?.address}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="state"><g:message code="user.state.label" default="State" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'state', 'errors')}">
-                                    <g:textField name="state" value="${userInstance?.state}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="postcode"><g:message code="user.postcode.label" default="Postcode" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'postcode', 'errors')}">
-                                    <g:textField name="postcode" value="${userInstance?.postcode}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="country"><g:message code="user.country.label" default="Country" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'country', 'errors')}">
-                                    <g:textField name="country" value="${userInstance?.country}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="organisation"><g:message code="user.organisation.label" default="Organisation" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'organisation', 'errors')}">
-                                    <g:textField name="organisation" value="${userInstance?.organisation}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="orgType.id"><g:message code="user.orgType.label" default="Org Type" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'orgType', 'errors')}">
-                                    <g:select name="orgType.id" from="${au.org.emii.portal.OrganisationType.list()}" optionKey="id" value="${userInstance?.orgType?.id}" noSelection="['null': '']" />
-                                </td>
-                            </tr>
-                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label><g:message code="user.permissions.label" default="Permissions" /></label>

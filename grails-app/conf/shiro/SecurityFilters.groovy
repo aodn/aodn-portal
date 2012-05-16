@@ -6,6 +6,20 @@ package shiro
  */
 class SecurityFilters {
     def filters = {
+		
+		openIdAccess(controller: "auth", action: "*") { // Todo - DN: Remove after OpenID dev
+			before = {
+
+				println "== ${controllerName}/${actionName} =" + ("=" * 70)
+
+				request.accessAllowed = true
+			}
+			after = {
+
+				println "\n\n"
+
+			}
+		}
         
         homeAccess(controller: "home", action: "index|config") {
             before = {
@@ -109,7 +123,7 @@ class SecurityFilters {
 
         all(uri: "/**") {
             before = {
-
+                
                 // Check if request has been allowed by another filter
                 if (request.accessAllowed) return true            
                 

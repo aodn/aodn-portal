@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
+import org.springframework.jdbc.core.JdbcTemplate;
 
 class ConfigController {
 
@@ -201,4 +202,39 @@ class ConfigController {
         }
         return configInstance
     }
+    
+    def _getDisplayableMenu(menu) {
+		def ids = _getServerIdsWithAvailableLayers()
+		
+		for (def iterator = menu.menuItems.iterator(); iterator.hasNext();) {
+			def item = iterator.next()
+			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
+				iterator.remove()
+			}
+		}
+		return menu
+	}
+	
+	def _isLayerViewable(layer) {
+		return layer.activeInLastScan && !layer.blacklisted
+	}
+	
+	def _getServerIdsWithAvailableLayers() {
+		// We don't explicitly map layers to servers so dropping to JDBC
+		def template = new JdbcTemplate(dataSource)
+		def query = 
+"""\
+select server.id
+from server
+join layer on layer.server_id = server.id
+where not layer.blacklisted and layer.active_in_last_scan
+group by server.id\
+"""
+		
+		def ids = []
+		template.queryForList(query).each { row ->
+			ids << row.id
+		}
+		return ids
+	}
 }

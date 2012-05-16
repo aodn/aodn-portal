@@ -1,72 +1,88 @@
-import au.org.emii.portal.User
-import org.apache.shiro.authc.*
+package au.org.emii.portal
 
-class SecDbRealm {
-    static authTokenClass = au.org.emii.portal.SaltedUsernamePasswordToken
+import org.apache.shiro.authc.AccountException
+import org.apache.shiro.authc.SimpleAccount
+import org.apache.shiro.authc.UnknownAccountException
 
-    def authService
+class OpenIdDbRealm {
+
+    static authTokenClass = au.org.emii.portal.OpenIdAuthenticationToken
 
     def credentialMatcher
     def shiroPermissionResolver
 
     def authenticate( authToken ) {
-        log.info "Attempting to authenticate ${authToken.username} in DB realm..."
-        def emailAddress = authToken.username
+
+        log.info "Attempting to authenticate ${authToken.userId}..."
+        def userId = authToken.userId
         
         // Null username is invalid
-        if ( !emailAddress ) throw new AccountException( "Null usernames are not allowed by this realm." )
+        if ( !userId ) throw new AccountException( "Cannot authenticate User will null userId." )
 
         // Get the user with the given username. If the user is not
         // found, then they don't have an account and we throw an
         // exception.
-        def user = User.findByEmailAddress( emailAddress )
-        if ( !user ) throw new UnknownAccountException( "No account found for user [${emailAddress}]" )
+        def user = User.findById( userId )
+        if ( !user ) throw new UnknownAccountException( "No account found for user with id ${ userId }" )
 
-        log.info "Found user '${user.emailAddress}' in DB"
-
-        // Include salt for User
-        authToken.salt = user.passwordSalt
+        log.info "Found user '${user.openIdUrl}' in DB"
 
         // Now check the user's password against the hashed value stored
         // in the database.
-        def account = new SimpleAccount( emailAddress, user.passwordHash, "SecDbRealm" )
-        if ( !credentialMatcher.doCredentialsMatch( authToken, account ) ) {
-            log.info "Invalid password (DB realm)"
-            throw new IncorrectCredentialsException("Invalid password for user '${emailAddress}'")
-        }
+        def account = new SimpleAccount( userId, user.openIdUrl, "OpenIdDbRealm" )
+//        if ( !credentialMatcher.doCredentialsMatch( authToken, account ) ) {
+//            log.info "Invalid openIdUrl"
+//            throw new IncorrectCredentialsException("Invalid openIdUrl for user '${userId}'")
+//        }
 
         return account
     }
 
     def hasRole(principal, roleName) {
+
+        log.debug "Checking hasRole($principal, $roleName)"
+
         def roles = User.withCriteria {
             roles {
-                eq("name", roleName)
+                eq( "name", roleName )
             }
-            eq("emailAddress", principal)
+            eq( "id", principal )
         }
 
         return roles.size() > 0
     }
 
     def hasAllRoles(principal, roles) {
+
+        log.debug "Checking hasAllRoles($principal, $roles)"
+
         def r = User.withCriteria {
             roles {
-                'in'("name", roles)
+                'in'( "name", roles )
             }
-            eq("emailAddress", principal)
+            eq( "id", principal )
         }
 
         return r.size() == roles.size()
     }
 
     def isPermitted(principal, requiredPermission) {
+
         // Does the user have the given permission directly associated
         // with himself?
         //
         // First find all the permissions that the user has that match
         // the required permission's type and project code.
-        def user = User.findByEmailAddress(principal)
+        def user = User.get( principal )
+
+        log.debug "Calling isPermitted($principal, $requiredPermission); Found user: $user"
+
+        if ( !user ) {
+
+            log.error "Called isPermitted() but could not find User for principal: '$principal'; requiredPermission: '$requiredPermission'"
+            return false
+        }
+
         def permissions = user.permissions
 
         // Try each of the permissions found and see whether any of
@@ -78,16 +94,10 @@ class SecDbRealm {
 
             // Now check whether this permission implies the required
             // one.
-            if (perm.implies(requiredPermission)) {
-                // User has the permission!
-                return true
-            }
-            else {
-                return false
-            }
+            return perm.implies( requiredPermission )
         }
 
-        if (retval != null) {
+        if ( retval ) {
             // Found a matching permission!
             return true
         }
@@ -95,7 +105,7 @@ class SecDbRealm {
         // If not, does he gain it through a role?
         //
         // Get the permissions from the roles that the user does have.
-        def results = User.executeQuery("select distinct p from User as user join user.roles as role join role.permissions as p where user.emailAddress = '$principal'")
+        def results = User.executeQuery("select distinct p from User as user join user.roles as role join role.permissions as p where user.id = '$principal'")
 
         // There may be some duplicate entries in the results, but
         // at this stage it is not worth trying to remove them. Now,
@@ -108,13 +118,7 @@ class SecDbRealm {
 
             // Now check whether this permission implies the required
             // one.
-            if (perm.implies(requiredPermission)) {
-                // User has the permission!
-                return true
-            }
-            else {
-                return false
-            }
+            return perm.implies( requiredPermission )
         }
 
         return retval != null

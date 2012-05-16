@@ -21,9 +21,9 @@ class WmsScannerController {
         wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
         
         // Check if WMS Scanner settings are valid
-        if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackUsername || !conf.wmsScannerCallbackPassword ) {
+        if ( !conf.wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
             
-            flash.message = "All three settings: 'WmsScannerBaseUrl', 'WmsScannerCallbackUsername', and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
+            flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
             
             return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
         }
@@ -73,7 +73,6 @@ class WmsScannerController {
             def wmsVersion  = URLEncoder.encode( versionVal )
             def uri         = URLEncoder.encode( server.uri )
             def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-            def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
             def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
             
@@ -115,7 +114,6 @@ class WmsScannerController {
         def wmsVersion  = URLEncoder.encode( versionVal )
         def uri         = URLEncoder.encode( server.uri )
         def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-        def callbackUsername = URLEncoder.encode( conf.wmsScannerCallbackUsername )
         def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
         

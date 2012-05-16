@@ -203,6 +203,7 @@ class LayerController {
 
         try {
             // Logging output
+
             if ( log.debugEnabled ) {
                 def layerDataPrint = JSON.parse( params.layerData )
                 layerDataPrint.children = "[...]"
@@ -290,20 +291,15 @@ class LayerController {
 	
     void _validateCredentialsAndAuthenticate(def params) {
         
-        def un = params.username
-        def pwd = params.password
+        def suppliedPassword = params.password
         
-        if ( !un ) throw new IllegalArgumentException( "Value for username is invalid." )
-        if ( !pwd ) throw new IllegalArgumentException( "Value for password is invalid." )
+        if ( !suppliedPassword ) throw new IllegalArgumentException( "Supplied value for password is invalid." )
         
-        def authToken = new SaltedUsernamePasswordToken( authService, un.toLowerCase(), pwd )
+        def configuredPassword = Config.activeInstance().wmsScannerCallbackPassword
+        
+        if ( !configuredPassword ) throw new IllegalStateException( "WMS Scanner password not configured in Portal app." )
 
-        SecurityUtils.subject.login authToken
-        
-        def permissionString = "${controllerName}:${actionName}"
-        log.debug "Checking permissions: $permissionString"
-        
-        if ( !SecurityUtils.subject.isPermitted( permissionString ) ) throw new Exception( "User $un does not have correct permissions" )
+        if ( configuredPassword != suppliedPassword ) throw new IllegalArgumentException( "Supplied password does not match configured password." )
     }
     
     void _validateMetadata(def metadata) {
