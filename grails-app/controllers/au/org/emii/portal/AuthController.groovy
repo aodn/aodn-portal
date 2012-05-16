@@ -64,7 +64,8 @@ class AuthController {
             if ( !userInstance ) {
 
                 userInstance = new User( openIdUrl: verified.identifier )
-                // Todo - DN: Add UserRole 'SelfRegisteredUser'
+
+                userInstance.addToRoles UserRole.findByName( "SelfRegisteredUser" )
             }
 
             // Get values from attribute exchange
@@ -132,11 +133,9 @@ class AuthController {
     }
 	
 	def _authenticateWithOpenId(register) {
+
 		def openIdProviderUrl = grailsApplication.config.openIdProvider.url
 		def portalUrl = grailsApplication.config.grails.serverURL
-
-		log.debug "openIdProviderUrl: ${ openIdProviderUrl }"
-		log.debug "portalUrl: ${ portalUrl }"
 
 		// Perform discovery on our OpenID provider
 		def discoveries = consumerManager.discover( openIdProviderUrl ) // User-supplied String
@@ -149,16 +148,11 @@ class AuthController {
 		// leave out for stateless operation / if there is no session
 		session.setAttribute "discovered", discovered
 
-		log.debug "discovered: ${ discovered }"
-
 		// Retrieve accounts details w/ attribute exchange (http://code.google.com/p/openid4java/wiki/AttributeExchangeHowTo)
 		def fetch = FetchRequest.createFetchRequest()
 		fetch.addAttribute "email", "http://schema.openid.net/contact/email", true /* required */
 		fetch.addAttribute "fullname", "http://schema.openid.net/namePerson", true /* required */
 
-		log.debug "portalUrl 1: ${ portalUrl }"
-		log.debug "portalUrl 2: ${ portalUrl as String }" // Todo - DN: Why does this sometimes have an empty map appended?
-		
 		// obtain a AuthRequest message to be sent to the OpenID provider
 		def returnUrl = "${portalUrl}/auth/verifyResponse"
 		def authReq = consumerManager.authenticate( discovered, returnUrl )

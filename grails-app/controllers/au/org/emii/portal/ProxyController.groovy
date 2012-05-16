@@ -107,9 +107,9 @@ class ProxyController {
     }
 	
 	def wmsOnly = {
+
 		if ( params.url ) {
 
-			
 			try {
 				
 				def resp = params.url.toURL()
@@ -151,7 +151,4 @@ class ProxyController {
 			
 		}
 	}
-	
-
-	
 }

@@ -205,11 +205,10 @@ class LayerController {
             // Logging output
 
             if ( log.debugEnabled ) {
-                def layerDataPrint = JSON.parse( params.layerData )
+                def layerDataPrint = JSON.parse( params.layerData as String )
                 layerDataPrint.children = "[...]"
                 layerDataPrint.supportedProjections = "[...]"
 
-                log.debug "username:  ${params.username}"
                 log.debug "metadata:  ${params.metadata}"
                 log.debug "layerData: $layerDataPrint"
             }
@@ -229,10 +228,8 @@ class LayerController {
             // Should control be handed-off to layerService as soon as the credentials are checked?
             
             // Check metadata
-            def metadata = JSON.parse( params.metadata )
+            def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
-
-
 
             // Check layer data
             def layerData = params.layerData
@@ -243,7 +240,7 @@ class LayerController {
 
             if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
             
-            layerService.updateWithNewData JSON.parse( layerData ), server, metadata.dataSource
+            layerService.updateWithNewData JSON.parse( layerData as String ), server, metadata.dataSource
             
             server.lastScanDate = new Date()
             server.save( failOnError: true )
