@@ -6,21 +6,7 @@ package shiro
  */
 class SecurityFilters {
     def filters = {
-		
-		openIdAccess(controller: "auth", action: "*") { // Todo - DN: Remove after OpenID dev
-			before = {
 
-				println "== ${controllerName}/${actionName} =" + ("=" * 70)
-
-				request.accessAllowed = true
-			}
-			after = {
-
-				println "\n\n"
-
-			}
-		}
-        
 		homeAccess(controller: "home", action: "index|config") {
             before = {
             
@@ -111,7 +97,7 @@ class SecurityFilters {
             }
         }
 
-        authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
+        authAccess(controller: "auth", action: "index|register|login|verifyResponse|logOut|unauthorized") {
             before = {
 
                 logRequest("authAccess", controllerName, actionName)
