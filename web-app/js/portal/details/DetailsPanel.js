@@ -2,7 +2,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	id: 'detailsPanelItems',
-	hidden: true,
+	//hidden: true,
 	layout: 'vbox',
 	layoutConfig: {
 		align: 'stretch'
@@ -12,15 +12,12 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
 		this.opacitySlider = new Ext.slider.SingleSlider({
 			id: "opacitySlider",
-			layer: "layer",
+			//hidden: true,
+			//hideParent: true,
+			keyIncrement: 10,
+			increment: 5,
 			minValue: 20, // we dont want a user to be able to give zero vis
 			maxValue: 100,
-			margins: {
-				top: 0,
-				right: 30,
-				bottom: 10,
-				left: 10
-			},
 			inverse: false,
 			fieldLabel: "Opacity",
 			plugins: new GeoExt.LayerOpacitySliderTip({
@@ -30,8 +27,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				// call show when a layer is chosen so we can access this listener
 				show: function(slider) {
-					slider.setValue(this.selectedLayer.opacity * 100,true);
+					this.opacitySlider.setValue(this.selectedLayer.opacity * 100,true);
+					this.opacitySlider.syncThumb();
 				},
+				// user changed opacity
 				changeComplete: function(slider, val, thumb){
 					this.selectedLayer.setOpacity(val / 100);
 				}
@@ -40,6 +39,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 		this.opacitySliderContainer = new Ext.Panel({
 			layout: 'form',
+			height: 26,
+			margins: {
+				top: 5,
+				right: 5,
+				bottom: 0,
+				left: 5
+			},
 			items: [this.opacitySlider]
 		});
 
@@ -98,7 +104,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		              this.detailsPanelTabs
 		              ];
 
-		Portal.details.DetailsPanel.superclass.initComponent.call(this);
+		Portal.details.DetailsPanel.superclass.initComponent.call(this);	
 	},
 
 	getOpacitySlider: function(){
@@ -110,10 +116,12 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		// show new layer unless user requested 'hideLayerOptions' or
 		// check if the map is still in focus - not the search
 		if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
+
+			
 			this.selectedLayer = layer;
 			this.detailsPanelTabs.setSelectedLayer(layer);
 			this.detailsPanelTabs.update(layer);
-			this.opacitySlider.show(); // reset slider
+			this.detailsPanelTabs.show();
 			this.transectControl.hide();
 
 			// remove any transect tabs for previous layer
@@ -129,8 +137,11 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				this.transectControl.layer = layer;
 				this.transectControl.show();
 				
-			}
-			this.doLayout();
+			}			
+			this.opacitySlider.show(); // will reset slider
+		}
+		else {
+			this.collapseAndHide();
 		}
 	},
 
@@ -159,8 +170,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				if(dims[dimType].values != undefined)
 				{
 					var valList = dims[dimType].values;
-					var dimStore, dimData;
-
+					var dimStore;
 					var dimData = new Array();
 
 					var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
