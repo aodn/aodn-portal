@@ -97,7 +97,7 @@ class SecurityFilters {
             }
         }
 
-        authAccess(controller: "auth", action: "login|register|createUser|forgotPassword") {
+        authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
 
                 logRequest("authAccess", controllerName, actionName)
