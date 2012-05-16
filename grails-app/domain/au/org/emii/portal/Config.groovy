@@ -53,7 +53,6 @@ class Config {
     String baselayerList    
     List defaultLayers
     
-    String wmsScannerCallbackUsername
     String wmsScannerCallbackPassword
 
     static hasMany = [defaultLayers:Layer]    
@@ -105,8 +104,7 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
-        wmsScannerCallbackUsername(nullable: true)
-        wmsScannerCallbackPassword(nullable: true)
+        wmsScannerCallbackPassword( nullable: true )
     }
     
     static Config activeInstance() {

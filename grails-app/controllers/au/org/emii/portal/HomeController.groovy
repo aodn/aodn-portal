@@ -1,13 +1,18 @@
 package au.org.emii.portal
 
 import grails.util.Environment
-
 class HomeController {
 
 	def grailsApplication
 
     def index = { // This is the main portal entry
 
+        // Intercept OpenID verification calls
+        if ( params["openid.return_to"] ) {
+
+            forward controller: "auth", action: "verifyResponse"
+        }
+        
         def jsFileVersionNumber = grailsApplication.metadata.'app.svn.revision' ?: System.currentTimeMillis()
 
         [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo(), jsVerNum: jsFileVersionNumber ]

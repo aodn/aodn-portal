@@ -33,72 +33,21 @@
                             <td valign="top" class="name"><g:message code="user.emailAddress.label" default="Email Address" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "emailAddress")}</td>
-                            
+                        </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="user.openIdUrl.label" default="OpenID URL" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "openIdUrl")}</td>
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.firstName.label" default="First Name" /></td>
+                            <td valign="top" class="name"><g:message code="user.fullName.label" default="Name" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "firstName")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.lastName.label" default="Last Name" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "lastName")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "fullName")}</td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.passwordHash.label" default="Password Hash" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "passwordHash")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.address.label" default="Address" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "address")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.state.label" default="State" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "state")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.postcode.label" default="Postcode" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "postcode")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.country.label" default="Country" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "country")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.organisation.label" default="Organisation" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "organisation")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.orgType.label" default="Org Type" /></td>
-                            
-                            <td valign="top" class="value"><g:link controller="organisationType" action="show" id="${userInstance?.orgType?.id}">${userInstance?.orgType?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.permissions.label" default="Permissions" /></td>
                             

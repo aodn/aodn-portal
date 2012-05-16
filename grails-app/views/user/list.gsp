@@ -24,11 +24,11 @@
                             <g:sortableColumn property="id" title="${message(code: 'user.id.label', default: 'Id')}" />
                         
                             <g:sortableColumn property="emailAddress" title="${message(code: 'user.emailAddress.label', default: 'Email Address')}" />
+
+                            <g:sortableColumn property="openIdUrl" title="${message(code: 'user.openIdUrl.label', default: 'OpenID URL')}" />
                         
-                            <g:sortableColumn property="firstName" title="${message(code: 'user.firstName.label', default: 'First Name')}" />
-                        
-                            <g:sortableColumn property="lastName" title="${message(code: 'user.lastName.label', default: 'Last Name')}" />
-                        
+                            <g:sortableColumn property="fullName" title="${message(code: 'user.fullName.label', default: 'Name')}" />
+
                             <th>${message(code: 'user.roles.label', default: 'Roles')}</th>
                         </tr>
                     </thead>
@@ -39,11 +39,11 @@
                             <td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "id")}</g:link></td>
                         
                             <td>${fieldValue(bean: userInstance, field: "emailAddress")}</td>
-                        
-                            <td>${fieldValue(bean: userInstance, field: "firstName")}</td>
-                        
-                            <td>${fieldValue(bean: userInstance, field: "lastName")}</td>
-                        
+
+                            <td>${fieldValue(bean: userInstance, field: "openIdUrl")}</td>
+
+                            <td>${fieldValue(bean: userInstance, field: "fullName")}</td>
+
                             <td>${fieldValue(bean: userInstance, field: "roles")}</td>
                         </tr>
                     </g:each>

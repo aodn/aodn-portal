@@ -1,5 +1,5 @@
-import au.org.emii.portal.User
 import grails.converters.JSON
+import au.org.emii.portal.User
 
 class BootStrap {
 
@@ -48,9 +48,8 @@ class BootStrap {
 		JSON.registerObjectMarshaller(User) { user ->
 			def result = [:]
 			result['id'] = user.id
-			result['emailAddress'] = user.emailAddress
-			result['firstName'] = user.firstName
-			result['lastName'] = user.lastName
+            result['emailAddress'] = user.emailAddress
+			result['fullName'] = user.fullName
 			return result
 		}
     }

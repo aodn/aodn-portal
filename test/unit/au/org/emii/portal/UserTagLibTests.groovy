@@ -7,23 +7,26 @@ import org.apache.shiro.SecurityUtils
 class UserTagLibTests extends TagLibUnitTestCase {
     
     // Subjects
-    def authdSubjectPrincipal = "sys.admin@emii.org.au"
+    def authdSubjectPrincipal = 1
     def authdSubject = [ getPrincipal: { authdSubjectPrincipal },
                          isAuthenticated: { true },
                          hasRole: { true } ,
                          toString: { return "authdSubject" },
                          logout: { authdSubjectPrincipal = null }
                        ] as Subject
-    
+
     // Users
-    def user1FirstName = "Stan"
-    def user1 = new User(emailAddress: authdSubjectPrincipal, firstName: user1FirstName)
+    def user1FullName = "Dan Brown"
+    def user1 = new User(id: authdSubjectPrincipal, fullName: user1FullName)
     
-    def user2 = new User(emailAddress: "billg@microsoft.com", firstName: "William")
-    
+    def user2 = new User(id:  2, fullName: "William Gates (III)")
+
     protected void setUp() {
+
         super.setUp()
-        
+
+        loadCodec org.codehaus.groovy.grails.plugins.codecs.HTMLCodec
+
         mockDomain User, [user1, user2]
         mockLogging UserTagLib
     }
@@ -38,9 +41,9 @@ class UserTagLibTests extends TagLibUnitTestCase {
     void testLoggedInUser_NoUserLoggedIn_EmptyOutput() {
 
         // Esnure no-one is logged-in
-        SecurityUtils.metaClass.static.getSubject = { null }
+        SecurityUtils.metaClass.static.getSubject = { return null }
         
-        tagLib.loggedInUser(property: 'firstName') {}
+        tagLib.loggedInUser(property: 'fullName') {}
         
         assertEquals "No logged-in User should return empty String", "", tagLib.out.toString()
     }
@@ -49,17 +52,18 @@ class UserTagLibTests extends TagLibUnitTestCase {
 
         SecurityUtils.metaClass.static.getSubject = { authdSubject }
         
-        tagLib.loggedInUser(property: 'firstName') {}
+        tagLib.loggedInUser(property: 'fullName') {}
         
-        assertEquals "Should return name of logged-in user", user1FirstName, tagLib.out.toString()
+        assertEquals "Should return name of logged-in user", user1FullName, tagLib.out.toString()
     }
-    
-    void testLoggedInUser_NonExistingPropertyRequested_EmptyOutput() {
 
-        SecurityUtils.metaClass.static.getSubject = { authdSubject }
-        
-        tagLib.loggedInUser(property: 'lastName') {}
-        
-        assertEquals "Value of property lastName is blank in User. Tag should return empty String.", "", tagLib.out.toString()
-    }
+    // Currently no fields in User that can be empty/null
+//    void testLoggedInUser_NonExistingPropertyRequested_EmptyOutput() {
+//
+//        SecurityUtils.metaClass.static.getSubject = { authdSubject }
+//
+//        tagLib.loggedInUser(property: 'someProperty') {}
+//
+//        assertEquals "Value of property lastName is blank in User. Tag should return empty String.", "", tagLib.out.toString()
+//    }
 }

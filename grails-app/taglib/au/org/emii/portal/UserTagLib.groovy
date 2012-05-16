@@ -8,24 +8,18 @@ class UserTagLib {
     
     def loggedInUser = { attrs, body ->
         
-        def subj = SecurityUtils.subject
-        
-        if ( !subj ) return // No-one logged-in
-        
-        def principal = subj.principal
-        
-        log.debug "Found principal: $principal"
-        
+        def principal = SecurityUtils.subject?.principal
+
         if ( !principal ) return // No-one logged-in
-        
-        def user = User.findByEmailAddress( principal )
-        
-        if ( !user ) return
-        
+
+        def user = User.get( principal )
+
         log.debug "Found user: $user"
 
+        if ( !user ) return
+
         def prop = user[attrs.property]
-        
-        if ( prop ) out << prop
+
+        if ( prop ) out << prop.encodeAsHTML()
     }
 }
