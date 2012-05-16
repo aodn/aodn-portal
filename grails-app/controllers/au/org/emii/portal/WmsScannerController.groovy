@@ -21,7 +21,7 @@ class WmsScannerController {
         wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
         
         // Check if WMS Scanner settings are valid
-        if ( !conf.wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
+        if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
             
             flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
             
@@ -77,7 +77,7 @@ class WmsScannerController {
             def scanFrequency = server.scanFrequency
             
             // Perform action
-            def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackUsername=$callbackUsername&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency"
+            def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency"
         
             url = address.toURL()   
             conn = url.openConnection()
@@ -117,7 +117,7 @@ class WmsScannerController {
         def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
         
-        def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackUsername=$callbackUsername&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency"
+        def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency"
         
         def url
         def conn

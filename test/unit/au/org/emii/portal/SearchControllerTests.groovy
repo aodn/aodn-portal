@@ -17,8 +17,8 @@ class SearchControllerTests extends ControllerUnitTestCase
 		mockDomain(Search)
 		mockDomain(SearchFilter)
 		
-		joeBloggs = new User(firstName: 'Joe Bloggs')
-		peteSmith = new User(firstName: 'Pete Smith')
+		joeBloggs = new User(fullName: 'Joe Bloggs')
+		peteSmith = new User(fullName: 'Pete Smith')
 		mockDomain(User, [joeBloggs, peteSmith])
 		[joeBloggs, peteSmith].each { it.save() }
 		
