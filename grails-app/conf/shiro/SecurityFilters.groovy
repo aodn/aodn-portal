@@ -21,7 +21,7 @@ class SecurityFilters {
 			}
 		}
         
-        homeAccess(controller: "home", action: "index|config") {
+		homeAccess(controller: "home", action: "index|config") {
             before = {
             
                 logRequest("homeAccess", controllerName, actionName)
@@ -91,7 +91,7 @@ class SecurityFilters {
             }
         }
         
-        proxyAccess(controller: "proxy", action: "index|cache") {
+        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly") {
             before = {
                 
                 logRequest("proxyAccess", controllerName, actionName)
