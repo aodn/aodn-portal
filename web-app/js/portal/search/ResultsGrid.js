@@ -191,7 +191,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
   getSelectLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
     if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLinkProtocols) > 1) {
-      return 'p-result-select-link';
+      return 'p-result-show-link';
     } else {
       return 'p-result-disabled';
     }
@@ -199,7 +199,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
  
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) > 1) {
-		  return 'p-result-select-layer';
+      return 'p-result-map-add';
 	  } else {
 		  return 'p-result-disabled';
 	  }

@@ -16,39 +16,21 @@ Portal.search.LayerSelectionWindow = Ext.extend(Ext.Window, {
 		    columns: [{
 		    	id: 'title',
 		        dataIndex: 'title'
-		    },{
-		    	xtype: 'actioncolumn',
-		    	width: 70,
-		    	items: [{
-	                iconCls: 'p-result-map-go',
-	                tooltip: OpenLayers.i18n('layerSelectionWindowShowOnMinimap'),
-	                width: 35,
-	                height: 35,
-	                handler: this.onShowOnMinimap,
-	                scope: this
-	             },{
-	                 iconCls: 'p-result-map-add',
-	                 tooltip: OpenLayers.i18n('layerSelectionWindowAddToMap'),
-	                 width: 35,
-	                 height: 35,
-	                 handler: this.onAddToMap,
-	                 scope: this
-	              }]
-		    }]
+		    }],
+        listeners: {
+          rowclick: {
+            fn: this.onAddToMap,
+            scope: this
+          }
+        }
 	   	};
 	   
 	   Portal.search.LayerSelectionWindow.superclass.initComponent.apply(this, arguments); 
 	   
-       this.addEvents('showlayer', 'addlayer');
+       this.addEvents('addlayer');
    },
    
-   onShowOnMinimap: function(grid, rowIndex, colIndex) {
-      var layerRec = this.store.getLayerLink(rowIndex);
-      this.fireEvent('showlayer', layerRec);
-      this.close();
-   },
-   
-   onAddToMap: function(grid, rowIndex, colIndex) {
+   onAddToMap: function(grid, rowIndex) {
       var layerRec = this.store.getLayerLink(rowIndex);
       this.fireEvent('addlayer', layerRec);
       this.close();
