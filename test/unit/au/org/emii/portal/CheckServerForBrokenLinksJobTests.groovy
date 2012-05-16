@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext
 class CheckServerForBrokenLinksJobTests extends GrailsUnitTestCase {
 	
 	
-	def CheckServerForBrokenLinksJob testJob
 	def grailsApplication
 	
 	protected void setUp() {
