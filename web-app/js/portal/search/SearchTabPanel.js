@@ -40,6 +40,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 					 {
 						 region: 'north',
 						 xtype: 'portal.search.minimappanel',
+						 cls: 'map',
 						 ref: '../minimap',
 						 initialBbox: appConfig.initialBbox,
 						 mainMap: this.mapPanel,
@@ -61,6 +62,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 					layout: 'ux.centre',
 					items: [{					  
 						xtype: 'portal.search.searchform',
+						
 						ref: '../../searchForm',
             searchController: this.searchController,
 	          boxMaxWidth: 450,

@@ -1,15 +1,5 @@
-.p-search a, .p-search p, .p-search h1 {
-   color: black;
-}
 
-.p-search a {   
-    text-decoration: none;
-    color: #333333;
-}
-.p-search a:hover {   
-    text-decoration: underline;
-    color: black;
-}
+
 
 .p-search h1 {
    margin-bottom: 5px;

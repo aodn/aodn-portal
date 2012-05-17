@@ -1,8 +1,10 @@
 .ux-layout-centre-item {
     margin:0 auto;
     text-align:left;
+	padding-top: 60px;
 }
 .ux-layout-centre .x-panel-body,   
 body.ux-layout-centre {            
     text-align:center;
+	border-radius: 12px 12px 0 0;
 }

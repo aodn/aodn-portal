@@ -40,7 +40,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     mapLayer: 'Map Layer',
     searchButton: 'Search',
-    fullTextSearch: ' ** Free text search **',
+    fullTextSearch: ' ',
     saveSearchButtonText: 'Save',
     saveSearchButtonTip: 'Save the current search',
     deleteSavedSearchButtonText: 'Delete',

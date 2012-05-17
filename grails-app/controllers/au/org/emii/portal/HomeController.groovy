@@ -14,7 +14,7 @@ class HomeController {
         }
         
         def jsFileVersionNumber = grailsApplication.metadata.'app.svn.revision' ?: System.currentTimeMillis()
-
+println _appBuildInfo()
         [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo(), jsVerNum: jsFileVersionNumber ]
     }
 	

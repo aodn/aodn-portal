@@ -90,7 +90,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 					);
 					if (this.ownerCt.width <  430) {
 						this.ownerCt.setWidth(430);
-						if (this.ownerCt.ownerCt) this.ownerCt.ownerCt.doLayout();
+						if (this.ownerCt.ownerCt) {
+							this.ownerCt.ownerCt.doLayout();
+						}
 					}
 
 					this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
@@ -134,9 +136,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 			if(layer.server.type.search("NCWMS") > -1)  {
 				this.transectControl.setMapPanel(getMapPanel());
-				this.transectControl.layer = layer;
+				this.transectControl.layer = layer;	
 				this.transectControl.show();
-				
+				this.transectControl.ownerCt.doLayout();
 			}			
 			this.opacitySlider.show(); // will reset slider
 		}
