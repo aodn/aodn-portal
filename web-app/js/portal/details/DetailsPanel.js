@@ -49,7 +49,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			items: [this.opacitySlider]
 		});
 
-
+	
 		this.transectControl = new Portal.mainMap.TransectControl({
 			ref: 'transectControl',
 			height: 30,
@@ -67,15 +67,18 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 									layoutConfig: {
 										align: 'stretch'
 									},
+	
 									items: [
+									    
 										{
 											//TODO: use template
-											height: 335,
+											//TODO: resize to fit
 											html: "<img src=\"" + inf.transectUrl + "\" />"
 										},
 										
 										{
-											items: [{
+											//TODO: add a button to display this in a popup
+									/*		items: [{
 												width: 200,
 												//TODO: use template
 												html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " "
@@ -83,7 +86,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 												hidden: inf.dimensionValues == '',
 												//TODO: use template
 												html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
-											}]
+											}] */
 										}]
 								}]
 							}		
