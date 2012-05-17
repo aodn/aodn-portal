@@ -274,7 +274,7 @@ class LayerController {
 				onlineResourcesList.each {
 					def linkText = it.CI_OnlineResource.description.CharacterString.text()
 					def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-					html += "<a href=${linkUrl}>${linkText}</a><BR>"
+					html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
 				}
 				render text: html, contentType: "text/html", encoding: "UTF-8"
 			} catch(SAXException e) {
