@@ -54,7 +54,13 @@ class ConfigController {
         def principal = currentUser?.getPrincipal()
 
         if (principal) {
-            def userInstance = User.findByEmailAddress(principal)
+            def userInstance = User.get(principal)
+			
+			if (!userInstance)
+			{
+				log.error("No user found with id: " + principal)
+			}
+			
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
 
