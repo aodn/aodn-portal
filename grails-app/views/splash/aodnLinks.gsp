@@ -6,6 +6,6 @@
 <a href="http://www.aodc.gov.au" class="external wrap" title="Australian Ocean Data Centre Joint Facility" target="_blank">Australian Ocean Data Centre Joint Facility (AODCJF)</a><br>
 <a href="http://www.ands.org.au" class="external wrap" title="Australian National Data Service" target="_blank">Australian National Data Service (ANDS)</a><br>
 <a class="external wrap" href="http://imos.aodn.org.au/oceancurrent/" title="Ocean Current page" target="_blank">Ocean Current Page</a><BR>
-<a class="external" href="http://emii1.its.utas.edu.au/Portal2_help/?q=forum" title="forum" target="_blank">Help forum</a>
+<a class="external" href="${ grailsApplication.config.help.url }/?q=forum" title="forum" target="_blank">Help forum</a>
 
 <div class="clear spacer"></div>

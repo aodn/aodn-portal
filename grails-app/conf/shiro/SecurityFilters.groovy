@@ -16,13 +16,17 @@ class SecurityFilters {
                 // Remove the rememberMe cookie
                 request.cookies.find( { it.name == "rememberMe" } ).each {
 
+                    getSession() // Ensure a Session exists before we start the response
+
                     log.info "Removing rememberMe cookie: ${it.value}"
 
                     it.maxAge = 0
                     response.addCookie it
 
-                    log.info "Logging user out"
-                    SecurityUtils.subject.logout()
+                    def subject = SecurityUtils.subject
+
+                    log.info "Logging user '${subject.principal}' out"
+                    subject.logout()
                 }
             }
         }
