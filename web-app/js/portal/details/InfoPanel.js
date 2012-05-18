@@ -78,9 +78,9 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
             // only handling WMS-1.3.0 reversing here not ncWMS
             if(this.selectedLayer.server.type == "WMS-1.3.0") { 
                 bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
-            } 
-			
-            if ((!this.selectedLayer.isBaseLayer) && this.selectedLayer.getVisibility() && this.selectedLayer.params.QUERYABLE) {
+            }
+            
+            if ((!this.selectedLayer.isBaseLayer) && this.selectedLayer.getVisibility()) {
                 if (this.selectedLayer.params.VERSION == "1.1.1" || this.selectedLayer.params.VERSION == "1.1.0") {                
                     url = this.selectedLayer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",
