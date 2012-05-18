@@ -68,25 +68,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 										align: 'stretch'
 									},
 	
-									items: [
-									    
-										{
+									items: [{
 											//TODO: use template
-											//TODO: resize to fit
-											html: "<img src=\"" + inf.transectUrl + "\" />"
-										},
-										
-										{
-											//TODO: add a button to display this in a popup
-									/*		items: [{
-												width: 200,
-												//TODO: use template
-												html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " "
-											},{
-												hidden: inf.dimensionValues == '',
-												//TODO: use template
-												html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
-											}] */
+											html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading')+ "', '"+inf.line+"');\" />"
 										}]
 								}]
 							}		
