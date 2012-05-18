@@ -21,7 +21,6 @@
 
 html, body, p, td{    
     font-family: tahoma,verdana,arial,sans-serif;
-	line
 }
 p {
 	margin-bottom: 40px;
@@ -241,9 +240,8 @@ a.userlink {
     text-shadow: none! important;
 }
 
-
 #downloadCart {
-    background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
+    background: url("../images/mapshadow.png") repeat-x scroll left top #0079C2;
     border-radius: 10px 3px 10px 3px;
     color: white;
     float: right;
@@ -267,6 +265,14 @@ a.userlink {
 #downloadCart a:hover {
     font-weight: bold;
 }
+
+ #header .hiddenCart {
+     display: none;
+ }
+
+ #downloadCartControls {
+     text-align: right;
+ }
 
 .x-tab-strip span.x-tab-strip-text {
     color: #666;

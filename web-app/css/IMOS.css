@@ -248,3 +248,11 @@ a.userlink {
 #downloadCart a:hover {
     font-weight: bold;
 }
+
+#header .hiddenCart {
+    display: none;
+}
+
+#downloadCartControls {
+    text-align: right;
+}
