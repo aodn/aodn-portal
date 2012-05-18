@@ -26,13 +26,23 @@
   <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum" title="forum" target="_blank">Help forum</a></li>
   </ul>
   </div>
+
   
     <div class="spacer floatLeft homePanelWidget"  style="width:235px">  
     <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent4AODN.png" width="250" /></a>
 	<BR>
 	</div>
+	
+	
   <div class="spacer floatLeft homePanelWidget"  style="width:300px"> 
   The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
   go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
   </div>
+
+	<div class="clear spacer"></div>
+  	<div class="spacer"> 
+	    <img class="roundedImages" src="images/cc.bmp"/></a>
+	    This site is licensed under a <a class="external" title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a>
+	</div>
+
   
