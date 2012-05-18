@@ -176,9 +176,9 @@ function addToPopup(mapPanel, e) {
             // only handling WMS-1.3.0 reversing here not ncWMS
             if(layer.server.type == "WMS-1.3.0") { 
                 bboxBounds =  new OpenLayers.Bounds.fromArray(bboxBounds.toArray(true));
-            } 
-			
-            if ((!layer.isBaseLayer) && layer.getVisibility() && layer.params.QUERYABLE) {
+            }
+            
+            if ((!layer.isBaseLayer) && layer.getVisibility()) {
                 if (layer.params.VERSION == "1.1.1" || layer.params.VERSION == "1.1.0") {                
                     url = layer.getFullRequestString({
                         REQUEST: "GetFeatureInfo",

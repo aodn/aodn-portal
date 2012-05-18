@@ -1,8 +1,5 @@
 package au.org.emii.portal
 
-import org.apache.jasper.compiler.Node.ParamsAction;
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-
 /**
  * A snapshot represents the state of a saved map (i.e. the zoom and extent, as well as 
  * all of the selected layers).
@@ -43,5 +40,4 @@ class Snapshot
 	{
 		name
 	}
-    
 }

@@ -49,7 +49,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			items: [this.opacitySlider]
 		});
 
-
+	
 		this.transectControl = new Portal.mainMap.TransectControl({
 			ref: 'transectControl',
 			height: 30,
@@ -67,30 +67,19 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 									layoutConfig: {
 										align: 'stretch'
 									},
-									items: [
-										{
+	
+									items: [{
 											//TODO: use template
-											height: 335,
-											html: "<img src=\"" + inf.transectUrl + "\" />"
-										},
-										
-										{
-											items: [{
-												width: 200,
-												//TODO: use template
-												html: "<h5>" + OpenLayers.i18n('transectDataHeading')+ "</h5>" + inf.line +  " "
-											},{
-												hidden: inf.dimensionValues == '',
-												//TODO: use template
-												html: "<h5>" + OpenLayers.i18n('dimensionValuesHeading') + "</h5>" + inf.dimensionValues
-											}]
+											html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading')+ "', '"+inf.line+"');\" />"
 										}]
 								}]
 							}		
 					);
 					if (this.ownerCt.width <  430) {
 						this.ownerCt.setWidth(430);
-						if (this.ownerCt.ownerCt) this.ownerCt.ownerCt.doLayout();
+						if (this.ownerCt.ownerCt) {
+							this.ownerCt.ownerCt.doLayout();
+						}
 					}
 
 					this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
@@ -134,9 +123,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 			if(layer.server.type.search("NCWMS") > -1)  {
 				this.transectControl.setMapPanel(getMapPanel());
-				this.transectControl.layer = layer;
+				this.transectControl.layer = layer;	
 				this.transectControl.show();
-				
+				this.transectControl.ownerCt.doLayout();
 			}			
 			this.opacitySlider.show(); // will reset slider
 		}

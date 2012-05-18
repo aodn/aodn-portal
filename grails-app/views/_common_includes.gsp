@@ -4,7 +4,6 @@
       <script>
         jQuery('.button input').live('hover',  
           function () {
-            //$(this).append($("<span> ***</span>"));
             jQuery(this).toggleClass("hover")
               .next().stop(true, true).slideToggle();
 
@@ -19,10 +18,11 @@
       <script src="${resource(dir:'js/portal/common',file:'helpers.js')}"   type="text/javascript"></script>       
 
 
-      <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-3.3.1/resources/css/ext-all.css')}" />
-      <link rel="stylesheet" type="text/css" href="${resource(dir:'js',file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />         
+      <link rel="stylesheet" type="text/css" href="${resource(dir:'js', file:'ext-3.3.1/resources/css/ext-all.css')}" />
+      <link rel="stylesheet" type="text/css" href="${resource(dir:'js', file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />         
       <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'extThemeOverrides.css')}" />
-      <link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'general.css')}" />
+      <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'general.css')}" />
+	  <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file: grailsApplication.config.instanceName + '.css')}" />
 
 
       <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />

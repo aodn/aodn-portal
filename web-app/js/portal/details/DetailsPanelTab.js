@@ -41,11 +41,13 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	
     	//Update the info tab panel
     	var metaUrl = null;
+
     	if (layer.metadataUrls && layer.metadataUrls.length > 0 && layer.metadataUrls[0].type == "other") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
         	metaUrl = layer.metadataUrls[0].onlineResource.href;
         }
 
-        if(metaUrl || this.selectedLayer.server.type.search("NCWMS") > -1) {
+
+        if(metaUrl) {   //TODO: add this back in: || this.selectedLayer.server.type.search("NCWMS") > -1) {
         	this.setActiveTab(this.infoPanel.getId());
         	this.unhideTabStripItem(this.infoPanel);
         	this.infoPanel.updateInfo(metaUrl);

@@ -55,9 +55,7 @@ p, h1, h2, h3 {
     border: 0px;
     /*background: none;*/
 }
-.x-layout-split {
-    background-color: #f3f3f3;
-}
+
 
 .x-tip-body {
     padding: 5px! important;
@@ -107,16 +105,7 @@ p, h1, h2, h3 {
     background-color: inherit! important;
 }
 
-.x-panel-header {
-    background-image: none;
-	background-color: white;
-    border: none;
-    color: #15428B;
-    font-family: tahoma,arial,verdana,sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 10px 3px 4px 10px;
-}
+
 
 a.x-menu-item {
     padding-left: 3px! important;
