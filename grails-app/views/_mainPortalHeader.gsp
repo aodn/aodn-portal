@@ -24,7 +24,7 @@
         </shiro:user>
         <a class="external mainlinks" target="_blank" href="http://www.emii.org.au" title="e-Marine Information Infrastructure" >eMII</a>
         <a class="external mainlinks" target="_blank" href="${ grailsApplication.config.portal.header.organisationLink.url }" title="${ grailsApplication.config.portal.header.organisationLink.tooltipText }">${ grailsApplication.config.portal.header.organisationLink.linkText }</a>
-      	<a class="external mainlinks" href="${grailsApplication.config.help.url}" title="Portal Help files" >Help</a>
+      	<a class="external mainlinks" target="_blank" href="${grailsApplication.config.help.url}" title="Portal Help files" >Help</a>
     </div>
     <div id="downloadCart" class="hiddenCart">
       Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="#" onclick="new Portal.ui.DownloadCartConfirmationWindow().show(); return false;">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
