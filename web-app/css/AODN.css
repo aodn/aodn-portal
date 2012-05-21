@@ -2,13 +2,20 @@
     font-size: 12px;
 	line-height: 16px;
 	background-color: white;
-	background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#FFFFFF));
+	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF));
 	background-image: -moz-linear-gradient(center top , #DDDDDD 0pt, white 745px); 
-	background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
+	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#FFFFFF');
 	color: #030303;
     margin-top: 0px! important; 
 	
+}
+html.x-viewport {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+body {
+	height: 100%
 }
 
 #header {
@@ -81,7 +88,7 @@ input, select, textarea {
    background-color: white;
    font-size: 12px;
    border-radius: 12px;
-   padding: 20px;
+   /*padding: 20px;*/
    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
 }
 
@@ -207,7 +214,7 @@ a.userlink {
 }
 #viewPortLinks  {
    position: relative;
-   top: 52px;
+   top: 55px;
 }
 
 .viewPortLinks a {
@@ -227,7 +234,7 @@ a.userlink {
 }
 .viewPortLinksBackground {
     float: left;
-    padding: 4px 10px;
+    padding: 6px 10px;
     margin-right: 5px;
     background: url("../images/mapshadow.png") repeat-x scroll left top grey;
     border-radius: 14px;   

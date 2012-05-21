@@ -18,7 +18,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                 region:'center',
                 layout:'fit',
                 //minHeight: 600,
-                padding:  '0px 10px 0px 10px',
+                padding:  '0px 5px 0px 0px',
                 unstyled: true,
                 stateful: false,
                 items: [  
