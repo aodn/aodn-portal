@@ -5,7 +5,7 @@
     <meta name="layout" content="main">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="layout" content="main" />
-    <meta http-equiv="refresh" content="180">
+    <meta http-equiv="refresh" content="30">
     
 		<g:set var="entityName" value="${message(code: 'wmsScanner.label', default: 'WMS Scanner')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>  

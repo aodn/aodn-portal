@@ -115,7 +115,7 @@ class LayerController {
 			}
         }
         else {
-            log.error "Layer: The layerId does not exist"
+            log.error "Layer with id: '${params.layerId}' does not exist"
             render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
