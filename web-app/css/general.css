@@ -778,3 +778,17 @@ JQUERY AUTO COMPLETE
 .wrapping-wrapped-field {
 	white-space: normal;
 }
+
+.p-centre-item {
+    margin:0 auto;
+    text-align:left;
+}
+
+.p-centre .x-panel-body {            
+    text-align:center;
+}
+
+.p-header-space {
+  border-radius: 12px 12px 0 0;
+}
+

@@ -29,7 +29,17 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		  searchController: this.searchController
 		});
 		
-		this.items = [
+   this.searchForm = new Portal.search.SearchForm({            
+      searchController: this.searchController,
+      cls: 'p-centre-item',
+      boxMaxWidth: 450,
+      boxMinWidth: 280,
+      border: false,
+      bodyStyle: 'padding:5px 5px 0'
+    });
+   
+
+   this.items = [
 		{
 			 region: 'east',
 			 collapseMode: 'mini',
@@ -56,27 +66,26 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			xtype: 'container',
 			ref: 'searchPanel',
 			activeItem: 0,
-			items: [
-					{
-					ref: '../searchContainer',
-					layout: 'ux.centre',
-					items: [{					  
-						xtype: 'portal.search.searchform',
-						
-						ref: '../../searchForm',
-            searchController: this.searchController,
-	          boxMaxWidth: 450,
-	          boxMinWidth: 280,
-						border: false,
-						bodyStyle: 'padding:5px 5px 0'
-					}]
-				},
-				{
-					store: this.resultsStore,
-					xtype: 'portal.search.resultsgrid',
-					ref: '../resultsGrid'
-				}
-			]
+     items: [{
+        xtype: 'container',
+        layout: 'anchor',
+         items: [{
+           xtype: 'spacer',
+           cls: 'x-panel-body p-header-space',
+           anchor: '100% 7%'
+         },{
+           ref: '../../searchContainer',
+           layout: 'fit',
+           cls: 'p-centre',
+            anchor: '100% 90%',
+           items: [this.searchForm]
+        }]
+     },{
+           store: this.resultsStore,
+           xtype: 'portal.search.resultsgrid',
+           ref: '../resultsGrid'
+         }
+      ]
 		 }];
 		
 		Portal.search.SearchTabPanel.superclass.initComponent.call(this);

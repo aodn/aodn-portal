@@ -8,7 +8,6 @@ ${buildInfo}
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt1.1/resources/css/geoext-all.css')}" />
 <!-- User extensions -->
-<link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'CentreLayout.css')}" />
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/superboxselect.css')}" />
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'ext-ux/Hyperlink/hyperlink.css')}" />
 <!-- Portal classes-->
@@ -41,7 +40,6 @@ ${buildInfo}
 
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'ext-ux/Centre.js')}" type="text/javascript"></script>
 
 <script src="${resource(dir:'js',file:'portal/lang/en.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js?')}${jsVerNum}" type="text/javascript"></script>   
