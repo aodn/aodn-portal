@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import grails.util.Environment
+
 class HomeController {
 
 	def grailsApplication
@@ -47,7 +48,7 @@ class HomeController {
 
         if ( Environment.current == Environment.PRODUCTION ) {
 
-            return "<!-- Portal version ${md['app.version']}, built ${md['app.build.date']?:"Unk."} -->"
+            return "<!-- ${grailsApplication.config.instanceName} Portal v${md['app.version']}, built ${md['app.build.date']?:"Unk."} -->"
         }
 
         return """\
