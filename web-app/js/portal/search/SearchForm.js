@@ -24,7 +24,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     
     this.saveSearchLink = new Portal.search.SaveSearchLink({
       searchController: this.searchController,
-      hidden: !Portal.app.config.currentUser
+      hidden: true
     });
     
     this.items = [
@@ -95,6 +95,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
   },
 
   onSearch: function() {
+    this.saveSearchLink.setVisible('currentUser' in Portal.app.config);
     this.fireEvent("search", this);
   },
 
