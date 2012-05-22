@@ -181,18 +181,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	},
 
 	setSearchContainerHeightDeferred: function() {
-//		var searchFormHeight = this.searchForm.getHeight();
-//		if (searchFormHeight == this.lastHeight) return;
-//    this.lastHeight = searchFormHeight;
-//		var searchFormWidth = this.searchForm.getWidth();
-//		var searchContainerWidth = this.searchContainer.getWidth();
-//		var newHeight = searchFormHeight;
-//		// add space for scroll bar if required
-//		if (searchContainerWidth < searchFormWidth) {
-//			newHeight += 20;
-//		}
-//    this.searchContainer.setSize(searchContainerWidth, newHeight);
-//    this.searchContainer.setHeight(searchFormHeight);
 		this.searchPanel.doLayout();
 	},
 
