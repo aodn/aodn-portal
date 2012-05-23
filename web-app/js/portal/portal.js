@@ -17,10 +17,10 @@ Portal.app = {
     
     ajaxComplete: function(conn, response, options) {
         progressCount--;
-        if(progressCount == 0) {
+        if(progressCount <= 0) {
+        	progressCount = 0;
             this.ajaxAction('hide');
         }
-        
     },
     init: function() {
     	// Set open layers proxyhost
