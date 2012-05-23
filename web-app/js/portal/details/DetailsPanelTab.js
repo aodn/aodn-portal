@@ -32,6 +32,11 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.stylePanel.setSelectedLayer(layer);
         this.animationPanel.setSelectedLayer(layer);
     },
+    
+    hideInfoTab: function(){
+    	this.setActiveTab(this.stylePanel.getId());
+    	this.hideTabStripItem(this.infoPanel);
+    },
 
     update: function(layer){
 
@@ -47,14 +52,12 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         }
 
 
-        if(metaUrl) {   //TODO: add this back in: || this.selectedLayer.server.type.search("NCWMS") > -1) {
+        if(metaUrl || this.selectedLayer.server.type.search("NCWMS") > -1) {
         	this.setActiveTab(this.infoPanel.getId());
         	this.unhideTabStripItem(this.infoPanel);
         	this.infoPanel.updateInfo(metaUrl);
         } else {  //Just hide it if there's nothing to display
-        	this.setActiveTab(this.stylePanel.getId());
-        	this.hideTabStripItem(this.infoPanel);
+        	this.hideInfoTab();
         }
     }
-
 });

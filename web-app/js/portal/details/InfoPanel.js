@@ -6,7 +6,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
     title: 'Info',
     layout: 'fit',
     autoScroll: true,
-    html: "Loading ...<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>",
+    html: "Loading ...",
 
 	initComponent: function(cfg){
 		Portal.details.InfoPanel.superclass.initComponent.call(this);
@@ -139,7 +139,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 						if(copyright != undefined) {
 							newTabContent = "<p>" + copyright.childNodes[0].nodeValue + "</p>";
 						} else {
-							newTabContent = "No metadata avaialble for this layer.";
+							Ext.getCmp("detailsPanelTabs").hideInfoTab();
 						}
 					}
 
