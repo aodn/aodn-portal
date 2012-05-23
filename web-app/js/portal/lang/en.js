@@ -1,4 +1,7 @@
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
+	
+	layerChooserMenuHeader: 'Map Layer Chooser',
+			
     // Search results 
     selectLayer: 'Select layer',
     bboxLayer: 'Extent',

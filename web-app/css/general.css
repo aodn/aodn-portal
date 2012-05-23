@@ -1,5 +1,5 @@
 body, html{
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
 	
     /*margin: 5px! important;
@@ -7,8 +7,10 @@ body, html{
     margin-top: 2px! important; */
 }
 
+
+
 p, td{    
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: tahoma,verdana,arial,sans-serif;
 }
 
 

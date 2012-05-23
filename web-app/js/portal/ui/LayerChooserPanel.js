@@ -20,7 +20,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
                 cls: 'menuHeader',
                 html: 'Message'
             },
-            title: 'Map Layer Chooser',
+            title: OpenLayers.i18n('layerChooserMenuHeader'),
             layout: 'vbox',
             layoutConfig: {
               align: 'stretch'

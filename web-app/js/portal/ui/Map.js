@@ -299,13 +299,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if(layerDescriptor.namespace != null) {
 			layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
 		}
-		
 		var params = {
 			layers: layerDescriptor.name,
 			transparent: 'TRUE',
 			version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
+			EXCEPTIONS: 'application/vnd.ogc.se_xml',
 			queryable: layerDescriptor.queryable
 		};
 		if (overrides) {
