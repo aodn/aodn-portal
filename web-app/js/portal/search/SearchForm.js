@@ -27,6 +27,16 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       hidden: true
     });
     
+    this.newSearchLink = new Portal.search.NewSearchLink({
+      searchController: this.searchController,
+      hidden: true
+    });
+    
+    this.saveNewSpacer = new Ext.Spacer({
+      width: 8,
+      hidden: true
+    });
+    
     this.items = [
       this.searchFiltersPanel,
       this.filterSelector,
@@ -39,6 +49,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
         layout: 'hbox',
         cls: 'searchField',
         items: [
+          this.newSearchLink,
+          this.saveNewSpacer,
           this.saveSearchLink,
           {
             xtype: 'spacer',
@@ -58,6 +70,8 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
     this.mon(this.searchButton, 'click', this.onSearch, this);
     this.mon(this.searchFiltersPanel, 'contentchange', this.refreshDisplay, this);
+    
+    this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
     
     this.on('activate', this.refreshDisplay, this);    
   },
@@ -96,7 +110,15 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
   onSearch: function() {
     this.saveSearchLink.setVisible('currentUser' in Portal.app.config);
+    this.saveNewSpacer.setVisible('currentUser' in Portal.app.config);
+    this.newSearchLink.setVisible(true);
     this.fireEvent("search", this);
+  },
+  
+  handleNewSearch: function() {
+    this.saveSearchLink.setVisible(false);
+    this.saveNewSpacer.setVisible(false);
+    this.newSearchLink.setVisible(false);
   },
 
   addSearchFilters: function(searchFilters) {

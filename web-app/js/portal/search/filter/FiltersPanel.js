@@ -54,9 +54,9 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
     var filterComponent = Ext.create(record.get('componentConfig'));
 
     // Set the value if necessary (e.g. if we got here via load saved search).
-    if (record.filterValue)
+    if (record.get('filterValue'))
     {
-      filterComponent.setFilterValue(record.filterValue);
+      filterComponent.setFilterValue(record.get('filterValue'));
     }
 
     // Relay protocol change events (for other filters that are interested in it).
@@ -144,9 +144,9 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
       this.relayEvents(bboxField, ['bboxchange']);
 
       // Need to set value again...
-      if (record.filterValue)
+      if (record.get('filterValue'))
       {
-        filterComponent.setFilterValue(record.filterValue);
+        filterComponent.setFilterValue(record.get('filterValue'));
       }
     }
   },

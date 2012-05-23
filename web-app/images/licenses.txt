@@ -19,3 +19,11 @@ Iconset: Snowish Icons (144 icons)
 License: GNU General Public License
 Commercial usage: Allowed
 URL: http://www.iconarchive.com/show/snowish-icons-by-saki.html
+
+go-back-icon.png
+
+Artist: Custom Icon Design
+Iconset: Pretty Office 5 Icons (60 icons)
+License: GFree for non-commercial use
+Commercial usage: Buy commercial license here: http://www.customicondesign.com/free-icon/pretty-office-icon-set-part-5
+URL: http://www.iconarchive.com/show/pretty-office-5-icons-by-custom-icon-design.html

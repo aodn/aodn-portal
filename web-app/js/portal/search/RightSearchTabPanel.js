@@ -28,10 +28,6 @@ Portal.search.RightSearchTabPanel = Ext.extend(Ext.TabPanel, {
       }, cfg);
     
     Portal.search.RightSearchTabPanel.superclass.constructor.call(this, config);
-  },
-  
-  addTab: function(newTab) {
-    this.add(newTab);
   }
   
 });

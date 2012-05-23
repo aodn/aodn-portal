@@ -62,6 +62,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/search/filter/FiltersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FilterStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/FilterSelector.js?')}${jsVerNum}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/NewSearchLink.js?')}${jsVerNum}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SaveSearchLink.js?')}${jsVerNum}"   type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SavedSearchComboBox.js?')}${jsVerNum}" type="text/javascript"></script>

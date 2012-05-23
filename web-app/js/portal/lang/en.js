@@ -54,6 +54,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	chooseSavedSearch: 'Choose a Saved Search',
 	mySearches: 'My Searches',
 	registerToSave: 'Register or login to save your searches',
+  newSearchText: 'New',
+  newSearchTip: 'Start a new search',
       
     
     // Download Cart

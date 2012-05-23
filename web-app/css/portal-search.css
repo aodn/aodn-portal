@@ -149,3 +149,8 @@ input.p-selector {
    background-repeat: no-repeat;
 }
 
+.p-back-icon {
+   background-image: url(../images/go-back-icon.png);
+   background-repeat: no-repeat;
+}
+

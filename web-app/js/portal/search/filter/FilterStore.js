@@ -1,65 +1,67 @@
 Ext.namespace('Portal.search.filter');
 
+Portal.search.filter.getDefaultFilters = function() {
+  return [ 
+       [ 
+        1, 
+        'portal.search.field.freetext',
+        null, 
+        {
+        xtype : 'portal.search.field.freetext',
+        anchor: '100%'
+      },
+      true
+    ],
+    // TODO: this element could do with refactoring...
+    [
+      2,
+      'combo',
+      null,
+      {
+        hideLabel : true,
+        name : 'protocolCombo',
+        xtype : 'combo',
+        anchor: '-2',
+        mode : 'local',
+        editable : false,
+        submitValue : false,
+        forceSelection : true,
+        triggerAction : 'all',
+        store : 
+          [
+            [ '', 'Show me all results' ],
+            [
+                Portal.app.config.metadataLayerProtocols.split(
+                    "\n").join(' or '),
+                'Show me results with map layers only' ]
+          ],
+        hiddenName : 'protocol',
+        value : '',
+        getFilterValue: function() {
+          return { value: this.getValue() };
+        },
+        setFilterValue: function(v) {
+          this.setValue(v.value);
+        },
+        listeners :
+        {
+          'select': function(combo, record, index) {
+            this.fireEvent('protocolChange', record.data.field1);
+          }
+        },
+        onContentChange: function()
+        {
+          this.fireEvent('protocolChange', this.getValue());
+        } 
+      },
+      true
+    ]
+  ]};
+
 Portal.search.filter.newDefaultActiveFilterStore = function()
 {
 	return new Portal.search.filter.FilterStore({
-		data: 
-			[ 
-				[ 
-				  	1, 
-				  	'portal.search.field.freetext',
-				  	null, 
-				  	{
-						xtype : 'portal.search.field.freetext',
-            anchor: '100%'
-					},
-					true
-				],
-				// TODO: this element could do with refactoring...
-				[
-				 	2,
-				 	'combo',
-				 	null,
-					{
-						hideLabel : true,
-						name : 'protocolCombo',
-						xtype : 'combo',
-            anchor: '-2',
-						mode : 'local',
-						editable : false,
-						submitValue : false,
-						forceSelection : true,
-						triggerAction : 'all',
-						store : 
-							[
-								[ '', 'Show me all results' ],
-								[
-										Portal.app.config.metadataLayerProtocols.split(
-												"\n").join(' or '),
-										'Show me results with map layers only' ]
-							],
-						hiddenName : 'protocol',
-						value : '',
-						getFilterValue: function() {
-							return { value: this.getValue() };
-						},
-						setFilterValue: function(v) {
-							this.setValue(v.value);
-						},
-						listeners :
-						{
-							'select': function(combo, record, index) {
-								this.fireEvent('protocolChange', record.data.field1);
-							}
-						},
-						onContentChange: function()
-						{
-							this.fireEvent('protocolChange', this.getValue());
-						}	
-					},
-					true
-				]
-			]
+		data: this.getDefaultFilters() 
 	});
 };
 

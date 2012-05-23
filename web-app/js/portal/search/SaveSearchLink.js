@@ -6,16 +6,11 @@ Portal.search.SaveSearchLink = Ext.extend(Ext.ux.Hyperlink, {
     
     var config = Ext.apply({
       text: OpenLayers.i18n("saveSearchButtonText"),
-      tooltip: OpenLayers.i18n("saveSearchButtonTip"),
-      iconCls: 'p-save-icon',
-      listeners:
-      {
-        scope: this,
-        'click': this.onSaveClick
-      }
+//      tooltip: OpenLayers.i18n("saveSearchButtonTip"),   // Not supported
+      iconCls: 'p-save-icon'
     }, cfg);
 
-    Portal.search.FilterSelector.superclass.constructor.call(this, config);
+    Portal.search.SaveSearchLink.superclass.constructor.call(this, config);
     
     this.on('click', this.onSaveClick, this);
   },

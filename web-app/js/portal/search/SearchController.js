@@ -23,9 +23,7 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
     this.activeFilterStore.on('remove', this.onRemoveActiveFilter, this);
     this.inactiveFilterStore.on('remove', this.onRemoveInactiveFilter, this);
 
-//    this.addEvents({
-//      snapshotsChanged: true
-//    });
+    this.addEvents('newsearch');
   },
   
   getActiveFilterStore: function() {
@@ -99,6 +97,53 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
 		});
 	},
 	
+	newSearch: function() {
+    var defaultFilters = Portal.search.filter.getDefaultFilters();
+	  this.clearFilters();
+	  this.addFiltersArray(defaultFilters);
+	  this.fireEvent('newsearch');
+	},
+	
+  clearFilters: function() {
+    // Make every filter inactive.
+    this.activeFilterStore.each(function(record) {
+      record.set('filterValue', undefined);
+      this.inactiveFilterStore.add(record);
+    }, this);
+    this.activeFilterStore.removeAll();
+  },
+  
+  addFiltersObject: function(filters) {
+    Ext.each(filters, function(filter) {
+      this.addFilter(filter.type, filter.value);
+    }, this);
+  },
+
+  addFiltersArray: function(filters) {
+    Ext.each(filters, function(filter) {
+      this.addFilter(filter[1], filter[3]);
+    }, this);
+  },
+  
+  addFilter: function(filterType, filterValue) {
+    var recordIndex = this.inactiveFilterStore.find('type', filterType);
+    
+    if (recordIndex == -1)
+    {
+      // error
+      // TODO
+      return
+    }
+    
+    var record = this.inactiveFilterStore.getAt(recordIndex);
+
+    // Update value.
+    record.set('filterValue', filterValue);
+    
+    // Move to active store...
+    this.inactiveFilterStore.remove(record);
+  },
+  
 	onSuccessfulSave: function(response, options)
 	{
 		console.log(response);
@@ -123,33 +168,8 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
 	onSuccessfulShow: function(response, options)
 	{
 		var savedSearch = Ext.decode(response.responseText);
-
-		// Make every filter inactive.
-		this.activeFilterStore.each(function(record) {
-			this.inactiveFilterStore.add(record);
-		}, this);
-		this.activeFilterStore.removeAll();
-		
-		Ext.each(savedSearch.filters, function(filter) {
-			
-			var recordIndex = this.inactiveFilterStore.find('type', filter.type);
-			
-			if (recordIndex == -1)
-			{
-				// error
-				// TODO
-				return
-			}
-			
-			var record = this.inactiveFilterStore.getAt(recordIndex);
-
-			// Update value.
-			record.filterValue = filter.value;
-			
-			// Move to active store...
-			this.inactiveFilterStore.remove(record);
-			
-		}, this);
+		this.clearFilters();
+		this.addFiltersObject(savedSearch.filters);
 	},
 	
 	onFailedShow: function(response, options)

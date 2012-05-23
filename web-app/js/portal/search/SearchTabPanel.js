@@ -137,6 +137,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			contentchange: this.setSearchContainerHeight,
 			afterrender: this.setSearchContainerHeight
 		});
+		
+		this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
 
 	 	// relay add layer event
 	 	this.relayEvents(this.resultsGrid, ['addlayer']);
@@ -240,6 +242,17 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		this.runSearch(searchParams, 1);
 	},
 	
+	handleNewSearch: function() {
+    var searchForm = this.searchForm;
+    this.rightSearchPanel.remove(searchForm, false);
+    this.rightSearchPanel.setActiveTab(0);
+    this.searchPanel.getLayout().setActiveItem(0);
+    this.searchContainer.add(searchForm);
+    searchForm.setTitle('');
+    searchForm.setActionSide('left');
+    this.doLayout();
+	},
+	
 	getCatalogueSearchParams: function(searchFilters) {
 		var format = function(value) {
 			return Ext.isDate(value)?value.format('Y-m-d'):value;
@@ -266,7 +279,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
     this.searchContainer.remove(searchForm, false);
     searchForm.setTitle(OpenLayers.i18n('refineSearch'));
     searchForm.setActionSide('left');
-    this.rightSearchPanel.addTab(searchForm);
+    this.rightSearchPanel.add(searchForm);
     this.rightSearchPanel.setActiveTab(1);
     this.searchPanel.getLayout().setActiveItem(1);
     this.doLayout();
