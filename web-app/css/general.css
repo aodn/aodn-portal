@@ -7,7 +7,9 @@ body, html{
     margin-top: 2px! important; */
 }
 
-
+h1 {
+    white-space: nowrap; 
+}
 
 p, td{    
     font-family: tahoma,verdana,arial,sans-serif;

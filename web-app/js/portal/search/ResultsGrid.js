@@ -1,8 +1,9 @@
 Ext.namespace('Portal.search');
 
 Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
-   frame: true,
+   frame: false,
    layout: 'fit',
+   border: false,
    disableSelection: true,
    autoExpandColumn: 'mdDesc',
    
@@ -23,8 +24,8 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                   xtype: 'templatecolumn',
                   tpl: [
                      '<div style="white-space:normal !important;" title="{abstract}">',
-                     '<h1>{title}</h1>',
-                     '<p>{[values.abstract.substring(0, 350)]}<tpl if="values.abstract.length &gt; 350"> ...</tpl></p>',    // TODO : 350 as parameter
+                     '<h4>{title}</h4>',
+                     '<p >{[values.abstract.substring(0, 350)]}<tpl if="values.abstract.length &gt; 350"> ...</tpl></p>',    // TODO : 350 as parameter
                      '</div>'
                   ],
                   dataIndex: 'title'

@@ -6,6 +6,9 @@ p, h1, h2, h3 {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+.x-grid3-row {
+	padding: 10px 0;
+}
 
 .x-btn-text {
     font-weight: bold;
