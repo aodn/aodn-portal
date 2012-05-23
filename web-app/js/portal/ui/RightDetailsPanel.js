@@ -15,53 +15,69 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 
 	// check whether the panel has been rendered before calling the default expand method
 	expand: function() {
-	  if (this.rendered) {
+	  if (this.rendered) {  	
 		Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
 	  }
+	},
+	expandFinished: function() {
+		// should always be set, but a user could open the panel before adding layers!!
+		
+		if (this.selectedLayer != null) {
+			this.detailsPanelItems.updateDetailsPanel(this.selectedLayer,true);
+		}		
 	},
 
 	initComponent: function(){
 		this.detailsPanelItems = new Portal.details.DetailsPanel();
-	
+		this.selectedLayer = null;
+		this.lockedPanel = false;
+		
 	    this.items = [
 			this.detailsPanelItems
 		];
-
-        Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
+		
+		this.detailsPanelItems.hideDetailsPanelContents();
+        Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);		
+		this.on("expand",this.expandFinished,this);
 		
 	},
 
 	getDetailsPanelItems: function(){
 		return this.detailsPanelItems;
 	},
-	// a new layer has been added
+	
+	// a new layer has been added or selected
 	update: function(openlayer){
 		
-		// show new layer unless user requested 'hideLayerOptions' or
-		// check if the map is still in focus - not the search
-		if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
-			if(this.collapsed) {
+		
+		this.selectedLayer = openlayer;
+		
+		this.text = openlayer.name;
+		this.setTitle(openlayer.name);
+		
+		// show new layer details unless user requested 'hideLayerOptions' or
+		// || !viewport.isMapVisible() check if the map is still in focus - not the search
+		if (!(Portal.app.config.hideLayerOptions === true  )) {
+			
+			if(this.collapsed ) {
+				// will updateDetailsPanel after expand					
 				this.expand();
-				//	wait for the expansion for the benefit of the opacity slider		
-				this.detailsPanelItems.updateDetailsPanel.defer(1500,this.detailsPanelItems,[openlayer]);
 			}
 			else {
 				this.detailsPanelItems.updateDetailsPanel(openlayer);
-			}		
-
-			this.text = openlayer.name;
-			this.setTitle(openlayer.name);
+			}
 		}
 		else {
-			this.collapseAndHide();			
-		}
-
-		
+			this.detailsPanelItems.updateDetailsPanel(openlayer);
+			this.collapse(true);		
+		}		
 	},
 
+
+	// call only when there are no layers in the map
 	collapseAndHide: function(){
-			this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
-			this.collapse(true);			
-			this.detailsPanelItems.hideDetailsPanelContents();
+		this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
+		this.collapse(true);
+		this.detailsPanelItems.hideDetailsPanelContents();
 	}
 });

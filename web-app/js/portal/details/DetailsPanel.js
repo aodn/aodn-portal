@@ -39,7 +39,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 		this.opacitySliderContainer = new Ext.Panel({
 			layout: 'form',
-			height: 26,
+			height: 26,			
 			margins: {
 				top: 5,
 				right: 5,
@@ -100,16 +100,16 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		return this.opacitySlider;
 	},
 
+	// must be called when the panel is fully expanded for the slider
+	updateDetailsPanel: function(layer,forceOpen){
+		
+		this.selectedLayer = layer;
+		
+		// show new layer unless user requested 'hideLayerOptions' 
+		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
 
-	updateDetailsPanel: function(layer){
-		// show new layer unless user requested 'hideLayerOptions' or
-		// check if the map is still in focus - not the search
-		if (!(Portal.app.config.hideLayerOptions === true || !viewport.isMapVisible() )) {
-
-			
-			this.selectedLayer = layer;
 			this.detailsPanelTabs.setSelectedLayer(layer);
-			this.detailsPanelTabs.update(layer);
+			this.detailsPanelTabs.update(layer);			
 			this.detailsPanelTabs.show();
 			this.transectControl.hide();
 
@@ -127,17 +127,20 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				this.transectControl.show();
 				this.transectControl.ownerCt.doLayout();
 			}			
-			this.opacitySlider.show(); // will reset slider
+			this.opacitySliderContainer.doLayout();
+			//this.opacitySliderContainer.show();			
+			this.opacitySlider.show();// will reset slider
+			
 		}
 		else {
-			this.collapseAndHide();
+			this.hideDetailsPanelContents();
 		}
 	},
 
 	hideDetailsPanelContents: function(){
 		// clear the details Panel. ie. Don't show any layer options
 		this.detailsPanelTabs.hide();
-		this.opacitySlider.hide(); // reset slider
+		//this.opacitySliderContainer.hide(); 
 		this.transectControl.hide();
 	},
 
@@ -182,7 +185,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 						triggerAction: 'all',
 						editable : false,
 						lazyRender:true,
-						mode: 'local',
+						mode: 'local',					
 						store: valueStore,
 						emptyText: OpenLayers.i18n('pickAStyle'),
 						valueField: 'myId',

@@ -295,6 +295,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	getOpenLayerParams: function(layerDescriptor, overrides) {
+				
+		if(layerDescriptor.namespace != null) {
+			layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
+		}
+		
 		var params = {
 			layers: layerDescriptor.name,
 			transparent: 'TRUE',
@@ -622,11 +627,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this.getLayerMetadata(openLayer);
 			}
 
-			// show open layer options
+			Ext.getCmp('rightDetailsPanel').update(openLayer);
 			
-			else if(!Portal.app.config.hideLayerOptions) {
-				Ext.getCmp('rightDetailsPanel').update(openLayer);
-			}
 
 
 			if (animated) {

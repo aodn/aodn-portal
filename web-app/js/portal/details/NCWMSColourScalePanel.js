@@ -6,7 +6,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     initComponent: function(){
         this.colourScaleHeader = new Ext.form.Label({
-            html: "<h4>Set Parameter Range</h4>"
+            html: "<h5>Set Parameter Range</h5>"
         });
 
         this.colourScaleMin = new Ext.form.TextField({

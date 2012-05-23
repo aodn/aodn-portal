@@ -107,7 +107,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	hideDetailsPanel: 'Hide layer details',
 	
 	// RightDetailsPanel.js
-	noActiveLayersSelected:	"No active layers have been selected",
+	noActiveLayersSelected:	"No layers have been added to the map",
 	layerOptions: "Layer Options",
 	
     //Options Panel

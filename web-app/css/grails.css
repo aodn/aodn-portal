@@ -1,6 +1,5 @@
 html {
     background-color: white;
-    height: 100%;
     /* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -10,7 +9,8 @@ html {
 body {
     background: #ffffff;
     color: #333333;
-    font-size: 12px;
+    font-size: 12px;	
+	height: 100%;
 
 }
 

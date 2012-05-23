@@ -39,14 +39,9 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 				check: function(thisThingy,checked) {
 					Portal.app.config.hideLayerOptions = checked; // change the global option not a copy
 					if (checked) {
-						Ext.getCmp('rightDetailsPanel').collapseAndHide();
-					}
-					else {
-						Ext.getCmp('rightDetailsPanel').show();
+						Ext.getCmp('rightDetailsPanel').collapse();
 					}
 					viewport.mainTabPanel.getPortalPanel().doLayout();
-					//Ext.getCmp('rightDetailsPanel').findParentByType('panel').doLayout();
-					// resize map with doLayout??
 					
 				}
 			}
