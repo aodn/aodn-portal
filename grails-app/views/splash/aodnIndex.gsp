@@ -5,7 +5,7 @@
 <h3>Want to contribute data to the AODN?</h3>
 <p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
 
-<h3>The portal provides two ways of discovering IMOS data:</h3>
+<h3>The portal provides two ways of discovering data:</h3>
   
   <div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(1);return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(2);return false;" >metadata catalogue.</a></div>
 
