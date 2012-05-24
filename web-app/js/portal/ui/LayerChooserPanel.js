@@ -10,7 +10,8 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 		
         var config = Ext.apply({
             id: "leftMenus",
-            minWidth: 260,
+            minWidth: 260,		
+			margins : {left:5},
             maxWidth: 450,
 			padding: 4,
             collapsible: true,

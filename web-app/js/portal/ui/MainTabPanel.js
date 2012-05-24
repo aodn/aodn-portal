@@ -10,7 +10,8 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     var config = Ext.apply({
         xtype: 'tabpanel', // TabPanel itself has no title        
         autoDestroy: false, // wont destroy tab contents when switching        
-        activeTab: 0,
+        activeTab: 0,	
+	    margins : {right:5},
         unstyled: true,
         // method to hide the usual tab panel header with css
         headerCfg: {

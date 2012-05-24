@@ -161,8 +161,6 @@ input, select, textarea {
 }
 
 #mainMapCentrePanel, .map {
-	border: 2px solid #333333;
-	border-radius: 2px;
 }
 #rightDetailsPanel {
 	border-radius: 12px 12px 0 0;
