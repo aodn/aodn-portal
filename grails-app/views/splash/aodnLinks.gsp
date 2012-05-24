@@ -8,4 +8,4 @@
 <a class="external wrap" href="http://imos.aodn.org.au/oceancurrent/" title="Ocean Current page" target="_blank">Ocean Current Page</a><BR>
 <a class="external" href="${ grailsApplication.config.help.url }/?q=forum" title="forum" target="_blank">Help forum</a>
 
-<div class="clear spacer"></div>
+<div class="spacer"></div>

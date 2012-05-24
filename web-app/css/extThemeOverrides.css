@@ -13,6 +13,9 @@ p, h1, h2, h3 {
 .x-btn-text {
     font-weight: bold;
 }
+.x-form-invalid-tip .x-tip-body {
+    background-image:none;
+}
 
 .x-tree-lines .x-tree-elbow-plus, .x-tree-lines .x-tree-elbow-end-plus{
     background-image: url('../img/icons/treePlus.png');

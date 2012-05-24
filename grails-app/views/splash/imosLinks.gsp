@@ -7,4 +7,4 @@
 <a href="http://www.ands.org.au" class="external wrap" title="Australian National Data Service" target="_blank">Australian National Data Service (ANDS)</a><br>
 <a class="external wrap" href="http://imos.aodn.org.au/oceancurrent/" title="Ocean Current page" target="_blank">Ocean Current Page</a>
 
-<div class="clear spacer"></div>
+<div class="spacer"></div>
