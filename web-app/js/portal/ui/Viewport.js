@@ -41,7 +41,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
 		this.mon(this.mainTabPanel, 'tabchange', this.onPanelTabChange, this);
 		this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
-		this.mon(this.layerChooserPanel, 'resetmap', this.onResetMap, this);
+		//this.mon(this.layerChooserPanel, 'resetmap', this.onResetMap, this);
 
 		//TODO: find a better home for this
 		this.on('afterrender', function() {              
@@ -74,8 +74,11 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 	},
 	
 	onResetMap: function() {
-		// deactivate transect control
-		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().getDetailsPanelItems().deactivateDrawingControl();
+		console.log("reset map");
+		// centre map and set zoom clear layers 
+		// 
+		// and details panel
+		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().collapseAndHide();
 	}
 
 });

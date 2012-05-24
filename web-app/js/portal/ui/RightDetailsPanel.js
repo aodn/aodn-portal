@@ -20,8 +20,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	  }
 	},
 	expandFinished: function() {
-		// should always be set, but a user could open the panel before adding layers!!
 		
+		// should always be set, but a user could open the panel before adding layers!!		
 		if (this.selectedLayer != null) {
 			this.detailsPanelItems.updateDetailsPanel(this.selectedLayer,true);
 		}		

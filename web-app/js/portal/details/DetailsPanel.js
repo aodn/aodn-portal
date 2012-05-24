@@ -140,6 +140,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	hideDetailsPanelContents: function(){
 		// clear the details Panel. ie. Don't show any layer options
 		this.detailsPanelTabs.hide();
+		this.deactivateDrawingControl();
 		//this.opacitySliderContainer.hide(); 
 		this.transectControl.hide();
 	},
