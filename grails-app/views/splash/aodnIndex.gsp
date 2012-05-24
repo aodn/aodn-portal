@@ -40,9 +40,10 @@
   </div>
 
 	<div class="clear spacer"></div>
-  	<div class="spacer"> 
-	    <img class="roundedImages" src="images/cc.bmp"/></a>
-	    This site is licensed under a <a class="external" title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a>
+  	<div class="footer"> 
+	    
+	  This site is licensed under a <a title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a> &nbsp;
+		<a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a>
 	</div>
 
   
