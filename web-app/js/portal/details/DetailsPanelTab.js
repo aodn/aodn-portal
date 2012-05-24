@@ -60,4 +60,5 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         	this.hideInfoTab();
         }
     }
+
 });

@@ -104,8 +104,8 @@ function addToPopup(mapPanel, e) {
     var locArray = loc.toShortString().split(",");
     popup.locationString = "<b>Lat:</b> " + toNSigFigs(locArray[1], 4) + " <b>Lon:</b> " + toNSigFigs(locArray[0], 4);
 
-    // reset the popup's location
-    popup.location = loc;    
+	// reset the popup's location
+    popup.location = loc;
     popup.doLayout();
     popup.show(); // since the popup is anchored, calling show will move popup to this location  
 

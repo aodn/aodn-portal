@@ -582,7 +582,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	zoomTo: function(bounds, closest) {
-		if((bounds.left == bounds.right) && (bounds.top == bounds.bottom)){
+		if((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)){
 		 	this.map.setCenter(bounds.getCenterLonLat(), 3);
 		}
 		else{
