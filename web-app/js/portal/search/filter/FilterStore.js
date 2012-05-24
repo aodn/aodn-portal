@@ -12,51 +12,17 @@ Portal.search.filter.getDefaultFilters = function() {
       },
       true
     ],
-    // TODO: this element could do with refactoring...
     [
       2,
       'combo',
       null,
       {
-        hideLabel : true,
-        name : 'protocolCombo',
-        xtype : 'combo',
-        anchor: '-2',
-        mode : 'local',
-        editable : false,
-        submitValue : false,
-        forceSelection : true,
-        triggerAction : 'all',
-        store : 
-          [
-            [ '', 'Show me all results' ],
-            [
-                Portal.app.config.metadataLayerProtocols.split(
-                    "\n").join(' or '),
-                'Show me results with map layers only' ]
-          ],
-        hiddenName : 'protocol',
-        value : '',
-        getFilterValue: function() {
-          return { value: this.getValue() };
-        },
-        setFilterValue: function(v) {
-          this.setValue(v.value);
-        },
-        listeners :
-        {
-          'select': function(combo, record, index) {
-            this.fireEvent('protocolChange', record.data.field1);
-          }
-        },
-        onContentChange: function()
-        {
-          this.fireEvent('protocolChange', this.getValue());
-        } 
+        xtype: 'portal.search.field.maplayers',
       },
       true
     ]
-  ]};
+  ];
+ };
 
 Portal.search.filter.newDefaultActiveFilterStore = function()
 {
