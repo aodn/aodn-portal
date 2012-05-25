@@ -27,7 +27,7 @@
       	<a class="external mainlinks" target="_blank" href="${grailsApplication.config.help.url}" title="Portal Help files" >Help</a>
     </div>
     <div id="downloadCart" class="hiddenCart">
-      Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="#" onclick="new Portal.ui.DownloadCartConfirmationWindow().show(); return false;">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
+      Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="#" onclick="javascript:doDownload();">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
   </div>
 <div id="headerTail" >&nbsp;</div>
