@@ -10,6 +10,11 @@ Portal.search.field.FreeText = Ext.extend(Ext.form.TextField, {
    },
    setFilterValue: function(v) {
 	   this.setValue(v.value);
+   },
+   getValue: function() {
+     var enteredValue = Portal.search.field.FreeText.superclass.getValue.call(this);
+     // Strip hyphens from value entered - GeoNetwork can't handle them at the moment
+     return enteredValue.replace('-', ' ');
    }
 });
 
