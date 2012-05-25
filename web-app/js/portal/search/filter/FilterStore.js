@@ -17,7 +17,7 @@ Portal.search.filter.getDefaultFilters = function() {
       'combo',
       null,
       {
-        xtype: 'portal.search.field.maplayers',
+        xtype: 'portal.search.field.maplayers'
       },
       true
     ]
