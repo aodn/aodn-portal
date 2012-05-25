@@ -59,6 +59,23 @@ function clearDownloadCart() {
     });
 }
 
+function doDownload(){
+	Ext.Ajax.request({
+		url: 'downloadCart/getSize',
+		success: function(resp){
+			if(resp.responseText === "0"){
+				alert("The download cart is empty.  Please add at least one item to the cart and try again.");
+			}
+			else{
+				new Portal.ui.DownloadCartConfirmationWindow().show();
+			}
+		},
+		failure: function(){
+			alert("There is a problem with the download cart and please try again later.  Please refer to our Help section for further assistance.");
+		}
+	});
+}
+
 // Internal methods
 function _handleSuccessAndShow( resp ) {
 
