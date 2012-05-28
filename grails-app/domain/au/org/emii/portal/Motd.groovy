@@ -13,7 +13,7 @@ class Motd {
 
     static constraints = {
     }
-    
+
     String toString() {
         return "${motdTitle}"
     }

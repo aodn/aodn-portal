@@ -53,7 +53,7 @@ Portal.app = {
                     if(this.config.enableMOTD)  {
                         var nav = new Ext.Panel({
                             labelWidth:400,
-                            title: "<h2>"+ this.config.motd.motdTitle + "</h2>", 
+                            title: "<h2>"+ this.config.motd.motdTitle + "</h2>",
                             html: this.config.motd.motd,
                             padding: 20,
                             unstyled: true,

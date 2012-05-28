@@ -30,7 +30,7 @@ class ConfigController {
         def x = (configInstance as JSON).toString()
         configInstance = _enableDisableMenuOfTheDay(configInstance);
         // convert back to an generic object so we can add what we want
-        def instanceAsGenericObj = JSON.parse(x)        
+        def instanceAsGenericObj = JSON.parse(x)
         // add the fully expanded baselayer menu as layers
 		instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
             configInstance.baselayerMenu?.getBaseLayers() as JSON
@@ -41,14 +41,21 @@ class ConfigController {
             def displayMenu = new au.org.emii.portal.display.Menu(configInstance.defaultMenu)
 			displayMenu as JSON
         }
-		
+
 		instanceAsGenericObj['defaultMenu'] = JSON.parse(tmpJsonObj.toString());
-		
+
 		tmpJsonObj = JSON.use('deep') {
 			configInstance.defaultLayers as JSON
 		}
 		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
-		
+
+        //the MOTD is skipped somehow when converting the object to JSON.
+        def tmpMOTD = JSON.use('deep') {
+            configInstance.motd as JSON
+        }
+        instanceAsGenericObj['motd'] = JSON.parse(tmpMOTD.toString())
+        instanceAsGenericObj['enableMOTD'] = configInstance.enableMOTD
+
         // add current user details
         def currentUser = SecurityUtils.getSubject()
         def principal = currentUser?.getPrincipal()
