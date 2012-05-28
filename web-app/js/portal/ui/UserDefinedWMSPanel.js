@@ -16,7 +16,6 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 			anchor:'99%',
 			name: 'url',
 			enableKeyEvents: true,
-			allowBlank: false,
 			listeners: {
 				scope: this,
 				specialkey: function(field,e) {
