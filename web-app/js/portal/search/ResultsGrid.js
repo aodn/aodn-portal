@@ -327,7 +327,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   addLinkDataToCart: function(recs) {
 
       var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
-      var linksToAdd = new Array();
+      var tuplesToAdd = new Array();
 
       for (var i = 0; i < recs.length; i++) {
 
@@ -340,12 +340,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
               if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
 
-                  linksToAdd.push( link );
+                  tuplesToAdd.push( {record: rec, link: link} );
               }
           }
       }
 
-      addToDownloadCart( linksToAdd );
+      addToDownloadCart( tuplesToAdd );
   },
   
   getLayerLink: function(rowIndex) {
@@ -363,9 +363,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     
      var rec = grid.store.getAt( rowIndex );
 
-     var recordsToAdd = [rec];
-
-     this.addLinkDataToCart( recordsToAdd );
+     this.addLinkDataToCart( [rec] );
   },
   
   addAllToCartExecute: function() { // button, event

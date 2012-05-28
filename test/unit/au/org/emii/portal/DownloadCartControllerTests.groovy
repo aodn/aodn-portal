@@ -132,4 +132,42 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
         assertEquals "home", controller.redirectArgs.controller
         assertEquals "No data in cart to download", controller.flash.message
     }
+
+    void testGetCartContents() {
+
+        def cartEntries = """
+                             [
+                                 { "rec_uuid":"2", val: "A" },
+                                 { "rec_uuid":"1", val: "B" },
+                                 { "rec_uuid":"3", val: "C" },
+                                 { "rec_uuid":"2", val: "D" },
+                                 { "rec_uuid":"3", val: "E" },
+                             ]""".stripIndent()
+
+        mockRequest.session.downloadCart = JSON.parse( cartEntries ).toArray() as Set
+
+        // Make the call
+        controller.getCartContents()
+
+        def result = JSON.parse( mockResponse.contentAsString )
+
+        assert 3, result.size()
+
+        println "result: $result"
+
+        def rec1 = result.'1'
+        assertNotNull rec1
+        assertEquals 1, rec1.size()
+        assertEquals "B", rec1.collect( { it.val } ).join(",")
+
+        def rec2 = result.'2'
+        assertNotNull rec2
+        assertEquals 2, rec2.size()
+        assertEquals "A,D", rec2.collect( { it.val } ).join(",")
+
+        def rec3 = result.'3'
+        assertNotNull rec3
+        assertEquals 2, rec3.size()
+        assertEquals "C,E", rec3.collect( { it.val } ).join(",")
+    }
 }
