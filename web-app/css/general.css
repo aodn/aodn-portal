@@ -1,7 +1,7 @@
 body, html{
     font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
-	
+	height: 100%;
     /*margin: 5px! important;
 	
     margin-top: 2px! important; */
@@ -790,6 +790,10 @@ JQUERY AUTO COMPLETE
 
 .p-centre {            
     text-align:center;
+}
+
+.p-search .x-grid3-row {
+	padding: 10px 0;
 }
 
 .p-header-space {

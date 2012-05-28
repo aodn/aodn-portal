@@ -26,6 +26,9 @@ html, body, p, td{
     font-family: tahoma,verdana,arial,sans-serif;
 }
 p {
+	margin-bottom: 10px;
+}
+#mainHomePanel p {
 	margin-bottom: 40px;
 }
 
