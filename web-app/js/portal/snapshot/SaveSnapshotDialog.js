@@ -14,7 +14,7 @@ Portal.snapshot.SaveSnapshotDialog = Ext.extend(Portal.common.SaveDialog, {
 	},
 	
     onSave: function() {
-	  this.controller.createSnapshot(this.nameField.getValue(), this.onSuccessfulSave, this.onFailedSave);
-	  this.hide();
+	  this.controller.createSnapshot(this.nameField.getValue(), this.onSuccessfulSave.createDelegate(this), this.onFailedSave.createDelegate(this));	 
+	  this.close();	
 	}
 });

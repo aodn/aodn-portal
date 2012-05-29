@@ -64,7 +64,7 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
   },
 
   onSuccessfulSave: function() {
-    this.close();
+    this.close(); 
   },
 
   onFailedSave: function(errors) {
