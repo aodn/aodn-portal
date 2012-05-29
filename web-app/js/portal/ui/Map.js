@@ -318,14 +318,26 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		return server.uri;
 	},
 	
-	getServerUri: function(layerDescriptor) {
-		var serverUri = this.getUri(this.getServer(layerDescriptor));
-		if (layerDescriptor.cache == true) {
-			serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
-		}
-		return serverUri;
-	},
-	
+  getServerUri: function(layerDescriptor) {
+    var serverUri = this.getUri(this.getServer(layerDescriptor));
+    if (layerDescriptor.cache == true) {
+      serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
+    }
+    return serverUri;
+  },
+  
+  getLayerNs: function(layerDescriptor) {
+    var qName = layerDescriptor.name;
+    var nameParts = qName.split(':');
+    return nameParts.length == 2 ? nameParts[0] : "";
+  },
+  
+  getLayerName: function(layerDescriptor) {
+    var qName = layerDescriptor.name;
+    var nameParts = qName.split(':');
+    return nameParts.length == 2 ? nameParts[1] : qName;
+  },
+  
 	getParent: function(layerDescriptor) {
 		return layerDescriptor.parent;
 	},
@@ -610,6 +622,25 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				Ext.MessageBox.alert('Error', "Sorry I could not load the requested layer:\n" + resp.responseText);
 			}
 		});
+	},
+
+	addExternalLayer: function(layerDescriptor) {
+    var namespace = this.getLayerNs(layerDescriptor);
+    var name = this.getLayerName(layerDescriptor);
+	  
+    Ext.Ajax.request({
+      url: 'layer/findLayerAsJson?namespace=' + namespace + '&name=' + name,
+      scope: this,
+      success: function(resp) {
+        var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  
+        if (grailsDescriptor) {
+          this.addMapLayer(grailsDescriptor);
+        }
+      },
+      failure: function(resp) {
+        this.addMapLayer(layerDescriptor);
+      }
+    });
 	},
 	
 	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {

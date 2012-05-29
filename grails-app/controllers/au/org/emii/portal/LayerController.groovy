@@ -119,6 +119,27 @@ class LayerController {
             render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
+    
+    // Find a layer with a given namespace and name
+    // this combination should be unique - that's what a namespace is for
+    
+    def findLayerAsJson = {
+        def criteria = Layer.createCriteria()
+        
+        def layerInstance = criteria.get {  
+            eq( "namespace", params.namespace)
+            eq( "name", params.name)
+            isNull("cql")      // don't include filtered layers!
+        }
+            
+        if (layerInstance) {
+            JSON.use("deep") {
+                render layerInstance as JSON
+            }
+        } else {
+            render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
+        }
+    }
 
     def create = {
         def layerInstance = new Layer()
