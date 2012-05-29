@@ -326,18 +326,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     return serverUri;
   },
   
-  getLayerNs: function(layerDescriptor) {
-    var qName = layerDescriptor.name;
-    var nameParts = qName.split(':');
-    return nameParts.length == 2 ? nameParts[0] : "";
-  },
-  
-  getLayerName: function(layerDescriptor) {
-    var qName = layerDescriptor.name;
-    var nameParts = qName.split(':');
-    return nameParts.length == 2 ? nameParts[1] : qName;
-  },
-  
 	getParent: function(layerDescriptor) {
 		return layerDescriptor.parent;
 	},
@@ -625,11 +613,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
 	addExternalLayer: function(layerDescriptor) {
-    var namespace = this.getLayerNs(layerDescriptor);
-    var name = this.getLayerName(layerDescriptor);
+	  var serverUri = this.getServerUri(layerDescriptor);
 	  
     Ext.Ajax.request({
-      url: 'layer/findLayerAsJson?namespace=' + namespace + '&name=' + name,
+      url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
       scope: this,
       success: function(resp) {
         var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  

@@ -175,16 +175,16 @@ class LayerServiceTests extends GroovyTestCase {
         
         def controller = new LayerController()
         
-        controller.params.namespace = layerInstance.namespace
-        controller.params.name = layerInstance.name
+        controller.params.serverUri = serverInstance.uri
+        controller.params.name = "imos:argo_float_mv"
         
         controller.findLayerAsJson()
         
         def layerAsJson = JSON.parse(controller.response.contentAsString)
 
         assertEquals(layerInstance.id, layerAsJson.id)
-        assertEquals(layerInstance.namespace, layerAsJson.namespace)
-        assertEquals(layerInstance.name, layerAsJson.name)
+        assertEquals("imos", layerAsJson.namespace)
+        assertEquals("argo_float_mv", layerAsJson.name)
     }
     
     void testUpdateWithNewData_NoExistingThenUpdateProcessedTwice() {

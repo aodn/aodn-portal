@@ -120,15 +120,42 @@ class LayerController {
         }
     }
     
-    // Find a layer with a given namespace and name
-    // this combination should be unique - that's what a namespace is for
+    // Lookup a layer using the server uri and layer name 
+    // (used to find any portal layer corresponding to externally entered layer details)
     
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
         
+        // For the moment just use the protocol/authority portion of the server uri 
+        // due to inconsistencies in the way server URI's are being used.
+        // This should be unique anyway
+        
+        def serverUrl = new URL(params.serverUri)
+        def serverUriPattern = serverUrl.getProtocol() + "://" + serverUrl.getAuthority() + '%'
+        
+        // split name into namespace and local name components if applicable
+        
+        def parts = params.name.split(":")
+        def namespace, localName
+        
+        if (parts.length == 2) {
+            namespace = parts[0]
+            localName = parts[1]
+        } else {
+            namespace = null
+            localName = params.name
+        }
+        
         def layerInstance = criteria.get {  
-            eq( "namespace", params.namespace)
-            eq( "name", params.name)
+            server {
+                like("uri", serverUriPattern)
+            }
+            if (namespace) {
+                eq( "namespace", namespace)
+            } else {
+                isNull ("namespace")
+            }         
+            eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
         }
             
@@ -419,4 +446,8 @@ class LayerController {
 		}
 		return filtered
 	}
+    
+    def _getNamespace(qualifiedName) {
+        
+    }
 }
