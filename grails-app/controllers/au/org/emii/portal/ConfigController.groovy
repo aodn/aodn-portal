@@ -32,21 +32,16 @@ class ConfigController {
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)        
         // add the fully expanded baselayer menu as layers
-		instanceAsGenericObj['baselayerList'] = JSON.use("deep") {
-            configInstance.baselayerMenu?.getBaseLayers() as JSON
-		}
+		instanceAsGenericObj['baselayerList'] = configInstance.baselayerMenu?.getBaseLayers() as JSON
 
+		configInstance.defaultMenu?.toDisplayableMenu()
+		def displayMenu = new au.org.emii.portal.display.Menu(configInstance.defaultMenu)
 		def tmpJsonObj = JSON.use('deep') {
-			configInstance.defaultMenu?.toDisplayableMenu()
-            def displayMenu = new au.org.emii.portal.display.Menu(configInstance.defaultMenu)
 			displayMenu as JSON
         }
-		
 		instanceAsGenericObj['defaultMenu'] = JSON.parse(tmpJsonObj.toString());
 		
-		tmpJsonObj = JSON.use('deep') {
-			configInstance.defaultLayers as JSON
-		}
+		tmpJsonObj = configInstance.defaultLayers as JSON
 		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
 		
         // add current user details
