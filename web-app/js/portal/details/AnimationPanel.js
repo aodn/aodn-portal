@@ -339,7 +339,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     _cycleAnimation: function(forced){
 		this.progressLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
-		this.progressLabel.setVisible(this.isLoadingAnimation());
+		this.progressLabel.setVisible(this._isLoadingAnimation());
 
 		if(this.counter < this.animatedLayers.length - 1){
 			if(this.map.map.getLayersBy("id", this.animatedLayers[this.counter + 1].id).length == 0){
@@ -429,7 +429,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
 			this._resetTimer(this.BASE_SPEED);
 			if(this.pausedTime !== ""){
-				this.counter = this.getIndexFromTime(this.pausedTime);
+				this.counter = this._getIndexFromTime(this.pausedTime);
 			}
 			else{
 				this.counter = 0;
@@ -456,12 +456,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         //else no animation is running, so can't change the speed of the animation
     },
 
-    setupAnimationControl: function() {
-        if (this.selectedLayer == undefined) {
-            return false;
-        }
-    },
-
     update: function(){
     	//Just hide everything by default
 		this.noAnimationLabel.hide();
@@ -471,7 +465,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//There's a animation already configured (paused, or playing)
 			if(this.animatedLayers.length == 0){
 				//no animation has been set yet, so configure the panel
-				this.setLayerDatesByCapability();
+				this._setLayerDatesByCapability();
 				this.controlPanel.setVisible(true);
 				this.enable();
 			}
@@ -491,7 +485,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
     },
 
-    setLayerDatesByCapability: function(){
+    _setLayerDatesByCapability: function(){
     	if(this.selectedLayer != null && this.selectedLayer.dimensions != null){
     		var capDates = new Array();
     		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
@@ -530,7 +524,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	return null;
     },
 
-    isLoadingAnimation: function(){
+    _isLoadingAnimation: function(){
     	if(this.animatedLayers.length > 0){
         	for(var i = 0; i < this.animatedLayers.length; i++){
         		if(this.map.map.getLayersBy("id", this.animatedLayers[i].id).length == 0)
@@ -544,7 +538,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	return false;
     },
 
-    getIndexFromTime: function(timeStr){
+    _getIndexFromTime: function(timeStr){
     	if(this.animatedLayers.length > 0){
     		for(var i = 0; i < this.animatedLayers.length; i++){
     			if(this.animatedLayers[i].params["TIME"] === timeStr)
