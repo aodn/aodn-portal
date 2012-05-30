@@ -46,9 +46,36 @@ Portal.ui.Options = Ext.extend(Object, {
 	}	
 });
 
+Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {                
+    defaultHandlerOptions: {
+        single: true,
+        double: false,
+        pixelTolerance: 0,
+        stopSingle: true,
+        stopDouble: true
+    },
+
+    constructor: function (options) {
+        this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
+        OpenLayers.Control.prototype.initialize.apply(this, arguments);
+        
+        this.handler = new OpenLayers.Handler.Click(
+            this, 
+            { 
+        		click: this.onClick
+    		}, 
+            this.handlerOptions
+        );
+    }, 
+
+    onClick: function(event) {}
+});
+
 Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	constructor: function(cfg) {
+		
+		this.appConfig = cfg.appConfig;
 		
 		// Stop the pink tiles appearing on error
 		OpenLayers.Util.onImageLoadError = function(e) {
@@ -63,15 +90,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			region: "center",
 			split: true,
 			header: false,
-			items: [/*{
-	            xtype: "gx_zoomslider",
-	            aggressive: false,
-	            vertical: true,
-	            height: 100,
-	            x: 12,
-	            y: 70,
-	            plugins: new GeoExt.ZoomSliderTip()
-	        }*/],
+			initialBbox: this.appConfig.initialBbox,
+            autoZoom: this.appConfig.autoZoom,
+            hideLayerOptions: this.appConfig.hideLayerOptions,
 			activeLayers: {},
 			layersLoading: 0
 		}, cfg);
@@ -80,16 +101,18 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.initMapLinks();
 
 		// Control to get feature info or pop up
-		var clickControl = new OpenLayers.Control.Click2({
-			trigger: function(event) {
-				addToPopup(this, event);
-			//imgSizer(); // not working!!
+		var clickControl = new Portal.ui.ClickControl({
+			map: this.map,
+			appConfig: this.appConfig,
+			fallThrough: false,
+			scope: this,
+			onClick: function(event) {
+				this.scope._handleFeatureInfoClick(event);
+				//imgSizer(); // not working!!
 			}
 		});
 		this.map.addControl(clickControl);
 		clickControl.activate();
-		clickControl.fallThrough = false;
-
 
 	    
 		this.spinnerForLayerloading = new Spinner({
@@ -104,10 +127,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	    
 		this.on('hide', function() {
-
 			this.updateLoadingImage("none");
-			// close the getfeatureinfo popup
-			this.closePopup();
+			this._closeFeatureInfoPopup();
 		}, this);
 	    
 		this.on('baselayersloaded', this.onBaseLayersLoaded, this);
@@ -136,10 +157,20 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.layers.bind(this.map);
 	},
 	
-	closePopup: function() {
-		if (popup) {
-			popup.close();
+	_handleFeatureInfoClick: function(event) {
+		this._closeFeatureInfoPopup();
+		this._findFeatureInfo(event);
+	},
+	
+	_closeFeatureInfoPopup: function() {
+		if (this.featureInfoPopup) {
+			this.featureInfoPopup.close();
 		}
+	},
+	
+	_findFeatureInfo: function(event) {
+		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig });
+		this.featureInfoPopup.findFeatures(event);
 	},
     
 	initMap: function() {
@@ -603,6 +634,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			success: function(resp, options) {
 				var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
 				if (layerDescriptor) {
+					layerDescriptor.isNcwms = function() {
+						
+					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
 				}
 			},
@@ -640,7 +674,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 
 
-			if (this.isNcwmsServer(layerDescriptor)) {
+			if (openLayer.isNcwms()) {
 				// update detailsPanel after Json request
 				this.getLayerMetadata(openLayer);
 			}
@@ -654,14 +688,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this.addNCWMSLayer(openLayer);
 			}
 		}
-	},
-
-	// layerObject might be one of our own descriptors or a WMS layer on a map
-	// might be an idea to wrap/abstract away that difference at some point
-	isNcwmsServer: function(layerObject) {
-		var server = this.getServer(layerObject);
-		var serverTypes =  ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"];
-		return serverTypes.indexOf(server.type) >= 0;
 	},
 
 	getLayerMetadata: function(openLayer) {
@@ -750,7 +776,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		Ext.getCmp('rightDetailsPanel').selectedLayer = null;
 		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
-		closePopup();
+		this._closeFeatureInfoPopup();
 	},
 	
 	removeAllLayersIn: function(openLayers) {

@@ -125,15 +125,15 @@ function addToPopup(mapPanel, e) {
     else {
         updatePopupDepthStatus( null ); // Update with no info (will still clear 'loading' message)
     }
-
+    
     // For each layer...
     for (var i = 0; i < wmsLayers.length; i++ ) {
 
         var layer = wmsLayers[i];
         var url = "none";
         var params;
-        var expectedFormat = isncWMS(layer) ? "text/xml" : "text/html";
-        var featureCount = isncWMS(layer) ? 1 : 100; // some ncWMS servers have a problem with 'FEATURE_COUNT >1 ''   ]
+        var expectedFormat = layer.isNcwms() ? "text/xml" : "text/html";
+        var featureCount = layer.isNcwms() ? 1 : 100; // some ncWMS servers have a problem with 'FEATURE_COUNT >1 ''   ]
         var isAnimatedLayer = layer.originalWMSLayer != undefined;
 
         // this is an animated image
@@ -321,7 +321,7 @@ function updatePopupDepthStatus(response) {
 }
 
 function updatePopupStatus(popup) {
-    
+	
     //popup.setTitle("Features at " + popup.locationString);
     if (popup.numGoodResults > 0) {
         popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
@@ -337,12 +337,6 @@ function tabsFromPopup(popup) {
     return popup.popupTab;
 }
 
-
-
-function isncWMS(layer) {
-    return getMapPanel().isNcwmsServer(layer);   
-}                    
- 
 /*
 function inArray (array,value) {
     

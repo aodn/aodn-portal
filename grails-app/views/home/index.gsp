@@ -41,6 +41,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
 
+<script src="${resource(dir:'js',file:'portal/prototypes/OpenLayers.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/lang/en.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js?')}${jsVerNum}" type="text/javascript"></script>   
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -101,6 +102,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/FeatureInfoPopup.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Viewport.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js?')}${jsVerNum}" type="text/javascript"></script>

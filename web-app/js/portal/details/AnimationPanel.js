@@ -405,7 +405,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							+ " (" + this.dateStore.getAt(j).get("displayText") + ")";
 					}
 					else{
-						newLayer.name = this.origianlLayerName + " (" + this.dateStore.getAt(j).get("displayText") + ")";
+						newLayer.name = this.originalLayer.name + " (" + this.dateStore.getAt(j).get("displayText") + ")";
 					}
 					newLayer.mergeNewParams({
 						TIME: this.dateStore.getAt(j).get("displayText")

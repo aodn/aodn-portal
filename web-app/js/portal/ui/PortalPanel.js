@@ -39,9 +39,10 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 	
     initMapPanel: function(appConfig) {
         this.mapPanel = new Portal.ui.Map({
-            initialBbox: appConfig.initialBbox,
-            autoZoom: appConfig.autoZoom,
-            hideLayerOptions: appConfig.hideLayerOptions
+            appConfig: appConfig
+//        	initialBbox: appConfig.initialBbox,
+//            autoZoom: appConfig.autoZoom,
+//            hideLayerOptions: appConfig.hideLayerOptions
         });
     },
 
