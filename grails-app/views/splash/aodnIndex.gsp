@@ -37,7 +37,7 @@
 
 
 	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
-	  <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent4AODN.png" width="220" /></a>
+	  <a title="Ocean Current page" href="http://oceancurrent.imos.org.au/sst_anom/latest.html"  target="_blank" ><img class="roundedImages" src="http://oceancurrent.imos.org.au/sst_anom/latest.png" width="220" /></a>
 	  <BR>
 	  </div>
 
