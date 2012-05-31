@@ -73,84 +73,60 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _handleLayers: function() {
+    	var resized = false;
     	var wmsLayers = this._collectUniqueLayers();
     	Ext.each(wmsLayers, function(layer, index, all) {
     		if ((!layer.isBaseLayer) && layer.getVisibility()) {
     			this._requestFeatureInfo(layer);
+    			if (!resized) {
+    				this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
+    				resized = true;
+    			}
     		}
     	}, this);
     },
     
     _requestFeatureInfo: function(layer) {
-    	this.numResultsToLoad++; // Record layers requested
-    	
-        Ext.Ajax.request({
+    	this.numResultsToLoad++;
+    	Ext.Ajax.request({
         	scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
             params: {
                 name: layer.name,
-                id: layer.id,
                 expectedFormat: layer.getFeatureInfoFormat(),
-                isAnimatedLayer: layer.isAnimated,
-                units: layer.metadata.units
+                units: layer.metadata.units,
+                animation: layer.isAnimated
             },
             success: function(resp, options) {
-                var newTabContent;
-
-                if(options.params.isAnimatedLayer) {
-                    newTabContent = "<div><img src='" + url + "'></div>";
-                }
-                else {
-                    newTabContent = formatGetFeatureInfo( resp, options );
-                }
-
-                if (newTabContent) {
-                    this.numGoodResults++;
-                    
-                    this.popupTab.add( {
-                        xtype: "box",
-                        id: options.params.id,
-                        title: options.params.name,
-                        padding: 30,
-                        autoHeight: true,
-                        cls: "featureinfocontent",
-                        autoEl: {
-                            html: newTabContent
-                        }
-                    });
-
-                    //if (this.numGoodResults == 1) {                                
-                        
-                        // set to full height and re-pan
-                        this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);               
-                        this.show(); // since the popup is anchored, calling show will move popup to this location 
-
-                        // Make first tab active
-                        this.popupTab.setActiveTab( 0 );
-                        this.popupTab.doLayout();
-                        this.popupTab.show();
-
-                        setTimeout('imgSizer()', 900); // ensure the popup is ready
-                    //}
-                }
-                // got a result, maybe empty
-                this.numResultQueries++;
-                
-                this._updateStatus();
+            	if (options.params.animation) {
+            		this.numGoodResults++;
+            		this._addPopupTabContent("<div><img src='" + options.url + "'></div>", options.params.name);
+            	}
+            	else {
+	                var newTabContent = formatGetFeatureInfo( resp, options );
+	                if (newTabContent) {
+	                    this.numGoodResults++;
+	                    this._addPopupTabContent(newTabContent, options.params.name);
+	                }
+            	}
+                this._featureInfoRequestCompleted();
             },
 
-            failure: function(resp, options) { // Popup may have been closed since request was sent
-            	this._updateStatus();
-                // got a fail but its still a result
-                this.numResultQueries++;
-            }
+            failure: this._featureInfoRequestCompleted
         });
+    },
+    
+    _featureInfoRequestCompleted: function() {
+    	this.numResultQueries++;
+        this._updateStatus();
     },
     
     _getLayerFeatureInfoRequestString: function(layer) {
     	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
-    	if (layer.startTime && layer.endTime) {
+    	if (layer.isAnimated && layer.startTime && layer.endTime) {
 			extraParams.TIME = layer.startTime.format(this.animationDatePattern) + "/" + layer.endTime.format(this.animationDatePattern);
+			extraParams.FORMAT = "image/png";
+			extraParams.INFO_FORMAT = "image/png";
 		}
     	return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams)) + "&format=" + encodeURIComponent(layer.getFeatureInfoFormat());
     },
@@ -167,7 +143,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	        	this._setLayerTimes(layer);
 	        	if (!rootLayer) {
 	        		rootLayers[layer.params.LAYERS] = layer;
-	        		animatedLayer = layer;
+	        		rootLayer = layer;
 	        		uniqueLayers.push(rootLayer);
 	        	}
 	        	if (this._after(rootLayer, layer)) {
@@ -252,12 +228,28 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             if (xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
                 var str =  (depth <= 0) ?  "Depth:" : "Altitude:";
-                this.popupHtml.update(this.locationString + " <b>" + str + "</b> " + Math.abs(depth) + "m");
+                this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
             }
         }
         else {
             // clear out any placeholder 'loading' text
             this.popupHtml.update("");
         }
+    },
+    
+    _addPopupTabContent: function(content, title) {
+    	this.popupTab.add( {
+            xtype: "box",
+            title: title,
+            padding: 30,
+            autoHeight: true,
+            cls: "featureinfocontent",
+            autoEl: {
+                html: content
+            }
+        });
+    	this.popupTab.setActiveTab( 0 );
+    	this.popupTab.doLayout();
+    	this.popupTab.show();
     }
 });

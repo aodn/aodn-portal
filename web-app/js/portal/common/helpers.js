@@ -158,10 +158,6 @@ function formatGetFeatureInfo(response, options) {
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
     }
-    else if(options.params.expectedFormat.indexOf('image') >= 0){
-
-        // todo - So what do we do here?
-    }
     else{
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }

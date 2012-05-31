@@ -313,6 +313,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
             this._resetForNewAnimation();
 		}
+    	delete this.originalLayer.isAnimated;
     },
 
 
@@ -382,6 +383,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			if(this.originalLayer.name.indexOf("animated") < 0){
 				this.originalLayer.name = this.originalLayer.name + " (animated)";
+				this.originalLayer.isAnimated = true;
             }
 			newAnimatedLayers = new Array();
 
