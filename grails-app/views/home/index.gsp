@@ -89,6 +89,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/NCWMSColourScalePanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/StylePanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/AodaacPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -101,6 +102,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js?')}${jsVerNum}" type="text/javascript"></script>
+    <script src="${resource(dir:'js',file:'portal/ui/AodaacAggregatorJobListWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Viewport.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js?')}${jsVerNum}" type="text/javascript"></script>

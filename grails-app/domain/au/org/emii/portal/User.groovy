@@ -7,7 +7,7 @@ class User {
     String fullName
     
     // Relationships
-    static hasMany = [ roles: UserRole, permissions: String ]
+    static hasMany = [ roles: UserRole, permissions: String, aodaacJobs: AodaacJob ]
     
     static constraints = {
 

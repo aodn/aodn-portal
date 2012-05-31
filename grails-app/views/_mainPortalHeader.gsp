@@ -13,6 +13,7 @@
         <g:if test="${flash.openidErrorMessage}">
             <strong>${ flash.openidErrorMessage}</strong>
         </g:if>
+        <g:link controller="aodaac">AODAAC</g:link>
         <shiro:notUser>
             <g:link controller="auth" action="login">Log in</g:link> or 
             <g:link controller="auth" action="register">Register</g:link>
