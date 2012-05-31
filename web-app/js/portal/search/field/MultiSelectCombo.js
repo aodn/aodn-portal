@@ -22,6 +22,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    width: 350,
    maxCaptionLength: 40,
    extraItemCls: 'wrapping-wrapped-field',
+   pinList: false,
 
    initComponent: function(config) {
 
@@ -75,7 +76,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 			   if (success) {
 				   this.setValue(v.value);
 			   }
-		   },
+	   },
 		   scope: this
 	   });
    },

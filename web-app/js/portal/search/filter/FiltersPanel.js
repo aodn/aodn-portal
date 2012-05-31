@@ -67,9 +67,9 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
       filterComponent.mon(this, 'protocolChange', filterComponent.onProtocolChange, filterComponent);
     }
 
-    if (filterComponent.onContentChange)
+    if (filterComponent.onAddFilter)
     {
-      filterComponent.mon(this, 'contentChange', filterComponent.onContentChange, filterComponent);
+      filterComponent.mon(this.store, 'add', filterComponent.onAddFilter, filterComponent);
     }
 
     var actionItem;

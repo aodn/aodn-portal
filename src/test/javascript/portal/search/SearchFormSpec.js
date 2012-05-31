@@ -20,7 +20,7 @@ describe("Portal.search.SearchForm", function()
   it("creates search form with default options on instantiation", function() {
     var searchForm = buildMockSearchForm();
 
-    expect(searchForm.items.getCount()).toEqual(4);
+    expect(searchForm.items.getCount()).toEqual(5);
   });
   
 // HTMLUnit can't run this (IE mode)  

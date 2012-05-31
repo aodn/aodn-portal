@@ -24,7 +24,7 @@ Portal.search.field.MapLayersCheckBox = Ext.extend(Portal.search.field.ValueChec
   },
   
   // When other components are added send them protocol details
-  onContentChange: function() {
+  onAddFilter: function() {
     this.fireEvent('protocolChange', this.getValue());
   },
   
