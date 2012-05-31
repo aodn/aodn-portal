@@ -110,7 +110,9 @@ p, h1, h2, h3 {
 }
 
 
-
+.x-form-cb-label {
+	color: #666;
+}
 
 
 input.x-tree-node-cb {

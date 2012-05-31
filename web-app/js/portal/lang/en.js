@@ -27,7 +27,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	opacity: "Opacity",
 	
     // Refine search panel revised    
-    refineSearch: 'Refine Search',
+    refineSearch: 'Current Search',
     
     //Search form
     addCriteria: 'Limit search to',
@@ -41,7 +41,16 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     keyword: 'Keyword',
     parameter: 'Parameter',
     organisation: 'Organisation',
+    downloadsOnly: 'Downloads Only',
+    downloads: 'Downloads',
+    downloadsText: 'Show me results with downloads only',
+    mapLayersOnly: 'Map Layers Only',
+    mapLayers: 'Map Layers',
     mapLayer: 'Map Layer',
+    mapLayersOnlyDesc: 'Show Me Results With Map Layers Only',
+    exactMatches: 'Exact Matches',
+    precision: 'Precision',
+    exactMatchesDesc: 'Must Match Search Terms Exactly',
     searchButton: 'Search',
     fullTextSearch: ' ',
     saveSearchButtonText: 'Save',

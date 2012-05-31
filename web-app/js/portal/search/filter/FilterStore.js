@@ -11,15 +11,6 @@ Portal.search.filter.getDefaultFilters = function() {
         anchor: '100%'
       },
       true
-    ],
-    [
-      2,
-      'combo',
-      null,
-      {
-        xtype: 'portal.search.field.maplayers'
-      },
-      true
     ]
   ];
  };
@@ -45,6 +36,15 @@ Portal.search.filter.newDefaultInactiveFilterStore = function()
 	return new Portal.search.filter.FilterStore({
 		data: 
 			[ 
+		    [
+		     2,
+		     'combo',
+		     OpenLayers.i18n("mapLayersOnly"),
+		     {
+		       xtype: 'portal.search.field.maplayers'
+		     },
+		     false
+		   ],
 				[ 
 				  	3,
 				  	'portal.search.field.daterange',
@@ -110,7 +110,38 @@ Portal.search.filter.newDefaultInactiveFilterStore = function()
 						url : orgSuggestUrl
 					},
 					false
-				]
+				], 
+        [ 
+         8, 
+         'downloads',
+         OpenLayers.i18n("downloadsOnly"), 
+         {
+           fieldLabel: OpenLayers.i18n("downloads"),
+           boxLabel: OpenLayers.i18n('downloadsText'),
+           labelSeparator : '',
+           name : 'download',
+           xtype : 'portal.search.field.checkbox',
+           checked: true,
+           anchor: '100%'
+         },
+         false
+       ],[
+          9,
+          'precision',
+          OpenLayers.i18n('exactMatches'),
+          {
+            xtype: 'portal.search.field.valuecheckbox',
+            name: 'similarity',
+            fieldLabel: OpenLayers.i18n('precision'),
+            labelSeparator : '',
+            boxLabel: OpenLayers.i18n('exactMatchesDesc'),
+            checked: true,
+            checkedValue: 1,
+            uncheckedValue: 0.8
+          },
+          false,
+          {name: 'similarity', value: 0.8}
+          ]
 			]			
 	});
 };
@@ -125,7 +156,7 @@ Portal.search.filter.FilterStore = Ext.extend(Ext.data.ArrayStore, {
 		{
 			id : 0,
 			
-			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'asJson', 'filterValue' ]
+			fields : [ 'sortOrder', 'type', 'displayText', 'componentConfig', 'fixed', 'defaultFilter', 'asJson', 'filterValue' ]
 		}, cfg);
 
         Portal.search.filter.FilterStore.superclass.constructor.call(this, config);

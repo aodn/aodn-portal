@@ -164,7 +164,7 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
   },
   
   setActionSide: function(actionSide) {
-    //TODO: tricky
+    //TODO: implement
   }
   
 });

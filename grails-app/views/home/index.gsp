@@ -59,7 +59,9 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/search/field/DateRange.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/BoundingBox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/field/MultiSelectCombo.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/field/MapLayersOnlyCombo.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/CheckBox.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/ValueCheckBox.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/field/MapLayersCheckBox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FilterComboBox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FiltersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FilterStore.js?')}${jsVerNum}" type="text/javascript"></script>

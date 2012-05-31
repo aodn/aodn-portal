@@ -39,6 +39,10 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     
     this.items = [
       this.searchFiltersPanel,
+      {
+        xtype: 'spacer',
+        height: 10
+      },
       this.filterSelector,
       {
         xtype: 'spacer',
@@ -122,7 +126,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
   },
 
   addSearchFilters: function(searchFilters) {
-    var fieldValues = this.getForm().getFieldValues(), protocolFilter=false;
+    var fieldValues = this.getForm().getFieldValues();
 
     for (var fieldName in fieldValues) {
       var values = fieldValues[fieldName];
@@ -136,8 +140,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       }
     }
 
-    // default is to show layers only
-    if (!protocolFilter) searchFilters.push({name: "protocol", value: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')});
+    this.searchController.addInactiveFilterDefaults(searchFilters);
 
     return searchFilters;
   },
