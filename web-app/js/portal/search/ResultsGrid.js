@@ -10,6 +10,9 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    initComponent: function() {
      var config = {
         colModel: new Ext.grid.ColumnModel({
+           defaults: {
+             menuDisabled: true
+           },
            columns: [
                {
                   header: OpenLayers.i18n('logoHeading'), 
