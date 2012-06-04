@@ -21,8 +21,8 @@ class AodaacAggregatorService {
     def getTestParams() {
 
         return [
-            dateRangeStart: new GregorianCalendar(2011, java.util.Calendar.DECEMBER, 5).time,
-            dateRangeEnd: new GregorianCalendar(2012, java.util.Calendar.JANUARY, 1).time,
+            dateRangeStart: new GregorianCalendar(2009, java.util.Calendar.JANUARY, 5).time,
+            dateRangeEnd: new GregorianCalendar(2010, java.util.Calendar.DECEMBER, 1).time,
             timeOfDayRangeStart: "0000",
             timeOfDayRangeEnd: "2400",
             latitudeRangeStart: -90,
@@ -41,9 +41,17 @@ class AodaacAggregatorService {
         return "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
     }
 
-    def createJob( params ) {
+    def createJob( user, params ) {
 
         // Todo - DN: Vaidate params?
+
+        if ( !user ) {
+
+            log.debug "Can't create an AODAAC job without a User"
+            log.debug "params: ${ params }"
+
+            return null
+        }
 
         def args = []
         args.with {
@@ -66,18 +74,21 @@ class AodaacAggregatorService {
         params.environment = AodaacEnvironment
         params.server = _aggregatorBaseUrl()
 
+        def responseText
+
         try {
             // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,startBackgroundAggregator.cgi.sh,nc,20010101,20010102,0000,2400,-32.695,-25.006,150.293,165.234,1
             log.debug "apiCall: ${ apiCall }"
 
             // Make the call
-            def response = JSON.parse( apiCall.toURL().text )
+            responseText = apiCall.toURL().text
+            def responseJson = JSON.parse( responseText )
 
-            log.debug "response: ${ response }"
+            log.debug "responseJson: ${ responseJson }"
 
-            if ( response.jobId ) {
+            if ( responseJson.jobId ) {
 
-                def job = new AodaacJob( response.jobId, params )
+                def job = new AodaacJob( user, responseJson.jobId, params )
 
                 job.save( failOnError: true )
 
@@ -87,7 +98,7 @@ class AodaacAggregatorService {
         catch(Exception e) {
 
             log.info "Call to '$apiCall' failed", e
-            throw new AodaacException( "Unable to create new job", e )
+            throw new AodaacException( "Unable to create new job (response: '$responseText')", e )
         }
 
         return null

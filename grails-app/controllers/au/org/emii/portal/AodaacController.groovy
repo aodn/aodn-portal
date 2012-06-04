@@ -40,7 +40,9 @@ class AodaacController {
 //
 //        }
 
-        aodaacAggregatorService.createJob( aodaacAggregatorService.testParams )
+        def user = User.get( SecurityUtils.subject?.principal as Long )
+
+        aodaacAggregatorService.createJob( user, aodaacAggregatorService.testParams )
 
         redirect action: "index"
     }
@@ -68,6 +70,8 @@ class AodaacController {
 
     def userJobInfo = {
 
+        Thread.sleep 1500
+
         def subject = SecurityUtils.subject
 
         if ( !subject || !subject?.principal ) {
@@ -76,11 +80,11 @@ class AodaacController {
             return
         }
 
-        def userInstance = User.get( subject.principal )
+        def userInstance = User.get( subject.principal as Long )
 
         if ( !userInstance ) {
 
-            log.error "No user found with id: " + subject.principal
+            log.error "No user found with id: ${subject.principal}"
             render status: 500
         }
 

@@ -38,30 +38,30 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<p><b>Spatial Extent</b></p>"
         });
 
-        var useDataExtent = new Ext.Button({ text: "Use data extent", enableToggle: true, toggleGroup: "spatialExtent" });
+//        var useDataExtent = new Ext.Button({ text: "Use data extent", enableToggle: true, toggleGroup: "spatialExtent" });
 
-        var useMapExtentButton = new Ext.Button({ text: "Use map extent", enableToggle: true, toggleGroup: "spatialExtent" });
+//        var useMapExtentButton = new Ext.Button({ text: "Use map extent", enableToggle: true, toggleGroup: "spatialExtent" });
 
-        var useCustomExtent = new Ext.Button({ text: "Use custom extent", enableToggle: true, toggleGroup: "spatialExtent" });
+//        var useCustomExtent = new Ext.Button({ text: "Use custom extent", enableToggle: true, toggleGroup: "spatialExtent" });
 
-        useDataExtent.toggle( true );
-
-        var spatialExtentButtonConatiner = {
-            xtype: 'container',
-            layout: {
-                type: 'hbox',
-                pack:'center',
-                align: 'middle'
-            },
-            width: 300,
-            items: [
-                useDataExtent,
-                new Ext.Spacer({width: 7}),
-                useMapExtentButton,
-                new Ext.Spacer({width: 7}),
-                useCustomExtent
-            ]
-        };
+//        useDataExtent.toggle( true );
+//
+//        var spatialExtentButtonConatiner = {
+//            xtype: 'container',
+//            layout: {
+//                type: 'hbox',
+//                pack:'center',
+//                align: 'middle'
+//            },
+//            width: 300,
+//            items: [
+//                useDataExtent,
+////                new Ext.Spacer({width: 7}),
+////                useMapExtentButton,
+//                new Ext.Spacer({width: 7}),
+//                useCustomExtent
+//            ]
+//        };
 
         var bboxControl = [ // Todo - DN: Refactor to use Portal.search.filter.BoundingBox... ?
             {
@@ -84,7 +84,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     ref: '../northBL',
                     name: 'northBL',
                     decimalPrecision: 2,
-                    width: 50
+                    width: 50,
+                    readOnly: true
                 }]
             },{
                 xtype: 'container',
@@ -103,7 +104,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'westBL',
                         ref: '../westBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        readOnly: true
                     },{
                         xtype: 'label',
                         text: ' ',
@@ -113,7 +115,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'eastBL',
                         ref: '../eastBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        readOnly: true
                     },{
                         xtype: 'label',
                         text: OpenLayers.i18n('eastBL'),
@@ -138,7 +141,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     name: 'southBL',
                     ref: '../southBL',
                     decimalPrecision: 2,
-                    width: 50
+                    width: 50,
+                    readOnly: true
                 }]
             }
         ];

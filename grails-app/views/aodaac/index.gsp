@@ -11,10 +11,12 @@
 
 &gt; ${AodaacJob.count()} &lt;<br>
 
+<g:link action="userJobInfo">userJobInfo</g:link><br>
+
         <g:each in="${AodaacJob.list()}">
             ${it.jobId} <g:link action="updateJob" id="${it.jobId}">Update</g:link> | <g:link action="cancelJob" id="${it.jobId}">Cancel</g:link> | <g:link action="deleteJob" id="${it.jobId}">Delete</g:link><br>
-            ${it}
-            ${it.result?.dataUrl}
+            ${it}<br>
+            <a href="${it.result?.dataUrl}">${it.result?.dataUrl}</a>
             <hr>
         </g:each>
 <br/>

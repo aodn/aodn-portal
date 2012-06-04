@@ -4,107 +4,93 @@ Portal.ui.AodaacAggregatorJobListWindow = Ext.extend(Ext.Window, {
 
     initComponent: function() {
 
-        /*
-         Ext.Ajax.request({
-         url: proxyURL + encodeURIComponent( url ) + "&format=" + encodeURIComponent(expectedFormat), // add format for grails proxy
-         params: {
-         name: layer.name,
-         id: layer.id,
-         expectedFormat: expectedFormat,
-         isAnimatedLayer: isAnimatedLayer,
-         units: layer.metadata.units
-         },
-         success: function(resp, options){
-         if ( popup ) { // Popup may have been closed since request was sent
-
-         var newTabContent;
-
-         if(options.params.isAnimatedLayer)
-         newTabContent = "<div><img src='" + url + "'></div>";
-         else
-         newTabContent = formatGetFeatureInfo( resp, options );
-
-         if (newTabContent) {
-         popup.numGoodResults++;
-
-         tabsFromPopup( popup ).add( {
-         xtype: "box",
-         id: options.params.id,
-         title: options.params.name,
-         padding: 30,
-         autoHeight: true,
-         cls: "featureinfocontent",
-         autoEl: {
-         html: newTabContent
-         }
-         });
-
-         if (popup.numGoodResults == 1) {
-
-         // set to full height and re-pan
-         popup.setSize(Portal.app.config.popupWidth,Portal.app.config.popupHeight);
-         popup.show(); // since the popup is anchored, calling show will move popup to this location
-
-         // Make first tab active
-         var poptabs = tabsFromPopup( popup );
-         poptabs.setActiveTab( 0 );
-         poptabs.doLayout();
-         poptabs.show();
-
-         setTimeout('imgSizer()', 900); // ensure the popup is ready
-         }
-         }
-         // got a result, maybe empty
-         popup.numResultQueries++;
-
-         updatePopupStatus(popup);
-         }
-         },
-
-         failure: function(resp, options) { // Popup may have been closed since request was sent
-         updatePopupStatus(popup);
-         // got a fail but its still a result
-         popup.numResultQueries++;
-         }
-         });
-         */
-
-        // Content
-        var contentPanel = new Ext.Panel({
-            html: "Retrieving info...",
-            width: 450,
-            resizable: false
-        });
+//        // Content
+//        this.contentPanel = new Ext.Panel({
+//            html: "Retrieving info...",
+//            width: 450,
+//            resizable: false
+//        });
 
         // Controls
         var clearFinishedButton = {
-            text: "Clear finished" // Todo - DN: i18n
+            text: "Clear finished", // Todo - DN: i18n
+            onClick: function() { alert( 'Not implemented yet' ); }
         };
 
-        var cancelButton = {
+        var closeButton = {
             text: "Close", // Todo - DN: i18n
             listeners: {
                 scope: this,
-                click: this.onCancel
+                click: this.onClose
             }
         };
+
+        // Grid panel
+        var aodaacJobStore = new Ext.data.JsonStore({
+            // store configs
+            autoLoad: true,
+            autoDestroy: true,
+            url: 'http://localhost:8080/Portal2/aodaac/userJobInfo',
+            storeId: 'aodaacJobStore',
+            // reader configs
+//            root: '',
+            idProperty: 'jobId',
+            fields: ['jobId', 'url', {name:'jobParams', type: 'object'}, {name:'dateCreated', type:'date'}]
+        });
+
+        var gridPanel = new Ext.grid.GridPanel({
+            header: false,
+            store: aodaacJobStore,
+            colModel: new Ext.grid.ColumnModel({
+                defaults: {
+                    width: 80,
+                    sortable: false
+                },
+                columns: [
+                    {header: 'Job Id', id: 'jobId', width: 200, dataIndex: 'jobId'},
+                    {header: 'Output format', dataIndex: 'jobParams.outputFormat'},
+                    {header: 'Product Id', dataIndex: 'jobParams.productId'},
+                    // instead of specifying renderer: Ext.util.Format.dateRenderer('m/d/Y') use xtype
+                    {
+                        header: 'Date Created', width: 135, dataIndex: 'dateCreated',
+                        xtype: 'datecolumn', format: 'd/M/Y'
+                    }
+                ]
+            }),
+            viewConfig: {
+                forceFit: true,
+
+                // Return CSS class to apply to rows depending upon data values
+                getRowClass: function(record, index) {
+
+                    return 'cool_class';
+
+//                    var c = index % 2 == 0;
+//                    if (c < 0) {
+//                        return 'price-fall';
+//                    } else if (c > 0) {
+//                        return 'price-rise';
+//                    }
+                }
+            },
+            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+            width: '100%',
+            height: 300,
+            frame: true,
+            bbar: [clearFinishedButton, '-', closeButton]
+        });
 
         Ext.apply(this, {
             title: "AODAAC Jobs", // Todo - DN: i18n
             modal: true,
-			padding: 15,
+            padding: 0,
+            width: 450,
             layout: 'fit',
             items: {
                 autoHeight: true,
                 autoWidth: true,
-                padding: 5,
-                items: [contentPanel],
-                buttons: [clearFinishedButton, cancelButton],
-                keys: [{
-                    key: [Ext.EventObject.ESCAPE],
-                    handler: this.onCancel,
-                    scope: this
-                }]
+                padding: 0,
+                items: [gridPanel]
             },
             listeners: {
                 show: this.onShow,
@@ -115,7 +101,7 @@ Portal.ui.AodaacAggregatorJobListWindow = Ext.extend(Ext.Window, {
         Portal.ui.AodaacAggregatorJobListWindow.superclass.initComponent.apply(this, arguments);
     },
 
-    onCancel: function() {
+    onClose: function() {
         this.close();
     }
 });

@@ -24,11 +24,13 @@ class AodaacJob {
 
     AodaacJob(){ /* For Hibernate */ }
 
-    AodaacJob( jobId, jobParams ) {
+    AodaacJob( user, jobId, jobParams ) {
 
         dateCreated = new Date()
 
+        this.user = user
         this.jobId = jobId
+        user.addToAodaacJobs this
 
         this.jobParams = new AodaacJobParams( jobParams )
     }
@@ -36,7 +38,7 @@ class AodaacJob {
     @Override
     public String toString() {
 
-        return "AodaacJob $jobId (Status: $processingStatusText)"
+        return "AodaacJob userId: $userId; jobId: $jobId (Status: $processingStatusText)"
     }
 
     def getProcessingStatusText() {
