@@ -2,10 +2,11 @@
 <div class="p-centre">
 	<div class="p-centre-item" style="width:520px">
 
+	<h1>Welcome to the Western Australian Ocean Data Network demonstration portal</h1>
+	
+	<p>This portal is for <strong>demonstration purposes only</strong></p>
 
-
-
-
+	<%-- 
 	<h1>Welcome to the Western Australian Ocean Data Network</h1>
 
 	<p>This portal is the primary access point for search, discovery, access and download of data collected by the Australian marine community. Primary datasets are contributed by the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (Australian Antarctic Division, Australian Institute for Marine Science, Bureau of Meteorology, Commonwealth Science and Industrial Research Organisation, Geoscience Australia and the Royal Australian Navy). You can obtain full information about the WAODN via the <a title="WAODN home page" class="external" target="_blank"  href="http://www.imos.org.au/aodn.html" >WAODN Webpage</a>.</p>
@@ -53,7 +54,7 @@
 		This site is licensed under a <a title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a> &nbsp;
 		  <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a>
 	  </div>
-
+		--%>
 
   </div>
 </div>
