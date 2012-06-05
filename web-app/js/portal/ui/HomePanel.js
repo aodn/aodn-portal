@@ -58,7 +58,7 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
                         },
                         {
                             xtype: 'container',
-                            html: this.appConfig.footerContent,
+                            html: this.appConfig.footerContent + this.appConfig.portalBuildInfo,
                             cls: 'footerText'
                         }
                         ]

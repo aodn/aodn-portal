@@ -67,6 +67,11 @@ class ConfigController {
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
 
+        // Add build data
+        def cfg = grailsApplication.config
+        def md = grailsApplication.metadata
+        instanceAsGenericObj['portalBuildInfo'] = "${ cfg.instanceName } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
+
         render(contentType: "application/json", text: instanceAsGenericObj)
     }
 
