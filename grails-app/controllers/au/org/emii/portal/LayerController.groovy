@@ -100,23 +100,23 @@ class LayerController {
 		def combinedList = _collectLayersAndServers(layers)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
-	
+
     def showLayerByItsId = {
 
-        def layerInstance = null
-        // unencode layerId as per 'listAllLayers' to get just the id
-        if (params.layerId != null) {
-            def layerIdArr = params.layerId.split("_")
-            layerInstance = Layer.get( layerIdArr[ layerIdArr.size() - 1 ])
-        }
-        if (layerInstance) {
-			JSON.use("deep") {
-				render layerInstance as JSON
-			}
+        def layerInstance = Layer.get( params.layerId )
+
+        if ( layerInstance ) {
+
+            JSON.use("deep") {
+                render layerInstance as JSON
+            }
         }
         else {
-            log.error "Layer with id: '${params.layerId}' does not exist"
-            render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
+
+            def queryString = request.queryString ? "?$request.queryString" : ""
+            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+            log.info msg
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
     
