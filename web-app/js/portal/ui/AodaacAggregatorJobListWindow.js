@@ -35,7 +35,7 @@ Portal.ui.AodaacAggregatorJobListWindow = Ext.extend(Ext.Window, {
             // reader configs
 //            root: '',
             idProperty: 'jobId',
-            fields: ['jobId', 'url', {name:'jobParams', type: 'object'}, {name:'dateCreated', type:'date'}]
+            fields: ['jobId', 'url', 'jobParams.outputFormat', 'jobParams.productId', {name:'dateCreated', type:'date'}]
         });
 
         var gridPanel = new Ext.grid.GridPanel({

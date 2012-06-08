@@ -1,8 +1,14 @@
 package au.org.emii.portal
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+
 import grails.converters.JSON
+import grails.web.JSONBuilder;
+
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
+import org.springframework.beans.BeanUtils;
 import org.xml.sax.SAXException
 
 class LayerController {
@@ -100,23 +106,71 @@ class LayerController {
 		def combinedList = _collectLayersAndServers(layers)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
-	
+
     def showLayerByItsId = {
 
-        def layerInstance = null
-        // unencode layerId as per 'listAllLayers' to get just the id
-        if (params.layerId != null) {
-            def layerIdArr = params.layerId.split("_")
-            layerInstance = Layer.get( layerIdArr[ layerIdArr.size() - 1 ])
-        }
-        if (layerInstance) {
-			JSON.use("deep") {
-				render layerInstance as JSON
-			}
+        def layerInstance = Layer.get( params.layerId )
+
+        if ( layerInstance ) {
+
+            JSON.use("deep") {
+                render layerInstance as JSON
+            }
         }
         else {
-            log.error "Layer with id: '${params.layerId}' does not exist"
-            render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
+
+            def queryString = request.queryString ? "?$request.queryString" : ""
+            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+            log.info msg
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+        }
+    }
+    
+    // Lookup a layer using the server uri and layer name 
+    // (used to find any portal layer corresponding to externally entered layer details)
+    
+    def findLayerAsJson = {
+        def criteria = Layer.createCriteria()
+        
+        // For the moment just use the protocol/authority portion of the server uri 
+        // due to inconsistencies in the way server URI's are being used.
+        // This should be unique anyway
+        
+        def serverUrl = new URL(params.serverUri)
+        def serverUriPattern = serverUrl.getProtocol() + "://" + serverUrl.getAuthority() + '%'
+        
+        // split name into namespace and local name components if applicable
+        
+        def parts = params.name.split(":")
+        def namespace, localName
+        
+        if (parts.length == 2) {
+            namespace = parts[0]
+            localName = parts[1]
+        } else {
+            namespace = null
+            localName = params.name
+        }
+        
+        def layerInstance = criteria.get {  
+            server {
+                like("uri", serverUriPattern)
+            }
+            if (namespace) {
+                eq( "namespace", namespace)
+            } else {
+                isNull ("namespace")
+            }         
+            eq( "name", localName)
+            isNull("cql")      // don't include filtered layers!
+        }
+            
+        if (layerInstance) {
+            JSON.use("deep") {
+                render layerInstance as JSON
+            }
+        } else {
+            render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
         }
     }
 
@@ -320,11 +374,10 @@ class LayerController {
 				eq 'blacklisted', false
 				eq 'activeInLastScan', true
                 eq 'server.id', server.id
+				join 'server'
             }
         }
-
         def layersToReturn = layerDescriptors
-
         // If just one grouping layer, bypass it
         if ( layerDescriptors.size() == 1 &&
              layerDescriptors[0].layers.size() > 0 ) 
@@ -333,28 +386,24 @@ class LayerController {
         }
 			 
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		
+		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+		layerDescriptors*.discard()
 
-        def result = [layerDescriptors: layersToReturn]
-		JSON.use("deep") {
-			render result as JSON
-        }
+        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		render result as JSON
     }
 	
 	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
-
-        if ( !layerIds ) return "[]"
-
-		def defaultBaseLayers = Layer.findAllByIdInList(layerIds)
-		JSON.use("deep") {
-			render defaultBaseLayers as JSON
-		}
+		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.id }
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 	
 	def defaultlayers = {
-		JSON.use("deep") {
-			render Config.activeInstance().defaultLayers as JSON
-		}
+		def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 
     def _getServer(params) {
@@ -397,5 +446,52 @@ class LayerController {
 			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
 		}
 		return filtered
+	}
+    
+    def _getNamespace(qualifiedName) {
+        
+    }
+	
+	def _convertLayersToListOfMaps(layers) {
+		def excludes = [
+			'class',
+			'metaClass',
+			'dimensions',
+			'metadataUrls',
+			'hasMany',
+			'handler',
+			'belongsTo',
+			'layers',
+			'parent',
+			'hibernateLazyInitializer'
+		]
+		
+		def data = []
+		layers.each { layer ->
+			def layerData = [:]
+			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+			for (PropertyDescriptor property : properties) {
+				String name = property.getName()
+				Method readMethod = property.getReadMethod()
+				if (readMethod != null && !excludes.contains(name)) {
+					Object value = readMethod.invoke(layer, (Object[]) null)
+					layerData[name] = value
+				}
+			}
+			data << layerData
+		}
+		return data
+	}
+	
+	def _findLayersAndServers(layerIds) {
+		def layers = []
+		if (layerIds) {
+			def criteria = Layer.createCriteria()
+			layers = criteria.list {
+				'in'('id', layerIds)
+				join 'server'
+			}
+		}
+		return layers
 	}
 }

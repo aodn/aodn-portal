@@ -11,15 +11,18 @@ class DownloadCartController {
 
     def add = {
 
+        println "params.newEntries: ${params.newEntries}"
+
         if ( !params.newEntries ) {
 
             render text: "No items specified to add", status: 500
             return
         }
 
-        def newEntries = JSON.parse( params.newEntries )
+        def newEntries = JSON.parse( params.newEntries as String )
 
         def cart = _getCart()
+
         cart.addAll newEntries.toArray()
         _setCart( cart )
 
@@ -36,6 +39,25 @@ class DownloadCartController {
     def getSize = {
 
         render _getCartSize().toString()
+    }
+
+    def getCartContents = {
+
+        def cart = _getCart()
+        def compiledResult = [:]
+
+        cart.each{
+
+            def uuid = it.rec_uuid
+
+            def linksForRecord = compiledResult[uuid] ?: []
+
+            linksForRecord << it
+
+            compiledResult[uuid] = linksForRecord
+        }
+
+        render compiledResult as JSON
     }
 
     def download = {

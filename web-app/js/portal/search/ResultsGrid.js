@@ -10,6 +10,9 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    initComponent: function() {
      var config = {
         colModel: new Ext.grid.ColumnModel({
+           defaults: {
+             menuDisabled: true
+           },
            columns: [
                {
                   header: OpenLayers.i18n('logoHeading'), 
@@ -103,7 +106,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below 
      this.getBottomToolbar().store = this.store;
      
-     this.addEvents('showlayer', 'addlayer', 'rowenter', 'rowleave');
+     this.addEvents('addlayer', 'rowenter', 'rowleave');
   },
   
   afterRender: function(){
@@ -217,10 +220,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       }
   },
 
-  showOnMiniMapExecute: function(grid, rowIndex, colIndex) {
-   	 this.fireEvent('showlayer', this.getLayerLink(rowIndex));
-  },
-  
   selectLayerExecute: function(grid, rowIndex, colIndex) {
     var rec = this.store.getAt(rowIndex);
     var links = rec.get('links');
@@ -245,9 +244,6 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         scope: this,
         destroy: function() {
           delete this.layerSelectionWindow;
-        },
-        showlayer: function(layerLink) {
-          this.fireEvent('showlayer', layerLink);
         },
         addlayer: function(layerLink) {
           this.fireEvent('addlayer', layerLink);
@@ -327,7 +323,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   addLinkDataToCart: function(recs) {
 
       var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
-      var linksToAdd = new Array();
+      var tuplesToAdd = new Array();
 
       for (var i = 0; i < recs.length; i++) {
 
@@ -340,12 +336,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
               if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
 
-                  linksToAdd.push( link );
+                  tuplesToAdd.push( {record: rec, link: link} );
               }
           }
       }
 
-      addToDownloadCart( linksToAdd );
+      addToDownloadCart( tuplesToAdd );
   },
   
   getLayerLink: function(rowIndex) {
@@ -363,9 +359,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     
      var rec = grid.store.getAt( rowIndex );
 
-     var recordsToAdd = [rec];
-
-     this.addLinkDataToCart( recordsToAdd );
+     this.addLinkDataToCart( [rec] );
   },
   
   addAllToCartExecute: function() { // button, event

@@ -182,3 +182,12 @@
                                     </g:each>
                                 </td>
                             </tr>
+
+                            <tr class="prop">
+								<td valign="top" class="name">
+									<label for="layerHierarchyPath"><g:message code="layer.layerHierarchyPath.label" default="Layer Hierarchy Path" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layerHierarchyPath', 'errors')}">
+									${layerInstance?.layerHierarchyPath}
+								</td>
+							</tr>

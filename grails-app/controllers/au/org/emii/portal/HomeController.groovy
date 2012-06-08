@@ -44,23 +44,25 @@ class HomeController {
 
     def _appBuildInfo = {
 
+        def cfg = grailsApplication.config
         def md = grailsApplication.metadata
 
         if ( Environment.current == Environment.PRODUCTION ) {
 
-            return "<!-- ${grailsApplication.config.instanceName} Portal v${md['app.version']}, built ${md['app.build.date']?:"Unk."} -->"
+            return "<!-- ${ cfg.instanceName } Portal v${ md.'app.version' }, build date: ${ md.'app.build.date' ?: "not recorded" } -->"
         }
 
         return """\
 <!--
     [Portal Build Info]
-    Build date:    ${md['app.build.date'] ?: "Unk."}
-    Version:       ${md['app.version']}
-    Instance name: ${grailsApplication.config.instanceName}
-    Environment:   ${Environment.current.name}
-    Build:         #${md['app.build.number'] ?: "Unk."}
-    SVN revision:  #${md['app.svn.revision'] ?: "Unk."}
-    SVN URL:       ${md['app.svn.url'] ?: "Unk."}
+    Base URL:      ${ cfg.grails.serverURL }
+    Build date:    ${ md.'app.build.date' ?: "Unk." }
+    Version:       ${ md.'app.version' }
+    Instance name: ${ cfg.instanceName }
+    Environment:   ${ Environment.current.name }
+    Build:         #${ md.'app.build.number' ?: "Unk." }
+    SVN revision:  #${ md.'app.svn.revision' ?: "Unk." }
+    SVN URL:       ${ md.'app.svn.url' ?: "Unk." }
 -->"""
     }
 }

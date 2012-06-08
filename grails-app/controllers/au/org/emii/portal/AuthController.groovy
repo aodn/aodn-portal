@@ -90,18 +90,18 @@ class AuthController {
                     userInstance.emailAddress = ext.getAttributeValueByTypeUri( "http://schema.openid.net/contact/email" ) ?: "--None returned form OpenID provider--"
                 }
                 else {
-                    
+
                     log.warn "Unknown response type from OpenID (ie. not a FetchResponse). ext: '$ext' (${ ext?.class?.name })"
                 }
             }
             else {
-                
+
                 log.warn "Response doesn't have extension AxMessage.OPENID_NS_AX. Unable to set/update User fields."
             }
 
             // Save updated User
             userInstance.save flush: true, failOnError: true
-            
+
             // Log the User in
             def authToken = new OpenIdAuthenticationToken( userInstance.id, userInstance.openIdUrl ) // Todo - DN: Remember me option
             SecurityUtils.subject.login authToken
@@ -112,7 +112,6 @@ class AuthController {
 
             flash.message = ( params["openid.mode"] == "cancel" ) ? "Log in cancelled." : "Could not log in (${ verification.statusMsg })"
         }
-
         redirect controller: "home"
     }
 
@@ -128,7 +127,7 @@ class AuthController {
 
         redirect controller: "home"
     }
-	
+
 	def _authenticateWithOpenId(register) {
 
 		def openIdProviderUrl = grailsApplication.config.openIdProvider.url
@@ -162,4 +161,12 @@ class AuthController {
 
 		redirect url: url
 	}
+
+    def beforeInterceptor = {
+        request.exceptionHandler = { ex ->
+            flash.message = "There was a problem with authentication."
+            redirect controller: "home"
+        }
+    }
+
 }

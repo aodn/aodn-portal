@@ -3,15 +3,18 @@ Ext.namespace('Portal.common.downloadCart');
 Ext.EventManager.addListener( window, 'load', getInitialDownloadCartCount );
 
 // Public methods
-function addToDownloadCart( links ) {
+function addToDownloadCart( tuples ) {
 
     var condensedLinks = new Array();
 
     // Extract only the fields we need
-    Ext.each( links,
-        function( link ){
+    Ext.each( tuples,
+        function( tuple ){
 
-            condensedLinks.push( { title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
+            var rec = tuple.record.data;
+            var link = tuple.link;
+
+            condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
         }
     );
 

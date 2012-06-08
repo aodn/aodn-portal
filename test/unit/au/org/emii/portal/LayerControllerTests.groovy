@@ -1,8 +1,6 @@
 package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
 import org.codehaus.groovy.grails.web.json.JSONElement
 
 class LayerControllerTests extends ControllerUnitTestCase {
@@ -34,15 +32,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def server = new Server(id : 10, uri : "serverUriText", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", comments : "" )
         mockDomain Server, [server]
         mockDomain Config, [validConfig]
-        
-        def mockSubject = [ getPrincipal: { "sys.admin@emii.org.au" },
-                            isPermitted: { true },
-                            toString: { return "mockSubject" },
-                            login: { SaltedUsernamePasswordToken authtoken -> }
-                          ] as Subject
-
-        def securityUtilsControl = mockFor(SecurityUtils)
-        securityUtilsControl.demand.static.getSubject(2..2) { -> mockSubject}
 
         def mockLayer = new Layer()
         def layerServiceControl = mockFor(LayerService)

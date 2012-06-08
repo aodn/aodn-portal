@@ -155,6 +155,38 @@ class LayerServiceTests extends GroovyTestCase {
         _verifyHierarchy true /* Test had existing Layers */
     }
     
+    void testFindLayerAsJson() {
+        Server serverInstance = new Server(
+            uri: "http://geoserver.emii.org.au/geoserver/wms",
+            allowDiscoveries: true,
+            disable: false,
+            imageFormat: "image/png",
+            name: "",
+            opacity: 1,
+            shortAcron: "",
+            type: "WMS-1.1.1"
+         )
+        
+        serverInstance.save(failOnError: true)
+
+        Layer layerInstance = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
+        
+        layerInstance.save(failOnError: true)
+        
+        def controller = new LayerController()
+        
+        controller.params.serverUri = serverInstance.uri
+        controller.params.name = "imos:argo_float_mv"
+        
+        controller.findLayerAsJson()
+        
+        def layerAsJson = JSON.parse(controller.response.contentAsString)
+
+        assertEquals(layerInstance.id, layerAsJson.id)
+        assertEquals("imos", layerAsJson.namespace)
+        assertEquals("argo_float_mv", layerAsJson.name)
+    }
+    
     void testUpdateWithNewData_NoExistingThenUpdateProcessedTwice() {
         
         assertEquals "Should be 0 layers to start with", 0, Layer.count()

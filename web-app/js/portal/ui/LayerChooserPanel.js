@@ -103,8 +103,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             this.mapPanel.zoomToInitialBbox();
             this.leftTabMenuPanel.toggleNodeBranch(true);
             this.mapPanel.addDefaultLayers();
-            this.mapPanel.closePopup();
-           // Ext.getCmp('detailsPanelItems').deactivateDrawingControl();  //Arrgghh
         }, this);
     },
 	

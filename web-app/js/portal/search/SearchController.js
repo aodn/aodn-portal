@@ -41,7 +41,7 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
   onRemoveActiveFilter: function(store, record)
   {
     this.inactiveFilterStore.add(record);
-    this.inactiveFilterStore.sort('sortOrder');
+    this.inactiveFilterStore.sort('sortOrder','ASC');
   },
   
   onRemoveInactiveFilter: function(store, record)
@@ -142,6 +142,18 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
     
     // Move to active store...
     this.inactiveFilterStore.remove(record);
+  },
+  
+  addInactiveFilterDefaults: function(searchFilters) {
+    this.inactiveFilterStore.each(
+      function(record) {
+        var defaultFilter = record.get('defaultFilter');
+        
+        if (defaultFilter) {
+          searchFilters.push(defaultFilter);
+        }
+      } 
+    );
   },
   
 	onSuccessfulSave: function(response, options)

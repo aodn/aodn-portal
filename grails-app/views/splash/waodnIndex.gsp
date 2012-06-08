@@ -6,12 +6,12 @@
 
 
 
-	<h1>Welcome to the Australian Ocean Data Network</h1>
+	<h1>Welcome to the Western Australian Ocean Data Network</h1>
 
-	<p>This portal is the primary access point for search, discovery, access and download of data collected by the Australian marine community. Primary datasets are contributed by the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (Australian Antarctic Division, Australian Institute for Marine Science, Bureau of Meteorology, Commonwealth Science and Industrial Research Organisation, Geoscience Australia and the Royal Australian Navy). You can obtain full information about the AODN via the <a title="AODN home page" class="external" target="_blank"  href="http://www.imos.org.au/aodn.html" >AODN Webpage</a>.</p>
+	<p>This portal is the primary access point for search, discovery, access and download of data collected by the Australian marine community. Primary datasets are contributed by the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (Australian Antarctic Division, Australian Institute for Marine Science, Bureau of Meteorology, Commonwealth Science and Industrial Research Organisation, Geoscience Australia and the Royal Australian Navy). You can obtain full information about the WAODN via the <a title="WAODN home page" class="external" target="_blank"  href="http://www.imos.org.au/aodn.html" >WAODN Webpage</a>.</p>
 
-	<h3>Want to contribute data to the AODN?</h3>
-	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
+	<h3>Want to contribute data to the WAODN?</h3>
+	<p>Please see the web site for information on the WAODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
@@ -37,7 +37,7 @@
 
 
 	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
-	  <a title="Ocean Current page" href="http://oceancurrent.imos.org.au/sst_anom/latest.html"  target="_blank" ><img class="roundedImages" src="http://oceancurrent.imos.org.au/sst_anom/latest.png" width="220" /></a>
+	  <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent4WAODN.png" width="220" /></a>
 	  <BR>
 	  </div>
 

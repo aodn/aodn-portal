@@ -74,7 +74,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 	},
 	
 	onResetMap: function() {
-		console.log("reset map");
 		// centre map and set zoom clear layers 
 		// 
 		// and details panel

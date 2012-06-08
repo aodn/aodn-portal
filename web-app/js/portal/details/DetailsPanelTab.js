@@ -36,8 +36,10 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
     
     hideInfoTab: function(){
-    	this.setActiveTab(this.stylePanel.getId());
-    	this.hideTabStripItem(this.infoPanel);
+    	if(this.animationPanel.disabled)
+    		this.setActiveTab(this.stylePanel.getId());
+
+    	this.infoPanel.resetPanel();
     },
 
     update: function(layer){
@@ -45,7 +47,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	//Update the other tab panels
         this.stylePanel.updateStyles();
         this.animationPanel.update();
-    	
+
     	//Update the info tab panel
     	var metaUrl = null;
 
@@ -53,13 +55,27 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         	metaUrl = layer.metadataUrls[0].onlineResource.href;
         }
 
-        if(metaUrl || this.selectedLayer.server.type.search("NCWMS") > -1) {
-        	this.setActiveTab(this.infoPanel.getId());
+        if(metaUrl) {
         	this.unhideTabStripItem(this.infoPanel);
         	this.infoPanel.updateInfo(metaUrl);
-        } else {  //Just hide it if there's nothing to display
-        	this.hideInfoTab();
+        	this.infoPanel.enable();
         }
-    }
+        else{
+        	this.infoPanel.disable();
+        }
 
+
+		//only find another tab if the current active tab is no longer useful
+		//e.g. switching from an animated layer to, sayt,
+		if(this.getActiveTab().disabled){
+        	for(var i = 0; i < this.items.length; i++){
+        		if(this.getActiveTab().id != i){
+        			if(!this.items.get(i).disabled){
+        				this.setActiveTab(i);
+        				return;
+        			}
+        		}
+        	}
+		}
+    }
 });
