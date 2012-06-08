@@ -374,11 +374,10 @@ class LayerController {
 				eq 'blacklisted', false
 				eq 'activeInLastScan', true
                 eq 'server.id', server.id
+				join 'server'
             }
         }
-
         def layersToReturn = layerDescriptors
-
         // If just one grouping layer, bypass it
         if ( layerDescriptors.size() == 1 &&
              layerDescriptors[0].layers.size() > 0 ) 
@@ -387,11 +386,12 @@ class LayerController {
         }
 			 
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		
+		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+		layerDescriptors*.discard()
 
-        def result = [layerDescriptors: layersToReturn]
-		JSON.use("deep") {
-			render result as JSON
-        }
+        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		render result as JSON
     }
 	
 	def configuredbaselayers = {
