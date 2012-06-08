@@ -2,11 +2,14 @@
 
 <html>
 <body>
+<g:link controller="home">&lt; Home</g:link>
+<br /><br />
+
 <g:if test="${flash.message}">
     <div class="message" role="status">${flash.message}</div>
 </g:if>
 
-        <g:link action="createJob">Create</g:link><br>
+        <shiro:isLoggedIn><g:link action="createJob">Create</g:link><br></shiro:isLoggedIn>
         Test params: ${ testParams }<br>
 
 &gt; ${AodaacJob.count()} &lt;<br>

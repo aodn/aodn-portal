@@ -18,22 +18,6 @@ class AodaacAggregatorService {
     static final def GetDataCommand = "getJobDataUrl.cgi.sh" // Todo - DN: Where should this live?
     static final def DateFormat = "yyyyMMdd"
 
-    def getTestParams() {
-
-        return [
-            dateRangeStart: new GregorianCalendar(2009, java.util.Calendar.JANUARY, 5).time,
-            dateRangeEnd: new GregorianCalendar(2010, java.util.Calendar.DECEMBER, 1).time,
-            timeOfDayRangeStart: "0000",
-            timeOfDayRangeEnd: "2400",
-            latitudeRangeStart: -90,
-            latitudeRangeEnd: 90,
-            longitudeRangeStart: -180,
-            longitudeRangeEnd: 180,
-            productId: 1,
-            outputFormat: "hdf"
-        ]
-    }
-
     // Service methods
 
     def checkProducts() {
@@ -90,7 +74,7 @@ class AodaacAggregatorService {
 
                 def job = new AodaacJob( user, responseJson.jobId, params )
 
-                job.save( failOnError: true )
+                job.save failOnError: true
 
                 return job
             }
@@ -137,7 +121,7 @@ class AodaacAggregatorService {
 
             updatedStatus.with {
                 theErrors = errors // Rename field to match ours
-                remove "errors"
+                remove "errors"    // Remove old field (avoids name collisions)
             }
 
             log.debug "updatedStatus: ${ updatedStatus }"
@@ -147,13 +131,13 @@ class AodaacAggregatorService {
 
             if ( job.latestStatus.jobEnded ) {
 
-                _retrieveResults( job )
+                _retrieveResults job
             }
         }
         catch(Exception e) {
 
             log.info "Call to '$apiCall' failed", e
-            throw new AodaacException( "Unable to create new job", e )
+            throw new AodaacException( "Unable to update job '$job'", e )
         }
     }
 
@@ -174,7 +158,7 @@ class AodaacAggregatorService {
         catch(Exception e) {
 
             log.info "Call to '$apiCall' failed", e
-            throw new AodaacException( "Unable to cancel job '${job.jobId}'", e )
+            throw new AodaacException( "Unable to cancel job '$job'", e )
         }
     }
 
@@ -200,7 +184,7 @@ class AodaacAggregatorService {
         catch(Exception e) {
 
             log.info "Call to '$apiCall' failed", e
-            throw new AodaacException( "Unable to create new job", e )
+            throw new AodaacException( "Unable to retrieve results of job '$job'", e )
         }
     }
 
@@ -226,7 +210,7 @@ class AodaacAggregatorService {
 
         if ( !s ) return "/"
 
-        def slash = s[-1..-1] != "/" ? "/" : ""
+        def slash = s[-1] != "/" ? "/" : ""
 
         return "$s$slash"
     }

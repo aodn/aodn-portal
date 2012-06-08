@@ -7,9 +7,29 @@ class AodaacController {
 
     def aodaacAggregatorService
 
+    def testParams() {
+
+        [
+            dateRangeStart: new GregorianCalendar(1968, java.util.Calendar.JANUARY, 1).time,
+            dateRangeEnd: new GregorianCalendar(2012, java.util.Calendar.JANUARY, 7).time,
+            timeOfDayRangeStart: "0000",
+            timeOfDayRangeEnd: "2400",
+//            latitudeRangeStart: -70,
+//            latitudeRangeEnd: 40,
+//            longitudeRangeStart: -145,
+//            longitudeRangeEnd: 60,
+            latitudeRangeStart:  -30.681,
+            latitudeRangeEnd:    -24.452,
+            longitudeRangeStart: 148.383,
+            longitudeRangeEnd:   159.281,
+            productId: 3,
+            outputFormat: "urls"
+        ]
+    }
+
     def index = {
 
-        [ testParams: aodaacAggregatorService.testParams ]
+        [ testParams: testParams() ]
     }
 
     def checkProducts = {
@@ -19,30 +39,9 @@ class AodaacController {
 
     def createJob = {
 
-//        def params = [:]
-//
-//        // Quick job
-//        params.with {
-//            dateRangeStart = new GregorianCalendar(2006, java.util.Calendar.NOVEMBER, 7).time
-//            dateRangeEnd = new GregorianCalendar(2007, java.util.Calendar.NOVEMBER, 17).time
-//            timeOfDayRangeStart = "0000"
-//            timeOfDayRangeEnd = "2400"
-//            latitudeRangeStart = -40.219
-//            latitudeRangeEnd = -43.587
-//            longitudeRangeStart = 144.059
-//            longitudeRangeEnd = 149.464
-//            productId = 8
-//            outputFormat = "hdf"
-//        }
-//
-//        // Longer job
-//        params.with {
-//
-//        }
-
         def user = User.get( SecurityUtils.subject?.principal as Long )
 
-        aodaacAggregatorService.createJob( user, aodaacAggregatorService.testParams )
+        aodaacAggregatorService.createJob user, testParams()
 
         redirect action: "index"
     }
@@ -88,7 +87,14 @@ class AodaacController {
             render status: 500
         }
 
-        render userInstance.aodaacJobs as JSON
+        def jobs = userInstance.aodaacJobs
+
+        jobs.each {
+
+            aodaacAggregatorService.updateJob it // Could this be made async?
+        }
+
+        render jobs as JSON
     }
 
     def _byId( jobId ) {

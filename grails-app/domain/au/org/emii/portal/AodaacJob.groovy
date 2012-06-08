@@ -43,12 +43,15 @@ class AodaacJob {
 
     def getProcessingStatusText() {
 
+        def errorMsg = latestStatus?.theErrors ? ": ${latestStatus.theErrors}" : ""
+        def hasErrors = latestStatus?.hasErrors ? " -- errors occurred$errorMsg" : ""
+
         if ( processingStatus == AodaacJobProcessingStatus.Started ) {
 
-            return "Started (%$percentComplete complete)"
+            return "Started ($percentComplete% complete$hasErrors)"
         }
 
-        return processingStatus
+        return "$processingStatus$hasErrors"
     }
 
     def getProcessingStatus() {
