@@ -390,6 +390,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;
         openLayer.dimensions = layerDescriptor.dimensions;
+        openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
 	},
 	
 	getWmsOpenLayerUri: function(originalWMSLayer) {
@@ -397,7 +398,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	getLayerUid: function(openLayer) {
-
 		// layerHierarchyPath is the preferred unique identifier for a layer
 		if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
 
