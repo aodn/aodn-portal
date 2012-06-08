@@ -1,8 +1,14 @@
 package au.org.emii.portal
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+
 import grails.converters.JSON
+import grails.web.JSONBuilder;
+
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
+import org.springframework.beans.BeanUtils;
 import org.xml.sax.SAXException
 
 class LayerController {
@@ -390,19 +396,14 @@ class LayerController {
 	
 	def configuredbaselayers = {
 		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
-
-        if ( !layerIds ) return "[]"
-
-		def defaultBaseLayers = Layer.findAllByIdInList(layerIds)
-		JSON.use("deep") {
-			render defaultBaseLayers as JSON
-		}
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 	
 	def defaultlayers = {
-		JSON.use("deep") {
-			render Config.activeInstance().defaultLayers as JSON
-		}
+		def layerIds = Config.activeInstance().defaultLayers?.collect { it.layerId }
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 
     def _getServer(params) {
@@ -450,4 +451,47 @@ class LayerController {
     def _getNamespace(qualifiedName) {
         
     }
+	
+	def _convertLayersToListOfMaps(layers) {
+		def excludes = [
+			'class',
+			'metaClass',
+			'dimensions',
+			'metadataUrls',
+			'hasMany',
+			'handler',
+			'belongsTo',
+			'layers',
+			'parent',
+			'hibernateLazyInitializer'
+		]
+		
+		def data = []
+		layers.each { layer ->
+			def layerData = [:]
+			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+			for (PropertyDescriptor property : properties) {
+				String name = property.getName()
+				Method readMethod = property.getReadMethod()
+				if (readMethod != null && !excludes.contains(name)) {
+					Object value = readMethod.invoke(layer, (Object[]) null)
+					layerData[name] = value
+				}
+			}
+			data << layerData
+		}
+		return data
+	}
+	
+	def _findLayersAndServers(layerIds) {
+		def layers = []
+		if (layerIds) {
+			def criteria = Layer.createCriteria()
+			layers = criteria.list {
+				'in'('id', layerIds)
+				join 'server'
+			}
+		}
+		return layers
+	}
 }
