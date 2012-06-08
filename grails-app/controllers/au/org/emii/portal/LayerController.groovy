@@ -1,15 +1,13 @@
 package au.org.emii.portal
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-
 import grails.converters.JSON
-import grails.web.JSONBuilder;
-
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
+
+import java.beans.PropertyDescriptor
+import java.lang.reflect.Method
 
 class LayerController {
 
@@ -395,13 +393,13 @@ class LayerController {
     }
 	
 	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
+		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.id }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
 		render data as JSON
 	}
 	
 	def defaultlayers = {
-		def layerIds = Config.activeInstance().defaultLayers?.collect { it.layerId }
+		def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
 		render data as JSON
 	}
