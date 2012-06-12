@@ -10,6 +10,9 @@ class AodaacJob {
     AodaacJobStatus latestStatus
     AodaacJobResult result
 
+    Date mostRecentFileExistCheck
+    Boolean dataFileExists
+
     static embedded = ['jobParams', 'latestStatus', 'result']
 
     static belongsTo = [user: User]

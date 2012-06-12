@@ -147,7 +147,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             }
         ];
 
-        this.items.push( spatialExtentText, spatialExtentButtonConatiner, bboxControl );
+        this.items.push( spatialExtentText, /*spatialExtentButtonConatiner, */bboxControl );
     },
 
     addTemporalControls: function() {
@@ -230,16 +230,14 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 {
                     xtype: 'label',
                     text: "0:00",
-                    style: "margin: 4px 8px 16px 32px;"
+                    style: "padding: 1px 3px; border: red solid 1px;"
                 },
                 timeRangeSlider,
                 {
                     xtype: 'label',
                     text: "23:59",
-                    style: "margin: 4px 8px 16px 32px;"
+                    style: "padding: 1px 3px; border: black solid 1px;"
                 }
-
-
 
                 /*,
                 new Ext.form.Label({
