@@ -6,6 +6,8 @@ import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
 
+import au.org.emii.portal.display.MenuJsonCache;
+
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
 
@@ -110,10 +112,8 @@ class LayerController {
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-
-            JSON.use("deep") {
-                render layerInstance as JSON
-            }
+			def data = _getLayerData(layerInstance)
+            render data as JSON
         }
         else {
 
@@ -363,37 +363,47 @@ class LayerController {
     }
 
     def server = {
-		def layerDescriptors = []
+		def result
         def server = _getServer(params)
         if (server) {
-            def criteria = Layer.createCriteria()
-            layerDescriptors = criteria.list() {
-                isNull 'parent'
-				eq 'blacklisted', false
-				eq 'activeInLastScan', true
-                eq 'server.id', server.id
-				join 'server'
-            }
+			result = MenuJsonCache.instance().get(server)
+			if (!result) {
+				result = _getServerLayerJson(server)
+				MenuJsonCache.instance().add(server, result)
+			}
         }
-        def layersToReturn = layerDescriptors
-        // If just one grouping layer, bypass it
-        if ( layerDescriptors.size() == 1 &&
-             layerDescriptors[0].layers.size() > 0 ) 
-		{
-            layersToReturn = layerDescriptors[0].layers
-        }
-			 
-		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
 		
-		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
-		layerDescriptors*.discard()
-
-        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
-		render result as JSON
+		render result
     }
 	
+	def _getServerLayerJson(server) {
+		def criteria = Layer.createCriteria()
+		def layerDescriptors = criteria.list() {
+			isNull 'parent'
+			eq 'blacklisted', false
+			eq 'activeInLastScan', true
+			eq 'server.id', server.id
+			join 'server'
+		}
+		
+		def layersToReturn = layerDescriptors
+		// If just one grouping layer, bypass it
+		if ( layerDescriptors.size() == 1 &&
+			 layerDescriptors[0].layers.size() > 0 )
+		{
+			layersToReturn = layerDescriptors[0].layers
+		}
+		
+		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+		layerDescriptors*.discard()
+		
+		return (layersJsonObject as JSON).toString()
+	}
+	
 	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.id }
+		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
 		render data as JSON
 	}
@@ -446,37 +456,10 @@ class LayerController {
 		return filtered
 	}
     
-    def _getNamespace(qualifiedName) {
-        
-    }
-	
 	def _convertLayersToListOfMaps(layers) {
-		def excludes = [
-			'class',
-			'metaClass',
-			'dimensions',
-			'metadataUrls',
-			'hasMany',
-			'handler',
-			'belongsTo',
-			'layers',
-			'parent',
-			'hibernateLazyInitializer'
-		]
-		
 		def data = []
 		layers.each { layer ->
-			def layerData = [:]
-			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
-			for (PropertyDescriptor property : properties) {
-				String name = property.getName()
-				Method readMethod = property.getReadMethod()
-				if (readMethod != null && !excludes.contains(name)) {
-					Object value = readMethod.invoke(layer, (Object[]) null)
-					layerData[name] = value
-				}
-			}
-			data << layerData
+			data << _getLayerData(layer)
 		}
 		return data
 	}
@@ -491,5 +474,37 @@ class LayerController {
 			}
 		}
 		return layers
+	}
+	
+	def _getLayerData(layer) {
+		def excludes = [
+			"class",
+			"metaClass",
+			"dimensions",
+			"metadataUrls",
+			"hasMany",
+			"handler",
+			"belongsTo",
+			"layers",
+			"parent",
+			"hibernateLazyInitializer"
+		]
+		
+		def layerData = [:]
+		PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+		for (PropertyDescriptor property : properties) {
+			String name = property.getName()
+			Method readMethod = property.getReadMethod()
+			if (readMethod != null) {
+				Object value = readMethod.invoke(layer, (Object[]) null)
+				if ("layers".equals(name)) {
+					layerData[name] = _convertLayersToListOfMaps(value)
+				}
+				else if (!excludes.contains(name)) {
+					layerData[name] = value
+				}
+			}
+		}
+		return layerData
 	}
 }

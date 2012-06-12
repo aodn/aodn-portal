@@ -1,5 +1,6 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.MenuJsonCache;
 import grails.converters.JSON;
 import groovyx.net.http.*
 
@@ -136,12 +137,17 @@ class MenuController {
     }
 
     def json = {
+		def result = "{}"
 		if (params.id && params.id.isNumber()) {
 			def menu = Menu.get(params.id)
-			def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
-			render displayMenu as JSON
+			result = MenuJsonCache.instance().get(menu)
+			if (!result) {
+				def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
+				result = (displayMenu as JSON).toString()
+				MenuJsonCache.instance().add(menu, result)
+			}
 		}
-		render '{}'
+		render result
 	}
         
     private _cleanParams(params) {
