@@ -112,7 +112,18 @@ class LayerController {
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-			def data = _getLayerData(layerInstance)
+            def excludes = [
+                    "class",
+                    "metaClass",
+                    "hasMany",
+                    "handler",
+                    "belongsTo",
+                    "layers",
+                    "parent",
+                    "hibernateLazyInitializer"
+            ]
+
+            def data = _getLayerData(layerInstance, excludes)
             render data as JSON
         }
         else {
@@ -459,7 +470,7 @@ class LayerController {
 	def _convertLayersToListOfMaps(layers) {
 		def data = []
 		layers.each { layer ->
-			data << _getLayerData(layer)
+			data << _getLayerDefaultData(layer)
 		}
 		return data
 	}
@@ -476,21 +487,9 @@ class LayerController {
 		return layers
 	}
 	
-	def _getLayerData(layer) {
-		def excludes = [
-			"class",
-			"metaClass",
-			"dimensions",
-			"metadataUrls",
-			"hasMany",
-			"handler",
-			"belongsTo",
-			"layers",
-			"parent",
-			"hibernateLazyInitializer"
-		]
-		
-		def layerData = [:]
+	def _getLayerData(layer, excludes) {
+
+        def layerData = [:]
 		PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
 		for (PropertyDescriptor property : properties) {
 			String name = property.getName()
@@ -507,4 +506,21 @@ class LayerController {
 		}
 		return layerData
 	}
+    
+    def _getLayerDefaultData(layer){
+        def excludes = [
+                "class",
+                "metaClass",
+                "dimensions",
+                "metadataUrls",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+        ]
+
+        return _getLayerData(layer, excludes)
+    }
 }
