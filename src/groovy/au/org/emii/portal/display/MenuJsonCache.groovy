@@ -28,6 +28,7 @@ class MenuJsonCache {
 	private MenuJsonCache() {
 		manager = CacheManager.create()
 		manager.addCache(CACHE_NAME)
+		_setDynamicConfigurationParameters()
 	}
 	
 	def add(object, menuJson) {
@@ -59,5 +60,19 @@ class MenuJsonCache {
 	
 	def _toKey(object) {
 		return object.getClass().getName() + "-----" + object.id
+	}
+	
+	def _setDynamicConfigurationParameters() {
+		def configuration = _getCache().getCacheConfiguration()
+		// Live forever
+		configuration.setTimeToLiveSeconds(0)
+		// Unless idle for a day
+		configuration.setTimeToIdleSeconds(86400)
+	}
+	
+	def _dumpConfigurationStats() {
+		def configuration = _getCache().getCacheConfiguration()
+		log.debug(configuration.getTimeToIdleSeconds().toString())
+		log.debug(configuration.getTimeToLiveSeconds().toString())
 	}
 }
