@@ -110,10 +110,8 @@ class LayerController {
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-
-            JSON.use("deep") {
-                render layerInstance as JSON
-            }
+			def data = _getLayerData(layerInstance)
+            render data as JSON
         }
         else {
 
@@ -384,16 +382,16 @@ class LayerController {
         }
 			 
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
 		
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
-
-        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		
 		render result as JSON
     }
 	
 	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.id }
+		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
 		render data as JSON
 	}
@@ -446,37 +444,10 @@ class LayerController {
 		return filtered
 	}
     
-    def _getNamespace(qualifiedName) {
-        
-    }
-	
 	def _convertLayersToListOfMaps(layers) {
-		def excludes = [
-			'class',
-			'metaClass',
-			'dimensions',
-			'metadataUrls',
-			'hasMany',
-			'handler',
-			'belongsTo',
-			'layers',
-			'parent',
-			'hibernateLazyInitializer'
-		]
-		
 		def data = []
 		layers.each { layer ->
-			def layerData = [:]
-			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
-			for (PropertyDescriptor property : properties) {
-				String name = property.getName()
-				Method readMethod = property.getReadMethod()
-				if (readMethod != null && !excludes.contains(name)) {
-					Object value = readMethod.invoke(layer, (Object[]) null)
-					layerData[name] = value
-				}
-			}
-			data << layerData
+			data << _getLayerData(layer)
 		}
 		return data
 	}
@@ -491,5 +462,37 @@ class LayerController {
 			}
 		}
 		return layers
+	}
+	
+	def _getLayerData(layer) {
+		def excludes = [
+			"class",
+			"metaClass",
+			"dimensions",
+			"metadataUrls",
+			"hasMany",
+			"handler",
+			"belongsTo",
+			"layers",
+			"parent",
+			"hibernateLazyInitializer"
+		]
+		
+		def layerData = [:]
+		PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+		for (PropertyDescriptor property : properties) {
+			String name = property.getName()
+			Method readMethod = property.getReadMethod()
+			if (readMethod != null) {
+				Object value = readMethod.invoke(layer, (Object[]) null)
+				if ("layers".equals(name)) {
+					layerData[name] = _convertLayersToListOfMaps(value)
+				}
+				else if (!excludes.contains(name)) {
+					layerData[name] = value
+				}
+			}
+		}
+		return layerData
 	}
 }

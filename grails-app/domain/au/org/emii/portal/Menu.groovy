@@ -14,10 +14,6 @@ class Menu {
     Date editDate
 	SortedSet menuItems
 	
-    static mapping = {
-        sort "title"
-    }
-
     static constraints = {
         title(
             nullable:false,
@@ -30,6 +26,11 @@ class Menu {
     }
 	
 	static hasMany = [menuItems: MenuItem]
+	
+	static mapping = {
+		sort "title"
+		menuItems fetch: 'join'
+	}
 	
 	Menu() {
 		menuItems = [] as SortedSet
