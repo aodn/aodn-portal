@@ -130,10 +130,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
     for (var fieldName in fieldValues) {
       var values = fieldValues[fieldName];
+      
       if (Ext.isArray(values)) {
-        for (var i = 0; i < values.length; i++) {
-          searchFilters.push({name: fieldName, value: values[i]});
-        }
+        this.addValueArray(searchFilters, fieldName, values);
+      } else if (values.search(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER)) {
+        values = values.split(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER);
+        this.addValueArray(searchFilters, fieldName, values);
       } else {
         searchFilters.push({name: fieldName, value: values});
         if (fieldName=="protocol") protocolFilter=true;
@@ -143,6 +145,12 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     this.searchController.addInactiveFilterDefaults(searchFilters);
 
     return searchFilters;
+  },
+
+  addValueArray: function(searchFilters, fieldName, values) {
+    for (var i = 0; i < values.length; i++) {
+      searchFilters.push({name: fieldName, value: values[i]});
+    }
   },
   
   setActionSide: function(actionSide) {
