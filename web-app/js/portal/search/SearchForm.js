@@ -133,7 +133,7 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
       
       if (Ext.isArray(values)) {
         this.addValueArray(searchFilters, fieldName, values);
-      } else if (values.search(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER)) {
+      } else if (Ext.isString(values) && values.search(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER)) {
         values = values.split(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER);
         this.addValueArray(searchFilters, fieldName, values);
       } else {
