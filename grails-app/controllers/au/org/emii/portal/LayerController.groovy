@@ -6,6 +6,8 @@ import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
 
+import au.org.emii.portal.display.MenuJsonCache;
+
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
 
@@ -361,34 +363,44 @@ class LayerController {
     }
 
     def server = {
-		def layerDescriptors = []
+		def result
         def server = _getServer(params)
         if (server) {
-            def criteria = Layer.createCriteria()
-            layerDescriptors = criteria.list() {
-                isNull 'parent'
-				eq 'blacklisted', false
-				eq 'activeInLastScan', true
-                eq 'server.id', server.id
-				join 'server'
-            }
+			result = MenuJsonCache.instance().get(server)
+			if (!result) {
+				result = _getServerLayerJson(server)
+				MenuJsonCache.instance().add(server, result)
+			}
         }
-        def layersToReturn = layerDescriptors
-        // If just one grouping layer, bypass it
-        if ( layerDescriptors.size() == 1 &&
-             layerDescriptors[0].layers.size() > 0 ) 
-		{
-            layersToReturn = layerDescriptors[0].layers
-        }
-			 
-		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
 		
+		render result
+    }
+	
+	def _getServerLayerJson(server) {
+		def criteria = Layer.createCriteria()
+		def layerDescriptors = criteria.list() {
+			isNull 'parent'
+			eq 'blacklisted', false
+			eq 'activeInLastScan', true
+			eq 'server.id', server.id
+			join 'server'
+		}
+		
+		def layersToReturn = layerDescriptors
+		// If just one grouping layer, bypass it
+		if ( layerDescriptors.size() == 1 &&
+			 layerDescriptors[0].layers.size() > 0 )
+		{
+			layersToReturn = layerDescriptors[0].layers
+		}
+		
+		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
 		
-		render result as JSON
-    }
+		return (layersJsonObject as JSON).toString()
+	}
 	
 	def configuredbaselayers = {
 		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
