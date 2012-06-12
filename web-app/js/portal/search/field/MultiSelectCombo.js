@@ -23,18 +23,20 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    maxCaptionLength: 40,
    extraItemCls: 'wrapping-wrapped-field',
    pinList: false,
-
+   
    initComponent: function(config) {
 
 	   this.store = new Portal.data.SuggestionStore({
 	          url: this.url,
 	          autoLoad: true
 	      });
-	 
+
 	   if (this.baseParams) {
 		   this.store.baseParams = this.baseParams;
 	   }
-
+	   
+   	this.valueDelimiter = Portal.search.field.MultiSelectCombo.VALUE_DELIMITER;
+   
       Portal.search.field.MultiSelectCombo.superclass.initComponent.call(this);
       
       this.mon(this.store.proxy, {
@@ -97,6 +99,9 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' + Ext.urlEncode(params)) + '&format=text/xml');
    }
 });
+
+Portal.search.field.MultiSelectCombo.VALUE_DELIMITER = '_AND';
+
 
 Ext.reg('portal.search.field.multiselect', Portal.search.field.MultiSelectCombo);
 
