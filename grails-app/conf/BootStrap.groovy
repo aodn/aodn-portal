@@ -56,9 +56,11 @@ class BootStrap {
 		}
 		
 		def configInstance = au.org.emii.portal.Config.activeInstance()
-		def defaultMenu = configInstance.defaultMenu?.toDisplayableMenu()
-		def jsonCreator = new MenuJsonCreator()
-		MenuJsonCache.instance().add(defaultMenu, jsonCreator.menuToJson(defaultMenu))
+		if (configInstance) {
+			def defaultMenu = configInstance.defaultMenu?.toDisplayableMenu()
+			def jsonCreator = new MenuJsonCreator()
+			MenuJsonCache.instance().add(defaultMenu, jsonCreator.menuToJson(defaultMenu))
+		}
     }
 	
     def destroy = {
