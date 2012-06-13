@@ -27,6 +27,9 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     Portal.ui.MainTabPanel.superclass.constructor.call(this, config);
 
     this.mon(this.searchTabPanel, 'addLayer', this.onSearchTabPanelAddLayer, this);
+    this.on('tabchange', function() {
+    	this.portalPanel.fireEvent('tabchange');
+    }, this);
   },
   
  
@@ -68,4 +71,5 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
   onSearchTabPanelAddLayer: function(layerDef) {
     this.getMapPanel().addExternalLayer(layerDef);
   }
+
 });
