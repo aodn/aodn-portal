@@ -66,7 +66,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 	_getTitle: function(title, rec) {
 		// Set title to name if there is no title
 		if (title.trim() == '') {
-			return rec.name;
+			return rec.name?rec.name:'';
 		} else {
 			return title;
 		}
