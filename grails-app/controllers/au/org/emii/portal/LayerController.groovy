@@ -112,19 +112,7 @@ class LayerController {
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-            def excludes = [
-                    "class",
-                    "metaClass",
-                    "hasMany",
-                    "handler",
-                    "belongsTo",
-                    "layers",
-                    "parent",
-                    "hibernateLazyInitializer"
-            ]
-
-            def data = _getLayerData(layerInstance, excludes)
-            render data as JSON
+			_renderLayer(layerInstance)
         }
         else {
 
@@ -175,9 +163,7 @@ class LayerController {
         }
             
         if (layerInstance) {
-            JSON.use("deep") {
-                render layerInstance as JSON
-            }
+			_renderLayer(layerInstance)
         } else {
             render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
         }
@@ -485,6 +471,22 @@ class LayerController {
 			}
 		}
 		return layers
+	}
+	
+	def _renderLayer(layerInstance) {
+        def excludes = [
+                "class",
+                "metaClass",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+        ]
+
+        def data = _getLayerData(layerInstance, excludes)
+        render data as JSON
 	}
 	
 	def _getLayerData(layer, excludes) {
