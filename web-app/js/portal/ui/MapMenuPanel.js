@@ -61,6 +61,7 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
             }),
             collapsible: false,
             rootVisible: false,
+            animate: true,
             listeners: {
                 // add layers to map or expand discoveries
                 click: function(node) {
@@ -74,14 +75,16 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
                 },
                 expandnode: function(node) {
                     if (node.attributes.grailsServerId) {
+                    	node.getUI().beforeLoad();
                         Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad(
                             node, 
                             this, 
                             function() {
                                 this.fireEvent('serverloaded', node);
+                                node.getUI().afterLoad();
                             }, 
                             this
-                            );
+                        );
                     }
                 }
             }
