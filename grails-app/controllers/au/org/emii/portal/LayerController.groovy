@@ -294,6 +294,8 @@ class LayerController {
             server.save( failOnError: true )
             
             render status: 200, text: "Complete (saved)"
+			
+			_recache(server)
         }
         catch (Exception e) {
 
@@ -525,4 +527,11 @@ class LayerController {
 
         return _getLayerData(layer, excludes)
     }
+	
+	def _recache(server) {
+		def result = MenuJsonCache.instance().get(server)
+		if (result) {
+			MenuJsonCache.instance().add(server, _getServerLayerJson(server))
+		}
+	}
 }
