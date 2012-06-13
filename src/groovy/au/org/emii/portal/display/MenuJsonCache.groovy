@@ -27,8 +27,10 @@ class MenuJsonCache {
 	// The private modifier doesn't actually do anything but it might send a message
 	private MenuJsonCache() {
 		manager = CacheManager.create()
-		manager.addCache(CACHE_NAME)
-		_setDynamicConfigurationParameters()
+		if (!manager.cacheExists(CACHE_NAME)) {
+			manager.addCache(CACHE_NAME)
+			_setDynamicConfigurationParameters()
+		}
 	}
 	
 	def add(object, menuJson) {

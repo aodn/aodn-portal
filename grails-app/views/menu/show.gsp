@@ -46,7 +46,7 @@
                             root: rootNode,
                             rootVisible:false
                             });
-      rootNode.expand(true);
+      //rootNode.expand(true);
   }
 
                   </script>
