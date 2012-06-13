@@ -5,6 +5,7 @@ Portal.search.FilterSelector = Ext.extend(Ext.Container, {
   constructor: function(cfg) {
     this.filterCombo = new Portal.search.filter.FilterComboBox({
       store: cfg.store,
+      submitValue: false,
       anchor: '-2'  // prevents combo selector image being cut-off
     });
     
