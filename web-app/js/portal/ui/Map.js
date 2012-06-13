@@ -647,21 +647,21 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
 	addExternalLayer: function(layerDescriptor) {
-	  var serverUri = this.getServerUri(layerDescriptor);
-	  
-    Ext.Ajax.request({
-      url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
-      scope: this,
-      success: function(resp) {
-        var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  
-        if (grailsDescriptor) {
-          this.addMapLayer(grailsDescriptor);
-        }
-      },
-      failure: function(resp) {
-        this.addMapLayer(layerDescriptor);
-      }
-    });
+		var serverUri = this.getServerUri(layerDescriptor);
+
+		Ext.Ajax.request({
+			url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
+			scope: this,
+			success: function(resp) {
+				var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  
+				if (grailsDescriptor) {
+					this.addMapLayer(grailsDescriptor);
+				}
+			},
+			failure: function(resp) {
+				this.addMapLayer(layerDescriptor);
+			}
+		});
 	},
 	
 	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
