@@ -154,7 +154,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		this.on('tabchange', function() {
 			this._closeFeatureInfoPopup();
-		
 		}, this);
         
 		// make sure layer store reflects loaded layers 
