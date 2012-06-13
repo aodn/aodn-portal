@@ -238,6 +238,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   buildLayerSelectionWindow: function(linkStore) {
     return new Portal.search.LayerSelectionWindow({
       store: linkStore,
+      modal: true,
       listeners: {
         scope: this,
         destroy: function() {
@@ -276,6 +277,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   buildLinkSelectionWindow: function(linkStore) {
     return new Portal.search.LinkSelectionWindow({
       store: linkStore,
+      modal: true,
       listeners: {
         scope: this,
         destroy: function() {
