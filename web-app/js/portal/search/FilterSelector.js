@@ -30,6 +30,19 @@ Portal.search.FilterSelector = Ext.extend(Ext.Container, {
     Portal.search.FilterSelector.superclass.constructor.call(this, config);
     
     this.relayEvents(this.filterCombo, ['filteradd']);
+    
+    this.mon(this.store, 'add', this._hideIfNoFilters, this);
+    this.mon(this.store, 'remove', this._hideIfNoFilters, this);
+  },
+  
+  _hideIfNoFilters: function() {
+	var filtersToAdd = this.store.getCount() > 0;
+	
+	if (this.rendered) {
+		this.setVisible(filtersToAdd);
+	} else {
+		this.hidden = !filtersToAdd;
+	}
   }
   
 });
