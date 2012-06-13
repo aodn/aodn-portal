@@ -188,9 +188,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   getShowLinkTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
     var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLinkProtocols);
     if (!linkRec) return '';
-    var linkDesc = linkRec.get('title');
-    if (linkDesc.trim() == '') linkDesc = linkRec.get('name');
-    return linkDesc;
+    return linkRec.get('title');
   },
 
   getSelectLinkClass: function(v, metadata, rec, rowIndex, colIndex, store) {
