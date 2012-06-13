@@ -50,6 +50,7 @@ Portal.data.CatalogResultsStore = function(){
     return new Ext.data.JsonStore({
         totalProperty: 'summary.count',
         root: 'records',
+        fast: 'index',
         fields: [{
             name: 'title',
             convert: getTitle
