@@ -6,8 +6,7 @@ Portal.search.SaveSearchDialog = Ext.extend(Portal.common.SaveDialog, {
 		
 		var config = Ext.apply({
 			title: OpenLayers.i18n('saveSearchDialogTitle'),
-			nameFieldLabel: OpenLayers.i18n('saveSearchName'),
-			failedSaveErrMsg: OpenLayers.i18n('saveSearchFailureErrMsg')
+			nameFieldLabel: OpenLayers.i18n('saveSearchName')
 		}, cfg);
 		
 		Portal.search.SaveSearchDialog.superclass.constructor.call(this, config);
@@ -16,8 +15,6 @@ Portal.search.SaveSearchDialog = Ext.extend(Portal.common.SaveDialog, {
 	},
 	
     onSave: function() {
-    	
-    	this.searchController.saveSearch(this.nameField.getValue());
-    	this.close();
+    	this.searchController.saveSearch(this.nameField.getValue(), this.onSuccessfulSave, this.onFailedSave, this);
 	}
 });

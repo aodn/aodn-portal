@@ -35,7 +35,7 @@ class SearchController {
             render searchInstance as JSON
         }
         else {
-            render searchInstance.errors as JSON, status: 400
+            render text: searchInstance.errors as JSON, status: 400, contentType: "application/json", encoding: "UTF-8"
         }
     }
 
