@@ -536,7 +536,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     _isLoadingAnimation: function(){
     	if(this.animatedLayers.length > 0){
         	for(var i = 0; i < this.animatedLayers.length; i++){
-        		if(this.map.map.getLayer(this.animatedLayers[i].id) )
+        		if(this.map.map.getLayer(this.animatedLayers[i].id) == null )
         			return true;
         		if(this.animatedLayers[i].numLoadingTiles > 0){
         			return true;
