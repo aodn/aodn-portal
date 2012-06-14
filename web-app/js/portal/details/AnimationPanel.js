@@ -320,8 +320,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		    this._toggleButtons(false);
 
             this._resetForNewAnimation();
+            delete this.originalLayer.isAnimated;
 		}
-    	delete this.originalLayer.isAnimated;
+
     },
 
 
