@@ -771,6 +771,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
+		Ext.getCmp("animationPanel").removeAnimation();
+
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 				layersToRemove.push(openLayer);

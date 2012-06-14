@@ -143,7 +143,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners: {
 				scope: this,
 				'click': function(button,event){
-					this._removeAnimation();
+					this.removeAnimation();
 				}
 			},
 			tooltip: "Stops animation and remove all animated layers from map"
@@ -289,7 +289,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     },
 
-	_removeAnimation: function(){
+	removeAnimation: function(){
     	if(this.animatedLayers.length > 0){
     		clearTimeout(this.timerId);
 
