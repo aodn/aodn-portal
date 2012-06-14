@@ -114,4 +114,10 @@ Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad 
 		serverLayerDescriptorStore.scope = scope;
 		serverLayerDescriptorStore.load();
 	}
+	else {
+		// Mimic the load by executing the callback
+		if (Ext.isFunction(callback)) {
+			callback.call(scope || serverLayerDescriptorStore);
+		}
+	}
 }
