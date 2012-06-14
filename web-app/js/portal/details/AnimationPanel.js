@@ -516,6 +516,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.endTimeCombo.setValue(0);
 				this.timeSelectorPanel.doLayout();
     		}
+
+			this.endTimeCombo.setValue(this.dateStore.getCount() - 1);
+
+			//set start time to the end - 10 timestamps, or just the start time if there's
+			//less than 10 values
+			if(this.dateStore.getCount() >= 10){
+				this.startTimeCombo.setValue(this.dateStore.getCount() - 10);
+			}
+			else{
+				this.startTimeCombo.setValue(0);
+			}
     	}
     },
 
