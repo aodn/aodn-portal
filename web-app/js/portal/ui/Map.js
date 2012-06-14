@@ -455,7 +455,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	addLayer: function(openLayer, showLoading) {
-		if (!this.containsLayer(openLayer)) {
+		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)){
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);
 			}
