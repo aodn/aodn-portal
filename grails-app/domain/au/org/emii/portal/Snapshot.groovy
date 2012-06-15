@@ -32,6 +32,7 @@ class Snapshot
 	
     static constraints = 
 	{
+		name(unique: ['owner'])
 		description(nullable:true)
         maxX(validator: {val, obj -> obj.minX < val})
         maxY(validator: {val, obj -> obj.minY < val})
