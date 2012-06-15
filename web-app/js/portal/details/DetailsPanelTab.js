@@ -37,7 +37,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	if(this.animationPanel.disabled)
     		this.setActiveTab(this.stylePanel.getId());
 
-    	this.infoPanel.resetPanel();
+		this.hideTabStripItem(this.infoPanel);
     },
 
     update: function(layer){
@@ -62,7 +62,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         	this.infoPanel.enable();
         }
         else{
-        	this.infoPanel.disable();
+        	this.hideInfoTab();
         }
 
 
