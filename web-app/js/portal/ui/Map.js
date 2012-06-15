@@ -390,6 +390,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.blacklist = layerDescriptor.blacklist;
 		openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
 		openLayer.metadataUrls = layerDescriptor.metadataUrls;
+		openLayer.overrideMetadataUrl = layerDescriptor.overrideMetadataUrl;
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;

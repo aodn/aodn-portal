@@ -173,9 +173,18 @@
                             </tr>
 
                             <tr class="prop">
+								<td valign="top" class="name">
+									<g:message code="layer.overrideMetadataUrl.label" default="Override Metadata URL" />
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'overrideMetadataUrl', 'errors')}">
+									<g:textField name="overrideMetadataUrl" value="${layerInstance?.overrideMetadataUrl}" />
+								</td>
+                            </tr>
+
+                            <tr class="prop">
                                 <td valign="top" class="name">
-                                    <g:message code="layer.metadataUrls.label" default="Metadata URLs" />
-                                </td>
+									<g:message code="layer.overrideMetadataUrl.label" default="Metadata URLs" />
+								</td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metadataUrls', 'errors')}">
                                     <g:each in="${layerInstance?.metadataUrls}">
                                         ${it}<br />
