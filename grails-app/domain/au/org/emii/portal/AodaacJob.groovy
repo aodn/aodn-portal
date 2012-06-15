@@ -10,10 +10,12 @@ class AodaacJob {
     AodaacJobStatus latestStatus
     AodaacJobResult result
 
+    static embedded = ['jobParams', 'latestStatus', 'result']
+
     Date mostRecentFileExistCheck
     Boolean dataFileExists
 
-    static embedded = ['jobParams', 'latestStatus', 'result']
+    static transients = [ "mostRecentFileExistCheck", "dataFileExists" ]
 
     static belongsTo = [user: User]
 

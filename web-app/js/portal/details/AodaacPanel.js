@@ -1,5 +1,7 @@
 Ext.namespace('Portal.details');
 
+var productId = 1;
+
 Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     id: 'aodaacPanel',
     title: 'AODAAC Partition',
@@ -158,46 +160,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<p><b>Temporal Extent</b></p>"
         });
 
-        var startDatePicker = {
-            xtype: 'container',
-            layout: 'form',
-            width: 300,
-            items: [
-                {
-                    fieldLabel: 'Date from',
-                    labelSeparator: '',
-                    xtype: 'datefield',
-                    format: 'd/m/Y',
-                    anchor: '100%',
-                    showToday: false
-                }
-            ]
-        };
-
-        var endDatePicker = {
-            xtype: 'container',
-            layout: 'form',
-            width: 300,
-            items: [
-                {
-                    fieldLabel: 'Date to',
-                    labelSeparator: '',
-                    xtype: 'datefield',
-                    format: 'd/m/Y',
-                    anchor: '100%',
-                    showToday: false
-                }
-            ]
-        };
-
         var timeRangeSlider = new Ext.slider.MultiSlider({
             id: "timeExtentSlider",
-            width: 200,
+            width: 190,
             minValue: 0,
             maxValue: 96, // (24 hours worth of 15 minute increments)
             values: [0, 96],
-            fieldLabel: "Time of day",
-
             plugins: new Ext.slider.Tip({
                 getText: function(thumb){
 
@@ -224,30 +192,57 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         var timeRangeSliderContainer = new Ext.Panel({
+            fieldLabel: "Time of day",
             height: 'auto',
             layout: 'column',
             items: [
                 {
                     xtype: 'label',
                     text: "0:00",
-                    style: "padding: 1px 3px; border: red solid 1px;"
+                    style: "padding:0px; margin-top: 16px; margin-right: -32px;"
                 },
                 timeRangeSlider,
                 {
                     xtype: 'label',
                     text: "23:59",
-                    style: "padding: 1px 3px; border: black solid 1px;"
+                    style: "padding: 0px; margin-top: 16px; margin-left: -28px;"
                 }
-
-                /*,
-                new Ext.form.Label({
-                    fieldLabel: "",
-                    html: "0:00 - 23:59"
-                })*/
             ]
         });
 
-        this.items.push( temporalExtentText, startDatePicker, endDatePicker, new Ext.Spacer({ height: 5 }), timeRangeSliderContainer );
+        var today = new Date();
+        var yesterday = new Date();
+        yesterday.setDate(  today.getDate() - 1  );
+
+        var datePickers = {
+            xtype: 'container',
+            layout: 'form',
+            width: 300,
+            items: [
+                {
+                    fieldLabel: 'Date from:',
+                    labelSeparator: '',
+                    xtype: 'datefield',
+                    format: 'd/m/Y',
+                    anchor: '100%',
+                    showToday: false,
+                    maxValue: yesterday
+                },
+                {
+                    fieldLabel: 'Date to:',
+                    labelSeparator: '',
+                    xtype: 'datefield',
+                    format: 'd/m/Y',
+                    anchor: '100%',
+                    showToday: true,
+                    maxValue: today // Can't select date after today
+                },
+                new Ext.Spacer({ height: 5 }),
+                timeRangeSliderContainer
+            ]
+        };
+
+        this.items.push( temporalExtentText, datePickers );
     },
 
     addProcessingControls: function() {
