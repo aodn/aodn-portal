@@ -1,15 +1,15 @@
 package au.org.emii.portal
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-
 import grails.converters.JSON
-import grails.web.JSONBuilder;
-
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
+
+import au.org.emii.portal.display.MenuJsonCache;
+
+import java.beans.PropertyDescriptor
+import java.lang.reflect.Method
 
 class LayerController {
 
@@ -112,11 +112,8 @@ class LayerController {
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-
-            JSON.use("deep") {
-                render layerInstance as JSON
+			_renderLayer(layerInstance)
             }
-        }
         else {
 
             def queryString = request.queryString ? "?$request.queryString" : ""
@@ -166,9 +163,7 @@ class LayerController {
         }
             
         if (layerInstance) {
-            JSON.use("deep") {
-                render layerInstance as JSON
-            }
+			_renderLayer(layerInstance)
         } else {
             render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
         }
@@ -299,6 +294,8 @@ class LayerController {
             server.save( failOnError: true )
             
             render status: 200, text: "Complete (saved)"
+			
+			_recache(server)
         }
         catch (Exception e) {
 
@@ -365,33 +362,43 @@ class LayerController {
     }
 
     def server = {
-		def layerDescriptors = []
+		def result
         def server = _getServer(params)
         if (server) {
+			result = MenuJsonCache.instance().get(server)
+			if (!result) {
+				result = _getServerLayerJson(server)
+				MenuJsonCache.instance().add(server, result)
+			}
+        }
+		
+		render result
+    }
+	
+	def _getServerLayerJson(server) {
             def criteria = Layer.createCriteria()
-            layerDescriptors = criteria.list() {
+		def layerDescriptors = criteria.list() {
                 isNull 'parent'
 				eq 'blacklisted', false
 				eq 'activeInLastScan', true
                 eq 'server.id', server.id
 				join 'server'
             }
-        }
+		
         def layersToReturn = layerDescriptors
         // If just one grouping layer, bypass it
         if ( layerDescriptors.size() == 1 &&
-             layerDescriptors[0].layers.size() > 0 ) 
+			 layerDescriptors[0].layers.size() > 0 )
 		{
             layersToReturn = layerDescriptors[0].layers
         }
 			 
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		
+		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
-
-        def result = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
-		render result as JSON
+		
+		return (layersJsonObject as JSON).toString()
     }
 	
 	def configuredbaselayers = {
@@ -448,41 +455,14 @@ class LayerController {
 		return filtered
 	}
     
-    def _getNamespace(qualifiedName) {
-        
-    }
-	
 	def _convertLayersToListOfMaps(layers) {
-		def excludes = [
-			'class',
-			'metaClass',
-			'dimensions',
-			'metadataUrls',
-			'hasMany',
-			'handler',
-			'belongsTo',
-			'layers',
-			'parent',
-			'hibernateLazyInitializer'
-		]
-		
 		def data = []
 		layers.each { layer ->
-			def layerData = [:]
-			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
-			for (PropertyDescriptor property : properties) {
-				String name = property.getName()
-				Method readMethod = property.getReadMethod()
-				if (readMethod != null && !excludes.contains(name)) {
-					Object value = readMethod.invoke(layer, (Object[]) null)
-					layerData[name] = value
-				}
-			}
-			data << layerData
+			data << _getLayerDefaultData(layer)
 		}
 		return data
 	}
-	
+        
 	def _findLayersAndServers(layerIds) {
 		def layers = []
 		if (layerIds) {
@@ -490,8 +470,68 @@ class LayerController {
 			layers = criteria.list {
 				'in'('id', layerIds)
 				join 'server'
-			}
+    }
 		}
 		return layers
+	}
+	
+	def _renderLayer(layerInstance) {
+		def excludes = [
+                "class",
+                "metaClass",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+		]
+
+        def data = _getLayerData(layerInstance, excludes)
+        render data as JSON
+	}
+		
+	def _getLayerData(layer, excludes) {
+
+			def layerData = [:]
+			PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+			for (PropertyDescriptor property : properties) {
+				String name = property.getName()
+				Method readMethod = property.getReadMethod()
+			if (readMethod != null) {
+					Object value = readMethod.invoke(layer, (Object[]) null)
+				if ("layers".equals(name)) {
+					layerData[name] = _convertLayersToListOfMaps(value)
+				}
+				else if (!excludes.contains(name)) {
+					layerData[name] = value
+				}
+			}
+		}
+		return layerData
+	}
+	
+    def _getLayerDefaultData(layer){
+        def excludes = [
+                "class",
+                "metaClass",
+                "dimensions",
+                "metadataUrls",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+        ]
+
+        return _getLayerData(layer, excludes)
+			}
+	
+	def _recache(server) {
+		def result = MenuJsonCache.instance().get(server)
+		if (result) {
+			MenuJsonCache.instance().add(server, _getServerLayerJson(server))
+		}
 	}
 }

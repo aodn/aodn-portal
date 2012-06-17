@@ -39,7 +39,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	if(this.animationPanel.disabled)
     		this.setActiveTab(this.stylePanel.getId());
 
-    	this.infoPanel.resetPanel();
+		this.hideTabStripItem(this.infoPanel);
     },
 
     update: function(layer){
@@ -51,7 +51,10 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	//Update the info tab panel
     	var metaUrl = null;
 
-    	if (layer.metadataUrls && layer.metadataUrls.length > 0 && layer.metadataUrls[0].type == "other") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
+    	if(layer.overrideMetadataUrl){
+    		metaUrl = layer.overrideMetadataUrl;
+    	}
+    	else if (layer.metadataUrls && layer.metadataUrls.length > 0 && layer.metadataUrls[0].type == "other") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
         	metaUrl = layer.metadataUrls[0].onlineResource.href;
         }
 
@@ -61,7 +64,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         	this.infoPanel.enable();
         }
         else{
-        	this.infoPanel.disable();
+        	this.hideInfoTab();
         }
 
 

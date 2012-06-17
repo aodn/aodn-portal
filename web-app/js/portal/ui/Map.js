@@ -133,7 +133,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	    
 		this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 	    
-		this.addEvents('baselayersloaded', 'layeradded');
+		this.addEvents('baselayersloaded', 'layeradded', 'tabchange');
 		this.bubbleEvents.push('baselayersloaded');
 		this.bubbleEvents.push('layeradded');
         
@@ -151,6 +151,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				clickControl.activate();
 			});
         }, this);
+        
+		this.on('tabchange', function() {
+			this._closeFeatureInfoPopup();
+		}, this);
         
 		// make sure layer store reflects loaded layers 
 		// even if the map hasn't been rendered yet
@@ -386,6 +390,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.blacklist = layerDescriptor.blacklist;
 		openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
 		openLayer.metadataUrls = layerDescriptor.metadataUrls;
+		openLayer.overrideMetadataUrl = layerDescriptor.overrideMetadataUrl;
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;
@@ -455,7 +460,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	addLayer: function(openLayer, showLoading) {
-		if (!this.containsLayer(openLayer)) {
+		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);
 			}
@@ -648,7 +653,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
 	addExternalLayer: function(layerDescriptor) {
 	  var serverUri = this.getServerUri(layerDescriptor);
-	  
+
     Ext.Ajax.request({
       url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
       scope: this,
@@ -767,6 +772,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
+		Ext.getCmp("animationPanel").removeAnimation();
+
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 				layersToRemove.push(openLayer);

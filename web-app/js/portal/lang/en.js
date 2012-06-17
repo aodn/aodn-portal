@@ -66,6 +66,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
   newSearchText: 'New',
   newSearchTip: 'Start a new search',
       
+    // errors
+  	errorDialogTitle: 'Error',
     
     // Download Cart
     ttAddToDownload: 'Add to download cart',

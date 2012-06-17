@@ -6,7 +6,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    this.numResultsToLoad = 0;
 	    this.numResultQueries = 0;
 	    this.numGoodResults = 0;
-	    this.animationDatePattern = "Y-m-d\\TH:i:s.u\\Z";
 		
 	    var config = Ext.apply({
 	    	title: "Searching for Features at your click point",
@@ -124,7 +123,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     _getLayerFeatureInfoRequestString: function(layer) {
     	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
     	if (layer.isAnimated && layer.startTime && layer.endTime) {
-			extraParams.TIME = layer.startTime.format(this.animationDatePattern) + "/" + layer.endTime.format(this.animationDatePattern);
+			extraParams.TIME = layer.startTime.toISOString() + "/" + layer.endTime.toISOString();
 			extraParams.FORMAT = "image/png";
 			extraParams.INFO_FORMAT = "image/png";
 		}
@@ -168,7 +167,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _getLayerTimeFromUrl: function(layer) {
-    	return Date.parseDate(layer.params.TIME, this.animationDatePattern);
+    	if(layer.params.TIME){
+			return new Date(layer.params.TIME);
+    	}
     },
     
     _after: function(layer, other) {

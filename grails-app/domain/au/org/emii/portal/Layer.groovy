@@ -27,6 +27,7 @@ class Layer {
     Date lastUpdated
 
     String layerHierarchyPath
+    String overrideMetadataUrl
 
      /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -71,6 +72,7 @@ class Layer {
         bboxMaxX(nullable:true)
         bboxMaxY(nullable:true)
         projection(nullable: true)
+        overrideMetadataUrl(nullable:  true)
         queryable()
 
         isBaseLayer()
@@ -112,6 +114,13 @@ class Layer {
 
     String toString() {
         return "${server?.shortAcron} - ${name}"
+    }
+
+    String getOverrideMetadataUrl(){
+        if((this.overrideMetadataUrl == null) && (this.getParent() != null)){
+            return this.getParent().getOverrideMetadataUrl();
+        }
+        return this.overrideMetadataUrl;
     }
 	
     void printTree(int depth = 0) {

@@ -1,6 +1,6 @@
 Ext.namespace('Portal.snapshot');
 
-Portal.snapshot.SnapshotController = Ext.extend(Ext.util.Observable, {
+Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   constructor: function(config) {
     config = config || {};
     Ext.apply(this, config);

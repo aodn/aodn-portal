@@ -1,5 +1,7 @@
 import grails.converters.JSON
 import au.org.emii.portal.User
+import au.org.emii.portal.display.MenuJsonCache
+import au.org.emii.portal.display.MenuJsonCreator
 
 class BootStrap {
 
@@ -52,6 +54,13 @@ class BootStrap {
 			result['fullName'] = user.fullName
 			return result
 		}
+		
+		def configInstance = au.org.emii.portal.Config.activeInstance()
+		if (configInstance) {
+			def defaultMenu = configInstance.defaultMenu?.toDisplayableMenu()
+			def jsonCreator = new MenuJsonCreator()
+			MenuJsonCache.instance().add(defaultMenu, jsonCreator.menuToJson(defaultMenu))
+    }
     }
 	
     def destroy = {

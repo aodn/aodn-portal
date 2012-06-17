@@ -126,14 +126,16 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
   },
 
   addSearchFilters: function(searchFilters) {
-    var fieldValues = this.getForm().getFieldValues();
+    var fieldValues = this.getFieldValues(this.getForm());
 
     for (var fieldName in fieldValues) {
       var values = fieldValues[fieldName];
+      
       if (Ext.isArray(values)) {
-        for (var i = 0; i < values.length; i++) {
-          searchFilters.push({name: fieldName, value: values[i]});
-        }
+        this.addValueArray(searchFilters, fieldName, values);
+      } else if (Ext.isString(values) && values.search(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER)) {
+        values = values.split(Portal.search.field.MultiSelectCombo.VALUE_DELIMITER);
+        this.addValueArray(searchFilters, fieldName, values);
       } else {
         searchFilters.push({name: fieldName, value: values});
         if (fieldName=="protocol") protocolFilter=true;
@@ -144,10 +146,55 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
 
     return searchFilters;
   },
+
+  addValueArray: function(searchFilters, fieldName, values) {
+    for (var i = 0; i < values.length; i++) {
+      searchFilters.push({name: fieldName, value: values[i]});
+    }
+  },
   
   setActionSide: function(actionSide) {
     this.searchFiltersPanel.setActionSide(actionSide);
+  },
+  
+  /**
+   * Retrieves the fields in the form as a set of key/value pairs, using the Ext.form.Field.getValue() method.
+   * If multiple fields exist with the same name they are returned as an array.  
+   * Same as Ext.form.BasicForm.getFieldValues() except 
+   * that it ignores fields that have a submitValue property set to false  
+   * @param {Boolean} dirtyOnly (optional) True to return only fields that are dirty.
+   * @return {Object} The values in the form
+   * 
+   * TODO: Replace with an active FilterStore method that returns filter values
+   */
+  getFieldValues : function(form, dirtyOnly){
+      var o = {},
+          n,
+          key,
+          val;
+      
+      form.items.each(function(f) {
+    	  var submitValue = Ext.isDefined(f.submitValue) ? f.submitValue : true;
+    	  
+          if (submitValue && !f.disabled && (dirtyOnly !== true || f.isDirty())) {
+              n = f.getName();
+              key = o[n];
+              val = f.getValue();
+
+              if(Ext.isDefined(key)){
+                  if(Ext.isArray(key)){
+                      o[n].push(val);
+                  }else{
+                      o[n] = [key, val];
   }
+              }else{
+                  o[n] = val;
+              }
+          }
+      });
+      return o;
+  }
+
 });
 
 Ext.reg('portal.search.searchform', Portal.search.SearchForm);
