@@ -61,7 +61,6 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
             }),
             collapsible: false,
             rootVisible: false,
-            animate: true,
             listeners: {
                 // add layers to map or expand discoveries
                 click: function(node) {
