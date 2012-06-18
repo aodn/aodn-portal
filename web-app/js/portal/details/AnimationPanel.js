@@ -1,16 +1,23 @@
 Ext.namespace('Portal.details');
 
 Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
-    title: 'Date Animate',
-    id: 'animationPanel',
-    plain: true,
-    layout: 'form',
-    stateful: false,
-    autoScroll: true,
-    bodyCls: 'floatingDetailsPanel',
-    style: {margin: 5},
-    padding: 5,
-    height: 400,
+    
+    constructor: function(cfg) {
+    	var config = Ext.apply({
+    		title: 'Date Animate',
+    	    id: 'animationPanel',
+    	    plain: true,
+    	    layout: 'form',
+    	    stateful: false,
+    	    autoScroll: true,
+    	    bodyCls: 'floatingDetailsPanel',
+    	    style: { margin: 5 },
+    	    padding: 5,
+    	    height: 400
+    	}, cfg);
+        
+        Portal.details.AnimationPanel.superclass.constructor.call(this, config);
+    },
 
     initComponent: function(){
     	this.animatedLayers = new Array();
@@ -468,7 +475,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         //else no animation is running, so can't change the speed of the animation
     },
 
-    update: function(){
+    update: function(show, hide, target) {
     	//Just hide everything by default
 		this.noAnimationLabel.hide();
 		this.controlPanel.hide();
@@ -479,19 +486,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				//no animation has been set yet, so configure the panel
 				this._setLayerDatesByCapability();
 				this.controlPanel.setVisible(true);
-				this.enable();
 			}
 			else if(this.selectedLayer.id == this.originalLayer.id){
 				this.controlPanel.setVisible(true);
-				this.enable();
 			}
+			show.call(target, this);
 			//else{
 			// an animation is already in place, but it is NOT the same as the actively selected layer
 			//}
 		}
 		else{
 			//No time dimension, it's a dud!
-			this.disable();
+			hide.call(target, this);
 		}
     },
 

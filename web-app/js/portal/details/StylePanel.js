@@ -1,19 +1,26 @@
 Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Panel, {
-    id: 'stylePanel',
-    title: 'Styles',
-    style: {margin: 5},
-    autoHeight: 250,
-    autoScroll: true,
+    
+    constructor: function(cfg) {
+    	var config = Ext.apply({
+	    	id: 'stylePanel',
+	        title: 'Styles',
+	        style: { margin: 5 },
+	        autoHeight: 250,
+	        autoScroll: true
+    	}, cfg);
+        
+        Portal.details.StylePanel.superclass.constructor.call(this, config);
+    },
 
-    initComponent: function(cfg){
+    initComponent: function(cfg) {
         this.legendImage = new GeoExt.LegendImage({
             id: 'legendImage',
             imgCls: 'legendImage',
             flex: 1
         });
-
+        
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
         this.styleCombo = this.makeCombo();
 
@@ -104,12 +111,13 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
     },
 
-    updateStyles: function() {
-
+    update: function(show, hide, target) {
+    	show.call(target, this);
+    	
         var data = new Array();
         this.styleCombo.hide();
 
-        if(this.selectedLayer.server.type.search("NCWMS") > -1)  {
+        if(this.selectedLayer.isNcwms())  {
             this.ncwmsColourScalePanel.makeNcWMSColourScale(this.selectedLayer);
         }
         else{
@@ -131,7 +139,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                         colorbaronly: true
                     };
                     // its a ncwms layer
-                    if(this.selectedLayer.server.type.search("NCWMS") > -1)  {
+                    if(this.selectedLayer.isNcwms())  {
                         var s = styles[j].split("/");
                         // if forward slash is found it is in the form  [type]/[palette]
                         // we only care about the palette part
@@ -156,7 +164,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo.show();
         }
         this.refreshLegend(this.selectedLayer);
-
     },
     // full legend shown in layer option. The current legend
     refreshLegend: function(layer) {
@@ -168,7 +175,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
          };
 
          // its a ncwms layer send 'palette'
-         if(layer.server.type.search("NCWMS") > -1)  {
+         if(layer.isNcwms())  {
              var s = style.split("/");
              // if forward slash is found it is in the form  [type]/[palette]
              // we only care about the palette part
