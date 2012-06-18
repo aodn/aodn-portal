@@ -33,6 +33,11 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 	
         Portal.ui.PortalPanel.superclass.constructor.call(this, config);
+        
+        this.addEvents('tabchange');
+        this.on('tabchange', function() {
+        	this.mapPanel.fireEvent('tabchange');
+        }, this);
 		
     },
 	

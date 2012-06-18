@@ -133,7 +133,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	    
 		this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 	    
-		this.addEvents('baselayersloaded', 'layeradded');
+		this.addEvents('baselayersloaded', 'layeradded', 'tabchange');
 		this.bubbleEvents.push('baselayersloaded');
 		this.bubbleEvents.push('layeradded');
         
@@ -151,6 +151,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				clickControl.activate();
 			});
         }, this);
+		
+		this.on('tabchange', function() {
+			this._closeFeatureInfoPopup();
+		
+		}, this);
         
 		// make sure layer store reflects loaded layers 
 		// even if the map hasn't been rendered yet
