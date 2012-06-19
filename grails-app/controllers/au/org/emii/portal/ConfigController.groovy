@@ -4,6 +4,9 @@ import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import au.org.emii.portal.display.MenuJsonCache;
+import au.org.emii.portal.display.MenuJsonCreator;
+
 class ConfigController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -22,7 +25,7 @@ class ConfigController {
 
     def viewport = {
 
-        def configInstance = Config.activeInstance();
+        def configInstance = Config.activeInstance()
 		// Clean ^M characters
 		configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
         
@@ -31,18 +34,8 @@ class ConfigController {
         configInstance = _enableDisableMenuOfTheDay(configInstance);
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)        
-        // add the fully expanded baselayer menu as layers
-		instanceAsGenericObj['baselayerList'] = configInstance.baselayerMenu?.getBaseLayers() as JSON
 
-		configInstance.defaultMenu?.toDisplayableMenu()
-		def displayMenu = new au.org.emii.portal.display.Menu(configInstance.defaultMenu)
-		def tmpJsonObj = JSON.use('deep') {
-			displayMenu as JSON
-        }
-		instanceAsGenericObj['defaultMenu'] = JSON.parse(tmpJsonObj.toString());
-		
-		tmpJsonObj = configInstance.defaultLayers as JSON
-		instanceAsGenericObj['defaultLayers'] = JSON.parse(tmpJsonObj.toString());
+		_addMenuIdJson(instanceAsGenericObj, 'defaultMenu', configInstance.defaultMenu)
 		
         // add current user details
         def currentUser = SecurityUtils.getSubject()
@@ -237,5 +230,11 @@ group by server.id\
 			ids << row.id
 		}
 		return ids
+	}
+	
+	def _addMenuIdJson(jsonObject, name, menu) {
+		if (menu) {
+			jsonObject[name] = JSON.parse("{\"id\":${menu.id}}");
+		}
 	}
 }

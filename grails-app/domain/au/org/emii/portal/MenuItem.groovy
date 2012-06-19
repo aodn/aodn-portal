@@ -32,6 +32,9 @@ class MenuItem implements Comparable<MenuItem> {
         childItems cascade: 'all-delete-orphan'
         parentId updateable: false
         parentId insertable: false
+		layer fetch: 'join'
+		server fetch: 'join'
+		childItems fetch: 'join'
 	}
 	
 	MenuItem() {
