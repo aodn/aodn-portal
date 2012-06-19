@@ -1,11 +1,18 @@
 Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
+	
+	constructor: function(cfg) {
+    	var config = Ext.apply({
 	id: 'detailsPanelItems',
 	//hidden: true,
 	layout: 'vbox',
 	layoutConfig: {
 		align: 'stretch'
+    		}
+    	}, cfg);
+        
+        Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 	},
 
 	initComponent: function(){
@@ -108,9 +115,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		// show new layer unless user requested 'hideLayerOptions' 
 		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
 
-			this.detailsPanelTabs.setSelectedLayer(layer);
 			this.detailsPanelTabs.update(layer);			
-			this.detailsPanelTabs.show();
 			this.transectControl.hide();
 
 			// remove any transect tabs for previous layer

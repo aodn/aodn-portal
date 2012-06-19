@@ -1,6 +1,9 @@
 Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
+    
+    constructor: function(cfg) {
+    	var config = Ext.apply({
     defaults: {
         margin: 10
     },
@@ -10,9 +13,13 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     activeTab: 0,
     enableTabScroll: true,
     cls: 'floatingDetailsPanelContent',
-    flex: 1,
+    	    flex: 1
+    	}, cfg);
+        
+        Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
+    },
 
-    initComponent: function(){
+    initComponent: function() {
     	this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
         this.animationPanel = new Portal.details.AnimationPanel();
@@ -28,57 +35,36 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
     },
 
-    setSelectedLayer: function(layer){
+    setSelectedLayer: function(layer) {
         this.selectedLayer = layer;
         this.infoPanel.setSelectedLayer(layer);
         this.stylePanel.setSelectedLayer(layer);
         this.animationPanel.setSelectedLayer(layer);
     },
-    
-    hideInfoTab: function(){
-    	if(this.animationPanel.disabled)
-    		this.setActiveTab(this.stylePanel.getId());
 
-		this.hideTabStripItem(this.infoPanel);
-    },
-
-    update: function(layer){
-
+    update: function(layer) {
+    	this.setSelectedLayer(layer);
     	//Update the other tab panels
-        this.stylePanel.updateStyles();
-        this.animationPanel.update();
-
-    	//Update the info tab panel
-    	var metaUrl = null;
-
-    	if(layer.overrideMetadataUrl){
-    		metaUrl = layer.overrideMetadataUrl;
-    	}
-    	else if (layer.metadataUrls && layer.metadataUrls.length > 0 && layer.metadataUrls[0].type == "other") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
-        	metaUrl = layer.metadataUrls[0].onlineResource.href;
+        this.stylePanel.update(this._showTab, this._hideTab, this);
+        this.animationPanel.update(this._showTab, this._hideTab, this);
+        this.infoPanel.update(this._showTab, this._hideTab, this);
+        this.show();
+    },
+    
+    _hideTab: function(tab) {
+    	this.hideTabStripItem(tab.id);
+    	for(var i = 0; i < this.items.length; i++) {
+    		var item = this.items.get(i);
+    		if (item) {
+		    	if (Ext.get(this.getTabEl(item)).isVisible()) {
+		    		this.setActiveTab(item);
+		    		i = this.items.length;
+    	        }
+            }
         }
-
-        if(metaUrl) {
-        	this.unhideTabStripItem(this.infoPanel);
-        	this.infoPanel.updateInfo(metaUrl);
-        	this.infoPanel.enable();
-        }
-        else{
-        	this.hideInfoTab();
-        }
-
-
-		//only find another tab if the current active tab is no longer useful
-		//e.g. switching from an animated layer to, sayt,
-		if(this.getActiveTab().disabled){
-        	for(var i = 0; i < this.items.length; i++){
-        		if(this.getActiveTab().id != i){
-        			if(!this.items.get(i).disabled){
-        				this.setActiveTab(i);
-        				return;
-        			}
-        		}
-        	}
-		}
+    },
+    
+    _showTab: function(tab) {
+    	this.unhideTabStripItem(tab.id);
     }
 });

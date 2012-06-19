@@ -2,6 +2,9 @@ Ext.namespace('Portal.ui');
 
 //TODO: add something here to hide/show 'no layer selected' if there are no active layers on the map
 Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
+	
+	constructor: function(cfg) {
+    	var config = Ext.apply({
 	id: 'rightDetailsPanel',
 	region: 'east',
 	title: OpenLayers.i18n('noActiveLayersSelected'),
@@ -11,7 +14,11 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	split: true,
 	width: 350,
 	minWidth: 250,
-	layout: 'fit',
+    		layout: 'fit'
+    	}, cfg);
+        
+        Portal.ui.RightDetailsPanel.superclass.constructor.call(this, config);
+    },
 
 	// check whether the panel has been rendered before calling the default expand method
 	expand: function() {
