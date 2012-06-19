@@ -12,7 +12,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 		Portal.details.InfoPanel.superclass.initComponent.call(this);
 	},
 
-
 	setSelectedLayer: function(layer){
 		this.selectedLayer = layer;
 	},
@@ -25,7 +24,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 			this.updateNcwmsLayer();  //Show the getFeatureInfo response for ncWMS if there's no metadata
 		}
 	},
-
 
 	updateLayer: function(metaUrl){
 		var conn = new Ext.data.Connection; 

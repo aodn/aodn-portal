@@ -17,6 +17,7 @@ class AodaacAggregatorService {
     static final def CancelJobCommand = "cancelJob.cgi.sh" // Todo - DN: Where should this live?
     static final def GetDataCommand = "getJobDataUrl.cgi.sh" // Todo - DN: Where should this live?
     static final def DateFormat = "yyyyMMdd"
+    static final def HttpStatusCodeSuccessRange = 200..299
 
     // Service methods
 
@@ -36,6 +37,8 @@ class AodaacAggregatorService {
 
             return null
         }
+
+        log.info "Creating AODAAC Job for user: '$user'"
 
         def args = []
         args.with {
@@ -79,7 +82,7 @@ class AodaacAggregatorService {
                 return job
             }
         }
-        catch(Exception e) {
+        catch( Exception e ) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException( "Unable to create new job (response: '$responseText')", e )
@@ -94,11 +97,13 @@ class AodaacAggregatorService {
 
         if ( !job ) return
 
-        if ( job.latestStatus?.jobEnded ) { // Todo - DN: Check if data has been retrieved as well?
+        if ( job.latestStatus?.jobEnded ) {
 
-            if ( !job.result?.dataUrl ) log.error "Unexpected state for job: $job" // Todo - DN: What about if job has been cancelled?
+            log.debug "Don't update job as we know if has already ended, but verify presence of result data file"
 
-            log.debug "Not updating job as we already know it has ended"
+            // Check if result file exists
+            _verifyResultFileExists job
+
             return
         }
 
@@ -132,9 +137,10 @@ class AodaacAggregatorService {
             if ( job.latestStatus.jobEnded ) {
 
                 _retrieveResults job
+                _verifyResultFileExists job
             }
         }
-        catch(Exception e) {
+        catch( Exception e ) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException( "Unable to update job '$job'", e )
@@ -179,13 +185,46 @@ class AodaacAggregatorService {
             log.debug "response: $response"
 
             job.result = new AodaacJobResult( dataUrl: response )
-            job.save()
+            job.save failOnError: true
         }
-        catch(Exception e) {
+        catch( Exception e ) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException( "Unable to retrieve results of job '$job'", e )
         }
+    }
+
+    void _verifyResultFileExists( job ) {
+
+        log.debug "Verifying results file exists for $job"
+
+        // Reset data file exists
+        job.dataFileExists = false
+
+        try {
+            def url = job.result.dataUrl.toURL()
+
+            log.debug "job.result.dataUrl.toURL(): ${ url }"
+
+            def conn = url.openConnection()
+            conn.requestMethod = "HEAD"
+            conn.connect()
+
+            log.debug "conn.responseCode: ${ conn.responseCode }"
+
+            if ( HttpStatusCodeSuccessRange.contains( conn.responseCode ) ) {
+
+                job.dataFileExists = true
+            }
+        }
+        catch( Exception e ) {
+
+            log.debug "Could not check existence of result file for job '$job'", e
+        }
+
+        // Record date this check occurred
+        job.mostRecentDataFileExistCheck = new Date()
+        job.save failOnError: true
     }
 
     // Supporting logic

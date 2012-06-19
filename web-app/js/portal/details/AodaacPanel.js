@@ -3,11 +3,21 @@ Ext.namespace('Portal.details');
 var productId = 1;
 
 Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
+
+    /* The plan:
+     * --------------------------------------
+     * Load AODAAC tab (hidden)
+     * If metadata record has productId:
+     *  - Show panel (with loading message)
+     *  - Load product data file
+     * When the product data file loads:
+     *  - If no product info for id: display message "No info found for relevant product
+     *  - If product info is found, build UI with defaults max/min bounds and display
+     */
+
     id: 'aodaacPanel',
     title: 'AODAAC Partition',
-    style: {margin: 5},
-    height: 400,
-    enableTabScroll: true,
+    html: "Loading ...",
 
     initComponent: function(){
 
@@ -21,15 +31,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         this.addSpatialControls();
 
-        this.items.push( new Ext.Spacer({height: 5}) );
+        this.items.push( new Ext.Spacer( {height: 5} ) );
 
         this.addTemporalControls();
 
-        this.items.push( new Ext.Spacer({height: 5}) );
+        this.items.push( new Ext.Spacer( {height: 5} ) );
 
         this.addProcessingControls();
 
-        Portal.details.AodaacPanel.superclass.initComponent.call(this);
+        Portal.details.AodaacPanel.superclass.initComponent.call( this );
     },
 
     addSpatialControls: function() {

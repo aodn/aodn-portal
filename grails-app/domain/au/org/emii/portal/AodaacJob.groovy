@@ -12,10 +12,8 @@ class AodaacJob {
 
     static embedded = ['jobParams', 'latestStatus', 'result']
 
-    Date mostRecentFileExistCheck
+    Date mostRecentDataFileExistCheck
     Boolean dataFileExists
-
-    static transients = [ "mostRecentFileExistCheck", "dataFileExists" ]
 
     static belongsTo = [user: User]
 
@@ -25,6 +23,9 @@ class AodaacJob {
 
         latestStatus nullable: true
         result nullable: true
+
+        mostRecentDataFileExistCheck nullable: true
+        dataFileExists nullable: true
     }
 
     AodaacJob(){ /* For Hibernate */ }
@@ -48,15 +49,32 @@ class AodaacJob {
 
     def getProcessingStatusText() {
 
+        // Check for recorded errors
         def errorMsg = latestStatus?.theErrors ? ": ${latestStatus.theErrors}" : ""
         def hasErrors = latestStatus?.hasErrors ? " -- errors occurred$errorMsg" : ""
 
+        // Include percentage processed (if started but not complete)
         if ( processingStatus == AodaacJobProcessingStatus.Started ) {
 
             return "Started ($percentComplete% complete$hasErrors)"
         }
 
-        return "$processingStatus$hasErrors"
+        def resultFileMsg = ""
+
+        // Use result of presence of result file
+        if ( processingStatus == AodaacJobProcessingStatus.Complete ) {
+
+            if ( mostRecentDataFileExistCheck ) {
+
+                resultFileMsg = dataFileExists ? "" : " -- Data file is missing"
+            }
+            else {
+
+                resultFileMsg = " -- Data file presence not checked"
+            }
+        }
+
+        return "$processingStatus$resultFileMsg$hasErrors"
     }
 
     def getProcessingStatus() {

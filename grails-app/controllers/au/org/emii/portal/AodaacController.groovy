@@ -10,8 +10,8 @@ class AodaacController {
     def testParams() {
 
         [
-            dateRangeStart: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 1).time,
-            dateRangeEnd: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 7).time,
+            dateRangeStart: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 14).time,
+            dateRangeEnd: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 21).time,
             timeOfDayRangeStart: "0000",
             timeOfDayRangeEnd: "2400",
 //            latitudeRangeStart: -70,
@@ -23,7 +23,7 @@ class AodaacController {
             longitudeRangeStart: 148.383,
             longitudeRangeEnd:   159.281,
             productId: 1,
-            outputFormat: "hdf"
+            outputFormat: "nc"
         ]
     }
 
