@@ -29,7 +29,5 @@ Portal.common.Controller = Ext.extend(Ext.util.Observable, {
 		if (requestCallbacks.failure) {
 			requestCallbacks.failure.apply(requestCallbacks.scope || this || window, args);
 		}
-	},
-	
-		
+	}
 });

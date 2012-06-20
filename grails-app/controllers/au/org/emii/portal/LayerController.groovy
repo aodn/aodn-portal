@@ -1,12 +1,11 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
-
-import au.org.emii.portal.display.MenuJsonCache;
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -249,32 +248,31 @@ class LayerController {
 
     def saveOrUpdate = {
 
+        // Logging output
+        if ( log.debugEnabled ) {
+            def layerDataPrint = JSON.parse( params.layerData as String )
+            layerDataPrint.children = "[...]"
+            layerDataPrint.supportedProjections = "[...]"
+
+            log.debug "metadata:  ${params.metadata}"
+            log.debug "layerData: $layerDataPrint"
+        }
+
+        // Check credentials
         try {
-            // Logging output
+            _validateCredentialsAndAuthenticate params
+        }
+        catch(Exception e) {
 
-            if ( log.debugEnabled ) {
-                def layerDataPrint = JSON.parse( params.layerData as String )
-                layerDataPrint.children = "[...]"
-                layerDataPrint.supportedProjections = "[...]"
+            log.info "Problem validating credentials", e
 
-                log.debug "metadata:  ${params.metadata}"
-                log.debug "layerData: $layerDataPrint"
-            }
+            log.debug "Possible problem with '${ params.password }'"
 
-            // Check credentials
-            try {
-                _validateCredentialsAndAuthenticate params
-            }
-            catch(Exception e) {
+            render status: 401, text: "Credentials missing or incorrect"
+            return
+        }
 
-                log.info "Problem validating credentials", e
-
-                render status: 401, text: "Credentials missing or incorrect"
-                return
-            }
-            
-            // Should control be handed-off to layerService as soon as the credentials are checked?
-            
+        try {
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
