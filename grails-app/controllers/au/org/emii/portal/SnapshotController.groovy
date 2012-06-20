@@ -2,6 +2,8 @@ package au.org.emii.portal
 
 import org.codehaus.groovy.grails.web.json.JSONObject;
 
+import au.org.emii.portal.config.JsonMarshallingRegistrar;
+
 import grails.converters.JSON
 
 class SnapshotController 
@@ -103,7 +105,7 @@ class SnapshotController
 			if (params.type == 'JSON')
 			{
                 //TODO: only need down to snapshot layers level
-                JSON.use("snapshotlayers") {
+                JSON.use(JsonMarshallingRegistrar.SNAPSHOT_LAYERS_MARSHALLING_CONFIG) {
                     render(snapshotInstance as JSON)
                 }
 			}

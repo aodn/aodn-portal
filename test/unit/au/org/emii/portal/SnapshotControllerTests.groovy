@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import java.util.Map;
 
+import au.org.emii.portal.config.JsonMarshallingRegistrar;
 import au.org.emii.portal.display.SnapshotLayerJsonMarshaller;
 
 import grails.test.*
@@ -94,9 +95,7 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 		
 		controller.params.id = snapshot.id
 		
-		JSON.createNamedConfig("snapshotlayers") {
-			it.registerObjectMarshaller(new SnapshotLayerJsonMarshaller())
-		}
+		JsonMarshallingRegistrar.registerJsonMarshallers()
 		
 		callShow()
 
