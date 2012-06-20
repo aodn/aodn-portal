@@ -2,6 +2,7 @@ import grails.converters.JSON
 import au.org.emii.portal.User
 import au.org.emii.portal.display.MenuJsonCache
 import au.org.emii.portal.display.MenuJsonCreator
+import au.org.emii.portal.display.SnapshotLayerJsonMarshaller
 
 class BootStrap {
 
@@ -53,6 +54,10 @@ class BootStrap {
             result['emailAddress'] = user.emailAddress
 			result['fullName'] = user.fullName
 			return result
+		}
+		
+		JSON.createNamedConfig("snapshotlayers") {
+			it.registerObjectMarshaller(new SnapshotLayerJsonMarshaller())
 		}
 		
 		def configInstance = au.org.emii.portal.Config.activeInstance()

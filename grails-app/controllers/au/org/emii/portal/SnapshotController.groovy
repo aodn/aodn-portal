@@ -103,7 +103,7 @@ class SnapshotController
 			if (params.type == 'JSON')
 			{
                 //TODO: only need down to snapshot layers level
-                JSON.use("deep") {
+                JSON.use("snapshotlayers") {
                     render(snapshotInstance as JSON)
                 }
 			}
