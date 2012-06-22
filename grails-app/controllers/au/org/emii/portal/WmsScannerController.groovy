@@ -75,8 +75,14 @@ class WmsScannerController {
             def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
             def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
-            def username = URLEncoder.encode(server.username)
-            def password = URLEncoder.encode(server.password)
+            
+            def username = null
+            if(server.username)
+                username = URLEncoder.encode(server.username)
+            
+            def password = null
+            if(server.password)
+                password = URLEncoder.encode(server.password)
             
             // Perform action
             def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency&username=$username&password=$password"
