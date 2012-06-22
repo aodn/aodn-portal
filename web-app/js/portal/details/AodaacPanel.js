@@ -245,8 +245,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<b>Temporal Extent</b>"
         });
 
-        var timeRangeSlider = new Ext.slider.MultiSlider({
-            id: "timeExtentSlider",
+        this.timeRangeSlider = new Ext.slider.MultiSlider({
+            id: 'timeExtentSlider',
             width: 190,
             minValue: 0,
             maxValue: 96, // (24 hours worth of 15 minute increments)
@@ -286,7 +286,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     text: "0:00",
                     style: "padding:0px; margin-top: 16px; margin-right: -32px;"
                 },
-                timeRangeSlider,
+                this.timeRangeSlider,
                 {
                     xtype: 'label',
                     text: "23:59",
@@ -341,7 +341,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<b>Output</b>"
         });
 
-        var outputSelector = new Ext.form.ComboBox({
+        this.outputSelector = new Ext.form.ComboBox({
             id: 'outputSelector',
             fieldLabel: 'Output format',
             mode: 'local',
@@ -366,10 +366,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             text: "Start processing job&nbsp;",
             scale: "medium",
             icon: "images/start.png",
+            scope: this,
             handler: this.startProcessing
         });
 
-        items.push( processingControlsText, outputSelector, this._newSectionSpacer(), startProcessingButton );
+        items.push( processingControlsText, this.outputSelector, this._newSectionSpacer(), startProcessingButton );
     },
 
     _newSectionSpacer: function() {
@@ -380,6 +381,25 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     startProcessing: function() {
 
         var args = "";
+        args += "outputFormat=" + this.outputSelector.value;
+        args += "&";
+        args += "dateRangeStart=" + this.dateRangeStartPicker.value;
+        args += "&";
+        args += "dateRangeEnd=" + this.dateRangeEndPicker.value;
+        args += "&";
+        args += "timeOfDayRangeStart=" + this._convertTimeSliderValue( this.timeRangeSlider.thumbs[0].value );
+        args += "&";
+        args += "timeOfDayRangeEnd=" + this._convertTimeSliderValue( this.timeRangeSlider.thumbs[1].value );
+        args += "&";
+        args += "latitudeRangeStart=" + this.southBL.value;
+        args += "&";
+        args += "latitudeRangeEnd=" + this.northBL.value;
+        args += "&";
+        args += "longitudeRangeStart=" + this.westBL.value;
+        args += "&";
+        args += "longitudeRangeEnd=" + this.eastBL.value;
+        args += "&";
+        args += "productId=" + productId;
 
         Ext.Ajax.request({
             url: 'aodaac/createJob?' + args,
@@ -388,13 +408,30 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
                 alert( 'Partitioning job created. Processing now.\n\nIf you supplied an email address we will sent you a notification when the job is complete.\nOtherwise, you can track the progress of the job in the \'Data\' tab of the Portal.' );
             },
-            failure: function( resp ) {
+            failure: function() {
 
                 alert( 'Unable to create processing job. Please re-check the parameters and try again.' );
             }
         });
 
         new Portal.ui.AodaacAggregatorJobListWindow().show();
+    },
+
+    _convertTimeSliderValue: function( quarterHours ) {
+
+        // 'value' will be 0 - 96 (representing quarter-hours throughout the day)
+
+        var fullHours = Math.floor(quarterHours / 4);
+        var partHours = quarterHours % 4;
+
+        var minutePart = ["00", "15", "30", "45"][partHours];
+        var hourPart = fullHours;
+
+        // Add leading zeros
+        if (fullHours == 0) hourPart = '00';
+        else if (fullHours < 10) hourPart = '0' + hourPart;
+
+        return hourPart + '' + minutePart;
     }
 });
 

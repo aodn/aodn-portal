@@ -51,8 +51,8 @@ class AodaacJob {
         BindDynamicMethod bind = new BindDynamicMethod()
         bind.invoke this.jobParams, 'bind', args
 
-        this.jobParams.dateRangeStart = Date.parse( 'EEE MMM dd HH:mm:ss zzz yyyy', jobParams.dateRangeStart ) // Would prefer to use parseToStringDate but couldn't get it to work :'(
-        this.jobParams.dateRangeEnd = Date.parse( 'EEE MMM dd HH:mm:ss zzz yyyy', jobParams.dateRangeEnd )
+        this.jobParams.dateRangeStart = Date.parse( 'dd/MM/hhhh', jobParams.dateRangeStart ) // Would prefer to use parseToStringDate but couldn't get it to work :'(
+        this.jobParams.dateRangeEnd = Date.parse( 'dd/MM/hhhh', jobParams.dateRangeEnd )
     }
 
     @Override

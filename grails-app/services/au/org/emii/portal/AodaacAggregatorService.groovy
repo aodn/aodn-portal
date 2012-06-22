@@ -99,8 +99,8 @@ class AodaacAggregatorService {
 
         apiCallArgs.with {
             add params.outputFormat
-            add params.dateRangeStart.format( DateFormat )
-            add params.dateRangeEnd.format( DateFormat )
+            add params.dateRangeStart?.format( DateFormat )
+            add params.dateRangeEnd?.format( DateFormat )
             add params.timeOfDayRangeStart
             add params.timeOfDayRangeEnd
             add params.latitudeRangeStart
@@ -150,8 +150,6 @@ class AodaacAggregatorService {
     void updateJob( job ) {
 
         log.debug "Updating job ${ job }"
-
-        if ( !job ) return
 
         if ( job.latestStatus?.jobEnded ) {
 
