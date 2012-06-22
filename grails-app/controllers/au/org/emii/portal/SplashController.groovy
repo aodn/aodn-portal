@@ -3,10 +3,14 @@ package au.org.emii.portal
 class SplashController {
 	
 	def cfgInstanceName = grailsApplication.config.instanceName.toLowerCase()
+    def oceanCurrentService
 
     // the home page center content
     def index = {
-        render(view: "${cfgInstanceName}Index")
+		
+		def oceanCurrentObj = oceanCurrentService.getRandomDetails()
+		
+        render(view: "${cfgInstanceName}Index", model:[ oceanCurrent: oceanCurrentObj])
     }
     
     // links
