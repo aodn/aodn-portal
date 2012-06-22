@@ -31,7 +31,7 @@ class DownloadCartController {
 
     def clear = {
 
-        _setCart( [] as Set )
+        _setCart null
 
         render _getCartSize().toString()
     }

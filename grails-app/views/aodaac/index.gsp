@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" import="au.org.emii.portal.AodaacAggregatorService; au.org.emii.portal.AodaacJob" %>
+<%@ page contentType="text/html;charset=UTF-8" import="au.org.emii.portal.AodaacController; au.org.emii.portal.AodaacAggregatorService; au.org.emii.portal.AodaacJob" %>
 
 <html>
 <body>
@@ -9,10 +9,10 @@
     <div class="message" role="status">${flash.message}</div>
 </g:if>
 
-        <shiro:isLoggedIn><g:link action="createJob">Create</g:link><br></shiro:isLoggedIn>
+        <g:link action="testCreateJob">Create</g:link><br>
         Test params: ${ testParams }<br>
 
-&gt; ${AodaacJob.count()} &lt;<br>
+&gt; ${AodaacJob.count()} &lt; total<br>
 
 <g:link action="userJobInfo">userJobInfo</g:link><br>
 

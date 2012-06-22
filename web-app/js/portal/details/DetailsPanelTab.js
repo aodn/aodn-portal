@@ -48,6 +48,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.stylePanel.update(this._showTab, this._hideTab, this);
         this.animationPanel.update(this._showTab, this._hideTab, this);
         this.infoPanel.update(this._showTab, this._hideTab, this);
+        this.aodaacPanel.update( this._showTab, this._hideTab, this );
         this.show();
     },
     

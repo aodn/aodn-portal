@@ -15,67 +15,133 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
      *  - If product info is found, build UI with defaults max/min bounds and display
      */
 
-    id: 'aodaacPanel',
-    title: 'AODAAC Partition',
-    html: "Loading ...",
+    constructor: function(cfg) {
+
+        var items = [];
+
+        this._addBlurb( items );
+        this._addProductInfo( items );
+        this._addSpatialControls( items );
+        this._addTemporalControls( items );
+        this._addProcessingControls( items );
+
+        var config = Ext.apply({
+            id: 'aodaacPanel',
+            title: 'AODAAC Partition',
+            items: items,
+            bodyCls: 'aodaacTab'
+        }, cfg );
+
+        Portal.details.AodaacPanel.superclass.constructor.call( this, config );
+    },
 
     initComponent: function(){
-
-        var descriptionText = new Ext.Container({
-            autoEl: 'div',
-            cls: 'aodaacTab',
-            html: "<p>This tool can be used to partition gridded datasets spatially and temporally, and then aggregate the results.</p>"
-        });
-
-        this.items = [ descriptionText ];
-
-        this.addSpatialControls();
-
-        this.items.push( new Ext.Spacer( {height: 5} ) );
-
-        this.addTemporalControls();
-
-        this.items.push( new Ext.Spacer( {height: 5} ) );
-
-        this.addProcessingControls();
-
         Portal.details.AodaacPanel.superclass.initComponent.call( this );
     },
 
-    addSpatialControls: function() {
+    setSelectedLayer: function(layer){
+        this.selectedLayer = layer;
+    },
+
+    update: function(show, hide, target) {
+
+        if ( productId > 0 ) {
+
+            this._updateBody();
+            show.call( target, this );
+        }
+        else {
+
+            hide.call( target, this );
+        }
+    },
+
+    _updateBody: function() {
+
+        Ext.Ajax.request({
+            url: 'aodaac/productInfo/' + productId,
+            scope: this,
+            success: function( resp ) {
+
+                var productInfo = JSON.parse( resp.responseText );
+
+                // Make 'Product info' text
+                var maxTimeText = productInfo.extents.dateTime.max;
+                var maxTimeValue = new Date();
+
+                if ( maxTimeText.trim() == "" ) {
+                    maxTimeText = ', ongoing'
+                }
+                else {
+                    maxTimeValue = maxTimeText;
+                    maxTimeText = " to " + maxTimeText;
+                }
+
+                var newText = "";
+                newText += productInfo.name + "<br />";
+                newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
+                newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
+
+                this.productInfoText.update( newText );
+
+                // Populate spatial extent controls
+                this.southBL.setValue( productInfo.extents.lat.min );
+                this.eastBL.setValue( productInfo.extents.lon.min );
+                this.northBL.setValue( productInfo.extents.lat.max );
+                this.westBL.setValue( productInfo.extents.lon.max );
+
+                // Populate temporal extent controls
+                var timeRangeStart = productInfo.extents.dateTime.min;
+                var timeRangeEnd = productInfo.extents.dateTime.max;
+
+                this.dateRangeStartPicker.setMinValue( timeRangeStart );
+                this.dateRangeStartPicker.setValue( timeRangeStart );
+                this.dateRangeStartPicker.setMaxValue( timeRangeEnd );
+
+                this.dateRangeEndPicker.setMinValue( timeRangeStart );
+                this.dateRangeEndPicker.setValue( maxTimeValue ); // From above, handles 'ongoing' data sets
+                this.dateRangeEndPicker.setMaxValue( timeRangeEnd );
+            },
+            failure: function() {
+
+                this.body.update( "Unable to get product information, so partitioning is currently unavailable." );
+            }
+        });
+    },
+
+    _addBlurb: function ( items ) {
+
+        var blurbText = new Ext.Container({
+            autoEl: 'div',
+            html: "This tool can be used to partition gridded datasets spatially and temporally, and then aggregate the results."
+        });
+
+        items.push( blurbText, this._newSectionSpacer() );
+    },
+
+    _addProductInfo: function ( items ) {
+
+        var productInfoHeader = new Ext.Container({
+            autoEl: 'div',
+            html: "<b>Product info</b>"
+        });
+
+        this.productInfoText = new Ext.Container({
+            autoEl: 'div',
+            html: "<i>Loading...</i>"
+        });
+
+        items.push( productInfoHeader, this.productInfoText, this._newSectionSpacer() );
+    },
+
+    _addSpatialControls: function( items ) {
 
         var spatialExtentText = new Ext.Container({
             autoEl: 'div',
-            cls: 'aodaacTab',
-            html: "<p><b>Spatial Extent</b></p>"
+            html: "<b>Spatial Extent</b>"
         });
 
-//        var useDataExtent = new Ext.Button({ text: "Use data extent", enableToggle: true, toggleGroup: "spatialExtent" });
-
-//        var useMapExtentButton = new Ext.Button({ text: "Use map extent", enableToggle: true, toggleGroup: "spatialExtent" });
-
-//        var useCustomExtent = new Ext.Button({ text: "Use custom extent", enableToggle: true, toggleGroup: "spatialExtent" });
-
-//        useDataExtent.toggle( true );
-//
-//        var spatialExtentButtonConatiner = {
-//            xtype: 'container',
-//            layout: {
-//                type: 'hbox',
-//                pack:'center',
-//                align: 'middle'
-//            },
-//            width: 300,
-//            items: [
-//                useDataExtent,
-////                new Ext.Spacer({width: 7}),
-////                useMapExtentButton,
-//                new Ext.Spacer({width: 7}),
-//                useCustomExtent
-//            ]
-//        };
-
-        var bboxControl = [ // Todo - DN: Refactor to use Portal.search.filter.BoundingBox... ?
+        var bboxControl = [
             {
                 xtype: 'spacer',
                 height: 5
@@ -87,18 +153,21 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     align: 'middle'
                 },
                 width: 300,
-                items: [{
-                    xtype: 'label',
-                    text: OpenLayers.i18n('northBL'),
-                    width: 15
-                },{
-                    xtype: 'numberfield',
-                    ref: '../northBL',
-                    name: 'northBL',
-                    decimalPrecision: 2,
-                    width: 50,
-                    readOnly: true
-                }]
+                items: [
+                    {
+                        xtype: 'label',
+                        text: OpenLayers.i18n('northBL'),
+                        width: 15
+                    },
+                    {
+                        xtype: 'numberfield',
+                        ref: '../northBL',
+                        name: 'northBL',
+                        decimalPrecision: 2,
+                        width: 50,
+                        readOnly: true
+                    }
+                ]
             },{
                 xtype: 'container',
                 layout: {
@@ -111,25 +180,29 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         xtype: 'label',
                         text: OpenLayers.i18n('westBL'),
                         width: 15
-                    },{
+                    },
+                    {
                         xtype: 'numberfield',
                         name: 'westBL',
                         ref: '../westBL',
                         decimalPrecision: 2,
                         width: 50,
                         readOnly: true
-                    },{
+                    },
+                    {
                         xtype: 'label',
                         text: ' ',
                         flex: 1
-                    },{
+                    },
+                    {
                         xtype: 'numberfield',
                         name: 'eastBL',
                         ref: '../eastBL',
                         decimalPrecision: 2,
                         width: 50,
                         readOnly: true
-                    },{
+                    },
+                    {
                         xtype: 'label',
                         text: OpenLayers.i18n('eastBL'),
                         margins: '0 0 0 5',
@@ -144,30 +217,32 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     align: 'middle'
                 },
                 width: 300,
-                items: [{
-                    xtype: 'label',
-                    text: OpenLayers.i18n('southBL'),
-                    width: 15
-                },{
-                    xtype: 'numberfield',
-                    name: 'southBL',
-                    ref: '../southBL',
-                    decimalPrecision: 2,
-                    width: 50,
-                    readOnly: true
-                }]
+                items: [
+                    {
+                        xtype: 'label',
+                        text: OpenLayers.i18n('southBL'),
+                        width: 15
+                    },
+                    {
+                        xtype: 'numberfield',
+                        name: 'southBL',
+                        ref: '../southBL',
+                        decimalPrecision: 2,
+                        width: 50,
+                        readOnly: true
+                    }
+                ]
             }
         ];
 
-        this.items.push( spatialExtentText, /*spatialExtentButtonConatiner, */bboxControl );
+        items.push( spatialExtentText, bboxControl, this._newSectionSpacer() );
     },
 
-    addTemporalControls: function() {
+    _addTemporalControls: function( items ) {
 
         var temporalExtentText = new Ext.Container({
             autoEl: 'div',
-            cls: 'aodaacTab',
-            html: "<p><b>Temporal Extent</b></p>"
+            html: "<b>Temporal Extent</b>"
         });
 
         var timeRangeSlider = new Ext.slider.MultiSlider({
@@ -185,8 +260,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     var endThumb = slider.thumbs[1];
 
                     // Format value for reading
-                    var timeRangeStart = Portal.details.AodaacPanel.hoursFromThumb( startThumb );
-                    var timeRangeEnd = Portal.details.AodaacPanel.hoursFromThumb( endThumb );
+                    var timeRangeStart = Portal.details.AodaacPanel._hoursFromThumb( startThumb );
+                    var timeRangeEnd = Portal.details.AodaacPanel._hoursFromThumb( endThumb );
 
                     // Whole day message
                     var wholeDayMessage = "";
@@ -220,47 +295,50 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             ]
         });
 
+        // Calculate dates for max/min
         var today = new Date();
         var yesterday = new Date();
         yesterday.setDate(  today.getDate() - 1  );
+
+        var dateRangeStartPicker = {
+            name: 'dateRangeStartPicker',
+            ref: '../dateRangeStartPicker',
+            fieldLabel: 'Date from:',
+            labelSeparator: '',
+            xtype: 'datefield',
+            format: 'd/m/Y',
+            anchor: '100%',
+            showToday: false,
+            maxValue: yesterday
+        };
+
+        var dateRangeEndPicker = {
+            name: 'dateRangeEndPicker',
+            ref: '../dateRangeEndPicker',
+            fieldLabel: 'Date to:',
+            labelSeparator: '',
+            xtype: 'datefield',
+            format: 'd/m/Y',
+            anchor: '100%',
+            showToday: true,
+            maxValue: today // Can't select date after today
+        };
 
         var datePickers = {
             xtype: 'container',
             layout: 'form',
             width: 300,
-            items: [
-                {
-                    fieldLabel: 'Date from:',
-                    labelSeparator: '',
-                    xtype: 'datefield',
-                    format: 'd/m/Y',
-                    anchor: '100%',
-                    showToday: false,
-                    maxValue: yesterday
-                },
-                {
-                    fieldLabel: 'Date to:',
-                    labelSeparator: '',
-                    xtype: 'datefield',
-                    format: 'd/m/Y',
-                    anchor: '100%',
-                    showToday: true,
-                    maxValue: today // Can't select date after today
-                },
-                new Ext.Spacer({ height: 5 }),
-                timeRangeSliderContainer
-            ]
+            items: [ dateRangeStartPicker, dateRangeEndPicker, this._newSectionSpacer(), timeRangeSliderContainer]
         };
 
-        this.items.push( temporalExtentText, datePickers );
+        items.push( temporalExtentText, datePickers, this._newSectionSpacer() );
     },
 
-    addProcessingControls: function() {
+    _addProcessingControls: function( items ) {
 
         var processingControlsText = new Ext.Container({
             autoEl: 'div',
-            cls: 'aodaacTab',
-            html: "<p><b>Output</b></p>"
+            html: "<b>Output</b>"
         });
 
         var outputSelector = new Ext.form.ComboBox({
@@ -269,10 +347,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             mode: 'local',
             store: new Ext.data.ArrayStore({
                 fields: [ 'code', 'name' ],
-                data: [['hdf', 'HDF file'], ['nc', 'NetCDF file'], ['txt', 'ASCII text'], ['urls', 'List of OPeNDAP URLs']],
+                data: [
+                    ['nc', 'NetCDF file'],
+                    ['hdf', 'HDF file'],
+                    ['txt', 'ASCII text'],
+                    ['urls', 'List of OPeNDAP URLs']
+                ],
                 autoDestroy: true
             }),
-            value: 'hdf', // Default selection
+            value: 'nc', // Default selection
             valueField: 'code',
             displayField: 'name',
             triggerAction: 'all',
@@ -286,16 +369,36 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             handler: this.startProcessing
         });
 
-        this.items.push( processingControlsText, outputSelector, new Ext.Spacer({ height: 5 }), startProcessingButton );
+        items.push( processingControlsText, outputSelector, this._newSectionSpacer(), startProcessingButton );
+    },
+
+    _newSectionSpacer: function() {
+
+        return new Ext.Spacer({ height: 7 });
     },
 
     startProcessing: function() {
+
+        var args = "";
+
+        Ext.Ajax.request({
+            url: 'aodaac/createJob?' + args,
+            scope: this,
+            success: function() {
+
+                alert( 'Partitioning job created. Processing now.\n\nIf you supplied an email address we will sent you a notification when the job is complete.\nOtherwise, you can track the progress of the job in the \'Data\' tab of the Portal.' );
+            },
+            failure: function( resp ) {
+
+                alert( 'Unable to create processing job. Please re-check the parameters and try again.' );
+            }
+        });
 
         new Portal.ui.AodaacAggregatorJobListWindow().show();
     }
 });
 
-Portal.details.AodaacPanel.hoursFromThumb = function( thumb ) {
+Portal.details.AodaacPanel._hoursFromThumb = function( thumb ) {
 
     var value = thumb.value;
 

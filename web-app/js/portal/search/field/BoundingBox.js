@@ -128,6 +128,10 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Container, {
    },
    
    setBox: function(boundingBox) {
+
+       console.log( this.northBL );
+       console.log( this.northBL.toSource() );
+
       if (boundingBox.northBL) {
          this.northBL.setValue(boundingBox.northBL);
       };

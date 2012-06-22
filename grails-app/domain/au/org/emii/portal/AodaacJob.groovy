@@ -1,10 +1,13 @@
 package au.org.emii.portal
 
+import org.codehaus.groovy.grails.web.metaclass.BindDynamicMethod
+
 class AodaacJob {
 
     Date dateCreated
 
     String jobId
+    String notificationEmailAddress
 
     AodaacJobParams jobParams
     AodaacJobStatus latestStatus
@@ -15,11 +18,10 @@ class AodaacJob {
     Date mostRecentDataFileExistCheck
     Boolean dataFileExists
 
-    static belongsTo = [user: User]
-
     static constraints = {
 
         jobId blank: false
+        notificationEmailAddress nullable: true
 
         latestStatus nullable: true
         result nullable: true
@@ -30,21 +32,33 @@ class AodaacJob {
 
     AodaacJob(){ /* For Hibernate */ }
 
-    AodaacJob( user, jobId, jobParams ) {
+    AodaacJob( jobId, jobParams, notificationEmailAddress ) {
 
         dateCreated = new Date()
 
-        this.user = user
         this.jobId = jobId
-        user.addToAodaacJobs this
+        this.notificationEmailAddress = notificationEmailAddress
 
-        this.jobParams = new AodaacJobParams( jobParams )
+        println jobParams.getClass()
+        println jobParams
+
+
+        this.jobParams = new AodaacJobParams()
+
+        // Bind jobParams
+        def args = [ this.jobParams, jobParams, [ exclude: [ 'dateRangeStart','dateRangeEnd' ] ] ] as Object[]
+
+        BindDynamicMethod bind = new BindDynamicMethod()
+        bind.invoke this.jobParams, 'bind', args
+
+        this.jobParams.dateRangeStart = Date.parse( 'EEE MMM dd HH:mm:ss zzz yyyy', jobParams.dateRangeStart ) // Would prefer to use parseToStringDate but couldn't get it to work :'(
+        this.jobParams.dateRangeEnd = Date.parse( 'EEE MMM dd HH:mm:ss zzz yyyy', jobParams.dateRangeEnd )
     }
 
     @Override
     public String toString() {
 
-        return "AodaacJob userId: $userId; jobId: $jobId (Status: $processingStatusText)"
+        return "AodaacJob jobId: $jobId (Status: $processingStatusText)"
     }
 
     def getProcessingStatusText() {

@@ -21,27 +21,83 @@ class AodaacAggregatorService {
 
     // Service methods
 
-    def checkProducts() {
+    def getProductInfo( productId ) {
 
-        return "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
+        log.debug "Getting Product Info for id: '$productId'. Converting from Javascript to JSON objects."
+
+        // Delimeters for sections
+        def productDataDelimeter = "var productData = "
+        def productExtentDelimeter = "productExtents="
+
+        // Get the javascript
+        def productDataJavascript = "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
+
+        // Split into relevant parts
+        productDataJavascript = productDataJavascript.split( productDataDelimeter )[1] // Throw away dataset info
+        def parts = productDataJavascript.split( productExtentDelimeter )
+        def productDataPart = parts[0]
+        def productExtentPart = parts[1]
+
+        log.debug "productDataPart: ${ productDataPart }"
+        log.debug "productExtentPart: ${ productExtentPart }"
+
+        // Convert to JSON fo rextraction
+        def allProductDataJson = JSON.parse( productDataPart )
+        def allProductExtentJson = JSON.parse( productExtentPart )
+
+        log.debug "allProductDataJson: ${ allProductDataJson } -- ${ allProductDataJson.getClass() }"
+        log.debug "allProductExtentJson: ${ allProductExtentJson } -- ${ allProductExtentJson.getClass() }"
+
+        // Create new JSON object with desired structure
+        def productInfo = [
+            extents: [
+                lat: [:],
+                lon: [:],
+                dateTime: [:]
+            ]
+        ]
+
+        // Copy data to new structure
+        def productDataJson = allProductDataJson.find( { it.id == productId } )
+        def productExtentJson = allProductExtentJson.find( { it.id == productId } )
+
+        // Name
+        productInfo.name = productDataJson.name
+
+        // Latitude
+        productInfo.extents.lat.min = productExtentJson.extents.lat[0]
+        productInfo.extents.lat.max = productExtentJson.extents.lat[1]
+
+        // longitude
+        productInfo.extents.lon.min = productExtentJson.extents.lon[0]
+        productInfo.extents.lon.max = productExtentJson.extents.lon[1]
+
+        // Time (sanitise and parse)
+        def startTimeString = productExtentJson.extents.dateTime[0]
+        def endTimeString = productExtentJson.extents.dateTime[1]
+
+        startTimeString = startTimeString - " to" // Start time is appended with ' to' for display  purposes, but we don't want that
+
+        log.debug "startTimeString: ${ startTimeString }"
+
+        def startTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", startTimeString )
+        def endTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", endTimeString )
+
+        productInfo.extents.dateTime.min = startTimeDate.format( "dd/MM/yyyy" )
+        productInfo.extents.dateTime.max = endTimeDate.format( "dd/MM/yyyy" )
+
+        return productInfo
     }
 
-    def createJob( user, params ) {
+    def createJob( notificationEmailAddress, params ) {
 
         // Todo - DN: Vaidate params?
 
-        if ( !user ) {
+        log.info "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
 
-            log.debug "Can't create an AODAAC job without a User"
-            log.debug "params: ${ params }"
+        def apiCallArgs = []
 
-            return null
-        }
-
-        log.info "Creating AODAAC Job for user: '$user'"
-
-        def args = []
-        args.with {
+        apiCallArgs.with {
             add params.outputFormat
             add params.dateRangeStart.format( DateFormat )
             add params.dateRangeEnd.format( DateFormat )
@@ -55,7 +111,7 @@ class AodaacAggregatorService {
         }
 
         // Generate url
-        def apiCall = _aggregatorCommandUrl( StartJobCommand, args )
+        def apiCall = _aggregatorCommandUrl( StartJobCommand, apiCallArgs )
 
         // Include server/environment
         params.environment = AodaacEnvironment
@@ -75,7 +131,7 @@ class AodaacAggregatorService {
 
             if ( responseJson.jobId ) {
 
-                def job = new AodaacJob( user, responseJson.jobId, params )
+                def job = new AodaacJob( responseJson.jobId, params, notificationEmailAddress )
 
                 job.save failOnError: true
 

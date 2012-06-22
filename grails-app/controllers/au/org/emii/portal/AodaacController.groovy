@@ -1,6 +1,5 @@
 package au.org.emii.portal
 
-import org.apache.shiro.SecurityUtils
 import grails.converters.JSON
 
 class AodaacController {
@@ -14,10 +13,6 @@ class AodaacController {
             dateRangeEnd: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 21).time,
             timeOfDayRangeStart: "0000",
             timeOfDayRangeEnd: "2400",
-//            latitudeRangeStart: -70,
-//            latitudeRangeEnd: 40,
-//            longitudeRangeStart: -145,
-//            longitudeRangeEnd: 60,
             latitudeRangeStart:  -30.681,
             latitudeRangeEnd:    -24.452,
             longitudeRangeStart: 148.383,
@@ -32,62 +27,114 @@ class AodaacController {
         [ testParams: testParams() ]
     }
 
-    def checkProducts = {
+    def productInfo = {
 
-        render "<pre>${aodaacAggregatorService.checkProducts()}</pre>"
+        Thread.sleep 1000 // Todo - DN: Remove after testing
+
+        def productId = params.id
+
+        if ( !productId ) {
+
+            render text: "productId must be specified", status: 500
+            return
+        }
+
+        try {
+            render aodaacAggregatorService.getProductInfo( productId ) as JSON
+        }
+        catch( Exception e ) {
+
+            log.debug "Unable to get product info for productId: '$productId'", e
+
+            render text: "Unable to get complete product info for productId: '$productId'", status: 500
+        }
+    }
+
+    def testCreateJob = {
+
+        forward action: "createJob", params: testParams()
     }
 
     def createJob = {
 
-        def user = User.get( SecurityUtils.subject?.principal as Long )
+        try {
+            def job = aodaacAggregatorService.createJob( params.notificationEmailAddress, params )
 
-        aodaacAggregatorService.createJob user, testParams()
+            _addToList job
 
-        redirect action: "index"
+            render text: "Job created (ID: ${ job?.jobId })"
+        }
+        catch (Exception e) {
+
+            log.info "Unable to create job with params ($params)", e
+
+            render text: "Unable to create job", status: 500
+        }
     }
 
     def updateJob = {
 
-        aodaacAggregatorService.updateJob( _byId( params.id ) )
+        try {
+            def job = _byId( params.id )
 
-        redirect action: "index"
+            aodaacAggregatorService.updateJob job
+
+            render text: "Job updated (ID: ${ job.jobId })"
+        }
+        catch (Exception e) {
+
+            log.info "Unable to update job with params ($params)", e
+
+            render text: "Unable to update job", status: 500
+        }
     }
 
     def cancelJob = {
 
-        aodaacAggregatorService.cancelJob( _byId( params.id ) )
+        try {
+            def job = _byId( params.id )
 
-        redirect action: "index"
+            aodaacAggregatorService.cancelJob job
+
+            _removeFromList job
+
+            render text: "Job cancelled (ID: ${ job.jobId })"
+        }
+        catch (Exception e) {
+
+            log.info "Unable to cancel job with params ($params)", e
+
+            render text: "Unable to cancel job", status: 500
+        }
     }
 
     def deleteJob = {
 
-        _byId( params.id )?.delete()
+        try {
+            def job = _byId( params.id )
 
-        redirect action: "index"
+            // Store jobId to notify the User
+            def jobId = job.jobId
+
+            _removeFromList job
+
+            job?.delete()
+
+            render text: "Deleted job (ID: $jobId)"
+        }
+        catch (Exception e) {
+
+            log.info "Unable to delete job with params ($params)", e
+
+            render text: "Unable to delete job", status: 500
+        }
     }
 
     def userJobInfo = {
 
         Thread.sleep 1500
 
-        def subject = SecurityUtils.subject
-
-        if ( !subject || !subject?.principal ) {
-
-            render [] as JSON
-            return
-        }
-
-        def userInstance = User.get( subject.principal as Long )
-
-        if ( !userInstance ) {
-
-            log.error "No user found with id: ${subject.principal}"
-            render status: 500
-        }
-
-        def jobs = userInstance.aodaacJobs
+        def jobs = _getJobList()
 
         jobs.each {
 
@@ -100,5 +147,26 @@ class AodaacController {
     def _byId( jobId ) {
 
         return AodaacJob.findByJobId( jobId )
+    }
+
+    def _getJobList() {
+
+        if ( !session.aodaacJobList ) { session.aodaacJobList = [] as Set }
+
+        return session.aodaacJobList.collect{ AodaacJob.findByJobId( it ) }
+    }
+
+    void _addToList( item ) {
+
+        def list = _getJobList()
+
+        list << item.jobId
+    }
+
+    void _removeFromList( item ) {
+
+        def list = _getJobList()
+
+        list.remove item.jobId
     }
 }
