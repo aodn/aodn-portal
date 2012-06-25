@@ -7,33 +7,64 @@ class ProxyController {
     // proxies HTML by default or XML and Images if specified
     def index = {		
 		if ( params.url ) {
-            
+               
 				def targetUrl = params.url.toURL()  
-				if (allowedHost(params.url)) {
+				
+                if (allowedHost(params.url)) {
+                    def format
+                    def conn
+
+                    if(params.format)
+                        format = params.format
+                    else
+                        format = params.FORMAT
+
+                    def foundServer = Server.findByUriLike("%" + targetUrl.getHost() + "%")
+
+                    if(foundServer.username && foundServer.password){
+                        def query = params.findAll({key, value -> key != "controller" && key != "url"})
+                        def queryStr = ""
+
+                        query.each {key, value ->
+                            queryStr += "&$key=$value"
+                        }
+                        
+                        def authString = "$foundServer.username:$foundServer.password".getBytes().encodeBase64().toString()
+                        def finalURL = params.url + queryStr
+                        conn = finalURL.toURL().openConnection()
+
+                        conn.setRequestProperty("Authorization", "Basic ${authString}")
+                    }
+                    else{
+                        conn = targetUrl.openConnection()
+                    }
 
 					// handle binary images
-					if (params.format?.startsWith("image")) {
-						def webImage = new ByteArrayOutputStream()
-						webImage << new URL(params.url).openStream()
+					if (format?.startsWith("image")) {
+                        def webImage = new ByteArrayOutputStream()
+						webImage << conn.getInputStream()
 
-						if (request.method == 'HEAD') { 
-							render text: "", contentType: params.format
+                        if (request.method == 'HEAD') {
+							render text: "", contentType: format
 						}
 						else {
-
-							response.contentLength = webImage.size()
-							response.contentType = params.format
+                        	response.contentLength = webImage.size()
+							response.contentType = format
 							response.outputStream << webImage.toByteArray()
 							response.outputStream.flush()
 						}                    
 					}
 					// else handle as HTML by default or XML if specified
 					else {
-						def format = params.format == "text/xml" ? "text/xml" : "text/html"
 
 						//log.debug "TargetUrl: $targetUrl (expected type: $format)"
 						try {
-							render text: targetUrl.text, contentType: format, encoding: "UTF-8"
+                            response.contentLength = conn.contentLength
+                            response.contentType = conn.contentType
+                            response.outputStream << conn.content.text
+                            response.outputStream.flush()
+
+							//render text: conn.content.text, contentType: format, encoding: "UTF-8"
 						}
 						catch (Exception e) {                    
 							log.debug "Exception occurred: $e"

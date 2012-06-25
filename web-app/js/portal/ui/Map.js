@@ -385,13 +385,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         //injecting credentials for authenticated WMSes.  Openlayer doesn;t
         //provide a way to add header information to a WMS request
 		if(openLayer.server.username && openLayer.server.password){
-			splitAtProtocol = openLayer.server.uri.split("://");
-			if(splitAtProtocol.length == 2){
-				//cringe! But had the blessings from management to add this
-				openLayer.server.uri = splitAtProtocol[0] + "://" + openLayer.server.username + ":" +
-										openLayer.server.password + "@" + splitAtProtocol[1];
-				openLayer.url = openLayer.server.uri;
-			}
+			console.log("proxyURL: " + proxyURL);
+			openLayer.server.uri = proxyURL + openLayer.server.uri + "?";
+			openLayer.url = openLayer.server.uri;
 		}
 
 		openLayer.cql = layerDescriptor.cql;  
