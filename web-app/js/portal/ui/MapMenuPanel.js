@@ -74,14 +74,16 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
                 },
                 expandnode: function(node) {
                     if (node.attributes.grailsServerId) {
+                    	node.getUI().beforeLoad();
                         Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad(
                             node, 
                             this, 
                             function() {
                                 this.fireEvent('serverloaded', node);
+                                node.getUI().afterLoad();
                             }, 
                             this
-                            );
+                        );
                     }
                 }
             }

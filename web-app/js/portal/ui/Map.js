@@ -68,7 +68,6 @@ Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
         );
     }, 
 
-    onClick: function(event) {}
 });
 
 Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
@@ -91,8 +90,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			split: true,
 			header: false,
 			initialBbox: this.appConfig.initialBbox,
-            autoZoom: this.appConfig.autoZoom,
-            hideLayerOptions: this.appConfig.hideLayerOptions,
+			autoZoom: this.appConfig.autoZoom,
+			hideLayerOptions: this.appConfig.hideLayerOptions,
 			activeLayers: {},
 			layersLoading: 0
 		}, cfg);
@@ -108,9 +107,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			scope: this,
 			onClick: function(event) {
 				this.scope._handleFeatureInfoClick(event);
-				//imgSizer(); // not working!!
 			}
 		});
+		
+		
 		this.map.addControl(clickControl);
 		clickControl.activate();
 
@@ -127,13 +127,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	    
 		this.on('hide', function() {
+			// map is never hidden!!!!"
 			this.updateLoadingImage("none");
 			this._closeFeatureInfoPopup();
 		}, this);
 	    
 		this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 	    
-		this.addEvents('baselayersloaded', 'layeradded');
+		this.addEvents('baselayersloaded', 'layeradded', 'tabchange');
 		this.bubbleEvents.push('baselayersloaded');
 		this.bubbleEvents.push('layeradded');
         
@@ -150,7 +151,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				//this.style.cursor="pointer";
 				clickControl.activate();
 			});
-        }, this);
+		}, this);
+		
+		this.on('tabchange', function() {
+			this._closeFeatureInfoPopup();
+		}, this);
         
 		// make sure layer store reflects loaded layers 
 		// even if the map hasn't been rendered yet
@@ -349,13 +354,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		return server.uri;
 	},
 	
-  getServerUri: function(layerDescriptor) {
-    var serverUri = this.getUri(this.getServer(layerDescriptor));
-    if (layerDescriptor.cache == true) {
-      serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
-    }
-    return serverUri;
-  },
+	getServerUri: function(layerDescriptor) {
+		var serverUri = this.getUri(this.getServer(layerDescriptor));
+		if (layerDescriptor.cache == true) {
+			serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
+		}
+		return serverUri;
+	},
   
 	getParent: function(layerDescriptor) {
 		return layerDescriptor.parent;
@@ -376,6 +381,15 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	setDomainLayerProperties: function(openLayer, layerDescriptor) {
 		openLayer.grailsLayerId = layerDescriptor.id;
 		openLayer.server= layerDescriptor.server;
+
+        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
+        //provide a way to add header information to a WMS request
+		if(openLayer.server.username && openLayer.server.password){
+			console.log("proxyURL: " + proxyURL);
+			openLayer.server.uri = proxyURL + openLayer.server.uri + "?";
+			openLayer.url = openLayer.server.uri;
+		}
+
 		openLayer.cql = layerDescriptor.cql;  
 		openLayer.bboxMinX = layerDescriptor.bboxMinX;
 		openLayer.bboxMinY = layerDescriptor.bboxMinY;
@@ -386,10 +400,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.blacklist = layerDescriptor.blacklist;
 		openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
 		openLayer.metadataUrls = layerDescriptor.metadataUrls;
+		openLayer.overrideMetadataUrl = layerDescriptor.overrideMetadataUrl;
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;
-        openLayer.dimensions = layerDescriptor.dimensions;
+		openLayer.dimensions = layerDescriptor.dimensions;
+		openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
 	},
 	
 	getWmsOpenLayerUri: function(originalWMSLayer) {
@@ -397,7 +413,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	getLayerUid: function(openLayer) {
-
 		// layerHierarchyPath is the preferred unique identifier for a layer
 		if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
 
@@ -455,7 +470,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	addLayer: function(openLayer, showLoading) {
-		if (!this.containsLayer(openLayer)) {
+		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);
 			}
@@ -614,7 +629,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	zoomTo: function(bounds, closest) {
 		if((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)){
-		 	this.map.setCenter(bounds.getCenterLonLat(), 3);
+			this.map.setCenter(bounds.getCenterLonLat(), 3);
 		}
 		else{
 			this.map.zoomToExtent(bounds, closest);
@@ -647,21 +662,21 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
 	addExternalLayer: function(layerDescriptor) {
-	  var serverUri = this.getServerUri(layerDescriptor);
-	  
-    Ext.Ajax.request({
-      url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
-      scope: this,
-      success: function(resp) {
-        var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  
-        if (grailsDescriptor) {
-          this.addMapLayer(grailsDescriptor);
-        }
-      },
-      failure: function(resp) {
-        this.addMapLayer(layerDescriptor);
-      }
-    });
+		var serverUri = this.getServerUri(layerDescriptor);
+
+		Ext.Ajax.request({
+			url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
+			scope: this,
+			success: function(resp) {
+				var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  
+				if (grailsDescriptor) {
+					this.addMapLayer(grailsDescriptor);
+				}
+			},
+			failure: function(resp) {
+				this.addMapLayer(layerDescriptor);
+			}
+		});
 	},
 	
 	addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
@@ -680,7 +695,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 
 			Ext.getCmp('rightDetailsPanel').update(openLayer);
-			
 
 
 			if (animated) {
@@ -709,41 +723,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				}
 			});
 		}
-	    
-	    
-		// TIMESTEPS URI
-		//http://obsidian:8080/ncWMS/wms?item=timesteps&layerName=67%2Fu&day=2006-09-19T00%3A00%3A00Z&request=GetMetadata
-		// this is  timestrings we can use in the uri to control animation
-		// based on timestepss
-		//http://obsidian:8080/ncWMS/wms?item=animationTimesteps&layerName=67%2FTemperature_layer_between_two_pressure_difference_from_ground&start=2002-12-02T22%3A00%3A00.000Z&end=2002-12-03T01%3A00%3A00.000Z&request=GetMetadata
-		/**
-	     * Support for parsing JSON animation parameters from NCWMS JSON responses
-	     *
-	     * Example JSON response string:
-	     * {
-	     * 	"units":"m/sec",
-	     * 	"bbox":[146.80064392089844,-43.80047607421875,163.8016815185547,-10.000572204589844],
-	     * 	"scaleRange":[-0.99646884,1.2169001],
-	     * 	"supportedStyles":["BOXFILL"],
-	     * 	"zaxis":{
-	     * 		"units":"meters",
-	     * 		"positive":false,
-	     * 		"values":[-5]
-	     * 	},
-	     * 	"datesWithData":{
-	     * 		"2006":{
-	     * 			"8":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-	     * 		}
-	     * 	},
-	     * 	"nearestTimeIso":"2006-09-01T12:00:00.000Z",
-	     * 	"moreInfo":"",
-	     * 	"copyright":"",
-	     * 	"palettes":["redblue","alg","ncview","greyscale","alg2","occam","rainbow","sst_36","ferret","occam_pastel-30"],
-	     * 	"defaultPalette":"rainbow",
-	     * 	"logScaling":false
-	     * }
-	     */
-	    
+	    	    
 		return false;
 	},
 	
@@ -767,6 +747,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
+		Ext.getCmp("animationPanel").removeAnimation();
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 				layersToRemove.push(openLayer);

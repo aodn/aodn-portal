@@ -1,9 +1,14 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
+import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
+
+import java.beans.PropertyDescriptor
+import java.lang.reflect.Method
 
 class LayerController {
 
@@ -100,23 +105,20 @@ class LayerController {
 		def combinedList = _collectLayersAndServers(layers)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
-	
+
     def showLayerByItsId = {
 
-        def layerInstance = null
-        // unencode layerId as per 'listAllLayers' to get just the id
-        if (params.layerId != null) {
-            def layerIdArr = params.layerId.split("_")
-            layerInstance = Layer.get( layerIdArr[ layerIdArr.size() - 1 ])
-        }
-        if (layerInstance) {
-			JSON.use("deep") {
-				render layerInstance as JSON
-			}
+        def layerInstance = Layer.get( params.layerId )
+
+        if ( layerInstance ) {
+			_renderLayer(layerInstance)
         }
         else {
-            log.error "Layer with id: '${params.layerId}' does not exist"
-            render text: "The layerId '${params.layerId}' does not exist", contentType: "text/html", encoding: "UTF-8", status: 500
+
+            def queryString = request.queryString ? "?$request.queryString" : ""
+            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+            log.info msg
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
     
@@ -160,9 +162,7 @@ class LayerController {
         }
             
         if (layerInstance) {
-            JSON.use("deep") {
-                render layerInstance as JSON
-            }
+			_renderLayer(layerInstance)
         } else {
             render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
         }
@@ -248,32 +248,31 @@ class LayerController {
 
     def saveOrUpdate = {
 
+        // Logging output
+        if ( log.debugEnabled ) {
+            def layerDataPrint = JSON.parse( params.layerData as String )
+            layerDataPrint.children = "[...]"
+            layerDataPrint.supportedProjections = "[...]"
+
+            log.debug "metadata:  ${params.metadata}"
+            log.debug "layerData: $layerDataPrint"
+        }
+
+        // Check credentials
         try {
-            // Logging output
+            _validateCredentialsAndAuthenticate params
+        }
+        catch(Exception e) {
 
-            if ( log.debugEnabled ) {
-                def layerDataPrint = JSON.parse( params.layerData as String )
-                layerDataPrint.children = "[...]"
-                layerDataPrint.supportedProjections = "[...]"
+            log.info "Problem validating credentials", e
 
-                log.debug "metadata:  ${params.metadata}"
-                log.debug "layerData: $layerDataPrint"
-            }
+            log.debug "Possible problem with '${ params.password }'"
 
-            // Check credentials
-            try {
-                _validateCredentialsAndAuthenticate params
-            }
-            catch(Exception e) {
+            render status: 401, text: "Credentials missing or incorrect"
+            return
+        }
 
-                log.info "Problem validating credentials", e
-
-                render status: 401, text: "Credentials missing or incorrect"
-                return
-            }
-            
-            // Should control be handed-off to layerService as soon as the credentials are checked?
-            
+        try {
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
@@ -293,6 +292,8 @@ class LayerController {
             server.save( failOnError: true )
             
             render status: 200, text: "Complete (saved)"
+			
+			_recache(server)
         }
         catch (Exception e) {
 
@@ -359,50 +360,55 @@ class LayerController {
     }
 
     def server = {
-		def layerDescriptors = []
+		def result
         def server = _getServer(params)
         if (server) {
-            def criteria = Layer.createCriteria()
-            layerDescriptors = criteria.list() {
-                isNull 'parent'
-				eq 'blacklisted', false
-				eq 'activeInLastScan', true
-                eq 'server.id', server.id
-            }
+			result = MenuJsonCache.instance().get(server)
+			if (!result) {
+				result = _getServerLayerJson(server)
+				MenuJsonCache.instance().add(server, result)
+			}
         }
-
-        def layersToReturn = layerDescriptors
-
-        // If just one grouping layer, bypass it
-        if ( layerDescriptors.size() == 1 &&
-             layerDescriptors[0].layers.size() > 0 ) 
-		{
-            layersToReturn = layerDescriptors[0].layers
-        }
-			 
-		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-
-        def result = [layerDescriptors: layersToReturn]
-		JSON.use("deep") {
-			render result as JSON
-        }
+		
+		render result
     }
+	
+	def _getServerLayerJson(server) {
+		def criteria = Layer.createCriteria()
+		def layerDescriptors = criteria.list() {
+			isNull 'parent'
+			eq 'blacklisted', false
+			eq 'activeInLastScan', true
+			eq 'server.id', server.id
+			join 'server'
+		}
+		
+		def layersToReturn = layerDescriptors
+		// If just one grouping layer, bypass it
+		if ( layerDescriptors.size() == 1 &&
+			 layerDescriptors[0].layers.size() > 0 )
+		{
+			layersToReturn = layerDescriptors[0].layers
+		}
+		
+		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+		layerDescriptors*.discard()
+		
+		return (layersJsonObject as JSON).toString()
+	}
 	
 	def configuredbaselayers = {
 		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
-
-        if ( !layerIds ) return "[]"
-
-		def defaultBaseLayers = Layer.findAllByIdInList(layerIds)
-		JSON.use("deep") {
-			render defaultBaseLayers as JSON
-		}
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 	
 	def defaultlayers = {
-		JSON.use("deep") {
-			render Config.activeInstance().defaultLayers as JSON
-		}
+		def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
+		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+		render data as JSON
 	}
 
     def _getServer(params) {
@@ -447,7 +453,83 @@ class LayerController {
 		return filtered
 	}
     
-    def _getNamespace(qualifiedName) {
-        
+	def _convertLayersToListOfMaps(layers) {
+		def data = []
+		layers.each { layer ->
+			data << _getLayerDefaultData(layer)
+		}
+		return data
+	}
+	
+	def _findLayersAndServers(layerIds) {
+		def layers = []
+		if (layerIds) {
+			def criteria = Layer.createCriteria()
+			layers = criteria.list {
+				'in'('id', layerIds)
+				join 'server'
+			}
+		}
+		return layers
+	}
+	
+	def _renderLayer(layerInstance) {
+        def excludes = [
+                "class",
+                "metaClass",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+        ]
+
+        def data = _getLayerData(layerInstance, excludes)
+        render data as JSON
+	}
+	
+	def _getLayerData(layer, excludes) {
+
+        def layerData = [:]
+		PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+		for (PropertyDescriptor property : properties) {
+			String name = property.getName()
+			Method readMethod = property.getReadMethod()
+			if (readMethod != null) {
+				Object value = readMethod.invoke(layer, (Object[]) null)
+				if ("layers".equals(name)) {
+					layerData[name] = _convertLayersToListOfMaps(value)
+				}
+				else if (!excludes.contains(name)) {
+					layerData[name] = value
+				}
+			}
+		}
+		return layerData
+	}
+    
+    def _getLayerDefaultData(layer){
+        def excludes = [
+                "class",
+                "metaClass",
+                "dimensions",
+                "metadataUrls",
+                "hasMany",
+                "handler",
+                "belongsTo",
+                "layers",
+                "parent",
+                "hibernateLazyInitializer"
+        ]
+
+        return _getLayerData(layer, excludes)
     }
+	
+	def _recache(server) {
+		def result = MenuJsonCache.instance().get(server)
+		if (result) {
+			MenuJsonCache.instance().add(server, _getServerLayerJson(server))
+		}
+	}
 }

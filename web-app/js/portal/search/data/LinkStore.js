@@ -3,7 +3,7 @@ Ext.namespace('Portal.search.data');
 Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 	constructor : function(cfg) {
 		cfg = cfg || {};
-
+		
 		var config = Ext.apply({
 			root : 'links',
 			fields : [ {
@@ -14,7 +14,8 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 			}, {
 				name : 'protocol'
 			}, {
-				name : 'title'
+				name : 'title',
+				convert : this._getTitle
 			}, {
 				name : 'type'
 			} ]
@@ -60,6 +61,16 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 			}
 		}
 		return 'WMS';
+	},
+	
+	_getTitle: function(title, rec) {
+		// Set title to name if there is no title
+		if (title.trim() == '') {
+			return rec.name?rec.name:'';
+		} else {
+			return title;
+		}
 	}
+
 
 });

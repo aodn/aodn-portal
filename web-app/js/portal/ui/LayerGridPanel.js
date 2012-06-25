@@ -13,7 +13,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
 	    	enableDragDrop: true,
 	    	ddGroup: 'layerGridPanel',
 	    	columns: [
-	    	    { header: "Name", sortable: true, dataIndex: 'title' },
+	    	    { header: "Title", sortable: true, dataIndex: 'title' },
 	            { header: "WMS Server Layer Name", sortable: true, dataIndex: 'name' },
 	            { header: "Base Layer", sortable: true, dataIndex: 'isBaseLayer' }
 	        ],

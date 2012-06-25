@@ -11,6 +11,8 @@ class Server {
     Integer opacity // layer opacity
     String imageFormat
     String comments
+    String username
+    String password
 
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
@@ -46,6 +48,8 @@ class Server {
         opacity()
         imageFormat( inList:['image/png','image/gif'] )
         comments(nullable:true)
+        username(nullable:true)
+        password(nullable:true)
     }
     
     String toIdString() {

@@ -13,6 +13,7 @@ describe("Portal.ui.MainTabPanel", function()
     spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
     spyOn(Portal.ui.MainTabPanel.superclass.constructor, "call");
     spyOn(Portal.ui.MainTabPanel.prototype, "mon");
+    spyOn(Portal.ui.MainTabPanel.prototype, "on");
 
     return new Portal.ui.MainTabPanel({appConfig: mockConfig});
   };
@@ -28,6 +29,7 @@ describe("Portal.ui.MainTabPanel", function()
     expect(mainTabPanel.homePanel).toEqual(mockHomePanel);
     expect(mainTabPanel.searchTabPanel).toEqual(mockSearchTabPanel);
     expect(Portal.ui.MainTabPanel.prototype.mon).toHaveBeenCalled();
+    expect(Portal.ui.MainTabPanel.prototype.on).toHaveBeenCalled();
   });
   
 });

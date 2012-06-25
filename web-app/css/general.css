@@ -32,6 +32,11 @@ input.readonlyInput {
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
+.imageLabel {
+	margin: 2px;
+	margin-left: 13px;
+	font-size: 10px;
+}
 
 .searchInput {
     display: block;

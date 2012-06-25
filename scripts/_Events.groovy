@@ -6,7 +6,7 @@ import org.tmatesoft.svn.core.wc.SVNClientManager
 import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
-import org.apache.catalina.connector.Connector;
+import org.apache.catalina.connector.Connector
 
 eventCreateWarStart = { warname, stagingDir ->
 	Ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")

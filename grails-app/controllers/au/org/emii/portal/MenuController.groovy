@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.MenuJsonCache;
+import au.org.emii.portal.display.MenuJsonCreator;
 import grails.converters.JSON;
 import groovyx.net.http.*
 
@@ -49,7 +51,7 @@ class MenuController {
         }
         else {
             def menuInstanceJson = JSON.use("deep") { 
-				menuInstance as JSON
+				new au.org.emii.portal.display.Menu(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
@@ -63,7 +65,7 @@ class MenuController {
         }
         else {
             def menuInstanceJson = JSON.use("deep") { 
-				menuInstance as JSON
+				new au.org.emii.portal.display.Menu(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
@@ -88,6 +90,7 @@ class MenuController {
             if (!menuInstance.hasErrors() && menuInstance.save(flush: true, failOnError: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
                 redirect(action: "show", id: menuInstance.id)
+				_recache(menuInstance)
             }
             else {
                 render(view: "edit", model: [menuInstance: menuInstance])
@@ -136,14 +139,17 @@ class MenuController {
     }
 
     def json = {
+		def result = "{}"
 		if (params.id && params.id.isNumber()) {
 			def menu = Menu.get(params.id)
-			def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
-			JSON.use("deep") {
-				render displayMenu as JSON
+			result = MenuJsonCache.instance().get(menu)
+			if (!result) {
+				def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
+				result = (displayMenu as JSON).toString()
+				MenuJsonCache.instance().add(menu, result)
 			}
 		}
-		render '{}'
+		render result
 	}
         
     private _cleanParams(params) {
@@ -158,5 +164,14 @@ class MenuController {
         params.json = jsonArray.children.toString()
         return params
     }
+	
+	def _recache(menu) {
+		def cachedJson = MenuJsonCache.instance().get(menu)
+		if (cachedJson) {
+			def defaultMenu = menu.toDisplayableMenu()
+			def jsonCreator = new MenuJsonCreator()
+			MenuJsonCache.instance().add(menu, jsonCreator.menuToJson(menu))
+		}
+	}
 }
 

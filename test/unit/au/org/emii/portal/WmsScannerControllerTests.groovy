@@ -121,7 +121,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &uri=svr2uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 &callbackPassword=pwd\
-&scanFrequency=45\
+&scanFrequency=45&username=null&password=null\
 """
 
         setUpToUrlForResponse "scannerBaseUrl/scanJob/register$expectedQueryString", "Registered"
@@ -146,7 +146,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &uri=svr2uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 &callbackPassword=pwd\
-&scanFrequency=45\
+&scanFrequency=45&username=null&password=null\
 """
         
         setUpToUrlForException "scannerBaseUrl/scanJob/register$expectedQueryString", "Error Text"

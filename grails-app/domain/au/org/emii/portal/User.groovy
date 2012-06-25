@@ -32,4 +32,16 @@ class User {
 
         return "${fullName} (${openIdUrl})"
     }
+
+    void beforeDelete(){
+        Snapshot.withNewSession{
+            def snapshots = Snapshot.findAllByOwner(this)
+            snapshots*.delete()
+        }
+
+        Search.withNewSession{
+            def savedSearches = Search.findAllByOwner(this)
+            savedSearches*.delete()
+        }
+    }
 }

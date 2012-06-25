@@ -1,6 +1,6 @@
 Ext.namespace('Portal.search');
 
-Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
+Portal.search.SearchController = Ext.extend(Portal.common.Controller, {
 	
   constructor: function(config) {
     
@@ -20,8 +20,8 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
     this.activeFilterStore = Portal.search.filter.newDefaultActiveFilterStore();
     this.inactiveFilterStore = Portal.search.filter.newDefaultInactiveFilterStore(this);
     
-    this.activeFilterStore.on('remove', this.onRemoveActiveFilter, this);
-    this.inactiveFilterStore.on('remove', this.onRemoveInactiveFilter, this);
+    this.activeFilterStore.on('remove', this._onRemoveActiveFilter, this);
+    this.inactiveFilterStore.on('remove', this._onRemoveInactiveFilter, this);
 
     this.addEvents('newsearch');
   },
@@ -38,72 +38,68 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
     return this.savedSearchStore;
   },
 
-  onRemoveActiveFilter: function(store, record)
+  loadSavedSearch: function(id, name)
   {
-    this.inactiveFilterStore.add(record);
-    this.inactiveFilterStore.sort('sortOrder','ASC');
+	  // Load the saved search (in full).
+	  Ext.Ajax.request({
+		  url: 'search/show',
+		  params: { id: id },
+		  success: this._onSuccessfulShow,
+		  failure: this._onFailedShow,
+		  scope: this
+	  });
   },
-  
-  onRemoveInactiveFilter: function(store, record)
+
+  deleteSavedSearch: function(record)
   {
-    this.activeFilterStore.add(record);
+	  Ext.Ajax.request({
+		  url: 'search/delete',
+		  params: { id: record.get('id') },
+		  success: this._onSuccessfulDelete,
+		  failure: this._onFailedDelete,
+		  scope: this
+	  });
   },
-  
-	loadSavedSearch: function(id, name)
-	{
-		// Load the saved search (in full).
-		Ext.Ajax.request({
-			url: 'search/show',
-			params: { id: id },
-			success: this.onSuccessfulShow,
-			failure: this.onFailedShow,
-			scope: this
-		});
-	},
-	
-	deleteSavedSearch: function(record)
-	{
-		Ext.Ajax.request({
-			url: 'search/delete',
-			params: { id: record.get('id') },
-			success: this.onSuccessfulDelete,
-			failure: this.onFailedDelete,
-			scope: this
-		});
-	},
-	
-	saveSearch: function(savedSearchName) 
-	{
-		var filtersArray = [];
-		
-		Ext.each(this.activeFilterStore.data.items, function(record, index, array) {
-			   
-			filtersArray.push(record.get('asJson')());
-		});
-		
-		var jsonArray = 
-		{
-			name: savedSearchName,
-			owner: { id: Portal.app.config.currentUser.id },
-			filters: filtersArray
-		};
-		
-		Ext.Ajax.request({
-			url: 'search/save',
-		    jsonData: Ext.encode(jsonArray),
-			success: this.onSuccessfulSave,
-			failure: this.onFailedSave,
-			scope: this
-		});
-	},
-	
-	newSearch: function() {
-    var defaultFilters = Portal.search.filter.getDefaultFilters();
+
+  saveSearch: function(savedSearchName, successCallback, failureCallback, scope) 
+  {
+	  var filtersArray = [];
+
+	  Ext.each(this.activeFilterStore.data.items, function(record, index, array) {
+
+		  filtersArray.push(record.get('asJson')());
+	  });
+
+	  var jsonArray = 
+	  {
+			  name: savedSearchName,
+			  owner: { id: Portal.app.config.currentUser.id },
+			  filters: filtersArray
+	  };
+
+	  var requestCallbacks = {
+			  success: successCallback,
+			  failure: failureCallback,
+			  scope: scope
+	  }; 
+
+	  Ext.Ajax.request({
+		  url: 'search/save',
+		  jsonData: Ext.encode(jsonArray),
+		  success: this._onSuccessfulSave,
+		  failure: this._logAndReturnErrors,
+		  requestCallbacks: requestCallbacks, 
+		  scope: this
+	  });
+  },
+
+  newSearch: function() {
+	  var defaultFilters = Portal.search.filter.getDefaultFilters();
 	  this.clearFilters();
 	  this.addFiltersArray(defaultFilters);
 	  this.fireEvent('newsearch');
-	},
-	
+  },
+
   clearFilters: function() {
     // Make every filter inactive.
     this.activeFilterStore.each(function(record) {
@@ -156,45 +152,53 @@ Portal.search.SearchController = Ext.extend(Ext.util.Observable, {
     );
   },
   
-	onSuccessfulSave: function(response, options)
-	{
-		console.log(response);
-		
-    var savedSearch = Ext.decode(response.responseText);
-    
-    this.savedSearchStore.load({
-      callback: function(records, options, success) {
-        if (success) {
-          this.fireEvent('searchsaved', savedSearch.id);
-        }
-      },
-      scope: this
-    });
-	},
+  _onRemoveActiveFilter: function(store, record)
+  {
+    this.inactiveFilterStore.add(record);
+    this.inactiveFilterStore.sort('sortOrder','ASC');
+  },
+  
+  _onRemoveInactiveFilter: function(store, record)
+  {
+    this.activeFilterStore.add(record);
+  },
+  
+  _onSuccessfulSave: function(response, options)
+  {
+	  console.log(response);
+
+	  var savedSearch = Ext.decode(response.responseText);
+
+	  this.savedSearchStore.load({
+		  callback: function(records, options, success) {
+			  if (success) {
+				  this.fireEvent('searchsaved', savedSearch.id);
+			  }
+		  },
+		  scope: this
+	  });
+	  
+	  this._callSuccessCallback(options.requestCallbacks, [savedSearch]);
+  },
 	
-	onFailedSave: function(response, options)
-	{
-		console.log(response);
-	},
-	
-	onSuccessfulShow: function(response, options)
+	_onSuccessfulShow: function(response, options)
 	{
 		var savedSearch = Ext.decode(response.responseText);
 		this.clearFilters();
 		this.addFiltersObject(savedSearch.filters);
 	},
 	
-	onFailedShow: function(response, options)
+	_onFailedShow: function(response, options)
 	{
 		console.log(response);
 	},
 	
-	onSuccessfulDelete: function(response, options)
+	_onSuccessfulDelete: function(response, options)
 	{
 		this.savedSearchStore.reload();
 	},
 	
-	onFailedDelete: function(response, options)
+	_onFailedDelete: function(response, options)
 	{
 		// TODO
 	}

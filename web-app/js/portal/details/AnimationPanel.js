@@ -1,16 +1,23 @@
 Ext.namespace('Portal.details');
 
 Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
-    title: 'Date Animate',
-    id: 'animationPanel',
-    plain: true,
-    layout: 'form',
-    stateful: false,
-    autoScroll: true,
-    bodyCls: 'floatingDetailsPanel',
-    style: {margin: 5},
-    padding: 5,
-    height: 400,
+    
+    constructor: function(cfg) {
+    	var config = Ext.apply({
+    		title: 'Date Animate',
+    	    id: 'animationPanel',
+    	    plain: true,
+    	    layout: 'form',
+    	    stateful: false,
+    	    autoScroll: true,
+    	    bodyCls: 'floatingDetailsPanel',
+    	    style: { margin: 5 },
+    	    padding: 5,
+    	    height: 400
+    	}, cfg);
+        
+        Portal.details.AnimationPanel.superclass.constructor.call(this, config);
+    },
 
     initComponent: function(){
     	this.animatedLayers = new Array();
@@ -95,7 +102,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			displayField: 'displayText',
 			tpl: '<tpl for="."><div class="x-combo-list-item">{displayText}</div></tpl>',
 			width: 175,
-			padding: 5
+			padding: 5,
+			listeners: {
+				scope: this,
+				'select': function (combo, record, index){
+                	this.selectedLayer.mergeNewParams({
+						TIME: this.dateStore.getAt(index).get("displayText")
+					});
+				}
+			}
 		});
 
 		this.endTimeCombo = new Ext.form.ComboBox({
@@ -135,7 +150,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners: {
 				scope: this,
 				'click': function(button,event){
-					this._removeAnimation();
+					this.removeAnimation();
 				}
 			},
 			tooltip: "Stops animation and remove all animated layers from map"
@@ -281,7 +296,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     },
 
-	_removeAnimation: function(){
+	removeAnimation: function(){
     	if(this.animatedLayers.length > 0){
     		clearTimeout(this.timerId);
 
@@ -293,7 +308,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.originalLayer.setOpacity(this.originalOpacity);
 
 			for(var i = 0; i < this.animatedLayers.length; i++){
-				if(this.map.map.getLayersBy("id", this.animatedLayers[i].id).length > 0){
+				if(this.map.map.getLayer(this.animatedLayers[i].id)){
 					this.map.removeLayer(this.animatedLayers[i], this.originalLayer);
 				}
 
@@ -312,8 +327,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		    this._toggleButtons(false);
 
             this._resetForNewAnimation();
+            delete this.originalLayer.isAnimated;
 		}
-    	delete this.originalLayer.isAnimated;
+
     },
 
 
@@ -343,8 +359,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.progressLabel.setVisible(this._isLoadingAnimation());
 
 		if(this.counter < this.animatedLayers.length - 1){
-			if(this.map.map.getLayersBy("id", this.animatedLayers[this.counter + 1].id).length == 0){
-				this.map.addLayer(this.animatedLayers[this.counter + 1]);
+			if(this.map.map.getLayer(this.animatedLayers[this.counter + 1].id) == null){
+				this.map.addLayer(this.animatedLayers[this.counter + 1], false);
 				this.animatedLayers[this.counter + 1].display(false);
 			}
 			else{
@@ -425,7 +441,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.animatedLayers = newAnimatedLayers;
 
 			//always pre-load the first one
-			this.map.addLayer(this.animatedLayers[0]);
+			this.map.addLayer(this.animatedLayers[0], false);
+
 			this.selectedLayer.setOpacity(0);
 			this.stepSlider.setMinValue(0);
 			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
@@ -458,7 +475,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         //else no animation is running, so can't change the speed of the animation
     },
 
-    update: function(){
+    update: function(show, hide, target) {
     	//Just hide everything by default
 		this.noAnimationLabel.hide();
 		this.controlPanel.hide();
@@ -469,19 +486,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				//no animation has been set yet, so configure the panel
 				this._setLayerDatesByCapability();
 				this.controlPanel.setVisible(true);
-				this.enable();
 			}
 			else if(this.selectedLayer.id == this.originalLayer.id){
 				this.controlPanel.setVisible(true);
-				this.enable();
 			}
+			show.call(target, this);
 			//else{
 			// an animation is already in place, but it is NOT the same as the actively selected layer
 			//}
 		}
 		else{
 			//No time dimension, it's a dud!
-			this.disable();
+			hide.call(target, this);
 		}
     },
 
@@ -506,6 +522,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.endTimeCombo.setValue(0);
 				this.timeSelectorPanel.doLayout();
     		}
+
+			this.endTimeCombo.setValue(this.dateStore.getCount() - 1);
+
+			//set start time to the end - 10 timestamps, or just the start time if there's
+			//less than 10 values
+			if(this.dateStore.getCount() >= 10){
+				this.startTimeCombo.setValue(this.dateStore.getCount() - 10);
+			}
+			else{
+				this.startTimeCombo.setValue(0);
+			}
     	}
     },
 
@@ -527,7 +554,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     _isLoadingAnimation: function(){
     	if(this.animatedLayers.length > 0){
         	for(var i = 0; i < this.animatedLayers.length; i++){
-        		if(this.map.map.getLayersBy("id", this.animatedLayers[i].id).length == 0)
+        		if(this.map.map.getLayer(this.animatedLayers[i].id) == null )
         			return true;
         		if(this.animatedLayers[i].numLoadingTiles > 0){
         			return true;

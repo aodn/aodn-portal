@@ -37,8 +37,9 @@
 
 
 	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
-	  <a title="Ocean Current page" href="http://oceancurrent.imos.org.au/sst_anom/latest.html"  target="_blank" ><img class="roundedImages" src="http://oceancurrent.imos.org.au/sst_anom/latest.png" width="220" /></a>
-	  <BR>
+	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="220" />
+	  
+	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
 	  </div>
 
 

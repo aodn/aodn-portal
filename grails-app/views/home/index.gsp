@@ -50,6 +50,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/MapPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/Controller.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/SuggestionStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js?')}${jsVerNum}" type="text/javascript"></script>

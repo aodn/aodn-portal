@@ -6,8 +6,7 @@ Portal.snapshot.SaveSnapshotDialog = Ext.extend(Portal.common.SaveDialog, {
 		
 		var config = Ext.apply({
 			title: OpenLayers.i18n('saveSnapshotDialogTitle'),
-			nameFieldLabel: OpenLayers.i18n('saveSnapshotName'),
-			failedSaveErrMsg: OpenLayers.i18n('saveSnapshotFailureErrMsg')
+			nameFieldLabel: OpenLayers.i18n('saveSnapshotName')
 		}, cfg);
 		
 		Portal.snapshot.SaveSnapshotDialog.superclass.constructor.call(this, config);

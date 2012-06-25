@@ -3,9 +3,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
-        this.appConfig = cfg.appConfig;
-		
-        this.initMapPanel(this.appConfig);
+        this.initMapPanel(cfg.appConfig);
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',
 			collapsible: true,
@@ -33,6 +31,11 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 	
         Portal.ui.PortalPanel.superclass.constructor.call(this, config);
+        
+        this.addEvents('tabchange');
+        this.on('tabchange', function() {
+        	this.mapPanel.fireEvent('tabchange');
+        }, this);
 		
     },
 	
