@@ -46,30 +46,27 @@ Portal.ui.Options = Ext.extend(Object, {
 	}	
 });
 
-OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {               
-	defaultHandlerOptions: {
-		'single': true,
-		'double': true,
-		'pixelTolerance': 0,
-		'stopSingle': false,
-		'stopDouble': false
-	},
+Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {                
+    defaultHandlerOptions: {
+        single: true,
+        double: false,
+        pixelTolerance: 0,
+        stopSingle: true,
+        stopDouble: true
+    },
 
-	initialize: function(options) {
-		this.handlerOptions = OpenLayers.Util.extend(
-		{}, this.defaultHandlerOptions
-			);
-		OpenLayers.Control.prototype.initialize.apply(
-			this, arguments
-			);
-		this.handler = new OpenLayers.Handler.Click(
-			this, {
-				'click': this.onClick
-			}, this.handlerOptions
-			);
-	},
-
-	onClick: function(evt) {}
+    constructor: function (options) {
+        this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
+        OpenLayers.Control.prototype.initialize.apply(this, arguments);
+        
+        this.handler = new OpenLayers.Handler.Click(
+            this, 
+            { 
+        		click: this.onClick
+    		}, 
+            this.handlerOptions
+        );
+    }, 
 
 });
 
@@ -102,8 +99,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		Portal.ui.Map.superclass.constructor.call(this, config);
 		this.initMapLinks();
 
-		
-		var clickControl = new OpenLayers.Control.Click({
+		// Control to get feature info or pop up
+		var clickControl = new Portal.ui.ClickControl({
 			map: this.map,
 			appConfig: this.appConfig,
 			fallThrough: false,
@@ -177,10 +174,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	_findFeatureInfo: function(event) {
-		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
-			map: this.map, 
-			appConfig: this.appConfig
-		});
+		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig });
 		this.featureInfoPopup.findFeatures(event);
 	},
     
@@ -758,7 +752,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
 		Ext.getCmp("animationPanel").removeAnimation();
-
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 				layersToRemove.push(openLayer);
