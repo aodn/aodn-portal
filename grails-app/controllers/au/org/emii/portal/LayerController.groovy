@@ -467,6 +467,8 @@ class LayerController {
 			def criteria = Layer.createCriteria()
 			layers = criteria.list {
 				'in'('id', layerIds)
+				eq("activeInLastScan", true)
+				eq("blacklisted", false)
 				join 'server'
 			}
 		}
