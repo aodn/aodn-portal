@@ -4,17 +4,27 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     
     constructor: function(cfg) {
     	var config = Ext.apply({
-    		title: 'Date Animate',
-    	    id: 'animationPanel',
+    		id: 'animationPanel',
     	    plain: true,
     	    layout: 'form',
     	    stateful: false,
-    	    autoScroll: true,
     	    bodyCls: 'floatingDetailsPanel',
     	    style: { margin: 5 },
     	    padding: 5,
-    	    height: 400
+    	    height: 200,
+    	    unstyled: true,
+    	    x: 600,
+    	    width: 300,
+			listeners: {
+				render: function(p) {
+					//magic to get animation control in the middle~!
+					p.getEl().parent("table").wrap({tag:'center'});
+				},
+				single: true  // Remove the listener after first invocation
+			}
     	}, cfg);
+
+
         
         Portal.details.AnimationPanel.superclass.constructor.call(this, config);
     },
@@ -218,18 +228,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.controlPanel = new Ext.Panel({
         	layout: 'form',
         	items: [
-				this.timeSelectorPanel,
-				this.stepLabel,
-				this.stepSlider,
-				this.buttonsPanel,
-				this.progressLabel,
-				this.speedLabel
+				//this.timeSelectorPanel,
+				//this.stepLabel,
+				//this.stepSlider,
+				this.buttonsPanel//,
+				//this.progressLabel,
+				//this.speedLabel
 			]
         });
 
         this.items = [
-        	this.noAnimationLabel,
-        	this.warn,
+        	//this.noAnimationLabel,
+        	//this.warn,
 			this.controlPanel
         ];
 

@@ -159,8 +159,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.on('tabchange', function() {
 			this._closeFeatureInfoPopup();
 		}, this);
-        
-		// make sure layer store reflects loaded layers 
+
+
+		// make sure layer store reflects loaded layers
 		// even if the map hasn't been rendered yet
 		this.layers.bind(this.map);
 	},
@@ -196,16 +197,27 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	initToolBar: function() {
+		this.animationPanel = new Portal.details.AnimationPanel();
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
 			height: 35,
 			width: '100%',
 			cls: 'semiTransparent noborder',
 			overCls: "fullTransparency",
-			unstyled: true  
+			unstyled: true,
+			items: [
+				this.animationPanel
+			],
+			listeners:{
+				// stops the click bubbling to a getFeatureInfo request on the map
+				scope: this,
+				render: function(p){
+					p.getEl().on('click', this.eventStopper);
+				},
+				single: true  // Remove the listener after first invocation
+			}
 		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		this.mapToolbar.on('click', this.eventStopper);
+
 		return this.mapToolbar;
 	},
 	
@@ -227,6 +239,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	eventStopper: function(ev, target) {
+		console.log("hi mum2!");
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	
