@@ -160,4 +160,8 @@ class Layer {
         deleteDefaultLayersInConfig()
         deleteLayerMenuItems()
     }
+	
+	def isViewable() {
+		return activeInLastScan && !blacklisted
+	}
 }
