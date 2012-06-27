@@ -143,6 +143,11 @@ hr {
     cursor: pointer;
 }
 
+.link {
+	cursor: url;
+	cursor: pointer;
+}
+
 #centerTabPanel {
     border: 0px solid white;
 }
@@ -431,6 +436,10 @@ table.featureInfo caption{
     color: white;
 }
 
+#mapToolbarExpanderBar {
+	opacity: 1.0;
+}
+
 .semiTransparent button {
     color: white;
 }
@@ -440,10 +449,11 @@ table.featureInfo caption{
 }
 
 .fullTransparency {
-    background: inherit! important;
-    background-color:white! important; 
     opacity: 0.8! important;
     filter: alpha(opacity = 80);
+}
+.mapToolbarExpanderBarOver {	
+    background-color:white! important; 
 }
 
 .fullTransparency .x-item-disabled * {

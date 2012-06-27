@@ -1,10 +1,14 @@
 Ext.namespace('Portal.ui');
 
+
+
 Portal.ui.Options = Ext.extend(Object, {
 	
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
+		
+		Ext.QuickTips.init();
 		
 		var container = document.getElementById("navtoolbar");                
                 
@@ -196,11 +200,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	},
 	
-	initToolBar: function() {
+	
+	
+	initMapLinks: function() {
+		
 		this.animationPanel = new Portal.details.AnimationPanel();
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
-			height: 35,
 			width: '100%',
 			cls: 'semiTransparent noborder',
 			overCls: "fullTransparency",
@@ -217,29 +223,86 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				single: true  // Remove the listener after first invocation
 			}
 		});
-
-		return this.mapToolbar;
-	},
-	
-	initMapLinks: function() {
-		var mapLinks = new Ext.Panel({
+		
+		var mapLinksHeight = 46;
+		
+		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
+			height: mapLinksHeight,
 			closeAction: 'hide',
 			floating: true,
 			unstyled: true,
 			closeable: true,
-			items: this.initToolBar()
-		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		mapLinks.on('click', this.eventStopper);
-		mapLinks.setPosition(1, 0); // override with CSS later
-		this.add(mapLinks);
+			items: [
+				this.initToolBarExpanderBar(),
+				this.mapToolbar
+			],		
+			scope: this/*,
+			
+			toggleMapLinks: function() {				
+			
+				console.log("toggle map links");
+				if (this.getHeight() > mapLinksHeight) {
+					this.setHeight(mapLinksHeight);
+				}
+				else {
+					this.setHeight(200);
+				}
+				
+			}*/
+		});		
+	
+		this.mapLinks.setPosition(1, 0); // override with CSS later
+		this.add(this.mapLinks);
 	},
 	
+	toggleMapLinks: function() {				
+			
+				console.log("toggle map links");
+				if (this.getHeight() > mapLinksHeight) {
+					this.setHeight(mapLinksHeight);
+				}
+				else {
+					this.setHeight(200);
+				}
+				
+			},
+		
+	initToolBarExpanderBar: function() {
+
+		this.mapToolbarExpanderBar = new Ext.Toolbar({
+			id: 'mapToolbarExpanderBar',
+			//title:'<div ext:qtip="i am a tooltip on a PanelTitle">PanelTitle</div>',
+			qtip: "This is a tip",
+			height: 10,
+			width: '100%',
+			cls: 'semiTransparent noborder link',
+			overCls: "mapToolbarExpanderBarOver",
+			unstyled: true,
+			listeners:{
+					scope: this,
+					render: function(p){
+							p.getEl().on('click', function(e){
+								
+				console.log(this.ownerCt);
+								this.ownerCt.toggleMapLinks();
+								e.stopPropagation();
+							});
+							
+					},
+					single: true  // Remove the listener after first invocation
+			}
+
+		});
+		
+		return mapToolbarExpanderBar;
+	},
+	
+	
+	
 	eventStopper: function(ev, target) {
-		console.log("hi mum2!");
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	
