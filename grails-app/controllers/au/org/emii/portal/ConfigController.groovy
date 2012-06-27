@@ -245,10 +245,7 @@ group by server.id\
 	}
 	
 	def _addMenuIdJson(jsonObject, name, menu) {
-		def id
-		if (menu) {
-			id = menu.id
-		}
+		def id = menu ? menu.id : null
 		jsonObject[name] = JSON.parse("{\"id\":${id}}");
 	}
 }
