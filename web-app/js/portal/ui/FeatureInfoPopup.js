@@ -240,7 +240,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     
     _addPopupTabContent: function(content, title) {
     	
-    	this._checkForAndHandleFirstTab();
+    	// We'll need to set the active tab index later, if there's not one currently.
+    	var activeTab = this.popupTab.getActiveTab();
     	
     	this.popupTab.add( {
             xtype: "box",
@@ -253,16 +254,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }
         });
 
-    	this.popupTab.doLayout();
-    	this.popupTab.show();
-    },
-    
-    _checkForAndHandleFirstTab: function() {
-    	
-    	var activeTab = this.popupTab.getActiveTab();
     	if (!activeTab)
     	{
         	this.popupTab.setActiveTab(0);
     	}
-    }
+    	
+    	this.popupTab.doLayout();
+    	this.popupTab.show();
+    },
 });
