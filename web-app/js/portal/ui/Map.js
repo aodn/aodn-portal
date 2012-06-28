@@ -269,7 +269,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				render: function(bar) {
 				   bar.getEl().on('click', function(ev) {
 					   parent.toggleMapLinks();
-					   ev.stopPropagation
+					   ev.stopPropagation();
 				   });
 				}
 			}
