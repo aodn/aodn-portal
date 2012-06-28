@@ -341,7 +341,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
-			EXCEPTIONS: 'application/vnd.ogc.se_xml',
 			queryable: layerDescriptor.queryable
 		};
 		if (overrides) {
