@@ -68,3 +68,14 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
 OpenLayers.Layer.WMS.prototype._is130 = function() {
 	return "WMS-1.3.0" == this.server.type; 
 }
+
+OpenLayers.Layer.WMS.prototype.isAnimatable = function(){
+	if (this.dimensions != undefined){
+		for(var i = 0; i < this.dimensions.length; i++){
+			if(this.dimensions[i].name == "time"){
+				return true;
+			}
+		}
+	}
+	return false;
+}

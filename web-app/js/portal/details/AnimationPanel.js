@@ -8,13 +8,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	    plain: true,
     	    layout: 'form',
     	    stateful: false,
-    	    bodyCls: 'floatingDetailsPanel',
     	    style: { margin: 5 },
+    	    plain: true,
+			overCls: "fullTransparency",
     	    padding: 5,
     	    height: 200,
     	    unstyled: true,
-    	    x: 600,
-    	    width: 300,
+    	    width: 100,
 			listeners: {
 				render: function(p) {
 					//magic to get animation control in the middle~!
@@ -32,11 +32,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     initComponent: function(){
     	this.animatedLayers = new Array();
 
-        this.noAnimationLabel = new Ext.form.Label({
-        	hidden: true,
-        	text: "This layer cannot be animated"
-        });
-
         this.warn = new Ext.form.Label({
 			padding: 5,
 			width: 280,
@@ -47,7 +42,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.speedUp = new Ext.Button({
          	icon: 'images/animation/last.png',
-         	cls:'x-btn-text-icon',
+         	plain: true,
          	padding: 5,
          	listeners: {
 				scope: this,
@@ -141,6 +136,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.playButton = new Ext.Button({
 			id: 'Play',
 			padding: 5,
+			plain: true,
 			disabled: false, // readonly
 			icon: 'images/animation/play.png',
 			listeners: {
@@ -154,7 +150,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.clearButton = new Ext.Button({
 			id: 'Stop',
 			padding: 5,
-			disabled: true, // readonly
+			plain: true,
 			text: "Cancel",
 			iconAlign: 'top',
 			listeners: {
@@ -205,7 +201,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
-			style: 'padding-top: 5; padding-bottom: 5',
+			plain: true,
 			items: [
 				this.slowDown,
 				this.playButton,
@@ -218,7 +214,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.timeSelectorPanel = new Ext.Panel({
 		   id: 'timeSelectorPanel',
 		   layout: 'form',
-		   style: 'padding-top: 5',
+		   plain: true,
 		   items:[
 				this.startTimeCombo,
 				this.endTimeCombo
@@ -227,6 +223,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
         this.controlPanel = new Ext.Panel({
         	layout: 'form',
+        	plain: true,
         	items: [
 				//this.timeSelectorPanel,
 				//this.stepLabel,
@@ -238,8 +235,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
-        	//this.noAnimationLabel,
-        	//this.warn,
 			this.controlPanel
         ];
 
@@ -485,9 +480,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         //else no animation is running, so can't change the speed of the animation
     },
 
-    update: function(show, hide, target) {
-    	//Just hide everything by default
-		this.noAnimationLabel.hide();
+    update: function() {
 		this.controlPanel.hide();
 
 		if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
@@ -500,7 +493,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			else if(this.selectedLayer.id == this.originalLayer.id){
 				this.controlPanel.setVisible(true);
 			}
-			show.call(target, this);
+			//show.call(target, this);
 			//else{
 			// an animation is already in place, but it is NOT the same as the actively selected layer
 			//}
