@@ -373,7 +373,7 @@
 						<include>jquery/jquery-1.4.1.min.js</include>
 						<include>jquery/jquery-autocomplete1.1.js</include>
 						<include>jquery/jquery.rotate.1-1.js</include>
-						<include>ext-3.3.1/adapter/ext/ext-base.js</include>
+						<include>ext-3.3.1/adapter/ext/ext-base-debug.js</include>
 						<include>ext-3.3.1/ext-all-debug-w-comments.js</include>
 						<include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
 						<include>OpenLayers-2.10/OpenLayers.js</include>

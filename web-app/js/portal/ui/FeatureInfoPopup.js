@@ -239,6 +239,13 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _addPopupTabContent: function(content, title) {
+    	
+    	var activeTab = this.popupTab.getActiveTab();
+    	if (!activeTab)
+    	{
+        	this.popupTab.setActiveTab(0);
+    	}
+    	
     	this.popupTab.add( {
             xtype: "box",
             title: title,
@@ -249,7 +256,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 html: content
             }
         });
-    	this.popupTab.setActiveTab( 0 );
+
     	this.popupTab.doLayout();
     	this.popupTab.show();
     }
