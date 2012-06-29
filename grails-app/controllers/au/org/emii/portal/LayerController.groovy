@@ -152,8 +152,6 @@ class LayerController {
                 isNull ("namespace")
             }         
             eq( "name", localName)
-			eq( "activeInLastScan", true)
-			eq( "blacklisted", false)
             isNull("cql")      // don't include filtered layers!
         }
             
