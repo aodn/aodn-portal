@@ -123,17 +123,11 @@ class LayerController {
     }
     
     // Lookup a layer using the server uri and layer name 
-    // (used to find any portal layer corresponding to externally entered layer details)
+    // (used to find any portal layer corresponding to externally
+	// entered layer details e.g. layers sourced from metadata records)
     
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
-        
-        // For the moment just use the protocol/authority portion of the server uri 
-        // due to inconsistencies in the way server URI's are being used.
-        // This should be unique anyway
-        
-        def serverUrl = new URL(params.serverUri)
-        def serverUriPattern = serverUrl.getProtocol() + "://" + serverUrl.getAuthority() + '%'
         
         // split name into namespace and local name components if applicable
         
@@ -150,7 +144,7 @@ class LayerController {
         
         def layerInstance = criteria.get {  
             server {
-                like("uri", serverUriPattern)
+                eq("uri", params.serverUri)
             }
             if (namespace) {
                 eq( "namespace", namespace)
@@ -158,6 +152,8 @@ class LayerController {
                 isNull ("namespace")
             }         
             eq( "name", localName)
+			eq( "activeInLastScan", true)
+			eq( "blacklisted", false)
             isNull("cql")      // don't include filtered layers!
         }
             
