@@ -207,10 +207,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.animationPanel = new Portal.details.AnimationPanel();
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
-			height: 100,
+			height: '100%',
 			width: '100%',
 			cls: 'semiTransparent noborder',
-			overCls: "fullTransparency",
 			unstyled: true,
 			items: [
 				this.animationPanel
@@ -220,6 +219,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				scope: this,
 				render: function(p){
 					p.getEl().on('click', this.eventStopper);
+					p.getEl().on('dblclick', this.eventStopper);
+					p.getEl().on('drag', this.eventStopper);
+					p.getEl().on('dragStart', this.eventStopper);
+					p.getEl().on('dragEnd', this.eventStopper);
 				},
 				single: true  // Remove the listener after first invocation
 			}

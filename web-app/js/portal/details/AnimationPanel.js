@@ -14,7 +14,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	    padding: 5,
     	    height: 200,
     	    unstyled: true,
-    	    width: 100,
+    	    width: '100%',
 			listeners: {
 				render: function(p) {
 					//magic to get animation control in the middle~!
@@ -24,8 +24,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
     	}, cfg);
 
-
-        
         Portal.details.AnimationPanel.superclass.constructor.call(this, config);
     },
 
@@ -38,7 +36,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
            	text: "Only one layer can be animated at a time.  You must remove an existing animation to create " +
            		  "	a new animation."
         });
-
 
 		this.speedUp = new Ext.Button({
          	icon: 'images/animation/last.png',
@@ -79,58 +76,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this._setSlide(slider.getValue());
 				}
 			}
-		});
-
-		var tpl = '<tpl for="."><div class="x-combo-list-item">{displayText}</div></tpl>';
-
-		var fields = [{
-			name: 'index'
-		},{
-			name: 'displayText'
-		}];
-
-		this.dateStore  = new Ext.data.ArrayStore({
-			autoDestroy: true,
-			name: "time",
-			fields: fields
-		});
-
-		this.startTimeCombo = new Ext.form.ComboBox({
-			id: "startTimePicker",
-			fieldLabel: 'Start',
-			triggerAction: 'all',
-			editable : false,
-			lazyRender:true,
-			mode: 'local',
-			store: this.dateStore,
-			valueField: 'index',
-			displayField: 'displayText',
-			tpl: '<tpl for="."><div class="x-combo-list-item">{displayText}</div></tpl>',
-			width: 175,
-			padding: 5,
-			listeners: {
-				scope: this,
-				'select': function (combo, record, index){
-                	this.selectedLayer.mergeNewParams({
-						TIME: this.dateStore.getAt(index).get("displayText")
-					});
-				}
-			}
-		});
-
-		this.endTimeCombo = new Ext.form.ComboBox({
-			id: "endTimePicker",
-			fieldLabel: 'End',
-			triggerAction: 'all',
-			editable : false,
-			lazyRender:true,
-			mode: 'local',
-			store: this.dateStore,
-			valueField: 'index',
-			displayField: 'displayText',
-			tpl: '<tpl for="."><div class="x-combo-list-item">{displayText}</div></tpl>',
-			width: 175,
-			padding: 5
 		});
 
 		this.playButton = new Ext.Button({
@@ -208,7 +153,35 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.pauseButton,
 				this.speedUp,
 				this.clearButton
-			]
+			],
+			width: 400
+		});
+
+		this.startDatePicker = new Ext.form.DateField({
+			fieldLabel: 'Start',
+			format: 'd-m-Y',
+			editable: false,
+			listeners:{
+				scope: this,
+            	select: this._onDateSelected
+			}
+		});
+
+		this.endDatePicker = new Ext.form.DateField({
+			fieldLabel: 'End',
+			format: 'd-m-Y',
+			editable: false,
+			listeners:{
+				scope: this,
+				select: this._onDateSelected
+			}
+		});
+
+		this.startTimeCombo = new Ext.form.ComboBox({
+			store: new Array()
+		});
+		this.endTimeCombo = new Ext.form.ComboBox({
+			store: new Array()
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
@@ -216,7 +189,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		   layout: 'form',
 		   plain: true,
 		   items:[
+				this.startDatePicker,
 				this.startTimeCombo,
+				this.endDatePicker,
 				this.endTimeCombo
 			]
 		});
@@ -225,13 +200,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         	layout: 'form',
         	plain: true,
         	items: [
-				//this.timeSelectorPanel,
-				//this.stepLabel,
-				//this.stepSlider,
-				this.buttonsPanel//,
-				//this.progressLabel,
-				//this.speedLabel
-			]
+        		this.buttonsPanel,
+				this.timeSelectorPanel,
+				this.stepLabel,
+				this.stepSlider,
+				this.progressLabel,
+				this.speedLabel
+			],
+			width: 500,
+			height: '100%'
         });
 
         this.items = [
@@ -241,12 +218,34 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this._resetForNewAnimation();
         this.map = Ext.getCmp("map");
 
-//    map.events.register(type, obj, listener);
         this.map.map.events.register('moveend', this, this.onMove);
 
         this.pausedTime = "";
 
         Portal.details.AnimationPanel.superclass.initComponent.call(this);
+    },
+
+    _onDateSelected: function(field, date){
+    	var combo;
+
+    	if(field === this.startDatePicker){
+    		combo = this.startTimeCombo;
+    	}
+    	else{
+    		combo = this.endTimeCombo;
+    	}
+
+    	var key = date.format("Y-m-d");
+    	if(this.allTimes[key] != null){
+    		store = combo.getStore();
+    		store.removeAll();
+    		store.loadData(this.allTimes[key]);
+    		combo.enable();
+    	}
+    	else{
+    		combo.disable();
+    	}
+
     },
 
     _resetForNewAnimation: function(){
@@ -258,6 +257,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.originalOpacity = -1;
 		this.speed = this.BASE_SPEED;
 		this.pausedTime = "";
+		this.allTimes = {};
+
 		//resetting the array
 		this.animatedLayers = new Array();
 	},
@@ -273,9 +274,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     	if(playing){
     		//can't change the time when it's playing
-    		this.startTimeCombo.disable();
-			this.endTimeCombo.disable();
-			this.playButton.disable();
+    		this.playButton.disable();
 			this.pauseButton.enable();
 			this.stepSlider.disable();
 			this.speedUp.enable();
@@ -337,7 +336,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     },
 
-
     setSelectedLayer: function(layer){
         this.selectedLayer = layer;
     },
@@ -386,12 +384,25 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
 	_loadAnimation: function(){
-    	if(this.startTimeCombo.getValue() == this.endTimeCombo.getValue()){
+
+        var startString = this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
+        var endString = this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
+
+        console.log("loading animation with " + startString + " and " + endString);
+
+        dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
+
+        var startIndex = dimSplit.indexOf(startString);
+        var endIndex = dimSplit.indexOf(endString);
+
+        console.log("startIndexL " + startIndex + " endIndex:  " + endIndex);
+
+    	if(startIndex == endIndex){
     		alert("The start and end time must not be the same");
     		return false;
     	}
 
-    	if(this.startTimeCombo.getValue() > this.endTimeCombo.getValue()){
+    	if(startIndex > endIndex){
 			alert("You must select an end date that is later than the start date");
 			return false;
 		}
@@ -410,12 +421,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			//could prrrrobably work out if any of the existing layers are in the
 			//new animation, but let's make it work for now.
-			for( var j = this.startTimeCombo.getValue(); j <= this.endTimeCombo.getValue(); j++){
+			for( var j = startIndex; j <= endIndex; j++){
 				newLayer = null;
 
 				if(this.animatedLayers.length > 0){
 					for( var i = 0; i < this.animatedLayers.length; i++){
-						if(this.dateStore.getAt(j).get("displayText") === this.animatedLayers[i].params["TIME"]){
+						if(dimSplit[i] === this.animatedLayers[i].params["TIME"]){
 							newLayer = this.animatedLayers[i];
 						}
 					}
@@ -425,13 +436,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					newLayer = this.selectedLayer.clone();
 					if(this.originalLayer.name.indexOf("animated") > 0){
 						newLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"))
-							+ " (" + this.dateStore.getAt(j).get("displayText") + ")";
+							+ " (" + dimSplit[j] + ")";
 					}
 					else{
-						newLayer.name = this.originalLayer.name + " (" + this.dateStore.getAt(j).get("displayText") + ")";
+						newLayer.name = this.originalLayer.name + " (" + dimSplit[j] + ")";
 					}
 					newLayer.mergeNewParams({
-						TIME: this.dateStore.getAt(j).get("displayText")
+						TIME: dimSplit[j]
 					});
 
 					newLayer.setVisibility(true);
@@ -493,10 +504,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			else if(this.selectedLayer.id == this.originalLayer.id){
 				this.controlPanel.setVisible(true);
 			}
-			//show.call(target, this);
-			//else{
-			// an animation is already in place, but it is NOT the same as the actively selected layer
-			//}
 		}
 		else{
 			//No time dimension, it's a dud!
@@ -504,39 +511,61 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
     },
 
+    _setDateRange: function(combo, startDate, endDate){
+    	combo.setMinValue(startDate);
+		combo.setMaxValue(endDate);
+		combo.setValue(startDate);
+    },
+
+    _extractDays: function(dim){
+    	splitDates = dim.extent.split(",");
+    	var startDate;
+    	var endDate;
+
+		if(splitDates.length > 0){
+			startDate = new Date(splitDates[0]);
+			endDate = new Date(splitDates[splitDates.length - 1]);
+
+			//set the start/end date range for both pickers
+			this._setDateRange(this.startDatePicker, startDate, endDate);
+			this._setDateRange(this.endDatePicker, startDate, endDate);
+
+			//then calculate the missing days
+			var missingDays = [];
+
+			for(var j = 0; j < splitDates.length; j++){
+				var dayTime = splitDates[j].split("T");
+				var dayString = dayTime[0];
+				var timeString = dayTime[1];
+
+				if(this.allTimes[dayString] == null){
+					this.allTimes[dayString] = new Array();
+				}
+				this.allTimes[dayString].push(timeString);
+			}
+
+			var curDate = new Date(splitDates[0]);
+			while(curDate <= endDate){
+				day = curDate.toISOString().split("T")[0];
+
+				if(this.allTimes[day] == null){
+					missingDays.push(curDate.format("d-m-Y"));
+				}
+				curDate.setDate(curDate.getDate() + 1);
+			}
+
+			this.startDatePicker.setDisabledDates(missingDays);
+            this.endDatePicker.setDisabledDates(missingDays);
+		}
+    },
+
     _setLayerDatesByCapability: function(){
-    	if(this.selectedLayer != null && this.selectedLayer.dimensions != null){
-    		var capDates = new Array();
-    		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
-    			var dim = this.selectedLayer.dimensions[i];
-
-    			if(dim.name == "time"){
-    				splitDates = dim.extent.split(",");
-    				for(var j = 0; j < splitDates.length; j++){
-    					capDates.push([j, splitDates[j].trim()]);
-    				}
-    			}
-    		}
-
-    		if(capDates.length > 0){
-    			this.startTimeCombo.store.loadData(capDates);
-				this.startTimeCombo.setValue(0);
-				this.endTimeCombo.store.loadData(capDates);
-				this.endTimeCombo.setValue(0);
-				this.timeSelectorPanel.doLayout();
-    		}
-
-			this.endTimeCombo.setValue(this.dateStore.getCount() - 1);
-
-			//set start time to the end - 10 timestamps, or just the start time if there's
-			//less than 10 values
-			if(this.dateStore.getCount() >= 10){
-				this.startTimeCombo.setValue(this.dateStore.getCount() - 10);
-			}
-			else{
-				this.startTimeCombo.setValue(0);
-			}
+    	var dim = this.getSelectedLayerTimeDimension();
+    	if(dim != null){
+    		this._extractDays(dim);
+			//TODO: set default to last 10 timestamp for instant animation
     	}
+
     },
 
 	setSelectedLayer: function(layer){
