@@ -1,3 +1,7 @@
+import grails.util.Environment
+
+import java.text.SimpleDateFormat
+
 import org.tmatesoft.svn.core.SVNException
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory
@@ -10,6 +14,9 @@ import org.apache.catalina.connector.Connector
 
 eventCreateWarStart = { warname, stagingDir ->
 	Ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
+	if (grailsEnv == 'production') {
+		Ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
+	}
 }
 
 eventCompileStart = { kind ->
@@ -24,7 +31,7 @@ eventCompileStart = { kind ->
 
         // Get build info
         metadata.'app.build.number' = System.getenv('BUILD_NUMBER') ?: 'Not Jenkins build'
-        metadata.'app.build.date' = new Date().format( "dd/MM/yyyy HH:mm" )
+        metadata.'app.build.date' = new SimpleDateFormat( "dd/MM/yyyy HH:mm" ).format(new Date())
 
         // Get subvsersion revision number
         try {
@@ -69,4 +76,3 @@ eventConfigureTomcat = {tomcat ->
     }
 
 }
-

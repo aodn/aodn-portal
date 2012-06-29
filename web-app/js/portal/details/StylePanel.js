@@ -276,6 +276,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
              + "&LAYER=" + layer.params.LAYERS
              + "&FORMAT=" + layer.params.FORMAT;
 
+         if (layer && layer.server && layer.server.type) {
+        	 var version = layer.server.type.split('-')[1];
+        	 opts += "&VERSION=" + version;
+         }
+         
          // strip off leading '&'
          opts = opts.replace(/^[&]+/g,"");
          url += opts;

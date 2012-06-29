@@ -29,8 +29,8 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
     }
     
     baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, overrideParams);
-	
-    return this.getFullRequestString(baseFeatureInfoParams);
+    
+    return this.unproxy(this.getFullRequestString(baseFeatureInfoParams));
 }
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
@@ -55,6 +55,18 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
     }
 	
 	return result;
+}
+
+OpenLayers.Layer.WMS.prototype.proxy = function(proxy) {
+	if (this.server.username && this.server.password  && !this.localProxy) {
+		this.server.uri = proxy + this.server.uri + "?";
+		this.url = this.server.uri;
+		this.localProxy = proxy;
+	}
+}
+
+OpenLayers.Layer.WMS.prototype.unproxy = function(url) {
+	return url.replace(this.localProxy, '');
 }
 
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {

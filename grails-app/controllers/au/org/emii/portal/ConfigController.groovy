@@ -35,7 +35,7 @@ class ConfigController {
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)
 
-		_addMenuIdJson(instanceAsGenericObj, 'defaultMenu', configInstance.defaultMenu)
+		instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
 
         //the MOTD is skipped somehow when converting the object to JSON.
         def tmpMOTD = JSON.use('deep') {
@@ -242,11 +242,5 @@ group by server.id\
 			ids << row.id
 		}
 		return ids
-	}
-	
-	def _addMenuIdJson(jsonObject, name, menu) {
-		if (menu) {
-			jsonObject[name] = JSON.parse("{\"id\":${menu.id}}");
-		}
 	}
 }

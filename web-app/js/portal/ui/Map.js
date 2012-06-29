@@ -341,7 +341,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
-			EXCEPTIONS: 'application/vnd.ogc.se_xml',
 			queryable: layerDescriptor.queryable
 		};
 		if (overrides) {
@@ -384,12 +383,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn;t
         //provide a way to add header information to a WMS request
-		if(openLayer.server.username && openLayer.server.password){
-			console.log("proxyURL: " + proxyURL);
-			openLayer.server.uri = proxyURL + openLayer.server.uri + "?";
-			openLayer.url = openLayer.server.uri;
-		}
-
+		openLayer.proxy(proxyURL);
 		openLayer.cql = layerDescriptor.cql;  
 		openLayer.bboxMinX = layerDescriptor.bboxMinX;
 		openLayer.bboxMinY = layerDescriptor.bboxMinY;

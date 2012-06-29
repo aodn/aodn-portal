@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.apache.commons.codec.binary.Base64;
+
 class Server {
     Long id
     String uri
@@ -77,4 +79,12 @@ class Server {
         Config.activeInstance().refresh()
         Config.activeInstance().defaultLayers
     }
+	
+	def isCredentialled() {
+		return username && password
+	}
+	
+	def getEncodedCredentials() {
+		return new String(Base64.encodeBase64("$username:$password".getBytes()))
+	}
 }
