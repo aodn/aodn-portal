@@ -58,6 +58,8 @@ class LayerService {
             def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
                 newData, parent ->
 
+				parent?.save()
+				
                 def uniquePath = _uniquePathIdentifier( newData, parent )
                 def layerToUpdate = existingLayers[ uniquePath ]
 
@@ -110,10 +112,12 @@ class LayerService {
 
                 layerToUpdate.layerHierarchyPath = uniquePath
 
+				// Need to explicitly save, since saves no longer cascade to children (since fix
+				// for #1761).
+				layerToUpdate.save(failOnError: true)
+					
                 return layerToUpdate
             })
-
-//            newLayer.printTree()
 
             log.debug "Updating Layers finished."
             

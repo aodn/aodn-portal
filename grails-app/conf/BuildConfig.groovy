@@ -38,9 +38,10 @@ grails.project.dependency.resolution = {
         excludes "xml-apis"
     }
 
-
-
-
+	
+	plugins {
+		compile ":build-test-data:1.1.2"
+	}
 }
 
 coverage {

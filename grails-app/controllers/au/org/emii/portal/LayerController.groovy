@@ -153,6 +153,7 @@ class LayerController {
             }         
             eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
+			eq("activeInLastScan", true)
         }
             
         if (layerInstance) {
