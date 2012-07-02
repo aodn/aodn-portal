@@ -163,11 +163,18 @@ class Layer {
             dels*.delete()
         }
     }
+	
+	void deleteSnapshotLayers() {
+		
+		Layer.withNewSession {
+			SnapshotLayer.findAllByLayer(this).each {
+				it.snapshot.removeFromLayers(it)
+				it.delete()
+			}
+		}
+	}
 
-    void beforeDelete(){
-        //find all layers related to this server
-        deleteDefaultLayersInConfig()
-        deleteLayerMenuItems()
+	void deleteChildLayers() {
 		
 		Layer.withNewSession {
 			// Cascade delete child layers.
@@ -175,6 +182,14 @@ class Layer {
 				it.delete()
 			}
         }
+    }
+	
+    void beforeDelete(){
+        //find all layers related to this server
+        deleteDefaultLayersInConfig()
+        deleteLayerMenuItems()
+		deleteSnapshotLayers()
+		deleteChildLayers()
     }
 	
 	/** 
