@@ -212,7 +212,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			cls: 'semiTransparent noborder',
 			unstyled: true,
 			items: [
-				this.animationPanel
+			this.animationPanel
 			],
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
@@ -227,20 +227,22 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				single: true  // Remove the listener after first invocation
 			}
 		});
+		
+		this.maplinksHeight = 48;
 
 		this.expandBar = this.initToolBarExpanderBar();
 		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
-			height: 46,
+			height: this.maplinksHeight,
 			closeAction: 'hide',
 			floating: true,
 			unstyled: true,
 			closeable: true,
 			items: [
-				this.expandBar,
-				this.mapToolbar
+			this.expandBar,
+			this.mapToolbar
 			]
 		});		
 	
@@ -249,11 +251,17 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	toggleMapLinks: function() {
-		if (this.mapLinks.getHeight() > 46) {
-			this.mapLinks.setHeight(46);
+		
+						console.log(this.expandBar);
+		if (this.mapLinks.getHeight() > this.maplinksHeight) {
+			this.mapLinks.setHeight(this.maplinksHeight);
+			this.expandBar.addClass("expandUpLink");
+			this.expandBar.removeClass("expandDownLink");
 		}
 		else {
-			this.mapLinks.setHeight(200);
+			this.mapLinks.setHeight(200);					
+			this.expandBar.addClass("expandDownLink");
+			this.expandBar.removeClass("expandUpLink");
 		}
 	},
 		
@@ -262,18 +270,18 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		var toolbar = new Ext.Toolbar({
 			id: 'mapToolbarExpanderBar',
 			qtip: "This is a tip",
-			height: 10,
+			height: 6,
 			width: '100%',
-			cls: 'semiTransparent noborder link',
+			cls: 'semiTransparent noborder expandUpLink link',
 			overCls: "mapToolbarExpanderBarOver",
 			unstyled: true,
 			listeners:{
-				scope: this,
+				//scope: this,
 				render: function(bar) {
-				   bar.getEl().on('click', function(ev) {
-					   parent.toggleMapLinks();
-					   ev.stopPropagation();
-				   });
+					bar.getEl().on('click', function(ev) {
+						parent.toggleMapLinks();
+						ev.stopPropagation();
+					});
 				}
 			}
 		});
@@ -444,14 +452,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.grailsLayerId = layerDescriptor.id;
 		openLayer.server= layerDescriptor.server;
 
-        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
-        //provide a way to add header information to a WMS request
+		//injecting credentials for authenticated WMSes.  Openlayer doesn;t
+		//provide a way to add header information to a WMS request
 		if(openLayer.server.username && openLayer.server.password){
 			splitAtProtocol = openLayer.server.uri.split("://");
 			if(splitAtProtocol.length == 2){
 				//cringe! But had the blessings from management to add this
 				openLayer.server.uri = splitAtProtocol[0] + "://" + openLayer.server.username + ":" +
-										openLayer.server.password + "@" + splitAtProtocol[1];
+				openLayer.server.password + "@" + splitAtProtocol[1];
 				openLayer.url = openLayer.server.uri;
 			}
 		}
@@ -542,8 +550,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			if(openLayer.isAnimated == undefined){
 				console.log("setting up animation panel");
 				this.animationPanel.setVisible(true);
-			    this.animationPanel.setSelectedLayer(openLayer);
-                this.animationPanel.update();
+				this.animationPanel.setSelectedLayer(openLayer);
+				this.animationPanel.update();
 
 			}
 		}
@@ -642,16 +650,16 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 
 		/********************************************************
-	     * attach the old WMS layer to the new Image layer !!
-	     * if this is set we know its an animated layer
-	     * ******************************************************/
+			 * attach the old WMS layer to the new Image layer !!
+			 * if this is set we know its an animated layer
+			 * ******************************************************/
 		newNCWMS.originalWMSLayer = layer;
 
 		/*******************************************************
-	     * add to map is done here
-	     * swap in the new animating layer into openlayers
-	     * keeping the layer position
-	     *******************************************************/
+			 * add to map is done here
+			 * swap in the new animating layer into openlayers
+			 * keeping the layer position
+			 *******************************************************/
 		this.swapLayers(newNCWMS, currentLayer);
 
 	},

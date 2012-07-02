@@ -428,12 +428,19 @@ table.featureInfo caption{
 
 /* map toolbar */
 
+
 .semiTransparent {
-    background: inherit! important;
-    background-color:#3c668d! important;
+    background-image: none;
+    background-color: #3c668d! important;
     opacity: 0.7;
     filter: alpha(opacity = 70);
     color: white;
+}
+.expandUpLink {
+	background: url('../images/mini-up.png') center 1px  no-repeat;
+}
+.expandDownLink {
+	background: url('../images/mini-down.png') center 1px no-repeat;
 }
 
 #mapToolbarExpanderBar {
