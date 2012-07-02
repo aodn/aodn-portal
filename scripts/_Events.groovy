@@ -1,4 +1,3 @@
-import grails.util.Environment
 
 import java.text.SimpleDateFormat
 
@@ -11,12 +10,19 @@ import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
 import org.apache.catalina.connector.Connector
+import org.apache.tools.ant.taskdefs.Ant
+
+import au.org.emii.portal.display.JavaScriptSourceCollator
 
 eventCreateWarStart = { warname, stagingDir ->
-	Ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
+	ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
 	if (grailsEnv == 'production') {
-		Ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
+		ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
 	}
+	
+	// Create the portal-all.js file from the js files in index.gsp
+	def collator = new JavaScriptSourceCollator(stagingDir)
+	collator.collate()
 }
 
 eventCompileStart = { kind ->
