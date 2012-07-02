@@ -5,7 +5,7 @@ class JavaScriptSourceCollator {
 	def stagingDir
 	def viewDir
 	
-	JavaScriptSourceCollator(stagingDir) {
+	JavaScriptSourceCollator(File stagingDir) {
 		this.stagingDir = stagingDir
 	}
 	
