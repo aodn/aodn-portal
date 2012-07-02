@@ -252,7 +252,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	toggleMapLinks: function() {
 		
-						console.log(this.expandBar);
 		if (this.mapLinks.getHeight() > this.maplinksHeight) {
 			this.mapLinks.setHeight(this.maplinksHeight);
 			this.expandBar.addClass("expandUpLink");
