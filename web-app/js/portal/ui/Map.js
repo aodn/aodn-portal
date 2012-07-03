@@ -212,7 +212,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				xtype: 'button',
 				id: 'controlButton',				
 				cls: 'fullTransparency',
-				text: 'Animation Options',
+				text: OpenLayers.i18n('controlButton_4animationPanel'),
 				listeners:{
 					// stops the click bubbling to a getFeatureInfo request on the map
 					scope: this,

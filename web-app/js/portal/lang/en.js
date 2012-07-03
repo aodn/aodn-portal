@@ -16,6 +16,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	clearButton_tip: "Stops animation and remove all animated layers from map",
 	pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 	
+	// Map.js
+	controlButton_4animationPanel: 'Options',
+	
 	
 	
     // Search results 

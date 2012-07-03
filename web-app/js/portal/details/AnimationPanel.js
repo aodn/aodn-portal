@@ -74,6 +74,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				drag: function(slider, e){
 					this._setSlide(slider.getValue());
+				},
+				render: function(p){
+					p.getEl().on('click', this.eventStopper);
+					p.getEl().on('dblclick', this.eventStopper);
+					p.getEl().on('drag', this.eventStopper);
+					p.getEl().on('dragStart', this.eventStopper);
+					p.getEl().on('dragEnd', this.eventStopper);
 				}
 			}
 		});
@@ -327,7 +334,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
 			this.animatedLayers.length = 0;
-			this.stepLabel.setText("Time: <br />", false);
+			this.stepLabel.setText(OpenLayers.i18n('time') + ": <br />", false);
 
 			this.clearButton.setText(OpenLayers.i18n('stop'));
 			this.progressLabel.setVisible(false);
@@ -354,7 +361,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.setValue(index);
 
 			//also set the label
-			labelStr = "Time: " + this.animatedLayers[index].params.TIME;
+			labelStr = OpenLayers.i18n('time') + ": " + this.animatedLayers[index].params.TIME;
 
 			this.stepLabel.setText(labelStr + "<br />", false);
     	}
