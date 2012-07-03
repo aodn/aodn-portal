@@ -9,15 +9,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	    layout: 'form',
     	    stateful: false,
     	    //style: { margin: 5 },
-			overCls: "fullTransparency",
-    	    padding: 10,
+			defaults: {
+				cls: 'fullTransparency'
+			},
+			
+			//overCls: "",
     	    height: 220,
-    	    unstyled: true,
+    	    //unstyled: true,
     	    width: '100%',
 			listeners: {
 				render: function(p) {
 					//magic to get animation control in the middle~!
-					p.getEl().parent("table").wrap({tag:'center'});
+					//p.getEl().parent("table").wrap({tag:'center'});
 				},
 				single: true  // Remove the listener after first invocation
 			}

@@ -205,14 +205,50 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	initMapLinks: function() {
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
+		
+		this.controlButton = new Ext.FormPanel({
+			
+			items: [{
+				xtype: 'button',
+				id: 'controlButton',				
+				cls: 'fullTransparency',
+				text: 'Animation Options',
+				listeners:{
+					// stops the click bubbling to a getFeatureInfo request on the map
+					scope: this,
+					render: function(p){
+						p.getEl().on('click', this.eventStopper);
+						p.getEl().on('dblclick', this.eventStopper);
+						p.getEl().on('drag', this.eventStopper);
+						p.getEl().on('dragStart', this.eventStopper);
+						p.getEl().on('dragEnd', this.eventStopper);
+					},
+					click: this.toggleMapLinks
+				}
+			}]
+		});
+		
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
 			height: '100%',
 			width: '100%',
-			cls: 'semiTransparent noborder',
+			cls: 'semiTransparent',
+			defaults: {	
+				bodyStyle:'padding:10px'
+			},
 			unstyled: true,
-			items: [
-			this.animationPanel
+			items: [		
+				
+			{
+				xtype: 'tbspacer', 
+				width: 300
+			}, 
+			this.animationPanel,
+			{
+				xtype: 'tbspacer', 
+				width: 30
+			}, 
+			this.controlButton,			
 			],
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
@@ -231,6 +267,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.maplinksHeight = 48;
 
 		this.expandBar = this.initToolBarExpanderBar();
+		
 		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
@@ -239,7 +276,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			closeAction: 'hide',
 			floating: true,
 			unstyled: true,
-			closeable: true,
 			items: [
 			this.expandBar,
 			this.mapToolbar
@@ -247,6 +283,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});		
 	
 		this.mapLinks.setPosition(1, 0); // override with CSS later
+		this.controlButton.setPosition(-1, 0); // override with CSS later
 		this.add(this.mapLinks);
 	},
 	
