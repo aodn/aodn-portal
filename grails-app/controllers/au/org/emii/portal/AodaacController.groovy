@@ -9,8 +9,8 @@ class AodaacController {
     def testParams() {
 
         [
-            dateRangeStart: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 14).time,
-            dateRangeEnd: new GregorianCalendar(2011, java.util.Calendar.JANUARY, 21).time,
+            dateRangeStart: "01/01/2011",
+            dateRangeEnd: "14/01/2011",
             timeOfDayRangeStart: "0000",
             timeOfDayRangeEnd: "2400",
             latitudeRangeStart:  -30.681,
@@ -132,7 +132,7 @@ class AodaacController {
 
     def userJobInfo = {
 
-        Thread.sleep 1500
+        Thread.sleep 1500 // Todo - DN: Remove after testing
 
         def jobs = _getJobList()
 
@@ -153,20 +153,20 @@ class AodaacController {
 
         if ( !session.aodaacJobList ) { session.aodaacJobList = [] as Set }
 
-        return session.aodaacJobList.collect{ AodaacJob.findByJobId( it ) }
+        return session.aodaacJobList.collect{ AodaacJob.get( it ) }
     }
 
     void _addToList( item ) {
 
         def list = _getJobList()
 
-        list << item.jobId
+        list << item.id
     }
 
     void _removeFromList( item ) {
 
         def list = _getJobList()
 
-        list.remove item.jobId
+        list.remove item.id
     }
 }
