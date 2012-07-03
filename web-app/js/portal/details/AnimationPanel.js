@@ -11,10 +11,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			defaults: {
 				cls: 'fullTransparency'
 			},
-			
-			//overCls: "",
-    	    //height: 200,
-    	    //unstyled: true,
     	    width: '100%',
 			listeners: {
 				render: function(p) {

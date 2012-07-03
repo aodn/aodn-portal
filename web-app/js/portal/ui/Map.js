@@ -227,7 +227,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				}
 			}]
 		});
-		
+
+
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
 			height: '100%',
@@ -247,8 +248,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			{
 				xtype: 'tbspacer', 
 				width: 3
-			}, 
-			this.controlButton,			
+			}//,
+			//this.controlButton,
 			],
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
@@ -267,7 +268,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.maplinksHeight = 48;
 
 		this.expandBar = this.initToolBarExpanderBar();
-		
+
+		var parent = this;
 		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
@@ -279,25 +281,46 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			items: [
 			this.expandBar,
 			this.mapToolbar
-			]
-		});		
-	
+			],
+			listeners:{
+				// stops the click bubbling to a getFeatureInfo request on the map
+				scope: this,
+				render: function(p){
+					p.getEl().on('mouseenter', function(){
+						parent._expandMapLinks();
+					});
+					p.getEl().on('mouseleave', function(){
+							parent._contractMapLinks();
+					});
+				},
+				single: true  // Remove the listener after first invocation
+			}
+		});
+
 		this.mapLinks.setPosition(1, 0); // override with CSS later
 		this.controlButton.setPosition(-1, 0); // override with CSS later
 		this.add(this.mapLinks);
+	},
+
+	_contractMapLinks: function(){
+		this.mapLinks.setHeight(this.maplinksHeight);
+		this.expandBar.addClass("expandUpLink");
+		this.expandBar.removeClass("expandDownLink");
+	},
+
+	_expandMapLinks: function(){
+		this.mapLinks.setHeight(200);
+		this.expandBar.addClass("expandDownLink");
+		this.expandBar.removeClass("expandUpLink");
 	},
 	
 	toggleMapLinks: function() {
 		
 		if (this.mapLinks.getHeight() > this.maplinksHeight) {
-			this.mapLinks.setHeight(this.maplinksHeight);
-			this.expandBar.addClass("expandUpLink");
-			this.expandBar.removeClass("expandDownLink");
+			this._expandMapLinks();
 		}
 		else {
-			this.mapLinks.setHeight(200);					
-			this.expandBar.addClass("expandDownLink");
-			this.expandBar.removeClass("expandUpLink");
+			this._contractMapLinks();
 		}
 	},
 		
