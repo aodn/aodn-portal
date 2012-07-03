@@ -257,8 +257,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 					p.getEl().on('click', this.eventStopper);
 					p.getEl().on('dblclick', this.eventStopper);
 					p.getEl().on('drag', this.eventStopper);
-					p.getEl().on('dragStart', this.eventStopper);
-					p.getEl().on('dragEnd', this.eventStopper);
+					p.getEl().on('dragstart', this.eventStopper);
+					p.getEl().on('dragend', this.eventStopper);
 				},
 				single: true  // Remove the listener after first invocation
 			}
@@ -578,20 +578,23 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.addLayer(openLayer, showLoading);
 		}, this);
 	},
-	
-	addLayer: function(openLayer, showLoading) {
-		console.log("isAnimatable()" + openLayer.isAnimatable());
-		if(openLayer.isAnimatable()){
-			console.log("isAnimated: " + openLayer.isAnimated);
-			if(openLayer.isAnimated == undefined){
-				console.log("setting up animation panel");
+
+	updateAnimationPanel: function(openLayer){
+		if(!this.animationPanel.isAnimating()){
+			if(openLayer.isAnimatable()){
+				//show the panel for the first time!
 				this.animationPanel.setVisible(true);
 				this.animationPanel.setSelectedLayer(openLayer);
 				this.animationPanel.update();
-
+			}
+			else{
+				this.animationPanel.setVisible(false);
 			}
 		}
+	},
 
+	addLayer: function(openLayer, showLoading) {
+		this.updateAnimationPanel(openLayer);
 		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);

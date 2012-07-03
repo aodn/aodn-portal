@@ -74,6 +74,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				drag: function(slider, e){
 					this._setSlide(slider.getValue());
+					e.stopPropagation();
 				},
 				render: function(p){
 					p.getEl().on('click', this.eventStopper);
@@ -393,19 +394,43 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
     },
 
+    _makeNextSlide: function(timeStamp){
+    	var newLayer = this.selectedLayer.clone();
+
+		if(this.originalLayer.name.indexOf("animated") > 0){
+			newLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"))
+				+ " (" + timeStamp + ")";
+		}
+		else{
+			newLayer.name = this.originalLayer.name + " (" +timeStamp + ")";
+		}
+		newLayer.mergeNewParams({
+			TIME: timeStamp
+		});
+
+		newLayer.setVisibility(true);
+		newLayer.setOpacity(1);
+		newLayer.display(false);
+		newLayer.isAnimated = true;
+
+		return newLayer;
+    },
+
 	_loadAnimation: function(){
+		if(this.startDatePicker.getValue() === "" || this.endDatePicker.getValue() === "" ||
+			this.startTimeCombo.getValue() === "" || this.endTimeCombo.getValue() === ""){
+				//Incomplete start/end time!  Do nothing.
+				//Maybe show a message
+				return;
+		}
 
         var startString = this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
         var endString = this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
-
-        console.log("loading animation with " + startString + " and " + endString);
 
         dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
 
         var startIndex = dimSplit.indexOf(startString);
         var endIndex = dimSplit.indexOf(endString);
-
-        console.log("startIndexL " + startIndex + " endIndex:  " + endIndex);
 
     	if(startIndex == endIndex){
     		alert("The start and end time must not be the same");
@@ -427,38 +452,24 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.originalLayer.name = this.originalLayer.name + " (animated)";
 				this.originalLayer.isAnimated = true;
             }
+
 			newAnimatedLayers = new Array();
 
-			//could prrrrobably work out if any of the existing layers are in the
-			//new animation, but let's make it work for now.
 			for( var j = startIndex; j <= endIndex; j++){
-				newLayer = null;
+				var newLayer = null;
 
+				//find existing layer
 				if(this.animatedLayers.length > 0){
 					for( var i = 0; i < this.animatedLayers.length; i++){
-						if(dimSplit[i] === this.animatedLayers[i].params["TIME"]){
+						if(dimSplit[j] === this.animatedLayers[i].params["TIME"]){
 							newLayer = this.animatedLayers[i];
 						}
 					}
 				}
 
+				//or create new layer, since it hasn't been animated before
 				if(newLayer == null){
-					newLayer = this.selectedLayer.clone();
-					if(this.originalLayer.name.indexOf("animated") > 0){
-						newLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"))
-							+ " (" + dimSplit[j] + ")";
-					}
-					else{
-						newLayer.name = this.originalLayer.name + " (" + dimSplit[j] + ")";
-					}
-					newLayer.mergeNewParams({
-						TIME: dimSplit[j]
-					});
-
-					newLayer.setVisibility(true);
-					newLayer.setOpacity(1);
-					newLayer.display(false);
-					newLayer.isAnimated = true;
+					newLayer = this._makeNextSlide(dimSplit[j]);
 				}
 
 				newAnimatedLayers.push(newLayer);
@@ -521,10 +532,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
     },
 
-    _setDateRange: function(combo, startDate, endDate){
-    	combo.setMinValue(startDate);
-		combo.setMaxValue(endDate);
-		combo.setValue(startDate);
+    _setDateRange: function(picker, startDate, endDate){
+    	picker.setMinValue(startDate);
+		picker.setMaxValue(endDate);
+		picker.setValue(startDate);
     },
 
     _extractDays: function(dim){
@@ -533,6 +544,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	var endDate;
 
 		if(splitDates.length > 0){
+
 			startDate = new Date(splitDates[0]);
 			endDate = new Date(splitDates[splitDates.length - 1]);
 
@@ -555,8 +567,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 
 			var curDate = new Date(splitDates[0]);
-			while(curDate <= endDate){
-				day = curDate.toISOString().split("T")[0];
+
+
+			while(curDate < endDate){
+				day =  curDate.toISOString().split("T")[0];
 
 				if(this.allTimes[day] == null){
 					missingDays.push(curDate.format("d-m-Y"));
@@ -564,8 +578,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				curDate.setDate(curDate.getDate() + 1);
 			}
 
-			this.startDatePicker.setDisabledDates(missingDays);
-            this.endDatePicker.setDisabledDates(missingDays);
+			if(missingDays.length > 1){
+				this.startDatePicker.setDisabledDates(missingDays);
+				this.endDatePicker.setDisabledDates(missingDays);
+			}
+
+
+			this.startDatePicker.setValue(startDate);
+			this.endDatePicker.setValue(endDate);
+            this._onDateSelected(this.startDatePicker, startDate);
+            this._onDateSelected(this.endDatePicker, endDate);
+
 		}
     },
 
@@ -616,5 +639,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     	}
 
     	return -1;
+    },
+
+    isAnimating: function(){
+    	return (this.animatedLayers.length > 0);
     }
+
 });
