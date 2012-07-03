@@ -5,16 +5,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
     	var config = Ext.apply({
     		id: 'animationPanel',
-    	    plain: true,
+    	    //plain: true,
     	    layout: 'form',
     	    stateful: false,
-    	    //style: { margin: 5 },
 			defaults: {
 				cls: 'fullTransparency'
 			},
 			
 			//overCls: "",
-    	    height: 220,
+    	    //height: 200,
     	    //unstyled: true,
     	    width: '100%',
 			listeners: {
@@ -35,8 +34,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.warn = new Ext.form.Label({
 			padding: 5,
 			width: 280,
-           	text: "Only one layer can be animated at a time.  You must remove an existing animation to create " +
-           		  "	a new animation."
+           	text: OpenLayers.i18n('warn_label')
         });
 
 		this.speedUp = new Ext.Button({
@@ -49,7 +47,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this._resetTimer(this.speed / 2);
 				}
 			},
-			tooltip: "Doubles animation speed"
+			tooltip: OpenLayers.i18n('speedUp')
 		});
 
 		this.slowDown = new Ext.Button({
@@ -61,7 +59,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this._resetTimer(this.speed * 2);
 				}
 			},
-			tooltip: "Halves animation speed"
+			tooltip: OpenLayers.i18n('slowDown')
 		});
 
 		this.label = new Ext.form.Label({
@@ -91,14 +89,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function(button,event){
 					this._loadAnimation();
 				}
-			}
+			},
+			tooltip: OpenLayers.i18n('play')
 		});
 
 		this.clearButton = new Ext.Button({
 			id: 'Stop',
 			padding: 5,
 			plain: true,
-			text: "Cancel",
+			text: OpenLayers.i18n('stop'),
 			iconAlign: 'top',
 			listeners: {
 				scope: this,
@@ -106,7 +105,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this.removeAnimation();
 				}
 			},
-			tooltip: "Stops animation and remove all animated layers from map"
+			tooltip: OpenLayers.i18n('clearButton_tip')
 		});
 
 		this.pauseButton = new Ext.Button({
@@ -123,11 +122,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this._toggleButtons(false);
 				}
 			},
-			tooltip: "Pauses animation and can explore individual time step using the slider above"
+			tooltip: OpenLayers.i18n('pauseButton_tip')
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			html: "Time: <br />",
+			html: OpenLayers.i18n('time') + ": <br />",
 			width: 300,
 			style: 'padding-top: 5'
 		});
@@ -140,7 +139,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.speedLabel = new Ext.form.Label({
 		   hidden: true,
-		   text: "speed",
+		   text: OpenLayers.i18n('speed'),
 		   width: 100,
 		   left: 150
 		});
@@ -148,6 +147,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
+			padding: "0 0 20 0",
 			plain: true,
 			items: [
 				this.slowDown,
@@ -160,17 +160,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.startDatePicker = new Ext.form.DateField({
-			fieldLabel: 'Start',
+			fieldLabel: OpenLayers.i18n('start'),
 			format: 'd-m-Y',
 			editable: false,
 			listeners:{
 				scope: this,
             	select: this._onDateSelected
 			}
+			
 		});
 
 		this.endDatePicker = new Ext.form.DateField({
-			fieldLabel: 'End',
+			fieldLabel: OpenLayers.i18n('end'),
 			format: 'd-m-Y',
 			editable: false,
 			listeners:{
@@ -197,7 +198,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.endTimeCombo
 			]
 		});
-
+		
         this.controlPanel = new Ext.Panel({
         	layout: 'form',
         	plain: true,
@@ -328,7 +329,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.animatedLayers.length = 0;
 			this.stepLabel.setText("Time: <br />", false);
 
-			this.clearButton.setText("Cancel");
+			this.clearButton.setText(OpenLayers.i18n('stop'));
 			this.progressLabel.setVisible(false);
 		    this._toggleButtons(false);
 

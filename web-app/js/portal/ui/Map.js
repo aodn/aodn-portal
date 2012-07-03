@@ -234,7 +234,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			width: '100%',
 			cls: 'semiTransparent',
 			defaults: {	
-				bodyStyle:'padding:10px'
+				bodyStyle:'padding:5px'
 			},
 			unstyled: true,
 			items: [		
@@ -246,7 +246,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.animationPanel,
 			{
 				xtype: 'tbspacer', 
-				width: 30
+				width: 3
 			}, 
 			this.controlButton,			
 			],

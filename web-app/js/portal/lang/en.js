@@ -1,7 +1,23 @@
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	
 	layerChooserMenuHeader: 'Map Layer Chooser',
-			
+	
+	// Animation Panel
+	stop: 'Stop',
+	start: 'Start',
+	play: 'Play',
+	pause: 'Pause',
+	end: 'End',
+	time: 'Time',
+	speed: 'Speed',
+	warn_label: "Only one layer can be animated at a time.  You must remove an existing animation to create a new animation.",
+	speedUp: "Doubles animation speed",
+	slowDown: "Halves animation speed",
+	clearButton_tip: "Stops animation and remove all animated layers from map",
+	pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
+	
+	
+	
     // Search results 
     selectLayer: 'Select layer',
     bboxLayer: 'Extent',

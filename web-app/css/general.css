@@ -448,7 +448,9 @@ table.featureInfo caption{
 animationPanel {
 	opacity: 1.0;
 }
-
+#maptools .x-panel-body {	   
+    border-radius: 5px;
+}
 
 .semiTransparent .x-item-disabled * {
     color:  #eee! important;
