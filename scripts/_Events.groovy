@@ -18,7 +18,8 @@ eventCreateWarStart = { warname, stagingDir ->
 	}
 	
 	// Create the portal-all.js file from the js files in index.gsp
-	def collator = classLoader.loadClass('au.org.emii.portal.display.JavaScriptSourceCollator').getConstructor(File.class).newInstance(stagingDir)
+	def clazz = loadDependencyClass('au.org.emii.portal.display.JavaScriptSourceCollator')
+	def collator = clazz.getConstructor(File.class).newInstance(stagingDir)
 	collator.collate()
 }
 
@@ -78,4 +79,16 @@ eventConfigureTomcat = {tomcat ->
         println t
     }
 
+}
+
+loadDependencyClass = { name ->
+	def doLoad = { -> classLoader.loadClass(name) }
+	try {
+		doLoad()
+	}
+	catch (ClassNotFoundException e) {
+		includeTargets << grailsScript("_GrailsCompile")
+		compile()
+		doLoad()
+	}
 }
