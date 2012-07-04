@@ -9,7 +9,6 @@ import org.tmatesoft.svn.core.wc.SVNClientManager
 import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
-import org.apache.catalina.connector.Connector
 
 eventCreateWarStart = { warname, stagingDir ->
 	ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
@@ -19,11 +18,6 @@ eventCreateWarStart = { warname, stagingDir ->
 	
 	includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
 	collatePortalJavaScriptFiles()
-	
-	// Create the portal-all.js file from the js files in index.gsp
-//	def clazz = loadDependencyClass('au.org.emii.portal.display.JavaScriptSourceCollator')
-//	def collator = clazz.getConstructor(File.class).newInstance(stagingDir)
-//	collator.collate()
 }
 
 eventCompileStart = { kind ->
@@ -66,10 +60,11 @@ eventCompileStart = { kind ->
 }
 
 
-eventConfigureTomcat = {tomcat ->
+eventConfigureTomcat = { tomcat ->
 
-    try{
-        def connector = new Connector("org.apache.coyote.http11.Http11Protocol")
+    try {
+		def clazz = loadDependencyClass("org.apache.catalina.connector.Connector")
+        def connector = clazz.getConstructor(String.class).newInstance("org.apache.coyote.http11.Http11Protocol")
         connector.port = System.getProperty("server.port", "8080").toInteger()
         connector.redirectPort = 8443
         connector.protocol = "HTTP/1.1"
@@ -78,20 +73,20 @@ eventConfigureTomcat = {tomcat ->
         tomcat.connector = connector
         tomcat.service.addConnector connector
     }
-    catch(Throwable t){
+    catch(Throwable t) {
         println t
     }
 
 }
 
-//loadDependencyClass = { name ->
-//	def doLoad = { -> classLoader.loadClass(name) }
-//	try {
-//		doLoad()
-//	}
-//	catch (ClassNotFoundException e) {
-//		includeTargets << grailsScript("_GrailsCompile")
-//		compile()
-//		doLoad()
-//	}
-//}
+loadDependencyClass = { name ->
+	def doLoad = { -> classLoader.loadClass(name) }
+	try {
+		doLoad()
+	}
+	catch (ClassNotFoundException e) {
+		includeTargets << grailsScript("_GrailsCompile")
+		compile()
+		doLoad()
+	}
+}
