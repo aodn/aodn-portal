@@ -10,9 +10,6 @@ import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
 import org.apache.catalina.connector.Connector
-import org.apache.tools.ant.taskdefs.Ant
-
-//import au.org.emii.portal.display.JavaScriptSourceCollator
 
 eventCreateWarStart = { warname, stagingDir ->
 	ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
@@ -21,7 +18,8 @@ eventCreateWarStart = { warname, stagingDir ->
 	}
 	
 	// Create the portal-all.js file from the js files in index.gsp
-	def collator = classLoader.loadClass('au.org.emii.portal.display.JavaScriptSourceCollator').getConstructor(File.class).newInstance(stagingDir)
+	def clazz = loadDependencyClass('au.org.emii.portal.display.JavaScriptSourceCollator')
+	def collator = clazz.getConstructor(File.class).newInstance(stagingDir)
 	collator.collate()
 }
 
@@ -81,4 +79,16 @@ eventConfigureTomcat = {tomcat ->
         println t
     }
 
+}
+
+loadDependencyClass = { name ->
+	def doLoad = { -> classLoader.loadClass(name) }
+	try {
+		doLoad()
+	}
+	catch (ClassNotFoundException e) {
+		includeTargets << grailsScript("_GrailsCompile")
+		compile()
+		doLoad()
+	}
 }
