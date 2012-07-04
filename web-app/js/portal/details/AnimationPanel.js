@@ -2,42 +2,42 @@ Ext.namespace('Portal.details');
 
 Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     
-    constructor: function(cfg) {
-    	var config = Ext.apply({
-    		id: 'animationPanel',
-    	    //plain: true,
-    	    layout: 'form',
-    	    stateful: false,
+	constructor: function(cfg) {
+		var config = Ext.apply({
+			id: 'animationPanel',
+			//plain: true,
+			layout: 'form',
+			stateful: false,
 			defaults: {
 				cls: 'fullTransparency'
 			},
-    	    width: '100%',
+			width: '100%',
 			listeners: {
 				render: function(p) {
-					//magic to get animation control in the middle~!
-					//p.getEl().parent("table").wrap({tag:'center'});
+				//magic to get animation control in the middle~!
+				//p.getEl().parent("table").wrap({tag:'center'});
 				},
 				single: true  // Remove the listener after first invocation
 			}
-    	}, cfg);
+		}, cfg);
 
-        Portal.details.AnimationPanel.superclass.constructor.call(this, config);
-    },
+		Portal.details.AnimationPanel.superclass.constructor.call(this, config);
+	},
 
-    initComponent: function(){
-    	this.animatedLayers = new Array();
+	initComponent: function(){
+		this.animatedLayers = new Array();
 
-        this.warn = new Ext.form.Label({
+		this.warn = new Ext.form.Label({
 			padding: 5,
 			width: 280,
-           	text: OpenLayers.i18n('warn_label')
-        });
+			text: OpenLayers.i18n('warn_label')
+		});
 
 		this.speedUp = new Ext.Button({
-         	icon: 'images/animation/last.png',
-         	plain: true,
-         	padding: 5,
-         	listeners: {
+			icon: 'images/animation/last.png',
+			plain: true,
+			padding: 5,
+			listeners: {
 				scope: this,
 				'click': function(button,event){
 					this._resetTimer(this.speed / 2);
@@ -47,9 +47,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.slowDown = new Ext.Button({
-         	icon: 'images/animation/first.png',
-         	padding: 5,
-         	listeners: {
+			icon: 'images/animation/first.png',
+			padding: 5,
+			listeners: {
 				scope: this,
 				'click': function(button,event){
 					this._resetTimer(this.speed * 2);
@@ -62,22 +62,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			html: "<h4>Select Time Period</h4>"
 		});
 
-        this.stepSlider = new Ext.Slider({
+		this.stepSlider = new Ext.slider.SingleSlider({			
 			id: 'stepSlider',
 			ref: 'stepSlider',
-			width: 280,
 			listeners:{
 				scope: this,
-				drag: function(slider, e){
-					this._setSlide(slider.getValue());
-					e.stopPropagation();
+				dragstart: function() {					
+					this._modMapDragging(false);
 				},
-				render: function(p){
-					p.getEl().on('click', this.eventStopper);
-					p.getEl().on('dblclick', this.eventStopper);
-					p.getEl().on('drag', this.eventStopper);
-					p.getEl().on('dragStart', this.eventStopper);
-					p.getEl().on('dragEnd', this.eventStopper);
+				dragend: function() {
+					this._modMapDragging(true);
+				},
+				drag: function(slider, ev){
+					this._setSlide(slider.getValue());
+					ev.stopPropagation();
+					ev.preventDefault();
 				}
 			}
 		});
@@ -136,29 +135,29 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.progressLabel = new Ext.form.Label({
-		   hidden: true,
-		   width: 100,
-		   left: 150
+			hidden: true,
+			width: 100,
+			left: 150
 		});
 
 		this.speedLabel = new Ext.form.Label({
-		   hidden: true,
-		   text: OpenLayers.i18n('speed'),
-		   width: 100,
-		   left: 150
+			hidden: true,
+			text: OpenLayers.i18n('speed'),
+			width: 100,
+			left: 150
 		});
 
 		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
-			padding: "0 0 20 0",
+			padding: "5 0 20 0",
 			plain: true,
 			items: [
-				this.slowDown,
-				this.playButton,
-				this.pauseButton,
-				this.speedUp,
-				this.clearButton
+			this.slowDown,
+			this.playButton,
+			this.pauseButton,
+			this.speedUp,
+			this.clearButton
 			],
 			width: 400
 		});
@@ -169,7 +168,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			editable: false,
 			listeners:{
 				scope: this,
-            	select: this._onDateSelected
+				select: this._onDateSelected
 			}
 			
 		});
@@ -192,75 +191,89 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
-		   id: 'timeSelectorPanel',
-		   layout: 'form',
-		   plain: true,
-		   items:[
-				this.startDatePicker,
-				this.startTimeCombo,
-				this.endDatePicker,
-				this.endTimeCombo
+			id: 'timeSelectorPanel',
+			layout: 'form',
+			plain: true,
+			items:[
+			this.startDatePicker,
+			this.startTimeCombo,
+			this.endDatePicker,
+			this.endTimeCombo
 			]
 		});
 		
-        this.controlPanel = new Ext.Panel({
-        	layout: 'form',
-        	plain: true,
-        	items: [
-        		this.buttonsPanel,
-				this.timeSelectorPanel,
-				this.stepLabel,
-				this.stepSlider,
-				this.progressLabel,
-				this.speedLabel
+		this.controlPanel = new Ext.Panel({
+			layout: 'form',
+			plain: true,
+			items: [
+			this.buttonsPanel,
+			this.timeSelectorPanel,
+			this.stepLabel,
+			this.stepSlider,
+			this.progressLabel,
+			this.speedLabel
 			],
 			width: 500,
 			height: '100%'
-        });
+		});
 
-        this.items = [
-			this.controlPanel
-        ];
+		this.items = [
+		this.controlPanel
+		];
 
-        this._resetForNewAnimation();
-        this.map = Ext.getCmp("map");
+		this._resetForNewAnimation();
+		this.map = Ext.getCmp("map");
 
-        this.map.map.events.register('moveend', this, this.onMove);
+		this.map.map.events.register('moveend', this, this.onMove);
 
-        this.pausedTime = "";
+		this.pausedTime = "";
 
-        Portal.details.AnimationPanel.superclass.initComponent.call(this);
-    },
+		Portal.details.AnimationPanel.superclass.initComponent.call(this);
+	},
+	
+	_modMapDragging: function(toggle) {
+		var map = this.map.map;
+		var navControl;
+		for (var i = 0; i< map.controls.length; i++) {
+			if (map.controls[i].displayClass == "olControlNavigation") {
+				navControl = map.controls[i];
+			}
+		}
+		if (navControl != undefined) {
+			(toggle) ?	navControl.activate(): navControl.deactivate();
+		}
+		
+	},
 
-    _onDateSelected: function(field, date){
-    	var combo;
+	_onDateSelected: function(field, date){
+		var combo;
 
-    	if(field === this.startDatePicker){
-    		combo = this.startTimeCombo;
-    	}
-    	else{
-    		combo = this.endTimeCombo;
-    	}
+		if(field === this.startDatePicker){
+			combo = this.startTimeCombo;
+		}
+		else{
+			combo = this.endTimeCombo;
+		}
 
-    	var key = date.format("Y-m-d");
-    	if(this.allTimes[key] != null){
-    		store = combo.getStore();
-    		store.removeAll();
-    		store.loadData(this.allTimes[key]);
-    		combo.enable();
-    	}
-    	else{
-    		combo.disable();
-    	}
+		var key = date.format("Y-m-d");
+		if(this.allTimes[key] != null){
+			store = combo.getStore();
+			store.removeAll();
+			store.loadData(this.allTimes[key]);
+			combo.enable();
+		}
+		else{
+			combo.disable();
+		}
 
-    },
+	},
 
-    _resetForNewAnimation: function(){
-    	this.timerId = -1;
+	_resetForNewAnimation: function(){
+		this.timerId = -1;
 		this.BASE_SPEED = 500;
-		this.stepSlider.setValue(0);
-		this.stepSlider.setMaxValue(0);
-		this.stepSlider.setMinValue(0);
+		//this.stepSlider.setValue(0);
+		//this.stepSlider.setMaxValue(0); // cant do this as it munts the slider
+		//this.stepSlider.setMinValue(0);
 		this.originalOpacity = -1;
 		this.speed = this.BASE_SPEED;
 		this.pausedTime = "";
@@ -270,25 +283,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.animatedLayers = new Array();
 	},
 
-    _toggleButtons: function(playing){
-    	if(this.animatedLayers.length > 0){
+	_toggleButtons: function(playing){
+		if(this.animatedLayers.length > 0){
 			this.clearButton.enable();
-			this.stepSlider.enable();
-    	}
-    	else{
-    		this.stepSlider.disable();
-    	}
+		}
 
-    	if(playing){
-    		//can't change the time when it's playing
-    		this.playButton.disable();
+		if(playing){
+			//can't change the time when it's playing
+			this.playButton.disable();
 			this.pauseButton.enable();
 			this.stepSlider.disable();
 			this.speedUp.enable();
 			this.slowDown.enable();
-    	}
-        else{
-        	this.startTimeCombo.enable();
+		}
+		else{
+			this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
 
@@ -296,26 +305,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.pauseButton.disable();
 			this.speedUp.disable();
 			this.slowDown.disable();
-        }
-    },
+		}
+	},
 
-    _onMove: function(){
-    	//have to redraw??
-    	if(this.animatedLayers.length > 0){
-    		this._setSlide(this.counter);
-    	}
+	_onMove: function(){
+		//have to redraw??
+		if(this.animatedLayers.length > 0){
+			this._setSlide(this.counter);
+		}
 
-    },
+	},
 
 	removeAnimation: function(){
-    	if(this.animatedLayers.length > 0){
-    		clearTimeout(this.timerId);
+		if(this.animatedLayers.length > 0){
+			clearTimeout(this.timerId);
 
-    		if(this.map == null){
-    			this.map = Ext.getCmp("map");
-    		}
+			if(this.map == null){
+				this.map = Ext.getCmp("map");
+			}
 
-    		this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
+			this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
 			this.originalLayer.setOpacity(this.originalOpacity);
 
 			for(var i = 0; i < this.animatedLayers.length; i++){
@@ -335,36 +344,37 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			this.clearButton.setText(OpenLayers.i18n('stop'));
 			this.progressLabel.setVisible(false);
-		    this._toggleButtons(false);
+			this._toggleButtons(false);
 
-            this._resetForNewAnimation();
-            delete this.originalLayer.isAnimated;
+			this._resetForNewAnimation();
+			delete this.originalLayer.isAnimated;
 		}
 
-    },
+	},
 
-    setSelectedLayer: function(layer){
-        this.selectedLayer = layer;
-    },
+	setSelectedLayer: function(layer){
+		this.selectedLayer = layer;
+	},
 
-    _setSlide: function(index){
-    	if(this.animatedLayers != undefined){
+	_setSlide: function(index){
+		if(this.animatedLayers.length > 0){
 
-    		for(var i = 0; i < this.animatedLayers.length; i++){
+			for(var i = 0; i < this.animatedLayers.length; i++){
 				this.animatedLayers[i].display(i == index);
 			}
 
 			//this should still work even if there's no animation, i.e. paused
 			this.stepSlider.setValue(index);
+			
 
 			//also set the label
-			labelStr = OpenLayers.i18n('time') + ": " + this.animatedLayers[index].params.TIME;
+			var labelStr = OpenLayers.i18n('time') + ": " + this.animatedLayers[index].params.TIME;
 
 			this.stepLabel.setText(labelStr + "<br />", false);
-    	}
-    },
+		}
+	},
 
-    _cycleAnimation: function(forced){
+	_cycleAnimation: function(forced){
 		this.progressLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
 		this.progressLabel.setVisible(this._isLoadingAnimation());
 
@@ -388,14 +398,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.clearButton.setText("Clear Animation");
 			this.progressLabel.setVisible(false);
 		}
-    },
+	},
 
-    _makeNextSlide: function(timeStamp){
-    	var newLayer = this.selectedLayer.clone();
+	_makeNextSlide: function(timeStamp){
+		var newLayer = this.selectedLayer.clone();
 
 		if(this.originalLayer.name.indexOf("animated") > 0){
 			newLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"))
-				+ " (" + timeStamp + ")";
+			+ " (" + timeStamp + ")";
 		}
 		else{
 			newLayer.name = this.originalLayer.name + " (" +timeStamp + ")";
@@ -410,30 +420,30 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		newLayer.isAnimated = true;
 
 		return newLayer;
-    },
+	},
 
 	_loadAnimation: function(){
 		if(this.startDatePicker.getValue() === "" || this.endDatePicker.getValue() === "" ||
 			this.startTimeCombo.getValue() === "" || this.endTimeCombo.getValue() === ""){
-				//Incomplete start/end time!  Do nothing.
-				//Maybe show a message
-				return;
+			//Incomplete start/end time!  Do nothing.
+			//Maybe show a message
+			return;
 		}
 
-        var startString = this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
-        var endString = this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
+		var startString = this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
+		var endString = this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
 
-        dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
+		dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
 
-        var startIndex = dimSplit.indexOf(startString);
-        var endIndex = dimSplit.indexOf(endString);
+		var startIndex = dimSplit.indexOf(startString);
+		var endIndex = dimSplit.indexOf(endString);
 
-    	if(startIndex == endIndex){
-    		alert("The start and end time must not be the same");
-    		return false;
-    	}
+		if(startIndex == endIndex){
+			alert("The start and end time must not be the same");
+			return false;
+		}
 
-    	if(startIndex > endIndex){
+		if(startIndex > endIndex){
 			alert("You must select an end date that is later than the start date");
 			return false;
 		}
@@ -447,7 +457,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			if(this.originalLayer.name.indexOf("animated") < 0){
 				this.originalLayer.name = this.originalLayer.name + " (animated)";
 				this.originalLayer.isAnimated = true;
-            }
+			}
 
 			newAnimatedLayers = new Array();
 
@@ -488,11 +498,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 			this._toggleButtons(true);
 		}
-    },
+	},
 
-    _resetTimer: function(speed){
-    	this.speed = speed;
-    	var inst = this;
+	_resetTimer: function(speed){
+		this.speed = speed;
+		var inst = this;
 
 		if(this.animatedLayers.length > 0){
 			if(this.timerId != -1){
@@ -505,10 +515,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		}
 
-        //else no animation is running, so can't change the speed of the animation
-    },
+	//else no animation is running, so can't change the speed of the animation
+	},
 
-    update: function() {
+	update: function() {
 		this.controlPanel.hide();
 
 		if(this.getSelectedLayerTimeDimension() != null && this.getSelectedLayerTimeDimension().extent != null){
@@ -526,18 +536,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//No time dimension, it's a dud!
 			hide.call(target, this);
 		}
-    },
+	},
 
-    _setDateRange: function(picker, startDate, endDate){
-    	picker.setMinValue(startDate);
+	_setDateRange: function(picker, startDate, endDate){
+		picker.setMinValue(startDate);
 		picker.setMaxValue(endDate);
 		picker.setValue(startDate);
-    },
+	},
 
-    _extractDays: function(dim){
-    	splitDates = dim.extent.split(",");
-    	var startDate;
-    	var endDate;
+	_extractDays: function(dim){
+		splitDates = dim.extent.split(",");
+		var startDate;
+		var endDate;
 
 		if(splitDates.length > 0){
 
@@ -582,63 +592,63 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			this.startDatePicker.setValue(startDate);
 			this.endDatePicker.setValue(endDate);
-            this._onDateSelected(this.startDatePicker, startDate);
-            this._onDateSelected(this.endDatePicker, endDate);
+			this._onDateSelected(this.startDatePicker, startDate);
+			this._onDateSelected(this.endDatePicker, endDate);
 
 		}
-    },
+	},
 
-    _setLayerDatesByCapability: function(){
-    	var dim = this.getSelectedLayerTimeDimension();
-    	if(dim != null){
-    		this._extractDays(dim);
-			//TODO: set default to last 10 timestamp for instant animation
-    	}
+	_setLayerDatesByCapability: function(){
+		var dim = this.getSelectedLayerTimeDimension();
+		if(dim != null){
+			this._extractDays(dim);
+		//TODO: set default to last 10 timestamp for instant animation
+		}
 
-    },
+	},
 
 	setSelectedLayer: function(layer){
 		this.selectedLayer = layer;
 	},
 
-    getSelectedLayerTimeDimension: function(){
-    	if((this.selectedLayer != undefined) && (this.selectedLayer.dimensions != undefined)){
-    		for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
-    			if(this.selectedLayer.dimensions[i].name == "time"){
-    				return this.selectedLayer.dimensions[i];
-    			}
-    		}
-    	}
-    	return null;
-    },
+	getSelectedLayerTimeDimension: function(){
+		if((this.selectedLayer != undefined) && (this.selectedLayer.dimensions != undefined)){
+			for(var i = 0; i < this.selectedLayer.dimensions.length; i++){
+				if(this.selectedLayer.dimensions[i].name == "time"){
+					return this.selectedLayer.dimensions[i];
+				}
+			}
+		}
+		return null;
+	},
 
-    _isLoadingAnimation: function(){
-    	if(this.animatedLayers.length > 0){
-        	for(var i = 0; i < this.animatedLayers.length; i++){
-        		if(this.map.map.getLayer(this.animatedLayers[i].id) == null )
-        			return true;
-        		if(this.animatedLayers[i].numLoadingTiles > 0){
-        			return true;
-        		}
-        	}
-    	}
+	_isLoadingAnimation: function(){
+		if(this.animatedLayers.length > 0){
+			for(var i = 0; i < this.animatedLayers.length; i++){
+				if(this.map.map.getLayer(this.animatedLayers[i].id) == null )
+					return true;
+				if(this.animatedLayers[i].numLoadingTiles > 0){
+					return true;
+				}
+			}
+		}
 
-    	return false;
-    },
+		return false;
+	},
 
-    _getIndexFromTime: function(timeStr){
-    	if(this.animatedLayers.length > 0){
-    		for(var i = 0; i < this.animatedLayers.length; i++){
-    			if(this.animatedLayers[i].params["TIME"] === timeStr)
-    				return i;
-    		}
-    	}
+	_getIndexFromTime: function(timeStr){
+		if(this.animatedLayers.length > 0){
+			for(var i = 0; i < this.animatedLayers.length; i++){
+				if(this.animatedLayers[i].params["TIME"] === timeStr)
+					return i;
+			}
+		}
 
-    	return -1;
-    },
+		return -1;
+	},
 
-    isAnimating: function(){
-    	return (this.animatedLayers.length > 0);
-    }
+	isAnimating: function(){
+		return (this.animatedLayers.length > 0);
+	}
 
 });

@@ -206,8 +206,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
 		
-		this.controlButton = new Ext.FormPanel({
-			
+		this.controlButton = new Ext.FormPanel({				
+			padding: "10 5 10 5",
 			items: [{
 				xtype: 'button',
 				id: 'controlButton',				
@@ -216,13 +216,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				listeners:{
 					// stops the click bubbling to a getFeatureInfo request on the map
 					scope: this,
-					render: function(p){
-						p.getEl().on('click', this.eventStopper);
-						p.getEl().on('dblclick', this.eventStopper);
-						p.getEl().on('drag', this.eventStopper);
-						p.getEl().on('dragStart', this.eventStopper);
-						p.getEl().on('dragEnd', this.eventStopper);
-					},
 					click: this.toggleMapLinks
 				}
 			}]
@@ -238,8 +231,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				bodyStyle:'padding:5px'
 			},
 			unstyled: true,
-			items: [		
-				
+			items: [				
 			{
 				xtype: 'tbspacer', 
 				width: 300
@@ -248,7 +240,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			{
 				xtype: 'tbspacer', 
 				width: 3
-			}//,
+			}//, 
 			//this.controlButton,
 			],
 			listeners:{
@@ -257,15 +249,19 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				render: function(p){
 					p.getEl().on('click', this.eventStopper);
 					p.getEl().on('dblclick', this.eventStopper);
-					p.getEl().on('drag', this.eventStopper);
-					p.getEl().on('dragstart', this.eventStopper);
-					p.getEl().on('dragend', this.eventStopper);
+					p.getEl().on('mouseenter', function(){
+						//parent._expandMapLinks();
+					});
+					p.getEl().on('mouseleave', function(){
+						//parent._contractMapLinks();
+					});
 				},
 				single: true  // Remove the listener after first invocation
 			}
 		});
 		
-		this.maplinksHeight = 48;
+		
+		this.maplinksHeight = 52;
 
 		this.expandBar = this.initToolBarExpanderBar();
 
@@ -281,24 +277,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			items: [
 			this.expandBar,
 			this.mapToolbar
-			],
-			listeners:{
-				// stops the click bubbling to a getFeatureInfo request on the map
-				scope: this,
-				render: function(p){
-					p.getEl().on('mouseenter', function(){
-						parent._expandMapLinks();
-					});
-					p.getEl().on('mouseleave', function(){
-							parent._contractMapLinks();
-					});
-				},
-				single: true  // Remove the listener after first invocation
-			}
+			]
 		});
 
 		this.mapLinks.setPosition(1, 0); // override with CSS later
-		this.controlButton.setPosition(-1, 0); // override with CSS later
+		//this.controlButton.setPosition(-1, 0); // override with CSS later
 		this.add(this.mapLinks);
 	},
 
@@ -309,7 +292,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
 	_expandMapLinks: function(){
-		this.mapLinks.setHeight(200);
+		this.mapLinks.setHeight(270);
 		this.expandBar.addClass("expandDownLink");
 		this.expandBar.removeClass("expandUpLink");
 	},
@@ -317,19 +300,19 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	toggleMapLinks: function() {
 		
 		if (this.mapLinks.getHeight() > this.maplinksHeight) {
-			this._expandMapLinks();
+			this._contractMapLinks();
 		}
 		else {
-			this._contractMapLinks();
+			this._expandMapLinks();
 		}
 	},
 		
 	initToolBarExpanderBar: function() {
-		var parent = this;
+		var parent = this;		
 		var toolbar = new Ext.Toolbar({
 			id: 'mapToolbarExpanderBar',
 			qtip: "This is a tip",
-			height: 6,
+			height: 10,
 			width: '100%',
 			cls: 'semiTransparent noborder expandUpLink link',
 			overCls: "mapToolbarExpanderBarOver",
@@ -348,8 +331,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	
-	
-	eventStopper: function(ev, target) {
+	eventStopper: function(ev) {
+		//console.log(ev.type);
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	

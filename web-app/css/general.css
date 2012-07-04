@@ -437,10 +437,10 @@ table.featureInfo caption{
     /*color: white;*/
 }
 .expandUpLink {
-	background: url('../images/mini-up.png') center 1px  no-repeat;
+	background: url('../images/mini-up.png') center 2px  no-repeat;
 }
 .expandDownLink {
-	background: url('../images/mini-down.png') center 1px no-repeat;
+	background: url('../images/mini-down.png') center 2px no-repeat;
 }
 
 #mapToolbarExpanderBar,
