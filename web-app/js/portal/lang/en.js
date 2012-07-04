@@ -8,7 +8,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	play: 'Play',
 	pause: 'Pause',
 	end: 'End',
-	time: 'Time',
+	time: 'Animation time',
 	speed: 'Speed',
 	warn_label: "Only one layer can be animated at a time.  You must remove an existing animation to create a new animation.",
 	speedUp: "Doubles animation speed",

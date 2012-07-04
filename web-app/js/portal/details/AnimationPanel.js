@@ -7,6 +7,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			id: 'animationPanel',
 			//plain: true,
 			layout: 'form',
+			margins: "15 5 20 5",
+			style: {
+				margin: '2px',
+				padding: '5px'
+			},
 			stateful: false,
 			defaults: {
 				cls: 'fullTransparency'
@@ -64,7 +69,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.stepSlider = new Ext.slider.SingleSlider({			
 			id: 'stepSlider',
-			ref: 'stepSlider',
+			ref: 'stepSlider',			
+            width: 250,
+			flex: 3,
 			listeners:{
 				scope: this,
 				dragstart: function() {					
@@ -129,8 +136,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			html: OpenLayers.i18n('time') + ": <br />",
-			width: 300,
+			html: OpenLayers.i18n('time') + ": ",
+			flex: 1,
+			width: 80,
 			style: 'padding-top: 5'
 		});
 
@@ -150,7 +158,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.buttonsPanel = new Ext.Panel({
 			id: 'playerControlPanel',
 			layout: 'hbox',
-			padding: "5 0 20 0",
 			plain: true,
 			items: [
 			this.slowDown,
@@ -159,7 +166,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.speedUp,
 			this.clearButton
 			],
-			width: 400
+			height: 40,
+			flex: 2
 		});
 
 		this.startDatePicker = new Ext.form.DateField({
@@ -206,10 +214,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			layout: 'form',
 			plain: true,
 			items: [
-			this.buttonsPanel,
-			this.timeSelectorPanel,
-			this.stepLabel,
-			this.stepSlider,
+				{
+					xtype: 'container',					
+					defaultMargins: "15 5 20 5",
+					layout: {
+					   type: 'hbox',
+					   pack: 'start'
+					   
+					},
+					items: [						
+						this.buttonsPanel,						
+						this.stepLabel,		
+						this.stepSlider
+					]					
+				},
+			this.timeSelectorPanel,	
 			this.progressLabel,
 			this.speedLabel
 			],
