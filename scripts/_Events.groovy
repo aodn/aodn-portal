@@ -17,10 +17,13 @@ eventCreateWarStart = { warname, stagingDir ->
 		ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
 	}
 	
+	includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
+	collatePortalJavaScriptFiles()
+	
 	// Create the portal-all.js file from the js files in index.gsp
-	def clazz = loadDependencyClass('au.org.emii.portal.display.JavaScriptSourceCollator')
-	def collator = clazz.getConstructor(File.class).newInstance(stagingDir)
-	collator.collate()
+//	def clazz = loadDependencyClass('au.org.emii.portal.display.JavaScriptSourceCollator')
+//	def collator = clazz.getConstructor(File.class).newInstance(stagingDir)
+//	collator.collate()
 }
 
 eventCompileStart = { kind ->
@@ -81,14 +84,14 @@ eventConfigureTomcat = {tomcat ->
 
 }
 
-loadDependencyClass = { name ->
-	def doLoad = { -> classLoader.loadClass(name) }
-	try {
-		doLoad()
-	}
-	catch (ClassNotFoundException e) {
-		includeTargets << grailsScript("_GrailsCompile")
-		compile()
-		doLoad()
-	}
-}
+//loadDependencyClass = { name ->
+//	def doLoad = { -> classLoader.loadClass(name) }
+//	try {
+//		doLoad()
+//	}
+//	catch (ClassNotFoundException e) {
+//		includeTargets << grailsScript("_GrailsCompile")
+//		compile()
+//		doLoad()
+//	}
+//}
