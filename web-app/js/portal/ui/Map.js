@@ -198,7 +198,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	},
 	
-	
+
 	
 	initMapLinks: function() {
 		var parent = this;

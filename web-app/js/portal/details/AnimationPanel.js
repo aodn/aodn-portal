@@ -133,9 +133,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.progressLabel = new Ext.form.Label({
-			hidden: true,
-			width: 100,
-			left: 150
+		   hidden: true,
+		   width: 100,
+		   left: 150
 		});
 
 		this.speedLabel = new Ext.form.Label({
@@ -162,17 +162,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.startDatePicker = new Ext.form.DateField({
 			fieldLabel: OpenLayers.i18n('start'),
+			id: 'startDatePicker',
 			format: 'd-m-Y',
 			editable: false,
 			listeners:{
 				scope: this,
-				select: this._onDateSelected
+            	select: this._onDateSelected
 			}
 			
 		});
 
 		this.endDatePicker = new Ext.form.DateField({
 			fieldLabel: OpenLayers.i18n('end'),
+			id: 'endDatePicker',
 			format: 'd-m-Y',
 			editable: false,
 			listeners:{
@@ -182,10 +184,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.startTimeCombo = new Ext.form.ComboBox({
-			store: new Array()
+			store: new Array(),
+			id: "startTimeCombo",
+			triggerAction: "all"
 		});
 		this.endTimeCombo = new Ext.form.ComboBox({
-			store: new Array()
+			store: new Array(),
+			id: "endTimeCombo",
+			triggerAction: "all"
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
@@ -274,15 +280,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		var key = date.format("Y-m-d");
 		if(this.allTimes[key] != null){
-			store = combo.getStore();
-			store.removeAll();
-			store.loadData(this.allTimes[key]);
-			combo.enable();
+			combo.getStore().loadData(this.allTimes[key], false);
 		}
-		else{
-			combo.disable();
-		}
-
 	},
 
 	_resetForNewAnimation: function(){
@@ -596,7 +595,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				day =  curDate.toISOString().split("T")[0];
 
 				if(this.allTimes[day] == null){
-					missingDays.push(curDate.format("d-m-Y"));
+					missingDays.push([this.allTimes[day].length, curDate.format("d-m-Y")]);
 				}
 				curDate.setDate(curDate.getDate() + 1);
 			}
@@ -607,10 +606,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 
 
-			this.startDatePicker.setValue(startDate);
-			this.endDatePicker.setValue(endDate);
-			this._onDateSelected(this.startDatePicker, startDate);
-			this._onDateSelected(this.endDatePicker, endDate);
+			this._setTime(this.endDatePicker, this.endTimeCombo, splitDates[splitDates.length - 1]);
+
+			if(splitDates.length > 10){
+				this._setTime(this.startDatePicker, this.startTimeCombo, splitDates[splitDates.length - 10]);
+			}
+			else{
+				this._setTime(this.startDatePicker, this.startTimeCombo, splitDates[t0]);
+			}
+			//this.startDatePicker.setValue(startDate);
+			//this.endDatePicker.setValue(endDate);
+			//this._onDateSelected(this.startDatePicker, startDate);
+			//this._onDateSelected(this.endDatePicker, endDate);
 
 		}
 	},
@@ -666,6 +673,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	isAnimating: function(){
 		return (this.animatedLayers.length > 0);
+	},
+
+	_setTime: function(picker, combo, timestamp){
+		var date = timestamp.split("T")[0];
+		var time = timestamp.split("T")[1];
+
+		picker.setValue(date);
+		combo.setValue(time);
 	}
 
 });
