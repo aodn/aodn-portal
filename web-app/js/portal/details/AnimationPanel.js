@@ -5,25 +5,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			id: 'animationPanel',
-			//plain: true,
 			layout: 'form',
-			margins: "15 5 20 5",
-			style: {
-				margin: '2px',
-				padding: '5px'
-			},
 			stateful: false,
+			bodyStyle:'padding:5px; margin:2px',
 			defaults: {
 				cls: 'fullTransparency'
 			},
-			width: '100%',
-			listeners: {
-				render: function(p) {
-				//magic to get animation control in the middle~!
-				//p.getEl().parent("table").wrap({tag:'center'});
-				},
-				single: true  // Remove the listener after first invocation
-			}
+			width: '100%'
 		}, cfg);
 
 		Portal.details.AnimationPanel.superclass.constructor.call(this, config);

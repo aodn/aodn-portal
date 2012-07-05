@@ -206,12 +206,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
 		
-		this.controlButton = new Ext.FormPanel({				
-			padding: "10 5 10 5",
+		this.controlButtonPanel = new Ext.Panel({		
+			
+			bodyStyle:'margin:5px',
 			items: [{
 				xtype: 'button',
-				id: 'controlButton',				
-				cls: 'fullTransparency',
+				iconCls: 'arrowUp',
+				ref: 'controlButton',
+				iconAlign: 'right',
 				text: OpenLayers.i18n('controlButton_4animationPanel'),
 				listeners:{
 					// stops the click bubbling to a getFeatureInfo request on the map
@@ -228,7 +230,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			width: '100%',
 			cls: 'semiTransparent',
 			defaults: {	
-				bodyStyle:'padding:5px'
+				//bodyStyle:'padding:5px; margin:2px'
 			},
 			unstyled: true,
 			items: [				
@@ -239,9 +241,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.animationPanel,
 			{
 				xtype: 'tbspacer', 
-				width: 3
-			}//, 
-			//this.controlButton,
+				width: 5
+			}, 
+			this.controlButtonPanel,
 			],
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
@@ -281,7 +283,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 
 		this.mapLinks.setPosition(1, 0); // override with CSS later
-		//this.controlButton.setPosition(-1, 0); // override with CSS later
 		this.add(this.mapLinks);
 	},
 
@@ -289,12 +290,15 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.mapLinks.setHeight(this.maplinksHeight);
 		this.expandBar.addClass("expandUpLink");
 		this.expandBar.removeClass("expandDownLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowUp");
+		
 	},
 
 	_expandMapLinks: function(){
 		this.mapLinks.setHeight(270);
 		this.expandBar.addClass("expandDownLink");
 		this.expandBar.removeClass("expandUpLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowDown");
 	},
 	
 	toggleMapLinks: function() {

@@ -96,6 +96,13 @@ hr {
 .buttonPad {
     padding: 2px 5px 5px 0px
 }
+.arrowUp {	
+    background: url("../images/arrowUp.png") no-repeat left top transparent; 
+}
+.arrowDown {	
+    background: url("../images/arrowDown.png") no-repeat left top transparent; 
+}
+
 
 .leftMenus {
     background-color: white;
