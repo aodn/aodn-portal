@@ -18,7 +18,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	initComponent: function(){
-		this.animatedLayers = new Array();
+		
+		this.animatedLayers = new Array();		
+		var parent = this;
 
 		this.warn = new Ext.form.Label({
 			padding: 5,
@@ -58,19 +60,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.stepSlider = new Ext.slider.SingleSlider({			
 			id: 'stepSlider',
 			ref: 'stepSlider',			
-            width: 250,
+			width: 250,
 			flex: 3,
 			listeners:{
 				scope: this,
 				dragstart: function() {					
-					//this._modMapDragging(false);
+				//this._modMapDragging(false);
 				},
 				dragend: function() {
-					//this._modMapDragging(true);
+				//this._modMapDragging(true);
 				},
 				drag: function(slider, ev){
 					this._setSlide(slider.getValue());
-					//ev.stopPropagation();
+				//ev.stopPropagation();
 				}
 			}
 		});
@@ -103,6 +105,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				}
 			},
 			tooltip: OpenLayers.i18n('clearButton_tip')
+		
 		});
 
 		this.pauseButton = new Ext.Button({
@@ -201,20 +204,32 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			layout: 'form',
 			plain: true,
 			items: [
-				{
-					xtype: 'container',					
-					defaultMargins: "15 5 20 5",
-					layout: {
-					   type: 'hbox',
-					   pack: 'start'
+			{
+				xtype: 'container',					
+				defaultMargins: "15 5 20 5",
+				layout: {
+					type: 'hbox',
+					pack: 'start'
 					   
-					},
-					items: [						
-						this.buttonsPanel,						
-						this.stepLabel,		
-						this.stepSlider
-					]					
 				},
+				items: [						
+				this.buttonsPanel,						
+				this.stepLabel,		
+				this.stepSlider
+				],
+				listeners:{
+					// stops the click bubbling to a getFeatureInfo request on the map
+					//scope: this,
+					render: function(p){
+						p.getEl().on('mouseenter', function(){
+							parent._modMapDragging(false);
+						});
+						p.getEl().on('mouseleave', function(){
+							parent._modMapDragging(true);
+						});
+					}
+				}					
+			},
 			this.timeSelectorPanel,	
 			this.progressLabel,
 			this.speedLabel
@@ -237,6 +252,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationPanel.superclass.initComponent.call(this);
 	},
 	
+	_modMapDragging: function(toggle) {
+		var map = this.map.map;
+		for (var i = 0; i< map.controls.length; i++) {
+			if (map.controls[i].displayClass == "olControlNavigation") {
+				(toggle) ?	 map.controls[i].activate():  map.controls[i].deactivate();
+			}
+		}		
+	},
 
 
 	_onDateSelected: function(field, date){

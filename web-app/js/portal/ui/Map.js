@@ -25,12 +25,10 @@ Portal.ui.Options = Ext.extend(Object, {
 		toolPanel.addControls( [ zoom,pan] );
 		
 		this.controls = [
-		new OpenLayers.Control.Navigation(),
 		new OpenLayers.Control.Attribution(),
 		new OpenLayers.Control.PanZoomBar(),
 		new OpenLayers.Control.MousePosition(),
 		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.NavigationHistory(),
 		new OpenLayers.Control.OverviewMap({
 			autoPan: true,
 			minRectSize: 30,
@@ -249,14 +247,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				render: function(p){
 					p.getEl().on('click', this.eventStopper);
 					p.getEl().on('dblclick', this.eventStopper);
-					p.getEl().on('mouseenter', function(){
-						//	parent._modMapDragging(false);
-					});
-					p.getEl().on('mouseleave', function(){
-						//	parent._modMapDragging(true);
-					});
-				}//,
-				//single: true  // Remove the listener after first invocation
+				},
+				single: true  // Remove the listener after first invocation
 			}
 		});
 		
@@ -284,18 +276,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.add(this.mapLinks);
 	},
 	
-	_modMapDragging: function(toggle) {
-		var navControl;
-		for (var i = 0; i< this.map.controls.length; i++) {
-			if (this.map.controls[i].displayClass == "olControlNavigation") {
-				navControl = this.map.controls[i];
-			}
-		}
-		if (navControl != undefined) {
-			(toggle) ?	navControl.activate(): navControl.deactivate();
-		}
-		
-	},
+
 
 	_contractMapLinks: function(){
 		this.mapLinks.setHeight(this.maplinksHeight);
@@ -347,7 +328,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	
 	eventStopper: function(ev) {
-		console.log(ev.type);
+		//console.log(ev.type);
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	
