@@ -243,7 +243,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			items: [				
 			{
 				xtype: 'tbspacer', 
-				width: 280
+				width: 230
 			}, 
 			this.animationPanel,			
 			this.controlButtonPanel,
@@ -784,7 +784,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			success: function(resp, options) {
 				var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
 				if (layerDescriptor) {
-					layerDescriptor.isNcwms = function() {
+					layerDescriptor.isNcwms = function() {'setSelectedLayer'
 						
 					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);

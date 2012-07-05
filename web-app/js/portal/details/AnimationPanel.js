@@ -60,19 +60,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.stepSlider = new Ext.slider.SingleSlider({			
 			id: 'stepSlider',
 			ref: 'stepSlider',			
-			width: 250,
+			width: 120,			
 			flex: 3,
 			listeners:{
 				scope: this,
-				dragstart: function() {					
-				//this._modMapDragging(false);
-				},
-				dragend: function() {
-				//this._modMapDragging(true);
-				},
 				drag: function(slider, ev){
 					this._setSlide(slider.getValue());
-				//ev.stopPropagation();
 				}
 			}
 		});
@@ -126,10 +119,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			html: OpenLayers.i18n('time') + ": ",
+			html: OpenLayers.i18n('time'),
 			flex: 1,
 			width: 80,
-			style: 'padding-top: 5'
+			style: 'padding: 5'
 		});
 
 		this.progressLabel = new Ext.form.Label({
@@ -221,9 +214,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					   
 				},
 				items: [						
-				this.buttonsPanel,						
-				this.stepLabel,		
-				this.stepSlider
+				this.buttonsPanel,	
+				this.stepSlider,					
+				this.stepLabel
 				],
 				listeners:{
 					// stops the click bubbling to a getFeatureInfo request on the map
@@ -242,7 +235,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.progressLabel,
 			this.speedLabel
 			],
-			width: 500,
+			width: 330,
 			height: '100%'
 		});
 
