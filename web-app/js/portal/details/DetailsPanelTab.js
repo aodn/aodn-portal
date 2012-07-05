@@ -38,13 +38,11 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
     update: function(layer) {
 
-        console.log( 'DetailsPanelTab -- Update!' );
-
     	//Update the other tab panels
         this.stylePanel.update(layer, this._showTab, this._hideTab, this);
         this.animationPanel.update(layer, this._showTab, this._hideTab, this);
         this.infoPanel.update(layer, this._showTab, this._hideTab, this);
-        this.aodaacPanel.update(layer, this._showTab, this._hideTab, this );
+        this.aodaacPanel.update(layer, this._showTab, this._hideTab, this);
 
         this.show();
     },
