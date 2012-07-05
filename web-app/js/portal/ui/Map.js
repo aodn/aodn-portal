@@ -174,7 +174,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	_findFeatureInfo: function(event) {
-		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig });
+		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig, maximisedSize: this.getViewSize() });
 		this.featureInfoPopup.findFeatures(event);
 	},
     
@@ -822,5 +822,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			// get back the plain wms layer
 			this.swapLayers(openLayer.originalWMSLayer, openLayer);
 		}
+	},
+	
+	getViewSize: function() {
+		return this.container.getViewSize();
 	}
 });

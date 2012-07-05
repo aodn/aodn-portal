@@ -12,7 +12,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	        width: cfg.appConfig.popupWidth,
 	        height: 80, // set height later when there are results
 	        maximizable: true,
-	        //map: cfg.map,
 	        anchored: true,
 	        autoScroll: true
 	    }, cfg);
@@ -262,4 +261,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	this.popupTab.doLayout();
     	this.popupTab.show();
     },
+    
+    fitContainer: function() {
+    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
+    	if (this.dd) {
+            this.dd.unlock();
+        }
+    }
+    
 });
