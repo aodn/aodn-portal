@@ -15,7 +15,6 @@ class MenuController {
 
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]         
         
     }    
