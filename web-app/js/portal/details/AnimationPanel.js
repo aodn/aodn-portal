@@ -564,6 +564,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		splitDates = dim.extent.split(",");
 		var startDate;
 		var endDate;
+		this.allTimes = {};
 
 		if(splitDates.length > 0){
 
@@ -595,7 +596,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				day =  curDate.toISOString().split("T")[0];
 
 				if(this.allTimes[day] == null){
-					missingDays.push([this.allTimes[day].length, curDate.format("d-m-Y")]);
+					missingDays.push(curDate.format("d-m-Y"));
 				}
 				curDate.setDate(curDate.getDate() + 1);
 			}
