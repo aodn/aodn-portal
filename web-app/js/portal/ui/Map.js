@@ -203,12 +203,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	
 	initMapLinks: function() {
+		var parent = this;
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
 		
 		this.controlButtonPanel = new Ext.Panel({		
 			
-			bodyStyle:'margin:5px',
+			bodyStyle:'margin:6px',
 			items: [{
 				xtype: 'button',
 				iconCls: 'arrowUp',
@@ -236,15 +237,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			items: [				
 			{
 				xtype: 'tbspacer', 
-				width: 300
+				width: 280
 			}, 
-			this.animationPanel,
-			{
-				xtype: 'tbspacer', 
-				width: 5
-			}, 
+			this.animationPanel,			
 			this.controlButtonPanel,
 			],
+			
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
 				scope: this,
@@ -252,13 +250,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 					p.getEl().on('click', this.eventStopper);
 					p.getEl().on('dblclick', this.eventStopper);
 					p.getEl().on('mouseenter', function(){
-						//parent._expandMapLinks();
+						//	parent._modMapDragging(false);
 					});
 					p.getEl().on('mouseleave', function(){
-						//parent._contractMapLinks();
+						//	parent._modMapDragging(true);
 					});
-				},
-				single: true  // Remove the listener after first invocation
+				}//,
+				//single: true  // Remove the listener after first invocation
 			}
 		});
 		
@@ -267,7 +265,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
 		this.expandBar = this.initToolBarExpanderBar();
 
-		var parent = this;
+		
 		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
@@ -284,6 +282,19 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
 		this.mapLinks.setPosition(1, 0); // override with CSS later
 		this.add(this.mapLinks);
+	},
+	
+	_modMapDragging: function(toggle) {
+		var navControl;
+		for (var i = 0; i< this.map.controls.length; i++) {
+			if (this.map.controls[i].displayClass == "olControlNavigation") {
+				navControl = this.map.controls[i];
+			}
+		}
+		if (navControl != undefined) {
+			(toggle) ?	navControl.activate(): navControl.deactivate();
+		}
+		
 	},
 
 	_contractMapLinks: function(){
@@ -315,7 +326,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		var parent = this;		
 		var toolbar = new Ext.Toolbar({
 			id: 'mapToolbarExpanderBar',
-			qtip: "This is a tip",
 			height: 10,
 			width: '100%',
 			cls: 'semiTransparent noborder expandUpLink link',
@@ -323,11 +333,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			unstyled: true,
 			listeners:{
 				//scope: this,
-				render: function(bar) {
+				render: function(bar) {					
 					bar.getEl().on('click', function(ev) {
 						parent.toggleMapLinks();
-						ev.stopPropagation();
+						parent.eventStopper(ev);
 					});
+					bar.getEl().on('dblclick', parent.eventStopper);
 				}
 			}
 		});
@@ -336,7 +347,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	
 	eventStopper: function(ev) {
-		//console.log(ev.type);
+		console.log(ev.type);
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	

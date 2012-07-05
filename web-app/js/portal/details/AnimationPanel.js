@@ -7,7 +7,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			id: 'animationPanel',
 			layout: 'form',
 			stateful: false,
-			bodyStyle:'padding:5px; margin:2px',
+			bodyStyle:'padding:6px; margin:2px',
 			defaults: {
 				cls: 'fullTransparency'
 			},
@@ -63,15 +63,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners:{
 				scope: this,
 				dragstart: function() {					
-					this._modMapDragging(false);
+					//this._modMapDragging(false);
 				},
 				dragend: function() {
-					this._modMapDragging(true);
+					//this._modMapDragging(true);
 				},
 				drag: function(slider, ev){
 					this._setSlide(slider.getValue());
-					ev.stopPropagation();
-					ev.preventDefault();
+					//ev.stopPropagation();
 				}
 			}
 		});
@@ -238,19 +237,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationPanel.superclass.initComponent.call(this);
 	},
 	
-	_modMapDragging: function(toggle) {
-		var map = this.map.map;
-		var navControl;
-		for (var i = 0; i< map.controls.length; i++) {
-			if (map.controls[i].displayClass == "olControlNavigation") {
-				navControl = map.controls[i];
-			}
-		}
-		if (navControl != undefined) {
-			(toggle) ?	navControl.activate(): navControl.deactivate();
-		}
-		
-	},
+
 
 	_onDateSelected: function(field, date){
 		var combo;
