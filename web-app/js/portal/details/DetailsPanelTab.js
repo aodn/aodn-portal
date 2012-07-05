@@ -20,6 +20,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
 
     initComponent: function() {
+
     	this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
         this.animationPanel = new Portal.details.AnimationPanel();
@@ -31,24 +32,20 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
             this.stylePanel,
             this.animationPanel
         ];
-  
+
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
     },
 
-    setSelectedLayer: function(layer) {
-        this.selectedLayer = layer;
-        this.infoPanel.setSelectedLayer(layer);
-        this.stylePanel.setSelectedLayer(layer);
-        this.animationPanel.setSelectedLayer(layer);
-    },
-
     update: function(layer) {
-    	this.setSelectedLayer(layer);
+
+        console.log( 'DetailsPanelTab -- Update!' );
+
     	//Update the other tab panels
-        this.stylePanel.update(this._showTab, this._hideTab, this);
-        this.animationPanel.update(this._showTab, this._hideTab, this);
-        this.infoPanel.update(this._showTab, this._hideTab, this);
-        this.aodaacPanel.update( this._showTab, this._hideTab, this );
+        this.stylePanel.update(layer, this._showTab, this._hideTab, this);
+        this.animationPanel.update(layer, this._showTab, this._hideTab, this);
+        this.infoPanel.update(layer, this._showTab, this._hideTab, this);
+        this.aodaacPanel.update(layer, this._showTab, this._hideTab, this );
+
         this.show();
     },
     

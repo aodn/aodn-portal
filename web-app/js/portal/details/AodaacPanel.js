@@ -1,24 +1,12 @@
 Ext.namespace('Portal.details');
 
-var productId = 1;
-
 Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
-
-    /* The plan:
-     * --------------------------------------
-     * Load AODAAC tab (hidden)
-     * If metadata record has productId:
-     *  - Show panel (with loading message)
-     *  - Load product data file
-     * When the product data file loads:
-     *  - If no product info for id: display message "No info found for relevant product
-     *  - If product info is found, build UI with defaults max/min bounds and display
-     */
 
     constructor: function(cfg) {
 
-        var items = [];
+        this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
+        var items = [];
         this._addBlurb( items );
         this._addProductInfo( items );
         this._addSpatialControls( items );
@@ -39,74 +27,82 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Portal.details.AodaacPanel.superclass.initComponent.call( this );
     },
 
-    setSelectedLayer: function(layer){
-        this.selectedLayer = layer;
-    },
-
-    update: function(show, hide, target) {
-
-        if ( productId > 0 ) {
-
-            this._updateBody();
-            show.call( target, this );
-        }
-        else {
-
-            hide.call( target, this );
-        }
-    },
-
-    _updateBody: function() {
+    update: function( layer, show, hide, target ) {
 
         Ext.Ajax.request({
-            url: 'aodaac/productInfo/' + productId,
+            url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
             success: function( resp ) {
 
-                var productInfo = JSON.parse( resp.responseText );
+                // No productInfo found
+                if ( resp.responseText == "[]" ) {
 
-                // Make 'Product info' text
-                var maxTimeText = productInfo.extents.dateTime.max;
-                var maxTimeValue = new Date();
-
-                if ( maxTimeText.trim() == "" ) {
-                    maxTimeText = ', ongoing'
+                    hide.call( target, this );
                 }
                 else {
-                    maxTimeValue = maxTimeText;
-                    maxTimeText = " to " + maxTimeText;
+
+                    this.productsInfo = JSON.parse( resp.responseText );
+
+                    this._populateFormFields();
+                    this._showAllControls();
+
+                    show.call( target, this );
                 }
-
-                var newText = "";
-                newText += productInfo.name + "<br />";
-                newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
-                newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
-
-                this.productInfoText.update( newText );
-
-                // Populate spatial extent controls
-                this.southBL.setValue( productInfo.extents.lat.min );
-                this.eastBL.setValue( productInfo.extents.lon.min );
-                this.northBL.setValue( productInfo.extents.lat.max );
-                this.westBL.setValue( productInfo.extents.lon.max );
-
-                // Populate temporal extent controls
-                var timeRangeStart = productInfo.extents.dateTime.min;
-                var timeRangeEnd = productInfo.extents.dateTime.max;
-
-                this.dateRangeStartPicker.setMinValue( timeRangeStart );
-                this.dateRangeStartPicker.setValue( timeRangeStart );
-                this.dateRangeStartPicker.setMaxValue( timeRangeEnd );
-
-                this.dateRangeEndPicker.setMinValue( timeRangeStart );
-                this.dateRangeEndPicker.setValue( maxTimeValue ); // From above, handles 'ongoing' data sets
-                this.dateRangeEndPicker.setMaxValue( timeRangeEnd );
             },
             failure: function() {
 
-                this.body.update( "Unable to get product information, so partitioning is currently unavailable." );
+                this.body.update( "This feature is currently unavailable for this Layer. Unable to find the required partitioning information." );
             }
         });
+    },
+
+    _showAllControls: function() {
+
+        this.spatialControls.show();
+        this.temporalControls.show();
+        this.processingControls.show();
+    },
+
+    _populateFormFields: function() {
+
+        var productInfo = this.productsInfo[ this.selectedProductInfoIndex ];
+
+        // Make 'Product info' text
+        var maxTimeText = productInfo.extents.dateTime.max;
+        var maxTimeValue = new Date();
+
+        if ( maxTimeText.trim() == "" ) {
+            maxTimeText = ', ongoing'
+        }
+        else {
+            maxTimeValue = maxTimeText;
+            maxTimeText = " to " + maxTimeText;
+        }
+
+        var newText = "";
+        newText += productInfo.name + "<br />";
+        newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
+        newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
+
+        this.productInfoText.update( newText );
+
+        // Populate spatial extent controls
+        this.southBL.setValue( productInfo.extents.lat.min );
+        this.eastBL.setValue( productInfo.extents.lon.min );
+        this.northBL.setValue( productInfo.extents.lat.max );
+        this.westBL.setValue( productInfo.extents.lon.max );
+
+        // Populate temporal extent controls
+        var timeRangeStart = productInfo.extents.dateTime.min;
+        var timeRangeEnd = productInfo.extents.dateTime.max;
+
+        this.dateRangeStartPicker.setMinValue( timeRangeStart );
+        this.dateRangeStartPicker.setValue( timeRangeStart );
+        this.dateRangeStartPicker.setMaxValue( timeRangeEnd );
+
+        this.dateRangeEndPicker.setMinValue( timeRangeStart );
+        this.dateRangeEndPicker.setValue( maxTimeValue ); // From above, handles 'ongoing' data sets
+        this.dateRangeEndPicker.setMaxValue( timeRangeEnd );
     },
 
     _addBlurb: function ( items ) {
@@ -126,9 +122,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<b>Product info</b>"
         });
 
+        // Todo - DN: Add product picker in case of multiple products per Layer
+
         this.productInfoText = new Ext.Container({
             autoEl: 'div',
-            html: "<i>Loading...</i>"
+            html: "<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>"
         });
 
         items.push( productInfoHeader, this.productInfoText, this._newSectionSpacer() );
@@ -161,7 +159,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     },
                     {
                         xtype: 'numberfield',
-                        ref: '../northBL',
+                        ref: '../../northBL',
                         name: 'northBL',
                         decimalPrecision: 2,
                         width: 50,
@@ -184,7 +182,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     {
                         xtype: 'numberfield',
                         name: 'westBL',
-                        ref: '../westBL',
+                        ref: '../../westBL',
                         decimalPrecision: 2,
                         width: 50,
                         readOnly: true
@@ -197,7 +195,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     {
                         xtype: 'numberfield',
                         name: 'eastBL',
-                        ref: '../eastBL',
+                        ref: '../../eastBL',
                         decimalPrecision: 2,
                         width: 50,
                         readOnly: true
@@ -226,7 +224,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     {
                         xtype: 'numberfield',
                         name: 'southBL',
-                        ref: '../southBL',
+                        ref: '../../southBL',
                         decimalPrecision: 2,
                         width: 50,
                         readOnly: true
@@ -235,7 +233,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             }
         ];
 
-        items.push( spatialExtentText, bboxControl, this._newSectionSpacer() );
+        // Group controls for hide/show
+        this.spatialControls = new Ext.Container({
+            items: [spatialExtentText, bboxControl, this._newSectionSpacer()],
+            hidden: true
+        });
+
+        items.push( this.spatialControls );
     },
 
     _addTemporalControls: function( items ) {
@@ -302,7 +306,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var dateRangeStartPicker = {
             name: 'dateRangeStartPicker',
-            ref: '../dateRangeStartPicker',
+            ref: '../../dateRangeStartPicker',
             fieldLabel: 'Date from:',
             labelSeparator: '',
             xtype: 'datefield',
@@ -314,7 +318,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var dateRangeEndPicker = {
             name: 'dateRangeEndPicker',
-            ref: '../dateRangeEndPicker',
+            ref: '../../dateRangeEndPicker',
             fieldLabel: 'Date to:',
             labelSeparator: '',
             xtype: 'datefield',
@@ -331,14 +335,20 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             items: [ dateRangeStartPicker, dateRangeEndPicker, this._newSectionSpacer(), timeRangeSliderContainer]
         };
 
-        items.push( temporalExtentText, datePickers, this._newSectionSpacer() );
+        // Group controls for hide/show
+        this.temporalControls = new Ext.Container({
+            items: [temporalExtentText, datePickers, this._newSectionSpacer()],
+            hidden: true
+        });
+
+        items.push( this.temporalControls );
     },
 
     _addProcessingControls: function( items ) {
 
         var processingControlsText = new Ext.Container({
             autoEl: 'div',
-            html: "<b>Output</b>"
+            html: "<b>Output</b><br/>If you specify an email address you will be notified by email when the processing is complete."
         });
 
         this.outputSelector = new Ext.form.ComboBox({
@@ -362,6 +372,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             editable: false
         });
 
+        this.emailAddressTextbox = new Ext.form.TextField({
+            id: 'emailAddress',
+            fieldLabel: 'Email address',
+            value: Portal.app.config.currentUser ? Portal.app.config.currentUser.emailAddress : ''
+        });
+
         var startProcessingButton = new Ext.Button({
             text: "Start processing job&nbsp;",
             scale: "medium",
@@ -370,7 +386,21 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             handler: this.startProcessing
         });
 
-        items.push( processingControlsText, this.outputSelector, this._newSectionSpacer(), startProcessingButton );
+        // Group controls for hide/show
+        this.processingControls = new Ext.Container({
+            items: [
+                processingControlsText,
+                new Ext.Container({
+                    layout: 'form',
+                    items: [this.outputSelector, this.emailAddressTextbox]
+                }),
+                this._newSectionSpacer(),
+                startProcessingButton
+            ],
+            hidden: true
+        });
+
+        items.push( this.processingControls );
     },
 
     _newSectionSpacer: function() {
@@ -399,7 +429,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         args += "&";
         args += "longitudeRangeEnd=" + this.eastBL.value;
         args += "&";
-        args += "productId=" + productId;
+        args += "productId=" + this.productsInfo[ this.selectedProductInfoIndex ].productId;
+        args += "&";
+        args += "notificationEmailAddress=" + this.emailAddressTextbox.getValue();
 
         Ext.Ajax.request({
             url: 'aodaac/createJob?' + args,

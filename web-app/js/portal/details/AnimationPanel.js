@@ -332,11 +332,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
     },
 
-
-    setSelectedLayer: function(layer){
-        this.selectedLayer = layer;
-    },
-
     _setSlide: function(index){
     	if(this.animatedLayers != undefined){
 
@@ -475,7 +470,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         //else no animation is running, so can't change the speed of the animation
     },
 
-    update: function(show, hide, target) {
+    update: function(layer, show, hide, target) {
+
+        this.selectedLayer = layer;
+
     	//Just hide everything by default
 		this.noAnimationLabel.hide();
 		this.controlPanel.hide();
@@ -535,10 +533,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
     	}
     },
-
-	setSelectedLayer: function(layer){
-		this.selectedLayer = layer;
-	},
 
     getSelectedLayerTimeDimension: function(){
     	if((this.selectedLayer != undefined) && (this.selectedLayer.dimensions != undefined)){

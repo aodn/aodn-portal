@@ -31,22 +31,37 @@ class AodaacController {
 
         Thread.sleep 1000 // Todo - DN: Remove after testing
 
-        def productId = params.id
+        def productIds = []
 
-        if ( !productId ) {
+        if ( params.productIds ) {
 
-            render text: "productId must be specified", status: 500
-            return
+            productIds = params.productIds.tokenize( "," )
+        }
+        else if ( params.layerId ) {
+
+            log.debug "ProductIds being retrieved with params.layerId: '$params.layerId'"
+
+            def layer = Layer.get( params.layerId )
+
+            def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
+
+            productIds = aodaacProductLinks.collect{ it.productId }.unique()
+
+            if ( !productIds ) { // If no product Ids for layer then return empty array
+
+                render ([] as JSON)
+                return
+            }
         }
 
         try {
-            render aodaacAggregatorService.getProductInfo( productId ) as JSON
+            render aodaacAggregatorService.getProductInfo( productIds ) as JSON
         }
         catch( Exception e ) {
 
-            log.debug "Unable to get product info for productId: '$productId'", e
+            log.debug "Unable to get product info for productIds: $productIds", e
 
-            render text: "Unable to get complete product info for productId: '$productId'", status: 500
+            render text: "Unable to get complete product info for productIds: $productIds", status: 500
         }
     }
 

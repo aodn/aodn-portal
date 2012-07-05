@@ -9,34 +9,40 @@ class AodaacAggregatorService {
 
     def grailsApplication
 
-    // Todo - DN: Possible to refactor out common parts of these methods. Have a method liek this makeRequest( requestType, args, closure{ response -> } )
-
-    static final def AodaacEnvironment = "test" // Todo - DN: Where should this live?
-    static final def StartJobCommand = "startBackgroundAggregator.cgi.sh" // Todo - DN: Where should this live?
-    static final def UpdateJobCommand = "reportProgress.cgi.sh" // Todo - DN: Where should this live?
-    static final def CancelJobCommand = "cancelJob.cgi.sh" // Todo - DN: Where should this live?
-    static final def GetDataCommand = "getJobDataUrl.cgi.sh" // Todo - DN: Where should this live?
-    static final def DateFormat = "yyyyMMdd"
+    static final def AodaacEnvironment = "test" // Todo - DN: Where should this live? Config!
+    static final def StartJobCommand = "startBackgroundAggregator.cgi.sh"
+    static final def UpdateJobCommand = "reportProgress.cgi.sh"
+    static final def CancelJobCommand = "cancelJob.cgi.sh"
+    static final def GetDataCommand = "getJobDataUrl.cgi.sh"
+    static final def DateFormat = "yyyyMMdd" // Todo - DN: Give better name
     static final def HttpStatusCodeSuccessRange = 200..299
+
+    static final def ProductDataPartIdx = 0
+    static final def ProductExtentPartIdx = 1
+
+    static final def ProductDataIdx = 1
+
+    static final def MinValue = 0
+    static final def MaxValue = 1
 
     // Service methods
 
-    def getProductInfo( productId ) {
+    def getProductInfo( productIds ) {
 
-        log.debug "Getting Product Info for id: '$productId'. Converting from Javascript to JSON objects."
+        log.debug "Getting Product Info for ids: '$productIds'. Converting from Javascript to JSON objects."
 
         // Delimeters for sections
-        def productDataDelimeter = "var productData = "
-        def productExtentDelimeter = "productExtents="
+        def productDataDelimeter = "var productData = " // Todo - DN: String to constant
+        def productExtentDelimeter = "productExtents=" // Todo - DN: String to constant
 
         // Get the javascript
         def productDataJavascript = "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
 
         // Split into relevant parts
-        productDataJavascript = productDataJavascript.split( productDataDelimeter )[1] // Throw away dataset info
+        productDataJavascript = productDataJavascript.split( productDataDelimeter )[ ProductDataIdx ] // Ignore dataset info
         def parts = productDataJavascript.split( productExtentDelimeter )
-        def productDataPart = parts[0]
-        def productExtentPart = parts[1]
+        def productDataPart = parts[ ProductDataPartIdx ]
+        def productExtentPart = parts[ ProductExtentPartIdx ]
 
         log.debug "productDataPart: ${ productDataPart }"
         log.debug "productExtentPart: ${ productExtentPart }"
@@ -48,45 +54,7 @@ class AodaacAggregatorService {
         log.debug "allProductDataJson: ${ allProductDataJson } -- ${ allProductDataJson.getClass() }"
         log.debug "allProductExtentJson: ${ allProductExtentJson } -- ${ allProductExtentJson.getClass() }"
 
-        // Create new JSON object with desired structure
-        def productInfo = [
-            extents: [
-                lat: [:],
-                lon: [:],
-                dateTime: [:]
-            ]
-        ]
-
-        // Copy data to new structure
-        def productDataJson = allProductDataJson.find( { it.id == productId } )
-        def productExtentJson = allProductExtentJson.find( { it.id == productId } )
-
-        // Name
-        productInfo.name = productDataJson.name
-
-        // Latitude
-        productInfo.extents.lat.min = productExtentJson.extents.lat[0]
-        productInfo.extents.lat.max = productExtentJson.extents.lat[1]
-
-        // longitude
-        productInfo.extents.lon.min = productExtentJson.extents.lon[0]
-        productInfo.extents.lon.max = productExtentJson.extents.lon[1]
-
-        // Time (sanitise and parse)
-        def startTimeString = productExtentJson.extents.dateTime[0]
-        def endTimeString = productExtentJson.extents.dateTime[1]
-
-        startTimeString = startTimeString - " to" // Start time is appended with ' to' for display  purposes, but we don't want that
-
-        log.debug "startTimeString: ${ startTimeString }"
-
-        def startTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", startTimeString )
-        def endTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", endTimeString )
-
-        productInfo.extents.dateTime.min = startTimeDate.format( "dd/MM/yyyy" )
-        productInfo.extents.dateTime.max = endTimeDate.format( "dd/MM/yyyy" )
-
-        return productInfo
+       return _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson )
     }
 
     def createJob( notificationEmailAddress, params ) {
@@ -281,6 +249,80 @@ class AodaacAggregatorService {
         job.save failOnError: true
     }
 
+    def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
+
+        if ( !productIds ) {
+
+            log.debug "No productIds passed, using all from allProductdataJson"
+
+            productIds = allProductDataJson.collect( { it.id} )
+        }
+
+        log.debug "productIds: ${ productIds }"
+
+        def productsInfo = []
+
+        productIds.each {
+            productId ->
+
+            // Create new JSON object with desired structure
+            def productInfo = [
+                    extents: [
+                            lat: [:],
+                            lon: [:],
+                            dateTime: [:]
+                    ]
+            ]
+
+            // Copy data to new structure
+            def matchingIds = { it.id == productId?.toString() } // it.id will be a String
+            def productDataJson = allProductDataJson.find( matchingIds )
+            def productExtentJson = allProductExtentJson.find( matchingIds )
+
+            log.debug "JSON for productId: '$productId'"
+            log.debug "  productDataJson: $productDataJson"
+            log.debug "  productExtentJson: $productExtentJson"
+
+            try {
+                // Name, etc.
+                productInfo.name = productDataJson.name
+                productInfo.productId = productDataJson.id
+
+                // Latitude
+                productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
+                productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
+
+                // longitude
+                productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
+                productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
+
+                // Time (sanitise and parse)
+                def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
+                def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
+
+                startTimeString = startTimeString - " to" // Start time is appended with ' to' for display  purposes, but we don't want that // Todo - DN: String to remove
+
+                log.debug "  startTimeString: ${ startTimeString }"
+
+                def startTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", startTimeString ) // Todo - DN: String format to constant
+                def endTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", endTimeString )     // Todo - DN: String format to constant
+
+                productInfo.extents.dateTime.min = startTimeDate.format( "dd/MM/yyyy" ) // Todo - DN: Date format to constant
+                productInfo.extents.dateTime.max = endTimeDate.format( "dd/MM/yyyy" )   // Todo - DN: Date format to constant
+
+                productsInfo << productInfo
+            }
+            catch (Exception) {
+
+                log.info "Problem reading info from JSON (possible invalid values in JSON)"
+                log.info "productDataJson: $productDataJson"
+                log.info "productExtentJson: $productExtentJson"
+            }
+        }
+
+        return productsInfo
+    }
+
     // Supporting logic
 
     def _aggregatorCommandUrl( command, args ) {
@@ -289,7 +331,7 @@ class AodaacAggregatorService {
         def cgiPart = "cgi-bin/IMOS.cgi?"
         def environmentPart = "$AodaacEnvironment,"
         def commandPart = "$command,"
-        def argPart = args.join(',')
+        def argPart = args.join( ',' )
 
         return baseUrl + cgiPart + environmentPart + commandPart + argPart
     }
