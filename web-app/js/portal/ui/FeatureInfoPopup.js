@@ -263,10 +263,15 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     fitContainer: function() {
-    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
-    	if (this.dd) {
-            this.dd.unlock();
-        }
+    	if (this.maximisedSize) {
+	    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
+	    	if (this.dd) {
+	            this.dd.unlock();
+	        }
+    	}
+    	else {
+    		GeoExt.Popup.prototype.fitContainer.call(this);
+    	}
     }
     
 });
