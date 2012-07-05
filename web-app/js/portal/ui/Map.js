@@ -156,11 +156,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				//this.style.cursor="pointer";
 				clickControl.activate();
 			});
-			jQuery("div.olControlMousePosition,div.olControlScaleLine,div.olControlScaleLineTop,div.olControlScaleLineBottom").mouseover(function() {
-				jQuery(this).addClass('allwhite');
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
 			});
-			jQuery("div.olControlMousePosition,div.olControlScaleLine,div.olControlScaleLineTop,div.olControlScaleLineBottom").mouseout(function() {
-				jQuery(this).removeClass('allwhite');
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
 			});
 
 			
