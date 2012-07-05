@@ -156,6 +156,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				//this.style.cursor="pointer";
 				clickControl.activate();
 			});
+			jQuery("div.olControlMousePosition,div.olControlScaleLine,div.olControlScaleLineTop,div.olControlScaleLineBottom").mouseover(function() {
+				jQuery(this).addClass('allwhite');
+			});
+			jQuery("div.olControlMousePosition,div.olControlScaleLine,div.olControlScaleLineTop,div.olControlScaleLineBottom").mouseout(function() {
+				jQuery(this).removeClass('allwhite');
+			});
+
+			
 		}, this);
 		
 		this.on('tabchange', function() {
