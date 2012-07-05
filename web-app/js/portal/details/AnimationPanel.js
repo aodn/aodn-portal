@@ -186,12 +186,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.startTimeCombo = new Ext.form.ComboBox({
 			store: new Array(),
 			id: "startTimeCombo",
-			triggerAction: "all"
+			triggerAction: "all",
+			editable: false
 		});
 		this.endTimeCombo = new Ext.form.ComboBox({
 			store: new Array(),
 			id: "endTimeCombo",
-			triggerAction: "all"
+			triggerAction: "all",
+			editable: false
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
@@ -630,10 +632,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		//TODO: set default to last 10 timestamp for instant animation
 		}
 
-	},
-
-	setSelectedLayer: function(layer){
-		this.selectedLayer = layer;
 	},
 
 	getSelectedLayerTimeDimension: function(){
