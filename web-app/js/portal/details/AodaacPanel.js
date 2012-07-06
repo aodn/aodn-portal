@@ -34,24 +34,23 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             scope: this,
             success: function( resp ) {
 
-                // No productInfo found
-                if ( resp.responseText == "[]" ) {
+                this.productsInfo = JSON.parse( resp.responseText );
 
-                    hide.call( target, this );
-                }
-                else {
-
-                    this.productsInfo = JSON.parse( resp.responseText );
+                if ( this.productsInfo.length > 0 ) {
 
                     this._populateFormFields();
                     this._showAllControls();
 
                     show.call( target, this );
                 }
+                else {
+
+                    hide.call( target, this );
+                }
             },
             failure: function() {
 
-                this.body.update( "This feature is currently unavailable for this Layer. Unable to find the required partitioning information." );
+                hide.call( target, this );
             }
         });
     },

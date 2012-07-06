@@ -13,12 +13,12 @@ Portal.ui.AodaacAggregatorJobListWindow = Ext.extend(Ext.Window, {
 
         // Controls
         var clearFinishedButton = {
-            text: "Clear finished", // Todo - DN: i18n
+            text: "Clear finished",
             onClick: function() { alert( 'Not implemented yet' ); }
         };
 
         var closeButton = {
-            text: "Close", // Todo - DN: i18n
+            text: "Close",
             listeners: {
                 scope: this,
                 click: this.onClose
@@ -81,7 +81,7 @@ Portal.ui.AodaacAggregatorJobListWindow = Ext.extend(Ext.Window, {
         });
 
         Ext.apply(this, {
-            title: "AODAAC Jobs", // Todo - DN: i18n
+            title: "AODAAC Jobs",
             modal: true,
             padding: 0,
             width: 450,

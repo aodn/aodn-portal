@@ -6,7 +6,7 @@ class AodaacController {
 
     def aodaacAggregatorService
 
-    def testParams() {
+    def testParams() { // Todo - DN: To be removed once a good testing setup is available
 
         [
             dateRangeStart: "01/01/2011",
@@ -22,14 +22,12 @@ class AodaacController {
         ]
     }
 
-    def index = {
+    def index = { // Todo - DN: To be removed once a good testing setup is available
 
         [ testParams: testParams() ]
     }
 
     def productInfo = {
-
-        Thread.sleep 1000 // Todo - DN: Remove after testing
 
         def productIds = []
 
@@ -147,14 +145,9 @@ class AodaacController {
 
     def userJobInfo = {
 
-        Thread.sleep 1500 // Todo - DN: Remove after testing
-
         def jobs = _getJobList()
 
-        jobs.each {
-
-            aodaacAggregatorService.updateJob it // Could this be made async?
-        }
+        jobs.each { aodaacAggregatorService.updateJob it }
 
         render jobs as JSON
     }
