@@ -670,9 +670,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	_setTime: function(picker, combo, timestamp){
 		var date = timestamp.split("T")[0];
 		var time = timestamp.split("T")[1];
-
 		picker.setValue(date);
+
+		this._onDateSelected(picker, new Date(timestamp));
 		combo.setValue(time);
+
 	}
 
 });
