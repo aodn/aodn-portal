@@ -8,22 +8,28 @@ class AodaacAggregatorService {
     static transactional = true
 
     def grailsApplication
+    def messageSource
 
-    static final def AodaacEnvironment = "test" // Todo - DN: Where should this live? Config!
     static final def StartJobCommand = "startBackgroundAggregator.cgi.sh"
     static final def UpdateJobCommand = "reportProgress.cgi.sh"
     static final def CancelJobCommand = "cancelJob.cgi.sh"
     static final def GetDataCommand = "getJobDataUrl.cgi.sh"
-    static final def DateFormat = "yyyyMMdd" // Todo - DN: Give better name
     static final def HttpStatusCodeSuccessRange = 200..299
 
+    // Date formats
+    static final def AggregatorDateRangeInputFormat = "yyyyMMdd"
+    static final def AggregatorProductInfoDateOutputFormat = "dd/MM/yyyy hh:mm:ss"
+    static final def JavascriptUIDateOutputFormat = "dd/MM/yyyy"
+    static final def AggregatorStartDateAddedMessage = " to"
+
+    // ProductDataJS
     static final def ProductDataPartIdx = 0
     static final def ProductExtentPartIdx = 1
-
     static final def ProductDataIdx = 1
-
     static final def MinValue = 0
     static final def MaxValue = 1
+    static final def ProductDataDelimeter   = "var productData = "
+    static final def ProductExtentDelimeter = "productExtents="
 
     // Service methods
 
@@ -32,15 +38,13 @@ class AodaacAggregatorService {
         log.debug "Getting Product Info for ids: '$productIds'. Converting from Javascript to JSON objects."
 
         // Delimeters for sections
-        def productDataDelimeter = "var productData = " // Todo - DN: String to constant
-        def productExtentDelimeter = "productExtents=" // Todo - DN: String to constant
 
         // Get the javascript
         def productDataJavascript = "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
 
         // Split into relevant parts
-        productDataJavascript = productDataJavascript.split( productDataDelimeter )[ ProductDataIdx ] // Ignore dataset info
-        def parts = productDataJavascript.split( productExtentDelimeter )
+        productDataJavascript = productDataJavascript.split( ProductDataDelimeter )[ ProductDataIdx ] // Ignore dataset info
+        def parts = productDataJavascript.split( ProductExtentDelimeter )
         def productDataPart = parts[ ProductDataPartIdx ]
         def productExtentPart = parts[ ProductExtentPartIdx ]
 
@@ -59,16 +63,14 @@ class AodaacAggregatorService {
 
     def createJob( notificationEmailAddress, params ) {
 
-        // Todo - DN: Vaidate params?
-
         log.info "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
 
         def apiCallArgs = []
 
         apiCallArgs.with {
             add params.outputFormat
-            add params.dateRangeStart?.format( DateFormat )
-            add params.dateRangeEnd?.format( DateFormat )
+            add params.dateRangeStart?.format( AggregatorDateRangeInputFormat )
+            add params.dateRangeEnd?.format( AggregatorDateRangeInputFormat )
             add params.timeOfDayRangeStart
             add params.timeOfDayRangeEnd
             add params.latitudeRangeStart
@@ -82,7 +84,7 @@ class AodaacAggregatorService {
         def apiCall = _aggregatorCommandUrl( StartJobCommand, apiCallArgs )
 
         // Include server/environment
-        params.environment = AodaacEnvironment
+        params.environment = _aggregatorEnvironment()
         params.server = _aggregatorBaseUrl()
 
         def responseText
@@ -139,8 +141,7 @@ class AodaacAggregatorService {
             // Make the call
             def response = apiCall.toURL().text
 
-            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" ) // TODO - HACK - Fixing bad JSON response
-            response = response.replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" ) // TODO - HACK - Fixing bad JSON response
+            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" ).replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" ) // Fixing invalid JSOn response from AODAAC aggregator
 
             log.debug "response: ${ response }"
 
@@ -160,6 +161,7 @@ class AodaacAggregatorService {
 
                 _retrieveResults job
                 _verifyResultFileExists job
+                _sendNotificationEmail job
             }
         }
         catch( Exception e ) {
@@ -170,6 +172,8 @@ class AodaacAggregatorService {
     }
 
     void cancelJob( job ) {
+
+        log.info "Cancelling job $job"
 
         // Generate url
         def apiCall = _aggregatorCommandUrl( CancelJobCommand, [job.jobId] )
@@ -206,7 +210,7 @@ class AodaacAggregatorService {
 
             log.debug "response: $response"
 
-            job.result = new AodaacJobResult( dataUrl: response )
+            job.result = new AodaacJobResult( dataUrl: response?.trim() )
             job.save failOnError: true
         }
         catch( Exception e ) {
@@ -247,6 +251,41 @@ class AodaacAggregatorService {
         // Record date this check occurred
         job.mostRecentDataFileExistCheck = new Date()
         job.save failOnError: true
+    }
+
+    void _sendNotificationEmail( job ) {
+
+        log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
+
+        if ( !job.latestStatus.jobEnded ) {
+
+            log.debug "Will not send notification email for job which has not ended."
+            return
+        }
+
+        if ( !job.notificationEmailAddress ) {
+
+            log.debug "No notification email address, not sending email"
+            return
+        }
+
+        try {
+
+            def emailBodyCode = "${grailsApplication.config.instanceName.toLowerCase()}.aodaacJob.notification.email.${job.dataFileExists ? "success" : "failed"}Body"
+
+            def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl].toArray(), Locale.getDefault() )
+
+            sendMail {
+                to( [job.notificationEmailAddress] )
+                subject( "Portal aggregation job complete" )
+                body( emailBody )
+                from( grailsApplication.config.portal.systemEmail.fromAddress )
+            }
+        }
+        catch (Exception e) {
+
+            log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
+        }
     }
 
     def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
@@ -300,15 +339,15 @@ class AodaacAggregatorService {
                 def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
                 def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
 
-                startTimeString = startTimeString - " to" // Start time is appended with ' to' for display  purposes, but we don't want that // Todo - DN: String to remove
+                startTimeString = startTimeString - AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
 
                 log.debug "  startTimeString: ${ startTimeString }"
 
-                def startTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", startTimeString ) // Todo - DN: String format to constant
-                def endTimeDate = Date.parse( "dd/MM/yyyy hh:mm:ss", endTimeString )     // Todo - DN: String format to constant
+                def startTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, startTimeString )
+                def endTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, endTimeString )
 
-                productInfo.extents.dateTime.min = startTimeDate.format( "dd/MM/yyyy" ) // Todo - DN: Date format to constant
-                productInfo.extents.dateTime.max = endTimeDate.format( "dd/MM/yyyy" )   // Todo - DN: Date format to constant
+                productInfo.extents.dateTime.min = startTimeDate.format( JavascriptUIDateOutputFormat )
+                productInfo.extents.dateTime.max = endTimeDate.format( JavascriptUIDateOutputFormat )
 
                 productsInfo << productInfo
             }
@@ -329,7 +368,7 @@ class AodaacAggregatorService {
 
         def baseUrl = _aggregatorBaseUrl()
         def cgiPart = "cgi-bin/IMOS.cgi?"
-        def environmentPart = "$AodaacEnvironment,"
+        def environmentPart = "${_aggregatorEnvironment()},"
         def commandPart = "$command,"
         def argPart = args.join( ',' )
 
@@ -339,6 +378,11 @@ class AodaacAggregatorService {
     def _aggregatorBaseUrl() {
 
         return _ensureTrailingSlash( grailsApplication.config.aodaacAggregator.url )
+    }
+
+    def _aggregatorEnvironment() {
+
+        return grailsApplication.config.aodaacAggregator.environment
     }
 
     def _ensureTrailingSlash( s ) {

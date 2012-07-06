@@ -18,7 +18,8 @@ class AodaacController {
             longitudeRangeStart: 148.383,
             longitudeRangeEnd:   159.281,
             productId: 1,
-            outputFormat: "nc"
+            outputFormat: "nc",
+            notificationEmailAddress: "dnahodil@gmail.com"
         ]
     }
 
@@ -145,11 +146,20 @@ class AodaacController {
 
     def userJobInfo = {
 
-        def jobs = _getJobList()
+        def jobIds = _getJobIdList()
 
-        jobs.each { aodaacAggregatorService.updateJob it }
+        if ( jobIds.size() ) {
 
-        render jobs as JSON
+            def jobs = AodaacJob.getAll( jobIds )
+
+            jobs.each { aodaacAggregatorService.updateJob it }
+
+            render jobs as JSON
+        }
+        else {
+
+            render ([] as JSON)
+        }
     }
 
     def _byId( jobId ) {
@@ -157,23 +167,21 @@ class AodaacController {
         return AodaacJob.findByJobId( jobId )
     }
 
-    def _getJobList() {
+    def _getJobIdList() {
 
-        if ( !session.aodaacJobList ) { session.aodaacJobList = [] as Set }
+        if ( !session.aodaacJobIdList ) { session.aodaacJobIdList = [] }
 
-        return session.aodaacJobList.collect{ AodaacJob.get( it ) }
+        return session.aodaacJobIdList
     }
 
     void _addToList( item ) {
 
-        def list = _getJobList()
-
-        list << item.id
+        session.aodaacJobIdList = _getJobIdList() + item.id
     }
 
     void _removeFromList( item ) {
 
-        def list = _getJobList()
+        def list = _getJobIdList()
 
         list.remove item.id
     }
