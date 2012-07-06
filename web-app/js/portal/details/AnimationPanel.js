@@ -266,8 +266,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	_modMapDragging: function(toggle) {
 		var map = this.map.map;
 		for (var i = 0; i< map.controls.length; i++) {
-			if (map.controls[i].displayClass == "olControlNavigation") {
-				(toggle) ?	 map.controls[i].activate():  map.controls[i].deactivate();
+			if ((map.controls[i].displayClass === "olControlNavigation") || (map.controls[i].displayClass === "olControl")){
+				if(toggle){
+					map.controls[i].activate();
+				}
+				else{
+					 map.controls[i].deactivate();
+				}
 			}
 		}		
 	},

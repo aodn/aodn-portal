@@ -295,7 +295,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
 	_expandMapLinks: function(){
-		this.mapLinks.setHeight(270);
+		this.mapLinks.setHeight(200);
 		this.expandBar.addClass("expandDownLink");
 		this.expandBar.removeClass("expandUpLink");
 		this.controlButtonPanel.controlButton.setIconClass("arrowDown");
