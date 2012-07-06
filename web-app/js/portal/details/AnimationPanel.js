@@ -179,7 +179,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			store: new Array(),
 			id: "startTimeCombo",
 			triggerAction: "all",
-			editable: false
+			editable: false,
+			listeners:{
+				scope: this,
+				select: function(combo, record, index){
+					timeStr = this._getSelectedTimeString(true);
+					this.selectedLayer.mergeNewParams({
+						TIME: timeStr
+					});
+					this.stepLabel.setText(timeStr);
+				}
+			}
 		});
 		this.endTimeCombo = new Ext.form.ComboBox({
 			store: new Array(),
@@ -282,9 +292,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	_resetForNewAnimation: function(){
 		this.timerId = -1;
 		this.BASE_SPEED = 500;
-		//this.stepSlider.setValue(0);
-		//this.stepSlider.setMaxValue(0); // cant do this as it munts the slider
-		//this.stepSlider.setMinValue(0);
 		this.originalOpacity = -1;
 		this.speed = this.BASE_SPEED;
 		this.pausedTime = "";
@@ -303,7 +310,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//can't change the time when it's playing
 			this.playButton.disable();
 			this.pauseButton.enable();
-			this.stepSlider.disable();
+			this.stepSlider.enable();
 			this.speedUp.enable();
 			this.slowDown.enable();
 		}
@@ -439,8 +446,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			return;
 		}
 
-		var startString = this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
-		var endString = this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
+		var startString = this._getSelectedTimeString(true);
+		var endString = this._getSelectedTimeString(false);
 
 		dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
 
@@ -669,6 +676,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this._onDateSelected(picker, new Date(timestamp));
 		combo.setValue(time);
 
+	},
+
+	_getSelectedTimeString: function(isStart){
+		if(isStart)
+    		return this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
+    	else
+        	return this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
 	}
 
 });
