@@ -89,7 +89,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			id: 'Stop',
 			padding: 5,
 			plain: true,
-			text: OpenLayers.i18n('stop'),
+			icon: 'images/animation/stop.png',
 			iconAlign: 'top',
 			listeners: {
 				scope: this,
@@ -119,9 +119,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.stepLabel = new Ext.form.Label({
-			html: OpenLayers.i18n('time'),
 			flex: 1,
-			width: 80,
+			width: 110,
 			style: 'padding: 5'
 		});
 
@@ -235,7 +234,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.progressLabel,
 			this.speedLabel
 			],
-			width: 330,
+			width: 360,
 			height: '100%'
 		});
 
@@ -351,9 +350,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
 			this.animatedLayers.length = 0;
-			this.stepLabel.setText(OpenLayers.i18n('time') + ": <br />", false);
+			this.stepLabel.setText("", false);
 
-			this.clearButton.setText(OpenLayers.i18n('stop'));
 			this.progressLabel.setVisible(false);
 			this._toggleButtons(false);
 
@@ -379,9 +377,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			
 
 			//also set the label
-			var labelStr = OpenLayers.i18n('time') + ": " + this.animatedLayers[index].params.TIME;
+			var labelStr = this.animatedLayers[index].params.TIME;
 
-			this.stepLabel.setText(labelStr + "<br />", false);
+			this.stepLabel.setText(this.animatedLayers[index].params.TIME, false);
 		}
 	},
 
@@ -406,7 +404,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.counter = 0;
 			this._setSlide(this.counter);
 
-			this.clearButton.setText("Clear Animation");
 			this.progressLabel.setVisible(false);
 		}
 	},
@@ -610,11 +607,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			else{
 				this._setTime(this.startDatePicker, this.startTimeCombo, splitDates[t0]);
 			}
-			//this.startDatePicker.setValue(startDate);
-			//this.endDatePicker.setValue(endDate);
-			//this._onDateSelected(this.startDatePicker, startDate);
-			//this._onDateSelected(this.endDatePicker, endDate);
-
 		}
 	},
 

@@ -215,7 +215,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		this.controlButtonPanel = new Ext.Panel({		
 			
-			bodyStyle:'margin:6px',
+			bodyStyle:'padding: 6px; margin: 2px;',
 			items: [{
 				xtype: 'button',
 				iconCls: 'arrowUp',
