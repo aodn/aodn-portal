@@ -248,6 +248,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.map.map.events.register('moveend', this, this.onMove);
 
 		this.pausedTime = "";
+		this.timerId = -1;
 
 		Portal.details.AnimationPanel.superclass.initComponent.call(this);
 	},
@@ -497,13 +498,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.selectedLayer.setOpacity(0);
 			this.stepSlider.setMinValue(0);
 			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
-			this._resetTimer(this.BASE_SPEED);
+
 			if(this.pausedTime !== ""){
 				this.counter = this._getIndexFromTime(this.pausedTime);
 			}
 			else{
 				this.counter = 0;
 			}
+			this._resetTimer(this.BASE_SPEED);
 			this._toggleButtons(true);
 		}
 	},
