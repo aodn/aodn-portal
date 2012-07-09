@@ -22,12 +22,10 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     initComponent: function() {
     	this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
-        this.animationPanel = new Portal.details.AnimationPanel();
 
         this.items = [
             this.infoPanel,
-            this.stylePanel,
-            this.animationPanel
+            this.stylePanel
         ];
   
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
@@ -37,14 +35,12 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.selectedLayer = layer;
         this.infoPanel.setSelectedLayer(layer);
         this.stylePanel.setSelectedLayer(layer);
-        this.animationPanel.setSelectedLayer(layer);
     },
 
     update: function(layer) {
     	this.setSelectedLayer(layer);
     	//Update the other tab panels
         this.stylePanel.update(this._showTab, this._hideTab, this);
-        this.animationPanel.update(this._showTab, this._hideTab, this);
         this.infoPanel.update(this._showTab, this._hideTab, this);
         this.show();
     },

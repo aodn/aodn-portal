@@ -85,6 +85,7 @@ hr {
     background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
 }
 
+
 .floatLeft {
     float: left;
 }
@@ -96,6 +97,13 @@ hr {
 .buttonPad {
     padding: 2px 5px 5px 0px
 }
+.arrowUp {	
+    background: url("../images/arrowUp.png") no-repeat left top transparent; 
+}
+.arrowDown {	
+    background: url("../images/arrowDown.png") no-repeat left top transparent; 
+}
+
 
 .leftMenus {
     background-color: white;
@@ -141,6 +149,11 @@ hr {
     background-color: #CCCCCC;
     border: 1px solid #666;
     cursor: pointer;
+}
+
+.link {
+	cursor: url;
+	cursor: pointer;
 }
 
 #centerTabPanel {
@@ -423,16 +436,28 @@ table.featureInfo caption{
 
 /* map toolbar */
 
+
 .semiTransparent {
-    background: inherit! important;
-    background-color:#3c668d! important;
+    background-image: none;
+    background-color: #3c668d! important;
     opacity: 0.7;
     filter: alpha(opacity = 70);
-    color: white;
+    /*color: white;*/
+}
+.expandUpLink {
+	background: url('../images/mini-up.png') center 2px  no-repeat;
+}
+.expandDownLink {
+	background: url('../images/mini-down.png') center 2px no-repeat;
 }
 
-.semiTransparent button {
-    color: white;
+#mapToolbarExpanderBar,
+#controlButton,
+animationPanel {
+	opacity: 1.0;
+}
+#maptools .x-panel-body {	   
+    border-radius: 5px;
 }
 
 .semiTransparent .x-item-disabled * {
@@ -440,10 +465,11 @@ table.featureInfo caption{
 }
 
 .fullTransparency {
-    background: inherit! important;
+    opacity: 1.0! important;
+    filter: alpha(opacity = 100);
+}
+.mapToolbarExpanderBarOver {	
     background-color:white! important; 
-    opacity: 0.8! important;
-    filter: alpha(opacity = 80);
 }
 
 .fullTransparency .x-item-disabled * {
@@ -803,5 +829,10 @@ JQUERY AUTO COMPLETE
 
 .p-header-space {
   border-radius: 12px 12px 0 0;
+}
+
+div.allwhite {
+	color: white;
+	border-color: white;
 }
 

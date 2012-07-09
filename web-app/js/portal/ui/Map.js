@@ -1,10 +1,14 @@
 Ext.namespace('Portal.ui');
 
+
+
 Portal.ui.Options = Ext.extend(Object, {
 	
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
+		
+		Ext.QuickTips.init();
 		
 		var container = document.getElementById("navtoolbar");                
                 
@@ -21,12 +25,10 @@ Portal.ui.Options = Ext.extend(Object, {
 		toolPanel.addControls( [ zoom,pan] );
 		
 		this.controls = [
-		new OpenLayers.Control.Navigation(),
 		new OpenLayers.Control.Attribution(),
 		new OpenLayers.Control.PanZoomBar(),
 		new OpenLayers.Control.MousePosition(),
 		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.NavigationHistory(),
 		new OpenLayers.Control.OverviewMap({
 			autoPan: true,
 			minRectSize: 30,
@@ -151,13 +153,22 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				//this.style.cursor="pointer";
 				clickControl.activate();
 			});
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
+			});
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
+			});
+
+			
 		}, this);
 		
 		this.on('tabchange', function() {
 			this._closeFeatureInfoPopup();
 		}, this);
-        
-		// make sure layer store reflects loaded layers 
+
+
+		// make sure layer store reflects loaded layers
 		// even if the map hasn't been rendered yet
 		this.layers.bind(this.map);
 	},
@@ -189,38 +200,137 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	},
 	
-	initToolBar: function() {
-		this.mapToolbar = new Ext.Toolbar({
-			id: 'maptools',
-			height: 35,
-			width: '100%',
-			cls: 'semiTransparent noborder',
-			overCls: "fullTransparency",
-			unstyled: true  
-		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		this.mapToolbar.on('click', this.eventStopper);
-		return this.mapToolbar;
-	},
+
 	
 	initMapLinks: function() {
-		var mapLinks = new Ext.Panel({
+		var parent = this;
+		
+		this.animationPanel = new Portal.details.AnimationPanel();
+		
+		this.controlButtonPanel = new Ext.Panel({		
+			
+			bodyStyle:'padding: 6px; margin: 2px;',
+			items: [{
+				xtype: 'button',
+				iconCls: 'arrowUp',
+				ref: 'controlButton',
+				iconAlign: 'right',
+				text: OpenLayers.i18n('controlButton_4animationPanel'),
+				listeners:{
+					// stops the click bubbling to a getFeatureInfo request on the map
+					scope: this,
+					click: this.toggleMapLinks
+				}
+			}]
+		});
+
+
+		this.mapToolbar = new Ext.Toolbar({
+			id: 'maptools',
+			height: '100%',
+			width: '100%',
+			cls: 'semiTransparent',
+			defaults: {	
+				//bodyStyle:'padding:5px; margin:2px'
+			},
+			unstyled: true,
+			items: [				
+			{
+				xtype: 'tbspacer', 
+				width: 230
+			}, 
+			this.animationPanel,			
+			this.controlButtonPanel,
+			],
+			
+			listeners:{
+				// stops the click bubbling to a getFeatureInfo request on the map
+				scope: this,
+				render: function(p){
+					p.getEl().on('click', this.eventStopper);
+					p.getEl().on('dblclick', this.eventStopper);
+				},
+				single: true  // Remove the listener after first invocation
+			}
+		});
+		
+		
+		this.maplinksHeight = 52;
+
+		this.expandBar = this.initToolBarExpanderBar();
+
+		
+		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
+			height: this.maplinksHeight,
 			closeAction: 'hide',
 			floating: true,
 			unstyled: true,
-			closeable: true,
-			items: this.initToolBar()
+			items: [
+			this.expandBar,
+			this.mapToolbar
+			]
 		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		mapLinks.on('click', this.eventStopper);
-		mapLinks.setPosition(1, 0); // override with CSS later
-		this.add(mapLinks);
+
+		this.mapLinks.setPosition(1, 0); // override with CSS later
+		this.add(this.mapLinks);
 	},
 	
-	eventStopper: function(ev, target) {
+
+
+	_contractMapLinks: function(){
+		this.mapLinks.setHeight(this.maplinksHeight);
+		this.expandBar.addClass("expandUpLink");
+		this.expandBar.removeClass("expandDownLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowUp");
+		
+	},
+
+	_expandMapLinks: function(){
+		this.mapLinks.setHeight(200);
+		this.expandBar.addClass("expandDownLink");
+		this.expandBar.removeClass("expandUpLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowDown");
+	},
+	
+	toggleMapLinks: function() {
+		
+		if (this.mapLinks.getHeight() > this.maplinksHeight) {
+			this._contractMapLinks();
+		}
+		else {
+			this._expandMapLinks();
+		}
+	},
+		
+	initToolBarExpanderBar: function() {
+		var parent = this;		
+		var toolbar = new Ext.Toolbar({
+			id: 'mapToolbarExpanderBar',
+			height: 10,
+			width: '100%',
+			cls: 'semiTransparent noborder expandUpLink link',
+			overCls: "mapToolbarExpanderBarOver",
+			unstyled: true,
+			listeners:{
+				//scope: this,
+				render: function(bar) {					
+					bar.getEl().on('click', function(ev) {
+						parent.toggleMapLinks();
+						parent.eventStopper(ev);
+					});
+					bar.getEl().on('dblclick', parent.eventStopper);
+				}
+			}
+		});
+		return toolbar;
+	},
+	
+	
+	eventStopper: function(ev) {
+		//console.log(ev.type);
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	
@@ -462,8 +572,23 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.addLayer(openLayer, showLoading);
 		}, this);
 	},
-	
+
+	updateAnimationPanel: function(openLayer){
+		if(!this.animationPanel.isAnimating()){
+			if(openLayer.isAnimatable()){
+				//show the panel for the first time!
+				this.animationPanel.setVisible(true);
+				this.animationPanel.setSelectedLayer(openLayer);
+				this.animationPanel.update();
+			}
+			else{
+				this.animationPanel.setVisible(false);
+			}
+		}
+	},
+
 	addLayer: function(openLayer, showLoading) {
+		this.updateAnimationPanel(openLayer);
 		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);
@@ -558,16 +683,16 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 
 		/********************************************************
-	     * attach the old WMS layer to the new Image layer !!
-	     * if this is set we know its an animated layer
-	     * ******************************************************/
+			 * attach the old WMS layer to the new Image layer !!
+			 * if this is set we know its an animated layer
+			 * ******************************************************/
 		newNCWMS.originalWMSLayer = layer;
 
 		/*******************************************************
-	     * add to map is done here
-	     * swap in the new animating layer into openlayers
-	     * keeping the layer position
-	     *******************************************************/
+			 * add to map is done here
+			 * swap in the new animating layer into openlayers
+			 * keeping the layer position
+			 *******************************************************/
 		this.swapLayers(newNCWMS, currentLayer);
 
 	},
@@ -643,7 +768,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			success: function(resp, options) {
 				var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
 				if (layerDescriptor) {
-					layerDescriptor.isNcwms = function() {
+					layerDescriptor.isNcwms = function() {'setSelectedLayer'
 						
 					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
@@ -742,6 +867,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
 		Ext.getCmp("animationPanel").removeAnimation();
+
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
 				layersToRemove.push(openLayer);

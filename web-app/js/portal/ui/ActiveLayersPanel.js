@@ -131,7 +131,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
 		if(node != null){
 			this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
-			Ext.getCmp('rightDetailsPanel').update(node.layer);			
+			Ext.getCmp('rightDetailsPanel').update(node.layer);
 	    } 
 	},
 

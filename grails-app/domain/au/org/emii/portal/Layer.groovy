@@ -197,8 +197,14 @@ class Layer {
 	 */
 	List<Layer> getLayers()	{
 
-		return Layer.findAllByParent(this, [sort: 'title', order: 'asc'])
+		return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
 	}
+
+
+    void setLayers(List<Layer> _layers)	{
+        this.layers.clear()
+        this.layers.addAll(_layers)
+    }
 	
 	void addToLayers(Layer child) {
 		child.parent = this
