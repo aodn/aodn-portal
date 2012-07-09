@@ -17,9 +17,9 @@ class MenuBootStrapTests extends GrailsUnitTestCase {
 	protected void setUp() {
         super.setUp()
 		Menu.metaClass.getServerIdsWithAvailableLayers = { [] }
-		addConverters(au.org.emii.portal.display.Menu)
-		addConverters(au.org.emii.portal.display.MenuItem)
-		addConverters(au.org.emii.portal.display.Layer)
+		addConverters(au.org.emii.portal.display.MenuPresenter)
+		addConverters(au.org.emii.portal.display.MenuItemPresenter)
+		addConverters(au.org.emii.portal.display.LayerPresenter)
 		
 		mockDomain(Config)
     }

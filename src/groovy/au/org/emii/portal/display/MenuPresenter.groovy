@@ -1,12 +1,12 @@
 package au.org.emii.portal.display
 
-class Menu {
+class MenuPresenter {
 	
 	def id
 	def title
 	def menuItems
 
-	Menu(domainMenu) {
+	MenuPresenter(domainMenu) {
 		if (domainMenu) {
 			id = domainMenu.id
 			title = domainMenu.title
@@ -17,7 +17,7 @@ class Menu {
 	def _initItems(domainMenuItems) {
 		menuItems = []
 		domainMenuItems.each { domainMenuItem ->
-			menuItems << new MenuItem(domainMenuItem)
+			menuItems << new MenuItemPresenter(domainMenuItem)
 		}
 	}
 }

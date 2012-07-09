@@ -1,5 +1,6 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.LayerPresenter;
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
@@ -387,7 +388,7 @@ class LayerController {
 		}
 		
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		def layersJsonObject = [layerDescriptors: layersToReturn]
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
 		
@@ -441,11 +442,7 @@ class LayerController {
 	}
 	
 	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		def filtered = layerDescriptors.findAll { !it.blacklisted && it.activeInLastScan }
-		filtered.each { layerDescriptor ->
-			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
-		}
-		return filtered
+		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
     
 	def _convertLayersToListOfMaps(layers) {

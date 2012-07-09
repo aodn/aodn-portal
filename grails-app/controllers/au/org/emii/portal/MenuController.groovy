@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.MenuJsonCache;
 import au.org.emii.portal.display.MenuJsonCreator;
+import au.org.emii.portal.display.MenuPresenter;
 import grails.converters.JSON;
 import groovyx.net.http.*
 
@@ -50,7 +51,7 @@ class MenuController {
         }
         else {
             def menuInstanceJson = JSON.use("deep") { 
-				new au.org.emii.portal.display.Menu(menuInstance) as JSON
+				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
@@ -64,7 +65,7 @@ class MenuController {
         }
         else {
             def menuInstanceJson = JSON.use("deep") { 
-				new au.org.emii.portal.display.Menu(menuInstance) as JSON
+				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
@@ -143,7 +144,7 @@ class MenuController {
 			def menu = Menu.get(params.id)
 			result = MenuJsonCache.instance().get(menu)
 			if (!result) {
-				def displayMenu = new au.org.emii.portal.display.Menu(menu.toDisplayableMenu())
+				def displayMenu = new MenuPresenter(menu.toDisplayableMenu())
 				result = (displayMenu as JSON).toString()
 				MenuJsonCache.instance().add(menu, result)
 			}
