@@ -206,9 +206,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		var parent = this;
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
-		
-		this.controlButtonPanel = new Ext.Panel({		
-			
+
+		this.controlButtonPanel = new Ext.Panel({
+
 			bodyStyle:'padding: 6px; margin: 2px;',
 			items: [{
 				xtype: 'button',
@@ -580,9 +580,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this.animationPanel.setVisible(true);
 				this.animationPanel.setSelectedLayer(openLayer);
 				this.animationPanel.update();
+				this.controlButtonPanel.setVisible(true);
 			}
 			else{
 				this.animationPanel.setVisible(false);
+				this.controlButtonPanel.setVisible(false);
 			}
 		}
 	},
@@ -939,17 +941,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 	},
 
-	stopAnimation: function(openLayer) {
-		// if originalWMSLayer is set then it is an animated Openlayers.Image
-		//if(openLayer.numLoadingTiles > 0)
-		//	this.loadEnd();
-
-		if (openLayer.originalWMSLayer !== undefined) {
-			// get back the plain wms layer
-			this.swapLayers(openLayer.originalWMSLayer, openLayer);
-		}
-	},
-	
 	getViewSize: function() {
 		return this.container.getViewSize();
 	}
