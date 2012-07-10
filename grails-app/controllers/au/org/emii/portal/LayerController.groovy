@@ -88,12 +88,13 @@ class LayerController {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
+		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
+		
 		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
 			}
-			add(Restrictions.isEmpty("layers"))
 			eq 'blacklisted', false
 			eq 'activeInLastScan', true
 			server {
@@ -103,7 +104,8 @@ class LayerController {
 			order("title")
 		}
 		
-		def combinedList = _collectLayersAndServers(layers)
+		def combinedList = layers.grep { !parentIds.contains(it.id) }
+		combinedList = _collectLayersAndServers(combinedList)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
 
