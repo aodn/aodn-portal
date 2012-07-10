@@ -391,8 +391,6 @@ class LayerController {
 		
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
 		def layersJsonObject = [layerDescriptors: layersToReturn]
-		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
-		layerDescriptors*.discard()
 		
 		return (layersJsonObject as JSON).toString()
 	}
