@@ -1,6 +1,6 @@
 package au.org.emii.portal.display
 
-class MenuItem {
+class MenuItemPresenter {
 	
 	def leaf
 	def text
@@ -8,7 +8,7 @@ class MenuItem {
 	def layer
 	def server
 
-	MenuItem(domainMenuItem) {
+	MenuItemPresenter(domainMenuItem) {
 		leaf = domainMenuItem.leaf
 		text = domainMenuItem.text
 		childItems = []
@@ -20,19 +20,19 @@ class MenuItem {
 	
 	def _initChildItems(domainChildItems) {
 		domainChildItems.each { childDomainItem ->
-			childItems << new MenuItem(childDomainItem)
+			childItems << new MenuItemPresenter(childDomainItem)
 		}
 	}
 	
 	def _initLayer(domainLayer) {
 		if (domainLayer) {
-			layer = new Layer(domainLayer)
+			layer = new LayerPresenter(domainLayer)
 		}
 	}
 	
 	def _initServer(domainServer) {
 		if (domainServer) {
-			server = new Server(domainServer)
+			server = new ServerPresenter(domainServer)
 		}
 	}
 }

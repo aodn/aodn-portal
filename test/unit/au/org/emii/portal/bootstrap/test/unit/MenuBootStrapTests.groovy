@@ -17,15 +17,17 @@ class MenuBootStrapTests extends GrailsUnitTestCase {
 	protected void setUp() {
         super.setUp()
 		Menu.metaClass.getServerIdsWithAvailableLayers = { [] }
-		addConverters(au.org.emii.portal.display.Menu)
-		addConverters(au.org.emii.portal.display.MenuItem)
-		addConverters(au.org.emii.portal.display.Layer)
+		Layer.metaClass.getLayers = { [] }
+		addConverters(au.org.emii.portal.display.MenuPresenter)
+		addConverters(au.org.emii.portal.display.MenuItemPresenter)
+		addConverters(au.org.emii.portal.display.LayerPresenter)
 		
 		mockDomain(Config)
     }
 
     protected void tearDown() {
         super.tearDown()
+		Layer.metaClass = null
     }
 
     void testNoDefaultMenuBootstrap() {
@@ -67,7 +69,7 @@ class MenuBootStrapTests extends GrailsUnitTestCase {
 				text: "Item $it", 
 				leaf: true, 
 				menuPosition: it, 
-				layer: new Layer(id: it, name: "Layer $it", title: "Layer $it", blacklisted: false, activeInLastScan: true)
+				layer: new Layer(id: it, name: "Layer $it", title: "Layer $it", blacklisted: false, activeInLastScan: true, server: new Server(id: 1, name: "menu tests mocked server"))
 			)
 		}
 		

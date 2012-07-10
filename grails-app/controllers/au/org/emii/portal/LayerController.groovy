@@ -1,5 +1,6 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.LayerPresenter;
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
@@ -87,12 +88,13 @@ class LayerController {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
+		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
+		
 		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
 			}
-			add(Restrictions.isEmpty("layers"))
 			eq 'blacklisted', false
 			eq 'activeInLastScan', true
 			server {
@@ -102,7 +104,8 @@ class LayerController {
 			order("title")
 		}
 		
-		def combinedList = _collectLayersAndServers(layers)
+		def combinedList = layers.grep { !parentIds.contains(it.id) }
+		combinedList = _collectLayersAndServers(combinedList)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
 
@@ -387,7 +390,7 @@ class LayerController {
 		}
 		
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		def layersJsonObject = [layerDescriptors: layersToReturn]
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
 		
@@ -441,11 +444,7 @@ class LayerController {
 	}
 	
 	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		def filtered = layerDescriptors.findAll { !it.blacklisted && it.activeInLastScan }
-		filtered.each { layerDescriptor ->
-			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
-		}
-		return filtered
+		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
     
 	def _convertLayersToListOfMaps(layers) {

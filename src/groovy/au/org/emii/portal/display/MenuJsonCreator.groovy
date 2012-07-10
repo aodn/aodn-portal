@@ -5,7 +5,7 @@ import grails.converters.JSON;
 class MenuJsonCreator {
 
 	def menuToJson(menu) {
-		def displayMenu = new au.org.emii.portal.display.Menu(menu)
+		def displayMenu = new MenuPresenter(menu)
 		return JSON.use('deep') {
 			displayMenu as JSON
 		}.toString()
