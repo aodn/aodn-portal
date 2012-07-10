@@ -1,6 +1,7 @@
 package au.org.emii.portal.display
 
 import au.org.emii.portal.Layer;
+import au.org.emii.portal.Server;
 import grails.test.*
 
 class LayerPresenterTests extends GrailsUnitTestCase {
@@ -11,6 +12,8 @@ class LayerPresenterTests extends GrailsUnitTestCase {
 		return value
 	}
 	
+	def server = new Server(id: 1, name: "Mocked Server")
+	
 	protected void setUp() {
 		super.setUp()
 		
@@ -19,15 +22,16 @@ class LayerPresenterTests extends GrailsUnitTestCase {
 
     protected void tearDown() {
         super.tearDown()
+		Layer.metaClass = null
     }
 
     void testCanCreateLayerPresenter() {
-		def layer = new LayerPresenter(new Layer(blacklisted: false, activeInLastScan: true), childLayerFilter)
+		def layer = new LayerPresenter(new Layer(blacklisted: false, activeInLastScan: true, server: server), childLayerFilter)
     }
 	
 	void testFailsCreatingLayerPresenter() {
 		try {
-			def layer = new LayerPresenter(new Layer(blacklisted: true, activeInLastScan: true), childLayerFilter)
+			def layer = new LayerPresenter(new Layer(blacklisted: true, activeInLastScan: true, server: server), childLayerFilter)
 			fail
 		}
 		catch (IllegalArgumentException e) {
@@ -36,7 +40,7 @@ class LayerPresenterTests extends GrailsUnitTestCase {
 	}
 	
 	void testNoFilterAppliedDoesNotFail() {
-		def layer = new LayerPresenter(new Layer(blacklisted: false, activeInLastScan: true))
+		def layer = new LayerPresenter(new Layer(blacklisted: false, activeInLastScan: true, server: server))
 	}
 	
 	void testListFiltering() {
@@ -46,9 +50,9 @@ class LayerPresenterTests extends GrailsUnitTestCase {
 	}
 	
 	void testListFilteringExcludes() {
-		def excludeMe = new Layer(id: 1, blacklisted: true, activeInLastScan: true)
-		def excludeMeToo = new Layer(id: 2, blacklisted: false, activeInLastScan: false)
-		def includeMe = new Layer(id: 3, blacklisted: false, activeInLastScan: true)
+		def excludeMe = new Layer(id: 1, blacklisted: true, activeInLastScan: true, server: server)
+		def excludeMeToo = new Layer(id: 2, blacklisted: false, activeInLastScan: false, server: server)
+		def includeMe = new Layer(id: 3, blacklisted: false, activeInLastScan: true, server: server)
 		def layersToFilter = [excludeMe, includeMe, excludeMeToo]
 		
 		def layers = LayerPresenter.filter(layersToFilter, childLayerFilter)
@@ -61,8 +65,12 @@ class LayerPresenterTests extends GrailsUnitTestCase {
 	}
 	
 	void testDescendentFiltering() {
-		def parent = new Layer(id: 1, blacklisted: false, activeInLastScan: true)
-		def childLayers = [new Layer(id: 2, blacklisted: false, activeInLastScan: false), new Layer(id: 3, blacklisted: false, activeInLastScan: true), new Layer(id: 4, blacklisted: true, activeInLastScan: true)]
+		def parent = new Layer(id: 1, blacklisted: false, activeInLastScan: true, server: server)
+		def childLayers = [
+			new Layer(id: 2, blacklisted: false, activeInLastScan: false, server: server), 
+			new Layer(id: 3, blacklisted: false, activeInLastScan: true, server: server), 
+			new Layer(id: 4, blacklisted: true, activeInLastScan: true, server: server)
+		]
 		
 		parent.metaClass.getLayers = { return childLayers }
 		
