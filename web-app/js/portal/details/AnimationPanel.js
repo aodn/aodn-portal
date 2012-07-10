@@ -556,7 +556,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
 		else{
 			//No time dimension, it's a dud!
-			hide.call(target, this);
+			//hide.call(target, this);
 		}
 	},
 

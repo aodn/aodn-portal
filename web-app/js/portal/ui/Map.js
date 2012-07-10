@@ -204,7 +204,21 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	initMapLinks: function() {
 		var parent = this;
-		
+
+		//setVisible(true) for floating panel doesn't work without this fix
+		//http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
+		var supr = Ext.Element.prototype;
+        Ext.override(Ext.Layer, {
+        	hideAction : function(){
+        		this.visible = false;
+        		if(this.useDisplay === true){
+        			this.setDisplayed(false);
+        		}else{
+        			supr.setLeftTop.call(this, -10000, -10000);
+        		}
+        	}
+        });
+
 		this.animationPanel = new Portal.details.AnimationPanel();
 
 		this.controlButtonPanel = new Ext.Panel({
@@ -224,7 +238,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}]
 		});
 
-
 		this.mapToolbar = new Ext.Toolbar({
 			id: 'maptools',
 			height: '100%',
@@ -240,9 +253,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				width: 230
 			}, 
 			this.animationPanel,			
-			this.controlButtonPanel,
+			this.controlButtonPanel
 			],
-			
 			listeners:{
 				// stops the click bubbling to a getFeatureInfo request on the map
 				scope: this,
@@ -264,8 +276,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
+			hidden: true,
 			height: this.maplinksHeight,
-			closeAction: 'hide',
 			floating: true,
 			unstyled: true,
 			items: [
@@ -577,14 +589,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if(!this.animationPanel.isAnimating()){
 			if(openLayer.isAnimatable()){
 				//show the panel for the first time!
-				this.animationPanel.setVisible(true);
 				this.animationPanel.setSelectedLayer(openLayer);
 				this.animationPanel.update();
-				this.controlButtonPanel.setVisible(true);
+				this.mapLinks.setVisible(true);
 			}
 			else{
-				this.animationPanel.setVisible(false);
-				this.controlButtonPanel.setVisible(false);
+				this.mapLinks.setVisible(false);
 			}
 		}
 	},
