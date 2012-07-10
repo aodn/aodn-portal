@@ -1,5 +1,6 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.LayerPresenter;
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
@@ -87,12 +88,13 @@ class LayerController {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
+		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
+		
 		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
 			}
-			add(Restrictions.isEmpty("layers"))
 			eq 'blacklisted', false
 			eq 'activeInLastScan', true
 			server {
@@ -102,7 +104,8 @@ class LayerController {
 			order("title")
 		}
 		
-		def combinedList = _collectLayersAndServers(layers)
+		def combinedList = layers.grep { !parentIds.contains(it.id) }
+		combinedList = _collectLayersAndServers(combinedList)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
 
@@ -123,17 +126,11 @@ class LayerController {
     }
     
     // Lookup a layer using the server uri and layer name 
-    // (used to find any portal layer corresponding to externally entered layer details)
+    // (used to find any portal layer corresponding to externally
+	// entered layer details e.g. layers sourced from metadata records)
     
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
-        
-        // For the moment just use the protocol/authority portion of the server uri 
-        // due to inconsistencies in the way server URI's are being used.
-        // This should be unique anyway
-        
-        def serverUrl = new URL(params.serverUri)
-        def serverUriPattern = serverUrl.getProtocol() + "://" + serverUrl.getAuthority() + '%'
         
         // split name into namespace and local name components if applicable
         
@@ -150,7 +147,7 @@ class LayerController {
         
         def layerInstance = criteria.get {  
             server {
-                like("uri", serverUriPattern)
+                eq("uri", params.serverUri)
             }
             if (namespace) {
                 eq( "namespace", namespace)
@@ -159,6 +156,7 @@ class LayerController {
             }         
             eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
+			eq("activeInLastScan", true)
         }
             
         if (layerInstance) {
@@ -392,7 +390,7 @@ class LayerController {
 		}
 		
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
+		def layersJsonObject = [layerDescriptors: layersToReturn]
 		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
 		layerDescriptors*.discard()
 		
@@ -446,11 +444,7 @@ class LayerController {
 	}
 	
 	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		def filtered = layerDescriptors.findAll { !it.blacklisted && it.activeInLastScan }
-		filtered.each { layerDescriptor ->
-			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
-		}
-		return filtered
+		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
     
 	def _convertLayersToListOfMaps(layers) {

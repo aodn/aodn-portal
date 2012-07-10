@@ -13,6 +13,8 @@ class LayerTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
+		mockDomain(Layer)
+		
         def layer1 = new Layer(name : "layer1", abstractTrimmed : "description");
         mockForConstraintsTests(Layer, [layer1])
 

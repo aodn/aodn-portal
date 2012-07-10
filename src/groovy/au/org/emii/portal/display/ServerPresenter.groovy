@@ -1,11 +1,11 @@
 package au.org.emii.portal.display
 
-class Server {
+class ServerPresenter {
 
 	def id
 	def name
 	
-	Server(domainServer) {
+	ServerPresenter(domainServer) {
 		id = domainServer.id
 		name = domainServer.name
 	}

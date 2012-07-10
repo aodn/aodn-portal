@@ -554,7 +554,6 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
     
     var dl = {}
 	var server = {}
-
 	server.uri = url;
 	server.type = type;    
 	server.opacity = 100;

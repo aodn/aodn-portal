@@ -5,8 +5,6 @@ import org.slf4j.MDC
 
 class LoggingFilters {
 
-    static final def UserInfoField = 'userInfo'
-
     def filters = {
 
         addLoggingInfo(controller:'*', action:'*') {
@@ -15,14 +13,14 @@ class LoggingFilters {
 
                 def principal = SecurityUtils?.subject?.principal
 
-                def userInfo = principal ?: "Not auth'd"
-
-                MDC.put UserInfoField, userInfo as String
+                MDC.put 'userInfoForFile', "(User: ${ principal ?: "anon." }) "
+                MDC.put 'userInfoForEmail', "User: ${ principal ?: "Not logged-in" }\n"
             }
 
             afterView = {
 
-                MDC.remove UserInfoField
+                MDC.remove 'userInfoForFile'
+                MDC.remove 'userInfoForEmail'
             }
         }
     }

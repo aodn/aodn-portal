@@ -1,4 +1,3 @@
-import grails.util.Environment
 
 import java.text.SimpleDateFormat
 
@@ -10,13 +9,15 @@ import org.tmatesoft.svn.core.wc.SVNClientManager
 import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
-import org.apache.catalina.connector.Connector
 
 eventCreateWarStart = { warname, stagingDir ->
-	Ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
+	ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
 	if (grailsEnv == 'production') {
-		Ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
+		ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
 	}
+	
+	includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
+	collatePortalJavaScriptFiles()
 }
 
 eventCompileStart = { kind ->
@@ -59,10 +60,11 @@ eventCompileStart = { kind ->
 }
 
 
-eventConfigureTomcat = {tomcat ->
+eventConfigureTomcat = { tomcat ->
 
-    try{
-        def connector = new Connector("org.apache.coyote.http11.Http11Protocol")
+    try {
+		def clazz = loadDependencyClass("org.apache.catalina.connector.Connector")
+        def connector = clazz.getConstructor(String.class).newInstance("org.apache.coyote.http11.Http11Protocol")
         connector.port = System.getProperty("server.port", "8080").toInteger()
         connector.redirectPort = 8443
         connector.protocol = "HTTP/1.1"
@@ -71,8 +73,20 @@ eventConfigureTomcat = {tomcat ->
         tomcat.connector = connector
         tomcat.service.addConnector connector
     }
-    catch(Throwable t){
+    catch(Throwable t) {
         println t
     }
 
+}
+
+loadDependencyClass = { name ->
+	def doLoad = { -> classLoader.loadClass(name) }
+	try {
+		doLoad()
+	}
+	catch (ClassNotFoundException e) {
+		includeTargets << grailsScript("_GrailsCompile")
+		compile()
+		doLoad()
+	}
 }
