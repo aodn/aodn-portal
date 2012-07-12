@@ -866,6 +866,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			if (newDetailsPanelLayer == null) {
+				Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 				Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers
 			} else {
 				Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
@@ -887,7 +888,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}, this);
 		this.removeAllLayersIn(layersToRemove);
 		
-		Ext.getCmp('rightDetailsPanel').selectedLayer = null;
+		Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
 		this._closeFeatureInfoPopup();
 	},
