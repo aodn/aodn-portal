@@ -63,7 +63,7 @@ class AodaacAggregatorService {
 
     def createJob( notificationEmailAddress, params ) {
 
-        log.info "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
+        log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
 
         def apiCallArgs = []
 
@@ -173,7 +173,7 @@ class AodaacAggregatorService {
 
     void cancelJob( job ) {
 
-        log.info "Cancelling job $job"
+        log.debug "Cancelling job $job"
 
         // Generate url
         def apiCall = _aggregatorCommandUrl( CancelJobCommand, [job.jobId] )
@@ -191,6 +191,23 @@ class AodaacAggregatorService {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException( "Unable to cancel job '$job'", e )
+        }
+    }
+
+    void deleteJob( job ) {
+
+        log.debug "Deleting job $job"
+
+        try {
+            // Cancel processing before we delete our record of it
+            cancelJob job
+
+            job.delete()
+        }
+        catch (Exception e) {
+
+            log.info "Unable to delete job $job", e
+            throw new AodaacException( "Unable to delete job '$job'", e )
         }
     }
 

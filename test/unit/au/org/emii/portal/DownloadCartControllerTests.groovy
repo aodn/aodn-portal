@@ -89,7 +89,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
 
         controller.clear()
 
-        assertEquals( [] as Set, mockRequest.session.downloadCart )
+        assertNull( mockRequest.session.downloadCart )
         assertEquals "0", mockResponse.contentAsString
     }
 

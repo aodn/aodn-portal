@@ -45,22 +45,15 @@ class AodaacController {
             def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
 
             productIds = aodaacProductLinks.collect{ it.productId }.unique()
-
-            if ( !productIds ) { // If no product Ids for layer then return empty array
-
-                render ([] as JSON)
-                return
-            }
         }
 
-        try {
+        if ( productIds ) {
+
             render aodaacAggregatorService.getProductInfo( productIds ) as JSON
         }
-        catch( Exception e ) {
+        else {
 
-            log.debug "Unable to get product info for productIds: $productIds", e
-
-            render text: "Unable to get complete product info for productIds: $productIds", status: 500
+            render ([] as JSON)
         }
     }
 
@@ -71,77 +64,45 @@ class AodaacController {
 
     def createJob = {
 
-        try {
-            def job = aodaacAggregatorService.createJob( params.notificationEmailAddress, params )
+        def job = aodaacAggregatorService.createJob( params.notificationEmailAddress, params )
 
-            _addToList job
+        _addToList job
 
-            render text: "Job created (ID: ${ job?.jobId })"
-        }
-        catch (Exception e) {
-
-            log.info "Unable to create job with params ($params)", e
-
-            render text: "Unable to create job", status: 500
-        }
+        render text: "Job created (ID: ${ job?.jobId })"
     }
 
     def updateJob = {
 
-        try {
-            def job = _byId( params.id )
+        def job = _byId( params.id )
 
-            aodaacAggregatorService.updateJob job
+        aodaacAggregatorService.updateJob job
 
-            render text: "Job updated (ID: ${ job.jobId })"
-        }
-        catch (Exception e) {
-
-            log.info "Unable to update job with params ($params)", e
-
-            render text: "Unable to update job", status: 500
-        }
+        render text: "Job updated (ID: ${ job.jobId })"
     }
 
     def cancelJob = {
 
-        try {
-            def job = _byId( params.id )
+        def job = _byId( params.id )
 
-            aodaacAggregatorService.cancelJob job
+        aodaacAggregatorService.cancelJob job
 
-            _removeFromList job
+        _removeFromList job
 
-            render text: "Job cancelled (ID: ${ job.jobId })"
-        }
-        catch (Exception e) {
-
-            log.info "Unable to cancel job with params ($params)", e
-
-            render text: "Unable to cancel job", status: 500
-        }
+        render text: "Job cancelled (ID: ${ job.jobId })"
     }
 
     def deleteJob = {
 
-        try {
-            def job = _byId( params.id )
+        def job = _byId( params.id )
 
-            // Store jobId to notify the User
-            def jobId = job.jobId
+        // Store jobId to notify the User
+        def jobId = job.jobId
 
-            _removeFromList job
+        _removeFromList job
 
-            job?.delete()
+        aodaacAggregatorService.deleteJob job
 
-            render text: "Deleted job (ID: $jobId)"
-        }
-        catch (Exception e) {
-
-            log.info "Unable to delete job with params ($params)", e
-
-            render text: "Unable to delete job", status: 500
-        }
+        render text: "Job deleted (ID: $jobId)"
     }
 
     def userJobInfo = {
@@ -176,13 +137,11 @@ class AodaacController {
 
     void _addToList( item ) {
 
-        session.aodaacJobIdList = _getJobIdList() + item.id
+        _getJobIdList().add item.jobId
     }
 
     void _removeFromList( item ) {
 
-        def list = _getJobIdList()
-
-        list.remove item.id
+        _getJobIdList().remove item.jobId as Object
     }
 }
