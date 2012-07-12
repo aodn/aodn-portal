@@ -23,11 +23,13 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     
     _addElements: function() {
     	// Add container for html (empty for now)
-	    this.add(new Ext.Container({
-	        html: "Loading ...",
-	        cls: 'popupHtml',      
-	        ref: 'popupHtml'
-		}));
+    	this.blankContainer = new Ext.Container({
+			html: "Loading ...",
+			cls: 'popupHtml',
+			ref: 'popupHtml'
+		});
+
+	    this.add(this.blankContainer);
 
 	    // Add tab panel (empty for now)
 	    this.add(new Ext.TabPanel({
@@ -73,15 +75,22 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     _handleLayers: function() {
     	var resized = false;
     	var wmsLayers = this._collectUniqueLayers();
-    	Ext.each(wmsLayers, function(layer, index, all) {
-    		if ((!layer.isBaseLayer) && layer.getVisibility()) {
-    			this._requestFeatureInfo(layer);
-    			if (!resized) {
-    				this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
-    				resized = true;
-    			}
-    		}
-    	}, this);
+
+    	if(wmsLayers.length == 0){
+    		this.setTitle("No layer selected.");
+    		this.blankContainer.update("");
+    	}
+    	else{
+    		Ext.each(wmsLayers, function(layer, index, all) {
+				if (layer.getVisibility()) {
+					this._requestFeatureInfo(layer);
+					if (!resized) {
+						this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
+						resized = true;
+					}
+				}
+			}, this);
+    	}
     },
     
     _requestFeatureInfo: function(layer) {
@@ -136,25 +145,27 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	var allLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
     	allLayers.concat(this.map.getLayersByClass("OpenLayers.Layer.Image"));
         Ext.each(allLayers, function(layer, index, all) {
-        	if (layer.isAnimated) {
-        		var rootLayer = rootLayers[layer.params.LAYERS];
-	        	this._setLayerTimes(layer);
-	        	if (!rootLayer) {
-	        		rootLayers[layer.params.LAYERS] = layer;
-	        		rootLayer = layer;
-	        		uniqueLayers.push(rootLayer);
-	        	}
-	        	if (this._after(rootLayer, layer)) {
-	        		rootLayer.endTime = layer.endTime;
-	        	}
-	        	if (this._before(rootLayer, layer)) {
-	        		rootLayer.startTime = layer.startTime;
-	        	}
-        	}
-        	else {
-        		uniqueLayers.push(layer);
-        		rootLayers[layer.params.LAYERS] = layer;
-        	}
+        	if(!layer.isBaseLayer){
+				if (layer.isAnimated) {
+					var rootLayer = rootLayers[layer.params.LAYERS];
+					this._setLayerTimes(layer);
+					if (!rootLayer) {
+						rootLayers[layer.params.LAYERS] = layer;
+						rootLayer = layer;
+						uniqueLayers.push(rootLayer);
+					}
+					if (this._after(rootLayer, layer)) {
+						rootLayer.endTime = layer.endTime;
+					}
+					if (this._before(rootLayer, layer)) {
+						rootLayer.startTime = layer.startTime;
+					}
+				}
+				else {
+					uniqueLayers.push(layer);
+					rootLayers[layer.params.LAYERS] = layer;
+				}
+			}
         }, this);
         
         return uniqueLayers;
