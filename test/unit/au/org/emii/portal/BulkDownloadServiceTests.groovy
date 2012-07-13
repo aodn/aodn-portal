@@ -106,8 +106,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
             String filename = entry.getName()
             byte[] bytes = checkBaos.toByteArray()
 
-            println "filename: $filename"
-
             // Count file entry and check size
             switch ( filename ) {
                 case "file1.txt":

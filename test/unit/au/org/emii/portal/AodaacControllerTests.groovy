@@ -14,9 +14,9 @@ class AodaacControllerTests extends ControllerUnitTestCase {
     protected void tearDown() {
         super.tearDown()
 
-        AodaacJob.metaClass.static = null
-        AodaacProductLink.metaClass.static = null
-        Layer.metaClass.static = null
+        AodaacJob.metaClass = null
+        AodaacProductLink.metaClass = null
+        Layer.metaClass = null
     }
 
     void testProductInfo_PassingProductIds() {

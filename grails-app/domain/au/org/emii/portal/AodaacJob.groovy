@@ -39,10 +39,6 @@ class AodaacJob {
         this.jobId = jobId
         this.notificationEmailAddress = notificationEmailAddress
 
-        println jobParams.getClass()
-        println jobParams
-
-
         this.jobParams = new AodaacJobParams()
 
         // Bind jobParams

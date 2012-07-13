@@ -3,6 +3,8 @@ package au.org.emii.portal
 import au.org.emii.portal.exceptions.AodaacException
 import grails.converters.JSON
 
+import java.text.SimpleDateFormat
+
 class AodaacAggregatorService {
 
     static transactional = true
@@ -40,7 +42,7 @@ class AodaacAggregatorService {
         // Delimeters for sections
 
         // Get the javascript
-        def productDataJavascript = "${ _aggregatorBaseUrl() }aodaac-$AodaacEnvironment/js/productData.js".toURL().text
+        def productDataJavascript = _productDataJavascriptAddress().toURL().text
 
         // Split into relevant parts
         productDataJavascript = productDataJavascript.split( ProductDataDelimeter )[ ProductDataIdx ] // Ignore dataset info
@@ -67,10 +69,15 @@ class AodaacAggregatorService {
 
         def apiCallArgs = []
 
+        def fromJavascriptFotmatter = new SimpleDateFormat( JavascriptUIDateOutputFormat )
+        def toJavascriptFormatter = new SimpleDateFormat( AggregatorDateRangeInputFormat )
+        def dateRangeStart = fromJavascriptFotmatter.parse( params.dateRangeStart )
+        def dateRangeEnd   = fromJavascriptFotmatter.parse( params.dateRangeEnd )
+
         apiCallArgs.with {
             add params.outputFormat
-            add params.dateRangeStart?.format( AggregatorDateRangeInputFormat )
-            add params.dateRangeEnd?.format( AggregatorDateRangeInputFormat )
+            add toJavascriptFormatter.format( dateRangeStart )
+            add toJavascriptFormatter.format( dateRangeEnd )
             add params.timeOfDayRangeStart
             add params.timeOfDayRangeEnd
             add params.latitudeRangeStart
@@ -81,11 +88,11 @@ class AodaacAggregatorService {
         }
 
         // Generate url
-        def apiCall = _aggregatorCommandUrl( StartJobCommand, apiCallArgs )
+        def apiCall = _aggregatorCommandAddress( StartJobCommand, apiCallArgs )
 
         // Include server/environment
         params.environment = _aggregatorEnvironment()
-        params.server = _aggregatorBaseUrl()
+        params.server = _aggregatorBaseAddress()
 
         def responseText
 
@@ -99,22 +106,17 @@ class AodaacAggregatorService {
 
             log.debug "responseJson: ${ responseJson }"
 
-            if ( responseJson.jobId ) {
+            def job = new AodaacJob( responseJson.jobId, params, notificationEmailAddress )
 
-                def job = new AodaacJob( responseJson.jobId, params, notificationEmailAddress )
+            job.save failOnError: true
 
-                job.save failOnError: true
-
-                return job
-            }
+            return job
         }
         catch( Exception e ) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException( "Unable to create new job (response: '$responseText')", e )
         }
-
-        return null
     }
 
     void updateJob( job ) {
@@ -132,7 +134,7 @@ class AodaacAggregatorService {
         }
 
         // Generate url
-        def apiCall = _aggregatorCommandUrl( UpdateJobCommand, [job.jobId] )
+        def apiCall = _aggregatorCommandAddress( UpdateJobCommand, [job.jobId] )
 
         try {
             // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,progress.cgi.sh,20110309T162224_3818
@@ -141,7 +143,7 @@ class AodaacAggregatorService {
             // Make the call
             def response = apiCall.toURL().text
 
-            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" ).replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" ) // Fixing invalid JSOn response from AODAAC aggregator
+            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" ).replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" ) // Fixing invalid JSON response from AODAAC aggregator
 
             log.debug "response: ${ response }"
 
@@ -176,7 +178,7 @@ class AodaacAggregatorService {
         log.debug "Cancelling job $job"
 
         // Generate url
-        def apiCall = _aggregatorCommandUrl( CancelJobCommand, [job.jobId] )
+        def apiCall = _aggregatorCommandAddress( CancelJobCommand, [job.jobId] )
 
         try {
             // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,startBackgroundAggregator.cgi.sh,20110309T162224_3818
@@ -206,7 +208,6 @@ class AodaacAggregatorService {
         }
         catch (Exception e) {
 
-            log.info "Unable to delete job $job", e
             throw new AodaacException( "Unable to delete job '$job'", e )
         }
     }
@@ -216,25 +217,18 @@ class AodaacAggregatorService {
         log.debug "Retrieving results for $job"
 
         // Generate url
-        def apiCall = _aggregatorCommandUrl( GetDataCommand, [job.jobId] )
+        def apiCall = _aggregatorCommandAddress( GetDataCommand, [job.jobId] )
 
-        try {
-            // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
-            log.debug "apiCall: ${ apiCall }"
+        // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
+        log.debug "apiCall: ${ apiCall }"
 
-            // Make the call
-            def response = apiCall.toURL().text
+        // Make the call
+        def response = apiCall.toURL().text
 
-            log.debug "response: $response"
+        log.debug "response: $response"
 
-            job.result = new AodaacJobResult( dataUrl: response?.trim() )
-            job.save failOnError: true
-        }
-        catch( Exception e ) {
-
-            log.info "Call to '$apiCall' failed", e
-            throw new AodaacException( "Unable to retrieve results of job '$job'", e )
-        }
+        job.result = new AodaacJobResult( dataUrl: response?.trim() )
+        job.save failOnError: true
     }
 
     void _verifyResultFileExists( job ) {
@@ -247,8 +241,6 @@ class AodaacAggregatorService {
         try {
             def url = job.result.dataUrl.toURL()
 
-            log.debug "job.result.dataUrl.toURL(): ${ url }"
-
             def conn = url.openConnection()
             conn.requestMethod = "HEAD"
             conn.connect()
@@ -259,15 +251,15 @@ class AodaacAggregatorService {
 
                 job.dataFileExists = true
             }
+
+            // Record date this check occurred
+            job.mostRecentDataFileExistCheck = new Date()
+            job.save failOnError: true
         }
         catch( Exception e ) {
 
-            log.debug "Could not check existence of result file for job '$job'", e
+            log.info "Could not check existence of result file for job '$job'", e
         }
-
-        // Record date this check occurred
-        job.mostRecentDataFileExistCheck = new Date()
-        job.save failOnError: true
     }
 
     void _sendNotificationEmail( job ) {
@@ -368,9 +360,9 @@ class AodaacAggregatorService {
 
                 productsInfo << productInfo
             }
-            catch (Exception) {
+            catch (Exception e) {
 
-                log.info "Problem reading info from JSON (possible invalid values in JSON)"
+                log.info "Problem reading info from JSON (possible invalid values in JSON)", e
                 log.info "productDataJson: $productDataJson"
                 log.info "productExtentJson: $productExtentJson"
             }
@@ -381,9 +373,14 @@ class AodaacAggregatorService {
 
     // Supporting logic
 
-    def _aggregatorCommandUrl( command, args ) {
+    def _productDataJavascriptAddress() {
 
-        def baseUrl = _aggregatorBaseUrl()
+        return "${ _aggregatorBaseAddress() }aodaac-${_aggregatorEnvironment()}/js/productData.js"
+    }
+
+    def _aggregatorCommandAddress( command, args ) {
+
+        def baseUrl = _aggregatorBaseAddress()
         def cgiPart = "cgi-bin/IMOS.cgi?"
         def environmentPart = "${_aggregatorEnvironment()},"
         def commandPart = "$command,"
@@ -392,7 +389,7 @@ class AodaacAggregatorService {
         return baseUrl + cgiPart + environmentPart + commandPart + argPart
     }
 
-    def _aggregatorBaseUrl() {
+    def _aggregatorBaseAddress() {
 
         return _ensureTrailingSlash( grailsApplication.config.aodaacAggregator.url )
     }
