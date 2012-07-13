@@ -8,6 +8,8 @@ grails.project.dependency.resolution = {
     inherits("global") {
         // uncomment to disable ehcache
         // excludes 'ehcache'
+		excludes "xml-apis"
+		excludes("catalina")
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -31,16 +33,10 @@ grails.project.dependency.resolution = {
     }
 	
 	// Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
-	pom true
-
-
-    inherits("global") {
-        excludes "xml-apis"
-    }
-
-
-
-
+	pom true	
+	plugins {
+		test ":build-test-data:1.1.2"
+	}
 }
 
 coverage {
@@ -51,6 +47,7 @@ coverage {
 grails.war.resources = { stagingDir ->
     
     delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.2.jar")
+	delete(file:"${stagingDir}/WEB-INF/lib/catalina-6.0.32.jar")
 	copy(toDir: "${stagingDir}/WEB-INF/classes/instance") {
 		fileset(dir: "instance")
 	}

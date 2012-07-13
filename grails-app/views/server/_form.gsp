@@ -89,4 +89,24 @@
                                     <g:textField name="scanFrequency" value="${serverInstance?.scanFrequency}" /><font class="hint">in minutes</font>
                                 </td>
                             </tr>
+
+                            <tr class="prop">
+								<td valign="top" class="name">
+									<label for="username"><g:message code="server.username.label" default="Username for protected server" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'username', 'errors')}">
+									<g:textField name="username" value="${serverInstance?.username}" />
+								</td>
+							</tr>
+
+							<tr class="prop">
+								<td valign="top" class="name">
+									<label for="password"><g:message code="server.password.label" default="Password for protected server" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'password', 'errors')}">
+									<g:textField name="password" value="${serverInstance?.password}" />
+								</td>
+							</tr>
+
+
                         

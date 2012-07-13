@@ -41,6 +41,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
 
+<g:if env="development">
 <script src="${resource(dir:'js',file:'portal/prototypes/OpenLayers.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/lang/en.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js?')}${jsVerNum}" type="text/javascript"></script>   
@@ -53,6 +54,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/common/Controller.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/SuggestionStore.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/data/CatalogResult.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResultsStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/LinkStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/FacetStore.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -115,6 +117,10 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/portal.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js?')}${jsVerNum}" type="text/javascript"></script>
+</g:if>
+<g:else>
+<script src="${resource(dir:'js',file:'portal-all.js?')}${jsVerNum}" type="text/javascript"></script>
+</g:else>
 
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>

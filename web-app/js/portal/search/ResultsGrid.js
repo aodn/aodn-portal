@@ -100,6 +100,8 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      };
  
      Ext.apply(this, Ext.apply(this.initialConfig, config));
+     
+     this.downloadProtocols = this._parseProtocols(Portal.app.config.downloadCartDownloadableProtocols);
  
      Portal.search.ResultsGrid.superclass.initComponent.apply(this, arguments);
      
@@ -208,10 +210,10 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
+	  var result = new Portal.search.data.CatalogResult({record: rec});
+	  var downloads = result.getDownloadLinks(this.downloadProtocols);
       
-      var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
-      
-      if (this.getProtocolCount(rec.get('links'), downloadableProtocols) > 0) {
+      if (downloads.length > 0) {
               return 'p-result-cart-add';
       } else {
               return 'p-result-disabled';
@@ -321,25 +323,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   addLinkDataToCart: function(recs) {
-
-      var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split("\n");
       var tuplesToAdd = new Array();
 
-      for (var i = 0; i < recs.length; i++) {
+      Ext.each(recs, function(rec) {
+    	  var result = new Portal.search.data.CatalogResult({record: rec});
+    	  
+    	  var recTuples = result.getDownloadLinks(this.downloadProtocols);
 
-          var rec = recs[i];
-          var links = rec.get('links');
-
-          for (var j = 0; j < links.length; j++) {
-
-              var link = links[j];
-
-              if ( this.containsProtocol( downloadableProtocols, link.protocol ) ) {
-
-                  tuplesToAdd.push( {record: rec, link: link} );
-              }
-          }
-      }
+    	  Ext.each(recTuples, function(tuple) {
+    		  tuplesToAdd.push(tuple)
+    	  });
+      }, this);
 
       addToDownloadCart( tuplesToAdd );
   },
@@ -386,7 +380,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     linkStore.filterByProtocols(protocols);
     return linkStore.getAt(0);
-  }
+  },
+  
+	_parseProtocols: function(protocols) {
+		var result = [];
+		
+		Ext.each(protocols.split("\n"), function(protocol) {
+			result.push(protocol.trim())
+		});
+		
+		return result;
+	}
 });
 
 Ext.reg('portal.search.resultsgrid', Portal.search.ResultsGrid);

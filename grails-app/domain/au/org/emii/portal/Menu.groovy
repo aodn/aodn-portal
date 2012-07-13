@@ -121,15 +121,11 @@ class Menu {
 		
 		for (def iterator = menuItems.iterator(); iterator.hasNext();) {
 			def item = iterator.next()
-			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
+			if ((item.layer && !item.layer.isViewable()) || (item.server && !ids.contains(item.server.id))) {
 				iterator.remove()
 			}
 		}
 		return this
-	}
-	
-	def _isLayerViewable(layer) {
-		return layer.activeInLastScan && !layer.blacklisted
 	}
 	
 	def getServerIdsWithAvailableLayers() {

@@ -7,6 +7,10 @@ p, h1, h2, h3 {
     border-radius: 5px;
 }
 
+.x-toolbar .x-toolbar-cell {
+    vertical-align: top;
+}
+
 
 .x-btn-text {
     font-weight: bold;

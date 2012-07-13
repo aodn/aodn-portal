@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.apache.commons.codec.binary.Base64;
+
 class Server {
     Long id
     String uri
@@ -11,6 +13,8 @@ class Server {
     Integer opacity // layer opacity
     String imageFormat
     String comments
+    String username
+    String password
 
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
@@ -46,6 +50,8 @@ class Server {
         opacity()
         imageFormat( inList:['image/png','image/gif'] )
         comments(nullable:true)
+        username(nullable:true)
+        password(nullable:true)
     }
     
     String toIdString() {
@@ -73,4 +79,12 @@ class Server {
         Config.activeInstance().refresh()
         Config.activeInstance().defaultLayers
     }
+	
+	def isCredentialled() {
+		return username && password
+	}
+	
+	def getEncodedCredentials() {
+		return new String(Base64.encodeBase64("$username:$password".getBytes()))
+	}
 }

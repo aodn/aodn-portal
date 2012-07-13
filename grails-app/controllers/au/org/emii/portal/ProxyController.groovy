@@ -1,5 +1,8 @@
 package au.org.emii.portal
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+
 class ProxyController {
 
     def grailsApplication
@@ -7,49 +10,44 @@ class ProxyController {
     // proxies HTML by default or XML and Images if specified
     def index = {		
 		if ( params.url ) {
-            
-				def targetUrl = params.url.toURL()  
-				if (allowedHost(params.url)) {
+			_index()
+		}
+		else {
+			render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
+		}
+    }
+	
+	def _index() {
+		def targetUrl = _getUrl(params)
+		if (allowedHost(params.url)) {
+			
+			def conn = targetUrl.openConnection()
+			def outputStream = response.outputStream
+			
+			_addAuthentication(conn, targetUrl)
 
-					// handle binary images
-					if (params.format?.startsWith("image")) {
-						def webImage = new ByteArrayOutputStream()
-						webImage << new URL(params.url).openStream()
-
-						if (request.method == 'HEAD') { 
-							render text: "", contentType: params.format
-						}
-						else {
-
-							response.contentLength = webImage.size()
-							response.contentType = params.format
-							response.outputStream << webImage.toByteArray()
-							response.outputStream.flush()
-						}                    
-					}
-					// else handle as HTML by default or XML if specified
-					else {
-						def format = params.format == "text/xml" ? "text/xml" : "text/html"
-
-						//log.debug "TargetUrl: $targetUrl (expected type: $format)"
-						try {
-							render text: targetUrl.text, contentType: format, encoding: "UTF-8"
-						}
-						catch (Exception e) {                    
-							log.debug "Exception occurred: $e"
-							render text: "An error occurred making request to $targetUrl", status: 500
-						}
-					}
-				}
-				else {
-					log.error "Proxy: The url ${params.url} was not allowed"
-					render text: "Host '${targetUrl.getHost()}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
-				}
+			if (request.method == 'HEAD') {
+				render(text: "", contentType: (params.format ?: params.FORMAT))
 			}
 			else {
-				render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
+				try {
+					outputStream << conn.inputStream
+					outputStream.flush()
+				}
+				catch (Exception e) {
+					log.debug "Exception occurred: $e"
+					render text: "An error occurred making request to $targetUrl", status: 500
+				}
+				finally {
+					IOUtils.closeQuietly(outputStream)
+				}
 			}
-    }
+		}
+		else {
+			log.error "Proxy: The url ${params.url} was not allowed"
+			render text: "Host '${targetUrl.getHost()}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
+		}
+	}
     
     Boolean allowedHost (url) {
         
@@ -150,5 +148,33 @@ class ProxyController {
 			}
 			
 		}
+	}
+	
+	def _getUrl(params) {
+		def targetUrl = params.url.toURL()
+		def server = _getServer(targetUrl)
+		
+		if (server && server.isCredentialled()) {
+			def query = params.findAll({key, value -> key != "controller" && key != "url" && key != "format"})
+			def queryStr = ""
+
+			query.each { key, value ->
+				queryStr += "&$key=$value"
+			}
+			targetUrl = (params.url + queryStr).toURL()
+		}
+		
+		return targetUrl
+	}
+	
+	def _addAuthentication(connection, url) {
+		def server = _getServer(url)
+		if (server && server.isCredentialled()) {
+			connection.setRequestProperty("Authorization", "Basic ${server.getEncodedCredentials()}")
+		}
+	}
+	
+	def _getServer(url) {
+		return Server.findByUriLike("%${url.getHost()}%")
 	}
 }

@@ -39,6 +39,17 @@ Portal.data.CatalogResultsStore = function(){
         }
     }
     
+    /**
+     * Can user download geonetwork uploads? Yes if no information to the contrary 
+     */
+    function getCanDownload(v, record){
+        if (record.geonet_info && record.geonet_info.download) {
+            return record.geonet_info.download[0].value != 'false';
+        } else {
+            return true;
+        }
+    }
+    
     function getAbstract(v, record){
         if (record['abstract']) {
             return record['abstract'][0].value;
@@ -67,6 +78,9 @@ Portal.data.CatalogResultsStore = function(){
         }, {
             name: 'source',
             convert: getSource
+        }, {
+            name: 'canDownload',
+            convert: getCanDownload
         }, {
             name: 'bbox',
             mapping: 'BoundingBox',

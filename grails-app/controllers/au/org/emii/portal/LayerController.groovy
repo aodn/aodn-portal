@@ -1,12 +1,12 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.LayerPresenter;
+import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
 import org.xml.sax.SAXException
-
-import au.org.emii.portal.display.MenuJsonCache;
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -88,12 +88,13 @@ class LayerController {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
 		
+		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
+		
 		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
 				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
 			}
-			add(Restrictions.isEmpty("layers"))
 			eq 'blacklisted', false
 			eq 'activeInLastScan', true
 			server {
@@ -103,7 +104,8 @@ class LayerController {
 			order("title")
 		}
 		
-		def combinedList = _collectLayersAndServers(layers)
+		def combinedList = layers.grep { !parentIds.contains(it.id) }
+		combinedList = _collectLayersAndServers(combinedList)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
 	}
 
@@ -124,17 +126,11 @@ class LayerController {
     }
     
     // Lookup a layer using the server uri and layer name 
-    // (used to find any portal layer corresponding to externally entered layer details)
+    // (used to find any portal layer corresponding to externally
+	// entered layer details e.g. layers sourced from metadata records)
     
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
-        
-        // For the moment just use the protocol/authority portion of the server uri 
-        // due to inconsistencies in the way server URI's are being used.
-        // This should be unique anyway
-        
-        def serverUrl = new URL(params.serverUri)
-        def serverUriPattern = serverUrl.getProtocol() + "://" + serverUrl.getAuthority() + '%'
         
         // split name into namespace and local name components if applicable
         
@@ -151,7 +147,7 @@ class LayerController {
         
         def layerInstance = criteria.get {  
             server {
-                like("uri", serverUriPattern)
+                eq("uri", params.serverUri)
             }
             if (namespace) {
                 eq( "namespace", namespace)
@@ -160,6 +156,7 @@ class LayerController {
             }         
             eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
+			eq("activeInLastScan", true)
         }
             
         if (layerInstance) {
@@ -249,32 +246,31 @@ class LayerController {
 
     def saveOrUpdate = {
 
+        // Logging output
+        if ( log.debugEnabled ) {
+            def layerDataPrint = JSON.parse( params.layerData as String )
+            layerDataPrint.children = "[...]"
+            layerDataPrint.supportedProjections = "[...]"
+
+            log.debug "metadata:  ${params.metadata}"
+            log.debug "layerData: $layerDataPrint"
+        }
+
+        // Check credentials
         try {
-            // Logging output
+            _validateCredentialsAndAuthenticate params
+        }
+        catch(Exception e) {
 
-            if ( log.debugEnabled ) {
-                def layerDataPrint = JSON.parse( params.layerData as String )
-                layerDataPrint.children = "[...]"
-                layerDataPrint.supportedProjections = "[...]"
+            log.info "Problem validating credentials", e
 
-                log.debug "metadata:  ${params.metadata}"
-                log.debug "layerData: $layerDataPrint"
-            }
+            log.debug "Possible problem with '${ params.password }'"
 
-            // Check credentials
-            try {
-                _validateCredentialsAndAuthenticate params
-            }
-            catch(Exception e) {
+            render status: 401, text: "Credentials missing or incorrect"
+            return
+        }
 
-                log.info "Problem validating credentials", e
-
-                render status: 401, text: "Credentials missing or incorrect"
-                return
-            }
-            
-            // Should control be handed-off to layerService as soon as the credentials are checked?
-            
+        try {
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
@@ -394,9 +390,7 @@ class LayerController {
         }
 			 
 		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: _convertLayersToListOfMaps(layersToReturn)]
-		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
-		layerDescriptors*.discard()
+		def layersJsonObject = [layerDescriptors: layersToReturn]
 		
 		return (layersJsonObject as JSON).toString()
     }
@@ -448,11 +442,7 @@ class LayerController {
 	}
 	
 	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		def filtered = layerDescriptors.findAll { !it.blacklisted && it.activeInLastScan }
-		filtered.each { layerDescriptor ->
-			layerDescriptor.layers = _removeBlacklistedAndInactiveLayers(layerDescriptor.layers)
-		}
-		return filtered
+		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
     
 	def _convertLayersToListOfMaps(layers) {
@@ -469,6 +459,8 @@ class LayerController {
 			def criteria = Layer.createCriteria()
 			layers = criteria.list {
 				'in'('id', layerIds)
+				eq("activeInLastScan", true)
+				eq("blacklisted", false)
 				join 'server'
     }
 		}

@@ -51,6 +51,11 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
   
   setActiveTab: function(item) {
     Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
+	
+	if (!this.isMapVisible()) {
+		this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
+		this.portalPanel.getMapPanel().updateLoadingImage("none");
+	}
     
     // Ensure tab selectors reflect actual tab selected
     var tabIndex = this.items.indexOf(this.getActiveTab());

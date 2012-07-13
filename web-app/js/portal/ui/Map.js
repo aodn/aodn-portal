@@ -1,10 +1,14 @@
 Ext.namespace('Portal.ui');
 
+
+
 Portal.ui.Options = Ext.extend(Object, {
 	
 	constructor: function(cfg) {
 		var config = Ext.apply({}, cfg);
 		Portal.ui.Options.superclass.constructor.call(this, config);
+		
+		Ext.QuickTips.init();
 		
 		var container = document.getElementById("navtoolbar");                
                 
@@ -21,12 +25,10 @@ Portal.ui.Options = Ext.extend(Object, {
 		toolPanel.addControls( [ zoom,pan] );
 		
 		this.controls = [
-		new OpenLayers.Control.Navigation(),
 		new OpenLayers.Control.Attribution(),
 		new OpenLayers.Control.PanZoomBar(),
 		new OpenLayers.Control.MousePosition(),
 		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.NavigationHistory(),
 		new OpenLayers.Control.OverviewMap({
 			autoPan: true,
 			minRectSize: 30,
@@ -68,7 +70,6 @@ Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
         );
     }, 
 
-    onClick: function(event) {}
 });
 
 Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
@@ -91,8 +92,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			split: true,
 			header: false,
 			initialBbox: this.appConfig.initialBbox,
-            autoZoom: this.appConfig.autoZoom,
-            hideLayerOptions: this.appConfig.hideLayerOptions,
+			autoZoom: this.appConfig.autoZoom,
+			hideLayerOptions: this.appConfig.hideLayerOptions,
 			activeLayers: {},
 			layersLoading: 0
 		}, cfg);
@@ -108,9 +109,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			scope: this,
 			onClick: function(event) {
 				this.scope._handleFeatureInfoClick(event);
-				//imgSizer(); // not working!!
 			}
 		});
+		
+		
 		this.map.addControl(clickControl);
 		clickControl.activate();
 
@@ -127,6 +129,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	    
 		this.on('hide', function() {
+			// map is never hidden!!!!"
 			this.updateLoadingImage("none");
 			this._closeFeatureInfoPopup();
 		}, this);
@@ -150,13 +153,22 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				//this.style.cursor="pointer";
 				clickControl.activate();
 			});
-        }, this);
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
+			});
+			jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function() {
+				jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
+			});
+
+			
+		}, this);
         
 		this.on('tabchange', function() {
 			this._closeFeatureInfoPopup();
 		}, this);
-        
-		// make sure layer store reflects loaded layers 
+
+
+		// make sure layer store reflects loaded layers
 		// even if the map hasn't been rendered yet
 		this.layers.bind(this.map);
 	},
@@ -173,7 +185,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	_findFeatureInfo: function(event) {
-		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig });
+		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig, maximisedSize: this.getViewSize() });
 		this.featureInfoPopup.findFeatures(event);
 	},
     
@@ -188,38 +200,149 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		});
 	},
 	
-	initToolBar: function() {
-		this.mapToolbar = new Ext.Toolbar({
-			id: 'maptools',
-			height: 35,
-			width: '100%',
-			cls: 'semiTransparent noborder',
-			overCls: "fullTransparency",
-			unstyled: true  
-		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		this.mapToolbar.on('click', this.eventStopper);
-		return this.mapToolbar;
-	},
+
 	
 	initMapLinks: function() {
-		var mapLinks = new Ext.Panel({
+		var parent = this;
+
+		//setVisible(true) for floating panel doesn't work without this fix
+		//http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
+		var supr = Ext.Element.prototype;
+        Ext.override(Ext.Layer, {
+        	hideAction : function(){
+        		this.visible = false;
+        		if(this.useDisplay === true){
+        			this.setDisplayed(false);
+        		}else{
+        			supr.setLeftTop.call(this, -10000, -10000);
+        		}
+        	}
+        });
+
+		this.animationPanel = new Portal.details.AnimationPanel();
+
+		this.controlButtonPanel = new Ext.Panel({
+
+			bodyStyle:'padding: 6px; margin: 2px;',
+			items: [{
+				xtype: 'button',
+				iconCls: 'arrowUp',
+				ref: 'controlButton',
+				iconAlign: 'right',
+				text: OpenLayers.i18n('controlButton_4animationPanel'),
+				listeners:{
+					// stops the click bubbling to a getFeatureInfo request on the map
+					scope: this,
+					click: this.toggleMapLinks
+				}
+			}]
+		});
+
+		this.mapToolbar = new Ext.Toolbar({
+			id: 'maptools',
+			height: '100%',
+			width: '100%',
+			cls: 'semiTransparent',
+			defaults: {	
+				//bodyStyle:'padding:5px; margin:2px'
+			},
+			unstyled: true,
+			items: [				
+			{
+				xtype: 'tbspacer', 
+				width: 230
+			}, 
+			this.animationPanel,			
+			this.controlButtonPanel
+			],
+			listeners:{
+				// stops the click bubbling to a getFeatureInfo request on the map
+				scope: this,
+				render: function(p){
+					p.getEl().on('click', this.eventStopper);
+					p.getEl().on('dblclick', this.eventStopper);
+				},
+				single: true  // Remove the listener after first invocation
+			}
+		});
+		
+		
+		this.maplinksHeight = 52;
+
+		this.expandBar = this.initToolBarExpanderBar();
+
+		
+		this.mapLinks = new Ext.Panel({
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
-			closeAction: 'hide',
+			hidden: true,
+			height: this.maplinksHeight,
 			floating: true,
 			unstyled: true,
-			closeable: true,
-			items: this.initToolBar()
+			items: [
+			this.expandBar,
+			this.mapToolbar
+			]
 		});
-		// stops the click bubbling to a getFeatureInfo request on the map
-		mapLinks.on('click', this.eventStopper);
-		mapLinks.setPosition(1, 0); // override with CSS later
-		this.add(mapLinks);
+
+		this.mapLinks.setPosition(1, 0); // override with CSS later
+		this.add(this.mapLinks);
 	},
 	
-	eventStopper: function(ev, target) {
+
+
+	_contractMapLinks: function(){
+		this.mapLinks.setHeight(this.maplinksHeight);
+		this.expandBar.addClass("expandUpLink");
+		this.expandBar.removeClass("expandDownLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowUp");
+		
+	},
+
+	_expandMapLinks: function(){
+		this.mapLinks.setHeight(200);
+		this.expandBar.addClass("expandDownLink");
+		this.expandBar.removeClass("expandUpLink");
+		this.controlButtonPanel.controlButton.setIconClass("arrowDown");
+	},
+	
+	toggleMapLinks: function() {
+		
+		if (this.mapLinks.getHeight() > this.maplinksHeight) {
+			this._contractMapLinks();
+		}
+		else {
+			this._expandMapLinks();
+		}
+	},
+		
+	initToolBarExpanderBar: function() {
+		var parent = this;		
+		var toolbar = new Ext.Toolbar({
+			id: 'mapToolbarExpanderBar',
+			height: 10,
+			width: '100%',
+			cls: 'semiTransparent noborder expandUpLink link',
+			overCls: "mapToolbarExpanderBarOver",
+			unstyled: true,
+			listeners:{
+				//scope: this,
+				render: function(bar) {					
+					bar.getEl().on('click', function(ev) {
+						parent.toggleMapLinks();
+						parent.eventStopper(ev);
+					});
+					bar.getEl().on('dblclick', parent.eventStopper);
+				}
+			}
+		});
+		return toolbar;
+	},
+	
+	
+	eventStopper: function(ev) {
+		//console.log(ev.type);
 		ev.stopPropagation(); // Cancels bubbling of the event
 	},
 	
@@ -340,7 +463,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
-			EXCEPTIONS: 'application/vnd.ogc.se_xml',
 			queryable: layerDescriptor.queryable
 		};
 		if (overrides) {
@@ -353,13 +475,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		return server.uri;
 	},
 	
-  getServerUri: function(layerDescriptor) {
-    var serverUri = this.getUri(this.getServer(layerDescriptor));
-    if (layerDescriptor.cache == true) {
-      serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
-    }
-    return serverUri;
-  },
+	getServerUri: function(layerDescriptor) {
+		var serverUri = this.getUri(this.getServer(layerDescriptor));
+		if (layerDescriptor.cache == true) {
+			serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);         
+		}
+		return serverUri;
+	},
   
 	getParent: function(layerDescriptor) {
 		return layerDescriptor.parent;
@@ -380,6 +502,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	setDomainLayerProperties: function(openLayer, layerDescriptor) {
 		openLayer.grailsLayerId = layerDescriptor.id;
 		openLayer.server= layerDescriptor.server;
+
+        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
+        //provide a way to add header information to a WMS request
+		openLayer.proxy(proxyURL);
 		openLayer.cql = layerDescriptor.cql;  
 		openLayer.bboxMinX = layerDescriptor.bboxMinX;
 		openLayer.bboxMinY = layerDescriptor.bboxMinY;
@@ -394,8 +520,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
 		openLayer.allStyles = layerDescriptor.styles;
-        openLayer.dimensions = layerDescriptor.dimensions;
-        openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
+		openLayer.dimensions = layerDescriptor.dimensions;
+		openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
 	},
 	
 	getWmsOpenLayerUri: function(originalWMSLayer) {
@@ -458,8 +584,23 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.addLayer(openLayer, showLoading);
 		}, this);
 	},
-	
+
+	updateAnimationPanel: function(openLayer){
+		if(!this.animationPanel.isAnimating()){
+			if(openLayer.isAnimatable()){
+				//show the panel for the first time!
+				this.animationPanel.setSelectedLayer(openLayer);
+				this.animationPanel.update();
+				this.mapLinks.setVisible(true);
+			}
+			else{
+				this.mapLinks.setVisible(false);
+			}
+		}
+	},
+
 	addLayer: function(openLayer, showLoading) {
+		this.updateAnimationPanel(openLayer);
 		if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
 			if (!this.defaultLayersLoaded) {
 				this.waitForDefaultLayers(openLayer, showLoading);
@@ -554,16 +695,16 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 
 		/********************************************************
-	     * attach the old WMS layer to the new Image layer !!
-	     * if this is set we know its an animated layer
-	     * ******************************************************/
+			 * attach the old WMS layer to the new Image layer !!
+			 * if this is set we know its an animated layer
+			 * ******************************************************/
 		newNCWMS.originalWMSLayer = layer;
 
 		/*******************************************************
-	     * add to map is done here
-	     * swap in the new animating layer into openlayers
-	     * keeping the layer position
-	     *******************************************************/
+			 * add to map is done here
+			 * swap in the new animating layer into openlayers
+			 * keeping the layer position
+			 *******************************************************/
 		this.swapLayers(newNCWMS, currentLayer);
 
 	},
@@ -619,7 +760,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	zoomTo: function(bounds, closest) {
 		if((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)){
-		 	this.map.setCenter(bounds.getCenterLonLat(), 3);
+			this.map.setCenter(bounds.getCenterLonLat(), 3);
 		}
 		else{
 			this.map.zoomToExtent(bounds, closest);
@@ -639,7 +780,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			success: function(resp, options) {
 				var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
 				if (layerDescriptor) {
-					layerDescriptor.isNcwms = function() {
+					layerDescriptor.isNcwms = function() {'setSelectedLayer'
 						
 					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
@@ -685,7 +826,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 
 			Ext.getCmp('rightDetailsPanel').update(openLayer);
-			
 
 
 			if (animated) {
@@ -714,41 +854,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				}
 			});
 		}
-	    
-	    
-		// TIMESTEPS URI
-		//http://obsidian:8080/ncWMS/wms?item=timesteps&layerName=67%2Fu&day=2006-09-19T00%3A00%3A00Z&request=GetMetadata
-		// this is  timestrings we can use in the uri to control animation
-		// based on timestepss
-		//http://obsidian:8080/ncWMS/wms?item=animationTimesteps&layerName=67%2FTemperature_layer_between_two_pressure_difference_from_ground&start=2002-12-02T22%3A00%3A00.000Z&end=2002-12-03T01%3A00%3A00.000Z&request=GetMetadata
-		/**
-	     * Support for parsing JSON animation parameters from NCWMS JSON responses
-	     *
-	     * Example JSON response string:
-	     * {
-	     * 	"units":"m/sec",
-	     * 	"bbox":[146.80064392089844,-43.80047607421875,163.8016815185547,-10.000572204589844],
-	     * 	"scaleRange":[-0.99646884,1.2169001],
-	     * 	"supportedStyles":["BOXFILL"],
-	     * 	"zaxis":{
-	     * 		"units":"meters",
-	     * 		"positive":false,
-	     * 		"values":[-5]
-	     * 	},
-	     * 	"datesWithData":{
-	     * 		"2006":{
-	     * 			"8":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-	     * 		}
-	     * 	},
-	     * 	"nearestTimeIso":"2006-09-01T12:00:00.000Z",
-	     * 	"moreInfo":"",
-	     * 	"copyright":"",
-	     * 	"palettes":["redblue","alg","ncview","greyscale","alg2","occam","rainbow","sst_36","ferret","occam_pastel-30"],
-	     * 	"defaultPalette":"rainbow",
-	     * 	"logScaling":false
-	     * }
-	     */
-	    
+	    	    
 		return false;
 	},
 	
@@ -760,6 +866,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			if (newDetailsPanelLayer == null) {
+				Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 				Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers
 			} else {
 				Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
@@ -781,7 +888,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}, this);
 		this.removeAllLayersIn(layersToRemove);
 		
-		Ext.getCmp('rightDetailsPanel').selectedLayer = null;
+		Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
 		this._closeFeatureInfoPopup();
 	},
@@ -845,14 +952,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 	},
 
-	stopAnimation: function(openLayer) {
-		// if originalWMSLayer is set then it is an animated Openlayers.Image
-		//if(openLayer.numLoadingTiles > 0)
-		//	this.loadEnd();
-
-		if (openLayer.originalWMSLayer !== undefined) {
-			// get back the plain wms layer
-			this.swapLayers(openLayer.originalWMSLayer, openLayer);
-		}
+	getViewSize: function() {
+		return this.container.getViewSize();
 	}
 });

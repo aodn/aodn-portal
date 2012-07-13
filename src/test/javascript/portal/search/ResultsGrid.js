@@ -29,7 +29,8 @@ describe("Portal.search.ResultsGrid", function() {
 	}];
 
    var resultsRecord = Ext.data.Record.create([ 
-       'links'
+       'links',
+       'canDownload'
    ]);
 
    var testRecord1 = new resultsRecord({
@@ -67,7 +68,8 @@ describe("Portal.search.ResultsGrid", function() {
                 protocol: "WWW:DOWNLOAD-1.0-http--download"
         },{
                 protocol: "OGC:WMS-1.1.1-http-get-map"			
-        }]
+        }],
+        canDownload: true
     });
 
     var recordNoDownloadableLink = new resultsRecord({

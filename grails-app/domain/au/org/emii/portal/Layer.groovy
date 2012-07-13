@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import javax.persistence.ManyToOne;
+
 import org.apache.commons.lang.builder.EqualsBuilder
 
 class Layer {
@@ -29,6 +31,13 @@ class Layer {
     String layerHierarchyPath
     String overrideMetadataUrl
 
+	/**
+	 * This was previously a belongsTo relationship - but in fact, root layers do not have a parent.
+	 * The result was that it was not possible to create a valid layer hierarchy in code, since it's
+	 * not possible to have a null parent with GORM.
+	 */
+	Layer parent
+
      /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
         <tns:description>Oxygen enabled Argo Floats in the Australian region</tns:description>
@@ -46,7 +55,6 @@ class Layer {
     static mapping = {
         // Sorting
         sort "server"
-		layers sort: "title"
 
         // Column types
         styles type: "text"
@@ -55,10 +63,10 @@ class Layer {
         metadataUrls cascade: 'all-delete-orphan'
     }
 
-    static belongsTo = [parent: Layer]
-    static hasMany = [layers: Layer, metadataUrls: MetadataUrl, dimensions: WMSDimension]
+    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension]
     static constraints = {
-        name( nullable: true, size:1..225 )
+		parent(nullable: true)
+		name( nullable: true, size:1..225 )
         namespace( nullable: true )
         title( nullable: true )
         blacklisted()
@@ -83,10 +91,11 @@ class Layer {
         layerHierarchyPath(nullable: true)
     }
 
+	static transients = ['layers']
+	
     Layer() {
 
         // Empty relationships
-        layers = []
         metadataUrls = []
         dimensions = []
         
@@ -100,7 +109,7 @@ class Layer {
         activeInLastScan = true
     }
 
-    boolean equals(other){
+	boolean equals(other){
         if(is(other)){
             return true
         }    
@@ -154,10 +163,52 @@ class Layer {
             dels*.delete()
         }
     }
+	
+	void deleteSnapshotLayers() {
+		
+		Layer.withNewSession {
+			SnapshotLayer.findAllByLayer(this).each {
+				it.snapshot.removeFromLayers(it)
+				it.delete()
+			}
+		}
+	}
 
+	void deleteChildLayers() {
+		
+		Layer.withNewSession {
+			// Cascade delete child layers.
+			layers.each {
+				it.delete()
+			}
+        }
+    }
+	
     void beforeDelete(){
         //find all layers related to this server
         deleteDefaultLayersInConfig()
         deleteLayerMenuItems()
+		deleteSnapshotLayers()
+		deleteChildLayers()
     }
+	
+	/** 
+	 * Mimic belongsTo relationship.
+	 */
+	List<Layer> getLayers()	{
+
+		return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
+	}
+	
+	void addToLayers(Layer child) {
+		child.parent = this
+	}
+	
+	void removeFromLayers(Layer child) {
+		child.parent = null
+	}
+	
+	def isViewable() {
+		return activeInLastScan && !blacklisted
+	}
 }

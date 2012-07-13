@@ -36,7 +36,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         this.on('tabchange', function() {
         	this.mapPanel.fireEvent('tabchange');
         }, this);
-		
+
     },
 	
     initMapPanel: function(appConfig) {

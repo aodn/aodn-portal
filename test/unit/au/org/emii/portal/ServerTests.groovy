@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.apache.commons.codec.binary.Base64;
+
 import grails.test.*
 
 class ServerTests extends GrailsUnitTestCase {
@@ -46,5 +48,30 @@ class ServerTests extends GrailsUnitTestCase {
 	void testToString() {
 		def testServer = new Server(uri : "uri1", shortAcron : "A1", name : "name1")
 		assertEquals testServer.toString(), "A1"
+	}
+	
+	void testIsCredentialled() {
+		def server = new Server()
+		
+		assertFalse server.isCredentialled()
+		
+		server.username = "fred"
+		assertFalse server.isCredentialled()
+		
+		server.password = "flintstone"
+		assertTrue server.isCredentialled()
+		
+		server.username = null
+		assertFalse server.isCredentialled()
+	}
+	
+	void testCredentialEncoding() {
+		def server = new Server()
+		server.username = "fred"
+		server.password = "flintstone"
+		
+		assertTrue server.getEncodedCredentials() instanceof String
+		assertFalse "${server.username}:${server.password}".equals(server.getEncodedCredentials())
+		assertEquals new String(Base64.encodeBase64("fred:flintstone".getBytes())), server.getEncodedCredentials()
 	}
 }
