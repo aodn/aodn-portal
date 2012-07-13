@@ -31,6 +31,18 @@ class SecurityFilters {
             }
         }
 
+        aodaacAccess(controller: "aodaac", action: "index|testCreateJob|productInfo|createJob|updateJob|cancelJob|deleteJob|userJobInfo") { // Todo - DN: Tighten up when testing controls removed
+            before = {
+
+                println "Todo - DN: Tighten up when testing controls removed"
+
+                logRequest("aodaacAccess", controllerName, actionName)
+
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+
 		homeAccess(controller: "home", action: "index|config") {
             before = {
             
@@ -81,7 +93,7 @@ class SecurityFilters {
             }
         }
         
-        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers") {
+        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers") {
             before = {
                 
                 logRequest("layerAccess", controllerName, actionName)

@@ -19,11 +19,10 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 	},
 
 
-	setSelectedLayer: function(layer){
-		this.selectedLayer = layer;
-	},
-	
-	update: function(show, hide, target) {
+    update: function(layer, show, hide, target) {
+
+        this.selectedLayer = layer;
+
         if (this._showBody()) {
         	this._updateBody();
         	show.call(target, this);

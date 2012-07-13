@@ -107,11 +107,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    setSelectedLayer: function(layer){
-        this.selectedLayer = layer;
-    },
+    update: function(layer, show, hide, target) {
 
-    update: function(show, hide, target) {
+        this.selectedLayer = layer;
+
     	show.call(target, this);
     	
         var data = new Array();
