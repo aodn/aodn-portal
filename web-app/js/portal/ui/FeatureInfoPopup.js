@@ -81,8 +81,10 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     		this.blankContainer.update("");
     	}
     	else{
+    		var count = 0;
     		Ext.each(wmsLayers, function(layer, index, all) {
-				if (layer.getVisibility()) {
+				if (layer.params.QUERYABLE == true && layer.getVisibility()) {
+					count++;
 					this._requestFeatureInfo(layer);
 					if (!resized) {
 						this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
@@ -90,6 +92,11 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 					}
 				}
 			}, this);
+
+			if(count == 0){
+				this.setTitle("No layer selected.");
+				this.blankContainer.update("");
+			}
     	}
     },
     
