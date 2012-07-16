@@ -83,7 +83,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
         newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
 
-        this.productInfoText.update( newText );
+        this.productInfoText.html = newText;
 
         // Populate spatial extent controls
         this.southBL.setValue( productInfo.extents.lat.min );
@@ -437,15 +437,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             scope: this,
             success: function() {
 
-                alert( 'Partitioning job created. Processing now.\n\nIf you supplied an email address we will sent you a notification when the job is complete.\nOtherwise, you can track the progress of the job in the \'Data\' tab of the Portal.' );
+                alert( 'Partitioning job created. Processing now.\n\nIf you supplied an email address we will sent you a notification when the job is complete.' ); // \nOtherwise, you can track the progress of the job in the \'Data\' tab of the Portal.
             },
             failure: function() {
 
                 alert( 'Unable to create processing job. Please re-check the parameters and try again.' );
             }
         });
-
-        new Portal.ui.AodaacAggregatorJobListWindow().show();
     },
 
     _convertTimeSliderValue: function( quarterHours ) {

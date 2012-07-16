@@ -109,7 +109,6 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/FeatureInfoPopup.js?')}${jsVerNum}" type="text/javascript"></script>
-    <script src="${resource(dir:'js',file:'portal/ui/AodaacAggregatorJobListWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Viewport.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js?')}${jsVerNum}" type="text/javascript"></script>
