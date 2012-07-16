@@ -47,13 +47,18 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
 	var result = undefined;
+
 	if (this.overrideMetadataUrl) {
 		result = this.overrideMetadataUrl;
 	}
-	else if (this.metadataUrls && this.metadataUrls.length > 0 && this.metadataUrls[0].type == "other") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
-    	result = this.metadataUrls[0].onlineResource.href;
+	else if (this.metadataUrls && this.metadataUrls.length > 0){
+		for(var i = 0; i < this.metadataUrls.length; i++){
+														//TC211 is meant for MCP
+	 		if(this.metadataUrls[i].type == "TC211") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
+    			return this.metadataUrls[i].onlineResource.href;
+			}
+		}
     }
-	
 	return result;
 }
 
