@@ -1,7 +1,6 @@
 package au.org.emii.portal
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.IOUtils
 
 class ProxyController {
 
@@ -18,8 +17,10 @@ class ProxyController {
     }
 	
 	def _index() {
+
 		def targetUrl = _getUrl(params)
-		if (allowedHost(params.url)) {
+
+        if (allowedHost(params.url)) {
 			
 			def conn = targetUrl.openConnection()
 			def outputStream = response.outputStream
@@ -33,13 +34,14 @@ class ProxyController {
 				try {
 					outputStream << conn.inputStream
 					outputStream.flush()
+                    IOUtils.closeQuietly( outputStream )
 				}
 				catch (Exception e) {
-					log.debug "Exception occurred: $e"
+
+                    IOUtils.closeQuietly( outputStream )
+
+                    log.debug "Exception occurred: $e"
 					render text: "An error occurred making request to $targetUrl", status: 500
-				}
-				finally {
-					IOUtils.closeQuietly(outputStream)
 				}
 			}
 		}
