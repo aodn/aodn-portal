@@ -34,15 +34,15 @@ class ProxyController {
 				try {
 					outputStream << conn.inputStream
 					outputStream.flush()
-                    IOUtils.closeQuietly( outputStream )
 				}
 				catch (Exception e) {
 
-                    IOUtils.closeQuietly( outputStream )
-
-                    log.debug "Exception occurred: $e"
-					render text: "An error occurred making request to $targetUrl", status: 500
+                    log.info "Unable to pass-through response from $targetUrl", e
 				}
+                finally {
+
+                    IOUtils.closeQuietly( outputStream )
+                }
 			}
 		}
 		else {
