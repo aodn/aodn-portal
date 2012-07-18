@@ -31,18 +31,18 @@ class ProxyController {
 				render(text: "", contentType: (params.format ?: params.FORMAT))
 			}
 			else {
-				try {
-					outputStream << conn.inputStream
-					outputStream.flush()
-                    IOUtils.closeQuietly( outputStream )
-				}
-				catch (Exception e) {
+                try {
+                    outputStream << conn.inputStream
+                    outputStream.flush()
+                }
+                catch (Exception e) {
+
+                    log.info "Unable to pass-through response from $targetUrl", e
+                }
+                finally {
 
                     IOUtils.closeQuietly( outputStream )
-
-                    log.debug "Exception occurred: $e"
-					render text: "An error occurred making request to $targetUrl", status: 500
-				}
+                }
 			}
 		}
 		else {
