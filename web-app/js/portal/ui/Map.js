@@ -204,6 +204,20 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	
 	initMapLinks: function() {
 		var parent = this;
+
+		//setVisible(true) for floating panel doesn't work without this fix
+		//http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
+		var supr = Ext.Element.prototype;
+        Ext.override(Ext.Layer, {
+        	hideAction : function(){
+        		this.visible = false;
+        		if(this.useDisplay === true){
+        			this.setDisplayed(false);
+        		}else{
+        			supr.setLeftTop.call(this, -10000, -10000);
+        		}
+        	}
+        });
 		
 		this.animationPanel = new Portal.details.AnimationPanel();
 		
@@ -264,6 +278,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			id: "mapLinks",
 			shadow: false,
 			width: '100%',
+			hidden: true,
 			height: this.maplinksHeight,
 			closeAction: 'hide',
 			floating: true,
@@ -577,12 +592,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if(!this.animationPanel.isAnimating()){
 			if(openLayer.isAnimatable()){
 				//show the panel for the first time!
-				this.animationPanel.setVisible(true);
 				this.animationPanel.setSelectedLayer(openLayer);
 				this.animationPanel.update();
+				this.mapLinks.setVisible(true);
 			}
 			else{
-				this.animationPanel.setVisible(false);
+				this.mapLinks.setVisible(false);
 			}
 		}
 	},
@@ -854,6 +869,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			if (newDetailsPanelLayer == null) {
+				Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 				Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers
 			} else {
 				Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
