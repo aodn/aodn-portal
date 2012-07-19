@@ -18,7 +18,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	initComponent: function(){
-		
+		this.BASE_SPEED = 500;
 		this.animatedLayers = new Array();		
 		var parent = this;
 
@@ -132,7 +132,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.speedLabel = new Ext.form.Label({
 			hidden: true,
-			text: OpenLayers.i18n('speed'),
+			html: "<br /> " + OpenLayers.i18n('speed'),
 			width: 100,
 			left: 150
 		});
@@ -296,9 +296,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	_resetForNewAnimation: function(){
 		this.timerId = -1;
-		this.BASE_SPEED = 500;
-		this.originalOpacity = -1;
 		this.speed = this.BASE_SPEED;
+		this.originalOpacity = -1;
 		this.pausedTime = "";
 		this.allTimes = {};
 
@@ -318,6 +317,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.enable();
 			this.speedUp.enable();
 			this.slowDown.enable();
+			this.speedLabel.setVisible(true);
 		}
 		else{
 			this.startTimeCombo.enable();
@@ -328,6 +328,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.pauseButton.disable();
 			this.speedUp.disable();
 			this.slowDown.disable();
+			this.speedLabel.setVisible(false);
 		}
 	},
 
@@ -536,6 +537,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}, speed);
 
 		}
+
+		//more milliseconds between each step, so it's slower!
+		if(this.speed > this.BASE_SPEED)
+			this.speedLabel.setText("<br/> Speed: x 1/" + (this.speed/this.BASE_SPEED), false );
+		else
+			this.speedLabel.setText("<br/> Speed: x " + (this.BASE_SPEED/this.speed), false );
 
 	//else no animation is running, so can't change the speed of the animation
 	},
