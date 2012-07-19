@@ -35,6 +35,8 @@
 	</ul>
 	</div>
 
+	<h3>Want to see data in your region?</h3>
+    <p><a class="external" target="_blank" href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia </a>.</p>
 
 	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
 	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="220" />
