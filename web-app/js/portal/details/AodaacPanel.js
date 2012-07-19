@@ -248,6 +248,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<b>Temporal Extent</b>"
         });
 
+        var target = this;
+
         this.timeRangeSlider = new Ext.slider.MultiSlider({
             id: 'timeExtentSlider',
             width: 190,
@@ -263,8 +265,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     var endThumb = slider.thumbs[1];
 
                     // Format value for reading
-                    var timeRangeStart = Portal.details.AodaacPanel._hoursFromThumb( startThumb );
-                    var timeRangeEnd = Portal.details.AodaacPanel._hoursFromThumb( endThumb );
+                    var timeRangeStart = target._hoursFromThumb( startThumb );
+                    var timeRangeEnd = target._hoursFromThumb( endThumb );
 
                     // Whole day message
                     var wholeDayMessage = "";
@@ -461,22 +463,22 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         else if (fullHours < 10) hourPart = '0' + hourPart;
 
         return hourPart + '' + minutePart;
+    },
+
+    _hoursFromThumb: function( thumb ) {
+
+        var value = thumb.value;
+
+        var fullHours = Math.floor(value / 4);
+        var partHours = value % 4;
+
+        var quarterHours = ["00", "15", "30", "45"];
+
+        var returnValue = String.format( "{0}:{1}", fullHours, quarterHours[partHours] );
+
+        // Tweak not to show 24:00
+        if ( returnValue == "24:00" ) returnValue = "23:59";
+
+        return returnValue;
     }
 });
-
-Portal.details.AodaacPanel._hoursFromThumb = function( thumb ) {
-
-    var value = thumb.value;
-
-    var fullHours = Math.floor(value / 4);
-    var partHours = value % 4;
-
-    var quarterHours = ["00", "15", "30", "45"];
-
-    var returnValue = String.format( "{0}:{1}", fullHours, quarterHours[partHours] );
-
-    // Tweak not to show 24:00
-    if ( returnValue == "24:00" ) returnValue = "23:59";
-
-    return returnValue;
-};
