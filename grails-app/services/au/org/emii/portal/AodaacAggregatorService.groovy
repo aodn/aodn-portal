@@ -247,7 +247,7 @@ class AodaacAggregatorService {
 
             log.debug "conn.responseCode: ${ conn.responseCode }"
 
-            if ( HttpStatusCodeSuccessRange.contains( conn.responseCode ) ) {
+            if ( conn.responseCode in HttpStatusCodeSuccessRange ) {
 
                 job.dataFileExists = true
             }

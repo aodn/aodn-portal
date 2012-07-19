@@ -193,7 +193,7 @@ class WmsScannerController {
                 msg += "<br /><b>$currentLine</b>"
             }
             
-            if ( msg.contains( "<html") ) {
+            if ( msg.contains( "<html" ) ) {
 
                 msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
             }
