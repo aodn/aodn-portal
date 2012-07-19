@@ -291,6 +291,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		var key = date.format("Y-m-d");
 		if(this.allTimes[key] != null){
 			combo.getStore().loadData(this.allTimes[key], false);
+			combo.clearValue();
 		}
 	},
 
