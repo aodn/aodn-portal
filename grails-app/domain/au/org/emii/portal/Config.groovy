@@ -8,22 +8,21 @@ class Config {
     String name
     String proxy
     Integer proxyPort
+
+    // Search
     String catalogUrl
+    String defaultSearchBoundingBox
+
     // Map behaviour
     String initialBbox
     Boolean autoZoom
-    // Depth service database configuration
-    Boolean useDepthService
-    String depthUrl
-    String depthUser
-    String depthPassword
-    String depthSchema
-    String depthTable
+
     // Menus
     Menu baselayerMenu
     Menu defaultMenu
     Menu contributorMenu
     Menu regionMenu
+
     // Message of the day
     Boolean enableMOTD  //toggle
     Motd motd
@@ -52,7 +51,7 @@ class Config {
     Integer mapGetFeatureInfoBuffer    
     String baselayerList    
     List defaultLayers
-    
+
     String wmsScannerCallbackPassword
 
     static hasMany = [defaultLayers:Layer]    
@@ -77,13 +76,8 @@ class Config {
         motdEnd(nullable:true)
         footerContent(nullable:true,maxSize: 4000)   
         footerContentWidth(nullable:true,range: 150..1000)
-        useDepthService(nullable:true)
-        depthUrl(nullable:true)
-        depthUser(nullable:true)
-        depthPassword(nullable:true)
-        depthSchema(nullable:true)
-        depthTable(nullable:true)
         catalogUrl(url: true)
+        defaultSearchBoundingBox(nullable: true)
         baselayerMenu(nullable: true)
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)

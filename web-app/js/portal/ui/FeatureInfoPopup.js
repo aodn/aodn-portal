@@ -51,25 +51,21 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _handleDepthService: function() {
-        if (this.appConfig.useDepthService) {
-            Ext.Ajax.request({
-            	scope: this,
-                url: 'depth', 
-                params: {
-                    lat: this.location.lat,
-                    lon: this.location.lon
-                },
-                success: function(response, options) {
-                    this._updatePopupDepthStatus(response);
-                },
-                failure: function (response, options) {
-                	this._updatePopupDepthStatus(null);
-                }
-            });
-        }
-        else {
-            this._updatePopupDepthStatus( null ); // Update with no info (will still clear 'loading' message)
-        }
+
+        Ext.Ajax.request({
+            scope: this,
+            url: 'depth',
+            params: {
+                lat: this.location.lat,
+                lon: this.location.lon
+            },
+            success: function(response, options) {
+                this._updatePopupDepthStatus(response);
+            },
+            failure: function (response, options) {
+                this._updatePopupDepthStatus(null);
+            }
+        });
     },
     
     _handleLayers: function() {

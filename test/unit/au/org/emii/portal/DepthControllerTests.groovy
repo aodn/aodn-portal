@@ -1,8 +1,9 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.ControllerUnitTestCase
 
 class DepthControllerTests extends ControllerUnitTestCase {
+
     protected void setUp() {
         super.setUp()
     }
@@ -12,34 +13,44 @@ class DepthControllerTests extends ControllerUnitTestCase {
     }
 
     void testIndexIncorrectParams() {
-		this.controller.index()
-		assertTrue this.controller.response.contentAsString.equals("incorrect parameters supplied")
+
+        controller.index()
+
+        assertEquals "Incorrect parameters supplied", this.controller.response.contentAsString
     }
 	
 	void testIndexServiceUnavailable() {
-		this.controller.params.lat = 10
-		this.controller.params.lon = 20
-		def configControl = mockFor(Config)
-		def mockConfig = configControl.createMock()
-		configControl.demand.static.activeInstance(1..1) { -> mockConfig}
-		configControl.demand.getUseDepthService(1..1) { -> null}
-		this.controller.index()
-		assertTrue this.controller.response.contentAsString.equals("This service is unavailable")
+
+        controller.params.lat = 10
+		controller.params.lon = 20
+
+		controller._generateServiceUrl = { -> null }
+
+        controller.index()
+
+        assertEquals "This service is unavailable", this.controller.response.contentAsString
 	}
 	
 	void testIndex() {
-		this.controller.params.lat = 10
-		this.controller.params.lon = 20
-		def depthServiceConfigControl = mockFor(DepthService)
-		depthServiceConfigControl.demand.getNearestDepth(1..1) {Map params -> "depth service text"}
-		this.controller.depthService = depthServiceConfigControl.createMock()
-		def configControl = mockFor(Config)
-		def mockConfig = new Config()
-		mockConfig.useDepthService = true;
-		configControl.demand.static.activeInstance(1..1) { -> mockConfig}
-		this.controller.index()
-		configControl.verify()
-		assertTrue this.controller.response.contentAsString.equals("depth service text")
+
+        controller.params.lat = 10
+		controller.params.lon = 20
+
+        controller._generateServiceUrl = { -> [text: "depth service text"] }
+
+		controller.index()
+
+        assertEquals "depth service text", this.controller.response.contentAsString
 	}
-	
+
+    void testGenerateServiceUrl() {
+
+        def baseUrl = "http://depthservice.aodn.org.au/depth/index"
+
+        controller.params.lat = 10
+        controller.params.lon = 20
+        controller.grailsApplication = [config: [depthService: [url: baseUrl]]]
+
+        assertEquals "${baseUrl}.xml?lat=10&lon=20".toURL(), controller._generateServiceUrl()
+    }
 }

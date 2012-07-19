@@ -1,9 +1,9 @@
 package au.org.emii.portal.config
 
-import au.org.emii.portal.Config;
-import au.org.emii.portal.User;
-import au.org.emii.portal.display.SnapshotLayerJsonMarshaller;
-import grails.converters.JSON;
+import au.org.emii.portal.Config
+import au.org.emii.portal.User
+import au.org.emii.portal.display.SnapshotLayerJsonMarshaller
+import grails.converters.JSON
 
 class JsonMarshallingRegistrar {
 	
@@ -16,12 +16,16 @@ class JsonMarshallingRegistrar {
 	}
 	
 	static void _registerConfig() {
+
 		JSON.registerObjectMarshaller(Config) { cfg ->
+
 			def result = [:]
 			result['name'] = cfg.name
 			result['proxy'] = cfg.proxy
 			result['proxyPort'] = cfg.proxyPort
 			result['catalogUrl'] = cfg.catalogUrl
+			result['defaultSearchBoundingBox'] = cfg.defaultSearchBoundingBox
+
 			// Map behaviour
 			result['initialBbox'] = cfg.initialBbox
 			result['autoZoom'] = cfg.autoZoom
@@ -34,10 +38,7 @@ class JsonMarshallingRegistrar {
 
 			result['footerContent'] = cfg.footerContent
 			result['footerContentWidth'] = cfg.footerContentWidth
-			
-			// Depth service settings
-			result['useDepthService'] = cfg.useDepthService
-			
+
 			// heights and widths
 			result['popupWidth'] = cfg.popupWidth
 			result['popupHeight'] = cfg.popupHeight
