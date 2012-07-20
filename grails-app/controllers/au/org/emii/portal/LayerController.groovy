@@ -318,9 +318,11 @@ class LayerController {
 				//TODO: transform to html in a better way. e.g. xslt
 				def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
 				onlineResourcesList.each {
-					def linkText = it.CI_OnlineResource.description.CharacterString.text()
-					def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-					html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                    if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
+                        def linkText = it.CI_OnlineResource.description.CharacterString.text()
+                        def linkUrl = it.CI_OnlineResource.linkage.URL.text()
+                        html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                    }
 				}
 				render text: html, contentType: "text/html", encoding: "UTF-8"
 			} catch(SAXException e) {
