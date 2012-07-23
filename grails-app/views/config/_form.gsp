@@ -54,10 +54,10 @@
 
                            <tr class="prop">
                                <td valign="top" class="name">
-                                   <label for="defaultSearchBoundingBox"><g:message code="config.defaultSearchBoundingBox.label" default="Default Search Bounding Box" /></label>
+                                   <label for="searchUsingBboxByDefault"><g:message code="config.searchUsingBboxByDefault.label" default="Search using bounding box by default" /></label>
                                </td>
-                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultSearchBoundingBox', 'errors')}">
-                                   <g:textField size="70" name="defaultSearchBoundingBox" value="${configInstance?.defaultSearchBoundingBox}" /><span class="hint">W,S,E,N (Comma separated)</span>
+                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'searchUsingBboxByDefault', 'errors')}">
+                                   <g:checkBox name="searchUsingBboxByDefault" value="${configInstance?.searchUsingBboxByDefault}" />
                                </td>
                            </tr>
 

@@ -24,7 +24,7 @@ class JsonMarshallingRegistrar {
 			result['proxy'] = cfg.proxy
 			result['proxyPort'] = cfg.proxyPort
 			result['catalogUrl'] = cfg.catalogUrl
-			result['defaultSearchBoundingBox'] = cfg.defaultSearchBoundingBox
+			result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
 
 			// Map behaviour
 			result['initialBbox'] = cfg.initialBbox
