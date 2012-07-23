@@ -140,8 +140,11 @@ Portal.search.filter.FiltersPanel = Ext.extend(Ext.Panel, {
     if (filterComponent.xtype == 'portal.search.field.boundingbox') {
       var bboxField = this.findByType('portal.search.field.boundingbox')[0];
 
-      bboxField.setBox(this.ownerCt.bounds);
-      this.relayEvents(bboxField, ['bboxchange']);
+      if ( this.ownerCt != undefined ) {
+
+          bboxField.setBox(this.ownerCt.bounds);
+          this.relayEvents(bboxField, ['bboxchange']);
+      }
 
       // Need to set value again...
       if (record.get('filterValue'))
