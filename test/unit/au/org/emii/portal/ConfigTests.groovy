@@ -25,6 +25,7 @@ class ConfigTests extends GrailsUnitTestCase {
             initialBbox: "120,20,120,20", // character varying,  lat,lon might be shite? 
             name: "The aMazing Portal",
             catalogUrl: "http://www.google.com/",
+            searchUsingBboxByDefault: false,
             footerHeight: 500,
             footerContentWidth: 500,
             headerHeight: 600,
