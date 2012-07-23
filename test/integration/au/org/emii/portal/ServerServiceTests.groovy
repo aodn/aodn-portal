@@ -63,6 +63,7 @@ class ServerServiceTests extends GroovyTestCase {
         dummy.save()
 
         Config conf = new Config(initialBbox: "180,10,-180,10", autoZoom: false,
+                                    searchUsingBboxByDefault: true,
                                     baselayerMenu:dummy, defaultMenu: dummy, contributorMenu: dummy, regionMenu: dummy,
                                     headerHeight: 100, footerHeight: 100, activeLayersHeight: 100, popupWidth: 1,
                                     poopupMenuHeight: 1, westWidth: 1, downloadCartFilename: "dl", popupHeight: 1,
