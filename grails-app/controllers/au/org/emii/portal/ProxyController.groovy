@@ -9,16 +9,17 @@ class ProxyController {
     // proxies HTML by default or XML and Images if specified
     def index = {		
 		if ( params.url ) {
-			_index()
+			_index(false)
 		}
 		else {
 			render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
 		}
     }
 	
-	def _index() {
+	def _index(downloadGif) {
 
 		def targetUrl = _getUrl(params)
+        println targetUrl
 
         if (allowedHost(params.url)) {
 			
@@ -31,7 +32,19 @@ class ProxyController {
 				render(text: "", contentType: (params.format ?: params.FORMAT))
 			}
 			else {
-				try {
+                if(downloadGif){
+                    def index = params.url.indexOf("LAYERS=")
+
+                    if(index > -1){
+                        def layers = params.url.substring(index + 7);
+                        def timeStr = params.TIME.replaceAll("[-:]", "")
+                        timeStr.replace("/", "_")
+                        response.setHeader("Content-disposition", "attachment; filename=" +
+                        layers + "_" + timeStr + ".gif");
+                    }
+
+                }
+               try {
 					outputStream << conn.inputStream
 					outputStream.flush()
 				}
@@ -154,18 +167,15 @@ class ProxyController {
 	
 	def _getUrl(params) {
 		def targetUrl = params.url.toURL()
-		def server = _getServer(targetUrl)
-		
-		if (server && server.isCredentialled()) {
-			def query = params.findAll({key, value -> key != "controller" && key != "url" && key != "format"})
-			def queryStr = ""
 
-			query.each { key, value ->
-				queryStr += "&$key=$value"
-			}
-			targetUrl = (params.url + queryStr).toURL()
-		}
-		
+        def query = params.findAll({key, value -> key != "controller" && key != "url" && key != "format"})
+        def queryStr = ""
+
+        query.each { key, value ->
+            queryStr += "&$key=$value"
+        }
+        targetUrl = (params.url + queryStr).toURL()
+
 		return targetUrl
 	}
 	
@@ -179,4 +189,9 @@ class ProxyController {
 	def _getServer(url) {
 		return Server.findByUriLike("%${url.getHost()}%")
 	}
+
+    def downloadGif = {
+        println "in downloadGif"
+        _index(true)
+    }
 }

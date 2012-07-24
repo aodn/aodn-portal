@@ -152,11 +152,20 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			flex: 2
 		});
 
+		this.startLabel = new Ext.form.Label({
+			html: "Start:",
+		});
+
+		this.endLabel = new Ext.form.Label({
+			html: "End: ",
+			width: 70
+		});
+
 		this.startDatePicker = new Ext.form.DateField({
-			fieldLabel: OpenLayers.i18n('start'),
 			id: 'startDatePicker',
 			format: 'd-m-Y',
 			editable: false,
+			width: 100,
 			listeners:{
 				scope: this,
             	select: this._onDateSelected
@@ -165,10 +174,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.endDatePicker = new Ext.form.DateField({
-			fieldLabel: OpenLayers.i18n('end'),
 			id: 'endDatePicker',
 			format: 'd-m-Y',
 			editable: false,
+			width: 100,
 			listeners:{
 				scope: this,
 				select: this._onDateSelected
@@ -180,6 +189,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			id: "startTimeCombo",
 			triggerAction: "all",
 			editable: false,
+			width: 100,
 			listeners:{
 				scope: this,
 				select: function(combo, record, index){
@@ -194,20 +204,59 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.endTimeCombo = new Ext.form.ComboBox({
 			store: new Array(),
 			id: "endTimeCombo",
+			width: 100,
 			triggerAction: "all",
 			editable: false
 		});
 
 		this.timeSelectorPanel = new Ext.Panel({
 			id: 'timeSelectorPanel',
-			layout: 'form',
+			layout: 'table',
+			layoutConfig:{
+				tableAttrs: {
+				style: {
+					width: '80%'
+					}
+				},
+				columns: 3
+			},
+			width: 350,
 			plain: true,
 			items:[
+			this.startLabel,
 			this.startDatePicker,
 			this.startTimeCombo,
+			this.endLabel,
 			this.endDatePicker,
 			this.endTimeCombo
 			]
+		});
+
+		this.getAnimationButton = new Ext.Button({
+			icon: 'images/animation/download.png',
+            hidden: true,
+			listeners:{
+				scope: this,
+				click: function(){
+					if(this.animatedLayers.length > 0){
+						//need to workout BBOX
+						var clonedLayer = parent.originalLayer.clone();
+						clonedLayer.map = this.originalLayer.map;
+						bounds = clonedLayer.map.getExtent();
+						clonedLayer.mergeNewParams({
+							TIME: this.animatedLayers[0].params.TIME + "/" +
+								this.animatedLayers[this.animatedLayers.length - 1].params.TIME,
+							BBOX: bounds.toBBOX(),
+							FORMAT: "image/gif", //must be gif!!
+							WIDTH: 512,
+							HEIGHT: Math.floor(512 * (bounds.getHeight() / bounds.getWidth()))
+						});
+
+						var fullUrl = "proxy/downloadGif?url=" + clonedLayer.getFullRequestString();
+                        window.open(fullUrl, '_blank', "width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes");
+					}
+				}
+			}
 		});
 		
 		this.controlPanel = new Ext.Panel({
@@ -242,7 +291,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			},
 			this.timeSelectorPanel,	
 			this.progressLabel,
-			this.speedLabel
+			this.speedLabel,
+			this.getAnimationButton
 			],
 			width: 360,
 			height: '100%'
@@ -319,6 +369,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.speedUp.enable();
 			this.slowDown.enable();
 			this.speedLabel.setVisible(true);
+			this.getAnimationButton.setVisible(true);
 		}
 		else{
 			this.startTimeCombo.enable();
@@ -330,6 +381,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.speedUp.disable();
 			this.slowDown.disable();
 			this.speedLabel.setVisible(false);
+			this.getAnimationButton.setVisible(false);
 		}
 	},
 
@@ -399,8 +451,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_cycleAnimation: function(forced){
-		this.progressLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
-		this.progressLabel.setVisible(this._isLoadingAnimation());
+		//this.progressLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
+		//this.progressLabel.setVisible(this._isLoadingAnimation());
+
+		if(this._isLoadingAnimation()){
+			this.stepLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
+		}
 
 		if(this.counter < this.animatedLayers.length - 1){
 			if(this.map.map.getLayer(this.animatedLayers[this.counter + 1].id) == null){
