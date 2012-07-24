@@ -19,7 +19,6 @@ class ProxyController {
 	def _index(downloadGif) {
 
 		def targetUrl = _getUrl(params)
-        println targetUrl
 
         if (allowedHost(params.url)) {
 			
@@ -191,7 +190,6 @@ class ProxyController {
 	}
 
     def downloadGif = {
-        println "in downloadGif"
         _index(true)
     }
 }
