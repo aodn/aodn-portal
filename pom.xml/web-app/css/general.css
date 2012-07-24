@@ -1,0 +1,840 @@
+body, html{
+    font-family: tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+	height: 100%;
+    /*margin: 5px! important;
+	
+    margin-top: 2px! important; */
+}
+
+h1 {
+    white-space: nowrap; 
+}
+
+p, td{    
+    font-family: tahoma,verdana,arial,sans-serif;
+}
+
+
+body {
+    min-width:  1020px;
+}
+
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
+input.readonlyInput {
+    border: none;
+}
+.roundedImages {
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.imageLabel {
+	margin: 2px;
+	margin-left: 13px;
+	font-size: 10px;
+}
+
+.searchInput {
+    display: block;
+    height: 27px;
+    padding: 15px;
+    font-size: 14px;
+    color: inherit;
+	border-color: #777777;
+}
+.searchInput.x-form-empty-field {
+    color: #15428B;
+    font-size: inherit;
+	font-weight: bold;	
+}
+
+
+.userWMSInput {
+    display: block;
+    height: 22px;
+    padding: 10px;
+    margin: 0px 0px 10px 0px! important;
+    font-size: 12px;
+    color: inherit;
+}
+
+#activeTreePanel input{
+    margin: 0;
+}
+
+a {
+    color: #6A6A6A;
+}
+
+a img{
+    border: none;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+
+
+.floatLeft {
+    float: left;
+}
+.homePanelWidget {
+    margin-right: 10px;	
+	padding-right: 20px;
+}
+
+.buttonPad {
+    padding: 2px 5px 5px 0px
+}
+.arrowUp {	
+    background: url("../images/arrowUp.png") no-repeat left top transparent; 
+}
+.arrowDown {	
+    background: url("../images/arrowDown.png") no-repeat left top transparent; 
+}
+
+
+.leftMenus {
+    background-color: white;
+	border-radius: 12px 12px 0 0;
+}
+
+#leftMenuTabPanel {
+    background-color: red;
+}
+
+#activeMenuPanel {
+}
+
+.searchField {
+  padding: 3px 5px 3px 5px;
+}
+
+.searchFieldSelectors {
+    margin: 3px 0px;
+    background-color: #fafafa;
+}
+
+.noborder {
+    border: none! important;
+}
+
+/*
+    map while loading
+*/
+.olMapViewport {
+    background-color: #7391AD;
+}
+
+/* the main tabPanel for the portal */
+.mainTabPanelHeader .x-tab-strip-wrap 
+{
+    display: none;
+}
+
+/* added to buttons on hover with jQuery */
+.hover {
+    color: black;
+    background-color: #CCCCCC;
+    border: 1px solid #666;
+    cursor: pointer;
+}
+
+.link {
+	cursor: url;
+	cursor: pointer;
+}
+
+#centerTabPanel {
+    border: 0px solid white;
+}
+
+
+
+
+
+#loader {
+    background-color: #0B5584;
+    border: 0px solid #CBCED3;
+    border-radius: 6px ;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 10px;
+    height: 20px;    
+    width: 150px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;
+}
+
+#loader p {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 2px 1px 3px #333333;
+}
+
+.mapFooter {
+    background: url("../images/shadowLight.png") repeat-x scroll left top white; 
+}
+
+
+#mapLinks {
+    top: auto! important;
+    bottom: 0px! important;
+    z-index: 900! important;
+}
+.spacer  {
+    margin: 25px 0px;
+}
+
+
+#viewPortHomepageLinks {	
+    margin-left: 20px;		
+    margin-top: 5px;
+}
+#viewPortHomepageLinks .viewPortLinksBackground{	
+    background-color: #4F7B96;
+}
+#viewPortHomepageLinks a{	
+    font-size: 12px;
+}
+
+#mapSpinnerPanel {
+    padding-left: 10px;
+}
+
+.alpha60 {
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0) transparent;
+    /* RGBa with 0.6 opacity */
+    background: rgba(0, 0, 0, 0.6);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+
+.motd {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color: white;
+    padding: 10px;
+    border: 6px solid #F4F4F4;
+    font-size: 12px;
+}
+
+#mainMapCentrePanel {
+    background-color: #8AA8C4;
+}
+
+a[rel="external"], a.external {
+    padding-right: 15px;
+    background: url(../images/extlink.gif) no-repeat 100% 50%;
+    zoom: 1;
+}
+
+.mainlinks {
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    margin-right: 10px;    
+    padding-left: 10px;
+    border-left: 1px solid #99CCFF;
+}
+
+a:hover.mainlinks {
+    color: black;
+}
+
+.noBackgroundImage * {
+    background-image: none! important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* login register forgotten password */
+.auth table {
+    border:0;
+    border-spacing: 4px;
+}
+
+.authentication-formLinks {
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    font-size: 14px;
+}
+
+.authentication-form-floated {
+
+    position: absolute;
+    top: 150px;
+    left: 210px;
+}
+
+.authentication-form h2 {
+    padding-bottom: 0.8em;
+}
+.authentication-form label {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.authentication-form .authentication-hints {
+    font-size: 0.9em;
+    font-style: italic;
+    padding: 10px 5px;
+}
+
+/* MESSAGES AND ERRORS */
+
+.errors, .message {
+    font-size: 0.9em;
+    line-height: 2;
+    margin: 2em 0em;
+    padding: 0.5em;
+}
+
+.message {
+    background: #f3f3ff;
+    border: 1px solid #b2d1ff;
+    color: #006dba;
+    -moz-box-shadow: 0 0 0.25em #b2d1ff;
+    -webkit-box-shadow: 0 0 0.25em #b2d1ff;
+    box-shadow: 0 0 0.25em #b2d1ff;
+}
+
+.errors {
+    background: #fff3f3;
+    border: 1px solid #ffaaaa;
+    color: #cc0000;
+    -moz-box-shadow: 0 0 0.25em #ff8888;
+    -webkit-box-shadow: 0 0 0.25em #ff8888;
+    box-shadow: 0 0 0.25em #ff8888;
+}
+
+.errors ul,
+.message {
+    padding: 0;
+}
+
+.errors li {
+    list-style: none;
+    background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
+    text-indent: 22px;
+}
+
+.message {
+    background: transparent url(../images/skin/information.png) 3px 5px no-repeat;
+    text-indent: 22px;
+    padding: 5px;
+}
+
+/*
+Geoserver default tables
+*/
+table.featureInfo, table.featureInfo td, table.featureInfo th {
+    border:1px solid #ddd;
+    border-collapse:collapse;
+    margin:0;
+    padding:0;
+    font-size: 90%;
+    padding:.2em .1em;
+}
+
+table.featureInfo th {
+    padding:.2em .2em;
+    font-weight:bold;
+    background:#eee;
+}
+
+table.featureInfo td{
+    background:#fff;
+}
+
+table.featureInfo tr.odd td{
+    background:#eee;
+}
+
+table.featureInfo caption{
+    text-align:left;
+    font-size:100%;
+    font-weight:bold;
+    text-transform:uppercase;
+    padding:.2em .2em;
+}
+
+#mapdiv {
+    position: absolute;	
+    z-index: 1;
+    height: 100%;
+    width:100%;
+}
+
+
+
+.leftdrop  {
+    background-image:url(../images/leftshadow.png);
+    background-position:left top;
+    background-repeat:repeat-y;
+    z-index: 101;
+    width:10px ;
+    height:100%;
+    position: absolute;
+}
+
+#mapscale {
+    width: 90px;
+    z-index: 3;
+    position: relative;
+    float: left;	
+    color: white;
+}
+
+#mapcoords {
+    width: 90px;
+    z-index: 4;
+    position: relative;
+    float: right;
+    color: white;
+    background: inherit;
+}
+
+#mapcoords b{
+    background: none;
+}
+
+#mapinfo {
+    bottom: 0em;
+    left: 0px;
+    padding: 10px 15px ;
+    display: block;
+    position: absolute;
+    width: 220px;
+    z-index: 3;
+    font-family: Arial;
+    font-size: smaller;
+    -moz-border-radius: 5! important;
+    border-width: 1px 1px 0 0;
+    background-color:#3c668d;
+    opacity: 0.0;
+    filter: alpha(opacity = 0);
+}
+
+/* map toolbar */
+
+
+.semiTransparent {
+    background-image: none;
+    background-color: #3c668d! important;
+    opacity: 0.7;
+    filter: alpha(opacity = 70);
+    /*color: white;*/
+}
+.expandUpLink {
+	background: url('../images/mini-up.png') center 2px  no-repeat;
+}
+.expandDownLink {
+	background: url('../images/mini-down.png') center 2px no-repeat;
+}
+
+#mapToolbarExpanderBar,
+#controlButton,
+animationPanel {
+	opacity: 1.0;
+}
+#maptools .x-panel-body {	   
+    border-radius: 5px;
+}
+
+.semiTransparent .x-item-disabled * {
+    color:  #eee! important;
+}
+
+.fullTransparency {
+    opacity: 1.0! important;
+    filter: alpha(opacity = 100);
+}
+.mapToolbarExpanderBarOver {	
+    background-color:white! important; 
+}
+
+.fullTransparency .x-item-disabled * {
+    color: #666! important;
+}
+
+.fullTransparency button, .fullTransparency a {
+    color: #333;
+}
+
+/* getFeatureInfo popup
+*/
+
+.popupHtml {
+    color:#6A6A6A;
+    background-color: #F4F4F4; 
+    padding: 0px 0px 10px 10px; 
+    
+}
+
+.featureinfocontent {
+}
+
+.feature {
+    padding: 8px 5px;
+}
+
+.nofeature {
+    margin: 2px 0px 5px 0px;
+    padding: 5px;
+    width:100%;
+    background-color: #fafafa;
+}
+
+.feature ul li{
+    margin-left: 1em;
+}
+
+.featureinfocontent .info {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #6D889C;
+    background: #B6C3CD;
+}
+
+.featureinfocontent .error {
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid #ACAC0C;
+    background: #FCFCCF;
+}
+
+.featureinfocontent {
+    padding: 10px 3px 3px 10px;
+    background-color: white;
+    position: relative;
+}
+
+.featureinfocontent_topborder {
+    margin-top: 10px;
+    clear: both;
+}
+
+.featureinfocontent_topborderimg {
+    width:100%;
+    position:absolute;
+}
+
+.featureinfocontent img {
+    padding: 10px 5px;
+}
+
+.featureinfocontent b { 
+    color:#6A6A6A; 
+    font-weight: bold;
+}
+
+.featureinfocontent ul { 
+    margin: 5px 0px;
+    padding-left: 2px; 
+    list-style-type: circle;
+}
+
+.featureinfocontent li { 
+    margin-left: 2px; 
+    padding-left: 2px; 
+    list-style-position: inside;
+}
+
+.block h3 {
+    border: solid 1px #cccccc;
+    background-color: #efefef;
+    padding-left: 3px;
+    width: 100%;
+}
+
+p.important {
+    color:#3c668d;
+    font-weight: bold;
+}
+
+.extAjaxLoading {  
+    border-radius: 4px;    
+    padding: 3px;
+    background-color: #ffffff! important;
+}
+
+.extAjaxLoading div {       
+    background-color: #ffffff! important;
+}
+
+.addServerStatusPanel .x-panel-header {
+	padding-top: 0px;
+}
+
+.argodates {
+
+    font-size: .9em;
+    background-color: #ffffff;
+    padding: 2px 10px;
+}
+
+/* openlayers */
+
+.olControlPanel .olControlNavigationItemActive, 
+.olControlPanel .olControlNavigationItemInactive, 
+.olControlPanel .olControlZoomBoxItemActive, 
+.olControlPanel .olControlZoomBoxItemInactive, 
+.olControlPanel .olControlEditingToolbar, 
+.olControlPanel .olControlEditingToolbarItemInactive {
+    background-image: url("../images/raa_y.gif");
+    display: block;
+    height: 25px;
+    width: 45px;
+}
+
+.olControlZoomBoxItemActive {
+    background-position: -600px 0;
+}
+.olControlZoomBoxItemInactive {
+    background-position: -500px 0;
+}
+.olControlZoomBoxItemInactive:hover {
+    background-position: -600px 0;
+}
+.olControlNavigationItemActive {
+    background-position: -800px 0;
+}
+.olControlNavigationItemInactive {
+    background-position: -700px 0;
+}
+.olControlNavigationItemInactive:hover {
+    background-position: -800px 0;
+}
+.olControlPanel {
+    margin-left: 5px;
+    /*width: 62px;*/
+    top: 230px;
+}
+
+.olControlScaleLine {
+    bottom: 3px! important;
+}
+
+div.olControlMousePosition {
+    bottom: 5px! important;
+    left: 120px;
+    font-size: 11px! important;
+    font-weight: bold;
+    right:auto! important;
+    color: #253745;
+}
+
+.olControlOverviewMapElement {
+    background-color: #34546E! important;
+}
+
+.olControlLayerSwitcher .layersDiv {
+    background-color: #34546E! important;
+}
+
+div.olControlScaleLineBottom {
+    margin-top: -1px;
+}
+
+div.olControlScaleLineTop, div.olControlScaleLineBottom {
+    border-color: #253745;        
+    color: #253745;
+    font-weight: bold;
+}
+
+.olControlEditingToolbar, .olControlEditingToolbarItemInactive {
+    width: 50px;
+}
+
+.olControlEditingToolbar div {
+    float: left;
+}
+
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus{
+    background-color: transparent;
+}
+
+a.ygtvlabel:hover {
+    text-decoration:underline;
+}
+
+/*
+JQUERY AUTO COMPLETE
+*/
+
+.ac_results {
+    padding: 0px;
+    border: 1px solid #999;
+    background-color: white;
+    overflow: hidden;
+    z-index: 99999;
+}
+
+.ac_results ul {
+    width: 100%;
+    list-style-position: outside;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ac_results li {
+    margin: 0px;
+    padding: 2px 5px;
+    cursor: default;
+    display: block;
+    /*
+    if width will be 100% horizontal scrollbar will apear
+    when scroll mode will be used
+    */
+    /*width: 100%;*/
+    font: menu;
+    /*
+    it is very important, if line-height not setted or setted
+    in relative units scroll will be broken in firefox
+    */
+    line-height: 16px;
+    overflow: hidden;
+}
+
+.ac_loading {
+    background: white url('../images/spinner.gif') right center no-repeat;
+}
+
+.smallIndentInputBox {
+    padding-left: 0px! important;
+}
+
+#detailsPanel {z-index: 1200 !important}
+
+#detailsPanelTabs .x-tab-panel-header {
+    background-color: white;
+}
+
+#mapOptions {
+    margin: 1px 6px 0px 4px;
+    padding: 10px;
+    background-color: #F1F1F0;    
+    border-radius: 10px;
+    border: 1px solid #CBCED3;
+    box-shadow: 2px 2px 3px 1px #EEEEEE;
+}
+
+#mapOptions div {
+    background-color: #F1F1F0;
+}
+
+.emptyActiveLayerTreePanelText {
+    margin: 10px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.p-btn-transect {
+   background-image: url(../images/draw.png);
+}
+
+.olControlDrawFeatureActive .olControlDrawFeature {
+    position: absolute;
+    float: left;
+    width: 42px;
+    z-index: 1001;
+    margin-top: 280px;
+    margin-left: 3px;
+    height: 22px;
+    background-image: url("../images/draw.png?");
+    background-position:12px 1px;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+
+
+#menuHeaderTail{
+    background: url(../images/menuHeader.png) 0px -13px repeat-x;
+}
+
+.layer_blacklisted {
+	background-color: #333333;
+}
+
+.layer_inactive {
+	/*background-color: #FF0000;*/
+}
+.layer_inactive a span {
+    color:  #888;
+}
+
+#national_tidal_centre_list li {
+	padding-left: 2em;
+}
+
+#welcome {
+	font-size: 1.2em;
+}
+
+#welcome ul {
+	padding: 0px 0px 10px 10px;
+	margin: 0px 0px 10px 10px;
+	list-style-type: disc;
+}
+
+#welcome ul li {
+}
+
+.clear {
+	clear: both;
+	height: 1px;
+}
+
+.top_padded {
+	padding-top: 1.3em;
+}
+
+.wrapping-wrapped-field {
+	white-space: normal;
+}
+
+.p-centre-item {
+    margin:0 auto;
+    text-align:left;
+}
+
+.p-centre {            
+    text-align:center;
+}
+
+.p-search .x-grid3-row {
+	padding: 10px 0;
+}
+
+.p-header-space {
+  border-radius: 12px 12px 0 0;
+}
+
+div.allwhite {
+	color: white;
+	border-color: white;
+}
+
+/* AODAAC tab styles */
+.aodaacTab { }

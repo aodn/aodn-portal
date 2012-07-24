@@ -1,0 +1,156 @@
+
+
+
+.p-search h1 {
+   margin-bottom: 5px;
+   font-size: 14px;
+}
+
+.p-results li {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+.p-results {
+	margin-left: 10px;
+}
+
+.p-facet-values li, .p-selected-values li {
+   background-image: url('../images/arrow.gif');
+   background-repeat: no-repeat;
+   background-position: 0 .2em;
+   padding-left: .6em;
+}
+
+.p-facet-values, .p-selected-values {
+   list-style-type: none !important;
+   padding-left: 1em;
+   font-weight: normal;
+}
+
+.p-facet-name, .p-selected-name {
+   padding-top: 10px;
+   width: 360px;
+   float: left;
+   font-weight: bold;
+}
+
+.p-facets, .p-refinements {
+}
+
+.p-facets {
+   padding: 0px 12px 0px 12px;
+   float: left;
+}
+
+.p-refinements {
+   padding: 0px 12px 6px 12px;
+   background-color: #DBDBDB;
+   float: left;
+}
+
+.p-refinements-title {
+   width: 350px;
+}
+
+.p-refinements-label {
+   font-weight: bold;
+}
+
+.p-remove-all {
+   padding-left: 25px;
+}
+
+.p-remove-value {
+   float: right;
+   padding-right: 35px;
+   padding-left: 15px;
+}
+
+.p-result-map-add, .p-result-map-go, .p-result-select-layer {
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-disabled {
+   max-width: 0px;
+}
+
+.p-result-map-add {
+   background-image: url(../images/map-add-icon.png);
+}
+
+.p-result-select-layer {
+   background-image: url(../images/layers-map-icon.png);
+}
+
+.p-result-map-go {
+   background-image: url(../images/map-go-icon.png);
+}
+
+.p-result-info {
+   background-image: url(../images/information-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-show-link {
+   background-image: url(../images/link-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-select-link {
+   background-image: url(../images/select-link-icon.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-result-cart-add {
+   background-image: url(../images/basket_add.png);
+   background-repeat: no-repeat;
+   max-width: 30px;
+}
+
+.p-logo img {
+  max-width : 30px;
+}
+
+.p-logo {
+	width: 40px;
+}
+
+.p-abstract {
+	width: 800px;
+}
+
+.p-results table {
+	width: 100%;
+}
+
+.p-result-action {
+	float: right;
+	margin-right: 5px;
+}
+
+input.p-selector {
+  background-image:url(../images/grey_bg.png);
+}
+
+.p-remove-filter {
+   background-image: url(../images/cross.png);
+   background-repeat: no-repeat;
+   max-width: 8px;
+   max-height:8px;
+}
+
+.p-save-icon {
+   background-image: url(../images/save-icon.png);
+   background-repeat: no-repeat;
+}
+
+.p-back-icon {
+   background-image: url(../images/go-back-icon.png);
+   background-repeat: no-repeat;
+}
+

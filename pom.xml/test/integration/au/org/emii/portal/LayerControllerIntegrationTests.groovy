@@ -1,0 +1,51 @@
+package au.org.emii.portal
+
+import grails.test.*
+
+class LayerControllerIntegrationTests extends GroovyTestCase 
+{
+	def layerController
+	
+    protected void setUp() 
+	{
+        super.setUp()
+		
+		layerController = new LayerController()
+    }
+
+    protected void tearDown() 
+	{
+        super.tearDown()
+    }
+
+	// #1761
+    void testNoDuplicatesInLayerAsJson() 
+	{
+		// Create
+		Server server = Server.build(uri: "http://someserver/path")
+		server.save()
+		
+		Layer activeLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: true)
+		activeLayer.save()
+		
+		Layer inactiveLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: false)
+		inactiveLayer.save()
+		
+		try
+		{
+			layerController.params.serverUri = "http://someserver/path"
+			layerController.params.name = "imos:layername"
+			layerController.findLayerAsJson()
+			
+			assertEquals(200, layerController.response.status)
+		}
+		catch (Exception e)
+		{
+			fail("Unexpected failure: " + e.message)
+		}
+		finally
+		{
+			server.delete()
+		}
+    }
+}
