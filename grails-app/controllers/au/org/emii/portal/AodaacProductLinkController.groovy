@@ -16,10 +16,17 @@ class AodaacProductLinkController {
     def create = {
         def aodaacProductLinkInstance = new AodaacProductLink()
         aodaacProductLinkInstance.properties = params
-        return [aodaacProductLinkInstance: aodaacProductLinkInstance]
+        return [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance]
     }
 
     def save = {
+
+        // Trim whitespace to avoid potential bugs
+        if ( params ) {
+
+            params.layerName = params.layerName?.trim()
+        }
+
         def aodaacProductLinkInstance = new AodaacProductLink(params)
         if (aodaacProductLinkInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink'), aodaacProductLinkInstance.id])}"
@@ -37,7 +44,7 @@ class AodaacProductLinkController {
             redirect(action: "list")
         }
         else {
-            return [aodaacProductLinkInstance: aodaacProductLinkInstance]
+            return [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance]
         }
     }
 
@@ -49,17 +56,21 @@ class AodaacProductLinkController {
                 if (aodaacProductLinkInstance.version > version) {
 
                     aodaacProductLinkInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink')] as Object[], "Another user has updated this AodaacProductLink while you were editing")
-                    render(view: "edit", model: [aodaacProductLinkInstance: aodaacProductLinkInstance])
+                    render(view: "edit", model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance])
                     return
                 }
             }
+
+            // Trim whitespace to avoid potential bugs
+            params.layerName = params.layerName?.trim()
+
             aodaacProductLinkInstance.properties = params
             if (!aodaacProductLinkInstance.hasErrors() && aodaacProductLinkInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink'), aodaacProductLinkInstance.id])}"
                 redirect(action: "list", id: aodaacProductLinkInstance.id)
             }
             else {
-                render(view: "edit", model: [aodaacProductLinkInstance: aodaacProductLinkInstance])
+                render(view: "edit", model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance])
             }
         }
         else {

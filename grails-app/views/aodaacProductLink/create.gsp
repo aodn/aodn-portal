@@ -62,6 +62,31 @@
                     <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
                 </div>
             </g:form>
+            <br />
+            <h2>Existing entries</h2>
+            <div class="list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Layer Name</th>
+                        <th>AODAAC Product ID</th>
+                        <th>Server</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${aodaacProductLinkInstanceList}" status="i" var="aodaacProductLinkInstance">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "layerName")}</td>
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "productId")}</td>
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "server")}</td>
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>

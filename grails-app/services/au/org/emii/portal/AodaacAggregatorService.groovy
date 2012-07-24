@@ -143,7 +143,10 @@ class AodaacAggregatorService {
             // Make the call
             def response = apiCall.toURL().text
 
-            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" ).replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" ) // Fixing invalid JSON response from AODAAC aggregator
+            // Fixing invalid JSON response from AODAAC aggregator
+            response = response.replaceAll( "/var/aodaac/test/log", "\"/var/aodaac/test/log\"" )
+            response = response.replaceAll( "/var/aodaac/prod/log", "\"/var/aodaac/prod/log\"" )
+            response = response.replaceAll( "cgiSeq: \n", "cgiSeq: \"\"\n" )
 
             log.debug "response: ${ response }"
 
@@ -348,7 +351,7 @@ class AodaacAggregatorService {
                 def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
                 def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
 
-                startTimeString = startTimeString - AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
+                startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
 
                 log.debug "  startTimeString: ${ startTimeString }"
 

@@ -66,6 +66,31 @@
                     <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
                 </div>
             </g:form>
+            <br />
+            <h2>Existing entries</h2>
+            <div class="list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Layer Name</th>
+                        <th>AODAAC Product ID</th>
+                        <th>Server</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${aodaacProductLinkInstanceList}" status="i" var="aodaacProductLinkInstance">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "layerName")}</td>
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "productId")}</td>
+
+                            <td>${fieldValue(bean: aodaacProductLinkInstance, field: "server")}</td>
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>
