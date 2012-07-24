@@ -234,6 +234,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.getAnimationButton = new Ext.Button({
 			icon: 'images/animation/download.png',
+			text: 'download',
             hidden: true,
 			listeners:{
 				scope: this,

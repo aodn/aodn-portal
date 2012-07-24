@@ -410,4 +410,15 @@ class AodaacAggregatorService {
 
         return "$s$slash"
     }
+
+    def checkIncompleteJobs(){
+        def jobList = AodaacJob.findAll("from AodaacJob as job where job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false")
+
+        log.debug "number of jobs: " + jobList.size()
+
+        jobList.each{
+            log.debug it
+            updateJob it
+        }
+    }
 }
