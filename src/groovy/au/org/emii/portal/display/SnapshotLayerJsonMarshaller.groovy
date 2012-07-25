@@ -1,10 +1,9 @@
 package au.org.emii.portal.display
 
+import au.org.emii.portal.Snapshot
+import au.org.emii.portal.SnapshotLayer
 import grails.converters.JSON
-
-import org.codehaus.groovy.grails.commons.GrailsClassUtils
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
-import org.codehaus.groovy.grails.commons.GrailsDomainClassProperty
 import org.codehaus.groovy.grails.web.converters.ConverterUtil
 import org.codehaus.groovy.grails.web.converters.exceptions.ConverterException
 import org.codehaus.groovy.grails.web.converters.marshaller.json.DomainClassMarshaller
@@ -15,9 +14,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeanWrapper
 import org.springframework.beans.BeanWrapperImpl
-
-import au.org.emii.portal.Snapshot
-import au.org.emii.portal.SnapshotLayer;
 
 class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	
@@ -97,7 +93,7 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	}
 	
 	def _includeForLayer(o, property) {
-		return _isLayer(o) && !LAYER_EXCLUDES.contains(property)       ∂
+		return _isLayer(o) && !LAYER_EXCLUDES.contains(property)
 	}
 	
 	def _initialise(referenceObject) {
