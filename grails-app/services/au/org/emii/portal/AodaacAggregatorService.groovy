@@ -283,13 +283,17 @@ class AodaacAggregatorService {
 
         try {
 
-            def emailBodyCode = "${grailsApplication.config.instanceName.toLowerCase()}.aodaacJob.notification.email.${job.dataFileExists ? "success" : "failed"}Body"
+            def instanceCode = grailsApplication.config.instanceName.toLowerCase()
 
+            def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${job.dataFileExists ? "success" : "failed"}Body"
             def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl].toArray(), Locale.getDefault() )
+
+            def emailSubjectCode = "${instanceCode}.aodaacJob.notification.email.subject"
+            def emailSubject = messageSource.getMessage( emailSubjectCode, [].toArray(), Locale.getDefault() )
 
             sendMail {
                 to( [job.notificationEmailAddress] )
-                subject( "Portal aggregation job complete" )
+                subject( emailSubject )
                 body( emailBody )
                 from( grailsApplication.config.portal.systemEmail.fromAddress )
             }

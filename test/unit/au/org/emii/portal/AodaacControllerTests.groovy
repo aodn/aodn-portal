@@ -237,8 +237,6 @@ class AodaacControllerTests extends ControllerUnitTestCase {
     void testUserJobInfo_HasJobsInList() {
 
         def getAllCalledTimes = 0
-        def updateJobCalledTimes = 0
-        def jobsUpdated = []
 
         def testJob1 = [jobId: 2]
         def testJob2 = [jobId: 4]
@@ -254,20 +252,9 @@ class AodaacControllerTests extends ControllerUnitTestCase {
             return [testJob1, testJob2]
         }
 
-        controller.aodaacAggregatorService = [
-                updateJob: {
-                    job ->
-
-                    jobsUpdated.add job
-                    updateJobCalledTimes++
-                }
-        ]
-
         controller.userJobInfo()
 
         assertEquals 1, getAllCalledTimes
-        assertEquals 2, updateJobCalledTimes
-        assertEquals( [testJob1, testJob2], jobsUpdated )
         assertEquals '[{"jobId":2},{"jobId":4}]', mockResponse.contentAsString
     }
 

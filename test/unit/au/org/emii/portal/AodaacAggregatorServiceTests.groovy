@@ -483,8 +483,16 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             getMessage: {
                 code, args, locale ->
 
-                assertEquals "imos.aodaacJob.notification.email.successBody", code
-                assertEquals( ["dataUrl"], args )
+                if ( messageSourceGetMessageCalledCount == 0 ) {
+
+                    assertEquals "imos.aodaacJob.notification.email.successBody", code
+                    assertEquals( ["dataUrl"], args )
+                }
+                else if ( messageSourceGetMessageCalledCount == 1 ) {
+
+                    assertEquals "imos.aodaacJob.notification.email.subject", code
+                    assertEquals( [].toArray(), args )
+                }
 
                 messageSourceGetMessageCalledCount++
             }
@@ -500,7 +508,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         aodaacAggregatorService._sendNotificationEmail testJob
 
         assertEquals 1, sendMailCalledCount
-        assertEquals 1, messageSourceGetMessageCalledCount
+        assertEquals 2, messageSourceGetMessageCalledCount
     }
 
     void testSendNotificationEmail_JobNotEnded() {

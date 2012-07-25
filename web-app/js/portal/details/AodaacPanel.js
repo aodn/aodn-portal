@@ -15,7 +15,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             id: 'aodaacPanel',
-            title: 'AODAAC Partition',
+            title: 'Partition data',
             items: items,
             bodyCls: 'aodaacTab'
         }, cfg );
@@ -161,8 +161,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         ref: '../../northBL',
                         name: 'northBL',
                         decimalPrecision: 2,
-                        width: 50,
-                        readOnly: true
+                        width: 50
                     }
                 ]
             },{
@@ -183,8 +182,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'westBL',
                         ref: '../../westBL',
                         decimalPrecision: 2,
-                        width: 50,
-                        readOnly: true
+                        width: 50
                     },
                     {
                         xtype: 'label',
@@ -196,8 +194,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'eastBL',
                         ref: '../../eastBL',
                         decimalPrecision: 2,
-                        width: 50,
-                        readOnly: true
+                        width: 50
                     },
                     {
                         xtype: 'label',
@@ -225,8 +222,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'southBL',
                         ref: '../../southBL',
                         decimalPrecision: 2,
-                        width: 50,
-                        readOnly: true
+                        width: 50
                     }
                 ]
             }

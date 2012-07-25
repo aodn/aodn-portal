@@ -109,18 +109,9 @@ class AodaacController {
 
         def jobIds = _getJobIdList()
 
-        if ( jobIds.size() ) {
+        def jobs = jobIds.size() ? AodaacJob.getAll( jobIds ) : []
 
-            def jobs = AodaacJob.getAll( jobIds )
-
-            jobs.each { aodaacAggregatorService.updateJob it }
-
-            render jobs as JSON
-        }
-        else {
-
-            render ([] as JSON)
-        }
+        render jobs as JSON
     }
 
     def _byId( jobId ) {
