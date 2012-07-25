@@ -26,7 +26,6 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	static LAYER_EXCLUDES = [
 		"class",
         "metaClass",
-        "dimensions",
         "metadataUrls",
         "hasMany",
         "handler",
@@ -98,7 +97,7 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	}
 	
 	def _includeForLayer(o, property) {
-		return _isLayer(o) && !LAYER_EXCLUDES.contains(property)
+		return _isLayer(o) && !LAYER_EXCLUDES.contains(property)       ∂
 	}
 	
 	def _initialise(referenceObject) {

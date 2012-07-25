@@ -784,6 +784,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 						
 					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
+
+
 				}
 			},
 			failure: function(resp) {
@@ -819,19 +821,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this.zoomToLayer(openLayer);
 			}
 
+			if(chosenTimes != undefined){
+				console.log("setting chosen times: " + chosenTimes);
 
-			if (openLayer.isNcwms()) {
-				// update detailsPanel after Json request
-				this.getLayerMetadata(openLayer);
+				this.animationPanel.loadFromSavedMap(openLayer, chosenTimes.split("/"));
 			}
 
 			Ext.getCmp('rightDetailsPanel').update(openLayer);
-
-
-			if (animated) {
-				openLayer.chosenTimes = chosenTimes;
-				this.addNCWMSLayer(openLayer);
-			}
 		}
 	},
 
@@ -879,7 +875,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
-		Ext.getCmp("animationPanel").removeAnimation();
+		this.animationPanel.removeAnimation();
 
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {

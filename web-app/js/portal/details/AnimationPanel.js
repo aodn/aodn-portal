@@ -79,7 +79,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners: {
 				scope: this,
 				'click': function(button,event){
-					this._loadAnimation();
+					dates = this._getFormDates();
+					this._loadAnimation(dates[0], dates[1]);
 				}
 			},
 			tooltip: OpenLayers.i18n('play')
@@ -481,6 +482,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_makeNextSlide: function(timeStamp){
+		console.log("making next slide: " + timeStamp);
 		var newLayer = this.selectedLayer.clone();
 
 		if(this.originalLayer.name.indexOf("animated") > 0){
@@ -497,12 +499,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		newLayer.setVisibility(true);
 		newLayer.setOpacity(1);
 		newLayer.display(false);
-		newLayer.isAnimated = true;
-
+		newLayer.isAnimatedSlice = true;	//NOTE: isAnimatedSlice = a layer that is part of the animation, whereas
+											//isAnimated denotes the ORIGINAL layer that is currently animated.
 		return newLayer;
 	},
 
-	_loadAnimation: function(){
+	_getFormDates: function(){
 		if(this.startDatePicker.getValue() === "" || this.endDatePicker.getValue() === "" ||
 			this.startTimeCombo.getValue() === "" || this.endTimeCombo.getValue() === ""){
 			//Incomplete start/end time!  Do nothing.
@@ -512,6 +514,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		var startString = this._getSelectedTimeString(true);
 		var endString = this._getSelectedTimeString(false);
+		return [startString, endString];
+	},
+
+	_loadAnimation: function(startString, endString){
+
 
 		dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
 
@@ -536,8 +543,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			if(this.originalLayer.name.indexOf("animated") < 0){
 				this.originalLayer.name = this.originalLayer.name + " (animated)";
+
+				//NOTE: isAnimatedSlice = a layer that is part of the animation, whereas
+				//isAnimated denotes the ORIGINAL layer that is currently animated.
 				this.originalLayer.isAnimated = true;
 			}
+
+			this.originalLayer.chosenTimes =  dimSplit[startIndex] + "/" + dimSplit[endIndex];
 
 			newAnimatedLayers = new Array();
 
@@ -753,6 +765,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     		return this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
     	else
         	return this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
+	},
+
+	loadFromSavedMap: function(layer, stamps){
+		this.setSelectedLayer(layer);
+		this.update();
+		this._loadAnimation(stamps[0], stamps[1]);
 	}
 
 });

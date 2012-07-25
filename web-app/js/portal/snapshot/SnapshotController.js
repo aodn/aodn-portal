@@ -81,16 +81,21 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   
   getSnapshotLayer: function(mapLayer) {
     var layer = {};
-    if (mapLayer.grailsLayerId) {
+    if(mapLayer.isAnimatedSlice != undefined){
+    	return; //don't save it
+    }
+    if(mapLayer.isAnimated){ //changing isAnimated to indicate it is the original layer that is animated
+		// animated layers - save original layer details plus animation settings
+		layer.layer = mapLayer.grailsLayerId;
+		layer.animated = true;
+		layer.chosenTimes = mapLayer.chosenTimes;
+		layer.styles = mapLayer.params.STYLES;
+    }
+    else if (mapLayer.grailsLayerId) {
       // layers sourced from server
       layer.layer = mapLayer.grailsLayerId;
-    } else if (mapLayer.originalWMSLayer != undefined) {
-      // animated layers - save original layer details plus animation settings
-      layer.layer = mapLayer.originalWMSLayer.grailsLayerId;
-      layer.animated = true;
-      layer.chosenTimes = mapLayer.originalWMSLayer.chosenTimes; 
-      layer.styles = mapLayer.originalWMSLayer.params.STYLES;
-    } else {
+    }
+    else if(!layer.animated){
       // layers added from search
       layer.name = mapLayer.params.LAYERS;
       layer.title = mapLayer.name;
@@ -150,6 +155,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   
   addGrailsLayer: function(id, options, params, animated, chosenTimes) {
 	  if (Ext.isFunction(this.addGrailsLayerFn)) {
+	  	 console.log("in addGrailsLayer: " + chosenTimes);
 		  var delegate = this.addGrailsLayerFn.createDelegate(this.mapScope, [id, options, params, animated, chosenTimes]);
 		  delegate.call();
 	  }
