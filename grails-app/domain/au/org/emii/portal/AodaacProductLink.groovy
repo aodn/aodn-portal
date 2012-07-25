@@ -12,4 +12,9 @@ class AodaacProductLink {
         layerName blank: false
         productId unique:  ['server', 'layerName']
     }
+
+    @Override
+    String toString() {
+        return "AodaacProductLink[ProductId: $productId, layerName: '$layerName', server: $server]"
+    }
 }

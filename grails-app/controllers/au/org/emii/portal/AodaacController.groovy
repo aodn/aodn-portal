@@ -6,28 +6,6 @@ class AodaacController {
 
     def aodaacAggregatorService
 
-    def testParams() { // Todo - DN: To be removed once a good testing setup is available
-
-        [
-            dateRangeStart: "01/01/2011",
-            dateRangeEnd: "14/01/2011",
-            timeOfDayRangeStart: "0000",
-            timeOfDayRangeEnd: "2400",
-            latitudeRangeStart:  -30.681,
-            latitudeRangeEnd:    -24.452,
-            longitudeRangeStart: 148.383,
-            longitudeRangeEnd:   159.281,
-            productId: 1,
-            outputFormat: "nc",
-            notificationEmailAddress: "dnahodil@gmail.com"
-        ]
-    }
-
-    def index = { // Todo - DN: To be removed once a good testing setup is available
-
-        [ testParams: testParams() ]
-    }
-
     def productInfo = {
 
         def productIds = []
@@ -44,6 +22,13 @@ class AodaacController {
 
             def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
 
+            if ( !aodaacProductLinks && log.debugEnabled ) {
+
+                log.debug "layer: ${ layer }"
+//                log.debug "AodaacProductLink.findAllByLayerName( layer.name ): ${ AodaacProductLink.findAllByLayerName(layer.name) }"
+//                log.debug "AodaacProductLink.findAllByServer( layer.server ): ${ AodaacProductLink.findAllByServer(layer.server) }"
+            }
+
             productIds = aodaacProductLinks.collect{ it.productId }.unique()
         }
 
@@ -55,11 +40,6 @@ class AodaacController {
 
             render ([] as JSON)
         }
-    }
-
-    def testCreateJob = {
-
-        forward action: "createJob", params: testParams()
     }
 
     def createJob = {

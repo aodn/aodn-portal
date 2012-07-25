@@ -31,10 +31,8 @@ class SecurityFilters {
             }
         }
 
-        aodaacAccess(controller: "aodaac", action: "index|testCreateJob|productInfo|createJob|updateJob|cancelJob|deleteJob|userJobInfo") { // Todo - DN: Tighten up when testing controls removed
+        aodaacAccess(controller: "aodaac", action: "productInfo|createJob|updateJob|cancelJob|deleteJob|userJobInfo") {
             before = {
-
-                println "Todo - DN: Tighten up when testing controls removed"
 
                 logRequest("aodaacAccess", controllerName, actionName)
 
