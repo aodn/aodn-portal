@@ -15,6 +15,10 @@ body, html{
     width: 100%;
 
 }
+.mainlinks {
+    color: white;
+    border-left: 1px solid #99CCFF;
+}
 
 p, td{    
     font-family: tahoma,verdana,arial,sans-serif;

@@ -2,7 +2,6 @@
     font-size: 12px;
 	line-height: 16px;
 	background-color: white;
-	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF));
 	background-image: -moz-linear-gradient(center top , #DDDDDD 0pt, white 745px); 
 	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF));
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#FFFFFF');
@@ -20,6 +19,11 @@ body {
     height: 300px;
     width: 100%;
 
+}
+
+.mainlinks {
+    color: white;
+    border-left: 1px solid #CCCCCC;
 }
 
 html, body, p, td{    
