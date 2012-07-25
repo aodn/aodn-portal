@@ -87,9 +87,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Populate spatial extent controls
         this.southBL.setValue( productInfo.extents.lat.min );
-        this.eastBL.setValue( productInfo.extents.lon.min );
+        this.westBL.setValue( productInfo.extents.lon.min );
         this.northBL.setValue( productInfo.extents.lat.max );
-        this.westBL.setValue( productInfo.extents.lon.max );
+        this.eastBL.setValue( productInfo.extents.lon.max );
 
         // Populate temporal extent controls
         var timeRangeStart = productInfo.extents.dateTime.min;

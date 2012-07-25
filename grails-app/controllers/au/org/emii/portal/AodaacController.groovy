@@ -25,6 +25,8 @@ class AodaacController {
             if ( !aodaacProductLinks && log.debugEnabled ) {
 
                 log.debug "layer: ${ layer }"
+                // Debugging for when you aren't getting the Products you expect for a given Layer.
+                // ** Performance-heavy so commented-out until needed
 //                log.debug "AodaacProductLink.findAllByLayerName( layer.name ): ${ AodaacProductLink.findAllByLayerName(layer.name) }"
 //                log.debug "AodaacProductLink.findAllByServer( layer.server ): ${ AodaacProductLink.findAllByServer(layer.server) }"
             }
