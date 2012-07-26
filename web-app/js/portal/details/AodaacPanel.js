@@ -407,6 +407,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     startProcessing: function() {
 
+        if ( !this._validateEmailAddress( this.emailAddressTextbox.getValue() ) ) {
+
+            alert( 'Please enter a valid email address so we can notify you when the job is complete' );
+            return;
+        }
+
         var args = "";
         args += "outputFormat=" + this.outputSelector.value;
         args += "&";
@@ -442,6 +448,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 alert( 'Unable to create processing job. Please re-check the parameters and try again.' );
             }
         });
+    },
+
+    _validateEmailAddress: function( address ) {
+
+        if ( address == undefined )
+            return false;
+
+        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test( address );
     },
 
     _convertTimeSliderValue: function( quarterHours ) {
