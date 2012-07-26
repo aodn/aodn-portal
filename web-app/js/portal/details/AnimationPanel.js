@@ -254,7 +254,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							HEIGHT: Math.floor(512 * (bounds.getHeight() / bounds.getWidth()))
 						});
 
-						cloneLayer.map = this.
+						cloneLayer.map = this.originalLayer.map;
 
 						var fullUrl = "proxy/downloadGif?url=" + clonedLayer.getFullRequestString();
                         window.open(fullUrl, '_blank', "width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes");
