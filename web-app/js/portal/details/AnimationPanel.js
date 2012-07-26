@@ -242,8 +242,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				click: function(){
 					if(this.animatedLayers.length > 0){
 						//need to workout BBOX
-						var clonedLayer = parent.originalLayer.clone();
+						var clonedLayer = this.originalLayer.clone();
 						bounds = this.originalLayer.map.getExtent();
+
 						clonedLayer.mergeNewParams({
 							TIME: this.animatedLayers[0].params.TIME + "/" +
 								this.animatedLayers[this.animatedLayers.length - 1].params.TIME,
@@ -252,6 +253,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							WIDTH: 512,
 							HEIGHT: Math.floor(512 * (bounds.getHeight() / bounds.getWidth()))
 						});
+
+						cloneLayer.map = this.
 
 						var fullUrl = "proxy/downloadGif?url=" + clonedLayer.getFullRequestString();
                         window.open(fullUrl, '_blank', "width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes");
