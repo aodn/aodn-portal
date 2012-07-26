@@ -777,6 +777,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			} else {
 				Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
 			}
+			if(newDetailsPanelLayer != null)
+				this.mapLinks.setVisible(newDetailsPanelLayer.isAnimatable());
+			else
+				this.mapLinks.setVisible(false);
 		}
 	},
 	
@@ -796,7 +800,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
-		this.mapLinks.setVisible(false);
 		this._closeFeatureInfoPopup();
 	},
 	
