@@ -68,7 +68,7 @@ Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
     		}, 
             this.handlerOptions
         );
-    }, 
+    }
 
 });
 
@@ -254,7 +254,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				width: 230
 			}, 
 			this.animationPanel,			
-			this.controlButtonPanel,
+			this.controlButtonPanel
 			],
 			
 			listeners:{

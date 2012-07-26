@@ -3,7 +3,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     if (this.server) {
     	return ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"].indexOf(this.server.type) >= 0;
     }
-}
+};
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint, overrideParams) {
     var baseFeatureInfoParams = {
@@ -24,14 +24,14 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
     		X: clickPoint.x,
             Y: clickPoint.y,
             I: clickPoint.x,
-            J: clickPoint.y,
+            J: clickPoint.y
     	});
     }
     
     baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, overrideParams);
     
     return this.unproxy(this.getFullRequestString(baseFeatureInfoParams));
-}
+};
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
 	var result = "text/html";
@@ -43,7 +43,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
 	}
 	
 	return result;
-}
+};
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
 	var result = undefined;
@@ -55,7 +55,7 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
     }
 	
 	return result;
-}
+};
 
 OpenLayers.Layer.WMS.prototype.proxy = function(proxy) {
 	if (this.server.username && this.server.password  && !this.localProxy) {
@@ -63,11 +63,11 @@ OpenLayers.Layer.WMS.prototype.proxy = function(proxy) {
 		this.url = this.server.uri;
 		this.localProxy = proxy;
 	}
-}
+};
 
 OpenLayers.Layer.WMS.prototype.unproxy = function(url) {
 	return url.replace(this.localProxy, '');
-}
+};
 
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
 	var bounds = this._is130() 
@@ -75,11 +75,11 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
 		: this.getExtent();
 	
 	return bounds.toBBOX();
-}
+};
 
 OpenLayers.Layer.WMS.prototype._is130 = function() {
 	return "WMS-1.3.0" == this.server.type; 
-}
+};
 
 OpenLayers.Layer.WMS.prototype.isAnimatable = function(){
 	if (this.dimensions != undefined){
@@ -90,4 +90,4 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function(){
 		}
 	}
 	return false;
-}
+};
