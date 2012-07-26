@@ -126,7 +126,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 			extraParams.FORMAT = "image/png";
 			extraParams.INFO_FORMAT = "image/png";
 		}
-    	return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams)) + "&format=" + encodeURIComponent(layer.getFeatureInfoFormat());
+    	return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams));
     },
     
     _collectUniqueLayers: function() {
