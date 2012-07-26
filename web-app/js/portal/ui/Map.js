@@ -195,9 +195,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
 		// keep the animated image crisp
 		// limit to changes in zoom. moveend is too onerous
-		this.map.events.register("moveend", this, function (e) {        
-			this.redrawAnimatedLayers();
-		});
 	},
 	
 
@@ -623,92 +620,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			jQuery('.emptyActiveLayerTreePanelText').hide('slow');
 		}
 	},
-	
-	redrawAnimatedLayers: function() {
-		var wmsLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
-		// interesting the animated images are not appearing to be of the class OpenLayers.Layer.Image
-		for(var i = 0; i < wmsLayers.length; i++)   {   
-			if (this.map.layers[i].id !== undefined) {
-				var layer = this.map.getLayer(this.map.layers[i].id);       
-				if (layer.originalWMSLayer !== undefined) {
-					// redraw
-					this.addNCWMSLayer(layer);
-				}
-			}
-		}
 
-	},
-	
-	// exchange OpenLayers.Layer.WMS with OpenLayers.Layer.Image 
-	// or reload OpenLayers.Layer.Image
-	// Reloading may be called from reloading a style or changing zoomlevel
-	addNCWMSLayer: function(currentLayer) {
-		// Because of the way the ncWMS layer is generated there's not much point
-		// attaching to its load start/end event so we can manually call those
-		// actions here
-		this.loadStart();
-
-		var bbox = this.getMapExtent();
-		var layer = currentLayer;
-
-		// if originalWMSLayer is set - then it is already an animated Image
-		if (currentLayer.originalWMSLayer !== undefined) {
-			layer = currentLayer.originalWMSLayer;
-			layer.map = this.map;
-		}
-
-		var newUrl = layer.getFullRequestString({
-			TIME: layer.chosenTimes,
-			TRANSPARENT: true,
-			STYLE: layer.params.STYLES, // use the style of the original WMS layer
-			WIDTH: 1024,
-			HEIGHT: 1024,
-			BBOX: bbox.toArray(),
-			FORMAT: "image/gif"
-		});
-
-		var newNCWMS = new OpenLayers.Layer.Image(
-			layer.name + " (Animated)",
-			newUrl,
-			bbox,
-			bbox.getSize(), 
-			{
-				format: 'image/gif', 
-				opacity: layer.server.opacity / 100,
-				isBaseLayer : false,
-				maxResolution: this.map.baseLayer.maxResolution,
-				minResolution: this.map.baseLayer.minResolution,
-				resolutions: this.map.baseLayer.resolutions
-			}
-			);
-
-		newNCWMS.events.register('loadend', this, this.loadEnd);
-
-		if (!this.getServer(newNCWMS)) {
-			newNCWMS.server = this.getServer(layer);
-		}
-		if (!newNCWMS.params) {
-			newNCWMS.params = layer.params;
-		}
-		else {
-			newNCWMS.params.STYLES = layer.params.STYLES;
-		}
-
-		/********************************************************
-			 * attach the old WMS layer to the new Image layer !!
-			 * if this is set we know its an animated layer
-			 * ******************************************************/
-		newNCWMS.originalWMSLayer = layer;
-
-		/*******************************************************
-			 * add to map is done here
-			 * swap in the new animating layer into openlayers
-			 * keeping the layer position
-			 *******************************************************/
-		this.swapLayers(newNCWMS, currentLayer);
-
-	},
-	
 	getMapExtent: function()  {
 		var bounds = this.map.getExtent();
 		var maxBounds = this.map.maxExtent;
@@ -822,8 +734,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 
 			if(chosenTimes != undefined){
-				console.log("setting chosen times: " + chosenTimes);
-
 				this.animationPanel.loadFromSavedMap(openLayer, chosenTimes.split("/"));
 			}
 

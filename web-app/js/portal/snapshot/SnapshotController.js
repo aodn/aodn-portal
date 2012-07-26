@@ -50,11 +50,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   },
   
   onSuccessfulLoad: function(snapshot, successCallback) {
-    this.fireEvent('snapshotLoaded');
+
     
     var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
-    
+
     this.map.zoomToExtent(bounds, true);
+    this.map.zoomTo(this.map.getZoomForExtent(bounds, true));
     
     for (var i=0; i< snapshot.layers.length; i++) {
       this.addSnapshotLayer(snapshot.layers[i]);
@@ -63,6 +64,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     if (successCallback) {
       successCallback(snapshot);
     }
+    this.fireEvent('snapshotLoaded');
   },
   
   deleteSnapshot: function(id, successCallback, failureCallback) {
@@ -155,7 +157,6 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   
   addGrailsLayer: function(id, options, params, animated, chosenTimes) {
 	  if (Ext.isFunction(this.addGrailsLayerFn)) {
-	  	 console.log("in addGrailsLayer: " + chosenTimes);
 		  var delegate = this.addGrailsLayerFn.createDelegate(this.mapScope, [id, options, params, animated, chosenTimes]);
 		  delegate.call();
 	  }

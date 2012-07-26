@@ -80,7 +80,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				scope: this,
 				'click': function(button,event){
 					dates = this._getFormDates();
-					this._loadAnimation(dates[0], dates[1]);
+					this._waitForOriginalLayer(dates[0], dates[1]);
 				}
 			},
 			tooltip: OpenLayers.i18n('play')
@@ -243,8 +243,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					if(this.animatedLayers.length > 0){
 						//need to workout BBOX
 						var clonedLayer = parent.originalLayer.clone();
-						clonedLayer.map = this.originalLayer.map;
-						bounds = clonedLayer.map.getExtent();
+						bounds = this.originalLayer.map.getExtent();
 						clonedLayer.mergeNewParams({
 							TIME: this.animatedLayers[0].params.TIME + "/" +
 								this.animatedLayers[this.animatedLayers.length - 1].params.TIME,
@@ -453,24 +452,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_cycleAnimation: function(forced){
-		//this.progressLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
-		//this.progressLabel.setVisible(this._isLoadingAnimation());
-
 		if(this._isLoadingAnimation()){
 			this.stepLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
 		}
 
 		if(this.counter < this.animatedLayers.length - 1){
-			if(this.map.map.getLayer(this.animatedLayers[this.counter + 1].id) == null){
-				this.map.addLayer(this.animatedLayers[this.counter + 1], false);
-				this.animatedLayers[this.counter + 1].display(false);
+            curLayer = this.animatedLayers[this.counter + 1];
+			if(this.map.map.getLayer(curLayer.id) == null){
+				this.map.addLayer(curLayer, false);
+				curLayer.display(false);
 			}
 			else{
-				if(this.animatedLayers[this.counter + 1].numLoadingTiles == 0){
+				if(curLayer.numLoadingTiles == 0){
 					this.counter++;
 					this._setSlide(this.counter);
-
-				}
+}
 			}
 		}
 		else{
@@ -482,7 +478,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_makeNextSlide: function(timeStamp){
-		console.log("making next slide: " + timeStamp);
 		var newLayer = this.selectedLayer.clone();
 
 		if(this.originalLayer.name.indexOf("animated") > 0){
@@ -515,6 +510,24 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		var startString = this._getSelectedTimeString(true);
 		var endString = this._getSelectedTimeString(false);
 		return [startString, endString];
+	},
+
+	/*
+		This function waits for the original layer to load first before creating time slices.
+
+		If the original layer hasn't completely loaded, the time slices (since they are cloned!)
+		will try and attempt to load the missing tiles from the original layer too.  Which means, the
+		time slices never loads and the animation doesn't start.
+	*/
+	_waitForOriginalLayer: function(startString, endString){
+		if(this.selectedLayer.numLoadingTiles > 0){
+			this.selectedLayer.events.register('loadend', this, function(){
+				this._loadAnimation(startString, endString);
+			});
+		}
+		else{
+			this._loadAnimation(startString, endString)
+		}
 	},
 
 	_loadAnimation: function(startString, endString){
@@ -770,7 +783,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	loadFromSavedMap: function(layer, stamps){
 		this.setSelectedLayer(layer);
 		this.update();
-		this._loadAnimation(stamps[0], stamps[1]);
+		this._waitForOriginalLayer(stamps[0], stamps[1]);
 	}
 
 });

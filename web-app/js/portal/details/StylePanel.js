@@ -103,7 +103,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             // its an animated openlayers image
             // set the style on the original layer. the style will 'stick' to both
             this.selectedLayer.originalWMSLayer.params.STYLES = record.get('displayText');
-            addNCWMSLayer(this.selectedLayer);
         }
     },
 
