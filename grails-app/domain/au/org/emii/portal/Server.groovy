@@ -79,7 +79,12 @@ class Server {
         Config.activeInstance().refresh()
         Config.activeInstance().defaultLayers
     }
-	
+
+    def beforeValidate() {
+
+        uri = uri?.trim()
+    }
+
 	def isCredentialled() {
 		return username && password
 	}
