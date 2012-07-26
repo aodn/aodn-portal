@@ -796,6 +796,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 		Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
+		this.mapLinks.setVisible(false);
 		this._closeFeatureInfoPopup();
 	},
 	
