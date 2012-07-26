@@ -23,6 +23,10 @@ class ProxyController {
         if (allowedHost(params.url)) {
 			
 			def conn = targetUrl.openConnection()
+
+	        if (params.format) {
+		        response.contentType = params.format
+	        }
 			def outputStream = response.outputStream
 			
 			_addAuthentication(conn, targetUrl)
