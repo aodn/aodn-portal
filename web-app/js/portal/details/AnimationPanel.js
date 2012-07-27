@@ -254,7 +254,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							HEIGHT: Math.floor(512 * (bounds.getHeight() / bounds.getWidth()))
 						});
 
-						cloneLayer.map = this.originalLayer.map;
+						clonedLayer.map = this.originalLayer.map;
 
 						var fullUrl = "proxy/downloadGif?url=" + clonedLayer.getFullRequestString();
                         window.open(fullUrl, '_blank', "width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes");
@@ -408,15 +408,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.originalLayer.name = this.originalLayer.name.substr(0, this.originalLayer.name.indexOf(" (animated)"));
 			this.originalLayer.setOpacity(this.originalOpacity);
 
-			for(var i = 0; i < this.animatedLayers.length; i++){
-				if(this.map.map.getLayer(this.animatedLayers[i].id)){
-					this.map.removeLayer(this.animatedLayers[i], this.originalLayer);
+			while(this.animatedLayers.length > 0){
+				if((this.animatedLayers[0].map == null)){
+					this.animatedLayers[0] = null;
+				}
+				else{
+					this.map.removeLayer(this.animatedLayers[0], this.originalLayer);
 				}
 
-				if(this.animatedLayers[i].div != null) {
-					if(this.animatedLayers[i].map != null)
-						this.animatedLayers[i].destroy();
-				}
+				this.animatedLayers.shift();
 			}
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,

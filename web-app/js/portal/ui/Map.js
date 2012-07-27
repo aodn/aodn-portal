@@ -195,10 +195,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
 		// keep the animated image crisp
 		// limit to changes in zoom. moveend is too onerous
-	},
-	
 
-	
+		this.map.events.register('removelayer', this, this.postRemoveLayer);
+	},
+
 	initMapLinks: function() {
 		var parent = this;
 
@@ -763,10 +763,17 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	    	    
 		return false;
 	},
+
+	postRemoveLayer: function(e){
+		//remove animation when user removes layer from the active layers menu.
+		if(!e.layer.isBaseLayer && e.layer.isAnimated){
+			this.animationPanel.removeAnimation();
+		}
+
+	},
 	
 	removeLayer: function(openLayer, newDetailsPanelLayer) {
 		if (openLayer.name != 'OpenLayers.Handler.Path') {
-
 			this.map.removeLayer(openLayer, newDetailsPanelLayer);
 
 			delete this.activeLayers[this.getLayerUid(openLayer)];
@@ -789,7 +796,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// the map.layers property because it updates its internal indices and
 		// accordingly skips layers as the loop progresses
 		var layersToRemove = [];
-		this.animationPanel.removeAnimation();
+		if(this.animationPanel.isAnimating()){
+			this.animationPanel.removeAnimation();
+		}
 
 		Ext.each(this.map.layers, function(openLayer, allLayers, index) {
 			if(openLayer && !openLayer.isBaseLayer) {
