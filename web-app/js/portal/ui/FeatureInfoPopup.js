@@ -121,12 +121,18 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     
     _getLayerFeatureInfoRequestString: function(layer) {
     	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
+        var format = 'text/xml';
     	if (layer.isAnimated && layer.startTime && layer.endTime) {
 			extraParams.TIME = layer.startTime.toISOString() + "/" + layer.endTime.toISOString();
 			extraParams.FORMAT = "image/png";
 			extraParams.INFO_FORMAT = "image/png";
+            delete format;
 		}
-    	return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams));
+        var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams));
+        if (format) {
+            result += "&format=" + encodeURIComponent(format);
+        }
+        return result;
     },
     
     _collectUniqueLayers: function() {
