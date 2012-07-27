@@ -75,17 +75,12 @@ class WmsScannerController {
             def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
             def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
-            
-            def username = null
-            if(server.username)
-                username = URLEncoder.encode(server.username)
-            
-            def password = null
-            if(server.password)
-                password = URLEncoder.encode(server.password)
-            
+
+            def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
+            def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
+
             // Perform action
-            def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency&username=$username&password=$password"
+            def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
         
             url = address.toURL()   
             conn = url.openConnection()
@@ -124,8 +119,11 @@ class WmsScannerController {
         def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
         def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
-        
-        def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency"
+
+        def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
+        def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
+
+        def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
         
         def url
         def conn
@@ -193,7 +191,7 @@ class WmsScannerController {
                 msg += "<br /><b>$currentLine</b>"
             }
             
-            if ( msg.contains( "<html") ) {
+            if ( msg.contains( "<html" ) ) {
 
                 msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
             }

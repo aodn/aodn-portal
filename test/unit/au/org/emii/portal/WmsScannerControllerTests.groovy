@@ -8,7 +8,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     
     def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true )
     def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
-    def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true )
+    def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true, username: "u n", password: "p/w/d" )
     
     def validConfig = new Config( wmsScannerCallbackPassword: "pwd" )
     def invalidConfig = new Config()
@@ -114,19 +114,21 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockDomain Config, [validConfig]
         
         def expectedQueryString = """\
-?jobName=Server+scan+for+%27Server+2%27\
+?jobName=Server+scan+for+%27Server+3%27\
 &jobDescription=Created+by+Portal%2C+${ URLEncoder.encode( new Date().format( "dd/MM/yyyy hh:mm" ) ) }\
 &jobType=WMS\
-&wmsVersion=1.1.1\
-&uri=svr2uri\
+&wmsVersion=1.3.0\
+&uri=svr3uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 &callbackPassword=pwd\
-&scanFrequency=45&username=null&password=null\
+&scanFrequency=120\
+&username=u+n\
+&password=p%2Fw%2Fd\
 """
 
         setUpToUrlForResponse "scannerBaseUrl/scanJob/register$expectedQueryString", "Registered"
         
-        Server.metaClass.static.get = { map -> return server2 }
+        Server.metaClass.static.get = { map -> return server3 }
         
         controller.callRegister() // Make the call
         
@@ -146,7 +148,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &uri=svr2uri\
 &callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
 &callbackPassword=pwd\
-&scanFrequency=45&username=null&password=null\
+&scanFrequency=45\
 """
         
         setUpToUrlForException "scannerBaseUrl/scanJob/register$expectedQueryString", "Error Text"
@@ -171,6 +173,8 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &wmsVersion=1.3.0\
 &uri=svr3uri\
 &scanFrequency=120\
+&username=u+n\
+&password=p%2Fw%2Fd\
 """
 
         setUpToUrlForResponse "scannerBaseUrl/scanJob/update$expectedQueryString", "Updated"
