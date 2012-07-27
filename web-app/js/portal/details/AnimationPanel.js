@@ -297,7 +297,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this._resetForNewAnimation();
 		this.map = Ext.getCmp("map");
 
-		this.map.map.events.register('moveend', this, this.onMove);
+		this.map.map.events.register('moveend', this, this._onMove);
 
 		this.pausedTime = "";
 		this.timerId = -1;
@@ -364,7 +364,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	_onMove: function(){
 		//have to redraw??
+		console.log("on moved!");
 		if(this.animatedLayers.length > 0){
+			this.counter = 0;
 			this._setSlide(this.counter);
 		}
 
@@ -418,20 +420,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			//this should still work even if there's no animation, i.e. paused
 			this.stepSlider.setValue(index);
-			
 
 			//also set the label
 			var labelStr = this.animatedLayers[index].params.TIME;
 
 			this.stepLabel.setText(this.animatedLayers[index].params.TIME, false);
+
+			if(this._isLoadingAnimation()){
+				this.stepLabel.setText("Loading... " + Math.round((index+ 1) / this.animatedLayers.length * 100) + "%");
+			}
 		}
 	},
 
 	_cycleAnimation: function(forced){
-		if(this._isLoadingAnimation()){
-			this.stepLabel.setText("Loading... " + Math.round((this.counter + 1) / this.animatedLayers.length * 100) + "%");
-		}
-
 		if(this.counter < this.animatedLayers.length - 1){
             curLayer = this.animatedLayers[this.counter + 1];
 			if(this.map.map.getLayer(curLayer.id) == null){
