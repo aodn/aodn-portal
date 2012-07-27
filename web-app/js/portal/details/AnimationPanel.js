@@ -279,19 +279,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.buttonsPanel,	
 				this.stepSlider,					
 				this.stepLabel
-				],
-				listeners:{
-					// stops the click bubbling to a getFeatureInfo request on the map
-					//scope: this,
-					render: function(p){
-						p.getEl().on('mouseenter', function(){
-							parent._modMapDragging(false);
-						});
-						p.getEl().on('mouseleave', function(){
-							parent._modMapDragging(true);
-						});
-					}
-				}					
+				]
 			},
 			this.timeSelectorPanel,	
 			this.progressLabel,
@@ -316,21 +304,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		Portal.details.AnimationPanel.superclass.initComponent.call(this);
 	},
-	
-	_modMapDragging: function(toggle) {
-		var map = this.map.map;
-		for (var i = 0; i< map.controls.length; i++) {
-			if ((map.controls[i].displayClass === "olControlNavigation") || (map.controls[i].displayClass === "olControl")){
-				if(toggle){
-					map.controls[i].activate();
-				}
-				else{
-					 map.controls[i].deactivate();
-				}
-			}
-		}		
-	},
-
 
 	_onDateSelected: function(field, date){
 		var combo;

@@ -280,13 +280,39 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			items: [
 			this.expandBar,
 			this.mapToolbar
-			]
+			],
+			listeners:{
+				// stops the click bubbling to a getFeatureInfo request on the map
+				//scope: this,
+				render: function(p){
+					p.getEl().on('mouseenter', function(){
+						parent._modMapDragging(false);
+					});
+					p.getEl().on('mouseleave', function(){
+						parent._modMapDragging(true);
+					});
+				}
+			}
 		});
 
 		this.mapLinks.setPosition(1, 0); // override with CSS later
 		this.add(this.mapLinks);
 	},
-	
+
+	_modMapDragging: function(toggle) {
+		for (var i = 0; i< this.map.controls.length; i++) {
+			if ((this.map.controls[i].displayClass === "olControlNavigation") || (this.map.controls[i].displayClass === "olControl")){
+				if(toggle){
+					this.map.controls[i].activate();
+				}
+				else{
+					this.map.controls[i].deactivate();
+				}
+			}
+		}
+	},
+
+
 
 
 	_contractMapLinks: function(){
