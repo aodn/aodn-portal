@@ -68,7 +68,7 @@ Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
     		}, 
             this.handlerOptions
         );
-    }, 
+    }
 
 });
 
