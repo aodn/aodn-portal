@@ -7,7 +7,7 @@ body, html{
     margin-top: 2px! important; */
 }
 
-h1 {
+h1, h2,h3,h4 {
     white-space: nowrap; 
 }
 
@@ -247,10 +247,8 @@ a[rel="external"], a.external {
 .mainlinks {
     font-size: 13px;
     font-weight: bold;
-    color: white;
     margin-right: 10px;    
     padding-left: 10px;
-    border-left: 1px solid #99CCFF;
 }
 
 a:hover.mainlinks {

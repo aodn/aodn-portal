@@ -21,10 +21,23 @@
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(1);return false;" href="">Map</a></div>
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(2);return false;" href="">Search</a></div>
 	</div>
+	
+	  <div class="clear spacer"></div>
+	
 
-	<div class="clear spacer"></div>
+	<div class="spacer floatLeft homePanelWidget"  style="width:230px">  
+	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" />
+	  
+	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
+	  <BR>
+	  </div>
 
-	<div class="spacer">
+	<div class="spacer floatLeft homePanelWidget"  style="width:250px"> 
+	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
+	go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
+	
+	  
+	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
 	<ul>
 	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/14" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
@@ -35,21 +48,10 @@
 	</ul>
 	</div>
 
+	  <div class="clear spacer">
 	<h3>Want to see data in your region?</h3>
-    <p><a class="external" target="_blank" href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia </a>.</p>
-
-	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
-	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="220" />
-	  
-	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
-	  </div>
-
-
-	<div class="spacer floatLeft homePanelWidget"  style="width:260px"> 
-	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
-	go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
-	</div>
-
+    <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia </a>.</p>
+</div>
 	  <div class="clear spacer"></div>
 	  <div class="footer"> 
 

@@ -15,6 +15,10 @@ body, html{
     width: 100%;
 
 }
+.mainlinks {
+    color: white;
+    border-left: 1px solid #99CCFF;
+}
 
 p, td{    
     font-family: tahoma,verdana,arial,sans-serif;
@@ -75,7 +79,6 @@ h6 {
 }
 
 .footer {       
-    color: #0B5584;
     font-size: 10px;
     background-color: white;
 }
@@ -88,14 +91,7 @@ h6 {
     overflow: visible;
 }
 
-.footer a{
-    color: #0B5584;
-    text-decoration: none;    
-}
 
-.footer a:hover{
-    text-decoration: underline;    
-}
 
 #headerTail {   
     height: 30px;

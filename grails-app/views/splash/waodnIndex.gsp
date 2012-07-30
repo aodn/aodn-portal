@@ -1,18 +1,15 @@
 
 <div class="p-centre">
-	<div class="p-centre-item" style="width:520px">
+	<div class="p-centre-item" style="width:560px">
 
-	<h1>Welcome to the Western Australian Ocean Data Network demonstration portal</h1>
 	
-	<p>This portal is for <strong>demonstration purposes only</strong></p>
-
-	<%-- 
 	<h1>Welcome to the Western Australian Ocean Data Network</h1>
 
-	<p>This portal is the primary access point for search, discovery, access and download of data collected by the Australian marine community. Primary datasets are contributed by the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (Australian Antarctic Division, Australian Institute for Marine Science, Bureau of Meteorology, Commonwealth Science and Industrial Research Organisation, Geoscience Australia and the Royal Australian Navy). You can obtain full information about the WAODN via the <a title="WAODN home page" class="external" target="_blank"  href="http://www.imos.org.au/aodn.html" >WAODN Webpage</a>.</p>
+	<p>This portal is the primary access point for search, discovery, access and download of data for Western Australia collected by the Australian marine community. These data are presented as a regional view of all the data available from the <a  target="_blank" class="external"  title="Main AODN Portal" href="http://portal.aodn.org.au/webportal/" >Australian Ocean Data Network</a>. 
+Primary datasets are contributed by Commonwealth Government agencies, State Government agencies, Universities, the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and WAMSI (Western Australia Marine Science Institute).</p>
 
-	<h3>Want to contribute data to the WAODN?</h3>
-	<p>Please see the web site for information on the WAODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
+	<h3>Want to contribute data to the AODN?</h3>
+	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
@@ -22,10 +19,23 @@
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(1);return false;" href="">Map</a></div>
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(2);return false;" href="">Search</a></div>
 	</div>
+	
+	  <div class="clear spacer"></div>
+	
 
-	<div class="clear spacer"></div>
+	<div class="spacer floatLeft homePanelWidget"  style="width:230px">  
+	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" />
+	  
+	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
+	  <BR>
+	  </div>
 
-	<div class="spacer">
+	<div class="spacer floatLeft homePanelWidget"  style="width:250px"> 
+	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
+	go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
+	
+	  
+	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
 	<ul>
 	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/14" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
@@ -36,17 +46,11 @@
 	</ul>
 	</div>
 
+<div class="clear spacer">
+	<h3>Want to see data for all Australasia?</h3>
+    <p><a href="http://portal.aodn.org.au/webportal" title="Australian Ocean Data Network" >Main AODN portal</a>.</p>
+</div>
 
-	  <div class="spacer floatLeft homePanelWidget"  style="width:215px">  
-	  <a title="Ocean Current page" href="http://imos.aodn.org.au/oceancurrent/" ><img class="roundedImages" src="images/OceanCurrent4WAODN.png" width="220" /></a>
-	  <BR>
-	  </div>
-
-
-	<div class="spacer floatLeft homePanelWidget"  style="width:260px"> 
-	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
-	go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
-	</div>
 
 	  <div class="clear spacer"></div>
 	  <div class="footer"> 
@@ -54,7 +58,5 @@
 		This site is licensed under a <a title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a> &nbsp;
 		  <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a>
 	  </div>
-		--%>
-
   </div>
 </div>
