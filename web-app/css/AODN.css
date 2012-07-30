@@ -1,8 +1,9 @@
  html{
     font-size: 12px;
 	line-height: 16px;
-	background-color: white;
+	background-color: #DDDDDD;
 	background-image: -moz-linear-gradient(center top , #DDDDDD 0pt, white 745px); 
+	background-image: -o-linear-gradient(center top , #DDDDDD 0pt, white 745px); 
 	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF));
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#FFFFFF');
 	color: #030303;
