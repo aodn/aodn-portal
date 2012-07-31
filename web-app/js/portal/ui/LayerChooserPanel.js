@@ -171,5 +171,9 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     hideActions: function() {
       this.actionsPanel.hide();
       this.doLayout();
+    },
+
+    loadSnapshot: function(id){
+    	this.actionsPanel.loadSnapshot(id);
     }
 });

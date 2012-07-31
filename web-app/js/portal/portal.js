@@ -50,6 +50,7 @@ Portal.app = {
                 }
                 else
                 {
+
                     if(this.config.enableMOTD)  {
                         var nav = new Ext.Panel({
                             labelWidth:400,
@@ -72,8 +73,24 @@ Portal.app = {
                         dlgPopup.show();
                     }
                 }
-                doViewPort();
-                setViewPortTab( 0 ); // Select default tab                
+
+				viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
+
+				if(window.location.search.length > 0){
+                	setViewPortTab('map');
+
+			        var regPattern = new RegExp(/\?savedMapId=([0-9]*)/);
+			        var matches = regPattern.exec(window.location.search);
+					if(matches != null && matches.length == 2){
+						setViewPortTab( 1 );
+						//show the map
+                        viewport.showSnapshot(matches[1]);
+					}
+					else{
+						//show the homepage
+						setViewPortTab( 0 ); // Select default tab
+					}
+                }
             }
         });
         
@@ -95,10 +112,6 @@ Ext.onReady(Portal.app.init, Portal.app);
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex){ 
     viewport.setActiveTab(tabIndex);
-}
-
-function doViewPort() {    
-  viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
 }
 
 //

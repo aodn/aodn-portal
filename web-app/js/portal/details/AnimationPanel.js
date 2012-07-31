@@ -295,14 +295,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		];
 
 		this._resetForNewAnimation();
-		this.map = Ext.getCmp("map");
-
-		this.map.map.events.register('moveend', this, this._onMove);
+		this.map = undefined;
 
 		this.pausedTime = "";
 		this.timerId = -1;
 
+
 		Portal.details.AnimationPanel.superclass.initComponent.call(this);
+	},
+
+	setMap: function(theMap){
+		this.map = theMap;
+		this.map.map.events.register('moveend', this, this._onMove);
 	},
 
 	_onDateSelected: function(field, date){

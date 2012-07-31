@@ -217,6 +217,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         });
 
 		this.animationPanel = new Portal.details.AnimationPanel();
+		this.animationPanel.setMap(this);
 
 		this.controlButtonPanel = new Ext.Panel({
 

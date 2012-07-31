@@ -131,5 +131,9 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	fireRemoveAllLayers: function() { 
 		this.fireEvent('removealllayers');
+	},
+
+	loadSnapshot: function(id){
+        this.snapshotController.loadSnapshot(id);
 	}
 });

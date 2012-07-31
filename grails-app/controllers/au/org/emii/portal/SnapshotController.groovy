@@ -195,6 +195,10 @@ class SnapshotController
 			}
         }
     }
+
+    def loadMap = {
+        redirect(controller: "home", params:  [savedMapId: params.id])
+    }
     
     private void bindJSONSnapshotData(Snapshot snapshotInstance, JSONObject jsonSnapshotInstance) {
         bindData(snapshotInstance, jsonSnapshotInstance, [exclude: ['owner','layers']])

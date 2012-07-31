@@ -73,7 +73,7 @@ class SecurityFilters {
 
         depthAccess(controller: "depth", action: "index") {
             before = {
-                
+
                 logRequest("depthAccess", controllerName, actionName)
 
                 // Allow all access
@@ -135,6 +135,16 @@ class SecurityFilters {
             before = {
 
                 logRequest("authAccess", controllerName, actionName)
+
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
+
+        snapshotAccess(controller: "snapshot", action: "show|loadMap") {
+            before = {
+
+                logRequest("snapshot", controllerName, actionName)
 
                 // Allow all access
                 request.accessAllowed = true

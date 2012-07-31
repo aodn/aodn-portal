@@ -48,22 +48,32 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   loadSnapshot: function(id, successCallback, failureCallback) {
     this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this,[successCallback],true), failureCallback);
   },
+
+  _doLoadLayers: function(bounds, snapshot, successCallback){
+   	this.map.zoomToExtent(bounds, true);
+   	for (var i=0; i< snapshot.layers.length; i++) {
+	  this.addSnapshotLayer(snapshot.layers[i]);
+	}
+
+	if (successCallback) {
+	  successCallback(snapshot);
+	}
+
+  },
   
   onSuccessfulLoad: function(snapshot, successCallback) {
     this.fireEvent('snapshotLoaded');
-    
+
     var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
 
-    this.map.zoomToExtent(bounds, true);
-
-    for (var i=0; i< snapshot.layers.length; i++) {
-      this.addSnapshotLayer(snapshot.layers[i]);
-    }
-    
-    if (successCallback) {
-      successCallback(snapshot);
-    }
-
+    if(this.map.baseLayer === null){
+		this.mapScope.on('baselayersloaded', function(){
+			this._doLoadLayers(bounds, snapshot, successCallback);
+		}, this);
+	}
+	else{
+		this._doLoadLayers(bounds, snapshot, successCallback);
+	}
   },
   
   deleteSnapshot: function(id, successCallback, failureCallback) {
@@ -126,12 +136,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     var params = {
         styles: snapshotLayer.styles
     };
-    
+
     if (snapshotLayer.isBaseLayer) {
       if (!snapshotLayer.hidden) {
         // find and display baselayer if it still exists
         var matchingLayers = this.map.getLayersBy("grailsLayerId", snapshotLayer.layer.id);
-        if (matchingLayers.length > 0) this.map.setBaseLayer(matchingLayers[0]);          
+        if (matchingLayers.length > 0) this.map.setBaseLayer(matchingLayers[0]);
       }
     } else {
       if (snapshotLayer.layer) {

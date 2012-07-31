@@ -78,6 +78,11 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 		// 
 		// and details panel
 		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().collapseAndHide();
+	},
+
+	showSnapshot: function(id){
+		console.log("showSavedMap " + id);
+        this.layerChooserPanel.loadSnapshot(id);
 	}
 
 });
