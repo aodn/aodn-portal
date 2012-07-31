@@ -21,11 +21,11 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
   
    constructor: function(cfg) {
      this.initMap();
-     
+
      var config = Ext.apply({
        height: 400,
        width: 600,
-       center: new OpenLayers.LonLat(133, -25),
+       center: cfg.initialBbox,
        zoom: 0
      }, cfg);
      
