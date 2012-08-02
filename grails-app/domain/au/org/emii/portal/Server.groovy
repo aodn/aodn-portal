@@ -102,7 +102,7 @@ class Server {
 		}
 	}
 
-	def _getServerLayerJson() {
+	def toServerLayerJson() {
 		def criteria = Layer.createCriteria()
 		def layerDescriptors = criteria.list() {
 			isNull 'parent'

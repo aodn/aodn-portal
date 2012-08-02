@@ -365,7 +365,7 @@ class LayerController {
         if (server) {
 			result = MenuJsonCache.instance().get(server)
 			if (!result) {
-				result = _getServerLayerJson(server)
+				result = server.toServerLayerJson()
 				MenuJsonCache.instance().add(server, result)
 			}
         }
