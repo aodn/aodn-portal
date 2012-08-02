@@ -1,6 +1,8 @@
 package au.org.emii.portal
 
-import org.apache.commons.codec.binary.Base64;
+import au.org.emii.portal.display.LayerPresenter
+import grails.converters.JSON
+import org.apache.commons.codec.binary.Base64
 
 class Server {
     Long id
@@ -91,5 +93,42 @@ class Server {
 	
 	def getEncodedCredentials() {
 		return new String(Base64.encodeBase64("$username:$password".getBytes()))
+	}
+
+	def recache(cache) {
+		def result = cache.get(this)
+		if (result) {
+			cache.add(this, _getServerLayerJson())
+		}
+	}
+
+	def _getServerLayerJson() {
+		def criteria = Layer.createCriteria()
+		def layerDescriptors = criteria.list() {
+			isNull 'parent'
+			eq 'blacklisted', false
+			eq 'activeInLastScan', true
+			eq 'server.id', id
+			join 'server'
+		}
+
+		def layersToReturn = layerDescriptors
+		// If just one grouping layer, bypass it
+		if ( layerDescriptors.size() == 1 &&
+			layerDescriptors[0].layers.size() > 0 )
+		{
+			layersToReturn = layerDescriptors[0].layers
+		}
+
+		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+		def layersJsonObject = [layerDescriptors: layersToReturn]
+		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+		layerDescriptors*.discard()
+
+		return (layersJsonObject as JSON).toString()
+	}
+
+	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
+		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
 }

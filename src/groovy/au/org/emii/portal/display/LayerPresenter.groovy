@@ -29,6 +29,10 @@ class LayerPresenter {
 		server = new ServerPresenter(domainLayer.server)
 		layers = LayerPresenter.filter(domainLayer.layers, childLayerFilter)
 	}
+
+	def isViewable() {
+		return activeInLastScan && !blacklisted
+	}
 	
 	static def filter(layersToFilter, childLayerFilter) {
 		return layersToFilter.grep(childLayerFilter).collect { new LayerPresenter(it, childLayerFilter) }

@@ -1,10 +1,8 @@
 package au.org.emii.portal
 
-import au.org.emii.portal.display.MenuJsonCache;
-import au.org.emii.portal.display.MenuJsonCreator;
-import au.org.emii.portal.display.MenuPresenter;
-import grails.converters.JSON;
-import groovyx.net.http.*
+import au.org.emii.portal.display.MenuJsonCache
+import au.org.emii.portal.display.MenuPresenter
+import grails.converters.JSON
 
 class MenuController {
 
@@ -27,12 +25,12 @@ class MenuController {
 
     }
 
-    def save = {             
+    def save = {
         def menuInstance = new Menu()
 		menuInstance.parseJson(params.json)
 		menuInstance.edited()
 		menuInstance.active = true
-       
+
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
             redirect(action: "show", id: menuInstance.id)
@@ -166,12 +164,6 @@ class MenuController {
     }
 	
 	def _recache(menu) {
-		def cachedJson = MenuJsonCache.instance().get(menu)
-		if (cachedJson) {
-			def defaultMenu = menu.toDisplayableMenu()
-			def jsonCreator = new MenuJsonCreator()
-			MenuJsonCache.instance().add(menu, jsonCreator.menuToJson(menu))
-		}
+		MenuJsonCache.instance().recache(menu)
 	}
 }
-
