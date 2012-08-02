@@ -16,7 +16,7 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function()
 	
 	it("constructs panel with required items", function()
 	{
-		expect(snapshotOptionsPanel.items.length).toEqual(3);
+		expect(snapshotOptionsPanel.items.length).toEqual(4);
 		expect(snapshotOptionsPanel.btnDelete.text).toEqual("Delete");
     expect(mockController.on).toHaveBeenCalled();
 	});
@@ -33,7 +33,7 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function()
   {
     var btnDelete = snapshotOptionsPanel.btnDelete;
     btnDelete.fireEvent('click', btnDelete);
-    
+
     expect(mockController.deleteSnapshot).toHaveBeenCalled();
   });
   Ext.Ajax.request.isSpy = false;  

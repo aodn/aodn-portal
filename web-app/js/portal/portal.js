@@ -79,8 +79,9 @@ Portal.app = {
 				if(window.location.search.length > 0){
                 	setViewPortTab('map');
 
-			        var regPattern = new RegExp(/\?savedMapId=([0-9]*)/);
+			        var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
 			        var matches = regPattern.exec(window.location.search);
+
 					if(matches != null && matches.length == 2){
 						setViewPortTab( 1 );
 						//show the map

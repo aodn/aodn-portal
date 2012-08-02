@@ -133,6 +133,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     chooseSavedMap: 'Choose a Saved Map',
     deleteSnapshot: 'Delete',
     deleteSnapshotTip: 'Delete a saved map',
+    shareSnapshot: 'Share',
+    shareMapDialogTitle: 'Share Map',
+    shareSnapshotTip: 'Share a saved map',
 	
   	// UserDefinedWMSPanel
 	rourUrl: 'Choose a Saved Map',

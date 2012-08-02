@@ -7,7 +7,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
       hidden: true,
       items: [
         new Ext.form.ComboBox({
-          width: 175,
+          width: 150,
           editable :false,
           padding: 20,
           ref: 'snapshotCombo',
@@ -49,7 +49,18 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
             scope: this,
             click: this.onDeleteSelectedSnapshot
           }
-        })
+        }),
+        new Ext.Button({
+		  text: OpenLayers.i18n('shareSnapshot'),
+		  ref: 'btnShare',
+		  cls: "floatLeft buttonPad",
+		  tooltip: OpenLayers.i18n('shareSnapshotTip'),
+		  listeners:
+		  {
+			scope: this,
+			click: this.onShareSelectedSnapshot
+		  }
+		})
       ]      
     });
     
@@ -74,7 +85,26 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 
     this.controller.deleteSnapshot(id, this.onSuccessfulDelete.createDelegate(this), this.onFailure.createDelegate(this,['Unexpected failure deleting snapshot'],true));
   },
-  
+
+  onShareSelectedSnapshot: function(button, event){
+  	var id = this.snapshotCombo.getValue();
+
+	if (!id || id == '') return;                                                                      x
+
+	var curLoc = document.URL;
+
+	if(curLoc.split("?").length == 2)
+	{
+		curLoc = curLoc.split("?")[0];
+	}
+	var url = curLoc + 'snapshot/loadMap/' +  id;
+
+	Ext.MessageBox.show({
+		 title:OpenLayers.i18n('shareMapDialogTitle'),
+		 msg: 'You can share a map by using this URL: ' + '<a href="' + url  + '" target="_blank">' + url + '</a>'
+	  });
+
+  },
   onSuccessfulDelete: function() {
     this.snapshotCombo.clearValue();
   },

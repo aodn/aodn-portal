@@ -368,7 +368,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	_onMove: function(){
 		//have to redraw??
-		console.log("on moved!");
 		if(this.animatedLayers.length > 0){
 			this.counter = 0;
 			this._setSlide(this.counter);

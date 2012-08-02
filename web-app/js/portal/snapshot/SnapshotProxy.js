@@ -69,7 +69,14 @@ Portal.snapshot.SnapshotProxy = function()
 	};
 
 	this.onFailure = function(response, options) {
-	  errors = Ext.decode(response.responseText).errors;
+	  var errors = "";
+	  try{
+       	errors = Ext.decode(response.responseText).errors;
+	  }
+	  catch(exception){
+	  	//should I check content of this?
+	  	errors = response.responseText;
+	  }
 	  
 	  if (options.failureCallback) {
 	    options.failureCallback(errors);

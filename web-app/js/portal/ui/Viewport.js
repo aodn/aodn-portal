@@ -81,7 +81,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 	},
 
 	showSnapshot: function(id){
-		console.log("showSavedMap " + id);
         this.layerChooserPanel.loadSnapshot(id);
 	}
 
