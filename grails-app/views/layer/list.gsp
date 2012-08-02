@@ -20,7 +20,7 @@
             </g:if>
 
             <div class="filters">
-                <g:form action="list">
+                <g:form action="list" method="get">
                     <table style="border-width: 0; width: 20%; margin: 0.8em 0;">
                         <tr>
                             <th colspan="2">Filter list</th>

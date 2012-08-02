@@ -53,5 +53,5 @@
     </table>
 </div>
 <div class="pagination">
-    <g:paginate total="${ filteredLayersCount }" />
+    <g:paginate total="${ filteredLayersCount }" params="${params}" />
 </div>
