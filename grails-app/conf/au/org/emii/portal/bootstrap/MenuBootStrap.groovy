@@ -8,7 +8,7 @@ class MenuBootStrap {
 		
 		def configInstance = au.org.emii.portal.Config.activeInstance()
 		if (configInstance && configInstance.defaultMenu) {
-			def defaultMenu = configInstance.defaultMenu.cache(MenuJsonCache.instance())
+			configInstance.defaultMenu.cache(MenuJsonCache.instance())
 		}
 	}
 }
