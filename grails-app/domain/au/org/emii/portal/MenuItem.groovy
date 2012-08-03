@@ -105,7 +105,7 @@ class MenuItem implements Comparable<MenuItem> {
 		}
 		return baseLayers
 	}
-	
+
 	def _parseChildren(json) {
 		def itemsJsonArray = JSON.use("deep") {
 			JSON.parse(json)

@@ -1,12 +1,12 @@
 package au.org.emii.portal
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.springframework.jdbc.core.JdbcTemplate;
-
+import au.org.emii.portal.display.MenuPresenter
 import grails.converters.JSON
+import org.apache.commons.lang.builder.EqualsBuilder
 
 class Menu {
-	
+
+	// Referenced by the MenuPresenter class
 	def dataSource
     
     String title
@@ -117,29 +117,19 @@ class Menu {
 	}
 	
 	def toDisplayableMenu() {
-		def ids = getServerIdsWithAvailableLayers()
-		
-		for (def iterator = menuItems.iterator(); iterator.hasNext();) {
-			def item = iterator.next()
-			if ((item.layer && !item.layer.isViewable()) || (item.server && !ids.contains(item.server.id))) {
-				iterator.remove()
-			}
-		}
-		return this
+		return new MenuPresenter(this)
 	}
-	
-	def getServerIdsWithAvailableLayers() {
-		// We don't explicitly map layers to servers so dropping to JDBC
-		def template = new JdbcTemplate(dataSource)
-		def query =
-"""\
-select server.id
-from server
-join layer on layer.server_id = server.id
-where not layer.blacklisted and layer.active_in_last_scan
-group by server.id\
-"""
-		
-		return template.queryForList(query, Long.class)
+
+	def recache(theCache) {
+		def cachedJson = theCache.get(this)
+		if (cachedJson) {
+			cache(theCache)
+		}
+	}
+
+	def cache(theCache) {
+		theCache.add(this, JSON.use("deep") {
+			toDisplayableMenu() as JSON
+		}.toString())
 	}
 }

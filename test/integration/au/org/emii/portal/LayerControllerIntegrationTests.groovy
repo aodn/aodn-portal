@@ -48,4 +48,25 @@ class LayerControllerIntegrationTests extends GroovyTestCase
 			server.delete()
 		}
     }
+
+	void testServer() {
+
+		try {
+			// Create
+			Server server = Server.build(uri: "http://someserver/path")
+			server.save()
+
+			Layer activeLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: true)
+			activeLayer.save()
+
+			def _server = Server.list()[0]
+			layerController.params.server = _server.id
+			layerController.server()
+			assertEquals(200, layerController.response.status)
+		}
+		catch (e) {
+			fail("Unexpected failure: " + e.message)
+		}
+
+	}
 }

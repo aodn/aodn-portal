@@ -59,6 +59,10 @@ class MenuJsonCache {
 	def _getCache() {
 		return manager.getCache(CACHE_NAME)
 	}
+
+	def recache(object) {
+		object.recache(this)
+	}
 	
 	def _toKey(object) {
 		return object.getClass().getName() + "-----" + object.id

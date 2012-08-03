@@ -1,6 +1,5 @@
 package au.org.emii.portal
 
-import au.org.emii.portal.display.LayerPresenter;
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
@@ -212,6 +211,7 @@ class LayerController {
             layerInstance.properties = params
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
+	            _recache(layerInstance.server)
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
@@ -365,39 +365,13 @@ class LayerController {
         if (server) {
 			result = MenuJsonCache.instance().get(server)
 			if (!result) {
-				result = _getServerLayerJson(server)
+				result = server.toServerLayerJson()
 				MenuJsonCache.instance().add(server, result)
 			}
         }
 		
 		render result
     }
-	
-	def _getServerLayerJson(server) {
-		def criteria = Layer.createCriteria()
-		def layerDescriptors = criteria.list() {
-			isNull 'parent'
-			eq 'blacklisted', false
-			eq 'activeInLastScan', true
-			eq 'server.id', server.id
-			join 'server'
-		}
-		
-		def layersToReturn = layerDescriptors
-		// If just one grouping layer, bypass it
-		if ( layerDescriptors.size() == 1 &&
-			 layerDescriptors[0].layers.size() > 0 )
-		{
-			layersToReturn = layerDescriptors[0].layers
-		}
-		
-		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: layersToReturn]
-		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
-		layerDescriptors*.discard()
-		
-		return (layersJsonObject as JSON).toString()
-	}
 	
 	def configuredbaselayers = {
 		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
@@ -445,10 +419,6 @@ class LayerController {
 		return [data: data, total: total]
 	}
 	
-	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
-	}
-    
 	def _convertLayersToListOfMaps(layers) {
 		def data = []
 		layers.each { layer ->
@@ -525,9 +495,10 @@ class LayerController {
     }
 	
 	def _recache(server) {
-		def result = MenuJsonCache.instance().get(server)
-		if (result) {
-			MenuJsonCache.instance().add(server, _getServerLayerJson(server))
+		MenuJsonCache.instance().recache(server)
+		def configInstance = au.org.emii.portal.Config.activeInstance()
+		if (configInstance && configInstance.defaultMenu) {
+			MenuJsonCache.instance().recache(configInstance.defaultMenu)
 		}
 	}
 }

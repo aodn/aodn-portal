@@ -8,19 +8,26 @@ class MenuItemPresenter {
 	def layer
 	def server
 
-	MenuItemPresenter(domainMenuItem) {
+	MenuItemPresenter(domainMenuItem, itemFilter) {
 		leaf = domainMenuItem.leaf
 		text = domainMenuItem.text
 		childItems = []
 		
 		_initLayer(domainMenuItem.layer)
 		_initServer(domainMenuItem.server)
-		_initChildItems(domainMenuItem.childItems)
+		_initChildItems(domainMenuItem.childItems, itemFilter)
 	}
-	
-	def _initChildItems(domainChildItems) {
+
+	def isViewable(itemFilter) {
+		return itemFilter(this)
+	}
+
+	def _initChildItems(domainChildItems, itemFilter) {
 		domainChildItems.each { childDomainItem ->
-			childItems << new MenuItemPresenter(childDomainItem)
+			def item = new MenuItemPresenter(childDomainItem, itemFilter)
+			if (item.isViewable(itemFilter)) {
+				childItems << item
+			}
 		}
 	}
 	

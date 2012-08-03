@@ -2,10 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import au.org.emii.portal.display.MenuJsonCache;
-import au.org.emii.portal.display.MenuJsonCreator;
+import org.springframework.jdbc.core.JdbcTemplate
 
 class ConfigController {
 

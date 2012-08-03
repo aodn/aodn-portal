@@ -207,8 +207,4 @@ class Layer {
 	void removeFromLayers(Layer child) {
 		child.parent = null
 	}
-	
-	def isViewable() {
-		return activeInLastScan && !blacklisted
-	}
 }

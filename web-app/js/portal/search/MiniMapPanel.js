@@ -21,7 +21,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
   
    constructor: function(cfg) {
      this.initMap();
-     
+
      var config = Ext.apply({
        height: 400,
        width: 600,
