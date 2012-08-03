@@ -39,12 +39,7 @@ class AodaacController {
         else if ( params.layerId ) {
 
             log.debug "ProductIds being retrieved with params.layerId: '$params.layerId'"
-
-            def layer = Layer.get( params.layerId )
-
-            def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
-
-            productIds = aodaacProductLinks.collect{ it.productId }.unique()
+            productIds = _getLayerProductIds(params.layerId)
         }
 
         if ( productIds ) {
@@ -144,4 +139,24 @@ class AodaacController {
 
         _getJobIdList().remove item.jobId as Object
     }
+
+	def _getLayerProductIds(layerId) {
+		def productIds = []
+		try {
+			if (layerId.isNumber()) {
+				def layer = Layer.get( layerId.toLong() )
+
+				def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
+
+				productIds = aodaacProductLinks.collect{ it.productId }.unique()
+			}
+			else {
+				log.warn("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
+			}
+		}
+		catch (e) {
+			log.error("Error fetching product links for layer id $layerId: ", e)
+		}
+		return productIds
+	}
 }
