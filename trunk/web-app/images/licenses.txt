@@ -1,0 +1,29 @@
+Icons used as is:
+
+map-add-icon.png, map-go-icon.png, information-icon.png, layers-map-icon.png, link-icon.png
+
+Icons derived from published icons:
+
+select-link-icon.png (derived from link-icon.png)
+
+Artist: Fatcow Web Hosting
+Iconset: Farm Fresh Icons (2000 icons)
+License: CC Attribution 3.0
+Commercial usage: Allowed (Backlink required)
+URL: http://www.iconarchive.com/show/farm-fresh-icons-by-fatcow.html
+
+save-icon.png
+
+Artist: Saki
+Iconset: Snowish Icons (144 icons)
+License: GNU General Public License
+Commercial usage: Allowed
+URL: http://www.iconarchive.com/show/snowish-icons-by-saki.html
+
+go-back-icon.png
+
+Artist: Custom Icon Design
+Iconset: Pretty Office 5 Icons (60 icons)
+License: GFree for non-commercial use
+Commercial usage: Buy commercial license here: http://www.customicondesign.com/free-icon/pretty-office-icon-set-part-5
+URL: http://www.iconarchive.com/show/pretty-office-5-icons-by-custom-icon-design.html
