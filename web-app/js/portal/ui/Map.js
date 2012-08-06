@@ -122,7 +122,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			length: 16, // The length of each line
 			width: 4, // The line thickness
 			radius: 12, // The radius of the inner circle
-			color: '#CCC', // #rgb or #rrggbb
+			color: '#0B5584', //#18394E', // #rgb or #rrggbb
 			speed: 1, // Rounds per second
 			trail: 60, // Afterglow percentage
 			shadow: true // Whether to render a shadow

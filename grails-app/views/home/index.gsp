@@ -133,7 +133,7 @@ ${buildInfo}
   
 <div id="loader" style="position:absolute; top:50%; left:43%; z-index: 9000;">
   <p>Page Loading ....</p>
-  <div id="jsloader" style="position:relative;left:120px;top:-7px" ></div>
+  <div id="jsloader" style="position:relative;left:130px;top:-17px" ></div>
     <!--img src="images/spinnerLarge.gif" alt="Loading..." /-->
   </div>
 
