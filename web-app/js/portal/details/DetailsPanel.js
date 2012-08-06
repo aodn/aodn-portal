@@ -62,26 +62,22 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			height: 30,
 			listeners: {
 				scope: this,
+				
 				transect: function(inf) {
-					var newTab = this.detailsPanelTabs.add(
-							{
-								title: OpenLayers.i18n('transectTab'),
-								closable: true,
-								layout:'fit',
-								autoScroll: true,
-								items : [{
-									layout: 'vbox',
-									layoutConfig: {
-										align: 'stretch'
-									},
-	
-									items: [{
-											//TODO: use template
-											html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading')+ "', '"+inf.line+"');\" />"
-										}]
-								}]
-							}		
-					);
+					var newTab = this.detailsPanelTabs.add({
+						xtype: 'panel',
+						title: OpenLayers.i18n('transectTab'),
+						closable: true,
+						layout:'form',
+						autoScroll: true,
+						items : [
+						    {
+								//TODO: use template
+								html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading')+ "', '"+inf.line+"');\" />"
+							}
+						]
+					});
+					
 					if (this.ownerCt.width <  430) {
 						this.ownerCt.setWidth(430);
 						if (this.ownerCt.ownerCt) {
@@ -91,6 +87,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 					this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
 				}
+				
 			}
 		});
 
