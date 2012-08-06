@@ -89,7 +89,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
   onShareSelectedSnapshot: function(button, event){
   	var id = this.snapshotCombo.getValue();
 
-	if (!id || id == '') return;                                                                      x
+	if (!id || id == '') return;
 
 	var curLoc = document.URL;
 
