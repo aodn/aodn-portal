@@ -51,7 +51,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         Layer.metaClass.static.get = {
             id ->
 
-            assertEquals "2", id
+            assertEquals 2, id
 
             return testLayer
         }

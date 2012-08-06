@@ -6,43 +6,29 @@ class AodaacController {
 
     def aodaacAggregatorService
 
-    def productInfo = {
+	def productInfo = {
 
-        def productIds = []
+		def productIds = []
 
-        if ( params.productIds ) {
+		if ( params.productIds ) {
 
-            productIds = params.productIds.tokenize( "," )
-        }
-        else if ( params.layerId ) {
+			productIds = params.productIds.tokenize( "," )
+		}
+		else if ( params.layerId ) {
 
-            log.debug "ProductIds being retrieved with params.layerId: '$params.layerId'"
+			log.debug "ProductIds being retrieved with params.layerId: '$params.layerId'"
+			productIds = _getLayerProductIds(params.layerId)
+		}
 
-            def layer = Layer.get( params.layerId )
+		if ( productIds ) {
 
-            def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
+			render aodaacAggregatorService.getProductInfo( productIds ) as JSON
+		}
+		else {
 
-            if ( !aodaacProductLinks && log.debugEnabled ) {
-
-                log.debug "layer: ${ layer }"
-                // Debugging for when you aren't getting the Products you expect for a given Layer.
-                // ** Performance-heavy so commented-out until needed
-//                log.debug "AodaacProductLink.findAllByLayerName( layer.name ): ${ AodaacProductLink.findAllByLayerName(layer.name) }"
-//                log.debug "AodaacProductLink.findAllByServer( layer.server ): ${ AodaacProductLink.findAllByServer(layer.server) }"
-            }
-
-            productIds = aodaacProductLinks.collect{ it.productId }.unique()
-        }
-
-        if ( productIds ) {
-
-            render aodaacAggregatorService.getProductInfo( productIds ) as JSON
-        }
-        else {
-
-            render ([] as JSON)
-        }
-    }
+			render ([] as JSON)
+		}
+	}
 
     def createJob = {
 
@@ -52,7 +38,7 @@ class AodaacController {
 
         render text: "Job created (ID: ${ job?.jobId })"
     }
-
+            
     def updateJob = {
 
         def job = _byId( params.id )
@@ -117,4 +103,24 @@ class AodaacController {
 
         _getJobIdList().remove item.jobId as Object
     }
+
+	def _getLayerProductIds(layerId) {
+		def productIds = []
+		try {
+			if (layerId.isNumber()) {
+				def layer = Layer.get( layerId.toLong() )
+
+				def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
+
+				productIds = aodaacProductLinks.collect{ it.productId }.unique()
+			}
+			else {
+				log.warn("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
+			}
+		}
+		catch (e) {
+			log.error("Error fetching product links for layer id $layerId: ", e)
+		}
+		return productIds
+	}
 }
