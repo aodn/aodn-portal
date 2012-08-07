@@ -307,24 +307,28 @@ class LayerController {
 			try {
 				//Connect
 				def con = new URL(params.metaURL).openConnection()
-				def xml = new XmlSlurper().parse(con.responseCode == 200 ? con.inputStream : con.errorStream)
+                def metadataText = con.content.text
 
-				//TODO: Validate schema before proceeding
-				
-				//Extract Abstract and resource links
-				def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
-				def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
-				
-				//TODO: transform to html in a better way. e.g. xslt
-				def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
-				onlineResourcesList.each {
-                    if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
-                        def linkText = it.CI_OnlineResource.description.CharacterString.text()
-                        def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-                        html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                if(con.contentType.contains("text/xml"))
+                {
+                    def xml = new XmlSlurper().parseText(metadataText)
+                    //TODO: Validate schema before proceeding
+
+                    //Extract Abstract and resource links
+                    def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
+                    def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
+
+                    //TODO: transform to html in a better way. e.g. xslt
+                    def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
+                    onlineResourcesList.each {
+                        if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
+                            def linkText = it.CI_OnlineResource.description.CharacterString.text()
+                            def linkUrl = it.CI_OnlineResource.linkage.URL.text()
+                            html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                        }
                     }
-				}
-				render text: html, contentType: "text/html", encoding: "UTF-8"
+                    render text: html, contentType: "text/html", encoding: "UTF-8"
+                }
 			} catch(SAXException e) {
 				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
 			}
