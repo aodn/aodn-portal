@@ -2,6 +2,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     
+	state: {
+		LOADING: "LOADING",
+		PLAYING: "PLAYING",
+		STOPPED: "STOPPED"
+	},
+	
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			id: 'animationPanel',
@@ -113,7 +119,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				'click': function(button,event){
 					clearTimeout(this.timerId);
 					this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
-					this._toggleButtons(false);
+					this._updateButtons(this.state.STOPPED);
 				}
 			},
 			tooltip: OpenLayers.i18n('pauseButton_tip')
@@ -337,12 +343,23 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.animatedLayers = new Array();
 	},
 
-	_toggleButtons: function(playing){
-		if(this.animatedLayers.length > 0){
+	_updateButtons: function(state) {
+		
+		if(this.animatedLayers.length > 0) {
 			this.clearButton.enable();
 		}
 
-		if(playing){
+		if (state == this.state.LOADING) {
+			//can't change the time when it's loading
+			this.playButton.disable();
+			this.pauseButton.disable();
+			this.stepSlider.disable();
+			this.speedUp.disable();
+			this.slowDown.disable();
+			this.speedLabel.setVisible(false);
+			this.getAnimationButton.setVisible(false);
+		}
+		else if (state == this.state.PLAYING) {
 			//can't change the time when it's playing
 			this.playButton.disable();
 			this.pauseButton.enable();
@@ -352,7 +369,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.speedLabel.setVisible(true);
 			this.getAnimationButton.setVisible(true);
 		}
-		else{
+		else if (state == this.state.STOPPED) {
 			this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
@@ -402,7 +419,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepLabel.setText("", false);
 
 			this.progressLabel.setVisible(false);
-			this._toggleButtons(false);
+			this._updateButtons(this.state.STOPPED);
 
 			this._resetForNewAnimation();
 			delete this.originalLayer.isAnimated;
@@ -414,10 +431,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.selectedLayer = layer;
 	},
 
-	_setSlide: function(index){
-		if(this.animatedLayers.length > 0){
+	_setSlide: function(index) {
+		
+		if (this.animatedLayers.length > 0) {
 
-			for(var i = 0; i < this.animatedLayers.length; i++){
+			for (var i = 0; i < this.animatedLayers.length; i++) {
 				this.animatedLayers[i].display(i == index);
 			}
 
@@ -429,9 +447,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			this.stepLabel.setText(this.animatedLayers[index].params.TIME, false);
 
-			if(this._isLoadingAnimation()){
+			if (this._isLoadingAnimation()) {
 				this.stepLabel.setText("Loading... " + Math.round((index+ 1) / this.animatedLayers.length * 100) + "%");
 			}
+		}
+		else if (index == 0) {
+			this.stepSlider.setValue(0);
+			this.stepLabel.setText("Loading... 0%");
 		}
 	},
 
@@ -500,7 +522,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		time slices never loads and the animation doesn't start.
 	*/
 	_waitForOriginalLayer: function(startString, endString){
+		
+		this._setSlide(0);
+
 		if(this.selectedLayer.numLoadingTiles > 0){
+			
+			this._updateButtons(this.state.LOADING);
 			this.selectedLayer.events.register('loadend', this, function(){
 				this._loadAnimation(startString, endString);
 			});
@@ -582,7 +609,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.counter = 0;
 			}
 			this._resetTimer(this.BASE_SPEED);
-			this._toggleButtons(true);
+			this._updateButtons(this.state.PLAYING);
 		}
 	},
 
