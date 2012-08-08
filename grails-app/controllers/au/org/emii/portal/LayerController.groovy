@@ -499,10 +499,6 @@ class LayerController {
     }
 	
 	def _recache(server) {
-		MenuJsonCache.instance().recache(server)
-		def configInstance = au.org.emii.portal.Config.activeInstance()
-		if (configInstance && configInstance.defaultMenu) {
-			MenuJsonCache.instance().recache(configInstance.defaultMenu)
-		}
+		au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
 	}
 }

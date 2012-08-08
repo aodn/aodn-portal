@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.config.JsonMarshallingRegistrar;
+
 class ServerServiceTests extends GroovyTestCase {
 
     protected void setUp() {
@@ -9,10 +11,10 @@ class ServerServiceTests extends GroovyTestCase {
     protected void tearDown() {
         super.tearDown()
     }
-
+	
     void testService() {
 
-
+//		JsonMarshallingRegistrar.registerJsonMarshallers()
         def Server s1 = new Server(uri: "something1", shortAcron: "sa1", id: 1, type:"WMS-1.1.1", scanFrequency: 100,
                                     name: "something1name", disable: false, opacity: 100, imageFormat: "image/gif",
                                     allowDiscoveries:true)
@@ -24,9 +26,9 @@ class ServerServiceTests extends GroovyTestCase {
                 name: "something3name", disable: false, opacity: 100, imageFormat: "image/gif",
                 allowDiscoveries:true)
 
-        s1.save(failOnError: true)
-        s2.save(failOnError: true)
-        s3.save(failOnError:  true)
+        s1.save(failOnError: true,flush:true)
+        s2.save(failOnError: true,flush:true)
+        s3.save(failOnError:  true,flush:true)
 
         assertEquals 3, Server.count()
 
@@ -38,9 +40,9 @@ class ServerServiceTests extends GroovyTestCase {
         def Layer l3 = new Layer(server: s2, blacklisted:false, abstractTrimmed: "", cache:false, styles: "",
                                 queryable:true, isBaseLayer:false, dataSource: "Unknown",activeInLastScan: false, name: "l3")
 
-        l1.save(failOnError: true)
-        l2.save(failOnError: true)
-        l3.save(failOnError: true)
+        l1.save(failOnError: true,flush:true)
+        l2.save(failOnError: true,flush:true)
+        l3.save(failOnError: true,flush:true)
 
         assertEquals 3, Layer.count()
 
@@ -49,18 +51,18 @@ class ServerServiceTests extends GroovyTestCase {
         def MenuItem mi3 = new MenuItem(leaf:true,  text: "menuitem3", menuPosition: 3, layer: l2, childItems: [])  //linked to s1  (delete)
         def MenuItem mi4 = new MenuItem(leaf:false,  text: "menuitem4", menuPosition: 4, layer: l3, childItems: [])  //linked to s2
         def MenuItem mi5 = new MenuItem(leaf:false,  text: "menuitem5", menuPosition: 5, server: s3,  childItems: [])  //linked to s3 (server, delete)
-
-        mi1.save(failOnError: true)
-        mi2.save(failOnError: true)
-        mi3.save(failOnError: true)
-        mi4.save(failOnError: true)
-        mi5.save(failOnError: true)
+//
+        mi1.save(failOnError: true,flush:true)
+        mi2.save(failOnError: true,flush:true)
+        mi3.save(failOnError: true,flush:true)
+        mi4.save(failOnError: true,flush:true)
+        mi5.save(failOnError: true,flush:true)
 
         assertEquals 5, MenuItem.count()
 
         Menu dummy = new Menu(title: "dummy", active: true, editDate: new Date(), menuItems: [mi1, mi2, mi3, mi4])
-
-        dummy.save()
+//
+        dummy.save(flush:true)
 
         Config conf = new Config(initialBbox: "180,10,-180,10", autoZoom: false,
                                     searchUsingBboxByDefault: true,
@@ -76,10 +78,10 @@ class ServerServiceTests extends GroovyTestCase {
                                     defaultLayers: [l1,l2]) //<-- most important part, l1  and l2
                                                          //is set as default layer
 
-        conf.save(failOnError:  true)
+        conf.save(failOnError:  true,flush:true)
 
-        s1.delete()
-        s3.delete()
+        s1.delete(flush:true)
+        s3.delete(flush:true)
 
         //check that two server has been deleted, sa1, s2
         assertEquals 1, Server.count()

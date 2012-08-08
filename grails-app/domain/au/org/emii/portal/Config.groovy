@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.display.MenuJsonCache;
+
 /*
 Configuration domain for the portal
 */
@@ -104,4 +106,13 @@ class Config {
     static Config activeInstance() {
         return Config.list()[0]
     }
+	
+	def recacheDefaultMenu()
+	{
+
+		def configInstance = Config.activeInstance()
+		if (configInstance && configInstance.defaultMenu) {
+			MenuJsonCache.instance().recache(configInstance.defaultMenu)
+		}
+	}
 }

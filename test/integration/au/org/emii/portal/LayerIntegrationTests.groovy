@@ -2,7 +2,7 @@ package au.org.emii.portal
 
 import grails.test.*
 
-class LayerIntegrationTests extends GroovyTestCase {
+class LayerIntegrationTests extends DummySetup {
     protected void setUp() {
         super.setUp()
     }
@@ -14,7 +14,9 @@ class LayerIntegrationTests extends GroovyTestCase {
 
 	// Test for #1746.
     void testDeleteSnapshottedLayer() {
-
+		//		JsonMarshallingRegistrar.registerJsonMarshallers()
+		setupConfig()
+		
 		Layer layer = Layer.build(server: Server.build())
 		layer.metaClass.deleteDefaultLayersInConfig = {}
 		

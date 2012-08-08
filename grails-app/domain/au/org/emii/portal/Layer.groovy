@@ -207,4 +207,8 @@ class Layer {
 	void removeFromLayers(Layer child) {
 		child.parent = null
 	}
+	
+	def afterDelete() {
+		au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
+	}
 }
