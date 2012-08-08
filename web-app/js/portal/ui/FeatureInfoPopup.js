@@ -13,7 +13,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	        height: 80, // set height later when there are results
 	        maximizable: true,
 	        anchored: true,
-	        autoScroll: true
+	        autoScroll: true,
+	        resizable: false
 	    }, cfg);
 
 	    Portal.ui.FeatureInfoPopup.superclass.constructor.call(this, config);
@@ -21,6 +22,23 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    this._addElements();
     },
     
+    unanchorPopup: function() {
+    	
+    	this._makeResizable();
+    	Portal.ui.FeatureInfoPopup.superclass.unanchorPopup.call(this);
+    },
+    
+    _makeResizable: function() {
+    	
+        this.resizable = true;
+        var resizer = new Ext.Resizable(this.getEl());
+        var featureInfoPopup = this;
+        
+        resizer.on('resize', function() {
+        	featureInfoPopup.syncSize();
+        });
+    },
+
     _addElements: function() {
     	// Add container for html (empty for now)
     	this.blankContainer = new Ext.Container({
