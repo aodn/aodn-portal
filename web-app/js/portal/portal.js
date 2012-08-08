@@ -51,26 +51,15 @@ Portal.app = {
                 else
                 {
 
-                    if(this.config.enableMOTD)  {
-                        var nav = new Ext.Panel({
-                            labelWidth:400,
-                            title: "<h2>"+ this.config.motd.motdTitle + "</h2>",
-                            html: this.config.motd.motd,
-                            padding: 20,
-                            unstyled: true,
-                            width:300
-                        });
-                        var dlgPopup = new Ext.Window({  
-                            modal:true,
-                            layout:'fit',
-                            unstyled: true, 
-                            cls: "motd",
-                            closable:true,
-                            resizable:false,
-                            plain:true,
-                            items:[nav]
-                        });
-                        dlgPopup.show();
+                    if (this.config.enableMOTD)  {
+                    	
+                    	Ext.Msg.show({
+                    		title: "<h2>"+ this.config.motd.motdTitle + "</h2>",
+                    		msg: this.config.motd.motd,
+                    		buttons: Ext.Msg.OK,
+                    		cls: 'motd',
+                    		width: 400
+                    	});
                     }
                 }
 

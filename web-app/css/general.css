@@ -233,6 +233,14 @@ hr {
     padding: 10px;
     border: 6px solid #F4F4F4;
     font-size: 12px;
+    
+        background-image: none;
+    
+}
+
+/* Our own style is applied to the message of the day dialog (see above). */
+.motd div[class^='x-window'] {
+	background-image: none;
 }
 
 #mainMapCentrePanel {
