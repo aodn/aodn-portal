@@ -3,19 +3,26 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
-    	var config = Ext.apply({
-    		id: 'detailsPanelItems',
-    		//hidden: true,
-    		layout: 'vbox',
-    		layoutConfig: {
-    			align: 'stretch'
-    		}
-    	}, cfg);
+		var config = Ext.apply({
+			id: 'detailsPanelItems',
+			//hidden: true,
+			layout: 'vbox',
+			layoutConfig: {
+				align: 'stretch'
+			}
+		}, cfg);
         
-        Portal.details.DetailsPanel.superclass.constructor.call(this, config);
-    },
+		Portal.details.DetailsPanel.superclass.constructor.call(this, config);
+	},
 
 	initComponent: function(){
+		
+		this.errorPanel = new Ext.Panel({
+			cls: "errors",
+			hidden: true, 
+			html:OpenLayers.i18n('wmsLayerProblem'
+		)});
+		
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
 		this.opacitySlider = new Ext.slider.SingleSlider({
 			id: "opacitySlider",
@@ -92,10 +99,11 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.items = [
-		              this.opacitySliderContainer,
-		              this.transectControl,
-		              this.detailsPanelTabs
-		              ];
+		this.opacitySliderContainer,
+		this.transectControl,
+		this.errorPanel,
+		this.detailsPanelTabs
+		];
 
 		Portal.details.DetailsPanel.superclass.initComponent.call(this);	
 	},
@@ -111,7 +119,25 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		
 		// show new layer unless user requested 'hideLayerOptions' 
 		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
-
+			
+			// check if there is a problem with this layer, with a bogusgetFetureInfo request
+		
+			if(layer.params.QUERYABLE && !layer.isAnimated ) {
+				Ext.Ajax.request({
+					url: 'checkLayerAvailability/',
+					params: { 
+						layerId: layer.grailsLayerId,
+						serverUri: layer.server.uri,
+						isNcwms: layer.isNcwms() // need this in grails land
+					},
+					scope: this,
+					failure: function(resp) {
+						this.hideDetailsPanelContents();
+						this.errorPanel.show();
+					}
+				});
+			}
+			this.errorPanel.hide();
 			this.detailsPanelTabs.update(layer);			
 			this.transectControl.hide();
 
@@ -154,7 +180,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 
-//	TODO: revisit this method when elevation and other dimensions are passed into javascript
+	//	TODO: revisit this method when elevation and other dimensions are passed into javascript
 	updateDimensions: function(layer){
 
 		var dims = layer.metadata.dimensions;
@@ -195,7 +221,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 						displayField: 'displayText',
 						tpl: tpl,
 						style: {
-							// marginTop: '10px'
+						// marginTop: '10px'
 						},
 						listeners:{
 							select: function(cbbox, record, index){

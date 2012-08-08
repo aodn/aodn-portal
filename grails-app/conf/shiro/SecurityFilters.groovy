@@ -80,6 +80,14 @@ class SecurityFilters {
                 request.accessAllowed = true
             }
         }
+		
+		checkLayerAvailabilityAccess(controller: "checkLayerAvailability", action: "index") {
+            before = {
+                logRequest("checkLayerAvailabilityAccess", controllerName, actionName)
+                // Allow all access
+                request.accessAllowed = true
+            }
+        }
 
         serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
             before = {

@@ -44,6 +44,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 	
 	// DetailsPanel.js
 	opacity: "Opacity",
+	wmsLayerProblem: "There is a problem with the availability of this layer",
 	
     // Refine search panel revised    
     refineSearch: 'Current Search',

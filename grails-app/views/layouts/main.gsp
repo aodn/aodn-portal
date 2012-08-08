@@ -21,7 +21,7 @@
       <g:layoutBody />
       
         <div id="controllerMenu">
-          <h2>Portal Config Controllers</h2>
+          <h2>Portal Config</h2>
           <ul>
             <li class="controllerMenuItems"><g:link controller="server" action="list" >Server</g:link>
               <span class="inline">
