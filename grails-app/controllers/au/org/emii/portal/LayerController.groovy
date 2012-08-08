@@ -146,7 +146,7 @@ class LayerController {
         
         def layerInstance = criteria.get {  
             server {
-                eq("uri", params.serverUri)
+                like("uri", params.serverUri+"%")
             }
             if (namespace) {
                 eq( "namespace", namespace)
