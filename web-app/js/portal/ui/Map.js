@@ -633,6 +633,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 				this._addLayer(openLayer, showLoading);
 			}
 		}
+
+		if(openLayer.isNcwms){
+			this.getLayerMetadata(openLayer);
+		}
 	},
 	
 	_addLayer: function(openLayer, showLoading) {
