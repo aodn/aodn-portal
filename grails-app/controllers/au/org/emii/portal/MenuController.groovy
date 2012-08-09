@@ -139,11 +139,10 @@ class MenuController {
     def json = {
 		def result = "{}"
 		if (params.id && params.id.isNumber()) {
-			def menu = Menu.get(params.id)
+			def menu = Menu.get(params.id).toDisplayableMenu()
 			result = MenuJsonCache.instance().get(menu)
 			if (!result) {
-				def displayMenu = new MenuPresenter(menu.toDisplayableMenu())
-				result = (displayMenu as JSON).toString()
+				result = (menu as JSON).toString()
 				MenuJsonCache.instance().add(menu, result)
 			}
 		}
