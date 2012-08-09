@@ -20,10 +20,8 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 
     update: function(layer, show, hide, target) {
 
-        this.selectedLayer = layer;
-
-        if (this._showBody()) {
-        	this._updateBody();
+        if (this._showBody(layer)) {
+        	this._updateBody(layer);
         	show.call(target, this);
         }
         else {
@@ -31,15 +29,15 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
         }
 	},
 	
-	_showBody: function() {
-		return this.selectedLayer.getMetadataUrl();
+	_showBody: function(layer) {
+		return layer.getMetadataUrl();
 	},
 
-	_updateBody: function() {
+	_updateBody: function(layer) {
 		this.body.update("Loading...");
-		if (this.selectedLayer.getMetadataUrl()) {
+		if (layer.getMetadataUrl()) {
 			Ext.Ajax.request({
-				url: 'layer/getFormattedMetadata?metaURL=' + this.selectedLayer.getMetadataUrl(),
+				url: 'layer/getFormattedMetadata?metaURL=' + layer.getMetadataUrl(),
 				scope: this,
 				success: function(resp, options) {
 					this.body.update(resp.responseText);
