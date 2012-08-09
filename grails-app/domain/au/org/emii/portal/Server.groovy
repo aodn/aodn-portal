@@ -98,7 +98,7 @@ class Server {
 	def recache(cache) {
 		def result = cache.get(this)
 		if (result) {
-			cache.add(this, _getServerLayerJson())
+			cache.add(this, toServerLayerJson())
 		}
 	}
 
