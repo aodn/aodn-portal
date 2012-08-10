@@ -114,7 +114,9 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   afterRender: function(){
     Portal.search.ResultsGrid.superclass.afterRender.call(this);
 
-    this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
+	this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."}, true);
+
+    this.loadMaskShowing = false;
 
     this.getView().mainBody.on({
       scope    : this,
@@ -124,14 +126,16 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
 
   showMask: function(){
-    if (this.rendered) {
+    if (this.rendered && ! this.loadMaskShowing) {
       this.loadMask.show();
+      this.loadMaskShowing = true;
     }
   },
   
   hideMask: function(){
     if (this.rendered) {
       this.loadMask.hide();
+      this.loadMaskShowing = false;
     }
   },
   
