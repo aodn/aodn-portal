@@ -136,8 +136,8 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	loadSnapshot: function(id){
         this.snapshotController.loadSnapshot(id, null, function(errors){
         	Ext.MessageBox.show({
-			 title:OpenLayers.i18n('errorDialogTitle'),
-			 msg: 'Failed to load saved map: ' + errors
+			 title:'Saved Map',
+			 msg: 'The map you are attempting to view is not available.'
 		  });
         });
 	}
