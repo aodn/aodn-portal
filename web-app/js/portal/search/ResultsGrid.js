@@ -115,7 +115,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     Portal.search.ResultsGrid.superclass.afterRender.call(this);
 
     this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
-    
+
     this.getView().mainBody.on({
       scope    : this,
       mouseover: this.onMouseOver,

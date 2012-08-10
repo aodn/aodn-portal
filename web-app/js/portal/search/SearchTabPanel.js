@@ -6,7 +6,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	title: 'Search',
 	HITS_PER_PAGE: 15,
 
-	initComponent: function() {	 
+	initComponent: function() {
 	  
 	  var appConfig = Portal.app.config;
 	  
@@ -197,22 +197,27 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	resultsStoreLoad: function() {
 		this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: this.resultsStore.startRecord, limit: 15}});
 	},
-	
+
 	runSearch: function(filters, startRecord, updateStore) {
 		this.resultsGrid.showMask();
 
-		var onSuccess = function(result) {
-			this.resultsGrid.hideMask();
+		var onSuccess = function(result, query) {
+			if(this.currentQuery == query){
 
-			// This makes sure that the paging toolbar updates on a zero result set
-			this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
+				this.resultsGrid.hideMask();
+				// This makes sure that the paging toolbar updates on a zero result set
+				this.resultsStore.fireEvent('load', this.resultsStore, this.resultsStore.data.items, this.resultsStore.lastOptions);
+			}
+			else{
+				//ignoring because it has been overwritten by another query
+			}
 		};
-		
+
 		var onFailure = function(response) {
 			this.resultsGrid.hideMask();
 			Ext.Msg.alert( 'Error', response.status + ': ' + response.statusText );
 		};
-		
+
 		if (updateStore !== false) {
 			updateStore = true;
 		};
@@ -220,21 +225,23 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		if (updateStore) {
 			this.resultsStore.removeAll();
 		};
-		
+
 		var queryParams = filters.slice(0);
 
 		// Add paging params
 		queryParams.push("from=" + startRecord);
 		queryParams.push("to=" + (startRecord + this.HITS_PER_PAGE - 1));
-		
+
 		var query = GeoNetwork.util.SearchTools.buildQueryGET(queryParams, startRecord, GeoNetwork.util.SearchTools.sortBy, this.resultsStore.fast);
-		
+
+		this.currentQuery = query;
+
 		GeoNetwork.util.SearchTools.doQuery(query, this.catalogue, startRecord, Ext.createDelegate(onSuccess, this), Ext.createDelegate(onFailure,this), updateStore, this.resultsStore);
 
 		this.resultsStore.startRecord = startRecord - 1;
 		this.lastSearch = filters;
 	},
-	
+
 	onSearch: function () {
 	  this.changeLayout();
 		this.resultsStore.totalLength = 0; // This makes sure that the paging toolbar updates on a zero result set
