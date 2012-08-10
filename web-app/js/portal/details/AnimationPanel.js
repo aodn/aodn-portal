@@ -66,7 +66,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.stepSlider = new Ext.slider.SingleSlider({			
 			id: 'stepSlider',
 			ref: 'stepSlider',			
-			width: 120,			
+			width: 115,
 			flex: 3,
 			listeners:{
 				scope: this,
@@ -84,64 +84,24 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			icon: 'images/animation/play.png',
 			listeners: {
 				scope: this,
-				'click': function(button,event){
-					dates = this._getFormDates();
-					this._waitForOriginalLayer(dates[0], dates[1]);
-				}
+				'click': this._togglePlay
 			},
 			tooltip: OpenLayers.i18n('play')
 		});
 
-		this.clearButton = new Ext.Button({
-			id: 'Stop',
-			padding: 5,
-			plain: true,
-			icon: 'images/animation/stop.png',
-			iconAlign: 'top',
-			listeners: {
-				scope: this,
-				'click': function(button,event){
-					this.removeAnimation();
-				}
-			},
-			tooltip: OpenLayers.i18n('clearButton_tip')
-		
-		});
+		this.currentState = this.state.STOPPED;
 
-		this.pauseButton = new Ext.Button({
-			id: 'Pause',
-			padding: 5,
-			disabled: true, // readonly
-			icon: 'images/animation/pause.png',
-			iconAlign: 'top',
-			listeners: {
-				scope: this,
-				'click': function(button,event){
-					clearTimeout(this.timerId);
-					this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
-					this._updateButtons(this.state.STOPPED);
-				}
-			},
-			tooltip: OpenLayers.i18n('pauseButton_tip')
-		});
 
 		this.stepLabel = new Ext.form.Label({
 			flex: 1,
-			width: 110,
-			style: 'padding: 5'
-		});
-
-		this.progressLabel = new Ext.form.Label({
-		   hidden: true,
-		   width: 100,
-		   left: 150
+			width: 115,
+			style: 'padding-top: 5; padding-bottom: 5'
 		});
 
 		this.speedLabel = new Ext.form.Label({
-			hidden: true,
-			html: "<br /> " + OpenLayers.i18n('speed'),
-			width: 100,
-			left: 150
+			flex: 1,
+			html: OpenLayers.i18n('speed'),
+			style: 'padding: 5'
 		});
 
 		this.buttonsPanel = new Ext.Panel({
@@ -151,9 +111,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			items: [
 			this.slowDown,
 			this.playButton,
-			this.pauseButton,
-			this.speedUp,
-			this.clearButton
+			this.speedUp
 			],
 			height: 40,
 			flex: 2
@@ -283,16 +241,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				},
 				items: [						
 				this.buttonsPanel,	
-				this.stepSlider,					
+				this.stepSlider,
+				this.speedLabel,
 				this.stepLabel
 				]
 			},
-			this.timeSelectorPanel,	
-			this.progressLabel,
-			this.speedLabel,
+			this.timeSelectorPanel,
 			this.getAnimationButton
 			],
-			width: 360,
+			width: 330,
 			height: '100%'
 		});
 
@@ -313,6 +270,18 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	setMap: function(theMap){
 		this.map = theMap;
 		this.map.map.events.register('moveend', this, this._onMove);
+	},
+
+	_togglePlay: function(button,event){
+    	if(this.currentState == this.state.PLAYING){
+    		clearTimeout(this.timerId);
+			this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
+			this._updateButtons(this.state.STOPPED);
+    	}
+    	else{
+        	dates = this._getFormDates();
+			this._waitForOriginalLayer(dates[0], dates[1]);
+    	}
 	},
 
 	_onDateSelected: function(field, date){
@@ -344,15 +313,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_updateButtons: function(state) {
-		
-		if(this.animatedLayers.length > 0) {
-			this.clearButton.enable();
-		}
+		this.currentState = state;
 
 		if (state == this.state.LOADING) {
 			//can't change the time when it's loading
-			this.playButton.disable();
-			this.pauseButton.disable();
+			this.playButton.setIcon('images/animation/pause.png');
 			this.stepSlider.disable();
 			this.speedUp.disable();
 			this.slowDown.disable();
@@ -361,8 +326,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
 		else if (state == this.state.PLAYING) {
 			//can't change the time when it's playing
-			this.playButton.disable();
-			this.pauseButton.enable();
+			this.playButton.setIcon('images/animation/pause.png');
 			this.stepSlider.enable();
 			this.speedUp.enable();
 			this.slowDown.enable();
@@ -370,12 +334,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.getAnimationButton.setVisible(true);
 		}
 		else if (state == this.state.STOPPED) {
+			this.playButton.setIcon('images/animation/play.png');
 			this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
 
 			//nothing's playing, so stop and pause doesn't make sense
-			this.pauseButton.disable();
 			this.speedUp.disable();
 			this.slowDown.disable();
 			this.speedLabel.setVisible(false);
@@ -418,7 +382,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.animatedLayers.length = 0;
 			this.stepLabel.setText("", false);
 
-			this.progressLabel.setVisible(false);
 			this._updateButtons(this.state.STOPPED);
 
 			this._resetForNewAnimation();
@@ -468,14 +431,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				if(curLayer.numLoadingTiles == 0){
 					this.counter++;
 					this._setSlide(this.counter);
-}
+				}
 			}
 		}
 		else{
 			this.counter = 0;
 			this._setSlide(this.counter);
-
-			this.progressLabel.setVisible(false);
 		}
 	},
 
@@ -555,8 +516,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			return false;
 		}
 		else{
-
-			this.progressLabel.setVisible(true);
 			this.originalLayer = this.selectedLayer;
 			if(this.originalOpacity == -1)
 				this.originalOpacity = this.selectedLayer.opacity;
@@ -630,9 +589,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		//more milliseconds between each step, so it's slower!
 		if(this.speed > this.BASE_SPEED)
-			this.speedLabel.setText("<br/> Speed: x 1/" + (this.speed/this.BASE_SPEED), false );
+			this.speedLabel.setText(" (x1/" + (this.speed/this.BASE_SPEED)  + ")", false );
 		else
-			this.speedLabel.setText("<br/> Speed: x " + (this.BASE_SPEED/this.speed), false );
+			this.speedLabel.setText(" (x " + (this.BASE_SPEED/this.speed)  + ")", false );
 
 	//else no animation is running, so can't change the speed of the animation
 	},
