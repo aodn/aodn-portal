@@ -17,7 +17,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    minChars: 0,
    hideTrigger: false,
    valueField: 'value',
-   displayField: 'value',
+   displayField: 'display',
    hideLabel: false,
    width: 350,
    maxCaptionLength: 40,
