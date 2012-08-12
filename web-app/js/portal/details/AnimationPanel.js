@@ -100,7 +100,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		this.speedLabel = new Ext.form.Label({
 			flex: 1,
-			html: OpenLayers.i18n('speed'),
 			style: 'padding: 5'
 		});
 
@@ -257,6 +256,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.controlPanel
 		];
 
+		this.speed = this.BASE_SPEED;
 		this._resetForNewAnimation();
 		this.map = undefined;
 
@@ -483,9 +483,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		time slices never loads and the animation doesn't start.
 	*/
 	_waitForOriginalLayer: function(startString, endString){
-		
-		this._setSlide(0);
-
 		if(this.selectedLayer.numLoadingTiles > 0){
 			
 			this._updateButtons(this.state.LOADING);
@@ -567,7 +564,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			else{
 				this.counter = 0;
 			}
-			this._resetTimer(this.BASE_SPEED);
+
+			this._resetTimer(this.speed);
 			this._updateButtons(this.state.PLAYING);
 		}
 	},
