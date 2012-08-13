@@ -134,14 +134,14 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 						layerOptions: {
 							buffer: 0, 
 							singleTile: false, 
-							ratio: 1, 
-							queryable: false
+							ratio: 1
 						},
 						layerParams: {
 							'TRANSPARENT': true,
-							'queryable': false,
+							'queryable': true, //if not base layer, then might as well make it querayable, since
+											   //GetFeatureInfo popup goes through proxy, which does NOT allow
+											   //connections to untrusted servers
 							'isBaseLayer': false
-							
 						},
 						
 						// customize the createNode method to add a checkbox to nodes

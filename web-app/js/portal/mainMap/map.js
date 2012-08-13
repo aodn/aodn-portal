@@ -325,7 +325,7 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 	server.opacity = 100;
 	dl.server = server;
 
-	dl.queryable = false; // no more
+	dl.queryable = true; // Setting to true because our proxy will not connect to any untrusted servers
 
 	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
 
