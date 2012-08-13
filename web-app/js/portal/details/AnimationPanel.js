@@ -10,7 +10,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
 		var config = Ext.apply({
-			id: 'animationPanel',
 			layout: 'form',
 			stateful: false,
 			bodyStyle:'padding:6px; margin:2px',
@@ -24,6 +23,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	initComponent: function(){
+        this.DATE_FORMAT = 'Y-m-d';
+        this.TIME_FORMAT = 'H:i:s (T)';
+        this.DATE_TIME_FORMAT = this.DATE_FORMAT + ' ' + this.TIME_FORMAT;
+        this.STEP_LABEL_DATE_TIME_FORMAT = this.DATE_FORMAT + " H:i:s";
+
 		this.BASE_SPEED = 500;
 		this.animatedLayers = new Array();		
 		var parent = this;
@@ -64,9 +68,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.stepSlider = new Ext.slider.SingleSlider({			
-			id: 'stepSlider',
-			ref: 'stepSlider',			
-			width: 115,
+			ref: 'stepSlider',
+			width: 115,			
 			flex: 3,
 			listeners:{
 				scope: this,
@@ -77,7 +80,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.playButton = new Ext.Button({
-			id: 'Play',
 			padding: 5,
 			plain: true,
 			disabled: false, // readonly
@@ -104,7 +106,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.buttonsPanel = new Ext.Panel({
-			id: 'playerControlPanel',
 			layout: 'hbox',
 			plain: true,
 			items: [
@@ -117,7 +118,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.startLabel = new Ext.form.Label({
-			html: "Start:",
+			html: "Start:"
 		});
 
 		this.endLabel = new Ext.form.Label({
@@ -126,7 +127,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.startDatePicker = new Ext.form.DateField({
-			id: 'startDatePicker',
 			format: 'd-m-Y',
 			editable: false,
 			width: 100,
@@ -138,7 +138,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.endDatePicker = new Ext.form.DateField({
-			id: 'endDatePicker',
 			format: 'd-m-Y',
 			editable: false,
 			width: 100,
@@ -148,33 +147,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
-		this.startTimeCombo = new Ext.form.ComboBox({
-			store: new Array(),
-			id: "startTimeCombo",
-			triggerAction: "all",
-			editable: false,
-			width: 100,
-			listeners:{
+		this.startTimeCombo = new Ext.form.ComboBox(Ext.apply({
+			listeners: {
 				scope: this,
 				select: function(combo, record, index){
-					timeStr = this._getSelectedTimeString(true);
+					var timeStr = this._getSelectedTimeString(true);
 					this.selectedLayer.mergeNewParams({
 						TIME: timeStr
 					});
-					this.stepLabel.setText(timeStr);
+					this._setTimeAsStepLabelText(timeStr);
 				}
 			}
-		});
-		this.endTimeCombo = new Ext.form.ComboBox({
-			store: new Array(),
-			id: "endTimeCombo",
-			width: 100,
-			triggerAction: "all",
-			editable: false
-		});
+		}, this._timeComboOptions()));
+		this.endTimeCombo = new Ext.form.ComboBox(this._timeComboOptions());
 
 		this.timeSelectorPanel = new Ext.Panel({
-			id: 'timeSelectorPanel',
 			layout: 'table',
 			layoutConfig:{
 				tableAttrs: {
@@ -206,7 +193,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					if(this.animatedLayers.length > 0){
 						//need to workout BBOX
 						var clonedLayer = this.originalLayer.clone();
-						bounds = this.originalLayer.map.getExtent();
+						var bounds = this.originalLayer.map.getExtent();
 
 						clonedLayer.mergeNewParams({
 							TIME: this.animatedLayers[0].params.TIME + "/" +
@@ -279,7 +266,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this._updateButtons(this.state.STOPPED);
     	}
     	else{
-        	dates = this._getFormDates();
+        	var dates = this._getFormDates();
 			this._waitForOriginalLayer(dates[0], dates[1]);
     	}
 	},
@@ -294,10 +281,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			combo = this.endTimeCombo;
 		}
 
-		var key = date.format("Y-m-d");
+		var key = this._toDateString(date);
 		if(this.allTimes[key] != null){
-			combo.getStore().loadData(this.allTimes[key], false);
-			combo.clearValue();
+            combo.clearValue();
+            combo.getStore().loadData(this.allTimes[key], false);
 		}
 	},
 
@@ -306,7 +293,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.speed = this.BASE_SPEED;
 		this.originalOpacity = -1;
 		this.pausedTime = "";
-		this.allTimes = {};
 
 		//resetting the array
 		this.animatedLayers = new Array();
@@ -380,7 +366,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			//stackoverflow says it's better setting length to zero than to reinitalise array.,.,.,
 			this.animatedLayers.length = 0;
-			this.stepLabel.setText("", false);
+			this._setStepLabelText("");
 
 			this._updateButtons(this.state.STOPPED);
 
@@ -408,21 +394,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//also set the label
 			var labelStr = this.animatedLayers[index].params.TIME;
 
-			this.stepLabel.setText(this.animatedLayers[index].params.TIME, false);
+			this._setTimeAsStepLabelText(this.animatedLayers[index].params.TIME);
 
 			if (this._isLoadingAnimation()) {
-				this.stepLabel.setText("Loading... " + Math.round((index+ 1) / this.animatedLayers.length * 100) + "%");
+				this._setStepLabelText("Loading... " + Math.round((index+ 1) / this.animatedLayers.length * 100) + "%");
 			}
 		}
 		else if (index == 0) {
 			this.stepSlider.setValue(0);
-			this.stepLabel.setText("Loading... 0%");
+			this._setStepLabelText("Loading... 0%");
 		}
 	},
 
 	_cycleAnimation: function(forced){
 		if(this.counter < this.animatedLayers.length - 1){
-            curLayer = this.animatedLayers[this.counter + 1];
+            var curLayer = this.animatedLayers[this.counter + 1];
 			if(this.map.map.getLayer(curLayer.id) == null){
 				this.map.addLayer(curLayer, false);
 				curLayer.display(false);
@@ -496,19 +482,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_loadAnimation: function(startString, endString){
+        var startDate = this._parseIso8601Date(startString);
+        var endDate = this._parseIso8601Date(endString);
 
-
-		dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
-
-		var startIndex = dimSplit.indexOf(startString);
-		var endIndex = dimSplit.indexOf(endString);
-
-		if(startIndex == endIndex){
+		if(startDate == endDate){
 			alert("The start and end time must not be the same");
 			return false;
 		}
 
-		if(startIndex > endIndex){
+		if(startDate.getTime() > endDate.getTime()){
 			alert("You must select an end date that is later than the start date");
 			return false;
 		}
@@ -525,9 +507,24 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.originalLayer.isAnimated = true;
 			}
 
+            var startIndex;
+            var endIndex;
+            var dimSplit = this.getSelectedLayerTimeDimension().extent.split(",");
+
+            for(var i = 0; !(startIndex && endIndex) && i < dimSplit.length; i++) {
+                var date = this._parseIso8601Date(dimSplit[i]);
+                // Use >= because some strings have milliseconds on them meaning getting exact equality could be impossible
+                if (date.getTime() >= startDate.getTime() && !startIndex) {
+                    startIndex = i;
+                }
+                else if (date.getTime() >= endDate.getTime() && !endIndex) {
+                    endIndex = i;
+                }
+            }
+
 			this.originalLayer.chosenTimes =  dimSplit[startIndex] + "/" + dimSplit[endIndex];
 
-			newAnimatedLayers = new Array();
+			var newAnimatedLayers = new Array();
 
 			for( var j = startIndex; j <= endIndex; j++){
 				var newLayer = null;
@@ -621,62 +618,60 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_extractDays: function(dim){
-		splitDates = dim.extent.split(",");
-		var startDate;
-		var endDate;
-		this.allTimes = {};
-
+		var splitDates = dim.extent.split(",");
 		if(splitDates.length > 0){
-
-			startDate = new Date(splitDates[0]);
-			endDate = new Date(splitDates[splitDates.length - 1]);
+			var startDate = this._parseIso8601Date(splitDates[0]);
+			var endDate = this._parseIso8601Date(splitDates.last());
 
 			//set the start/end date range for both pickers
 			this._setDateRange(this.startDatePicker, startDate, endDate);
 			this._setDateRange(this.endDatePicker, startDate, endDate);
 
-			//then calculate the missing days
-			var missingDays = [];
+            this._setDayTimes(splitDates);
+            this._setMissingDays(splitDates);
 
-			for(var j = 0; j < splitDates.length; j++){
-				var dayTime = splitDates[j].split("T");
-				var dayString = dayTime[0];
-				var timeString = dayTime[1];
-
-				if(this.allTimes[dayString] == null){
-					this.allTimes[dayString] = new Array();
-				}
-				this.allTimes[dayString].push(timeString);
-			}
-
-			var curDate = new Date(splitDates[0]);
-
-
-			while(curDate < endDate){
-				day =  curDate.toISOString().split("T")[0];
-
-				if(this.allTimes[day] == null){
-					missingDays.push(curDate.format("d-m-Y"));
-				}
-				curDate.setDate(curDate.getDate() + 1);
-			}
-
-			if(missingDays.length > 1){
-				this.startDatePicker.setDisabledDates(missingDays);
-				this.endDatePicker.setDisabledDates(missingDays);
-			}
-
-
-			this._setTime(this.endDatePicker, this.endTimeCombo, splitDates[splitDates.length - 1]);
-
-			if(splitDates.length > 10){
-				this._setTime(this.startDatePicker, this.startTimeCombo, splitDates[splitDates.length - 10]);
-			}
-			else{
-				this._setTime(this.startDatePicker, this.startTimeCombo, splitDates[t0]);
-			}
+            this._setTime(this.startDatePicker, this.startTimeCombo, this._getTimeComboStartDate(splitDates));
+            this._setTime(this.endDatePicker, this.endTimeCombo, endDate);
 		}
 	},
+
+    _setDayTimes: function(dateStringsArray) {
+        this.allTimes = {};
+
+        for (var j = 0; j < dateStringsArray.length; j++) {
+            var date = Date.parseDate(dateStringsArray[j], "c");
+            var dayString = this._toDateString(date);
+            var timeString = this._toTimeString(date);
+            var timeRoundedString = this._toTimeString(this._roundToNearestFiveMinutes(date));
+
+            if (this.allTimes[dayString] == null) {
+                this.allTimes[dayString] = new Array();
+            }
+            this.allTimes[dayString].push([timeString, timeRoundedString]);
+        }
+    },
+
+    _setMissingDays: function(dateStringsArray) {
+        if (!this.allTimes) {
+            this._setDayTimes(dateStringsArray);
+        }
+
+        var missingDays = [];
+        var curDate = this._parseIso8601Date(dateStringsArray[0]);
+        var endDate = this._parseIso8601Date(dateStringsArray.last());
+        while (curDate < endDate) {
+            var day = this._toDateString(curDate);
+            if (this.allTimes[day] == null) {
+                missingDays.push(day);
+            }
+            curDate.setDate(curDate.getDate() + 1);
+        }
+
+        if (missingDays.length > 1) {
+            this.startDatePicker.setDisabledDates(missingDays);
+            this.endDatePicker.setDisabledDates(missingDays);
+        }
+    },
 
 	_setLayerDatesByCapability: function(){
 		var dim = this.getSelectedLayerTimeDimension();
@@ -728,26 +723,104 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_setTime: function(picker, combo, timestamp){
-		var date = timestamp.split("T")[0];
-		var time = timestamp.split("T")[1];
-		picker.setValue(date);
-
-		this._onDateSelected(picker, new Date(timestamp));
-		combo.setValue(time);
+        picker.setValue(timestamp);
+		this._onDateSelected(picker, timestamp);
+		combo.setValue(timestamp.format(this.TIME_FORMAT));
 
 	},
 
 	_getSelectedTimeString: function(isStart){
-		if(isStart)
-    		return this.startDatePicker.getValue().format("Y-m-d") + "T" + this.startTimeCombo.getValue();
-    	else
-        	return this.endDatePicker.getValue().format("Y-m-d") + "T" + this.endTimeCombo.getValue();
+		if(isStart) {
+            return this._toUtcIso8601DateString(this.startDatePicker.getValue(), this.startTimeCombo.getValue());
+        }
+        return this._toUtcIso8601DateString(this.endDatePicker.getValue(), this.endTimeCombo.getValue());
 	},
 
 	loadFromSavedMap: function(layer, stamps){
 		this.setSelectedLayer(layer);
 		this.update();
 		this._waitForOriginalLayer(stamps[0], stamps[1]);
-	}
+	},
+
+    _parseIso8601Date: function(string) {
+        return Date.parseDate(string, "c");
+    },
+
+    _toDateString: function(date) {
+        return date.format(this.DATE_FORMAT);
+    },
+
+    _toUtcDateString: function(date) {
+        return date.getUTCFullYear() + "-" + this._pad((date.getUTCMonth() + 1)) + "-" + this._pad(date.getUTCDate());
+    },
+
+    _toTimeString: function(date) {
+        return date.format(this.TIME_FORMAT);
+    },
+
+    _toUtcTimeString: function(date) {
+        return this._pad(date.getUTCHours()) + ":" + this._pad(date.getUTCMinutes()) + ":" + this._pad(date.getUTCSeconds()) + 'Z';
+    },
+
+    _pad: function(val) {
+        return val < 10 ? '0' + val : val.toString();
+    },
+
+    _getTimeComboStartDate: function(dates) {
+        return this._parseIso8601Date(dates[this._getTimeComboStartIndex(dates)]);
+    },
+
+    _getTimeComboStartIndex: function(dates) {
+        return dates.length > 10 ? dates.length - 10 : 0;
+    },
+
+    _toUtcIso8601DateString: function(date, timeString) {
+        if (timeString) {
+            return this._toUtcIso8601DateString(Date.parseDate(date.format(this.DATE_FORMAT) + ' ' + timeString, this.DATE_TIME_FORMAT));
+        }
+        return this._toUtcDateString(date) + 'T' + this._toUtcTimeString(date);
+    },
+
+    _setStepLabelText: function(text) {
+        this.stepLabel.setText(text, false);
+    },
+
+    _setTimeAsStepLabelText: function(dateTimeString) {
+        this._setStepLabelText(this._parseIso8601Date(dateTimeString).format(this.STEP_LABEL_DATE_TIME_FORMAT));
+    },
+
+    _roundToNearestFiveMinutes: function(date) {
+        var roundedDate = new Date(date.getTime());
+        if (roundedDate.getMinutes() > 57) {
+            roundedDate.setHours(roundedDate.getHours() + 1)
+        }
+        roundedDate.setMinutes((Math.round(roundedDate.getMinutes() / 5) * 5) % 60)
+        roundedDate.setSeconds(0);
+        return roundedDate;
+    },
+
+    _timeComboStoreOptions: function() {
+         return {
+            autoLoad: false,
+            autoDestroy: true,
+            fields: [
+                'time',
+                'roundedTime'
+            ],
+            data: []
+        };
+    },
+
+    _timeComboOptions: function() {
+        return {
+            store: new Ext.data.ArrayStore(this._timeComboStoreOptions()),
+            mode: 'local',
+            triggerAction: "all",
+            editable: false,
+            valueField: 'time',
+            displayField: 'roundedTime',
+            width: 110
+        };
+    }
 
 });
