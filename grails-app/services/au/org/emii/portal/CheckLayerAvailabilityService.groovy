@@ -12,10 +12,10 @@ class CheckLayerAvailabilityService {
 	def isLayerAlive(layerId,serverUri,isNcwms) {
 		
 		def valid = true // start with the gates open
-		def layerDetails = getLayerDetails(layerId)
+		def layerDetails = Layer.get(layerId)
 		if (layerDetails) {
 			
-			def featInfURL = _constructFeatureInfoRequest(serverUri, layerDetails.layer,isNcwms).toURL()	
+			def featInfURL = _constructFeatureInfoRequest(serverUri, layerDetails,isNcwms).toURL()	
 			try {
 				def res = featInfURL.openConnection() 
 				if (res) {
@@ -48,18 +48,6 @@ class CheckLayerAvailabilityService {
 						
 		return valid
 	}
-	
-	def getLayerDetails(layerId) {
-		def layerInstance = Layer.get( layerId as int )
-		
-		if (layerInstance) {
-			def serverInstance = Server.get(layerInstance.server.id)
-			if ( serverInstance ) {
-				return [layer: layerInstance, server: serverInstance]
-			}
-		}        
-	}
-	
 
 	def String _constructFeatureInfoRequest(serverUri, layer,isNcwms) {
 		// Construct the getFeatureInfo request. 
