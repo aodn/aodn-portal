@@ -49,6 +49,7 @@ class Server {
         name(unique:true)
         disable()
         allowDiscoveries()
+        allowDiscoveries()
         opacity()
         imageFormat( inList:['image/png','image/gif'] )
         comments(nullable:true)
