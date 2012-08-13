@@ -4,6 +4,8 @@ import au.org.emii.portal.Config
 import au.org.emii.portal.User
 import au.org.emii.portal.display.SnapshotLayerJsonMarshaller
 import grails.converters.JSON
+import au.org.emii.portal.display.MenuPresenter
+import au.org.emii.portal.display.MenuItemPresenter
 
 class JsonMarshallingRegistrar {
 	
@@ -13,6 +15,8 @@ class JsonMarshallingRegistrar {
 		_registerConfig()
 		_registerUser()
 		_registerSnapshotLayer()
+		_registerMenuPresenter()
+		_registerMenuItemPresenter()
 	}
 	
 	static void _registerConfig() {
@@ -72,6 +76,28 @@ class JsonMarshallingRegistrar {
 	static void _registerSnapshotLayer() {
 		JSON.createNamedConfig(SNAPSHOT_LAYERS_MARSHALLING_CONFIG) {
 			it.registerObjectMarshaller(new SnapshotLayerJsonMarshaller())
+		}
+	}
+
+	static void _registerMenuPresenter() {
+		JSON.registerObjectMarshaller(MenuPresenter) { presenter ->
+			def result = [:]
+			result['id'] = presenter.id
+			result['title'] = presenter.title
+			result['menuItems'] = presenter.menuItems
+			return result
+		}
+	}
+
+	static void _registerMenuItemPresenter() {
+		JSON.registerObjectMarshaller(MenuItemPresenter) { presenter ->
+			def result = [:]
+			result['leaf'] = presenter.leaf
+			result['text'] = presenter.text
+			result['childItems'] = presenter.childItems
+			result['layer'] = presenter.layer
+			result['server'] = presenter.server
+			return result
 		}
 	}
 }
