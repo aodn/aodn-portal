@@ -201,7 +201,10 @@ class Layer {
 		{
 			return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
 		}
-		
+		else
+		{
+			return []
+		}
 	}
 	
 	void addToLayers(Layer child) {
