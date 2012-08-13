@@ -792,9 +792,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
     _roundToNearestFiveMinutes: function(date) {
         var roundedDate = new Date(date.getTime());
         if (roundedDate.getMinutes() > 57) {
-            roundedDate.setHours(roundedDate.getHours() + 1)
+            roundedDate.setHours(roundedDate.getHours() + 1);
         }
-        roundedDate.setMinutes((Math.round(roundedDate.getMinutes() / 5) * 5) % 60)
+        roundedDate.setMinutes((Math.round(roundedDate.getMinutes() / 5) * 5) % 60);
         roundedDate.setSeconds(0);
         return roundedDate;
     },

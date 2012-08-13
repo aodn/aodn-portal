@@ -14,7 +14,7 @@ class Search
 	String name
 	
     static constraints = {
-		name(nullable: false, unique: true)
+		name(nullable: false, unique: 'owner')
     }
 	
 	@Override
