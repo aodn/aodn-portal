@@ -23,6 +23,11 @@ class LayerTests extends GrailsUnitTestCase {
         assertEquals "nullable", testLayer.errors["server"]
         assertEquals "nullable", testLayer.errors["dataSource"]
 
+		//This constraint is managed 
+		//in the getLayers() method, since layers is transient
+        assertNotNull testLayer.layers
+        assertTrue testLayer.layers.isEmpty()
+
         testLayer = new Layer(dataSource: "")
         assertFalse testLayer.validate()
         assertEquals "blank", testLayer.errors["dataSource"]
