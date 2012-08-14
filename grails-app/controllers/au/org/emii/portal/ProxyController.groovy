@@ -184,8 +184,8 @@ class ProxyController {
 	
 	def _addAuthentication(connection, url) {
 		def server = _getServer(url)
-		if (server && server.isCredentialled()) {
-			connection.setRequestProperty("Authorization", "Basic ${server.getEncodedCredentials()}")
+		if (server) {
+			server.addAuthentication(connection)
 		}
 	}
 	

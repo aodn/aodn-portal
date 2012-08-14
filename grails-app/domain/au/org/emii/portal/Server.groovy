@@ -131,4 +131,10 @@ class Server {
 	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
 		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
 	}
+
+	def addAuthentication(connection) {
+		if (isCredentialled()) {
+			connection.setRequestProperty("Authorization", "Basic ${getEncodedCredentials()}")
+		}
+	}
 }
