@@ -47,7 +47,7 @@ class ProxyController {
                     }
 
                 }
-               try {
+                try {
 					outputStream << conn.inputStream
 					outputStream.flush()
 				}
