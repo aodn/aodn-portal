@@ -22,7 +22,7 @@ class LayerControllerIntegrationTests extends GroovyTestCase
     void testNoDuplicatesInLayerAsJson() 
 	{
 		// Create
-		Server server = Server.build(uri: "http://someserver/path")
+		Server server = Server.build(uri: "http://someserver.com/path")
 		server.save()
 		
 		Layer activeLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: true)
@@ -33,7 +33,7 @@ class LayerControllerIntegrationTests extends GroovyTestCase
 		
 		try
 		{
-			layerController.params.serverUri = "http://someserver/path"
+			layerController.params.serverUri = "http://someserver.com/path"
 			layerController.params.name = "imos:layername"
 			layerController.findLayerAsJson()
 			
@@ -53,7 +53,7 @@ class LayerControllerIntegrationTests extends GroovyTestCase
 
 		try {
 			// Create
-			Server server = Server.build(uri: "http://someserver/path")
+			Server server = Server.build(uri: "http://someserver.com/path")
 			server.save()
 
 			Layer activeLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: true)

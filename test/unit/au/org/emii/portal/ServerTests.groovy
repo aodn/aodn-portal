@@ -15,7 +15,7 @@ class ServerTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
-		def server1 = new Server(uri : "uri1", shortAcron : "A1", name : "name1");
+		def server1 = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1");
 		mockForConstraintsTests(Server, [server1])
 		
 		def testServer = new Server()
@@ -29,7 +29,7 @@ class ServerTests extends GrailsUnitTestCase {
 		assertEquals "nullable", testServer.errors["opacity"]
 		assertEquals "nullable", testServer.errors["imageFormat"]
 		
-		testServer = new Server(uri : "uri1", shortAcron : "A1", name : "name1")
+		testServer = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1")
 		assertFalse testServer.validate()
 		assertEquals "unique", testServer.errors["uri"]
 		assertEquals "unique", testServer.errors["shortAcron"]
@@ -38,15 +38,20 @@ class ServerTests extends GrailsUnitTestCase {
 		testServer = new Server(type : "WFS-1.0.0")
 		assertFalse testServer.validate()
 		assertEquals "inList", testServer.errors["type"]
-    }
+		
+		testServer = new Server(uri : "uri1")
+		assertFalse testServer.validate()
+		assertEquals "url", testServer.errors["uri"]
+	}
+	
 
 	void testToIdString() {
-		def testServer = new Server(uri : "uri1", shortAcron : "A1", name : "name1")
+		def testServer = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1")
 		assertEquals testServer.toIdString(), "A1" 
 	}
 	
 	void testToString() {
-		def testServer = new Server(uri : "uri1", shortAcron : "A1", name : "name1")
+		def testServer = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1")
 		assertEquals testServer.toString(), "A1"
 	}
 	

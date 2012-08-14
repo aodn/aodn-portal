@@ -15,14 +15,14 @@ class ServerServiceTests extends GroovyTestCase {
     void testService() {
 
 //		JsonMarshallingRegistrar.registerJsonMarshallers()
-        def Server s1 = new Server(uri: "something1", shortAcron: "sa1", id: 1, type:"WMS-1.1.1", scanFrequency: 100,
+        def Server s1 = new Server(uri: "http://something1.com", shortAcron: "sa1", id: 1, type:"WMS-1.1.1", scanFrequency: 100,
                                     name: "something1name", disable: false, opacity: 100, imageFormat: "image/gif",
                                     allowDiscoveries:true)
-        def Server s2 = new Server(uri:  "something2", shortAcron:  "s2", id: 2, type:"WMS-1.1.1", scanFrequency: 10,
+        def Server s2 = new Server(uri:  "http://something2.com", shortAcron:  "s2", id: 2, type:"WMS-1.1.1", scanFrequency: 10,
                                     name: "something2name", disable: false, opacity: 100, imageFormat: "image/gif",
                                     allowDiscoveries:true)
 
-        def Server s3 = new Server(uri:  "something3", shortAcron:  "s3", id: 3, type:"WMS-1.1.1", scanFrequency: 10,
+        def Server s3 = new Server(uri:  "http://something3.com", shortAcron:  "s3", id: 3, type:"WMS-1.1.1", scanFrequency: 10,
                 name: "something3name", disable: false, opacity: 100, imageFormat: "image/gif",
                 allowDiscoveries:true)
 

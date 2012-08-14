@@ -24,12 +24,12 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
     void testSaveOrUpdate() {
         
-        String metadata = '{metaDataElement: "metaData", serverUri: "serverUriText", dataSource:"testDataSource"}'
+        String metadata = '{metaDataElement: "metaData", serverUri: "http://serverUriText.com", dataSource:"testDataSource"}'
         this.controller.params.password = "pwd"
         this.controller.params.metadata = metadata
         this.controller.params.layerData = "012345678901234567890123456789001234567890123456789012345678901234567890123456789012345678901234567890123456789"
 
-        def server = new Server(id : 10, uri : "serverUriText", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", comments : "" )
+        def server = new Server(id : 10, uri : "http://serverUriText.com", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", comments : "" )
         mockDomain Server, [server]
         mockDomain Config, [validConfig]
 
