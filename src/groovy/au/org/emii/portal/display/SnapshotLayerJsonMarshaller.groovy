@@ -19,7 +19,7 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	
 	static Logger log = LoggerFactory.getLogger(SnapshotLayerJsonMarshaller.class)
 	
-	static LAYER_EXCLUDES = [
+	static SNAPSHOT_LAYER_EXCLUDES = [
 		"class",
         "metaClass",
         "metadataUrls",
@@ -93,7 +93,7 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
 	}
 	
 	def _includeForLayer(o, property) {
-		return _isLayer(o) && !LAYER_EXCLUDES.contains(property)
+		return _isLayer(o) && !SNAPSHOT_LAYER_EXCLUDES.contains(property)
 	}
 	
 	def _initialise(referenceObject) {

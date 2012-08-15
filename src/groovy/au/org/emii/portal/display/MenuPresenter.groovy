@@ -9,6 +9,8 @@ class MenuPresenter {
 	def menuItems
 	def serverIds
 
+	MenuPresenter() {}
+
 	MenuPresenter(domainMenu) {
 		if (domainMenu) {
 			id = domainMenu.id
@@ -31,6 +33,7 @@ class MenuPresenter {
 
 	def itemFilter = { item ->
 		if ((item.layer && !item.layer.isViewable()) || (item.server && !serverIds.contains(item.server.id))) {
+			log.debug("Item $item.layer?name not viewable")
 			return false
 		}
 		return true

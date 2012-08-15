@@ -3,6 +3,7 @@ package au.org.emii.portal
 import au.org.emii.portal.display.MenuJsonCache
 import au.org.emii.portal.display.MenuPresenter
 import grails.converters.JSON
+import au.org.emii.portal.config.JsonMarshallingRegistrar
 
 class MenuController {
 
@@ -48,7 +49,7 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            def menuInstanceJson = JSON.use("deep") { 
+            def menuInstanceJson = JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
 				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
@@ -62,7 +63,7 @@ class MenuController {
             redirect(action: "list")
         }
         else {
-            def menuInstanceJson = JSON.use("deep") { 
+            def menuInstanceJson = JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
 				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
@@ -139,9 +140,12 @@ class MenuController {
     def json = {
 		def result = "{}"
 		if (params.id && params.id.isNumber()) {
-			def menu = Menu.get(params.id).toDisplayableMenu()
-			result = MenuJsonCache.instance().get(menu)
+			def dummy = new MenuPresenter()
+			dummy.id = params.id
+			result = MenuJsonCache.instance().get(dummy)
+
 			if (!result) {
+				def menu = Menu.get(params.id).toDisplayableMenu()
 				result = (menu as JSON).toString()
 				MenuJsonCache.instance().add(menu, result)
 			}

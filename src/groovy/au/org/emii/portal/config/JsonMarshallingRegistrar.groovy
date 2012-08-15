@@ -4,15 +4,18 @@ import au.org.emii.portal.Config
 import au.org.emii.portal.User
 import au.org.emii.portal.display.SnapshotLayerJsonMarshaller
 import grails.converters.JSON
+import au.org.emii.portal.display.PresenterJsonMarshaller
 
 class JsonMarshallingRegistrar {
 	
 	static final String SNAPSHOT_LAYERS_MARSHALLING_CONFIG = "snapshotlayers"
+	static final String MENU_PRESENTER_MARSHALLING_CONFIG = "menupresenter"
 
 	static void registerJsonMarshallers() {
 		_registerConfig()
 		_registerUser()
 		_registerSnapshotLayer()
+		_registerMenuPresenters()
 	}
 	
 	static void _registerConfig() {
@@ -72,6 +75,12 @@ class JsonMarshallingRegistrar {
 	static void _registerSnapshotLayer() {
 		JSON.createNamedConfig(SNAPSHOT_LAYERS_MARSHALLING_CONFIG) {
 			it.registerObjectMarshaller(new SnapshotLayerJsonMarshaller())
+		}
+	}
+
+	static void _registerMenuPresenters() {
+		JSON.createNamedConfig(MENU_PRESENTER_MARSHALLING_CONFIG) {
+			it.registerObjectMarshaller(new PresenterJsonMarshaller())
 		}
 	}
 }
