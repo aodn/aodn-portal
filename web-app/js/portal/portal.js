@@ -1,8 +1,8 @@
 
 
 var viewport;
-var proxyURL = "proxy?url=";
-var proxyWMSURL = "proxy/wmsOnly?url=";
+//var proxyURL = "proxy?url="; was already in map.js
+//var proxyWMSURL = "proxy/wmsOnly?url="; was already in map.js
 var progressCount = 0;
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
@@ -58,7 +58,7 @@ Portal.app = {
                     		msg: this.config.motd.motd,
                     		buttons: Ext.Msg.OK,
                     		cls: 'motd',
-                    		width: 400
+                    		width: 600
                     	});
                     }
                 }

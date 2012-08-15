@@ -8,9 +8,10 @@ class CheckLayerAvailabilityController {
 	
     def index = { 
 		def layer
-		if (params.layerId != "" && params.isNcwms != "" && params.serverUri != "" && params.layerId?.isInteger()  ) {
+		if (params.layerId != null && params.layerId?.isInteger()  ) {
 			
-			layer = checkLayerAvailabilityService.isLayerAlive(params.layerId, params.serverUri, params.isNcwms)
+						
+			layer = checkLayerAvailabilityService.isLayerAlive(params)
 			
 			if (layer) {
 				//print layer 

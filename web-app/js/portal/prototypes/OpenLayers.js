@@ -34,13 +34,16 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
-	var result = "text/html";
+
+	var result = this.server.infoFormat;
+	console.log(this.server.infoFormat);
 	if (this.isAnimated) {
 		result = "image/png";
-	}
+	}	
 	else if (this.isNcwms()) {
+		// ignoring any bad user config. we know what we want here
 		result = "text/xml";
-	}
+	}	
 	
 	return result;
 };

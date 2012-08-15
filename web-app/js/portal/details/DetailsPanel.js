@@ -1,7 +1,7 @@
 Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
-	
+		
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			id: 'detailsPanelItems',
@@ -127,7 +127,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 					url: 'checkLayerAvailability/',
 					params: { 
 						layerId: layer.grailsLayerId,
-						serverUri: layer.server.uri,
+						format: layer.getFeatureInfoFormat(),
+						proxy: layer.localProxy,
 						isNcwms: layer.isNcwms() // need this in grails land
 					},
 					scope: this,

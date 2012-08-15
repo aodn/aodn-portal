@@ -14,21 +14,6 @@ function ucwords( str ) {
     } );
 }
 
-/* From old map.js Move this to Extjs framework
-
-function getXML(request_string) {
-
-        if (window.XMLHttpRequest)  {
-            xhttp=new XMLHttpRequest();
-        }
-        else {// Internet Explorer 5/6
-            xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhttp.open("GET",proxyURL+encodeURIComponent(request_string)+"&format=xml",false);
-        xhttp.send("");
-       return xhttp.responseXML;
-
-}*/
 
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
@@ -128,6 +113,10 @@ function formatGetFeatureInfo(response, options) {
     }
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
+    }
+	else if(options.params.expectedFormat == 'text/plain') {
+		// cant be assed to handle different line endings. its crap anyhow
+        return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
     else{
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");

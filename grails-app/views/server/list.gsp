@@ -33,6 +33,7 @@
                             <g:sortableColumn property="name" title="${message(code: 'server.name.label', default: 'Name')}" />
                         
                             <g:sortableColumn property="disable" title="${message(code: 'server.disable.label', default: 'Disable')}" />
+                            <g:sortableColumn property="infoFormat" title="${message(code: 'server.infoFormat.label', default: 'getFeatureInfo Format')}" />
                             <g:sortableColumn property="allowDiscoveries" title="${message(code: 'server.allowDiscoveries.label', default: 'Allow Discoveries')}" />
                         
                         </tr>
@@ -54,6 +55,8 @@
                             <td>${fieldValue(bean: serverInstance, field: "name")}</td>
                         
                             <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
+                            
+                            <td>${serverInstance.infoFormat}</td>
                             
                             <td><g:formatBoolean boolean="${serverInstance.allowDiscoveries}" /></td>
                         

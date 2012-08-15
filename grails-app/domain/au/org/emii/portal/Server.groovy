@@ -14,6 +14,7 @@ class Server {
     Boolean allowDiscoveries // hide from menus    
     Integer opacity // layer opacity
     String imageFormat
+	String infoFormat
     String comments
     String username
     String password
@@ -51,6 +52,7 @@ class Server {
         allowDiscoveries()
         opacity()
         imageFormat( inList:['image/png','image/gif'] )
+       infoFormat( inList:['text/html','text/plain'] )
         comments(nullable:true)
         username(nullable:true)
         password(nullable:true)

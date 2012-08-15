@@ -90,6 +90,12 @@
                             
                             <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "imageFormat")}</td>
                             
+                        </tr>                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="server.infoFormat.label" default="infoFormat" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: serverInstance, field: "infoFormat")}</td>
+                            
                         </tr>
                     
                         <tr class="prop">

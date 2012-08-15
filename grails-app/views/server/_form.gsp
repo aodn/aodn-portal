@@ -71,6 +71,15 @@
                                     <g:select name="imageFormat" from="${serverInstance.constraints.imageFormat.inList}" value="${serverInstance?.imageFormat}" valueMessagePrefix="server.imageFormat"  />
                                 </td>
                             </tr>
+							
+							<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="infoFormat"><g:message code="server.infoFormat.label" default="getFeatureInfo request Format" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'infoFormat', 'errors')}">
+                                    <g:select name="infoFormat" from="${serverInstance.constraints.infoFormat.inList}" value="${serverInstance?.infoFormat}" valueMessagePrefix="server.infoFormat"  />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">

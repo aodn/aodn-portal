@@ -17,11 +17,14 @@ class LayerIntegrationTests extends DummySetup {
 		//		JsonMarshallingRegistrar.registerJsonMarshallers()
 		setupConfig()
 		
-		Layer layer = Layer.build(server: Server.build())
+		Server server = Server.build()
+		server.save(failOnError: true)
+		
+		Layer layer = Layer.build(server: server)
 		layer.metaClass.deleteDefaultLayersInConfig = {}
 		
 		layer.save(failOnError: true)
-		
+
 		Snapshot snapshot = Snapshot.build(minX: 0.0, minY: 0.0, maxX: 1.0, maxY: 1.0)
 		SnapshotLayer snapshotLayer = SnapshotLayer.build(layer: layer, snapshot: snapshot)
 		

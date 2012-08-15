@@ -57,7 +57,7 @@ class SnapshotServiceTests extends GroovyTestCase {
         
         user.save()
         
-        def server = new Server(uri: "http://something1.com", shortAcron: "shortacron", name: "name", type: "WMS-1.3.0", disable: true, allowDiscoveries: true, opacity: 1, imageFormat: "image/png")
+        def server = new Server(uri: "http://something1.com", shortAcron: "shortacron", name: "name", type: "WMS-1.3.0", disable: true, allowDiscoveries: true, opacity: 1, imageFormat: "image/png", infoFormat: "text/html")
         
         server.save()
         
