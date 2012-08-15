@@ -3,6 +3,7 @@ package au.org.emii.portal
 import au.org.emii.portal.display.MenuPresenter
 import grails.converters.JSON
 import org.apache.commons.lang.builder.EqualsBuilder
+import au.org.emii.portal.config.JsonMarshallingRegistrar
 
 class Menu {
 
@@ -121,15 +122,20 @@ class Menu {
 	}
 
 	def recache(theCache) {
-		def cachedJson = theCache.get(this)
+		def displayableMenu = toDisplayableMenu()
+		def cachedJson = theCache.get(displayableMenu)
 		if (cachedJson) {
-			cache(theCache)
+			_cache(theCache, displayableMenu)
 		}
 	}
 
 	def cache(theCache) {
-		theCache.add(this, JSON.use("deep") {
-			toDisplayableMenu() as JSON
+		_cache(theCache, toDisplayableMenu())
+	}
+
+	def _cache(theCache, displayableMenu) {
+		theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
+			displayableMenu as JSON
 		}.toString())
 	}
 }
