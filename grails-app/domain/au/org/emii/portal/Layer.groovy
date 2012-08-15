@@ -3,6 +3,7 @@ package au.org.emii.portal
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang.builder.EqualsBuilder
+import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class Layer {
 
@@ -213,9 +214,5 @@ class Layer {
 	
 	void removeFromLayers(Layer child) {
 		child.parent = null
-	}
-	
-	def afterDelete() {
-		au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
 	}
 }

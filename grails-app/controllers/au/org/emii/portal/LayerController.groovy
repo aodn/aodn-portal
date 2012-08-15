@@ -228,10 +228,10 @@ class LayerController {
         def layerInstance = Layer.get(params.id)
         if (layerInstance) {
             try {
-				//layerInstance.onDelete()
-                layerInstance.delete()
+                layerInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "list")
+	            au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
