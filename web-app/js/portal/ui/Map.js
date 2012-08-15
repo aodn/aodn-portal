@@ -487,7 +487,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			version: this.getWmsVersionString(this.getServer(layerDescriptor)),
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
-			queryable: layerDescriptor.queryable
+			queryable: layerDescriptor.queryable,
+			styles:layerDescriptor.styles
 		};
 		if (overrides) {
 			Ext.apply(params, overrides);

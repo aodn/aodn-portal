@@ -353,7 +353,7 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 	}
 
 
-	getMapPanel().addMapLayer(dl);
+	getMapPanel().addExternalLayer(dl);
 }
 
 function IsInt(sText) {
