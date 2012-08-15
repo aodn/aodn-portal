@@ -108,7 +108,7 @@ class LayerServiceTests extends GroovyTestCase {
         
         super.setUp()
         
-        server = new Server( uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", disable: false, opacity: 100 )
+        server = new Server( uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", infoFormat: "text/plain", disable: false, opacity: 100 )
         server.save( failOnError: true )
     }
 
@@ -161,6 +161,7 @@ class LayerServiceTests extends GroovyTestCase {
             allowDiscoveries: true,
             disable: false,
             imageFormat: "image/png",
+            infoFormat: "text/plain",
             name: "",
             opacity: 1,
             shortAcron: "",
