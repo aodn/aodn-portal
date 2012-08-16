@@ -24,33 +24,24 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		)});
 		
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
-		this.opacitySlider = new Ext.slider.SingleSlider({
+		
+		this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
 			id: "opacitySlider",
-			//hidden: true,
-			//hideParent: true,
-			keyIncrement: 10,
+	        layer: new OpenLayers.Layer("Dummy Layer"),
+	        keyIncrement: 10,
 			increment: 5,
 			minValue: 20, // we dont want a user to be able to give zero vis
 			maxValue: 100,
-			inverse: false,
-			fieldLabel: "Opacity",
+	        aggressive: true, 
+	        width: 200,
+	        isFormField: true,
+	        inverse: false,
+	        fieldLabel: "Opacity",
 			plugins: new GeoExt.LayerOpacitySliderTip({
 				template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-			}),
-			listeners: {
-				scope: this,
-				// call show when a layer is chosen so we can access this listener
-				show: function(slider) {
-					this.opacitySlider.setValue(this.selectedLayer.opacity * 100,true);
-					this.opacitySlider.syncThumb();
-				},
-				// user changed opacity
-				changeComplete: function(slider, val, thumb){
-					this.selectedLayer.setOpacity(val / 100);
-				}
-			}
-		});
-
+				}) 
+			});
+	
 		this.opacitySliderContainer = new Ext.Panel({
 			layout: 'form',
 			height: 26,			
@@ -114,8 +105,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 	// must be called when the panel is fully expanded for the slider
 	updateDetailsPanel: function(layer,forceOpen){
-		
-		this.selectedLayer = layer;
+		this.opacitySlider.setLayer(layer);
 		
 		// show new layer unless user requested 'hideLayerOptions' 
 		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
@@ -157,9 +147,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				this.transectControl.ownerCt.doLayout();
 			}			
 			this.opacitySliderContainer.doLayout();
-			//this.opacitySliderContainer.show();			
-			this.opacitySlider.show();// will reset slider
-			
+			this.opacitySliderContainer.show();		
 		}
 		else {
 			this.hideDetailsPanelContents();
@@ -167,8 +155,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	hideDetailsPanelContents: function(){
-		// clear the details Panel. ie. Don't show any layer options
-		this.opacitySlider.setVisible(false);
+		// clear the details Panel. ie. Don't show any layer options	
+		
+		//DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
+		this.opacitySliderContainer.setVisible(false);
 		this.detailsPanelTabs.setVisible(false);
 		this.deactivateDrawingControl();
 		this.transectControl.hide();

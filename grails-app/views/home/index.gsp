@@ -116,6 +116,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/portal.js?')}${jsVerNum}"  type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/LayerOpacitySliderFixed.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js?')}${jsVerNum}" type="text/javascript"></script>
 </g:if>
 <g:else>
