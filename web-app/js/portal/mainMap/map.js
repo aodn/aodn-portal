@@ -330,7 +330,7 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
 
 	// style in .ftl's but should be styles
-	dl.styles = style;
+	dl.defaultStyle = style;
 	dl.name = layer; // layer id on server  
 	dl.title = label; 
 

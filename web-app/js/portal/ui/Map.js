@@ -481,6 +481,12 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if(layerDescriptor.namespace != null) {
 			layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
 		}
+		var defaultStyle = "";
+		if(layerDescriptor.defaultStyle != null)
+		{
+			defaultStyle = layerDescriptor.defaultStyle;
+		}
+		
 		var params = {
 			layers: layerDescriptor.name,
 			transparent: 'TRUE',
@@ -488,7 +494,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			format: this.getServerImageFormat(this.getServer(layerDescriptor)),
 			CQL_FILTER: layerDescriptor.cql,
 			queryable: layerDescriptor.queryable,
-			styles:layerDescriptor.styles
+			styles:layerDescriptor.defaultStyle
 		};
 		if (overrides) {
 			Ext.apply(params, overrides);
