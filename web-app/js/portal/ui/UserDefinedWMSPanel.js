@@ -78,6 +78,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 			}
 			
 		});
+		this.proxyWMSURL = "proxy/wmsOnly?url=";
 		
 		var config = Ext.apply({
 			title: 'Add WMS Servers',
@@ -109,7 +110,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 		url = (url.indexOf("http://") == 0)? url : "http://" + url;
 		
 		url = url+ concatenator + "SERVICE=WMS&request=GetCapabilities";
-		return proxyWMSURL+encodeURIComponent(url)
+		return this.proxyWMSURL+encodeURIComponent(url)
 	},
 	
 	

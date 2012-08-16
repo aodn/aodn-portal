@@ -724,12 +724,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			success: function(resp, options) {
 				var layerDescriptor = Ext.util.JSON.decode(resp.responseText);  
 				if (layerDescriptor) {
-					layerDescriptor.isNcwms = function() {'setSelectedLayer'
-						
-					}
 					this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
-
-
 				}
 			},
 			failure: function(resp) {
