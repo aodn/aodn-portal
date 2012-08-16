@@ -36,7 +36,6 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
 
 	var result = this.server.infoFormat;
-	console.log(this.server.infoFormat);
 	if (this.isAnimated) {
 		result = "image/png";
 	}	
