@@ -4,8 +4,20 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
    frame: false,
    layout: 'fit',
    border: false,
-   disableSelection: true,
+   //Opera follows standards correctly, and "user-select" in CSS is not only non-standard, but the biggest load of...
+   disableSelection: navigator.userAgent.search("Opera"),
    autoExpandColumn: 'mdDesc',
+   viewConfig: {
+   	//this is to make text selectable, uses x-selectable style, defined in portal-search.css
+   	//for Opera see above, from what I've read ie 9 won't select either but, I can't be bothered checking for it.
+      templates: {
+         cell: new Ext.Template(
+            '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable{css}" style="{style}" tabIndex="0" {cellAttr}>',
+            '<div  class="x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
+            '</td>'
+         )
+      }
+   },
    
    initComponent: function() {
      var config = {
