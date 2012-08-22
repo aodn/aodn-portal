@@ -140,7 +140,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 			this.updateDimensions(layer); // time and elevation
 
-			if(layer.server.type.search("NCWMS") > -1)  {
+			//turn on transect control if server is NCWMS and layer is not animated.
+			if(layer.server.type.search("NCWMS") > -1
+					&& !layer.isAnimated)  {
 				this.transectControl.setMapPanel(getMapPanel());
 				this.transectControl.layer = layer;	
 				this.transectControl.show();
