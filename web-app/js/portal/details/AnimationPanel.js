@@ -336,6 +336,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		
 	},
 	
+	//Grey out speed buttonss if reached max multiplier
 	_updateSpeedButtons: function() {
 		if(this.speed*1000 <= this.BASE_SPEED*1000 / this.MAX_SPEED_MULTIPLIER )
 		{
@@ -400,7 +401,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_setSlide: function(index) {
-		
+		console.log("Set Slide index:" + index);
 		if (this.animatedLayers.length > 0) {
 
 			for (var i = 0; i < this.animatedLayers.length; i++) {
@@ -501,6 +502,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_loadAnimation: function(startString, endString){
+		
+		console.log("loadAnimation:" + startString + " to " + endString);
         var startDate = this._parseIso8601Date(startString);
         var endDate = this._parseIso8601Date(endString);
 
@@ -560,6 +563,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				//or create new layer, since it hasn't been animated before
 				if(newLayer == null){
 					newLayer = this._makeNextSlide(dimSplit[j]);
+					//provide instant feedback that we're trying to load stuff
+					this._setStepLabelText("Loading... 0%");
 				}
 
 				newAnimatedLayers.push(newLayer);
