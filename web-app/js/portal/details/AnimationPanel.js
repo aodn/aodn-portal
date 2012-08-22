@@ -401,7 +401,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_setSlide: function(index) {
-		console.log("Set Slide index:" + index);
 		if (this.animatedLayers.length > 0) {
 
 			for (var i = 0; i < this.animatedLayers.length; i++) {
@@ -499,7 +498,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	_loadAnimation: function(startString, endString){
 		
-		console.log("loadAnimation:" + startString + " to " + endString);
         var startDate = this._parseIso8601Date(startString);
         var endDate = this._parseIso8601Date(endString);
 
