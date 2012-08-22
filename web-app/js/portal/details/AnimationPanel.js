@@ -29,6 +29,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
         this.STEP_LABEL_DATE_TIME_FORMAT = this.DATE_FORMAT + " H:i:s";
 
 		this.BASE_SPEED = 500;
+		this.MAX_SPEED_MULTIPLIER= 32;
+		
 		this.animatedLayers = new Array();		
 		var parent = this;
 
@@ -45,7 +47,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners: {
 				scope: this,
 				'click': function(button,event){
-					this._resetTimer(this.speed / 2);
+					this._resetTimer(this.speed / 2);	
 				}
 			},
 			tooltip: OpenLayers.i18n('speedUp')
@@ -314,22 +316,39 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			//can't change the time when it's playing
 			this.playButton.setIcon('images/animation/pause.png');
 			this.stepSlider.enable();
-			this.speedUp.enable();
-			this.slowDown.enable();
 			this.speedLabel.setVisible(true);
 			this.getAnimationButton.setVisible(true);
+			this._updateSpeedButtons();
 		}
 		else if (state == this.state.STOPPED) {
 			this.playButton.setIcon('images/animation/play.png');
 			this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
-			this.speedUp.enable();
-			this.slowDown.enable();
 			//nothing's playing, so stop and pause doesn't make sense
 		
 			this.speedLabel.setVisible(false);
 			this.getAnimationButton.setVisible(false);
+			
+			this._updateSpeedButtons();
+		}
+		//Even if playing/paused, disable speed up/down if already at maxspeed/minspeed
+		
+	},
+	
+	_updateSpeedButtons: function() {
+		if(this.speed*1000 <= this.BASE_SPEED*1000 / this.MAX_SPEED_MULTIPLIER )
+		{
+			this.speedUp.disable();
+		}
+		else if(this.speed >= this.MAX_SPEED_MULTIPLIER * this.BASE_SPEED)
+		{
+			this.slowDown.disable();
+		}
+		else
+		{
+			this.slowDown.enable();
+			this.speedUp.enable();
 		}
 	},
 
@@ -588,6 +607,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		else
 			this.speedLabel.setText(" (x " + (this.BASE_SPEED/this.speed)  + ")", false );
 
+			this._updateSpeedButtons();
 	//else no animation is running, so can't change the speed of the animation
 	},
 
