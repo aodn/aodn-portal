@@ -420,14 +420,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this._setStepLabelText("Loading... " + Math.round((index+ 1) / this.animatedLayers.length * 100) + "%");
 			}
 		}
-		else if (index == 0) {
-			this.stepSlider.setValue(0);
-			this._setStepLabelText("Loading... 0%");
-		}
-//		else
-//		{
-//			this._setStepLabelText("Loading...");
-//		}
 	},
 
 	_cycleAnimation: function(forced){
