@@ -424,6 +424,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.setValue(0);
 			this._setStepLabelText("Loading... 0%");
 		}
+//		else
+//		{
+//			this._setStepLabelText("Loading...");
+//		}
 	},
 
 	_cycleAnimation: function(forced){
@@ -562,9 +566,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 				//or create new layer, since it hasn't been animated before
 				if(newLayer == null){
+					this._setStepLabelText("Loading... 0%");
 					newLayer = this._makeNextSlide(dimSplit[j]);
 					//provide instant feedback that we're trying to load stuff
-					this._setStepLabelText("Loading... 0%");
+					
 				}
 
 				newAnimatedLayers.push(newLayer);
