@@ -105,7 +105,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 	// must be called when the panel is fully expanded for the slider
 	updateDetailsPanel: function(layer,forceOpen){
-		this.opacitySlider.setLayer(layer);
+		
 		
 		// show new layer unless user requested 'hideLayerOptions' 
 		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
@@ -148,8 +148,12 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				this.transectControl.show();
 				this.transectControl.ownerCt.doLayout();
 			}			
-			this.opacitySliderContainer.doLayout();
-			this.opacitySliderContainer.show();		
+			
+			this.opacitySliderContainer.doLayout();		
+			this.opacitySliderContainer.show();	
+			//weird stuff happens if you set layer before showing the container, see Bug #1582
+			this.opacitySlider.setLayer(layer);
+			
 		}
 		else {
 			this.hideDetailsPanelContents();
