@@ -48,27 +48,28 @@ Portal.ui.Options = Ext.extend(Object, {
 	}	
 });
 
-Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {                
-    defaultHandlerOptions: {
-        single: true,
-        double: false,
-        pixelTolerance: 0,
-        stopSingle: true,
-        stopDouble: true
-    },
+Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {    
+	defaultHandlerOptions: {
+		'single': true,
+		'double': true,
+		'pixelTolerance': 0,
+		'stopSingle': false,
+		'stopDouble': false
+	},
 
-    constructor: function (options) {
-        this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
-        OpenLayers.Control.prototype.initialize.apply(this, arguments);
+
+	constructor: function (options) {
+		this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
+		OpenLayers.Control.prototype.initialize.apply(this, arguments);
         
-        this.handler = new OpenLayers.Handler.Click(
-            this, 
-            { 
-        		click: this.onClick
-    		}, 
-            this.handlerOptions
-        );
-    }
+		this.handler = new OpenLayers.Handler.Click(
+			this, 
+			{ 
+				click: this.onClick
+			}, 
+			this.handlerOptions
+			);
+	}
 
 });
 
@@ -185,7 +186,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 	
 	_findFeatureInfo: function(event) {
-		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({ map: this.map, appConfig: this.appConfig, maximisedSize: this.getViewSize() });
+		this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
+			map: this.map, 
+			appConfig: this.appConfig, 
+			maximisedSize: this.getViewSize()
+		});
 		this.featureInfoPopup.findFeatures(event);
 	},
     
@@ -205,16 +210,16 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		//setVisible(true) for floating panel doesn't work without this fix
 		//http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
 		var supr = Ext.Element.prototype;
-        Ext.override(Ext.Layer, {
-        	hideAction : function(){
-        		this.visible = false;
-        		if(this.useDisplay === true){
-        			this.setDisplayed(false);
-        		}else{
-        			supr.setLeftTop.call(this, -10000, -10000);
-        		}
-        	}
-        });
+		Ext.override(Ext.Layer, {
+			hideAction : function(){
+				this.visible = false;
+				if(this.useDisplay === true){
+					this.setDisplayed(false);
+				}else{
+					supr.setLeftTop.call(this, -10000, -10000);
+				}
+			}
+		});
 
 		this.animationPanel = new Portal.details.AnimationPanel();
 		this.animationPanel.setMap(this);
@@ -242,7 +247,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			width: '100%',
 			cls: 'semiTransparent',
 			defaults: {	
-				//bodyStyle:'padding:5px; margin:2px'
+			//bodyStyle:'padding:5px; margin:2px'
 			},
 			unstyled: true,
 			items: [				
@@ -534,8 +539,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.grailsLayerId = layerDescriptor.id;
 		openLayer.server= layerDescriptor.server;
 
-        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
-        //provide a way to add header information to a WMS request
+		//injecting credentials for authenticated WMSes.  Openlayer doesn;t
+		//provide a way to add header information to a WMS request
 		openLayer.proxy(proxyURL);
 		openLayer.cql = layerDescriptor.cql;  
 		openLayer.bboxMinX = layerDescriptor.bboxMinX;
