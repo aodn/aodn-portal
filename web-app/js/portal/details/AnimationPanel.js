@@ -566,13 +566,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					}
 				}
 
-				this.originalLayer.setStyle = function(style) {
-					this.params.STYLES = style;
+				this.originalLayer.mergeNewParams = function(newParams) {
 					for (var i = 0; i < this.slides.length; i++) {
-						this.slides[i].mergeNewParams({
-			                styles : style
-			            });
+						this.slides[i].mergeNewParams(newParams);
 					}
+			        return OpenLayers.Layer.WMS.prototype.mergeNewParams.apply(this, 
+	                                                 newParams);
 				}
 
 				this.originalLayer.display = function(value) {

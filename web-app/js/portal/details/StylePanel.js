@@ -89,20 +89,12 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     setChosenStyle: function(record) {
-        if (!this.selectedLayer.isAnimated) {
-            // its a standard WMS layer
-            this.selectedLayer.mergeNewParams({
-                styles : record.get('displayText')
-            });
-
-            // store the default style
-            this.selectedLayer.params.STYLES = record.get('myId');
-            this.refreshLegend(this.selectedLayer);
-        }
-        else {
-               this.selectedLayer.setStyle(record.get('displayText'));
-//             this.selectedLayer.originalWMSLayer.params.STYLES = record.get('displayText');
-        }
+        this.selectedLayer.mergeNewParams({
+            styles : record.get('displayText')
+        });
+         // Params should already have been changed, but legend doesn't update if we don't do this...
+        this.selectedLayer.params.STYLES = record.get('myId');
+        this.refreshLegend(this.selectedLayer);
     },
 
     update: function(layer, show, hide, target) {
