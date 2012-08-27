@@ -263,7 +263,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_startPlaying : function() {
-		console.log("_startPlaying");
 		var dates = this._getFormDates();
 		this._waitForOriginalLayer(dates[0], dates[1]);
 	},
@@ -424,14 +423,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				if (this.map.map.getLayer(curLayer.id) == null) {
 					this.map.addLayer(curLayer, false);
 					curLayer.display(false);
-					// curLayer.visibility = false;
-					// TODO:Put those into a method
-					if (this.counter == this.animatedLayers.length - 1) {
-						console.log("unvisibilizing them all");
-//						for (var i = 0; i < this.originalLayer.slides.length; i++) {
-//							this.originalLayer.slides[i].setVisibility(false);
-//						}
-					}
 
 				} else {
 					if (curLayer.numLoadingTiles == 0) {
@@ -448,7 +439,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_makeNextSlide : function(timeStamp) {
-		console.log("makeNextSlide");
 		var newLayer = this.originalLayer.template.clone();
 
 		if (this.originalLayer.name.indexOf("animated") > 0) {
@@ -579,7 +569,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.originalLayer.setStyle = function(style) {
 					this.params.STYLES = style;
 					for (var i = 0; i < this.slides.length; i++) {
-						this.slides[i].params.STYLES = style;
+						this.slides[i].mergeNewParams({
+			                styles : style
+			            });
 					}
 				}
 
@@ -593,9 +585,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 				this.originalLayer.setVisibility = function(value) {
 					this.visibility = value;
-					console.log("setVisibility");
 					if (!value) {
-						console.log("Setting all to " + value);
 						for (var i = 0; i < this.slides.length; i++) {
 							this.slides[i].setVisibility(false);
 						}
@@ -692,9 +682,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_onLayerVisibilityChanged : function() {
-		console.log("visibility Changed to"
-				+ this.originalLayer.getVisibility());
-
 		if (!this.originalLayer.getVisibility()) {
 			this._stopPlaying();
 		} else {
@@ -880,7 +867,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	loadFromSavedMap : function(layer, stamps) {
-		console.log("LoadFromSavedMap");
 		this.setSelectedLayer(layer);
 		this.update();
 		this._waitForOriginalLayer(stamps[0], stamps[1]);

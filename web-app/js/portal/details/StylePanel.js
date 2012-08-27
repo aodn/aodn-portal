@@ -89,7 +89,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     setChosenStyle: function(record) {
-        if (this.selectedLayer.originalWMSLayer == undefined) {
+        if (!this.selectedLayer.isAnimated) {
             // its a standard WMS layer
             this.selectedLayer.mergeNewParams({
                 styles : record.get('displayText')
@@ -100,9 +100,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.refreshLegend(this.selectedLayer);
         }
         else {
-            // its an animated openlayers image
-            // set the style on the original layer. the style will 'stick' to both
-            this.selectedLayer.originalWMSLayer.params.STYLES = record.get('displayText');
+               this.selectedLayer.setStyle(record.get('displayText'));
+//             this.selectedLayer.originalWMSLayer.params.STYLES = record.get('displayText');
         }
     },
 
