@@ -105,7 +105,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerExistsMsg: 'This layer has already been added to the map',
     layerAddedTitle: 'Add layer',
     layerAddedMsg: "'${layerDesc}' has been added to the map",
-    
+    layerActions: 'Actions',
+    autoZoomControlLabel: 'Auto zoom to layer',
+    removeAllControlLabel: 'Remove all...',
+    resetMapControlLabel: 'Reset map...',
+
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
 	

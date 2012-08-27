@@ -24,19 +24,24 @@ Portal.ui.Options = Ext.extend(Object, {
 		});
 		toolPanel.addControls( [ zoom,pan] );
 		
+		this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher({
+			autoActivate: true
+		});
+
 		this.controls = [
-		new OpenLayers.Control.Attribution(),
-		new OpenLayers.Control.PanZoomBar(),
-		new OpenLayers.Control.MousePosition(),
-		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.OverviewMap({
-			autoPan: true,
-			minRectSize: 30,
-			mapOptions:{
-				resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-			}
-		}),
-		toolPanel
+			new OpenLayers.Control.Attribution(),
+			new OpenLayers.Control.PanZoomBar(),
+			new OpenLayers.Control.MousePosition(),
+			new OpenLayers.Control.ScaleLine(),
+			this.layerSwitcher,
+			new OpenLayers.Control.OverviewMap({
+				autoPan: true,
+				minRectSize: 30,
+				mapOptions:{
+					resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+				}
+			}),
+			toolPanel
 		];
 		
 		this.options = {
@@ -171,6 +176,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// make sure layer store reflects loaded layers
 		// even if the map hasn't been rendered yet
 		this.layers.bind(this.map);
+	},
+	
+	afterRender: function() {
+		
+		Portal.ui.Map.superclass.afterRender.call(this);
+		
+		// Is there a way to achieve this with initialisation config of the control?
+		this.mapOptions.layerSwitcher.maximizeControl();
 	},
 	
 	_handleFeatureInfoClick: function(event) {
