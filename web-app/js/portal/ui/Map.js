@@ -641,7 +641,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			}
 		}
 
-		if(openLayer.isNcwms){
+		if(openLayer.isNcwms()){
 			this.getLayerMetadata(openLayer);
 		}
 	},
