@@ -50,7 +50,7 @@
 
 	  <div class="clear spacer">
 	<h3>Want to see data in your region?</h3>
-    <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia </a>.</p>
+    <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
 </div>
 	  <div class="clear spacer"></div>
 	  <div class="footer"> 
