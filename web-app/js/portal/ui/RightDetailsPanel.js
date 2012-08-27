@@ -59,10 +59,6 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	
 	// a new layer has been added or selected
 	update: function(openlayer){
-		if(openlayer.parentLayer != null)
-		{
-			openlayer = openlayer.parentLayer;
-		}
 		this.selectedLayer = openlayer;
 		
 		this.text = openlayer.name;
