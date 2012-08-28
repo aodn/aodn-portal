@@ -191,7 +191,7 @@ class WmsScannerController {
                 msg += "<br /><b>$currentLine</b>"
             }
             
-            if ( msg.contains( "<html" ) ) {
+            if ( msg.toLowerCase().contains( "<html" ) ) {
 
                 msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
             }
@@ -214,7 +214,7 @@ class WmsScannerController {
 
         def response = conn.content.text // Executes command
 
-        if ( response.contains( "<html" ) ) {
+        if ( response.toLowerCase().contains( "<html" ) ) {
 
             response = "HTML response (Code: ${ conn.responseCode })"
         }

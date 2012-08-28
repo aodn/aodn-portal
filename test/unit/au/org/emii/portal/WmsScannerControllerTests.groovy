@@ -231,7 +231,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockDomain Config, [validConfig]
         
         def expectedQueryString = "?id=4&callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate"
-        setUpToUrlForException "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><html>Blah blah blah..."
+        setUpToUrlForException "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><hTMl>Blah blah blah..."
          
         mockParams.scanJobId = 4
         controller.callDelete() // Make the call
