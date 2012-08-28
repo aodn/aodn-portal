@@ -62,7 +62,8 @@ class ProxyController {
 			}
 		}
 		else {
-			log.error "Proxy: The url ${params.url} was not allowed"
+
+			log.info "Proxy: The url ${params.url} was not allowed"
 			render text: "Host '${targetUrl.getHost()}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
 		}
 	}
