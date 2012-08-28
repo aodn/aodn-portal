@@ -748,7 +748,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		var serverUri = this.getServerUri(layerDescriptor);
 
 		Ext.Ajax.request({
-			url: 'layer/findLayerAsJson?serverUri=' + serverUri + '&name=' + layerDescriptor.name,
+			url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerDescriptor.name}),
 			scope: this,
 			success: function(resp) {
 				var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);  

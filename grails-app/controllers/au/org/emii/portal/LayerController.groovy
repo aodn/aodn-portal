@@ -144,9 +144,21 @@ class LayerController {
             localName = params.name
         }
         
+        def serverParam = params.serverUri
+        
         def layerInstance = criteria.get {  
             server {
-                like("uri", params.serverUri+"%")
+                or {
+                    // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
+                    like("uri", params.serverUri+"%")
+                    // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)  
+                    // Note that different GetCapabilites versions may have different request endpoints.
+                    // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
+                    operations {
+                        eq( "name", "GetMap" )
+                        eq( "getUrl", params.serverUri)
+                    }
+                }
             }
             if (namespace) {
                 eq( "namespace", namespace)
@@ -248,12 +260,12 @@ class LayerController {
 
         // Logging output
         if ( log.debugEnabled ) {
-            def layerDataPrint = JSON.parse( params.layerData as String )
-            layerDataPrint.children = "[...]"
-            layerDataPrint.supportedProjections = "[...]"
+            def capabilitiesDataPrint = JSON.parse( params.capabilitiesData as String )
+            capabilitiesDataPrint.children = "[...]"
+            capabilitiesDataPrint.supportedProjections = "[...]"
 
             log.debug "metadata:  ${params.metadata}"
-            log.debug "layerData: $layerDataPrint"
+            log.debug "capabilitiesData: $capabilitiesDataPrint"
         }
 
         // Check credentials
@@ -275,16 +287,20 @@ class LayerController {
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
 
-            // Check layer data
-            def layerData = params.layerData
-            _validateLayerData layerData
+            // Check capabilities data
+            def capabilitiesData = params.capabilitiesData
+            _validateCapabilitiesData capabilitiesData
 
             // Get server w/ metdata
             def server = Server.findByUri( metadata.serverUri )
 
             if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
             
-            layerService.updateWithNewData JSON.parse( layerData as String ), server, metadata.dataSource
+            def serverCapabilities = JSON.parse( capabilitiesData as String )
+            
+            layerService.updateWithNewData serverCapabilities.rootLayer, server, metadata.dataSource
+            
+            server.updateOperations serverCapabilities.operations 
             
             server.lastScanDate = new Date()
             server.save( failOnError: true )
@@ -301,7 +317,6 @@ class LayerController {
         }
     }
     
-	
 	def getFormattedMetadata = {
 		if (params.metaURL != null) {
 			try {
@@ -358,9 +373,9 @@ class LayerController {
         if ( !metadata.dataSource ) throw new IllegalArgumentException( "dataSource must be specified in the metadata" )
     }
     
-    void _validateLayerData(def layerData) {
+    void _validateCapabilitiesData(def capabilitiesData) {
         
-        if ( !layerData ) throw new IllegalArgumentException( "LayerData must be present" )
+        if ( !capabilitiesData ) throw new IllegalArgumentException( "CapabilitiesData must be present" )
     }
 
     def server = {

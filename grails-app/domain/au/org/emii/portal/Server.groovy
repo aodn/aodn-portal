@@ -22,8 +22,14 @@ class Server {
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
 
+    Set operations = [] // operations supported by this server
+    
+    static hasMany = [operations: Operation]
+    
     static mapping = {
         sort "shortAcron"
+        
+        operations cascade: 'all-delete-orphan'
     }
 	
     static constraints = {
@@ -152,4 +158,24 @@ class Server {
 			connection.setRequestProperty("Authorization", "Basic ${getEncodedCredentials()}")
 		}
 	}
+    
+    def updateOperations( newOperations ) {
+        
+        operations.clear()
+
+        newOperations.each {
+
+            def operation = new Operation()
+
+            operation.name = it.name
+            operation.formats = it.formats.join(",")
+            operation.getUrl = it.getUrl
+            operation.postUrl = it.postUrl
+
+            operations << operation
+        }
+        
+      }
+    
+
 }
