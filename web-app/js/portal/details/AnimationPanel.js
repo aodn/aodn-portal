@@ -525,10 +525,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			if (this.originalOpacity == -1)
 				this.originalOpacity = this.selectedLayer.opacity;
 
+			this.originalLayer.isAnimated = true;
 			if (this.originalLayer.name.indexOf("animated") < 0) {
-				this.originalLayer.name = this.originalLayer.name
-						+ " (animated)";
-
+				this.originalLayer.setName(this.originalLayer.name
+						+ " (animated)");
+					
 				// setup originalLayer as an animated layer adding and
 				// overriding methods and parameters
 
@@ -537,26 +538,22 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				// isAnimated denotes the ORIGINAL layer that is currently
 				// animated.
 
-				this.originalLayer.isAnimated = true;
 
+				
+				
+//				this.map.map.events.triggerEvent("changelayer", {
+//	                layer: this.originalLayer, property: "name"
+//	            });
+	            
 				// can't clone later, or the sublayers will pick up the extra
 				// stuff we're about to add
 				this.originalLayer.template = this.originalLayer.clone();
 
-				// this.originalLayer.redraw();
-				// this.originalLayer.setVisibility(false);
-				// this.originalLayer.display(false);
-				// this.originalLayer.setOpacity(1);
 				for (var i = 0, len = this.originalLayer.div.childNodes.length; i < len; ++i) {
 					var element = this.originalLayer.div.childNodes[i].firstChild;
 					OpenLayers.Util.modifyDOMElement(element, null, null, null,
 							null, null, null, 0);
 				}
-
-				// var nothingLayer = new OpenLayers.Layer("NOTHING NOTHING
-				// NOTHING")
-				// nothingLayer.isAnimated = false;
-				// this.map.addLayer(nothingLayer, false);
 
 				this.originalLayer.slides = new Array();
 
@@ -564,7 +561,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this.slides.push(openlayer);
 				}
 				// might be better to go other way round, ie sublayers retrieve
-				// opacity from their parent
+				// opacity from their parent, but think some things access 
+				// opacity directly rather than through get method
 				this.originalLayer.setOpacity = function(opacity) {
 					this.opacity = opacity;
 					for (var i = 0; i < this.slides.length; i++) {
