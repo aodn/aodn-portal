@@ -182,15 +182,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			listeners : {
 				scope : this,
 				click : function() {
-					if (this.animatedLayers.length > 0) {
+					if (this.originalLayer.slides.length > 0) {
 						// need to workout BBOX
-						var clonedLayer = this.originalLayer.template.clone();
+						var clonedLayer = this.originalLayer.slides[0].clone();
 						var bounds = this.originalLayer.map.getExtent();
 
 						clonedLayer.mergeNewParams({
-							TIME : this.animatedLayers[0].params.TIME
+							TIME : this.originalLayer.slides[0].params.TIME
 									+ "/"
-									+ this.animatedLayers[this.animatedLayers.length
+									+ this.originalLayer.slides[this.originalLayer.slides.length
 											- 1].params.TIME,
 							BBOX : bounds.toBBOX(),
 							FORMAT : "image/gif", // must be gif!!
@@ -342,8 +342,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_onMove : function() {
-
-
+		//Openlayers.Map seems to reset display of layers after a move
+		//so rereset it back.
+//		for (var i = 0; i < this.animatedLayers.length; i++) {			
+//			var value = i == this.counter
+//			console.log(value);
+//			this.animatedLayers[i].display[value];
+//			this.animatedLayers[i].redraw();
+//		}
 	//the following code will change how the loading of layers on zoom happens
 	/*	if (this.originalLayer != null && this.originalLayer.getVisibility()) {
 			for (var i = 0; i < this.originalLayer.slides.length; i++) {
@@ -369,7 +375,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				if ((this.animatedLayers[0].map == null)) {
 					this.animatedLayers[0] = null;
 				} else {
-					this.map.removeLayer(this.animatedLayers[0],
+					this.map.map.removeLayer(this.animatedLayers[0],
 							this.originalLayer);
 				}
 
@@ -613,6 +619,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							"visibilitychanged" : this._onLayerVisibilityChanged,
 							scope : this
 						});
+						
+				this.map.map.events.on({
+					"removelayer" : this._onLayerRemoved,
+					scope : this
+				});
 			}
 
 			var startIndex;
@@ -687,6 +698,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.originalLayer.slides[this.stepSlider.getValue()].display(true);
 		}
 	},
+	
+	_onLayerRemoved : function(evt) {
+		if(evt.layer==this.originalLayer)
+			this.removeAnimation();
+	},
+	
+	
 	_resetTimer : function(speed) {
 		this.speed = speed;
 		var inst = this;
