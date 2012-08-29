@@ -119,11 +119,7 @@ describe("Portal.ui.Map", function() {
       
       openLayer.server = { uri: 'http://remotehost' };
       expect(map.getLayerUid(openLayer)).toEqual('http://remotehost::test::some cql');
-      
-      openLayer.server = undefined;
-      openLayer.originalWMSLayer = { server: { uri: 'http://originalhost' } };
-      expect(map.getLayerUid(openLayer)).toEqual('http://originalhost::test::some cql');
-    });
+      });
   });
   
   describe('containsLayer', function() {
