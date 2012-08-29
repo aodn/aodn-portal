@@ -35,7 +35,8 @@ Portal.ui.openlayers.LayerSwitcher = Ext.extend(OpenLayers.Control.LayerSwitcher
         autoZoomElem.checked = false;
         autoZoomElem.defaultChecked = false;
         
-        this.addElementInSpan(autoZoomElem, OpenLayers.i18n('autoZoomControlLabel'));
+        this.autoZoomElem = autoZoomElem;
+        this.autoZoomLabelSpan = this.addElementInSpan(autoZoomElem, OpenLayers.i18n('autoZoomControlLabel'), this.autoZoomClicked);
 	},
 
 	addRemoveAllElement: function() {
@@ -59,42 +60,45 @@ Portal.ui.openlayers.LayerSwitcher = Ext.extend(OpenLayers.Control.LayerSwitcher
 		this.actionsDiv.appendChild(document.createElement("br"));
 	},
 	
-	addElementInSpan: function(elem, label) {
+	addElementInSpan: function(elem, label, handler) {
 		
         var context = {
                 'inputElem': elem,
-                'layer': null,
                 'layerSwitcher': this
-            };
-            OpenLayers.Event.observe(elem, "mouseup", 
-                OpenLayers.Function.bindAsEventListener(this.onInputClick,
-                                                        context)
-            );
+        };
+        
+        OpenLayers.Event.observe(elem, "mouseup", 
+            OpenLayers.Function.bindAsEventListener(handler,
+                                                    context)
+        );
 
-            // create span
-            var labelSpan = document.createElement("span");
-            OpenLayers.Element.addClass(labelSpan, "labelSpan");
-            labelSpan.innerHTML = label;
-            labelSpan.style.verticalAlign = "baseline";
-            OpenLayers.Event.observe(labelSpan, "click", 
-                OpenLayers.Function.bindAsEventListener(this.onInputClick,
-                                                        context)
-            );
+        // create span
+        var labelSpan = document.createElement("span");
+        OpenLayers.Element.addClass(labelSpan, "labelSpan");
+        labelSpan.innerHTML = label;
+        labelSpan.style.verticalAlign = "baseline";
+        OpenLayers.Event.observe(labelSpan, "click", 
+            OpenLayers.Function.bindAsEventListener(handler,
+                                                    context)
+        );
+        
+        // create line break
+        var br = document.createElement("br");
+
+        var groupDiv = this.actionsDiv;
+        groupDiv.appendChild(elem);
+        groupDiv.appendChild(labelSpan);
+        groupDiv.appendChild(br);
             
-            // create line break
-            var br = document.createElement("br");
-
-            var groupDiv = this.actionsDiv;
-            groupDiv.appendChild(elem);
-            groupDiv.appendChild(labelSpan);
-            groupDiv.appendChild(br);
+        return labelSpan; 
 	},
-	
-    onInputClick: function(e) {
-
-    	// TODO: intercept (and stop) autozoom, reset layer etc events here.
+    
+    isAutoZoomEnabled: function() {
+    	return this.autoZoomElem.checked;
+    },
+    
+    autoZoomClicked: function() {
     	
-    	OpenLayers.Control.LayerSwitcher.prototype.onInputClick.apply(this);
+    	this.layerSwitcher.autoZoomElem.checked = !this.layerSwitcher.autoZoomElem.checked;
     }
-	
 });

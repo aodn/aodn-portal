@@ -24,9 +24,7 @@ Portal.ui.Options = Ext.extend(Object, {
 		});
 		toolPanel.addControls( [ zoom,pan] );
 		
-		this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher({
-			autoActivate: true
-		});
+		this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher();
 
 		this.controls = [
 			new OpenLayers.Control.Attribution(),
