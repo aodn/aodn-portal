@@ -33,9 +33,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	            loader: Ext.applyIf({
 					filter: function(record){
 						var layer = record.getLayer();
-//						if(layer.isAnimatedSlice == undefined){
+						if(layer.isAnimatedSlice == undefined){
 							return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
-//						}
+						}
 						return false;
 					}
 				}),
