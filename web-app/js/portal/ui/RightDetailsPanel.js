@@ -57,9 +57,21 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.selectedLayer = openLayer;
 	},
 	
+	_onChangeLayer: function(evt)
+	{
+		console.log("layer changed");
+		if(evt.layer==this.selectedLayer)
+		{
+			this.update(evt.layer);
+		}
+	},
 	// a new layer has been added or selected
 	update: function(openlayer){
 		this.selectedLayer = openlayer;
+		openlayer.map.events.on({
+			"changelayer" : this._onChangeLayer,
+			scope : this
+		});
 		
 		this.text = openlayer.name;
 		this.setTitle(openlayer.name);
