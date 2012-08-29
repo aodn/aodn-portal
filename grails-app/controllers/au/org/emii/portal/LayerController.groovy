@@ -5,7 +5,6 @@ import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
-import org.xml.sax.SAXException
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -344,7 +343,11 @@ class LayerController {
                     }
                     render text: html, contentType: "text/html", encoding: "UTF-8"
                 }
-			} catch(SAXException e) {
+			}
+            catch(SAXException) {
+				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
+			}
+            catch(FileNotFoundException) {
 				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
 			}
 		} else {
