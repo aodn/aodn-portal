@@ -560,10 +560,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
 	},
 	
-	getWmsOpenLayerUri: function(originalWMSLayer) {
-		return this.getUri(this.getServer(originalWMSLayer));
-	},
-	
 	getLayerUid: function(openLayer) {
 		// layerHierarchyPath is the preferred unique identifier for a layer
 		if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
@@ -574,14 +570,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		if (server) {
 			uri = server.uri;
 		}
-		else {
-			// may currently be an animating layer 
-			if (openLayer.originalWMSLayer) {
-				uri = this.getWmsOpenLayerUri(openLayer.originalWMSLayer);
-			}
-			else if(openLayer.url) {
-				uri = openLayer.url;
-			}
+		else if(openLayer.url)
+		{
+			uri = openLayer.url;
 		}
 
 		return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
@@ -800,14 +791,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		}
 	    	    
 		return false;
-	},
-
-	postRemoveLayer: function(e){
-		//remove animation when user removes layer from the active layers menu.
-		if(!e.layer.isBaseLayer && e.layer.isAnimated){
-			this.animationPanel.removeAnimation();
-		}
-
 	},
 	
 	removeLayer: function(openLayer, newDetailsPanelLayer) {

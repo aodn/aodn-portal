@@ -112,7 +112,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			
 			// check if there is a problem with this layer, with a bogusgetFetureInfo request
 		
-			if(layer.params.QUERYABLE && !layer.isAnimated ) {
+			if(layer.params.QUERYABLE) {
 				Ext.Ajax.request({
 					url: 'checkLayerAvailability/',
 					params: { 

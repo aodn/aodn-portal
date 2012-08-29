@@ -193,29 +193,15 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
          var palette = params.palette;
          var style = params.style;
 
-         // if this is an animated image then use the originals details
-         // the params object is not set for animating images
-         // the layer.url is for the whole animated gif
-         if (layer.originalWMSLayer != undefined) {
-             layer.params = layer.originalWMSLayer.params;
-             if (layer.originalWMSLayer.cache === true) {
-                  url = layer.originalWMSLayer.server.uri;
-                  useProxy = true;
-             }
-             else {
-                 url = layer.originalWMSLayer.url;
-             }
-
+         
+         if (layer.cache === true) {
+              url = layer.server.uri;
+              useProxy = true;
          }
          else {
-             if (layer.cache === true) {
-                  url = layer.server.uri;
-                  useProxy = true;
-             }
-             else {
-                 url = layer.url;
-             }
+             url = layer.url;
          }
+     
 
          var opts = "";
 
