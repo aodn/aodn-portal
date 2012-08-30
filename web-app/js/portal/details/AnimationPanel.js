@@ -342,21 +342,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_onMove : function() {
-		//Openlayers.Map seems to reset display of layers after a move
-		//so rereset it back.
-		for (var i = 0; i < this.animatedLayers.length; i++) {			
+		// Openlayers.Map seems to reset display of layers after a move
+		// so rereset it back.
+		for (var i = 0; i < this.animatedLayers.length; i++) {
 			var value = i == this.counter
-			console.log(value);
 			this.animatedLayers[i].display(value);
 			this.animatedLayers[i].redraw();
 		}
-		console.log("                   ");
-	//the following code will change how the loading of layers on zoom happens
-	/*	if (this.originalLayer != null && this.originalLayer.getVisibility()) {
-			for (var i = 0; i < this.originalLayer.slides.length; i++) {
-				this.originalLayer.slides[i].redraw();
-			}
-		}*/
+
+		// the following code will change how the loading of layers on zoom
+		// happens
+		/*
+		 * if (this.originalLayer != null && this.originalLayer.getVisibility()) {
+		 * for (var i = 0; i < this.originalLayer.slides.length; i++) {
+		 * this.originalLayer.slides[i].redraw(); } }
+		 */
 
 	},
 
@@ -429,7 +429,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				var curLayer = this.animatedLayers[this.counter + 1];
 				if (this.map.map.getLayer(curLayer.id) == null) {
 					this.map.map.addLayer(curLayer, false);
-					this.map.map.setLayerIndex(curLayer,this.map.map.getLayerIndex(this.originalLayer));
+					this.map.map.setLayerIndex(curLayer, this.map.map
+									.getLayerIndex(this.originalLayer));
 					curLayer.display(false);
 				} else {
 					if (curLayer.numLoadingTiles == 0) {
@@ -468,7 +469,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		// that is part of the animation,
 		// whereas
 		// isAnimated denotes the ORIGINAL layer that is currently animated.
-		newLayer.parentLayer = this.originalLayer;
+
 		return newLayer;
 	},
 
@@ -530,7 +531,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			if (this.originalLayer.name.indexOf("animated") < 0) {
 				this.originalLayer.setName(this.originalLayer.name
 						+ " (animated)");
-					
+
 				// setup originalLayer as an animated layer adding and
 				// overriding methods and parameters
 
@@ -539,13 +540,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				// isAnimated denotes the ORIGINAL layer that is currently
 				// animated.
 
+				// this.map.map.events.triggerEvent("changelayer", {
+				// layer: this.originalLayer, property: "name"
+				// });
 
-				
-				
-//				this.map.map.events.triggerEvent("changelayer", {
-//	                layer: this.originalLayer, property: "name"
-//	            });
-	            
 				// can't clone later, or the sublayers will pick up the extra
 				// stuff we're about to add
 				this.originalLayer.template = this.originalLayer.clone();
@@ -559,10 +557,11 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.originalLayer.slides = new Array();
 
 				this.originalLayer.addSlide = function(openlayer) {
-					this.slides.push(openlayer);
+					this.slides.push(openlayer);										
+
 				}
 				// might be better to go other way round, ie sublayers retrieve
-				// opacity from their parent, but think some things access 
+				// opacity from their parent, but think some things access
 				// opacity directly rather than through get method
 				this.originalLayer.setOpacity = function(opacity) {
 					this.opacity = opacity;
@@ -575,8 +574,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					for (var i = 0; i < this.slides.length; i++) {
 						this.slides[i].mergeNewParams(newParams);
 					}
-			        return OpenLayers.Layer.WMS.prototype.mergeNewParams.apply(this, 
-	                                                 newParams);
+					return OpenLayers.Layer.WMS.prototype.mergeNewParams.apply(
+							this, newParams);
 				}
 
 				this.originalLayer.display = function(value) {
@@ -586,17 +585,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						}
 					}
 				}
-
 				this.originalLayer.setVisibility = function(value) {
 					this.visibility = value;
 					if (!value) {
 						for (var i = 0; i < this.slides.length; i++) {
 							this.slides[i].setVisibility(false);
 						}
-					}
-					else
-					{
-						//if visibility is off then won't update on zoom
+					} else {
+						// if visibility is off then won't update on zoom
 						for (var i = 0; i < this.slides.length; i++) {
 							this.slides[i].setVisibility(true);
 							this.slides[i].display(false);
@@ -604,6 +600,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					}
 					this.display(false);
 					this.events.triggerEvent("visibilitychanged");
+				}
+
+				this.originalLayer._onChangeLayer = function(evt) 
+				{
+					// if this layer's order(bottom,second from top, etc) is changed, change the order
+					// of the frames aswell. 
+					if (evt.property == "order" && evt.layer == this) 
+					{
+						for (var i = 0; i < this.slides.length; i++) 
+						{
+							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this));
+						}
+					}
 				}
 
 				// this.originalLayer.getURL = function(bounds) {
@@ -618,11 +627,16 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 							"visibilitychanged" : this._onLayerVisibilityChanged,
 							scope : this
 						});
-						
+
 				this.map.map.events.on({
-					"removelayer" : this._onLayerRemoved,
-					scope : this
-				});
+							"removelayer" : this._onLayerRemoved,
+							scope : this
+						});
+
+				this.map.map.events.on({
+							"changelayer" : this.originalLayer._onChangeLayer,
+							scope : this.originalLayer
+						});
 			}
 
 			var startIndex;
@@ -645,40 +659,48 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					+ dimSplit[endIndex];
 
 			var newAnimatedLayers = new Array();
-
+			
+			// provide instant feedback that we're trying to load stuff
+			this._setStepLabelText("Loading... 0%");
+			
 			for (var j = startIndex; j <= endIndex; j++) {
 				var newLayer = null;
 
 				// find existing layer
-				if (this.animatedLayers.length > 0) {
-					for (var i = 0; i < this.animatedLayers.length; i++) {
-						if (dimSplit[j] === this.animatedLayers[i].params["TIME"]) {
-							newLayer = this.animatedLayers[i];
+				if (this.originalLayer.slides.length > 0) {
+					for (var i = 0; i < this.originalLayer.slides.length; i++) {
+						if (dimSplit[j] === this.originalLayer.slides[i].params["TIME"]) {
+							newLayer = this.originalLayer.slides[i];
 						}
 					}
 				}
 
 				// or create new layer, since it hasn't been animated before
 				if (newLayer == null) {
-					this._setStepLabelText("Loading... 0%");
+
+					
 					newLayer = this._makeNextSlide(dimSplit[j]);
-					this.originalLayer.addSlide(newLayer);
-					// provide instant feedback that we're trying to load stuff
+					newLayer.parentLayer = this;
 				}
-
 				newAnimatedLayers.push(newLayer);
-
 			}
 
 			this.animatedLayers = newAnimatedLayers;
-
+			
+			this.originalLayer.slides.length = 0;
+			for (var i = 0; i < newAnimatedLayers.length; i++) {
+				this.originalLayer.slides.push(newAnimatedLayers[i]);
+			}
+			
+						
 			// always pre-load the first one
-			this.map.map.addLayer(this.animatedLayers[0], false);
-			this.map.map.setLayerIndex(this.animatedLayers[0],this.map.map.getLayerIndex(this.originalLayer));
+			this.map.map.addLayer(this.originalLayer.slides[0], false);
+			this.map.map.setLayerIndex(this.originalLayer.slides[0], this.map.map
+							.getLayerIndex(this.originalLayer));
 
 			// this.selectedLayer.setOpacity(1);
 			this.stepSlider.setMinValue(0);
-			this.stepSlider.setMaxValue(this.animatedLayers.length - 1);
+			this.stepSlider.setMaxValue(this.originalLayer.slides.length - 1);
 
 			if (this.pausedTime !== "") {
 				this.counter = this._getIndexFromTime(this.pausedTime);
@@ -698,13 +720,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.originalLayer.slides[this.stepSlider.getValue()].display(true);
 		}
 	},
-	
+
 	_onLayerRemoved : function(evt) {
-		if(evt.layer==this.originalLayer)
+		if (evt.layer == this.originalLayer)
 			this.removeAnimation();
 	},
-	
-	
+
 	_resetTimer : function(speed) {
 		this.speed = speed;
 		var inst = this;
