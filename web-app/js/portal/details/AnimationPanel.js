@@ -429,8 +429,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				var curLayer = this.animatedLayers[this.counter + 1];
 				if (this.map.map.getLayer(curLayer.id) == null) {
 					this.map.map.addLayer(curLayer, false);
+					this.map.map.setLayerIndex(curLayer,this.map.map.getLayerIndex(this.originalLayer));
 					curLayer.display(false);
-
 				} else {
 					if (curLayer.numLoadingTiles == 0) {
 						this.counter++;
@@ -674,6 +674,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			// always pre-load the first one
 			this.map.map.addLayer(this.animatedLayers[0], false);
+			this.map.map.setLayerIndex(this.animatedLayers[0],this.map.map.getLayerIndex(this.originalLayer));
 
 			// this.selectedLayer.setOpacity(1);
 			this.stepSlider.setMinValue(0);
