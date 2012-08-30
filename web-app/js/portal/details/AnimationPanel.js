@@ -512,6 +512,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	_loadAnimation : function(startString, endString) {
 		var startDate = this._parseIso8601Date(startString);
 		var endDate = this._parseIso8601Date(endString);
+		
+
 
 		if (startDate == endDate) {
 			alert("The start and end time must not be the same");
@@ -784,6 +786,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		if (splitDates.length > 0) {
 			var startDate = this._parseIso8601Date(splitDates[0]);
 			var endDate = this._parseIso8601Date(splitDates.last());
+			
+					
 
 			// set the start/end date range for both pickers
 			this._setDateRange(this.startDatePicker, startDate, endDate);
@@ -792,9 +796,12 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this._setDayTimes(splitDates);
 			this._setMissingDays(splitDates);
 
-			this._setTime(this.startDatePicker, this.startTimeCombo, this
-							._getTimeComboStartDate(splitDates));
-			this._setTime(this.endDatePicker, this.endTimeCombo, endDate);
+			var defaultStart = this._getTimeComboStartDate(splitDates);
+			//endDate gets stuffed up by the picker when we setDateRange, hence redoing the retrieval
+			var defaultEnd = this._parseIso8601Date(splitDates.last());
+			
+			this._setTime(this.startDatePicker, this.startTimeCombo, defaultStart);
+			this._setTime(this.endDatePicker, this.endTimeCombo, defaultEnd);
 		}
 	},
 
