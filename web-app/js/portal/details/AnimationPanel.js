@@ -344,20 +344,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	_onMove : function() {
 		// Openlayers.Map seems to reset display of layers after a move
 		// so rereset it back.
-		for (var i = 0; i < this.animatedLayers.length; i++) {
-			var value = i == this.counter
-			this.animatedLayers[i].display(value);
-			this.animatedLayers[i].redraw();
+		if(this.originalLayer != null && this.originalLayer.getVisibility())
+		{
+			for (var i = 0; i < this.animatedLayers.length; i++) {
+				var value = i == this.counter
+				this.animatedLayers[i].display(value);
+				this.animatedLayers[i].redraw();
+			}
 		}
-
-		// the following code will change how the loading of layers on zoom
-		// happens
-		/*
-		 * if (this.originalLayer != null && this.originalLayer.getVisibility()) {
-		 * for (var i = 0; i < this.originalLayer.slides.length; i++) {
-		 * this.originalLayer.slides[i].redraw(); } }
-		 */
-
 	},
 
 	removeAnimation : function() {
