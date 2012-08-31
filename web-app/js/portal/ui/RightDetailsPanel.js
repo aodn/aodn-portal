@@ -59,7 +59,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 	
 	_onChangeLayer: function(evt)
 	{
-		if(evt.layer==this.selectedLayer)
+		if(evt.layer==this.selectedLayer && evt.property == "name")
 		{
 			this.update(evt.layer);
 		}
