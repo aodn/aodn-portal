@@ -24,7 +24,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	initComponent : function() {
 		this.DATE_FORMAT = 'Y-m-d';
-		this.TIME_FORMAT = 'H:i:s (T)';
+		this.TIME_FORMAT = 'H:i:s (P)';
 		this.DATE_TIME_FORMAT = this.DATE_FORMAT + ' ' + this.TIME_FORMAT;
 		this.STEP_LABEL_DATE_TIME_FORMAT = this.DATE_FORMAT + " H:i:s";
 
@@ -819,7 +819,14 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				this.allTimes[dayString] = new Array();
 			}
 			this.allTimes[dayString].push([timeString, timeRoundedString]);
+			
+//			if(j==0)
+//			{
+//				console.log(timeString);
+//				console.log(date.toString());
+//			}
 		}
+		
 	},
 
 	_setMissingDays : function(dateStringsArray) {
