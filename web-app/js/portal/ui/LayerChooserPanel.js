@@ -83,10 +83,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     },
     
     registerMapPanelEvents: function() {
-        this.mapPanel.on('baselayersloaded', function() {
-//            this.actionsPanel.initBaseLayerCombo();
-        }, this);
-		
+    	
 		this.mapPanel.on('layeradded', function(openLayer) {
 			this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, false);
 		}, this);
@@ -118,7 +115,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     
     registerMonitoringEvents: function() {
         this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
-//        this.mon(this.actionsPanel, 'zoomtolayer', this.zoomToLayer, this);
 //        this.mon(this.actionsPanel, 'hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
 //        this.mon(this.actionsPanel, 'hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
 //        this.mon(this.actionsPanel, 'autozoomchecked', this.autoZoomCheckboxHandler, this);
@@ -137,10 +133,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     },
     	
-    zoomToLayer: function(openLayer) {
-        this.mapPanel.zoomToLayer(openLayer);
-    },
-    
     layerOptionsVisible: function() {
 //        return this.actionsPanel.layerOptionsVisible();
     },

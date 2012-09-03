@@ -191,9 +191,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		// TODO: shouldn't be referencing "actionsPanel" directly.
 		this.mapOptions.mapActionsControl.actionsPanel.on('removelayer', this.removeLayer, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('zoomToLayer', this.zoomToLayer, this);
 		
 		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer']); //, 'zoomtolayer', 'togglevisibility']);
-
 	},
 	
 	_handleFeatureInfoClick: function(event) {
