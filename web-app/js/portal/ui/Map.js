@@ -24,14 +24,11 @@ Portal.ui.Options = Ext.extend(Object, {
 		});
 		toolPanel.addControls( [ zoom,pan] );
 		
-		this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher();
-
 		this.controls = [
 			new OpenLayers.Control.Attribution(),
 			new OpenLayers.Control.PanZoomBar(),
 			new OpenLayers.Control.MousePosition(),
 			new OpenLayers.Control.ScaleLine(),
-			this.layerSwitcher,
 			new OpenLayers.Control.OverviewMap({
 				autoPan: true,
 				minRectSize: 30,
@@ -180,8 +177,23 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		Portal.ui.Map.superclass.afterRender.call(this);
 		
+		// TODO: refactor.
+		this.initMapActionsControl();
+	},
+	
+	initMapActionsControl: function() {
+		this.appConfig.mapPanel = this;
+		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
+		this.map.addControl(this.mapOptions.mapActionsControl);
+		
 		// Is there a way to achieve this with initialisation config of the control?
-		this.mapOptions.layerSwitcher.maximizeControl();
+		this.mapOptions.mapActionsControl.maximizeControl();
+		
+		// TODO: shouldn't be referencing "actionsPanel" directly.
+		this.mapOptions.mapActionsControl.actionsPanel.on('removelayer', this.removeLayer, this);
+		
+		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer']); //, 'zoomtolayer', 'togglevisibility']);
+
 	},
 	
 	_handleFeatureInfoClick: function(event) {
@@ -201,7 +213,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
     
 	initMap: function() {
-		this.mapOptions = new Portal.ui.Options();
+		
+		// The MapActionsControl (in the OpenLayers map tools) needs this.
+		this.appConfig.mapPanel = this;
+		
+		this.mapOptions = new Portal.ui.Options(this.appConfig);
 		this.map = new OpenLayers.Map(this.mapOptions.options);
 		this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
 		// keep the animated image crisp

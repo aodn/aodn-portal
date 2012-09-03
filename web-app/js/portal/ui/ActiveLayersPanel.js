@@ -3,6 +3,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
+		
 		var config = Ext.apply({
 			title: "Active Layers",
 		    id: 'activeLayersPanel',
@@ -17,14 +18,15 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
 		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
-		this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
+		// Not sure what these all are:  this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 	},
 
 	initActiveLayers: function(layerStore) {
 		this.initLayerActionsMenu();
+		
 		this.activeLayers = new Ext.tree.TreePanel({
 	        id: 'activeLayerTreePanel',
-	        enableDD: true,
+//	        enableDD: true,
 	        rootVisible: false,
 	        root: new GeoExt.tree.OverlayLayerContainer({        
 	            layerStore: layerStore, 
@@ -51,7 +53,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 						this.setActiveNode(node);
 					}
 				}
-				
 	        })
 		});
 		
