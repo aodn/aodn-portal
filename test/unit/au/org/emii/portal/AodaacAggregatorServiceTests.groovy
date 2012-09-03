@@ -465,6 +465,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testSendNotificationEmail() {
 
         // Set up job
+        testJob.jobId = "12345"
         testJob.latestStatus = [jobEnded: true]
         testJob.result = [dataUrl: "dataUrl"]
         testJob.dataFileExists = true
@@ -491,7 +492,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
                 else if ( messageSourceGetMessageCalledCount == 1 ) {
 
                     assertEquals "imos.aodaacJob.notification.email.subject", code
-                    assertEquals( [].toArray(), args )
+                    assertEquals( ["12345"].toArray(), args )
                 }
 
                 messageSourceGetMessageCalledCount++

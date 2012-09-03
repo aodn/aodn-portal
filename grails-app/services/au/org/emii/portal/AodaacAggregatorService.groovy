@@ -289,7 +289,7 @@ class AodaacAggregatorService {
             def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl].toArray(), Locale.getDefault() )
 
             def emailSubjectCode = "${instanceCode}.aodaacJob.notification.email.subject"
-            def emailSubject = messageSource.getMessage( emailSubjectCode, [].toArray(), Locale.getDefault() )
+            def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
 
             sendMail {
                 to( [job.notificationEmailAddress] )
