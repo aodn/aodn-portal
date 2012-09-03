@@ -192,8 +192,16 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		// TODO: shouldn't be referencing "actionsPanel" directly.
 		this.mapOptions.mapActionsControl.actionsPanel.on('removelayer', this.removeLayer, this);
 		this.mapOptions.mapActionsControl.actionsPanel.on('zoomToLayer', this.zoomToLayer, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('removealllayers', this.removeAllLayers, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('resetmap', this.resetMap, this);
 		
-		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer']); //, 'zoomtolayer', 'togglevisibility']);
+		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
+	},
+	
+	resetMap: function() {
+		this.removeAllLayers();
+		this.zoomToInitialBbox();
+		this.addDefaultLayers();
 	},
 	
 	_handleFeatureInfoClick: function(event) {

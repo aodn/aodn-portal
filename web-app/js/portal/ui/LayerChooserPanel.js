@@ -39,8 +39,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.registerEvents();
         
         this.addEvents('addlayerclicked');
-//        this.relayEvents(this.actionsPanel, ['resetmap']);
-
     },
     
     initActionsPanel: function(appConfig, mapPanel) {
@@ -63,7 +61,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     registerEvents: function() {
     	this.registerOwnEvents();
     	this.registerMapPanelEvents();
-        this.registerActionPanelEvents();
         this.registerLeftTabMenuPanelEvents();
         this.registerMonitoringEvents();
     },
@@ -89,22 +86,14 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 		}, this);
 		
 		this.mon(this.mapPanel, 'removelayer', this.removeLayer, this);
+		this.mon(this.mapPanel, 'removealllayers', function() {
+			this.leftTabMenuPanel.toggleNodeBranch(true);
+		}, this);
+		 this.mon(this.mapPanel, 'resetmap', function() {
+			this.leftTabMenuPanel.toggleNodeBranch(true);
+		}, this);
 	},
     
-    registerActionPanelEvents: function() {
-//        this.actionsPanel.on('removealllayers', function() {
-//            this.mapPanel.removeAllLayers();
-//            this.leftTabMenuPanel.toggleNodeBranch(true);
-//        }, this);
-//		
-//        this.actionsPanel.on('resetmap', function() {
-//            this.mapPanel.removeAllLayers();
-//            this.mapPanel.zoomToInitialBbox();
-//            this.leftTabMenuPanel.toggleNodeBranch(true);
-//            this.mapPanel.addDefaultLayers();
-//        }, this);
-    },
-	
     registerLeftTabMenuPanelEvents: function() {
         this.leftTabMenuPanel.on('serverloaded', function(node) {
 //            Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
