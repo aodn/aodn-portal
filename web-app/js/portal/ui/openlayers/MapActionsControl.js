@@ -94,8 +94,8 @@ Portal.ui.openlayers.MapActionsControl =
 
           //configure main div
 
-          OpenLayers.Event.observe(this.div, "mouseup",
-              OpenLayers.Function.bindAsEventListener(this.mouseUp, this));
+//          OpenLayers.Event.observe(this.div, "mouseup",
+//              OpenLayers.Function.bindAsEventListener(this.mouseUp, this));
           OpenLayers.Event.observe(this.div, "click",
                         this.ignoreEvent);
           OpenLayers.Event.observe(this.div, "mousedown",
@@ -161,10 +161,10 @@ Portal.ui.openlayers.MapActionsControl =
               hideLayerOptions: this.appConfig.hideLayerOptions,
               autoZoom: this.appConfig.autoZoom,
               addGrailsLayerFn: this.appConfig.mapPanel.addGrailsLayer,
-              mapScope: this.appConfig.mapPanel
+              mapScope: this.appConfig.mapPanel,
+              renderTo: this.layersDiv
+              
           });
-          
-          this.actionsPanel.render(this.layersDiv);
       },
 
       /** 
