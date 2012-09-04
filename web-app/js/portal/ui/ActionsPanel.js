@@ -7,7 +7,6 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 		this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(cfg);
 		var config = Ext.apply({
             id: 'activeMenuPanel',
-//		    flex: 1,
             layout: 'form',
 		    padding: '0px 0px 20px 0px',                      
             autoScroll: true,

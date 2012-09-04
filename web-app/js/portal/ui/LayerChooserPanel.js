@@ -5,7 +5,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         this.appConfig = cfg.appConfig;
         this.mapPanel = cfg.mapPanel;
-//        this.initActionsPanel(this.appConfig, this.mapPanel);
         this.initLeftTabMenuPanel(this.appConfig);
 		
         var config = Ext.apply({
@@ -29,7 +28,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             autoScroll: true,
             items: [
                 this.leftTabMenuPanel,
-//                this.actionsPanel
             ],
             cls: 'leftMenus'
         }, cfg);
@@ -39,17 +37,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.registerEvents();
         
         this.addEvents('addlayerclicked');
-    },
-    
-    initActionsPanel: function(appConfig, mapPanel) {
-        this.actionsPanel = new Portal.ui.ActionsPanel({
-            map: mapPanel.map,
-            layerStore: mapPanel.layers,
-            hideLayerOptions: appConfig.hideLayerOptions,
-            autoZoom: appConfig.autoZoom,
-            addGrailsLayerFn: mapPanel.addGrailsLayer,
-            mapScope: mapPanel
-        });
     },
     
     initLeftTabMenuPanel: function(appConfig) {
@@ -96,18 +83,14 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     
     registerLeftTabMenuPanelEvents: function() {
         this.leftTabMenuPanel.on('serverloaded', function(node) {
-//            Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
-//                this.leftTabMenuPanel.toggleLayerNodes(node.layer.grailsLayerId, false);
-//            }, this);
+            Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
+                this.leftTabMenuPanel.toggleLayerNodes(node.layer.grailsLayerId, false);
+            }, this);
         }, this);
     },
     
     registerMonitoringEvents: function() {
         this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
-//        this.mon(this.actionsPanel, 'hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
-//        this.mon(this.actionsPanel, 'hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
-//        this.mon(this.actionsPanel, 'autozoomchecked', this.autoZoomCheckboxHandler, this);
-//        this.mon(this.actionsPanel, 'autozoomunchecked', this.autoZoomCheckboxHandler, this);
     },
     
     onMenuNodeClick: function(node) {
@@ -122,37 +105,8 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     },
     	
-    layerOptionsVisible: function() {
-//        return this.actionsPanel.layerOptionsVisible();
-    },
-	
-    autoZoomEnabled: function() {
-//        this.actionsPanel.autoZoomEnabled();
-    },
-    
-    autoZoomCheckboxHandler: function(box, checked) {
-        Portal.app.config.autoZoom = checked;
-        this.mapPanel.autoZoom = checked;
-    },
-	
-    layerOptionsCheckboxHandler: function(box, checked) {
-        Portal.app.config.hideLayerOptions = checked;
-        this.mapPanel.hideLayerOptions = checked;
-    },
-
-   
     addMapLayer: function(layerDescriptor, showLoading) {
             this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
-    },
-    
-    showActions: function() {
-//      this.actionsPanel.show();
-      this.doLayout();
-    },
-    
-    hideActions: function() {
-//      this.actionsPanel.hide();
-      this.doLayout();
     },
 
     loadSnapshot: function(id){

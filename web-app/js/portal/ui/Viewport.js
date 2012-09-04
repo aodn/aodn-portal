@@ -64,15 +64,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 		return this.mainTabPanel.isMapVisible();
 	},
 
-	onPanelTabChange: function(thisTabPanel, newTab) {
-		if (newTab === this.mainTabPanel.homePanel) {
-			this.layerChooserPanel.hideActions();
-		}
-		else {
-			this.layerChooserPanel.showActions();
-		}
-	},
-	
 	onResetMap: function() {
 		// centre map and set zoom clear layers 
 		// 
