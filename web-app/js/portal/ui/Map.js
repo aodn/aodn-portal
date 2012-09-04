@@ -197,6 +197,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomchecked', this.autoZoomCheckboxHandler, this);
 		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomunchecked', this.autoZoomCheckboxHandler, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
 
 		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
 	},
@@ -206,6 +208,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     	
         Portal.app.config.autoZoom = checked;
         this.autoZoom = checked;
+    },
+
+    layerOptionsCheckboxHandler: function(box, checked) {
+        Portal.app.config.hideLayerOptions = checked;
+        this.hideLayerOptions = checked;
     },
 
 	resetMap: function() {
