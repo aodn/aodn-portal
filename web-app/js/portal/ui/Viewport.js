@@ -69,8 +69,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().collapseAndHide();
 	},
 
-	showSnapshot: function(id){
-        this.layerChooserPanel.loadSnapshot(id);
+	showSnapshot: function(id) {
+        this.mainTabPanel.loadSnapshot(id);
 	}
 
 });

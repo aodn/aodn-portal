@@ -107,9 +107,5 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     	
     addMapLayer: function(layerDescriptor, showLoading) {
             this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
-    },
-
-    loadSnapshot: function(id){
-//    	this.actionsPanel.loadSnapshot(id);
     }
 });

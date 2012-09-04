@@ -56,7 +56,7 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 		return this.mapOptionsPanel.autoZoomEnabled();
 	},
 
-	loadSnapshot: function(id){
+	loadSnapshot: function(id) {
 		this.mapOptionsPanel.loadSnapshot(id);
 	}
 });

@@ -203,6 +203,11 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
 	},
 	
+	loadSnapshot: function(id) {
+
+		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
+	},
+
     autoZoomCheckboxHandler: function(box, checked) {
     	console.log("autoZoom: " + checked);
     	
