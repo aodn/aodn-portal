@@ -161,9 +161,33 @@ Portal.ui.openlayers.MapActionsControl =
               hideLayerOptions: this.appConfig.hideLayerOptions,
               autoZoom: this.appConfig.autoZoom,
               addGrailsLayerFn: this.appConfig.mapPanel.addGrailsLayer,
-              mapScope: this.appConfig.mapPanel,
-              renderTo: this.layersDiv
-              
+              mapScope: this.appConfig.mapPanel
+          });
+          
+          var targetDiv = this.layersDiv;
+          
+          this.mapActionsWindow = new Ext.Window({
+        	  draggable: false,
+        	  hidden: false,
+        	  closable: false,
+        	  border: false,
+        	  bodyBorder: false,
+        	  resizable: false,
+        	  
+        	  width: 300,
+        	  floating: {
+        		  shadow: false
+        	  },
+        	  items: [
+        	      this.actionsPanel
+        	  ],
+        	  
+        	  afterRender: function() {
+        		  
+        		  Ext.Window.superclass.afterRender.apply(this);
+        		  targetDiv.appendChild(this.el.dom);
+        		  this.el.dom.style.position = "";
+        	  }
           });
       },
 
