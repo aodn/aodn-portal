@@ -181,11 +181,11 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 								
 								spinnerPanel.hide('slow');
 								setViewPortTab(1); // move to the map tab
-								statusField.setTitle(OpenLayers.i18n('addYourURLSucessful'));
-								// ADD TO LIST OF SUCESSFULL SERVERS
+								statusField.setTitle(OpenLayers.i18n('addYourURLSuccessful'));
+								// ADD TO LIST OF SUCCESSFULL SERVERS
 								statusField.update("");
 								statusField.show();
-								// add to sucessfully loaded array
+								// add to successfully loaded array
 								this.loadedServerURLS.push(url);
 							},
 							loadexception: function(obj,node,e) {
@@ -193,12 +193,12 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 								spinnerPanel.hide('slow');
 								statusField.setTitle("ERROR: Server URL Invalid");
 								if (e.responseText != undefined) {
-									statusField.update( OpenLayers.i18n('addYourURLUnsucessful',{
+									statusField.update( OpenLayers.i18n('addYourURLUnsuccessful',{
 										url: e.responseText
 										}));
 								}
 								else {
-									statusField.update( OpenLayers.i18n('addYourURLUnsucessfulNoResponse'));
+									statusField.update( OpenLayers.i18n('addYourURLUnsuccessfulNoResponse'));
 								}								
 								statusField.show().expand();
 								
@@ -218,10 +218,10 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 					'click': function(node) {
 						if (node.attributes.layer != null) {
 							var layer = node.attributes.layer;	
-							statusField.setTitle(OpenLayers.i18n('addYourLayerSucess',{
+							statusField.setTitle(OpenLayers.i18n('addYourLayerSuccess',{
 								layerName: layer.name.replace(/_/gi, " ")
 								}));
-							statusField.update("")
+							statusField.update("");
 							statusField.show();
 							layer.server = node.attributes.server;
 							
