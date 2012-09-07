@@ -6,19 +6,16 @@ class CheckLayerAvailabilityService {
 
     static transactional = true
 
-    def serviceMethod() {
-
-    }
-	
 	// use supplied serverUri from layer as it may vary from getCap's server
 	def isLayerAlive(params) {
-		
-		
+
 		def valid = true // start with the gates open
 		def layer = Layer.get(params.layerId)
+
 		if (layer) {
 			
-			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()	
+			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()
+
 			try {
 				def utils = WebUtils.retrieveGrailsWebRequest()
 				def response = utils.getCurrentResponse() 
@@ -29,33 +26,35 @@ class CheckLayerAvailabilityService {
 				//outputStream << conn.inputStream
 				//outputStream.flush()			
 				
-				def contentType = conn.getContentType().split(';')[0]						
-				if (!(contentType  == "text/html"  || contentType  == "text/plain")) {	
+				def contentType = conn.getContentType().split(';')[0]
+
+				if (!(contentType  == "text/html"  || contentType  == "text/plain")) {
 
 					def text = featInfURL.text
-					print featInfURL
+
 					// its xml, test for exception messages, or sillyness
-					valid = (text.find('<WMT_MS_Capabilities')) ? false : valid
+					valid = (text.find('<WMT_MS_Capabilities')) ? false : valid // Todo - DN: Check this too
 					valid = (text.find('<ServiceExceptionReport')) ? false : valid
 					valid = (text == "") ? false : valid
 						
 					// allow possible data changes						
 					valid = (text.find('InvalidRangeException')) ? true : valid	
+				}
 
-				}									
+                // Todo - DN: Check this. It means that if the response is text/html or text/plain then valid is TRUE. Is this correct?
 			}
 			catch (e) {
+
 				// could this be an unusual WMS server
 				valid = false
-			}	
-			
+			}
 		}
 		else {
 			// we dont have this layer in the database ???
 			// shouldnt really get here often
 			valid = false
 		}
-						
+
 		return valid
 	}
 	def _addAuthentication(connection, url) {

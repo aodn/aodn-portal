@@ -555,7 +555,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		openLayer.overrideMetadataUrl = layerDescriptor.overrideMetadataUrl;
 		openLayer.parentLayerId = this.getParentId(layerDescriptor);
 		openLayer.parentLayerName = this.getParentName(layerDescriptor);
-		openLayer.allStyles = layerDescriptor.styles;
+		openLayer.allStyles = layerDescriptor.allStyles;
 		openLayer.dimensions = layerDescriptor.dimensions;
 		openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
 	},

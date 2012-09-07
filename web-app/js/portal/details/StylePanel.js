@@ -145,7 +145,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             }
         }
 
-
         if (data.length > 0) {
             // populate the stylecombo picker
             this.styleCombo.store.loadData(data);

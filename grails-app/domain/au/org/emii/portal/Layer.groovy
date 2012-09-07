@@ -1,9 +1,6 @@
 package au.org.emii.portal
 
-import javax.persistence.ManyToOne;
-
 import org.apache.commons.lang.builder.EqualsBuilder
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class Layer {
 
@@ -215,4 +212,19 @@ class Layer {
 	void removeFromLayers(Layer child) {
 		child.parent = null
 	}
+
+    def getAllStyles() {
+
+        def currentLayer = this
+        def styles = []
+
+        while ( currentLayer ) {
+
+            if ( currentLayer.styles ) styles << currentLayer.styles
+
+            currentLayer = currentLayer.parent
+        }
+
+        return styles.join( "," )
+    }
 }

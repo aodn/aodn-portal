@@ -317,14 +317,18 @@ class LayerController {
     }
     
 	def getFormattedMetadata = {
+
+        def responseText
+
 		if (params.metaURL != null) {
+
 			try {
 				//Connect
 				def con = new URL(params.metaURL).openConnection()
                 def metadataText = con.content.text
 
-                if(con.contentType.contains("text/xml"))
-                {
+                if (con.contentType.contains("text/xml")) {
+
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
 
@@ -341,18 +345,23 @@ class LayerController {
                             html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
                         }
                     }
-                    render text: html, contentType: "text/html", encoding: "UTF-8"
+
+                    responseText = html
                 }
 			}
             catch(SAXException) {
-				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
+
+                responseText = "<BR>The metadata record is not available at this time."
 			}
             catch(FileNotFoundException) {
-				render text: "<BR>The metadata record is not available at this time.", contentType: "text/html", encoding: "UTF-8"
+
+                responseText = "<BR>The metadata record is not available at this time."
 			}
-		} else {
-			render text: "<BR>This layer has no link to a metadata record", contentType: "text/html", encoding: "UTF-8"
 		}
+
+        if ( !responseText ) responseText = "<BR>This layer has no link to a metadata record"
+
+        render text: responseText, contentType: "text/html", encoding: "UTF-8"
 	}
 
 	
@@ -472,7 +481,8 @@ class LayerController {
                 "belongsTo",
                 "layers",
                 "parent",
-                "hibernateLazyInitializer"
+                "hibernateLazyInitializer",
+                "styles"
         ]
 
         def data = _getLayerData(layerInstance, excludes)
