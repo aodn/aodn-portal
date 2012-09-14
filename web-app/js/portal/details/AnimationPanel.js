@@ -149,9 +149,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						scope : this,
 						select : function(combo, record, index) {
 							var timeStr = this._getSelectedTimeString(true);
-							this.selectedLayer.mergeNewParams({
-										TIME : timeStr
-									});
+//							this.selectedLayer.mergeNewParams({
+//										TIME : timeStr
+//									});
 							this._setTimeAsStepLabelText(timeStr);
 						}
 					}
@@ -567,6 +567,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				}
 
 				this.originalLayer.mergeNewParams = function(newParams) {
+					//TODO:things will go very wrong if fed a TIME param here...
 					for (var i = 0; i < this.slides.length; i++) {
 						this.slides[i].mergeNewParams(newParams);
 					}
