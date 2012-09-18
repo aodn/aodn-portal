@@ -257,6 +257,8 @@ class LayerController {
 
     def saveOrUpdate = {
 
+        log.info "Capabilities data length: ${params.capabilitiesData.length()}"
+
         // Logging output
         if ( log.debugEnabled ) {
             def capabilitiesDataPrint = JSON.parse( params.capabilitiesData as String )
