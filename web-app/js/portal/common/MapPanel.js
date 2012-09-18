@@ -45,10 +45,10 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     
     var bbox = initialBbox.split(",");
     
-    var minx = parseInt(bbox[0]);
-    var maxx = parseInt(bbox[2]);
-    var miny = parseInt(bbox[1]);
-    var maxy = parseInt(bbox[3]);
+    var minx = parseFloat(bbox[0]);
+    var maxx = parseFloat(bbox[2]);
+    var miny = parseFloat(bbox[1]);
+    var maxy = parseFloat(bbox[3]);
     
     if (!((minx >= -180 && minx <= 180)
       && (maxx > -180 && maxx <= 180)
