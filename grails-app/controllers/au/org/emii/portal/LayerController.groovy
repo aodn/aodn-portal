@@ -257,7 +257,7 @@ class LayerController {
 
     def saveOrUpdate = {
 
-        log.info "Capabilities data length: ${params.capabilitiesData.length()}"
+        log.info "Capabilities data length: ${params.capabilitiesData?.length()}"
 
         // Logging output
         if ( log.debugEnabled ) {
@@ -265,7 +265,7 @@ class LayerController {
             capabilitiesDataPrint.children = "[...]"
             capabilitiesDataPrint.supportedProjections = "[...]"
 
-            log.debug "metadata:  ${params.metadata}"
+            log.debug "metadata: ${params.metadata}"
             log.debug "capabilitiesData: $capabilitiesDataPrint"
         }
 
