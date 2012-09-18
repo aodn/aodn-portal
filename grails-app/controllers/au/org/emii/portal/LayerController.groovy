@@ -258,16 +258,7 @@ class LayerController {
     def saveOrUpdate = {
 
         log.info "Capabilities data length: ${params.capabilitiesData?.length()}"
-
-        // Logging output
-        if ( log.debugEnabled ) {
-            def capabilitiesDataPrint = JSON.parse( params.capabilitiesData as String )
-            capabilitiesDataPrint.children = "[...]"
-            capabilitiesDataPrint.supportedProjections = "[...]"
-
-            log.debug "metadata: ${params.metadata}"
-            log.debug "capabilitiesData: $capabilitiesDataPrint"
-        }
+        log.debug "metadata: ${params.metadata}"
 
         // Check credentials
         try {
@@ -376,6 +367,8 @@ class LayerController {
         def configuredPassword = Config.activeInstance().wmsScannerCallbackPassword
         
         if ( !configuredPassword ) throw new IllegalStateException( "WMS Scanner password not configured in Portal app." )
+
+        println "Checking '$configuredPassword' and '$suppliedPassword'"
 
         if ( configuredPassword != suppliedPassword ) throw new IllegalArgumentException( "Supplied password does not match configured password." )
     }
