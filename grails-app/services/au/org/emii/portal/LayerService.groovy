@@ -30,36 +30,34 @@ class LayerService {
             log.debug "====================="
 
             if ( rootLayer ) {
-                
-                _traverseLayerTree rootLayer, {
-                    
-                    // Only modify layers created by the scanner
-                    if ( it.dataSource == dataSource ) {
-                    
-                        def uid = _uniquePathIdentifier( it, it.parent )
-                        
-                        log.debug "Disabling existing layer and storing for later ($uid)"
-                        
-                        // Check for duplicates
-                        if ( existingLayers[ uid ] ) {
-                            
-                            log.warn "*********************************"
-                            log.warn "*** Duplicate name + title id: $uid"
-                            log.warn "*********************************"
-                        }
-                        
-                        it.activeInLastScan = false
-                        existingLayers[ uid ] = it
+
+                def allLayersInServer = Layer.findAllByServerAndDataSource( server, dataSource )
+
+                log.debug "allLayersInServer: ${ allLayersInServer.size() }"
+
+                allLayersInServer.each {
+
+                    def uid = _uniquePathIdentifier( it, it.parent )
+
+                    log.debug "Disabling existing layer and storing for later ($uid)"
+
+                    // Check for duplicates
+                    if ( existingLayers[ uid ] ) {
+
+                        log.warn "*********************************"
+                        log.warn "*** Duplicate name + title id: $uid"
+                        log.warn "*********************************"
                     }
+
+                    it.activeInLastScan = false
+                    existingLayers[ uid ] = it
                 }
             }
-            
+
             // Traverse incoming JSON and create or update layers (update if they are in existingLayers[])
             def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
                 newData, parent ->
 
-				parent?.save()
-				
                 def uniquePath = _uniquePathIdentifier( newData, parent )
                 def layerToUpdate = existingLayers[ uniquePath ]
 
@@ -71,7 +69,7 @@ class LayerService {
                     
                     if ( currentParent && ( currentParent != parent ) ) {
                             
-                        layerToUpdate.parent.removeFromLayers layerToUpdate
+                        layerToUpdate.parent = null
                     }
 
                     layerToUpdate.dimensions*.delete()
@@ -88,7 +86,7 @@ class LayerService {
                 log.debug "Applying new values to layer: $newData"
 
                 // Add as child of parent
-                if ( parent ) parent.addToLayers layerToUpdate
+                if ( parent ) layerToUpdate.parent = parent //parent.addToLayers layerToUpdate
                 
                 // Move data over
                 layerToUpdate.title      = newData.title
@@ -112,16 +110,13 @@ class LayerService {
 
                 layerToUpdate.layerHierarchyPath = uniquePath
 
-				// Need to explicitly save, since saves no longer cascade to children (since fix
-				// for #1761).
+				// Need to explicitly save, since saves no longer cascade to children (since fix for #1761).
 				layerToUpdate.save(failOnError: true)
-					
+
                 return layerToUpdate
             })
 
             log.debug "Updating Layers finished."
-            
-            newLayer.save( failOnError: true )
         }
         catch ( Exception e ) {
 
@@ -134,6 +129,7 @@ class LayerService {
         layerProcess.call( layer )
 
         layer.layers.each {
+
             _traverseLayerTree it, layerProcess
         }
     }
@@ -151,16 +147,11 @@ class LayerService {
             )
         }
 
-        if ( parent ) {
-
-            parent.layers << newLayer
-        }
-
         return newLayer
     }
     
     def _uniquePathIdentifier( layer, parent ) {
-        
+
         def namePart
         
         if ( layer.name ) {
@@ -174,8 +165,8 @@ class LayerService {
         
         def titlePart = layer.title ?: "<no title>"
         def parentPart = parent ? _uniquePathIdentifier( parent, parent.parent ) + " // " : ""
-        
-        return "$parentPart$namePart -- $titlePart" 
+
+        return "$parentPart$namePart -- $titlePart"
     }
 
     // More helpers
