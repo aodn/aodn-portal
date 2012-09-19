@@ -368,8 +368,6 @@ class LayerController {
         
         if ( !configuredPassword ) throw new IllegalStateException( "WMS Scanner password not configured in Portal app." )
 
-        println "Checking '$configuredPassword' and '$suppliedPassword'"
-
         if ( configuredPassword != suppliedPassword ) throw new IllegalArgumentException( "Supplied password does not match configured password." )
     }
     
