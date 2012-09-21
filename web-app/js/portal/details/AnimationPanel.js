@@ -603,22 +603,53 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				{
 					// if this layer's order(bottom,second from top, etc) is changed, change the order
 					// of the frames aswell. 
+				
+
 					if (evt.property == "order" && evt.layer == this) 
 					{
+							console.log("Layer moved to " + this.map.getLayerIndex(this));
+						for (var i = 0; i < this.map.layers.length; i++) 
+						{
+						 console.log("Layer "+this.map.layers[i].name +"is " +i );
+						}
 						for (var i = 0; i < this.slides.length; i++) 
 						{
+							console.log("For "+i +" is " + this.map.getLayerIndex(this.slides[i]));
+							
+							
+//							console.log("Moving " + this.slides[i] + "to index " + this.map.getLayerIndex(this));
 							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this));
 						}
 					}
 				}
-
-				// this.originalLayer.getURL = function(bounds) {
-				// return null;
-				// }
-
-				// this.originalLayer.redraw = function() {
-				// return true;
-				// }
+				
+				this.originalLayer._onLayerRemoved = function(evt) 
+				{
+					if (evt.layer == this)
+					{
+						console.log("removing layer with"+ this.slides.length +"slides");
+						for (var i = 0; i < this.slides.length; i++) 
+						{
+							this.slides[i].map.removeLayer(this.slides[i]);
+						}
+					}
+				}
+				
+				this.originalLayer._onLayerAdded = function(evt) 
+				{
+					if (evt.layer == this)
+					{
+						
+						for (var i = 0; i < this.slides.length; i++) 
+						{
+							this.map.addLayer(this.slides[i]);
+						}
+						for (var i = 0; i < this.map.layers.length; i++) 
+						{
+						 console.log("Layer "+this.map.layers[i].name +"is " +i );
+						}
+					}
+				}
 
 				this.originalLayer.events.on({
 							"visibilitychanged" : this._onLayerVisibilityChanged,
@@ -626,10 +657,15 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						});
 
 				this.map.map.events.on({
-							"removelayer" : this._onLayerRemoved,
-							scope : this
+							"removelayer" : this.originalLayer._onLayerRemoved,
+							scope : this.originalLayer
 						});
 
+				this.map.map.events.on({
+							"addlayer" : this.originalLayer._onLayerAdded,
+							scope : this.originalLayer
+						});
+						
 				this.map.map.events.on({
 							"changelayer" : this.originalLayer._onChangeLayer,
 							scope : this.originalLayer
@@ -719,8 +755,20 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_onLayerRemoved : function(evt) {
-		if (evt.layer == this.originalLayer)
-			this.removeAnimation();
+		console.log("Layer removed");
+		
+		while (this.animatedLayers.length > 0) {
+			if ((this.animatedLayers[0].map == null)) {
+				this.animatedLayers[0] = null;
+			} else {
+				this.map.map.removeLayer(this.animatedLayers[0],
+						this.originalLayer);
+			}
+
+			this.animatedLayers.shift();
+		}
+//		if (evt.layer == this.originalLayer)
+//			this.removeAnimation();
 	},
 
 	_resetTimer : function(speed) {
