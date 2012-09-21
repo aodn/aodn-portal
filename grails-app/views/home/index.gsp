@@ -92,7 +92,12 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/utils/TimeUtil.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/AnimationPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/filter/BaseFilter.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/filter/FilterCombo.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/filter/TimeFilter.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/filter/FilterPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/NCWMSColourScalePanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/StylePanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>

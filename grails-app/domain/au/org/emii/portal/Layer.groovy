@@ -59,9 +59,10 @@ class Layer {
         layerHierarchyPath type: "text"
         dimensions cascade: 'all-delete-orphan'
         metadataUrls cascade: 'all-delete-orphan'
+        filters cascade: 'all-delete-orphan'
     }
 
-    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension]
+    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter]
     static constraints = {
 		parent(nullable: true)
 		name( nullable: true, size:1..225 )
@@ -96,6 +97,7 @@ class Layer {
         // Empty relationships
         metadataUrls = []
         dimensions = []
+        filters = []
         
         // Defaults
         abstractTrimmed = ""

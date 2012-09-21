@@ -24,11 +24,13 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     	this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
         this.aodaacPanel = new Portal.details.AodaacPanel();
+        this.filterPanel = new Portal.filter.FilterPanel();
 
         this.items = [
             this.infoPanel,
             this.stylePanel,
-            this.aodaacPanel
+            this.aodaacPanel,
+            this.filterPanel
         ];
 
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
@@ -40,6 +42,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.stylePanel.update( layer, this._showTab, this._hideTab, this );
         this.infoPanel.update( layer, this._showTab, this._hideTab, this );
         this.aodaacPanel.update( layer, this._showTab, this._hideTab, this );
+        this.filterPanel.update( layer, this._showTab, this._hideTab, this );
 
         this.show();
     },

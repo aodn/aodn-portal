@@ -174,6 +174,25 @@
 
                             <tr class="prop">
 								<td valign="top" class="name">
+									<label for="filters"><g:message code="layer.filters.label" default="Layer Filters" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'filters', 'errors')}">
+									<ul>
+									<g:each in="${layerInstance?.filters}" var="filter">
+										<li><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></li>
+									 </g:each>
+									 </ul>
+								</td>
+							</tr>
+
+							 <tr class="prop">
+								<td valign="top" class="name">
+									<g:link controller="filter" action="create" params="[layerId: layerInstance.id]">Create Filter</g:link>
+								</td>
+							</tr>
+
+                            <tr class="prop">
+								<td valign="top" class="name">
 									<g:message code="layer.overrideMetadataUrl.label" default="Override Metadata URL" />
 								</td>
 								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'overrideMetadataUrl', 'errors')}">
@@ -200,3 +219,4 @@
 									${layerInstance?.layerHierarchyPath}
 								</td>
 							</tr>
+

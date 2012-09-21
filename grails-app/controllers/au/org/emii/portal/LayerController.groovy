@@ -482,7 +482,8 @@ class LayerController {
                 "layers",
                 "parent",
                 "hibernateLazyInitializer",
-                "styles"
+                "styles",
+                "filters"
         ]
 
         def data = _getLayerData(layerInstance, excludes)
@@ -529,4 +530,25 @@ class LayerController {
 	def _recache(server) {
 		au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
 	}
+
+    def getFiltersAsJSON = {
+        def layerInstance = Layer.get( params.layerId )
+
+        def results = []
+
+        if ( layerInstance ) {
+            if(layerInstance.filters){
+                layerInstance.filters.each{
+                    results.add(it.toLayerData())
+                }
+            }
+            render results as JSON
+        }
+        else {
+            def queryString = request.queryString ? "?$request.queryString" : ""
+            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+            log.info msg
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+        }
+    }
 }
