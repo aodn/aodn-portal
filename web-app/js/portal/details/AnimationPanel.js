@@ -604,18 +604,20 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					// if this layer's order(bottom,second from top, etc) is changed, change the order
 					// of the frames aswell. 
 				
+					
 
-					if (evt.property == "order" && evt.layer == this) 
+					if (evt.property == "order") 
 					{
-						console.log("Layer moved to " + this.map.getLayerIndex(this));
-						for (var i = 0; i < this.map.layers.length; i++) 
-						{
-						 console.log("Layer "+this.map.layers[i].name +"is " +i );
-						}
 						for (var i = 0; i < this.slides.length; i++) 
 						{
-							console.log("For "+i +" is " + this.map.getLayerIndex(this.slides[i]));
-							
+							if(this.slides[i]==evt.layer)
+							{
+								return;
+							}
+						}
+
+						for (var i = 0; i < this.slides.length; i++) 
+						{
 							//Weird stuf happens here, but it works.
 							//just moving the slides doesn't register in the active layers panel
 							//So remove and add...
