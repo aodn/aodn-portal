@@ -607,7 +607,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 					if (evt.property == "order" && evt.layer == this) 
 					{
-							console.log("Layer moved to " + this.map.getLayerIndex(this));
+						console.log("Layer moved to " + this.map.getLayerIndex(this));
 						for (var i = 0; i < this.map.layers.length; i++) 
 						{
 						 console.log("Layer "+this.map.layers[i].name +"is " +i );
@@ -616,9 +616,13 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						{
 							console.log("For "+i +" is " + this.map.getLayerIndex(this.slides[i]));
 							
-							
+							//Weird stuf happens here, but it works.
+							//just moving the slides doesn't register in the active layers panel
+							//So remove and add...
+							this.map.removeLayer(this.slides[i]);
+							this.map.addLayer(this.slides[i])
 //							console.log("Moving " + this.slides[i] + "to index " + this.map.getLayerIndex(this));
-							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this));
+							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this)+1);
 						}
 					}
 				}
@@ -639,7 +643,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-						
+						console.log("Adding layer with"+ this.slides.length +"slides");
 						for (var i = 0; i < this.slides.length; i++) 
 						{
 							this.map.addLayer(this.slides[i]);
