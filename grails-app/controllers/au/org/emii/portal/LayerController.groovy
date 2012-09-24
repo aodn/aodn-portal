@@ -257,15 +257,8 @@ class LayerController {
 
     def saveOrUpdate = {
 
-        // Logging output
-        if ( log.debugEnabled ) {
-            def capabilitiesDataPrint = JSON.parse( params.capabilitiesData as String )
-            capabilitiesDataPrint.children = "[...]"
-            capabilitiesDataPrint.supportedProjections = "[...]"
-
-            log.debug "metadata:  ${params.metadata}"
-            log.debug "capabilitiesData: $capabilitiesDataPrint"
-        }
+        log.info "Capabilities data length: ${params.capabilitiesData?.length()}"
+        log.debug "metadata: ${params.metadata}"
 
         // Check credentials
         try {
