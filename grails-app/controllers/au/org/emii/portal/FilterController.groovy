@@ -47,10 +47,6 @@ class FilterController {
     def update = {
         def filterInstance = Filter.get(params.id)
 
-        println "updating"
-        println filterInstance.version
-        println params.version
-        
         if(filterInstance){
             
             if (params.version) {

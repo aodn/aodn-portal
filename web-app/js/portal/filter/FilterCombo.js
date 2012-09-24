@@ -36,7 +36,7 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
 		this.add(this.combo);
 
 		this.combo.clearValue();
-		var values = this.filter.values.split(",");
+		var values = this.filter.filterValues.split(",");
 
 		var data = [];
 		for(var i = 0; i < values.length; i++){
@@ -52,7 +52,7 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
 
     _onSelected: function(combo, record, index){
 		this._createCQL(combo, record, index);
-		this.fireEvent('addFilter', this);
+		this._fireAddEvent();
     },
 
     handleRemoveFilter: function(){

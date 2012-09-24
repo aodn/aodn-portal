@@ -15,7 +15,7 @@ class FilterTests extends GrailsUnitTestCase {
 
         mockDomain(Filter)
 
-        def filter1 = new Filter(name : "vesselName", type : FilterTypes.STRINGTYPE, label: "Vessel Name", values: "ship 1, ship 2, ship 3");
+        def filter1 = new Filter(name : "vesselName", type : FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship 1, ship 2, ship 3");
         mockForConstraintsTests(Filter, [filter1])
 
         def testFilter = new Filter()
@@ -32,13 +32,13 @@ class FilterTests extends GrailsUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type: FilterTypes.STRINGTYPE, label: "Vessel Name", values: "ship1, ship2, ship3", layer: layer1)
+        def filter1 = new Filter(name: "vesselName", type: FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
 
         def expected = [:]
         expected["label"] = "Vessel Name"
         expected["type"] = FilterTypes.STRINGTYPE
         expected["name"] = "vesselName"
-        expected["values"] = "ship1, ship2, ship3"
+        expected["filterValues"] = "ship1, ship2, ship3"
         expected["layerId"] = 3
         
         assertEquals filter1.toLayerData().toString(), expected.toString()

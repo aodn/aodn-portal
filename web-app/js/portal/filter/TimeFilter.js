@@ -57,8 +57,8 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 		this.add(this.fromField);
 		this.add(this.toField);
 
-		if(this.filter.values != undefined){
-			var vals = this.filter.values.split(",");
+		if(this.filter.filterValues != undefined){
+			var vals = this.filter.filterValues.split(",");
 			this._setMinMax(this.fromField, vals);
 			this._setMinMax(this.toField, vals);
 		}
@@ -85,14 +85,14 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 		if(this.operators.getValue() != 'between'){
 			this.CQL = this.filter.name + " ";
 			this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
-            this.fireEvent('addFilter', this);
+            this._fireAddEvent();
 		}
 		else{
 			if(this.fromField.getValue() != "" && this.toField.getValue() != "")
 			{
 				this.CQL = this.filter.name + " ";
 				this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
-				this.fireEvent('addFilter', this);
+				this._fireAddEvent();
 			}
 		}
 	},

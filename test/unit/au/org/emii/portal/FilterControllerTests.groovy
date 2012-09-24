@@ -19,8 +19,8 @@ class FilterControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type: FilterTypes.STRINGTYPE, label: "Vessel Name", values: "ship1, ship2, ship3", layer: layer1)
-        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.STRINGTYPE, label: "Sensor Type", values: "type1, type2", layer:  layer1)
+        def filter1 = new Filter(name: "vesselName", type: FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
+        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.STRINGTYPE, label: "Sensor Type", filterValues: "type1, type2", layer:  layer1)
 
         layer1.filters = [filter1, filter2]
 

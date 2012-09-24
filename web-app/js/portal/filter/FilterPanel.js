@@ -50,8 +50,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 				fieldLabel: filter.label
 			});
     	}
+    	else if(filter.type === "Boolean"){
+    		newFilter = new Portal.filter.BooleanFilter({
+    		   fieldLabel: filter.label
+    		});
+    	}
     	else if(filter.type === "Number"){
     		//...
+    	}
+    	else{
+    		//Filter hasn't been defined
     	}
 
     	if(newFilter != undefined){
