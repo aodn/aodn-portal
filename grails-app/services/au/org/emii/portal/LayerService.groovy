@@ -12,21 +12,27 @@ class LayerService {
 
             def existingLayers = [:]
 
+            def updatedLayerPaths = [] as SortedSet
+            def addedLayerPaths = []
+
             // Traverse existing layers
             // - Disable layer
             // - Store layer in map for later update
 
-            def rootLayer = Layer.findWhere(
+            def matchingLayers = Layer.findAllWhere(
                 server: server,
                 parent: null,
                 dataSource: dataSource
             )
 
-            log.debug "== Find Root Layer =="
-            log.debug "server: $server"
-            log.debug "parent: null"
-            log.debug "source: $dataSource"
-            log.debug "found:  $rootLayer"
+            def rootLayer = matchingLayers?.getAt( 0 ) // Get first element or null
+
+            log.info "== Find Root Layer =="
+            log.info "With server: $server"
+            log.info "With parent: null"
+            log.info "With source: $dataSource"
+            log.info "Found ${matchingLayers.size()} matching Layer(s)"
+            log.info "Using: $rootLayer"
             log.debug "====================="
 
             if ( rootLayer ) {
@@ -64,7 +70,9 @@ class LayerService {
                 if ( layerToUpdate ) {
                     
                     log.debug "Found existing layer with details: '$uniquePath'"
-                    
+
+                    updatedLayerPaths << uniquePath
+
                     def currentParent = layerToUpdate.parent
                     
                     if ( currentParent && ( currentParent != parent ) ) {
@@ -77,7 +85,9 @@ class LayerService {
                 else {
 
                     log.debug "Could not find existing layer with details: '$uniquePath'. Creating new..."
-                        
+
+                    addedLayerPaths << uniquePath
+
                     // Doesn't exist, create
                     layerToUpdate = new Layer()
                     layerToUpdate.server = server
@@ -116,7 +126,21 @@ class LayerService {
                 return layerToUpdate
             })
 
-            log.debug "Updating Layers finished."
+            // Summary of changes
+            def existingLayerPaths = new TreeSet( existingLayers.keySet() )
+            def layersLeftInactivePaths = existingLayerPaths.minus( updatedLayerPaths )
+
+            log.info "== Updating Layers finished for server: $server ==========="
+            log.info "# Layers updated: ${ updatedLayerPaths.size() }"
+            updatedLayerPaths.each{ log.debug it }
+
+            log.info "# Layers added: ${ addedLayerPaths.size() }"
+            addedLayerPaths.each{ log.debug it }
+
+            log.info "# Layers made inactive: ${ layersLeftInactivePaths.size() }"
+            layersLeftInactivePaths.each{ log.debug it }
+
+            log.info "==========================================================="
         }
         catch ( Exception e ) {
 
