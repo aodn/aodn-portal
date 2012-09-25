@@ -190,7 +190,7 @@ class LayerService {
         def titlePart = layer.title ?: "<no title>"
         def parentPart = parent ? _uniquePathIdentifier( parent, parent.parent ) + " // " : ""
 
-        return "$parentPart$namePart -- $titlePart"
+        return "$parentPart$namePart -- $titlePart".toString() // Needs to be a String (ie. not a GString) to be used as a key in a map reliably
     }
 
     // More helpers
