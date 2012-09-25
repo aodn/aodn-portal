@@ -267,6 +267,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this._waitForOriginalLayer(dates[0], dates[1]);
 	},
 
+
 	_onDateSelected : function(field, date) {
 		var combo;
 
@@ -633,10 +634,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-						console.log("removing layer with"+ this.slides.length +"slides");
-						for (var i = 0; i < this.slides.length; i++) 
+						console.log("removing layer with"+ evt.layer.slides.length +"slides");
+						for (var i = 0; i < evt.layer.slides.length; i++) 
 						{
-							this.slides[i].map.removeLayer(this.slides[i]);
+							evt.layer.slides[i].map.removeLayer(this.slides[i]);
 						}
 					}
 				}
@@ -759,24 +760,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			this.originalLayer.slides[this.stepSlider.getValue()].display(true);
 		}
 	},
-
-	_onLayerRemoved : function(evt) {
-		console.log("Layer removed");
-		
-		while (this.animatedLayers.length > 0) {
-			if ((this.animatedLayers[0].map == null)) {
-				this.animatedLayers[0] = null;
-			} else {
-				this.map.map.removeLayer(this.animatedLayers[0],
-						this.originalLayer);
-			}
-
-			this.animatedLayers.shift();
-		}
-//		if (evt.layer == this.originalLayer)
-//			this.removeAnimation();
-	},
-
+	
 	_resetTimer : function(speed) {
 		this.speed = speed;
 		var inst = this;
