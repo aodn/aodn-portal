@@ -242,7 +242,7 @@ class LayerController {
                 layerInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "list")
-	            au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
+	            au.org.emii.portal.Config.recacheDefaultMenu()
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
@@ -384,17 +384,23 @@ class LayerController {
     }
 
     def server = {
-		def result
+
         def server = _getServer(params)
+
         if (server) {
-			result = MenuJsonCache.instance().get(server)
-			if (!result) {
+			def result = MenuJsonCache.instance().get(server)
+
+            if (!result) {
 				result = server.toServerLayerJson()
 				MenuJsonCache.instance().add(server, result)
 			}
+
+            render result
         }
-		
-		render result
+        else {
+
+            render text: "Could not find Server with params: $params", status: 500
+        }
     }
 	
 	def configuredbaselayers = {
@@ -521,7 +527,8 @@ class LayerController {
     }
 	
 	def _recache(server) {
-		au.org.emii.portal.Config.activeInstance().recacheDefaultMenu()
+        server.recache(MenuJsonCache.instance())
+		Config.recacheDefaultMenu()
 	}
 
     def getFiltersAsJSON = {

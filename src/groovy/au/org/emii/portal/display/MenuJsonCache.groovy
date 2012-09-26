@@ -1,12 +1,9 @@
 package au.org.emii.portal.display
 
-import java.security.MessageDigest;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.sf.ehcache.CacheManager
+import net.sf.ehcache.Element
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class MenuJsonCache {
 

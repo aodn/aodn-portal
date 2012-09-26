@@ -107,8 +107,7 @@ class Config {
         return Config.list()[0]
     }
 	
-	def recacheDefaultMenu()
-	{
+	static def recacheDefaultMenu() {
 
 		def configInstance = Config.activeInstance()
 		if (configInstance && configInstance.defaultMenu) {
