@@ -6,6 +6,12 @@ Ext.namespace('Portal.filter');
 Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	constructor: function(cfg) {
 		var config = Ext.apply({
+			listeners: {
+				beforeremove: function(panel, component){
+					console.log("beforeremove");
+					this.removeAll(true);
+				}
+			}
 		}, cfg);
 
      	this.CQL = "";
@@ -34,6 +40,7 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 		this.filter = filter;
 		this.layer = layer;
 		this._createField();
+		this._setExistingFilters();
 	},
 
 	getCQL: function(){
@@ -60,5 +67,9 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 
 	_fireAddEvent: function(){
 		this.fireEvent('addFilter', this);
+	},
+
+	_setExistingFilters: function(){
+		console.log("_setExistingFilters yet to be implemented");
 	}
 });

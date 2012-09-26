@@ -44,6 +44,8 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
 		}
 
 		this.combo.getStore().loadData(data);
+
+
 	},
 
     _createCQL: function(combo, record, index){
@@ -56,7 +58,21 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     handleRemoveFilter: function(){
+    	this.CQL = "";
     	this.combo.clearValue();
+    },
+
+    _setExistingFilters: function(){
+    	this.re = new RegExp(this.filter.name + " LIKE '%(.*)%'");
+
+		if(this.layer.params.CQL_FILTER != undefined){
+			var m = this.re.exec(this.layer.params.CQL_FILTER);
+
+			if (m != null && m.length == 2) {
+				this.combo.setValue(m[1]);
+				this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
+			}
+		}
     }
 
 });

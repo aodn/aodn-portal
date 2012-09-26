@@ -37,7 +37,6 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 		this.fromField = new Ext.form.DateField({
 			name: 'from',
-			hidden: true,
 			listeners: {
 				scope: this,
 				select: this._onSelect
@@ -65,9 +64,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 	},
 
 	_setMinMax: function(dateField, vals){
-		dateField.setVisible(true);
 		dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
-
 		if(vals.length == 2){
 			dateField.setMaxValue(this.TIME_UTIL._parseIso8601Date(vals[1]));
 		}

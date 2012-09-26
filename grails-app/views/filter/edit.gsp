@@ -47,7 +47,7 @@
                                 </td>
 
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
-								 	<g:select name="type" from="${FilterTypes?.values()}" select="${filterInstance?.type}" optionKey="key" />
+								 	<g:select name="type" from="${FilterTypes?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
 								</td>
                             </tr>
                         

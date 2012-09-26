@@ -38,6 +38,6 @@ class SnapshotLayer {
         chosenTimes(nullable:true)
         opacity(nullable:true)
         styles()
-        
+
     }
 }

@@ -35,5 +35,21 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 	handleRemoveFilter: function(){
 		this.CQL = "";
         this.checkbox.reset();
+	},
+
+	_setExistingFilters: function(){
+		if(this.layer.params.CQL_FILTER != undefined){
+
+			this.re = new RegExp(this.filter.name + " = (.*) ?");
+
+			if(this.layer.params.CQL_FILTER != undefined){
+				var m = this.re.exec(this.layer.params.CQL_FILTER);
+
+				if (m != null && m.length == 2) {
+					this.CQL = this.filter.name + " = " + m[1];
+					this.checkbox.setValue(m[1] == "true");
+				}
+			}
+		}
 	}
 });

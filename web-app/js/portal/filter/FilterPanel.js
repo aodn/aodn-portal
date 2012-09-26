@@ -97,43 +97,39 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     update: function(layer, show, hide, target){
-    	if(layer != this.layer){
-    		this.layer = layer;
-			this.removeAll();
-			if(layer.grailsLayerId != undefined){
+		this.layer = layer;
 
-				Ext.Ajax.request({
-					url: this.GET_FILTER,
-					params: {
-						layerId: layer.grailsLayerId
-					},
-					scope: this,
-					failure: function(resp) {
-						hide.call(target, this);
-					},
-					success: function(resp, opts) {
-					   var filters = Ext.util.JSON.decode(resp.responseText);
-						Ext.each(filters,
-							function(filter, index, all) {
-								this.createFilter(layer, filter);
-							},
-							this
-						);
+		if(layer.grailsLayerId != undefined){
 
-						this.doLayout();
+			Ext.Ajax.request({
+				url: this.GET_FILTER,
+				params: {
+					layerId: layer.grailsLayerId
+				},
+				scope: this,
+				failure: function(resp) {
+					this.setVisible(false);
+					hide.call(target, this);
+				},
+				success: function(resp, opts) {
+					this.setVisible(true);
+					var filters = Ext.util.JSON.decode(resp.responseText);
+					Ext.each(filters,
+						function(filter, index, all) {
+							this.createFilter(layer, filter);
+						},
+						this
+					);
 
-						show.call(target, this);
-					}
-				});
-			}
-			else{
-				//probably some other layer added in through getfeatureinfo, or user added WMS
-			}
-    	}
-    	else{
-    		//same layer, don't do anything
-    	}
-    },
+					this.doLayout();
+					show.call(target, this);
+				}
+			});
+		}
+		else{
+			//probably some other layer added in through getfeatureinfo, or user added WMS
+		}
+	},
 
     _updateFilter: function(){
     	var combinedCQL = "";

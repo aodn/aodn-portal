@@ -24,7 +24,7 @@ class FilterController {
 
         filterInstance.type = params.type
         filterInstance.label = params.label
-        filterInstance.values = params.values
+        filterInstance.filterValues = params.filterValues
 
         filterInstance.layer = layerInstance
 
