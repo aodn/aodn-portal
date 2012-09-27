@@ -37,6 +37,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 		this.fromField = new Ext.form.DateField({
 			name: 'from',
+			format: "d/m/Y",
 			listeners: {
 				scope: this,
 				select: this._onSelect
@@ -45,6 +46,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 		this.toField = new Ext.form.DateField({
 			name: 'to',
+			format: "d/m/Y",
 			hidden: true,
 			listeners: {
 				scope: this,
@@ -96,6 +98,46 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 	handleRemoveFilter: function(){
 		this.operators.clearValue();
+		this.toField.reset();
+		this.fromField.reset();
+	},
+
+	_setExistingFilters: function(){
+		if(this.layer.params.CQL_FILTER != undefined){
+			var beforePattern = this.filter.name + " before (.*) *"
+			var afterPattern = this.filter.name + " after (.*) *"
+
+			betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
+			beforeRe = new RegExp(beforePattern);
+			afterRe = new RegExp(afterPattern);
+
+			if(this.layer.params.CQL_FILTER != undefined){
+
+				var m = beforeRe.exec(this.layer.params.CQL_FILTER);
+				var m2 = afterRe.exec(this.layer.params.CQL_FILTER);
+				var between = betweenRe.exec(this.layer.params.CQL_FILTER);
+
+				if(between != null && between.length == 3){
+					this.operators.setValue('between');
+					this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
+					this.toField.setVisible(true);
+					this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
+				}
+
+				else{
+				if (m != null && m.length == 2) {
+						this.operators.setValue('before');
+						this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+					}
+
+					else if (m2 != null && m2.length == 2) {
+						this.operators.setValue('after');
+						this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+					}
+				}
+
+			}
+		}
 	}
 
 });
