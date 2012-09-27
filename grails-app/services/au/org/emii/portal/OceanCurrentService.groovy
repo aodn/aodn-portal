@@ -35,7 +35,8 @@ class OceanCurrentService {
 		try {
 
             def con = fileAddress.toURL().openConnection()
-            con.readTimeout = 20 * 1000 // 20 seconds
+            con.connectTimeout = 1000 // 1 second
+            con.readTimeout = 2000 // 2 seconds
             con.connect()
 
             def data = IOUtils.toString( con.inputStream, "UTF-8" )
