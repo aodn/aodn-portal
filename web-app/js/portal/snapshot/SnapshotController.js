@@ -117,6 +117,11 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     }
     if (mapLayer.params != undefined) {
       layer.styles = mapLayer.params.STYLES;
+
+      if(mapLayer.params.CQL_FILTER != undefined){
+      	layer.cql = mapLayer.params.CQL_FILTER;
+      }
+
     }
     layer.isBaseLayer= mapLayer.isBaseLayer;
     // using hidden as per OGC WMC spec but visible may make more sense!
@@ -136,6 +141,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     var params = {
         styles: snapshotLayer.styles
     };
+
+    if(snapshotLayer.cql != undefined && snapshotLayer.cql.length > 0){
+    	params["CQL_FILTER"] = snapshotLayer.cql;
+    	console.log("layer params:");
+    	console.log(params);
+    }
 
     if (snapshotLayer.isBaseLayer) {
       if (!snapshotLayer.hidden) {

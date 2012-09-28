@@ -20,6 +20,7 @@ class SnapshotLayer {
     Boolean hidden = false
     Float opacity
     String styles = ""
+    String cql
 
     static constraints = {
         layer(nullable: true)
@@ -38,6 +39,7 @@ class SnapshotLayer {
         chosenTimes(nullable:true)
         opacity(nullable:true)
         styles()
+        cql(nullable: true)
 
     }
 }

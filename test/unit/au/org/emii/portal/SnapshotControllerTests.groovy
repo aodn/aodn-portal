@@ -37,6 +37,8 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 
 		mockDomain(User, userList)
 		userList.each { it.save() }
+
+        layers[4].cql = "blah like '%basdfasdf%'"
 		
 		mockDomain(Snapshot)
 		
@@ -85,9 +87,10 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 	{
 		layers[0].name = "Argos 1"
 		layers[1].name = "Argos 2"
+        layers[4].name = "blah"
 		
 		def snapshotName = "NW argos"
-		def snapshotLayers = [layers[0], layers[1]]
+		def snapshotLayers = [layers[0], layers[1], layers[4]]
 			
 		def snapshot = new Snapshot(owner: owner, name: snapshotName, layers: snapshotLayers)
 		mockDomain(Snapshot, [snapshot])
@@ -105,6 +108,8 @@ class SnapshotControllerTests extends ControllerUnitTestCase
 		assertEquals(snapshot.id, snapshotAsJson.id)
 		assertEquals(snapshotLayers*.id, snapshotAsJson.layers*.id)
 		assertEquals(snapshotLayers*.name, snapshotAsJson.layers*.name)
+
+        assertEquals(snapshotLayers[2].cql, snapshotAsJson.layers[2].cql)
 	}
 
 	void testShowAsJSONError()

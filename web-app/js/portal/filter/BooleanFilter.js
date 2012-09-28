@@ -34,7 +34,7 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 	handleRemoveFilter: function(){
 		this.CQL = "";
-        this.checkbox.reset();
+        this.checkbox.setValue(false);
 	},
 
 	_setExistingFilters: function(){
