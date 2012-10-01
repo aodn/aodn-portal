@@ -112,17 +112,22 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 					hide.call(target, this);
 				},
 				success: function(resp, opts) {
-					this.setVisible(true);
 					var filters = Ext.util.JSON.decode(resp.responseText);
-					Ext.each(filters,
-						function(filter, index, all) {
-							this.createFilter(layer, filter);
-						},
-						this
-					);
+					if(filters.length > 0){
+						this.setVisible(true);
+						Ext.each(filters,
+							function(filter, index, all) {
+								this.createFilter(layer, filter);
+							},
+							this
+						);
 
-					this.doLayout();
-					show.call(target, this);
+						this.doLayout();
+						show.call(target, this);
+					}
+					else{
+						hide.call(target, this);
+					}
 				}
 			});
 		}

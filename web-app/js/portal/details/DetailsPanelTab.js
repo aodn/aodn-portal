@@ -52,6 +52,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.filterPanel = this.filterPanel = new Portal.filter.FilterPanel();
         this.add(this.filterPanel);
         this.filterPanel.update( layer, this._showTab, this._hideTab, this );
+        this._hideTab(this.filterPanel);
 
         this.show();
     },
