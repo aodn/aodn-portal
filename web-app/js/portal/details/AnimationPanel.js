@@ -147,16 +147,16 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.startTimeCombo = new Ext.form.ComboBox(Ext.apply({
 					listeners : {
 						scope : this,
-						select : function(combo, record, index) {
-							var timeStr = this._getSelectedTimeString(true);
-//							this.selectedLayer.mergeNewParams({
-//										TIME : timeStr
-//									});
-							this._setTimeAsStepLabelText(timeStr);
-						}
+						select : this._onTimeSelected
 					}
 				}, this._timeComboOptions()));
-		this.endTimeCombo = new Ext.form.ComboBox(this._timeComboOptions());
+				
+		this.endTimeCombo = new Ext.form.ComboBox(Ext.apply({
+					listeners : {
+						scope : this,
+						select : this._onTimeSelected
+					}
+				}, this._timeComboOptions()));
 
 		this.timeSelectorPanel = new Ext.Panel({
 					layout : 'table',
@@ -282,6 +282,17 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			combo.clearValue();
 			combo.getStore().loadData(this.allTimes[key], false);
 		}
+	},
+	
+	 _onTimeSelected : function(combo, record, index) {
+	 	if (this.currentState == this.state.PLAYING) {
+			this._stopPlaying();
+			this._startPlaying();
+		} else if(combo == this.startTimeCombo) {
+			var timeStr = this._getSelectedTimeString(true);
+			this._setTimeAsStepLabelText(timeStr);
+		}
+
 	},
 
 	_resetForNewAnimation : function() {
