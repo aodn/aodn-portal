@@ -536,10 +536,11 @@ class LayerController {
         def results = []
 
         if ( layerInstance ) {
-            if(layerInstance.filters?.each){
-                    results.add(it.toLayerData())
-                }
+
+            layerInstance.filters?.each {
+                results.add(it.toLayerData())
             }
+
             render results as JSON
         }
         else {
