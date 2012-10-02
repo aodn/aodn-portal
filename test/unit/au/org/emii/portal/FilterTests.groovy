@@ -13,11 +13,9 @@ class FilterTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
-        // Code review - PM: This isn't wrong or anything but we've stopped writing constraints unit test for domain classes.
-        // They are too much work to maintain and they don't really add much (any?) safety
         mockDomain(Filter)
 
-        def filter1 = new Filter(name : "vesselName", type : FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship 1, ship 2, ship 3");
+        def filter1 = new Filter(name : "vesselName", type : FilterTypes.String, label: "Vessel Name", filterValues: "ship 1, ship 2, ship 3");
         mockForConstraintsTests(Filter, [filter1])
 
         def testFilter = new Filter()
@@ -34,11 +32,11 @@ class FilterTests extends GrailsUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type: FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
+        def filter1 = new Filter(name: "vesselName", type: FilterTypes.String, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
 
         def expected = [:]
         expected["label"] = "Vessel Name"
-        expected["type"] = FilterTypes.STRINGTYPE
+        expected["type"] = FilterTypes.String
         expected["name"] = "vesselName"
         expected["filterValues"] = "ship1, ship2, ship3"
         expected["layerId"] = 3

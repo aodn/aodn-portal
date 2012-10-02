@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 import org.codehaus.groovy.grails.web.json.JSONElement
-import org.springframework.context.annotation.FilterType
 
 class LayerControllerTests extends ControllerUnitTestCase {
 
@@ -24,7 +23,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
     }
 
     void testSaveOrUpdate() {
-        
+
         String metadata = '{metaDataElement: "metaData", serverUri: "http://serverUriText.com", dataSource:"testDataSource"}'
         this.controller.params.password = "pwd"
         this.controller.params.metadata = metadata
@@ -40,64 +39,64 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.layerService = layerServiceControl.createMock()
 
         this.controller.saveOrUpdate()
-        
+
         assertNotNull "Server should now have a lastScanDate", server.lastScanDate
-        
+
         assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
     }
-	
+
 	void testToResponseMap() {
 		def data = ['a', 'b', 'c', 'd', 'e', 'f']
 		def response = this.controller._toResponseMap(data, data.size())
 		assertEquals data, response.data
 		assertEquals data.size(), response.total
 	}
-	
+
 	void testIsServerCollectable() {
 		assertFalse this.controller._isServerCollectable(null, null)
-		
+
 		def server1 = new Server()
 		server1.id  = 1
 		assertTrue this.controller._isServerCollectable(null, server1)
 		assertFalse this.controller._isServerCollectable(server1, server1)
 		assertFalse this.controller._isServerCollectable(server1, null)
-		
+
 		def server2 = new Server()
 		server2.id  = 2
 		assertTrue this.controller._isServerCollectable(server1, server2)
 	}
-	
+
 	void testCollectServer() {
 		def items = []
-		
+
 		def server1 = new Server()
 		server1.id  = 1
 		def result = this.controller._collectServer(null, server1, items)
 		assertEquals result, server1
 		assertEquals 1, items.size()
-		
+
 		result = this.controller._collectServer(result, server1, items)
 		assertEquals result, server1
 		assertEquals 1, items.size()
-		
+
 		def server2 = new Server()
 		server2.id  = 2
 		result = this.controller._collectServer(result, server2, items)
 		assertEquals result, server2
 		assertEquals 2, items.size()
 	}
-	
+
 	void testCollectLayersAndServers() {
 		def servers = _buildServers(1, 4)
 		def layers = []
 		servers.eachWithIndex { server, i ->
 			layers.addAll(_buildLayers(1 + (i * 10), server, 10))
 		}
-		
+
 		def result = this.controller._collectLayersAndServers(layers)
 		assertEquals 44, result.size()
 	}
-    
+
     void testGetLayerWithFilters(){
         def server1 = new Server()
         server1.id = 1
@@ -106,8 +105,8 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type:  FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
-        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.STRINGTYPE, label: "Sensor Type", filterValues: "type1, type2", layer:  layer1)
+        def filter1 = new Filter(name: "vesselName", type:  FilterTypes.String, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
+        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.String, label: "Sensor Type", filterValues: "type1, type2", layer:  layer1)
 
         layer1.filters = [filter1, filter2]
 
@@ -118,7 +117,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         //test layer with filters
         this.controller.params.layerId = 3
         this.controller.getFiltersAsJSON()
-        
+
         println this.controller.response.contentAsString
 
         assertEquals true, this.controller.response.contentAsString.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","filterValues":"ship1, ship2, ship3","layerId":3}""")
@@ -143,7 +142,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def expected = "[]"
         assertEquals expected, this.controller.response.contentAsString
     }
-	
+
 	def _buildServers(sId, number) {
 		def servers = []
 		for (def i = 0; i < number; i++) {
@@ -153,7 +152,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		}
 		return servers
 	}
-	
+
 	def _buildLayers(sLayerId, server, number) {
 		def layers = []
 		for (def i = 0; i < number; i++) {
