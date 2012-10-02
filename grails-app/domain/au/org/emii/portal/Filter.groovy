@@ -1,10 +1,5 @@
 package au.org.emii.portal
 
-import java.beans.PropertyDescriptor
-import org.springframework.beans.BeanUtils
-import java.lang.reflect.Method
-import javax.swing.text.LayeredHighlighter
-
 class Filter {
 
     String label //This is the human readable name

@@ -15,7 +15,6 @@ class LayerController {
 
     def layerService
 	def dataSource
-    def authService
 
     def index = {
         redirect(action: "list", params: params)
@@ -49,14 +48,14 @@ class LayerController {
                 order( "title", "asc" )
             }
         }
-        
+
         params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
         if ( !params.offset ) params.offset = 0
 
         def criteria = Layer.createCriteria()
         def layers = criteria.list( query, max: params.max, offset: params.offset )
         def filters = [keyword: params.keyword, serverId: params.serverId]
-        
+
         def model = [
             layerInstanceList: layers,
             layersShownCount: layers.size(),
@@ -81,13 +80,13 @@ class LayerController {
 			render layerInstanceList as JSON
         }
     }
-    
+
 	def listForMenuEdit = {
 		def max = params.limit?.toInteger() ?: 50
 		def offset = params.start?.toInteger() ?: 0
-		
+
 		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
-		
+
 		def criteria = Layer.createCriteria()
 		def layers = criteria.list(max: max, offset: offset) {
 			if (params.phrase?.size() > 1) {
@@ -101,7 +100,7 @@ class LayerController {
 			order("server.id")
 			order("title")
 		}
-		
+
 		def combinedList = layers.grep { !parentIds.contains(it.id) }
 		combinedList = _collectLayersAndServers(combinedList)
 		render _toResponseMap(combinedList, layers.totalCount) as JSON
@@ -122,19 +121,19 @@ class LayerController {
             render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
-    
-    // Lookup a layer using the server uri and layer name 
+
+    // Lookup a layer using the server uri and layer name
     // (used to find any portal layer corresponding to externally
 	// entered layer details e.g. layers sourced from metadata records)
-    
+
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
-        
+
         // split name into namespace and local name components if applicable
-        
+
         def parts = params.name.split(":")
         def namespace, localName
-        
+
         if (parts.length == 2) {
             namespace = parts[0]
             localName = parts[1]
@@ -142,15 +141,15 @@ class LayerController {
             namespace = null
             localName = params.name
         }
-        
+
         def serverParam = params.serverUri
-        
-        def layerInstance = criteria.get {  
+
+        def layerInstance = criteria.get {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
                     like("uri", params.serverUri+"%")
-                    // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)  
+                    // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)
                     // Note that different GetCapabilites versions may have different request endpoints.
                     // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
                     operations {
@@ -163,12 +162,12 @@ class LayerController {
                 eq( "namespace", namespace)
             } else {
                 isNull ("namespace")
-            }         
+            }
             eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
 			eq("activeInLastScan", true)
         }
-            
+
         if (layerInstance) {
 			_renderLayer(layerInstance)
         } else {
@@ -213,7 +212,7 @@ class LayerController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (layerInstance.version > version) {
-                    
+
                     layerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'layer.label', default: 'Layer')] as Object[], "Another user has updated this Layer while you were editing")
                     render(view: "edit", model: [layerInstance: layerInstance])
                     return
@@ -287,28 +286,28 @@ class LayerController {
             def server = Server.findByUri( metadata.serverUri )
 
             if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
-            
+
             def serverCapabilities = JSON.parse( capabilitiesData as String )
-            
+
             layerService.updateWithNewData serverCapabilities.rootLayer, server, metadata.dataSource
-            
-            server.updateOperations serverCapabilities.operations 
-            
+
+            server.updateOperations serverCapabilities.operations
+
             server.lastScanDate = new Date()
             server.save( failOnError: true )
-            
+
             render status: 200, text: "Complete (saved)"
-			
+
 			_recache(server)
         }
         catch (Exception e) {
 
             log.info "Error processing layer/saveOrUpdate request", e
-            
+
             render status: 500, text: "Error processing request: $e"
         }
     }
-    
+
 	def getFormattedMetadata = {
 
         def responseText
@@ -357,29 +356,29 @@ class LayerController {
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
 	}
 
-	
+
     void _validateCredentialsAndAuthenticate(def params) {
-        
+
         def suppliedPassword = params.password
-        
+
         if ( !suppliedPassword ) throw new IllegalArgumentException( "Supplied value for password is invalid." )
-        
+
         def configuredPassword = Config.activeInstance().wmsScannerCallbackPassword
-        
+
         if ( !configuredPassword ) throw new IllegalStateException( "WMS Scanner password not configured in Portal app." )
 
         if ( configuredPassword != suppliedPassword ) throw new IllegalArgumentException( "Supplied password does not match configured password." )
     }
-    
+
     void _validateMetadata(def metadata) {
-        
+
         if ( !metadata ) throw new IllegalArgumentException( "Metadata must be present" )
         if ( !metadata.serverUri ) throw new IllegalArgumentException( "serverUri must be specified in the metadata" )
         if ( !metadata.dataSource ) throw new IllegalArgumentException( "dataSource must be specified in the metadata" )
     }
-    
+
     void _validateCapabilitiesData(def capabilitiesData) {
-        
+
         if ( !capabilitiesData ) throw new IllegalArgumentException( "CapabilitiesData must be present" )
     }
 
@@ -402,13 +401,13 @@ class LayerController {
             render text: "Could not find Server with params: $params", status: 500
         }
     }
-	
+
 	def configuredbaselayers = {
 		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
 		render data as JSON
 	}
-	
+
 	def defaultlayers = {
 		def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
 		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
@@ -421,7 +420,7 @@ class LayerController {
         }
         return null
     }
-	
+
 	def _collectLayersAndServers(layers) {
 		def items = []
 		def server
@@ -431,7 +430,7 @@ class LayerController {
 		}
 		return items
 	}
-	
+
 	def _collectServer(previous, current, items) {
 		def result = previous
 		if (_isServerCollectable(result, current)) {
@@ -440,15 +439,15 @@ class LayerController {
 		}
 		return result
 	}
-	
+
 	def _isServerCollectable(server1, server2) {
 		return server2 && (!server1 || server1 != server2)
 	}
-	
+
 	def _toResponseMap(data, total) {
 		return [data: data, total: total]
 	}
-	
+
 	def _convertLayersToListOfMaps(layers) {
 		def data = []
 		layers.each { layer ->
@@ -456,7 +455,7 @@ class LayerController {
 		}
 		return data
 	}
-	
+
 	def _findLayersAndServers(layerIds) {
 		def layers = []
 		if (layerIds) {
@@ -470,7 +469,7 @@ class LayerController {
 		}
 		return layers
 	}
-	
+
 	def _renderLayer(layerInstance) {
         def excludes = [
                 "class",
@@ -488,7 +487,7 @@ class LayerController {
         def data = _getLayerData(layerInstance, excludes)
         render data as JSON
 	}
-	
+
 	def _getLayerData(layer, excludes) {
 
         def layerData = [:]
@@ -508,7 +507,7 @@ class LayerController {
 		}
 		return layerData
 	}
-    
+
     def _getLayerDefaultData(layer){
         def excludes = [
                 "class",
@@ -525,7 +524,7 @@ class LayerController {
 
         return _getLayerData(layer, excludes)
     }
-	
+
 	def _recache(server) {
         server.recache(MenuJsonCache.instance())
 		Config.recacheDefaultMenu()
@@ -533,6 +532,16 @@ class LayerController {
 
     def getFiltersAsJSON = {
         def layerInstance = Layer.get( params.layerId )
+
+        // Code review - PM
+        // It seems like a small change but I think it's worth using the null-safe dereference here. ie:
+        // if ( layerInstance ) {
+        //    layerInstance.filters?.each{
+        //        results.add(it.toLayerData())
+        //    }
+        //    render results as JSON
+        // }
+        // else ...
 
         def results = []
 

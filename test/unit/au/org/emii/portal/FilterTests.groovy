@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class FilterTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -13,6 +13,8 @@ class FilterTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
+        // Code review - PM: This isn't wrong or anything but we've stopped writing constraints unit test for domain classes.
+        // They are too much work to maintain and they don't really add much (any?) safety
         mockDomain(Filter)
 
         def filter1 = new Filter(name : "vesselName", type : FilterTypes.STRINGTYPE, label: "Vessel Name", filterValues: "ship 1, ship 2, ship 3");
@@ -40,7 +42,7 @@ class FilterTests extends GrailsUnitTestCase {
         expected["name"] = "vesselName"
         expected["filterValues"] = "ship1, ship2, ship3"
         expected["layerId"] = 3
-        
+
         assertEquals filter1.toLayerData().toString(), expected.toString()
     }
 }
