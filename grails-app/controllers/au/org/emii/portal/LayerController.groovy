@@ -533,21 +533,10 @@ class LayerController {
     def getFiltersAsJSON = {
         def layerInstance = Layer.get( params.layerId )
 
-        // Code review - PM
-        // It seems like a small change but I think it's worth using the null-safe dereference here. ie:
-        // if ( layerInstance ) {
-        //    layerInstance.filters?.each{
-        //        results.add(it.toLayerData())
-        //    }
-        //    render results as JSON
-        // }
-        // else ...
-
         def results = []
 
         if ( layerInstance ) {
-            if(layerInstance.filters){
-                layerInstance.filters.each{
+            if(layerInstance.filters?.each){
                     results.add(it.toLayerData())
                 }
             }
