@@ -138,6 +138,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	                }
             	}
                 this._featureInfoRequestCompleted();
+                setTimeout(imgSizer, 1000);
             },
 
             failure: this._featureInfoRequestCompleted
@@ -251,7 +252,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     
     _updateStatus: function() {
         if (this.numGoodResults > 0) {
-            this.setTitle("Feature information found for " + this.numGoodResults + " / " + this.numResultsToLoad + " layers");
+            this.setTitle("Feature information found for " + this.numGoodResults + " layers");
         }
         else if (this.numResultQueries == this.numResultsToLoad) {
             var layerStr = (this.numResultsToLoad == 1) ? "layer" : "layers";

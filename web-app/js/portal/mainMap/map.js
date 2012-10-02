@@ -242,8 +242,16 @@ function imgSizer(){
 
     $(selector).each(function(){
 
-        var width = $(this).width();
-        var height = $(this).height();
+        //from stack overflow: http://stackoverflow.com/questions/318630/get-real-image-width-and-height-with-javascript-in-safari-chrome
+		var pic_real_width, pic_real_height;
+		$(this) // Make in memory copy of image to avoid css issues
+			.load(function() {
+				pic_real_width = this.width;   // Note: $(this).width() will not
+				pic_real_height = this.height; // work for in memory images.
+			});
+
+		var width = $(this).width();
+                var height = $(this).height();
 
         if (width > max_width) {
 

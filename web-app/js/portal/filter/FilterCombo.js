@@ -38,13 +38,7 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
 		this.combo.clearValue();
 		var values = this.filter.filterValues.split(",");
 
-        // Code review - PM: What does this loop do? possibly redundant?
-		var data = [];
-		for(var i = 0; i < values.length; i++){
-			data.push([values[i]]);
-		}
-
-		this.combo.getStore().loadData(data);
+		this.combo.getStore().loadData(values);
 	},
 
     _createCQL: function(combo, record, index){
