@@ -798,7 +798,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			this.map.removeLayer(openLayer, newDetailsPanelLayer);
 
 			delete this.activeLayers[this.getLayerUid(openLayer)];
-
+			
+			//got to do this here do to wierd way ActiveLayersPanel 
+			//rearranges layers(removing and adding rather than just seting order)
+			if(openLayer.isAnimated)
+			{
+				this.animationPanel.removeAnimation();
+			}
 			if (newDetailsPanelLayer == null) {
 				Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
 				Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers

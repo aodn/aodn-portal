@@ -353,38 +353,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
-	_onMove : function() {
-		// Openlayers.Map seems to reset display of layers after a move
-		// so rereset it back.
-		if(this.originalLayer != null && this.originalLayer.getVisibility())
-		{
-			for (var i = 0; i < this.animatedLayers.length; i++) {
-				var value = i == this.counter
-				this.animatedLayers[i].display(value);
-				this.animatedLayers[i].redraw();
-			}
-		}
-	},
-
 	removeAnimation : function() {
 		if (this.animatedLayers.length > 0) {
 			clearTimeout(this.timerId);
 
-			if (this.map == null) {
-				this.map = Ext.getCmp("map");
-			}
+//			if (this.map == null) {
+//				this.map = Ext.getCmp("map");
+//			}
 
-			this.originalLayer.name = this.originalLayer.name.substr(0,
-					this.originalLayer.name.indexOf(" (animated)"));
-			this.originalLayer.setOpacity(this.originalOpacity);
+//			this.originalLayer.name = this.originalLayer.name.substr(0,
+//					this.originalLayer.name.indexOf(" (animated)"));
+//			this.originalLayer.setOpacity(this.originalOpacity);
 
 			while (this.animatedLayers.length > 0) {
 				if ((this.animatedLayers[0].map == null)) {
 					this.animatedLayers[0] = null;
-				} else {
-					this.map.map.removeLayer(this.animatedLayers[0],
-							this.originalLayer);
-				}
+				} 
+//				else {
+//					this.map.map.removeLayer(this.animatedLayers[0],
+//							this.originalLayer);
+//				}
 
 				this.animatedLayers.shift();
 			}
@@ -398,6 +386,10 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 			this._resetForNewAnimation();
 			delete this.originalLayer.isAnimated;
+			
+			this.allTimes = null
+			this.originalLayer = null;
+			this.selectedLayer = null;
 		}
 
 	},
@@ -408,9 +400,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 	_setSlide : function(index) {
 		if (this.animatedLayers.length > 0) {
-			for (var i = 0; i < this.animatedLayers.length; i++) {
-				this.animatedLayers[i].display(i == index);
-			}
+			this.originalLayer.setCurrentSlide(index);
 
 			// this should still work even if there's no animation, i.e. paused
 			this.stepSlider.setValue(index);
@@ -418,8 +408,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			// also set the label
 			var labelStr = this.animatedLayers[index].params.TIME;
 
-			this
-					._setTimeAsStepLabelText(this.animatedLayers[index].params.TIME);
+			this._setTimeAsStepLabelText(this.animatedLayers[index].params.TIME);
 
 			if (this._isLoadingAnimation()) {
 				this._setStepLabelText("Loading... "
@@ -430,7 +419,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_cycleAnimation : function(forced) {
-		if (this.originalLayer.getVisibility()) {
+		if (this.originalLayer.getVisibility() && this.originalLayer.map !=null) {
 			if (this.counter < this.animatedLayers.length - 1) {
 				var curLayer = this.animatedLayers[this.counter + 1];
 				if (this.map.map.getLayer(curLayer.id) == null) {
@@ -564,6 +553,8 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 				this.originalLayer.slides = new Array();
 
+				this.currentSlide = 0;
+				this.playing = false;
 				this.originalLayer.addSlide = function(openlayer) {
 					this.slides.push(openlayer);										
 
@@ -610,15 +601,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					this.display(false);
 					this.events.triggerEvent("visibilitychanged");
 				}
+				
+				this.originalLayer.setCurrentSlide = function(index) {
+					this.currentSlide = index;
+					console.log("setSlide" + index)
+					for (var i = 0; i < this.slides.length; i++) {
+						this.slides[i].display(i == index);
+					}
+				}
 
 				this.originalLayer._onChangeLayer = function(evt) 
 				{
 					// if this layer's order(bottom,second from top, etc) is changed, change the order
 					// of the frames aswell. 
-				
-					
 
-					if (evt.property == "order") 
+					if (evt.property == "order" && this.map !=null) 
 					{
 						for (var i = 0; i < this.slides.length; i++) 
 						{
@@ -668,6 +665,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						}
 					}
 				}
+				
+				this.originalLayer._onMove = function() {
+					// Openlayers.Map seems to reset display of layers after a move
+					// so rereset it back.
+					if(this.getVisibility())
+					{
+						for (var i = 0; i < this.slides.length; i++) {
+							var value = i == this.currentSlide
+							this.slides[i].display(value);
+							this.slides[i].redraw();
+						}
+					}
+				}
 
 				this.originalLayer.events.on({
 							"visibilitychanged" : this._onLayerVisibilityChanged,
@@ -675,9 +685,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 						});
 
 				this.map.map.events.on({
-							"removelayer" : this.originalLayer._onLayerRemoved,
-							scope : this.originalLayer
-						});
+					"removelayer" : this.originalLayer._onLayerRemoved,
+					scope : this.originalLayer
+				});
 
 				this.map.map.events.on({
 							"addlayer" : this.originalLayer._onLayerAdded,
