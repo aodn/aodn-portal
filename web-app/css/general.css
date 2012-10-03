@@ -3,18 +3,17 @@ body, html{
     font-size: 11px;
 	height: 100%;
     /*margin: 5px! important;
-	
+
     margin-top: 2px! important; */
 }
 
 h1, h2,h3,h4 {
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
-p, td{    
+p, td{
     font-family: tahoma,verdana,arial,sans-serif;
 }
-
 
 body {
     min-width:  1020px;
@@ -49,9 +48,8 @@ input.readonlyInput {
 .searchInput.x-form-empty-field {
     color: #15428B;
     font-size: inherit;
-	font-weight: bold;	
+	font-weight: bold;
 }
-
 
 .userWMSInput {
     display: block;
@@ -90,18 +88,18 @@ hr {
     float: left;
 }
 .homePanelWidget {
-    margin-right: 10px;	
+    margin-right: 10px;
 	padding-right: 20px;
 }
 
 .buttonPad {
     padding: 2px 5px 5px 0px
 }
-.arrowUp {	
-    background: url("../images/arrowUp.png") no-repeat left top transparent; 
+.arrowUp {
+    background: url("../images/arrowUp.png") no-repeat left top transparent;
 }
-.arrowDown {	
-    background: url("../images/arrowDown.png") no-repeat left top transparent; 
+.arrowDown {
+    background: url("../images/arrowDown.png") no-repeat left top transparent;
 }
 
 
@@ -138,7 +136,7 @@ hr {
 }
 
 /* the main tabPanel for the portal */
-.mainTabPanelHeader .x-tab-strip-wrap 
+.mainTabPanelHeader .x-tab-strip-wrap
 {
     display: none;
 }
@@ -172,7 +170,7 @@ hr {
     margin-bottom: 3px;
     margin-right: 3px;
     padding: 15px;
-    height: 20px;    
+    height: 20px;
     width: 150px;
     box-shadow: -5px 5px 25px rgba(24, 57, 78, 0.3), 0 0 1px rgba(24, 57, 78, 0.2) inset
 }
@@ -185,7 +183,7 @@ hr {
 }
 
 .mapFooter {
-    background: url("../images/shadowLight.png") repeat-x scroll left top white; 
+    background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
 
 
@@ -199,14 +197,14 @@ hr {
 }
 
 
-#viewPortHomepageLinks {	
-    margin-left: 20px;		
+#viewPortHomepageLinks {
+    margin-left: 20px;
     margin-top: 5px;
 }
-#viewPortHomepageLinks .viewPortLinksBackground{	
+#viewPortHomepageLinks .viewPortLinksBackground{
     background-color: #4F7B96;
 }
-#viewPortHomepageLinks a{	
+#viewPortHomepageLinks a{
     font-size: 12px;
 }
 
@@ -233,9 +231,9 @@ hr {
     padding: 10px;
     border: 6px solid #F4F4F4;
     font-size: 12px;
-    
+
         background-image: none;
-    
+
 }
 
 /* Our own style is applied to the message of the day dialog (see above). */
@@ -256,7 +254,7 @@ a[rel="external"], a.external {
 .mainlinks {
     font-size: 13px;
     font-weight: bold;
-    margin-right: 10px;    
+    margin-right: 10px;
     padding-left: 10px;
 }
 
@@ -385,7 +383,7 @@ table.featureInfo caption{
 }
 
 #mapdiv {
-    position: absolute;	
+    position: absolute;
     z-index: 1;
     height: 100%;
     width:100%;
@@ -407,7 +405,7 @@ table.featureInfo caption{
     width: 90px;
     z-index: 3;
     position: relative;
-    float: left;	
+    float: left;
     color: white;
 }
 
@@ -463,7 +461,7 @@ table.featureInfo caption{
 animationPanel {
 	opacity: 1.0;
 }
-#maptools .x-panel-body {	   
+#maptools .x-panel-body {
     border-radius: 5px;
 }
 
@@ -475,8 +473,8 @@ animationPanel {
     opacity: 1.0! important;
     filter: alpha(opacity = 100);
 }
-.mapToolbarExpanderBarOver {	
-    background-color:white! important; 
+.mapToolbarExpanderBarOver {
+    background-color:white! important;
 }
 
 .fullTransparency .x-item-disabled * {
@@ -492,9 +490,9 @@ animationPanel {
 
 .popupHtml {
     color:#6A6A6A;
-    background-color: #F4F4F4; 
-    padding: 0px 0px 10px 10px; 
-    
+    background-color: #F4F4F4;
+    padding: 0px 0px 10px 10px;
+
 }
 
 .featureinfocontent {
@@ -549,20 +547,20 @@ animationPanel {
     padding: 10px 5px;
 }
 
-.featureinfocontent b { 
-    color:#6A6A6A; 
+.featureinfocontent b {
+    color:#6A6A6A;
     font-weight: bold;
 }
 
-.featureinfocontent ul { 
+.featureinfocontent ul {
     margin: 5px 0px;
-    padding-left: 2px; 
+    padding-left: 2px;
     list-style-type: circle;
 }
 
-.featureinfocontent li { 
-    margin-left: 2px; 
-    padding-left: 2px; 
+.featureinfocontent li {
+    margin-left: 2px;
+    padding-left: 2px;
     list-style-position: inside;
 }
 
@@ -578,13 +576,13 @@ p.important {
     font-weight: bold;
 }
 
-.extAjaxLoading {  
-    border-radius: 4px;    
+.extAjaxLoading {
+    border-radius: 4px;
     padding: 3px;
     background-color: #ffffff! important;
 }
 
-.extAjaxLoading div {       
+.extAjaxLoading div {
     background-color: #ffffff! important;
 }
 
@@ -601,11 +599,11 @@ p.important {
 
 /* openlayers */
 
-.olControlPanel .olControlNavigationItemActive, 
-.olControlPanel .olControlNavigationItemInactive, 
-.olControlPanel .olControlZoomBoxItemActive, 
-.olControlPanel .olControlZoomBoxItemInactive, 
-.olControlPanel .olControlEditingToolbar, 
+.olControlPanel .olControlNavigationItemActive,
+.olControlPanel .olControlNavigationItemInactive,
+.olControlPanel .olControlZoomBoxItemActive,
+.olControlPanel .olControlZoomBoxItemInactive,
+.olControlPanel .olControlEditingToolbar,
 .olControlPanel .olControlEditingToolbarItemInactive {
     background-image: url("../images/raa_y.gif");
     display: block;
@@ -663,7 +661,7 @@ div.olControlScaleLineBottom {
 }
 
 div.olControlScaleLineTop, div.olControlScaleLineBottom {
-    border-color: #253745;        
+    border-color: #253745;
     color: #253745;
     font-weight: bold;
 }
@@ -740,7 +738,7 @@ JQUERY AUTO COMPLETE
 #mapOptions {
     margin: 1px 6px 0px 4px;
     padding: 10px;
-    background-color: #F1F1F0;    
+    background-color: #F1F1F0;
     border-radius: 10px;
     border: 1px solid #CBCED3;
     box-shadow: 2px 2px 3px 1px #EEEEEE;
@@ -826,7 +824,7 @@ JQUERY AUTO COMPLETE
     text-align:left;
 }
 
-.p-centre {            
+.p-centre {
     text-align:center;
 }
 
@@ -845,3 +843,33 @@ div.allwhite {
 
 /* AODAAC tab styles */
 .aodaacTab { }
+
+/* Faceted search styles */
+.search-filter-panel .x-panel-header {
+    /*color: #8a2be2;*/
+    height: 12px;
+    font-size: 12px;
+    padding: 5px 2px 5px 2px;
+}
+
+.term-selection-panel {
+    border: 1px solid #EEE;
+    margin-bottom: 3px;
+}
+
+.term-selection-panel .x-panel-header {
+    background-color: #f8f8f8;
+    padding-bottom: 7px;
+}
+
+.search-filter-panel .term-selection-panel-header {
+    color: #666;
+    font-weight: bold;
+    /*  background-color: #fffacd; */
+}
+
+.drop-zone-placeholder {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}

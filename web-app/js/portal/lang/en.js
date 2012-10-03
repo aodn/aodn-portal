@@ -1,27 +1,25 @@
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
-	
-	layerChooserMenuHeader: 'Map Layer Chooser',
-	
-	// Animation Panel
-	stop: 'Stop',
-	start: 'Start',
-	play: 'Play',
-	pause: 'Pause',
-	end: 'End',
-	time: 'Animation time',
-	speed: ' (x 1)',
-	warn_label: "Only one layer can be animated at a time.  You must remove an existing animation to create a new animation.",
-	speedUp: "Doubles animation speed",
-	slowDown: "Halves animation speed",
-	clearButton_tip: "Stops animation and remove all animated layers from map",
-	pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
-	
-	// Map.js
-	controlButton_4animationPanel: 'Animation Options',
-	
-	
-	
-    // Search results 
+
+    layerChooserMenuHeader: 'Map Layer Chooser',
+
+    // Animation Panel
+    stop: 'Stop',
+    start: 'Start',
+    play: 'Play',
+    pause: 'Pause',
+    end: 'End',
+    time: 'Animation time',
+    speed: ' (x 1)',
+    warn_label: "Only one layer can be animated at a time.  You must remove an existing animation to create a new animation.",
+    speedUp: "Doubles animation speed",
+    slowDown: "Halves animation speed",
+    clearButton_tip: "Stops animation and remove all animated layers from map",
+    pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
+
+    // Map.js
+    controlButton_4animationPanel: 'Animation Options',
+
+    // Search results
     selectLayer: 'Select layer',
     bboxLayer: 'Extent',
     logoHeading: 'Logo',
@@ -34,21 +32,21 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerSelectionWindowAddToMap: "Add to map",
     datasetLayers: 'Dataset layers',
     selectLink: 'Select linked page',
-	
+
     // Refine search panel
     filterNames: {
         keywords: 'Keywords',
         organizationNames: 'Organisations',
         dataParameters: 'Data Parameters'
     },
-	
-	// DetailsPanel.js
-	opacity: "Opacity",
-	wmsLayerProblem: "There is a problem with the availability of this layer",
-	
-    // Refine search panel revised    
+
+    // DetailsPanel.js
+    opacity: "Opacity",
+    wmsLayerProblem: "There is a problem with the availability of this layer",
+
+    // Refine search panel revised
     refineSearch: 'Current Search',
-    
+
     //Search form
     addCriteria: 'Limit search to',
     dateRange: 'Date range',
@@ -72,23 +70,23 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     precision: 'Precision',
     exactMatchesDesc: 'Must Match Search Terms Exactly',
     searchButton: 'Search',
-    fullTextSearch: ' ',
+    fullTextSearch: 'What are you looking for?',
     saveSearchButtonText: 'Save',
     saveSearchButtonTip: 'Save the current search',
     deleteSavedSearchButtonText: 'Delete',
     deleteSavedSearchButtonTip: 'Delete the current saved search',
     saveSearchDialogTitle: 'Save Search',
     saveSearchName: 'Name',
-	saveSearchFailureErrMsg: 'Unexpected failure saving search',
-	chooseSavedSearch: 'Choose a Saved Search',
-	mySearches: 'My Searches',
-	registerToSave: 'Register or login to save your searches',
-  newSearchText: 'New',
-  newSearchTip: 'Start a new search',
-      
+    saveSearchFailureErrMsg: 'Unexpected failure saving search',
+    chooseSavedSearch: 'Choose a Saved Search',
+    mySearches: 'My Searches',
+    registerToSave: 'Register or login to save your searches',
+    newSearchText: 'New',
+    newSearchTip: 'Start a new search',
+
     // errors
-  	errorDialogTitle: 'Error',
-  	
+    errorDialogTitle: 'Error',
+
     // Download Cart
     ttAddToDownload: 'Add to download cart',
     ttAddAllToDownload: 'Add all to download cart',
@@ -105,30 +103,34 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerExistsMsg: 'This layer has already been added to the map',
     layerAddedTitle: 'Add layer',
     layerAddedMsg: "'${layerDesc}' has been added to the map",
-    
+    layerActions: 'Actions',
+    autoZoomControlLabel: 'Auto zoom to layer',
+    removeAllControlLabel: 'Remove all\u2025',
+    resetMapControlLabel: 'Reset map\u2025',
+
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
-	
-	// UserDefinedWMSPanel
-	searching: 'Searching ...',
-	addYourURL: ' ** Add your URL ** ',	
-	addYourURLHeader: "Enter WMS Server URL",
-	addYourLayerSuccess: '\'${layerName}\' added to map',
-	addYourURLHelp: '<i>Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Only add required parameters specific to the server such as \'dataset\' or \'namespace\'. The map layers must also be available from this base URL.<BR>Due to Javascript restrictions, layer features cannot be retrieved when you click on the map. You may also note reduced functionality.</i>',	
-	addYourURLSuccessful: 'Server successfully loaded',
-	addYourURLUnsuccessful: 'Unsuccessfully tried to load <a class=\"external\" target=\"_blank\" href=\"${url}\">${url}</a><BR>To diagnose the problem, click the link to see the full reponse from the server.',
-	addYourURLUnsuccessfulNoResponse: 'No response recieved from the WMS server. Connection timed out',
-	addYourURLDuplicate: 'The server has previously been loaded',
-	addYourURLDuplicateBody: 'Add parameters to the WMS server URL if required, to change the returned list of layers',
-	addYourURLSubmit: 'Submit',
-	addYourURLSubmitTip: 'Load layers from your OGC compliant Web Map Server URL',
-  
-    //snapshots 
+
+    // UserDefinedWMSPanel
+    searching: 'Searching ...',
+    addYourURL: ' ** Add your URL ** ',
+    addYourURLHeader: "Enter WMS Server URL",
+    addYourLayerSuccess: '\'${layerName}\' added to map',
+    addYourURLHelp: '<i>Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Only add required parameters specific to the server such as \'dataset\' or \'namespace\'. The map layers must also be available from this base URL.<BR>Due to Javascript restrictions, layer features cannot be retrieved when you click on the map. You may also note reduced functionality.</i>',
+    addYourURLSuccessful: 'Server successfully loaded',
+    addYourURLUnsuccessful: 'Unsuccessfully tried to load <a class=\"external\" target=\"_blank\" href=\"${url}\">${url}</a><BR>To diagnose the problem, click the link to see the full reponse from the server.',
+    addYourURLUnsuccessfulNoResponse: 'No response recieved from the WMS server. Connection timed out',
+    addYourURLDuplicate: 'The server has previously been loaded',
+    addYourURLDuplicateBody: 'Add parameters to the WMS server URL if required, to change the returned list of layers',
+    addYourURLSubmit: 'Submit',
+    addYourURLSubmitTip: 'Load layers from your OGC compliant Web Map Server URL',
+
+    //snapshots
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
     saveSnapshotDialogTitle: 'Save Map',
     saveSnapshotName: 'Name',
-	saveSnapshotFailureErrMsg: 'Unexpected failure saving snapshot',
+    saveSnapshotFailureErrMsg: 'Unexpected failure saving snapshot',
     btnSave: 'Save',
     btnCancel: 'Cancel',
     chooseSavedMap: 'Choose a Saved Map',
@@ -137,23 +139,44 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareSnapshot: 'Share',
     shareMapDialogTitle: 'Share Map',
     shareSnapshotTip: 'Share a saved map',
-	
-  	// UserDefinedWMSPanel
-	rourUrl: 'Choose a Saved Map',
-	
-	//MapOptionsPanel
-	autozoom: 'Auto zoom to layer',
-	hideDetailsPanel: 'Hide layer details',
-	
-	// RightDetailsPanel.js
-	noActiveLayersSelected:	"No layers have been added to the map",
-	layerOptions: "Layer Options",
-	
+
+    // layer search
+    searchTabTitle: 'Search',
+    layerSearch: 'Map Layers',
+    themeFilter: 'Theme',
+    locationFilter: 'Location',
+    methodFilter: 'Method',
+    organisationFilter: 'Organisation',
+    parameterFilter: 'Parameter',
+    freeTextFilter: 'Free Text',
+    freeTextSearch: 'Go',
+
+    showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
+    matchingLayers: 'Add Layer',
+
+    // UserDefinedWMSPanel
+    rourUrl: 'Choose a Saved Map',
+
+    //MapOptionsPanel
+    autozoom: 'Auto zoom to layer',
+    hideDetailsPanel: 'Hide layer details',
+
+    // RightDetailsPanel.js
+    noActiveLayersSelected:	"No layers have been added to the map",
+    layerOptions: "Layer Options",
+
     //Options Panel
     turnOnTransect: 'Turn on transect graphing for this layer:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',
     transectTab: 'Transect',
     transectDataHeading: 'Data along the transect: ',
-    dimensionValuesHeading: 'For dimension values: '
-}); 
+    dimensionValuesHeading: 'For dimension values: ',
+
+    // Dropzone placeholders
+    downloadCartDropZonePlaceholder: 'Drag downloads here to add them to the cart',
+    mapDropZonePlaceholder: 'Drag layers here to add them to the map',
+
+    layerSearchTabTitle: 'Layers',
+    downloadSearchTabTitle: 'Downloads'
+});

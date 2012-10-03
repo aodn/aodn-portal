@@ -14,14 +14,14 @@ ${buildInfo}
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'css',file:'portal-search.css')}" />
 
 <g:if env="development">
-<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base-debug.js')}" type="text/javascript"></script>          
+<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base-debug.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
 <script src="${resource(dir:'js',file:'GeoExt1.1/lib/GeoExt.js')}" type="text/javascript"></script>
 </g:if>
 <g:else>
-<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}" type="text/javascript"></script>          
+<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
 <!--- GeoExt (Has to be after Openlayers and ExJS) -->
@@ -45,9 +45,10 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/prototypes/Array.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/prototypes/OpenLayers.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/lang/en.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/common/spin.min.js?')}${jsVerNum}" type="text/javascript"></script>   
+<script src="${resource(dir:'js',file:'portal/common/spin.min.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/FacetedSearchActionColumn.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/LoadMask.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -69,20 +70,21 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/search/filter/FilterComboBox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FiltersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/filter/FilterStore.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/FilterSelector.js?')}${jsVerNum}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/NewSearchLink.js?')}${jsVerNum}"   type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/SaveSearchLink.js?')}${jsVerNum}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/FilterSelector.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/NewSearchLink.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SaveSearchLink.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/MiniMapPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SavedSearchComboBox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SaveSearchDialog.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/SavedSearchPanel.js?')}${jsVerNum}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/SavedSearchPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchController.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchForm.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/search/RightSearchTabPanel.js?')}${jsVerNum}"   type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/RightSearchTabPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/SearchTabPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LinkSelectionWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/LayerSelectionWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/ResultsGrid.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/search/FacetedSearchResultsGrid.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/ServerNodeLayerDescriptorStore.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotProxy.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -90,6 +92,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotDialog.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotSaveButton.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+%{--<script src="${resource(dir:'js',file:'portal/ui/ActiveLayersTreeNodeUI.js?')}${jsVerNum}" type="text/javascript"></script>--}%
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/utils/TimeUtil.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -105,6 +108,8 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/AodaacPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+%{--<script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js?')}${jsVerNum}" type="text/javascript"></script>--}%
+%{--<script src="${resource(dir:'js',file:'portal/ui/openlayers/LayerSwitcher.js?')}${jsVerNum}" type="text/javascript"></script>--}%
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -112,15 +117,24 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/MapMenuPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/PortalPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/LayerChooserPanel.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js?')}${jsVerNum}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/MainTabPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/UserDefinedWMSPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/DownloadCartConfirmationWindow.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/FeatureInfoPopup.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ui/Viewport.js?')}${jsVerNum}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/Viewport.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/SelectionPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/search/SearchPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/search/FreeTextSearchPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/service/CatalogSearcher.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/search/SearchFiltersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/TopTermStore.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/TermSelectionPanel.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/ResultsStore.js?')}${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/EmptyDropZonePlaceholder.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/TransectControl.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/DownloadCart.js?')}${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/portal.js?')}${jsVerNum}"  type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/portal.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/GeoExt.ux.BaseLayerCombobox.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/LayerOpacitySliderFixed.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/mainMap/ramadda.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -131,16 +145,16 @@ ${buildInfo}
 
 <!--- common styles and JavaScript for the map page and Grails admin pages -->
  <g:render template="/common_includes"></g:render>
- 
+
 <title>${configInstance?.name}</title>
 </head>
 
 <body>
-    
+
   <g:render template="/mainPortalHeader" model="['showLinks':true,'configInstance':configInstance]"></g:render>
-  
+
 <div id="loader" style="position:absolute; top:50%; left:43%; z-index: 9000;">
-  <p>Page Loading ....</p>
+  <p>Page Loading ...</p>
   <div id="jsloader" style="position:relative;left:130px;top:-17px" ></div>
     <!--img src="images/spinnerLarge.gif" alt="Loading..." /-->
   </div>
@@ -151,7 +165,5 @@ ${buildInfo}
     Ext.Msg.alert( "Message", "${flash.message.encodeAsHTML()}" );
   </script>
 </g:if>
-  
 </body>
-
 </html>
