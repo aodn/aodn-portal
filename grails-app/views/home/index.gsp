@@ -92,7 +92,6 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/snapshot/SaveSnapshotDialog.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotSaveButton.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/snapshot/SnapshotOptionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
-%{--<script src="${resource(dir:'js',file:'portal/ui/ActiveLayersTreeNodeUI.js?')}${jsVerNum}" type="text/javascript"></script>--}%
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/utils/TimeUtil.js?')}${jsVerNum}" type="text/javascript"></script>
@@ -108,8 +107,6 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/AodaacPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js?')}${jsVerNum}" type="text/javascript"></script>
-%{--<script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js?')}${jsVerNum}" type="text/javascript"></script>--}%
-%{--<script src="${resource(dir:'js',file:'portal/ui/openlayers/LayerSwitcher.js?')}${jsVerNum}" type="text/javascript"></script>--}%
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/Map.js?')}${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js?')}${jsVerNum}" type="text/javascript"></script>
