@@ -262,7 +262,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	
 	getCatalogueSearchParams: function(searchFilters) {
 		var format = function(value) {
-			return Ext.isDate(value)?value.format('Y-m-d'):value;
+			value = Ext.isDate(value)?value.format('Y-m-d'):value;
+			value = value.substring?value.replace("&","%26"):value;
+			return value;
 		};
 		var searchParams = [];
 		for (var i = 0; i < searchFilters.length; i++) {
