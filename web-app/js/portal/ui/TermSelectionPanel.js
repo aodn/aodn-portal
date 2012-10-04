@@ -6,6 +6,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     cfg = cfg || {};
 
+    this.titleText = cfg.title;
     if ( cfg.title ) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
     var defaults = {
@@ -233,8 +234,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
   _onFilterClick: function(view, index) {
     var rec = view.store.getAt(index);
     var filterValue = rec.get('value');
+	
+	var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
+   
+	newTitle += '    ' + filterValue.substr(0,30)+'...';
+	this.setTitle(newTitle);
 
-    this.searcher.removeFilters(this._getCurrentFilterName());
+	this.searcher.removeFilters(this._getCurrentFilterName());
     this.searcher.addFilter(this._getClickedFilterName(), filterValue);
     this.searcher.search();
 
@@ -244,6 +250,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
   _onFilterRemoved: function() {
     var filter = this.selectionStore.getFilterValue();
 
+    var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
+	this.setTitle(newTitle);
     this.searcher.removeFilters(this.fieldName);
     this.searcher.addFilter(this._getCurrentFilterName(), filter);
     this.searcher.search();

@@ -868,6 +868,13 @@ div.allwhite {
     /*  background-color: #fffacd; */
 }
 
+.search-filter-panel .term-selection-panel-header-selected {
+    color: #666;
+    font-weight: bold;
+    /*  background-color: #fffacd;*/
+    font-style: italic;
+}
+
 .drop-zone-placeholder {
     display: table-cell;
     text-align: center;
