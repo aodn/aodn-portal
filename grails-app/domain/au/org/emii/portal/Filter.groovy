@@ -5,15 +5,20 @@ class Filter {
     String label //This is the human readable name
     FilterTypes type  //String, time, etc, etc.
     String name  //note that this is the CQL name
-    String filterValues //a comma separated string of values, instead of a separate table of individual values
     static belongsTo = [layer: Layer]
+    static hasMany = [possibleValues: String]
+    List<String> possibleValues
+
+    public Filter(){
+        possibleValues = []
+    }
 
     static constraints = {
         name()
         type()
         layer()
         label()
-        filterValues(nullable:  true)
+        possibleValues(nullable:  true)
     }
 
     def beforeDelete(){
@@ -25,7 +30,7 @@ class Filter {
         filterData["label"] = this.label
         filterData["type"] = this.type.toString()
         filterData["name"] = this.name
-        filterData["filterValues"] = this.filterValues
+        filterData["possibleValues"] = this.possibleValues
         filterData["layerId"] = this.layer.id
         return filterData
      }

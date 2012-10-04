@@ -53,6 +53,9 @@
 
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
+
+            <li class="controllerMenuItems"><g:link controller="server" action="listByOwner" params="[ownerId: layerInstance.id]>Edit Filters</g:link>
+			</li>
           </ul>
           <br />
         <b>Portal project build info</b><br />

@@ -105,8 +105,8 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type:  FilterTypes.String, label: "Vessel Name", filterValues: "ship1, ship2, ship3", layer: layer1)
-        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.String, label: "Sensor Type", filterValues: "type1, type2", layer:  layer1)
+        def filter1 = new Filter(name: "vesselName", type:  FilterTypes.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
+        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer:  layer1)
 
         layer1.filters = [filter1, filter2]
 
@@ -118,10 +118,11 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.params.layerId = 3
         this.controller.getFiltersAsJSON()
 
-        println this.controller.response.contentAsString
+        def expected = """[{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3},{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3}]"""
 
-        assertEquals true, this.controller.response.contentAsString.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","filterValues":"ship1, ship2, ship3","layerId":3}""")
-        assertEquals true, this.controller.response.contentAsString.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","filterValues":"type1, type2","layerId":3}""")
+        assertEquals this.controller.response.contentAsString, expected.toString()
+        
+        
     }
 
     void testGetLayerWithoutFilters(){

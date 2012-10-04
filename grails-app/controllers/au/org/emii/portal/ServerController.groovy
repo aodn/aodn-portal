@@ -138,4 +138,25 @@ class ServerController {
 		def result = checkLinksService.check(params.server, params.userEmailAddress)
 		render result
 	}
+
+    def listServersByUser = {
+        def currentUser = SecurityUtils.getSubject()
+        def principal = currentUser?.getPrincipal()
+
+        if (principal) {
+            def userInstance = User.get(principal)
+
+            if (!userInstance)
+            {
+                log.error("No user found with id: " + principal)
+            }
+            else{
+                serverList = Server.getServerByOwner(owner)
+
+                if(serverList){
+                    render(view: "listByOwner", model: [serverList: serverList])
+                }
+            }
+        }
+    }
 }

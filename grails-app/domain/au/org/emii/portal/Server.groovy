@@ -24,7 +24,7 @@ class Server {
 
     Set operations = [] // operations supported by this server
     
-    static hasMany = [operations: Operation]
+    static hasMany = [operations: Operation, owners: User]
     
     static mapping = {
         sort "shortAcron"
@@ -62,6 +62,7 @@ class Server {
         comments(nullable:true)
         username(nullable:true)
         password(nullable:true)
+        owners(nullable:  true)
     }
     
     String toIdString() {

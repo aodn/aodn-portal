@@ -53,10 +53,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="filterValues"><g:message code="filter.filterValues.label" default="Filter Values" /></label>
+                                  <label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'filterValues', 'errors')}">
-                                	<g:textArea name="filterValues" value="${filterInstance?.filterValues}" />
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'possibleValues', 'errors')}">
+                                	<g:textArea name="possibleValues" value="${concatValues}" />
                                 </td>
                             </tr>
                         

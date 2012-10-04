@@ -35,10 +35,14 @@ Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
 
 		this.add(this.combo);
 
-		this.combo.clearValue();
-		var values = this.filter.filterValues.split(",");
+		var data = [];
 
-		this.combo.getStore().loadData(values);
+		for(var i = 0; i < this.filter.possibleValues.length; i++){
+			data.push([this.filter.possibleValues[i]]);
+		}
+
+		this.combo.clearValue();
+		this.combo.getStore().loadData(data);
 	},
 
     _createCQL: function(combo, record, index){

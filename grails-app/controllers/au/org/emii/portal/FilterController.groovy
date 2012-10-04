@@ -24,7 +24,13 @@ class FilterController {
 
         filterInstance.type = params.type
         filterInstance.label = params.label
-        filterInstance.filterValues = params.filterValues
+        
+        println params.possibleValues
+
+        if(params.possibleValues.length() > 0)
+            filterInstance.possibleValues = params.possibleValues.split(",")
+        else
+            filterInstance.possibleValues = []
 
         filterInstance.layer = layerInstance
 
@@ -40,7 +46,12 @@ class FilterController {
             redirect(action: "list")
         }
         else {
-            return [filterInstance: filterInstance, filterTypes: FilterTypes.values()]
+            def concatValues = filterInstance?.possibleValues.inject('') { str, item -> str + ',' + item }
+
+            if(concatValues.length() > 0)
+                concatValues = concatValues.substring(1)
+
+            return [filterInstance: filterInstance, filterTypes: FilterTypes.values(), concatValues: concatValues]
         }
     }
 
