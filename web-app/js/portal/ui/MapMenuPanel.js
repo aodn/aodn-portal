@@ -11,7 +11,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
         });
         itemsToAdd.push( this.defaultMenuTree );
 
-        if ( appConfigStore.getById('facetedSearch.enabled').data.value == 'true' ) {
+        if ( appConfigStore.getById('facetedSearch.enabled').data.value ) {
 
             this.selectionPanel = new Portal.ui.SelectionPanel({
                 title: 'Faceted Search',
