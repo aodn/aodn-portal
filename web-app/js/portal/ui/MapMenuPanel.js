@@ -4,21 +4,29 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 
     constructor: function(cfg) {
 
+        var itemsToAdd = [];
+
         this.defaultMenuTree = new Portal.ui.MenuPanel({
             menuId: cfg.menuId
         });
+        itemsToAdd.push( this.defaultMenuTree );
 
-        this.selectionPanel = new Portal.ui.SelectionPanel({
-            title: 'Faceted Search',
-            appConfig: Portal.app.config,
-            split: true,
-            searchRestriction: {
-                protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
-            },
-            searchTabTitle: OpenLayers.i18n('layerSearchTabTitle')
-        });
+        if ( appConfigStore.getById('facetedSearch.enabled').data.value == 'true' ) {
+
+            this.selectionPanel = new Portal.ui.SelectionPanel({
+                title: 'Faceted Search',
+                appConfig: Portal.app.config,
+                split: true,
+                searchRestriction: {
+                    protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
+                },
+                searchTabTitle: OpenLayers.i18n('layerSearchTabTitle')
+            });
+            itemsToAdd.push( this.selectionPanel );
+        }
 
         this.userDefinedWMSPanel = new Portal.ui.UserDefinedWMSPanel( {} );
+        itemsToAdd.push( this.userDefinedWMSPanel );
 
         var config = Ext.apply({
             defaults: {
@@ -30,11 +38,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
             border: false,
             enableTabScroll: true,
             activeTab: 0,
-            items: [
-                this.defaultMenuTree,
-                this.selectionPanel,
-                this.userDefinedWMSPanel
-            ]
+            items: itemsToAdd
         }, cfg);
 
         Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
