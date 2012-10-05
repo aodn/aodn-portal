@@ -467,6 +467,15 @@ class LayerController {
 				join 'server'
 			}
 		}
+		
+		layers = layers.sort {layer ->
+			for(int i=0;i<layerIds.size(); i++) {
+				if(layerIds.getAt(i) == layer.id) {
+					return i;
+				}
+			}
+		}
+		
 		return layers
 	}
 
