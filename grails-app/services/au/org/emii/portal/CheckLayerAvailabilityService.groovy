@@ -11,20 +11,18 @@ class CheckLayerAvailabilityService {
 		
 		def valid = true // start with the gates open
 		def layer = Layer.get(params.layerId)
+		println params.layerId
 
 		if (layer) {
 			
 			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()	
 
-			try {
-				def utils = WebUtils.retrieveGrailsWebRequest()
-				def response = utils.getCurrentResponse() 
+			try {				
+				
 				def conn = featInfURL.openConnection() 
-				def outputStream = response.outputStream
+				//conn.setConnectTimeout(50000) // wait for nearly a minute till we declare it dead
+				//conn.setReadTimeout(50000)				
 				_addAuthentication(conn, featInfURL)				
-		
-				//outputStream << conn.inputStream
-				//outputStream.flush()			
 				
 				def contentType = conn.getContentType().split(';')[0]						
 
