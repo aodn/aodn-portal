@@ -15,6 +15,24 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 	_createField:function(){
 
+		this.trueButton = new Ext.form.Radio({
+		   	name: this.filter.name,
+		   	boxLabel: "True",
+			listeners: {
+				scope: this,
+				check: this._buttonChecked
+			}
+		});
+
+		this.falseButton = new Ext.form.Radio({
+		   	name: this.filter.name,
+		   	boxLabel: "False",
+		   	listeners: {
+				scope: this,
+			    check: this._buttonChecked
+			}
+		});
+
      	this.checkbox = new Ext.form.Checkbox({
         	name: this.filter.name,
         	value: true,
@@ -24,17 +42,26 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
         	}
      	});
 
-     	this.add(this.checkbox);
+		this.add(this.trueButton);
+		this.add(this.falseButton);
+     	//this.add(this.checkbox);
 	},
 
 	_buttonChecked: function(button, checked){
-		this.CQL = this.filter.name + " = " + checked
-   		this._fireAddEvent();
+		if(button === this.trueButton && checked){
+			this.CQL = this.filter.name + " = true";
+		}
+		else if(button === this.falseButton && checked){
+			this.CQL = this.filter.name + " = false";
+		}
+
+		this._fireAddEvent();
 	},
 
 	handleRemoveFilter: function(){
 		this.CQL = "";
-        this.checkbox.setValue(false);
+        this.trueButton.setValue(false);
+        this.falseButton.setValue(false);
 	},
 
 	_setExistingFilters: function(){
@@ -47,7 +74,15 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 				if (m != null && m.length == 2) {
 					this.CQL = this.filter.name + " = " + m[1];
-					this.checkbox.setValue(m[1] == "true");
+					//this.checkbox.setValue(m[1] == "true");
+					if(m[1] === "true"){
+						this.trueButton.setValue(true);
+						this.falseButton.setValue(false);
+					}
+					else if(m[1] === "false"){
+						this.trueButton.setValue(false);
+						this.falseButton.setValue(true);
+					}
 				}
 			}
 		}
