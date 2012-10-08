@@ -6,14 +6,18 @@ class LayerService {
 
     static transactional = true
 
+    def grailsApplication
+
     void updateWithNewData(JSONElement layerAsJson, Server server, String dataSource) {
 
         try {
 
+            // Track existing and updated Layers
             def existingLayers = [:]
-
-            def updatedLayerPaths = [] as SortedSet
-            def addedLayerPaths = []
+            def existingActiveLayerPaths = [] as Set
+            def existingInactiveLayerPaths = [] as Set
+            def addedLayerPaths = [] as Set
+            def updatedLayerPaths = [] as Set
 
             // Traverse existing layers
             // - Disable layer
@@ -55,28 +59,39 @@ class LayerService {
                         log.warn "*********************************"
                     }
 
+                    // Record for stats
+                    if ( it.activeInLastScan ) {
+
+                        existingActiveLayerPaths << uid
+                    }
+                    else {
+
+                        existingInactiveLayerPaths << uid
+                    }
+
+                    // Mark inactive and store
                     it.activeInLastScan = false
                     existingLayers[ uid ] = it
                 }
             }
 
             // Traverse incoming JSON and create or update layers (update if they are in existingLayers[])
-            def newLayer = _traverseJsonLayerTree( layerAsJson, null, {
+            _traverseJsonLayerTree( layerAsJson, null, {
                 newData, parent ->
 
                 def uniquePath = _uniquePathIdentifier( newData, parent )
                 def layerToUpdate = existingLayers[ uniquePath ]
 
                 if ( layerToUpdate ) {
-                    
+
                     log.debug "Found existing layer with details: '$uniquePath'"
 
-                    updatedLayerPaths << uniquePath
+                    updatedLayerPaths << uniquePath // Record for stats
 
                     def currentParent = layerToUpdate.parent
-                    
+
                     if ( currentParent && ( currentParent != parent ) ) {
-                            
+
                         layerToUpdate.parent = null
                     }
 
@@ -86,18 +101,18 @@ class LayerService {
 
                     log.debug "Could not find existing layer with details: '$uniquePath'. Creating new..."
 
-                    addedLayerPaths << uniquePath
+                    addedLayerPaths << uniquePath // Record for stats
 
                     // Doesn't exist, create
                     layerToUpdate = new Layer()
                     layerToUpdate.server = server
                 }
-                   
+
                 log.debug "Applying new values to layer: $newData"
 
                 // Add as child of parent
                 if ( parent ) layerToUpdate.parent = parent //parent.addToLayers layerToUpdate
-                
+
                 // Move data over
                 layerToUpdate.title      = newData.title
                 layerToUpdate.queryable  = newData.queryable
@@ -127,20 +142,7 @@ class LayerService {
             })
 
             // Summary of changes
-            def existingLayerPaths = new TreeSet( existingLayers.keySet() )
-            def layersLeftInactivePaths = existingLayerPaths.minus( updatedLayerPaths )
-
-            log.info "== Updating Layers finished for server: $server ==========="
-            log.info "# Layers updated: ${ updatedLayerPaths.size() }"
-            updatedLayerPaths.each{ log.debug it }
-
-            log.info "# Layers added: ${ addedLayerPaths.size() }"
-            addedLayerPaths.each{ log.debug it }
-
-            log.info "# Layers made inactive: ${ layersLeftInactivePaths.size() }"
-            layersLeftInactivePaths.each{ log.debug it }
-
-            log.info "==========================================================="
+            _buildAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
         }
         catch ( Exception e ) {
 
@@ -173,20 +175,20 @@ class LayerService {
 
         return newLayer
     }
-    
+
     def _uniquePathIdentifier( layer, parent ) {
 
         def namePart
-        
+
         if ( layer.name ) {
-        
+
             namePart = layer.namespace ? "${layer.namespace}:${layer.name}" : layer.name
         }
         else {
-            
+
             namePart = "<no name>"
         }
-        
+
         def titlePart = layer.title ?: "<no title>"
         def parentPart = parent ? _uniquePathIdentifier( parent, parent.parent ) + " // " : ""
 
@@ -277,5 +279,76 @@ class LayerService {
         }
 
         layer.dimensions = dimensions
+    }
+
+    def _buildAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
+
+        // Calculate remaining changes
+        def layersMadeInactive = existingActiveLayerPaths - updatedLayerPaths
+        def layersRemainingInactive = existingInactiveLayerPaths - updatedLayerPaths
+
+        def layersReactivated = existingInactiveLayerPaths.clone()
+        layersReactivated.retainAll( updatedLayerPaths )
+
+        def labelsAndLayers = [
+            [ "Layers created", addedLayerPaths ],
+            [ "Layers deactivated", layersMadeInactive ],
+            [ "Layers reactivated", layersReactivated ],
+            [ "Layers remaining active", updatedLayerPaths ],
+            [ "Layers remaining inactive", layersRemainingInactive ]
+        ]
+
+        // Write summary to log
+        log.info _summaryText( server, labelsAndLayers, log.debugEnabled )
+
+        // Email report
+        def interestingLayerChanges = addedLayerPaths.size() || layersMadeInactive.size() || layersReactivated.size()
+
+        def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] )
+        def menusAffected = menuItemsForInactiveLayersOnServer.size()
+
+        log.debug "interestingLayerChanges: ${ interestingLayerChanges }"
+        log.debug "menusAffected: ${ menusAffected }"
+
+        if ( interestingLayerChanges || menusAffected ) {
+
+            def emailBody = _summaryText( server, labelsAndLayers, true )
+
+            if ( menusAffected ) {
+
+                def menus = menuItemsForInactiveLayersOnServer.collect{ it.menu }.unique()
+
+                def newInfo = "Menus with inactive Layers from this Server:\n"
+
+                menus.each { newInfo += "$it\n" }
+
+                emailBody = "$newInfo\n$emailBody"
+            }
+
+            sendMail {
+                to( ["dnahodil@utas.edu.au"] )
+                subject( "WMS Scanner report for '$server' (url: ${ server.uri })" )
+                body( emailBody )
+                from( grailsApplication.config.portal.systemEmail.fromAddress )
+            }
+        }
+    }
+
+    def _summaryText( server, labelsAndLayers, includeLayerPaths ) {
+
+        def summary = ""
+
+        summary += "\n== Updating Layers finished for server: $server (${server.uri}) ==\n"
+
+        labelsAndLayers.each {
+
+            def label = it[ 0 ]
+            def layers = it[ 1 ]
+
+            summary += "# $label: ${ layers.size() }\n"
+            if ( includeLayerPaths ) layers.each{ summary += "$it\n" }
+        }
+
+        return summary
     }
 }
