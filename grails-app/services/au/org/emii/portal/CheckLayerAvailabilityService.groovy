@@ -14,8 +14,8 @@ class CheckLayerAvailabilityService {
 		println params.layerId
 
 		if (layer) {
-			
-			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()	
+		
+			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()
 
 			try {				
 				
@@ -29,7 +29,7 @@ class CheckLayerAvailabilityService {
 				if (!(contentType  == "text/html"  || contentType  == "text/plain")) {	
 
 					def text = featInfURL.text
-
+					
 					// its xml, test for exception messages, or sillyness
 					valid = (text.find('<WMT_MS_Capabilities')) ? false : valid // Todo - DN: Check this too
 					valid = (text.find('<ServiceExceptionReport')) ? false : valid
@@ -42,7 +42,7 @@ class CheckLayerAvailabilityService {
                 // Todo - DN: Check this. It means that if the response is text/html or text/plain then valid is TRUE. Is this correct?
 				}									
 			catch (e) {
-
+			
 				// could this be an unusual WMS server
 				valid = false
 			}	
@@ -86,13 +86,25 @@ class CheckLayerAvailabilityService {
 		// Construct the getFeatureInfo request. 
 		// are returned at location 0,0.
 		
+		//if there's only one feature, the min and max values 
+		//will be the same and geoserver will throw an exception
+		//so change minvalues if same as max values.
+		
+		def minX= layer.bboxMinX.toDouble()
+		if(layer.bboxMinX == layer.bboxMaxX)
+			minX -= 1;
+		
+		def minY = layer.bboxMinY.toDouble()
+		if(layer.bboxMinY == layer.bboxMaxY)
+			minY -= 1;
+						
 		def infoFormat = params.format
 		
 		def getFeatureInfoUrlString = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=' + URLEncoder.encode(layer.name)
 		getFeatureInfoUrlString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
 		getFeatureInfoUrlString += '&SRS=' + URLEncoder.encode(layer.projection)
 		getFeatureInfoUrlString += '&CRS=' + URLEncoder.encode(layer.projection)
-		getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(layer.bboxMinX +',' + layer.bboxMinY + ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
+		getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
 		getFeatureInfoUrlString += '&QUERY_LAYERS=' +  URLEncoder.encode(layer.name)		
 		getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode(infoFormat)			 
 	    getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
