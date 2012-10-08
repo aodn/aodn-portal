@@ -49,7 +49,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 	    	layout: 'border',
             split: false,
 	    	items: [
-                this.freeTextSearchPanel,
+//                this.freeTextSearchPanel,
 	    	    this.filtersPanel,
 	    	    this.resultsGrid
 	    	]

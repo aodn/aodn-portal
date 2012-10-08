@@ -58,7 +58,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             padding: 3,
 
 	        cls: 'search-filter-panel',
-	        title: '\u2026or find layers by:',
+	        title: 'Find layers by:',
 
 	        items: [
                 this.themeFilter,
