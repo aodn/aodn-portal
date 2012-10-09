@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 import org.codehaus.groovy.grails.web.json.JSONElement
+import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor
 
 class LayerControllerTests extends ControllerUnitTestCase {
 
@@ -29,20 +30,39 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.params.metadata = metadata
         this.controller.params.capabilitiesData = "012345678901234567890123456789001234567890123456789012345678901234567890123456789012345678901234567890123456789"
 
-        def server = new Server(id : 10, uri : "http://serverUriText.com", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", infoFormat: 'text/html', comments : "" )
-        mockDomain Server, [server]
-        mockDomain Config, [validConfig]
+        UserRole role = new UserRole(name: "ServerOwner", id:  100)
+        mockDomain UserRole, [role]
+        UserRole.metaClass.findByName{
+            return role
+        }
+        
+        User user = new User(id:  100, roles: [role])
+        mockDomain User, [user]
+        
+        try{
+            def server = new Server(id : 10, uri : "http://serverUriText.com", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", infoFormat: 'text/html', comments : "", owners: [user] )
+            mockDomain Server, [server]
+            mockDomain Config, [validConfig]
 
-        def mockLayer = new Layer()
-        def layerServiceControl = mockFor(LayerService)
-        layerServiceControl.demand.updateWithNewData(1..1) { JSONElement e, Server s, String ds -> mockLayer }
-        this.controller.layerService = layerServiceControl.createMock()
 
-        this.controller.saveOrUpdate()
+            def mockLayer = new Layer()
+            def layerServiceControl = mockFor(LayerService)
+            layerServiceControl.demand.updateWithNewData(1..1) { JSONElement e, Server s, String ds -> mockLayer }
+            this.controller.layerService = layerServiceControl.createMock()
 
-        assertNotNull "Server should now have a lastScanDate", server.lastScanDate
+            this.controller.saveOrUpdate()
 
-        assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
+            assertNotNull "Server should now have a lastScanDate", server.lastScanDate
+
+            assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
+    
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace()
+        }
+        
+
     }
 
 	void testToResponseMap() {

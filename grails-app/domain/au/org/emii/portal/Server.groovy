@@ -67,22 +67,22 @@ class Server {
             //This is totally retarded
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
-            def found = false
-            it.roles?.each(){ r ->
+            def valid = false
+            if(it?.size() == 0)
+                return true
+
+            it?.roles?.each(){ r ->
                 r.each(){  rr->
                     if(rr.id == ownerRole.id) {
-                        found = true
+                        valid = true
                     }
                 }
             }
 
-            if(!found){
+            if(!valid){
                 return ['invalid.serverowner']
             }
-            else{
-                return true
-            }
-
+            return valid
         })
     }
     

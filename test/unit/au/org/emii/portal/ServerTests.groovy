@@ -15,10 +15,22 @@ class ServerTests extends GrailsUnitTestCase {
 
     void testConstraints() {
 
-		def server1 = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1");
+        UserRole role = new UserRole(name: "ServerOwner", id:  100)
+        mockDomain UserRole, [role]
+        UserRole.metaClass.findByName{
+            return role
+        }
+
+        User user = new User(id:  100,roles: [role])
+        mockDomain User, [user]
+
+		def server1 = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user]);
 		mockForConstraintsTests(Server, [server1])
 		
 		def testServer = new Server()
+
+
+
 		assertFalse testServer.validate()
 		assertEquals "nullable", testServer.errors["uri"]
 		assertEquals "nullable", testServer.errors["shortAcron"]
