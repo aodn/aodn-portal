@@ -24,6 +24,7 @@
       <g:layoutBody />
       
         <div id="controllerMenu">
+          <user:loggedInUserInRole roles="Administrator">
           <h2>Portal Config</h2>
           <ul>
             <li class="controllerMenuItems"><g:link controller="server" action="list" >Server</g:link>
@@ -57,7 +58,10 @@
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
 
+		   </user:loggedInUserInRole>
+		   <user:loggedInUserInRole roles="Administrator,ServerOwner">
             <li class="controllerMenuItems"><g:link controller="server" action="listByOwner" params="[ownerId: layerInstance.id]>Edit Filters</g:link>
+           </user:loggedInUserInRole>
 			</li>
           </ul>
           <br />

@@ -24,8 +24,6 @@ class FilterController {
 
         filterInstance.type = params.type
         filterInstance.label = params.label
-        
-        println params.possibleValues
 
         if(params.possibleValues.length() > 0)
             filterInstance.possibleValues = params.possibleValues.split(",")
@@ -36,7 +34,7 @@ class FilterController {
 
         filterInstance.save(flush: true)
 
-        redirect(controller:  "layer", action: "edit", id: layerInstance.id)
+        redirect(controller:  "layer", action: "editFilters", id: layerInstance.id)
     }
 
     def edit = {
@@ -72,7 +70,7 @@ class FilterController {
             filterInstance.properties = params
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'filter.label', default: 'Filter'), filterInstance.id])}"
-                redirect(controller:  "layer", action: "edit", id: filterInstance.layer.id)
+                redirect(controller:  "layer", action: "editFilters", id: filterInstance.layer.id)
             }
             else {
                 render(view: "edit", model: [filterInstance: filterInstance])
@@ -94,7 +92,7 @@ class FilterController {
                 def ownerLayer = filterInstance.layer
                 filterInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'filter.label', default: 'Filter'), params.id])}"
-                redirect(controller: "layer", action: "edit", id: ownerLayer.id)
+                redirect(controller: "layer", action: "editFilters", id: ownerLayer.id)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'filter.label', default: 'Filter'), params.id])}"

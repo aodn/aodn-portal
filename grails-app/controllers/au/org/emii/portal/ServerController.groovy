@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.deep.JSON
 import org.apache.shiro.SecurityUtils
+import javax.swing.text.LayeredHighlighter
 
 class ServerController {
 
@@ -26,7 +27,14 @@ class ServerController {
 	def create = {
 		def serverInstance = new Server()
 		serverInstance.properties = params
-		return [serverInstance: serverInstance]
+
+        def allOwners = User.withCriteria{
+            roles{
+                eq('name', UserRole.SERVEROWNER)
+            }
+        }
+
+		return [serverInstance: serverInstance, allOwners: allOwners]
 	}
 
 	def save = {
@@ -59,7 +67,13 @@ class ServerController {
 			redirect(action: "list")
 		}
 		else {
-			return [serverInstance: serverInstance]
+            def allOwners = User.withCriteria{
+                roles{
+                    eq('name', UserRole.SERVEROWNER)
+                }
+            }
+            
+			return [serverInstance: serverInstance, allOwners: allOwners]
 		}
 	}
 
@@ -139,7 +153,7 @@ class ServerController {
 		render result
 	}
 
-    def listServersByUser = {
+    def listByOwner = {
         def currentUser = SecurityUtils.getSubject()
         def principal = currentUser?.getPrincipal()
 
@@ -151,10 +165,20 @@ class ServerController {
                 log.error("No user found with id: " + principal)
             }
             else{
-                serverList = Server.getServerByOwner(owner)
+                def serverList = Server.withCriteria{
+                    owners{
+                        eq('id', userInstance.id)
+                    }
+                }
+
+                def maps = [:]
+                serverList.each(){
+                    def layerList = Layer.findAllByServer(it)
+                    maps[it] = layerList
+                }
 
                 if(serverList){
-                    render(view: "listByOwner", model: [serverList: serverList])
+                    render(view: "listByOwner", model: [maps: maps])
                 }
             }
         }

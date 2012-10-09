@@ -23,6 +23,7 @@ class Server {
     Integer scanFrequency = 120 // 2 hours
 
     Set operations = [] // operations supported by this server
+    Set owners = []
     
     static hasMany = [operations: Operation, owners: User]
     
@@ -62,7 +63,27 @@ class Server {
         comments(nullable:true)
         username(nullable:true)
         password(nullable:true)
-        owners(nullable:  true)
+        owners(nullable:  true, validator: {
+            //This is totally retarded
+            def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
+
+            def found = false
+            it.roles?.each(){ r ->
+                r.each(){  rr->
+                    if(rr.id == ownerRole.id) {
+                        found = true
+                    }
+                }
+            }
+
+            if(!found){
+                return ['invalid.serverowner']
+            }
+            else{
+                return true
+            }
+
+        })
     }
     
     String toIdString() {

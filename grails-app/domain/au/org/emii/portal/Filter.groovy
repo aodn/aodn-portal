@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import org.springframework.context.annotation.FilterType
+
 class Filter {
 
     String label //This is the human readable name
@@ -14,11 +16,20 @@ class Filter {
     }
 
     static constraints = {
-        name()
+        name(blank: false)
         type()
-        layer()
-        label()
-        possibleValues(nullable:  true)
+        layer(nullable: false)
+        label(blank: false)
+        possibleValues(validator:{ val, obj ->
+            def valid = false
+            if(obj.type != FilterTypes.Boolean){
+                if(val.size() > 0)
+                    valid = true
+            }
+            else
+                valid = true
+            return ['invalid.possibleValue']
+        })
     }
 
     def beforeDelete(){
@@ -34,5 +45,9 @@ class Filter {
         filterData["layerId"] = this.layer.id
         return filterData
      }
+
+    boolean equals(o){
+        return o.id == this.id && o.name.equals(this.name)
+    }
 
 }

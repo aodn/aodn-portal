@@ -117,5 +117,18 @@
 								</td>
 							</tr>
 
+							<tr class="prop">
+								<td valign="top" class="name">
+									<label for="owners"><g:message code="server.password.label" default="Set server owner" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'owners', 'errors')}">
+									<g:select name="owners"
+                                              from="${allOwners}"
+                                              value="${serverInstance?.owners}"
+                                              optionKey="id"
+                                              multiple="true" />
+								</td>
+							</tr>
+
 
                         

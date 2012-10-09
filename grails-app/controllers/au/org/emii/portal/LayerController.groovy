@@ -559,4 +559,16 @@ class LayerController {
             render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
+
+    def editFilters = {
+        def layerInstance = Layer.get(params.id)
+
+        if (layerInstance) {
+            render(view: "editFilters", model: [layerInstance: layerInstance])
+        }
+        else{
+            //:( Fail
+        }
+
+    }
 }
