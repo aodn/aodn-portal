@@ -325,7 +325,7 @@ function getNodeText(xmlNode)
 }
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
-    
+	
     var dl = {}
 	var server = {}
 	server.uri = url;
@@ -333,7 +333,8 @@ function setExtWmsLayer(url,label,type,layer,sld,options,style) {
 	server.opacity = 100;
 	dl.server = server;
 
-	dl.queryable = true; // Setting to true because our proxy will not connect to any untrusted servers
+	dl.queryable = true; 
+	dl.server.infoFormat = "text/html";
 
 	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
 

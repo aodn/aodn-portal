@@ -110,8 +110,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		// show new layer unless user requested 'hideLayerOptions' 
 		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
 			
-			// check if there is a problem with this layer, with a bogusgetFetureInfo request
-		
+			this.errorPanel.hide();
+			// check if there is a problem with this layer, with a bogusgetFetureInfo request		
 			if(layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
 				Ext.Ajax.request({
 					url: 'checkLayerAvailability/',
@@ -128,7 +128,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 					}
 				});
 			}
-			this.errorPanel.hide();
+			
 			this.detailsPanelTabs.update(layer);			
 			this.transectControl.hide();
 

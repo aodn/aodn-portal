@@ -15,6 +15,8 @@ Ext.ns('Portal');
 
 Portal.app = {
     
+	
+	
     ajaxComplete: function(conn, response, options) {
         progressCount--;
         if(progressCount <= 0) {
@@ -25,7 +27,7 @@ Portal.app = {
     init: function() {
     	// Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
-        
+		
         // Global Ajax events can be handled on every request!
         Ext.Ajax.on('beforerequest', function(conn, options){
             if(progressCount == 0) {

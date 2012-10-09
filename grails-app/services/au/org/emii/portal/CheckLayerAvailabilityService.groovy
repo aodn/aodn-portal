@@ -19,9 +19,7 @@ class CheckLayerAvailabilityService {
 
 			try {				
 				
-				def conn = featInfURL.openConnection() 
-				//conn.setConnectTimeout(50000) // wait for nearly a minute till we declare it dead
-				//conn.setReadTimeout(50000)				
+				def conn = featInfURL.openConnection() 			
 				_addAuthentication(conn, featInfURL)				
 				
 				def contentType = conn.getContentType().split(';')[0]						

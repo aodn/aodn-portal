@@ -1,9 +1,11 @@
-${buildInfo}
 <html>
 <head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+${buildInfo}
 
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir:'css',file:'mapprint.css')}" /-->
 <link rel="stylesheet" type="text/css"  href="${resource(dir:'js',file:'GeoExt1.1/resources/css/geoext-all.css')}" />
