@@ -283,10 +283,22 @@ class AodaacAggregatorService {
 
         try {
 
+            // To know which message key to use
             def instanceCode = grailsApplication.config.instanceName.toLowerCase()
 
-            def p = job.jobParams
-            def paramsString = """\
+            def successMessage = job.dataFileExists
+
+            // Message replacement args
+            def args
+
+            if ( successMessage ) {
+
+                args = [job.result.dataUrl]
+            }
+            else {
+
+                def p = job.jobParams
+                def paramsString = """\
 Output format: ${ p.outputFormat }
 Date range start: ${ p.dateRangeStart }
 Date range end: ${ p.dateRangeEnd }
@@ -298,8 +310,11 @@ Long range start: ${ p.longitudeRangeStart }
 Long range end: ${ p.longitudeRangeEnd }
 """
 
-            def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${job.dataFileExists ? "success" : "failed"}Body"
-            def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl, job.latestStatus.theErrors, paramsString].toArray(), Locale.getDefault() )
+                args = [job.latestStatus.theErrors, paramsString]
+            }
+
+            def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${ successMessage ? "success" : "failed"}Body"
+            def emailBody = messageSource.getMessage( emailBodyCode, args.toArray(), Locale.getDefault() )
 
             def emailSubjectCode = "${instanceCode}.aodaacJob.notification.email.subject"
             def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )

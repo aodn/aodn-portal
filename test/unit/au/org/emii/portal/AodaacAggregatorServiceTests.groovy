@@ -464,6 +464,8 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testSendNotificationEmail() {
 
+        // Todo - DN: Test should be expanded to include error reason and job params if we decide to keep those available after the AODAAC is ready for release
+
         // Set up job
         testJob.jobId = "12345"
         testJob.latestStatus = [jobEnded: true]
@@ -487,7 +489,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
                 if ( messageSourceGetMessageCalledCount == 0 ) {
 
                     assertEquals "imos.aodaacJob.notification.email.successBody", code
-                    assertEquals( ["dataUrl"], args )
+                    assertEquals( ["dataUrl"].toArray(), args )
                 }
                 else if ( messageSourceGetMessageCalledCount == 1 ) {
 
