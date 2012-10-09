@@ -69,8 +69,8 @@ class AodaacAggregatorService {
 
         def apiCallArgs = []
 
-        def fromJavascriptFotmatter = new SimpleDateFormat( JavascriptUIDateOutputFormat )
-        def toJavascriptFormatter = new SimpleDateFormat( AggregatorDateRangeInputFormat )
+        def fromJavascriptFotmatter = new SimpleDateFormat( JavascriptUIDateOutputFormat ) // 01/02/2012  -> Date Object
+        def toJavascriptFormatter = new SimpleDateFormat( AggregatorDateRangeInputFormat ) // Date Object -> 20120201
         def dateRangeStart = fromJavascriptFotmatter.parse( params.dateRangeStart )
         def dateRangeEnd   = fromJavascriptFotmatter.parse( params.dateRangeEnd )
 
@@ -277,7 +277,7 @@ class AodaacAggregatorService {
 
         if ( !job.notificationEmailAddress ) {
 
-            log.debug "No notification email address, not sending email"
+            log.warn "No notification email address, not sending email"
             return
         }
 
@@ -285,8 +285,21 @@ class AodaacAggregatorService {
 
             def instanceCode = grailsApplication.config.instanceName.toLowerCase()
 
+            def p = job.jobParams
+            def paramsString = """\
+Output format: ${ p.outputFormat }
+Date range start: ${ p.dateRangeStart }
+Date range end: ${ p.dateRangeEnd }
+Time of day start: ${ p.timeOfDayRangeStart }
+Time of day end: ${ p.timeOfDayRangeEnd }
+Lat range start: ${ p.latitudeRangeStart }
+Lat range end: ${ p.latitudeRangeEnd }
+Long range start: ${ p.longitudeRangeStart }
+Long range end: ${ p.longitudeRangeEnd }
+"""
+
             def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${job.dataFileExists ? "success" : "failed"}Body"
-            def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl].toArray(), Locale.getDefault() )
+            def emailBody = messageSource.getMessage( emailBodyCode, [job.result.dataUrl, job.latestStatus.theErrors, paramsString].toArray(), Locale.getDefault() )
 
             def emailSubjectCode = "${instanceCode}.aodaacJob.notification.email.subject"
             def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
@@ -310,7 +323,7 @@ class AodaacAggregatorService {
 
             log.debug "No productIds passed, using all from allProductdataJson"
 
-            productIds = allProductDataJson.collect( { it.id} )
+            productIds = allProductDataJson.collect( { it.id } )
         }
 
         log.debug "productIds: ${ productIds }"

@@ -304,7 +304,7 @@ class LayerService {
         // Email report
         def interestingLayerChanges = addedLayerPaths.size() || layersMadeInactive.size() || layersReactivated.size()
 
-        def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] )
+        def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] ).findAll { it.menu != null }
         def menusAffected = menuItemsForInactiveLayersOnServer.size()
 
         log.debug "interestingLayerChanges: ${ interestingLayerChanges }"
@@ -320,15 +320,15 @@ class LayerService {
 
                 def newInfo = "Menus with inactive Layers from this Server:\n"
 
-                menus.each { newInfo += "$it\n" }
+                newInfo +=  menus.join( "\n" )
 
                 emailBody = "$newInfo\n$emailBody"
             }
 
             sendMail {
                 to( ["dnahodil@utas.edu.au"] )
-                subject( "WMS Scanner report for '$server' (url: ${ server.uri })" )
-                body( emailBody )
+                subject( "WMS Scanner report from ${ grailsApplication.config.grails.serverURL } for '$server'" )
+                body( "Site: ${ grailsApplication.config.grails.serverURL }\n\n$emailBody" )
                 from( grailsApplication.config.portal.systemEmail.fromAddress )
             }
         }
@@ -336,9 +336,7 @@ class LayerService {
 
     def _summaryText( server, labelsAndLayers, includeLayerPaths ) {
 
-        def summary = ""
-
-        summary += "\n== Updating Layers finished for server: $server (${server.uri}) ==\n"
+        def summary = "\n== Updating Layers finished for server: $server (${server.uri}) ==\n"
 
         labelsAndLayers.each {
 
@@ -346,7 +344,7 @@ class LayerService {
             def layers = it[ 1 ]
 
             summary += "# $label: ${ layers.size() }\n"
-            if ( includeLayerPaths ) layers.each{ summary += "$it\n" }
+            if ( includeLayerPaths ) summary += layers.join( "\n" ) + "\n"
         }
 
         return summary
