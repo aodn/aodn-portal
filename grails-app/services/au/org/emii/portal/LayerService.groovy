@@ -142,7 +142,7 @@ class LayerService {
             })
 
             // Summary of changes
-            _buildAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
+            _logAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
         }
         catch ( Exception e ) {
 
@@ -281,7 +281,7 @@ class LayerService {
         layer.dimensions = dimensions
     }
 
-    def _buildAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
+    def _logAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
 
         // Calculate remaining changes
         def layersMadeInactive = existingActiveLayerPaths - updatedLayerPaths
@@ -302,34 +302,37 @@ class LayerService {
         log.info _summaryText( server, labelsAndLayers, log.debugEnabled )
 
         // Email report
-        def interestingLayerChanges = addedLayerPaths.size() || layersMadeInactive.size() || layersReactivated.size()
+        if ( grailsApplication.config.wmsScanner.updateEmails.enabled ) {
 
-        def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] ).findAll { it.menu != null }
-        def menusAffected = menuItemsForInactiveLayersOnServer.size()
+            def interestingLayerChanges = addedLayerPaths.size() || layersMadeInactive.size() || layersReactivated.size()
 
-        log.debug "interestingLayerChanges: ${ interestingLayerChanges }"
-        log.debug "menusAffected: ${ menusAffected }"
+            def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] ).findAll { it.menu != null }
+            def menusAffected = menuItemsForInactiveLayersOnServer.size()
 
-        if ( interestingLayerChanges || menusAffected ) {
+            log.debug "interestingLayerChanges: ${ interestingLayerChanges }"
+            log.debug "menusAffected: ${ menusAffected }"
 
-            def emailBody = _summaryText( server, labelsAndLayers, true )
+            if ( interestingLayerChanges || menusAffected ) {
 
-            if ( menusAffected ) {
+                def emailBody = _summaryText( server, labelsAndLayers, true )
 
-                def menus = menuItemsForInactiveLayersOnServer.collect{ it.menu }.unique()
+                if ( menusAffected ) {
 
-                def newInfo = "Menus with inactive Layers from this Server:\n"
+                    def menus = menuItemsForInactiveLayersOnServer.collect{ it.menu }.unique()
 
-                newInfo +=  menus.join( "\n" )
+                    def newInfo = "Menus with inactive Layers from this Server:\n"
 
-                emailBody = "$newInfo\n$emailBody"
-            }
+                    newInfo +=  menus.join( "\n" )
 
-            sendMail {
-                to( ["dnahodil@utas.edu.au"] )
-                subject( "WMS Scanner report from ${ grailsApplication.config.grails.serverURL } for '$server'" )
-                body( "Site: ${ grailsApplication.config.grails.serverURL }\n\n$emailBody" )
-                from( grailsApplication.config.portal.systemEmail.fromAddress )
+                    emailBody = "$newInfo\n$emailBody"
+                }
+
+                sendMail {
+                    to( ["dnahodil@utas.edu.au"] )
+                    subject( "WMS Scanner report from ${ grailsApplication.config.grails.serverURL } for '$server'" )
+                    body( "Site: ${ grailsApplication.config.grails.serverURL }\n\n$emailBody" )
+                    from( grailsApplication.config.portal.systemEmail.fromAddress )
+                }
             }
         }
     }
