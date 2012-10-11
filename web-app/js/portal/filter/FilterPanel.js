@@ -55,8 +55,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     		   fieldLabel: filter.label
     		});
     	}
-    	else if(filter.type === "Number"){
-    		//...
+    	else if (filter.type === "BoundingBox"){
+            newFilter = new Portal.filter.BoundingBoxFilter({
+            	fieldLabel: filter.label
+            })
     	}
     	else{
     		//Filter hasn't been defined

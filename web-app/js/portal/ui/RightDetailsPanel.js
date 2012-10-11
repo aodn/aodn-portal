@@ -13,8 +13,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 					stateful : false,
 					padding : '10px 10px 5px 20px',
 					split : true,
-					width : 350,
-					minWidth : 350,
+					width : 400,
+					minWidth : 400,
 					maxWidth : 500,
 					layout : 'fit'
 				}, cfg);

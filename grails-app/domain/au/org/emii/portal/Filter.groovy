@@ -21,14 +21,13 @@ class Filter {
         layer(nullable: false)
         label(blank: false)
         possibleValues(validator:{ val, obj ->
-            def valid = false
-            if(obj.type != FilterTypes.Boolean){
+            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox){
                 if(val.size() > 0)
-                    valid = true
+                    return true
             }
             else
-                valid = true
-            return ['invalid.possibleValue']
+                return true
+            return ['invalid.possibleValues']
         })
     }
 
