@@ -94,8 +94,8 @@ Portal.ui.openlayers.MapActionsControl =
 
           //configure main div
 
-          OpenLayers.Event.observe(this.div, "mouseup",
-              OpenLayers.Function.bindAsEventListener(this.mouseUp, this));
+//          OpenLayers.Event.observe(this.div, "mouseup",
+//              OpenLayers.Function.bindAsEventListener(this.mouseUp, this));
           OpenLayers.Event.observe(this.div, "click",
                         this.ignoreEvent);
           OpenLayers.Event.observe(this.div, "mousedown",
@@ -164,7 +164,31 @@ Portal.ui.openlayers.MapActionsControl =
               mapScope: this.appConfig.mapPanel
           });
           
-          this.actionsPanel.render(this.layersDiv);
+          var targetDiv = this.layersDiv;
+          
+          this.mapActionsWindow = new Ext.Window({
+        	  draggable: false,
+        	  hidden: false,
+        	  closable: false,
+        	  border: false,
+        	  bodyBorder: false,
+        	  resizable: false,
+        	  
+        	  width: 300,
+        	  floating: {
+        		  shadow: false
+        	  },
+        	  items: [
+        	      this.actionsPanel
+        	  ],
+        	  
+        	  afterRender: function() {
+        		  
+        		  Ext.Window.superclass.afterRender.apply(this);
+        		  targetDiv.appendChild(this.el.dom);
+        		  this.el.dom.style.position = "";
+        	  }
+          });
       },
 
       /** 

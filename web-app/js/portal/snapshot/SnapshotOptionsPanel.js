@@ -7,9 +7,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
   initComponent: function() { 
     Ext.apply(this, {
     	
-    	// hbox layout not working (probably because the OpenLayers control which this is in
-    	// is not a child of the viewport).
-//    	layout: "hbox",
+    	layout: "hbox",
     	
     	items: [ 
     		

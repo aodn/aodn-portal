@@ -1,35 +1,16 @@
 Ext.namespace('Portal.ui');
 
-Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
+Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	
 	constructor: function(cfg) {
 		
 		var config = Ext.apply({
 			title: "Active Layers",
-		    id: 'activeLayersPanel',
-		    items : [
-		        new Ext.Container({
-			        autoEl: 'div',  // This is the default
-			        cls: 'emptyActiveLayerTreePanelText',
-			        html: "<p>Choose a layer from the layer chooser above, or use the search feature.</p>"        
-			    }),
-		        this.initActiveLayers(cfg.layerStore)
-		    ]
-		}, cfg);
-		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
-		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
-		// Not sure what these all are:  this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
-	},
-
-	initActiveLayers: function(layerStore) {
-		this.initLayerActionsMenu();
-		
-		this.activeLayers = new Ext.tree.TreePanel({
 	        id: 'activeLayerTreePanel',
 //	        enableDD: true,
 	        rootVisible: false,
 	        root: new GeoExt.tree.OverlayLayerContainer({        
-	            layerStore: layerStore, 
+	            layerStore: cfg.layerStore, 
 	            leaf: false,
 	            expanded: true,
 	            loader: Ext.applyIf({
@@ -54,18 +35,22 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 					}
 				}
 	        })
-		});
 		
-		this.activeLayers.on("contextmenu", function(node, event) {
-			this.activeLayers.getSelectionModel().select(node);
+		}, cfg);
+		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
+		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
+		// Not sure what these all are:  this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
+		
+		this.initLayerActionsMenu();
+		
+		this.on("contextmenu", function(node, event) {
+			this.getSelectionModel().select(node);
 	        this.layerActionsMenu.showAt(event.getXY());
 	    }, this);
 		
-		this.activeLayers.on("click", this.activeLayersTreePanelClickHandler, this);
-		this.activeLayers.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
-		this.activeLayers.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
-		
-		return this.activeLayers;
+		this.on("click", this.activeLayersTreePanelClickHandler, this);
+		this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
+		this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
 	},
 	
 	initLayerActionsMenu: function() {
@@ -100,7 +85,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 
 	
 	setActiveNode: function(node) {		
-		this.activeLayers.getRootNode().eachChild(function(n) {
+		this.getRootNode().eachChild(function(n) {
 			if (n === node) {	
 				n.setCls('x-tree-selected');	
 			}
@@ -118,8 +103,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	activeLayersTreePanelCheckChangeHandler: function(node, checked) {	
 		
-		var selectedNode = this.activeLayers.getSelectionModel().select(node);			
-		var checkedLayers = this.activeLayers.getChecked();
+		var selectedNode = this.getSelectionModel().select(node);			
+		var checkedLayers = this.getChecked();
 
 		if (checkedLayers.length == 0) {
 			this.setActiveNode(null); // makes nothing active
@@ -154,7 +139,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	getActiveLayerNodes: function() {
 		var leafNodes = [];
-		this.addLeafNodes(this.activeLayers.getRootNode(), leafNodes);
+		this.addLeafNodes(this.getRootNode(), leafNodes);
 		return leafNodes;
 	},
 	
@@ -170,7 +155,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	},
 	
 	getSelectedNode: function() {
-		return this.activeLayers.getSelectionModel().getSelectedNode();
+		return this.getSelectionModel().getSelectedNode();
 	},
 	
 	getSelectedLayer: function () {
@@ -180,7 +165,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.Panel, {
 	
 	removeLayer: function() {
 		var selectedLayer = this.getSelectedLayer();
-		var checkedLayers = this.activeLayers.getChecked();
+		var checkedLayers = this.getChecked();
 		//Decide which layer to show in details panel
 		var newDetailsPanelLayer = null;
 		if (checkedLayers.length > 0) {

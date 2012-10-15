@@ -202,71 +202,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
 	},
 	
-    initEmptyMapOverlay: function() {
+	loadSnapshot: function(id) {
 
-        this.emptyMapOverlay = new Portal.ui.EmptyDropZonePlaceholder({
-            id: 'mapDropZonePlaceholder',
-            layout: 'fit',
-            placeholderText: OpenLayers.i18n('mapDropZonePlaceholder'),
-
-            style: {
-                opacity: 0.7,
-                'z-index': 99999,
-                position: 'absolute',
-                width: '100%',
-                height: '100%'
-            }
-        });
-
-        this.add(this.emptyMapOverlay);
-
-        this.layers.on('add', this.updateEmptyMapOverlayVisibility, this);
-        this.layers.on('remove', this.updateEmptyMapOverlayVisibility, this);
-    },
-
-    updateEmptyMapOverlayVisibility: function(store, records, index) {
-
-        if (store.getCount() == 0) {
-            this.emptyMapOverlay.show();
-        }
-        else {
-            this.emptyMapOverlay.hide();
-        }
-    },
-
-    initDropTarget: function() {
-
-        var mapPanel = this;
-
-        this.dropTarget = new Ext.dd.DropTarget(this.getEl(), {
-
-            ddGroup: 'map-dd-group',
-
-            notifyDrop: function(source, e, data) {
-
-                Ext.each(data.selections, function(layerRecord) {
-                    var layerDesc = mapPanel.getLayerLink(layerRecord);
-                    mapPanel.addMapLayer(layerDesc);
-                });
-            }
-        });
-    },
-
-    // TODO: cut and pasted code.
-    getLayerLink: function(layerRecord) {
-        var links = layerRecord.get('links');
-        var linkStore = new Portal.search.data.LinkStore({
-            data: {links: links}
-        });
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
-
-        return linkStore.getLayerLink(0);
-    },
-
-    loadSnapshot: function(id) {
-
-        this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
-    },
+		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
+	},
 
     autoZoomCheckboxHandler: function(box, checked) {
         console.log("autoZoom: " + checked);
