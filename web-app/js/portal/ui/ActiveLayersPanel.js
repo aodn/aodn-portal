@@ -7,21 +7,29 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		var config = Ext.apply({
 			title: "Active Layers",
 	        id: 'activeLayerTreePanel',
-//	        enableDD: true,
-	        rootVisible: false,
+	        enableDD: true,
+            rootVisible: false,
+            
 	        root: new GeoExt.tree.OverlayLayerContainer({        
 	            layerStore: cfg.layerStore, 
 	            leaf: false,
 	            expanded: true,
-	            loader: Ext.applyIf({
+                loader: new GeoExt.tree.LayerLoader({
 					filter: function(record){
 						var layer = record.getLayer();
 						if(layer.isAnimatedSlice == undefined){
 							return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
 						}
 						return false;
-					}
+					},
+					
+					createNode: function(attr) {
+					    
+	                    attr.uiProvider = Portal.ui.ActiveLayersTreeNodeUI;
+                        return GeoExt.tree.LayerLoader.prototype.createNode.call(this, attr);
+	                }
 				}),
+				
 				listeners: {
 					// fake the selected node
 					// initial loading
@@ -41,48 +49,10 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
 		// Not sure what these all are:  this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
 		
-		this.initLayerActionsMenu();
-		
-		this.on("contextmenu", function(node, event) {
-			this.getSelectionModel().select(node);
-	        this.layerActionsMenu.showAt(event.getXY());
-	    }, this);
-		
 		this.on("click", this.activeLayersTreePanelClickHandler, this);
 		this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
 		this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
 	},
-	
-	initLayerActionsMenu: function() {
-		
-		this.zoomToLayerMenuItem = new Ext.menu.Item({
-        	text: 'Zoom to layer', 
-        	scope: this, 
-        	handler: this.zoomToLayer
-        });
-		
-		this.layerActionsMenu = new Ext.menu.Menu({
-	        plain: true,
-	        floating: true,
-	        showSeparator: false,
-	        items: [
-                {
-                	text: 'Remove layer', 
-                	scope: this, 
-                	handler: this.removeLayer
-                },
-                this.zoomToLayerMenuItem
-	        ],
-	        listeners:
-	        {
-        		scope: this,
-        		beforeshow: this.updateZoomToLayerMenuItemVisibility								
-	        }
-	    });
-		return this.layerActionsMenu;
-	},
-
-
 	
 	setActiveNode: function(node) {		
 		this.getRootNode().eachChild(function(n) {
@@ -96,7 +66,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		});
 	},	
 
-	activeLayersTreePanelClickHandler: function(node, event) {		
+	activeLayersTreePanelClickHandler: function(node, event) {
+	    
 		this.setActiveNode(node);
 		node.getUI().toggleCheck(true);		
 		
@@ -118,7 +89,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	},
 		
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
-		if(node != null){
+	    
+		if (node != null) {
 			this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
 			Ext.getCmp('rightDetailsPanel').update(node.layer);
 			Ext.getCmp('map').updateAnimationPanel(node.layer);
@@ -164,7 +136,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	},
 	
 	removeLayer: function() {
+	    
 		var selectedLayer = this.getSelectedLayer();
+		
 		var checkedLayers = this.getChecked();
 		//Decide which layer to show in details panel
 		var newDetailsPanelLayer = null;
@@ -185,5 +159,16 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
 			
 		}
+	},
+	
+	/**
+	 * Bug fix, see: http://www.sencha.com/forum/showthread.php?105047-Setting-TreeNode.uiProvider-Causes-RootVisible-to-be-Ignored
+	 */
+	setRootNode : function(node){
+       
+	    node = Portal.ui.ActiveLayersPanel.superclass.setRootNode.call(this, node);
+	    node.ui = new Ext.tree.RootTreeNodeUI(node);
+       
+	    return node;
 	}
 });

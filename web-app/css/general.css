@@ -736,7 +736,6 @@ JQUERY AUTO COMPLETE
 }
 
 #mapOptions {
-    margin: 1px 6px 0px 4px;
     padding: 10px;
     background-color: #F1F1F0;
     border-radius: 10px;
@@ -868,15 +867,20 @@ div.allwhite {
     /*  background-color: #fffacd; */
 }
 
-.search-filter-panel .term-selection-panel-header-selected {
-    color: #666;
-    font-weight: bold;
-    /*  background-color: #fffacd;*/
-    font-style: italic;
+.remove-layer-button {
+    width: 15px;
+    height: 15px;
+    background-image: url(../images/remove_layer.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    vertical-align: middle;
 }
 
-.drop-zone-placeholder {
-    display: table-cell;
-    text-align: center;
+.zoom-to-layer-button {
+    width: 15px;
+    height: 15px;
+    background: url(../images/zoom_to_layer.png)  center no-repeat;
+    background-repeat: no-repeat;
+    background-size: 100%;
     vertical-align: middle;
 }

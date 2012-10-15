@@ -187,19 +187,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		
 		// Is there a way to achieve this with initialisation config of the control?
 		this.mapOptions.mapActionsControl.maximizeControl();
-		
-		// TODO: shouldn't be referencing "actionsPanel" directly - refactor.
-		this.mapOptions.mapActionsControl.actionsPanel.on('removelayer', this.removeLayer, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('zoomToLayer', this.zoomToLayer, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('removealllayers', this.removeAllLayers, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('resetmap', this.resetMap, this);
-		
-		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomchecked', this.autoZoomCheckboxHandler, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomunchecked', this.autoZoomCheckboxHandler, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
-		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
-
-		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
 	},
 	
 	loadSnapshot: function(id) {
