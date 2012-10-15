@@ -100,7 +100,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.Map.superclass.constructor.call(this, config);
         this.initMapLinks();
-
+        
         // Control to get feature info or pop up
         var clickControl = new Portal.ui.ClickControl({
             map: this.map,
@@ -111,8 +111,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
                 this.scope._handleFeatureInfoClick(event);
             }
         });
-
-
+        
         this.map.addControl(clickControl);
         clickControl.activate();
 
@@ -177,14 +176,32 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.Map.superclass.afterRender.call(this);
 
-        // this.initEmptyMapOverlay(); // Don't show this for now
-
-        this.initDropTarget();
-
         // TODO: refactor.
         this.initMapActionsControl();
     },
 
+	initMapActionsControl: function() {
+		this.appConfig.mapPanel = this;
+		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
+		this.map.addControl(this.mapOptions.mapActionsControl);
+		
+		// Is there a way to achieve this with initialisation config of the control?
+		this.mapOptions.mapActionsControl.maximizeControl();
+		
+		// TODO: shouldn't be referencing "actionsPanel" directly - refactor.
+		this.mapOptions.mapActionsControl.actionsPanel.on('removelayer', this.removeLayer, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('zoomToLayer', this.zoomToLayer, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('removealllayers', this.removeAllLayers, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('resetmap', this.resetMap, this);
+		
+		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomchecked', this.autoZoomCheckboxHandler, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('autozoomunchecked', this.autoZoomCheckboxHandler, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionschecked', this.layerOptionsCheckboxHandler, this);
+		this.mapOptions.mapActionsControl.actionsPanel.on('hidelayeroptionsunchecked', this.layerOptionsCheckboxHandler, this);
+
+		this.relayEvents(this.mapOptions.mapActionsControl.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']); // 'togglevisibility']);
+	},
+	
     initEmptyMapOverlay: function() {
 
         this.emptyMapOverlay = new Portal.ui.EmptyDropZonePlaceholder({
@@ -244,15 +261,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
-    },
-
-    initMapActionsControl: function() {
-        this.appConfig.mapPanel = this;
-        this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
-        this.map.addControl(this.mapOptions.mapActionsControl);
-
-        // Is there a way to achieve this with initialisation config of the control?
-        this.mapOptions.mapActionsControl.maximizeControl();
     },
 
     loadSnapshot: function(id) {

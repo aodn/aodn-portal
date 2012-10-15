@@ -106,33 +106,7 @@ Portal.ui.openlayers.MapActionsControl =
           this.layersDiv = document.createElement("div");
           this.layersDiv.id = this.id + "_layersDiv";
           OpenLayers.Element.addClass(this.layersDiv, "layersDiv");
-//
-//          this.baseLbl = document.createElement("div");
-//          this.baseLbl.innerHTML = OpenLayers.i18n("Base Layer");
-//          OpenLayers.Element.addClass(this.baseLbl, "baseLbl");
-//
-//          this.baseLayersDiv = document.createElement("div");
-//          OpenLayers.Element.addClass(this.baseLayersDiv, "baseLayersDiv");
-//
-//          this.dataLbl = document.createElement("div");
-//          this.dataLbl.innerHTML = OpenLayers.i18n("Overlays");
-//          OpenLayers.Element.addClass(this.dataLbl, "dataLbl");
-//
-//          this.dataLayersDiv = document.createElement("div");
-//          OpenLayers.Element.addClass(this.dataLayersDiv, "dataLayersDiv");
-//
-//          if (this.ascending) {
-//              this.layersDiv.appendChild(this.baseLbl);
-//              this.layersDiv.appendChild(this.baseLayersDiv);
-//              this.layersDiv.appendChild(this.dataLbl);
-//              this.layersDiv.appendChild(this.dataLayersDiv);
-//          } else {
-//              this.layersDiv.appendChild(this.dataLbl);
-//              this.layersDiv.appendChild(this.dataLayersDiv);
-//              this.layersDiv.appendChild(this.baseLbl);
-//              this.layersDiv.appendChild(this.baseLayersDiv);
-//          }
-//
+
           this.div.appendChild(this.layersDiv);
 
           if(this.roundedCorner) {
@@ -245,7 +219,7 @@ Portal.ui.openlayers.MapActionsControl =
        * evt - {Event} 
        */
       ignoreEvent: function(evt) {
-          OpenLayers.Event.stop(evt);
+          OpenLayers.Event.stop(evt, true);
       },
 
       /** 
@@ -257,7 +231,7 @@ Portal.ui.openlayers.MapActionsControl =
        * evt - {Event}
        */
       mouseDown: function(evt) {
-          this.isMouseDown = true;
+    	  this.isMouseDown = true;
           this.ignoreEvent(evt);
       },
 
@@ -271,7 +245,7 @@ Portal.ui.openlayers.MapActionsControl =
        * evt - {Event} 
        */
       mouseUp: function(evt) {
-          if (this.isMouseDown) {
+    	  if (this.isMouseDown) {
               this.isMouseDown = false;
               this.ignoreEvent(evt);
           }

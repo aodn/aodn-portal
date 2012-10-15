@@ -3,14 +3,17 @@ Ext.namespace('Portal.ui');
 Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	constructor: function(cfg) {
+		
 		this.snapshotController = new Portal.snapshot.SnapshotController({
 			map: cfg.map,
 			addGrailsLayerFn: cfg.addGrailsLayerFn,
 			mapScope: cfg.mapScope
 		});
+		
 		this.snapshotController.on('snapshotLoaded', function() {
 			this.fireRemoveAllLayers();
 		}, this);
+		
 		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
             map: cfg.map,           
             editable: false,
@@ -46,49 +49,40 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 				}
 			}
         });
-		
-		
+
 		var config = Ext.apply({
 	        collapseMode : 'mini',
-	        autoHeight: true,
-	        region: 'north',
-	        items:[
-	            {
-	                id : 'mapOptions',
-	                items: [
-	                    new Ext.Container({
-	                        layout: 'hbox',
-                                height: 40,
-	                        items: [
-                                { 
-                                    flex: 3,
-                                    items: [ 
-										this.autoZoomCheckbox,
-										this.hideDetailsPanelCheckbox
-									]
-                                },
-	                            new Ext.BoxComponent({      
-                                    flex: 2,
-                                    border: true,
-                                    padding: 4,
-                                    id: 'mapSpinnerPanel',
-                                    html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
-	                            })
-	                        ]
-	                    }),
-	                    new Ext.Spacer({height: 5}),
-	                    this.initButtonPanel(),
-	                    new Ext.Spacer({height: 2}),
-	                    new Portal.snapshot.SnapshotOptionsPanel({controller: this.snapshotController}),
-	                    this.baseLayerCombo
-	                ]
-	            }
-	        ]
+            id : 'mapOptions',
+            items: [
+                new Ext.Panel({
+                    height: 40,
+                    items: [
+                        { 
+                            flex: 3,
+                            items: [ 
+								this.autoZoomCheckbox,
+								this.hideDetailsPanelCheckbox
+							]
+                        },
+                        new Ext.BoxComponent({      
+                            flex: 2,
+                            border: true,
+                            padding: 4,
+                            id: 'mapSpinnerPanel',
+                            html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
+                        })
+                    ]
+                }),
+                new Ext.Spacer({height: 5}),
+                this.initButtonPanel(),
+                new Ext.Spacer({height: 2}),
+                new Portal.snapshot.SnapshotOptionsPanel({controller: this.snapshotController}),
+                this.baseLayerCombo
+            ]
 		}, cfg);
 		
 		Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
 		
-		//this.addEvents('transect');
 		this.relayEvents(this.buttonPanel, ['removealllayers', 'resetmap']);
 		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
 	},
