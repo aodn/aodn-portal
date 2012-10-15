@@ -97,11 +97,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	    } 
 	},
 
-	updateZoomToLayerMenuItemVisibility: function()
-	{
-		this.zoomToLayerMenuItem.setVisible(this.layerHasBoundingBox(this.getSelectedNode().layer));
-	},
-	
 	layerHasBoundingBox: function(layer)
 	{
 		// TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
