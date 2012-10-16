@@ -142,8 +142,6 @@ class LayerController {
             localName = params.name
         }
 
-        def serverParam = params.serverUri
-
         def layerInstance = criteria.get {
             server {
                 or {
@@ -467,7 +465,7 @@ class LayerController {
 				join 'server'
 			}
 		}
-		
+
 		layers = layers.sort {layer ->
 			for(int i=0;i<layerIds.size(); i++) {
 				if(layerIds.getAt(i) == layer.id) {
@@ -475,7 +473,7 @@ class LayerController {
 				}
 			}
 		}
-		
+
 		return layers
 	}
 
@@ -566,9 +564,5 @@ class LayerController {
         if (layerInstance) {
             render(view: "editFilters", model: [layerInstance: layerInstance])
         }
-        else{
-            //:( Fail
-        }
-
     }
 }

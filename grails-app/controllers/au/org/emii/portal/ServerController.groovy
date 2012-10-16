@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import grails.converters.deep.JSON
 import org.apache.shiro.SecurityUtils
-import javax.swing.text.LayeredHighlighter
 
 class ServerController {
 
@@ -18,7 +17,7 @@ class ServerController {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
 	}
-        
+
     def listAllowDiscoveriesAsJson = {
         def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
         render layerInstanceList as JSON
@@ -72,7 +71,7 @@ class ServerController {
                     eq('name', UserRole.SERVEROWNER)
                 }
             }
-            
+
 			return [serverInstance: serverInstance, allOwners: allOwners]
 		}
 	}
