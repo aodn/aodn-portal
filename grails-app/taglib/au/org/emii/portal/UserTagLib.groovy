@@ -1,14 +1,13 @@
 package au.org.emii.portal
 
 import org.apache.shiro.SecurityUtils
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor
 
 class UserTagLib {
 
     static namespace = "user"
-    
+
     def loggedInUser = { attrs, body ->
-        
+
         def principal = SecurityUtils.subject?.principal
 
         if ( !principal ) return // No-one logged-in
@@ -23,7 +22,7 @@ class UserTagLib {
 
         if ( prop ) out << prop.encodeAsHTML()
     }
-    
+
     def loggedInUserInRole = { attrs, body ->
         def principal = SecurityUtils.subject?.principal
 

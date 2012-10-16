@@ -1,14 +1,12 @@
 package au.org.emii.portal
 
-import org.codehaus.groovy.grails.web.json.JSONObject
-
-class SearchFilter 
+class SearchFilter
 {
 	static belongsTo = [search: Search]
-	
+
 	String type
 	Map value
-	
+
 	static SearchFilter fromJson(json) throws IllegalArgumentException
 	{
 		if (!json.type)
@@ -20,19 +18,19 @@ class SearchFilter
 		{
 			throw new IllegalArgumentException("Filter value must be specified.")
 		}
-		
+
 		SearchFilter filter = new SearchFilter(type: json.type)
 		filter.value = [:]
 		json.value.each
 		{
 			k, v ->
-			
+
 			filter.value.put(k, String.valueOf(v))
 		}
-		
+
 		return filter
 	}
-	
+
 	@Override
 	public String toString() {
 		return "type: ${type}, value: ${value}"
