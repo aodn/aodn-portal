@@ -58,7 +58,7 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	   In this method, implement actions like clearing a textfield, reset values.
 	**/
 	handleRemoveFilter: function(){
-		console.log("_createField yet to be implemented");
+		console.log("handleRemoveFilter yet to be implemented");
 	},
 
 	hasValue: function(){

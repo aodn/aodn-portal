@@ -1,66 +1,77 @@
 Ext.namespace('Portal.snapshot');
 
 Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
+	
+	defaultHeight: 20,
+	
   initComponent: function() { 
     Ext.apply(this, {
-      layout: "hbox",
-      hidden: true,
-      items: [
-        new Ext.form.ComboBox({
-          width: 150,
-          editable :false,
-          padding: 20,
-          ref: 'snapshotCombo',
-          emptyText: OpenLayers.i18n('chooseSavedMap'),
-          minChars: 0,
-          displayField: 'name',
-          valueField: 'id',
-          store: new Ext.data.JsonStore({
-            autoLoad: Portal.app.config.currentUser,
-            autoDestroy: true,
-            remote: true,
-            url: 'snapshot/listForSnapshotOptions',
-            baseParams: {
-              'owner.id': Portal.app.config.currentUser ? Portal.app.config.currentUser.id : null
-            },
-            root: 'data',
-            fields: ['id','name'],
-            listeners: {
-              scope: this,
-              load: this.onSnapshotsLoaded
-            }
-          }),
-          listeners: {
-            scope: this,
-            beforequery: function(qe){
-              delete qe.combo.lastQuery;
-            },
-            select: this.onLoadSelectedSnapshot
-          }
-        }),
-        new Ext.Spacer({width: 7}),
-        new Ext.Button({
-          text: OpenLayers.i18n('deleteSnapshot'),
-          ref: 'btnDelete',
-          cls: "floatLeft buttonPad",   
-          tooltip: OpenLayers.i18n('deleteSnapshotTip'),
-          listeners:
-          {
-            scope: this,
-            click: this.onDeleteSelectedSnapshot
-          }
-        }),
-        new Ext.Button({
-		  text: OpenLayers.i18n('shareSnapshot'),
-		  ref: 'btnShare',
-		  cls: "floatLeft buttonPad",
-		  tooltip: OpenLayers.i18n('shareSnapshotTip'),
-		  listeners:
-		  {
-			scope: this,
-			click: this.onShareSelectedSnapshot
-		  }
-		})
+    	
+    	layout: "hbox",
+    	
+    	items: [ 
+    		
+	        new Ext.form.ComboBox({
+	        	
+	        	colspan: 1,
+	          width: 150,
+	          editable :false,
+	          padding: 20,
+	          ref: 'snapshotCombo',
+	          emptyText: OpenLayers.i18n('chooseSavedMap'),
+	          minChars: 0,
+	          displayField: 'name',
+	          valueField: 'id',
+	          store: new Ext.data.JsonStore({
+	            autoLoad: Portal.app.config.currentUser,
+	            autoDestroy: true,
+	            remote: true,
+	            url: 'snapshot/listForSnapshotOptions',
+	            baseParams: {
+	              'owner.id': Portal.app.config.currentUser ? Portal.app.config.currentUser.id : null
+	            },
+	            root: 'data',
+	            fields: ['id','name'],
+	            listeners: {
+	              scope: this,
+	              load: this.onSnapshotsLoaded
+	            }
+	          }),
+	          listeners: {
+	            scope: this,
+	            beforequery: function(qe){
+	              delete qe.combo.lastQuery;
+	            },
+	            select: this.onLoadSelectedSnapshot
+	          }
+	        }),
+	
+	        new Ext.Spacer({width: 7,    
+	        }),
+	        new Ext.Button({
+	        	colspan: 1,
+	        	text: OpenLayers.i18n('deleteSnapshot'),
+	          ref: 'btnDelete',
+	          cls: "floatLeft buttonPad",   
+	          tooltip: OpenLayers.i18n('deleteSnapshotTip'),
+	          listeners:
+	          {
+	            scope: this,
+	            click: this.onDeleteSelectedSnapshot
+	          }
+	        }),
+	        new Ext.Button({
+	        	colspan: 1,
+			  text: OpenLayers.i18n('shareSnapshot'),
+			  ref: 'btnShare',
+			  cls: "floatLeft buttonPad",
+			  tooltip: OpenLayers.i18n('shareSnapshotTip'),
+			  listeners:
+			  {
+				scope: this,
+				click: this.onShareSelectedSnapshot
+			  }
+			})
       ]      
     });
     
@@ -68,7 +79,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
     
     this.mon(this.controller, 'snapshotsChanged', this.onSnapshotsChanged, this);
   },
-
+  
   onLoadSelectedSnapshot: function(button, event) {
     var id = this.snapshotCombo.getValue();
 

@@ -10,7 +10,7 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterTypes {
-    String, Date, Number, Boolean
+    String, Date, Number, Boolean,BoundingBox
 
     String getKey() { name() }
 }

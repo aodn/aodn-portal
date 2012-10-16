@@ -6,44 +6,46 @@ Portal.ui.Options = Ext.extend(Object, {
         var config = Ext.apply({}, cfg);
         Portal.ui.Options.superclass.constructor.call(this, config);
 
-        Ext.QuickTips.init();
-
-        var container = document.getElementById("navtoolbar");
-
-        var pan = new OpenLayers.Control.Navigation({
-            title: 'Pan Control'
-        } );
-        var zoom = new OpenLayers.Control.ZoomBox({
-            title: "Zoom and centre [shift + mouse drag]"
-        });
-        var toolPanel = new OpenLayers.Control.Panel({
-            defaultControl: pan,
-            div: container
-        });
-        toolPanel.addControls( [ zoom,pan] );
-
-        this.controls = [
-            new OpenLayers.Control.Attribution(),
-            new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.MousePosition(),
-            new OpenLayers.Control.ScaleLine(),
-            new OpenLayers.Control.OverviewMap({
-                autoPan: true,
-                minRectSize: 30,
-                mapOptions:{
-                    resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-                }
-            }),
-            toolPanel
-        ];
-
-        this.options = {
-            controls: this.controls,
-            displayProjection: new OpenLayers.Projection("EPSG:4326"),
-            prettyStateKeys: true, // for pretty permalinks,
-            resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-        };
-    }
+		Ext.QuickTips.init();
+		
+		var container = document.getElementById("navtoolbar");                
+                
+		var pan = new OpenLayers.Control.Navigation({
+			title: 'Pan Control'
+		} );
+		var zoom = new OpenLayers.Control.ZoomBox({
+			title: "Zoom and centre [shift + mouse drag]"
+		});
+		var toolPanel = new OpenLayers.Control.Panel({
+			defaultControl: pan,
+			div: container
+		});
+		toolPanel.addControls( [ zoom,pan] );
+		
+		this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher();
+		
+		this.controls = [
+			new OpenLayers.Control.Attribution(),
+			new OpenLayers.Control.PanZoomBar(),
+			new OpenLayers.Control.MousePosition(),
+			new OpenLayers.Control.ScaleLine(),
+			new OpenLayers.Control.OverviewMap({
+				autoPan: true,
+				minRectSize: 30,
+				mapOptions:{
+					resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+				}
+			}),
+			toolPanel
+		];
+		
+		this.options = {
+			controls: this.controls,
+			displayProjection: new OpenLayers.Projection("EPSG:4326"),
+			prettyStateKeys: true, // for pretty permalinks,
+			resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+		};
+	}	
 });
 
 Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
@@ -98,7 +100,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.Map.superclass.constructor.call(this, config);
         this.initMapLinks();
-
+        
         // Control to get feature info or pop up
         var clickControl = new Portal.ui.ClickControl({
             map: this.map,
@@ -109,8 +111,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
                 this.scope._handleFeatureInfoClick(event);
             }
         });
-
-
+        
         this.map.addControl(clickControl);
         clickControl.activate();
 
@@ -175,88 +176,23 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.Map.superclass.afterRender.call(this);
 
-        // this.initEmptyMapOverlay(); // Don't show this for now
-
-        this.initDropTarget();
-
         // TODO: refactor.
-        //this.initMapActionsControl();
+        this.initMapActionsControl();
     },
 
-    initEmptyMapOverlay: function() {
+	initMapActionsControl: function() {
+		this.appConfig.mapPanel = this;
+		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
+		this.map.addControl(this.mapOptions.mapActionsControl);
+		
+		// Is there a way to achieve this with initialisation config of the control?
+		this.mapOptions.mapActionsControl.maximizeControl();
+	},
+	
+	loadSnapshot: function(id) {
 
-        this.emptyMapOverlay = new Portal.ui.EmptyDropZonePlaceholder({
-            id: 'mapDropZonePlaceholder',
-            layout: 'fit',
-            placeholderText: OpenLayers.i18n('mapDropZonePlaceholder'),
-
-            style: {
-                opacity: 0.7,
-                'z-index': 99999,
-                position: 'absolute',
-                width: '100%',
-                height: '100%'
-            }
-        });
-
-        this.add(this.emptyMapOverlay);
-
-        this.layers.on('add', this.updateEmptyMapOverlayVisibility, this);
-        this.layers.on('remove', this.updateEmptyMapOverlayVisibility, this);
-    },
-
-    updateEmptyMapOverlayVisibility: function(store, records, index) {
-
-        if (store.getCount() == 0) {
-            this.emptyMapOverlay.show();
-        }
-        else {
-            this.emptyMapOverlay.hide();
-        }
-    },
-
-    initDropTarget: function() {
-
-        var mapPanel = this;
-
-        this.dropTarget = new Ext.dd.DropTarget(this.getEl(), {
-
-            ddGroup: 'map-dd-group',
-
-            notifyDrop: function(source, e, data) {
-
-                Ext.each(data.selections, function(layerRecord) {
-                    var layerDesc = mapPanel.getLayerLink(layerRecord);
-                    mapPanel.addMapLayer(layerDesc);
-                });
-            }
-        });
-    },
-
-    // TODO: cut and pasted code.
-    getLayerLink: function(layerRecord) {
-        var links = layerRecord.get('links');
-        var linkStore = new Portal.search.data.LinkStore({
-            data: {links: links}
-        });
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
-
-        return linkStore.getLayerLink(0);
-    },
-
-    initMapActionsControl: function() {
-        this.appConfig.mapPanel = this;
-        this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
-        this.map.addControl(this.mapOptions.mapActionsControl);
-
-        // Is there a way to achieve this with initialisation config of the control?
-        this.mapOptions.mapActionsControl.maximizeControl();
-    },
-
-    loadSnapshot: function(id) {
-
-        this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
-    },
+		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
+	},
 
     autoZoomCheckboxHandler: function(box, checked) {
         console.log("autoZoom: " + checked);

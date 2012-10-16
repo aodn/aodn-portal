@@ -86,6 +86,8 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Panel, {
                 height: 8
             },{
                 xtype: 'label',
+                name: 'bboxHint',
+                ref: 'bboxHint',
                 text: OpenLayers.i18n('bboxHint'),
                 style: 'font-style: italic'
             },{
