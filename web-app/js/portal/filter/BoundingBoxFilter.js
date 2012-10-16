@@ -58,8 +58,13 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 	},
 
 	_onCoordChange: function(bounds){
-		this.CQL = "BBOX(" + this.filter.name + "," + bounds.westBL + "," + bounds.southBL + "," + bounds.eastBL + ","
-							+ bounds.northBL+ ")";
-	 	this._fireAddEvent();
+
+		if((bounds.westBL != null) && (bounds.southBL != "") && (bounds.eastBL != "") && (bounds.northBL != "")){
+			this.CQL = "BBOX(" + this.filter.name + "," + bounds.westBL + "," + bounds.southBL + "," + bounds.eastBL + ","
+										+ bounds.northBL+ ")";
+			this._fireAddEvent();
+		}
+
+
 	}
 });

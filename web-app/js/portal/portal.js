@@ -68,6 +68,15 @@ Portal.app = {
 				viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
 
 				if(window.location.search.length > 0){
+
+					Ext.Msg.show({
+						title: "<h2>Disclaimer</h2>",
+						buttons: Ext.Msg.OK,
+						cls: 'motd',
+						width: 600,
+						msg: this.config.footerContent
+					});
+
                 	setViewPortTab('map');
 
 			        var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);

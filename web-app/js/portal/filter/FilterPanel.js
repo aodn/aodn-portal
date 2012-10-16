@@ -13,7 +13,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 				tableAttrs: {
 					cellspacing: '10px',
 					style: {
-						width: '100%'
+						width: '100%',
+						font: '11 px'
 					}
 				}
 			},
