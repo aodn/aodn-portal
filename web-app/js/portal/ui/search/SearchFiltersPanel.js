@@ -71,10 +71,16 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 		}, config);
 
 		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
+		
+		this.mon(this.searcher, 'searcherror', this._showError, this);
 	},
 
     initComponent: function() {
         Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
+    },
+    
+    _showError: function() {
+    	this.setTitle("Faceted search is currently unavailable.")
     }
 });
 
