@@ -178,13 +178,15 @@ class AodaacAggregatorService {
 
     void cancelJob( job ) {
 
+        // Todo - DN: Test this, I'm not even sure cancelling jobs works on our VM
+
         log.debug "Cancelling job $job"
 
         // Generate url
         def apiCall = _aggregatorCommandAddress( CancelJobCommand, [job.jobId] )
 
         try {
-            // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,startBackgroundAggregator.cgi.sh,20110309T162224_3818
+            // Example URL: Todo - DN: Include example cancel URL
             log.debug "apiCall: ${ apiCall }"
 
             // Make the call
