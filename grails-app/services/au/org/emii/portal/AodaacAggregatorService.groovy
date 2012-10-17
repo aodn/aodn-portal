@@ -299,6 +299,7 @@ class AodaacAggregatorService {
 
                 def p = job.jobParams
                 def paramsString = """\
+ProductId: ${ p.productId }
 Output format: ${ p.outputFormat }
 Date range start: ${ p.dateRangeStart }
 Date range end: ${ p.dateRangeEnd }
@@ -310,7 +311,14 @@ Long range start: ${ p.longitudeRangeStart }
 Long range end: ${ p.longitudeRangeEnd }
 """
 
-                args = [job.latestStatus.theErrors, paramsString]
+                def errorMessage = job.latestStatus.theErrors
+
+                if ( !errorMessage ) {
+
+                    errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
+                }
+
+                args = [errorMessage, paramsString]
             }
 
             def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${ successMessage ? "success" : "failed"}Body"
