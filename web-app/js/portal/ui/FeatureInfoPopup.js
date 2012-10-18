@@ -115,6 +115,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _requestFeatureInfo: function(layer) {
+		
     	this.numResultsToLoad++;
     	Ext.Ajax.request({
         	scope: this,
@@ -292,19 +293,27 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             autoHeight: true,
             cls: "featureinfocontent",
             autoEl: {
-                html: content
-            }
+					html: content
+					},
+			listeners: { 
+				// find script loaded as text and run it now when this tab is opened
+				activate: function(){				
+					var code = $('#' + this.getId( ) + ' script').text();
+					var codefunc = new Function(code);
+					codefunc();
+				} 
+			}
         });
-
-    	if (!activeTab)
-    	{
+		
+		
+    	if (!activeTab)	{
         	this.popupTab.setActiveTab(0);
     	}
-    	
+		
     	this.popupTab.doLayout();
     	this.popupTab.show();
-    },
-    
+    },	
+	
     fitContainer: function() {
     	if (this.maximisedSize) {
 	    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
