@@ -14,7 +14,16 @@ function addToDownloadCart( tuples ) {
             var rec = tuple.record.data;
             var link = tuple.link;
 
-            condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
+            var prefname = null;
+
+            if(tuple.link.preferredFname != null){
+            	condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol, preferredFname: link.preferredFname } );
+            }
+
+            else{
+            	condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
+            }
+
         }
     );
 

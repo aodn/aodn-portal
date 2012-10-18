@@ -64,7 +64,19 @@ class BulkDownloadService {
         log.debug "Adding file entry for ${ fileInfo.href }"
 
         def filenameToUse
-        _extractFilenameFromUrl( fileInfo )
+
+        if(fileInfo.preferredFname != null){
+            //For now, the preferred name is just <filename>.<file_extension>
+            //Adding this option because WFS always returns a file with the name "wms",
+            //which isn't going to be very helpful to users
+            def preferredFname = fileInfo.preferredFname
+            fileInfo.filenameUsed = preferredFname.substring(0, preferredFname.indexOf("."))
+            fileInfo.fileExtensionUsed = preferredFname.substring(preferredFname.indexOf("."))
+        }
+        else{
+            _extractFilenameFromUrl( fileInfo )
+        }
+
 
         // Ensure we can add another file
         def resultMessage = _getAnyRestrictionsAddingFile()

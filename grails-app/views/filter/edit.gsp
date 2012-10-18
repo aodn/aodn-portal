@@ -40,6 +40,16 @@
                                     <g:textField name="name" value="${filterInstance?.name}" />
                                 </td>
                             </tr>
+
+                             <tr class="prop">
+								<td valign="top" class="name">
+								  <label for="label"><g:message code="filter.label.label" default="Label" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
+									<g:textField name="label" value="${filterInstance?.label}" />
+								</td>
+							</tr>
+
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -60,15 +70,7 @@
                                 </td>
                             </tr>
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="label"><g:message code="filter.label.label" default="Label" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-                                    <g:textField name="label" value="${filterInstance?.label}" />
-                                </td>
-                            </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

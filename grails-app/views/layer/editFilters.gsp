@@ -5,6 +5,26 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'layer.label', default: '')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+
+        <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>
+		<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
+
+		<script language="javascript">
+			function getCombo(sel) {
+				var value = sel.options[sel.selectedIndex].value;
+				if((value == "Boolean") || (value == "BoundingBox")){
+                 	document.getElementById('possibleValues').style.visibility = 'hidden';
+				}
+				else{
+					document.getElementById('possibleValues').style.visibility = 'visible';
+				}
+			}
+
+			Ext.onReady(function() {
+
+			});
+
+		</script>
     </head>
     <body>
         <div class="nav">
@@ -33,16 +53,6 @@
 
 							<tr class="prop">
 								<td valign="top" class="name">
-									<label for="type"><g:message code="filter.type.label" default="Type" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
-
-								 <g:select name="type" from="${FilterTypes?.values()}" optionKey="key" />
-								</td>
-							</tr>
-
-							<tr class="prop">
-								<td valign="top" class="name">
 									<label for="label"><g:message code="filter.label.label" default="Label" /></label>
 								</td>
 								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
@@ -50,7 +60,17 @@
 								</td>
 							</tr>
 
-							 <tr class="prop">
+							<tr class="prop">
+								<td valign="top" class="name">
+									<label for="type"><g:message code="filter.type.label" default="Type" /></label>
+								</td>
+								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
+
+								 <g:select name="type" from="${FilterTypes?.values()}" optionKey="key" onchange="getCombo(this)" />
+								</td>
+							</tr>
+
+							 <tr class="prop" id="possibleValues">
 								<td valign="top" class="name">
 									<label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
 								</td>

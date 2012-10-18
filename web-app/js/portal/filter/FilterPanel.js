@@ -24,12 +24,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this.GET_FILTER = "layer/getFiltersAsJSON";
     	this.activeFilters = {};
 
+
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function(cfg) {
     	this.AND_QUERY = " AND ";
     	this.on('addFilter', this._handleAddFilter);
+
     	Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
@@ -125,6 +127,19 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 							this
 						);
 
+						this.addButton = new Ext.Button({
+							cls: "x-btn-text-icon",
+							icon: "images/basket_add.png",
+							anchor: 'right',
+							text: 'Add Data to Cart',
+							listeners: {
+								scope: this,
+								click: this._addToCart
+							}
+						});
+
+						this.add(this.addButton);
+
 						this.doLayout();
 						show.call(target, this);
 					}
@@ -175,5 +190,39 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _handleRemoveFilter: function(aFilter){
     	delete this.activeFilters[aFilter.getFilterName()];
     	this._updateFilter();
+    },
+
+    _makeWFSURL: function(){
+
+    	var query = Ext.urlEncode({
+			typeName: this.layer.params.LAYERS,
+			SERVICE: "WFS",
+			outputFormat: "csv",
+			REQUEST: "GetFeature",
+			VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
+			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
+		});
+
+    	var wfsURL =  this.layer.server.uri + "/../wfs?" + query;
+
+		return wfsURL;
+    },
+
+    _addToCart: function(){
+		var tup = new Object();
+		tup.record = new Object();
+		tup.record.data = new Object();
+		tup.link = new Object();
+
+		//pretending to be a geonetwork metadata record
+		tup.record.data["rec_uuid"] = this.layer.getMetadataUrl();
+		tup.record.data["rec_title"] =  this.layer.title;
+		tup.record.data["title"] =  this.layer.title;
+		tup.link["type"] =  "application/x-msexcel";
+		tup.link["href"] =  this._makeWFSURL();
+		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
+		tup.link["preferredFname"] = this.layer.params.LAYERS + ".csv";
+
+        addToDownloadCart(tup);
     }
 });
