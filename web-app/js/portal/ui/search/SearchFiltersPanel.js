@@ -10,14 +10,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 			fieldName: 'Gcmd538',
 			searcher: config.searcher
 		});
-
+		
 		this.methodFilter = new Portal.ui.TermSelectionPanel({
 			title: OpenLayers.i18n('methodFilter'),
 			hierarchical: true,
 			fieldName: 'Mcp14Cmv',
 			searcher: config.searcher
 		});
-
+		
 		this.locationFilter = new Portal.ui.TermSelectionPanel({
 			title: OpenLayers.i18n('locationFilter'),
 			hierarchical: true,
@@ -56,9 +56,9 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             //height: 200,
 	        autoScroll: true,
             padding: 3,
-
+			
 	        cls: 'search-filter-panel',
-	        title: 'Find layers by:',
+	        title: 'Loading search terms...',
 
 	        items: [
                 this.themeFilter,
@@ -72,11 +72,17 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
 		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 		
+		this.mon(this.searcher, 'searchcomplete', this._showIntroMessage, this);
+    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._showIntroMessage, this);  
 		this.mon(this.searcher, 'searcherror', this._showError, this);
 	},
 
     initComponent: function() {
         Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
+    },
+    
+    _showIntroMessage: function() {
+    	this.setTitle("Find layers by:")
     },
     
     _showError: function() {

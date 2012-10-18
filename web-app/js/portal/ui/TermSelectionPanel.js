@@ -53,7 +53,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
   initComponent: function() {
     Portal.ui.TermSelectionPanel.superclass.initComponent.apply(this, arguments);
-
+	this.setVisible(false);
     this.on('afterrender', function() {
       this.on('collapse', this._onCollapsedChange, this);
       this.on('expand', this._onCollapsedChange, this);
