@@ -140,7 +140,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareMapDialogTitle: 'Share Map',
     shareSnapshotTip: 'Share a saved map',
 
-    // layer search
+    // Faceted layer search
     searchTabTitle: 'Search',
     layerSearch: 'Map Layers',
     themeFilter: 'Theme',
@@ -148,6 +148,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     methodFilter: 'Method',
     organisationFilter: 'Organisation',
     parameterFilter: 'Parameter',
+    facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search.', // Change this to be the empty string to have no message displayed
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
 

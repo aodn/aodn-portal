@@ -874,6 +874,17 @@ div.allwhite {
     font-style: italic;
 }
 
+.faceted-search-disclaimer {
+
+    border: 1px solid #ffcc55;
+}
+
+.faceted-search-disclaimer .x-panel-body {
+
+    padding: 2px 2px 2px 4px;
+    background-color: #fffacd;
+}
+
 .remove-layer-button {
     width: 15px;
     height: 15px;
