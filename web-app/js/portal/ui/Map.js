@@ -864,6 +864,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         // Need to collect the layers first and delete outside a loop over
         // the map.layers property because it updates its internal indices and
         // accordingly skips layers as the loop progresses
+    	this.updateLoadingImage("none");
+    	
         var layersToRemove = [];
         if(this.animationPanel.isAnimating()){
             this.animationPanel.removeAnimation();
