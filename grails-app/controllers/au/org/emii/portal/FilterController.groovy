@@ -68,6 +68,12 @@ class FilterController {
             }
 
             filterInstance.properties = params
+
+            if(params.possibleValues.length() > 0)
+                filterInstance.possibleValues = params.possibleValues.split(",")
+            else
+                filterInstance.possibleValues = []
+
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'filter.label', default: 'Filter'), filterInstance.id])}"
                 redirect(controller:  "layer", action: "editFilters", id: filterInstance.layer.id)

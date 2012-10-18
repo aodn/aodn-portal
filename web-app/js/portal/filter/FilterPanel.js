@@ -6,7 +6,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 	    	id: 'filterPanel',
 	        title: 'Filters',
 	        layout:'table',
-	        bodyStyle:'padding:5px',
 			layoutConfig: {
 				// The total column count must be specified here
 				columns: 3,
@@ -131,13 +130,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 							cls: "x-btn-text-icon",
 							icon: "images/basket_add.png",
 							anchor: 'right',
-							text: 'Add Data to Cart',
+							text: 'Add to Cart',
 							listeners: {
 								scope: this,
 								click: this._addToCart
 							}
 						});
 
+						this.add({html: "&nbsp;"});
 						this.add(this.addButton);
 
 						this.doLayout();

@@ -19,6 +19,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 	handleRemoveFilter: function(){
 		this.CQL = "";
+		this._setDefaultBounds();
 	},
 
 	_setExistingFilters: function(){
