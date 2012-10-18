@@ -145,9 +145,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerSearch: 'Map Layers',
     themeFilter: 'Theme',
     locationFilter: 'Location',
-    methodFilter: 'Method',
+    methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
-    parameterFilter: 'Parameter',
+    parameterFilter: 'Measured parameter',
     facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search.', // Change this to be the empty string to have no message displayed
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',

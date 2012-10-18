@@ -46,9 +46,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     this.mon(this.selectedView, 'filterremoved', this._onFilterRemoved, this);
 
     this.mon(this.searcher, 'searchcomplete', this._loadStore, this);
-    this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);  
+    this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
     this.mon(this.searcher, 'searcherror', this._searchFail, this);
-    
   },
 
   initComponent: function() {
@@ -201,7 +200,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     this.filterView.setVisible(this.hierarchical || this.selectionStore.getCount() == 0);
     this.doLayout();
   },
-  
+
   _searchFail: function(response) {
     this.setVisible(false);
 //    this.filterView.setVisible(false);
@@ -241,13 +240,20 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
   _onFilterClick: function(view, index) {
     var rec = view.store.getAt(index);
     var filterValue = rec.get('value');
-	
-	var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
-   
-	newTitle += '    ' + filterValue.substr(0,30)+'...';
-	this.setTitle(newTitle);
 
-	this.searcher.removeFilters(this._getCurrentFilterName());
+    var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
+
+    // Trim filter value for better fit
+    var trimmedFilterValue = filterValue;
+    if ( trimmedFilterValue.length > 30 ) {
+
+        trimmedFilterValue = trimmedFilterValue.substr( 0, 30 ) + '...'
+    }
+
+    newTitle += ' - ' + trimmedFilterValue;
+    this.setTitle(newTitle);
+
+    this.searcher.removeFilters(this._getCurrentFilterName());
     this.searcher.addFilter(this._getClickedFilterName(), filterValue);
     this.searcher.search();
 
