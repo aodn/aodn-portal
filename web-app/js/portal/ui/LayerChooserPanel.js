@@ -28,7 +28,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
             },
             autoScroll: true,
             items: [
-                this.leftTabMenuPanel,
+                this.leftTabMenuPanel
             ],
             cls: 'leftMenus'
         }, cfg);
@@ -97,7 +97,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     },
 
     removeLayer: function(openLayer, newDetailsPanelLayer) {
-    	
+
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     },
 
