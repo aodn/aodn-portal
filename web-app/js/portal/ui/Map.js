@@ -227,7 +227,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
             map: this.map,
             appConfig: this.appConfig,
-            maximisedSize: this.getViewSize()
+            maximisedSize: this.getViewSize(),
+            maximisedX: this.getPageX(),
+            maximisedY: this.getPageY()
         });
         this.featureInfoPopup.findFeatures(event);
     },
@@ -945,7 +947,15 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     getViewSize: function() {
         return this.container.getViewSize();
     },
-
+    
+     getPageX: function() {
+        return this.getPosition()[0];
+    },
+    
+    getPageY: function() {
+        return this.getPosition()[1];
+    },
+   
     onAddLayer: function(layerDesc) {
         this.map.addMapLayer(layerDesc);
     },

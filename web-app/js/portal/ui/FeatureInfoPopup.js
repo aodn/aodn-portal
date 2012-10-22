@@ -21,6 +21,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    
 	    this._addElements();
 	    
+	    console.log(this.maximisedSize+"+"+this.maximisedX + "+" + this.maximisedY);
 	    this.on('maximize', this._onMaximizeRestore,this);
 	    this.on('restore', this._onMaximizeRestore,this);
     },
@@ -332,6 +333,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    	if (this.dd) {
 	            this.dd.unlock();
 	        }
+	        
+	        if(this.maximisedX && this.maximisedY)
+	        	this.setPosition(this.maximisedX, this.maximisedY);
     	}
     	else {
     		GeoExt.Popup.prototype.fitContainer.call(this);
