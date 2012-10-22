@@ -60,7 +60,7 @@
 
 		   </user:loggedInUserInRole>
 		   <user:loggedInUserInRole roles="Administrator,ServerOwner">
-            <li class="controllerMenuItems"><g:link controller="server" action="listByOwner" params="[ownerId: layerInstance.id]>Edit Filters</g:link>
+            <li class="controllerMenuItems"><g:link controller="server" action="listByOwner">Edit Filters</g:link>
            </user:loggedInUserInRole>
 			</li>
           </ul>
