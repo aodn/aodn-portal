@@ -735,7 +735,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
                     bounds =  new OpenLayers.Bounds.fromArray(bounds.toArray(true));
                 }
 
-                if (bounds) {
+                if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
                     this.zoomTo(bounds);
                 }
             }
