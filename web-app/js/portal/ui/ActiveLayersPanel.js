@@ -8,6 +8,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 			title: "Active Layers",
 	        id: 'activeLayerTreePanel',
 	        enableDD: true,
+			useArrows: true,
             rootVisible: false,
             
 	        root: new GeoExt.tree.OverlayLayerContainer({        

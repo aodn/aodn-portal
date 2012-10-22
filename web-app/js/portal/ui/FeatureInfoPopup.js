@@ -296,7 +296,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 					html: content
 					},
 			listeners: { 
-				// find script loaded as text and run it now when this tab is opened
+				// find any script loaded as text and run it when this tab is opened
 				activate: function(){				
 					var code = $('#' + this.getId( ) + ' script').text();
 					var codefunc = new Function(code);

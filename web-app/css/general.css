@@ -149,6 +149,12 @@ hr {
     cursor: pointer;
 }
 
+.hoverText {
+	background-color: #CCCCCC;
+	margin: 3px;
+	padding: 3px;
+}
+
 .link {
 	cursor: url;
 	cursor: pointer;
@@ -652,7 +658,7 @@ div.olControlMousePosition {
     background-color: #34546E! important;
 }
 
-.olControlLayerSwitcher .layersDiv {
+.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
     background-color: #34546E! important;
 }
 

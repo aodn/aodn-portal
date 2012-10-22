@@ -6,9 +6,15 @@
             jQuery(this).toggleClass("hover")
               .next().stop(true, true).slideToggle();
 
-          }
-
-        );
+          });
+		  
+		  // activelayer/tree labels
+		  jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').live('hover',
+          function () {
+			jQuery(this).attr('title', jQuery(this).html());
+			jQuery(this).die('hover'); // This removes the .live() functionality
+          });
+		  
       </script>
       <!-- Import extra pluggins-->
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-autocomplete1.1.js')}"></script>
