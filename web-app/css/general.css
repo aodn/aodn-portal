@@ -443,7 +443,8 @@ table.featureInfo caption{
     border-width: 1px 1px 0 0;
     background-color:#3c668d;
     opacity: 0.0;
-    filter: alpha(opacity = 0);
+	-ms-filter:"alpha(opacity=0)"; /* IE8 */
+	filter:alpha(opacity=0); /* IE6/IE7 */
 }
 
 /* map toolbar */
@@ -452,8 +453,10 @@ table.featureInfo caption{
 .semiTransparent {
     background-image: none;
     background-color: #3c668d! important;
-    opacity: 0.7;
-    filter: alpha(opacity = 70);
+    opacity: 0.7;	
+	-ms-filter:"alpha(opacity=70)"; /* IE8 */
+	filter:alpha(opacity=70); /* IE6/IE7 */
+
     /*color: white;*/
 }
 .expandUpLink {
@@ -467,6 +470,8 @@ table.featureInfo caption{
 #controlButton,
 animationPanel {
 	opacity: 1.0;
+	-ms-filter:"alpha(opacity=100)"; /* IE8 */
+filter:alpha(opacity=100); /* IE6/IE7 */
 }
 #maptools .x-panel-body {
     border-radius: 5px;
@@ -478,7 +483,8 @@ animationPanel {
 
 .fullTransparency {
     opacity: 1.0! important;
-    filter: alpha(opacity = 100);
+	-ms-filter:"alpha(opacity=100)"; /* IE8 */
+	filter:alpha(opacity=100); /* IE6/IE7 */
 }
 
 .mapToolbarExpanderBarOver {
@@ -668,7 +674,8 @@ div.olControlMousePosition {
 	-moz-border-radius: 6px 0px 0px 0px;
 	border-radius: 6px 0px 0px 0px;
 	opacity: 0.85;	
-    filter: alpha(opacity = 85);
+	-ms-filter:"alpha(opacity=85)"; /* IE8 */
+	filter:alpha(opacity=85); /* IE6/IE7 */
 }
 .olControlLayerSwitcher .maximizeDiv, .olControlLayerSwitcher .minimizeDiv {
     top: 18px! important;
@@ -691,7 +698,8 @@ div.olControlMousePosition {
 }
 .layersDiv {
 	opacity: 0.85;	
-    filter: alpha(opacity = 85);
+    -ms-filter:"alpha(opacity=85)"; /* IE8 */
+	filter:alpha(opacity=85); /* IE6/IE7 */
 }
 
 div.olControlScaleLineBottom {
@@ -926,19 +934,15 @@ div.allwhite {
 }
 
 .remove-layer-button {
-    width: 15px;
-    height: 15px;
-    background-image: url(../images/remove_layer.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background: url(../images/remove_layer2.png)  center no-repeat white;
+    vertical-align: bottom;
 }
 
 .zoom-to-layer-button {
-    width: 15px;
-    height: 15px;
-    background: url(../images/zoom_to_layer.png)  center no-repeat;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background: url(../images/zoom_to_layer2.png)  center no-repeat white;
+    vertical-align: bottom;
 }
