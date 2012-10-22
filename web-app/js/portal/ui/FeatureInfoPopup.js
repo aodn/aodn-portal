@@ -20,6 +20,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    Portal.ui.FeatureInfoPopup.superclass.constructor.call(this, config);
 	    
 	    this._addElements();
+	    
+	    this.on('maximize', this._onMaximizeRestore,this);
+	    this.on('restore', this._onMaximizeRestore,this);
     },
     
     unanchorPopup: function() {
@@ -34,9 +37,18 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var resizer = new Ext.Resizable(this.getEl());
         var featureInfoPopup = this;
         
-        resizer.on('resize', function() {
-        	featureInfoPopup.syncSize();
-        });
+        resizer.on('resize', this._onResize,this);
+    },
+    
+    _onResize: function() {
+    	this.syncSize();
+        this.popupTab.doLayout();
+        this.popupTab.delegateUpdates();
+    },
+    
+    _onMaximizeRestore:function() {
+    	this.popupTab.doLayout();
+        this.popupTab.delegateUpdates();
     },
 
     _addElements: function() {
@@ -55,7 +67,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	        enableTabScroll : true,
 	        deferredRender: true,
 	        hidden: true
-	    }));
+	    })); 
     },
     
     findFeatures: function(event) {
