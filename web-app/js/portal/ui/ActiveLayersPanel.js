@@ -5,7 +5,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	constructor: function(cfg) {
 		
 		var config = Ext.apply({
-			title: "Active Layers",
+			title: "Active Layers<br><i><small>No layers added to map</small></i>",
 	        id: 'activeLayerTreePanel',
 	        enableDD: true,
 			useArrows: true,
@@ -52,6 +52,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		
 		this.on("click", this.activeLayersTreePanelClickHandler, this);
 		this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
+        this.mon(this.root, 'append', this.updateTitle, this);
+        this.mon(this.root, 'insert', this.updateTitle, this);
+        this.mon(this.root, 'remove', this.updateTitle, this);
 		this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
 	},
 	
@@ -68,9 +71,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	},	
 
 	activeLayersTreePanelClickHandler: function(node, event) {
-	    
 		this.setActiveNode(node);
-		node.getUI().toggleCheck(true);		
+		node.getUI().toggleCheck(true);
 		
 	},
 	activeLayersTreePanelCheckChangeHandler: function(node, checked) {	
@@ -166,5 +168,13 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	    node.ui = new Ext.tree.RootTreeNodeUI(node);
        
 	    return node;
-	}
+	},
+
+    updateTitle: function() {
+        var title = 'Active Layers';
+        if (!this.root.hasChildNodes()) {
+            title += '</br><i><small>No layers added to map</small></i>';
+        }
+        this.setTitle(title);
+    }
 });
