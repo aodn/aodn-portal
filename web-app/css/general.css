@@ -28,8 +28,9 @@ input.readonlyInput {
     border: none;
 }
 .roundedImages {
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 .imageLabel {
 	margin: 2px;
@@ -112,8 +113,6 @@ hr {
     background-color: red;
 }
 
-#activeMenuPanel {
-}
 
 .searchField {
   padding: 3px 5px 3px 5px;
@@ -407,6 +406,8 @@ table.featureInfo caption{
     position: absolute;
 }
 
+
+
 #mapscale {
     width: 90px;
     z-index: 3;
@@ -479,6 +480,7 @@ animationPanel {
     opacity: 1.0! important;
     filter: alpha(opacity = 100);
 }
+
 .mapToolbarExpanderBarOver {
     background-color:white! important;
 }
@@ -654,12 +656,42 @@ div.olControlMousePosition {
     color: #253745;
 }
 
-.olControlOverviewMapElement {
-    background-color: #34546E! important;
+.olControlLayerSwitcher {
+	box-shadow: inset -5px 1px 5px black;
+	-webkit-border-radius: 6px 0px 0px 6px;
+	-moz-border-radius: 6px 0px 0px 6px;
+	border-radius: 6px 0px 0px 6px;
 }
+.olControlOverviewMapElement   { 
+	 background-color: #34546E! important;
+	-webkit-border-radius: 6px 0px 0px 0px;
+	-moz-border-radius: 6px 0px 0px 0px;
+	border-radius: 6px 0px 0px 0px;
+	opacity: 0.85;	
+    filter: alpha(opacity = 85);
+}
+.olControlLayerSwitcher .maximizeDiv, .olControlLayerSwitcher .minimizeDiv {
+    top: 18px! important;
+	z-index: 10000;
+	cursor: pointer;
+}
+
+.olControlOverviewMapMinimizeButton, 
+.olControlOverviewMapMaximizeButton,
+.minimizeDiv, 
+.maximizeDiv {	
+	cursor: pointer;
+}
+
+
+
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
     background-color: #34546E! important;
+}
+.layersDiv {
+	opacity: 0.85;	
+    filter: alpha(opacity = 85);
 }
 
 div.olControlScaleLineBottom {
@@ -742,11 +774,11 @@ JQUERY AUTO COMPLETE
 }
 
 #mapOptions {
-    padding: 10px;
+    padding: 5px;
     background-color: #F1F1F0;
-    border-radius: 10px;
+    /*border-radius: 10px;
     border: 1px solid #CBCED3;
-    box-shadow: 2px 2px 3px 1px #EEEEEE;
+    box-shadow: 2px 2px 3px 1px #EEEEEE;*/
 }
 
 #mapOptions div {

@@ -15,6 +15,15 @@
 			jQuery(this).die('hover'); // This removes the .live() functionality
           });
 		  
+		  jQuery('.layersDiv, .olControlOverviewMapElement')
+				.live("mouseenter", function () {
+				  $(this).addClass("fullTransparency");
+				})
+				.live("mouseleave", function () {
+				  $(this).removeClass("fullTransparency");
+				});
+
+		  
       </script>
       <!-- Import extra pluggins-->
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-autocomplete1.1.js')}"></script>
