@@ -10,8 +10,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     if ( cfg.title ) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
     var defaults = {
-      collapsible: true,
-      collapsed: true
+        collapsible: true,
+        collapsed: true,
+        titleCollapse: true
     };
 
     Ext.apply(this, cfg, defaults);
@@ -264,7 +265,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     var filter = this.selectionStore.getFilterValue();
 
     var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
-	this.setTitle(newTitle);
+    this.setTitle(newTitle);
     this.searcher.removeFilters(this.fieldName);
     this.searcher.addFilter(this._getCurrentFilterName(), filter);
     this.searcher.search();

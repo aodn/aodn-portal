@@ -894,15 +894,17 @@ div.allwhite {
     margin-bottom: 3px;
 }
 
+.term-selection-panel:hover {
+    border: 1px solid #CCC;
+}
+
 .term-selection-panel .x-panel-header {
     background-color: #f8f8f8;
     padding-bottom: 7px;
 }
 
-.search-filter-panel .term-selection-panel-header {
-    color: #666;
-    font-weight: bold;
-    /*  background-color: #fffacd; */
+.term-selection-panel .x-panel-header:hover {
+    background-color: #eeeeee;
 }
 
 .search-filter-panel .term-selection-panel-header-selected {
