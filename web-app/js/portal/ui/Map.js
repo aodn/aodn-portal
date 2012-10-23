@@ -184,7 +184,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.appConfig.mapPanel = this;
 		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
 		this.map.addControl(this.mapOptions.mapActionsControl);
-		
+
 		// Is there a way to achieve this with initialisation config of the control?
 		this.mapOptions.mapActionsControl.maximizeControl();
 	},
@@ -693,10 +693,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.map.addLayer(openLayer);
         this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
         this.fireEvent('layeradded', openLayer);
-        if (!openLayer.isBaseLayer) {
-            // Hides the text above the active layers
-            jQuery('.emptyActiveLayerTreePanelText').hide('slow');
-        }
     },
 
     getMapExtent: function()  {
