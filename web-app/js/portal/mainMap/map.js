@@ -40,21 +40,21 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     initialize: function(options) {
 
         this.handlerOptions = OpenLayers.Util.extend(
-            options && options.handlerOptions || {}, 
+            options && options.handlerOptions || {},
             this.defaultHandlerOptions
             );
         OpenLayers.Control.prototype.initialize.apply(
             this, arguments
-            ); 
+            );
         this.handler = new OpenLayers.Handler.Click(
-            this, 
+            this,
             {
                 click: this.trigger
-            }, 
+            },
             this.handlerOptions
             );
     },
-    
+
     CLASS_NAME: "OpenLayers.Control.Click"
 });
 
@@ -64,10 +64,10 @@ function closePopup() {
     }
 }
 
-function updatePopupDepthStatus(response) {   
-    
+function updatePopupDepthStatus(response) {
+
     if (response != undefined) {
-        var xmldoc = response.responseXML;  
+        var xmldoc = response.responseXML;
 
         if (xmldoc.getElementsByTagName('depth') != undefined) {
 
@@ -87,7 +87,7 @@ function updatePopupDepthStatus(response) {
 }
 
 function updatePopupStatus(popup) {
-	
+
     //popup.setTitle("Features at " + popup.locationString);
     if (popup.numGoodResults > 0) {
         popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
@@ -99,20 +99,20 @@ function updatePopupStatus(popup) {
 }
 
 // Get tabs from getFeatureInfo popup
-function tabsFromPopup(popup) {    
+function tabsFromPopup(popup) {
     return popup.popupTab;
 }
 
 /*
 function inArray (array,value) {
-    
+
     for (var i = 0; i < array.length; i++) {
-        
+
         if (array[i] === value) {
             return true;
         }
     }
-    
+
     return false;
 }
 */
@@ -325,23 +325,23 @@ function getNodeText(xmlNode)
 }
 
 function setExtWmsLayer(url,label,type,layer,sld,options,style) {
-	
-    var dl = {}
-	var server = {}
+
+    var dl = {};
+	var server = {};
 	server.uri = url;
-	server.type = type;    
+	server.type = type;
 	server.opacity = 100;
 	dl.server = server;
 
-	dl.queryable = true; 
+	dl.queryable = true;
 	dl.server.infoFormat = "text/html";
 
 	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
 
 	// style in .ftl's but should be styles
 	dl.defaultStyle = style;
-	dl.name = layer; // layer id on server  
-	dl.title = label; 
+	dl.name = layer; // layer id on server
+	dl.title = label;
 
 	// options are comma delimited to include a unique label from a single value such as a dropdown box
 	if (options.length > 1) {
