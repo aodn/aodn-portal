@@ -33,7 +33,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			minValue: 20, // we dont want a user to be able to give zero vis
 			maxValue: 100,
 	        aggressive: true, 
-	        width: 200,
+	        width: 175,
 	        isFormField: true,
 	        inverse: false,
 	        fieldLabel: "Opacity",

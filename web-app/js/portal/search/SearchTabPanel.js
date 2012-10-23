@@ -44,7 +44,8 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			 region: 'east',
 			 collapseMode: 'mini',
 			 split: true,
-			 width: 400,
+			 width: 360,
+			 minWidth: 320,
 			 layout:'border',
 			 items: [
 					 {
