@@ -453,7 +453,7 @@ table.featureInfo caption{
 .semiTransparent {
     background-image: none;
     background-color: #3c668d! important;
-    opacity: 0.7;	
+    opacity: 0.7;
 	-ms-filter:"alpha(opacity=70)"; /* IE8 */
 	filter:alpha(opacity=70); /* IE6/IE7 */
 
@@ -668,12 +668,12 @@ div.olControlMousePosition {
 	-moz-border-radius: 6px 0px 0px 6px;
 	border-radius: 6px 0px 0px 6px;
 }
-.olControlOverviewMapElement   { 
+.olControlOverviewMapElement   {
 	 background-color: #34546E! important;
 	-webkit-border-radius: 6px 0px 0px 0px;
 	-moz-border-radius: 6px 0px 0px 0px;
 	border-radius: 6px 0px 0px 0px;
-	opacity: 0.85;	
+	opacity: 0.85;
 	-ms-filter:"alpha(opacity=85)"; /* IE8 */
 	filter:alpha(opacity=85); /* IE6/IE7 */
 }
@@ -683,10 +683,10 @@ div.olControlMousePosition {
 	cursor: pointer;
 }
 
-.olControlOverviewMapMinimizeButton, 
+.olControlOverviewMapMinimizeButton,
 .olControlOverviewMapMaximizeButton,
-.minimizeDiv, 
-.maximizeDiv {	
+.minimizeDiv,
+.maximizeDiv {
 	cursor: pointer;
 }
 
@@ -697,7 +697,7 @@ div.olControlMousePosition {
     background-color: #34546E! important;
 }
 .layersDiv {
-	opacity: 0.85;	
+	opacity: 0.85;
     -ms-filter:"alpha(opacity=85)"; /* IE8 */
 	filter:alpha(opacity=85); /* IE6/IE7 */
 }
@@ -920,6 +920,21 @@ div.allwhite {
     font-weight: bold;
     /*  background-color: #fffacd;*/
     font-style: italic;
+}
+
+.faceted-search-title {
+
+    font-size: 1.3em;
+    /*font-weight: bold;*/
+    color: #888;
+}
+
+.faceted-search-clear-all div {
+
+    float: right;
+    height: 16px;
+    padding: 0;
+    margin-top: 2px;
 }
 
 .faceted-search-disclaimer {
