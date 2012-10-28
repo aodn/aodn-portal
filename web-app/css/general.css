@@ -961,3 +961,7 @@ div.allwhite {
     background: url(../images/zoom_to_layer2.png)  center no-repeat white;
     vertical-align: bottom;
 }
+
+#activeLayerTreePanel img.x-tree-elbow-end {
+	width: 1px;
+}
