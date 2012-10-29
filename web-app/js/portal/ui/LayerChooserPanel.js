@@ -49,7 +49,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     registerEvents: function() {
         this.registerOwnEvents();
         this.registerMapPanelEvents();
-        this.registerLeftTabMenuPanelEvents();
         this.registerMonitoringEvents();
     },
 
@@ -76,14 +75,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 			this.leftTabMenuPanel.toggleNodeBranch(true);
 		}, this);
 	},
-
-    registerLeftTabMenuPanelEvents: function() {
-        this.leftTabMenuPanel.on('serverloaded', function(node) {
-            Ext.each(this.actionsPanel.getActiveLayerNodes(), function(node, index, all) {
-                this.leftTabMenuPanel.toggleLayerNodes(node.layer.grailsLayerId, false);
-            }, this);
-        }, this);
-    },
 
     registerMonitoringEvents: function() {
         this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
