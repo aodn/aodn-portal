@@ -71,7 +71,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 //		});
 
 		config = Ext.apply({
-	        layout: 'fit',
 	        stateful: false,
 
             //height: 200,
