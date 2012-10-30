@@ -44,10 +44,8 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 	            },
 	            select: this.onLoadSelectedSnapshot
 	          }
-	        }),
-	
-	        new Ext.Spacer({width: 7,    
-	        }),
+	        }),	
+	        new Ext.Spacer({width: 7}),
 	        new Ext.Button({
 	        	colspan: 1,
 	        	text: OpenLayers.i18n('deleteSnapshot'),

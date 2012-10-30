@@ -137,9 +137,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
         this.addEvents('baselayersloaded', 'layeradded', 'tabchange');
         this.bubbleEvents.push('baselayersloaded');
-        this.bubbleEvents.push('layeradded');
-
-        this.addBaseLayers();
+        this.bubbleEvents.push('layeradded');				
+		
+        this.addBaseLayers();		
 
         this.on('afterlayout', function() {
             // cursor mods
@@ -195,8 +195,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 	},
 
     autoZoomCheckboxHandler: function(box, checked) {
-        console.log("autoZoom: " + checked);
-
+        //console.log("autoZoom: " + checked);
         Portal.app.config.autoZoom = checked;
         this.autoZoom = checked;
     },
@@ -242,10 +241,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions = new Portal.ui.Options(this.appConfig);
         this.map = new OpenLayers.Map(this.mapOptions.options);
         this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-        // keep the animated image crisp
-        // limit to changes in zoom. moveend is too onerous
 
-        this.map.events.register('removelayer', this, this.postRemoveLayer);
+        this.map.events.register('removelayer', this, this.postRemoveLayer);		
     },
 
     initMapLinks: function() {

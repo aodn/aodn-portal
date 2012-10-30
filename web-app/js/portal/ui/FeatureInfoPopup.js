@@ -21,7 +21,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    
 	    this._addElements();
 	    
-	    console.log(this.maximisedSize+"+"+this.maximisedX + "+" + this.maximisedY);
+	    //console.log(this.maximisedSize+"+"+this.maximisedX + "+" + this.maximisedY);
 	    this.on('maximize', this._onMaximizeRestore,this);
 	    this.on('restore', this._onMaximizeRestore,this);
     },
@@ -175,7 +175,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 		}
         var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams));
         if (format) {
-            result += "&format=" + encodeURIComponent(format);
+            //result += "&format=" + encodeURIComponent(format);
         }
         return result;
     },
