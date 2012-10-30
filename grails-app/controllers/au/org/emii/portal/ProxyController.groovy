@@ -27,6 +27,15 @@ class ProxyController {
             if (params.format) {
                 response.contentType = params.format
             }
+			else if(request.contentType)
+			{
+				response.contentType = request.contentType
+			}
+			else if(request.getHeader("Accept"))
+			{
+				response.contentType = request.getHeader("Accept")
+			}
+
             def outputStream = response.outputStream
 
             _addAuthentication(conn, targetUrl)
