@@ -15,6 +15,14 @@
 			jQuery(this).die('hover'); // This removes the .live() functionality
           });
 		  
+		  // helper tooltip for unpin (popup)
+		  jQuery('.x-tool-unpin').live('hover',
+          function () {
+			jQuery(this).attr('title', "Click to move and resize");
+			jQuery(this).die('hover'); // This removes the .live() functionality
+          });
+		  
+		  
 		  jQuery('.layersDiv, .olControlOverviewMapElement')
 				.live("mouseenter", function () {
 				  $(this).addClass("fullTransparency");
