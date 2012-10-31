@@ -962,6 +962,6 @@ div.allwhite {
     vertical-align: bottom;
 }
 
-#activeLayerTreePanel img.x-tree-elbow-end, #activeLayerTreePanel img.x-tree-elbow {
+#activeLayerTreePanel img.x-tree-node-icon {
 	width: 1px;
 }

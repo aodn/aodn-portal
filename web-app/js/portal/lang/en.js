@@ -133,7 +133,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     saveSnapshotFailureErrMsg: 'Unexpected failure saving snapshot',
     btnSave: 'Save',
     btnCancel: 'Cancel',
-    chooseSavedMap: 'Choose a Saved Map',
+    chooseSavedMap: 'Load a Saved Map',
     deleteSnapshot: 'Delete',
     deleteSnapshotTip: 'Delete a saved map',
     shareSnapshot: 'Share',
