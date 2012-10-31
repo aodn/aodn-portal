@@ -604,7 +604,6 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				
 				this.originalLayer.setCurrentSlide = function(index) {
 					this.currentSlide = index;
-					console.log("setSlide" + index)
 					for (var i = 0; i < this.slides.length; i++) {
 						this.slides[i].display(i == index);
 					}
@@ -642,7 +641,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-						console.log("removing layer with"+ evt.layer.slides.length +"slides");
+//						console.log("removing layer with"+ evt.layer.slides.length +"slides");
 						for (var i = 0; i < evt.layer.slides.length; i++) 
 						{
 							evt.layer.slides[i].map.removeLayer(this.slides[i]);
@@ -654,14 +653,9 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-						console.log("Adding layer with"+ this.slides.length +"slides");
 						for (var i = 0; i < this.slides.length; i++) 
 						{
 							this.map.addLayer(this.slides[i]);
-						}
-						for (var i = 0; i < this.map.layers.length; i++) 
-						{
-						 console.log("Layer "+this.map.layers[i].name +"is " +i );
 						}
 					}
 				}
