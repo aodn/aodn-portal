@@ -79,7 +79,8 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
     
 		Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
     
-		this.mon(this.controller, 'snapshotsChanged', this.onSnapshotsChanged, this);
+		this.mon(this.controller, 'snapshotAdded', this.onSnapshotAdded, this);
+		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);
 	},
   
 	onLoadSelectedSnapshot: function(button, event) {
@@ -129,7 +130,20 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 		this.snapshotCombo.clearValue();
 	},
 
-	onSnapshotsChanged: function() {
+	onSnapshotAdded: function(snapshot) {
+		this.snapshotCombo.store.load({
+		    scope   : this,
+		    params: {
+		        recordId: snapshot.id
+		    },
+		    callback: function(records, operation, success) {
+	       		this.snapshotCombo.setValue(operation.params.recordId, true );
+	 			this.snapshotCombo.fireEvent('select');
+		    }
+		});	
+	},
+	
+	onSnapshotRemoved: function() {
 		this.snapshotCombo.store.load();
 	},
   

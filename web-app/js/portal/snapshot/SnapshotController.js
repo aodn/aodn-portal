@@ -6,7 +6,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     Ext.apply(this, config);
     
     this.addEvents({
-      snapshotsChanged: true
+      snapshotAdded: true,
+      snapshotDeleted: true
     });
     
     this.proxy = new Portal.snapshot.SnapshotProxy();
@@ -38,7 +39,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   },
 
   onSuccessfulSave: function(snapshot, successCallback) {
-    this.fireEvent('snapshotsChanged');
+    this.fireEvent('snapshotAdded', snapshot );
     
     if (successCallback) {
       successCallback(snapshot);
@@ -81,7 +82,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   },
   
   onSuccessfulDelete: function(successCallback) {
-    this.fireEvent('snapshotsChanged');
+    this.fireEvent('snapshotDeleted');
     
     if (successCallback) {
       successCallback();
