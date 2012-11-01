@@ -273,5 +273,11 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
   _onCollapsedChange: function() {
     this.fireEvent('contentchange');
+  },
+
+  _removeAnyFilters: function() {
+
+    this.selectedView.onRemoveLast();
+    this.collapse();
   }
 });
