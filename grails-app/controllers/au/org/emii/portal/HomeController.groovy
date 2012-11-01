@@ -5,6 +5,7 @@ import grails.util.Environment
 class HomeController {
 
 	def grailsApplication
+	def portalInstance
 
     def index = { // This is the main portal entry
 
@@ -50,7 +51,7 @@ class HomeController {
 
         if ( Environment.current == Environment.PRODUCTION ) {
 
-            return "<!-- ${ cfg.instanceName } Portal v${ md.'app.version' }, build date: ${ md.'app.build.date' ?: "not recorded" } -->"
+            return "<!-- ${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${ md.'app.build.date' ?: "not recorded" } -->"
         }
 
         return """\
@@ -59,7 +60,7 @@ class HomeController {
     Base URL:      ${ cfg.grails.serverURL }
     Build date:    ${ md.'app.build.date' ?: "Unk." }
     Version:       ${ md.'app.version' }
-    Instance name: ${ cfg.instanceName }
+    Instance name: ${ portalInstance.name() }
     Environment:   ${ Environment.current.name }
     Build:         #${ md.'app.build.number' ?: "Unk." }
     SVN revision:  #${ md.'app.svn.revision' ?: "Unk." }

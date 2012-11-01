@@ -43,6 +43,11 @@
       <link rel="stylesheet" type="text/css" href="${resource(dir:'js', file:'ext-3.3.1/resources/css/xtheme-gray.css')}" />
       <link rel="stylesheet" type="text/css" href="${resource(dir:'css', file:'extThemeOverrides.css')}" />
       <link rel="stylesheet" type="text/css" href="${resource(dir:'css', file:'general.css')}" />
-	  <link rel="stylesheet" type="text/css" href="${resource(dir:'css', file: grailsApplication.config.instanceName + '.css')}" />
+      <g:if test="${grailsApplication.config.portal.instance?.css}">
+          <link rel="stylesheet" type="text/css" href="${grailsApplication.config.portal.instance.css}" />
+      </g:if>
+      <g:elseif test="${grailsApplication.config.portal.instance?.name}">
+          <link rel="stylesheet" type="text/css" href="${resource(dir:'css', file: grailsApplication.config.portal.instance.name + '.css')}" />
+      </g:elseif>
 
       <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />

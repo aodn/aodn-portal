@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.exceptions.AodaacException
 import grails.test.GrailsUnitTestCase
+import au.org.emii.portal.config.PortalInstance
 
 class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
@@ -475,12 +476,16 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def sendMailCalledCount = 0
         def messageSourceGetMessageCalledCount = 0
 
-        aodaacAggregatorService.grailsApplication = [
-            config: [
-                instanceName: "imos",
-                portal: [systemEmail: [fromAddress: "systemEmailAddress"]]
-            ]
-        ]
+	    aodaacAggregatorService.grailsApplication = [
+		    config: [
+			    portal: [systemEmail: [fromAddress: "systemEmailAddress"], instance: [name: "imos"]]
+		    ]
+	    ]
+
+	    def portalInstance = new PortalInstance()
+	    portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+
+        aodaacAggregatorService.portalInstance = portalInstance
 
         aodaacAggregatorService.messageSource = [
             getMessage: {

@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils
 class ProxyController {
 
     def grailsApplication
+	def hostVerifier
 
     // proxies HTML by default or XML and Images if specified
     def index = {
@@ -18,92 +19,21 @@ class ProxyController {
 
     def _index(downloadGif) {
 
-        def targetUrl = _getUrl(params)
-
         if (allowedHost(params.url)) {
-
-            def conn = targetUrl.openConnection()
-
-            if (params.format) {
-                response.contentType = params.format
-            }
-			else if(request.contentType)
-			{
-				response.contentType = request.contentType
-			}
-			else if(request.getHeader("Accept"))
-			{
-				response.contentType = request.getHeader("Accept")
-			}
-
-            def outputStream = response.outputStream
-
-            _addAuthentication(conn, targetUrl)
-
-            if (request.method == 'HEAD') {
-                render(text: "", contentType: (params.format ?: params.FORMAT))
-            }
-            else {
-                if(downloadGif){
-                    def index = params.url.indexOf("LAYERS=")
-
-                    if(index > -1){
-                        def layers = params.url.substring(index + 7);
-                        def timeStr = params.TIME.replaceAll("[-:]", "")
-                        timeStr.replace("/", "_")
-                        response.setHeader("Content-disposition", "attachment; filename=" +
-                                layers + "_" + timeStr + ".gif");
-                    }
-                }
-
-                try {
-                    outputStream << conn.inputStream
-                    outputStream.flush()
-                }
-                catch (Exception e) {
-
-                    log.info "Unable to pass-through response from $targetUrl", e
-                }
-                finally {
-
-                    IOUtils.closeQuietly( outputStream )
-                }
-            }
+	        def proxiedRequest = new ProxiedRequest(request, response, params)
+			proxiedRequest.proxy(downloadGif)
         }
         else {
-
             log.info "Proxy: The url ${params.url} was not allowed"
             render text: "Host '${targetUrl.host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
 
     Boolean allowedHost (url) {
-
-        def allowed = false
-        def allowableServers = [grailsApplication.config.spatialsearch.url]
-        def conf = Config.activeInstance()
-
-        // Get the domain name from the target uri
-        def targetUrl = url.toURL()
-
-        // allow hosts we consider valid. from our list of wms servers first
-        Server.list().each {
-            allowableServers.add(it.uri)
-        }
-
-        // add localhost
-        allowableServers.add(request.getHeader("host"))
-        // add the current mest url
-        allowableServers.add(conf.catalogUrl)
-
-
-        allowableServers.each {
-
-            if (it.contains( targetUrl.getHost() )) {
-                allowed = true
-            }
-        }
-        return allowed
+	    if (url) {
+		    return hostVerifier.allowedHost(request, url.toURL())
+	    }
+	    return false
     }
 
     // this action is intended to always be cached by squid
@@ -174,35 +104,6 @@ class ProxyController {
                 render text: params.url, status: 500
             }
 
-        }
-    }
-
-    def _getUrl(params) {
-
-        def query = params.findAll {
-            key, value ->
-
-            key != "controller" &&
-                    key != "url" &&
-                    key != "format" &&
-                    key != "_dc"
-        }
-
-        def queryStr = ""
-
-        query.each {
-            key, value ->
-
-            queryStr += "&$key=$value"
-        }
-
-        return (params.url + queryStr).toURL()
-    }
-
-    def _addAuthentication(connection, url) {
-        def server = _getServer(url)
-        if (server) {
-            server.addAuthentication(connection)
         }
     }
 

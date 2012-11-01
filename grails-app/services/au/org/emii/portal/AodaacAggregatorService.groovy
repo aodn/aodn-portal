@@ -11,6 +11,7 @@ class AodaacAggregatorService {
 
     def grailsApplication
     def messageSource
+	def portalInstance
 
     static final def StartJobCommand = "startBackgroundAggregator.cgi.sh"
     static final def UpdateJobCommand = "reportProgress.cgi.sh"
@@ -286,7 +287,7 @@ class AodaacAggregatorService {
         try {
 
             // To know which message key to use
-            def instanceCode = grailsApplication.config.instanceName.toLowerCase()
+            def instanceCode = portalInstance.code()
 
             def successMessage = job.dataFileExists
 

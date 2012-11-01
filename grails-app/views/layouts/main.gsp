@@ -66,7 +66,7 @@
           </ul>
           <br />
         <b>Portal project build info</b><br />
-        Instance name: ${ grailsApplication.config.instanceName ?: '<span style="color: red;">None supplied</span>' }<br />
+        Instance name: ${ grailsApplication.config.instance?.name ?: '<span style="color: red;">None supplied</span>' }<br />
         Environment: ${Environment.current.name}<br />
         Build date: ${grailsApplication.metadata['app.build.date'] ?: "Unk."}<br />
         Subversion revision: #${grailsApplication.metadata['app.svn.revision'] ?: "Unk."}<br />

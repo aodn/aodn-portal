@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils
 class OceanCurrentService {
 
     def grailsApplication
+	def portalInstance
 
     def getRandomDetails() {
 
@@ -14,7 +15,7 @@ class OceanCurrentService {
         def parentPage = ""
         def baseURL = "http://oceancurrent.imos.org.au/"
         def fileAddress = baseURL + "sitemap/updating.txt"
-        def cfgInstanceName = grailsApplication.config.instanceName.toLowerCase()
+        def cfgInstanceName = portalInstance.code()
 
         def waodn = ['NWS/latest.gif',
                 'Ningaloo/latest.gif',

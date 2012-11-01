@@ -8,6 +8,8 @@ class ConfigController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+	def portalInstance
+
     def index = {
         redirect(action: "edit")
     }
@@ -59,7 +61,7 @@ class ConfigController {
         // Add build data
         def cfg = grailsApplication.config
         def md = grailsApplication.metadata
-        instanceAsGenericObj['portalBuildInfo'] = "${ cfg.instanceName } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
+        instanceAsGenericObj['portalBuildInfo'] = "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
 
         render(contentType: "application/json", text: instanceAsGenericObj)
     }
