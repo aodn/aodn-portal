@@ -25,7 +25,6 @@ class ProxiedRequest {
 		else if(request.contentType)
 		{
 			response.contentType = request.contentType
-			println("contenttyoe")
 		}
 
 
