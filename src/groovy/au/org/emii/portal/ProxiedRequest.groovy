@@ -25,11 +25,9 @@ class ProxiedRequest {
 		else if(request.contentType)
 		{
 			response.contentType = request.contentType
+			println("contenttyoe")
 		}
-		else if(request.getHeader("Accept"))
-		{
-			response.contentType = request.getHeader("Accept")
-		}
+
 
 		def outputStream = response.outputStream
 
