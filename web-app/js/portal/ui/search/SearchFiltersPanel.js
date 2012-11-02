@@ -76,6 +76,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             //height: 200,
 	        autoScroll: true,
             padding: 3,
+            layout: 'fit',
 
 	        cls: 'search-filter-panel',
 
@@ -96,6 +97,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 		this.mon(this.searcher, 'searchcomplete', this._showIntroMessage, this);
     	this.mon(this.searcher, 'summaryOnlySearchComplete', this._showIntroMessage, this);
 		this.mon(this.searcher, 'searcherror', this._showError, this);
+        this.mon(this.searcher, 'filteradded', this._setClearAllLinkVisibility, this);
+        this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
 	},
 
     initComponent: function() {
@@ -103,24 +106,23 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _showIntroMessage: function() {
-        this._setTitleText( 'Find layers by:', true ); // Todo - DN: Dictionarise
+        this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle'), true );
     },
 
     _showError: function() {
-        this._setTitleText( 'Faceted search is currently unavailable.', false ); // Todo - DN: Dictionarise
+        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailableText'), false );
     },
 
     _buildClearAllLink: function() {
 
-        var link;
-
-        link = new Ext.ux.Hyperlink({
-            text: 'Clear all' // Todo - DN: Dictionarise
+        this.clearAllLink = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n('facetedSearchClearAllLink'),
+            hidden: true
         });
 
-        link.on( 'click', this._onClearAllClicked, this );
+        this.clearAllLink.on( 'click', this._onClearAllClicked, this );
 
-        return link;
+        return this.clearAllLink;
     },
 
     _setTitleText: function( newText, showClearAllLink ) {
@@ -138,11 +140,18 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _onClearAllClicked: function() {
 
-        this.parameterFilter._removeAnyFilters();
-        this.themeFilter._removeAnyFilters();
-        this.methodFilter._removeAnyFilters();
-        this.locationFilter._removeAnyFilters();
-        this.organisationFilter._removeAnyFilters();
+        this.parameterFilter.removeAnyFilters();
+        this.themeFilter.removeAnyFilters();
+        this.methodFilter.removeAnyFilters();
+        this.locationFilter.removeAnyFilters();
+        this.organisationFilter.removeAnyFilters();
+
+        this.searcher.search();
+    },
+
+    _setClearAllLinkVisibility: function() {
+
+        this.clearAllLink.setVisible( this.searcher.hasFilters() );
     }
 });
 

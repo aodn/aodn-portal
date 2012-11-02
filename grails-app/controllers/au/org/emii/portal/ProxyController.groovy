@@ -1,7 +1,5 @@
 package au.org.emii.portal
 
-import org.apache.commons.io.IOUtils
-
 class ProxyController {
 
     def grailsApplication
@@ -105,10 +103,6 @@ class ProxyController {
             }
 
         }
-    }
-
-    def _getServer(url) {
-        return Server.findByUriLike("%${url.getHost()}%")
     }
 
     def downloadGif = {

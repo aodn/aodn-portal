@@ -45,6 +45,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     this.mon(this.filterView, 'click', this._onFilterClick, this);
     this.mon(this.selectedView, 'filterremoved', this._onFilterRemoved, this);
+    this.mon(this.selectedView, 'searchinvalidated', this._onSearchInvalidated, this);
 
     this.mon(this.searcher, 'searchcomplete', this._loadStore, this);
     this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
@@ -120,20 +121,35 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.getEl().on('click', this.onRemoveLast, this, options);
       },
       onSelectionClick: function(view, index) {
-        this.deleteFrom(index);
+
+          this.deleteFrom( index, true );
       },
+
       onRemoveLast: function() {
-        this.deleteFrom(this.getStore().getCount() - 1);
+
+          this.deleteFrom( this.getStore().getCount() - 1, true );
       },
-      deleteFrom: function(index) {
+
+      silentlyRemoveLast: function() {
+
+          this.deleteFrom( this.getStore().getCount() - 1, false );
+      },
+
+      deleteFrom: function(index, searchAfterwards) {
+
         var store = this.getStore();
         var clearRecs = store.getRange(index, store.getCount() - 1);
         store.remove(clearRecs);
         this.fireEvent('filterremoved');
+
+        if ( searchAfterwards ) {
+            this.fireEvent( 'searchinvalidated' );
+        }
       }
     });
 
     selectedView.addEvents('filterremoved');
+    selectedView.addEvents('searchinvalidated');
 
     selectedView.on('click', selectedView.onSelectionClick, selectedView);
     selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
@@ -262,22 +278,27 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
   },
 
   _onFilterRemoved: function() {
+
     var filter = this.selectionStore.getFilterValue();
 
     var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
     this.setTitle(newTitle);
     this.searcher.removeFilters(this.fieldName);
     this.searcher.addFilter(this._getCurrentFilterName(), filter);
-    this.searcher.search();
   },
+
+    _onSearchInvalidated: function() {
+
+        this.searcher.search();
+    },
 
   _onCollapsedChange: function() {
     this.fireEvent('contentchange');
   },
 
-  _removeAnyFilters: function() {
+  removeAnyFilters: function() {
 
-    this.selectedView.onRemoveLast();
+    this.selectedView.silentlyRemoveLast();
     this.collapse();
   }
 });

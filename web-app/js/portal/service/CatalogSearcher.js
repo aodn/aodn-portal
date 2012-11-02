@@ -24,10 +24,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-    this.addEvents({
-      "searchcomplete" : true,
-      "searcherror"    : true
-    });
+    this.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
   },
 
   reset: function() {
@@ -62,9 +59,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
   },
 
   removeFilters: function(filterPattern) {
+
     var filters = this.searchFilters.query('name', filterPattern);
 
     this.searchFilters.remove(filters.items);
+
+    this.fireEvent( 'filterremoved' );
   },
 
   addFilter: function(name, value) {
@@ -74,6 +74,18 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     rec.set('value', value);
 
     this.searchFilters.add(rec);
+
+    this.fireEvent( 'filteradded' );
+  },
+
+  hasFilters: function() {
+
+      var idx = this.searchFilters.findBy( function( record ) {
+
+          return record.data.value != '';
+      } );
+
+      return idx >= 0;
   },
 
   _onSuccessfulSearch: function(response, options) {
