@@ -46,6 +46,7 @@ class LayerController {
             else {
                 order( "server", "asc" )
                 order( "title", "asc" )
+                order( "name", "asc" )
             }
         }
 
