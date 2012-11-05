@@ -8,6 +8,7 @@ class SplashController {
 
     // the home page center content
     def index = {
+
 	    if (_pageCanBeProxied('index')) {
 		    log.debug("Rendering configured index ${portalInstance.page('index')}")
 		    _renderInclude('index')

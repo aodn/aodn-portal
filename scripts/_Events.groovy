@@ -59,7 +59,6 @@ eventCompileStart = { kind ->
     }
 }
 
-
 eventConfigureTomcat = { tomcat ->
 
     try {
