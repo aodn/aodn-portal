@@ -47,7 +47,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     },
 
     registerEvents: function() {
-        this.registerOwnEvents();
         this.registerMapPanelEvents();
         this.registerMonitoringEvents();
     },
