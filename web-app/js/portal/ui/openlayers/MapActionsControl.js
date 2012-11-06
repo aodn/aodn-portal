@@ -160,19 +160,17 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             border : false,
             bodyBorder : false,
             resizable : false,
-
-            // TODO: "share" button in snapshot options is being truncated.
             autoHeight: true,
 
             floating : {
-                shadow : false
+                //shadow : false
             },
 
             layout : {
                 type : 'fit'
 
             },
-            id : 'helloWindow',
+            id : 'mapActionsWindow',
 
             afterRender : function() {
 

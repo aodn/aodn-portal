@@ -4,10 +4,11 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
     
     constructor: function(cfg) {
         this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(cfg);
+		
         this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(cfg);
         var config = Ext.apply({
             id: 'activeMenuPanel',
-            padding: '0px 0px 20px 0px',                      
+            //padding: '0px 0px 20px 0px',                      
             autoHeight: true,
             items:[
                 this.mapOptionsPanel,

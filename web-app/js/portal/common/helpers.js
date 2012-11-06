@@ -125,7 +125,6 @@ function formatGetFeatureInfo(response, options) {
 
 
 function setHTML_ncWMS(response,options) {
-    
     var xmldoc = response.responseXML;  
     
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 

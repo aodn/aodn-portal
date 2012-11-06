@@ -53,6 +53,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		var config = Ext.apply({
 	        collapseMode : 'mini',
             id : 'mapOptions',
+			padding: 5,
             items: [
                 new Ext.Panel({
                     height: 40,

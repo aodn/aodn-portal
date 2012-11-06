@@ -667,6 +667,7 @@ div.olControlMousePosition {
 	-webkit-border-radius: 6px 0px 0px 6px;
 	-moz-border-radius: 6px 0px 0px 6px;
 	border-radius: 6px 0px 0px 6px;
+	width: 280px! important; /* opera fix */
 }
 .olControlOverviewMapElement   {
 	 background-color: #34546E! important;
@@ -782,11 +783,7 @@ JQUERY AUTO COMPLETE
 }
 
 #mapOptions {
-    padding: 5px;
     background-color: #F1F1F0;
-    /*border-radius: 10px;
-    border: 1px solid #CBCED3;
-    box-shadow: 2px 2px 3px 1px #EEEEEE;*/
 }
 
 #mapOptions div {
