@@ -5,10 +5,10 @@ target(main: "Collates all the custom portal JS code into a single portal-all.js
 }
 
 target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code into a single portal-all.js file") {
-	
+
 	def resultFile = new File(_buildPath([stagingDir, 'js', 'portal-all.js']))
 	println "[collateportaljavascriptfiles] Collating to ${resultFile.absolutePath}"
-	
+
 	if (resultFile.exists()) {
 		println "[collateportaljavascriptfiles] Collated file already exists attempt to delete"
 		if (!resultFile.delete()) {
@@ -16,7 +16,7 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
 		}
 		println "[collateportaljavascriptfiles] Collated file deleted"
 	}
-	
+
 	getPortalJsFiles(stagingDir).each { filename ->
 		println "[collateportaljavascriptfiles] Appending $filename"
 		resultFile << new File(_buildPath([stagingDir, 'js', filename])).text
@@ -25,17 +25,17 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
 }
 
 def getPortalJsFiles(stagingDir) {
-	
+
 	def includes = []
 	new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "home", "index.gsp"])).eachLine { line ->
 		// We want to match lines like file:'portal/prototypes/OpenLayers.js?'
-		def matcher = line =~ /file:'(portal\/.+)\?'/
+		def matcher = line =~ /file:'(portal\/.+)'/
 		if (matcher.find()) {
 			println "[collateportaljavascriptfiles] Adding ${matcher.group(1)} to files to be collated"
 			includes << matcher.group(1)
 		}
 	}
-	
+
 	return includes
 }
 
