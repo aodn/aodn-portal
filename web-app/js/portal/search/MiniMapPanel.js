@@ -41,7 +41,6 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
 		controls: [			
 			new OpenLayers.Control.Navigation(),
 			new OpenLayers.Control.PanZoomBar()//,
-			//new OpenLayers.Control.LayerSwitcher() // show this for testing only
 		],
 		restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
 		displayProjection: new OpenLayers.Projection("EPSG:4326"),

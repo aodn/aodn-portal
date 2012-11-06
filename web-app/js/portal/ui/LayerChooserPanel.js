@@ -52,20 +52,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         this.registerMonitoringEvents();
     },
 
-    registerOwnEvents: function() {
-
-        this.on('beforeexpand', function() {
-            this.layerSwitcher.destroy();
-        }, this);
-
-        this.on('beforecollapse', function() {
-            this.layerSwitcher = new OpenLayers.Control.LayerSwitcher({
-                roundedCornerColor: '#34546E'
-            });
-            this.mapPanel.map.addControl(this.layerSwitcher);
-        }, this);
-    },
-
     registerMapPanelEvents: function() {
 		this.mon(this.mapPanel, 'removelayer', this.removeLayer, this);
 		this.mon(this.mapPanel, 'removealllayers', function() {
