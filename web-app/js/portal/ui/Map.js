@@ -38,6 +38,7 @@ Portal.ui.Options = Ext.extend(Object, {
 		];
 		
 		this.options = {
+			theme: null,
 			controls: this.controls,
 			displayProjection: new OpenLayers.Projection("EPSG:4326"),
 			prettyStateKeys: true, // for pretty permalinks,

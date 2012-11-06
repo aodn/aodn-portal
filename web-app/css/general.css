@@ -94,7 +94,7 @@ hr {
 }
 
 .buttonPad {
-    padding: 2px 5px 5px 0px
+    padding: 2px 2px 5px 0px 
 }
 .arrowUp {
     background: url("../images/arrowUp.png") no-repeat left top transparent;
@@ -667,7 +667,6 @@ div.olControlMousePosition {
 	-webkit-border-radius: 6px 0px 0px 6px;
 	-moz-border-radius: 6px 0px 0px 6px;
 	border-radius: 6px 0px 0px 6px;
-	width: 280px! important; /* opera fix */
 }
 .olControlOverviewMapElement   {
 	 background-color: #34546E! important;
