@@ -279,8 +279,19 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 		var key = this._toDateString(date);
 		if (this.allTimes[key] != null) {
+			var oldValue = combo.getValue();
 			combo.clearValue();
 			combo.getStore().loadData(this.allTimes[key], false);
+			
+			for(var i =0;i < this.allTimes[key].length;i++)
+			{
+				if(this.allTimes[key][i][1] === oldValue)
+				{
+					combo.setValue(oldValue,true);
+					combo.fireEvent('select');
+				}
+			}
+				
 		}
 	},
 	
