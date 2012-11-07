@@ -1,8 +1,12 @@
 package au.org.emii.portal
 
 import org.apache.commons.io.IOUtils
+import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 class ProxiedRequest {
+
+	static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
 
 	def request
 	def response

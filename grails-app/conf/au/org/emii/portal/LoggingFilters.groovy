@@ -14,16 +14,6 @@ class LoggingFilters {
 
             before = {
 
-	            def md = grails.util.Metadata.current
-
-	            MDC.put('serverUrl',  grailsApplication.config.grails.serverURL)
-	            MDC.put('instanceName', grailsApplication.config.portal.instance.name)
-	            MDC.put('grailsEnvironment', Environment.current.name.toString())
-	            MDC.put('appVersion', md.'app.version')
-	            MDC.put('buildDate', md.'app.build.date')
-	            MDC.put('buildNumber', md.'app.build.number')
-	            MDC.put('buildRevision', md.'app.svn.revision')
-
 	            // Client data
                 MDC.put 'clientAddress', clientAddress( request )
                 MDC.put 'userAgent', request.getHeader( "User-Agent" )
