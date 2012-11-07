@@ -7,8 +7,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.titleBar = new Ext.Panel({
 
             layout: {
-                type: 'hbox',
-                align: 'stretch'
+                type: 'hbox'
             },
             defaults: {
                 flex: 1
@@ -22,7 +21,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                     cls: 'faceted-search-clear-all'
                 })
             ],
-            boxMaxHeight: '29' // This is a bit random, but any less than 29 and the div won't be visible at all
+            boxMaxHeight: '1' // Not sure why this is needed
         });
 
         this.parameterFilter = new Portal.ui.TermSelectionPanel({
@@ -99,6 +98,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 		this.mon(this.searcher, 'searcherror', this._showError, this);
         this.mon(this.searcher, 'filteradded', this._setClearAllLinkVisibility, this);
         this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
+
+        this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
 	},
 
     initComponent: function() {
@@ -106,11 +107,11 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _showIntroMessage: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle'), true );
+        this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle') );
     },
 
     _showError: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailableText'), false );
+        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailableText') );
     },
 
     _buildClearAllLink: function() {
@@ -125,16 +126,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         return this.clearAllLink;
     },
 
-    _setTitleText: function( newText, showClearAllLink ) {
+    _setTitleText: function( newText ) {
 
         var tb = this.titleBar;
         var title = tb.items.get( 0 );
-        var link = tb.items.get( 1 );
 
         title.update( '<span class="faceted-search-title">' + newText + '</span>' );
-
-        link.hidden = !showClearAllLink;
-
         tb.doLayout();
     },
 
