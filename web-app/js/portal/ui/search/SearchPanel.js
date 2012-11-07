@@ -70,8 +70,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 	    }, cfg, defaults);
 
 	    Portal.ui.search.SearchPanel.superclass.constructor.call(this, config);
-
-	    this.searcher.search(true);
 	},
 
 	initComponent: function() {
