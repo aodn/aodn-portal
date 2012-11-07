@@ -446,6 +446,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
     onBaseLayersLoaded: function() {
         this.addDefaultLayers();
+		if (this.mapOptions.mapActionsControl != undefined) {
+			this.mapOptions.mapActionsControl.actionsPanel.mapOptionsPanel.baseLayerCombo.reload();
+		}
+		
     },
 
     addDefaultLayers: function() {
