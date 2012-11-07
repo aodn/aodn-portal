@@ -64,9 +64,9 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
   
   onSuccessfulLoad: function(snapshot, successCallback) {
     this.fireEvent('snapshotLoaded');
-
+	
     var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
-
+	
     if(this.map.baseLayer === null){
 		this.mapScope.on('baselayersloaded', function(){
 			this._doLoadLayers(bounds, snapshot, successCallback);
@@ -74,7 +74,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 	}
 	else{
 		this._doLoadLayers(bounds, snapshot, successCallback);
-	}
+	}	
   },
   
   deleteSnapshot: function(id, successCallback, failureCallback) {
@@ -145,8 +145,6 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
     if(snapshotLayer.cql != undefined && snapshotLayer.cql.length > 0){
     	params["CQL_FILTER"] = snapshotLayer.cql;
-    	console.log("layer params:");
-    	console.log(params);
     }
 
     if (snapshotLayer.isBaseLayer) {

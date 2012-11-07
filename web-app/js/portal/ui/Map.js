@@ -84,6 +84,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         };
 
         this.initMap();
+		this.addBaseLayers();
 
         var config = Ext.apply({
             id: "map",
@@ -138,7 +139,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.bubbleEvents.push('baselayersloaded');
         this.bubbleEvents.push('layeradded');				
 		
-        this.addBaseLayers();		
+        		
 
         this.on('afterlayout', function() {
             // cursor mods
@@ -188,7 +189,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 		this.mapOptions.mapActionsControl.maximizeControl();
 	},
 	
-	loadSnapshot: function(id) {
+	loadSnapshot: function(id) {		
 
 		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
 	},
@@ -208,6 +209,8 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         this.removeAllLayers();
         this.zoomToInitialBbox();
         this.addDefaultLayers();
+		// reset baselayers??		
+		//this.addBaseLayers();
     },
 
     _handleFeatureInfoClick: function(event) {

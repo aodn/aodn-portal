@@ -112,7 +112,6 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: constructor
      */
     initComponent: function(){
-        
         GeoExt.ux.BaseLayerComboBox.superclass.initComponent.apply(this, arguments);
         
         if (this.initialConfig.map !== null && this.initialConfig.map instanceof OpenLayers.Map && this.initialConfig.map.allOverlays === false) {
@@ -120,7 +119,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
             this.map = this.initialConfig.map;
             
             
-            // create layer store with only baselayer
+            // create layer store with only baselayers
             this.store = new GeoExt.data.LayerStore({
                 layers: this.map.getLayersBy('isBaseLayer', true)//,
                // map: this.map //  THIS NOT NEEDED. map from initialConfig used
@@ -145,7 +144,14 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
             });
 
         }
-    } // eo function initComponent
+    },	// eo function initComponent
+	
+	reload: function() {
+		    // reload layer store with 'new' baselayers
+		    this.store = new GeoExt.data.LayerStore({
+                layers: this.map.getLayersBy('isBaseLayer', true)
+            });
+	}
 });
 
 /** api: xtype = gxux_baselayer_combobox */

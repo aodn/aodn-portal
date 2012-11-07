@@ -12,6 +12,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		
 		this.snapshotController.on('snapshotLoaded', function() {
 			this.fireRemoveAllLayers();
+			this.baseLayerCombo.reload(); // if using snapshot url, combo was probably initd too early
 		}, this);
 		
 		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
