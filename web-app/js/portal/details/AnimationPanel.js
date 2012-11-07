@@ -290,13 +290,26 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			}
 			else
 			{
+				var containsOldValue = false;
 				for(var i =0;i < this.allTimes[key].length;i++)
 				{
 					if(this.allTimes[key][i][1] == oldValue)
 					{
 						combo.setValue(oldValue,true);
 						combo.fireEvent('select');
+						containsOldValue = true;
 						break;
+					}
+				}
+				
+				if(!containsOldValue)
+				{
+					if (field === this.startDatePicker) {
+						combo.setValue(this.allTimes[key][0][0]);
+						combo.fireEvent('select');
+					} else {
+						combo.setValue(this.allTimes[key][this.allTimes[key].length-1][0]);
+						combo.fireEvent('select');
 					}
 				}
 			}
