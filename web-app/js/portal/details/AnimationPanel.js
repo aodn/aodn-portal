@@ -283,12 +283,21 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 			combo.clearValue();
 			combo.getStore().loadData(this.allTimes[key], false);
 			
-			for(var i =0;i < this.allTimes[key].length;i++)
+			if(this.allTimes[key].length == 1)
 			{
-				if(this.allTimes[key][i][1] === oldValue)
+				combo.setValue(this.allTimes[key][0][0]);
+				combo.fireEvent('select');
+			}
+			else
+			{
+				for(var i =0;i < this.allTimes[key].length;i++)
 				{
-					combo.setValue(oldValue,true);
-					combo.fireEvent('select');
+					if(this.allTimes[key][i][1] == oldValue)
+					{
+						combo.setValue(oldValue,true);
+						combo.fireEvent('select');
+						break;
+					}
 				}
 			}
 				
