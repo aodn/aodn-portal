@@ -1,9 +1,9 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.config.JsonMarshallingRegistrar
 import au.org.emii.portal.display.MenuJsonCache
 import au.org.emii.portal.display.MenuPresenter
 import grails.converters.JSON
-import au.org.emii.portal.config.JsonMarshallingRegistrar
 
 class MenuController {
 
@@ -15,10 +15,10 @@ class MenuController {
 
 
     def list = {
-        [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]         
-        
-    }    
-    
+        [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]
+
+    }
+
     def create = {
         def menuInstance = new Menu()
         menuInstance.properties = params
@@ -71,14 +71,14 @@ class MenuController {
     }
 
     def update = {
-		
+
         def menuInstance = Menu.get(params.id)
-        
+
         if (menuInstance) {
             if (params.version) {
                 def version = params.version.toLong()
                 if (menuInstance.version > version) {
-                    
+
                     menuInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'menu.label', default: 'Menu')] as Object[], "Another user has updated this Menu while you were editing")
                     render(view: "edit", model: [menuInstance: menuInstance])
                     return
@@ -94,7 +94,7 @@ class MenuController {
             else {
                 render(view: "edit", model: [menuInstance: menuInstance])
             }
-			
+
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
@@ -120,52 +120,69 @@ class MenuController {
             redirect(action: "list")
         }
     }
-    
-    
+
+
     // this method is all about setting the 'active' attribute from the list page
     def setActive = {
-        
+
         def menuInstance = Menu.get(params.id)
         menuInstance.properties = params
         if (menuInstance.save(flush: true)) {
             def state = (menuInstance.active) ? "active" : "inactive"
-            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state              
+            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state
         }
         else {
             render 'ERROR: Problem saving the new state!'
         }
-        
+
     }
 
     def json = {
-		def result = "{}"
-		if (params.id && params.id.isNumber()) {
-			def dummy = new MenuPresenter()
-			dummy.id = params.id
-			result = MenuJsonCache.instance().get(dummy)
 
-			if (!result) {
-				def menu = Menu.get(params.id).toDisplayableMenu()
-				result = (menu as JSON).toString()
-				MenuJsonCache.instance().add(menu, result)
-			}
-		}
-		render result
-	}
-        
+        def result
+
+        if ( params.id?.isNumber() ) {
+
+            // Use cached version if possible
+            def dummy = new MenuPresenter()
+            dummy.id = params.id
+            result = MenuJsonCache.instance().get(dummy)
+
+            // If not in cache, load menu and cache it
+            if ( !result ) {
+                def menu = Menu.get( params.id )
+
+                // Menu will be null if params.id is not a menu id
+                if ( menu ) {
+
+                    def displayable = menu.toDisplayableMenu()
+                    result = (displayable as JSON).toString()
+                    MenuJsonCache.instance().add(displayable, result)
+                }
+                else {
+
+                    // If nothing else has worked so far
+                    result = "{}"
+                }
+            }
+        }
+
+        render result
+    }
+
     private _cleanParams(params) {
-        
+
          // strip out the root node and use it as the title
-        def jsonArray = JSON.parse(params.json)    
-        
+        def jsonArray = JSON.parse(params.json)
+
         params.editDate = new Date()
-        params.title = jsonArray.text       
-        
+        params.title = jsonArray.text
+
         // the JSON string to save and use is the children of the root node
         params.json = jsonArray.children.toString()
         return params
     }
-	
+
 	def _recache(menu) {
 		MenuJsonCache.instance().recache(menu)
 	}
