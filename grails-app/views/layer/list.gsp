@@ -21,7 +21,7 @@
 
             <div class="filters">
                 <g:form action="list" method="get">
-                    <table style="border-width: 0; width: 20%; margin: 0.8em 0;">
+                    <table style="border-width: 0; width: 40%; margin: 0.8em 0;">
                         <tr>
                             <th colspan="2">Filter list</th>
                         </tr>
@@ -32,6 +32,14 @@
                         <tr>
                             <td><label for="serverId">Server</label></td>
                             <td><g:select name="serverId" from="${Server.list()}" optionKey="id" optionValue="name" value="${filters?.serverId}" noSelection="['':'- Any -']" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="isActive">Active&nbsp;in&nbsp;last&nbsp;scan</label></td>
+                            <td><g:select name="isActive" from="${['Active Layers only', 'Both active and inactive layers', 'Inactive Layers only']}" keys="${['true', '', 'false']}" value="${filters?.isActive}" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="isRoot">Root nodes</label></td>
+                            <td><g:select name="isRoot" from="${['Root Layers only', 'Both root and non-root Layers', 'Non-root Layers only']}" keys="${['true', '', 'false']}" value="${filters?.isRoot}" /></td>
                         </tr>
                         <tr>
                             <td></td>

@@ -22,40 +22,14 @@ class LayerController {
 
     def list = {
 
-        def query = {
-
-            and {
-                if ( params.keyword ) {
-
-                    or {
-                        ilike( "name", "%${params.keyword}%" )
-                        ilike( "title", "%${params.keyword}%" )
-                        ilike( "namespace", "%${params.keyword}%" )
-                    }
-                }
-
-                if ( params.serverId ) {
-
-                    eq( "server.id", params.long( "serverId" ) )
-                }
-            }
-
-            if ( params.sort ) {
-                order( params.sort, params.order )
-            }
-            else {
-                order( "server", "asc" )
-                order( "title", "asc" )
-                order( "name", "asc" )
-            }
-        }
-
         params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
         if ( !params.offset ) params.offset = 0
+        if ( params.isActive == null ) params.isActive = true
+        if ( params.isRoot == null ) params.isRoot = ''
 
         def criteria = Layer.createCriteria()
-        def layers = criteria.list( query, max: params.max, offset: params.offset )
-        def filters = [keyword: params.keyword, serverId: params.serverId]
+        def layers = criteria.list( _queryFromParams( params ), max: params.max, offset: params.offset )
+        def filters = [keyword: params.keyword, serverId: params.serverId, isActive: params.isActive, isRoot: params.isRoot]
 
         def model = [
             layerInstanceList: layers,
@@ -72,6 +46,54 @@ class LayerController {
         else {
 
             return model
+        }
+    }
+
+    def _queryFromParams( params ) {
+
+        return {
+
+            and {
+                if ( params.keyword ) {
+
+                    or {
+                        ilike( "name", "%${params.keyword}%" )
+                        ilike( "title", "%${params.keyword}%" )
+                        ilike( "namespace", "%${params.keyword}%" )
+                    }
+                }
+
+                if ( params.serverId ) {
+
+                    eq( "server.id", params.long( "serverId" ) )
+                }
+
+                if ( params.isActive ) {
+
+                    eq( "activeInLastScan", params.isActive.toBoolean() )
+                }
+
+                if ( params.isRoot ) {
+
+                    if ( params.isRoot.toBoolean() ) {
+
+                        isNull( "parent" )
+                    }
+                    else {
+
+                        isNotNull( "parent" )
+                    }
+                }
+            }
+
+            if ( params.sort ) {
+                order( params.sort, params.order )
+            }
+            else {
+                order( "server", "asc" )
+                order( "title", "asc" )
+                order( "name", "asc" )
+            }
         }
     }
 
@@ -354,7 +376,6 @@ class LayerController {
 
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
 	}
-
 
     void _validateCredentialsAndAuthenticate(def params) {
 
