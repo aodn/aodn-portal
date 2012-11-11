@@ -142,7 +142,10 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
             this.map.events.register('changebaselayer', this, function(obj){
                 this.setValue(obj.layer.name);
             });
-
+			
+			this.map.events.register('blur', this, function(obj){
+				this.collapse();
+            });
         }
     },	// eo function initComponent
 	

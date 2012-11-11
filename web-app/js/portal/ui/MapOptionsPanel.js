@@ -49,6 +49,12 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 				}
 			}
         });
+		
+		this.snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
+			controller: this.snapshotController,
+			map: cfg.map
+		});
+		
 
 		var config = Ext.apply({
 	        collapseMode : 'mini',
@@ -77,7 +83,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                 new Ext.Spacer({height: 5}),
                 this.initButtonPanel(),
                 new Ext.Spacer({height: 2}),
-                new Portal.snapshot.SnapshotOptionsPanel({controller: this.snapshotController}),
+                this.snapshotOptionsPanel,
                 this.baseLayerCombo
             ]
 		}, cfg);

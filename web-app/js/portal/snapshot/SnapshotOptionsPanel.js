@@ -42,7 +42,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 					beforequery: function(qe){
 						delete qe.combo.lastQuery;
 					},
-					select: this.onLoadSelectedSnapshot
+					select: this.onLoadSelectedSnapshot					
 				}
 			}),	
 			new Ext.Spacer({
@@ -80,7 +80,15 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 		Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
     
 		this.mon(this.controller, 'snapshotAdded', this.onSnapshotAdded, this);
-		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);
+		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);		
+		
+		this.map.events.register('blur', this, function(obj){
+			if (this.el != undefined) {
+				this.snapshotCombo.collapse();
+			}			
+        });
+		
+		
 	},
   
 	onLoadSelectedSnapshot: function(button, event) {

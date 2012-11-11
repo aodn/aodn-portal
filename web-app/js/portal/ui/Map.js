@@ -105,12 +105,14 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         var clickControl = new Portal.ui.ClickControl({
             map: this.map,
             appConfig: this.appConfig,
-            fallThrough: false,
+            fallThrough: true,
             scope: this,
             onClick: function(event) {
-                this.scope._handleFeatureInfoClick(event);
+                this.scope._handleFeatureInfoClick(event);				
+				this.scope.closeDropdowns(event); 
             }
-        });
+        });		
+
         
         this.map.addControl(clickControl);
         clickControl.activate();
@@ -132,12 +134,15 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             this.updateLoadingImage("none");
             this._closeFeatureInfoPopup();
         }, this);
+		
 
         this.on('baselayersloaded', this.onBaseLayersLoaded, this);
+		this.map.events.register('movestart', this, this.closeDropdowns);
 
-        this.addEvents('baselayersloaded', 'layeradded', 'tabchange');
+        this.addEvents('baselayersloaded', 'layeradded', 'tabchange', 'mouseover');
         this.bubbleEvents.push('baselayersloaded');
-        this.bubbleEvents.push('layeradded');				
+        this.bubbleEvents.push('layeradded');
+        //this.bubbleEvents.push('focus');			
 		
         		
 
@@ -171,6 +176,10 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         // even if the map hasn't been rendered yet
         this.layers.bind(this.map);
     },
+	
+	closeDropdowns: function(event) {
+		this.map.events.triggerEvent('blur',event); // listening in BaseLayerComboBox and mapOptionsPanel
+	},	
 
     afterRender: function() {
 
