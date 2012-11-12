@@ -184,7 +184,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     afterRender: function() {
 
         Portal.ui.Map.superclass.afterRender.call(this);
-
+		
         // TODO: refactor.
         this.initMapActionsControl();
     },

@@ -3,6 +3,7 @@ Ext.namespace('Portal.ui.openlayers');
 Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     actionsPanel : null,
+	window: null,
 
     /**
      * APIProperty: roundedCorner {Boolean} If true the Rico library is used for
@@ -12,9 +13,9 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * APIProperty: roundedCornerColor {String} The color of the rounded
-     * corners, only applies if roundedCorner is true, defaults to "darkblue".
+     * corners, only applies if roundedCorner is true, 
      */
-    roundedCornerColor : "darkblue",
+    roundedCornerColor : "#34546E",
 
     layersDiv : null,
 
@@ -107,7 +108,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
                 color : this.roundedCornerColor,
                 blend : false
             });
-            OpenLayers.Rico.Corner.changeOpacity(this.layersDiv, 0.75);
+            OpenLayers.Rico.Corner.changeOpacity(this.layersDiv, 0.85);
         }
 
         var imgLocation = OpenLayers.Util.getImagesLocation();
@@ -125,8 +126,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.div.appendChild(this.maximizeDiv);
 
         // minimize button div
-        var img = imgLocation + 'layer-switcher-minimize.png';
-        var sz = new OpenLayers.Size(18, 18);
+        img = imgLocation + 'layer-switcher-minimize.png';
         this.minimizeDiv = OpenLayers.Util.createAlphaImageDiv(
                 "OpenLayers_Control_MinimizeDiv", null, sz, img, "absolute");
         OpenLayers.Element.addClass(this.minimizeDiv, "minimizeDiv");
@@ -143,17 +143,10 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             autoZoom : this.appConfig.autoZoom,
             addGrailsLayerFn : this.appConfig.mapPanel.addGrailsLayer,
             mapScope : this.appConfig.mapPanel
-        });
-
-        this.initActionsPanel();
-    },
-    
-    initActionsPanel: function() {
-        // These variables are used in "closures" below.
-        var actionsPanel = this.actionsPanel;
-        var targetDiv = this.layersDiv;
-
-        var window = new Ext.Window({
+        });        
+		
+		this.window = new Ext.Window({
+            id : 'mapActionsWindow',
             draggable : false,
             hidden : false,
             closable : false,
@@ -162,27 +155,28 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             resizable : false,
             autoHeight: true,
 
-            floating : {
-                //shadow : false
-            },
-
             layout : {
-                type : 'fit'
-
+                type : 'auto'
             },
-            id : 'mapActionsWindow',
-
             afterRender : function() {
-
+			
                 Ext.Window.superclass.afterRender.apply(this);
-                targetDiv.appendChild(this.el.dom);
                 this.el.dom.style.position = "";
             }
         });
 
+        this.layersDiv.appendChild(this.window.el.dom);
+        this.initActionsPanel();
+    },
+    
+    initActionsPanel: function() {
+        // These variables are used in "closures" below.
+        var actionsPanel = this.actionsPanel;
+		var window = this.window;
+
         Ext.TaskMgr.start({
             run : function() {
-                window.add(actionsPanel);
+                window.add(actionsPanel);	
                 window.doLayout();
             },
             interval : 0,
