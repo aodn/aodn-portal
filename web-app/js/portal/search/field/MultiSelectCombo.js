@@ -25,9 +25,9 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    pinList: false,
    
    initComponent: function(config) {
-
+	console.log("Init url "+ this.url);
 	   this.store = new Portal.data.SuggestionStore({
-	          url: this.url,
+	   		url : this.url,
 	          autoLoad: true
 	      });
 
@@ -64,6 +64,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 
    setBaseParams: function(baseParams) {
 	   this.store.baseParams = baseParams;
+//	   this.store.setBaseParams();
    },
    
    getFilterValue: function () {
@@ -96,7 +97,13 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    },
    
    proxyBeforeLoad: function(proxy, params) {
-      proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' + Ext.urlEncode(params)) + '&format=text/xml');
+  	
+   	var protocolString = "";
+   	if(params.protocol != null)
+   	{
+   		protocolString = "protocol=" + params.protocol;
+   	}  
+      proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' +protocolString) + '&format=text/xml');
    }
 });
 
