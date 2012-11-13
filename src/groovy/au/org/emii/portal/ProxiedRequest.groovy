@@ -1,8 +1,8 @@
 package au.org.emii.portal
 
 import org.apache.commons.io.IOUtils
-import org.slf4j.LoggerFactory
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class ProxiedRequest {
 
@@ -73,9 +73,9 @@ class ProxiedRequest {
 			key, value ->
 
 			key != "controller" &&
-				key != "url" &&
-				key != "format" &&
-				key != "_dc"
+            key != "url" &&
+            key != "format" &&
+            key != "_dc"
 		}
 
 		def queryStr = ""
