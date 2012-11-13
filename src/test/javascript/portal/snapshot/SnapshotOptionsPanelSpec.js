@@ -5,11 +5,18 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function()
       loadSnapshot: jasmine.createSpy(),
       deleteSnapshot: jasmine.createSpy()
   };
+
+  var mockMap = {
+    events: {
+      register: function (event, obj, fn) {}
+    }
+  };
   
   spyOn(Ext.Ajax, 'request').andReturn();
 
   var snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
-    controller: mockController
+    controller: mockController,
+    map: mockMap
     });
   
   snapshotOptionsPanel.snapshotCombo.setValue('20');
@@ -18,7 +25,7 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function()
 	{
 		expect(snapshotOptionsPanel.items.length).toEqual(4);
 		expect(snapshotOptionsPanel.btnDelete.text).toEqual("Delete");
-    expect(mockController.on).toHaveBeenCalled();
+        expect(mockController.on).toHaveBeenCalled();
 	});
 	
   it("calls loadSnapshot when value in combo box is selected", function()
