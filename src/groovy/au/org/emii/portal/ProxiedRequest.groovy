@@ -73,9 +73,9 @@ class ProxiedRequest {
 			key, value ->
 
 			key != "controller" &&
-				key != "url" &&
-				key != "format" &&
-				key != "_dc"
+            key != "url" &&
+            key != "format" &&
+            key != "_dc"
 		}
 
 		def queryStr = ""

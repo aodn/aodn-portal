@@ -23,7 +23,7 @@ class ProxyController {
         }
         else {
             log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host '${targetUrl.host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
+            render text: "Host '${params.url.host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
 

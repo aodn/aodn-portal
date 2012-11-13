@@ -14,7 +14,7 @@ class LayerController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def layerService
-	def dataSource
+    def dataSource
 
     def index = {
         redirect(action: "list", params: params)
@@ -22,7 +22,36 @@ class LayerController {
 
     def list = {
 
-        def query = {
+        params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
+        if ( !params.offset ) params.offset = 0
+        if ( params.isActive == null ) params.isActive = true
+        if ( params.isRoot == null ) params.isRoot = ''
+
+        def criteria = Layer.createCriteria()
+        def layers = criteria.list( _queryFromParams( params ), max: params.max, offset: params.offset )
+        def filters = [keyword: params.keyword, serverId: params.serverId, isActive: params.isActive, isRoot: params.isRoot]
+
+        def model = [
+                layerInstanceList: layers,
+                layersShownCount: layers.size(),
+                filteredLayersCount: layers.totalCount,
+                filters: filters
+        ]
+
+        if ( request.xhr ) {
+
+            // This is an ajax request
+            render template: "listBody", model: model
+        }
+        else {
+
+            return model
+        }
+    }
+
+    def _queryFromParams( params ) {
+
+        return {
 
             and {
                 if ( params.keyword ) {
@@ -38,6 +67,23 @@ class LayerController {
 
                     eq( "server.id", params.long( "serverId" ) )
                 }
+
+                if ( params.isActive ) {
+
+                    eq( "activeInLastScan", params.isActive.toBoolean() )
+                }
+
+                if ( params.isRoot ) {
+
+                    if ( params.isRoot.toBoolean() ) {
+
+                        isNull( "parent" )
+                    }
+                    else {
+
+                        isNotNull( "parent" )
+                    }
+                }
             }
 
             if ( params.sort ) {
@@ -49,70 +95,46 @@ class LayerController {
                 order( "name", "asc" )
             }
         }
-
-        params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
-        if ( !params.offset ) params.offset = 0
-
-        def criteria = Layer.createCriteria()
-        def layers = criteria.list( query, max: params.max, offset: params.offset )
-        def filters = [keyword: params.keyword, serverId: params.serverId]
-
-        def model = [
-            layerInstanceList: layers,
-            layersShownCount: layers.size(),
-            filteredLayersCount: layers.totalCount,
-            filters: filters
-        ]
-
-        if ( request.xhr ) {
-
-            // This is an ajax request
-            render template: "listBody", model: model
-        }
-        else {
-
-            return model
-        }
     }
 
     def listBaseLayersAsJson = {
         def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
-		JSON.use("deep") {
-			render layerInstanceList as JSON
+        JSON.use("deep") {
+            render layerInstanceList as JSON
         }
     }
 
-	def listForMenuEdit = {
-		def max = params.limit?.toInteger() ?: 50
-		def offset = params.start?.toInteger() ?: 0
+    def listForMenuEdit = {
+        def max = params.limit?.toInteger() ?: 50
+        def offset = params.start?.toInteger() ?: 0
 
-		def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
+        def parentIds = Layer.findAllByParentIsNotNull().collect { it.parent.id }.unique()
 
-		def criteria = Layer.createCriteria()
-		def layers = criteria.list(max: max, offset: offset) {
-			if (params.phrase?.size() > 1) {
-				add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
-			}
-			eq 'blacklisted', false
-			eq 'activeInLastScan', true
-			server {
-				eq 'disable', false
-			}
-			order("server.id")
-			order("title")
-		}
+        def criteria = Layer.createCriteria()
+        def layers = criteria.list(max: max, offset: offset) {
+            if (params.phrase?.size() > 1) {
+                add(Restrictions.ilike("title", "${params.phrase}", MatchMode.ANYWHERE))
+            }
+            eq 'blacklisted', false
+            eq 'activeInLastScan', true
+            server {
+                eq 'disable', false
+            }
+            order("server.id")
+            order("title")
+        }
 
-		def combinedList = layers.grep { !parentIds.contains(it.id) }
-		combinedList = _collectLayersAndServers(combinedList)
-		render _toResponseMap(combinedList, layers.totalCount) as JSON
-	}
+        def combinedList = layers.grep { !parentIds.contains(it.id) }
+        combinedList = _collectLayersAndServers(combinedList)
+        render _toResponseMap(combinedList, layers.totalCount) as JSON
+    }
 
     def showLayerByItsId = {
 
         def layerInstance = Layer.get( params.layerId )
 
         if ( layerInstance ) {
-			_renderLayer(layerInstance)
+            _renderLayer(layerInstance)
         }
         else {
 
@@ -125,7 +147,7 @@ class LayerController {
 
     // Lookup a layer using the server uri and layer name
     // (used to find any portal layer corresponding to externally
-	// entered layer details e.g. layers sourced from metadata records)
+    // entered layer details e.g. layers sourced from metadata records)
 
     def findLayerAsJson = {
         def criteria = Layer.createCriteria()
@@ -164,11 +186,11 @@ class LayerController {
             }
             eq( "name", localName)
             isNull("cql")      // don't include filtered layers!
-			eq("activeInLastScan", true)
+            eq("activeInLastScan", true)
         }
 
         if (layerInstance) {
-			_renderLayer(layerInstance)
+            _renderLayer(layerInstance)
         } else {
             render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
         }
@@ -220,7 +242,7 @@ class LayerController {
             layerInstance.properties = params
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
-	            _recache(layerInstance.server)
+                _recache(layerInstance.server)
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
@@ -240,7 +262,7 @@ class LayerController {
                 layerInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "list")
-	            au.org.emii.portal.Config.recacheDefaultMenu()
+                au.org.emii.portal.Config.recacheDefaultMenu()
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
@@ -297,7 +319,7 @@ class LayerController {
 
             render status: 200, text: "Complete (saved)"
 
-			_recache(server)
+            _recache(server)
         }
         catch (Exception e) {
 
@@ -307,15 +329,15 @@ class LayerController {
         }
     }
 
-	def getFormattedMetadata = {
+    def getFormattedMetadata = {
 
         def responseText
 
-		if (params.metaURL != null) {
+        if (params.metaURL != null) {
 
-			try {
-				//Connect
-				def con = new URL(params.metaURL).openConnection()
+            try {
+                //Connect
+                def con = new URL(params.metaURL).openConnection()
                 def metadataText = con.content.text
 
                 if (con.contentType.contains("text/xml")) {
@@ -339,22 +361,21 @@ class LayerController {
 
                     responseText = html
                 }
-			}
+            }
             catch(SAXException) {
 
                 responseText = "<BR>The metadata record is not available at this time."
-			}
+            }
             catch(FileNotFoundException) {
 
                 responseText = "<BR>The metadata record is not available at this time."
-			}
-		}
+            }
+        }
 
         if ( !responseText ) responseText = "<BR>This layer has no link to a metadata record"
 
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
-	}
-
+    }
 
     void _validateCredentialsAndAuthenticate(def params) {
 
@@ -386,12 +407,12 @@ class LayerController {
         def server = _getServer(params)
 
         if (server) {
-			def result = MenuJsonCache.instance().get(server)
+            def result = MenuJsonCache.instance().get(server)
 
             if (!result) {
-				result = server.toServerLayerJson()
-				MenuJsonCache.instance().add(server, result)
-			}
+                result = server.toServerLayerJson()
+                MenuJsonCache.instance().add(server, result)
+            }
 
             render result
         }
@@ -401,17 +422,17 @@ class LayerController {
         }
     }
 
-	def configuredbaselayers = {
-		def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
-		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
-		render data as JSON
-	}
+    def configuredbaselayers = {
+        def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
+        def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+        render data as JSON
+    }
 
-	def defaultlayers = {
-		def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
-		def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
-		render data as JSON
-	}
+    def defaultlayers = {
+        def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
+        def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
+        render data as JSON
+    }
 
     def _getServer(params) {
         if (params.server) {
@@ -420,65 +441,65 @@ class LayerController {
         return null
     }
 
-	def _collectLayersAndServers(layers) {
-		def items = []
-		def server
-		layers.each { layer ->
-			server = _collectServer(server, layer.server, items)
-			items.add(layer)
-		}
-		return items
-	}
+    def _collectLayersAndServers(layers) {
+        def items = []
+        def server
+        layers.each { layer ->
+            server = _collectServer(server, layer.server, items)
+            items.add(layer)
+        }
+        return items
+    }
 
-	def _collectServer(previous, current, items) {
-		def result = previous
-		if (_isServerCollectable(result, current)) {
-			result = current
-			items.add(result)
-		}
-		return result
-	}
+    def _collectServer(previous, current, items) {
+        def result = previous
+        if (_isServerCollectable(result, current)) {
+            result = current
+            items.add(result)
+        }
+        return result
+    }
 
-	def _isServerCollectable(server1, server2) {
-		return server2 && (!server1 || server1 != server2)
-	}
+    def _isServerCollectable(server1, server2) {
+        return server2 && (!server1 || server1 != server2)
+    }
 
-	def _toResponseMap(data, total) {
-		return [data: data, total: total]
-	}
+    def _toResponseMap(data, total) {
+        return [data: data, total: total]
+    }
 
-	def _convertLayersToListOfMaps(layers) {
-		def data = []
-		layers.each { layer ->
-			data << _getLayerDefaultData(layer)
-		}
-		return data
-	}
+    def _convertLayersToListOfMaps(layers) {
+        def data = []
+        layers.each { layer ->
+            data << _getLayerDefaultData(layer)
+        }
+        return data
+    }
 
-	def _findLayersAndServers(layerIds) {
-		def layers = []
-		if (layerIds) {
-			def criteria = Layer.createCriteria()
-			layers = criteria.list {
-				'in'('id', layerIds)
-				eq("activeInLastScan", true)
-				eq("blacklisted", false)
-				join 'server'
-			}
-		}
+    def _findLayersAndServers(layerIds) {
+        def layers = []
+        if (layerIds) {
+            def criteria = Layer.createCriteria()
+            layers = criteria.list {
+                'in'('id', layerIds)
+                eq("activeInLastScan", true)
+                eq("blacklisted", false)
+                join 'server'
+            }
+        }
 
-		layers = layers.sort {layer ->
-			for(int i=0;i<layerIds.size(); i++) {
-				if(layerIds.getAt(i) == layer.id) {
-					return i;
-				}
-			}
-		}
+        layers = layers.sort {layer ->
+            for(int i=0;i<layerIds.size(); i++) {
+                if(layerIds.getAt(i) == layer.id) {
+                    return i;
+                }
+            }
+        }
 
-		return layers
-	}
+        return layers
+    }
 
-	def _renderLayer(layerInstance) {
+    def _renderLayer(layerInstance) {
         def excludes = [
                 "class",
                 "metaClass",
@@ -494,27 +515,27 @@ class LayerController {
 
         def data = _getLayerData(layerInstance, excludes)
         render data as JSON
-	}
+    }
 
-	def _getLayerData(layer, excludes) {
+    def _getLayerData(layer, excludes) {
 
         def layerData = [:]
-		PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
-		for (PropertyDescriptor property : properties) {
-			String name = property.getName()
-			Method readMethod = property.getReadMethod()
-			if (readMethod != null) {
-				Object value = readMethod.invoke(layer, (Object[]) null)
-				if ("layers".equals(name)) {
-					layerData[name] = _convertLayersToListOfMaps(value)
-				}
-				else if (!excludes.contains(name)) {
-					layerData[name] = value
-				}
-			}
-		}
-		return layerData
-	}
+        PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
+        for (PropertyDescriptor property : properties) {
+            String name = property.getName()
+            Method readMethod = property.getReadMethod()
+            if (readMethod != null) {
+                Object value = readMethod.invoke(layer, (Object[]) null)
+                if ("layers".equals(name)) {
+                    layerData[name] = _convertLayersToListOfMaps(value)
+                }
+                else if (!excludes.contains(name)) {
+                    layerData[name] = value
+                }
+            }
+        }
+        return layerData
+    }
 
     def _getLayerDefaultData(layer){
         def excludes = [
@@ -533,10 +554,10 @@ class LayerController {
         return _getLayerData(layer, excludes)
     }
 
-	def _recache(server) {
+    def _recache(server) {
         server.recache(MenuJsonCache.instance())
-		Config.recacheDefaultMenu()
-	}
+        Config.recacheDefaultMenu()
+    }
 
     def getFiltersAsJSON = {
         def layerInstance = Layer.get( params.layerId )
