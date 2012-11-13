@@ -11,7 +11,6 @@ import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
 
 eventCreateWarStart = { warname, stagingDir ->
-	ant.delete(file: "${stagingDir}/WEB-INF/lib/postgresql-9.0-801.jdbc3.jar")
 	if (grailsEnv == 'production') {
 		ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
 	}
