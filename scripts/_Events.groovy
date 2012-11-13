@@ -1,6 +1,3 @@
-
-import java.text.SimpleDateFormat
-
 import org.tmatesoft.svn.core.SVNException
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory
@@ -10,11 +7,13 @@ import org.tmatesoft.svn.core.wc.SVNInfo
 import org.tmatesoft.svn.core.wc.SVNRevision
 import org.tmatesoft.svn.core.wc.SVNWCClient
 
+import java.text.SimpleDateFormat
+
 eventCreateWarStart = { warname, stagingDir ->
 	if (grailsEnv == 'production') {
 		ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
 	}
-	
+
 	includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
 	collatePortalJavaScriptFiles()
 }
