@@ -3,26 +3,26 @@
 <html>
     <head>
 	  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	  
-	  
-      
+
+
+
         <!--- common styles and JavaScript for the map page and Grails admin pages -->
        <g:render template="/common_includes"></g:render>
-       
+
         <title><g:layoutTitle default="Administration" /></title>
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
-        
+
         <g:layoutHead />
-       
+
         <link rel="stylesheet" media="screen" type="text/css"  href="${resource(dir:'css',file:'grails.css')}" />
     </head>
     <body>
         <div id="spinner" class="spinner" style="display:none;">
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
         </div>
-        
+
       <g:layoutBody />
-      
+
         <div id="controllerMenu">
           <user:loggedInUserInRole roles="Administrator">
           <h2>Portal Config</h2>
@@ -66,7 +66,7 @@
           </ul>
           <br />
         <b>Portal project build info</b><br />
-        Instance name: ${ grailsApplication.config.instance?.name ?: '<span style="color: red;">None supplied</span>' }<br />
+        Instance name: ${ grailsApplication.config.portal.instance.name ?: '<span style="color: red;">None supplied</span>' }<br />
         Environment: ${Environment.current.name}<br />
         Build date: ${grailsApplication.metadata['app.build.date'] ?: "Unk."}<br />
         Subversion revision: #${grailsApplication.metadata['app.svn.revision'] ?: "Unk."}<br />
