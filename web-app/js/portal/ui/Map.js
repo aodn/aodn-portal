@@ -554,6 +554,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             version: this.getWmsVersionString(this.getServer(layerDescriptor)),
             format: this.getServerImageFormat(this.getServer(layerDescriptor)),
             CQL_FILTER: layerDescriptor.cql,
+            cql: layerDescriptor.cql,
             queryable: layerDescriptor.queryable,
             styles:layerDescriptor.defaultStyle
         };
@@ -618,12 +619,13 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
     getLayerUid: function(openLayer) {
         // layerHierarchyPath is the preferred unique identifier for a layer
-        if ( openLayer.layerHierarchyPath ) return openLayer.layerHierarchyPath;
-
         var uri = "UNKNOWN";
         var server = openLayer.server;
-
-        if (server) {
+        
+        if ( openLayer.layerHierarchyPath ) {
+            uri = openLayer.layerHierarchyPath;
+        }
+        else if (server) {
             uri = server.uri;
         }
         else if(openLayer.url)
@@ -796,6 +798,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             success: function(resp) {
                 var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);
                 if (grailsDescriptor) {
+                    grailsDescriptor.cql = layerDescriptor.cql
                     this.addMapLayer(grailsDescriptor);
                 }
             },
