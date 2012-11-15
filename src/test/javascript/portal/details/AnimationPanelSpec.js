@@ -1,15 +1,17 @@
 describe("Portal.details.AnimationPanel", function() {
 	
-	var animationPanel = new Portal.details.AnimationPanel();
-	var startDatePicker = new Ext.form.DateField({
+
+	describe("_onDateSelected", function() {
+
+		
+		it("should, if there is only one time available, select it", function() {
+			var animationPanel = new Portal.details.AnimationPanel();
+			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
 			});
+			animationPanel.startDatePicker = startDatePicker;
 	
-	describe("_onDateSelected", function() {
-		animationPanel.startDatePicker = startDatePicker;
-		
-		it("should, if there is only one time available, select it", function() {
 			var allTimes = new Array();
 			allTimes['2006-06-06'] = new Array();
 			
@@ -25,7 +27,13 @@ describe("Portal.details.AnimationPanel", function() {
 		});
 		
 		it("should select earliest possible time if the previously selected time is not available", function() {
-			var a = "AHH";	
+			var animationPanel = new Portal.details.AnimationPanel();
+			var startDatePicker = new Ext.form.DateField({
+				format : 'd-m-Y',
+				value : '06-06-2007'
+			});
+			animationPanel.startDatePicker = startDatePicker;	
+			
 			var allTimes = new Array();
 			allTimes['2006-06-06'] = new Array();
 			
