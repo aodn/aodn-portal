@@ -42,6 +42,7 @@ ${buildInfo}
 
 <script src="${resource(dir:'js',file:'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
 <script src="${resource(dir:'js',file:'portal/prototypes/Array.js')}?${jsVerNum}" type="text/javascript"></script>
