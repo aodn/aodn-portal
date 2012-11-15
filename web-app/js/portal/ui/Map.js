@@ -181,11 +181,6 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         }, this);
     },
     
-    destroy: function() {
-        Ext.MsgBus.unsubscribe('selectedLayerChanged', this.updateAnimationPanel, this);
-        Portal.ui.Map.superclass.destroy.call(this);
-    },
-    
 	closeDropdowns: function(event) {
 		this.map.events.triggerEvent('blur',event); // listening in BaseLayerComboBox and mapOptionsPanel
 	},	

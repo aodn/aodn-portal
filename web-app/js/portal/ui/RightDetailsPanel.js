@@ -20,6 +20,11 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 				}, cfg);
 
 		Portal.ui.RightDetailsPanel.superclass.constructor.call(this, config);
+		
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
+            this.update(message)
+        }, this);
+
 	},
 
 	// check whether the panel has been rendered before calling the default

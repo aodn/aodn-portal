@@ -4,11 +4,6 @@ describe("Portal.ui.ActiveLayersPanel", function() {
     activeLayersPanel.activeLayersTreePanelSelectionChangeHandler = Portal.ui.ActiveLayersPanel.prototype.activeLayersTreePanelSelectionChangeHandler;
     activeLayersPanel.fireEvent = function(event) {}
 
-    Ext.getCmp = function() {
-        return { update: function() {}, updateAnimationPanel: function() {}}
-    };
-    
-    
     it("selection change triggers selectedLayerChanged event", function() {
         
         var selectedLayerChangedFired = false;
