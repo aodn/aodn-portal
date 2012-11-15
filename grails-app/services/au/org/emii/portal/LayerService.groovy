@@ -314,7 +314,7 @@ class LayerService {
 
             if ( interestingLayerChanges || menusAffected ) {
 
-                def emailBody = _summaryText( server, labelsAndLayers, true )
+                def emailBody = _summaryText( server, labelsAndLayers, false ) + "\n" + _summaryText( server, labelsAndLayers, true ) // Include short summary first, then full summary with Layers
 
                 if ( menusAffected ) {
 

@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import org.apache.shiro.SecurityUtils
 import org.slf4j.MDC
-import grails.util.Environment
 
 class LoggingFilters {
 
@@ -16,12 +15,12 @@ class LoggingFilters {
 
 	            // Client data
                 MDC.put 'clientAddress', clientAddress( request )
-                MDC.put 'userAgent', request.getHeader( "User-Agent" )
+                MDC.put 'userAgent', userAgent( request )
 
                 // User data
                 def principal = SecurityUtils?.subject?.principal
-                MDC.put 'userInfoForFile', "(User: ${ principal ?: "anon." }) "
-                MDC.put 'userInfoForEmail', "User: ${ principal ?: "Not logged-in" }\n"
+                MDC.put 'userInfoForFile', userInfoForFile( principal )
+                MDC.put 'userInfoForEmail', userInfoForEmail( principal )
             }
 
             afterView = {
@@ -37,5 +36,20 @@ class LoggingFilters {
     String clientAddress( request ) {
 
         return request.remoteAddr ?: request.getHeader( "X-Forwarded-For" ) ?: request.getHeader( "Client-IP" )
+    }
+
+    String userAgent( request ) {
+
+        return request.getHeader( "User-Agent" ) ?: ""
+    }
+
+    String userInfoForFile( principal ) {
+
+        return "(User: ${ principal ?: "anon." }) "
+    }
+
+    String userInfoForEmail( principal ) {
+
+        return "User: ${ principal ?: "Not logged-in" }\n"
     }
 }
