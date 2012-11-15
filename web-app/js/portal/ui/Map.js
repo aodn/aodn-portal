@@ -528,7 +528,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
-            gutter: 0,
+            gutter: 20,
             projection: new OpenLayers.Projection(layerDescriptor.projection)
         };
         if (overrides) {
