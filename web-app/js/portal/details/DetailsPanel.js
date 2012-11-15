@@ -154,6 +154,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			//weird stuff happens if you set layer before showing the container, see Bug #1582
 			this.opacitySlider.setLayer(layer);
 			
+			// #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
+			// slider won't be rendered properly, for example).
+			this.doLayout();
+			
 		}
 		else {
 			this.hideDetailsPanelContents();
