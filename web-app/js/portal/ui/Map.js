@@ -175,8 +175,17 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         // make sure layer store reflects loaded layers
         // even if the map hasn't been rendered yet
         this.layers.bind(this.map);
+        
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
+            this.updateAnimationPanel(message)
+        }, this);
     },
-	
+    
+    destroy: function() {
+        Ext.MsgBus.unsubscribe('selectedLayerChanged', this.updateAnimationPanel, this);
+        Portal.ui.Map.superclass.destroy.call(this);
+    },
+    
 	closeDropdowns: function(event) {
 		this.map.events.triggerEvent('blur',event); // listening in BaseLayerComboBox and mapOptionsPanel
 	},	

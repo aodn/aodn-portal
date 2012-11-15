@@ -93,7 +93,7 @@ Ext.ux.util.MessageBus = function(){
 
     var _unsubscribe = function(subject, callback, scope)
     {
-        var index = _findTransceiverForSubject(subject, callback, scope);
+        var index = _findTransceiver(subject, callback, scope);
         if (index == -1) {
             return false;
         }
