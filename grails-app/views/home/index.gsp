@@ -113,7 +113,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js')}?${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/ui/openlayers/MapControls.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/openlayers/MapOptions.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MapPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js')}?${jsVerNum}" type="text/javascript"></script>

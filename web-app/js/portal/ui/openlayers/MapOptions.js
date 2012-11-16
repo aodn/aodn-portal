@@ -1,8 +1,8 @@
-Portal.ui.openlayers.MapControls = Ext.extend(Object, {
+Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
-    constructor: function(cfg) {
+    constructor: function(cfg, mapPanel) {
         var config = Ext.apply({}, cfg);
-        Portal.ui.openlayers.MapControls.superclass.constructor.call(this, config);
+        Portal.ui.openlayers.MapOptions.superclass.constructor.call(this, config);
 
         Ext.QuickTips.init();
         
@@ -20,6 +20,15 @@ Portal.ui.openlayers.MapControls = Ext.extend(Object, {
         });
         toolPanel.addControls( [ zoom,pan] );
         
+        // Control to get feature info or pop up
+        this.clickControl = new Portal.ui.openlayers.ClickControl({
+            fallThrough: true,
+            onClick: function(event) {
+                mapPanel._handleFeatureInfoClick(event);              
+                mapPanel.closeDropdowns(event); 
+            }
+        });     
+
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
@@ -32,16 +41,14 @@ Portal.ui.openlayers.MapControls = Ext.extend(Object, {
                     resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
                 }
             }),
-            toolPanel
+            toolPanel,
+            this.clickControl
         ];
         
-        this.options = {
-            theme: null,
-            controls: this.controls,
-            displayProjection: new OpenLayers.Projection("EPSG:4326"),
-            prettyStateKeys: true, // for pretty permalinks,
-            resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-        };
+        this.theme = null;
+        this.displayProjection = new OpenLayers.Projection("EPSG:4326");
+        this.prettyStateKeys = true; // for pretty permalinks,
+        this.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
     }   
 });
 
