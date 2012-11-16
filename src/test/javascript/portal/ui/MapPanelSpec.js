@@ -1,4 +1,4 @@
-describe("Portal.ui.Map", function() {
+describe("Portal.ui.MapPanel", function() {
 
     Ext.Ajax.request.isSpy = false;
     spyOn(Ext.Ajax, 'request').andReturn('');
@@ -9,16 +9,16 @@ describe("Portal.ui.Map", function() {
         hideLayerOptions : false
     };
 
-    var map;
+    var mapPanel;
     
     beforeEach(function() {
-        map = new Portal.ui.Map({
+        mapPanel = new Portal.ui.MapPanel({
             appConfig : appConfig
         });
     });
     
     afterEach(function() {
-       map.destroy(); 
+        mapPanel.destroy(); 
     });
 
     var layer = {
@@ -60,16 +60,16 @@ describe("Portal.ui.Map", function() {
 
     describe('getServerImageFormat', function() {
         it("should return default png", function() {
-            expect(map.getServerImageFormat(undefined)).toEqual(undefined);
-            expect(map.getServerImageFormat(null)).toEqual(undefined);
-            expect(map.getServerImageFormat({})).toEqual('image/png');
+            expect(mapPanel.getServerImageFormat(undefined)).toEqual(undefined);
+            expect(mapPanel.getServerImageFormat(null)).toEqual(undefined);
+            expect(mapPanel.getServerImageFormat({})).toEqual('image/png');
         });
 
         it("should return the format set on the descriptor", function() {
             var server = {
                 imageFormat : 'image/jpeg'
             }
-            expect(map.getServerImageFormat(server)).toEqual('image/jpeg');
+            expect(mapPanel.getServerImageFormat(server)).toEqual('image/jpeg');
         });
 
     });
@@ -79,28 +79,28 @@ describe("Portal.ui.Map", function() {
             var server = {
                 type : 'lkajsdjalkdjas'
             }
-            expect(map.getWmsVersionString(server)).toEqual('undefined');
+            expect(mapPanel.getWmsVersionString(server)).toEqual('undefined');
         });
 
         it('returns the string "1.1.0"', function() {
             var server = {
                 type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
             }
-            expect(map.getWmsVersionString(server)).toEqual('1.1.0');
+            expect(mapPanel.getWmsVersionString(server)).toEqual('1.1.0');
         });
 
         it('returns the string "1.1.0"', function() {
             var server = {
                 type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
             }
-            expect(map.getWmsVersionString(server)).toEqual('1.1.0');
+            expect(mapPanel.getWmsVersionString(server)).toEqual('1.1.0');
         });
     });
 
     describe('getOpenLayerOptions', function() {
         it('testing setting of OpenLayers options',
                 function() {
-                    var options = map.getOpenLayerOptions(layer);
+                    var options = mapPanel.getOpenLayerOptions(layer);
                     expect(options.version).toEqual('1.1.1');
                     expect(options.isBaseLayer).toBeTruthy();
                     expect(options.opacity).toEqual(1);
@@ -111,7 +111,7 @@ describe("Portal.ui.Map", function() {
 
     describe('getOpenLayerParams', function() {
         it('testing setting of OpenLayers params', function() {
-            var options = map.getOpenLayerParams(layer);
+            var options = mapPanel.getOpenLayerParams(layer);
             expect(options.version).toEqual('1.1.1');
             expect(options.format).toEqual('image/png');
             expect(options.queryable).toBeFalsy();
@@ -123,20 +123,20 @@ describe("Portal.ui.Map", function() {
             var openLayer = {
                 name : 'test'
             };
-            expect(map.getLayerUid(openLayer)).toEqual('UNKNOWN::test');
+            expect(mapPanel.getLayerUid(openLayer)).toEqual('UNKNOWN::test');
 
             openLayer.cql = 'some cql';
-            expect(map.getLayerUid(openLayer)).toEqual(
+            expect(mapPanel.getLayerUid(openLayer)).toEqual(
                     'UNKNOWN::test::some cql');
 
             openLayer.url = 'http://localhost';
-            expect(map.getLayerUid(openLayer)).toEqual(
+            expect(mapPanel.getLayerUid(openLayer)).toEqual(
                     'http://localhost::test::some cql');
 
             openLayer.server = {
                 uri : 'http://remotehost'
             };
-            expect(map.getLayerUid(openLayer)).toEqual(
+            expect(mapPanel.getLayerUid(openLayer)).toEqual(
                     'http://remotehost::test::some cql');
         });
     });
@@ -146,11 +146,11 @@ describe("Portal.ui.Map", function() {
             var openLayer = {
                 name : 'test'
             };
-            map.activeLayers[map.getLayerUid(openLayer)] = openLayer;
+            mapPanel.activeLayers[mapPanel.getLayerUid(openLayer)] = openLayer;
             // As it isn't actually added to the Map so perhaps this is a
             // rubbish
             // test? It did lead to me finding an undefined reference however
-            expect(map.containsLayer(openLayer)).toBeFalsy();
+            expect(mapPanel.containsLayer(openLayer)).toBeFalsy();
         });
     });
 
@@ -163,22 +163,22 @@ describe("Portal.ui.Map", function() {
                     name : 'parent layer'
                 }
             };
-            expect(map.getParentId(layerDescriptor)).toEqual(100);
-            expect(map.getParentName(layerDescriptor)).toEqual('parent layer');
+            expect(mapPanel.getParentId(layerDescriptor)).toEqual(100);
+            expect(mapPanel.getParentName(layerDescriptor)).toEqual('parent layer');
             layerDescriptor.parent = undefined;
-            expect(map.getParentId(layerDescriptor)).toBeFalsy();
-            expect(map.getParentName(layerDescriptor)).toBeFalsy();
+            expect(mapPanel.getParentId(layerDescriptor)).toBeFalsy();
+            expect(mapPanel.getParentName(layerDescriptor)).toBeFalsy();
         });
     });
 
     describe('message bus tests', function() {
         
         it('updateAnimationPanel called on selectedLayerChanged event', function() {
-            spyOn(map, 'updateAnimationPanel');
+            spyOn(mapPanel, 'updateAnimationPanel');
             
             Ext.MsgBus.publish('selectedLayerChanged', { isAnimatable: function() { return true;}});
             
-            expect(map.updateAnimationPanel).toHaveBeenCalled();
+            expect(mapPanel.updateAnimationPanel).toHaveBeenCalled();
         });
     });
     
