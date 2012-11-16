@@ -1,76 +1,5 @@
 Ext.namespace('Portal.ui');
 
-Portal.ui.Options = Ext.extend(Object, {
-
-    constructor: function(cfg) {
-        var config = Ext.apply({}, cfg);
-        Portal.ui.Options.superclass.constructor.call(this, config);
-
-		Ext.QuickTips.init();
-		
-		var container = document.getElementById("navtoolbar");                
-                
-		var pan = new OpenLayers.Control.Navigation({
-			title: 'Pan Control'
-		} );
-		var zoom = new OpenLayers.Control.ZoomBox({
-			title: "Zoom and centre [shift + mouse drag]"
-		});
-		var toolPanel = new OpenLayers.Control.Panel({
-			defaultControl: pan,
-			div: container
-		});
-		toolPanel.addControls( [ zoom,pan] );
-		
-		this.controls = [
-			new OpenLayers.Control.Attribution(),
-			new OpenLayers.Control.PanZoomBar(),
-			new OpenLayers.Control.MousePosition(),
-			new OpenLayers.Control.ScaleLine(),
-			new OpenLayers.Control.OverviewMap({
-				autoPan: true,
-				minRectSize: 30,
-				mapOptions:{
-					resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-				}
-			}),
-			toolPanel
-		];
-		
-		this.options = {
-			theme: null,
-			controls: this.controls,
-			displayProjection: new OpenLayers.Projection("EPSG:4326"),
-			prettyStateKeys: true, // for pretty permalinks,
-			resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-		};
-	}	
-});
-
-Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
-    defaultHandlerOptions: {
-        'single': true,
-        'double': true,
-        'pixelTolerance': 0,
-        'stopSingle': false,
-        'stopDouble': false
-    },
-
-    constructor: function (options) {
-        this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
-        OpenLayers.Control.prototype.initialize.apply(this, arguments);
-
-        this.handler = new OpenLayers.Handler.Click(
-            this,
-            {
-                click: this.onClick
-            },
-            this.handlerOptions
-        );
-    }
-
-});
-
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function(cfg) {
@@ -102,7 +31,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.initMapLinks();
         
         // Control to get feature info or pop up
-        var clickControl = new Portal.ui.ClickControl({
+        var clickControl = new Portal.ui.openlayers.ClickControl({
             map: this.map,
             appConfig: this.appConfig,
             fallThrough: true,
@@ -195,16 +124,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
 	initMapActionsControl: function() {
 		this.appConfig.mapPanel = this;
-		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
-		this.map.addControl(this.mapOptions.mapActionsControl);
+		this.mapControls.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
+		this.map.addControl(this.mapControls.mapActionsControl);
 
 		// Is there a way to achieve this with initialisation config of the control?
-		this.mapOptions.mapActionsControl.maximizeControl();
+		this.mapControls.mapActionsControl.maximizeControl();
 	},
 	
 	loadSnapshot: function(id) {		
 
-		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
+		this.mapControls.mapActionsControl.actionsPanel.loadSnapshot(id);
 	},
 
     autoZoomCheckboxHandler: function(box, checked) {
@@ -253,8 +182,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         // The MapActionsControl (in the OpenLayers map tools) needs this.
         this.appConfig.mapPanel = this;
 
-        this.mapOptions = new Portal.ui.Options(this.appConfig);
-        this.map = new OpenLayers.Map(this.mapOptions.options);
+        this.mapControls = new Portal.ui.openlayers.MapControls(this.appConfig);
+        this.map = new OpenLayers.Map(this.mapControls.options);
         this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
 
         this.map.events.register('removelayer', this, this.postRemoveLayer);		
@@ -459,8 +388,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     onBaseLayersLoaded: function() {
         this.addDefaultLayers();
-		if (this.mapOptions.mapActionsControl != undefined) {
-			this.mapOptions.mapActionsControl.actionsPanel.mapOptionsPanel.baseLayerCombo.reload();
+		if (this.mapControls.mapActionsControl != undefined) {
+			this.mapControls.mapActionsControl.actionsPanel.mapOptionsPanel.baseLayerCombo.reload();
 		}
 		
     },
