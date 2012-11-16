@@ -269,52 +269,53 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 
 
 	_onDateSelected : function(field, date) {
-		var combo;
+			var key = this._toDateString(date);
 
-		if (field === this.startDatePicker) {
-			combo = this.startTimeCombo;
-		} else {
-			combo = this.endTimeCombo;
-		}
-
-		var key = this._toDateString(date);
-		if (this.allTimes[key] != null) {
+			var combo;
+	
+			if (field === this.startDatePicker) {
+				combo = this.startTimeCombo;
+			} else {
+				combo = this.endTimeCombo;
+			}
+	
 			var oldValue = combo.getValue();
+			
 			combo.clearValue();
 			combo.getStore().loadData(this.allTimes[key], false);
 			
-			if(this.allTimes[key].length == 1)
+			var timeValues = new Array();
+			
+			for(var i =0;i < this.allTimes[key].length;i++)
 			{
-				combo.setValue(this.allTimes[key][0][0]);
-				combo.fireEvent('select');
+				timeValues[i] = this.allTimes[key][i][0]
 			}
-			else
+			
+			var newValue;
+			if (field === this.startDatePicker) {
+				newValue = this._getNewTimeValue(oldValue, timeValues,0);
+			} else {
+				newValue = this._getNewTimeValue(oldValue, timeValues,timeValues.length-1);
+			}
+
+			combo.setValue(newValue,true);
+			combo.fireEvent('select');
+	},
+	
+	//PRE: old time must be a String or NULL, newTimes must be an array of strings, 
+	//defaultIndex must be an positive integer less than the length of newTimes
+	_getNewTimeValue : function(oldTime,newTimes, defaultIndex){
+		for(var i =0;i < newTimes.length;i++)
+		{
+			if(newTimes[i] === oldTime)
 			{
-				var containsOldValue = false;
-				for(var i =0;i < this.allTimes[key].length;i++)
-				{
-					if(this.allTimes[key][i][1] == oldValue)
-					{
-						combo.setValue(oldValue,true);
-						combo.fireEvent('select');
-						containsOldValue = true;
-						break;
-					}
-				}
-				
-				if(!containsOldValue)
-				{
-					if (field === this.startDatePicker) {
-						combo.setValue(this.allTimes[key][0][0]);
-						combo.fireEvent('select');
-					} else {
-						combo.setValue(this.allTimes[key][this.allTimes[key].length-1][0]);
-						combo.fireEvent('select');
-					}
-				}
+				return oldTime;
 			}
-				
 		}
+		
+		//if we get to this point, then oldTime must not be available, so use default.
+		return newTimes[defaultIndex]
+		
 	},
 	
 	 _onTimeSelected : function(combo, record, index) {
