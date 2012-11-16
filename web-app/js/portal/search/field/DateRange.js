@@ -2,8 +2,8 @@ Ext.namespace('Portal.search.field');
 
 Portal.search.field.DateRange = Ext.extend(Ext.Container, {
    layout: 'hbox',
-   
-   initComponent: function() { 
+
+   initComponent: function() {
       this.items = [
          {
             xtype: 'container',
@@ -19,7 +19,8 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                   xtype: 'datefield',
                   ref: '../fromDate',
                   format: 'd/m/Y',
-                  anchor: '100%'
+                  anchor: '100%',
+                  maxValue: new Date()
                }
             ]
          },{
@@ -35,7 +36,8 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
                   xtype: 'datefield',
                   ref: '../toDate',
                   format: 'd/m/Y',
-                  anchor: '100%'
+                  anchor: '100%',
+                  maxValue: new Date()
                }
             ]
          }
@@ -43,7 +45,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
 
       Portal.search.field.DateRange.superclass.initComponent.apply(this, arguments);
    },
-   
+
    getFilterValue: function()
    {
 	   return {
@@ -51,7 +53,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
 		   toDate: this.toDate.getValue()
 	   };
    },
-   
+
    setFilterValue: function(v)
    {
 	   this.fromDate.setValue(new Date(v.fromDate));
