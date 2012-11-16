@@ -675,15 +675,21 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     },
 
     updateAnimationPanel: function(openLayer){
-        if(!this.animationPanel.isAnimating()){
-            if(openLayer.isAnimatable()){
-                //show the panel for the first time!
-                this.animationPanel.setSelectedLayer(openLayer);
-                this.animationPanel.update();
-                this.mapLinks.setVisible(true);
+        
+        if (!this.animationPanel.isAnimating()) {
+            if (openLayer) {
+                if (openLayer.isAnimatable()) {
+                    //show the panel for the first time!
+                    this.animationPanel.setSelectedLayer(openLayer);
+                    this.animationPanel.update();
+                    this.mapLinks.setVisible(true);
+                }
+                else {
+                    this.mapLinks.setVisible(false);
+                }
             }
-            else{
-                this.mapLinks.setVisible(false);
+            else {
+                this.animationPanel.removeAnimation();
             }
         }
     },
@@ -734,7 +740,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             this.map.setLayerIndex(newLayer, layerLevelIndex);
         }
 
-        Ext.getCmp('rightDetailsPanel').update(newLayer);
+        Ext.MsgBus.publish("selectedLayerChanged", newLayer);
     },
 
     zoomToLayer: function(openLayer) {
@@ -825,7 +831,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
                 this.animationPanel.loadFromSavedMap(openLayer, chosenTimes.split("/"));
             }
 
-            Ext.getCmp('rightDetailsPanel').update(openLayer);
+            Ext.MsgBus.publish("selectedLayerChanged", openLayer);
         }
     },
 
@@ -844,7 +850,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
                     openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
                     // if this layer has been user selected before loading the metadata
                     // reload,  as the date picker details/ form  will be wrong at the very least!
-                    Ext.getCmp('rightDetailsPanel').update(openLayer);
+                    Ext.MsgBus.publish("selectedLayerChanged", openLayer);
                 }
             });
         }
@@ -864,12 +870,9 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 			{
 				this.animationPanel.removeAnimation();
 			}
-            if (newDetailsPanelLayer == null) {
-                Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
-                Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no active layers
-            } else {
-                Ext.getCmp('rightDetailsPanel').update(newDetailsPanelLayer); //Show one of the remaining active layers
-            }
+			
+			Ext.MsgBus.publish("selectedLayerChanged", newDetailsPanelLayer);
+
             if(newDetailsPanelLayer != null)
                 this.mapLinks.setVisible(newDetailsPanelLayer.isAnimatable());
             else
@@ -895,8 +898,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
         }, this);
         this.removeAllLayersIn(layersToRemove);
 
-        Ext.getCmp('rightDetailsPanel').setSelectedLayer(null);
-        Ext.getCmp('rightDetailsPanel').collapseAndHide();  // nothing to see now
+        Ext.MsgBus.publish("selectedLayerChanged", null);
         this._closeFeatureInfoPopup();
     },
 

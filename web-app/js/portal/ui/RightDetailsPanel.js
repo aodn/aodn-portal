@@ -64,40 +64,38 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		this.selectedLayer = openLayer;
 	},
 
-	_onChangeLayer : function(evt) {
-		if (evt.layer == this.selectedLayer && evt.property == "name") {
-			this.update(evt.layer);
-		}
-	},
-	// a new layer has been added or selected
+	// A new layer has been added or selected ("openlayer" may be null, e.g. when "Remove All Layers"
+	// has been clicked).
 	update : function(openlayer) {
 		this.selectedLayer = openlayer;
-		if(openlayer.map ==null)
-		{
-			return;
+		
+		if (openlayer) {
+    		if (openlayer.map == null)
+    		{
+    			return;
+    		}
+    		
+    		this.text = openlayer.name;
+    		this.setTitle(openlayer.name);
+    
+    		// show new layer details unless user requested 'hideLayerOptions' or
+    		// || !viewport.isMapVisible() check if the map is still in focus - not
+    		// the search
+    		if (!(Portal.app.config.hideLayerOptions === true)) {
+    
+    			if (this.collapsed) {
+    				// will updateDetailsPanel after expand
+    				this.expand();
+    			} else {
+    				this.detailsPanelItems.updateDetailsPanel(openlayer);
+    			}
+    		} else {
+    			this.detailsPanelItems.updateDetailsPanel(openlayer);
+    			this.collapse(true);
+    		}
 		}
-		openlayer.map.events.on({
-					"changelayer" : this._onChangeLayer,
-					scope : this
-				});
-
-		this.text = openlayer.name;
-		this.setTitle(openlayer.name);
-
-		// show new layer details unless user requested 'hideLayerOptions' or
-		// || !viewport.isMapVisible() check if the map is still in focus - not
-		// the search
-		if (!(Portal.app.config.hideLayerOptions === true)) {
-
-			if (this.collapsed) {
-				// will updateDetailsPanel after expand
-				this.expand();
-			} else {
-				this.detailsPanelItems.updateDetailsPanel(openlayer);
-			}
-		} else {
-			this.detailsPanelItems.updateDetailsPanel(openlayer);
-			this.collapse(true);
+		else {
+		    this.collapseAndHide();
 		}
 	},
 
