@@ -100,20 +100,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     afterRender: function() {
 
         Portal.ui.MapPanel.superclass.afterRender.call(this);
-		
-        // TODO: refactor.
-        this.initMapActionsControl();
+        this.mapOptions.afterRender(this);
     },
 
-	initMapActionsControl: function() {
-		this.appConfig.mapPanel = this;
-		this.mapOptions.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(this.appConfig);
-		this.map.addControl(this.mapOptions.mapActionsControl);
-
-		// Is there a way to achieve this with initialisation config of the control?
-		this.mapOptions.mapActionsControl.maximizeControl();
-	},
-	
 	loadSnapshot: function(id) {		
 
 		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
@@ -167,12 +156,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = new OpenLayers.Map(this.mapOptions);
-        
         this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-
         this.map.events.register('removelayer', this, this.postRemoveLayer);		
-        
-        this.mapOptions.clickControl.activate();
     },
 
     initMapLinks: function() {

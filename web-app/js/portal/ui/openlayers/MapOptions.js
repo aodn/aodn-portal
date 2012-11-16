@@ -24,6 +24,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.clickControl = new Portal.ui.openlayers.ClickControl({
             fallThrough: true,
             onClick: function(event) {
+                
+                console.log("clickControl click");
                 mapPanel._handleFeatureInfoClick(event);              
                 mapPanel.closeDropdowns(event); 
             }
@@ -49,7 +51,16 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.displayProjection = new OpenLayers.Projection("EPSG:4326");
         this.prettyStateKeys = true; // for pretty permalinks,
         this.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
-    }   
+    },
+    
+    afterRender: function(mapPanel) {
+        
+        this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
+        mapPanel.map.addControl(this.mapActionsControl);
+        this.mapActionsControl.maximizeControl();
+        
+        this.clickControl.activate();
+    },
 });
 
 Portal.ui.openlayers.ClickControl = Ext.extend(OpenLayers.Control, {
