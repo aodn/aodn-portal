@@ -521,6 +521,15 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
     },
 
     getOpenLayerOptions: function(layerDescriptor, overrides) {
+
+      	console.log(layerDescriptor);
+
+      	var gutterSize = 20;
+
+      	if(layerDescriptor.isBaseLayer){
+      	 	gutterSize = 0;
+      	}
+
         var options = {
             wrapDateLine: true,
             opacity: this.getServerOpacity(this.getServer(layerDescriptor)),
@@ -528,7 +537,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
-            gutter: 20,
+            gutter: gutterSize,
             projection: new OpenLayers.Projection(layerDescriptor.projection)
         };
         if (overrides) {
