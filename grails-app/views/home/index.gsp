@@ -112,6 +112,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/AodaacPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/openlayers/ClickControl.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapOptions.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js')}?${jsVerNum}" type="text/javascript"></script>

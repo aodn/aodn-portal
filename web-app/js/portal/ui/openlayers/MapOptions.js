@@ -1,3 +1,5 @@
+Ext.namespace('Portal.ui');
+
 Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
     constructor: function(cfg, mapPanel) {
@@ -61,28 +63,4 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         
         this.clickControl.activate();
     },
-});
-
-Portal.ui.openlayers.ClickControl = Ext.extend(OpenLayers.Control, {
-    defaultHandlerOptions: {
-        'single': true,
-        'double': true,
-        'pixelTolerance': 0,
-        'stopSingle': false,
-        'stopDouble': false
-    },
-
-    constructor: function (options) {
-        this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
-        OpenLayers.Control.prototype.initialize.apply(this, arguments);
-
-        this.handler = new OpenLayers.Handler.Click(
-            this,
-            {
-                click: this.onClick
-            },
-            this.handlerOptions
-        );
-    }
-
 });
