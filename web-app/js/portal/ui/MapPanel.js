@@ -71,7 +71,7 @@ Portal.ui.ClickControl = Ext.extend(OpenLayers.Control, {
 
 });
 
-Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
+Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function(cfg) {
 
@@ -98,7 +98,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
             layersLoading: 0
         }, cfg);
 
-        Portal.ui.Map.superclass.constructor.call(this, config);
+        Portal.ui.MapPanel.superclass.constructor.call(this, config);
         this.initMapLinks();
         
         // Control to get feature info or pop up
@@ -187,7 +187,7 @@ Portal.ui.Map = Ext.extend(Portal.common.MapPanel, {
 
     afterRender: function() {
 
-        Portal.ui.Map.superclass.afterRender.call(this);
+        Portal.ui.MapPanel.superclass.afterRender.call(this);
 		
         // TODO: refactor.
         this.initMapActionsControl();
