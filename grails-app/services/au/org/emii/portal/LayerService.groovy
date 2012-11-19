@@ -142,7 +142,7 @@ class LayerService {
             })
 
             // Summary of changes
-            _logAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
+            _logSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
         }
         catch ( Exception e ) {
 
@@ -281,7 +281,7 @@ class LayerService {
         layer.dimensions = dimensions
     }
 
-    def _logAndEmailSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
+    def _logSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
 
         // Calculate remaining changes
         def layersMadeInactive = existingActiveLayerPaths - updatedLayerPaths
@@ -299,40 +299,20 @@ class LayerService {
         ]
 
         // Write summary to log
-        log.info _summaryText( server, labelsAndLayers, log.debugEnabled )
+        log.info "== Updating Layers finished for server: $server (${server.uri}) =="
 
-        // Email report
-        if ( grailsApplication.config.wmsScanner.updateEmails.enabled ) {
+        labelsAndLayers.each {
+            label, layers ->
 
-            def interestingLayerChanges = addedLayerPaths.size() || layersMadeInactive.size() || layersReactivated.size()
+            log.info "# $label: ${ layers.size() }"
 
-            def menuItemsForInactiveLayersOnServer = MenuItem.executeQuery( "SELECT mi FROM MenuItem mi JOIN mi.layer l WHERE l.server = :server AND l.activeInLastScan = false", [server: server] ).findAll { it.menu != null }
-            def menusAffected = menuItemsForInactiveLayersOnServer.size()
+            if ( log.debugEnabled ) {
 
-            log.debug "interestingLayerChanges: ${ interestingLayerChanges }"
-            log.debug "menusAffected: ${ menusAffected }"
-
-            if ( interestingLayerChanges || menusAffected ) {
-
-                def emailBody = _summaryText( server, labelsAndLayers, false ) + "\n" + _summaryText( server, labelsAndLayers, true ) // Include short summary first, then full summary with Layers
-
-                if ( menusAffected ) {
-
-                    def menus = menuItemsForInactiveLayersOnServer.collect{ it.menu }.unique()
-
-                    def newInfo = "Menus with inactive Layers from this Server:\n"
-
-                    newInfo +=  menus.join( "\n" )
-
-                    emailBody = "$newInfo\n$emailBody"
+                layers.each{
+                    log.debug it
                 }
 
-                sendMail {
-                    to( ["dnahodil@utas.edu.au"] )
-                    subject( "WMS Scanner report from ${ grailsApplication.config.grails.serverURL } for '$server'" )
-                    body( "Site: ${ grailsApplication.config.grails.serverURL }\n\n$emailBody" )
-                    from( grailsApplication.config.portal.systemEmail.fromAddress )
-                }
+                if ( layers.size() ) log.debug "" // Blank line if any Layers were printed
             }
         }
     }
