@@ -82,20 +82,16 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 
 		if (checkedLayers.length == 0) {
 			this.setActiveNode(null); // makes nothing active
-			Ext.getCmp('rightDetailsPanel').collapseAndHide(); //Hide details panel if there are no checked active layers
+			
+			// Hide details panel if there are no checked active layers.
+			Ext.MsgBus.publish("selectedLayerChanged", null);
 		}
-		//Commenting the following bit of code out, as it updates the right details panel twice whenever a layer
-		//is selected in the active layers panel, thus, making twice as many AJAX calls to get layer metadata.
-		//else {
-			//this.activeLayersTreePanelSelectionChangeHandler(null, selectedNode);
-		//}
 	},
 		
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
 		if (node != null) {
 			this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
-			Ext.getCmp('rightDetailsPanel').update(node.layer);
-			Ext.getCmp('map').updateAnimationPanel(node.layer);
+			Ext.MsgBus.publish("selectedLayerChanged", node.layer);
 	    } 
 	},
 

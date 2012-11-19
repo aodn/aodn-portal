@@ -40,7 +40,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
     },
 	
     initMapPanel: function(appConfig) {
-        this.mapPanel = new Portal.ui.Map({
+        this.mapPanel = new Portal.ui.MapPanel({
             appConfig: appConfig
         });
     },
