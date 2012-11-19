@@ -1,6 +1,6 @@
 Ext.namespace('Portal.details');
 
-Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
+Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	state : {
 		LOADING : "LOADING",
@@ -19,7 +19,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 					width : '100%'
 				}, cfg);
 
-		Portal.details.AnimationPanel.superclass.constructor.call(this, config);
+		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 	},
 
 	initComponent : function() {
@@ -240,7 +240,7 @@ Portal.details.AnimationPanel = Ext.extend(Ext.Panel, {
 		this.pausedTime = "";
 		this.timerId = -1;
 
-		Portal.details.AnimationPanel.superclass.initComponent.call(this);
+		Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
 	},
 
 	setMap : function(theMap) {

@@ -99,7 +99,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/ActionsPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/ActiveLayersPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/utils/TimeUtil.js')}?${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/details/AnimationPanel.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/details/AnimationControlsPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/filter/BaseFilter.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/filter/FilterCombo.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/filter/TimeFilter.js')}?${jsVerNum}" type="text/javascript"></script>
@@ -115,6 +115,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/ClickControl.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapOptions.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/AnimationPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/RightDetailsPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/MapPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/HomePanel.js')}?${jsVerNum}" type="text/javascript"></script>

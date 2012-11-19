@@ -27,7 +27,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             fallThrough: true,
             onClick: function(event) {
                 
-                console.log("clickControl click");
                 mapPanel._handleFeatureInfoClick(event);              
                 mapPanel.closeDropdowns(event); 
             }

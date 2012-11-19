@@ -17,7 +17,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
-    controlButton_4animationPanel: 'Animation Options',
+    controlButton_4AnimationControlsPanel: 'Animation Options',
 
     // Search results
     selectLayer: 'Select layer',
