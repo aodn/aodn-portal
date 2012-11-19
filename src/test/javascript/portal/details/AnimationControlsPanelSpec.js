@@ -1,9 +1,9 @@
-describe("Portal.details.AnimationPanel", function() {
+describe("Portal.details.AnimationControlsPanel", function() {
 	
 	describe("_getNewTimeValue", function() {
 		it("select default if old time doesn't exist")
 		{
-			var animationPanel = new Portal.details.AnimationPanel();
+			var animationPanel = new Portal.details.AnimationControlsPanel();
 			
 			var oldTime = "13:25:00 (+10:00)";
 			
@@ -29,7 +29,7 @@ describe("Portal.details.AnimationPanel", function() {
 
 		
 		it("should, if there is only one time available, select it", function() {
-			var animationPanel = new Portal.details.AnimationPanel();
+			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
@@ -50,7 +50,7 @@ describe("Portal.details.AnimationPanel", function() {
 		});
 		
 		it("selects earliest possible time if the previously selected time is not available", function() {
-			var animationPanel = new Portal.details.AnimationPanel();
+			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
@@ -80,7 +80,7 @@ describe("Portal.details.AnimationPanel", function() {
 		});
 		
 		it("selects previously selected time if it is available", function() {
-			var animationPanel = new Portal.details.AnimationPanel();
+			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'

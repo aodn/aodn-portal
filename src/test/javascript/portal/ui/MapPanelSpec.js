@@ -173,12 +173,12 @@ describe("Portal.ui.MapPanel", function() {
 
     describe('message bus tests', function() {
         
-        it('updateAnimationPanel called on selectedLayerChanged event', function() {
-            spyOn(mapPanel, 'updateAnimationPanel');
+        it('updateAnimationControlsPanel called on selectedLayerChanged event', function() {
+            spyOn(mapPanel, 'updateAnimationControlsPanel');
             
             Ext.MsgBus.publish('selectedLayerChanged', { isAnimatable: function() { return true;}});
             
-            expect(mapPanel.updateAnimationPanel).toHaveBeenCalled();
+            expect(mapPanel.updateAnimationControlsPanel).toHaveBeenCalled();
         });
     });
     
