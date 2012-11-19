@@ -298,6 +298,11 @@ class LayerService {
             [ "Layers remaining inactive", layersRemainingInactive ]
         ]
 
+        _printUpdateInfo server, labelsAndLayers
+    }
+
+    def _printUpdateInfo( server, labelsAndLayers ) {
+
         // Write summary to log
         log.info "== Updating Layers finished for server: $server (${server.uri}) =="
 
@@ -315,21 +320,5 @@ class LayerService {
                 if ( layers.size() ) log.debug "" // Blank line if any Layers were printed
             }
         }
-    }
-
-    def _summaryText( server, labelsAndLayers, includeLayerPaths ) {
-
-        def summary = "\n== Updating Layers finished for server: $server (${server.uri}) ==\n"
-
-        labelsAndLayers.each {
-
-            def label = it[ 0 ]
-            def layers = it[ 1 ]
-
-            summary += "# $label: ${ layers.size() }\n"
-            if ( includeLayerPaths ) summary += layers.join( "\n" ) + "\n"
-        }
-
-        return summary
     }
 }
