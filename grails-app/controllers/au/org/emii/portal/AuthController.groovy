@@ -86,8 +86,8 @@ class AuthController {
 
                     log.debug "Setting attributes from '$ext'"
 
-                    userInstance.fullName = ext.getAttributeValueByTypeUri( "http://schema.openid.net/namePerson" ) ?: "--None returned form OpenID provider--"
-                    userInstance.emailAddress = ext.getAttributeValueByTypeUri( "http://schema.openid.net/contact/email" ) ?: "--None returned form OpenID provider--"
+                    userInstance.fullName = ext.getAttributeValueByTypeUri( "http://schema.openid.net/namePerson" ) ?: "Unk."
+                    userInstance.emailAddress = ext.getAttributeValueByTypeUri( "http://schema.openid.net/contact/email" ) ?: "Unk."
                 }
                 else {
 
@@ -153,7 +153,7 @@ class AuthController {
 		def returnUrl = "${portalUrl}/auth/verifyResponse"
 		def authReq = consumerManager.authenticate( discovered, returnUrl )
 		authReq.addExtension fetch
-		
+
 		def url = authReq.getDestinationUrl( true )
 		if (register) {
 			url += "&r=true"
@@ -168,5 +168,4 @@ class AuthController {
             redirect controller: "home"
         }
     }
-
 }
