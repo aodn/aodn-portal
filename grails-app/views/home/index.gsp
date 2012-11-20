@@ -51,7 +51,6 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}?${jsVerNum}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'portal/common/FacetedSearchActionColumn.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/LoadMask.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/AppConfigStore.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js')}?${jsVerNum}" type="text/javascript"></script>
