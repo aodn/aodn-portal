@@ -67,7 +67,13 @@ class AuthController {
 
                 userInstance = new User( openIdUrl: verified.identifier )
 
-                userInstance.addToRoles UserRole.findByName( "SelfRegisteredUser" )
+	            // If there are no users to date make the first user an admin
+				if (User.count() < 1) {
+					userInstance.addToRoles UserRole.findByName("Administrator")
+				}
+	            else {
+                    userInstance.addToRoles UserRole.findByName( "SelfRegisteredUser" )
+				}
             }
 
             // Get values from attribute exchange
