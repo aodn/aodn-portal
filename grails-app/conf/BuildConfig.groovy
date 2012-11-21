@@ -49,7 +49,4 @@ grails.war.resources = { stagingDir ->
 	delete(file:"${stagingDir}/WEB-INF/lib/catalina-6.0.32.jar")
 	delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-2.5.jar")
 	delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-6.0.32.jar")
-	copy(toDir: "${stagingDir}/WEB-INF/classes/instance") {
-		fileset(dir: "instance")
-	}
 }
