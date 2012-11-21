@@ -3,8 +3,6 @@ databaseChangeLog = {
 	// Structural changes and changes for all instances
 	include file: 'initialisation.groovy'
 	
-	include file: '20120321-DN-TweaksToDefaultConfig.groovy'
-	
     include file: '20120326-DN-SelfRegisteredUserPermissions.groovy'
     
     include file: '20120329-CJ-AddSelfRegisteredUserSnapshotPermissions.groovy'
@@ -13,8 +11,6 @@ databaseChangeLog = {
 	
 	include file: '20120308-DN-OpenIdTesting3.groovy'
 
-	include file: '20120314-DN-UserChangesForWmsScanner.groovy'
-	
 	include file: '20120411-DN-UpdateDownloadCartFilename.groovy'
 	
 	include file: '20120413-DN-UpdateDownloadCartMaxSize.groovy'
@@ -34,8 +30,6 @@ databaseChangeLog = {
     include file: '20120515-DN-RemovingLayerRelationship.groovy'
     
     include file: '20120515-DN-UpdatingAODNDownloadCartMessage.groovy'
-
-    include file: '20120518-PM-AdminPermission.groovy'
 
 	include file: '20120518-DN-UpdatingAODNDownloadCartMessage.groovy'
     

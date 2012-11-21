@@ -68,7 +68,7 @@ databaseChangeLog = {
 	
 	changeSet(author: "jburgess (generated)", id: "1334552333873-19", failOnError: true) {
 		insert(tableName: "user_role_permissions") {
-			column(name: "user_role_id", valueNumeric: "13")
+			column(name: "user_role_id", valueComputed: "(select id from user_role where name = 'SelfRegisteredUser')")
 
 			column(name: "permissions_string", value: "search:*")
 		}

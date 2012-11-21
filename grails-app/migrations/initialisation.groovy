@@ -685,14 +685,6 @@ OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "version", valueNumeric: "0")
 
-			column(name: "name", value: "LayerApiUser")
-		}
-
-		insert(tableName: "user_role") {
-			column(name: "id", valueComputed: "nextval('hibernate_sequence')")
-
-			column(name: "version", valueNumeric: "0")
-
 			column(name: "name", value: "Administrator")
 		}
 
@@ -707,23 +699,9 @@ OGC:WMS-1.3.0-http-get-map""")
 
 	changeSet(author: "tfotak (generated)", id: "1331787865301-19", failOnError: true) {
 		insert(tableName: "user_role_permissions") {
-			column(name: "user_role_id", valueComputed: "nextval('hibernate_sequence')")
+			column(name: "user_role_id", valueComputed: "(select id from user_role where name = 'Administrator')")
 
 			column(name: "permissions_string", value: "*")
-		}
-
-		insert(tableName: "user_role_permissions") {
-			column(name: "user_role_id", valueComputed: "nextval('hibernate_sequence')")
-
-			column(name: "permissions_string", value: "layer:saveOrUpdate")
-		}
-	}
-
-	changeSet(author: "tfotak (generated)", id: "1331787865301-21", failOnError: true) {
-		insert(tableName: "portal_user_roles") {
-			column(name: "user_id", valueComputed: "nextval('hibernate_sequence')")
-
-			column(name: "user_role_id", valueNumeric: "12")
 		}
 	}
 
@@ -851,7 +829,7 @@ OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "queryable", valueBoolean: "true")
 
-			column(name: "server_id", valueComputed: "select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'")
+			column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
 
 			column(name: "title", value: "Default Baselayer")
 
@@ -875,7 +853,7 @@ OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "queryable", valueBoolean: "true")
 
-			column(name: "server_id", valueComputed: "select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'")
+			column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
 
 			column(name: "title", value: "Simple Baselayer")
 
@@ -899,7 +877,7 @@ OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "queryable", valueBoolean: "true")
 
-			column(name: "server_id", valueComputed: "select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'")
+			column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
 
 			column(name: "title", value: "Marine GEO")
 
@@ -923,7 +901,7 @@ OGC:WMS-1.3.0-http-get-map""")
 
 			column(name: "queryable", valueBoolean: "true")
 
-			column(name: "server_id", valueComputed: "select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'")
+			column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
 
 			column(name: "title", value: "satellite")
 
@@ -957,9 +935,9 @@ OGC:WMS-1.3.0-http-get-map""")
 			
 			column(name: "text", value: "Default Baselayer")
 
-			column(name: "menu_id", valueComputed: "select menu_id from menu where title = 'Default Base Layers'")
+			column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
 
-			column(name: "layer_id", valueComputed: "select id from layers where name = 'HiRes_aus-group'")
+			column(name: "layer_id", valueComputed: "(select id from layer where name = 'HiRes_aus-group')")
 
 			column(name: "leaf", valueBoolean: "true")
 			
@@ -973,9 +951,9 @@ OGC:WMS-1.3.0-http-get-map""")
 			
 			column(name: "text", value: "Simple Baselayer")
 
-			column(name: "menu_id", valueComputed: "select menu_id from menu where title = 'Default Base Layers'")
+			column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
 
-			column(name: "layer_id", valueComputed: "select id from layers where name = 'default_basemap_simple'")
+			column(name: "layer_id", valueComputed: "(select id from layer where name = 'default_basemap_simple')")
 
 			column(name: "leaf", valueBoolean: "true")
 			
@@ -989,9 +967,9 @@ OGC:WMS-1.3.0-http-get-map""")
 			
 			column(name: "text", value: "Marine GEO")
 
-			column(name: "menu_id", valueComputed: "select menu_id from menu where title = 'Default Base Layers'")
+			column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
 
-			column(name: "layer_id", valueComputed: "select id from layers where name = 'marine_geo'")
+			column(name: "layer_id", valueComputed: "(select id from layer where name = 'marine_geo')")
 
 			column(name: "leaf", valueBoolean: "true")
 			
@@ -1005,9 +983,9 @@ OGC:WMS-1.3.0-http-get-map""")
 			
 			column(name: "text", value: "Satellite")
 
-			column(name: "menu_id", valueComputed: "select menu_id from menu where title = 'Default Base Layers'")
+			column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
 
-			column(name: "layer_id", valueComputed: "select id from layers where name = 'satellite'")
+			column(name: "layer_id", valueComputed: "(select id from layer where name = 'satellite')")
 
 			column(name: "leaf", valueBoolean: "true")
 			
@@ -1017,7 +995,7 @@ OGC:WMS-1.3.0-http-get-map""")
 	
 	changeSet(author: "tfotak (generated)", id: "1331787865301-47", failOnError: true) {
 		update(tableName: "config") {
-			column(name: "baselayer_menu_id", valueComputed: "select menu_id from menu where title = 'Default Base Layers'")
+			column(name: "baselayer_menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
 		}
 	}
 
@@ -1037,7 +1015,7 @@ OGC:WMS-1.3.0-http-get-map""")
 
 	changeSet(author: "tfotak (generated)", id: "1331787865301-49", failOnError: true) {
 		update(tableName: "config") {
-			column(name: "default_menu_id", valueComputed: "select menu_id from menu where title = 'Default Layers Menu'")
+			column(name: "default_menu_id", valueComputed: "(select id from menu where title = 'Default Layers Menu')")
 		}
 	}
 }

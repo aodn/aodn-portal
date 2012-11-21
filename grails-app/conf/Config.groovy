@@ -76,6 +76,7 @@ environments {
 
         // URLs
 		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
 
         facetedSearch.enabled = true
 
@@ -102,13 +103,11 @@ environments {
 
     production {
 
-        /*
-         * URLs handled by instance-specific configs:
-         * -grails.serverURL
-         * -spatialsearch.url
-         * -wmsScanner.url
-         * -openIdProvider.url
-         */
+	    // URLs
+	    grails.serverURL = "http://myaodn.example.com"
+	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
+	    openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = false
 
@@ -120,6 +119,21 @@ environments {
             }
         }
     }
+}
+
+portal {
+	header {
+		logo = "AODN_logo.png"
+		organisationLink {
+			linkText = "AODN"
+			tooltipText = "Australian Ocean Data Network"
+			url = "http://imos.org.au/aodn.html"
+		}
+	}
+	// Change authentication emails for IMOS
+	systemEmail {
+		fromAddress = "info@example.com"
+	}
 }
 
 /**

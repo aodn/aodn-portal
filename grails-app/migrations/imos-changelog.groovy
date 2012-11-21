@@ -8,7 +8,7 @@ databaseChangeLog = {
             update(tableName: "config")
             {
                 column(name:"name", value: "Integrated Marine Observing System")
-                where "id = 1"
+                where "id = (select id from config limit 1)"
             }
         }
 
@@ -17,7 +17,7 @@ databaseChangeLog = {
             update(tableName: "config")
             {
                 column(name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@imos.org.au">info@imos.org.au</a> to be directed to the data custodian.</p>''')
-                where "id = 1"
+                where "id = (select id from config limit 1)"
             }
         }
 

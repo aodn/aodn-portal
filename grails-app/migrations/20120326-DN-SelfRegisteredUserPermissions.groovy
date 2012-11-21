@@ -6,18 +6,18 @@ databaseChangeLog = {
 		
 		delete(tableName: "user_role_permissions") {
 			
-			where "user_role_id = 13"
+			where "user_role_id = (select id from user_role where name = 'SelfRegisteredUser')"
 		}
 		
 		insert(tableName: "user_role_permissions") {
 		
-			column(name: "user_role_id", valueNumeric: "13")
+			column(name: "user_role_id", valueComputed: "(select id from user_role where name = 'SelfRegisteredUser')")
 			column(name: "permissions_string", value: "user:updateAccount")
 		}
 		
 		insert(tableName: "user_role_permissions") {
 		
-			column(name: "user_role_id", valueNumeric: "13")
+			column(name: "user_role_id", valueComputed: "(select id from user_role where name = 'SelfRegisteredUser')")
 			column(name: "permissions_string", value: "user:userUpdateAccount")
 		}
 	}

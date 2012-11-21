@@ -21,7 +21,7 @@ environments {
 		dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
-		    url = "jdbc:postgresql://localhost:5432/portal2"
+		    url = "jdbc:postgresql://localhost:5432/aodn_portal"
             username = "postgres"
             password = "postgres"
 		}
@@ -33,4 +33,10 @@ environments {
             url = "jdbc:hsqldb:mem:testDb"
         }
     }
+
+	production {
+		dataSource {
+			jndiName = "java:comp/env/jdbc/aodnportal"
+		}
+	}
 }
