@@ -1,3 +1,11 @@
+
+/*
+ * Copyright 2012 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 includeTargets << grailsScript("Init")
 
 target(main: "Collates all the custom portal JS code into a single portal-all.js file") {

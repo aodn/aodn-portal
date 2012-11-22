@@ -1,4 +1,13 @@
 
+<%--
+
+ Copyright 2012 IMOS
+
+ The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
+
   
 <h3>AODN Links</h3>
 <a href="http://ncris.innovation.gov.au" class="external wrap" title="National Collaborative Research Infrastructure Strategy" target="_blank">National Collaborative Research Infrastructure Strategy (NCRIS)</a><br>

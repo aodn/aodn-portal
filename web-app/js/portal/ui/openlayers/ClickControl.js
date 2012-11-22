@@ -1,3 +1,11 @@
+
+/*
+ * Copyright 2012 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 Ext.namespace('Portal.ui.openlayers');
 
 Portal.ui.openlayers.ClickControl = Ext.extend(OpenLayers.Control, {

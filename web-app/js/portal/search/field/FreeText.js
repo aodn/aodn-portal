@@ -1,3 +1,11 @@
+
+/*
+ * Copyright 2012 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 Ext.namespace('Portal.search.field');
 
 Portal.search.field.FreeText = Ext.extend(Ext.form.TextField, {

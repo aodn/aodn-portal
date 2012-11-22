@@ -1,3 +1,12 @@
+
+<%--
+
+ Copyright 2012 IMOS
+
+ The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
    <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="name"><g:message code="config.name.label" default="Site Name" /></label>

@@ -1,3 +1,12 @@
+
+<%--
+
+ Copyright 2012 IMOS
+
+ The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
   <div id="header" style="height:${configInstance?.headerHeight}px">
 	<img src="${resource(dir:'images',file: grailsApplication.config.portal.header.logo)}" id="logo" />
 	<h1 id="headerTitle">${configInstance?.name}</h1>

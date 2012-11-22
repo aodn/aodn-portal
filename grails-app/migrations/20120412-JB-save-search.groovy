@@ -1,3 +1,11 @@
+
+/*
+ * Copyright 2012 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 databaseChangeLog = {
 
 	changeSet(author: "jburgess (generated)", id: "1334552333873-1") {
