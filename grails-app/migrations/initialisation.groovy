@@ -8,7 +8,7 @@
 
 databaseChangeLog = {
 
-	changeSet(author: "tfotak (generated)", id: "1331787865300-1", failOnError: true) {
+	changeSet(author: "tfotak (generated)", id: "1331787865301-48", failOnError: true) {
 		createSequence(schemaName: "public", sequenceName: "hibernate_sequence")
 	}
 
@@ -1007,7 +1007,7 @@ OGC:WMS-1.3.0-http-get-map""")
 		}
 	}
 
-	changeSet(author: "tfotak (generated)", id: "1331787865301-48", failOnError: true) {
+	changeSet(author: "tfotak (generated)", id: "1331787865301-49", failOnError: true) {
 		insert(tableName: "menu") {
 			column(name: "id", valueComputed: "nextval('hibernate_sequence')")
 
@@ -1021,7 +1021,7 @@ OGC:WMS-1.3.0-http-get-map""")
 		}
 	}
 
-	changeSet(author: "tfotak (generated)", id: "1331787865301-49", failOnError: true) {
+	changeSet(author: "tfotak (generated)", id: "1331787865301-50", failOnError: true) {
 		update(tableName: "config") {
 			column(name: "default_menu_id", valueComputed: "(select id from menu where title = 'Default Layers Menu')")
 		}
