@@ -13,7 +13,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
     constructor: function(layerDescriptor, overrides) {
        
         if (layerDescriptor.namespace != null) {
-            layerDescriptor.name = this.namespace + ":" + this.name;
+            layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
         }
         
         var defaultStyle = "";
@@ -32,7 +32,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
             queryable: layerDescriptor.queryable,
             styles:layerDescriptor.defaultStyle
         };
-        
+          
         Ext.apply(this, defaultParams);
         Ext.apply(this, overrides);
     },
