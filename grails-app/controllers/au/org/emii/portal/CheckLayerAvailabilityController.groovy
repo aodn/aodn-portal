@@ -11,25 +11,22 @@ package au.org.emii.portal
 class CheckLayerAvailabilityController {
 
 	def checkLayerAvailabilityService
-	
-    def index = { 
 
-        def isAlive
+    def index = {
 
-		if (params.layerId != null && params.layerId?.isInteger()  ) {
-			
-            isAlive = checkLayerAvailabilityService.isLayerAlive(params)
-						
-			if ( isAlive ) {
-			
-				render text: isAlive, status: 200
+		if ( params.layerId?.isInteger() ) {
+
+			if ( checkLayerAvailabilityService.isLayerAlive(params) ) {
+
+				render status: 200
 			}
 			else {
-				render  status: 500 // fail
+				render status: 500
 			}
 		}
 		else {
-			render text: "layerId and/or serverUri(as an  integer) not supplied", contentType: "text/html", encoding: "UTF-8", status: 500
+
+			render text: "layerId not supplied or not an integer. layerId: '${params.layerId}'", contentType: "text/html", encoding: "UTF-8", status: 500
 		}
 	}
 }
