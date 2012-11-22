@@ -19,8 +19,6 @@ class DownloadCartController {
 
     def add = {
 
-        println "params.newEntries: ${params.newEntries}"
-
         if ( !params.newEntries ) {
 
             render text: "No items specified to add", status: 500

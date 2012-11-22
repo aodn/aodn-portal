@@ -33,7 +33,7 @@ var layersLoading = 0; // Layer loading activity indicator
 var popup;
 
 function getMapPanel() {
-	return Ext.getCmp('map');
+	return Ext.getCmp('mainMapPanel');
 }
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {

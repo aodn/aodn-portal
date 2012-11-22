@@ -17,7 +17,6 @@ class CheckLayerAvailabilityService {
 
 		def valid = true // start with the gates open
 		def layer = Layer.get(params.layerId)
-		println params.layerId
 
 		if (layer) {
 
@@ -44,7 +43,7 @@ class CheckLayerAvailabilityService {
 				}
 
                 // Todo - DN: Check this. It means that if the response is text/html or text/plain then valid is TRUE. Is this correct?
-				}
+            }
 			catch (e) {
 
 				// could this be an unusual WMS server
@@ -59,7 +58,7 @@ class CheckLayerAvailabilityService {
 
 		return valid
 	}
-	def _addAuthentication(connection, url) {
+	def _addAuthentication( connection, url ) {
 		def server = _getServer(url)
 		if (server) {
 			server.addAuthentication(connection)
@@ -70,7 +69,7 @@ class CheckLayerAvailabilityService {
 		return Server.findByUriLike("%${url.getHost()}%")
 	}
 
-	String _buildUrl(layer,params,featureInfoParams) {
+	String _buildUrl( layer, params, featureInfoParams ) {
 
 		// use the uri stored in the database not munted in JS
 		def storedServerUri = layer.server.uri
@@ -86,7 +85,7 @@ class CheckLayerAvailabilityService {
 		return storedServerUri + featureInfoParams
 	}
 
-	String _constructFeatureInfoRequest(layer,params) {
+	String _constructFeatureInfoRequest( layer, params ) {
 		// Construct the getFeatureInfo request.
 		// are returned at location 0,0.
 
@@ -95,26 +94,25 @@ class CheckLayerAvailabilityService {
 		//so change minvalues if same as max values.
 
 		def minX= layer.bboxMinX.toDouble()
-		if(layer.bboxMinX == layer.bboxMaxX)
+		if ( layer.bboxMinX == layer.bboxMaxX )
 			minX -= 1;
 
 		def minY = layer.bboxMinY.toDouble()
-		if(layer.bboxMinY == layer.bboxMaxY)
+		if ( layer.bboxMinY == layer.bboxMaxY )
 			minY -= 1;
 
-		def infoFormat = params.format
+        def getFeatureInfoUrlString = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=' + URLEncoder.encode(layer.name)
+        getFeatureInfoUrlString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
+        getFeatureInfoUrlString += '&SRS=' + URLEncoder.encode(layer.projection)
+        getFeatureInfoUrlString += '&CRS=' + URLEncoder.encode(layer.projection)
+        getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
+        getFeatureInfoUrlString += '&QUERY_LAYERS=' +  URLEncoder.encode(layer.name)
+        getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
 
-		def getFeatureInfoUrlString = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=' + URLEncoder.encode(layer.name)
-		getFeatureInfoUrlString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
-		getFeatureInfoUrlString += '&SRS=' + URLEncoder.encode(layer.projection)
-		getFeatureInfoUrlString += '&CRS=' + URLEncoder.encode(layer.projection)
-		getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
-		getFeatureInfoUrlString += '&QUERY_LAYERS=' +  URLEncoder.encode(layer.name)
-		getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode(infoFormat)
-	    getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
+        // Include INFO_FORMAT if we have a value for it
+        if ( params.format )
+            getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode( params.format )
 
-		return _buildUrl(layer,params,getFeatureInfoUrlString)
-
+		return _buildUrl( layer, params, getFeatureInfoUrlString )
 	}
-
 }

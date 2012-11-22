@@ -48,6 +48,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
 
+        Ext.MsgBus.subscribe( 'facetedSearch.layerSelected', this.onLayerChooserAddLayerClicked, this );
+
         //TODO: find a better home for this
         this.on('afterrender', function() {
             jQuery("#loader").hide('slow'); // close the loader
@@ -69,8 +71,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     },
 
 	onResetMap: function() {
-		// centre map and set zoom clear layers 
-		// 
+		// centre map and set zoom clear layers
+		//
 		// and details panel
 		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().collapseAndHide();
 	},

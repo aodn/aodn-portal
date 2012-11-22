@@ -57,6 +57,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/prototypes/Array.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/prototypes/OpenLayers.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/lang/en.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/common/LayerDescriptor.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/spin.min.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/BrowserWindow.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/ActionColumn.js')}?${jsVerNum}" type="text/javascript"></script>
@@ -65,6 +66,7 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/common/SaveDialog.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/MapPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/common/Controller.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/data/LayerStore.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/MenuTreeLoader.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/data/SuggestionStore.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/search/data/CatalogResult.js')}?${jsVerNum}" type="text/javascript"></script>
@@ -121,6 +123,8 @@ ${buildInfo}
 <script src="${resource(dir:'js',file:'portal/details/DetailsPanelTab.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/details/InfoPanel.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/ClickControl.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/openlayers/LayerOptions.js')}?${jsVerNum}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'portal/ui/openlayers/LayerParams.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapActionsControl.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/openlayers/MapOptions.js')}?${jsVerNum}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'portal/ui/AnimationPanel.js')}?${jsVerNum}" type="text/javascript"></script>

@@ -19,7 +19,7 @@ class Server {
     String name
     String type // no need for another class
     Boolean disable
-    Boolean allowDiscoveries // hide from menus    
+    Boolean allowDiscoveries // hide from menus
     Integer opacity // layer opacity
     String imageFormat
 	String infoFormat
@@ -32,19 +32,19 @@ class Server {
 
     Set operations = [] // operations supported by this server
     Set owners = []
-    
+
     static hasMany = [operations: Operation, owners: User]
-    
+
     static mapping = {
         sort "shortAcron"
-        
+
         operations cascade: 'all-delete-orphan'
     }
-	
+
     static constraints = {
         uri(unique:true, url:true)
         shortAcron(unique:true,size:0..16)
-        // dont change only add. 
+        // dont change only add.
         // getFeatureInfo request code will need to be written to use new versions
         // Openlayers should handle getMap
         type(inList:[//"WMS-1.0.0",  // to old
@@ -58,7 +58,7 @@ class Server {
                        "GEORSS",
                        "KML",
                        "RAMADDA",
-                       "AUTO" 
+                       "AUTO"
         ])
         lastScanDate( nullable:true )
         scanFrequency()
@@ -67,7 +67,7 @@ class Server {
         allowDiscoveries()
         opacity()
         imageFormat( inList:['image/png','image/gif'] )
-       infoFormat( inList:['text/html','text/plain'] )
+        infoFormat( inList:['text/html','text/plain','image/png'] )
         comments(nullable:true)
         username(nullable:true)
         password(nullable:true)
@@ -93,11 +93,11 @@ class Server {
             return valid
         })
     }
-    
+
     String toIdString() {
         return "${shortAcron}"
     }
-    
+
     String toString() {
         return "${shortAcron}"
     }
@@ -124,7 +124,7 @@ class Server {
 
 		//save without whitespace to help avoid non-uniqueness
         uri = uri?.trim()
-		
+
 //		save without trailing question mark to help avoid non-uniqueness
 		if(uri.getAt(uri.size()-1)=='?')
 		{
@@ -135,13 +135,13 @@ class Server {
 		{
 			uri = uri.substring(0, uri.size()-1)
 		}
-		
+
     }
 
 	def isCredentialled() {
 		return username && password
 	}
-	
+
 	def getEncodedCredentials() {
 		return new String(Base64.encodeBase64("$username:$password".getBytes()))
 	}
@@ -188,9 +188,9 @@ class Server {
 			connection.setRequestProperty("Authorization", "Basic ${getEncodedCredentials()}")
 		}
 	}
-    
+
     def updateOperations( newOperations ) {
-        
+
         operations.clear()
 
         newOperations.each {
@@ -204,8 +204,8 @@ class Server {
 
             operations << operation
         }
-        
+
       }
-    
+
 
 }

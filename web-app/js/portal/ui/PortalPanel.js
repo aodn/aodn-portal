@@ -11,7 +11,14 @@ Ext.namespace('Portal.ui');
 Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
-        this.initMapPanel(cfg.appConfig);
+        
+        this.mapPanel = new Portal.ui.MapPanel({
+            appConfig: cfg.appConfig,
+            region:'center',
+            id: 'mainMapPanel',
+            stateful: false
+        });
+        
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',
 			collapsible: true,
@@ -21,19 +28,11 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout: 'border',
-            id: 'mainMapPanel',
+            id: 'portalPanel',
             title: 'Map',
             stateful: false,
             items: [
-                {
-                    region:'center',
-                    id: 'mainMapCentrePanel',
-                    layout:'border',
-                    stateful: false,
-                    items: [                
-                        this.mapPanel
-                    ]
-                },
+                this.mapPanel,
                 this.rightDetailsPanel
             ]
         }, cfg);
@@ -46,13 +45,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         }, this);
 
     },
-	
-    initMapPanel: function(appConfig) {
-        this.mapPanel = new Portal.ui.MapPanel({
-            appConfig: appConfig
-        });
-    },
-
+    
 	getRightDetailsPanel: function() {
 	    return this.rightDetailsPanel;
 	},

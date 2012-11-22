@@ -200,7 +200,7 @@ class LayerController {
         if (layerInstance) {
             _renderLayer(layerInstance)
         } else {
-            render text: "Layer '${params.namespace}:${params.name}' does not exist", status: 404
+            render text: "Layer '${namespace}:${localName}' does not exist", status: 404
         }
     }
 

@@ -45,7 +45,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Ext.apply(this, Ext.apply(this.initialConfig, config));
 
-        Portal.search.ResultsGrid.superclass.initComponent.apply(this, arguments);
+        Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
         // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below
         this.getBottomToolbar().store = this.store;
@@ -53,8 +53,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         this.addEvents('addlayer', 'rowenter', 'rowleave');
     },
 
-    afterRender: function(){
-        Portal.search.ResultsGrid.superclass.afterRender.call(this);
+    afterRender: function() {
+
+        Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
 
@@ -82,14 +83,13 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var row = this.getView().findRow(target);
         if (row && row !== this.lastRow) {
             var rowIndex = this.getView().findRowIndex(row);
-            this.fireEvent("mouseenter", this, rowIndex, this.store
-                .getAt(rowIndex), e);
+            this.fireEvent("mouseenter", this, rowIndex, this.store.getAt(rowIndex), e);
             this.lastRow = row;
         }
     },
 
     // trigger mouseleave event on row when applicable
-    onMouseOut: function(e, target) {
+    onMouseOut: function(e) {
         if (this.lastRow) {
             if(!e.within(this.lastRow, true, true)){
                 var lastRowIndex = this.getView().findRowIndex(this.lastRow);
@@ -97,6 +97,27 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 delete this.lastRow;
             }
         }
+    },
+
+    onClick: function(e, target) {
+
+        var row = this.getView().findRow(target);
+        var rowIndex = this.getView().findRowIndex(row);
+
+        Ext.MsgBus.publish( 'facetedSearch.layerSelected', this._getLayerLink(rowIndex) );
+    },
+
+    _getLayerLink: function(rowIndex) {
+
+        var rec = this.store.getAt(rowIndex);
+        var links = rec.get('links');
+        var linkStore = new Portal.search.data.LinkStore({
+            data: {links: links}
+        });
+
+        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
+
+        return linkStore.getLayerLink(0);
     }
 });
 

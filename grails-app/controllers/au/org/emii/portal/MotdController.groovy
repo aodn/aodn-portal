@@ -31,8 +31,7 @@ class MotdController {
         def motdInstance = new Motd(params)
         // escape the html
         motdInstance.motd = params.motd.encodeAsHTML()
-        println motdInstance.motd 
-        
+
         if (motdInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
             redirect(action: "show", id: motdInstance.id)
@@ -70,7 +69,7 @@ class MotdController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (motdInstance.version > version) {
-                    
+
                     motdInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'motd.label', default: 'Motd')] as Object[], "Another user has updated this Motd while you were editing")
                     render(view: "edit", model: [motdInstance: motdInstance])
                     return

@@ -24,7 +24,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 		this.addBaseLayers();
 
         var config = Ext.apply({
-            id: "map",
             region: "center",
             split: true,
             header: false,
@@ -36,6 +35,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
+
         this.initAnimationPanel();
         
         this.spinnerForLayerloading = new Spinner({
@@ -187,12 +187,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             url: 'layer/configuredbaselayers',
             scope: this,
             success: function(resp, opts) {
-                var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptors,
-                    function(layerDescriptor, index, all) {
-                        layerDescriptor.isBaseLayer = true;
+                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
+                Ext.each(layerDescriptorsAsText,
+                    function(layerDescriptorAsText, index, all) {
+                    
+                        var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
+                        // TODO: shouldn't these be set properly in the server in the first place?
+                        layerDescriptor.isBaseLayer = true; 
                         layerDescriptor.queryable = false;
-                        this.map.addLayer(this.getOpenLayer(layerDescriptor));
+                        this.map.addLayer(layerDescriptor.toOpenLayer());
                     },
                     this
                 );
@@ -220,10 +223,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             url: 'layer/defaultlayers',
             scope: this,
             success: function(resp, opts) {
-                var layerDescriptors = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptors,
-                    function(layerDescriptor, index, all) {
-                        this._addLayer(this.getOpenLayer(layerDescriptor), true);
+                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
+                Ext.each(layerDescriptorsAsText,
+                    function(layerDescriptorAsText, index, all) {
+                        this._addLayer(new Portal.common.LayerDescriptor(layerDescriptorAsText).toOpenLayer, true);
                     },
                     this
                 );
@@ -244,133 +247,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return item.server;
     },
 
-    getServerImageFormat: function (server) {
-        if (server) {
-            if (server.imageFormat) {
-                return server.imageFormat;
-            }
-            return 'image/png';
-        }
-        return undefined;
-    },
-
-    getWmsVersionString: function(server) {
-        // list needs to match Server.groovy
-        var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
-        for(var i = 0; i < versionList.length; i++){
-            if (server.type.indexOf(versionList[i]) != -1) {
-                return versionList[i];
-            }
-        }
-        return "undefined";
-    },
-
-    getServerOpacity: function(server) {
-        var opacity = server.opacity ? server.opacity : 100;
-        return Math.round((opacity / 100)*10)/10;
-    },
-
-    getOpenLayerOptions: function(layerDescriptor, overrides) {
-        
-        var gutterSize = 20;
-        if (layerDescriptor.isBaseLayer) {
-            gutterSize = 0;
-        }
-        
-        var options = {
-            wrapDateLine: true,
-            opacity: this.getServerOpacity(this.getServer(layerDescriptor)),
-            version: this.getWmsVersionString(this.getServer(layerDescriptor)),
-            transitionEffect: 'resize',
-            isBaseLayer: layerDescriptor.isBaseLayer,
-            buffer: 1,
-            gutter: gutterSize,
-            projection: new OpenLayers.Projection(layerDescriptor.projection)
-        };
-        if (overrides) {
-            Ext.apply(options, overrides);
-        }
-        return options;
-    },
-
-    getOpenLayerParams: function(layerDescriptor, overrides) {
-
-        if(layerDescriptor.namespace != null) {
-            layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
-        }
-        var defaultStyle = "";
-        if(layerDescriptor.defaultStyle != null)
-        {
-            defaultStyle = layerDescriptor.defaultStyle;
-        }
-
-        var params = {
-            layers: layerDescriptor.name,
-            transparent: 'TRUE',
-            version: this.getWmsVersionString(this.getServer(layerDescriptor)),
-            format: this.getServerImageFormat(this.getServer(layerDescriptor)),
-            CQL_FILTER: layerDescriptor.cql,
-            cql: layerDescriptor.cql,
-            queryable: layerDescriptor.queryable,
-            styles:layerDescriptor.defaultStyle
-        };
-        if (overrides) {
-            Ext.apply(params, overrides);
-        }
-        return params;
-    },
-
     getUri: function(server) {
         return server.uri;
-    },
-
-    getServerUri: function(layerDescriptor) {
-        var serverUri = this.getUri(this.getServer(layerDescriptor));
-        if (layerDescriptor.cache == true) {
-            serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);
-        }
-        return serverUri;
-    },
-
-    getParent: function(layerDescriptor) {
-        return layerDescriptor.parent;
-    },
-
-    getParentId: function(layerDescriptor) {
-        if (this.getParent(layerDescriptor)) {
-            return this.getParent(layerDescriptor).id;
-        }
-    },
-
-    getParentName: function(layerDescriptor) {
-        if (this.getParent(layerDescriptor)) {
-            return this.getParent(layerDescriptor).name;
-        }
-    },
-
-    setDomainLayerProperties: function(openLayer, layerDescriptor) {
-        openLayer.grailsLayerId = layerDescriptor.id;
-        openLayer.server= layerDescriptor.server;
-
-        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
-        //provide a way to add header information to a WMS request
-        openLayer.proxy(proxyURL);
-        openLayer.cql = layerDescriptor.cql;
-        openLayer.bboxMinX = layerDescriptor.bboxMinX;
-        openLayer.bboxMinY = layerDescriptor.bboxMinY;
-        openLayer.bboxMaxX = layerDescriptor.bboxMaxX;
-        openLayer.bboxMaxY = layerDescriptor.bboxMaxY;
-        openLayer.cache = layerDescriptor.cache;
-        openLayer.projection = layerDescriptor.projection;
-        openLayer.blacklist = layerDescriptor.blacklist;
-        openLayer.abstractTrimmed = layerDescriptor.abstractTrimmed;
-        openLayer.metadataUrls = layerDescriptor.metadataUrls;
-        openLayer.overrideMetadataUrl = layerDescriptor.overrideMetadataUrl;
-        openLayer.parentLayerId = this.getParentId(layerDescriptor);
-        openLayer.parentLayerName = this.getParentName(layerDescriptor);
-        openLayer.allStyles = layerDescriptor.allStyles;
-        openLayer.dimensions = layerDescriptor.dimensions;
-        openLayer.layerHierarchyPath = layerDescriptor.layerHierarchyPath;
     },
 
     getLayerUid: function(openLayer) {
@@ -398,26 +276,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             return false;
         }
         return this.map.getLayer(previousLayer.id) !== null;
-    },
-
-    getOpenLayer: function(layerDescriptor, optionOverrides, paramOverrides) {
-        var server = layerDescriptor.server;
-        var options = this.getOpenLayerOptions(layerDescriptor, optionOverrides);
-
-        var openLayer = new OpenLayers.Layer.WMS(
-            layerDescriptor.title,
-            this.getServerUri(layerDescriptor),
-            this.getOpenLayerParams(layerDescriptor, paramOverrides),
-            options
-        );
-        this.setDomainLayerProperties(openLayer, layerDescriptor);
-
-        // don't add layer twice
-        if (this.containsLayer(openLayer)) {
-            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
-            return;
-        }
-        return openLayer;
     },
 
     waitForDefaultLayers: function(openLayer, showLoading) {
@@ -552,7 +410,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     addExternalLayer: function(layerDescriptor) {
-        var serverUri = this.getServerUri(layerDescriptor);
+        var serverUri = layerDescriptor.server.uri;
 
         Ext.Ajax.request({
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerDescriptor.name}),
@@ -570,8 +428,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         });
     },
 
-    addMapLayer: function(layerDescriptor, layerOptions, layerParams, animated, chosenTimes) {
-        var openLayer = this.getOpenLayer(layerDescriptor, layerOptions, layerParams);
+    addMapLayer: function(layerDescriptorAsText, layerOptions, layerParams, animated, chosenTimes) {
+        var openLayer = new Portal.common.LayerDescriptor(layerDescriptorAsText).toOpenLayer(layerOptions, layerParams);
         if (openLayer) {
             this.addLayer(openLayer, true);
             // zoom map first. may request less wms tiles first off

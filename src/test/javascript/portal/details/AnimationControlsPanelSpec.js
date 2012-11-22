@@ -120,9 +120,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			animationPanel.allTimes =allTimes;	
 			animationPanel.startTimeCombo.setValue("14:18:00 (+10:00)")
 			
-			console.log(animationPanel.startTimeCombo);
 			animationPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
-			console.log(animationPanel.startTimeCombo);
 			expect(animationPanel.startTimeCombo.value).toBe("14:18:00 (+10:00)");
 		});
 	});
