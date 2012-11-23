@@ -47,7 +47,7 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 200, controller.renderArgs.status
-        assertEquals "", mockResponse.contentAsString
+        assertEquals "Layer is available", mockResponse.contentAsString
     }
 
     void testIndex_LayerNotAlive() {
@@ -57,6 +57,6 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 500, controller.renderArgs.status
-        assertEquals "", mockResponse.contentAsString
+        assertEquals "Layer is not available", mockResponse.contentAsString
     }
 }
