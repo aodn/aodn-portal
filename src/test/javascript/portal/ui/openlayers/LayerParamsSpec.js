@@ -11,6 +11,8 @@ describe("Portal.ui.openlayers.LayerParams", function() {
     var layerDescriptor;
     
     var layer = {
+        name: 'argo',    
+        namespace: 'imos',
         server : {
             type : "WMS-1.1.1",
         }
@@ -21,6 +23,10 @@ describe("Portal.ui.openlayers.LayerParams", function() {
     beforeEach(function() {
         layerDescriptor = new Portal.common.LayerDescriptor(layer);
         layerParams = new Portal.ui.openlayers.LayerParams(layerDescriptor, {});
+    });
+    
+    it('layer name set properly', function() {
+        expect(layerParams.layers).toBe('imos:argo');
     });
     
     describe('getServerImageFormat', function() {

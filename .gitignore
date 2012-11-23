@@ -9,3 +9,4 @@ DELETED_UNIT_TESTS
 .project
 .settings
 target-eclipse
+.link_to_grails_plugins
