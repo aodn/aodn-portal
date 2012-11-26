@@ -24,8 +24,11 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
 
     void testIndex_NoParams() {
 
-        controller.index() // with no supplied and required params
-		assertEquals 500, controller.renderArgs.status
+        // No params passed-in
+        controller.index()
+
+        assertEquals 500, controller.renderArgs.status
+        assertEquals "layerId not supplied or not an integer. layerId: 'null'", mockResponse.contentAsString
 	}
 
     void testIndex_NonIntegerLayerId() {
@@ -44,7 +47,7 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 200, controller.renderArgs.status
-        assertEquals "", mockResponse.contentAsString
+        assertEquals "Layer is available", mockResponse.contentAsString
     }
 
     void testIndex_LayerNotAlive() {
@@ -54,6 +57,6 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 500, controller.renderArgs.status
-        assertEquals "", mockResponse.contentAsString
+        assertEquals "Layer is not available", mockResponse.contentAsString
     }
 }

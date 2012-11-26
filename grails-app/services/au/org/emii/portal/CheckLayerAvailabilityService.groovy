@@ -15,37 +15,27 @@ class CheckLayerAvailabilityService {
 	// use supplied serverUri from layer as it may vary from getCap's server
 	def isLayerAlive(params) {
 
-		def valid = true // start with the gates open
+		def valid = true
 		def layer = Layer.get(params.layerId)
 
 		if (layer) {
 
-			def featInfURL = _constructFeatureInfoRequest(layer,params).toURL()
+			def featInfURL = _constructFeatureInfoRequest(layer, params).toURL()
 
 			try {
-
 				def conn = featInfURL.openConnection()
 				_addAuthentication(conn, featInfURL)
 
-				def contentType = conn.getContentType().split(';')[0]
+				def contentType = conn.contentType.split(';')[0]
 
-				if (!(contentType  == "text/html"  || contentType  == "text/plain")) {
+				if ( _shouldCheckResponse( contentType ) ) {
 
-					def text = featInfURL.text
-
-					// its xml, test for exception messages, or sillyness
-					valid = (text.find('<WMT_MS_Capabilities')) ? false : valid // Todo - DN: Check this too
-					valid = (text.find('<ServiceExceptionReport')) ? false : valid
-					valid = (text == "") ? false : valid
-
-					// allow possible data changes
-					valid = (text.find('InvalidRangeException')) ? true : valid
+                    valid = _isValidFromResponse( featInfURL.text )
 				}
 
                 // Todo - DN: Check this. It means that if the response is text/html or text/plain then valid is TRUE. Is this correct?
             }
 			catch (e) {
-
 				// could this be an unusual WMS server
 				valid = false
 			}
@@ -58,22 +48,45 @@ class CheckLayerAvailabilityService {
 
 		return valid
 	}
+
 	def _addAuthentication( connection, url ) {
+
 		def server = _getServer(url)
+
 		if (server) {
 			server.addAuthentication(connection)
 		}
 	}
 
 	def _getServer(url) {
-		return Server.findByUriLike("%${url.getHost()}%")
+
+		return Server.findByUriLike("%${url.host}%")
 	}
 
-	String _buildUrl( layer, params, featureInfoParams ) {
+    def _shouldCheckResponse( contentType ) {
+
+        return !(contentType == "text/html" || contentType == "text/plain") // Todo - DN: Check with Phil if this should include image/png
+    }
+
+    def _isValidFromResponse( String responseText ) {
+
+        def valid = true
+
+        // its xml, test for exception messages, or sillyness
+        valid = (responseText.find('<WMT_MS_Capabilities')) ? false : valid // Todo - DN: Check this too
+        valid = (responseText.find('<ServiceExceptionReport')) ? false : valid
+        valid = (responseText == "") ? false : valid
+
+        // allow possible data changes
+        valid = (responseText.find('InvalidRangeException')) ? true : valid
+
+        return valid
+    }
+
+	String _buildUrl(layer, featureInfoParams) {
 
 		// use the uri stored in the database not munted in JS
 		def storedServerUri = layer.server.uri
-
 
 		if (storedServerUri.contains("?")) {
 			storedServerUri += '&'
@@ -85,7 +98,7 @@ class CheckLayerAvailabilityService {
 		return storedServerUri + featureInfoParams
 	}
 
-	String _constructFeatureInfoRequest( layer, params ) {
+	String _constructFeatureInfoRequest(layer, params) {
 		// Construct the getFeatureInfo request.
 		// are returned at location 0,0.
 
@@ -93,12 +106,12 @@ class CheckLayerAvailabilityService {
 		//will be the same and geoserver will throw an exception
 		//so change minvalues if same as max values.
 
-		def minX= layer.bboxMinX.toDouble()
-		if ( layer.bboxMinX == layer.bboxMaxX )
+		def minX = layer.bboxMinX.toDouble()
+		if(layer.bboxMinX == layer.bboxMaxX)
 			minX -= 1;
 
 		def minY = layer.bboxMinY.toDouble()
-		if ( layer.bboxMinY == layer.bboxMaxY )
+		if(layer.bboxMinY == layer.bboxMaxY)
 			minY -= 1;
 
         def getFeatureInfoUrlString = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=' + URLEncoder.encode(layer.name)
@@ -110,9 +123,9 @@ class CheckLayerAvailabilityService {
         getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
 
         // Include INFO_FORMAT if we have a value for it
-        if ( params.format )
-            getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode( params.format )
+        if(params.format)
+            getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode(params.format)
 
-		return _buildUrl( layer, params, getFeatureInfoUrlString )
+		return _buildUrl(layer, getFeatureInfoUrlString)
 	}
 }
