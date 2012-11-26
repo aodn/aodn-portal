@@ -1,8 +1,6 @@
 Australian Ocean Data Network Portal
 ====================================
 
-_This README is currently a WiP_
-
 The AODN portal is a [Grails](http://grails.org/) application focussing on access to Australian Ocean data.
 
 You can view the portal in action at the following locations;
@@ -43,7 +41,26 @@ version up to date.
 
 ## Configuring Portal <a id="configuring"></a>
 
+You can fork portal and have your configuration included in your code base however portal offers the ability to specify
+your configuration externally via an environment context variable named ```aodn.configuration``` you can clone an
+example [AODN config here](https://github.com/aodn/aodn-portal-config) and modify as required. The example should be
+descriptive enough to get you up and running however you can always shoot questions at us via our contact email.
+
 ### Collaborating Applications
 
+Portal has a few collaborating applications that you may also want to deploy
+
+* [GeoNetwork](http://geonetwork-opensource.org/)
+* [Geoserver](http://geoserver.org/)
+* [An OpenID provider](http://openid.net/)
+
+If you want to mimic the AODN portal searching capabilities then you should consider deploying an instance of
+[spatial search](https://github.com/aodn/spatial-search) note that spatial search has a dependency on a specific
+minimum version of GeoNetwork. If you cannot deploy at least that version then you should consider not using spatial
+search for performance reasons and using GeoNetwork directly for spatial extent searching. Note that at time of writing
+this means that your results may not be as fine grained as available via spatial search.
+
 ## Getting Started (How Do I Drive This Thing?) <a id="admin"></a>
+
+Read the Getting Started guide on the wiki
 
