@@ -196,7 +196,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                         // TODO: shouldn't these be set properly in the server in the first place?
                         layerDescriptor.isBaseLayer = true; 
                         layerDescriptor.queryable = false;
-//                        this.map.addLayer(layerDescriptor.toOpenLayer());
                         this.layers.addUsingDescriptor(layerDescriptor);
                     },
                     this
@@ -341,20 +340,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         var left = Math.max(bounds.left, maxBounds.left);
         var right = Math.min(bounds.right, maxBounds.right);
         return new OpenLayers.Bounds(left, bottom, right, top);
-    },
-
-    swapLayers: function(newLayer, oldLayer) {
-        // exchange new for old
-        var layerLevelIndex = this.map.getLayerIndex(oldLayer);
-        var oldLayerId = this.getLayerUid(oldLayer);
-        if (this.activeLayers[oldLayerId] !== undefined) {
-            this.map.removeLayer(this.activeLayers[oldLayerId]);
-            // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
-            this.addLayer(newLayer);
-            this.map.setLayerIndex(newLayer, layerLevelIndex);
-        }
-
-        Ext.MsgBus.publish("selectedLayerChanged", newLayer);
     },
 
     zoomToLayer: function(openLayer) {
@@ -585,16 +570,5 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     
     getPageY: function() {
         return this.getPosition()[1];
-    },
-   
-    onAddLayer: function(layerDesc) {
-        
-        console.log("onAddLayer");
-        this.map.addMapLayer(layerDesc);
-    },
-
-    onRemoveLayer: function(openLayer) {
-        console.log("onRemoveLayer");
-        this.map.removeLayer(openLayer);
     }
 });
