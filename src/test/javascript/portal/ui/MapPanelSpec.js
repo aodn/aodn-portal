@@ -76,5 +76,35 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
     
+    describe('zoom to layer tests', function() {
+        
+        var openLayer = new OpenLayers.Layer.WMS();
+        
+        beforeEach(function() {
+            spyOn(mapPanel, 'zoomTo');
+            
+            mapPanel.getServer = function(openLayer) {
+                return { type: "WMS-1.1.0" };
+            }
+        });
+        
+        it('zoomToLayer not called for layer without bounds', function() {
+            
+            mapPanel.zoomToLayer(openLayer);
+            expect(mapPanel.zoomTo).not.toHaveBeenCalled();
+        });
+        
+        it('zoomToLayer called for layer with bounds', function() {
+        
+            openLayer.bboxMinX = 10;
+            openLayer.bboxMinY = 10;
+            openLayer.bboxMaxX = 20;
+            openLayer.bboxMaxY = 20;
+
+            mapPanel.zoomToLayer(openLayer);
+            expect(mapPanel.zoomTo).toHaveBeenCalled();
+        });
+    });
+    
     Ext.Ajax.request.isSpy = false;
 });

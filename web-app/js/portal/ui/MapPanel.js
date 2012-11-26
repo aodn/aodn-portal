@@ -344,7 +344,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     zoomToLayer: function(openLayer) {
         if (openLayer) {
-            if (this.hasBoundingBox(openLayer)) {
+            if (openLayer.hasBoundingBox()) {
                 // build openlayer bounding box
                 var bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
                 // ensure converted into this maps projection. convert metres into lat/lon etc
@@ -361,10 +361,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 }
             }
         }
-    },
-
-    hasBoundingBox: function(openLayer) {
-        return !Ext.isEmpty(openLayer.bboxMinX) && !Ext.isEmpty(openLayer.bboxMinY) && !Ext.isEmpty(openLayer.bboxMaxX) && !Ext.isEmpty(openLayer.bboxMaxY);
     },
 
     zoomTo: function(bounds, closest) {
