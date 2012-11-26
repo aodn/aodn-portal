@@ -42,7 +42,7 @@
                                     <g:textField name="proxy" value="${configInstance?.proxy}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="proxyPort"><g:message code="config.proxyPort.label" default="Proxy Port" /></label>
@@ -51,7 +51,7 @@
                                     <g:textField name="proxyPort" value="${fieldValue(bean: configInstance, field: 'proxyPort')}" />
                                 </td>
                             </tr>
-   
+
                            <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="catalogUrl"><g:message code="config.catalogUrl.label" default="Catalog Url" /></label>
@@ -78,7 +78,7 @@
                                     <g:select name="baselayerMenu.id" optionValue="title" from="${au.org.emii.portal.Menu.list()}" optionKey="id" value="${configInstance?.baselayerMenu?.id}" noSelection="${['null':'- None selected -']}" />
                                     <font class="hint"></font>
                                 </td>
-                            </tr>                       
+                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="defaultMenu"><g:message code="config.defaultMenu.label" default="Default Layers Menu" /></label>
@@ -108,8 +108,8 @@
                                 </td>
                             </tr>
 
-                        
-                            
+
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="defaultLayers"><g:message code="config.defaultLayers.label" default="Default Layers" /></label>
@@ -128,8 +128,8 @@
 
                                 </td>
                             </tr>
-                            
-                        
+
+
                              <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="enableMOTD"><g:message code="config.enableMOTD.label" default="Enable MOTD" /></label>
@@ -138,7 +138,7 @@
                                     <g:checkBox name="enableMOTD" value="${configInstance?.enableMOTD}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="motd"><g:message code="config.motd.label" default="MOTD" /></label>
@@ -147,7 +147,7 @@
                                     <g:select name="motd.id" from="${au.org.emii.portal.Motd.list()}" optionKey="id" value="${configInstance?.motd?.id}"  />
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="motdStart"><g:message code="config.motdStart.label" default="MOTD Start" /></label>
@@ -156,7 +156,7 @@
                                     <g:datePicker name="motdStart" precision="minute" value="${configInstance?.motdStart}"  />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="motdEnd"><g:message code="config.motdEnd.label" default="MOTD End" /></label>
@@ -165,7 +165,7 @@
                                     <g:datePicker  name="motdEnd" precision="minute" value="${configInstance?.motdEnd}"  />
                                 </td>
                             </tr>
-                            
+
                              <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="footerContent"><g:message code="config.footerContent.label" default="Footer HTML Content" /></label>
@@ -174,7 +174,7 @@
                                     <g:textArea rows="4" style="width: 400px;" name="footerContent" value="${configInstance?.footerContent}" escapeHtml="false" /><font class="hint">Any valid HTML</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="footerContentWidth"><g:message code="config.footerContentWidth.label" default="Footer Content Width" /></label>
@@ -183,7 +183,7 @@
                                     <g:textField size="4" name="footerContentWidth" value="${configInstance?.footerContentWidth}" /><font class="hint">Adjust size to suit content</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="headerHeight"><g:message code="config.headerHeight.label" default="Header Height" /></label>
@@ -192,7 +192,7 @@
                                     <g:textField size="4" name="headerHeight" value="${configInstance?.headerHeight}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="footerHeight"><g:message code="config.footerHeight.label" default="Footer Height" /></label>
@@ -209,7 +209,7 @@
                                     <g:textField size="4" name="activeLayersHeight" value="${configInstance?.activeLayersHeight}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
-     
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="popupWidth"><g:message code="config.popupWidth.label" default="Popup box width" /></label>
@@ -218,7 +218,7 @@
                                     <g:textField size="4" name="popupWidth" value="${configInstance?.popupWidth}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="popupHeight"><g:message code="config.popupHeight.label" default="Popup box height" /></label>
@@ -227,7 +227,7 @@
                                     <g:textField size="4" name="popupHeight" value="${configInstance?.popupHeight}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="footerHeight"><g:message code="config.westWidth.label" default="West menus initial width" /></label>
@@ -236,7 +236,7 @@
                                     <g:textField size="4" name="westWidth" value="${configInstance?.westWidth}" /><font class="hint">in pixels</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="mapGetFeatureInfoBuffer"><g:message code="config.mapGetFeatureInfoBuffer.label" default="Pixel radius to use for map clicks with GetFeatureInfo dialog" /></label>
@@ -245,7 +245,7 @@
                                     <g:textField size="2" name="mapGetFeatureInfoBuffer" value="${configInstance?.mapGetFeatureInfoBuffer}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadCartFilename"><g:message code="config.downloadCartFilename.label" default="Download cart filename" /></label>
@@ -254,7 +254,7 @@
                                     <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">The first %s will insert the date into the filename, the second one will insert the time</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadCartMaxNumFiles"><g:message code="config.downloadCartMaxNumFiles.label" default="Max number of files in download cart" /></label>
@@ -263,7 +263,7 @@
                                     <g:textField size="4" name="downloadCartMaxNumFiles" value="${configInstance?.downloadCartMaxNumFiles}" />
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadCartMaxFileSize"><g:message code="config.downloadCartMaxFileSize.label" default="Max file size of zip file of download cart" /></label>
@@ -287,10 +287,10 @@
                                     <label for="wmsScannerCallbackPassword"><g:message code="config.wmsScannerCallbackPassword.label" default="WMS Scanner Callback Password" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wmsScannerCallbackPassword', 'errors')}">
-                                    <g:textField size="30" name="wmsScannerCallbackPassword" value="${configInstance?.wmsScannerCallbackPassword}" /><font class="hint">The password for the user listed above.</font>
+                                    <g:textField size="30" name="wmsScannerCallbackPassword" value="${configInstance?.wmsScannerCallbackPassword}" /><span class="hint">Simple password for protecting callback. WMS Scanner jobs must be updated after this has been changed.</span>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadCartMimeTypeToExtensionMapping"><g:message code="config.downloadCartMimeTypeToExtensionMapping.label" default="Map from mime types to file extensions for downloads" /></label>
@@ -299,7 +299,7 @@
                                     <g:textArea rows="8" style="width: 400px;" name="downloadCartMimeTypeToExtensionMapping" value="${configInstance?.downloadCartMimeTypeToExtensionMapping}" /><font class="hint">as Json String</font>
                                 </td>
                             </tr>
-   
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadCartDownloadableProtocols"><g:message code="config.downloadCartDownloadableProtocols.label" default="Which protocols allow links to be added to download cart" /></label>
@@ -308,7 +308,7 @@
                                     <g:textArea rows="8" style="width: 400px;" name="downloadCartDownloadableProtocols" value="${configInstance?.downloadCartDownloadableProtocols}" /><font class="hint">Put each protocol on a separate line</font>
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="metadataLinkProtocols"><g:message code="config.metadataLinkProtocols.label" default="Which protocols are links to related pages" /></label>
@@ -317,7 +317,7 @@
                                     <g:textArea rows="8" style="width: 400px;" name="metadataLinkProtocols" value="${configInstance?.metadataLinkProtocols}" /><font class="hint">Put each protocol on a separate line</font>
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="metadataLayerProtocols"><g:message code="config.metadataLayerProtocols.label" default="Which protocols are displayable on the map" /></label>
@@ -326,5 +326,5 @@
                                     <g:textArea rows="8" style="width: 400px;" name="metadataLayerProtocols" value="${configInstance?.metadataLayerProtocols}" /><font class="hint">Put each protocol on a separate line</font>
                                 </td>
                             </tr>
-   
-                            
+
+
