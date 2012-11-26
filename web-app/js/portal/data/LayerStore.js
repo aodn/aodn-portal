@@ -17,12 +17,31 @@ Ext.namespace('Portal.data');
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     
-    /**
-     * @param layer A "layer descriptor" (as returned from the server) or an
-     *        OpenLayers layer.
-     */
-    add: function(layer) {
+    addUsingDescriptor: function(layerDescriptor) {
         
+        var openLayer = layerDescriptor.toOpenLayer();
         
+        var layerRecord = new GeoExt.data.LayerRecord({
+            layer: openLayer,
+            title: layerDescriptor.title
+        });
+        
+        this.add(layerRecord);
+    },
+    
+    addUsingOpenLayer: function(openLayer) {
+        
+        var layerRecord = new GeoExt.data.LayerRecord({
+            layer: openLayer,
+            title: openLayer.name
+        });
+        
+        this.add(layerRecord);
+    },
+    
+    removeUsingOpenLayer: function(openLayer) {
+        
+        var layerRecordToRemove = this.getByLayer(openLayer);
+        this.remove(layerRecordToRemove);
     }
 });

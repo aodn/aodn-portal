@@ -31,7 +31,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             autoZoom: this.appConfig.autoZoom,
             hideLayerOptions: this.appConfig.hideLayerOptions,
             activeLayers: {},
-            layersLoading: 0
+            layersLoading: 0,
+            layers: new Portal.data.LayerStore()
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -195,7 +196,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                         // TODO: shouldn't these be set properly in the server in the first place?
                         layerDescriptor.isBaseLayer = true; 
                         layerDescriptor.queryable = false;
-                        this.map.addLayer(layerDescriptor.toOpenLayer());
+//                        this.map.addLayer(layerDescriptor.toOpenLayer());
+                        this.layers.addUsingDescriptor(layerDescriptor);
                     },
                     this
                 );
@@ -324,7 +326,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (showLoading === true) {
             this.registerLayer(openLayer);
         }
-        this.map.addLayer(openLayer);
+        
+        this.layers.addUsingOpenLayer(openLayer);
+        
         this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
         this.fireEvent('layeradded', openLayer);
     },
@@ -470,20 +474,20 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     removeLayer: function(openLayer, newDetailsPanelLayer) {
         if (openLayer.name != 'OpenLayers.Handler.Path') {
-            this.map.removeLayer(openLayer, newDetailsPanelLayer);
-
+            
+            this.layers.removeUsingOpenLayer(openLayer);
             delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			//got to do this here do to wierd way ActiveLayersPanel
 			//rearranges layers(removing and adding rather than just seting order)
-			if(openLayer.isAnimated)
+			if (openLayer.isAnimated)
 			{
 				this.animationControlsPanel.removeAnimation();
 			}
 			
 			Ext.MsgBus.publish("selectedLayerChanged", newDetailsPanelLayer);
 
-            if(newDetailsPanelLayer != null)
+            if (newDetailsPanelLayer != null)
                 this.animationPanel.setVisible(newDetailsPanelLayer.isAnimatable());
             else
                 this.animationPanel.setVisible(false);
@@ -584,10 +588,13 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
    
     onAddLayer: function(layerDesc) {
+        
+        console.log("onAddLayer");
         this.map.addMapLayer(layerDesc);
     },
 
     onRemoveLayer: function(openLayer) {
+        console.log("onRemoveLayer");
         this.map.removeLayer(openLayer);
     }
 });
