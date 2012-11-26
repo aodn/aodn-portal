@@ -1,13 +1,25 @@
 Australian Ocean Data Network Portal
 ====================================
 
-The AODN portal is a [Grails](http://grails.org/) application focussing on access to Australian Ocean data.
+The AODN portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data. 
+The application integrates with the GeoNetwork metadata catalog and OGC Web Map Services. 
 
 You can view the portal in action at the following locations;
 
 * [AODN](http://portal.aodn.org.au) the main AODN portal
 * [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal
 * [Western Australia](http://wa.aodn.org.au)
+
+## Features
+
+* Faceted search for easy navigation of datasets.
+* Animation controls such as pause, fast-forward, etc.
+* Configurable themes and splash page.
+* Save and share data visualisations.
+* Subset and aggregate multiple datasets into a single file for download.
+* Filter data for download.
+* OpenID authentication.
+* Advanced spatial search that ensures results have features in the region of interest.  Not just a bounding box intersection.
 
 ## Quick Navigation
 
