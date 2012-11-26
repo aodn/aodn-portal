@@ -30,7 +30,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             initialBbox: this.appConfig.initialBbox,
             autoZoom: this.appConfig.autoZoom,
             hideLayerOptions: this.appConfig.hideLayerOptions,
-            activeLayers: {},
             layersLoading: 0,
             layers: new Portal.data.LayerStore()
         }, cfg);
@@ -252,31 +251,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return server.uri;
     },
 
-    getLayerUid: function(openLayer) {
-        // layerHierarchyPath is the preferred unique identifier for a layer
-        var uri = "UNKNOWN";
-        var server = openLayer.server;
-        
-        if ( openLayer.layerHierarchyPath ) {
-            uri = openLayer.layerHierarchyPath;
-        }
-        else if (server) {
-            uri = server.uri;
-        }
-        else if(openLayer.url)
-        {
-            uri = openLayer.url;
-        }
-
-        return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
-    },
-
     containsLayer: function(openLayer) {
-        var previousLayer = this.activeLayers[this.getLayerUid(openLayer)];
-        if (!previousLayer) {
-            return false;
-        }
-        return this.map.getLayer(previousLayer.id) !== null;
+        return (this.layers.getByLayer(openLayer) !== undefined);
     },
 
     waitForDefaultLayers: function(openLayer, showLoading) {
@@ -328,7 +304,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         
         this.layers.addUsingOpenLayer(openLayer);
         
-        this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
         this.fireEvent('layeradded', openLayer);
     },
 
@@ -457,7 +432,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (openLayer.name != 'OpenLayers.Handler.Path') {
             
             this.layers.removeUsingOpenLayer(openLayer);
-            delete this.activeLayers[this.getLayerUid(openLayer)];
 
 			//got to do this here do to wierd way ActiveLayersPanel
 			//rearranges layers(removing and adding rather than just seting order)

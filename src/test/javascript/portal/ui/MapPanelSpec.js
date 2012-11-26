@@ -29,42 +29,6 @@ describe("Portal.ui.MapPanel", function() {
         mapPanel.destroy(); 
     });
 
-    describe('getLayerUid', function() {
-        it('tests layer UID creation', function() {
-            var openLayer = {
-                name : 'test'
-            };
-            expect(mapPanel.getLayerUid(openLayer)).toEqual('UNKNOWN::test');
-
-            openLayer.cql = 'some cql';
-            expect(mapPanel.getLayerUid(openLayer)).toEqual(
-                    'UNKNOWN::test::some cql');
-
-            openLayer.url = 'http://localhost';
-            expect(mapPanel.getLayerUid(openLayer)).toEqual(
-                    'http://localhost::test::some cql');
-
-            openLayer.server = {
-                uri : 'http://remotehost'
-            };
-            expect(mapPanel.getLayerUid(openLayer)).toEqual(
-                    'http://remotehost::test::some cql');
-        });
-    });
-
-    describe('containsLayer', function() {
-        it('tests contains layer', function() {
-            var openLayer = {
-                name : 'test'
-            };
-            mapPanel.activeLayers[mapPanel.getLayerUid(openLayer)] = openLayer;
-            // As it isn't actually added to the Map so perhaps this is a
-            // rubbish
-            // test? It did lead to me finding an undefined reference however
-            expect(mapPanel.containsLayer(openLayer)).toBeFalsy();
-        });
-    });
-
     describe('message bus tests', function() {
         
         it('updateAnimationControlsPanel called on selectedLayerChanged event', function() {
@@ -103,6 +67,20 @@ describe("Portal.ui.MapPanel", function() {
 
             mapPanel.zoomToLayer(openLayer);
             expect(mapPanel.zoomTo).toHaveBeenCalled();
+        });
+    });
+    
+    describe('contains layer', function() {
+        
+        var openLayer = new OpenLayers.Layer.WMS();
+        
+        it('does not contain layer', function() {
+            expect(mapPanel.containsLayer(openLayer)).toBeFalsy();
+        })
+        
+        it('does contain layer', function() {
+            mapPanel._addLayer(openLayer);
+            expect(mapPanel.containsLayer(openLayer)).toBeTruthy();
         });
     });
     
