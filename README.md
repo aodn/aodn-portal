@@ -62,5 +62,5 @@ this means that your results may not be as fine grained as available via spatial
 
 ## Getting Started (How Do I Drive This Thing?)
 
-Read the Getting Started guide on the wiki
+Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
 
