@@ -148,9 +148,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		});
 		
 		this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
-
-	 	// relay add layer event
-	 	this.relayEvents(this.resultsGrid, ['addlayer']);
 	},
 	
 	afterRender: function() {

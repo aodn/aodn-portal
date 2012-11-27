@@ -34,7 +34,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
         Portal.ui.MainTabPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searchTabPanel, 'addLayer', this.onSearchTabPanelAddLayer, this);
         Ext.MsgBus.subscribe( 'facetedSearch.layerSelected', this.onFacetedSearchLayerAdded, this );
 
         this.on('tabchange', function() {
@@ -80,10 +79,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     isMapSelected: function() {
         return this.getActiveTab() === this.portalPanel;
-    },
-
-    onSearchTabPanelAddLayer: function(layerDef) {
-        this.getMapPanel().addExternalLayer(layerDef);
     },
 
     loadSnapshot: function(id) {

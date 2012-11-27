@@ -25,6 +25,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             this.addUsingDescriptor(layerDescriptor)
         }, this);
 
+        Ext.MsgBus.subscribe('addLayerUsingLayerLink', function(subject, layerLink) {
+            this.addUsingLayerLink(layerLink)
+        }, this);
+
         Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
             this.addUsingOpenLayer(openLayer)
         }, this);
@@ -44,6 +48,28 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
         
         this.add(layerRecord);
+    },
+    
+    addUsingLayerLink: function(layerLink) {
+        
+        var serverUri = layerLink.server.uri;
+
+        Ext.Ajax.request({
+            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
+            scope: this,
+            success: function(resp) {
+                
+                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
+                if (layerDescriptor) {
+                    layerDescriptor.cql = layerLink.cql
+                    this.addUsingDescriptor(layerDescriptor);
+                }
+            },
+            failure: function(resp) {
+                // TODO: not sure if this is actually a "valid" case...
+                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink));
+            }
+        });
     },
     
     addUsingOpenLayer: function(openLayer) {

@@ -128,7 +128,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
      // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below 
      this.getBottomToolbar().store = this.store;
      
-     this.addEvents('addlayer', 'rowenter', 'rowleave');
+     this.addEvents('rowenter', 'rowleave');
   },
   
   afterRender: function(){
@@ -271,7 +271,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
           delete this.layerSelectionWindow;
         },
         addlayer: function(layerLink) {
-          this.fireEvent('addlayer', layerLink);
+            Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
         }
       }
     });
@@ -314,7 +314,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   },
   
   addToMapExecute: function(grid, rowIndex, colIndex) {
- 	 this.fireEvent('addlayer', this.getLayerLink(rowIndex));
+      Ext.MsgBus.publish('addLayerUsingLayerLink', this.getLayerLink(rowIndex));
   },
   
   getProtocolCount: function(links, values) {

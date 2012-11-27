@@ -369,21 +369,21 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         });
     },
 
-    addExternalLayer: function(layerDescriptor) {
-        var serverUri = layerDescriptor.server.uri;
+    addExternalLayer: function(layerLink) {
+        var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
-            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerDescriptor.name}),
+            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
             scope: this,
             success: function(resp) {
                 var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);
                 if (grailsDescriptor) {
-                    grailsDescriptor.cql = layerDescriptor.cql
+                    grailsDescriptor.cql = layerLink.cql
                     this.addMapLayer(grailsDescriptor);
                 }
             },
             failure: function(resp) {
-                this.addMapLayer(layerDescriptor);
+                this.addMapLayer(layerLink);
             }
         });
     },
