@@ -30,8 +30,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             initialBbox: this.appConfig.initialBbox,
             autoZoom: this.appConfig.autoZoom,
             hideLayerOptions: this.appConfig.hideLayerOptions,
-            activeLayers: {},
-            layersLoading: 0
+            layersLoading: 0,
+            layers: new Portal.data.LayerStore()
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -195,7 +195,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                         // TODO: shouldn't these be set properly in the server in the first place?
                         layerDescriptor.isBaseLayer = true; 
                         layerDescriptor.queryable = false;
-                        this.map.addLayer(layerDescriptor.toOpenLayer());
+                        this.layers.addUsingDescriptor(layerDescriptor);
                     },
                     this
                 );
@@ -251,31 +251,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return server.uri;
     },
 
-    getLayerUid: function(openLayer) {
-        // layerHierarchyPath is the preferred unique identifier for a layer
-        var uri = "UNKNOWN";
-        var server = openLayer.server;
-        
-        if ( openLayer.layerHierarchyPath ) {
-            uri = openLayer.layerHierarchyPath;
-        }
-        else if (server) {
-            uri = server.uri;
-        }
-        else if(openLayer.url)
-        {
-            uri = openLayer.url;
-        }
-
-        return uri + "::" +  openLayer.name + (openLayer.cql ? '::' + openLayer.cql : '');
-    },
-
     containsLayer: function(openLayer) {
-        var previousLayer = this.activeLayers[this.getLayerUid(openLayer)];
-        if (!previousLayer) {
-            return false;
-        }
-        return this.map.getLayer(previousLayer.id) !== null;
+        return (this.layers.getByLayer(openLayer) !== undefined);
     },
 
     waitForDefaultLayers: function(openLayer, showLoading) {
@@ -324,8 +301,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (showLoading === true) {
             this.registerLayer(openLayer);
         }
-        this.map.addLayer(openLayer);
-        this.activeLayers[this.getLayerUid(openLayer)] = openLayer;
+        
+        this.layers.addUsingOpenLayer(openLayer);
+        
         this.fireEvent('layeradded', openLayer);
     },
 
@@ -339,23 +317,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return new OpenLayers.Bounds(left, bottom, right, top);
     },
 
-    swapLayers: function(newLayer, oldLayer) {
-        // exchange new for old
-        var layerLevelIndex = this.map.getLayerIndex(oldLayer);
-        var oldLayerId = this.getLayerUid(oldLayer);
-        if (this.activeLayers[oldLayerId] !== undefined) {
-            this.map.removeLayer(this.activeLayers[oldLayerId]);
-            // now that removeLayer has removed the old item in the activeLayers array, swap in the new layer
-            this.addLayer(newLayer);
-            this.map.setLayerIndex(newLayer, layerLevelIndex);
-        }
-
-        Ext.MsgBus.publish("selectedLayerChanged", newLayer);
-    },
-
     zoomToLayer: function(openLayer) {
         if (openLayer) {
-            if (this.hasBoundingBox(openLayer)) {
+            if (openLayer.hasBoundingBox()) {
                 // build openlayer bounding box
                 var bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
                 // ensure converted into this maps projection. convert metres into lat/lon etc
@@ -372,10 +336,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 }
             }
         }
-    },
-
-    hasBoundingBox: function(openLayer) {
-        return !Ext.isEmpty(openLayer.bboxMinX) && !Ext.isEmpty(openLayer.bboxMinY) && !Ext.isEmpty(openLayer.bboxMaxX) && !Ext.isEmpty(openLayer.bboxMaxY);
     },
 
     zoomTo: function(bounds, closest) {
@@ -470,20 +430,19 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     removeLayer: function(openLayer, newDetailsPanelLayer) {
         if (openLayer.name != 'OpenLayers.Handler.Path') {
-            this.map.removeLayer(openLayer, newDetailsPanelLayer);
-
-            delete this.activeLayers[this.getLayerUid(openLayer)];
+            
+            this.layers.removeUsingOpenLayer(openLayer);
 
 			//got to do this here do to wierd way ActiveLayersPanel
 			//rearranges layers(removing and adding rather than just seting order)
-			if(openLayer.isAnimated)
+			if (openLayer.isAnimated)
 			{
 				this.animationControlsPanel.removeAnimation();
 			}
 			
 			Ext.MsgBus.publish("selectedLayerChanged", newDetailsPanelLayer);
 
-            if(newDetailsPanelLayer != null)
+            if (newDetailsPanelLayer != null)
                 this.animationPanel.setVisible(newDetailsPanelLayer.isAnimatable());
             else
                 this.animationPanel.setVisible(false);
@@ -581,13 +540,5 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     
     getPageY: function() {
         return this.getPosition()[1];
-    },
-   
-    onAddLayer: function(layerDesc) {
-        this.map.addMapLayer(layerDesc);
-    },
-
-    onRemoveLayer: function(openLayer) {
-        this.map.removeLayer(openLayer);
     }
 });

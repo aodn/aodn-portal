@@ -32,8 +32,6 @@ class CheckLayerAvailabilityService {
 
                     valid = _isValidFromResponse( featInfURL.text )
 				}
-
-                // Todo - DN: Check this. It means that if the response is text/html or text/plain then valid is TRUE. Is this correct?
             }
 			catch (e) {
 				// could this be an unusual WMS server
@@ -65,7 +63,7 @@ class CheckLayerAvailabilityService {
 
     def _shouldCheckResponse( contentType ) {
 
-        return !(contentType == "text/html" || contentType == "text/plain") // Todo - DN: Check with Phil if this should include image/png
+        return contentType == "text/xml"
     }
 
     def _isValidFromResponse( String responseText ) {
@@ -73,9 +71,9 @@ class CheckLayerAvailabilityService {
         def valid = true
 
         // its xml, test for exception messages, or sillyness
-        valid = (responseText.find('<WMT_MS_Capabilities')) ? false : valid // Todo - DN: Check this too
-        valid = (responseText.find('<ServiceExceptionReport')) ? false : valid
-        valid = (responseText == "") ? false : valid
+		valid = (responseText == "") ? false : valid
+		valid = (responseText.find('<WMT_MS_Capabilities')) ? false : valid
+		valid = (responseText.find('<ServiceExceptionReport')) ? false : valid
 
         // allow possible data changes
         valid = (responseText.find('InvalidRangeException')) ? true : valid

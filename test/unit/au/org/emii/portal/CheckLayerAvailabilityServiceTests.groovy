@@ -9,7 +9,6 @@
 package au.org.emii.portal
 
 import grails.test.GrailsUnitTestCase
-import au.org.emii.portal.Server
 
 class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
@@ -158,10 +157,8 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
     void testShouldCheckResponse() {
 
-        assertFalse service._shouldCheckResponse( 'text/plain' )
-        assertFalse service._shouldCheckResponse( 'text/html' )
-
-        assertTrue service._shouldCheckResponse( 'image/xml' )
+		assertTrue service._shouldCheckResponse( 'text/xml' )
+		assertFalse service._shouldCheckResponse( 'text/plain' )
     }
 
     void testIsValidFromResponse() {
