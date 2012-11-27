@@ -10,9 +10,9 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function(mapPanel) {
+    constructor: function(map) {
         
-        this.mapPanel = mapPanel;
+        this.map = map;
         
         //setVisible(true) for floating panel doesn't work without this fix
         //http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
@@ -29,7 +29,7 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         });
 
         this.animationControlsPanel = new Portal.details.AnimationControlsPanel();
-        this.animationControlsPanel.setMap(mapPanel);
+        this.animationControlsPanel.setMap(map);
 
         this.controlButtonPanel = new Ext.Panel({
 
@@ -111,13 +111,13 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     _modMapDragging: function(toggle) {
-        for (var i = 0; i < this.mapPanel.map.controls.length; i++) {
-            if ((this.mapPanel.map.controls[i].displayClass === "olControlNavigation") || (this.mapPanel.map.controls[i].displayClass === "olControl")){
+        for (var i = 0; i < this.map.controls.length; i++) {
+            if ((this.map.controls[i].displayClass === "olControlNavigation") || (this.map.controls[i].displayClass === "olControl")){
                 if (toggle) {
-                    this.mapPanel.map.controls[i].activate();
+                    this.map.controls[i].activate();
                 }
                 else {
-                    this.mapPanel.map.controls[i].deactivate();
+                    this.map.controls[i].deactivate();
                 }
             }
         }

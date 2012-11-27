@@ -179,7 +179,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     initAnimationPanel: function() {
     
-        this.animationPanel = new Portal.ui.AnimationPanel(this);
+        this.animationPanel = new Portal.ui.AnimationPanel(this.map);
         this.add(this.animationPanel);
         
         // TODO: remove this - just a short cut as part of refactoring.
