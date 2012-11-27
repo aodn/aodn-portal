@@ -8,7 +8,7 @@ You can view the portal in action at the following locations;
 
 * [AODN](http://portal.aodn.org.au) the main AODN portal
 * [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal
-* [Western Australia](http://wa.aodn.org.au)
+* [WADON](http://wa.aodn.org.au) a Western Australia-focused portal
 
 ## Features
 
