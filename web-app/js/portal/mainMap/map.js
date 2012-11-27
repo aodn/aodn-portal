@@ -332,47 +332,6 @@ function getNodeText(xmlNode)
     return xmlNode.firstChild.nodeValue;
 }
 
-function setExtWmsLayer(url,label,type,layer,sld,options,style) {
-
-    var dl = {};
-	var server = {};
-	server.uri = url;
-	server.type = type;
-	server.opacity = 100;
-	dl.server = server;
-
-	dl.queryable = true;
-	dl.server.infoFormat = "text/html";
-
-	//dl.sld = sld; //comment out until required from the setExtWmsLayer function
-
-	// style in .ftl's but should be styles
-	dl.defaultStyle = style;
-	dl.name = layer; // layer id on server
-	dl.title = label;
-
-	// options are comma delimited to include a unique label from a single value such as a dropdown box
-	if (options.length > 1) {
-		var opts = options.split(",");
-		var cql = opts[0];
-		var newLabel = label;
-		if (opts.length > 1) {
-			newLabel = label + " " + opts[1];
-		}
-
-		dl.cql = cql;
-		if (newLabel.length > 0) {
-			dl.title = newLabel;
-		} else {
-			dl.cql = '';
-		}
-
-	}
-
-
-	getMapPanel().addExternalLayer(dl);
-}
-
 function IsInt(sText) {
 
     var ValidChars = "0123456789";
