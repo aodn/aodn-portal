@@ -11,12 +11,12 @@
 	line-height: 16px;
 	background-color: #435F7A;
 	background: -webkit-gradient(linear, left top, left bottom, from(#435F7A), to(#FFFFFF));
-	background-image: -moz-linear-gradient(center top , #435F7A 0pt, white 700px); 
-	background-image: -o-linear-gradient(center top , #435F7A 0pt, white 700px); 
+	background-image: -moz-linear-gradient(center top , #435F7A 0pt, white 700px);
+	background-image: -o-linear-gradient(center top , #435F7A 0pt, white 700px);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#435F7A', endColorstr='#FFFFFF');
 	color: #030303;
-    margin-top: 0px! important; 
-	
+    margin-top: 0px! important;
+
 }
 
 body {
@@ -24,7 +24,7 @@ body {
 }
 
 #header {
-    /*background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;*/	
+    /*background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;*/
     height: 300px;
     width: 100%;
 
@@ -33,7 +33,7 @@ body {
     color: white;
     border-left: 1px solid #333;
 }
-html, body, p, td{    
+html, body, p, td{
     font-family: tahoma,verdana,arial,sans-serif;
 }
 p {
@@ -45,7 +45,7 @@ h1,h2,h3 {
 	color: #666;
 }
 
-h1 {	
+h1 {
     font-size: 22px;
     font-weight: bold;
 }
@@ -100,7 +100,7 @@ input, select, textarea {
 
 #mainHomePanel h1 {
 	margin: 40px 0 30px 0px;
-	
+
 }
 
 #rightHomePanel {
@@ -109,9 +109,9 @@ input, select, textarea {
 }
 
 
-#headerTail {   
+#headerTail {
     height: 30px;
-    
+
 }
 
 
@@ -121,40 +121,32 @@ input, select, textarea {
     float: left;
 }
 
-.footer {       
+.footer {
     color: #333;
     font-size: 10px;
 	margin-top: 20px;
 }
 
-.footerText {   
-	padding-right: 10px;
-	padding-top: 10px;
+.footerText p {
+    margin-bottom: 15px !important;
 }
 
 .footer .x-box-inner {
     overflow: visible;
 }
 
-.footer a{   
-}
-
 .footer a:hover{
-    text-decoration: underline;    
+    text-decoration: underline;
 }
-
-
-
-
 
 .menuHeader {
-    font-size: 14px;  
+    font-size: 14px;
     color: #666;
     padding: 15px 1px 10px 10px;
 }
 
-.x-panel-header, 
-#rightHomePanel h3{	
+.x-panel-header,
+#rightHomePanel h3{
     color: #666;
     font-size: 14px;
 	font-weight: normal;
@@ -166,7 +158,7 @@ input, select, textarea {
     padding: 20px 3px 4px 10px;
 
 }
-.x-window-header-text {	
+.x-window-header-text {
     color: #666;
 }
 
@@ -232,7 +224,7 @@ a.userlink {
 }
 
 .viewPortLinks a:hover {
-    color: black;    
+    color: black;
     text-shadow: 0px 0px 8px grey;
 }
 .viewPortLinksBackground {
@@ -240,14 +232,14 @@ a.userlink {
     padding: 6px 10px;
     margin-right: 5px;
     background: url("../images/mapshadow.png") repeat-x scroll left top grey;
-    border-radius: 14px;   
+    border-radius: 14px;
 }
-.viewPortTabActive {        
-    background: none repeat-x scroll left top #0079C1;  
+.viewPortTabActive {
+    background: none repeat-x scroll left top #0079C1;
 }
 
-.viewPortTabActive a {      
-    color: white! important;     
+.viewPortTabActive a {
+    color: white! important;
     text-shadow: none! important;
 }
 

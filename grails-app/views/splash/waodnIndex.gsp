@@ -11,10 +11,10 @@
 <div class="p-centre">
 	<div class="p-centre-item" style="width:560px">
 
-	
+
 	<h1>Welcome to the Western Australian Ocean Data Network</h1>
 
-	<p>This portal is the primary access point for search, discovery, access and download of data for Western Australia collected by the Australian marine community. These data are presented as a regional view of all the data available from the <a  target="_blank" class="external"  title="Main AODN Portal" href="http://portal.aodn.org.au/webportal/" >Australian Ocean Data Network</a>. 
+	<p>This portal is the primary access point for search, discovery, access and download of data for Western Australia collected by the Australian marine community. These data are presented as a regional view of all the data available from the <a  target="_blank" class="external"  title="Main AODN Portal" href="http://portal.aodn.org.au/webportal/" >Australian Ocean Data Network</a>.
 Primary datasets are contributed by Commonwealth Government agencies, State Government agencies, Universities, the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and WAMSI (Western Australia Marine Science Institute).</p>
 
 	<h3>Want to contribute data to the AODN?</h3>
@@ -28,22 +28,22 @@ Primary datasets are contributed by Commonwealth Government agencies, State Gove
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(1);return false;" href="">Map</a></div>
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(2);return false;" href="">Search</a></div>
 	</div>
-	
-	  <div class="clear spacer"></div>
-	
 
-	<div class="spacer floatLeft homePanelWidget"  style="width:230px">  
+	  <div class="clear spacer"></div>
+
+
+	<div class="spacer floatLeft homePanelWidget"  style="width:230px">
 	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" />
-	  
+
 	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
 	  <BR>
 	  </div>
 
-	<div class="spacer floatLeft homePanelWidget"  style="width:250px"> 
-	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas, 
+	<div class="spacer floatLeft homePanelWidget"  style="width:250px">
+	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas,
 	go to our <a class="external" title="Ocean Current page"  href="http://imos.aodn.org.au/oceancurrent/" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
-	
-	  
+
+
 	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
 	<ul>
@@ -55,17 +55,20 @@ Primary datasets are contributed by Commonwealth Government agencies, State Gove
 	</ul>
 	</div>
 
-<div class="clear spacer">
-	<h3>Want to see data for all Australasia?</h3>
-    <p><a href="http://portal.aodn.org.au/webportal" title="Australian Ocean Data Network" >Main AODN portal</a>.</p>
-</div>
+    <div class="clear spacer">
+      <h3>Want to see data for all Australasia?</h3>
+      <p><a href="http://portal.aodn.org.au/webportal" title="Australian Ocean Data Network" >Main AODN portal</a>.</p>
+    </div>
 
-
-	  <div class="clear spacer"></div>
-	  <div class="footer"> 
-
-		This site is licensed under a <a title="Createive Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><NOBR>Creative Commons Attribution 3.0 Australia License</NOBR></a> &nbsp;
-		  <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a>
-	  </div>
+    <div class="clear"></div>
   </div>
+</div>
+<div class="footer">
+    <div style="float: left;">
+        <img src="images/DIISRTE_Inline-PNGSmall_200h.png" alt="DIISTRE logo"/>
+    </div>
+    <div class="footerText">
+        ${ cfg.footerContent }
+        ${ portalBuildInfo }
+    </div>
 </div>

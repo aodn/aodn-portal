@@ -9,7 +9,7 @@
 package au.org.emii.portal
 
 class SplashController {
-	
+
 	def oceanCurrentService
 	def portalInstance
 	def hostVerifier
@@ -24,14 +24,14 @@ class SplashController {
 	    else if (portalInstance.code()) {
 		    log.debug("Rendering index ${portalInstance.code()}")
 			def oceanCurrentObj = oceanCurrentService.getRandomDetails()
-	        render(view: "${portalInstance.code()}Index", model:[ oceanCurrent: oceanCurrentObj])
+	        render(view: "${portalInstance.code()}Index", model:[ oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance(), portalBuildInfo: _portalBuildInfo() ])
 	    }
 	    else {
 		    log.debug("Rendering empty index")
 		    _renderEmptyResponse()
 	    }
     }
-    
+
     // links
 	def links = {
 		if (_pageCanBeProxied('links')) {
@@ -40,14 +40,14 @@ class SplashController {
 		}
 		else if (portalInstance.code()) {
 			log.debug("Rendering links ${portalInstance.code()}")
-			render(view: "${portalInstance.code()}Links")
+			render(view: "${portalInstance.code()}Links", cfg: Config.activeInstance())
 		}
 		else {
 			log.debug("Rendering empty links")
 			_renderEmptyResponse()
 		}
 	}
-     
+
 	// facebook twitter etc
 	def community = {
 		if (_pageCanBeProxied('community')) {
@@ -56,7 +56,7 @@ class SplashController {
 		}
 		else if (portalInstance.code()) {
 			log.debug("Rendering community ${portalInstance.code()}")
-			render(view: "${portalInstance.code()}Community")
+			render(view: "${portalInstance.code()}Community", cfg: Config.activeInstance())
 		}
 		else {
 			log.debug("Rendering empty community")
@@ -80,5 +80,11 @@ class SplashController {
 		params.url = url
 		def proxiedRequest = new ProxiedRequest(request, response, params)
 		proxiedRequest.proxy(false)
+	}
+
+	def _portalBuildInfo() {
+
+		def md = grailsApplication.metadata
+		return "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
 	}
 }
