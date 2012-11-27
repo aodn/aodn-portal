@@ -36,7 +36,6 @@ describe("Portal.ui.MainTabPanel", function()
     expect(mainTabPanel.portalPanel).toEqual(mockPortalPanel);
     expect(mainTabPanel.homePanel).toEqual(mockHomePanel);
     expect(mainTabPanel.searchTabPanel).toEqual(mockSearchTabPanel);
-    expect(Portal.ui.MainTabPanel.prototype.mon).toHaveBeenCalled();
     expect(Portal.ui.MainTabPanel.prototype.on).toHaveBeenCalled();
   });
   
