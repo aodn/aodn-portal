@@ -106,3 +106,8 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function(){
 	}
 	return false;
 };
+
+OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
+    return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
+};
+

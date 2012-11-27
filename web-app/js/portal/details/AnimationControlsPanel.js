@@ -243,7 +243,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 		this.speed = this.BASE_SPEED;
 		this._resetForNewAnimation();
-		this.map = undefined;
+		this.mapPanel = undefined;
 
 		this.pausedTime = "";
 		this.timerId = -1;
@@ -252,8 +252,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	setMap : function(theMap) {
-		this.map = theMap;
-		this.map.map.events.register('moveend', this, this._onMove);
+		this.mapPanel = theMap;
+		this.mapPanel.map.events.register('moveend', this, this._onMove);
 	},
 
 	_togglePlay : function(button, event) {
@@ -399,8 +399,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		if (this.animatedLayers.length > 0) {
 			clearTimeout(this.timerId);
 
-//			if (this.map == null) {
-//				this.map = Ext.getCmp("map");
+//			if (this.mapPanel == null) {
+//				this.mapPanel = Ext.getCmp("map");
 //			}
 
 //			this.originalLayer.name = this.originalLayer.name.substr(0,
@@ -412,7 +412,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					this.animatedLayers[0] = null;
 				} 
 //				else {
-//					this.map.map.removeLayer(this.animatedLayers[0],
+//					this.mapPanel.map.removeLayer(this.animatedLayers[0],
 //							this.originalLayer);
 //				}
 
@@ -464,9 +464,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		if (this.originalLayer.getVisibility() && this.originalLayer.map !=null) {
 			if (this.counter < this.animatedLayers.length - 1) {
 				var curLayer = this.animatedLayers[this.counter + 1];
-				if (this.map.map.getLayer(curLayer.id) == null) {
-					this.map.map.addLayer(curLayer, false);
-					this.map.map.setLayerIndex(curLayer, this.map.map
+				if (this.mapPanel.map.getLayer(curLayer.id) == null) {
+					this.mapPanel.map.addLayer(curLayer, false);
+					this.mapPanel.map.setLayerIndex(curLayer, this.mapPanel.map
 									.getLayerIndex(this.originalLayer));
 					curLayer.display(false);
 				} else {
@@ -579,7 +579,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				// isAnimated denotes the ORIGINAL layer that is currently
 				// animated.
 
-				// this.map.map.events.triggerEvent("changelayer", {
+				// this.mapPanel.map.events.triggerEvent("changelayer", {
 				// layer: this.originalLayer, property: "name"
 				// });
 
@@ -656,7 +656,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					// if this layer's order(bottom,second from top, etc) is changed, change the order
 					// of the frames aswell. 
 
-					if (evt.property == "order" && this.map !=null) 
+					if (evt.property == "order" && this.mapPanel !=null) 
 					{
 						for (var i = 0; i < this.slides.length; i++) 
 						{
@@ -671,10 +671,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 							//Weird stuf happens here, but it works.
 							//just moving the slides doesn't register in the active layers panel
 							//So remove and add...
-							this.map.removeLayer(this.slides[i]);
-							this.map.addLayer(this.slides[i])
-//							console.log("Moving " + this.slides[i] + "to index " + this.map.getLayerIndex(this));
-							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this)+1);
+							this.mapPanel.removeLayer(this.slides[i]);
+							this.mapPanel.addLayer(this.slides[i])
+//							console.log("Moving " + this.slides[i] + "to index " + this.mapPanel.getLayerIndex(this));
+							this.mapPanel.setLayerIndex(this.slides[i], this.mapPanel.getLayerIndex(this)+1);
 						}
 					}
 				}
@@ -683,10 +683,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-//						console.log("removing layer with"+ evt.layer.slides.length +"slides");
+						console.log("removing layer with"+ evt.layer.slides.length +"slides");
 						for (var i = 0; i < evt.layer.slides.length; i++) 
 						{
-							evt.layer.slides[i].map.removeLayer(this.slides[i]);
+						    // Not sure when .map becomes defined, but it is undefined for slides that
+						    // haven't loaded, and hence without this check, removeLayer fails when removing
+						    // layer that hasn't fully loaded.
+						    if (evt.layer.slides[i].map) {
+						        evt.layer.slides[i].map.removeLayer(this.slides[i]);
+						    }
 						}
 					}
 				}
@@ -697,7 +702,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					{
 						for (var i = 0; i < this.slides.length; i++) 
 						{
-							this.map.addLayer(this.slides[i]);
+							this.mapPanel.addLayer(this.slides[i]);
 						}
 					}
 				}
@@ -720,17 +725,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 							scope : this
 						});
 
-				this.map.map.events.on({
+				this.mapPanel.map.events.on({
 					"removelayer" : this.originalLayer._onLayerRemoved,
 					scope : this.originalLayer
 				});
 
-				this.map.map.events.on({
+				this.mapPanel.map.events.on({
 							"addlayer" : this.originalLayer._onLayerAdded,
 							scope : this.originalLayer
 						});
 						
-				this.map.map.events.on({
+				this.mapPanel.map.events.on({
 							"changelayer" : this.originalLayer._onChangeLayer,
 							scope : this.originalLayer
 						});
@@ -791,8 +796,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			
 						
 			// always pre-load the first one
-			this.map.map.addLayer(this.originalLayer.slides[0], false);
-			this.map.map.setLayerIndex(this.originalLayer.slides[0], this.map.map
+			this.mapPanel.map.addLayer(this.originalLayer.slides[0], false);
+			this.mapPanel.map.setLayerIndex(this.originalLayer.slides[0], this.mapPanel.map
 							.getLayerIndex(this.originalLayer));
 
 			// this.selectedLayer.setOpacity(1);
@@ -965,7 +970,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	_isLoadingAnimation : function() {
 		if (this.animatedLayers.length > 0) {
 			for (var i = 0; i < this.animatedLayers.length; i++) {
-				if (this.map.map.getLayer(this.animatedLayers[i].id) == null)
+				if (this.mapPanel.map.getLayer(this.animatedLayers[i].id) == null)
 					return true;
 				if (this.animatedLayers[i].numLoadingTiles > 0) {
 					return true;
