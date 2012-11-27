@@ -97,8 +97,17 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.layers.bind(this.map);
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
-            this.updateAnimationControlsPanel(message)
+            this.onSelectedLayerChanged(message);
         }, this);
+    },
+    
+    onSelectedLayerChanged: function(openLayer) {
+        
+        this.updateAnimationControlsPanel(openLayer);
+        
+        if (this.autoZoom === true) {
+            this.zoomToLayer(openLayer);
+        }
     },
     
 	closeDropdowns: function(event) {

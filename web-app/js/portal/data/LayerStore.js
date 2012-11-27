@@ -33,6 +33,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             this.addUsingOpenLayer(openLayer)
         }, this);
 
+        Ext.MsgBus.subscribe('addLayerUsingServerId', function(subject, args) {
+            this.addUsingServerId(args)
+        }, this);
+
         Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
             this.removeUsingOpenLayer(openLayer)
         }, this);
@@ -40,14 +44,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     
     addUsingDescriptor: function(layerDescriptor) {
         
-        var openLayer = layerDescriptor.toOpenLayer();
-        
-        var layerRecord = new GeoExt.data.LayerRecord({
-            layer: openLayer,
-            title: layerDescriptor.title
-        });
-        
-        this.add(layerRecord);
+        this.addUsingOpenLayer(layerDescriptor.toOpenLayer());
     },
     
     addUsingLayerLink: function(layerLink) {
@@ -80,7 +77,31 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
         
         this.add(layerRecord);
+        
+        Ext.MsgBus.publish('selectedLayerChanged', openLayer);
     },
+    
+    addUsingServerId: function(args) {
+
+        Ext.Ajax.request({
+
+            url: 'layer/showLayerByItsId?layerId=' + args.id,
+            layerOptions: args.layerOptions,
+            layerParams: args.layerParams,
+            animated: args.animated,
+            chosenTimes: args.chosenTimes,
+            scope: this,
+            success: function(resp, options) {
+                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
+                this.addUsingOpenLayer(layerDescriptor.toOpenLayer(options.layerOptions, options.layerParams));
+                // TODO: chosen times?
+            },
+            failure: function(resp) {
+                Ext.MessageBox.alert('Error', "Sorry I could not load the requested layer:\n" + resp.responseText);
+            }
+        });
+    },
+
     
     removeUsingOpenLayer: function(openLayer) {
         

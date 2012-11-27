@@ -76,16 +76,13 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
     onMenuNodeClick: function(node) {
         if (node.attributes.grailsLayerId) {
             this.fireEvent('addlayerclicked');
-            this.mapPanel.addGrailsLayer(node.attributes.grailsLayerId);
+            
+            Ext.MsgBus.publish('addLayerUsingServerId', { id: node.attributes.grailsLayerId});
         }
     },
 
     removeLayer: function(openLayer, newDetailsPanelLayer) {
 
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
-    },
-
-    addMapLayer: function(layerDescriptor, showLoading) {
-        this.mapPanel.addLayer(this.mapPanel.getOpenLayer(layerDescriptor), showLoading);
     }
 });
