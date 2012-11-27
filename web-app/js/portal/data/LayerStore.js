@@ -17,6 +17,23 @@ Ext.namespace('Portal.data');
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     
+    constructor: function(cfg) {
+    
+        Portal.data.LayerStore.superclass.constructor.call(this, cfg);
+        
+        Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
+            this.addUsingDescriptor(layerDescriptor)
+        }, this);
+
+        Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
+            this.addUsingOpenLayer(openLayer)
+        }, this);
+
+        Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
+            this.removeUsingOpenLayer(openLayer)
+        }, this);
+    },
+    
     addUsingDescriptor: function(layerDescriptor) {
         
         var openLayer = layerDescriptor.toOpenLayer();
