@@ -149,7 +149,6 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             layerStore : this.appConfig.mapPanel.layers,
             hideLayerOptions : this.appConfig.hideLayerOptions,
             autoZoom : this.appConfig.autoZoom,
-            addGrailsLayerFn : this.appConfig.mapPanel.addGrailsLayer,
             mapScope : this.appConfig.mapPanel
         });        
 		

@@ -14,7 +14,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		
 		this.snapshotController = new Portal.snapshot.SnapshotController({
 			map: cfg.map,
-			addGrailsLayerFn: cfg.addGrailsLayerFn,
 			mapScope: cfg.mapScope
 		});
 		

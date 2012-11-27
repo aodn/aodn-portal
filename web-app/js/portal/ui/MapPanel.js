@@ -357,28 +357,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    addGrailsLayer: function (id, layerOptions, layerParams, animated, chosenTimes) {
-
-        Ext.Ajax.request({
-
-            url: 'layer/showLayerByItsId?layerId=' + id,
-            layerOptions: layerOptions,
-            layerParams: layerParams,
-            animated: animated,
-            chosenTimes: chosenTimes,
-            scope: this,
-            success: function(resp, options) {
-                var layerDescriptor = Ext.util.JSON.decode(resp.responseText);
-                if (layerDescriptor) {
-                    this.addMapLayer(layerDescriptor, options.layerOptions, options.layerParams, animated, chosenTimes);
-                }
-            },
-            failure: function(resp) {
-                Ext.MessageBox.alert('Error', "Sorry I could not load the requested layer:\n" + resp.responseText);
-            }
-        });
-    },
-
     addExternalLayer: function(layerLink) {
         var serverUri = layerLink.server.uri;
 
