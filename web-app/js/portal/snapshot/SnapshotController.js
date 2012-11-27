@@ -180,7 +180,6 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 });
             } 
             else {
-                console.log("addMapLayer calling...");
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
                 Ext.MsgBus.publish('addLayerUsingOpenLayer', layerDescriptor.toOpenLayer(options, params));
             }
