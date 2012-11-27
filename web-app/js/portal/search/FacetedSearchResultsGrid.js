@@ -50,7 +50,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below
         this.getBottomToolbar().store = this.store;
 
-        this.addEvents('addlayer', 'rowenter', 'rowleave');
+        this.addEvents('rowenter', 'rowleave');
     },
 
     afterRender: function() {
@@ -104,7 +104,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var row = this.getView().findRow(target);
         var rowIndex = this.getView().findRowIndex(row);
 
-        Ext.MsgBus.publish( 'facetedSearch.layerSelected', this._getLayerLink(rowIndex) );
+        Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
     },
 
     _getLayerLink: function(rowIndex) {

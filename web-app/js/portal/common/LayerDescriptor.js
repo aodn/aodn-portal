@@ -107,9 +107,4 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
             return this._getParent().name;
         }
     }
-
-
-    
-    
-
 });

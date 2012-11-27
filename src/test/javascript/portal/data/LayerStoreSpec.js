@@ -39,7 +39,7 @@ describe("Portal.data.LayerStore", function() {
                 "the title",
                 "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
                 {},
-                {}
+                { isBaseLayer: false }
             );
     }
     
@@ -122,10 +122,28 @@ describe("Portal.data.LayerStore", function() {
             var openLayer = createOpenLayer();
             
             spyOn(layerStore, 'addUsingOpenLayer').andCallThrough();
+            spyOn(Ext.MsgBus, 'publish').andCallThrough();
+            
             expect(layerStore.getCount()).toBe(0);
             Ext.MsgBus.publish('addLayerUsingOpenLayer', openLayer);
-            expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(openLayer);
             expect(layerStore.getCount()).toBe(1);
+            expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(openLayer);
+            expect(Ext.MsgBus.publish).toHaveBeenCalled();
+        });
+        
+        it('addLayerUsingOpenLayer base layer', function() {
+            
+            var openLayer = createOpenLayer();
+            openLayer.options.isBaseLayer = true;
+            
+            spyOn(layerStore, 'addUsingOpenLayer').andCallThrough();
+            spyOn(Ext.MsgBus, 'publish').andCallThrough();
+            
+            expect(layerStore.getCount()).toBe(0);
+            Ext.MsgBus.publish('addLayerUsingOpenLayer', openLayer);
+            expect(layerStore.getCount()).toBe(1);
+            expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(openLayer);
+            expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith('selectedLayerChanged');
         });
         
         it('removeLayerUsingOpenLayer', function() {

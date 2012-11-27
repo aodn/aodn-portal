@@ -48,8 +48,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
 
-        Ext.MsgBus.subscribe( 'facetedSearch.layerSelected', this.onLayerChooserAddLayerClicked, this );
-
+        Ext.MsgBus.subscribe('selectedLayerChanged', this.onLayerChooserAddLayerClicked, this);
+        
         //TODO: find a better home for this
         this.on('afterrender', function() {
             jQuery("#loader").hide('slow'); // close the loader

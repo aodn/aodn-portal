@@ -78,7 +78,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         
         this.add(layerRecord);
         
-        Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+        // Only want to be notified of changes in no base layer
+        if (!openLayer.options.isBaseLayer) {
+            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+        }
     },
     
     addUsingServerId: function(args) {
