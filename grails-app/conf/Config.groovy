@@ -6,8 +6,6 @@
  *
  */
 
-import grails.util.Environment
-
 import javax.naming.InitialContext
 
 // locations to search for config files that get merged into the main config
@@ -85,6 +83,8 @@ environments {
         // URLs
 		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+		wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
+		openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = true
 
@@ -164,15 +164,16 @@ if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
 
+def defaultInstanceName = "AODN"
 try {
 	configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
 	grails.config.locations << "file:${configurationPath}"
 
 	def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
-	System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: "AODN")
+	System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
 }
 catch (e) {
-	portal.instance.name = "AODN" // "AODN" is default
+	portal.instance.name = defaultInstanceName
 	System.setProperty "INSTANCE_NAME", portal.instance.name
 }
 
