@@ -36,12 +36,14 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 				}				
 			}
 		});
+		
 		this.spinnerPanel = new Ext.Panel({  
 			ref: "spinnner",
 			hidden: true,
 			//cls: 'extAjaxLoading',
 			html: '<div class="loading-indicator"> Loading...</div>'
 		});
+		
 		this.hbox = new Ext.Container({
 			layout: 'hbox',
 			items: [{
@@ -66,6 +68,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 				}]
 			}]
 		});
+		
 		this.statusPanel = new Ext.Panel({
 			ref: "status",
 			cls: 'addServerStatusPanel',
@@ -86,6 +89,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 			}
 			
 		});
+		
 		this.proxyWMSURL = "proxy/wmsOnly?url=";
 		
 		var config = Ext.apply({
@@ -120,13 +124,9 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 		url = url+ concatenator + "SERVICE=WMS&request=GetCapabilities";
 		return this.proxyWMSURL+encodeURIComponent(url)
 	},
-	
-	
 
-	
 	addWMStoTree: function(url,statusField, spinnerPanel){
 				
-		
 		var menu = this;
 		
 		menu.add(
@@ -209,16 +209,11 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 									statusField.update( OpenLayers.i18n('addYourURLUnsuccessfulNoResponse'));
 								}								
 								statusField.show().expand();
-								
-								
 							}
-						
-							
 						}
-							
 					})
-				})
-				,
+				}),
+				
 				listeners: {
 					// Add layers to the map when ckecked, remove when unchecked.
 					// Note that this does not take care of maintaining the layer
@@ -233,26 +228,16 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							statusField.show();
 							layer.server = node.attributes.server;
 							
-							//layer.metadata.dimensions = null; 
-							
-							getMapPanel().addLayer(layer,true);
-						//node.disable();
+							Ext.MsgBus.publish('addLayerUsingOpenLayer', layer);
 						}
 						else {
 							node.expand();
 						}
-						
-							
-						
 					}
 				}
 			})
-
-			);
-		menu.doLayout();
+		);
 		
+		menu.doLayout();
 	}
-	
-	
 });
-//Ext.reg('portal.ui.userdefinedwmspanel', Portal.ui.UserDefinedWMSPanel);

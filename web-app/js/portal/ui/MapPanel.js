@@ -290,6 +290,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
+    // TODO: when this function is removed, need to handle "showLoading" in the LayerStore.
     addLayer: function(openLayer, showLoading) {
         this.updateAnimationControlsPanel(openLayer);
         if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
