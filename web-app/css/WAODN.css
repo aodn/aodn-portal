@@ -129,11 +129,12 @@ input, select, textarea {
     margin-bottom: 15px !important;
 }
 
-.footer .x-box-inner {
-    overflow: visible;
+.footerText p:first-child {
+    margin-left: 210px;
 }
 
-.footer a{
+.footer .x-box-inner {
+    overflow: visible;
 }
 
 .footer a:hover{

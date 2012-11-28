@@ -108,13 +108,10 @@ input, select, textarea {
    border-radius: 12px;
 }
 
-
 #headerTail {
     height: 30px;
 
 }
-
-
 
 #logo {
     margin: 3px 5px;
@@ -129,6 +126,10 @@ input, select, textarea {
 
 .footerText p {
     margin-bottom: 15px !important;
+}
+
+.footerText p:first-child {
+    margin-left: 210px;
 }
 
 .footer .x-box-inner {
