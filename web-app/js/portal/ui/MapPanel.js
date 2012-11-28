@@ -357,42 +357,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    addExternalLayer: function(layerLink) {
-        var serverUri = layerLink.server.uri;
-
-        Ext.Ajax.request({
-            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
-            scope: this,
-            success: function(resp) {
-                var grailsDescriptor = Ext.util.JSON.decode(resp.responseText);
-                if (grailsDescriptor) {
-                    grailsDescriptor.cql = layerLink.cql
-                    this.addMapLayer(grailsDescriptor);
-                }
-            },
-            failure: function(resp) {
-                this.addMapLayer(layerLink);
-            }
-        });
-    },
-
-    addMapLayer: function(layerDescriptorAsText, layerOptions, layerParams, animated, chosenTimes) {
-        var openLayer = new Portal.common.LayerDescriptor(layerDescriptorAsText).toOpenLayer(layerOptions, layerParams);
-        if (openLayer) {
-            this.addLayer(openLayer, true);
-            // zoom map first. may request less wms tiles first off
-            if (this.autoZoom === true) {
-                this.zoomToLayer(openLayer);
-            }
-
-            if(chosenTimes != undefined){
-                this.animationControlsPanel.loadFromSavedMap(openLayer, chosenTimes.split("/"));
-            }
-
-            Ext.MsgBus.publish("selectedLayerChanged", openLayer);
-        }
-    },
-
     getLayerMetadata: function(openLayer) {
         if (openLayer.params.LAYERS) {
             var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
