@@ -211,7 +211,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
 		});
 
-    	var wfsURL =  this.layer.server.uri + "/../wfs?" + query;
+    	var wfsURL =  this.layer.server.uri.replace("/wms", "/wfs");
+
+    	if(wfsURL.indexOf("?") > -1)
+    		wfsURL +=  "&" + query;
+    	else
+    		wfsURL += "?" + query;
 
 		return wfsURL;
     },

@@ -10,10 +10,10 @@
 body, html{
     font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
-    background-color: white; 
+    background-color: white;
 	color: #030303;
     /*margin: 5px! important;
-	
+
     margin-top: 2px! important; */
 }
 
@@ -28,7 +28,7 @@ body, html{
     border-left: 1px solid #99CCFF;
 }
 
-p, td{    
+p, td{
     font-family: tahoma,verdana,arial,sans-serif;
 }
 
@@ -78,7 +78,7 @@ h6 {
 
 #mainHomePanel{
     background-color: whitesmoke;
-   background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px); 
+   background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px);
    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
    font-size: 12px;
@@ -86,22 +86,24 @@ h6 {
    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
 }
 
-.footer {       
+.footer {
     font-size: 10px;
     background-color: white;
 }
 
-.footerText {   
-	padding-right: 10px;
+.footerText p {
+    margin-bottom: 15px !important;
+}
+
+.footerText p:first-child {
+    margin-left: 210px;
 }
 
 .footer .x-box-inner {
     overflow: visible;
 }
 
-
-
-#headerTail {   
+#headerTail {
     height: 30px;
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
@@ -122,7 +124,7 @@ h6 {
     padding: 4px 10px;
     margin-right: 5px;
     background: url("../images/mapshadow.png") repeat-x scroll left top #0B5584;
-    border-radius: 14px;   
+    border-radius: 14px;
 }
 #viewPortLinks  {
    position: relative;
@@ -142,7 +144,7 @@ h6 {
 
 .viewPortLinks a:hover {
     color: black;
-    
+
     text-shadow: 0px 0px 8px #6DA3C3;
 }
 
@@ -164,7 +166,7 @@ h6 {
 	background-color: white;
     border: none;
     font-weight: bold;
-    padding: 10px 3px 4px 10px;	
+    padding: 10px 3px 4px 10px;
     color: #15428B;
     font-size: 13px;
 }
@@ -210,20 +212,20 @@ a.userlink {
 .topdrop  {
     background-image:url(../images/mapshadow.png);
     background-position:left top;
-    background-repeat:repeat-x;  
+    background-repeat:repeat-x;
     z-index: 100;
     width: 100%;
     height:10px;
     position: absolute;
 }
 
-.viewPortTabActive {        
-    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;  
-    color: #333333;  
+.viewPortTabActive {
+    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;
+    color: #333333;
 }
 
-.viewPortTabActive a {      
-    color: #333333! important;     
+.viewPortTabActive a {
+    color: #333333! important;
     text-shadow: none! important;
 }
 

@@ -31,20 +31,18 @@
                 <table>
                     <thead>
                         <tr>
-                        
-                        
-                            <g:sortableColumn property="uri" title="${message(code: 'server.uri.label', default: 'Uri')}" />
-                        
-                            <g:sortableColumn property="shortAcron" title="${message(code: 'server.shortAcron.label', default: 'Short Acron')}" />
-                        
-                            <g:sortableColumn property="type" title="${message(code: 'server.type.label', default: 'Type')}" />
-                        
                             <g:sortableColumn property="name" title="${message(code: 'server.name.label', default: 'Name')}" />
-                        
+
+                            <g:sortableColumn property="shortAcron" title="${message(code: 'server.shortAcron.label', default: 'Short Acron')}" />
+
+                            <g:sortableColumn property="uri" title="${message(code: 'server.uri.label', default: 'Uri')}" />
+
+                            <g:sortableColumn property="type" title="${message(code: 'server.type.label', default: 'Type')}" />
+
                             <g:sortableColumn property="disable" title="${message(code: 'server.disable.label', default: 'Disable')}" />
                             <g:sortableColumn property="infoFormat" title="${message(code: 'server.infoFormat.label', default: 'getFeatureInfo Format')}" />
                             <g:sortableColumn property="allowDiscoveries" title="${message(code: 'server.allowDiscoveries.label', default: 'Allow Discoveries')}" />
-                        
+
                         </tr>
                     </thead>
                     <tbody>
@@ -53,22 +51,20 @@
                                         'disable' : '' }
                             ${(serverInstanceList[i].allowDiscoveries) ?
                                         '' : 'disable' }">
-                        
-                        
-                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "uri")}</g:link></td>
-                        
-                            <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
-                        
-                            <td>${fieldValue(bean: serverInstance, field: "type")}</td>
-                        
                             <td>${fieldValue(bean: serverInstance, field: "name")}</td>
-                        
+
+                            <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
+
+                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "uri")}</g:link></td>
+
+                            <td>${fieldValue(bean: serverInstance, field: "type")}</td>
+
                             <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
-                            
+
                             <td>${serverInstance.infoFormat}</td>
-                            
+
                             <td><g:formatBoolean boolean="${serverInstance.allowDiscoveries}" /></td>
-                        
+
                         </tr>
                     </g:each>
                     </tbody>

@@ -21,12 +21,12 @@ class ConfigController {
     def index = {
         redirect(action: "edit")
     }
-    
+
     def list = {
 
         // expect only one Config instance to exist
         def configInstance = Config.activeInstance();
-        
+
         render(view: "show", model: [configInstance: configInstance])
     }
 
@@ -35,7 +35,7 @@ class ConfigController {
         def configInstance = Config.activeInstance()
 		// Clean ^M characters
 		configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
-        
+
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()
         configInstance = _enableDisableMenuOfTheDay(configInstance);
@@ -57,41 +57,36 @@ class ConfigController {
 
         if (principal) {
             def userInstance = User.get(principal)
-			
+
 			if (!userInstance)
 			{
 				log.error("No user found with id: " + principal)
 			}
-			
+
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
-
-        // Add build data
-        def cfg = grailsApplication.config
-        def md = grailsApplication.metadata
-        instanceAsGenericObj['portalBuildInfo'] = "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
 
         render(contentType: "application/json", text: instanceAsGenericObj)
     }
 
     def create = {
         // only one instance allowed
-        def configInstance;        
+        def configInstance;
         if (Config.list().size() > 0) {
            configInstance = Config.activeInstance()
            flash.message = "ERROR: New Config cannot be created. There can only be one instance of the configuration"
-           redirect(action: "edit")     
+           redirect(action: "edit")
         }
         else {
             configInstance = new Config()
-        }        
+        }
         configInstance.properties = params
         return [configInstance: configInstance]
     }
 
     def save = {
         def configInstance = new Config(params)
-        // test that this is the first 
+        // test that this is the first
         if (Config.list().size() != 0) {
             flash.message = "ERROR: New Config not created. There can only be one instance of the configuration"
         }
@@ -101,7 +96,7 @@ class ConfigController {
                 flash.message = "ERROR: The Message of the day Start Time is after the End Time"
             }
         }
-        
+
         if (flash.message == "") {
             if (configInstance.save(flush: true)) {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
@@ -146,14 +141,14 @@ class ConfigController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (configInstance.version > version) {
-                    
+
                     configInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'config.label', default: 'Config')] as Object[], "Another user has updated this Config while you were editing")
                     render(view: "edit", model: [configInstance: configInstance])
                     return
                 }
             }
             configInstance.properties = params
-            
+
             // test motd dates if enabled
             if (configInstance.enableMOTD) {
                 // insist that end is after the start
@@ -164,12 +159,12 @@ class ConfigController {
 
             if (!configInstance.hasErrors() && configInstance.save(flush: true) && (flash.message == null)) {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
-                
+
             }
             render(view: "edit", model: [configInstance: configInstance])
-           
-         
-            
+
+
+
         }
         else {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
@@ -199,11 +194,11 @@ class ConfigController {
             }
         }
     }
-    
-    // Proccess the Motd 
+
+    // Proccess the Motd
     // Process the defaultMenu - TODO
     def _enableDisableMenuOfTheDay(configInstance) {
-        
+
         def now = new Date()
 
         // test motd dates if enabled
@@ -215,10 +210,10 @@ class ConfigController {
         }
         return configInstance
     }
-    
+
     def _getDisplayableMenu(menu) {
 		def ids = _getServerIdsWithAvailableLayers()
-		
+
 		for (def iterator = menu.menuItems.iterator(); iterator.hasNext();) {
 			def item = iterator.next()
 			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
@@ -227,15 +222,15 @@ class ConfigController {
 		}
 		return menu
 	}
-	
+
 	def _isLayerViewable(layer) {
 		return layer.activeInLastScan && !layer.blacklisted
 	}
-	
+
 	def _getServerIdsWithAvailableLayers() {
 		// We don't explicitly map layers to servers so dropping to JDBC
 		def template = new JdbcTemplate(dataSource)
-		def query = 
+		def query =
 """\
 select server.id
 from server
@@ -243,7 +238,7 @@ join layer on layer.server_id = server.id
 where not layer.blacklisted and layer.active_in_last_scan
 group by server.id\
 """
-		
+
 		def ids = []
 		template.queryForList(query).each { row ->
 			ids << row.id

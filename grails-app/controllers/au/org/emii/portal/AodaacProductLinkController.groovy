@@ -12,13 +12,15 @@ class AodaacProductLinkController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+	def aodaacAggregatorService
+
     def index = {
         redirect(action: "list", params: params)
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [aodaacProductLinkInstanceList: AodaacProductLink.list(params), aodaacProductLinkInstanceTotal: AodaacProductLink.count()]
+        params.max = Math.min(params.max ? params.int('max') : 40, 100)
+        [aodaacProductLinkInstanceList: AodaacProductLink.list(params), aodaacProductLinkInstanceTotal: AodaacProductLink.count(), aodaacProductDataJavascriptAddress: aodaacAggregatorService.productDataJavascriptAddress]
     }
 
     def create = {
