@@ -57,6 +57,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     },
 
     loadSnapshot : function(id, successCallback, failureCallback) {
+        
+        Ext.MsgBus.publish('reset');
         this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this,
                 [ successCallback ], true), failureCallback);
     },
