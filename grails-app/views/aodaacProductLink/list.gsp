@@ -25,6 +25,9 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <p>
+            Aodaac Product info javascript: <a href="${aodaacProductDataJavascriptAddress}" target="_blank">${aodaacProductDataJavascriptAddress}</a>
+            </p>
             <div class="list">
                 <table>
                     <thead>
@@ -44,9 +47,9 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
                             <td>${fieldValue(bean: aodaacProductLinkInstance, field: "layerName")}</td>
-                        
+
                             <td>${fieldValue(bean: aodaacProductLinkInstance, field: "productId")}</td>
-                        
+
                             <td>${fieldValue(bean: aodaacProductLinkInstance, field: "server")}</td>
 
                             <td><g:link action="edit" id="${aodaacProductLinkInstance.id}">edit</g:link></td>

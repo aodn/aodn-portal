@@ -44,6 +44,11 @@ class AodaacAggregatorService {
 
     // Service methods
 
+	def getProductDataJavascriptAddress() {
+
+		return "${_aggregatorBaseAddress()}aodaac-${_aggregatorEnvironment()}/js/productData.js"
+	}
+
     def getProductInfo( productIds ) {
 
         log.debug "Getting Product Info for ids: '$productIds'. Converting from Javascript to JSON objects."
@@ -51,7 +56,7 @@ class AodaacAggregatorService {
         // Delimeters for sections
 
         // Get the javascript
-        def productDataJavascript = _productDataJavascriptAddress().toURL().text
+        def productDataJavascript = productDataJavascriptAddress.toURL().text
 
         // Split into relevant parts
         productDataJavascript = productDataJavascript.split( ProductDataDelimeter )[ ProductDataIdx ] // Ignore dataset info
@@ -426,11 +431,6 @@ Long range end: ${ p.longitudeRangeEnd }
     }
 
     // Supporting logic
-
-    def _productDataJavascriptAddress() {
-
-        return "${ _aggregatorBaseAddress() }aodaac-${_aggregatorEnvironment()}/js/productData.js"
-    }
 
     def _aggregatorCommandAddress( command, args ) {
 

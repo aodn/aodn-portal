@@ -8,9 +8,9 @@
 
 package au.org.emii.portal
 
+import au.org.emii.portal.config.PortalInstance
 import au.org.emii.portal.exceptions.AodaacException
 import grails.test.GrailsUnitTestCase
-import au.org.emii.portal.config.PortalInstance
 
 class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
@@ -113,7 +113,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         aodaacAggregatorService = new AodaacAggregatorService() // Why is this not injected?
 
-        aodaacAggregatorService.metaClass._productDataJavascriptAddress = {
+        aodaacAggregatorService.metaClass.getProductDataJavascriptAddress = {
             [ toURL: { [ text: productInfoJS ] } ]
         }
     }
