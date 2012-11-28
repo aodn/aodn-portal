@@ -68,7 +68,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 help.url = "http://portalhelp.aodn.org.au/"
 
 // AODAAC Aggregator
-aodaacAggregator.url = "http://vm-115-33.ersa.edu.au/"
+aodaacAggregator.url = "http://aodaac.emii.org.au/"
 aodaacAggregator.environment = "test"
 
 // Depth service
