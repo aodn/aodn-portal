@@ -260,6 +260,8 @@ class AodaacAggregatorService {
         try {
             def url = job.result.dataUrl.toURL()
 
+			log.debug "url: ${ url }"
+
             def conn = url.openConnection()
             conn.requestMethod = "HEAD"
             conn.connect()
