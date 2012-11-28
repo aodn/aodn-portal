@@ -50,6 +50,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
             this.removeUsingOpenLayer(openLayer)
         }, this);
+        
+        this._initBaseLayers();
+        this._initDefaultLayers();
     },
     
     addUsingDescriptor: function(layerDescriptor) {
@@ -115,10 +118,45 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
-    
     removeUsingOpenLayer: function(openLayer) {
         
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
+    },
+    
+    _initBaseLayers: function() {
+        
+        // TODO: shouldn't these be set properly in the server in the first place?
+        this._initWithLayersFromServer('layer/configuredbaselayers', {
+            isBaseLayer: true, 
+            queryable: false
+        });
+    },
+    
+    _initDefaultLayers: function() {
+        this._initWithLayersFromServer('layer/defaultlayers');
+    },
+    
+    _initWithLayersFromServer: function(url, configOverrides) {
+        
+        Ext.Ajax.request({
+            url: url,
+            scope: this,
+            success: function(resp, opts) {
+                
+                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
+                Ext.each(layerDescriptorsAsText,
+                        
+                    function(layerDescriptorAsText, index, all) {
+                    
+                        var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
+                        Ext.apply(layerDescriptor, configOverrides);
+                        this.addUsingDescriptor(layerDescriptor);
+                    },
+                    
+                    this
+                );
+            }
+        });
     }
 });

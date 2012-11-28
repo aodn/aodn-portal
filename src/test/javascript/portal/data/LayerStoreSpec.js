@@ -30,6 +30,7 @@ describe("Portal.data.LayerStore", function() {
     };
     
     beforeEach(function() {
+        
         layerStore = new Portal.data.LayerStore();
         expect(layerStore.getCount()).toBe(0);
     });
@@ -157,6 +158,29 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(openLayer);
             expect(layerStore.getCount()).toBe(0);
         })
+    });
+    
+    describe('layers loaded automatically on construction', function() {
+
+        var requestParams;
         
+        beforeEach(function() {
+            
+            spyOn(Ext.Ajax, 'request');
+        });
+        
+        it('base layers', function() {
+            layerStore._initBaseLayers();
+            
+            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
+            expect(ajaxParams.url).toBe('layer/configuredbaselayers');
+        });
+        
+        it('default layers', function() {
+            layerStore._initDefaultLayers();
+            
+            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
+            expect(ajaxParams.url).toBe('layer/defaultlayers');
+        });
     });
 });

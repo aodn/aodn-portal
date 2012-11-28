@@ -21,7 +21,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         };
 
         this.initMap();
-		this.addBaseLayers();
 
         var config = Ext.apply({
             region: "center",
@@ -56,10 +55,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
 		
 
-        this.on('baselayersloaded', this.onBaseLayersLoaded, this);
 		this.map.events.register('movestart', this, this.closeDropdowns);
 
-        this.addEvents('baselayersloaded', 'layeradded', 'tabchange', 'mouseover');
+        this.addEvents('layeradded', 'tabchange', 'mouseover');
         this.bubbleEvents.push('baselayersloaded');
         this.bubbleEvents.push('layeradded');
         //this.bubbleEvents.push('focus');			
@@ -139,9 +137,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     resetMap: function() {
         this.removeAllLayers();
         this.zoomToInitialBbox();
-        this.addDefaultLayers();
 		// reset baselayers??		
-		//this.addBaseLayers();
     },
 
     _handleFeatureInfoClick: function(event) {
@@ -184,72 +180,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         
         // TODO: remove this - just a short cut as part of refactoring.
         this.animationControlsPanel = this.animationPanel.animationControlsPanel;
-    },
-
-    addBaseLayers: function() {
-        if (this.baseLayersLoaded || this.baseLayersLoading) {
-            return;
-        }
-        this.baseLayersLoading = true;
-
-        Ext.Ajax.request({
-            url: 'layer/configuredbaselayers',
-            scope: this,
-            success: function(resp, opts) {
-                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptorsAsText,
-                    function(layerDescriptorAsText, index, all) {
-                    
-                        var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
-                        // TODO: shouldn't these be set properly in the server in the first place?
-                        layerDescriptor.isBaseLayer = true; 
-                        layerDescriptor.queryable = false;
-                        this.layers.addUsingDescriptor(layerDescriptor);
-                    },
-                    this
-                );
-                delete this.baseLayersLoading;
-                this.baseLayersLoaded = true;
-                this.fireEvent('baselayersloaded');
-            }
-        });
-    },
-
-    onBaseLayersLoaded: function() {
-        this.addDefaultLayers();
-		if (this.mapOptions.mapActionsControl != undefined) {
-			this.mapOptions.mapActionsControl.actionsPanel.mapOptionsPanel.baseLayerCombo.reload();
-		}
-		
-    },
-
-    addDefaultLayers: function() {
-        if (this.defaultLayersLoaded || this.defaultLayersLoading) {
-            return;
-        }
-        this.defaultLayersLoading = true;
-        Ext.Ajax.request({
-            url: 'layer/defaultlayers',
-            scope: this,
-            success: function(resp, opts) {
-                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptorsAsText,
-                    function(layerDescriptorAsText, index, all) {
-                        this._addLayer(new Portal.common.LayerDescriptor(layerDescriptorAsText).toOpenLayer, true);
-                    },
-                    this
-                );
-                // TODO tommy move to portal panel or another higher UI
-                jQuery('.extAjaxLoading').hide('slow');
-                // Zoom to the top most layer if autoZoom is enabled
-                if (this.autoZoom === true) {
-                    this.zoomToLayer(this.map.layers[this.map.layers.length - 1]);
-                }
-                this.defaultLayersLoaded = true;
-                delete this.defaultLayersLoading;
-                this.fireEvent('defaultlayersloaded');
-            }
-        });
     },
 
     getServer: function(item) {
