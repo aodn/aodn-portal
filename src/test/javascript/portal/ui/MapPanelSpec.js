@@ -75,20 +75,6 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
     
-    describe('contains layer', function() {
-        
-        var openLayer = new OpenLayers.Layer.WMS();
-        
-        it('does not contain layer', function() {
-            expect(mapPanel.containsLayer(openLayer)).toBeFalsy();
-        })
-        
-        it('does contain layer', function() {
-            mapPanel._addLayer(openLayer);
-            expect(mapPanel.containsLayer(openLayer)).toBeTruthy();
-        });
-    });
-    
     it('reset', function() {
 
         spyOn(mapPanel, 'reset');

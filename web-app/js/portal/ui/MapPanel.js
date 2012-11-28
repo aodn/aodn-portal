@@ -57,12 +57,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
 		this.map.events.register('movestart', this, this.closeDropdowns);
 
-        this.addEvents('layeradded', 'tabchange', 'mouseover');
-        this.bubbleEvents.push('baselayersloaded');
-        this.bubbleEvents.push('layeradded');
-        //this.bubbleEvents.push('focus');			
-		
-        		
+        this.addEvents('tabchange', 'mouseover');
 
         this.on('afterlayout', function() {
             // cursor mods
@@ -191,16 +186,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return server.uri;
     },
 
-    containsLayer: function(openLayer) {
-        return (this.layers.getByLayer(openLayer) !== undefined);
-    },
-
-    waitForDefaultLayers: function(openLayer, showLoading) {
-        this.on('defaultlayersloaded', function() {
-            this.addLayer(openLayer, showLoading);
-        }, this);
-    },
-
     updateAnimationControlsPanel: function(openLayer){
         
         if (!this.animationControlsPanel.isAnimating()) {
@@ -219,33 +204,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 this.animationControlsPanel.removeAnimation();
             }
         }
-    },
-
-    // TODO: when this function is removed, need to handle "showLoading" in the LayerStore.
-    addLayer: function(openLayer, showLoading) {
-        this.updateAnimationControlsPanel(openLayer);
-        if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
-            if (!this.defaultLayersLoaded) {
-                this.waitForDefaultLayers(openLayer, showLoading);
-            }
-            else {
-                this._addLayer(openLayer, showLoading);
-            }
-        }
-
-        if(openLayer.isNcwms()){
-            this.getLayerMetadata(openLayer);
-        }
-    },
-
-    _addLayer: function(openLayer, showLoading) {
-        if (showLoading === true) {
-            this.registerLayer(openLayer);
-        }
-        
-        this.layers.addUsingOpenLayer(openLayer);
-        
-        this.fireEvent('layeradded', openLayer);
     },
 
     getMapExtent: function()  {
@@ -288,6 +246,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
+    // previously called from addLayer(), if (openLayer.isNcwms()) ...
     getLayerMetadata: function(openLayer) {
         if (openLayer.params.LAYERS) {
             var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
@@ -319,15 +278,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return layerCount === 0 ? "" : layerCount.toString();
     },
 
-    registerLayer: function(openLayer) {
-        openLayer.events.register('loadstart', this, this.loadStart);
-        openLayer.events.register('loadend', this, this.loadEnd);
-    },
-
     buildLayerLoadingString: function(layerCount) {
         return "Loading " + this.getLayersLoadingText(layerCount) +"  " + this.getLayerText(layerCount) + "\u2026";
     },
 
+    // TODO: LayerStore should be firing appropriate events which interested views (e.g. this one) should be listening for.
     loadStart: function() {
         if (this.layersLoading == 0) {
             this.updateLoadingImage("block");
