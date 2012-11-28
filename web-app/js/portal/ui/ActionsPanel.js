@@ -26,7 +26,7 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
         Portal.ui.ActionsPanel.superclass.constructor.call(this, config);
         
         this.relayEvents(this.activeLayersPanel, ['removelayer', 'zoomtolayer', 'togglevisibility']);
-        this.relayEvents(this.mapOptionsPanel, ['removealllayers', 'resetmap', 'hidelayeroptionschecked', 'hidelayeroptionsunchecked', 'autozoomchecked', 'autozoomunchecked']);
+        this.relayEvents(this.mapOptionsPanel, ['hidelayeroptionschecked', 'hidelayeroptionsunchecked', 'autozoomchecked', 'autozoomunchecked']);
         
         //
         // This panel (which contains both the MapOptions and the ActiveLayers), needs to

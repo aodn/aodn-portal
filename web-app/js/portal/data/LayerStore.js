@@ -93,6 +93,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         
         // Remove only non base layers.
         var nonBaseLayers = this.queryBy(function(record, id) {
+            
+            if (record.getLayer().options === null) { 
+                return false 
+            }
             return !record.getLayer().options.isBaseLayer
         });
         
@@ -134,6 +138,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }, this);
 
         Ext.MsgBus.subscribe('removeAllLayers', function(subject, openLayer) {
+            this.removeAll();
+        }, this);
+        
+        Ext.MsgBus.subscribe('reset', function(subject, openLayer) {
             this.removeAll();
         }, this);
         

@@ -44,6 +44,13 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         Portal.ui.LayerChooserPanel.superclass.constructor.call(this, config);
 
         this.registerEvents();
+        
+        Ext.MsgBus.subscribe('removeAll', function(subject, message) {
+            this.leftTabMenuPanel.toggleNodeBranch(true);
+        }, this);
+        Ext.MsgBus.subscribe('reset', function(subject, message) {
+            this.leftTabMenuPanel.toggleNodeBranch(true);
+        }, this);
 
         this.addEvents('addlayerclicked');
     },
@@ -61,12 +68,6 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 
     registerMapPanelEvents: function() {
 		this.mon(this.mapPanel, 'removelayer', this.removeLayer, this);
-		this.mon(this.mapPanel, 'removealllayers', function() {
-			this.leftTabMenuPanel.toggleNodeBranch(true);
-		}, this);
-		 this.mon(this.mapPanel, 'resetmap', function() {
-			this.leftTabMenuPanel.toggleNodeBranch(true);
-		}, this);
 	},
 
     registerMonitoringEvents: function() {

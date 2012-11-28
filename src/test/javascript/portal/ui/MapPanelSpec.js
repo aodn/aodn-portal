@@ -34,7 +34,12 @@ describe("Portal.ui.MapPanel", function() {
         it('updateAnimationControlsPanel called on selectedLayerChanged event', function() {
             spyOn(mapPanel, 'updateAnimationControlsPanel');
             
-            Ext.MsgBus.publish('selectedLayerChanged', { isAnimatable: function() { return true;}});
+            Ext.MsgBus.publish('selectedLayerChanged', 
+                               {
+                                    isAnimatable: function() { 
+                                        return true;
+                                    }
+                               });
             
             expect(mapPanel.updateAnimationControlsPanel).toHaveBeenCalled();
         });
@@ -82,6 +87,13 @@ describe("Portal.ui.MapPanel", function() {
             mapPanel._addLayer(openLayer);
             expect(mapPanel.containsLayer(openLayer)).toBeTruthy();
         });
+    });
+    
+    it('reset', function() {
+
+        spyOn(mapPanel, 'reset');
+        Ext.MsgBus.publish('reset');
+        expect(mapPanel.reset).toHaveBeenCalled();
     });
     
     Ext.Ajax.request.isSpy = false;

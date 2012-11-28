@@ -96,7 +96,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		
 		Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
 		
-		this.relayEvents(this.buttonPanel, ['removealllayers', 'resetmap']);
 		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
 	},
 	
@@ -121,12 +120,13 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		            tooltip:  'This will load the default set of map overlay layers and reset the map location and zoom level',   
 		            cls: "floatLeft buttonPad",
 		            scope: this,
-		            handler: function() {this.fireEvent('resetmap');}
+		            handler: function() {
+                        Ext.MsgBus.publish('reset');
+                    }
 		        },
 		        new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
 	        ]
 	    });
-		this.buttonPanel.addEvents('removealllayers', 'resetmap');
 		return this.buttonPanel;
 	},
 	

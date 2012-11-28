@@ -97,6 +97,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
+        Ext.MsgBus.subscribe('reset', function(subject, message) {
+            this.reset();
+        }, this);
     },
     
     onSelectedLayerChanged: function(openLayer) {
@@ -134,10 +137,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.hideLayerOptions = checked;
     },
 
-    resetMap: function() {
-        this.removeAllLayers();
+    reset: function() {
         this.zoomToInitialBbox();
-		// reset baselayers??		
     },
 
     _handleFeatureInfoClick: function(event) {
@@ -329,34 +330,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             else
                 this.animationPanel.setVisible(false);
         }
-    },
-
-    removeAllLayers: function() {
-        // Need to collect the layers first and delete outside a loop over
-        // the map.layers property because it updates its internal indices and
-        // accordingly skips layers as the loop progresses
-    	this.updateLoadingImage("none");
-    	
-        var layersToRemove = [];
-        if(this.animationControlsPanel.isAnimating()){
-            this.animationControlsPanel.removeAnimation();
-        }
-
-        Ext.each(this.map.layers, function(openLayer, allLayers, index) {
-            if(openLayer && !openLayer.isBaseLayer) {
-                layersToRemove.push(openLayer);
-            }
-        }, this);
-        this.removeAllLayersIn(layersToRemove);
-
-        Ext.MsgBus.publish("selectedLayerChanged", null);
-        this._closeFeatureInfoPopup();
-    },
-
-    removeAllLayersIn: function(openLayers) {
-        Ext.each(openLayers, function(openLayer, allLayers, index) {
-            this.removeLayer(openLayer, null);
-        }, this);
     },
 
     getLayerText: function(layerCount) {

@@ -198,14 +198,12 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.actionsPanel.on('removelayer', this.appConfig.mapPanel.removeLayer, this.appConfig.mapPanel);
         this.actionsPanel.on('zoomtolayer', this.appConfig.mapPanel.zoomToLayer, this.appConfig.mapPanel);
 
-        this.actionsPanel.on('removealllayers', this.appConfig.mapPanel.removeAllLayers, this.appConfig.mapPanel);
-        this.actionsPanel.on('resetmap', this.appConfig.mapPanel.resetMap, this.appConfig.mapPanel);
         this.actionsPanel.on('autozoomchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);
         this.actionsPanel.on('autozoomunchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);
         this.actionsPanel.on('hidelayeroptionschecked', this.appConfig.mapPanel.layerOptionsCheckboxHandler, this.appConfig.mapPanel);
         this.actionsPanel.on('hidelayeroptionsunchecked', this.appConfig.mapPanel.layerOptionsCheckboxHandler, this.appConfig.mapPanel);
         
-        this.appConfig.mapPanel.relayEvents(this.actionsPanel, ['removelayer', 'removealllayers', 'resetmap']);
+        this.appConfig.mapPanel.relayEvents(this.actionsPanel, ['removelayer']);
     },
 
     /**
