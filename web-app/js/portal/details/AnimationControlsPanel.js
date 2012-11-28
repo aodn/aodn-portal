@@ -28,6 +28,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				}, cfg);
 
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
+		
+		Ext.MsgBus.subscribe('removeAllLayers', function() {
+	        if (this.isAnimating()) {
+	            this.removeAnimation();
+	        }
+		}, this);
 	},
 
 	initComponent : function() {

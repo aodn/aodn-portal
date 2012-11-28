@@ -8,11 +8,14 @@
 
 describe("Portal.details.AnimationControlsPanel", function() {
 	
+    var animationPanel;
+    
+    beforeEach(function() {
+        animationPanel = new Portal.details.AnimationControlsPanel();
+    });
+    
 	describe("_getNewTimeValue", function() {
-		it("select default if old time doesn't exist")
-		{
-			var animationPanel = new Portal.details.AnimationControlsPanel();
-			
+		it("select default if old time doesn't exist", function() {
 			var oldTime = "13:25:00 (+10:00)";
 			
 			var newTimes = new Array();
@@ -29,15 +32,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			
 			expect(newTime).toBe("14:18:00 (+10:00)");
 			
-		}
-	
+		});
 	});
 	
 	describe("_onDateSelected", function() {
 
 		
 		it("should, if there is only one time available, select it", function() {
-			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
@@ -58,7 +59,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 		});
 		
 		it("selects earliest possible time if the previously selected time is not available", function() {
-			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
@@ -88,7 +88,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 		});
 		
 		it("selects previously selected time if it is available", function() {
-			var animationPanel = new Portal.details.AnimationControlsPanel();
 			var startDatePicker = new Ext.form.DateField({
 				format : 'd-m-Y',
 				value : '06-06-2007'
@@ -123,5 +122,16 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			animationPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
 			expect(animationPanel.startTimeCombo.value).toBe("14:18:00 (+10:00)");
 		});
+	});
+	
+	it('on removeAll', function() {
+	    
+	    spyOn(animationPanel, 'isAnimating').andReturn(true);
+	    spyOn(animationPanel, 'removeAnimation');
+	    
+	    Ext.MsgBus.publish('removeAllLayers');
+	    
+	    expect(animationPanel.isAnimating).toHaveBeenCalled();
+        expect(animationPanel.removeAnimation).toHaveBeenCalled();
 	});
 });

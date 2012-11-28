@@ -183,4 +183,20 @@ describe("Portal.data.LayerStore", function() {
             expect(ajaxParams.url).toBe('layer/defaultlayers');
         });
     });
+    
+    it('removeAll', function() {
+        var openLayer = createOpenLayer();
+        layerStore.addUsingOpenLayer(openLayer);
+        var baseLayer = createOpenLayer();
+        baseLayer.options.isBaseLayer = true;
+        layerStore.addUsingOpenLayer(baseLayer);
+        
+        expect(layerStore.getCount()).toBe(2);
+        
+        spyOn(layerStore, 'removeAll').andCallThrough();
+        Ext.MsgBus.publish('removeAllLayers');
+        
+        expect(layerStore.removeAll).toHaveBeenCalled();
+        expect(layerStore.getCount()).toBe(1);
+    });
 });

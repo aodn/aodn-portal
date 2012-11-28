@@ -62,7 +62,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			map: cfg.map
 		});
 		
-
 		var config = Ext.apply({
 	        collapseMode : 'mini',
             id : 'mapOptions',
@@ -112,7 +111,9 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		        	cls: "floatLeft buttonPad",   
 		            tooltip: "Remove all overlay layers from the map",
 		            scope: this,
-		            handler: this.fireRemoveAllLayers
+		            handler: function() {
+		                Ext.MsgBus.publish('removeAllLayers');
+		            }
 		        },
 		        {
 		        	xtype: 'button',

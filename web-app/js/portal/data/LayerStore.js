@@ -21,36 +21,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
         
-        Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
-            this.addUsingDescriptor(layerDescriptor)
-        }, this);
-
-        /**
-         * A "LayerLink" is a JSON object which is returned from GeoNetwork (I think :-)
-         */
-        Ext.MsgBus.subscribe('addLayerUsingLayerLink', function(subject, layerLink) {
-            this.addUsingLayerLink(layerLink)
-        }, this);
-
-        /**
-         * This is used when loading WMS layers from 3rd party servers.
-         */
-        Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
-            this.addUsingOpenLayer(openLayer)
-        }, this);
-
-        /**
-         * This will be called when a layer is selected from the "Map Layer Chooser" (in which
-         * case the layer relates to a layer stored on the server by the given ID).
-         */
-        Ext.MsgBus.subscribe('addLayerUsingServerId', function(subject, args) {
-            this.addUsingServerId(args)
-        }, this);
-
-        Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
-            this.removeUsingOpenLayer(openLayer)
-        }, this);
-        
+        this._registerMessageListeners();
         this._initBaseLayers();
         this._initDefaultLayers();
     },
@@ -118,10 +89,58 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
+    removeAll: function() {
+        
+        // Remove only non base layers.
+        var nonBaseLayers = this.queryBy(function(record, id) {
+            return !record.getLayer().options.isBaseLayer
+        });
+        
+        this.remove(nonBaseLayers.getRange());
+        Ext.MsgBus.publish('selectedLayerChanged', null);
+    },
+    
     removeUsingOpenLayer: function(openLayer) {
         
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
+    },
+    
+    _registerMessageListeners: function() {
+        Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
+            this.addUsingDescriptor(layerDescriptor)
+        }, this);
+
+        /**
+         * A "LayerLink" is a JSON object which is returned from GeoNetwork (I think :-)
+         */
+        Ext.MsgBus.subscribe('addLayerUsingLayerLink', function(subject, layerLink) {
+            this.addUsingLayerLink(layerLink)
+        }, this);
+
+        /**
+         * This is used when loading WMS layers from 3rd party servers.
+         */
+        Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
+            this.addUsingOpenLayer(openLayer)
+        }, this);
+
+        /**
+         * This will be called when a layer is selected from the "Map Layer Chooser" (in which
+         * case the layer relates to a layer stored on the server by the given ID).
+         */
+        Ext.MsgBus.subscribe('addLayerUsingServerId', function(subject, args) {
+            this.addUsingServerId(args)
+        }, this);
+
+        Ext.MsgBus.subscribe('removeAllLayers', function(subject, openLayer) {
+            this.removeAll();
+        }, this);
+        
+        Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
+            this.removeUsingOpenLayer(openLayer)
+        }, this);
+        
     },
     
     _initBaseLayers: function() {
