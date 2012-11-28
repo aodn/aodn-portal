@@ -195,7 +195,6 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
     
     registerActionPanelEventListeners: function() {
       
-        this.actionsPanel.on('removelayer', this.appConfig.mapPanel.removeLayer, this.appConfig.mapPanel);
         this.actionsPanel.on('zoomtolayer', this.appConfig.mapPanel.zoomToLayer, this.appConfig.mapPanel);
 
         this.actionsPanel.on('autozoomchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);

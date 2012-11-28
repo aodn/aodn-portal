@@ -108,6 +108,11 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         Portal.ui.AnimationPanel.superclass.constructor.call(this, config);
         
         this.setPosition(1, 0); // override with CSS later
+        
+        Ext.MsgBus.subscribe('removeLayer', function() {
+            this.setVisible(false);
+        }, this);
+
     },
 
     _modMapDragging: function(toggle) {

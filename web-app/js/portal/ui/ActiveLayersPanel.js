@@ -55,8 +55,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 		
 		}, cfg);
 		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
-		this.addEvents('removelayer', 'zoomtolayer', 'selectedactivelayerchanged');
-		// Not sure what these all are:  this.bubbleEvents = ['add', 'remove', 'removelayer', 'zoomtolayer'];
+		this.addEvents('zoomtolayer', 'selectedactivelayerchanged');
 		
 		this.on("click", this.activeLayersTreePanelClickHandler, this);
 		this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
@@ -134,26 +133,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	getSelectedLayer: function () {
 		var node = this.getSelectedNode();
 		return (node != null) ? this.getSelectedNode().layer : null;
-	},
-	
-	removeLayer: function() {
-	    
-		var selectedLayer = this.getSelectedLayer();
-		
-		var checkedLayers = this.getChecked();
-		//Decide which layer to show in details panel
-		var newDetailsPanelLayer = null;
-		if (checkedLayers.length > 0) {
-			if (checkedLayers[0].layer != selectedLayer) {
-				newDetailsPanelLayer = checkedLayers[0].layer;
-			} else if (checkedLayers.length > 1) {
-				newDetailsPanelLayer = checkedLayers[1].layer;
-			}
-		} 
-		
-	    if (this.fireEvent('removelayer', selectedLayer, newDetailsPanelLayer)) {
-			
-		}
 	},
 	
 	zoomToLayer: function() {

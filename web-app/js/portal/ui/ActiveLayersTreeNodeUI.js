@@ -51,7 +51,8 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     removeLayer: function() {
-        this.deferToDelegate("removeLayer");
+        
+        Ext.MsgBus.publish('removeLayer', this.node.layer);
     },
     
     zoomToLayer: function() {

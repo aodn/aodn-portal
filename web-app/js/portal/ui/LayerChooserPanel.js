@@ -45,6 +45,9 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
 
         this.registerEvents();
         
+        Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
+            this.removeLayer(message);
+        }, this);
         Ext.MsgBus.subscribe('removeAll', function(subject, message) {
             this.leftTabMenuPanel.toggleNodeBranch(true);
         }, this);
@@ -82,7 +85,7 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    removeLayer: function(openLayer, newDetailsPanelLayer) {
+    removeLayer: function(openLayer) {
 
         this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     }

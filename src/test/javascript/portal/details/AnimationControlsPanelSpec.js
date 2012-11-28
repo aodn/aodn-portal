@@ -8,10 +8,10 @@
 
 describe("Portal.details.AnimationControlsPanel", function() {
 	
-    var animationPanel;
+    var animationControlsPanel;
     
     beforeEach(function() {
-        animationPanel = new Portal.details.AnimationControlsPanel();
+        animationControlsPanel = new Portal.details.AnimationControlsPanel();
     });
     
 	describe("_getNewTimeValue", function() {
@@ -28,7 +28,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			newTimes[6] = "15:18:00 (+10:00)";
 			newTimes[7] = "16:18:00 (+10:00)";
 			
-			var newTime = animationPanel._getNewTimeValue(oldTime,newTimes,5);
+			var newTime = animationControlsPanel._getNewTimeValue(oldTime,newTimes,5);
 			
 			expect(newTime).toBe("14:18:00 (+10:00)");
 			
@@ -43,7 +43,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 				format : 'd-m-Y',
 				value : '06-06-2007'
 			});
-			animationPanel.startDatePicker = startDatePicker;
+			animationControlsPanel.startDatePicker = startDatePicker;
 	
 			var allTimes = new Array();
 			allTimes['2006-06-06'] = new Array();
@@ -52,10 +52,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			allTimes['2006-06-06'][0][0]="13:18:00 (+10:00)"
 			allTimes['2006-06-06'][0][1]="13:20:00 (+10:00)"
 			
-			animationPanel.allTimes =allTimes;	
+			animationControlsPanel.allTimes =allTimes;	
 			
-			animationPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
-			expect(animationPanel.startTimeCombo.value).toBe("13:18:00 (+10:00)");
+			animationControlsPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
+			expect(animationControlsPanel.startTimeCombo.value).toBe("13:18:00 (+10:00)");
 		});
 		
 		it("selects earliest possible time if the previously selected time is not available", function() {
@@ -63,7 +63,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 				format : 'd-m-Y',
 				value : '06-06-2007'
 			});
-			animationPanel.startDatePicker = startDatePicker;	
+			animationControlsPanel.startDatePicker = startDatePicker;	
 			
 			var allTimes = new Array();
 			allTimes['2006-06-06'] = new Array();
@@ -80,11 +80,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			allTimes['2006-06-06'][2][0]="15:18:00 (+10:00)";
 			allTimes['2006-06-06'][2][1]="15:20:00 (+10:00)";
 			
-			animationPanel.allTimes =allTimes;	
-			animationPanel.startTimeCombo.setValue("19:19:00 (+10:00)")
+			animationControlsPanel.allTimes =allTimes;	
+			animationControlsPanel.startTimeCombo.setValue("19:19:00 (+10:00)")
 			
-			animationPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
-			expect(animationPanel.startTimeCombo.value).toBe("13:18:00 (+10:00)");
+			animationControlsPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
+			expect(animationControlsPanel.startTimeCombo.value).toBe("13:18:00 (+10:00)");
 		});
 		
 		it("selects previously selected time if it is available", function() {
@@ -92,7 +92,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 				format : 'd-m-Y',
 				value : '06-06-2007'
 			});
-			animationPanel.startDatePicker = startDatePicker;	
+			animationControlsPanel.startDatePicker = startDatePicker;	
 			
 			var allTimes = new Array();
 			
@@ -116,22 +116,45 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			allTimes['2006-06-06'][2][0]="15:18:00 (+10:00)";
 			allTimes['2006-06-06'][2][1]="15:20:00 (+10:00)";
 			
-			animationPanel.allTimes =allTimes;	
-			animationPanel.startTimeCombo.setValue("14:18:00 (+10:00)")
+			animationControlsPanel.allTimes =allTimes;	
+			animationControlsPanel.startTimeCombo.setValue("14:18:00 (+10:00)")
 			
-			animationPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
-			expect(animationPanel.startTimeCombo.value).toBe("14:18:00 (+10:00)");
+			animationControlsPanel._onDateSelected(startDatePicker, Date.parseDate("06-06-2006", 'd-m-Y'));
+			expect(animationControlsPanel.startTimeCombo.value).toBe("14:18:00 (+10:00)");
 		});
 	});
 	
-	it('on removeAll', function() {
-	    
-	    spyOn(animationPanel, 'isAnimating').andReturn(true);
-	    spyOn(animationPanel, 'removeAnimation');
-	    
-	    Ext.MsgBus.publish('removeAllLayers');
-	    
-	    expect(animationPanel.isAnimating).toHaveBeenCalled();
-        expect(animationPanel.removeAnimation).toHaveBeenCalled();
+	describe('remove messages', function() {
+	    it('on removeAll', function() {
+	        
+	        spyOn(animationControlsPanel, 'isAnimating').andReturn(true);
+	        spyOn(animationControlsPanel, 'removeAnimation');
+	        
+	        Ext.MsgBus.publish('removeAllLayers');
+	        
+	        expect(animationControlsPanel.isAnimating).toHaveBeenCalled();
+	        expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
+	    });
+
+        it('on removeLayer', function() {
+            
+            var animationPanel = new Portal.ui.AnimationPanel(new OpenLayers.Map());
+            
+            spyOn(animationControlsPanel, 'removeAnimation');
+            spyOn(Portal.ui.AnimationPanel.prototype, 'setVisible');
+            
+            var openLayer = new OpenLayers.Layer.WMS(
+                "the title",
+                "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
+                {},
+                { isBaseLayer: false }
+            );
+            openLayer.isAnimated = true;
+
+            Ext.MsgBus.publish('removeLayer', openLayer);
+            
+            expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
+            expect(Portal.ui.AnimationPanel.prototype.setVisible).toHaveBeenCalledWith(false);
+        });
 	});
 });

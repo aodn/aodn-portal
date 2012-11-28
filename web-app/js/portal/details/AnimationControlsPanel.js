@@ -34,6 +34,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	            this.removeAnimation();
 	        }
 		}, this);
+        Ext.MsgBus.subscribe('removeLayer', function() {
+            this.removeAnimation();
+        }, this);
 	},
 
 	initComponent : function() {

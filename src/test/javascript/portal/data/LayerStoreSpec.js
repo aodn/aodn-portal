@@ -89,17 +89,6 @@ describe("Portal.data.LayerStore", function() {
         expect(layerStore.getCount()).toBe(1);
     });
     
-    // remove open layer
-    it('remove open layer', function() {
-        
-        var openLayer = createOpenLayer();
-        layerStore.addUsingOpenLayer(openLayer);
-        expect(layerStore.getCount()).toBe(1);
-        
-        layerStore.removeUsingOpenLayer(openLayer);
-        expect(layerStore.getCount()).toBe(0);
-    });
-    
     describe('layer related events', function() {
        
         it('addLayerUsingDescriptor', function() {
@@ -184,32 +173,54 @@ describe("Portal.data.LayerStore", function() {
         });
     });
     
-    // I question whether we need both 'reset' and 'remove all layers', as the only difference
-    // is that 'reset' resets the zoom and extent (so why not just get rid of 'remove all layers'?).
-    it('removeAll', function() {
-        var openLayer = createOpenLayer();
-        layerStore.addUsingOpenLayer(openLayer);
-        var baseLayer = createOpenLayer();
-        baseLayer.options.isBaseLayer = true;
-        layerStore.addUsingOpenLayer(baseLayer);
+    describe('removing layers', function() {
         
-        expect(layerStore.getCount()).toBe(2);
+        it('remove open layer', function() {
+            
+            var openLayer = createOpenLayer();
+            layerStore.addUsingOpenLayer(openLayer);
+            expect(layerStore.getCount()).toBe(1);
+            
+            layerStore.removeUsingOpenLayer(openLayer);
+            expect(layerStore.getCount()).toBe(0);
+        });
         
-        spyOn(layerStore, 'removeAll').andCallThrough();
-        Ext.MsgBus.publish('removeAllLayers');
+        it('remove open layer via message', function() {
+            var openLayer = createOpenLayer();
+            layerStore.addUsingOpenLayer(openLayer);
+            expect(layerStore.getCount()).toBe(1);
+            
+            Ext.MsgBus.publish('removeLayer', openLayer);
+            expect(layerStore.getCount()).toBe(0);
+        });
         
-        expect(layerStore.removeAll).toHaveBeenCalled();
-        expect(layerStore.getCount()).toBe(1);
-    });
-    
-    it('reset', function() {
-        layerStore.addUsingOpenLayer(createOpenLayer());
-        expect(layerStore.getCount()).toBe(1);
+        // I question whether we need both 'reset' and 'remove all layers', as the only difference
+        // is that 'reset' resets the zoom and extent (so why not just get rid of 'remove all layers'?).
+        it('removeAll', function() {
+            var openLayer = createOpenLayer();
+            layerStore.addUsingOpenLayer(openLayer);
+            var baseLayer = createOpenLayer();
+            baseLayer.options.isBaseLayer = true;
+            layerStore.addUsingOpenLayer(baseLayer);
+            
+            expect(layerStore.getCount()).toBe(2);
+            
+            spyOn(layerStore, 'removeAll').andCallThrough();
+            Ext.MsgBus.publish('removeAllLayers');
+            
+            expect(layerStore.removeAll).toHaveBeenCalled();
+            expect(layerStore.getCount()).toBe(1);
+        });
         
-        spyOn(layerStore, 'removeAll').andCallThrough();
-        Ext.MsgBus.publish('reset');
-        
-        expect(layerStore.removeAll).toHaveBeenCalled();
-        expect(layerStore.getCount()).toBe(0);
+        it('reset', function() {
+            layerStore.addUsingOpenLayer(createOpenLayer());
+            expect(layerStore.getCount()).toBe(1);
+            
+            spyOn(layerStore, 'removeAll').andCallThrough();
+            Ext.MsgBus.publish('reset');
+            
+            expect(layerStore.removeAll).toHaveBeenCalled();
+            expect(layerStore.getCount()).toBe(0);
+        });
     });
 });
