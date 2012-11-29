@@ -78,5 +78,16 @@ describe("Portal.ui.MapPanel", function() {
         expect(mapPanel.reset).toHaveBeenCalled();
     });
     
+    it('layersLoading', function() {
+        
+        spyOn(mapPanel, '_updateLayerLoadingSpinner');
+        
+        Ext.MsgBus.publish('layersLoading', 0);
+        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
+
+        Ext.MsgBus.publish('layersLoading', 1);
+        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
+    })
+    
     Ext.Ajax.request.isSpy = false;
 });

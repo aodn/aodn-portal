@@ -85,11 +85,53 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
+        
         Ext.MsgBus.subscribe('reset', function(subject, message) {
             this.reset();
         }, this);
+        
+        Ext.MsgBus.subscribe('layersLoading', function(subject, numLayersLoading) {
+            this._updateLayerLoadingSpinner(numLayersLoading);
+        }, this);                
     },
     
+    _updateLayerLoadingSpinner: function(numLayersLoading) {
+      
+        jQuery("#loader p").text(this.buildLayerLoadingString(numLayersLoading));
+        
+        // Show spinner (if it's not already visible).
+        if ((numLayersLoading > 0) && (!this.spinnerTimeOut)) {
+            var spinner = this.spinnerForLayerloading;
+            this.spinnerTimeOut = setTimeout(function() {
+                jQuery("#loader").show();
+                spinner.spin(jQuery("#jsloader").get(0));
+            }, 2000);
+        }
+        else {
+            
+            if (this.spinnerTimeOut) {
+                clearTimeout(this.spinnerTimeOut);
+                delete this.spinnerTimeOut;
+            }
+            jQuery("#loader").hide('slow');
+        }
+    },
+//    updateLoadingImage: function(display) {
+//        if (display == "none" || !this.isVisible()) {
+//            jQuery("#loader").hide('slow');
+//        }
+//        else {
+//            if (this.layersLoading >= 0) {
+//                var spinner = this.spinnerForLayerloading;
+//                this.spinnerTimeOut = setTimeout(function() {
+//                    jQuery("#loader").show();
+//                    spinner.spin(jQuery("#jsloader").get(0));
+//                }, 2000);
+//            }
+//        }
+//    },
+
+
     onSelectedLayerChanged: function(openLayer) {
         
         if (this.autoZoom === true) {
@@ -261,21 +303,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 delete this.spinnerTimeOut;
             }
             this.updateLoadingImage("none");
-        }
-    },
-
-    updateLoadingImage: function(display) {
-        if (display == "none" || !this.isVisible()) {
-            jQuery("#loader").hide('slow');
-        }
-        else {
-            if (this.layersLoading >= 0) {
-                var spinner = this.spinnerForLayerloading;
-                this.spinnerTimeOut = setTimeout(function() {
-                    jQuery("#loader").show();
-                    spinner.spin(jQuery("#jsloader").get(0));
-                }, 2000);
-            }
         }
     },
 
