@@ -82,11 +82,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._closeFeatureInfoPopup();
         }, this);
 
-
-        // make sure layer store reflects loaded layers
-        // even if the map hasn't been rendered yet
-        this.layers.bind(this.map);
-        
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);

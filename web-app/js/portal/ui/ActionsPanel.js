@@ -48,6 +48,7 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
     },
     
     initBaseLayerCombo: function() {
+        console.log("initBaseLayerCombo");
         this.mapOptionsPanel.initBaseLayerCombo();
     },
     

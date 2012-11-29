@@ -129,8 +129,8 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
             
             // create layer store with only baselayers
             this.store = new GeoExt.data.LayerStore({
-                layers: this.map.getLayersBy('isBaseLayer', true)//,
-               // map: this.map //  THIS NOT NEEDED. map from initialConfig used
+                layers: this.map.getLayersBy('isBaseLayer', true),
+                map: this.map
             });
             
             
@@ -158,6 +158,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     },	// eo function initComponent
 	
 	reload: function() {
+	    
 		    // reload layer store with 'new' baselayers
 		    this.store = new GeoExt.data.LayerStore({
                 layers: this.map.getLayersBy('isBaseLayer', true)
