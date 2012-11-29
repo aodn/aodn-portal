@@ -31,17 +31,13 @@ describe("Portal.ui.MapPanel", function() {
 
     describe('message bus tests', function() {
         
-        it('updateAnimationControlsPanel called on selectedLayerChanged event', function() {
-            spyOn(mapPanel, 'updateAnimationControlsPanel');
+        it('on selectedLayerChanged event', function() {
+            spyOn(mapPanel, 'zoomToLayer');
             
-            Ext.MsgBus.publish('selectedLayerChanged', 
-                               {
-                                    isAnimatable: function() { 
-                                        return true;
-                                    }
-                               });
+            mapPanel.autoZoom = true;
+            Ext.MsgBus.publish('selectedLayerChanged');
             
-            expect(mapPanel.updateAnimationControlsPanel).toHaveBeenCalled();
+            expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
     });
     

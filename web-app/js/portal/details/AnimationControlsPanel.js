@@ -37,6 +37,21 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe('removeLayer', function() {
             this.removeAnimation();
         }, this);
+        
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
+            if (!this.isAnimating()) {
+                if (openLayer) {
+                    if (openLayer.isAnimatable()) {
+                        //show the panel for the first time!
+                        this.setSelectedLayer(openLayer);
+                        this.update();
+                    }
+                }
+                else {
+                    this.removeAnimation();
+                }
+            }
+        }, this);
 	},
 
 	initComponent : function() {

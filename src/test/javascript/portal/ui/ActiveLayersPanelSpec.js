@@ -20,7 +20,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             selectedLayerChangedFired = true;
         });
         
-        activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: {}});
+        activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
         expect(selectedLayerChangedFired).toBe(true);
     });
 });

@@ -20,8 +20,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.src = "img/blank.png";
         };
 
-        this.initMap();
-
         var config = Ext.apply({
             region: "center",
             split: true,
@@ -35,8 +33,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
-        this.initAnimationPanel();
-        
+        this.initMap();
+
         this.spinnerForLayerloading = new Spinner({
             lines: 12, // The number of lines to draw
             length: 16, // The length of each line
@@ -98,8 +96,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
     
     onSelectedLayerChanged: function(openLayer) {
-        
-        this.updateAnimationControlsPanel(openLayer);
         
         if (this.autoZoom === true) {
             this.zoomToLayer(openLayer);
@@ -164,18 +160,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.appConfig.mapPanel = this;
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
-        this.map = new OpenLayers.Map(this.mapOptions);
-        this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-        this.map.events.register('removelayer', this, this.postRemoveLayer);		
-    },
-
-    initAnimationPanel: function() {
-    
-        this.animationPanel = new Portal.ui.AnimationPanel(this.map);
-        this.add(this.animationPanel);
-        
-        // TODO: remove this - just a short cut as part of refactoring.
-        this.animationControlsPanel = this.animationPanel.animationControlsPanel;
+        this.map = this.mapOptions.newMap();
     },
 
     getServer: function(item) {
@@ -184,26 +169,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getUri: function(server) {
         return server.uri;
-    },
-
-    updateAnimationControlsPanel: function(openLayer){
-        
-        if (!this.animationControlsPanel.isAnimating()) {
-            if (openLayer) {
-                if (openLayer.isAnimatable()) {
-                    //show the panel for the first time!
-                    this.animationControlsPanel.setSelectedLayer(openLayer);
-                    this.animationControlsPanel.update();
-                    this.animationPanel.setVisible(true);
-                }
-                else {
-                    this.animationPanel.setVisible(false);
-                }
-            }
-            else {
-                this.animationControlsPanel.removeAnimation();
-            }
-        }
     },
 
     getMapExtent: function()  {
