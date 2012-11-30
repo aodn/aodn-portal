@@ -31,17 +31,13 @@ describe("Portal.ui.MapPanel", function() {
 
     describe('message bus tests', function() {
         
-        it('updateAnimationControlsPanel called on selectedLayerChanged event', function() {
-            spyOn(mapPanel, 'updateAnimationControlsPanel');
+        it('on selectedLayerChanged event', function() {
+            spyOn(mapPanel, 'zoomToLayer');
             
-            Ext.MsgBus.publish('selectedLayerChanged', 
-                               {
-                                    isAnimatable: function() { 
-                                        return true;
-                                    }
-                               });
+            mapPanel.autoZoom = true;
+            Ext.MsgBus.publish('selectedLayerChanged');
             
-            expect(mapPanel.updateAnimationControlsPanel).toHaveBeenCalled();
+            expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
     });
     
@@ -75,26 +71,23 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
     
-    describe('contains layer', function() {
-        
-        var openLayer = new OpenLayers.Layer.WMS();
-        
-        it('does not contain layer', function() {
-            expect(mapPanel.containsLayer(openLayer)).toBeFalsy();
-        })
-        
-        it('does contain layer', function() {
-            mapPanel._addLayer(openLayer);
-            expect(mapPanel.containsLayer(openLayer)).toBeTruthy();
-        });
-    });
-    
     it('reset', function() {
 
         spyOn(mapPanel, 'reset');
         Ext.MsgBus.publish('reset');
         expect(mapPanel.reset).toHaveBeenCalled();
     });
+    
+    it('layersLoading', function() {
+        
+        spyOn(mapPanel, '_updateLayerLoadingSpinner');
+        
+        Ext.MsgBus.publish('layersLoading', 0);
+        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
+
+        Ext.MsgBus.publish('layersLoading', 1);
+        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
+    })
     
     Ext.Ajax.request.isSpy = false;
 });
