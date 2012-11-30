@@ -21,6 +21,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         };
 
         var config = Ext.apply({
+            id: 'mapPanel',
             region: "center",
             split: true,
             header: false,
@@ -28,7 +29,12 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             autoZoom: this.appConfig.autoZoom,
             hideLayerOptions: this.appConfig.hideLayerOptions,
             layersLoading: 0,
-            layers: new Portal.data.LayerStore()
+            layers: new Portal.data.LayerStore(),
+            html: " \
+                    <div id='loader' style='position:absolute; top:50%; left:43%; z-index: 9000;'> \
+                        <p/> \
+                        <div id='jsloader' style='height:100px; width:100px;' /> \
+                    </div>" // This is the "Loading 'n' layers" pop-up.
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -44,11 +50,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             speed: 1, // Rounds per second
             trail: 60, // Afterglow percentage
             shadow: true // Whether to render a shadow
-        });
-
+        }).spin(jQuery("#jsloader"));    // TODO: spinner not visible for some reason.
+        
         this.on('hide', function() {
             // map is never hidden!!!!"
-            this.updateLoadingImage("none");
             this._closeFeatureInfoPopup();
         }, this);
 		
@@ -99,38 +104,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
       
         jQuery("#loader p").text(this.buildLayerLoadingString(numLayersLoading));
         
-        // Show spinner (if it's not already visible).
-        if ((numLayersLoading > 0) && (!this.spinnerTimeOut)) {
-            var spinner = this.spinnerForLayerloading;
-            this.spinnerTimeOut = setTimeout(function() {
-                jQuery("#loader").show();
-                spinner.spin(jQuery("#jsloader").get(0));
-            }, 2000);
+        // Show spinner.
+        if (numLayersLoading > 0) {
+            jQuery("#loader").show();
         }
         else {
-            
-            if (this.spinnerTimeOut) {
-                clearTimeout(this.spinnerTimeOut);
-                delete this.spinnerTimeOut;
-            }
             jQuery("#loader").hide('slow');
         }
     },
-//    updateLoadingImage: function(display) {
-//        if (display == "none" || !this.isVisible()) {
-//            jQuery("#loader").hide('slow');
-//        }
-//        else {
-//            if (this.layersLoading >= 0) {
-//                var spinner = this.spinnerForLayerloading;
-//                this.spinnerTimeOut = setTimeout(function() {
-//                    jQuery("#loader").show();
-//                    spinner.spin(jQuery("#jsloader").get(0));
-//                }, 2000);
-//            }
-//        }
-//    },
-
 
     onSelectedLayerChanged: function(openLayer) {
         
@@ -284,33 +265,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return "Loading " + this.getLayersLoadingText(layerCount) +"  " + this.getLayerText(layerCount) + "\u2026";
     },
 
-    // TODO: LayerStore should be firing appropriate events which interested views (e.g. this one) should be listening for.
-    loadStart: function() {
-        if (this.layersLoading == 0) {
-            this.updateLoadingImage("block");
-        }
-        this.layersLoading += 1;
-        jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
-    },
-
-    loadEnd: function() {
-        this.layersLoading -= 1;
-        this.layersLoading = Math.max(this.layersLoading, 0);
-        jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
-        if (this.layersLoading == 0) {
-            if (this.spinnerTimeOut) {
-                clearTimeout(this.spinnerTimeOut);
-                delete this.spinnerTimeOut;
-            }
-            this.updateLoadingImage("none");
-        }
-    },
-
     getViewSize: function() {
         return this.container.getViewSize();
     },
     
-     getPageX: function() {
+    getPageX: function() {
         return this.getPosition()[0];
     },
     
