@@ -60,10 +60,6 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 
     toggleLayerNodes: function(id, enable, node) {
         this.defaultMenuTree.toggleLayerNodes(id, enable, node);
-    },
-
-    initBaseLayerCombo: function() {
-        this.defaultMenuTree.initBaseLayerCombo();
     }
 });
 

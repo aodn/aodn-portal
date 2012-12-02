@@ -10,9 +10,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function(map) {
-        
-        this.map = map;
+    constructor: function() {
         
         //setVisible(true) for floating panel doesn't work without this fix
         //http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
@@ -29,7 +27,6 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         });
 
         this.animationControlsPanel = new Portal.details.AnimationControlsPanel();
-        this.animationControlsPanel.setMap(map);
 
         this.controlButtonPanel = new Ext.Panel({
 
@@ -112,7 +109,25 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe('removeLayer', function() {
             this.setVisible(false);
         }, this);
-
+        
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
+            
+            if (!this.animationControlsPanel.isAnimating()) {
+                if (openLayer) {
+                    if (openLayer.isAnimatable()) {
+                        this.setVisible(true);
+                    }
+                    else {
+                        this.setVisible(false);
+                    }
+                }
+            }
+        }, this);
+    },
+    
+    setMap: function(map) {
+        this.map = map;
+        this.animationControlsPanel.setMap(this.map);
     },
 
     _modMapDragging: function(toggle) {

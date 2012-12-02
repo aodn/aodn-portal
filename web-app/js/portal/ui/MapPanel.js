@@ -20,9 +20,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.src = "img/blank.png";
         };
 
-        this.initMap();
-
         var config = Ext.apply({
+            id: 'mapPanel',
             region: "center",
             split: true,
             header: false,
@@ -30,13 +29,18 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             autoZoom: this.appConfig.autoZoom,
             hideLayerOptions: this.appConfig.hideLayerOptions,
             layersLoading: 0,
-            layers: new Portal.data.LayerStore()
+            layers: new Portal.data.LayerStore(),
+            html: " \
+                    <div id='loader' style='position:absolute; top:50%; left:43%; z-index: 9000;'> \
+                        <p/> \
+                        <div id='jsloader' style='height:100px; width:100px;' /> \
+                    </div>" // This is the "Loading 'n' layers" pop-up.
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
-        this.initAnimationPanel();
-        
+        this.initMap();
+
         this.spinnerForLayerloading = new Spinner({
             lines: 12, // The number of lines to draw
             length: 16, // The length of each line
@@ -46,23 +50,17 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             speed: 1, // Rounds per second
             trail: 60, // Afterglow percentage
             shadow: true // Whether to render a shadow
-        });
-
+        }).spin(jQuery("#jsloader"));    // TODO: spinner not visible for some reason.
+        
         this.on('hide', function() {
             // map is never hidden!!!!"
-            this.updateLoadingImage("none");
             this._closeFeatureInfoPopup();
         }, this);
 		
 
 		this.map.events.register('movestart', this, this.closeDropdowns);
 
-        this.addEvents('layeradded', 'tabchange', 'mouseover');
-        this.bubbleEvents.push('baselayersloaded');
-        this.bubbleEvents.push('layeradded');
-        //this.bubbleEvents.push('focus');			
-		
-        		
+        this.addEvents('tabchange', 'mouseover');
 
         this.on('afterlayout', function() {
             // cursor mods
@@ -89,22 +87,33 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._closeFeatureInfoPopup();
         }, this);
 
-
-        // make sure layer store reflects loaded layers
-        // even if the map hasn't been rendered yet
-        this.layers.bind(this.map);
-        
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
+        
         Ext.MsgBus.subscribe('reset', function(subject, message) {
             this.reset();
         }, this);
+        
+        Ext.MsgBus.subscribe('layersLoading', function(subject, numLayersLoading) {
+            this._updateLayerLoadingSpinner(numLayersLoading);
+        }, this);                
     },
     
-    onSelectedLayerChanged: function(openLayer) {
+    _updateLayerLoadingSpinner: function(numLayersLoading) {
+      
+        jQuery("#loader p").text(this.buildLayerLoadingString(numLayersLoading));
         
-        this.updateAnimationControlsPanel(openLayer);
+        // Show spinner.
+        if (numLayersLoading > 0) {
+            jQuery("#loader").show();
+        }
+        else {
+            jQuery("#loader").hide('slow');
+        }
+    },
+
+    onSelectedLayerChanged: function(openLayer) {
         
         if (this.autoZoom === true) {
             this.zoomToLayer(openLayer);
@@ -169,18 +178,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.appConfig.mapPanel = this;
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
-        this.map = new OpenLayers.Map(this.mapOptions);
-        this.map.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-        this.map.events.register('removelayer', this, this.postRemoveLayer);		
-    },
-
-    initAnimationPanel: function() {
-    
-        this.animationPanel = new Portal.ui.AnimationPanel(this.map);
-        this.add(this.animationPanel);
-        
-        // TODO: remove this - just a short cut as part of refactoring.
-        this.animationControlsPanel = this.animationPanel.animationControlsPanel;
+        this.map = this.mapOptions.newMap();
     },
 
     getServer: function(item) {
@@ -189,63 +187,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getUri: function(server) {
         return server.uri;
-    },
-
-    containsLayer: function(openLayer) {
-        return (this.layers.getByLayer(openLayer) !== undefined);
-    },
-
-    waitForDefaultLayers: function(openLayer, showLoading) {
-        this.on('defaultlayersloaded', function() {
-            this.addLayer(openLayer, showLoading);
-        }, this);
-    },
-
-    updateAnimationControlsPanel: function(openLayer){
-        
-        if (!this.animationControlsPanel.isAnimating()) {
-            if (openLayer) {
-                if (openLayer.isAnimatable()) {
-                    //show the panel for the first time!
-                    this.animationControlsPanel.setSelectedLayer(openLayer);
-                    this.animationControlsPanel.update();
-                    this.animationPanel.setVisible(true);
-                }
-                else {
-                    this.animationPanel.setVisible(false);
-                }
-            }
-            else {
-                this.animationControlsPanel.removeAnimation();
-            }
-        }
-    },
-
-    // TODO: when this function is removed, need to handle "showLoading" in the LayerStore.
-    addLayer: function(openLayer, showLoading) {
-        this.updateAnimationControlsPanel(openLayer);
-        if (!this.containsLayer(openLayer) || (openLayer.isAnimated == true)) {
-            if (!this.defaultLayersLoaded) {
-                this.waitForDefaultLayers(openLayer, showLoading);
-            }
-            else {
-                this._addLayer(openLayer, showLoading);
-            }
-        }
-
-        if(openLayer.isNcwms()){
-            this.getLayerMetadata(openLayer);
-        }
-    },
-
-    _addLayer: function(openLayer, showLoading) {
-        if (showLoading === true) {
-            this.registerLayer(openLayer);
-        }
-        
-        this.layers.addUsingOpenLayer(openLayer);
-        
-        this.fireEvent('layeradded', openLayer);
     },
 
     getMapExtent: function()  {
@@ -288,6 +229,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
+    // previously called from addLayer(), if (openLayer.isNcwms()) ...
     getLayerMetadata: function(openLayer) {
         if (openLayer.params.LAYERS) {
             var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
@@ -319,56 +261,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return layerCount === 0 ? "" : layerCount.toString();
     },
 
-    registerLayer: function(openLayer) {
-        openLayer.events.register('loadstart', this, this.loadStart);
-        openLayer.events.register('loadend', this, this.loadEnd);
-    },
-
     buildLayerLoadingString: function(layerCount) {
         return "Loading " + this.getLayersLoadingText(layerCount) +"  " + this.getLayerText(layerCount) + "\u2026";
-    },
-
-    loadStart: function() {
-        if (this.layersLoading == 0) {
-            this.updateLoadingImage("block");
-        }
-        this.layersLoading += 1;
-        jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
-    },
-
-    loadEnd: function() {
-        this.layersLoading -= 1;
-        this.layersLoading = Math.max(this.layersLoading, 0);
-        jQuery("#loader p").text(this.buildLayerLoadingString(this.layersLoading));
-        if (this.layersLoading == 0) {
-            if (this.spinnerTimeOut) {
-                clearTimeout(this.spinnerTimeOut);
-                delete this.spinnerTimeOut;
-            }
-            this.updateLoadingImage("none");
-        }
-    },
-
-    updateLoadingImage: function(display) {
-        if (display == "none" || !this.isVisible()) {
-            jQuery("#loader").hide('slow');
-        }
-        else {
-            if (this.layersLoading >= 0) {
-                var spinner = this.spinnerForLayerloading;
-                this.spinnerTimeOut = setTimeout(function() {
-                    jQuery("#loader").show();
-                    spinner.spin(jQuery("#jsloader").get(0));
-                }, 2000);
-            }
-        }
     },
 
     getViewSize: function() {
         return this.container.getViewSize();
     },
     
-     getPageX: function() {
+    getPageX: function() {
         return this.getPosition()[0];
     },
     

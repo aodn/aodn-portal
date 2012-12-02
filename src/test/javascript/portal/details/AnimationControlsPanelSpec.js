@@ -9,9 +9,16 @@
 describe("Portal.details.AnimationControlsPanel", function() {
 	
     var animationControlsPanel;
+    var openLayer;
     
     beforeEach(function() {
         animationControlsPanel = new Portal.details.AnimationControlsPanel();
+        openLayer = new OpenLayers.Layer.WMS(
+                "the title",
+                "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
+                {},
+                { isBaseLayer: false }
+            );
     });
     
 	describe("_getNewTimeValue", function() {
@@ -124,7 +131,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 		});
 	});
 	
-	describe('remove messages', function() {
+	describe('layer messages', function() {
 	    it('on removeAll', function() {
 	        
 	        spyOn(animationControlsPanel, 'isAnimating').andReturn(true);
@@ -143,18 +150,53 @@ describe("Portal.details.AnimationControlsPanel", function() {
             spyOn(animationControlsPanel, 'removeAnimation');
             spyOn(Portal.ui.AnimationPanel.prototype, 'setVisible');
             
-            var openLayer = new OpenLayers.Layer.WMS(
-                "the title",
-                "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-                {},
-                { isBaseLayer: false }
-            );
             openLayer.isAnimated = true;
 
             Ext.MsgBus.publish('removeLayer', openLayer);
             
             expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
             expect(Portal.ui.AnimationPanel.prototype.setVisible).toHaveBeenCalledWith(false);
+        });
+        
+        describe('on selectedLayerChanged', function() {
+            
+            beforeEach(function() {
+                spyOn(animationControlsPanel, 'setSelectedLayer');
+                spyOn(animationControlsPanel, 'update');
+                spyOn(animationControlsPanel, 'removeAnimation');
+                animationControlsPanel.isAnimating = function() { return false };
+            });
+            
+            it('on selectedLayerChanged with openlayer, animatable', function() {
+                
+                openLayer.isAnimatable = function() { return true };
+                
+                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                
+                expect(animationControlsPanel.setSelectedLayer).toHaveBeenCalledWith(openLayer);
+                expect(animationControlsPanel.update).toHaveBeenCalled();
+                expect(animationControlsPanel.removeAnimation).not.toHaveBeenCalled();
+            });
+            
+            it('on selectedLayerChanged with openlayer, non animatable', function() {
+                
+                openLayer.isAnimatable = function() { return false };
+                
+                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                
+                expect(animationControlsPanel.setSelectedLayer).not.toHaveBeenCalledWith();
+                expect(animationControlsPanel.update).not.toHaveBeenCalled();
+                expect(animationControlsPanel.removeAnimation).not.toHaveBeenCalled();
+            });
+            
+            it('on selectedLayerChanged with undefined', function() {
+                
+                Ext.MsgBus.publish('selectedLayerChanged');
+                
+                expect(animationControlsPanel.setSelectedLayer).not.toHaveBeenCalled();
+                expect(animationControlsPanel.update).not.toHaveBeenCalled();
+                expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
+            });
         });
 	});
 });
