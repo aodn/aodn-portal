@@ -90,9 +90,11 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         // Test job
         testJob = [
-                jobId: "JOB_42",
-                notificationEmailAddress: "someEmailAddress",
-                latestStatus: null
+			jobId: "JOB_42",
+			notificationEmailAddress: "someEmailAddress",
+			latestStatus: null,
+			expired: false,
+			dateCreated: new Date()
         ] as AodaacJob
 
         testJob.jobParams = new AodaacJobParams([
@@ -265,20 +267,30 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         timesCalled._retrieveResults = 0
         timesCalled._verifyResultFileExists = 0
         timesCalled._sendNotificationEmail = 0
+		timesCalled._jobIsTakingTooLong = 0
 
         // Just count usages of support methods
         aodaacAggregatorService.metaClass._retrieveResults = {
-            assertEquals testJob, it
+
             timesCalled._retrieveResults++
         }
         aodaacAggregatorService.metaClass._verifyResultFileExists = {
-            assertEquals testJob, it
+
             timesCalled._verifyResultFileExists++
         }
         aodaacAggregatorService.metaClass._sendNotificationEmail = {
-            assertEquals testJob, it
+
             timesCalled._sendNotificationEmail++
         }
+
+		aodaacAggregatorService.metaClass._jobIsTakingTooLong = {
+			job ->
+
+			assertEquals testJob, job
+			timesCalled._jobIsTakingTooLong++
+
+			return false
+		}
 
         // Mock request/response from server
         aodaacAggregatorService.metaClass._aggregatorCommandAddress = {
@@ -291,7 +303,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
                     {
                         datafileReady: false,
                         hasErrors: true,
-                        jobEnded: true,
+                        jobEnded: false,
                         started: true,
                         urlCount: 3,
                         urlsComplete: 3,
@@ -308,10 +320,75 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         aodaacAggregatorService.updateJob testJob
 
         assertEquals 1, AodaacJob.count()
-        assertEquals 1, timesCalled._retrieveResults
-        assertEquals 1, timesCalled._verifyResultFileExists
-        assertEquals 1, timesCalled._sendNotificationEmail
+		assertEquals 1, timesCalled._jobIsTakingTooLong
+		assertEquals 0, timesCalled._retrieveResults
+		assertEquals 0, timesCalled._verifyResultFileExists
+		assertEquals 0, timesCalled._sendNotificationEmail
     }
+
+	void testUpdateJob_JobTakenTooLong() {
+
+		testJob.dateCreated = new Date( 1900, 1, 1 ) // Date long ago
+
+		def timesCalled = [:]
+		timesCalled._jobHasTakenTooLong = 0
+		timesCalled._sendNotificationEmail = 0
+		timesCalled._markJobAsExpired = 0
+
+		// Just count usages of support methods
+		aodaacAggregatorService.metaClass._retrieveResults = {
+			fail "Shouldn't be called"
+		}
+
+		aodaacAggregatorService.metaClass._jobIsTakingTooLong = { job ->
+
+			timesCalled._jobHasTakenTooLong++
+			assertEquals testJob, job
+
+			return true
+		}
+
+		aodaacAggregatorService.metaClass._sendNotificationEmail = { job ->
+
+			timesCalled._sendNotificationEmail++
+			assertEquals testJob, job
+		}
+
+		aodaacAggregatorService.metaClass._markJobAsExpired = { job ->
+
+			timesCalled._markJobAsExpired++
+			assertEquals testJob, job
+		}
+
+		// Mock request/response from server
+		aodaacAggregatorService.metaClass._aggregatorCommandAddress = {
+			cmd, args ->
+
+			assertEquals( ["JOB_42"], args )
+
+			return [toURL: {[
+				text: """\
+                    {
+                        datafileReady: false,
+                        hasErrors: false,
+                        jobEnded: false,
+                        started: true,
+                        urlCount: 3,
+                        urlsComplete: 1,
+                        errors: "",
+                        cgiSeq: /var/aodaac/test/log,
+                        warnings: ""
+                    }
+                    """
+			]}]
+		}
+
+		aodaacAggregatorService.updateJob testJob
+
+		assertEquals 1, timesCalled._jobHasTakenTooLong
+		assertEquals 1, timesCalled._sendNotificationEmail
+		assertEquals 1, timesCalled._markJobAsExpired
+	}
 
     void testCancelJob() {
 
@@ -473,16 +550,19 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testSendNotificationEmail() {
 
-        // Todo - DN: Test should be expanded to include error reason and job params if we decide to keep those available after the AODAAC is ready for release
-
         // Set up job
         testJob.jobId = "12345"
         testJob.latestStatus = [jobEnded: true]
         testJob.result = [dataUrl: "dataUrl"]
         testJob.dataFileExists = true
 
-        def sendMailCalledCount = 0
-        def messageSourceGetMessageCalledCount = 0
+		def timesCalled = [:]
+        timesCalled.sendMail = 0
+        timesCalled.messageSourceGetMessage = 0
+		timesCalled.getEmailReplacements = 0
+		timesCalled.getEmailBodyMessageCode = 0
+
+		def argsReturned = []
 
 	    aodaacAggregatorService.grailsApplication = [
 		    config: [
@@ -495,36 +575,57 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         aodaacAggregatorService.portalInstance = portalInstance
 
+		aodaacAggregatorService.metaClass._getEmailBodyReplacements = {
+			job ->
+
+			println '_getEmailBodyReplacements'
+
+			assertEquals testJob, job
+			timesCalled.getEmailReplacements++
+
+			return argsReturned
+		}
+
+		aodaacAggregatorService.metaClass._getEmailBodyMessageCode = {
+			job ->
+
+			assertEquals testJob, job
+			timesCalled.getEmailBodyMessageCode++
+
+			return 'imos.aodaacJob.notification.email.testBody'
+		}
+
         aodaacAggregatorService.messageSource = [
             getMessage: {
                 code, args, locale ->
 
-                if ( messageSourceGetMessageCalledCount == 0 ) {
+                if ( timesCalled.messageSourceGetMessage == 0 ) {
 
-                    assertEquals "imos.aodaacJob.notification.email.successBody", code
-                    assertEquals( ["dataUrl"].toArray(), args )
-                }
-                else if ( messageSourceGetMessageCalledCount == 1 ) {
+                    assertEquals "imos.aodaacJob.notification.email.testBody", code
+					assertEquals argsReturned, args
+				}
+                else if ( timesCalled.messageSourceGetMessage == 1 ) {
 
-                    assertEquals "imos.aodaacJob.notification.email.subject", code
-                    assertEquals( ["12345"].toArray(), args )
-                }
+					assertEquals "imos.aodaacJob.notification.email.subject", code
+					assertEquals( ['12345'], args )
+				}
 
-                messageSourceGetMessageCalledCount++
+				timesCalled.messageSourceGetMessage++
             }
         ]
-
 
         aodaacAggregatorService.metaClass.sendMail = {
             c ->
 
-            sendMailCalledCount++
+			timesCalled.sendMail++
         }
 
         aodaacAggregatorService._sendNotificationEmail testJob
 
-        assertEquals 1, sendMailCalledCount
-        assertEquals 2, messageSourceGetMessageCalledCount
+        assertEquals 1, timesCalled.sendMail
+        assertEquals 1, timesCalled.getEmailReplacements
+        assertEquals 1, timesCalled.getEmailBodyMessageCode
+        assertEquals 2, timesCalled.messageSourceGetMessage // Once for subject, once for body
     }
 
     void testSendNotificationEmail_JobNotEnded() {
@@ -567,4 +668,121 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals "string1/", aodaacAggregatorService._ensureTrailingSlash( "string1" )
         assertEquals "string2/", aodaacAggregatorService._ensureTrailingSlash( "string2/" )
     }
+
+	void testJobHasTakenToolong() {
+
+		testJob.latestStatus = [urlsComplete: 2]
+
+		assertFalse aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean
+
+		// Set date as old, but progress has been made
+		testJob.dateCreated = new Date( 50 /* 1950 */, 5, 5 )
+		assertFalse aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean
+
+		// Old job with no progress made
+		testJob.latestStatus.urlsComplete = 0
+		assertTrue aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean
+	}
+
+	void testMarkJobAsExpired() {
+
+		assertFalse testJob.expired as Boolean
+
+		aodaacAggregatorService._markJobAsExpired( testJob )
+
+		assertTrue testJob.expired as Boolean
+	}
+
+	void testGetEmailReplacements_SuccessfulJob() {
+
+		// Set up job
+		testJob.jobId = "12345"
+		testJob.latestStatus = [jobEnded: true]
+		testJob.result = [dataUrl: 'dataUrl']
+		testJob.dataFileExists = true
+
+		def portalInstance = new PortalInstance()
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+
+		aodaacAggregatorService.portalInstance = portalInstance
+
+		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
+
+		assertEquals( ['dataUrl'], replacements )
+	}
+
+	void testGetEmailReplacements_UnsuccessfulJob() {
+
+		// Set an error message
+		def expectedErrorMessage = 'The error message'
+		testJob.latestStatus = [theErrors: expectedErrorMessage]
+
+		def expectedParamsString = _expectedEmailParamsString( testJob )
+
+		def portalInstance = new PortalInstance()
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+
+		aodaacAggregatorService.portalInstance = portalInstance
+
+		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
+
+		assertEquals( [expectedErrorMessage, expectedParamsString], replacements )
+	}
+
+	void testGetEmailReplacements_ExpiredJob() {
+
+		// Set up job
+		testJob.dateCreated = new Date( 1900, 0, 1, 11, 34, 56 )
+		testJob.expired = true
+
+		def expectedParamsString = _expectedEmailParamsString( testJob )
+
+		def portalInstance = new PortalInstance()
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+
+		aodaacAggregatorService.portalInstance = portalInstance
+
+		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
+
+		assertEquals( [ '1/01/00 11:34:56 AM', expectedParamsString ], replacements )
+	}
+
+	void testGetEmailBodyMessageCode() {
+
+		def portalInstance = new PortalInstance()
+		aodaacAggregatorService.grailsApplication = [
+			config: [
+				portal: [instance: [name: "xxxx"]]
+			]
+		]
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+		aodaacAggregatorService.portalInstance = portalInstance
+
+
+		testJob.dataFileExists = true
+		assertEquals "xxxx.aodaacJob.notification.email.successBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+
+		testJob.dataFileExists = false
+		assertEquals "xxxx.aodaacJob.notification.email.failedBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+
+		testJob.expired = true
+		assertEquals "xxxx.aodaacJob.notification.email.expiredBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+	}
+
+	def _expectedEmailParamsString( job ) {
+
+		def p = testJob.jobParams
+		return """\
+ProductId: ${ p.productId }
+Output format: ${ p.outputFormat }
+Date range start: ${ p.dateRangeStart }
+Date range end: ${ p.dateRangeEnd }
+Time of day start: ${ p.timeOfDayRangeStart }
+Time of day end: ${ p.timeOfDayRangeEnd }
+Lat range start: ${ p.latitudeRangeStart }
+Lat range end: ${ p.latitudeRangeEnd }
+Long range start: ${ p.longitudeRangeStart }
+Long range end: ${ p.longitudeRangeEnd }
+"""
+	}
 }
