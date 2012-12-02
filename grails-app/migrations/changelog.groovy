@@ -94,5 +94,7 @@ databaseChangeLog = {
     // Instance-specific changes
     include file: 'imos-changelog.groovy'
     include file: 'wa-changelog.groovy'
+
+	include file: '20121130-DN-AodaacJobExpiration.groovy'
 }
 

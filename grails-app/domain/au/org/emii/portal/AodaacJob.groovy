@@ -16,6 +16,7 @@ class AodaacJob {
 
     String jobId
     String notificationEmailAddress
+	Boolean expired = false // For jobs that run too long
 
     AodaacJobParams jobParams
     AodaacJobStatus latestStatus
@@ -68,8 +69,7 @@ class AodaacJob {
     def getProcessingStatusText() {
 
         // Check for recorded errors
-        def errorMsg = latestStatus?.theErrors ? ": ${latestStatus.theErrors}" : ""
-        def hasErrors = latestStatus?.hasErrors ? " -- errors occurred$errorMsg" : ""
+        def hasErrors = latestStatus?.hasErrors ? " -- errors occurred: ${latestStatus.theErrors}" : ""
 
         // Include percentage processed (if started but not complete)
         if ( processingStatus == AodaacJobProcessingStatus.Started ) {
