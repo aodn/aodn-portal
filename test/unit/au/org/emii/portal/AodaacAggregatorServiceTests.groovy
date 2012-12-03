@@ -731,8 +731,10 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 	void testGetEmailReplacements_ExpiredJob() {
 
+		def testDate = new Date( 00, 0, 1, 11, 34, 56 )
+
 		// Set up job
-		testJob.dateCreated = new Date( 1900, 0, 1, 11, 34, 56 )
+		testJob.dateCreated = testDate
 		testJob.expired = true
 
 		def expectedParamsString = _expectedEmailParamsString( testJob )
@@ -744,7 +746,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
 
-		assertEquals( [ '1/01/00 11:34:56 AM', expectedParamsString ], replacements )
+		assertEquals( [ testDate.dateTimeString, expectedParamsString ], replacements )
 	}
 
 	void testGetEmailBodyMessageCode() {
