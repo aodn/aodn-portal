@@ -91,12 +91,12 @@ databaseChangeLog = {
 
     include file: '20121129-PM-LayerAvailabilityFlag.groovy'
 
-    // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
-
-    // Instance-specific changes
-    include file: 'imos-changelog.groovy'
-    include file: 'wa-changelog.groovy'
-
 	include file: '20121130-DN-AodaacJobExpiration.groovy'
+
+	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
+
+	// Instance-specific changes
+	include file: 'imos-changelog.groovy'
+	include file: 'wa-changelog.groovy'
 }
 
