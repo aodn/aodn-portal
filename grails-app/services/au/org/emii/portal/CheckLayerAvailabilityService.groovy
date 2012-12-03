@@ -12,40 +12,81 @@ class CheckLayerAvailabilityService {
 
     static transactional = true
 
-	// use supplied serverUri from layer as it may vary from getCap's server
 	def isLayerAlive(params) {
-
-		def valid = true
-		def layer = Layer.get(params.layerId)
+        def layer = Layer.get(params.layerId)
 
 		if (layer) {
 
-			def featInfURL = _constructFeatureInfoRequest(layer, params).toURL()
+            def getMapURL =  _constructGetMapRequest(layer, params).toURL()
+            def valid = _checkConnection(getMapURL, _testGetMap)
 
-			try {
-				def conn = featInfURL.openConnection()
-				_addAuthentication(conn, featInfURL)
-
-				def contentType = conn.contentType.split(';')[0]
-
-				if ( _shouldCheckResponse( contentType ) ) {
-
-                    valid = _isValidFromResponse( featInfURL.text )
-				}
+            //failed getmap test, now try getFeatureInfo
+            if(valid){
+                if(!layer.available){
+                    layer.available = true
+                    layer.save()
+                }
+                return true
             }
-			catch (e) {
-				// could this be an unusual WMS server
-				valid = false
-			}
-		}
-		else {
-			// we dont have this layer in the database ???
-			// shouldnt really get here often
-			valid = false
-		}
+            else{
+                layer.available = false
+                layer.save()
 
-		return valid
+                //test for get feature info
+                def featInfURL = _constructFeatureInfoRequest(layer, params).toURL()
+                def result = _checkConnection(featInfURL, _testGetFeatureInfo)
+
+                if(!result){
+                    notifyOwner(layer, "GetMap and GetFeature")
+                }
+                else{
+                    notifyOwner(layer, "GetMap")
+                }
+            }
+        }
+
+		return false
 	}
+
+    def _testGetFeatureInfo = { conn ->
+        if(conn.contentType != null){
+            def contentType = conn.contentType.split(';')[0]
+            return (_isValidFromResponse( conn.text ) && _checkFeatureInfoResponse( contentType ))
+        }
+        return false
+    }
+
+    def _testGetMap = { conn ->
+        if(conn.contentType != null){
+            def contentType = conn.contentType.split(';')[0]
+
+            if(_checkGetMapResponse( contentType )){
+                log.debug("GetMap check successful")
+                return true
+            }
+        }
+
+        log.debug("GetMap check unsuccessful")
+        return false
+    }
+
+
+    def _checkConnection(url, test){
+        try {
+            def conn = url.openConnection()
+            _addAuthentication(conn, url)
+            def result = test.call(conn)
+            return result
+        }
+        catch (e) {
+            //does this catch connection errors/etc??
+            // could this be an unusual WMS server
+            e.printStackTrace()
+            return false
+        }
+
+        return false
+    }
 
 	def _addAuthentication( connection, url ) {
 
@@ -61,9 +102,12 @@ class CheckLayerAvailabilityService {
 		return Server.findByUriLike("%${url.host}%")
 	}
 
-    def _shouldCheckResponse( contentType ) {
-
+    def _checkFeatureInfoResponse( contentType ) {
         return contentType == "text/xml"
+    }
+
+    def _checkGetMapResponse( contentType ) {
+        return !(contentType == "application/vnd.ogc.se_xml")
     }
 
     def _isValidFromResponse( String responseText ) {
@@ -126,4 +170,43 @@ class CheckLayerAvailabilityService {
 
 		return _buildUrl(layer, getFeatureInfoUrlString)
 	}
+
+    String _constructGetMapRequest(layer, params) {
+        // Construct the getMap request
+
+        def minX = layer.bboxMinX.toDouble()
+        if(layer.bboxMinX == layer.bboxMaxX)
+            minX -= 1;
+
+        def minY = layer.bboxMinY.toDouble()
+        if(layer.bboxMinY == layer.bboxMaxY)
+            minY -= 1;
+
+        def getMapString = 'VERSION=1.1.1&REQUEST=GetMap&LAYERS=' + URLEncoder.encode(layer.name)
+        getMapString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
+        getMapString += '&SRS=' + URLEncoder.encode(layer.projection)
+        getMapString += '&CRS=' + URLEncoder.encode(layer.projection)
+        getMapString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
+        getMapString += '&FORMAT=' + URLEncoder.encode(layer.server.imageFormat)
+        getMapString += '&EXCEPTIONS=application/vnd.ogc.se_xml'
+        getMapString += '&width=50&height=50'
+        return _buildUrl(layer, getMapString)
+    }
+
+
+    void notifyOwner(layer, failedOps){
+        def ownerList = layer.server.owners
+
+        ownerList.each(){ owner ->
+            def messageBody = "The layer $layer.name on $layer.server.uri is currently having problems with $failedOps requests."
+
+            if(layer.available){
+                sendMail {
+                    to owner.emailAddress
+                    subject "Layer failed to load"
+                    body messageBody
+                }
+            }
+        }
+    }
 }
