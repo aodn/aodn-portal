@@ -14,12 +14,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.appConfig = cfg.appConfig;
 
-        // Stop the pink tiles appearing on error
-        OpenLayers.Util.onImageLoadError = function(e) {
-            this.style.display = "";
-            this.src = "img/blank.png";
-        };
-
         var config = Ext.apply({
             id: 'mapPanel',
             region: "center",
