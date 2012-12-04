@@ -66,8 +66,6 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         assertTrue service.isLayerAlive( [layerId: 100] )
     }
 
-
-
     void testIsLayerAlive_checkFeatureInfoResponse() {
 
 		mockDomain Layer.class, [[id: 100] as Layer]
@@ -187,6 +185,23 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         assertEquals foundServer, service._getServer( testUrl )
     }
 
+    void testGetFeatureInfo() {
+
+        def conn = [contentType: 'XML', URL: [text: 'something']]
+        def called = false
+        
+        service.metaClass._isValidFromResponse = {
+            String responseText ->
+            called = true
+
+            assertEquals('something', responseText)
+        }
+
+        service._testGetFeatureInfo(conn)
+
+        assertTrue called
+    }
+    
     void testFeatureInfoResponse() {
 
 		assertTrue service._checkFeatureInfoResponse( 'text/xml' )
