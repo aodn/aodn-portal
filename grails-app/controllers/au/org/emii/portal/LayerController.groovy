@@ -46,6 +46,7 @@ class LayerController {
                 filters: filters
         ]
 
+        println "entered layer list"
         if ( request.xhr ) {
 
             // This is an ajax request
@@ -535,7 +536,7 @@ class LayerController {
             if (readMethod != null) {
                 Object value = readMethod.invoke(layer, (Object[]) null)
                 if ("layers".equals(name)) {
-                    layerData[name] = _convertLayersToListOfMaps(value)
+                    //layerData[name] = _convertLayersToListOfMaps(value)
                 }
                 else if (!excludes.contains(name)) {
                     layerData[name] = value

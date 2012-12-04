@@ -19,7 +19,7 @@ class Layer {
     Server server
     Boolean cache
     String cql
-    String styles
+    //String styles
     String bboxMinX
     String bboxMinY
     String bboxMaxX
@@ -63,14 +63,13 @@ class Layer {
         sort "server"
 
         // Column types
-        styles type: "text"
         layerHierarchyPath type: "text"
         dimensions cascade: 'all-delete-orphan'
         metadataUrls cascade: 'all-delete-orphan'
         filters cascade: 'all-delete-orphan'
     }
 
-    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter]
+    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Styles]
     static constraints = {
 		parent(nullable: true)
 		name( nullable: true, size:1..225 )
@@ -106,12 +105,12 @@ class Layer {
         metadataUrls = []
         dimensions = []
         filters = []
-        
+        styles = []
+
         // Defaults
         abstractTrimmed = ""
         blacklisted = false
         cache = false
-        styles = ""
         queryable = false
         isBaseLayer = false
         activeInLastScan = true
@@ -224,17 +223,6 @@ class Layer {
 	}
 
     def getAllStyles() {
-
-        def currentLayer = this
-        def styles = []
-
-        while ( currentLayer ) {
-
-            if ( currentLayer.styles ) styles << currentLayer.styles
-
-            currentLayer = currentLayer.parent
-        }
-
-        return styles.join( "," )
+        return this.styles
     }
 }

@@ -329,7 +329,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_a property bboxMaxX.", null, layerD.bboxMaxX
         assertEquals "layer_a property bboxMaxY.", null, layerD.bboxMaxY
         assertEquals "layer_d property projection", null, layerD.projection
-        assertEquals "layer_d property styles", "boxfill/alg,boxfill/redblue", layerD.styles
+        assertNotNull "layer_d property styles", layerD.styles
         assertEquals "layer_d property dataSource", "testCode", layerD.dataSource
         assertEquals "layer_d property activeInLastScan", true, layerD.activeInLastScan
         assertNotNull "layer_d property lastUpdated should exist", layerD.lastUpdated

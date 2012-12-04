@@ -6,7 +6,7 @@
  *
  */
 
-body, html{
+body, html, td{
     font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
 	height: 100%;
