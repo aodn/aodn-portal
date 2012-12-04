@@ -44,7 +44,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 			title: OpenLayers.i18n('themeFilter'),
 			hierarchical: true,
 			fieldName: 'Gcmd538',
-			searcher: config.searcher
+			searcher: config.searcher,
+            separator: "|"
 		});
 
 		this.methodFilter = new Portal.ui.TermSelectionPanel({
