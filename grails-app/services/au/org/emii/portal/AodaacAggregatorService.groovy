@@ -241,11 +241,8 @@ class AodaacAggregatorService {
 
 		log.debug "number of jobs: " + jobList.size()
 
-		println "jobList.size(): ${ jobList.size() }"
-
 		jobList.each{
 			log.debug it
-			println "it: ${ it }"
 			updateJob it
 		}
 	}
@@ -456,10 +453,6 @@ class AodaacAggregatorService {
 		use( groovy.time.TimeCategory ) {
 			duration = new Date() - job.dateCreated
 		}
-
-		println "job.dateCreated: ${ job.dateCreated }"
-		println "duration: ${ duration }"
-		println "jobHasMadeProgress: ${ jobHasMadeProgress }"
 
 		def jobTooOld = duration.days > 1 // Has this gone a whole day without progress?
 

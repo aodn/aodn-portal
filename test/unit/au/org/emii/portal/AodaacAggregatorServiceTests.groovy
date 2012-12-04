@@ -578,8 +578,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 		aodaacAggregatorService.metaClass._getEmailBodyReplacements = {
 			job ->
 
-			println '_getEmailBodyReplacements'
-
 			assertEquals testJob, job
 			timesCalled.getEmailReplacements++
 
