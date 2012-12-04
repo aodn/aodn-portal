@@ -27,6 +27,7 @@ class Layer {
     String projection
     Boolean queryable
     Boolean isBaseLayer
+    Boolean available   //used by CheckLayerAvailabilityService
 
     // Extra info
     String dataSource
@@ -95,6 +96,7 @@ class Layer {
         activeInLastScan()
         lastUpdated(nullable:true)
         layerHierarchyPath(nullable: true)
+        available(nullable: false)
     }
 
 	static transients = ['layers']
@@ -114,6 +116,7 @@ class Layer {
         queryable = false
         isBaseLayer = false
         activeInLastScan = true
+        available = true
     }
 
 	boolean equals(other){

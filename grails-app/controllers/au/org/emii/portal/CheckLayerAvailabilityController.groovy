@@ -18,10 +18,10 @@ class CheckLayerAvailabilityController {
 
 			if ( checkLayerAvailabilityService.isLayerAlive(params) ) {
 
-				render status: 200, text: "Layer is available"
+				render text: "Layer is available", status: 200
 			}
 			else {
-				render status: 500, text: "Layer is not available"
+				render text: "Layer is not available", status: 500
 			}
 		}
 		else {

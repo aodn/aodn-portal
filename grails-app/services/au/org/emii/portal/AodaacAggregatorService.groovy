@@ -176,12 +176,17 @@ class AodaacAggregatorService {
             job.latestStatus = new AodaacJobStatus( updatedStatus )
             job.save failOnError: true
 
-            if ( job.latestStatus.jobEnded ) {
+			if ( job.latestStatus.jobEnded ) {
 
                 _retrieveResults job
                 _verifyResultFileExists job
                 _sendNotificationEmail job
             }
+			else if ( _jobIsTakingTooLong( job ) ) {
+
+				_markJobAsExpired job
+				_sendNotificationEmail job
+			}
         }
         catch( Exception e ) {
 
@@ -231,208 +236,109 @@ class AodaacAggregatorService {
         }
     }
 
-    void _retrieveResults( job ) {
+	def checkIncompleteJobs(){
+		def jobList = AodaacJob.findAll("from AodaacJob as job where job.expired = false and (job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false)")
 
-        log.debug "Retrieving results for $job"
+		log.debug "number of jobs: " + jobList.size()
 
-        // Generate url
-        def apiCall = _aggregatorCommandAddress( GetDataCommand, [job.jobId] )
+		jobList.each{
+			log.debug it
+			updateJob it
+		}
+	}
 
-        // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
-        log.debug "apiCall: ${ apiCall }"
+    // Supporting logic
 
-        // Make the call
-        def response = apiCall.toURL().text
+	void _retrieveResults( job ) {
 
-        log.debug "response: $response"
+		log.debug "Retrieving results for $job"
 
-        job.result = new AodaacJobResult( dataUrl: response?.trim() )
-        job.save failOnError: true
-    }
+		// Generate url
+		def apiCall = _aggregatorCommandAddress( GetDataCommand, [job.jobId] )
 
-    void _verifyResultFileExists( job ) {
+		// Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
+		log.debug "apiCall: ${ apiCall }"
 
-        log.debug "Verifying results file exists for $job"
+		// Make the call
+		def response = apiCall.toURL().text
 
-        // Reset data file exists
-        job.dataFileExists = false
+		log.debug "response: $response"
 
-        try {
-            def url = job.result.dataUrl.toURL()
+		job.result = new AodaacJobResult( dataUrl: response?.trim() )
+		job.save failOnError: true
+	}
+
+	void _verifyResultFileExists( job ) {
+
+		log.debug "Verifying results file exists for $job"
+
+		// Reset data file exists
+		job.dataFileExists = false
+
+		try {
+			def url = job.result.dataUrl.toURL()
 
 			log.debug "url: ${ url }"
 
-            def conn = url.openConnection()
-            conn.requestMethod = "HEAD"
-            conn.connect()
+			def conn = url.openConnection()
+			conn.requestMethod = "HEAD"
+			conn.connect()
 
-            log.debug "conn.responseCode: ${ conn.responseCode }"
+			log.debug "conn.responseCode: ${ conn.responseCode }"
 
-            if ( conn.responseCode in HttpStatusCodeSuccessRange ) {
+			if ( conn.responseCode in HttpStatusCodeSuccessRange ) {
 
-                job.dataFileExists = true
-            }
+				job.dataFileExists = true
+			}
 
-            // Record date this check occurred
-            job.mostRecentDataFileExistCheck = new Date()
-            job.save failOnError: true
-        }
-        catch( Exception e ) {
+			// Record date this check occurred
+			job.mostRecentDataFileExistCheck = new Date()
+			job.save failOnError: true
+		}
+		catch( Exception e ) {
 
-            log.info "Could not check existence of result file for job '$job'", e
-        }
-    }
+			log.info "Could not check existence of result file for job '$job'", e
+		}
+	}
 
-    void _sendNotificationEmail( job ) {
+	void _sendNotificationEmail( job ) {
 
-        log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
+		log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
-        if ( !job.latestStatus.jobEnded ) {
+		if ( !(job.latestStatus.jobEnded || job.expired) ) {
 
-            log.debug "Will not send notification email for job which has not ended."
-            return
-        }
+			log.debug "Will not send notification email for job which has not ended or expired."
+			return
+		}
 
-        if ( !job.notificationEmailAddress ) {
+		if ( !job.notificationEmailAddress ) {
 
-            log.warn "No notification email address, not sending email"
-            return
-        }
+			log.warn "No notification email address, not sending email"
+			return
+		}
 
-        try {
+		try {
+			// Message replacement args
+			def args = _getEmailBodyReplacements( job )
 
-            // To know which message key to use
-            def instanceCode = portalInstance.code()
+			def emailBodyCode = _getEmailBodyMessageCode( job )
+			def emailBody = messageSource.getMessage( emailBodyCode, args.toArray(), Locale.getDefault() )
 
-            def successMessage = job.dataFileExists
+			def emailSubjectCode = "${portalInstance.code()}.aodaacJob.notification.email.subject"
+			def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
 
-            // Message replacement args
-            def args
+			sendMail {
+				to( [job.notificationEmailAddress] )
+				subject( emailSubject )
+				body( emailBody )
+				from( grailsApplication.config.portal.systemEmail.fromAddress )
+			}
+		}
+		catch (Exception e) {
 
-            if ( successMessage ) {
-
-                args = [job.result.dataUrl]
-            }
-            else {
-
-                def p = job.jobParams
-                def paramsString = """\
-ProductId: ${ p.productId }
-Output format: ${ p.outputFormat }
-Date range start: ${ p.dateRangeStart }
-Date range end: ${ p.dateRangeEnd }
-Time of day start: ${ p.timeOfDayRangeStart }
-Time of day end: ${ p.timeOfDayRangeEnd }
-Lat range start: ${ p.latitudeRangeStart }
-Lat range end: ${ p.latitudeRangeEnd }
-Long range start: ${ p.longitudeRangeStart }
-Long range end: ${ p.longitudeRangeEnd }
-"""
-
-                def errorMessage = job.latestStatus.theErrors
-
-                if ( !errorMessage ) {
-
-                    errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
-                }
-
-                args = [errorMessage, paramsString]
-            }
-
-            def emailBodyCode = "${instanceCode}.aodaacJob.notification.email.${ successMessage ? "success" : "failed"}Body"
-            def emailBody = messageSource.getMessage( emailBodyCode, args.toArray(), Locale.getDefault() )
-
-            def emailSubjectCode = "${instanceCode}.aodaacJob.notification.email.subject"
-            def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
-
-            sendMail {
-                to( [job.notificationEmailAddress] )
-                subject( emailSubject )
-                body( emailBody )
-                from( grailsApplication.config.portal.systemEmail.fromAddress )
-            }
-        }
-        catch (Exception e) {
-
-            log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
-        }
-    }
-
-    def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
-
-        if ( !productIds ) {
-
-            log.debug "No productIds passed, using all from allProductdataJson"
-
-            productIds = allProductDataJson.collect( { it.id } )
-        }
-
-        log.debug "productIds: ${ productIds }"
-
-        def productsInfo = []
-
-        productIds.each {
-            productId ->
-
-            // Create new JSON object with desired structure
-            def productInfo = [
-                    extents: [
-                            lat: [:],
-                            lon: [:],
-                            dateTime: [:]
-                    ]
-            ]
-
-            // Copy data to new structure
-            def matchingIds = { it.id == productId?.toString() } // it.id will be a String
-            def productDataJson = allProductDataJson.find( matchingIds )
-            def productExtentJson = allProductExtentJson.find( matchingIds )
-
-            log.debug "JSON for productId: '$productId'"
-            log.debug "  productDataJson: $productDataJson"
-            log.debug "  productExtentJson: $productExtentJson"
-
-            try {
-                // Name, etc.
-                productInfo.name = productDataJson.name
-                productInfo.productId = productDataJson.id
-
-                // Latitude
-                productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
-                productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
-
-                // longitude
-                productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
-                productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
-
-                // Time (sanitise and parse)
-                def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
-                def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
-
-                startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
-
-                log.debug "  startTimeString: ${ startTimeString }"
-
-                def startTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, startTimeString )
-                def endTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, endTimeString )
-
-                productInfo.extents.dateTime.min = startTimeDate.format( JavascriptUIDateOutputFormat )
-                productInfo.extents.dateTime.max = endTimeDate.format( JavascriptUIDateOutputFormat )
-
-                productsInfo << productInfo
-            }
-            catch (Exception e) {
-
-                log.info "Problem reading info from JSON (possible invalid values in JSON)", e
-                log.info "productDataJson: $productDataJson"
-                log.info "productExtentJson: $productExtentJson"
-            }
-        }
-
-        return productsInfo
-    }
-
-    // Supporting logic
+			log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
+		}
+	}
 
     def _aggregatorCommandAddress( command, args ) {
 
@@ -464,14 +370,159 @@ Long range end: ${ p.longitudeRangeEnd }
         return "$s$slash"
     }
 
-    def checkIncompleteJobs(){
-        def jobList = AodaacJob.findAll("from AodaacJob as job where job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false")
+	def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
 
-        log.debug "number of jobs: " + jobList.size()
+		if ( !productIds ) {
 
-        jobList.each{
-            log.debug it
-            updateJob it
-        }
-    }
+			log.debug "No productIds passed, using all from allProductdataJson"
+
+			productIds = allProductDataJson.collect( { it.id } )
+		}
+
+		log.debug "productIds: ${ productIds }"
+
+		def productsInfo = []
+
+		productIds.each {
+			productId ->
+
+			// Create new JSON object with desired structure
+			def productInfo = [
+				extents: [
+					lat: [:],
+					lon: [:],
+					dateTime: [:]
+				]
+			]
+
+			// Copy data to new structure
+			def matchingIds = { it.id == productId?.toString() } // it.id will be a String
+			def productDataJson = allProductDataJson.find( matchingIds )
+			def productExtentJson = allProductExtentJson.find( matchingIds )
+
+			log.debug "JSON for productId: '$productId'"
+			log.debug "  productDataJson: $productDataJson"
+			log.debug "  productExtentJson: $productExtentJson"
+
+			try {
+				// Name, etc.
+				productInfo.name = productDataJson.name
+				productInfo.productId = productDataJson.id
+
+				// Latitude
+				productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
+				productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
+
+				// longitude
+				productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
+				productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
+
+				// Time (sanitise and parse)
+				def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
+				def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
+
+				startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
+
+				log.debug "  startTimeString: ${ startTimeString }"
+
+				def startTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, startTimeString )
+				def endTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, endTimeString )
+
+				productInfo.extents.dateTime.min = startTimeDate.format( JavascriptUIDateOutputFormat )
+				productInfo.extents.dateTime.max = endTimeDate.format( JavascriptUIDateOutputFormat )
+
+				productsInfo << productInfo
+			}
+			catch (Exception e) {
+
+				log.info "Problem reading info from JSON (possible invalid values in JSON)", e
+				log.info "productDataJson: $productDataJson"
+				log.info "productExtentJson: $productExtentJson"
+			}
+		}
+
+		return productsInfo
+	}
+
+	def _jobIsTakingTooLong( job ) {
+
+		def jobHasMadeProgress = job.latestStatus.urlsComplete > 0
+
+		def duration
+
+		use( groovy.time.TimeCategory ) {
+			duration = new Date() - job.dateCreated
+		}
+
+		def jobTooOld = duration.days > 1 // Has this gone a whole day without progress?
+
+		return jobTooOld && !jobHasMadeProgress
+	}
+
+	def _markJobAsExpired( job ) {
+
+		job.expired = true
+		job.save flush: true
+	}
+
+	def _getEmailBodyReplacements( job ) {
+
+		// If successful
+		if ( job.dataFileExists ) {
+
+			// Success message
+			return [ job.result.dataUrl ]
+		}
+
+		// Record params
+		def p = job.jobParams
+		def paramsString = """\
+ProductId: ${ p.productId }
+Output format: ${ p.outputFormat }
+Date range start: ${ p.dateRangeStart }
+Date range end: ${ p.dateRangeEnd }
+Time of day start: ${ p.timeOfDayRangeStart }
+Time of day end: ${ p.timeOfDayRangeEnd }
+Lat range start: ${ p.latitudeRangeStart }
+Lat range end: ${ p.latitudeRangeEnd }
+Long range start: ${ p.longitudeRangeStart }
+Long range end: ${ p.longitudeRangeEnd }
+"""
+
+		// If expired
+		if ( job.expired ) {
+
+			return [ job.dateCreated.dateTimeString, paramsString ]
+		}
+
+		// Job failed
+		def errorMessage = job.latestStatus.theErrors
+
+		if ( !errorMessage ) {
+
+			errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
+		}
+
+		return [ errorMessage, paramsString ]
+	}
+
+	def _getEmailBodyMessageCode( job ) {
+
+		def codePart
+
+		if ( job.dataFileExists ) {
+
+			codePart = 'success'
+		}
+		else if ( job.expired ) {
+
+			codePart = 'expired'
+		}
+		else {
+
+			codePart = 'failed'
+		}
+
+		return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
+	}
 }

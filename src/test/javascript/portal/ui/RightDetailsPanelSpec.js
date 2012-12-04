@@ -23,7 +23,7 @@ describe("Portal.ui.RightDetailsPanel", function() {
         it('update called on selectedLayerChanged event', function() {
             spyOn(rightDetailsPanel, 'update');
             
-            Ext.MsgBus.publish('selectedLayerChanged', {});
+            Ext.MsgBus.publish('selectedLayerChanged', { isAnimatable: function() { return false}});
             
             expect(rightDetailsPanel.update).toHaveBeenCalled();
         });

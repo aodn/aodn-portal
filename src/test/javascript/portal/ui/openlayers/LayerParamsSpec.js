@@ -74,6 +74,7 @@ describe("Portal.ui.openlayers.LayerParams", function() {
             expect(layerParams.version).toEqual('1.1.1');
             expect(layerParams.format).toEqual('image/png');
             expect(layerParams.queryable).toBeFalsy();
+            expect(layerParams.exceptions).toEqual('application/vnd.ogc.se_xml');
         });
     });
 });

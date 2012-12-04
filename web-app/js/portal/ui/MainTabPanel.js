@@ -60,7 +60,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
         if (!this.isMapVisible()) {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
-            this.portalPanel.getMapPanel().updateLoadingImage("none");
+//            this.portalPanel.getMapPanel().updateLoadingImage("none");
         }
 
         // Ensure tab selectors reflect actual tab selected

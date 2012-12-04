@@ -16,7 +16,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             appConfig: cfg.appConfig,
             region:'center',
             id: 'mainMapPanel',
-            stateful: false
+            stateful: false,
+            forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
         });
         
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
@@ -43,6 +44,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         this.on('tabchange', function() {
         	this.mapPanel.fireEvent('tabchange');
         }, this);
+        
+        
 
     },
     

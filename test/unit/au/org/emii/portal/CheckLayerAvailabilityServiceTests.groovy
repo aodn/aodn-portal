@@ -9,6 +9,7 @@
 package au.org.emii.portal
 
 import grails.test.GrailsUnitTestCase
+import grails.test.MockUtils
 
 class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
@@ -17,6 +18,8 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
 
         super.setUp()
+
+        MockUtils.mockLogging CheckLayerAvailabilityService, true
     }
 
     protected void tearDown() {
@@ -37,77 +40,104 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 		assertFalse service.isLayerAlive( params )
     }
 
-    void testIsLayerAlive_ShouldCheckResponse() {
+    void testIsLayerAlive_checkGetMapResponse() {
 
-		mockDomain Layer.class, [[id: 100] as Layer]
+        mockDomain Layer.class, [[id: 100] as Layer]
 
-		// Mock out other methods
-		def urlReturned = {
-			[
-				openConnection: { [contentType: "A;B"]},
-				text: "response text"
-			]
-		}
+        // Mock out other methods
+        def urlReturned = {
+            [
+                    openConnection: { [contentType: "A;B"]},
+                    text: "response text"
+            ]
+        }
 
-		service.metaClass._constructFeatureInfoRequest = { layer, params ->
+        service.metaClass._constructGetMapRequest = { layer, params ->
 
-			return [toURL: urlReturned]
-		}
-		service.metaClass._addAuthentication = { conn, url -> /* Do nothing */ }
-		service.metaClass._shouldCheckResponse = { contentType ->
-			assertEquals "A", contentType
-			return true
-		}
-		service.metaClass._isValidFromResponse = { responseText ->
-			assertEquals "response text", responseText
-			return true
-		}
+            return [toURL: urlReturned]
+        }
+        service.metaClass._addAuthentication = { conn, url -> /* Do nothing */ }
+        service.metaClass._checkGetMapResponse = { contentType ->
+            assertEquals "A", contentType
+            return true
+        }
 
-		// Make the call
-		assertTrue service.isLayerAlive( [layerId: 100] )
+        // Make the call
+        assertTrue service.isLayerAlive( [layerId: 100] )
     }
 
-    void testIsLayerAlive_ShouldntCheckResponse() {
+    void testIsLayerAlive_checkFeatureInfoResponse() {
 
 		mockDomain Layer.class, [[id: 100] as Layer]
 
 		// Mock out other methods
 		def urlReturned = {
 			[
-				openConnection: { [contentType: "C"]},
-				text: "response text"
+				openConnection: { [contentType: "C;D", text: "response text2"]},
 			]
 		}
 
-		service.metaClass._constructFeatureInfoRequest = { layer, params ->
+        service.metaClass._constructGetMapRequest = { layer, params ->
+            return [toURL: urlReturned]
+        }
+        service.metaClass._addAuthentication = { conn, url -> /* Do nothing */ }
+        service.metaClass._checkGetMapResponse = { contentType ->
+            return false
+        }
 
+		service.metaClass._constructFeatureInfoRequest = { layer, params ->
 			return [toURL: urlReturned]
 		}
-		service.metaClass._addAuthentication = { conn, url -> /* Do nothing */ }
-		service.metaClass._shouldCheckResponse = { contentType ->
+
+		service.metaClass._checkFeatureInfoResponse = { contentType ->
 			assertEquals "C", contentType
-			return false
+			return true
 		}
 		service.metaClass._isValidFromResponse = { responseText ->
-			fail "This should not get called"
+			assertEquals "response text2", responseText
+			return true
 		}
 
+        service.metaClass.notifyOwner = { layer, failedOps ->
+            println "notifying owner"
+        }
+
 		// Make the call
-		assertTrue service.isLayerAlive( [layerId: 100] )
+		assertFalse service.isLayerAlive( [layerId: 100] )
     }
 
     void testIsLayerAlive_ExceptionThrown() {
 
 		mockDomain Layer.class, [[id: 100] as Layer]
 
-		service.metaClass._constructFeatureInfoRequest = { layer, params ->
+        // Mock out other methods
+        def urlReturned = {
+            [
+                openConnection: { [contentType: "C;D", text: "response text2"]},
+            ]
+        }
 
+		service.metaClass._constructGetMapRequest = { layer, params ->
 			return [toURL: { [openConnection: { throw new Exception( 'Test Exception' ) }]}]
 		}
-		service.metaClass._addAuthentication = { conn, url ->
 
-			fail "Shouldn't get here"
-		}
+        service.metaClass._constructFeatureInfoRequest = { layer, params ->
+            return [toURL: urlReturned]
+        }
+
+        service.metaClass._checkFeatureInfoResponse = { contentType ->
+            assertEquals "C", contentType
+            return true
+        }
+        service.metaClass._isValidFromResponse = { responseText ->
+            assertEquals "response text2", responseText
+            return true
+        }
+
+        service.metaClass.notifyOwner = { layer, failedOps ->
+            println "notifying owner"
+        }
+
 
 		def params = [layerId: 100]
 
@@ -155,10 +185,27 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         assertEquals foundServer, service._getServer( testUrl )
     }
 
-    void testShouldCheckResponse() {
+    void testGetFeatureInfo() {
 
-		assertTrue service._shouldCheckResponse( 'text/xml' )
-		assertFalse service._shouldCheckResponse( 'text/plain' )
+        def conn = [contentType: 'XML', URL: [text: 'something']]
+        def called = false
+        
+        service.metaClass._isValidFromResponse = {
+            String responseText ->
+            called = true
+
+            assertEquals('something', responseText)
+        }
+
+        service._testGetFeatureInfo(conn)
+
+        assertTrue called
+    }
+    
+    void testFeatureInfoResponse() {
+
+		assertTrue service._checkFeatureInfoResponse( 'text/xml' )
+		assertFalse service._checkFeatureInfoResponse( 'text/plain' )
     }
 
     void testIsValidFromResponse() {

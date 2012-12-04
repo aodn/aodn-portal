@@ -130,10 +130,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		return this.buttonPanel;
 	},
 	
-	initBaseLayerCombo: function() {
-		this.baseLayerCombo.initComponent();
-	},
-
 	autoZoomEnabled: function() {
 		return this.autoZoomCheckbox.getValue();
 	},

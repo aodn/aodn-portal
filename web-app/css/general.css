@@ -969,3 +969,6 @@ div.allwhite {
 #activeLayerTreePanel img.x-tree-node-icon {
 	width: 1px;
 }
+
+/* Bug #9 - show blank tiles on image load error. */
+.olImageLoadError { display: none; }

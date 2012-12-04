@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -16,12 +15,13 @@ Ext.namespace('Portal.data');
  * is introduced (i.e. it will store the set of active bundles).
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
-    
+
     constructor: function(cfg) {
     
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
         
         this._registerMessageListeners();
+        this._initCurrentlyLoadingLayers();
         this._initBaseLayers();
         this._initDefaultLayers();
     },
@@ -55,17 +55,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     
     addUsingOpenLayer: function(openLayer) {
         
-        var layerRecord = new GeoExt.data.LayerRecord({
-            layer: openLayer,
-            title: openLayer.name
-        });
-        
-        this.add(layerRecord);
-        
-        // Only want to be notified of changes in no base layer
-        if (!openLayer.options.isBaseLayer) {
-            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
-        }
+        this._addLayer(openLayer);
     },
     
     addUsingServerId: function(args) {
@@ -101,6 +91,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
         
         this.remove(nonBaseLayers.getRange());
+        this.currentlyLoadingLayers.clear();
+        
         Ext.MsgBus.publish('selectedLayerChanged', null);
     },
     
@@ -108,8 +100,44 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
+        this.currentlyLoadingLayers.remove(openLayer);
     },
     
+    _addLayer: function(openLayer) {
+        
+        openLayer.events.register('loadstart', this, function() { 
+            this.currentlyLoadingLayers.add(openLayer.name, openLayer);
+        });
+        openLayer.events.register('loadend', this, function() { 
+            this.currentlyLoadingLayers.remove(openLayer);
+        });
+        
+        var layerRecord = new GeoExt.data.LayerRecord({
+            layer: openLayer,
+            title: openLayer.name
+        });
+        
+        this.add(layerRecord);
+        
+        // Only want to be notified of changes in no base layer
+        if (!openLayer.options.isBaseLayer) {
+            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+        }
+    },
+    
+    _initCurrentlyLoadingLayers: function() {
+        this.currentlyLoadingLayers = new Ext.util.MixedCollection();
+        this.currentlyLoadingLayers.on('add', function(index, object) {
+            this._publishLayersLoadingMessage();
+        }, this);
+        this.currentlyLoadingLayers.on('clear', function() {
+            this._publishLayersLoadingMessage();
+        }, this);
+        this.currentlyLoadingLayers.on('remove', function(index, object) {
+            this._publishLayersLoadingMessage();
+        }, this);
+    },
+
     _registerMessageListeners: function() {
         Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
             this.addUsingDescriptor(layerDescriptor)
@@ -189,5 +217,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 );
             }
         });
+    },
+    
+    _publishLayersLoadingMessage: function() {
+        Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
     }
 });
