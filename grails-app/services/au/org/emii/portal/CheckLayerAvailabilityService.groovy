@@ -29,6 +29,7 @@ class CheckLayerAvailabilityService {
                 return true
             }
             else{
+
                 layer.available = false
                 layer.save()
 
@@ -48,10 +49,13 @@ class CheckLayerAvailabilityService {
 		return false
 	}
 
-    def _testGetFeatureInfo = { conn ->
-        if(conn.contentType != null){
+    def _testGetFeatureInfo = {
+
+        conn ->
+
+        if (conn.contentType != null) {
             def contentType = conn.contentType.split(';')[0]
-            return (_isValidFromResponse( conn.text ) && _checkFeatureInfoResponse( contentType ))
+            return (_isValidFromResponse(conn.URL.text) && _checkFeatureInfoResponse(contentType))
         }
         return false
     }
