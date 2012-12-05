@@ -56,7 +56,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     },
 
     setActiveTab: function(item) {
-//        Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
+        Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
 
         //
         // Nasty hack for #27 - without this, the details panel on the right has no content
