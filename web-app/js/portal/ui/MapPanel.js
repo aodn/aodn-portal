@@ -26,25 +26,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             layers: new Portal.data.LayerStore(),
             html: " \
                     <div id='loader' style='position:absolute; top:50%; left:43%; z-index: 9000;'> \
-                        <p/> \
-                        <div id='jsloader' style='height:100px; width:100px;' /> \
-                    </div>" // This is the "Loading 'n' layers" pop-up.
+                        <p></p> \
+                        <div id='jsloader' style='height:40px; width:40px; display:block;'></div> \
+                    </div>" // This is the "Loading 'n' layers" pop-up.// todo display inline
+
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
         this.initMap();
-
-        this.spinnerForLayerloading = new Spinner({
-            lines: 12, // The number of lines to draw
-            length: 16, // The length of each line
-            width: 4, // The line thickness
-            radius: 12, // The radius of the inner circle
-            color: '#0B5584', //#18394E', // #rgb or #rrggbb
-            speed: 1, // Rounds per second
-            trail: 60, // Afterglow percentage
-            shadow: true // Whether to render a shadow
-        }).spin(jQuery("#jsloader"));    // TODO: spinner not visible for some reason.
+        this.map.events.register('movestart', this, this.closeDropdowns);
         
         this.on('hide', function() {
             // map is never hidden!!!!"
@@ -52,7 +43,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
 		
 
-		this.map.events.register('movestart', this, this.closeDropdowns);
 
         this.addEvents('tabchange', 'mouseover');
 
@@ -74,6 +64,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
 
+            var spinnerForLayerloading = new Spinner({
+             lines: 12, // The number of lines to draw
+             length: 16, // The length of each line
+             width: 4, // The line thickness
+             radius: 12, // The radius of the inner circle
+             color: '#0B5584', //#18394E', // #rgb or #rrggbb
+             speed: 1, // Rounds per second
+             trail: 60, // Afterglow percentage
+             shadow: true // Whether to render a shadow
+             }).spin(jQuery("#jsloader"));
 
         }, this);
 
