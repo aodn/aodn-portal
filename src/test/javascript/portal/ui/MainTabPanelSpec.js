@@ -21,6 +21,7 @@ describe("Portal.ui.MainTabPanel", function() {
         spyOn(Portal.ui.MainTabPanel.superclass.constructor, "call");
         spyOn(Portal.ui.MainTabPanel.prototype, "mon");
         spyOn(Portal.ui.MainTabPanel.prototype, "on");
+        spyOn(Portal.ui.MainTabPanel.superclass.setActiveTab, 'call');
 
         return new Portal.ui.MainTabPanel({appConfig: mockConfig});
     };
