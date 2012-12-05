@@ -772,9 +772,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 		assertEquals "xxxx.aodaacJob.notification.email.expiredBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
 	}
 
-	def _expectedEmailParamsString( job ) {
+	static def _expectedEmailParamsString( job ) {
 
-		def p = testJob.jobParams
+		def p = job.jobParams
 		return """\
 ProductId: ${ p.productId }
 Output format: ${ p.outputFormat }
