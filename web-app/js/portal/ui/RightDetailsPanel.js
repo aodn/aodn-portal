@@ -97,7 +97,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
     			} else {
     				this.detailsPanelItems.updateDetailsPanel(openlayer);
     			}
-    		} else {
+    		}
+            else {
     			this.detailsPanelItems.updateDetailsPanel(openlayer);
     			this.collapse(true);
     		}

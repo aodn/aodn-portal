@@ -56,11 +56,20 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     },
 
     setActiveTab: function(item) {
-        Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
+//        Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
 
+        //
+        // Nasty hack for #27 - without this, the details panel on the right has no content
+        // and it partially obscures the MapPanel.
+        //
+        // It's probably worth having a look at how the RightDetailsPanel/DetailsPanel/DetailsTabPanel
+        // etc etc etc interact in terms of layout when selected layer changes - and perhaps this forced
+        // layout can be removed.
+        //
+        this.doLayout(false, true);
+        
         if (!this.isMapVisible()) {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
-//            this.portalPanel.getMapPanel().updateLoadingImage("none");
         }
 
         // Ensure tab selectors reflect actual tab selected
