@@ -33,8 +33,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      var config = Ext.apply({
        height: 400,
        width: 600,
-       center: cfg.initialBbox,
-       zoom: 0
+       initialBbox: cfg.initialBbox
      }, cfg);
      
      Portal.search.MiniMapPanel.superclass.constructor.call(this, config);
