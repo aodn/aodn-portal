@@ -404,7 +404,6 @@
 						<exclude>portal/portal.js</exclude>
 						<exclude>portal/config/grid2treedrag.js</exclude>
 						<exclude>portal/common/DownloadCart.js</exclude>
-						<exclude>portal/common/AppConfigStore.js</exclude>
 					</sourceExcludes>
 				</configuration>
 			</plugin>
