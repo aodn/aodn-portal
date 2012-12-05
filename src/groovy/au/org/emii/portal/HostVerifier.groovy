@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,12 +7,13 @@
 
 package au.org.emii.portal
 
+import org.apache.commons.io.IOUtils
+
 class HostVerifier {
 
 	def grailsApplication
 
 	def allowedHost(request, url) {
-
 		def allowableServers = [request.getHeader("host"), Config.activeInstance().catalogUrl]
 		allowableServers.addAll(_fromConfig())
 		// allow hosts we consider valid. from our list of wms servers first
@@ -25,8 +25,40 @@ class HostVerifier {
 				allowed = true
 			}
 		}
+		/*if allowed is still false then server isn't us, our catalog or in our wms servers list,
+			but it might have been retrieved from geonetwork, so we check if its registered 
+			as a layer server with geonetwork*/
+		if(!allowed)
+		{
+            allowed = _checkCatalog(url)
+		}
 		return allowed
 	}
+
+    def retrieveResultsFromGeoNetwork(server)
+    {
+       def catalog = Config.activeInstance().catalogUrl
+
+       return new XmlParser().parse(catalog + "/srv/eng/q?serverUrl=" + server +"&fast=index&summaryOnly=true")
+    }
+
+    def extractServer(url)
+    {
+        return  url.protocol + "://" + url.host + url.path
+    }
+
+    def _checkCatalog(url)
+    {
+        def containsHost = false
+        def server = extractServer(url)
+        def results = retrieveResultsFromGeoNetwork(server)
+
+        if(results?.summary[0]?.'@count' != "0")
+        {
+            containsHost = true
+        }
+        return containsHost
+    }
 
 	def _fromConfig() {
 		def result = []
