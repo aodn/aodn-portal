@@ -6,7 +6,7 @@
  *
  */
 
-body, html{
+body, html, td{
     font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
 	height: 100%;
@@ -969,3 +969,6 @@ div.allwhite {
 #activeLayerTreePanel img.x-tree-node-icon {
 	width: 1px;
 }
+
+/* Bug #9 - show blank tiles on image load error. */
+.olImageLoadError { display: none; }

@@ -240,11 +240,20 @@ class LayerService {
 
     def _attachStyleInfo( layer, newData ) {
 
-        if ( !newData.styles ) return
+        layer.styles*.delete()
+        layer.styles.clear()
 
-        def names = newData.styles*.name
+        newData.styles.each {
 
-        layer.styles = names.join( "," )
+            def styles = new Styles()
+
+            styles.name = it.name
+            styles.title = it.title
+            styles.abstractText = it.abstractText
+
+            layer.styles << styles
+        }
+
     }
 
     def _attachMetadataUrls( layer, newData ) {
