@@ -669,12 +669,15 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 	void testJobHasTakenToolong() {
 
+		def adjustedDate = new GregorianCalendar()
+		adjustedDate.add( Calendar.HOUR, -3 ) // 3 hours ago
+
 		testJob.latestStatus = [urlsComplete: 2]
 
-		assertFalse aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean
+		assertFalse aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean // Job is not too old here
 
 		// Set date as old, but progress has been made
-		testJob.dateCreated = new Date( 50 /* 1950 */, 5, 5 )
+		testJob.dateCreated = adjustedDate.time
 		assertFalse aodaacAggregatorService._jobIsTakingTooLong( testJob ) as Boolean
 
 		// Old job with no progress made
