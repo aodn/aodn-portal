@@ -454,7 +454,11 @@ class AodaacAggregatorService {
 			duration = new Date() - job.dateCreated
 		}
 
-		def jobTooOld = duration.days > 1 // Has this gone a whole day without progress?
+		def hours = duration.hours + (duration.days * 24)
+		def jobTooOld = hours >= 3 // Has this gone 3 hours without progress?
+
+		log.debug "duration: ${ duration }"
+		log.debug "is taking too long = jobTooOld && !isMakingProgress ($jobTooOld && !$jobHasMadeProgress)"
 
 		return jobTooOld && !jobHasMadeProgress
 	}
