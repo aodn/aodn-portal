@@ -93,6 +93,8 @@ databaseChangeLog = {
 
 	include file: '20121130-DN-AodaacJobExpiration.groovy'
 
+    include file: '20121205-PB-AddedStyleDomainToLayer.groovy'
+
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
 	// Instance-specific changes
