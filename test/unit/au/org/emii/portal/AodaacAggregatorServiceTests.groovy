@@ -712,24 +712,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 		assertEquals( ['dataUrl'], replacements )
 	}
 
-	void testGetEmailReplacements_UnsuccessfulJob() {
-
-		// Set an error message
-		def expectedErrorMessage = 'The error message'
-		testJob.latestStatus = [theErrors: expectedErrorMessage]
-
-		def expectedParamsString = _expectedEmailParamsString( testJob )
-
-		def portalInstance = new PortalInstance()
-		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-
-		aodaacAggregatorService.portalInstance = portalInstance
-
-		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
-
-		assertEquals( [expectedErrorMessage, expectedParamsString], replacements )
-	}
-
 	void testGetEmailReplacements_ExpiredJob() {
 
 		def testDate = new Date( 00, 0, 1, 11, 34, 56 )
@@ -750,6 +732,50 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 		assertEquals( [ testDate.dateTimeString, expectedParamsString ], replacements )
 	}
 
+	void testGetEmailReplacements_UnsuccessfulJob() {
+
+		// Set an error message
+		def expectedErrorMessage = 'The error message'
+		testJob.latestStatus = [theErrors: expectedErrorMessage]
+
+		def expectedParamsString = _expectedEmailParamsString( testJob )
+
+		def portalInstance = new PortalInstance()
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
+
+		aodaacAggregatorService.portalInstance = portalInstance
+
+		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
+
+		assertEquals( [expectedErrorMessage, expectedParamsString], replacements )
+	}
+
+    void testPrettifyErrorMessageWithRegexp() {
+
+        _assertPrettify("some error message", "Error is: pretty error")
+    }
+    
+    void testPrettifyErrorMessageUnmatchedRegexp() {
+
+        def errorMessage = "there's no match for this"
+        _assertPrettify(errorMessage, errorMessage)
+    }
+
+    void _assertPrettify(originalErrorMessage, expectedPrettifiedErrorMessage) {
+        
+        aodaacAggregatorService.grailsApplication = [
+            config: [
+                aodaacAggregator: [
+                    errorLookup: [
+                        /some.*message/: { errorMessage -> return expectedPrettifiedErrorMessage }
+                    ]
+                ]
+            ]
+        ]
+
+        assertEquals(expectedPrettifiedErrorMessage, aodaacAggregatorService._prettifyErrorMessage(originalErrorMessage))
+    }
+    
 	void testGetEmailBodyMessageCode() {
 
 		def portalInstance = new PortalInstance()

@@ -502,14 +502,29 @@ Long range end: ${ p.longitudeRangeEnd }
 		// Job failed
 		def errorMessage = job.latestStatus.theErrors
 
-		if ( !errorMessage ) {
-
+        if (errorMessage) {
+            errorMessage = _prettifyErrorMessage(errorMessage)
+        }
+		else { 
 			errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
 		}
 
 		return [ errorMessage, paramsString ]
 	}
 
+    def _prettifyErrorMessage(errorMessage) {
+
+        def prettificationEntry = grailsApplication?.config?.aodaacAggregator?.errorLookup?.find {
+            errorMessage ==~ it.key
+        }
+
+        if (!prettificationEntry) {
+            return errorMessage
+        }
+        
+        return prettificationEntry.value(errorMessage)
+    }
+    
 	def _getEmailBodyMessageCode( job ) {
 
 		def codePart
