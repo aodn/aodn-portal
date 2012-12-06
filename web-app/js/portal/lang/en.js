@@ -190,5 +190,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapDropZonePlaceholder: 'Drag layers here to add them to the map',
 
     layerSearchTabTitle: 'Layers',
-    downloadSearchTabTitle: 'Downloads'
+    downloadSearchTabTitle: 'Downloads',
+
+    // AODAAC aggregator
+    aodaacDialogTitle: 'Data partition',
+    aodaacJobCreatedMsg: 'Your partitioning job has been created. Processing now.<br /><br />When the job is complete we will send an email to <i>${email}</i> with the details of how to download the data.<br /><br />NB. Partitioning jobs can vary considerably in how long they take, from minutes to hours. Both the number of files the data are stored in and what area range is selected can affect how long a job takes to run.',
+    aodaacJobCreateErrorMsg: 'Unable to create partitioning job. Please re-check the parameters you provided and try again.',
+    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.'
 });
