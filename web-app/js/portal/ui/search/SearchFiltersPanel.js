@@ -52,14 +52,16 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 			title: OpenLayers.i18n('methodFilter'),
 			hierarchical: true,
 			fieldName: 'Mcp14Cmv',
-			searcher: config.searcher
+			searcher: config.searcher,
+            separator: "|"
 		});
 
 		this.locationFilter = new Portal.ui.TermSelectionPanel({
 			title: OpenLayers.i18n('locationFilter'),
 			hierarchical: true,
 			fieldName: 'Mcp14Gev',
-			searcher: config.searcher
+			searcher: config.searcher,
+            separator: "|"
 		});
 
 		this.organisationFilter = new Portal.ui.TermSelectionPanel({
