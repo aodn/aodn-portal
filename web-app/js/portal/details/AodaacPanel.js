@@ -415,9 +415,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     startProcessing: function() {
 
-        if ( !this._validateEmailAddress( this.emailAddressTextbox.getValue() ) ) {
+        var emailAddress = this.emailAddressTextbox.getValue();
 
-            alert( 'Please enter a valid email address so we can notify you when the job is complete' );
+        if ( !this._validateEmailAddress( emailAddress ) ) {
+
+            Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg') );
             return;
         }
 
@@ -442,18 +444,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         args += "&";
         args += "productId=" + this.productsInfo[ this.selectedProductInfoIndex ].productId;
         args += "&";
-        args += "notificationEmailAddress=" + this.emailAddressTextbox.getValue();
+        args += "notificationEmailAddress=" + emailAddress;
 
         Ext.Ajax.request({
             url: 'aodaac/createJob?' + args,
             scope: this,
             success: function() {
-
-                alert( 'Partitioning job created. Processing now.\n\nIf you supplied an email address we will sent you a notification when the job is complete.' ); // \nOtherwise, you can track the progress of the job in the \'Data\' tab of the Portal.
+                Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreatedMsg', {email: emailAddress} ) );
             },
             failure: function() {
-
-                alert( 'Unable to create processing job. Please re-check the parameters and try again.' );
+                Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreateErrorMsg') );
             }
         });
     },

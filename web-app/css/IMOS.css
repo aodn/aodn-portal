@@ -91,13 +91,7 @@ h6 {
     background-color: white;
 }
 
-.footerText p {
-    margin-bottom: 15px !important;
-}
 
-.footerText p:first-child {
-    margin-left: 210px;
-}
 
 .footer .x-box-inner {
     overflow: visible;
