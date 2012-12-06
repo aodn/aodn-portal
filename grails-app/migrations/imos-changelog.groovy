@@ -192,5 +192,10 @@ databaseChangeLog = {
 <p>IMOS data is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 2.5 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>""")
 			}
 		}
-	}
+
+
+
+        include file: '20121206-PB-IMOSFooterChanges.groovy'
+
+    }
 }

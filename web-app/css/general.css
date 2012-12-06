@@ -96,6 +96,14 @@ hr {
 .floatLeft {
     float: left;
 }
+.floatRight {
+     float: right;
+ }
+.floatFullHeight::after {
+    display:block;
+    content:"";
+    clear:both;
+}
 .homePanelWidget {
     margin-right: 10px;
 	padding-right: 20px;
@@ -207,6 +215,9 @@ hr {
 }
 .spacer  {
     margin: 25px 0px;
+}
+.minispacer  {
+    margin: 7px 0px;
 }
 
 
