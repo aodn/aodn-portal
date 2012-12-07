@@ -19,7 +19,6 @@ class Layer {
     Server server
     Boolean cache
     String cql
-    //String styles
     String bboxMinX
     String bboxMinY
     String bboxMaxX
@@ -91,7 +90,7 @@ class Layer {
         queryable()
 
         isBaseLayer()
-        
+
         dataSource(blank:false)
         activeInLastScan()
         lastUpdated(nullable:true)
@@ -100,7 +99,7 @@ class Layer {
     }
 
 	static transients = ['layers']
-	
+
     Layer() {
 
         // Empty relationships
@@ -122,7 +121,7 @@ class Layer {
 	boolean equals(other){
         if(is(other)){
             return true
-        }    
+        }
         if(!(other instanceof Layer)) {
             return false
         }
@@ -141,7 +140,7 @@ class Layer {
         }
         return this.overrideMetadataUrl;
     }
-	
+
     void printTree(int depth = 0) {
 
         if ( depth == 0 ) {
@@ -173,9 +172,9 @@ class Layer {
             dels*.delete()
         }
     }
-	
+
 	void deleteSnapshotLayers() {
-		
+
 		Layer.withNewSession {
 			SnapshotLayer.findAllByLayer(this).each {
 				it.snapshot.removeFromLayers(it)
@@ -185,7 +184,7 @@ class Layer {
 	}
 
 	void deleteChildLayers() {
-		
+
 		Layer.withNewSession {
 			// Cascade delete child layers.
 			layers.each {
@@ -193,7 +192,7 @@ class Layer {
 			}
         }
     }
-	
+
     void beforeDelete(){
         //find all layers related to this server
         deleteDefaultLayersInConfig()
@@ -201,8 +200,8 @@ class Layer {
 		deleteSnapshotLayers()
 		deleteChildLayers()
     }
-	
-	/** 
+
+	/**
 	 * Mimic belongsTo relationship.
 	 */
 	List<Layer> getLayers()	{
@@ -216,11 +215,11 @@ class Layer {
 			return []
 		}
 	}
-	
+
 	void addToLayers(Layer child) {
 		child.parent = this
 	}
-	
+
 	void removeFromLayers(Layer child) {
 		child.parent = null
 	}
