@@ -11,10 +11,10 @@ package au.org.emii.portal
 import grails.converters.JSON
 
 class LayerServiceTests extends GroovyTestCase {
-    
+
     // The service
     def layerService
-    
+
     // Long abstract text
     def fullAbstractText    = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris volutpat justo a risus mattis sagittis. Duis elementum, nisi quis fringilla bibendum, magna neque vulputate odio, ut malesuada metus quam sit amet enim. Phasellus in libero ipsum, at auctor purus. Integer sodales lobortis vulputate. Sed nibh elit, malesuada ac rhoncus eget, vehicula at ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eleifend aliquet dolor."
     def trimmedAbstractText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris volutpat justo a risus mattis sagittis. Duis elementum, nisi quis fringilla bibendum, magna neque vulputate odio, ut malesuada metus quam sit amet enim. Phasellus in libero ipsum, at auctor purus. Integer sodales lobortis vulputate. Sed nibh elit, malesuada ac rhoncus eget, vehicula at ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. M..."
@@ -37,6 +37,14 @@ class LayerServiceTests extends GroovyTestCase {
     bboxMaxX: "90",
     bboxMaxY: "180",
     bboxProjection: "EPSG:2010",
+    styles: [
+		{
+			title: "Grey title",
+			name: "boxfill/greyscale",
+			abstractText: "boxfill style, using the grey palette",
+			legends: []
+		}
+    ],
     children: [
         {
             name: "awesomeSauce:layer_c",
@@ -69,13 +77,13 @@ class LayerServiceTests extends GroovyTestCase {
             queryable: false,
             styles: [
                 {
-                    title: "boxfill/alg",
+                    title: "Alg title",
                     name: "boxfill/alg",
                     abstractText: "boxfill style, using the alg palette",
                     legends: []
                 },
                 {
-                    title: "boxfill/redblue",
+                    title: "Red Blue title",
                     name: "boxfill/redblue",
                     abstractText: "boxfill style, using the redblue palette",
                     legends: []
@@ -111,11 +119,11 @@ class LayerServiceTests extends GroovyTestCase {
         }
     ]
 }"""
-    
+
     protected void setUp() {
-        
+
         super.setUp()
-        
+
         server = new Server( uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", infoFormat: "text/plain", disable: false, opacity: 100 )
         server.save( failOnError: true )
     }
@@ -162,7 +170,7 @@ class LayerServiceTests extends GroovyTestCase {
 
         _verifyHierarchy true /* Test had existing Layers */
     }
-    
+
     void testFindLayerAsJson() {
         Server serverInstance = new Server(
             uri: "http://geoserver.emii.org.au/geoserver/wms",
@@ -175,40 +183,40 @@ class LayerServiceTests extends GroovyTestCase {
             shortAcron: "",
             type: "WMS-1.1.1"
          )
-        
+
         serverInstance.save(failOnError: true)
 
         Layer layerInstance = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
-        
+
         layerInstance.save(failOnError: true)
-        
+
         def controller = new LayerController()
-        
+
         controller.params.serverUri = serverInstance.uri
         controller.params.name = "imos:argo_float_mv"
-        
+
         controller.findLayerAsJson()
-        
+
         def layerAsJson = JSON.parse(controller.response.contentAsString)
 
         assertEquals(layerInstance.id, layerAsJson.id)
         assertEquals("imos", layerAsJson.namespace)
         assertEquals("argo_float_mv", layerAsJson.name)
     }
-    
+
     void testUpdateWithNewData_NoExistingThenUpdateProcessedTwice() {
-        
+
         assertEquals "Should be 0 layers to start with", 0, Layer.count()
-        
+
         layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
-        
+
         _verifyHierarchy false /* Test didn't have existing Layers */
 
         layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
-        
+
         _verifyHierarchy false /* Test didn't have existing Layers */
     }
-    
+
     void _verifyHierarchy(boolean hadExistingBAndC) {
 
         def numLayersExpected = hadExistingBAndC ? 10 : 8
@@ -236,6 +244,10 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull   "layer_a shouldn't have a parent.", layerA.parent
         assertEquals "layer_a should have $layerAExpectedChildren child layers.", layerAExpectedChildren, layerA.layers.size()
         assertEquals "layer_a -- Layer A", layerA.layerHierarchyPath
+		assertEquals 1, layerA.allStyles.size()
+		assertEquals( ['Grey title'], layerA.allStyles.collect{ it.title }.sort() )
+		assertEquals( ['boxfill/greyscale'], layerA.allStyles.collect{ it.name }.sort() )
+		assertEquals( ['boxfill style, using the grey palette'], layerA.allStyles.collect{ it.abstractText }.sort() )
 
         // Existing child (layer_b) if applicable
         if ( hadExistingBAndC ) {
@@ -330,6 +342,16 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_a property bboxMaxY.", null, layerD.bboxMaxY
         assertEquals "layer_d property projection", null, layerD.projection
         assertNotNull "layer_d property styles", layerD.styles
+		assertEquals 2, layerD.styles.size()
+		assertEquals( ['Alg title', 'Red Blue title'], layerD.styles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
+		assertEquals( ['boxfill/alg', 'boxfill/redblue'], layerD.styles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
+		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the redblue palette'], layerD.styles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
+		// Code review - PB: These 4 tests need to be commented-in to test getAllStyles()
+//		assertNotNull "layer_d property styles (inc. inherited)", layerD.allStyles
+//		assertEquals 3, layerD.allStyles.size()
+//		assertEquals( ['Alg title', 'Grey title', 'Red Blue title'], layerD.allStyles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
+//		assertEquals( ['boxfill/alg', 'boxfill/greyscale', 'boxfill/redblue'], layerD.allStyles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
+//		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the grey palette', 'boxfill style, using the redblue palette'], layerD.allStyles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
         assertEquals "layer_d property dataSource", "testCode", layerD.dataSource
         assertEquals "layer_d property activeInLastScan", true, layerD.activeInLastScan
         assertNotNull "layer_d property lastUpdated should exist", layerD.lastUpdated
