@@ -761,13 +761,33 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         _assertPrettify(errorMessage, errorMessage)
     }
 
+    void testPrettifyErrorMessageLimitExceeded() {
+
+        def errorMessage = "java.lang.Exception: requested ~ 23986632492 bytes; limit = 1000000000"
+        def expectedErrorMessage = "The requested job will have too much data. You have requested roughly 24 times the maximum aggregation size."
+        _assertPrettify(errorMessage, expectedErrorMessage)
+    }
+
     void _assertPrettify(originalErrorMessage, expectedPrettifiedErrorMessage) {
         
         aodaacAggregatorService.grailsApplication = [
             config: [
                 aodaacAggregator: [
                     errorLookup: [
-                        /some.*message/: { errorMessage -> return expectedPrettifiedErrorMessage }
+                        /some.*message/: { errorMessage -> return expectedPrettifiedErrorMessage },
+                        /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
+                            
+                            errorMessage ->
+
+                            def numBytes = (errorMessage =~ /[0-9]+/)
+                            assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
+                            def actualBytes = Long.valueOf(numBytes[0])
+                            def limitBytes = Long.valueOf(numBytes[1])
+
+                            def amountOver = Math.round(actualBytes/limitBytes)
+
+                            return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum aggregation size."
+                        }
                     ]
                 ]
             ]
