@@ -54,8 +54,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     afterRender:function () {
-        console.log(this.pageSize);
-        console.log(this.getBottomToolbar().pageSize)
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
