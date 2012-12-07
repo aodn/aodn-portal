@@ -66,7 +66,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         // etc etc etc interact in terms of layout when selected layer changes - and perhaps this forced
         // layout can be removed.
         //
-        this.doLayout(false, true);
+        this.doLayout(false, true /* force update */);
         
         if (!this.isMapVisible()) {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
