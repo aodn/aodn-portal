@@ -17,7 +17,7 @@ Ext.ns('GeoExt.ux');
 
 /**
  *
- * A combo box in order to switch the base layers of a given map 
+ * A combo box in order to switch the base layers of a given map
  *
  *
  * @constructor
@@ -139,7 +139,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
                     }
                 }
             });
-            
+
             // set the display field
             this.displayField = this.store.fields.keys[1];
             // set an initial value
@@ -169,9 +169,8 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
             layers : this.map.getLayersBy('isBaseLayer', true)
         });
     },
-    
+
     onAddLayer: function(evt) {
-        console.log('onAddLayer');
         GeoExt.ux.BaseLayerComboBox.superclass.onAddLayer.apply(this, evt);
     }
 });
