@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,37 +8,38 @@
 Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
-    frame: false,
-    layout: 'fit',
+    frame:false,
+    layout:'fit',
 
-    border: true,
-    autoExpandColumn: 'mdDesc',
+    border:true,
+    autoExpandColumn:'mdDesc',
 
-    initComponent: function() {
+    initComponent:function () {
         var config = {
-            colModel: new Ext.grid.ColumnModel({
-                defaults: {
-                    menuDisabled: true
+            colModel:new Ext.grid.ColumnModel({
+                defaults:{
+                    menuDisabled:true
                 },
-                columns: [
+                columns:[
                     {
-                        header: OpenLayers.i18n('logoHeading'),
-                        width: 50,
-                        xtype: 'templatecolumn',
-                        tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'/images/logos/{source}.gif"/>',
-                        dataIndex: 'source'
-                    },{
-                        id: 'mdDesc',
-                        header: OpenLayers.i18n('descHeading'),
-                        dataIndex: 'title',
-                        width: 150,
-                        xtype: 'templatecolumn',
-                        tpl: '<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
+                        header:OpenLayers.i18n('logoHeading'),
+                        width:50,
+                        xtype:'templatecolumn',
+                        tpl:'<img class="p-logo" src="' + Portal.app.config.catalogUrl + '/images/logos/{source}.gif"/>',
+                        dataIndex:'source'
+                    },
+                    {
+                        id:'mdDesc',
+                        header:OpenLayers.i18n('descHeading'),
+                        dataIndex:'title',
+                        width:150,
+                        xtype:'templatecolumn',
+                        tpl:'<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
                     }
                 ]
             }),
-            bbar: new Ext.PagingToolbar({
-                pageSize: 15
+            bbar:new Ext.PagingToolbar({
+                pageSize:this.pageSize
             })
         };
 
@@ -53,33 +53,32 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         this.addEvents('rowenter', 'rowleave');
     },
 
-    afterRender: function() {
-
+    afterRender:function () {
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
 
         this.getView().mainBody.on({
-            scope    : this,
-            mouseover: this.onMouseOver,
-            mouseout : this.onMouseOut
+            scope:this,
+            mouseover:this.onMouseOver,
+            mouseout:this.onMouseOut
         });
     },
 
-    showMask: function(){
+    showMask:function () {
         if (this.rendered) {
             this.loadMask.show();
         }
     },
 
-    hideMask: function(){
+    hideMask:function () {
         if (this.rendered) {
             this.loadMask.hide();
         }
     },
 
     // trigger mouseenter event on row when applicable
-    onMouseOver : function(e, target) {
+    onMouseOver:function (e, target) {
         var row = this.getView().findRow(target);
         if (row && row !== this.lastRow) {
             var rowIndex = this.getView().findRowIndex(row);
@@ -89,9 +88,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     // trigger mouseleave event on row when applicable
-    onMouseOut: function(e) {
+    onMouseOut:function (e) {
         if (this.lastRow) {
-            if(!e.within(this.lastRow, true, true)){
+            if (!e.within(this.lastRow, true, true)) {
                 var lastRowIndex = this.getView().findRowIndex(this.lastRow);
                 this.fireEvent("mouseleave", this, lastRowIndex, this.store.getAt(lastRowIndex), e);
                 delete this.lastRow;
@@ -99,7 +98,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         }
     },
 
-    onClick: function(e, target) {
+    onClick:function (e, target) {
 
         var row = this.getView().findRow(target);
         var rowIndex = this.getView().findRowIndex(row);
@@ -107,12 +106,12 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
     },
 
-    _getLayerLink: function(rowIndex) {
+    _getLayerLink:function (rowIndex) {
 
         var rec = this.store.getAt(rowIndex);
         var links = rec.get('links');
         var linkStore = new Portal.search.data.LinkStore({
-            data: {links: links}
+            data:{links:links}
         });
 
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
