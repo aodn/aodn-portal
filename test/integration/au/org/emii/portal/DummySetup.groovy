@@ -22,12 +22,11 @@ class DummySetup extends GroovyTestCase{
 		name: "something3name", disable: false, opacity: 100, imageFormat: "image/gif",  infoFormat: 'text/html',
 		allowDiscoveries:true)
 
-		s1.save(failOnError: true,flush:true)
-		s2.save(failOnError: true,flush:true)
-		s3.save(failOnError:  true,flush:true)
+		s1.save(failOnError: true, flush: true)
+		s2.save(failOnError: true, flush: true)
+		s3.save(failOnError: true, flush: true)
 
 		assertEquals 3, Server.count()
-
 
 		def Layer l1 = new Layer(server: s1, blacklisted:false, abstractTrimmed: "", cache:false, styles: "",
 		queryable:true, isBaseLayer:false, dataSource: "Unknown",activeInLastScan: false, name: "l1")
