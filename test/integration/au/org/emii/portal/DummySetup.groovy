@@ -28,7 +28,6 @@ class DummySetup extends GroovyTestCase{
 
 		assertEquals 3, Server.count()
 
-
 		def Layer l1 = new Layer(server: s1, blacklisted:false, abstractTrimmed: "", cache:false, styles: "",
 		queryable:true, isBaseLayer:false, dataSource: "Unknown",activeInLastScan: false, name: "l1")
 		def Layer l2 = new Layer(server: s1, blacklisted:false, abstractTrimmed: "", cache:false, styles: "",
