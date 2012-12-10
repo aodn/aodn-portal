@@ -17,6 +17,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     this.titleText = cfg.title;
     if ( cfg.title ) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
+    if(!cfg.separator)
+        cfg.separator = "|";
+
     var defaults = {
         collapsible: true,
         collapsed: true,
