@@ -22,9 +22,9 @@ class DummySetup extends GroovyTestCase{
 		name: "something3name", disable: false, opacity: 100, imageFormat: "image/gif",  infoFormat: 'text/html',
 		allowDiscoveries:true)
 
-		s1.save(failOnError: true,flush:true)
-		s2.save(failOnError: true,flush:true)
-		s3.save(failOnError:  true,flush:true)
+		s1.save(failOnError: true, flush: true)
+		s2.save(failOnError: true, flush: true)
+		s3.save(failOnError: true, flush: true)
 
 		assertEquals 3, Server.count()
 
