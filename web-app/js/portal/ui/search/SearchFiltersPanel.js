@@ -44,24 +44,21 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 			title: OpenLayers.i18n('themeFilter'),
 			hierarchical: true,
 			fieldName: 'Gcmd538',
-			searcher: config.searcher,
-            separator: "|"
+			searcher: config.searcher
 		});
 
 		this.methodFilter = new Portal.ui.TermSelectionPanel({
 			title: OpenLayers.i18n('methodFilter'),
 			hierarchical: true,
 			fieldName: 'Mcp14Cmv',
-			searcher: config.searcher,
-            separator: "|"
+			searcher: config.searcher
 		});
 
 		this.locationFilter = new Portal.ui.TermSelectionPanel({
 			title: OpenLayers.i18n('locationFilter'),
 			hierarchical: true,
 			fieldName: 'Mcp14Gev',
-			searcher: config.searcher,
-            separator: "|"
+			searcher: config.searcher
 		});
 
 		this.organisationFilter = new Portal.ui.TermSelectionPanel({
