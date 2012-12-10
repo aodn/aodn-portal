@@ -82,7 +82,7 @@ aodaacAggregator.errorLookup = [
 
         def amountOver = Math.round(actualBytes/limitBytes)
 
-        return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum aggregation size."
+        return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
     }
 ]
 

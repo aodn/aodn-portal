@@ -23,7 +23,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             id: 'aodaacPanel',
-            title: 'Partition data',
+            title: 'Subset data',
             items: items,
             bodyCls: 'aodaacTab'
         }, cfg );
