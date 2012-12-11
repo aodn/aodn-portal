@@ -22,13 +22,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 },
                 columns:[
                     {
-                        header:OpenLayers.i18n('logoHeading'),
-                        width:50,
-                        xtype:'templatecolumn',
-                        tpl:'<img class="p-logo" src="' + Portal.app.config.catalogUrl + '/images/logos/{source}.gif"/>',
-                        dataIndex:'source'
-                    },
-                    {
                         id:'mdDesc',
                         header:OpenLayers.i18n('descHeading'),
                         dataIndex:'title',
