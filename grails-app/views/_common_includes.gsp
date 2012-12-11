@@ -16,6 +16,12 @@
               .next().stop(true, true).slideToggle();
 
           });
+
+        // getFeatureInfo popup links
+        jQuery('.featureinfocontent a').live('hover',
+            function () {
+                jQuery(this).attr('target', '_blank').addClass('external');
+            });
 		  
 		  // activelayer/tree labels
 		  jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').live('hover',
