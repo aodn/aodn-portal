@@ -55,15 +55,15 @@
       <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
     </div>
 
-    <div class="clear"></div>
+    <div class="clear spacer"></div>
+    <div class="spacer clear footer">
+        <div class="spacer floatLeft homePanelWidget"  style="width:100px">
+            <img class="minispacer" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>
+        </div>
+        <div class="spacer floatLeft homePanelWidget"  style="width:370px">
+            ${ cfg.footerContent }
+        </div>
+    </div>
+    <div class="clear footer"> ${ portalBuildInfo }</div>
   </div>
-</div>
-<div class="footer">
-    <div style="float: left;">
-        <img src="images/DIISRTE_Inline-PNGSmall_200h.png" alt="DIISTRE logo"/>
-    </div>
-    <div class="footerText">
-    ${ cfg.footerContent }
-    ${ portalBuildInfo }
-    </div>
 </div>
