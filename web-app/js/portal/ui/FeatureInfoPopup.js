@@ -33,7 +33,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    this.on('maximize', this._onMaximizeRestore,this);
 	    this.on('restore', this._onMaximizeRestore,this);
 	    
-        Ext.MsgBus.subscribe('removeAllLayers', function() {
+        Ext.MsgBus.subscribe('reset', function() {
             this.close();
         }, this);
     },

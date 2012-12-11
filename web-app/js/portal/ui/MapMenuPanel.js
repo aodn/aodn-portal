@@ -60,6 +60,9 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 
     toggleLayerNodes: function(id, enable, node) {
         this.defaultMenuTree.toggleLayerNodes(id, enable, node);
+    },
+    resetTree: function(collapse) {
+        this.defaultMenuTree.resetTree(collapse);
     }
 });
 
@@ -143,6 +146,15 @@ Portal.ui.MenuPanel = Ext.extend(Ext.tree.TreePanel, {
         _node.eachChild(function(child) {
             this.toggleLayerNodes(id, _enable, child);
         }, this);
+    },
+
+    resetTree: function(collapse) {
+        this.defaultNode().cascade(function(){
+            this.enable();
+        });
+        if (collapse){
+            this.defaultNode().collapseChildNodes(true);
+        }
     },
 
     toggleNode: function(enable, node) {

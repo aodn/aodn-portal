@@ -48,11 +48,11 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
             this.removeLayer(message);
         }, this);
-        Ext.MsgBus.subscribe('removeAll', function(subject, message) {
-            this.leftTabMenuPanel.toggleNodeBranch(true);
+        Ext.MsgBus.subscribe('removeAllLayers', function(subject, message) {
+            this.leftTabMenuPanel.resetTree();
         }, this);
         Ext.MsgBus.subscribe('reset', function(subject, message) {
-            this.leftTabMenuPanel.toggleNodeBranch(true);
+            this.leftTabMenuPanel.resetTree(true);
         }, this);
 
         this.addEvents('addlayerclicked');
