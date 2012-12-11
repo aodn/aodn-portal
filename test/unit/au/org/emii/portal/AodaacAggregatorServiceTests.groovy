@@ -113,7 +113,19 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         mockDomain AodaacJob, [testJob]
         mockLogging AodaacAggregatorService, false
 
-        aodaacAggregatorService = new AodaacAggregatorService() // Why is this not injected?
+		// Create service and portal instance and link
+		def portalInstance = new PortalInstance()
+		aodaacAggregatorService = new AodaacAggregatorService() // Why is this not injected?
+		aodaacAggregatorService.portalInstance = portalInstance
+		aodaacAggregatorService.grailsApplication = [
+			config: [
+				portal: [
+					instance: [name: "testInstance"],
+					systemEmail: [fromAddress: "systemEmailAddress"]
+				]
+			]
+		]
+		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
 
         aodaacAggregatorService.metaClass.getProductDataJavascriptAddress = {
             [ toURL: { [ text: productInfoJS ] } ]
@@ -203,7 +215,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         aodaacAggregatorService.metaClass._aggregatorBaseAddress = { "url/" }
 
         try {
-
             aodaacAggregatorService.createJob testEmailAddress, testParams
 
             fail "Expected Exception"
@@ -227,7 +238,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         }
 
         try {
-
             aodaacAggregatorService.updateJob( [latestStatus: [jobEnded: false]] )
 
             fail "Expected Exception"
@@ -564,17 +574,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 		def argsReturned = []
 
-	    aodaacAggregatorService.grailsApplication = [
-		    config: [
-			    portal: [systemEmail: [fromAddress: "systemEmailAddress"], instance: [name: "imos"]]
-		    ]
-	    ]
-
-	    def portalInstance = new PortalInstance()
-	    portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-
-        aodaacAggregatorService.portalInstance = portalInstance
-
 		aodaacAggregatorService.metaClass._getEmailBodyReplacements = {
 			job ->
 
@@ -590,7 +589,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 			assertEquals testJob, job
 			timesCalled.getEmailBodyMessageCode++
 
-			return 'imos.aodaacJob.notification.email.testBody'
+			return 'testinstance.aodaacJob.notification.email.testBody'
 		}
 
         aodaacAggregatorService.messageSource = [
@@ -599,12 +598,12 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
                 if ( timesCalled.messageSourceGetMessage == 0 ) {
 
-                    assertEquals "imos.aodaacJob.notification.email.testBody", code
+                    assertEquals "testinstance.aodaacJob.notification.email.testBody", code
 					assertEquals argsReturned, args
 				}
                 else if ( timesCalled.messageSourceGetMessage == 1 ) {
 
-					assertEquals "imos.aodaacJob.notification.email.subject", code
+					assertEquals "testinstance.aodaacJob.notification.email.subject", code
 					assertEquals( ['12345'], args )
 				}
 
@@ -702,14 +701,12 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 		testJob.result = [dataUrl: 'dataUrl']
 		testJob.dataFileExists = true
 
-		def portalInstance = new PortalInstance()
-		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-
-		aodaacAggregatorService.portalInstance = portalInstance
+		// Set up message source
+		aodaacAggregatorService.metaClass._getEmailFooter = { 'FOOTER_CONTENT' }
 
 		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
 
-		assertEquals( ['dataUrl'], replacements )
+		assertEquals( ['dataUrl', 'FOOTER_CONTENT'], replacements )
 	}
 
 	void testGetEmailReplacements_ExpiredJob() {
@@ -722,14 +719,12 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 		def expectedParamsString = _expectedEmailParamsString( testJob )
 
-		def portalInstance = new PortalInstance()
-		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-
-		aodaacAggregatorService.portalInstance = portalInstance
+		// Set up message source
+		aodaacAggregatorService.metaClass._getEmailFooter = { -> 'FOOTER_CONTENT' }
 
 		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
 
-		assertEquals( [ testDate.dateTimeString, expectedParamsString ], replacements )
+		assertEquals( [ testDate.dateTimeString, expectedParamsString, 'FOOTER_CONTENT' ], replacements )
 	}
 
 	void testGetEmailReplacements_UnsuccessfulJob() {
@@ -740,21 +735,19 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
 		def expectedParamsString = _expectedEmailParamsString( testJob )
 
-		def portalInstance = new PortalInstance()
-		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-
-		aodaacAggregatorService.portalInstance = portalInstance
+		// Set up message source
+		aodaacAggregatorService.metaClass._getEmailFooter = { 'FOOTER_CONTENT' }
 
 		def replacements = aodaacAggregatorService._getEmailBodyReplacements( testJob )
 
-		assertEquals( [expectedErrorMessage, expectedParamsString], replacements )
+		assertEquals( [expectedErrorMessage, expectedParamsString, 'FOOTER_CONTENT'], replacements )
 	}
 
     void testPrettifyErrorMessageWithRegexp() {
 
         _assertPrettify("some error message", "Error is: pretty error")
     }
-    
+
     void testPrettifyErrorMessageUnmatchedRegexp() {
 
         def errorMessage = "there's no match for this"
@@ -769,14 +762,14 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     }
 
     void _assertPrettify(originalErrorMessage, expectedPrettifiedErrorMessage) {
-        
+
         aodaacAggregatorService.grailsApplication = [
             config: [
                 aodaacAggregator: [
                     errorLookup: [
                         /some.*message/: { errorMessage -> return expectedPrettifiedErrorMessage },
                         /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
-                            
+
                             errorMessage ->
 
                             def numBytes = (errorMessage =~ /[0-9]+/)
@@ -795,27 +788,39 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         assertEquals(expectedPrettifiedErrorMessage, aodaacAggregatorService._prettifyErrorMessage(originalErrorMessage))
     }
-    
+
 	void testGetEmailBodyMessageCode() {
 
-		def portalInstance = new PortalInstance()
-		aodaacAggregatorService.grailsApplication = [
-			config: [
-				portal: [instance: [name: "xxxx"]]
-			]
-		]
-		portalInstance.grailsApplication = aodaacAggregatorService.grailsApplication
-		aodaacAggregatorService.portalInstance = portalInstance
-
-
 		testJob.dataFileExists = true
-		assertEquals "xxxx.aodaacJob.notification.email.successBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+		assertEquals "testinstance.aodaacJob.notification.email.successBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
 
 		testJob.dataFileExists = false
-		assertEquals "xxxx.aodaacJob.notification.email.failedBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+		assertEquals "testinstance.aodaacJob.notification.email.failedBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
 
 		testJob.expired = true
-		assertEquals "xxxx.aodaacJob.notification.email.expiredBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+		assertEquals "testinstance.aodaacJob.notification.email.expiredBody", aodaacAggregatorService._getEmailBodyMessageCode( testJob ) as String
+	}
+
+	void testGetEmailFooter() {
+
+		def timesCalled = 0
+
+		aodaacAggregatorService.messageSource = [
+			getMessage: {
+				code, args, locale ->
+
+				assertEquals "testinstance.emailFooter", code
+				assertEquals( [].toArray(), args )
+				timesCalled++
+
+				return 'FOOTER_TEXT'
+			}
+		]
+
+		def result = aodaacAggregatorService._getEmailFooter()
+
+		assertEquals 'FOOTER_TEXT', result
+		assertEquals 1, timesCalled
 	}
 
 	static def _expectedEmailParamsString( job ) {
@@ -831,7 +836,6 @@ Time of day end: ${ p.timeOfDayRangeEnd }
 Lat range start: ${ p.latitudeRangeStart }
 Lat range end: ${ p.latitudeRangeEnd }
 Long range start: ${ p.longitudeRangeStart }
-Long range end: ${ p.longitudeRangeEnd }
-"""
+Long range end: ${ p.longitudeRangeEnd }"""
 	}
 }

@@ -471,45 +471,58 @@ class AodaacAggregatorService {
 
 	def _getEmailBodyReplacements( job ) {
 
+		def replacements = []
+
 		// If successful
 		if ( job.dataFileExists ) {
 
 			// Success message
-			return [ job.result.dataUrl ]
+			replacements << job.result.dataUrl
+		}
+		else {
+
+			// Record params
+			def p = job.jobParams
+			def paramsString = """\
+				ProductId: ${ p.productId }
+				Output format: ${ p.outputFormat }
+				Date range start: ${ p.dateRangeStart }
+				Date range end: ${ p.dateRangeEnd }
+				Time of day start: ${ p.timeOfDayRangeStart }
+				Time of day end: ${ p.timeOfDayRangeEnd }
+				Lat range start: ${ p.latitudeRangeStart }
+				Lat range end: ${ p.latitudeRangeEnd }
+				Long range start: ${ p.longitudeRangeStart }
+				Long range end: ${ p.longitudeRangeEnd }""".stripIndent()
+
+
+			// If expired
+			if ( job.expired ) {
+
+				replacements << job.dateCreated.dateTimeString
+				replacements << paramsString
+			}
+			else {
+
+				// Job failed
+				def errorMessage = job.latestStatus.theErrors
+
+				if (errorMessage) {
+					errorMessage = _prettifyErrorMessage(errorMessage)
+				}
+				else {
+					errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
+				}
+
+				replacements << errorMessage
+				replacements << paramsString
+			}
 		}
 
-		// Record params
-		def p = job.jobParams
-		def paramsString = """\
-ProductId: ${ p.productId }
-Output format: ${ p.outputFormat }
-Date range start: ${ p.dateRangeStart }
-Date range end: ${ p.dateRangeEnd }
-Time of day start: ${ p.timeOfDayRangeStart }
-Time of day end: ${ p.timeOfDayRangeEnd }
-Lat range start: ${ p.latitudeRangeStart }
-Lat range end: ${ p.latitudeRangeEnd }
-Long range start: ${ p.longitudeRangeStart }
-Long range end: ${ p.longitudeRangeEnd }
-"""
+		// Add footer
+		replacements << _getEmailFooter()
 
-		// If expired
-		if ( job.expired ) {
-
-			return [ job.dateCreated.dateTimeString, paramsString ]
-		}
-
-		// Job failed
-		def errorMessage = job.latestStatus.theErrors
-
-        if (errorMessage) {
-            errorMessage = _prettifyErrorMessage(errorMessage)
-        }
-		else { 
-			errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
-		}
-
-		return [ errorMessage, paramsString ]
+		return replacements
 	}
 
     def _prettifyErrorMessage(errorMessage) {
@@ -521,10 +534,10 @@ Long range end: ${ p.longitudeRangeEnd }
         if (!prettificationEntry) {
             return errorMessage
         }
-        
+
         return prettificationEntry.value(errorMessage)
     }
-    
+
 	def _getEmailBodyMessageCode( job ) {
 
 		def codePart
@@ -543,5 +556,14 @@ Long range end: ${ p.longitudeRangeEnd }
 		}
 
 		return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
+	}
+
+	def _getEmailFooter() {
+
+		return messageSource.getMessage(
+			portalInstance.code() + '.emailFooter', // Instance-specific message code
+			[].toArray(), // No replacements
+			Locale.getDefault()
+		)
 	}
 }
