@@ -229,11 +229,10 @@ class Layer {
 
         def currentLayer = this
         def styles = []
-        while ( currentLayer ) {
+		while ( currentLayer ) {
 
-            currentLayer.styles?.each() {
-                styles << it
-            }
+            styles.addAll currentLayer.styles
+
             currentLayer = currentLayer.parent
         }
         return styles
