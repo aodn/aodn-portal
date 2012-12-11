@@ -245,7 +245,7 @@ class LayerService {
 
         newData.styles.each {
 
-            def styles = new Styles()
+            def styles = new Style()
 
             styles.name = it.name
             styles.title = it.title

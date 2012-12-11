@@ -536,7 +536,7 @@ class LayerController {
             if (readMethod != null) {
                 Object value = readMethod.invoke(layer, (Object[]) null)
                 if ("layers".equals(name)) {
-                    //layerData[name] = _convertLayersToListOfMaps(value)
+                    layerData[name] = _convertLayersToListOfMaps(value)
                 }
                 else if (!excludes.contains(name)) {
                     layerData[name] = value
@@ -546,7 +546,7 @@ class LayerController {
         return layerData
     }
 
-    def _getLayerDefaultData(layer){
+        def _getLayerDefaultData(layer){
         def excludes = [
                 "class",
                 "metaClass",

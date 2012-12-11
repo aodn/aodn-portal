@@ -347,11 +347,11 @@ class LayerServiceTests extends GroovyTestCase {
 		assertEquals( ['boxfill/alg', 'boxfill/redblue'], layerD.styles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
 		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the redblue palette'], layerD.styles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
 		// Code review - PB: These 4 tests need to be commented-in to test getAllStyles()
-//		assertNotNull "layer_d property styles (inc. inherited)", layerD.allStyles
-//		assertEquals 3, layerD.allStyles.size()
-//		assertEquals( ['Alg title', 'Grey title', 'Red Blue title'], layerD.allStyles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
-//		assertEquals( ['boxfill/alg', 'boxfill/greyscale', 'boxfill/redblue'], layerD.allStyles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
-//		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the grey palette', 'boxfill style, using the redblue palette'], layerD.allStyles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
+		assertNotNull "layer_d property styles (inc. inherited)", layerD.allStyles
+		assertEquals 3, layerD.allStyles.size()
+		assertEquals( ['Alg title', 'Grey title', 'Red Blue title'], layerD.allStyles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
+		assertEquals( ['boxfill/alg', 'boxfill/greyscale', 'boxfill/redblue'], layerD.allStyles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
+		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the grey palette', 'boxfill style, using the redblue palette'], layerD.allStyles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
         assertEquals "layer_d property dataSource", "testCode", layerD.dataSource
         assertEquals "layer_d property activeInLastScan", true, layerD.activeInLastScan
         assertNotNull "layer_d property lastUpdated should exist", layerD.lastUpdated

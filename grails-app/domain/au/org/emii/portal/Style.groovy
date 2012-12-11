@@ -7,7 +7,7 @@
 
 package au.org.emii.portal
 
-class Styles {
+class Style {
 
     String name
     String title

@@ -11,7 +11,7 @@ package au.org.emii.portal
 
 import grails.test.*
 
-class StylesTests extends GrailsUnitTestCase {
+class StyleTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

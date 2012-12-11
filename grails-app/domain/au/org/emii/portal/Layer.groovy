@@ -69,7 +69,7 @@ class Layer {
         filters cascade: 'all-delete-orphan'
     }
 
-    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Styles]
+    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Style]
     static constraints = {
 		parent(nullable: true)
 		name( nullable: true, size:1..225 )
@@ -224,7 +224,18 @@ class Layer {
 		child.parent = null
 	}
 
+
     def getAllStyles() {
-        return this.styles
+
+        def currentLayer = this
+        def styles = []
+        while ( currentLayer ) {
+
+            currentLayer.styles?.each() {
+                styles << it
+            }
+            currentLayer = currentLayer.parent
+        }
+        return styles
     }
 }
