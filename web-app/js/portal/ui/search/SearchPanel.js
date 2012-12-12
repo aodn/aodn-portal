@@ -10,8 +10,8 @@ Ext.namespace('Portal.ui.search');
 Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
     constructor:function (cfg) {
-        var defaults = {
-        };
+
+        var defaults = {};
 
         Ext.apply(this, cfg || {}, defaults);
 
@@ -24,12 +24,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
 
         var itemsToDisplay = [];
-
-//        this.freeTextSearchPanel = new Portal.ui.search.FreeTextSearchPanel({
-//            region: 'north',
-//            bodyStyle: 'padding-top: 3px; height: 30px;'
-//        });
-//        itemsToDisplay.push( this.freeTextSearchPanel );
 
         var disclaimerMessage = OpenLayers.i18n('facetedSearchDisclaimer');
 
@@ -66,10 +60,9 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             onSearchComplete:function (response, page) {
                 this.store.loadData(response);
             },
-            pageSize:10
+            pageSize:this.resultGridSize
         });
         itemsToDisplay.push(this.resultsGrid);
-
 
         var config = Ext.apply({
             layout:'border',
@@ -93,10 +86,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.mon(this.searcher, 'searchcomplete', this._checkSize, this);
         this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
 
-//        this.freeTextSearchPanel.on('search', this.onSearch, this);
-
         this.relayEvents(this.resultsGrid, ['adddownload', 'addlayer']);
-
 
         // react to results panel events
         this.mon(this.resultsGrid.getBottomToolbar(), 'beforechange', this.resultsGridBbarBeforeChange, this);
@@ -109,7 +99,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
     },
 
     resultsStoreLoad:function () {
-        this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:this.resultsStore.startRecord, limit:15}});
+        this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:this.resultsStore.startRecord, limit:this.resultGridSize}});
     },
 
     onSearch:function (e) {
@@ -124,10 +114,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.filtersPanel.themeFilter.on('collapse', this.doResize, this);
         this.filtersPanel.themeFilter.on('expand', this.doResize, this);
 
-        this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:0, limit:15}});
-
-//	    this.filtersPanel.on('expand', this.doLayout, this);
-
+        this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:1, limit:this.resultGridSize}});
     },
 
     doResize:function () {
@@ -144,13 +131,13 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
     },
 
     resultsGridBbarBeforeChange:function (bbar, params) {
+
         this.resultsGrid.showMask();
-        this.searcher.goToPage(params.start, params.limit);
-        this.resultsStore.startRecord = params.start - 1;
+        this.searcher.goToPage(params.start + 1, params.limit);
+        this.resultsStore.startRecord = params.start;
         this.resultsGrid.hideMask();
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging
         return false;
     }
-
 });
