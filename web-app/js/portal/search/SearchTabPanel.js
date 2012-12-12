@@ -15,9 +15,9 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	HITS_PER_PAGE: 15,
 
 	initComponent: function() {
-	  
+
 	  var appConfig = Portal.app.config;
-	  
+
 		this.resultsStore = Portal.data.CatalogResultsStore();
 		// Callback to run after the resultsStore is loaded
 		this.resultsStore.on('load',	function(store, recs, opt) {
@@ -29,15 +29,15 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		this.catalogue.metadataStore = this.resultsStore;
 		this.catalogue.services.xmlSearch = appConfigStore.getById('spatialsearch.url').data.value;
 		this.searchDefaults = {E_protocol: appConfig.metadataLayerProtocols.split("\n").join(' or ')};
-		
+
     this.searchController = new Portal.search.SearchController();
-		
+
 		this.rightSearchPanel = new Portal.search.RightSearchTabPanel({
 		  region: 'center',
 		  searchController: this.searchController
 		});
-		
-   this.searchForm = new Portal.search.SearchForm({            
+
+   this.searchForm = new Portal.search.SearchForm({
       searchController: this.searchController,
       cls: 'p-centre-item',
       boxMaxWidth: 450,
@@ -45,7 +45,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
       border: false,
       bodyStyle: 'padding:5px 5px 0'
     });
-   
+
 
    this.items = [
 		{
@@ -96,7 +96,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
          }
       ]
 		 }];
-		
+
 		Portal.search.SearchTabPanel.superclass.initComponent.call(this);
 
 		// react to search requested by search form
@@ -105,25 +105,25 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			search: this.onSearch,
 			bboxchange: this.onBBoxChange
 		});
-		
+
 		// react to changes in map extent
 		this.mon(this.minimap, {
 			scope: this,
 			extentchange: this.minimapExtentChange
 		});
-		
+
 		// react to results panel events
 		this.mon(this.resultsGrid.getBottomToolbar(), {
 			scope: this,
 			beforechange: this.resultsGridBbarBeforeChange
 		});
-		
+
 		// react to store events
 		this.mon(this.resultsStore, {
 			scope: this,
 			load: this.resultsStoreLoad
 		});
-		
+
 		// react to results grid events
 		this.mon(this.resultsGrid, {
 			scope: this,
@@ -146,16 +146,16 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			contentchange: this.setSearchContainerHeight,
 			afterrender: this.setSearchContainerHeight
 		});
-		
+
 		this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
 	},
-	
+
 	afterRender: function() {
 		Portal.search.SearchTabPanel.superclass.afterRender.call(this);
-		// Update paging toolbar manually for the moment 
+		// Update paging toolbar manually for the moment
 		this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: 0, limit: 15}});
 	},
-	
+
 	minimapExtentChange: function(bounds) {
 	  // Don't change the search extent when the minimap extent change was generated
 	  // by the user changing the search extent in the first place
@@ -163,25 +163,25 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	    this.searchForm.setExtent(bounds);
 	  }
 	},
-	
+
 	onShowLayer: function(layer) {
 		this.minimap.showLayer(layer);
 	},
-	
+
 	onResultEnter: function(grid, rowIndex, rec) {
 		this.minimap.showBBox(rec.get('bbox'));
 	},
-	
+
 	onResultLeave: function(grid, rowIndex, rec) {
 		this.minimap.clearBBox();
 	},
-	
+
 	onBBoxChange: function(bounds) {
 	  this._changingBounds = true;
 	  this.minimap.setBounds(bounds);
 	  delete this._changingBounds;
 	},
-	
+
 	setSearchContainerHeight: function() {
 		// wait a bit for new sizes to be reflected (there's no consistent
 		// resize event on elements across browsers or provided by Ext!)
@@ -196,10 +196,10 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
     this.runSearch(this.lastSearch, parseInt(params.start) + 1);
 		//Stop paging control from doing anything itself for the moment
-		// TODO: replace with store driven paging 
+		// TODO: replace with store driven paging
 		return false;
 	},
-	
+
 	resultsStoreLoad: function() {
 		this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params: {start: this.resultsStore.startRecord, limit: 15}});
 	},
@@ -226,11 +226,11 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
 		if (updateStore !== false) {
 			updateStore = true;
-		};
+		}
 
 		if (updateStore) {
 			this.resultsStore.removeAll();
-		};
+		}
 
 		var queryParams = filters.slice(0);
 
@@ -254,7 +254,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		var searchParams = this.getCatalogueSearchParams(this.getSearchFilters());
 		this.runSearch(searchParams, 1);
 	},
-	
+
 	handleNewSearch: function() {
     var searchForm = this.searchForm;
     this.rightSearchPanel.remove(searchForm, false);
@@ -265,7 +265,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
     searchForm.setActionSide('left');
     this.doLayout();
 	},
-	
+
 	getCatalogueSearchParams: function(searchFilters) {
 		var format = function(value) {
 			value = Ext.isDate(value)?value.format('Y-m-d'):value;
@@ -278,17 +278,17 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		}
 		return searchParams;
 	},
-	
+
 	getSearchFilters: function() {
 		return this.addSearchFilters(this.searchForm, []);
 	},
-	
+
 	addSearchFilters: function(delegate, filters) {
 		return delegate.addSearchFilters(filters);
 	},
-	
+
 	// Move search form to refine search tab and display results grid instead
-	
+
 	changeLayout: function() {
 	  var searchForm = this.searchForm;
     this.searchContainer.remove(searchForm, false);
@@ -299,7 +299,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
     this.searchPanel.getLayout().setActiveItem(1);
     this.doLayout();
 	}
-	
+
 });
 
 Ext.reg('portal.search.searchtabpanel', Portal.search.SearchTabPanel);

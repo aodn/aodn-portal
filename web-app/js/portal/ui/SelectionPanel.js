@@ -14,11 +14,11 @@ Portal.ui.SelectionPanel = Ext.extend(Ext.Panel, {
 
 	    this.searchPanel = new Portal.ui.search.SearchPanel({
 	    	itemId: 'searchPanel',
-		    //title: config.searchTabTitle,
             proxyUrl: proxyURL,
 		    catalogUrl: Portal.app.config.catalogUrl,
 		    protocols: config.searchRestriction.protocols,
-		    dragAndDrop: config.dragAndDrop
+		    dragAndDrop: config.dragAndDrop,
+            resultGridSize: 10
 		});
 
 		config = Ext.apply({
