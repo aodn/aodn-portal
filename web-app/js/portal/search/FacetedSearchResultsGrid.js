@@ -96,7 +96,11 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var row = this.getView().findRow(target);
         var rowIndex = this.getView().findRowIndex(row);
 
-        Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
+        // Publish message if valid row selected (ie. not header row)
+        if ( rowIndex !== false ) {
+
+            Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
+        }
     },
 
     _getLayerLink:function (rowIndex) {
