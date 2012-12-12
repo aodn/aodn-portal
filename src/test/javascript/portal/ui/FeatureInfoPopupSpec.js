@@ -15,6 +15,10 @@ describe("Portal.ui.FeatureInfoPopup", function()
         map = new OpenLayers.Map();
         featureInfoPopup = new Portal.ui.FeatureInfoPopup({map: map, appConfig: {}});
     });
+
+    afterEach(function() {
+        featureInfoPopup.destroy();
+    });
     
 	// Simple case, two tabs, first one remains selected.
 	it("load two tabs, first remains selected", function()
@@ -44,10 +48,10 @@ describe("Portal.ui.FeatureInfoPopup", function()
 		expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 2");
 	});
 	
-   it('on removeAll', function() {
+   it('on reset', function() {
         
         spyOn(Portal.ui.FeatureInfoPopup.prototype, 'close');
-        Ext.MsgBus.publish('removeAllLayers');
+        Ext.MsgBus.publish('reset');
         expect(Portal.ui.FeatureInfoPopup.prototype.close).toHaveBeenCalled();
     });
 });

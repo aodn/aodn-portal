@@ -10,9 +10,9 @@ Ext.namespace('Portal.search');
 Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     frame:false,
     layout:'fit',
-
-    border:true,
-    autoExpandColumn:'mdDesc',
+    border:false,
+    autoExpandColumn: 'mdDesc',
+    enableColumnResize: false,
 
     initComponent:function () {
         var config = {
@@ -25,7 +25,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         id:'mdDesc',
                         header:OpenLayers.i18n('descHeading'),
                         dataIndex:'title',
-                        width:150,
+                        //width:100,
                         xtype:'templatecolumn',
                         tpl:'<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
                     }

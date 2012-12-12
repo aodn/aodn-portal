@@ -39,6 +39,7 @@ describe("Portal.ui.MapPanel", function() {
             
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
+
     });
     
     describe('zoom to layer tests', function() {
@@ -70,24 +71,24 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.zoomTo).toHaveBeenCalled();
         });
     });
-    
+
     it('reset', function() {
 
         spyOn(mapPanel, 'reset');
         Ext.MsgBus.publish('reset');
         expect(mapPanel.reset).toHaveBeenCalled();
     });
-    
+
     it('layersLoading', function() {
-        
+
         spyOn(mapPanel, '_updateLayerLoadingSpinner');
-        
+
         Ext.MsgBus.publish('layersLoading', 0);
         expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
 
         Ext.MsgBus.publish('layersLoading', 1);
         expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
-    })
+    });
     
     Ext.Ajax.request.isSpy = false;
 });
