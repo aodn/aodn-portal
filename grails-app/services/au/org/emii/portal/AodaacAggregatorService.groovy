@@ -455,7 +455,7 @@ class AodaacAggregatorService {
 		}
 
 		def hours = duration.hours + (duration.days * 24)
-		def jobTooOld = hours >= 3 // Has this gone 3 hours without progress?
+		def jobTooOld = hours >= grailsApplication.config.aodaacAggregator.idleJobTimeout
 
 		log.debug "duration: ${ duration }"
 		log.debug "is taking too long = jobTooOld && !isMakingProgress ($jobTooOld && !$jobHasMadeProgress)"

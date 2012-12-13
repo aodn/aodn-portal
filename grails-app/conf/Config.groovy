@@ -70,6 +70,7 @@ help.url = "http://portalhelp.aodn.org.au/"
 // AODAAC Aggregator
 aodaacAggregator.url = "http://aodaac.emii.org.au/"
 aodaacAggregator.environment = "test"
+aodaacAggregator.idleJobTimeout = 1 // In hours
 aodaacAggregator.errorLookup = [
     /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
 
@@ -230,7 +231,7 @@ log4j = {
 
     debug   'grails.app.job',
             //'grails.app.service',
-            'grails.app.tagLib',
+		'grails.app.tagLib',
             'grails.app.domain',
             'grails.app.realms'
             //'au.org.emii.portal'
