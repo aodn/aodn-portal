@@ -29,17 +29,18 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
   
    constructor: function(cfg) {
      this.initMap();
+     this.bboxInitialised = false;
 
      var config = Ext.apply({
        height: 400,
        width: 600,
        initialBbox: cfg.initialBbox
      }, cfg);
-     
+
      Portal.search.MiniMapPanel.superclass.constructor.call(this, config);
 
      this.bind(cfg.mainMap);
-     
+
      this.registerExtentChangeEvents();
    },
 
@@ -53,7 +54,7 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
 		displayProjection: new OpenLayers.Projection("EPSG:4326"),
 		resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
 	 });
-	 this.initBBoxLayer();
+
    },
    
    initBBoxLayer: function() {
@@ -112,6 +113,15 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      if (!miniMapClone) return;
      
      this.applyLayerChange(miniMapClone, e.layer, e.property);
+
+     //when the main map hasn't been initialised (i.e. cfg.mainMap.map is null), the minimap
+     //has problems calling initBBoxLayer (basemap is null!). Delaying this call to first layerChange event
+     //to ensure the main map is ready.  But to be honest, I have no idea why this works.
+
+     if(!this.bboxInitialised){
+         this.initBBoxLayer();
+         this.bboxInitialised = true;
+     }
    },
    
    applyLayerChange: function(target, source, property) {
