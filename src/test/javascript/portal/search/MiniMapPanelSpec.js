@@ -9,9 +9,11 @@
 describe("Portal.search.MiniMapPanel", function() {
   
   var testWindow;
+  var miniMapPanel;
   
   beforeEach(function() {
     testWindow = new Ext.Window();
+    miniMapPanel = new Portal.search.MiniMapPanel({initialBbox: '130,-60,160,-20'});
   });
   
   afterEach(function() {
@@ -19,9 +21,8 @@ describe("Portal.search.MiniMapPanel", function() {
   });
   
   it("should change map extent when setExtent called and not trigger extentchange event", function() {
-    var miniMapPanel = new Portal.search.MiniMapPanel({initialBbox: '130,-60,160,-20'});
 
-    // add a base layer - required if map is to be rendered 
+    // add a base layer - required if map is to be rendered
     var layer = new OpenLayers.Layer.WMS(
        "World Bathymetry",
        "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi", 

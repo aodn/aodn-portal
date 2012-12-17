@@ -127,9 +127,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 		// react to results grid events
 		this.mon(this.resultsGrid, {
 			scope: this,
-			showlayer: this.onShowLayer,
-			mouseenter: this.onResultEnter,
-			mouseleave: this.onResultLeave
+			showlayer: this.onShowLayer
 		});
 
 		// set size of search form based on its content when its content is created and/or
@@ -166,14 +164,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 
 	onShowLayer: function(layer) {
 		this.minimap.showLayer(layer);
-	},
-
-	onResultEnter: function(grid, rowIndex, rec) {
-		this.minimap.showBBox(rec.get('bbox'));
-	},
-
-	onResultLeave: function(grid, rowIndex, rec) {
-		this.minimap.clearBBox();
 	},
 
 	onBBoxChange: function(bounds) {

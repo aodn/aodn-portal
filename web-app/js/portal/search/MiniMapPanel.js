@@ -57,16 +57,6 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
 
    },
    
-   initBBoxLayer: function() {
-     var bboxLayerStyle = OpenLayers.Util.extend({
-       fillOpacity: 0.3,
-       strokeWidth: 3  
-     }, OpenLayers.Feature.Vector.style['default']);
-     
-     this.bboxLayer = new OpenLayers.Layer.Vector(OpenLayers.i18n("bboxLayer"), bboxLayerStyle);
-     this.map.addLayer(this.bboxLayer);
-   },
-   
    // Synchronise with main map layer and extent changes
    
    bind: function(mainMap) {
@@ -113,15 +103,6 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      if (!miniMapClone) return;
      
      this.applyLayerChange(miniMapClone, e.layer, e.property);
-
-     //when the main map hasn't been initialised (i.e. cfg.mainMap.map is null), the minimap
-     //has problems calling initBBoxLayer (basemap is null!). Delaying this call to first layerChange event
-     //to ensure the main map is ready.  But to be honest, I have no idea why this works.
-
-     if(!this.bboxInitialised){
-         this.initBBoxLayer();
-         this.bboxInitialised = true;
-     }
    },
    
    applyLayerChange: function(target, source, property) {
@@ -203,28 +184,6 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
    setBounds: function(bounds) {
      var olBounds = new OpenLayers.Bounds(bounds.westBL, bounds.southBL, bounds.eastBL, bounds.northBL);
      this.map.zoomToExtent(olBounds, false);
-   },
-   
-   showBBox: function(bbox) {
-     var polygons = [];
-	   for (var i = 0; i<bbox.length; i++ ) {
-		   var value = bbox[i].value;
-           var p1 = new OpenLayers.Geometry.Point(value[2], value[1]);
-           var p2 = new OpenLayers.Geometry.Point(value[2], value[3]);
-           var p3 = new OpenLayers.Geometry.Point(value[0], value[3]);
-           var p4 = new OpenLayers.Geometry.Point(value[0], value[1]);
-           var pointList = [p1, p2, p3, p4, p1];
-           var linearRing = new OpenLayers.Geometry.LinearRing(pointList);
-           var polygon = new OpenLayers.Geometry.Polygon([linearRing]);
-           polygons.push(polygon);
-	   }
-       var multipolygon = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.MultiPolygon(polygons), {});
-       this.bboxLayer.addFeatures(multipolygon);
-
-   },
-   
-   clearBBox: function(bbox) {
-	   this.bboxLayer.removeAllFeatures();
    }
 });
 
