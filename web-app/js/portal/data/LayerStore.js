@@ -8,38 +8,38 @@
 Ext.namespace('Portal.data');
 
 /**
- * Contains the set of currently "active" layers in the application, 
+ * Contains the set of currently "active" layers in the application,
  * i.e. those that have been added to the map.
- * 
+ *
  * It's intended for this to be generalised when the concept of "bundles"
  * is introduced (i.e. it will store the set of active bundles).
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     constructor: function(cfg) {
-    
+
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
-        
+
         this._registerMessageListeners();
         this._initCurrentlyLoadingLayers();
         this._initBaseLayers();
         this._initDefaultLayers();
     },
-    
+
     addUsingDescriptor: function(layerDescriptor) {
-        
+
         this.addUsingOpenLayer(layerDescriptor.toOpenLayer());
     },
-    
+
     addUsingLayerLink: function(layerLink) {
-        
+
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
             scope: this,
             success: function(resp) {
-                
+
                 var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
                 if (layerDescriptor) {
                     layerDescriptor.cql = layerLink.cql
@@ -47,17 +47,17 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 }
             },
             failure: function(resp) {
-                // TODO: not sure if this is actually a "valid" case...
+
                 this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink));
             }
         });
     },
-    
+
     addUsingOpenLayer: function(openLayer) {
-        
+
         this._addLayer(openLayer);
     },
-    
+
     addUsingServerId: function(args) {
 
         Ext.Ajax.request({
@@ -80,51 +80,51 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     removeAll: function() {
-        
+
         // Remove only non base layers.
         var nonBaseLayers = this.queryBy(function(record, id) {
-            
-            if (record.getLayer().options === null) { 
-                return false 
+
+            if (record.getLayer().options === null) {
+                return false
             }
             return !record.getLayer().options.isBaseLayer
         });
-        
+
         this.remove(nonBaseLayers.getRange());
         this.currentlyLoadingLayers.clear();
-        
+
         Ext.MsgBus.publish('selectedLayerChanged', null);
     },
-    
+
     removeUsingOpenLayer: function(openLayer) {
-        
+
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
         this.currentlyLoadingLayers.remove(openLayer);
     },
-    
+
     _addLayer: function(openLayer) {
-        
-        openLayer.events.register('loadstart', this, function() { 
+
+        openLayer.events.register('loadstart', this, function() {
             this.currentlyLoadingLayers.add(openLayer.name, openLayer);
         });
-        openLayer.events.register('loadend', this, function() { 
+        openLayer.events.register('loadend', this, function() {
             this.currentlyLoadingLayers.remove(openLayer);
         });
-        
+
         var layerRecord = new GeoExt.data.LayerRecord({
             layer: openLayer,
             title: openLayer.name
         });
-        
+
         this.add(layerRecord);
-        
+
         // Only want to be notified of changes in no base layer
         if (!openLayer.options.isBaseLayer) {
             Ext.MsgBus.publish('selectedLayerChanged', openLayer);
         }
     },
-    
+
     _initCurrentlyLoadingLayers: function() {
         this.currentlyLoadingLayers = new Ext.util.MixedCollection();
         this.currentlyLoadingLayers.on('add', function(index, object) {
@@ -168,57 +168,57 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.subscribe('removeLayer', function(subject, openLayer) {
             this.removeUsingOpenLayer(openLayer);
         }, this);
-        
+
         Ext.MsgBus.subscribe('removeAllLayers', function(subject, openLayer) {
             this.removeAll();
         }, this);
-        
+
         Ext.MsgBus.subscribe('reset', function(subject, openLayer) {
             this.removeAll();
         }, this);
-        
+
         Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
             this.removeUsingOpenLayer(openLayer)
         }, this);
-        
+
     },
-    
+
     _initBaseLayers: function() {
-        
+
         // TODO: shouldn't these be set properly in the server in the first place?
         this._initWithLayersFromServer('layer/configuredbaselayers', {
-            isBaseLayer: true, 
+            isBaseLayer: true,
             queryable: false
         });
     },
-    
+
     _initDefaultLayers: function() {
         this._initWithLayersFromServer('layer/defaultlayers');
     },
-    
+
     _initWithLayersFromServer: function(url, configOverrides) {
-        
+
         Ext.Ajax.request({
             url: url,
             scope: this,
             success: function(resp, opts) {
-                
+
                 var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
                 Ext.each(layerDescriptorsAsText,
-                        
+
                     function(layerDescriptorAsText, index, all) {
-                    
+
                         var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
                         Ext.apply(layerDescriptor, configOverrides);
                         this.addUsingDescriptor(layerDescriptor);
                     },
-                    
+
                     this
                 );
             }
         });
     },
-    
+
     _publishLayersLoadingMessage: function() {
         Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
     }

@@ -14,28 +14,28 @@ Ext.namespace('Portal.common');
 Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     constructor: function(cfg) {
-        
+
         if (typeof cfg == "string") {
             cfg = Ext.util.JSON.decode(cfg);
         }
-        
+
         Ext.apply(this, cfg);
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
-        
+
         var openLayer = new OpenLayers.Layer.WMS(
             this.title,
             this._getServerUri(),
             new Portal.ui.openlayers.LayerParams(this, paramOverrides),
             new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
         );
-        
+
         this._setDomainLayerProperties(openLayer);
-        
+
         return openLayer;
     },
-    
+
     _getWmsVersionString: function(server) {
         // list needs to match Server.groovy
         var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
@@ -46,7 +46,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
         return "undefined";
     },
-    
+
     /**
      * Refactor?
      */
@@ -55,14 +55,13 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _getServerUri: function() {
-        
+
         var serverUri = this._getUri(this.server);
         if (this.cache == true) {
             serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);
         }
         return serverUri;
     },
-    
 
     /**
      * Refactor.
@@ -87,24 +86,43 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.overrideMetadataUrl = this.overrideMetadataUrl;
         openLayer.parentLayerId = this._getParentId();
         openLayer.parentLayerName = this._getParentName();
-        openLayer.allStyles = this.allStyles;
+        openLayer.allStyles = this._getAllStyles();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
     },
-    
+
     _getParent: function() {
         return this.parent;
     },
 
     _getParentId: function() {
+
         if (this._getParent()) {
             return this._getParent().id;
         }
+        else {
+            return undefined; // Added explicit return that maintained current behaviour
+        }
     },
-    
+
     _getParentName: function() {
+
         if (this._getParent()) {
             return this._getParent().name;
+        }
+        else {
+            return undefined; // Added explicit return that maintained current behaviour
+        }
+    },
+
+    _getAllStyles: function() {
+
+        if (this.allStyles) {
+
+            return this.allStyles;
+        }
+        else {
+            return [];
         }
     }
 });
