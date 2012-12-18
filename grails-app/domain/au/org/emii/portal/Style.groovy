@@ -14,12 +14,11 @@ class Style {
     String abstractText // 'abstract' is a reserved word
 
     static mapping = {
-
+		abstractText type: 'text'
     }
+
     static constraints = {
-
-        title(nullable:true)
-        abstractText(nullable:true)
-
+        title(nullable: true)
+        abstractText(nullable: true)
     }
 }
