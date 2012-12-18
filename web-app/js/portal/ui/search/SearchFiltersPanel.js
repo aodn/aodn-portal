@@ -17,16 +17,15 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             layout: {
                 type: 'hbox'
             },
-            defaults: {
-                flex: 1
-            },
             items: [
                 new Ext.Panel({
-                    html: '<img src="images/spinner.gif" style="vertical-align: middle;" alt="Loading...">\&nbsp;<i>Loading search terms\u2025</i>'
+                    html: '<img src="images/spinner.gif" style="vertical-align: middle;" alt="Loading...">\&nbsp;<i>Loading search terms\u2025</i>',
+                    flex: 3
                 }),
                 new Ext.Panel({
                     items: [ this._buildClearAllLink() ],
-                    cls: 'faceted-search-clear-all'
+                    cls: 'faceted-search-clear-all',
+                    flex: 1
                 })
             ],
             boxMaxHeight: '1' // Not sure why this is needed
