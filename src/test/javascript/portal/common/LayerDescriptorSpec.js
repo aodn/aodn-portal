@@ -67,16 +67,19 @@ describe("Portal.common.LayerDescriptor", function() {
         expect(layerDescriptor._getParentName()).toBeFalsy();
     });
 
-    it('tests _getAllStyles returns object or empty Array if undefined', function() {
+    describe('_getAllStyles', function() {
 
-        var testStyles = ['Style 1', 'Style 2'];
+        it('returns object or empty Array if undefined', function() {
 
-        var layerDescriptor = new Portal.common.LayerDescriptor({
-            allStyles: testStyles
+            var testStyles = ['Style 1', 'Style 2'];
+
+            var layerDescriptor = new Portal.common.LayerDescriptor({
+                allStyles: testStyles
+            });
+
+            expect(layerDescriptor._getAllStyles()).toEqual(testStyles);
+            layerDescriptor.allStyles = undefined;
+            expect(layerDescriptor._getAllStyles()).toEqual([]);
         });
-
-        expect(layerDescriptor._getAllStyles()).toEqual(testStyles);
-        layerDescriptor.allStyles = undefined;
-        expect(layerDescriptor._getAllStyles()).toEqual([]);
     });
 });

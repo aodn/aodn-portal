@@ -101,7 +101,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
             return this._getParent().id;
         }
         else {
-            return undefined; // Added explicit return that maintained current behaviour
+            return undefined;
         }
     },
 
@@ -111,7 +111,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
             return this._getParent().name;
         }
         else {
-            return undefined; // Added explicit return that maintained current behaviour
+            return undefined;
         }
     },
 
