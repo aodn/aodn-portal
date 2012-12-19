@@ -36,12 +36,16 @@ describe("Portal.data.LayerStore", function() {
     });
     
     function createOpenLayer() {
+        return createOpenLayer("the title");
+    }
+
+    function createOpenLayer(title) {
         return new OpenLayers.Layer.WMS(
-                "the title",
-                "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-                {},
-                { isBaseLayer: false }
-            );
+            title,
+            "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
+            {},
+            { isBaseLayer: false }
+        );
     }
     
     it('add layer descriptor', function() {
@@ -85,6 +89,13 @@ describe("Portal.data.LayerStore", function() {
     // add open layer
     it('add open layer', function() {
         
+        layerStore.addUsingOpenLayer(createOpenLayer());
+        expect(layerStore.getCount()).toBe(1);
+    });
+
+    it('add duplicate layer', function() {
+
+        layerStore.addUsingOpenLayer(createOpenLayer());
         layerStore.addUsingOpenLayer(createOpenLayer());
         expect(layerStore.getCount()).toBe(1);
     });
@@ -199,7 +210,7 @@ describe("Portal.data.LayerStore", function() {
         it('removeAll', function() {
             var openLayer = createOpenLayer();
             layerStore.addUsingOpenLayer(openLayer);
-            var baseLayer = createOpenLayer();
+            var baseLayer = createOpenLayer("2");
             baseLayer.options.isBaseLayer = true;
             layerStore.addUsingOpenLayer(baseLayer);
             
