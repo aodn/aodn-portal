@@ -39,7 +39,7 @@
 
     <div class="spacer floatLeft homePanelWidget" style="width:100px">
         <img class="minispacer" src="images/soos/baselogo-dark.png" alt="SOOS Logo" /><BR>
-        <a href="http://www.imas.utas.edu.au/"><img src="images/IMOSLogo.png"  class="minispacer"  alt="IMOS Logo" /></a>
+        <a href="http://imos.org.au/"><img src="images/soos/IMOSLogo.png"  class="minispacer"  alt="IMOS Logo" /></a>
     </div>
 
     <div class="spacer floatLeft homePanelWidget" style="width:370px">
