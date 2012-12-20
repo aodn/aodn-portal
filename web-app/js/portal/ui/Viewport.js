@@ -46,8 +46,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     initComponent: function() {
         Portal.ui.Viewport.superclass.initComponent.call(this);
 
-        this.mon(this.layerChooserPanel, 'addlayerclicked', this.onLayerChooserAddLayerClicked, this);
-
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onLayerChooserAddLayerClicked, this);
         
         //TODO: find a better home for this

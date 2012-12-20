@@ -50,7 +50,20 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 
         Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
 
+        Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
+            this.removeLayer(message);
+        }, this);
+        Ext.MsgBus.subscribe('removeAllLayers', function(subject, message) {
+            this.resetTree();
+        }, this);
+        Ext.MsgBus.subscribe('reset', function(subject, message) {
+            this.resetTree(true);
+        }, this);
+
+        this.addEvents('addlayerclicked');
+
         this.relayEvents(this.defaultMenuTree, ['click', 'serverloaded']);
+        this.registerMonitoringEvents();
     },
 
     toggleNodeBranch:function (enable, node) {
@@ -60,9 +73,27 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
     toggleLayerNodes:function (id, enable, node) {
         this.defaultMenuTree.toggleLayerNodes(id, enable, node);
     },
+
     resetTree:function (collapse) {
         this.defaultMenuTree.resetTree(collapse);
+    },
+
+    registerMonitoringEvents: function() {
+        this.mon(this, 'click', this.onMenuNodeClick, this);
+    },
+
+    onMenuNodeClick: function(node) {
+        if (node.attributes.grailsLayerId) {
+            this.fireEvent('addlayerclicked');
+
+            Ext.MsgBus.publish('addLayerUsingServerId', { id: node.attributes.grailsLayerId});
+        }
+    },
+
+    removeLayer: function(openLayer) {
+        this.toggleLayerNodes(openLayer.grailsLayerId, true);
     }
+
 });
 
 Ext.reg('portal.ui.mapmenupanel', Portal.ui.MapMenuPanel);

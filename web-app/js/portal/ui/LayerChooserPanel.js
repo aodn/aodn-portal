@@ -42,51 +42,11 @@ Portal.ui.LayerChooserPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.LayerChooserPanel.superclass.constructor.call(this, config);
-
-        this.registerEvents();
-        
-        Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
-            this.removeLayer(message);
-        }, this);
-        Ext.MsgBus.subscribe('removeAllLayers', function(subject, message) {
-            this.leftTabMenuPanel.resetTree();
-        }, this);
-        Ext.MsgBus.subscribe('reset', function(subject, message) {
-            this.leftTabMenuPanel.resetTree(true);
-        }, this);
-
-        this.addEvents('addlayerclicked');
     },
 
     initLeftTabMenuPanel: function(appConfig) {
         this.leftTabMenuPanel = new Portal.ui.MapMenuPanel({
             menuId: appConfig.defaultMenu.id
         });
-    },
-
-    registerEvents: function() {
-        this.registerMapPanelEvents();
-        this.registerMonitoringEvents();
-    },
-
-    registerMapPanelEvents: function() {
-		this.mon(this.mapPanel, 'removelayer', this.removeLayer, this);
-	},
-
-    registerMonitoringEvents: function() {
-        this.mon(this.leftTabMenuPanel, 'click', this.onMenuNodeClick, this);
-    },
-
-    onMenuNodeClick: function(node) {
-        if (node.attributes.grailsLayerId) {
-            this.fireEvent('addlayerclicked');
-            
-            Ext.MsgBus.publish('addLayerUsingServerId', { id: node.attributes.grailsLayerId});
-        }
-    },
-
-    removeLayer: function(openLayer) {
-
-        this.leftTabMenuPanel.toggleLayerNodes(openLayer.grailsLayerId, true);
     }
 });
