@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -46,8 +45,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     initComponent: function() {
         Portal.ui.Viewport.superclass.initComponent.call(this);
 
-        this.mon(this.layerChooserPanel, 'addlayerclicked', this.aha, this);
-
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onLayerChooserAddLayerClicked, this);
         
         //TODO: find a better home for this
@@ -55,9 +52,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             jQuery("#loader").hide('slow'); // close the loader
         });
     },
-    aha: function() {
-      console.log("aha");
-    },
+
     onLayerChooserAddLayerClicked: function() {
         if (this.mainTabPanel.homePanelActive()) {
             this.mainTabPanel.showPortalPanel();
