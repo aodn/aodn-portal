@@ -1,0 +1,156 @@
+#header {
+  height: 219px;
+}
+
+#header #topbar {
+  background: url("../images/header/topbar.png") repeat-x scroll 0 0 transparent;
+  height: 6px;	
+}
+
+#header #headerBackground {
+  height: 171px;	
+  background: url("../images/header/headerbackground.png") repeat-x scroll 0 0 transparent;
+}
+
+#header #headerBackground #logoBackground {
+  width: 960px;
+  height: 171px; 
+  background: url("../images/header/logobackground.png") no-repeat scroll 0 0 transparent;
+  margin:0px auto;
+  text-align:left;
+  position:relative; 
+}
+
+#header #headerBackground #logoBackground #logoBox a {
+  display: block;
+  height: 108px;
+  width: 520px;	
+}
+
+#header #headerBackground #logoBackground #logoBox {
+  position: absolute;
+  left 0px;
+  width: 740px;
+  height: 108px;
+  /*background: url("../images/header/logo.png") no-repeat scroll 0 0 transparent;*/	
+}
+
+#header #headerBackground #logoBackground #searchBox {
+  position: absolute;
+  left: 740px;
+  width: 220px;
+  height: 108px;	
+}
+
+
+#header #headerBackground #logoBackground #searchBox #searchInputBox {
+  margin-top: 40px;
+  width: 220px;
+  height: 30px;
+  background: url("../images/header/search.png") no-repeat scroll 0 0 transparent;	
+}
+
+#header #headerBackground #logoBackground #searchBox input {
+  width: 175px;
+  height: 15px;
+  font-size: 75%;
+  margin-left: 30px;
+  margin-top: 7px;
+  background: url("../images/header/searchfield.png") no-repeat scroll 0 0 transparent;
+}
+
+#header #headerBackground #logoBackground #menuBox {
+  z-index:100;
+  margin:0;
+  padding:0;
+  position: absolute;
+  left: 0px;
+  top: 108px;
+  width: 960px;
+  height: 63px;
+  letter-spacing: 0px;
+}
+
+#header #navigation {
+  background: url("../images/header/navigationbackground.png") repeat-x scroll 0 0 transparent;
+  height: 42px;
+}
+
+#header #navigation #navigationBar {
+  width: 960px;
+  height: 30px;
+  padding-top: 12px;
+  margin:0px auto;
+  text-align:left;
+  /*position:relative;*/
+  font-size: 0.75em;
+  font-weight: normal;
+}
+
+#header #navigation #navigationShadow {
+  background: url("../images/header/navigationshadow.png") repeat-x scroll 0 0 transparent;
+  height: 10px;	
+}
+
+#header #navigation #navigationBar .breadcrumbs {
+  /*position: absolute;
+  top: 13px;
+  left: 0px;*/
+  /*margin-top: 12px;*/
+}
+
+#cms {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 125px;
+  left: 1030px;
+  width: 25px;
+  height: 25px;
+  background: url("../images/header/cms.png") no-repeat scroll 0 0 transparent;
+}
+
+#forum {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 125px;
+  left: 1090px;
+  width: 25px;
+  height: 25px;
+  background: url("../images/header/forum.png") no-repeat scroll 0 0 transparent;	
+}
+
+#facebook {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 125px;
+  left: 1060px;
+  width: 25px;
+  height: 25px;
+  background: url("../images/header/facebook.png") no-repeat scroll 0 0 transparent;	
+}
+
+#forum a {
+  width: 25px;
+  height: 25px;
+  display: block;	
+}
+
+#facebook a {
+  width: 25px;
+  height: 25px;
+  display: block;	
+}
+
+#cms a {
+  width: 25px;
+  height: 25px;
+  display: block;
+}
+
+.pathway:link { color: #000000; text-decoration:none; }
+.pathway:visited { color: #000000; text-decoration:none; }
+.pathway:hover { color: #000000; text-decoration:none; }
+.pathway:active { color: #000000; text-decoration:none; }

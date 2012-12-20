@@ -1,0 +1,293 @@
+
+/*
+ * Copyright 2012 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
+ html{
+	background-color: #f9f9f9;
+	color: #030303;
+    margin-top: 0px! important;
+
+
+}
+
+body {
+	height: 100%;
+    /*letter-spacing: -1px;*/
+}
+
+html, body, p, td{
+
+    /*font-family: "Myriad Pro","Gill Sans","Gill Sans MT",Calibri,sans-serif;   */
+    font-family: "Lucida Grande",​"Lucida Sans Unicode",​Arial,​sans-serif ;
+    font-size: 12px;
+    letter-spacing: 0;
+
+}
+
+#header {
+    background: url(../../images/SSOSHeaderBackground.png) no-repeat 0 0  #000000;
+    height: 315px;
+    width: 100%;
+
+}
+
+.mainlinks {
+    color: white;
+    border-left: 1px solid #CCCCCC;
+}
+
+p {
+	margin-bottom: 10px;
+}
+#mainHomePanel p {
+	margin-bottom: 10px;
+}
+
+h1,h2,h3 {
+	color: #00AEEF;
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 22px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 14px;
+}
+
+h4 {
+    color: #6A6A6A;
+    font-size: 12px;
+    margin: 2px 0px;
+}
+
+h5 {
+    color: #6A6A6A;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+
+h6 {
+    color: #6A6A6A;
+    display: inline;
+    font-size: 11px;
+    margin: 2px 0 ;
+}
+
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana,arial,helvetica,sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
+
+}
+
+#mainHomePanel{
+   background-color: white;
+   font-size: 12px;
+   border-radius: 12px;
+   /*padding: 20px;*/
+   /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
+}
+
+#mainHomePanel h1 {
+	margin: 40px 0 30px 0px;
+}
+
+#rightHomePanel {
+   background-color: white;
+   border-radius: 12px;
+}
+
+#headerTail {
+    height: 30px;
+}
+
+#logo {
+    margin: 35px 5px 5px 20px;
+    float: left;
+}
+
+/* specific items from the soos website */
+#facebook {
+    background: url("../../images/soos/facebook.png") no-repeat scroll 0 0 transparent;
+    height: 45px;
+}
+#baseContent div {
+    float: left;
+}
+
+
+.footer p , .footer {
+    color: #999;
+    font-size: 11px;
+	margin-top: 10px;
+}
+
+.footerText p {
+    margin-bottom: 15px !important;
+}
+
+.footerText p:first-child {
+    margin-left: 210px;
+}
+
+.footer .x-box-inner {
+    overflow: visible;
+}
+
+.footer a:hover{
+    text-decoration: underline;
+}
+
+.menuHeader {
+    font-size: 14px;
+    color: #00AEEF;
+    padding: 15px 1px 10px 10px;
+}
+
+.x-panel-header,
+#rightHomePanel h3{
+    font-size: 14px;
+    color: #00AEEF;
+}
+.x-panel-header {
+    background-image: none;
+	background-color: white;
+    border: none;
+    padding: 20px 3px 4px 10px;
+
+}
+.x-window-header-text {
+    color: #666;
+}
+
+#mainMapCentrePanel,
+#rightDetailsPanel > .x-panel-header {
+	border-radius: 12px 12px 0 0;
+}
+
+#headerTitle {
+    color: #FFFFFF;
+    padding: 61px 15px 0px 20px;
+    font-size: 16px;
+    float: left;
+}
+
+#toplinks {
+    color: #FFFFFF;
+    float: right;
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+
+#toplinks a {
+    color: #FFFFFF;
+    font-weight: bold;
+    margin: 0 3px;
+    text-decoration: none;
+}
+
+
+
+a.userlink {
+    font-size: inherit! important;
+    text-decoration: underline! important;
+    margin-right: 15px! important;
+}
+
+.community {
+    padding: 10px 0;
+}
+#viewPortLinks  {
+   position: relative;
+   top: 55px;
+}
+
+.viewPortLinks a {
+    color: white;
+    text-shadow: 2px 2px 6px grey;
+    padding: 8px 14px;
+    margin-right: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    outline: 0;
+}
+
+.viewPortLinks a:hover {
+    color: black;
+    text-shadow: 0px 0px 8px grey;
+}
+.viewPortLinksBackground {
+    float: left;
+    padding: 6px 10px;
+    margin-right: 5px;
+    background: url("../../images/mapshadow.png") repeat-x scroll left top grey;
+    border-radius: 14px;
+}
+.viewPortTabActive {
+    background: none repeat-x scroll left top #0079C1;
+}
+
+.viewPortTabActive a {
+    color: white! important;
+    text-shadow: none! important;
+}
+
+#downloadCart {
+    background: url("../../images/mapshadow.png") repeat-x scroll left top #0079C2;
+    border-radius: 10px 3px 10px 3px;
+    color: white;
+    float: right;
+    padding: 4px 10px 6px;
+    position: absolute;
+    right: 6px;
+    top: 45px;
+}
+
+#downloadCart div {
+    padding-top: 3px;
+}
+
+#downloadCart a {
+    color: white;
+    font-size: 11px;
+    margin: 0 3px;
+    text-decoration: none;
+}
+
+#downloadCart a:hover {
+    font-weight: bold;
+}
+
+ #header .hiddenCart {
+     display: none;
+ }
+
+ #downloadCartControls {
+     text-align: right;
+ }
+
+.x-tab-strip span.x-tab-strip-text {
+    color: #6A6A6A;
+}
+.searchInput.x-form-empty-field {
+    color: #00AEEF;
+    font-size: inherit;
+    font-weight: bold;
+}

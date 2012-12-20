@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -104,5 +103,6 @@ databaseChangeLog = {
 	// Instance-specific changes
 	include file: 'imos-changelog.groovy'
 	include file: 'wa-changelog.groovy'
+	include file: 'soos-changelog.groovy'
 }
 
