@@ -47,7 +47,7 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
         expect(Ext.MsgBus.publish).toHaveBeenCalledWith('addLayerUsingLayerLink', testLayerLink);
     });
 
-    it('should publish when false is returned', function() {
+    it('shouldn\'t publish when false is returned', function() {
 
         spyOn(fsrg.getView(), 'findRowIndex').andReturn(false);
 
