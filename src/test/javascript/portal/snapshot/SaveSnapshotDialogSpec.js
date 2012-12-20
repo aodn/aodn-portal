@@ -25,17 +25,17 @@ describe("Portal.snapshot.SaveSnapshotDialog", function()
   {
     var btnSave = saveSnapshotDialog.btnSave;
     btnSave.fireEvent('click', btnSave);
-    
+
     expect(mockController.createSnapshot).toHaveBeenCalled();
   });
-  
-  it("calls close method when cancel button is clicked", function() 
+
+  it("calls close method when cancel button is clicked", function()
   {
     spyOn(saveSnapshotDialog, 'close');
-    
+
     var btnCancel = saveSnapshotDialog.btnCancel;
     btnCancel.fireEvent('click', btnCancel);
-    
+
     expect(saveSnapshotDialog.close).toHaveBeenCalled();
   });
-});   
+});

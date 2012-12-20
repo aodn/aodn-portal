@@ -16,7 +16,6 @@ describe("Portal.search.SearchTabPabel", function() {
     });
 
     it('width of east panel', function() {
-        console.log('searchTabPanel', searchTabPanel.items.items[0]);
         var eastItems = searchTabPanel.items.items[0];
         expect(eastItems.region).toBe('east');
         expect(eastItems.width).toBe(390);

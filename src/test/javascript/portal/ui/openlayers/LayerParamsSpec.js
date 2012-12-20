@@ -7,31 +7,31 @@
  */
 
 describe("Portal.ui.openlayers.LayerParams", function() {
-   
+
     var layerDescriptor;
-    
+
     var layer = {
-        name: 'argo',    
+        name: 'argo',
         namespace: 'imos',
         server : {
-            type : "WMS-1.1.1",
+            type : "WMS-1.1.1"
         }
     };
-    
+
     var layerParams;
-    
+
     beforeEach(function() {
         layerDescriptor = new Portal.common.LayerDescriptor(layer);
         layerParams = new Portal.ui.openlayers.LayerParams(layerDescriptor, {});
     });
-    
+
     it('layer name set properly', function() {
         expect(layerParams.layers).toBe('imos:argo');
     });
-    
+
     describe('getServerImageFormat', function() {
         it("should return default png", function() {
-            
+
             expect(layerParams._getServerImageFormat(undefined)).toEqual(undefined);
             expect(layerParams._getServerImageFormat(null)).toEqual(undefined);
             expect(layerParams._getServerImageFormat({})).toEqual('image/png');
@@ -40,7 +40,7 @@ describe("Portal.ui.openlayers.LayerParams", function() {
         it("should return the format set on the descriptor", function() {
             var server = {
                 imageFormat : 'image/jpeg'
-            }
+            };
             expect(layerParams._getServerImageFormat(server)).toEqual('image/jpeg');
         });
 
@@ -50,21 +50,21 @@ describe("Portal.ui.openlayers.LayerParams", function() {
         it('returns the string undefined', function() {
             var server = {
                 type : 'lkajsdjalkdjas'
-            }
+            };
             expect(layerParams._getWmsVersionString(server)).toEqual('undefined');
         });
 
         it('returns the string "1.1.0"', function() {
             var server = {
                 type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
-            }
+            };
             expect(layerParams._getWmsVersionString(server)).toEqual('1.1.0');
         });
 
         it('returns the string "1.1.0"', function() {
             var server = {
                 type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
-            }
+            };
             expect(layerParams._getWmsVersionString(server)).toEqual('1.1.0');
         });
     });
