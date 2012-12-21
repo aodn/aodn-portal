@@ -42,6 +42,13 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 			Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
 		}
 	},
+
+    expandIfUnhidden: function() {
+        if(!(Portal.app.config.hideLayerOptions === true)) {
+            this.expand.call(this, arguments);
+        }
+    },
+
 	expandFinished : function() {
 
 		// should always be set, but a user could open the panel before adding
