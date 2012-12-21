@@ -148,11 +148,23 @@ environments {
 portal {
 	header {
 		logo = "AODN_logo.png"
-		organisationLink {
-			linkText = "AODN"
-			tooltipText = "Australian Ocean Data Network"
-			url = "http://imos.org.au/aodn.html"
-		}
+		externalLinks = [
+		    [
+				linkText: "eMII",
+				tooltipText: "e-Marine Information Infrastructure",
+				href: "http://www.emii.org.au"
+			],
+		    [
+				linkText: "AODN",
+				tooltipText: "Australian Ocean Data Network",
+				href: "http://imos.org.au/aodn.html"
+			],
+		    [
+				linkText: "Help",
+				tooltipText: "Portal help files",
+				href: help.url
+			]
+		]
 	}
 	// Change authentication emails for IMOS
 	systemEmail {

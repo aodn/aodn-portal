@@ -20,10 +20,10 @@
 
     <div id="toplinks" >
         <g:if test="${flash.openidErrorMessage}">
-            <strong>${ flash.openidErrorMessage}</strong>
+            <strong>${flash.openidErrorMessage}</strong>
         </g:if>
         <shiro:notUser>
-            <g:link controller="auth" action="login">Log in</g:link> or 
+            <g:link controller="auth" action="login">Log in</g:link> or
             <g:link controller="auth" action="register">Register</g:link>
         </shiro:notUser>
         <shiro:user>
@@ -31,9 +31,8 @@
           <g:link controller="auth" action="logOut">Log out</g:link>
           <shiro:hasPermission permission="config:edit"> - <g:link controller="config">Administration</g:link></shiro:hasPermission>
         </shiro:user>
-        <a class="external mainlinks" target="_blank" href="http://www.emii.org.au" title="e-Marine Information Infrastructure" >eMII</a>
-        <a class="external mainlinks" target="_blank" href="${ grailsApplication.config.portal.header.organisationLink.url }" title="${ grailsApplication.config.portal.header.organisationLink.tooltipText }">${ grailsApplication.config.portal.header.organisationLink.linkText }</a>
-      	<a class="external mainlinks" target="_blank" href="${grailsApplication.config.help.url}" title="Portal Help files" >Help</a>
+        <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
+        <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>
     <div id="downloadCart" class="hiddenCart">
       Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="#" onclick="javascript:doDownload();">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
