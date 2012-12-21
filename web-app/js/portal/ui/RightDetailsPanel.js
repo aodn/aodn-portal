@@ -68,10 +68,6 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 		return this.detailsPanelItems;
 	},
 
-	setSelectedLayer : function(openLayer) {
-		this.selectedLayer = openLayer;
-	},
-
 	// A new layer has been added or selected ("openlayer" may be null, e.g. when "Remove All Layers"
 	// has been clicked).
 	update : function(openlayer) {
