@@ -37,6 +37,8 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         this.on('tabchange', function() {
             this.portalPanel.fireEvent('tabchange');
         }, this);
+
+        Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
     },
 
     getPortalPanel: function() {
@@ -90,5 +92,11 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     loadSnapshot: function(id) {
         this.getMapPanel().loadSnapshot(id);
+    },
+
+    onSelectedLayerChange: function() {
+        if (this.homePanelActive()) {
+            this.showPortalPanel();
+        }
     }
 });
