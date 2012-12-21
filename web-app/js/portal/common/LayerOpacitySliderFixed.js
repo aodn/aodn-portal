@@ -29,7 +29,10 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
             	value = this.minValue;
             }
         } else {
-            value = this.maxValue;
+            //this is for the initial dummy layer
+            //needs to be min, otherwise the slider gets confused
+            // when you pass in same value for the next layer.
+            value = this.minValue;
         }
         return value;
     },

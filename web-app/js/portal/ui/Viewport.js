@@ -45,18 +45,10 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     initComponent: function() {
         Portal.ui.Viewport.superclass.initComponent.call(this);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', this.onLayerChooserAddLayerClicked, this);
-        
         //TODO: find a better home for this
         this.on('afterrender', function() {
             jQuery("#loader").hide('slow'); // close the loader
         });
-    },
-
-    onLayerChooserAddLayerClicked: function() {
-        if (this.mainTabPanel.homePanelActive()) {
-            this.mainTabPanel.showPortalPanel();
-        }
     },
 
     setActiveTab: function(tabIndex) {
@@ -66,13 +58,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     isMapVisible: function() {
         return this.mainTabPanel.isMapVisible();
     },
-
-	onResetMap: function() {
-		// centre map and set zoom clear layers
-		//
-		// and details panel
-		this.mainTabPanel.getPortalPanel().getRightDetailsPanel().collapseAndHide();
-	},
 
     showSnapshot: function(id) {
         this.mainTabPanel.loadSnapshot(id);

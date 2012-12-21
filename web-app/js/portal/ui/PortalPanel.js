@@ -45,12 +45,12 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         	this.mapPanel.fireEvent('tabchange');
         }, this);
     },
-    
-	getRightDetailsPanel: function() {
-	    return this.rightDetailsPanel;
-	},
-	
+
 	getMapPanel: function() {
 		return this.mapPanel;
-	}
+    },
+
+    expandRightDetailsPanel: function() {
+        this.rightDetailsPanel.expandIfUnhidden();
+    }
 });
