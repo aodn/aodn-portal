@@ -46,7 +46,6 @@ class LayerController {
                 filters: filters
         ]
 
-        println "entered layer list"
         if ( request.xhr ) {
 
             // This is an ajax request
