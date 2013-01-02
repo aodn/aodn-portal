@@ -35,6 +35,9 @@ input[type="checkbox"], input[type="radio"]{
 input.readonlyInput {
     border: none;
 }
+.x-splitbar-v {
+    background-color: #fafafa;
+}
 .roundedImages {
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
@@ -935,13 +938,6 @@ div.allwhite {
     font-weight: bold;
     /*  background-color: #fffacd;*/
     font-style: italic;
-}
-
-.faceted-search-title {
-
-    font-size: 1.3em;
-    /*font-weight: bold;*/
-    color: #888;
 }
 
 .faceted-search-clear-all div {

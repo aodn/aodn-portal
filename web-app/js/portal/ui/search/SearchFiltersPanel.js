@@ -15,7 +15,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.titleBar = new Ext.Panel({
 
             layout: {
-                type: 'hbox'
+                type: 'hbox',
+                defaultMargins: {top:0, right:0, bottom:4, left:0}
             },
             items: [
                 new Ext.Panel({
@@ -138,7 +139,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         var tb = this.titleBar;
         var title = tb.items.get( 0 );
 
-        title.update( '<span class="faceted-search-title">' + newText + '</span>' );
+        title.update( '<h4>' + newText + '</h4>' );
         tb.doLayout();
     },
 

@@ -156,10 +156,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
     parameterFilter: 'Measured parameter',
-    facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search. We welcome feedback about this feature via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a>.', // Change this to be the empty string to have no message displayed
+    // facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search. We welcome feedback about this feature via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a>.', // Change this to be the empty string to have no message displayed
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
-    facetedSearchPanelTitle: 'Find layers by:',
+    facetedSearchPanelTitle: 'Find layers by: [Experimental]',
     facetedSearchClearAllLink: 'Clear all',
     facetedSearchUnavailableText: 'Faceted search is currently unavailable.',
 
