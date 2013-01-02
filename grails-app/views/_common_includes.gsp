@@ -65,5 +65,6 @@
           <link rel="stylesheet" type="text/css" href="${resource(dir:'css', file: grailsApplication.config.portal.instance.name + '.css')}" />
       </g:elseif>
 
-      <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
-
+      <g:if test="${grailsApplication.config.portal.instance?.name}">
+        <link rel="shortcut icon" href="${resource(dir:'images',file: grailsApplication.config.portal.instance.name + 'favicon.ico')}" type="image/x-icon" />
+      </g:if>
