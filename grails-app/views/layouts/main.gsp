@@ -48,7 +48,6 @@
             <li class="controllerMenuItems"><g:link controller="menu" action="list" >Menu</g:link>
               <span class="inline">
                 <g:link controller="menu" action="create" class="" >create</g:link>
-      ${grailsApplication.config.portal.instance.css}
               </span>
             </li>
             <li class="controllerMenuItems"><g:link controller="motd" action="list" >MOTD</g:link>
