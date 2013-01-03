@@ -152,9 +152,9 @@ class LayerService {
             // Summary of changes
             _logSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
         }
-        catch ( Exception e ) {
+        catch ( Throwable t ) { // Want to catch both Errors and Exceptions
 
-            throw new RuntimeException( "Failure in updateWithNewData()", e )
+			throw new RuntimeException( "Failure in updateWithNewData() on Server: '$server'", t )
         }
     }
 
