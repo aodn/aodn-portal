@@ -17,7 +17,7 @@
 
     <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir: 'css', file: 'mapprint.css')}" /-->
     <link rel="stylesheet" type="text/css"
-          href="${resource(dir: 'js', file: 'GeoExt1.1/resources/css/geoext-all.css')}"/>
+          href="${resource(dir: 'js', file:'GeoExt1.1/resources/css/geoext-all.css')}"/>
     <!-- User extensions -->
     <link rel="stylesheet" type="text/css"
           href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}"/>

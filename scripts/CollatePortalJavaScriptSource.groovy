@@ -37,7 +37,7 @@ def getPortalJsFiles(stagingDir) {
 	def includes = []
 	new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "home", "index.gsp"])).eachLine { line ->
 		// We want to match lines like file:'portal/prototypes/OpenLayers.js?'
-		def matcher = line =~ /file:'(portal\/.+)'/
+		def matcher = line =~ /file:\s*'(portal\/.+)'/
 		if (matcher.find()) {
 			println "[collateportaljavascriptfiles] Adding ${matcher.group(1)} to files to be collated"
 			includes << matcher.group(1)
