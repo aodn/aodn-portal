@@ -29,7 +29,7 @@ html, body, p, td{
 }
 
 #header {
-    background: url(../../images/SSOSHeaderBackground.png) no-repeat 0 0  #000000;
+    background: url(../images/SSOSHeaderBackground.png) no-repeat 0 0  #000000;
     height: 315px;
     width: 100%;
 
@@ -123,7 +123,7 @@ input, select, textarea {
 
 /* specific items from the soos website */
 #facebook {
-    background: url("../../images/soos/facebook.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/soos/facebook.png") no-repeat scroll 0 0 transparent;
     height: 45px;
 }
 #baseContent div {
@@ -237,7 +237,7 @@ a.userlink {
     float: left;
     padding: 6px 10px;
     margin-right: 5px;
-    background: url("../../images/mapshadow.png") repeat-x scroll left top grey;
+    background: url("../images/mapshadow.png") repeat-x scroll left top grey;
     border-radius: 14px;
 }
 .viewPortTabActive {
@@ -250,7 +250,7 @@ a.userlink {
 }
 
 #downloadCart {
-    background: url("../../images/mapshadow.png") repeat-x scroll left top #0079C2;
+    background: url("../images/mapshadow.png") repeat-x scroll left top #0079C2;
     border-radius: 10px 3px 10px 3px;
     color: white;
     float: right;
