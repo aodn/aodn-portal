@@ -18,7 +18,7 @@
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
-	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(1);return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(2);return false;" >metadata catalogue.</a></div>
+	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(1);return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(2);return false;" >metadata catalogue</a>.</div>
 
 	<div id="viewPortHomepageLinks" class="floatLeft">
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(1);return false;" href="">Map</a></div>
