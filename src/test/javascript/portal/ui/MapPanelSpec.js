@@ -89,6 +89,32 @@ describe("Portal.ui.MapPanel", function() {
         Ext.MsgBus.publish('layersLoading', 1);
         expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
     });
+
+    it('addingLayersFromGetFeatureInfo', function(){
+        var glob = jasmine.getGlobal();
+        spyOn(glob, 'getMapPanel').andCallFake(function() {return mapPanel});
+
+        var oldCount = mapPanel.layers.getCount();
+
+        var server = new Object();
+        server.uri = 	"http://geoserver.imos.org.au/geoserver/wms";
+        server.type = "1.1.1";
+        server.opacity = 100;
+        server.infoFormat = "text/html";
+
+        var layerDesc = new Object();
+        layerDesc.server = server;
+        layerDesc.title = "Argo Track 5901184";
+        layerDesc.name = "float_cycle_vw";
+        layerDesc.cql =  "float_id = 3189";
+        layerDesc.defaultStyle = "";
+        layerDesc.queryable = true;
+
+        setExtWmsLayer('http://geoserver.imos.org.au/geoserver/wms','Argo Track 5901184','1.1.1','float_cycle_vw','','float_id = 3189','');
+
+        expect(mapPanel.layers.getCount()).toBe(oldCount + 1);
+
+    });
     
     Ext.Ajax.request.isSpy = false;
 });
