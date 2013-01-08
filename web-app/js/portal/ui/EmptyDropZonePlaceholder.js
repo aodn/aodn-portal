@@ -40,12 +40,7 @@ Portal.ui.EmptyDropZonePlaceholder = Ext.extend(Ext.Panel, {
     			        		'afterrender': function() {
 
     			        			$('#'+ placeholderTextId).parent().addClass('drop-zone-placeholder');
-
-    			        			console.log($('#' + emptyDropZonePlaceholderId).find('.x-panel-body'));
-
     			        			var parentHeight = $('#' + emptyDropZonePlaceholderId).height();
-    			        			console.log(parentHeight);
-
     			        			$('#' + emptyDropZonePlaceholderId).find('.x-panel-body').css('height', '');
     			        			$('#'+ placeholderTextId).parent().css('height', parentHeight - (2 * thePadding) + 'px');
     			        		}

@@ -16,7 +16,6 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 		var config = Ext.apply({
 			listeners: {
 				beforeremove: function(panel, component){
-					console.log("beforeremove");
 					this.removeAll(true);
 				}
 			}
@@ -41,7 +40,6 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	   Note that the "x" button is created in the filterPanel. See also handleRemoveFilter.
 	**/
 	_createField:function(){
-		console.log("_createField yet to be implemented");
 	},
 
 	setLayerAndFilter: function(layer, filter){
@@ -66,7 +64,6 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	   In this method, implement actions like clearing a textfield, reset values.
 	**/
 	handleRemoveFilter: function(){
-		console.log("handleRemoveFilter yet to be implemented");
 	},
 
 	hasValue: function(){
@@ -78,6 +75,5 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	},
 
 	_setExistingFilters: function(){
-		console.log("_setExistingFilters yet to be implemented");
 	}
 });

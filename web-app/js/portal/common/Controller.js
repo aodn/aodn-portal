@@ -16,7 +16,6 @@ Portal.common.Controller = Ext.extend(Ext.util.Observable, {
 	// Log the errors and call any passed failure callback with decoded errors
 
 	_logAndReturnErrors: function(response, options) {
-		console.log(response);
 		errors = Ext.decode(response.responseText).errors;
 		this._callFailureCallback(options.requestCallbacks, [errors]);
 	},

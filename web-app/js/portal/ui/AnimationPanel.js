@@ -192,7 +192,6 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     eventStopper: function(ev) {
-        //console.log(ev.type);
         ev.stopPropagation(); // Cancels bubbling of the event
     }
 });

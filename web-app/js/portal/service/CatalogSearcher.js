@@ -107,7 +107,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
   },
 
   _logAndReturnErrors: function(response, options) {
-    console.log(response);
     this.fireEvent('searcherror', response);
   },
 

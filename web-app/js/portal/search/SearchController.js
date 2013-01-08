@@ -173,8 +173,6 @@ Portal.search.SearchController = Ext.extend(Portal.common.Controller, {
   
   _onSuccessfulSave: function(response, options)
   {
-	  console.log(response);
-
 	  var savedSearch = Ext.decode(response.responseText);
 
 	  this.savedSearchStore.load({
@@ -198,7 +196,6 @@ Portal.search.SearchController = Ext.extend(Portal.common.Controller, {
 	
 	_onFailedShow: function(response, options)
 	{
-		console.log(response);
 	},
 	
 	_onSuccessfulDelete: function(response, options)

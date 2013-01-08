@@ -692,8 +692,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				{
 					if (evt.layer == this)
 					{
-						console.log("removing layer with"+ evt.layer.slides.length +"slides");
-						for (var i = 0; i < evt.layer.slides.length; i++) 
+						for (var i = 0; i < evt.layer.slides.length; i++)
 						{
 						    // Not sure when .map becomes defined, but it is undefined for slides that
 						    // haven't loaded, and hence without this check, removeLayer fails when removing
@@ -922,12 +921,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				this.allTimes[dayString] = new Array();
 			}
 			this.allTimes[dayString].push([timeString, timeRoundedString]);
-			
-//			if(j==0)
-//			{
-//				console.log(timeString);
-//				console.log(date.toString());
-//			}
 		}
 		
 	},
