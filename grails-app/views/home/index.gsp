@@ -104,7 +104,7 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/field/DateRange.js')}?${jsVerNum}"
                 type="text/javascript"></script>
-        <script src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.jsDateRange.js')}?${jsVerNum}"
+        <script src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.js')}?${jsVerNum}"
             type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/field/BoundingBox.js')}?${jsVerNum}"
                 type="text/javascript"></script>
