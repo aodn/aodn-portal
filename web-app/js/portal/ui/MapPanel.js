@@ -83,10 +83,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._closeFeatureInfoPopup();
         }, this);
 
-//        this.on('destroy', function() {
-//            this.layers.destroy();
-//        }, this);
-
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
