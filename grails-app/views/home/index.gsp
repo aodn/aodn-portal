@@ -104,6 +104,8 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/field/DateRange.js')}?${jsVerNum}"
                 type="text/javascript"></script>
+        <script src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.jsDateRange.js')}?${jsVerNum}"
+            type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/field/BoundingBox.js')}?${jsVerNum}"
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/field/MultiSelectCombo.js')}?${jsVerNum}"
@@ -149,6 +151,8 @@
         <script src="${resource(dir: 'js', file: 'portal/search/ResultsGrid.js')}?${jsVerNum}"
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}?${jsVerNum}"
+                type="text/javascript"></script>
+        <script src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}?${jsVerNum}"
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}?${jsVerNum}"
                 type="text/javascript"></script>

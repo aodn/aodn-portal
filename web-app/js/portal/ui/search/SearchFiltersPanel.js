@@ -69,6 +69,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 			searcher: config.searcher
 		});
 
+        this.dateFilter = new Portal.search.DateSelectionPanel({
+            title: OpenLayers.i18n('dateFilter'),
+            hierarchical: false,
+            fieldGroup: 'organisationNames',
+            fieldName: 'orgName',
+            searcher: config.searcher
+        });
+
 //		this.boundingBoxFilter = new Portal.search.field.BoundingBox({
 //            title: '<span class="term-selection-panel-header">' + OpenLayers.i18n('boundingBox') + '</span>',
 //            collapsed: true,
@@ -94,8 +102,9 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 this.themeFilter,
                 this.methodFilter,
                 this.locationFilter,
-                this.organisationFilter/*,
-                this.boundingBoxFilter*/
+                this.organisationFilter,
+                this.dateFilter
+                /*,this.boundingBoxFilter*/
             ]
 		}, config);
 
