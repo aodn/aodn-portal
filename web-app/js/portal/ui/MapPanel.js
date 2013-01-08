@@ -83,6 +83,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._closeFeatureInfoPopup();
         }, this);
 
+//        this.on('destroy', function() {
+//            this.layers.destroy();
+//        }, this);
+
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
@@ -132,7 +136,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 	},
 
     autoZoomCheckboxHandler: function(box, checked) {
-        //console.log("autoZoom: " + checked);
         Portal.app.config.autoZoom = checked;
         this.autoZoom = checked;
     },
@@ -271,50 +274,39 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     
     getPageY: function() {
         return this.getPosition()[1];
-    },
-
-    addExternalLayer: function(layerDescriptor) {
-        var layerDesc = new Portal.common.LayerDescriptor();
-        layerDesc.server = layerDescriptor.server;
-        layerDesc.title = layerDescriptor.title;
-        layerDesc.name = layerDescriptor.name;
-        layerDesc.cql =  layerDescriptor.cql;
-        layerDesc.defaultStyle = layerDescriptor.defaultStyle;
-        layerDesc.queryable = layerDescriptor.queryable;
-
-        this.layers.addUsingDescriptor(layerDesc);
     }
 });
 
+function setExtWmsLayer(url, label, type, layer, sld, options, style) {
+    var cql;
+    var _label = label;
 
-function setExtWmsLayer(url,label,type,layer,sld,options,style) {
-    var dl = {};
-    var server = {};
-    server.uri = url;
-    server.type = type;
-    server.opacity = 100;
-    dl.server = server;
-    dl.queryable = true;
-    dl.server.infoFormat = "text/html";
-//dl.sld = sld; //comment out until required from the setExtWmsLayer function
-// style in .ftl's but should be styles
-    dl.defaultStyle = style;
-    dl.name = layer; // layer id on server
-    dl.title = label;
-// options are comma delimited to include a unique label from a single value such as a dropdown box
+    // options are comma delimited to include a unique label from a single value such as a dropdown box
     if (options.length > 1) {
         var opts = options.split(",");
-        var cql = opts[0];
-        var newLabel = label;
+        cql = opts[0];
+
         if (opts.length > 1) {
-            newLabel = label + " " + opts[1];
+            _label += " " + opts[1];
         }
-        dl.cql = cql;
-        if (newLabel.length > 0) {
-            dl.title = newLabel;
-        } else {
-            dl.cql = '';
+
+        if (_label.length <= 0) {
+            cql = '';
         }
     }
-    getMapPanel().addExternalLayer(dl);
+
+    Ext.MsgBus.publish('addLayerUsingDescriptor', new Portal.common.LayerDescriptor({
+        server: {
+            uri: url,
+            type: type,
+            opacity: 100,
+            infoFormat: "text/html"
+        },
+        queryable: true,
+        // style in .ftl's but should be styles
+        defaultStyle: style,
+        name: layer,
+        title: _label,
+        cql: cql
+    }));
 }

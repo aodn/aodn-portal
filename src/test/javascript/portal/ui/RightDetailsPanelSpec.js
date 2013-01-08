@@ -22,8 +22,13 @@ describe("Portal.ui.RightDetailsPanel", function() {
         
         it('update called on selectedLayerChanged event', function() {
             spyOn(rightDetailsPanel, 'update');
+
+            var openLayer = new OpenLayers.Layer.WMS(
+                'My Open Layer',
+                'Mock URI'
+            );
             
-            Ext.MsgBus.publish('selectedLayerChanged', { isAnimatable: function() { return false}});
+            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
             
             expect(rightDetailsPanel.update).toHaveBeenCalled();
         });
