@@ -199,7 +199,7 @@ OpenLayers.Tile.Image.prototype.draw = function() {
     if(this.bounds.bottom < maxExtent.bottom ||
         this.bounds.top > maxExtent.top)
     {
-        return false;
+        drawTile = false;
     }
 
     /******End added*******/
