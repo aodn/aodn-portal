@@ -8,7 +8,7 @@
 
 Ext.namespace('Portal.search.field');
 
-Portal.search.field.DateRange = Ext.extend(Ext.Container, {
+Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
     layout: 'auto',
 
     initComponent: function() {
@@ -53,7 +53,7 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
             }
         ];
 
-        Portal.search.field.DateRange.superclass.initComponent.apply(this, arguments);
+        Portal.search.field.FacetedDateRange.superclass.initComponent.apply(this, arguments);
     },
 
     getFilterValue: function()
@@ -71,5 +71,5 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
     }
 });
 
-Ext.reg('portal.search.field.daterange', Portal.search.field.DateRange);
+Ext.reg('portal.search.field.faceteddaterange', Portal.search.field.FacetedDateRange);
 

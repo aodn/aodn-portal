@@ -29,7 +29,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             layout:'form',
             cls:'search-filter-panel term-selection-panel',
             items:[
-                this.dateRange = new Portal.search.field.DateRange(),
+                this.dateRange = new Portal.search.field.FacetedDateRange(),
                 this.searchButton = new Ext.Button({
                     text: OpenLayers.i18n("searchButton"),
                     width: 65
