@@ -30,16 +30,22 @@ describe("Portal.search.DateSelectionPanel", function()
         testWindow.close();
     });
 
-    it("creates search form with default options on instantiation", function() {
+    it("has title with header css class", function() {
         var dateFilter = buildMockSelectionPanel();
 
         expect(dateFilter.title.contains('<span class="term-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
+    });
 
-        dateFilter.setSelectedSubTitle("sub");
+    describe("setSelectedSubTitle", function() {
+        it("makes title use header-selected css class followed by subtitle", function() {
+            var dateFilter = buildMockSelectionPanel();
 
-        expect(dateFilter.title.contains('<span class="term-selection-panel-header-selected">' + "Date Filter" + '</span>')).toBeTruthy();
+            dateFilter.setSelectedSubTitle("sub");
 
-        expect(dateFilter.title.contains('sub')).toBeTruthy();
+            expect(dateFilter.title.contains('<span class="term-selection-panel-header-selected">' + "Date Filter" + '</span>')).toBeTruthy();
 
+            expect(dateFilter.title.contains('sub')).toBeTruthy();
+
+        });
     });
 });
