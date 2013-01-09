@@ -7,6 +7,7 @@
 Ext.namespace('Portal.search');
 
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
+    padding: 5,
 
     constructor:function (cfg) {
 
