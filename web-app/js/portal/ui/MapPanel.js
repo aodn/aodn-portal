@@ -145,7 +145,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.zoomToInitialBbox();
     },
 
-    _handleFeatureInfoClick: function(event) {
+    handleFeatureInfoClick: function(event) {
         this._closeFeatureInfoPopup();
         this._findFeatureInfo(event);
     },

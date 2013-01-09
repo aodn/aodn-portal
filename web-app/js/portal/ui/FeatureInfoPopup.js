@@ -84,10 +84,10 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     
     findFeatures: function(event) {
     	this.location = this.map.getLonLatFromViewPortPx(event.xy);
-    	this.clickPoint = { x: event.xy.x, y: event.xy.y };
+
         this._setLocationString();
         this._display();
-        
+
         this._handleDepthService();
         this._handleLayers();
     },
@@ -139,7 +139,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
     
     _requestFeatureInfo: function(layer) {
-		
     	this.numResultsToLoad++;
     	Ext.Ajax.request({
         	scope: this,
@@ -184,11 +183,17 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 			extraParams.INFO_FORMAT = "image/png";
             delete format;
 		}
-        var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this.clickPoint, extraParams));
+
+        var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), extraParams));
         if (format) {
             result += "&format=" + encodeURIComponent(format);
         }
         return result;
+    },
+
+    _clickPoint: function() {
+        var pixel = this.map.getViewPortPxFromLonLat(this.location);
+        return { x: pixel.x, y: pixel.y }
     },
     
     _collectUniqueLayers: function() {

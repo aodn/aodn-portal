@@ -35,7 +35,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             fallThrough: true,
             onClick: function(event) {
 
-                mapPanel._handleFeatureInfoClick(event);
+                mapPanel.handleFeatureInfoClick(event);
                 mapPanel.closeDropdowns(event);
             }
         });
