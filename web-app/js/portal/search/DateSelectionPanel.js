@@ -12,6 +12,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         cfg = cfg || {};
 
+        this.titleText = cfg.title;
+
         if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
         if (!cfg.separator)
@@ -55,13 +57,48 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         var range = this.dateRange.getFilterValue();
 
         this.searcher.removeFilters("extFrom");
-        this.searcher.addFilter("extFrom", range.fromDate);
-
         this.searcher.removeFilters("extTo");
-        this.searcher.addFilter("extTo", range.toDate);
 
-        this.searcher.search();
+        var titleFrom = "Min";
+        var titleTo = "Max";
 
-        this.selectionStore.setFilterValue("2013-01-16");
+        if (range.fromDate !== "")
+        {
+            this.searcher.addFilter("extFrom", range.fromDate);
+            titleFrom = range.fromDate.format("d/m/Y");
+        }
+
+        if (range.toDate !== "")
+        {
+            this.searcher.addFilter("extTo", range.toDate);
+            titleTo = range.toDate.format("d/m/Y");
+        }
+
+        if(range.fromDate !== "" || range.toDate !== "")
+        {
+            var newSub = titleFrom + " - " + titleTo;
+            this.setSelectedSubTitle(newSub);
+
+            this.searcher.search();
+        }
+    },
+
+    removeAnyFilters: function() {
+        this.searcher.removeFilters("extFrom");
+        this.searcher.removeFilters("extTo");
+        this.dateRange.clearValues();
+        this.removeSelectedSubTitle();
+        this.collapse();
+    },
+
+    setSelectedSubTitle: function(subtitle) {
+        var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
+        newTitle += " - " + subtitle;
+        this.setTitle(newTitle);
+    },
+
+    removeSelectedSubTitle: function() {
+        var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
+        this.setTitle(newTitle);
     }
 });

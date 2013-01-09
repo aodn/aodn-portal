@@ -159,6 +159,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.methodFilter.removeAnyFilters();
         this.locationFilter.removeAnyFilters();
         this.organisationFilter.removeAnyFilters();
+        this.dateFilter.removeAnyFilters();
 
         this.searcher.search();
     },

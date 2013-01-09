@@ -54,19 +54,19 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
       Portal.search.field.DateRange.superclass.initComponent.apply(this, arguments);
    },
 
-   getFilterValue: function()
-   {
-	   return {
-		   fromDate: this.fromDate.getValue(),
-		   toDate: this.toDate.getValue()
-	   };
-   },
+getFilterValue: function()
+{
+    return {
+        fromDate: this.fromDate.getValue(),
+        toDate: this.toDate.getValue()
+    };
+},
 
-   setFilterValue: function(v)
-   {
-	   this.fromDate.setValue(new Date(v.fromDate));
-	   this.toDate.setValue(new Date(v.toDate));
-   }
+setFilterValue: function(v)
+{
+    this.fromDate.setValue(new Date(v.fromDate));
+    this.toDate.setValue(new Date(v.toDate));
+}
 });
 
 Ext.reg('portal.search.field.daterange', Portal.search.field.DateRange);
