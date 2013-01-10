@@ -44,10 +44,6 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
         this.mon(this.searchButton, 'click', this.onSearch, this);
-
-//        this.mon(this.searcher, 'searchcomplete', this._loadStore, this);
-//        this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
-//        this.mon(this.searcher, 'searcherror', this._searchFail, this);
     },
 
     initComponent:function () {
