@@ -72,8 +72,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.dateFilter = new Portal.search.DateSelectionPanel({
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
-            fieldGroup: 'organisationNames',
-            fieldName: 'orgName',
             searcher: config.searcher
         });
 

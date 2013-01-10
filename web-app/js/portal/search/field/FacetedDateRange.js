@@ -73,6 +73,6 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
         this.toDate.reset();
     }
 });
-Ext.form.DateField
+
 Ext.reg('portal.search.field.faceteddaterange', Portal.search.field.FacetedDateRange);
 
