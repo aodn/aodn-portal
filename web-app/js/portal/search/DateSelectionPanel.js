@@ -61,13 +61,13 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         if (range.fromDate !== "")
         {
-            this.searcher.addFilter("extFrom", range.fromDate);
+            this.searcher.addFilter("extFrom", range.fromDate.format("Y-m-d"));
             titleFrom = range.fromDate.format("d/m/Y");
         }
 
         if (range.toDate !== "")
         {
-            this.searcher.addFilter("extTo", range.toDate);
+            this.searcher.addFilter("extTo", range.toDate.format("Y-m-d"));
             titleTo = range.toDate.format("d/m/Y");
         }
 
