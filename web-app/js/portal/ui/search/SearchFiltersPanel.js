@@ -169,4 +169,3 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
     }
 });
-
