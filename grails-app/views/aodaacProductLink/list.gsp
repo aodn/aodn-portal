@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'aodaacProductLink.label', default: 'AodaacProductLink')}" />
+        <g:set var="entityName" value="${message(code: 'aodaacProductLink.label', default: 'Aodaac Product Link')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -40,6 +40,7 @@
 
                             <th></th>
 
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,8 @@
                             <td>${fieldValue(bean: aodaacProductLinkInstance, field: "server")}</td>
 
                             <td><g:link action="edit" id="${aodaacProductLinkInstance.id}">edit</g:link></td>
+
+                            <td><g:link action="clone" id="${aodaacProductLinkInstance.id}">clone</g:link></td>
                         </tr>
                     </g:each>
                     </tbody>

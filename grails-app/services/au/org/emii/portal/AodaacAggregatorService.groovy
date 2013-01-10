@@ -457,10 +457,12 @@ class AodaacAggregatorService {
 		def hours = duration.hours + (duration.days * 24)
 		def jobTooOld = hours >= grailsApplication.config.aodaacAggregator.idleJobTimeout
 
-		log.debug "duration: ${ duration }"
-		log.debug "is taking too long = jobTooOld && !isMakingProgress ($jobTooOld && !$jobHasMadeProgress)"
+		def isTakingTooLong = jobTooOld && !jobHasMadeProgress
 
-		return jobTooOld && !jobHasMadeProgress
+		log.debug "duration: ${ duration }"
+		log.debug "isTakingTooLong == (jobTooOld && !isMakingProgress) == ($jobTooOld && !$jobHasMadeProgress) == $isTakingTooLong"
+
+		return isTakingTooLong
 	}
 
 	def _markJobAsExpired( job ) {

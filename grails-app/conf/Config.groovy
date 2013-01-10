@@ -68,24 +68,26 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 help.url = "http://portalhelp.aodn.org.au/"
 
 // AODAAC Aggregator
-aodaacAggregator.url = "http://aodaac.emii.org.au/"
-aodaacAggregator.environment = "test"
-aodaacAggregator.idleJobTimeout = 1 // In hours
-aodaacAggregator.errorLookup = [
-    /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
+aodaacAggregator {
+	url = "http://aodaac.emii.org.au/"
+	environment = "prod"
+	idleJobTimeout = 1 // In hours
+	errorLookup = [
+		/.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
 
-        errorMessage ->
+			errorMessage ->
 
-        def numBytes = (errorMessage =~ /[0-9]+/)
-        assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
-        def actualBytes = Long.valueOf(numBytes[0])
-        def limitBytes = Long.valueOf(numBytes[1])
+			def numBytes = (errorMessage =~ /[0-9]+/)
+			assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
+			def actualBytes = Long.valueOf(numBytes[0])
+			def limitBytes = Long.valueOf(numBytes[1])
 
-        def amountOver = Math.round(actualBytes/limitBytes)
+			def amountOver = Math.round(actualBytes/limitBytes)
 
-        return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
-    }
-]
+			return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
+		}
+	]
+}
 
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/"
