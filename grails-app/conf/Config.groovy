@@ -90,7 +90,7 @@ aodaacAggregator {
 }
 
 // Depth service
-depthService.url = "http://depthservice.aodn.org.au/"
+depthService.url = "http://depthservice.aodn.org.au/depth"
 
 // set per-environment serverURL stem for creating absolute links
 environments {
