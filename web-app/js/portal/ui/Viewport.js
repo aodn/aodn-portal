@@ -23,6 +23,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         var config = Ext.apply({
             layout: 'border',
             boxMinWidth: 1050,
+            id:'viewport',
             items: [
                 {
                     unstyled: true,
@@ -49,6 +50,10 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.on('afterrender', function() {
             jQuery("#loader").hide('slow'); // close the loader
         });
+
+        this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function() {
+            this.doLayout(false,true);
+        },this);
     },
 
     setActiveTab: function(tabIndex) {
