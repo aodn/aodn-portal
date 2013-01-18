@@ -248,6 +248,12 @@ class LayerController {
                 }
             }
             layerInstance.properties = params
+
+            if (params.wfsLayerId){
+                layerInstance.wfsLayer = Layer.get(params.wfsLayerId)
+            }
+
+
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
                 _recache(layerInstance.server)

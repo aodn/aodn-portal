@@ -89,6 +89,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.allStyles = this._getAllStyles();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
+        openLayer.wfsLayer = this.wfsLayer;
     },
 
     _getParent: function() {

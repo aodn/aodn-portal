@@ -104,5 +104,11 @@ databaseChangeLog = {
 	include file: 'imos-changelog.groovy'
 	include file: 'wa-changelog.groovy'
 	include file: 'soos-changelog.groovy'
+
+	include file: '20130108-PM-WfsLayerForFilter.groovy'
+
+	include file: '20130108-PM-linkWmsWfsLayers.groovy'
+
+	include file: '20130111-PM-DownloadOnlyFlagFilter.groovy'
 }
 

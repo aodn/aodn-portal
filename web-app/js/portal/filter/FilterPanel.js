@@ -29,6 +29,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	}, cfg);
 
     	this.GET_FILTER = "layer/getFiltersAsJSON";
+        this.GET_SERVER = "server/showServerByItsId"
     	this.activeFilters = {};
 
 
@@ -70,6 +71,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
             	fieldLabel: filter.label
             })
     	}
+        else if (filter.type === "Number"){
+            newFilter = new Portal.filter.NumberFilter({
+                fieldLabel: filter.label
+            })
+        }
     	else{
     		//Filter hasn't been defined
     	}
@@ -141,7 +147,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 							text: 'Add to Cart',
 							listeners: {
 								scope: this,
-								click: this._addToCart
+								click: this._addButtonClicked
 							}
 						});
 
@@ -163,7 +169,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 	},
 
     _updateFilter: function(){
-    	var combinedCQL = "";
+    	this.displayCQL = "";
+        this.downloadCQL = "";
     	var count = 0;
 		for(var key in this.activeFilters){
 			count++;
@@ -172,17 +179,32 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		if(count > 0){
 			for(var name in this.activeFilters){
 				if(this.activeFilters[name].hasValue()){
-					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
+                    console.log("name: " + name + " downloadONly: " + this.activeFilters[name].filter.downloadOnly);
+                    console.log(this.activeFilters[name].filter);
+                    if(!this.activeFilters[name].filter.downloadOnly){
+                        this.displayCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
+                    }
+                    this.downloadCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
+
+                    console.log("downloadCQL: " + this.downloadCQL);
+                    console.log("displayCQL: " + this.displayCQL);
 				}
 			}
 
-			if(combinedCQL.length > 0){
-				combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
+			if(this.displayCQL.length > 0){
+                this.displayCQL = this.displayCQL.substr(0, this.displayCQL.length - this.AND_QUERY.length);
 
 				this.layer.mergeNewParams({
-					CQL_FILTER: combinedCQL
+					CQL_FILTER: this.displayCQL
 				});
 			}
+
+            if(this.downloadCQL.length > 0){
+                this.downloadCQL = this.downloadCQL.substr(0, this.downloadCQL.length - this.AND_QUERY.length);
+            }
+
+
+
 		}
 		else{
          	delete this.layer.params["CQL_FILTER"];
@@ -200,28 +222,60 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this._updateFilter();
     },
 
-    _makeWFSURL: function(){
+    _addButtonClicked: function(){
+        var wfsURL = this.layer.server.uri.replace("/wms", "/wfs");
 
-    	var query = Ext.urlEncode({
-			typeName: this.layer.params.LAYERS,
-			SERVICE: "WFS",
-			outputFormat: "csv",
-			REQUEST: "GetFeature",
-			VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
-			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
-		});
+        if(this.layer.wfsLayer){
+            Ext.Ajax.request({
+                url: this.GET_SERVER,
+                params: {
+                    serverId: this.layer.wfsLayer.server.id
+                },
+                scope: this,
+                success: function(resp){
+                    var wfsLayerServer = Ext.util.JSON.decode(resp.responseText);
+                    var wfsServerURI = wfsLayerServer.uri;
 
-    	var wfsURL =  this.layer.server.uri.replace("/wms", "/wfs");
+                    var query = Ext.urlEncode({
+                        typeName:this.layer.wfsLayer.title,
+                        SERVICE: "WFS",
+                        outputFormat: "csv",
+                        REQUEST: "GetFeature",
+                        VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
+                        CQL_FILTER: this.downloadCQL      //Geonetwork only works with URL encoded filters
+                    });
 
-    	if(wfsURL.indexOf("?") > -1)
-    		wfsURL +=  "&" + query;
-    	else
-    		wfsURL += "?" + query;
 
-		return wfsURL;
+                    if(wfsServerURI.indexOf("?") > -1)
+                        wfsServerURI +=  "&" + query;
+                    else
+                        wfsServerURI += "?" + query;
+
+                    this._addToCart(wfsServerURI);
+                }
+            });
+        }
+        else{
+            var query = Ext.urlEncode({
+                typeName: this.layer.params.LAYERS,
+                SERVICE: "WFS",
+                outputFormat: "csv",
+                REQUEST: "GetFeature",
+                VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
+                CQL_FILTER: this.downloadCQL      //Geonetwork only works with URL encoded filters
+            });
+
+            if(wfsURL.indexOf("?") > -1)
+                wfsURL +=  "&" + query;
+            else
+                wfsURL += "?" + query;
+
+            this._addToCart(wfsURL);
+        }
     },
 
-    _addToCart: function(){
+    _addToCart: function(url){
+        console.log("_addToCart " + url);
 		var tup = new Object();
 		tup.record = new Object();
 		tup.record.data = new Object();
@@ -232,7 +286,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		tup.record.data["rec_title"] =  this.layer.title;
 		tup.record.data["title"] =  this.layer.title;
 		tup.link["type"] =  "application/x-msexcel";
-		tup.link["href"] =  this._makeWFSURL();
+		tup.link["href"] =  url;
 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
 		tup.link["preferredFname"] = this.layer.params.LAYERS + ".csv";
 

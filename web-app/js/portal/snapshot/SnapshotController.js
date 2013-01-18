@@ -64,6 +64,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     },
 
     _doLoadLayers : function(bounds, snapshot, successCallback) {
+        console.log("_doLoadLayers");
         this.map.zoomToExtent(bounds, true);
         for ( var i = 0; i < snapshot.layers.length; i++) {
             this.addSnapshotLayer(snapshot.layers[i]);
@@ -76,17 +77,23 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     },
 
     onSuccessfulLoad : function(snapshot, successCallback) {
+
+        console.log("snapshot loaded!");
         this.fireEvent('snapshotLoaded');
 
         var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY,
                 snapshot.maxX, snapshot.maxY);
 
+        console.log(bounds);
+        console.log(this.mapScope );
         if (this.map.baseLayer === null) {
             this.mapScope.on('baselayersloaded', function() {
                 this._doLoadLayers(bounds, snapshot, successCallback);
             }, this);
+            console.log("base layers loaded");
         } else {
             this._doLoadLayers(bounds, snapshot, successCallback);
+            console.log("layers loaded");
         }
     },
 

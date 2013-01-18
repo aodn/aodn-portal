@@ -18,6 +18,7 @@ class Filter {
     static belongsTo = [layer: Layer]
     static hasMany = [possibleValues: String]
     List<String> possibleValues
+    boolean downloadOnly;
 
     public Filter(){
         possibleValues = []
@@ -37,6 +38,7 @@ class Filter {
                 return true
             return ['invalid.possibleValues']
         })
+        downloadOnly(nullable: true)
     }
 
     def beforeDelete(){
@@ -50,6 +52,7 @@ class Filter {
         filterData["name"] = this.name
         filterData["possibleValues"] = this.possibleValues
         filterData["layerId"] = this.layer.id
+        filterData["downloadOnly"] = this.downloadOnly
         return filterData
      }
 

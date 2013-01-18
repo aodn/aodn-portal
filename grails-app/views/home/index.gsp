@@ -188,6 +188,8 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}?${jsVerNum}"
                 type="text/javascript"></script>
+        <script src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}?${jsVerNum}"
+            type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/filter/FilterPanel.js')}?${jsVerNum}"
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}?${jsVerNum}"

@@ -75,7 +75,7 @@ Portal.app = {
 
 				viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
 
-				if(window.location.search.length > 0){
+				/*if(window.location.search.length > 0){
 
 					Ext.Msg.show({
 						title: "<h2>Disclaimer</h2>",
@@ -99,7 +99,7 @@ Portal.app = {
 						//show the homepage
 						setViewPortTab( 0 ); // Select default tab
 					}
-                }
+                }*/
             }
         });
         

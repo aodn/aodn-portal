@@ -6,6 +6,7 @@
  The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
 
 --%>
+<%@ page import="au.org.emii.portal.Layer" %>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -168,7 +169,9 @@
                                     <label for="styles"><g:message code="layer.styles.label" default="Styles" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'styles', 'errors')}">
-                                    <g:textField name="styles" value="${layerInstance?.styles}" />
+                                    <g:select name="styles"
+                                              from="${layerInstance.styles}"
+                                              optionKey="id" />
                                 </td>
                             </tr>
 
@@ -228,4 +231,18 @@
 									${layerInstance?.layerHierarchyPath}
 								</td>
 							</tr>
+
+                            <tr class="prop" id="wfsLayer">
+                                <td valign="top" class="name">
+                                    <label for="wfsLayer"><g:message code="layer.wfsLayer.label" default="WFS Data Layer" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayer', 'errors')}">
+                                    <g:select name="wfsLayer.id"
+                                              from="${Layer.list()}"
+                                              optionKey="id"
+                                              value="${layerInstance?.wfsLayer?.id}"
+                                    />
+                                </td>
+                            </tr>
+
 

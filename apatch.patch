@@ -1,0 +1,573 @@
+diff --git a/grails-app/conf/Config.groovy b/grails-app/conf/Config.groovy
+index 10e4450..709a298 100644
+--- a/grails-app/conf/Config.groovy
++++ b/grails-app/conf/Config.groovy
+@@ -101,17 +101,15 @@ environments {
+         // URLs
+ 		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+ 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+-		wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
+-		openIdProvider.url = "http://openid.example.com"
++		wmsScanner.url = "http://localhost:8100/WmsScannerGrails"
++		openIdProvider.url = "https://devid.emii.org.au"
+ 
+         facetedSearch.enabled = true
+ 
+         grails {
+             mail {
+-                host = "localhost"
++                host = "postoffice.utas.edu.au"
+                 port = 25
+-
+-                username = "username"
+                 props = ["mail.smtp.auth":"false"]
+             }
+         }
+@@ -235,20 +233,19 @@ log4j = {
+ 
+     info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
+             'grails.app.filters.shiro.SecurityFilters',
+-            'grails.app.controller.au.org.emii.portal.LayerController',
+-            'grails.app.controller.au.org.emii.portal.AuthController',
+             'grails.app.service.au.org.emii.portal.LayerService',
+             'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
+             'au.org.emii.portal.display.MenuJsonCache',
+-            'org.apache.shiro',
+-            'grails.app.controller'
++            'org.apache.shiro'
++
+ 
+     debug   'grails.app.job',
+             //'grails.app.service',
+ 		'grails.app.tagLib',
++    'grails.app.controller',
+             'grails.app.domain',
+             'grails.app.realms'
+-            //'au.org.emii.portal'
++            'au.org.emii.portal'
+             //'au.org.emii.portal.display'
+ 		    //'org.hibernate.SQL',
+ 		    //'org.hibernate.type',
+diff --git a/grails-app/conf/DataSource.groovy b/grails-app/conf/DataSource.groovy
+index a14b38a..fca3640 100644
+--- a/grails-app/conf/DataSource.groovy
++++ b/grails-app/conf/DataSource.groovy
+@@ -29,7 +29,7 @@ environments {
+ 		dataSource {
+             //dbCreate = "update"
+             driverClassName = "org.postgresql.Driver"
+-		    url = "jdbc:postgresql://localhost:5432/aodn_portal"
++		    url = "jdbc:postgresql://localhost:5432/edge"
+             username = "postgres"
+             password = "postgres"
+ 		}
+diff --git a/grails-app/conf/shiro/SecurityFilters.groovy b/grails-app/conf/shiro/SecurityFilters.groovy
+index a49357e..a09fd23 100644
+--- a/grails-app/conf/shiro/SecurityFilters.groovy
++++ b/grails-app/conf/shiro/SecurityFilters.groovy
+@@ -97,7 +97,7 @@ class SecurityFilters {
+             }
+         }
+ 
+-        serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
++        serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson|showServerByItsId") {
+             before = {
+                 
+                 logRequest("serverAccess", controllerName, actionName)
+diff --git a/grails-app/controllers/au/org/emii/portal/LayerController.groovy b/grails-app/controllers/au/org/emii/portal/LayerController.groovy
+index 601c71d..bebaa25 100644
+--- a/grails-app/controllers/au/org/emii/portal/LayerController.groovy
++++ b/grails-app/controllers/au/org/emii/portal/LayerController.groovy
+@@ -248,6 +248,12 @@ class LayerController {
+                 }
+             }
+             layerInstance.properties = params
++
++            if (params.wfsLayerId){
++                layerInstance.wfsLayer = Layer.get(params.wfsLayerId)
++            }
++
++
+             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
+                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
+                 _recache(layerInstance.server)
+diff --git a/grails-app/controllers/au/org/emii/portal/ServerController.groovy b/grails-app/controllers/au/org/emii/portal/ServerController.groovy
+index b9306ab..2147a59 100644
+--- a/grails-app/controllers/au/org/emii/portal/ServerController.groovy
++++ b/grails-app/controllers/au/org/emii/portal/ServerController.groovy
+@@ -141,6 +141,10 @@ class ServerController {
+ 			def serverIdArr = params.serverId.split("_")
+ 			serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
+ 		}
++
++        log.debug("serverInstance")
++        log.debug(serverInstance)
++
+ 		if (serverInstance) {
+ 			render serverInstance as JSON
+ 		}
+diff --git a/grails-app/domain/au/org/emii/portal/Filter.groovy b/grails-app/domain/au/org/emii/portal/Filter.groovy
+index f479fbb..fc44986 100644
+--- a/grails-app/domain/au/org/emii/portal/Filter.groovy
++++ b/grails-app/domain/au/org/emii/portal/Filter.groovy
+@@ -18,6 +18,7 @@ class Filter {
+     static belongsTo = [layer: Layer]
+     static hasMany = [possibleValues: String]
+     List<String> possibleValues
++    boolean downloadOnly;
+ 
+     public Filter(){
+         possibleValues = []
+@@ -37,6 +38,7 @@ class Filter {
+                 return true
+             return ['invalid.possibleValues']
+         })
++        downloadOnly(nullable: true)
+     }
+ 
+     def beforeDelete(){
+@@ -50,6 +52,7 @@ class Filter {
+         filterData["name"] = this.name
+         filterData["possibleValues"] = this.possibleValues
+         filterData["layerId"] = this.layer.id
++        filterData["downloadOnly"] = this.downloadOnly
+         return filterData
+      }
+ 
+diff --git a/grails-app/domain/au/org/emii/portal/Layer.groovy b/grails-app/domain/au/org/emii/portal/Layer.groovy
+index b956ca7..36e52a2 100644
+--- a/grails-app/domain/au/org/emii/portal/Layer.groovy
++++ b/grails-app/domain/au/org/emii/portal/Layer.groovy
+@@ -27,6 +27,7 @@ class Layer {
+     Boolean queryable
+     Boolean isBaseLayer
+     Boolean available   //used by CheckLayerAvailabilityService
++    Layer wfsLayer
+ 
+     // Extra info
+     String dataSource
+@@ -96,6 +97,7 @@ class Layer {
+         lastUpdated(nullable:true)
+         layerHierarchyPath(nullable: true)
+         available(nullable: false)
++        wfsLayer(nullable: true)
+     }
+ 
+ 	static transients = ['layers']
+diff --git a/grails-app/migrations/changelog.groovy b/grails-app/migrations/changelog.groovy
+index f4e99c4..385ebc4 100644
+--- a/grails-app/migrations/changelog.groovy
++++ b/grails-app/migrations/changelog.groovy
+@@ -104,5 +104,11 @@ databaseChangeLog = {
+ 	include file: 'imos-changelog.groovy'
+ 	include file: 'wa-changelog.groovy'
+ 	include file: 'soos-changelog.groovy'
++
++	include file: '20130108-PM-WfsLayerForFilter.groovy'
++
++	include file: '20130108-PM-linkWmsWfsLayers.groovy'
++
++	include file: '20130111-PM-DownloadOnlyFlagFilter.groovy'
+ }
+ 
+diff --git a/grails-app/views/filter/edit.gsp b/grails-app/views/filter/edit.gsp
+index 52fb256..96903d6 100644
+--- a/grails-app/views/filter/edit.gsp
++++ b/grails-app/views/filter/edit.gsp
+@@ -78,6 +78,15 @@
+                                 	<g:textArea name="possibleValues" value="${concatValues}" />
+                                 </td>
+                             </tr>
++
++                            <tr class="prop">
++                                <td valign="top" class="name">
++                                    <label for="downloadOnly"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
++                                </td>
++                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadOnly', 'errors')}">
++                                    <g:checkBox name="downloadOnly" value="${filterInstance?.downloadOnly}" />
++                                </td>
++                            </tr>
+                         
+ 
+                         </tbody>
+diff --git a/grails-app/views/home/index.gsp b/grails-app/views/home/index.gsp
+index 1ffd3df..600c96d 100644
+--- a/grails-app/views/home/index.gsp
++++ b/grails-app/views/home/index.gsp
+@@ -188,6 +188,8 @@
+                 type="text/javascript"></script>
+         <script src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}?${jsVerNum}"
+                 type="text/javascript"></script>
++        <script src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}?${jsVerNum}"
++            type="text/javascript"></script>
+         <script src="${resource(dir: 'js', file: 'portal/filter/FilterPanel.js')}?${jsVerNum}"
+                 type="text/javascript"></script>
+         <script src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}?${jsVerNum}"
+diff --git a/grails-app/views/layer/_formBody.gsp b/grails-app/views/layer/_formBody.gsp
+index 70f8bc9..ba6e13a 100644
+--- a/grails-app/views/layer/_formBody.gsp
++++ b/grails-app/views/layer/_formBody.gsp
+@@ -6,6 +6,7 @@
+  The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ 
+ --%>
++<%@ page import="au.org.emii.portal.Layer" %>
+ 
+                             <tr class="prop">
+                                 <td valign="top" class="name">
+@@ -168,7 +169,9 @@
+                                     <label for="styles"><g:message code="layer.styles.label" default="Styles" /></label>
+                                 </td>
+                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'styles', 'errors')}">
+-                                    <g:textField name="styles" value="${layerInstance?.styles}" />
++                                    <g:select name="styles"
++                                              from="${layerInstance.styles}"
++                                              optionKey="id" />
+                                 </td>
+                             </tr>
+ 
+@@ -229,3 +232,17 @@
+ 								</td>
+ 							</tr>
+ 
++                            <tr class="prop" id="wfsLayer">
++                                <td valign="top" class="name">
++                                    <label for="wfsLayer"><g:message code="layer.wfsLayer.label" default="WFS Data Layer" /></label>
++                                </td>
++                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayer', 'errors')}">
++                                    <g:select name="wfsLayer.id"
++                                              from="${Layer.list()}"
++                                              optionKey="id"
++                                              value="${layerInstance?.wfsLayer?.id}"
++                                    />
++                                </td>
++                            </tr>
++
++
+diff --git a/grails-app/views/layer/editFilters.gsp b/grails-app/views/layer/editFilters.gsp
+index a2f4005..3fb81dd 100644
+--- a/grails-app/views/layer/editFilters.gsp
++++ b/grails-app/views/layer/editFilters.gsp
+@@ -69,6 +69,8 @@
+ 								</td>
+ 							</tr>
+ 
++
++
+ 							<tr class="prop">
+ 								<td valign="top" class="name">
+ 									<label for="type"><g:message code="filter.type.label" default="Type" /></label>
+@@ -88,6 +90,15 @@
+ 								</td>
+ 							 </tr>
+ 
++                            <tr class="prop">
++                                <td valign="top" class="name">
++                                    <label for="downloadOnly"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
++                                </td>
++                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadOnly', 'errors')}">
++                                    <g:checkBox name="downloadOnly" value="${filterInstance?.downloadOnly}" />
++                                </td>
++                            </tr>
++
+ 							 <g:hiddenField name="layerId" value="${layerInstance?.id}" />
+ 
+ 						</tbody>
+diff --git a/web-app/js/portal/common/LayerDescriptor.js b/web-app/js/portal/common/LayerDescriptor.js
+index b3df862..f962aa9 100644
+--- a/web-app/js/portal/common/LayerDescriptor.js
++++ b/web-app/js/portal/common/LayerDescriptor.js
+@@ -89,6 +89,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
+         openLayer.allStyles = this._getAllStyles();
+         openLayer.dimensions = this.dimensions;
+         openLayer.layerHierarchyPath = this.layerHierarchyPath;
++        openLayer.wfsLayer = this.wfsLayer;
+     },
+ 
+     _getParent: function() {
+diff --git a/web-app/js/portal/filter/FilterPanel.js b/web-app/js/portal/filter/FilterPanel.js
+index 3595081..1f9e33f 100644
+--- a/web-app/js/portal/filter/FilterPanel.js
++++ b/web-app/js/portal/filter/FilterPanel.js
+@@ -29,6 +29,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+     	}, cfg);
+ 
+     	this.GET_FILTER = "layer/getFiltersAsJSON";
++        this.GET_SERVER = "server/showServerByItsId"
+     	this.activeFilters = {};
+ 
+ 
+@@ -70,6 +71,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+             	fieldLabel: filter.label
+             })
+     	}
++        else if (filter.type === "Number"){
++            newFilter = new Portal.filter.NumberFilter({
++                fieldLabel: filter.label
++            })
++        }
+     	else{
+     		//Filter hasn't been defined
+     	}
+@@ -141,7 +147,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+ 							text: 'Add to Cart',
+ 							listeners: {
+ 								scope: this,
+-								click: this._addToCart
++								click: this._addButtonClicked
+ 							}
+ 						});
+ 
+@@ -163,7 +169,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+ 	},
+ 
+     _updateFilter: function(){
+-    	var combinedCQL = "";
++    	this.displayCQL = "";
++        this.downloadCQL = "";
+     	var count = 0;
+ 		for(var key in this.activeFilters){
+ 			count++;
+@@ -172,17 +179,32 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+ 		if(count > 0){
+ 			for(var name in this.activeFilters){
+ 				if(this.activeFilters[name].hasValue()){
+-					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
++                    console.log("name: " + name + " downloadONly: " + this.activeFilters[name].filter.downloadOnly);
++                    console.log(this.activeFilters[name].filter);
++                    if(!this.activeFilters[name].filter.downloadOnly){
++                        this.displayCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
++                    }
++                    this.downloadCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
++
++                    console.log("downloadCQL: " + this.downloadCQL);
++                    console.log("displayCQL: " + this.displayCQL);
+ 				}
+ 			}
+ 
+-			if(combinedCQL.length > 0){
+-				combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
++			if(this.displayCQL.length > 0){
++                this.displayCQL = this.displayCQL.substr(0, this.displayCQL.length - this.AND_QUERY.length);
+ 
+ 				this.layer.mergeNewParams({
+-					CQL_FILTER: combinedCQL
++					CQL_FILTER: this.displayCQL
+ 				});
+ 			}
++
++            if(this.downloadCQL.length > 0){
++                this.downloadCQL = this.downloadCQL.substr(0, this.downloadCQL.length - this.AND_QUERY.length);
++            }
++
++
++
+ 		}
+ 		else{
+          	delete this.layer.params["CQL_FILTER"];
+@@ -200,28 +222,60 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+     	this._updateFilter();
+     },
+ 
+-    _makeWFSURL: function(){
+-
+-    	var query = Ext.urlEncode({
+-			typeName: this.layer.params.LAYERS,
+-			SERVICE: "WFS",
+-			outputFormat: "csv",
+-			REQUEST: "GetFeature",
+-			VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
+-			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
+-		});
+-
+-    	var wfsURL =  this.layer.server.uri.replace("/wms", "/wfs");
+-
+-    	if(wfsURL.indexOf("?") > -1)
+-    		wfsURL +=  "&" + query;
+-    	else
+-    		wfsURL += "?" + query;
+-
+-		return wfsURL;
++    _addButtonClicked: function(){
++        var wfsURL = this.layer.server.uri.replace("/wms", "/wfs");
++
++        if(this.layer.wfsLayer){
++            Ext.Ajax.request({
++                url: this.GET_SERVER,
++                params: {
++                    serverId: this.layer.wfsLayer.server.id
++                },
++                scope: this,
++                success: function(resp){
++                    var wfsLayerServer = Ext.util.JSON.decode(resp.responseText);
++                    var wfsServerURI = wfsLayerServer.uri;
++
++                    var query = Ext.urlEncode({
++                        typeName:this.layer.wfsLayer.title,
++                        SERVICE: "WFS",
++                        outputFormat: "csv",
++                        REQUEST: "GetFeature",
++                        VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
++                        CQL_FILTER: this.downloadCQL      //Geonetwork only works with URL encoded filters
++                    });
++
++
++                    if(wfsServerURI.indexOf("?") > -1)
++                        wfsServerURI +=  "&" + query;
++                    else
++                        wfsServerURI += "?" + query;
++
++                    this._addToCart(wfsServerURI);
++                }
++            });
++        }
++        else{
++            var query = Ext.urlEncode({
++                typeName: this.layer.params.LAYERS,
++                SERVICE: "WFS",
++                outputFormat: "csv",
++                REQUEST: "GetFeature",
++                VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
++                CQL_FILTER: this.downloadCQL      //Geonetwork only works with URL encoded filters
++            });
++
++            if(wfsURL.indexOf("?") > -1)
++                wfsURL +=  "&" + query;
++            else
++                wfsURL += "?" + query;
++
++            this._addToCart(wfsURL);
++        }
+     },
+ 
+-    _addToCart: function(){
++    _addToCart: function(url){
++        console.log("_addToCart " + url);
+ 		var tup = new Object();
+ 		tup.record = new Object();
+ 		tup.record.data = new Object();
+@@ -232,7 +286,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+ 		tup.record.data["rec_title"] =  this.layer.title;
+ 		tup.record.data["title"] =  this.layer.title;
+ 		tup.link["type"] =  "application/x-msexcel";
+-		tup.link["href"] =  this._makeWFSURL();
++		tup.link["href"] =  url;
+ 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
+ 		tup.link["preferredFname"] = this.layer.params.LAYERS + ".csv";
+ 
+diff --git a/web-app/js/portal/portal.js b/web-app/js/portal/portal.js
+index b422fd4..4394b30 100644
+--- a/web-app/js/portal/portal.js
++++ b/web-app/js/portal/portal.js
+@@ -75,7 +75,7 @@ Portal.app = {
+ 
+ 				viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
+ 
+-				if(window.location.search.length > 0){
++				/*if(window.location.search.length > 0){
+ 
+ 					Ext.Msg.show({
+ 						title: "<h2>Disclaimer</h2>",
+@@ -99,7 +99,7 @@ Portal.app = {
+ 						//show the homepage
+ 						setViewPortTab( 0 ); // Select default tab
+ 					}
+-                }
++                }*/
+             }
+         });
+         
+diff --git a/web-app/js/portal/snapshot/SnapshotController.js b/web-app/js/portal/snapshot/SnapshotController.js
+index bcb03ee..36d7588 100644
+--- a/web-app/js/portal/snapshot/SnapshotController.js
++++ b/web-app/js/portal/snapshot/SnapshotController.js
+@@ -64,6 +64,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
+     },
+ 
+     _doLoadLayers : function(bounds, snapshot, successCallback) {
++        console.log("_doLoadLayers");
+         this.map.zoomToExtent(bounds, true);
+         for ( var i = 0; i < snapshot.layers.length; i++) {
+             this.addSnapshotLayer(snapshot.layers[i]);
+@@ -76,17 +77,23 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
+     },
+ 
+     onSuccessfulLoad : function(snapshot, successCallback) {
++
++        console.log("snapshot loaded!");
+         this.fireEvent('snapshotLoaded');
+ 
+         var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY,
+                 snapshot.maxX, snapshot.maxY);
+ 
++        console.log(bounds);
++        console.log(this.mapScope );
+         if (this.map.baseLayer === null) {
+             this.mapScope.on('baselayersloaded', function() {
+                 this._doLoadLayers(bounds, snapshot, successCallback);
+             }, this);
++            console.log("base layers loaded");
+         } else {
+             this._doLoadLayers(bounds, snapshot, successCallback);
++            console.log("layers loaded");
+         }
+     },
+ 
+diff --git a/web-app/js/portal/ui/Viewport.js b/web-app/js/portal/ui/Viewport.js
+index c1d8030..c20e1da 100644
+--- a/web-app/js/portal/ui/Viewport.js
++++ b/web-app/js/portal/ui/Viewport.js
+@@ -20,7 +20,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
+             // width: cfg.appConfig.westWidth // Todo - DN: Max and min are specified in JS, should default be too?
+         });
+ 
+-        var config = Ext.apply({
++        this.config = Ext.apply({
+             layout: 'border',
+             boxMinWidth: 1050,
+             items: [
+@@ -39,7 +39,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
+ 
+             ]}, cfg);
+ 
+-        Portal.ui.Viewport.superclass.constructor.call(this, config);
++        Portal.ui.Viewport.superclass.constructor.call(this, this.config);
+     },
+ 
+     initComponent: function() {
+@@ -48,7 +48,34 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
+         //TODO: find a better home for this
+         this.on('afterrender', function() {
+             jQuery("#loader").hide('slow'); // close the loader
+-        });
++
++            if(window.location.search.length > 0){
++
++                Ext.Msg.show({
++                    title: "<h2>Disclaimer</h2>",
++                    buttons: Ext.Msg.OK,
++                    cls: 'motd',
++                    width: 600,
++                    msg: this.config.appConfig.footerContent
++                });
++
++                this.setActiveTab('map');
++
++                var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
++                var matches = regPattern.exec(window.location.search);
++
++                if(matches != null && matches.length == 2){
++                    this.setActiveTab( 1 );
++                    //show the map
++                    console.log(matches[1]);
++                    this.showSnapshot(matches[1]);
++                }
++                else{
++                    //show the homepage
++                    this.setActiveTab( 0 ); // Select default tab
++                }
++            }
++        }, this);
+     },
+ 
+     setActiveTab: function(tabIndex) {

@@ -141,6 +141,10 @@ class ServerController {
 			def serverIdArr = params.serverId.split("_")
 			serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
 		}
+
+        log.debug("serverInstance")
+        log.debug(serverInstance)
+
 		if (serverInstance) {
 			render serverInstance as JSON
 		}

@@ -69,6 +69,8 @@
 								</td>
 							</tr>
 
+
+
 							<tr class="prop">
 								<td valign="top" class="name">
 									<label for="type"><g:message code="filter.type.label" default="Type" /></label>
@@ -87,6 +89,15 @@
 									<g:textArea name="possibleValues" value="${filterInstance?.possibleValues}" />
 								</td>
 							 </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadOnly"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadOnly', 'errors')}">
+                                    <g:checkBox name="downloadOnly" value="${filterInstance?.downloadOnly}" />
+                                </td>
+                            </tr>
 
 							 <g:hiddenField name="layerId" value="${layerInstance?.id}" />
 

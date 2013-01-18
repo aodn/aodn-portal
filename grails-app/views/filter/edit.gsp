@@ -78,6 +78,15 @@
                                 	<g:textArea name="possibleValues" value="${concatValues}" />
                                 </td>
                             </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadOnly"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadOnly', 'errors')}">
+                                    <g:checkBox name="downloadOnly" value="${filterInstance?.downloadOnly}" />
+                                </td>
+                            </tr>
                         
 
                         </tbody>

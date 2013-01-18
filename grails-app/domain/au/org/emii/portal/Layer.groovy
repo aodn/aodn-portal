@@ -27,6 +27,7 @@ class Layer {
     Boolean queryable
     Boolean isBaseLayer
     Boolean available   //used by CheckLayerAvailabilityService
+    Layer wfsLayer
 
     // Extra info
     String dataSource
@@ -96,6 +97,7 @@ class Layer {
         lastUpdated(nullable:true)
         layerHierarchyPath(nullable: true)
         available(nullable: false)
+        wfsLayer(nullable: true)
     }
 
 	static transients = ['layers']
