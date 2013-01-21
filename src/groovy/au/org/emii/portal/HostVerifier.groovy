@@ -7,8 +7,6 @@
 
 package au.org.emii.portal
 
-import org.apache.commons.io.IOUtils
-
 class HostVerifier {
 
 	def grailsApplication
@@ -26,7 +24,7 @@ class HostVerifier {
 			}
 		}
 		/*if allowed is still false then server isn't us, our catalog or in our wms servers list,
-			but it might have been retrieved from geonetwork, so we check if its registered 
+			but it might have been retrieved from geonetwork, so we check if its registered
 			as a layer server with geonetwork*/
 		if(!allowed)
 		{
