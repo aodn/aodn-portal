@@ -1,11 +1,9 @@
-
 /*
  * Copyright 2012 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-
 
 
 var viewport;
@@ -22,91 +20,83 @@ Ext.QuickTips.init();
 Ext.ns('Portal');
 
 Portal.app = {
-    
-	
-	
-    ajaxComplete: function(conn, response, options) {
+
+
+
+    ajaxComplete:function (conn, response, options) {
         progressCount--;
-        if(progressCount <= 0) {
-        	progressCount = 0;
+        if (progressCount <= 0) {
+            progressCount = 0;
             this.ajaxAction('hide');
         }
     },
-    init: function() {
-    	// Set open layers proxyhost
+    init:function () {
+        // Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
-		
+
         // Global Ajax events can be handled on every request!
-        Ext.Ajax.on('beforerequest', function(conn, options){
-            if(progressCount == 0) {
+        Ext.Ajax.on('beforerequest', function (conn, options) {
+            if (progressCount == 0) {
                 this.ajaxAction('show');
             }
             progressCount++;
         }, this);
 
-        Ext.Ajax.on('requestcomplete',  this.ajaxComplete, this);        
-        Ext.Ajax.on('requestexception',  this.ajaxComplete, this);       
-        
+        Ext.Ajax.on('requestcomplete', this.ajaxComplete, this);
+        Ext.Ajax.on('requestexception', this.ajaxComplete, this);
+
         appConfigStore.load();
-        
+
         Ext.Ajax.request({
-            url: 'config/viewport',
-            scope: this,
-            success: function(resp) {        
+            url:'config/viewport',
+            scope:this,
+            success:function (resp) {
                 this.config = Ext.util.JSON.decode(resp.responseText);
-                if(this.config.length == 0)
-                {
+                if (this.config.length == 0) {
                     Ext.MessageBox.alert('Error!', 'Your portal has no configuration.  Abort!');
                 }
-                else
-                {
+                else {
 
-                    if (this.config.enableMOTD)  {
-                    	
-                    	Ext.Msg.show({
-                    		title: "<h2>"+ this.config.motd.motdTitle + "</h2>",
-                    		msg: this.config.motd.motd,
-                    		buttons: Ext.Msg.OK,
-                    		cls: 'motd',
-                    		width: 600
-                    	});
+                    if (this.config.enableMOTD) {
+
+                        Ext.Msg.show({
+                            title:"<h2>" + this.config.motd.motdTitle + "</h2>",
+                            msg:this.config.motd.motd,
+                            buttons:Ext.Msg.OK,
+                            cls:'motd',
+                            width:600
+                        });
                     }
                 }
+                var startTab = 0;
+                var startSnapshot = null;
+                if (window.location.search.length > 0) {
+                    var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
+                    var matches = regPattern.exec(window.location.search);
 
-				viewport = new Portal.ui.Viewport({appConfig: Portal.app.config});
+                    if (matches != null && matches.length == 2) {
+                        //coming from saved map, so start at map.
+                        startTab = 1;
+                        startSnapshot = matches[1];
+                    }
 
-				if(window.location.search.length > 0){
-
-					Ext.Msg.show({
-						title: "<h2>Disclaimer</h2>",
-						buttons: Ext.Msg.OK,
-						cls: 'motd',
-						width: 600,
-						msg: this.config.footerContent
-					});
-
-                	setViewPortTab('map');
-
-			        var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
-			        var matches = regPattern.exec(window.location.search);
-
-					if(matches != null && matches.length == 2){
-						setViewPortTab( 1 );
-						//show the map
-                        viewport.showSnapshot(matches[1]);
-					}
-					else{
-						//show the homepage
-						setViewPortTab( 0 ); // Select default tab
-					}
+                    Ext.Msg.show({
+                        title: "<h2>Disclaimer</h2>",
+                        buttons: Ext.Msg.OK,
+                        cls: 'motd',
+                        width: 600,
+                        msg: this.config.footerContent
+                    });
                 }
+
+                viewport = new Portal.ui.Viewport({appConfig:Portal.app.config, activeTab:startTab, startSnapshot:startSnapshot});
             }
         });
-        
+
     },
-    
-    ajaxAction: function(request) {
-        if (request == 'show') {     
+
+    ajaxAction:function (request) {
+        if (request == 'show') {
             jQuery('.extAjaxLoading').show(100);
         }
         else {
@@ -119,7 +109,7 @@ Portal.app = {
 Ext.onReady(Portal.app.init, Portal.app);
 
 // sets the tab from the external links in the header
-function setViewPortTab(tabIndex){
+function setViewPortTab(tabIndex) {
     viewport.setActiveTab(tabIndex);
 }
 
@@ -129,14 +119,14 @@ function setViewPortTab(tabIndex){
 // Bug in Ext.form.MessageTargets in connection with using compositeFields
 //The problem is, that composite fields doesn't have the "dom" node and that is why the clear functions of Ext.form.MessageTargets.qtip 
 //and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
-Ext.onReady(function() {
+Ext.onReady(function () {
 
     Ext.apply(Ext.form.MessageTargets.qtip, {
-        clear: function(field){
+        clear:function (field) {
             field.el.removeClass(field.invalidClass);
             // fix
 
-            if(field.el.dom) {
+            if (field.el.dom) {
                 field.el.dom.qtip = '';
             }
         }
@@ -144,17 +134,17 @@ Ext.onReady(function() {
 
 
     Ext.apply(Ext.form.MessageTargets.side, {
-        clear: function(field){
+        clear:function (field) {
             field.el.removeClass(field.invalidClass);
             // fix
 
-            if(field.errorIcon && field.errorIcon.dom){
+            if (field.errorIcon && field.errorIcon.dom) {
                 field.errorIcon.dom.qtip = '';
                 field.errorIcon.hide();
-            }else{
+            } else {
                 // fix
 
-                if(field.el.dom) {
+                if (field.el.dom) {
                     field.el.dom.title = '';
                 }
             }

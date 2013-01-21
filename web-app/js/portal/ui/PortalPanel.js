@@ -17,7 +17,8 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             region:'center',
             id: 'mainMapPanel',
             stateful: false,
-            forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
+            forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
+            startSnapshot: cfg.startSnapshot
         });
         
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({

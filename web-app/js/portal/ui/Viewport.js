@@ -10,7 +10,9 @@ Ext.namespace('Portal.ui');
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
         this.mainTabPanel = new Portal.ui.MainTabPanel({
-            region: 'center'
+            region: 'center',
+            activeTab: cfg.activeTab,
+            startSnapshot: cfg.startSnapshot
         });
 
         this.layerChooserPanel = new Portal.ui.LayerChooserPanel({
@@ -51,9 +53,9 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             jQuery("#loader").hide('slow'); // close the loader
         });
 
-        this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function() {
-            this.doLayout(false,true);
-        },this);
+        this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function () {
+            this.doLayout(false, true);
+        }, this);
     },
 
     setActiveTab: function(tabIndex) {
