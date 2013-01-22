@@ -65,16 +65,18 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
 
-            var spinnerForLayerloading = new Spinner({
-                lines:12, // The number of lines to draw
-                length:16, // The length of each line
-                width:4, // The line thickness
-                radius:12, // The radius of the inner circle
-                color:'#0B5584', //#18394E', // #rgb or #rrggbb
-                speed:1, // Rounds per second
-                trail:60, // Afterglow percentage
-                shadow:true // Whether to render a shadow
-            }).spin(jQuery("#jsloader"));
+            // Removed for https://github.com/aodn/aodn-portal/issues/48
+            // But leaving the code in as it is VERY likely to be re-added as part of https://github.com/aodn/aodn-portal/issues/50
+//            var spinnerForLayerloading = new Spinner({
+//                lines:12, // The number of lines to draw
+//                length:16, // The length of each line
+//                width:4, // The line thickness
+//                radius:12, // The radius of the inner circle
+//                color:'#0B5584', //#18394E', // #rgb or #rrggbb
+//                speed:1, // Rounds per second
+//                trail:60, // Afterglow percentage
+//                shadow:true // Whether to render a shadow
+//            }).spin(jQuery("#jsloader"));
 
         }, this);
 
