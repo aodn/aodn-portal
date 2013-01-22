@@ -18,7 +18,7 @@
    All new data generated directly as a result of SOOS-related activities will be published via this site.</p>
    <p>This SOOS Portal is a data aggregating service and as such many of the datasets discoverable via this
    interface may also be available from dedicated web sites operated by SOOS <a href="http://www.soos.aq/index.php/about-us/sponsors" target="_blank" class="external wrap">sponsors</a>,
-       <a href="http://www.soos.aq/index.php/links" target="_blank" class="external wrap" >partners</a> and existing,
+       <a href="http://www.soos.aq/index.php/links" target="_blank" class="external wrap" >communities</a> and existing,
        <a href="http://www.soos.aq/index.php/science/themes" target="_blank" class="external wrap" >'theme-specific'</a> data networks. The 'points of truth' for all such data are listed in the metadata for each discovered dataset.</p>
 
    <h3>The portal provides two ways of discovering data:</h3>
@@ -30,7 +30,9 @@
         <p>Please see how to <a href="http://www.soos.aq/index.php/data" target="_blank" class="external wrap" >contribute data</a> to the SOOS Portal</p>
 
 
-        <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the NSIDC <a href="http://nsidc.org/data/seaice_index/" target="_blank" class="external wrap">sea-ice extents page</a>.</p>
+        <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the Centre
+        for Australian Weather and Climate Research (CAWCR)
+            <a href="http://www.cawcr.gov.au/staff/preid/seaice/gsfc_daily_maps.html" target="_blank" class="external wrap">sea-ice concentration and extents page.</a>.</p>
 
 
 
