@@ -36,7 +36,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
         this.map.events.register('movestart', this, this.closeDropdowns);
-        
+
         this.on('hide', function() {
             // map is never hidden!!!!"
             this._closeFeatureInfoPopup();
@@ -66,16 +66,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
 
-            var spinnerForLayerloading = new Spinner({
-             lines: 12, // The number of lines to draw
-             length: 16, // The length of each line
-             width: 4, // The line thickness
-             radius: 12, // The radius of the inner circle
-             color: '#0B5584', //#18394E', // #rgb or #rrggbb
-             speed: 1, // Rounds per second
-             trail: 60, // Afterglow percentage
-             shadow: true // Whether to render a shadow
-             }).spin(jQuery("#jsloader"));
+//            var spinnerForLayerloading = new Spinner({
+//             lines: 12, // The number of lines to draw
+//             length: 16, // The length of each line
+//             width: 4, // The line thickness
+//             radius: 12, // The radius of the inner circle
+//             color: '#0B5584', //#18394E', // #rgb or #rrggbb
+//             speed: 1, // Rounds per second
+//             trail: 60, // Afterglow percentage
+//             shadow: true // Whether to render a shadow
+//             }).spin(jQuery("#jsloader"));
 
         }, this);
 
@@ -86,20 +86,20 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
-        
+
         Ext.MsgBus.subscribe('reset', function(subject, message) {
             this.reset();
         }, this);
-        
+
         Ext.MsgBus.subscribe('layersLoading', function(subject, numLayersLoading) {
             this._updateLayerLoadingSpinner(numLayersLoading);
-        }, this);                
+        }, this);
     },
-    
+
     _updateLayerLoadingSpinner: function(numLayersLoading) {
-      
+
         jQuery("#loader p").text(this.buildLayerLoadingString(numLayersLoading));
-        
+
         // Show spinner.
         if (numLayersLoading > 0) {
             jQuery("#loader").show();
@@ -110,15 +110,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     onSelectedLayerChanged: function(openLayer) {
-        
+
         if (this.autoZoom === true) {
             this.zoomToLayer(openLayer);
         }
     },
-    
+
 	closeDropdowns: function(event) {
 		this.map.events.triggerEvent('blur',event); // listening in BaseLayerComboBox and mapOptionsPanel
-	},	
+	},
 
     afterRender: function() {
 
@@ -126,7 +126,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions.afterRender(this);
     },
 
-	loadSnapshot: function(id) {		
+	loadSnapshot: function(id) {
 
 		this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
 	},
@@ -263,11 +263,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     getViewSize: function() {
         return this.container.getViewSize();
     },
-    
+
     getPageX: function() {
         return this.getPosition()[0];
     },
-    
+
     getPageY: function() {
         return this.getPosition()[1];
     }
