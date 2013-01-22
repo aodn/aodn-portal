@@ -32,7 +32,7 @@
 
         <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the Centre
         for Australian Weather and Climate Research (CAWCR)
-            <a href="http://www.cawcr.gov.au/staff/preid/seaice/gsfc_daily_maps.html" target="_blank" class="external wrap">sea-ice concentration and extents page.</a>.</p>
+            <a href="http://www.cawcr.gov.au/staff/preid/seaice/gsfc_daily_maps.html" target="_blank" class="external wrap">sea-ice concentration and extents page</a>.</p>
 
 
 
