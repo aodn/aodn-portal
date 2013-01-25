@@ -24,9 +24,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             layersLoading:0,
             layers:new Portal.data.LayerStore(),
             html:" \
-                    <div id='loader' style='position:absolute; top:50%; left:43%; z-index: 9000;'> \
-                        <p></p> \
-                        <div id='jsloader' style='height:40px; width:40px; display:block;'></div> \
+                    <div id='loader' style='position: absolute; top: 50%; left: 43%; z-index: 9000;'> \
+                        <div id='jsloader' style='height: 70px; width: 70px; float: left;'></div> \
+                        <span></span> \
                     </div>" // This is the "Loading 'n' layers" pop-up.// todo display inline
 
         }, cfg);
@@ -65,19 +65,21 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
 
-            // Removed for https://github.com/aodn/aodn-portal/issues/48
-            // But leaving the code in as it is VERY likely to be re-added as part of https://github.com/aodn/aodn-portal/issues/50
-//            var spinnerForLayerloading = new Spinner({
-//                lines:12, // The number of lines to draw
-//                length:16, // The length of each line
-//                width:4, // The line thickness
-//                radius:12, // The radius of the inner circle
-//                color:'#0B5584', //#18394E', // #rgb or #rrggbb
-//                speed:1, // Rounds per second
-//                trail:60, // Afterglow percentage
-//                shadow:true // Whether to render a shadow
-//            }).spin(jQuery("#jsloader"));
+            if ( !this.spinnerCreated ) {
 
+                new Spinner({
+                    lines:12, // The number of lines to draw
+                    length:16, // The length of each line
+                    width:4, // The line thickness
+                    radius:12, // The radius of the inner circle
+                    color:'#0d67a0', //#18394E', // #rgb or #rrggbb
+                    speed:1, // Rounds per second
+                    trail:60, // Afterglow percentage
+                    shadow:true // Whether to render a shadow
+                }).spin(document.getElementById("jsloader"));
+
+                this.spinnerCreated = true;
+            }
         }, this);
 
         this.on('tabchange', function () {
@@ -101,7 +103,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     _updateLayerLoadingSpinner:function (numLayersLoading) {
 
-        jQuery("#loader p").text(this.buildLayerLoadingString(numLayersLoading));
+        jQuery("#loader span").text(this.buildLayerLoadingString(numLayersLoading));
 
         // Show spinner.
         if (numLayersLoading > 0) {

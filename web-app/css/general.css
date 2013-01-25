@@ -113,7 +113,7 @@ hr {
 }
 
 .buttonPad {
-    padding: 2px 2px 5px 0px 
+    padding: 2px 2px 5px 0px
 }
 .arrowUp {
     background: url("../images/arrowUp.png") no-repeat left top transparent;
@@ -174,7 +174,6 @@ hr {
 }
 
 .link {
-	cursor: url;
 	cursor: pointer;
 }
 
@@ -182,44 +181,39 @@ hr {
     border: 0px solid white;
 }
 
-
-
-
-
 #loader {
     background-color: #0B5584;
 	background-color: rgba(11,85,132,0.5);
-    border: 0px solid #CBCED3;
+    border: 0;
     border-radius: 6px;
     margin-bottom: 3px;
     margin-right: 3px;
-    padding: 15px;
-    height: 20px;
-    width: 150px;
+    width: 220px;
     box-shadow: -5px 5px 25px rgba(24, 57, 78, 0.3), 0 0 1px rgba(24, 57, 78, 0.2) inset
 }
 
-#loader p {
+#loader span {
     color: white;
     font-weight: bold;
     font-size: 14px;
     text-shadow: 2px 1px 3px #18394E;
+    white-space: nowrap;
+    line-height: 75px;
 }
 
 .mapFooter {
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
 
-
 #animationPanel {
     top: auto! important;
     bottom: 0px! important;
     z-index: 900! important;
 }
-.spacer  {
+.spacer {
     margin: 25px 0px;
 }
-.minispacer  {
+.minispacer {
     margin: 7px 0px;
 }
 
