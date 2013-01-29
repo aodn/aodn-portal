@@ -180,8 +180,6 @@ class SecurityFilters {
 
                 // Access control by convention.
                 if (!accessControl(auth: false)) { // "auth: false" means it will accept remembered users as well as those who logged-in in this session
-
-                    session.deniedUrl = request.forwardURI
                     return false
                 }
 
