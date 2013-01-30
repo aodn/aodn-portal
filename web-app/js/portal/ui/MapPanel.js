@@ -27,7 +27,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                     <div id='loader' style='position: absolute; top: 50%; left: 43%; z-index: 9000;'> \
                         <div id='jsloader' style='height: 70px; width: 70px; float: left;'></div> \
                         <span></span> \
-                    </div>" // This is the "Loading 'n' layers" pop-up.// todo display inline
+                    </div>" // This is the "Loading 'n' layers" pop-up; message is inserted into the span.
 
         }, cfg);
 
@@ -65,6 +65,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
 
+            // The 'afterLayout' event is called many times, this check prevents us from creating more than one spinner.
+            // Alternatively we could move this spinner creation but it needs to happen in the proper place
             if ( !this.spinnerCreated ) {
 
                 new Spinner({
