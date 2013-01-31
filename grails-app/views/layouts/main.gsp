@@ -19,7 +19,10 @@
        <g:render template="/common_includes"></g:render>
 
         <title><g:layoutTitle default="Administration" /></title>
-        <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
+
+        <g:if test="${grailsApplication.config.portal.instance?.name}">
+            <link rel="shortcut icon" href="${resource(dir:'images',file: grailsApplication.config.portal.instance.name + 'favicon.ico')}" type="image/x-icon" />
+        </g:if>
 
         <g:layoutHead />
 
