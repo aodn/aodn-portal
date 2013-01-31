@@ -144,6 +144,7 @@ OpenLayers.Layer.WMS.prototype.hasBoundingBox = function () {
     return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
 };
 
+  /*
 //overrides original openlayers method,
 // adds a check to not run the method if bounds are outside of vertical extent
 OpenLayers.Tile.Image.prototype.draw = function() {
@@ -153,7 +154,7 @@ OpenLayers.Tile.Image.prototype.draw = function() {
     }
     var drawTile = OpenLayers.Tile.prototype.draw.apply(this, arguments);
 
-    if ((OpenLayers.Util.indexOf(this.layer.SUPPORTED_TRANSITIONS, this.layer.transitionEffect) != -1) ||
+    if (this.layer.SUPPORTED_TRANSITIONS != null && (OpenLayers.Util.indexOf(this.layer.SUPPORTED_TRANSITIONS, this.layer.transitionEffect) != -1) ||
         this.layer.singleTile) {
         if (drawTile) {
             //we use a clone of this tile to create a double buffer for visual
@@ -193,7 +194,7 @@ OpenLayers.Tile.Image.prototype.draw = function() {
 
 
     //here is the if statement we add to the original method.
-    /******Start added*******/
+   //  Start added
     var maxExtent = this.layer.maxExtent;
 
     if(this.bounds.bottom < maxExtent.bottom ||
@@ -202,7 +203,7 @@ OpenLayers.Tile.Image.prototype.draw = function() {
         drawTile = false;
     }
 
-    /******End added*******/
+    // End added
 
     if (!drawTile) {
         return false;
@@ -217,5 +218,5 @@ OpenLayers.Tile.Image.prototype.draw = function() {
     }
 
     return this.renderTile();
-};
+};                                                */
 

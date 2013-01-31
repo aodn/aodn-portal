@@ -99,7 +99,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     } else {
         map.zoomToMaxExtent();
     }
-    
+
     this.initialExtentSet = true;
   }
 });

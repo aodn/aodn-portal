@@ -20,14 +20,17 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
         
         var defaultOptions = {
             wrapDateLine: true,
+            //sphericalMercator: true,
             opacity: this._getServerOpacity(layerDescriptor.server),
             version: this._getWmsVersionString(layerDescriptor.server),
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
             gutter: gutterSize,
-            projection: new OpenLayers.Projection(layerDescriptor.projection)
+            projection: new OpenLayers.Projection("EPSG:4326")
         };
+
+        console.log(layerDescriptor.projection);
         
         Ext.apply(this, defaultOptions);
         Ext.apply(this, overrides);

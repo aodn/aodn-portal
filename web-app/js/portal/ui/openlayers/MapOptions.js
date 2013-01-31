@@ -80,7 +80,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
      * Create a new map, from using the options specified by 'this'.
      */
     newMap: function() {
-        this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
+        //this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
         var map = new OpenLayers.Map(this);
 
         this.mapPanel.add(this.animationPanel);

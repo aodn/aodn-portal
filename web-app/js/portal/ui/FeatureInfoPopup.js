@@ -68,7 +68,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	this.blankContainer = new Ext.Container({
 			html: "Loading ...",
 			cls: 'popupHtml',
-			ref: 'popupHtml'
+			ref: './popupHtml'
 		});		
 
 	    this.add(this.blankContainer);
@@ -298,15 +298,15 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
                 var str =  (depth <= 0) ?  "Depth:" : "Altitude:";
-                this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
+                this.blankContainer.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
             }
             else {
-                this.popupHtml.update("");
+                this.blankContainer.update("");
             }
         }
         else {
             // clear out any placeholder 'loading' text
-            this.popupHtml.update("");
+            this.blankContainer.update("");
         }
     },
     
