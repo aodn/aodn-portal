@@ -13,7 +13,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	state : {
 		LOADING : "LOADING",
 		PLAYING : "PLAYING",
-		STOPPED : "STOPPED"
+		REMOVED : "REMOVED",
+        PAUSED : "PAUSED"
 	},
 
 	constructor : function(cfg) {
@@ -125,7 +126,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					tooltip : OpenLayers.i18n('play')
 				});
 
-		this.currentState = this.state.STOPPED;
+		this.currentState = this.state.REMOVED;
 
 		this.stepLabel = new Ext.form.Label({
 					flex : 1,
@@ -294,7 +295,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	_stopPlaying : function() {
 		clearTimeout(this.timerId);
 		this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
-		this._updateButtons(this.state.STOPPED);
+		this._updateButtons(this.state.PAUSED);
 	},
 
 	_startPlaying : function() {
@@ -392,20 +393,30 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.speedLabel.setVisible(true);
 			this.getAnimationButton.setVisible(true);
 			this._updateSpeedButtons();
-		} else if (state == this.state.STOPPED) {
+		} else if (state == this.state.REMOVED) {
 			this.playButton.setIcon('images/animation/play.png');
 			this.startTimeCombo.enable();
 			this.endTimeCombo.enable();
 			this.playButton.enable();
+            this.stepSlider.setValue(0);
 			// nothing's playing, so stop and pause doesn't make sense
 
 			this.speedLabel.setVisible(false);
 			this.getAnimationButton.setVisible(false);
 
 			this._updateSpeedButtons();
-		}
-		// Even if playing/paused, disable speed up/down if already at
-		// maxspeed/minspeed
+		} else if (state == this.state.PAUSED) {
+            this.playButton.setIcon('images/animation/play.png');
+            this.startTimeCombo.enable();
+            this.endTimeCombo.enable();
+            this.playButton.enable();
+            // nothing's playing, so stop and pause doesn't make sense
+
+            this.speedLabel.setVisible(false);
+            this.getAnimationButton.setVisible(true);
+
+            this._updateSpeedButtons();
+        }
 
 	},
 
@@ -439,7 +450,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.animatedLayers.length = 0;
 			this._setStepLabelText("");
 
-			this._updateButtons(this.state.STOPPED);
+			this._updateButtons(this.state.REMOVED);
 
 			this._resetForNewAnimation();
 			delete this.originalLayer.isAnimated;
