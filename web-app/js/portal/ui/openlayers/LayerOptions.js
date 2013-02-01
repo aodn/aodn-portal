@@ -12,26 +12,26 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
     
     constructor: function(layerDescriptor, overrides) {
         
-        var gutterSize = 20;
+        var gutterSize = 2;
         
         if (layerDescriptor.isBaseLayer) {
             gutterSize = 0;
         }
-        
-        var defaultOptions = {
+
+       var defaultOptions = {
             wrapDateLine: true,
-            //sphericalMercator: true,
+            sphericalMercator: true,
             opacity: this._getServerOpacity(layerDescriptor.server),
             version: this._getWmsVersionString(layerDescriptor.server),
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
             gutter: gutterSize,
-            projection: new OpenLayers.Projection("EPSG:4326")
+            projection: new OpenLayers.Projection("EPSG:900913")
         };
 
-        console.log(layerDescriptor.projection);
-        
+        console.log(defaultOptions);
+
         Ext.apply(this, defaultOptions);
         Ext.apply(this, overrides);
     },

@@ -5,6 +5,7 @@
  *
  */
 
+
 OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
     if (this.gutter) {
         // Adjust the extent of a bounds in map units by the

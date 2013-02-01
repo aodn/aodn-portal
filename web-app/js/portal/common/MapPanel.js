@@ -58,7 +58,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     var miny = parseFloat(bbox[1]);
     var maxy = parseFloat(bbox[3]);
     
-    if (!((minx >= -180 && minx <= 180)
+    /*if (!((minx >= -180 && minx <= 180)
       && (maxx > -180 && maxx <= 180)
       && (miny >= -90 && miny <= 90)
       && (maxy >= -90 && maxy <= 90)
@@ -78,9 +78,13 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         "\n South < North = " +(miny < maxy) 
         );
       return null;
-    }
+    }       */
+
+      var bounds = new OpenLayers.Bounds(minx, miny, maxx, maxy);
+      console.log("bounds");
+      console.log(bounds);
     
-    return new OpenLayers.Bounds(minx, miny, maxx, maxy);
+    return bounds;
   },
   
   /* Override GeoExt setInitialExtent - want a best fit zoom */

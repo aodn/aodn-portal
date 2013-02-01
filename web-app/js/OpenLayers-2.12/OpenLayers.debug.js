@@ -43151,6 +43151,9 @@ OpenLayers.Layer.TMS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         var res = this.getServerResolution();
         var x = Math.round((bounds.left - this.tileOrigin.lon) / (res * this.tileSize.w));
         var y = Math.round((bounds.bottom - this.tileOrigin.lat) / (res * this.tileSize.h));
+
+        console.log("1: width: " + x + " height: " + y);
+
         var z = this.getServerZoom();
         var path = this.serviceVersion + "/" + this.layername + "/" + z + "/" + x + "/" + y + "." + this.type; 
         var url = this.url;
@@ -55219,6 +55222,9 @@ OpenLayers.Layer.WMS = OpenLayers.Class(OpenLayers.Layer.Grid, {
             bounds.toArray(reverseAxisOrder);
         newParams.WIDTH = imageSize.w;
         newParams.HEIGHT = imageSize.h;
+
+        console.log("2: width: " + imageSize.w + " height: " + imageSize.h);
+
         var requestString = this.getFullRequestString(newParams);
         return requestString;
     },
@@ -73525,10 +73531,13 @@ OpenLayers.Layer.Zoomify = OpenLayers.Class(OpenLayers.Layer.Grid, {
      *          parameters
      */
     getURL: function (bounds) {
+
         bounds = this.adjustBounds(bounds);
         var res = this.map.getResolution();
         var x = Math.round((bounds.left - this.tileOrigin.lon) / (res * this.tileSize.w));
         var y = Math.round((this.tileOrigin.lat - bounds.top) / (res * this.tileSize.h));
+
+        console.log("width: " + x + " height: " + y);
         var z = this.map.getZoom();
 
         var tileIndex = x + y * this.tierSizeInTiles[z].w + this.tileCountUpToTier[z];
