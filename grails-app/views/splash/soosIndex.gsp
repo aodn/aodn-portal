@@ -27,7 +27,7 @@
 
 
    <h3>Want to contribute data to the SOOS Data Portal?</h3>
-        <p>Please see how to <a href="http://www.soos.aq/index.php/data" target="_blank" class="external wrap" >contribute data</a> to the SOOS Portal</p>
+        <p>Please see how to <a href="http://www.soos.aq/index.php/data/data-portal" target="_blank" class="external wrap" >contribute data</a> to the SOOS Portal</p>
 
 
         <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the Centre
