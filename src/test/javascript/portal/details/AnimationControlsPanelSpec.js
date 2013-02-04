@@ -198,5 +198,16 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
             });
         });
+
+        it('on reset map', function() {
+
+            spyOn(animationControlsPanel, 'isAnimating').andReturn(true);
+            spyOn(animationControlsPanel, 'removeAnimation');
+
+            Ext.MsgBus.publish('reset');
+
+            expect(animationControlsPanel.isAnimating).toHaveBeenCalled();
+            expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
+        });
 	});
 });
