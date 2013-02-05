@@ -14,7 +14,7 @@ describe("Portal.ui.AnimationPanel", function() {
         animationPanel = new Portal.ui.AnimationPanel();
     });
 
-    it("test panel hides on map reset", function() {
+    it("hides on map reset", function() {
         spyOn(animationPanel, 'setVisible');
 
         Ext.MsgBus.publish('reset');
