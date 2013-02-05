@@ -54,4 +54,17 @@ describe("Portal.ui.FeatureInfoPopup", function()
         Ext.MsgBus.publish('reset');
         expect(Portal.ui.FeatureInfoPopup.prototype.close).toHaveBeenCalled();
     });
+
+    it("._clickPoint returns integer x and y values", function()
+    {
+        featureInfoPopup.map.getViewPortPxFromLonLat = function() {
+            var position = {};
+            position.x = 30.1;
+            position.y = 30.1;
+            return position;
+        }
+
+        expect(featureInfoPopup._clickPoint().x).toEqual(30);
+        expect(featureInfoPopup._clickPoint().y).toEqual(30);
+    });
 });
