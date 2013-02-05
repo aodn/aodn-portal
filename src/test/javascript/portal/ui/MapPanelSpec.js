@@ -22,38 +22,38 @@ describe("Portal.ui.MapPanel", function() {
     });
 
     describe('message bus tests', function() {
-        
+
         it('on selectedLayerChanged event', function() {
             spyOn(mapPanel, 'zoomToLayer');
-            
+
             mapPanel.autoZoom = true;
             Ext.MsgBus.publish('selectedLayerChanged');
-            
+
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
 
     });
-    
+
     describe('zoom to layer tests', function() {
-        
+
         var openLayer = new OpenLayers.Layer.WMS();
-        
+
         beforeEach(function() {
             spyOn(mapPanel, 'zoomTo');
-            
+
             mapPanel.getServer = function(openLayer) {
                 return { type: "WMS-1.1.0" };
             }
         });
-        
+
         it('zoomToLayer not called for layer without bounds', function() {
-            
+
             mapPanel.zoomToLayer(openLayer);
             expect(mapPanel.zoomTo).not.toHaveBeenCalled();
         });
-        
+
         it('zoomToLayer called for layer with bounds', function() {
-        
+
             openLayer.bboxMinX = 10;
             openLayer.bboxMinY = 10;
             openLayer.bboxMaxX = 20;
@@ -64,11 +64,31 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    it('reset', function() {
+    describe('reset event', function() {
 
-        spyOn(mapPanel, 'reset');
-        Ext.MsgBus.publish('reset');
-        expect(mapPanel.reset).toHaveBeenCalled();
+        it('should call reset()', function() {
+
+            spyOn(mapPanel, 'reset');
+            Ext.MsgBus.publish('reset');
+            expect(mapPanel.reset).toHaveBeenCalled();
+        });
+
+        it('should call _closeFeatureInfoPopup()', function() {
+
+            spyOn(mapPanel, '_closeFeatureInfoPopup');
+            Ext.MsgBus.publish('reset');
+            expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
+        });
+    });
+
+    describe('removeAllLayers event', function() {
+
+        it('should call _closeFeatureInfoPopup()', function() {
+
+            spyOn(mapPanel, '_closeFeatureInfoPopup');
+            Ext.MsgBus.publish('removeAllLayers');
+            expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
+        });
     });
 
     it('layersLoading', function() {
@@ -89,6 +109,6 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.layers.getCount()).toBe(oldCount + 1);
         });
     });
-    
+
     Ext.Ajax.request.isSpy = false;
 });

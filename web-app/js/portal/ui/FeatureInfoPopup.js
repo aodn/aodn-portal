@@ -9,12 +9,12 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
-	
+
 	constructor: function(cfg) {
 	    this.numResultsToLoad = 0;
 	    this.numResultQueries = 0;
 	    this.numGoodResults = 0;
-		
+
 	    var config = Ext.apply({
 	    	title: "Searching for Features at your click point",
 	        width: cfg.appConfig.popupWidth,
@@ -26,38 +26,38 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    }, cfg);
 
 	    Portal.ui.FeatureInfoPopup.superclass.constructor.call(this, config);
-	    
+
 	    this._addElements();
-	    
+
 	    this.on('maximize', this._onMaximizeRestore,this);
 	    this.on('restore', this._onMaximizeRestore,this);
-	    
+
         Ext.MsgBus.subscribe('reset', function() {
             this.close();
         }, this);
     },
-    
+
     unanchorPopup: function() {
-    	
+
     	this._makeResizable();
     	Portal.ui.FeatureInfoPopup.superclass.unanchorPopup.call(this);
     },
-    
+
     _makeResizable: function() {
-    	
+
         this.resizable = true;
         var resizer = new Ext.Resizable(this.getEl());
         var featureInfoPopup = this;
-        
+
         resizer.on('resize', this._onResize,this);
     },
-    
+
     _onResize: function() {
     	this.syncSize();
         this.popupTab.doLayout();
         this.popupTab.delegateUpdates();
     },
-    
+
     _onMaximizeRestore:function() {
     	this.popupTab.doLayout();
         this.popupTab.delegateUpdates();
@@ -69,7 +69,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 			html: "Loading ...",
 			cls: 'popupHtml',
 			ref: 'popupHtml'
-		});		
+		});
 
 	    this.add(this.blankContainer);
 
@@ -79,9 +79,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	        enableTabScroll : true,
 	        deferredRender: true,
 	        hidden: true
-	    })); 
+	    }));
     },
-    
+
     findFeatures: function(event) {
     	this.location = this.map.getLonLatFromViewPortPx(event.xy);
 
@@ -91,7 +91,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this._handleDepthService();
         this._handleLayers();
     },
-    
+
     _handleDepthService: function() {
 
         Ext.Ajax.request({
@@ -109,7 +109,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }
         });
     },
-    
+
     _handleLayers: function() {
     	var resized = false;
     	var wmsLayers = this._collectUniqueLayers();
@@ -137,7 +137,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 			}
     	}
     },
-    
+
     _requestFeatureInfo: function(layer) {
     	this.numResultsToLoad++;
     	Ext.Ajax.request({
@@ -168,12 +168,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             failure: this._featureInfoRequestCompleted
         });
     },
-    
+
     _featureInfoRequestCompleted: function() {
     	this.numResultQueries++;
         this._updateStatus();
     },
-    
+
     _getLayerFeatureInfoRequestString: function(layer) {
     	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
         var format = 'text/xml';
@@ -195,11 +195,11 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var pixel = this.map.getViewPortPxFromLonLat(this.location);
         return { x: pixel.x, y: pixel.y }
     },
-    
+
     _collectUniqueLayers: function() {
     	var uniqueLayers = [];
     	var rootLayers = {};
-    	
+
     	var allLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
     	allLayers.concat(this.map.getLayersByClass("OpenLayers.Layer.Image"));
         Ext.each(allLayers, function(layer, index, all) {
@@ -225,21 +225,21 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 				}
 			}
         }, this);
-        
+
         return uniqueLayers;
     },
-    
+
     _setLayerTimes: function(layer) {
     	layer.startTime = this._getLayerTimeFromUrl(layer);
 		layer.endTime = this._getLayerTimeFromUrl(layer);
     },
-    
+
     _getLayerTimeFromUrl: function(layer) {
     	if(layer.params.TIME){
 			return new Date(layer.params.TIME);
     	}
 	},
-    
+
     _after: function(layer, other) {
     	var result = false;
     	if (other.endTime && !layer.endTime) {
@@ -250,7 +250,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	}
     	return result;
     },
-    
+
     _before: function(layer, other) {
     	var result = false;
     	if (other.startTime && !layer.startTime) {
@@ -261,25 +261,25 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	}
     	return result;
     },
-    
+
     _display: function(clickLocation) {
         this.doLayout();
         this.show();
     },
-    
+
     _setLocationString: function() {
     	this.locationString = this._getCoordinateLabel("Lat:", this.location.lat) + " " + this._getCoordinateLabel("Lon:", this.location.lon);
     },
-    
+
     _getCoordinateLabel: function(latLonLabel, coord) {
     	// TODO move toNSigFigs into a class somewhere
     	return this._boldify(latLonLabel) + " " + toNSigFigs(coord, 4);
     },
-    
+
     _boldify: function(text) {
     	return "<b>" + text + "</b>";
     },
-    
+
     _updateStatus: function() {
         if (this.numGoodResults > 0) {
             this.setTitle("Feature information found for " + this.numGoodResults + " layers");
@@ -289,10 +289,10 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             this.setTitle("No features found for " + this.numResultsToLoad + " queryable " + layerStr);
         }
     },
-    
-    _updatePopupDepthStatus: function(response) {   
+
+    _updatePopupDepthStatus: function(response) {
         if (response !== undefined) {
-            var xmldoc = response.responseXML;  
+            var xmldoc = response.responseXML;
 
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
@@ -309,12 +309,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             this.popupHtml.update("");
         }
     },
-    
+
     _addPopupTabContent: function(content, title) {
-    	
+
     	// We'll need to set the active tab index later, if there's not one currently.
     	var activeTab = this.popupTab.getActiveTab();
-    	
+
     	this.popupTab.add( {
             xtype: "box",
             title: title,
@@ -324,32 +324,32 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             autoEl: {
 					html: content
 					},
-			listeners: { 
+			listeners: {
 				// find any script loaded as text and run it when this tab is opened
-				activate: function(){				
+				activate: function(){
 					var code = $('#' + this.getId( ) + ' script').text();
 					var codefunc = new Function(code);
 					codefunc();
-				} 
+				}
 			}
         });
-		
-		
+
+
     	if (!activeTab)	{
         	this.popupTab.setActiveTab(0);
     	}
-		
+
     	this.popupTab.doLayout();
     	this.popupTab.show();
-    },	
-	
+    },
+
     fitContainer: function() {
     	if (this.maximisedSize) {
 	    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
 	    	if (this.dd) {
 	            this.dd.unlock();
 	        }
-	        
+
 	        if(this.maximisedX && this.maximisedY)
 	        	this.setPosition(this.maximisedX, this.maximisedY);
     	}
@@ -357,5 +357,4 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     		GeoExt.Popup.prototype.fitContainer.call(this);
     	}
     }
-    
 });

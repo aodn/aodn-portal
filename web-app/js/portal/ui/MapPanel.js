@@ -92,8 +92,12 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onSelectedLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe('reset', function (subject, message) {
+        Ext.MsgBus.subscribe('reset', function () {
             this.reset();
+        }, this);
+
+        Ext.MsgBus.subscribe('removeAllLayers', function () {
+            this._closeFeatureInfoPopup();
         }, this);
 
         Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
@@ -152,6 +156,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     reset:function () {
+        this._closeFeatureInfoPopup();
         this.zoomToInitialBbox();
     },
 
@@ -190,20 +195,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return item.server;
     },
 
-    getUri:function (server) {
-        return server.uri;
-    },
-
-    getMapExtent:function () {
-        var bounds = this.map.getExtent();
-        var maxBounds = this.map.maxExtent;
-        var top = Math.min(bounds.top, maxBounds.top);
-        var bottom = Math.max(bounds.bottom, maxBounds.bottom);
-        var left = Math.max(bounds.left, maxBounds.left);
-        var right = Math.min(bounds.right, maxBounds.right);
-        return new OpenLayers.Bounds(left, bottom, right, top);
-    },
-
     zoomToLayer:function (openLayer) {
         if (openLayer) {
             if (openLayer.hasBoundingBox()) {
@@ -232,30 +223,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         else {
             this.map.zoomToExtent(bounds, closest);
         }
-    },
-
-    // previously called from addLayer(), if (openLayer.isNcwms()) ...
-    getLayerMetadata:function (openLayer) {
-        if (openLayer.params.LAYERS) {
-            var url = proxyURL + encodeURIComponent(openLayer.url + "?item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata");
-            // see if this layer is flagged a 'cached' layer. a Cached layer is allready requested through our proxy
-            if (openLayer.cache === true) {
-                // all parameters passed along here will get added to URL
-                url = proxyCachedURL + encodeURIComponent(getUri(getServer(openLayer))) + "&item=layerDetails&layerName=" + openLayer.params.LAYERS + "&request=GetMetadata";
-            }
-
-            Ext.Ajax.request({
-                url:url,
-                success:function (resp) {
-                    openLayer.metadata = Ext.util.JSON.decode(resp.responseText);
-                    // if this layer has been user selected before loading the metadata
-                    // reload,  as the date picker details/ form  will be wrong at the very least!
-                    Ext.MsgBus.publish("selectedLayerChanged", openLayer);
-                }
-            });
-        }
-
-        return false;
     },
 
     getLayerText:function (layerCount) {
