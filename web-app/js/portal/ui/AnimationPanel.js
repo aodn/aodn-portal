@@ -109,6 +109,10 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe('removeLayer', function() {
             this.setVisible(false);
         }, this);
+
+        Ext.MsgBus.subscribe('reset', function() {
+            this.setVisible(false);
+        }, this);
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
             
