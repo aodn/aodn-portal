@@ -193,7 +193,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _clickPoint: function() {
         var pixel = this.map.getViewPortPxFromLonLat(this.location);
-        return { x: Math.round(pixel.x), y: Math.round(pixel.y) }
+        return { x: pixel.x, y: pixel.y }
     },
     
     _collectUniqueLayers: function() {
