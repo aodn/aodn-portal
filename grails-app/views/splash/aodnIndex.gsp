@@ -37,7 +37,7 @@
 
 	<div class="spacer floatLeft homePanelWidget"  style="width:250px">
 	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas,
-	go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
+	go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
 
 	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
