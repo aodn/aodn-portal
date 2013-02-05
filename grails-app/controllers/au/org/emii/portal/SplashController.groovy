@@ -40,7 +40,8 @@ class SplashController {
 		}
 		else if (portalInstance.code()) {
 			log.debug("Rendering links ${portalInstance.code()}")
-			render(view: "${portalInstance.code()}Links", cfg: Config.activeInstance())
+			def oceanCurrentObj = oceanCurrentService.getRandomDetails()
+			render(view: "${portalInstance.code()}Links", model:[ oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance() ])
 		}
 		else {
 			log.debug("Rendering empty links")
