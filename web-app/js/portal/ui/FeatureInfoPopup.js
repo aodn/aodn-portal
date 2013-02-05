@@ -26,7 +26,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 	    }, cfg);
 
 	    Portal.ui.FeatureInfoPopup.superclass.constructor.call(this, config);
-	    
+
 	    this._addElements();
 	    
 	    this.on('maximize', this._onMaximizeRestore,this);
@@ -193,7 +193,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _clickPoint: function() {
         var pixel = this.map.getViewPortPxFromLonLat(this.location);
-        return { x: pixel.x, y: pixel.y }
+        return { x: Math.round(pixel.x), y: Math.round(pixel.y) }
     },
     
     _collectUniqueLayers: function() {
