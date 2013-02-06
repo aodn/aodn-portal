@@ -136,11 +136,18 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
     _modMapDragging: function(toggle) {
         for (var i = 0; i < this.map.controls.length; i++) {
-            if ((this.map.controls[i].displayClass === "olControlNavigation") || (this.map.controls[i].displayClass === "olControl")){
+            if ((this.map.controls[i].displayClass === "olControlNavigation") || (this.map.controls[i].displayClass === "olControlZoomBox")){
                 if (toggle) {
-                    this.map.controls[i].activate();
+                    if(this.map.controls[i].displayClass === this.lastActive)
+                    {
+                        this.map.controls[i].activate();
+                    }
                 }
                 else {
+                    if(this.map.controls[i].active)
+                    {
+                        this.lastActive = this.map.controls[i].displayClass
+                    }
                     this.map.controls[i].deactivate();
                 }
             }
