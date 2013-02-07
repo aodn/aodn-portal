@@ -241,4 +241,37 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.getCount()).toBe(0);
         });
     });
+
+    describe('containsOpenLayer', function() {
+        it('returns false with duplicate names if layerHierarchy are different', function() {
+            var layer1 = createOpenLayer();
+            var layer2 = createOpenLayer();
+
+            layer1.layerHierarchyPath = "this/is/hierarchy";
+            layer2.layerHierarchyPath = "this/is/also/hierarchy";
+
+            layerStore.addUsingOpenLayer(layer1);
+            expect(layerStore.containsOpenLayer(layer2)).toBeFalsy();
+        });
+
+        it('returns true with duplicate names if layerHierarchy are nonexistant', function() {
+            var layer1 = createOpenLayer();
+            var layer2 = createOpenLayer();
+
+            layerStore.addUsingOpenLayer(layer1);
+            expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
+        });
+
+        it('returns true with duplicate layerHierarchies ', function() {
+            var layer1 = createOpenLayer();
+            var layer2 = createOpenLayer();
+            layerStore.addUsingOpenLayer(createOpenLayer());
+            layer1.layerHierarchyPath = "this/is/hierarchy";
+            layer2.layerHierarchyPath = "this/is/hierarchy";
+
+
+            layerStore.addUsingOpenLayer(layer1);
+            expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
+        });
+    });
 });

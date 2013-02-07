@@ -123,7 +123,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     		Ext.each(wmsLayers, function(layer, index, all) {
 				if (layer.params.QUERYABLE == true && layer.getVisibility()) {
 					count++;
-					this._requestFeatureInfo(layer);
+                    if (layer.metadata.units == undefined && layer.isNcwms()) {
+                        // populate unit information now
+                        this._setMetadataFirst(layer);
+                    }
+                    else {
+                        this._requestFeatureInfo(layer);
+                    }
+
 					if (!resized) {
 						this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
 						resized = true;
@@ -138,6 +145,20 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     	}
     },
 
+    _setMetadataFirst: function(layer) {
+
+        var url = proxyURL + encodeURIComponent(layer.url + "?layerName=" + layer.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails");
+        Ext.Ajax.request({
+            scope: this,
+            url: url,
+            success: function(resp, options) {
+                // error check?
+                layer.metadata = Ext.util.JSON.decode(resp.responseText);
+                this._requestFeatureInfo(layer);
+            }
+        });
+    },
+
     _requestFeatureInfo: function(layer) {
     	this.numResultsToLoad++;
     	Ext.Ajax.request({
@@ -146,7 +167,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             params: {
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
-                units: layer.units,
+                units: layer.metadata.units,
                 animation: layer.isAnimated
             },
             success: function(resp, options) {

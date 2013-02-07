@@ -126,9 +126,19 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     containsOpenLayer:function (openLayer) {
+        var path;
+        if(openLayer.layerHierarchyPath)
+        {
+            path = openLayer.layerHierarchyPath;
+        }
+        else
+        {
+            path = openLayer.name;
+        }
+
         var alreadyAdded = this.findBy(function (record, id) {
             if (record) {
-                return record.get("layer").name === openLayer.name && record.get("layer").url === openLayer.url;
+                return (record.get("layer").layerHierarchyPath === path || record.get("layer").name === path) && record.get("layer").url === openLayer.url;
             }
         });
 
