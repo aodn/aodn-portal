@@ -46,7 +46,7 @@ class AodaacController {
 
         render text: "Job created (ID: ${ job?.jobId })"
     }
-            
+
     def updateJob = {
 
         def job = _byId( params.id )
@@ -123,7 +123,7 @@ class AodaacController {
 				productIds = aodaacProductLinks.collect{ it.productId }.unique()
 			}
 			else {
-				log.warn("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
+				log.info("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
 			}
 		}
 		catch (e) {
