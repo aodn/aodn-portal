@@ -297,7 +297,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-                var str =  (depth <= 0) ?  "Depth:" : "Altitude:";
+                var str = (depth <= 0) ?  "Depth:" : "Elevation:";
                 this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
             }
             else {
