@@ -144,9 +144,21 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
                     }
                 }
                 else {
+
                     if(this.map.controls[i].active)
                     {
                         this.lastActive = this.map.controls[i].displayClass
+
+
+                        //if the user was in middle of dragging a zoombox, remove the box.
+                        if(this.map.controls[i].displayClass === "olControlZoomBox")
+                        {
+                            if(this.map.controls[i].handler.dragHandler.dragging)
+                            {
+                                this.map.controls[i].handler.removeBox();
+                            }
+                        }
+
                     }
                     this.map.controls[i].deactivate();
                 }
