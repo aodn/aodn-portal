@@ -104,6 +104,11 @@ function imgSizer(){
     }); //ends each function
 }
 
+// used by IMOS getFeatureInfo content.ftl's
+function showhide(css_id) {
+    $(css_id).toggle(450);
+}
+
 /*jQuery show
  *  param: the dom element
  *  ie: #theId or .theClass
