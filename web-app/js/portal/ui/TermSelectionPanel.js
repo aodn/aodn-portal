@@ -311,6 +311,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     _onCollapsedChange:function () {
         this.fireEvent('contentchange');
+        //doLayout() doesn't work when collapsed,
+        // so after uncollapsing we call it to make up for anything missed
+        this.doLayout();
     },
 
     removeAnyFilters:function () {
