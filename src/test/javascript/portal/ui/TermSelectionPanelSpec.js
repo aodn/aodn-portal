@@ -27,4 +27,18 @@ describe("Portal.ui.TermSelectionPanel", function()
 
         expect(selectPanel.separator).toEqual("<");
     });
+
+    it('does layout after expand', function() {
+        var mockSearcher = new Portal.service.CatalogSearcher();
+        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+        var selectPanel = new Portal.ui.TermSelectionPanel({
+            searcher: mockSearcher
+        });
+
+        spyOn(selectPanel, 'doLayout');
+        selectPanel._onCollapsedChange();
+        expect(selectPanel.doLayout).toHaveBeenCalled();
+    });
+
+
 });
