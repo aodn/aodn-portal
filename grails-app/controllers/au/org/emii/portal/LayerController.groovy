@@ -173,7 +173,8 @@ class LayerController {
             localName = params.name
         }
 
-        def layerInstance = criteria.get {
+        // due to WMS issues there may be more than one. Using list then taking the first one
+        def layerInstance = criteria.list {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
@@ -198,7 +199,7 @@ class LayerController {
         }
 
         if (layerInstance) {
-            _renderLayer(layerInstance)
+            _renderLayer(layerInstance[0])
         } else {
             render text: "Layer '${namespace}:${localName}' does not exist", status: 404
         }
