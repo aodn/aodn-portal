@@ -187,8 +187,11 @@ class LayerServiceTests extends GroovyTestCase {
         serverInstance.save(failOnError: true)
 
         Layer layerInstance = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
+        // Faking the wMS scanner bug
+        Layer layerInstance2 = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
 
         layerInstance.save(failOnError: true)
+        layerInstance2.save(failOnError: true)
 
         def controller = new LayerController()
 
