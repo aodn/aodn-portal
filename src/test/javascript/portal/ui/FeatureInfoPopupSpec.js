@@ -10,18 +10,9 @@ describe("Portal.ui.FeatureInfoPopup", function()
 {
     var map;
     var featureInfoPopup;
-    var layer;
     
     beforeEach(function() {
         map = new OpenLayers.Map();
-        layer = new OpenLayers.Layer.WMS(
-            "test layer",
-            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-            {},
-            { isBaseLayer: false,
-              queryable: true}
-        );
-        map.addLayer(layer);
         featureInfoPopup = new Portal.ui.FeatureInfoPopup({map: map, appConfig: {}});
     });
 
@@ -78,14 +69,4 @@ describe("Portal.ui.FeatureInfoPopup", function()
             expect(featureInfoPopup._clickPoint().y).toEqual(30);
         });
     });
-
-    describe("_handleLayers", function(){
-        it("calls _setMetadataFirst when no metadata", function(){
-
-            expect('_setMetadataFirst').toHaveBeenCalled();
-
-        });
-    });
-
-
 });
