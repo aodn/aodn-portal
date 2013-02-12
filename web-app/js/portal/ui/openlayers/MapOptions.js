@@ -20,7 +20,9 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
         var pan = new OpenLayers.Control.Navigation({
             title: 'Pan Control'
-        } );
+        });
+        this.navigation = pan;
+
         var zoom = new OpenLayers.Control.ZoomBox({
             title: "Zoom and centre [shift + mouse drag]"
         });
@@ -74,6 +76,19 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.mapActionsControl.maximizeControl();
 
         this.clickControl.activate();
+        this.navigation.events.on({
+            "activate": function() {
+                if (this.clickControl) {
+                    this.clickControl.activate();
+                }
+            },
+            "deactivate": function() {
+                if (this.clickControl) {
+                    this.clickControl.deactivate();
+                }
+            },
+            scope: this
+        });
     },
 
     /**
