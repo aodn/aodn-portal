@@ -11,16 +11,25 @@ describe("Portal.ui.FeatureInfoPopup", function()
     var map;
     var featureInfoPopup;
     var layer;
+    var server;
 
     beforeEach(function() {
         map = new OpenLayers.Map();
+        server = {
+            type: "NCWMS-1.3.0",
+            uri: "http://geoserver.imos.org.au/geoserver/wms"
+        };
+
         layer = new OpenLayers.Layer.WMS(
             "test layer",
             "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-            {},
-            { isBaseLayer: false,
-              queryable: true}
+            {
+                queryable: true
+            },
+            {isBaseLayer: false,server: server}
+
         );
+
         map.addLayer(layer);
         featureInfoPopup = new Portal.ui.FeatureInfoPopup({map: map, appConfig: {}});
     });
@@ -62,7 +71,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
         spyOn(Portal.ui.FeatureInfoPopup.prototype, 'close');
         Ext.MsgBus.publish('reset');
         expect(Portal.ui.FeatureInfoPopup.prototype.close).toHaveBeenCalled();
-    });
+   });
 
     describe("_clickPoint", function(){
         it("returns integer x and y values", function()
@@ -80,10 +89,16 @@ describe("Portal.ui.FeatureInfoPopup", function()
     });
 
     describe("_handleLayers", function(){
+
         it("calls _setMetadataFirst when no metadata", function(){
 
-            expect('_setMetadataFirst').toHaveBeenCalled();
+            featureInfoPopup._setMetadataFirst = function(){ return true}
+            featureInfoPopup._requestFeatureInfo = function(){ return true}
 
+            spyOn(featureInfoPopup, '_setMetadataFirst');
+
+            featureInfoPopup._handleLayers();
+            expect(featureInfoPopup._setMetadataFirst).toHaveBeenCalled();
         });
     });
 
