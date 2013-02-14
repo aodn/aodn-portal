@@ -101,7 +101,7 @@ describe("Portal.data.LayerStore", function() {
     });
 
     it('add duplicate layer', function() {
-        spyOn(window,"alert");
+        spyOn(window,"confirm").andReturn(true) ;
         layerStore.addUsingOpenLayer(createOpenLayer());
         layerStore.addUsingOpenLayer(createOpenLayer());
         expect(layerStore.getCount()).toBe(1);
