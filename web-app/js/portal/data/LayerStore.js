@@ -123,6 +123,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 Ext.MsgBus.publish('selectedLayerChanged', openLayer);
             }
         }
+        else {
+            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
+        }
     },
 
     containsOpenLayer:function (openLayer) {
