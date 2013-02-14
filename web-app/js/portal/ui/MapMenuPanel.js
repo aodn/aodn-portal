@@ -50,6 +50,13 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
 
         Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
 
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject,openLayer) {
+            if (openLayer) {
+                // so now parse tree and deactivate layers create from search
+                var rootNode = this.defaultMenuTree.defaultNode();
+                this.defaultMenuTree.toggleLayerNodes(openLayer.grailsLayerId,false,rootNode);
+            }
+        }, this);
         Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
             this.removeLayer(message);
         }, this);
