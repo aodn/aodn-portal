@@ -124,7 +124,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
         }
         else {
-            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
+            Ext.Msg.alert(OpenLayers.i18n('layerExistsMsg'));
         }
     },
 
