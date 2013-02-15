@@ -6,6 +6,16 @@
  */
 
 OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
+    if (this.wrapDateLine) {
+        // wrap around the date line, within the limits of rounding error
+        var wrappingOptions = {
+            'rightTolerance':this.map.getResolution(),
+            'leftTolerance':this.map.getResolution()
+        };
+        bounds = bounds.wrapDateLine(this.maxExtent, wrappingOptions);
+
+    }
+
     if (this.gutter) {
         // Adjust the extent of a bounds in map units by the
         // layer's gutter in pixels.
@@ -17,25 +27,9 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
             bounds.bottom - mapGutter,
             bounds.right + mapGutter,
             bounds.top + mapGutter);
-
-        //don't let buffer push a bounds across the dateline
-        if (originalLeft >= this.maxExtent.right && bounds.left < this.maxExtent.right) {
-            bounds.left = this.maxExtent.right;
-        }
-        else if (originalRight <= this.maxExtent.left && bounds.right > this.maxExtent.left) {
-            bounds.right = this.maxExtent.left;
-        }
     }
 
-    if (this.wrapDateLine) {
-        // wrap around the date line, within the limits of rounding error
-        var wrappingOptions = {
-            'rightTolerance':this.map.getResolution(),
-            'leftTolerance':this.map.getResolution()
-        };
-        bounds = bounds.wrapDateLine(this.maxExtent, wrappingOptions);
 
-    }
     return bounds;
 };
 
