@@ -101,10 +101,12 @@ describe("Portal.data.LayerStore", function() {
     });
 
     it('add duplicate layer', function() {
-        spyOn(window,"confirm").andReturn(true) ;
+        spyOn(Ext.Msg, "alert");
+
         layerStore.addUsingOpenLayer(createOpenLayer());
         layerStore.addUsingOpenLayer(createOpenLayer());
         expect(layerStore.getCount()).toBe(1);
+        expect(Ext.Msg.alert).toHaveBeenCalled();
     });
 
     describe('layer related events', function() {
