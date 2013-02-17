@@ -6,13 +6,4 @@
  */
 
 Ext.MessageBox.alert = function () {
-    return true;
-};
-
-Ext.MessageBox.confirm = function () {
-    return true;
-};
-
-Ext.MessageBox.show = function () {
-    return true;
 };
