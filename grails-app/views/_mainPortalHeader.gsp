@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -7,18 +6,24 @@
 
 --%>
 
-  <div id="header" style="height:${configInstance?.headerHeight}px">
-	<img src="${resource(dir:'images',file: grailsApplication.config.portal.header.logo)}" id="logo" />
-	<h1 id="headerTitle">${configInstance?.name}</h1>
+<div id="header" style="height:${configInstance?.headerHeight}px">
+    <img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" id="logo"/>
+
+    <h1 id="headerTitle">${configInstance?.name}</h1>
     <g:if test="${showLinks}">
-    <div id="viewPortLinks">
-      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab0"><a href="" onClick="setViewPortTab(0); return false;">Home</a></div>
-      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(1); return false;">Map</a></div>
-      <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(2); return false;">Search</a></div>
-    </div>
+        <div id="viewPortLinks">
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab0"><a href="" onClick="setViewPortTab(0);
+            return false;">Home</a></div>
+
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(1);
+            return false;">Map</a></div>
+
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(2);
+            return false;">Search</a></div>
+        </div>
     </g:if>
 
-    <div id="toplinks" >
+    <div id="toplinks">
         <g:if test="${flash.openidErrorMessage}">
             <strong>${flash.openidErrorMessage}</strong>
         </g:if>
@@ -27,15 +32,25 @@
             <g:link controller="auth" action="register">Register</g:link>
         </shiro:notUser>
         <shiro:user>
-          Welcome <user:loggedInUser property="fullName" />
-          <g:link controller="auth" action="logOut">Log out</g:link>
-          <shiro:hasPermission permission="config:edit"> - <g:link controller="config">Administration</g:link></shiro:hasPermission>
+            Welcome <user:loggedInUser property="fullName"/>
+            <g:link controller="auth" action="logOut">Log out</g:link>
+            <shiro:hasPermission permission="config:edit">- <g:link
+                    controller="config">Administration</g:link></shiro:hasPermission>
+            <shiro:hasRole name="ServerOwner">- <g:link
+                    controller="server" action="listByOwner">Edit filters</g:link></shiro:hasRole>
+
         </shiro:user>
         <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
-        <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a></g:each>
+            <a class="external mainlinks" target="_blank" href="${link.href}"
+               title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>
+
     <div id="downloadCart" class="hiddenCart">
-      Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/><div id="downloadCartControls"><a href="#" onclick="javascript:doDownload();">download</a> | <a href="javascript:clearDownloadCart();">clear cart</a></div>
+        Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/>
+
+        <div id="downloadCartControls"><a href="#" onclick="javascript:doDownload();">download</a> | <a
+                href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
-  </div>
-<div id="headerTail" >&nbsp;</div>
+</div>
+
+<div id="headerTail">&nbsp;</div>
