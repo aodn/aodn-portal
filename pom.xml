@@ -405,6 +405,10 @@
 						<exclude>portal/config/grid2treedrag.js</exclude>
 						<exclude>portal/common/DownloadCart.js</exclude>
 					</sourceExcludes>
+                    <specIncludes>
+                        <include>spec-helper.js</include>
+                        <include>**/*.js</include>
+                    </specIncludes>
 				</configuration>
 			</plugin>
 
