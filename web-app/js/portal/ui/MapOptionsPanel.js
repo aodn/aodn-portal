@@ -108,7 +108,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		        	xtype: 'button',
 		        	text: 'Remove All Layers',
 		        	cls: "floatLeft buttonPad",   
-		            tooltip: "Remove all overlay layers from the map",
+		            tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
 		            scope: this,
 		            handler: function() {
 		                Ext.MsgBus.publish('removeAllLayers');
@@ -117,7 +117,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		        {
 		        	xtype: 'button',
 		        	text: 'Reset Map',
-		            tooltip:  'This will load the default set of map overlay layers and reset the map location and zoom level',   
+		            tooltip:  OpenLayers.i18n("mapOptionsResetButton"),
 		            cls: "floatLeft buttonPad",
 		            scope: this,
 		            handler: function() {
