@@ -110,5 +110,15 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
+    describe('Ensure the MapPanel has methods that collaborators depend on', function() {
+        it('Checks that getPanelX() can be called', function() {
+            expect(mapPanel.getPanelX).toBeDefined();
+        });
+
+        it('Checks that getPanelY() can be called', function() {
+            expect(mapPanel.getPanelY).toBeDefined();
+        });
+    });
+
     Ext.Ajax.request.isSpy = false;
 });

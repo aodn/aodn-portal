@@ -163,11 +163,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     _findFeatureInfo:function (event) {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
-            map:this.map,
-            appConfig:this.appConfig,
-            maximisedSize:this.getViewSize(),
-            maximisedX:this.getPageX(),
-            maximisedY:this.getPageY()
+            map: this.map,
+            appConfig: this.appConfig,
+            maximisedPosition: { x: this.getPanelX(), y: this.getPanelY() }
         });
         this.featureInfoPopup.findFeatures(event);
     },
@@ -227,15 +225,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return "Loading " + this.getLayersLoadingText(layerCount) + "  " + this.getLayerText(layerCount) + "\u2026";
     },
 
-    getViewSize:function () {
-        return this.container.getViewSize();
-    },
-
-    getPageX:function () {
+    getPanelX:function () {
         return this.getPosition()[0];
     },
 
-    getPageY:function () {
+    getPanelY:function () {
         return this.getPosition()[1];
     }
 });
