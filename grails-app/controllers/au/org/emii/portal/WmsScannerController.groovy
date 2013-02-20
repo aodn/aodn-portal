@@ -9,6 +9,7 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.apache.shiro.SecurityUtils
 
 class WmsScannerController {
     def grailsApplication
@@ -23,7 +24,6 @@ class WmsScannerController {
                       (-2): "Stopped<br />(too&nbsp;many&nbsp;errors)" ]
 
     def controls = {
-
         def conf = Config.activeInstance()
         def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
         wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
@@ -55,11 +55,52 @@ class WmsScannerController {
             scanJobList = [] // Empty list
         }
 
+        def serversToList = Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ])
+
+        def currentUser = SecurityUtils.getSubject()
+        if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
+            def principal = currentUser?.getPrincipal()
+            def serverList = [];
+            if (principal) {
+                def userInstance = User.get(principal)
+
+                if (!userInstance)
+                {
+                    log.error("No user found with id: " + principal)
+                }
+                else{
+                    serverList = Server.withCriteria{
+                        owners{
+                            eq('id', userInstance.id)
+                        }
+                    }
+                }
+            }
+            def allowedUris = serverList*.getUri()
+
+            def allowedJobs = []
+            for (job in scanJobList) {
+                if (allowedUris.contains(job.uri)) {
+                    allowedJobs += job
+                }
+            }
+            scanJobList = allowedJobs
+
+
+            def allowedServers = []
+            for (server in serversToList) {
+                if (allowedUris.contains(server.uri)) {
+                    allowedServers += server
+                }
+            }
+            serversToList = allowedServers
+        }
+
         return [ configInstance: conf,
                  wmsScannerBaseUrl: wmsScannerBaseUrl,
                  scanJobList: scanJobList,
                  statusText: statusText,
-                 serversToList: Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ] )
+                 serversToList: serversToList
                ]
     }
 
