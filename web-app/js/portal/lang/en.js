@@ -27,6 +27,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
 
+    // MapOptionsPanel.js
+    mapOptionsResetButton: 'This will re-load the default set of map layers and reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all overlay layers from the map",
+
     // Search results
     selectLayer: 'Select layer',
     bboxLayer: 'Extent',
