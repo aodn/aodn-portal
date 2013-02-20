@@ -54,6 +54,9 @@
 	  <h3>Want to see data in your region?</h3>
       <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
     </div>
+    <div class="clear spacer"></div>
+        <div >There is a technical summary for those interested in the <a class="external" href="${ grailsApplication.config.help.url }?q=node/99" title="technical summary" target="_blank">information infrastructure</a> behind this portal.
+    </div>
 
     <div class="clear spacer"></div>
     <div class="spacer clear footer">
