@@ -29,7 +29,7 @@ environments {
 		dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
-		    url = "jdbc:postgresql://localhost:5432/aodn_portal"
+		    url = "jdbc:postgresql://localhost:5432/edge"
             username = "postgres"
             password = "postgres"
 		}

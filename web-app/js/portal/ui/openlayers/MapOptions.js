@@ -58,9 +58,14 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         ];
 
         this.theme = null;
-        this.displayProjection = new OpenLayers.Projection("EPSG:4326");
+        //this.projection = new OpenLayers.Projection("EPSG:4326");
         this.prettyStateKeys = true; // for pretty permalinks,
-        this.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
+        //this.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
+        this.maxResolution = 156543.0399;
+            this.numZoomLevels= 19;
+            this.units= 'm';
+            this.projection = new OpenLayers.Projection("EPSG:900913");
+            this.displayProjection= new OpenLayers.Projection("EPSG:4326");
 
         // This is included here, as it is essentially just another control for the map, although
         // not an actual OpenLayers.Control.
@@ -90,7 +95,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
      * Create a new map, from using the options specified by 'this'.
      */
     newMap: function() {
-        this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
+        //this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
         var map = new OpenLayers.Map(this);
 
         this.mapPanel.add(this.animationPanel);

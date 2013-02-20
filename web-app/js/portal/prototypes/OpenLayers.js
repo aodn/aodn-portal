@@ -5,6 +5,7 @@
  *
  */
 
+/*
 OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
     if (this.wrapDateLine) {
         // wrap around the date line, within the limits of rounding error
@@ -31,7 +32,7 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
 
 
     return bounds;
-};
+};          */
 
 // Modifications to OpenLayers class prototypes
 OpenLayers.Layer.WMS.prototype.isNcwms = function () {
@@ -137,79 +138,3 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function () {
     return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
 };
-
-//overrides original openlayers method,
-// adds a check to not run the method if bounds are outside of vertical extent
-OpenLayers.Tile.Image.prototype.draw = function() {
-    if (this.layer != this.layer.map.baseLayer && this.layer.reproject) {
-        this.bounds = this.
-            BaseLayer(this.position);
-    }
-    var drawTile = OpenLayers.Tile.prototype.draw.apply(this, arguments);
-
-    if ((OpenLayers.Util.indexOf(this.layer.SUPPORTED_TRANSITIONS, this.layer.transitionEffect) != -1) ||
-        this.layer.singleTile) {
-        if (drawTile) {
-            //we use a clone of this tile to create a double buffer for visual
-            //continuity.  The backBufferTile is used to create transition
-            //effects while the tile in the grid is repositioned and redrawn
-            if (!this.backBufferTile) {
-                this.backBufferTile = this.clone();
-                this.backBufferTile.hide();
-                // this is important.  It allows the backBuffer to place itself
-                // appropriately in the DOM.  The Image subclass needs to put
-                // the backBufferTile behind the main tile so the tiles can
-                // load over top and display as soon as they are loaded.
-                this.backBufferTile.isBackBuffer = true;
-
-                // potentially end any transition effects when the tile loads
-                this.events.register('loadend', this, this.resetBackBuffer);
-
-                // clear transition back buffer tile only after all tiles in
-                // this layer have loaded to avoid visual glitches
-                this.layer.events.register("loadend", this, this.resetBackBuffer);
-            }
-            // run any transition effects
-            this.startTransition();
-        } else {
-            // if we aren't going to draw the tile, then the backBuffer should
-            // be hidden too!
-            if (this.backBufferTile) {
-                this.backBufferTile.clear();
-            }
-        }
-    } else {
-        if (drawTile && this.isFirstDraw) {
-            this.events.register('loadend', this, this.showTile);
-            this.isFirstDraw = false;
-        }
-    }
-
-
-    //here is the if statement we add to the original method.
-    /******Start added*******/
-    var maxExtent = this.layer.maxExtent;
-
-    if(this.bounds.bottom < maxExtent.bottom ||
-        this.bounds.top > maxExtent.top)
-    {
-        drawTile = false;
-    }
-
-    /******End added*******/
-
-    if (!drawTile) {
-        return false;
-    }
-
-    if (this.isLoading) {
-        //if we're already loading, send 'reload' instead of 'loadstart'.
-        this.events.triggerEvent("reload");
-    } else {
-        this.isLoading = true;
-        this.events.triggerEvent("loadstart");
-    }
-
-    return this.renderTile();
-};
-

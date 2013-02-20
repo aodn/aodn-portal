@@ -26,7 +26,7 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
             gutter: gutterSize,
-            projection: new OpenLayers.Projection(layerDescriptor.projection)
+            projection: new OpenLayers.Projection("EPSG:4326")
         };
         
         Ext.apply(this, defaultOptions);

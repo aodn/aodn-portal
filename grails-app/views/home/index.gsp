@@ -30,6 +30,7 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'ext-3.3.1/ext-all-debug.js')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
         <!--- GeoExt (Has to be after Openlayers and ExJS) -->
         <script src="${resource(dir: 'js', file: 'GeoExt1.1/lib/GeoExt.js')}" type="text/javascript"></script>
     </g:if>
@@ -37,6 +38,7 @@
         <script src="${resource(dir: 'js', file: 'ext-3.3.1/adapter/ext/ext-base.js')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'ext-3.3.1/ext-all.js')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>
         <!--- GeoExt (Has to be after Openlayers and ExJS) -->
         <script src="${resource(dir: 'js', file: 'GeoExt1.1/script/GeoExt.js')}" type="text/javascript"></script>
     </g:else>
