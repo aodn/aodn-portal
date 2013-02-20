@@ -478,15 +478,13 @@ class LayerController {
     }
 
     def _convertLayersToListOfMaps(layers) {
-        def data = []
-        layers.each { layer ->
-            data << _getLayerDefaultData(layer)
-        }
-        return data
+
+		return layers.collect { _getLayerDefaultData(it) }
     }
 
     def _findLayersAndServers(layerIds) {
-        def layers = []
+
+		def layers = []
         if (layerIds) {
             def criteria = Layer.createCriteria()
             layers = criteria.list {
@@ -497,15 +495,8 @@ class LayerController {
             }
         }
 
-        layers = layers.sort {layer ->
-            for(int i=0;i<layerIds.size(); i++) {
-                if(layerIds.getAt(i) == layer.id) {
-                    return i;
-                }
-            }
-        }
-
-        return layers
+		// Put Layers in the order they were requested
+		return layers.sort { layerIds.indexOf( it.id ) }
     }
 
     def _renderLayer(layerInstance) {
