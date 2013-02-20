@@ -88,13 +88,11 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
                 fullName : "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        Server.constraints = {}
         def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
         mockDomain(Server, [server])
 
         def layer = new Layer(name : "layer1", abstractTrimmed : "description", server: server);
         mockDomain(Layer, [layer])
-
 
         def filter = new Filter(name:"la",layer:layer,label:"lala")
         mockDomain(Filter, [filter])
@@ -116,13 +114,11 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
                 fullName : "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        Server.constraints = {}
         def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
         mockDomain(Server, [server])
 
         def layer = new Layer(name : "layer1", abstractTrimmed : "description", server: server);
         mockDomain(Layer, [layer])
-
 
         def filter = new Filter(name:"la",layer:layer,label:"lala")
         mockDomain(Filter, [filter])
@@ -144,7 +140,6 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
                 fullName : "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        Server.constraints = {}
         def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
         mockDomain(Server, [server])
 
