@@ -54,7 +54,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     addUsingOpenLayer:function (openLayer) {
-        this._addLayer(openLayer);
+        return this._addLayer(openLayer);
     },
 
     addUsingServerId:function (args) {
@@ -78,21 +78,40 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
-    removeAll:function () {
+    reset: function() {
 
-        // Remove only non base layers.
-        var nonBaseLayers = this.queryBy(function (record, id) {
+        this.removeAll();
+    },
+    
+    removeAll: function () {
+
+        this.remove(this.getLayers(false).getRange());
+        this.currentlyLoadingLayers.clear();
+        Ext.MsgBus.publish('selectedLayerChanged', null);
+        this.selectDefaultBaseLayer();
+    },
+
+    selectDefaultBaseLayer: function() {
+
+        var defaultBaseLayer = this.getDefaultBaseLayer();
+        var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer: null;
+        Ext.MsgBus.publish('baseLayerChanged', openLayer);
+    },
+
+    getDefaultBaseLayer: function() {
+        return this.getLayers(true).first();
+    },
+    
+    getLayers: function(baseLayersOnly) {
+       
+        return this.queryBy(function (record, id) {
 
             if (record.getLayer().options === null) {
                 return false
             }
-            return !record.getLayer().options.isBaseLayer
+            
+            return (record.getLayer().options.isBaseLayer == baseLayersOnly)
         });
-
-        this.remove(nonBaseLayers.getRange());
-        this.currentlyLoadingLayers.clear();
-
-        Ext.MsgBus.publish('selectedLayerChanged', null);
     },
 
     removeUsingOpenLayer:function (openLayer) {
@@ -122,6 +141,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             if (!openLayer.options.isBaseLayer) {
                 Ext.MsgBus.publish('selectedLayerChanged', openLayer);
             }
+
+            return layerRecord;
         }
         else {
             Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
@@ -200,7 +221,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }, this);
 
         Ext.MsgBus.subscribe('reset', function (subject, openLayer) {
-            this.removeAll();
+            this.reset();
         }, this);
 
         Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function (subject, openLayer) {

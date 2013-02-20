@@ -32,6 +32,15 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
 
+        it('on baseLayerChanged event', function() {
+            spyOn(mapPanel, 'onBaseLayerChanged');
+
+            var baseLayerRecord = { layer: "asdf" };
+            Ext.MsgBus.publish('baseLayerChanged', baseLayerRecord);
+
+            expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
+        });
+
     });
 
     describe('zoom to layer tests', function() {
@@ -107,6 +116,16 @@ describe("Portal.ui.MapPanel", function() {
             var oldCount = mapPanel.layers.getCount();
             setExtWmsLayer('http://geoserver.imos.org.au/geoserver/wms','Argo Track 5901184','1.1.1','float_cycle_vw','','float_id = 3189','');
             expect(mapPanel.layers.getCount()).toBe(oldCount + 1);
+        });
+    });
+
+    describe('Ensure the MapPanel has methods that collaborators depend on', function() {
+        it('Checks that getPanelX() can be called', function() {
+            expect(mapPanel.getPanelX).toBeDefined();
+        });
+
+        it('Checks that getPanelY() can be called', function() {
+            expect(mapPanel.getPanelY).toBeDefined();
         });
     });
 

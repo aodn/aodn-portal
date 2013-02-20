@@ -82,6 +82,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onSelectedLayerChanged(message);
         }, this);
 
+        Ext.MsgBus.subscribe('baseLayerChanged', function(subject, message) {
+            this.onBaseLayerChanged(message);
+        }, this);
+
         Ext.MsgBus.subscribe('reset', function () {
             this.reset();
         }, this);
@@ -115,6 +119,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (this.autoZoom === true) {
             this.zoomToLayer(openLayer);
         }
+    },
+
+    onBaseLayerChanged: function(openLayer) {
+        this.map.setBaseLayer(openLayer);
     },
 
     closeDropdowns:function (event) {
@@ -163,11 +171,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     _findFeatureInfo:function (event) {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
-            map:this.map,
-            appConfig:this.appConfig,
-            maximisedSize:this.getViewSize(),
-            maximisedX:this.getPageX(),
-            maximisedY:this.getPageY()
+            map: this.map,
+            appConfig: this.appConfig,
+            maximisedPosition: { x: this.getPanelX(), y: this.getPanelY() }
         });
         this.featureInfoPopup.findFeatures(event);
     },
@@ -227,15 +233,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return "Loading " + this.getLayersLoadingText(layerCount) + "  " + this.getLayerText(layerCount) + "\u2026";
     },
 
-    getViewSize:function () {
-        return this.container.getViewSize();
-    },
-
-    getPageX:function () {
+    getPanelX:function () {
         return this.getPosition()[0];
     },
 
-    getPageY:function () {
+    getPanelY:function () {
         return this.getPosition()[1];
     }
 });

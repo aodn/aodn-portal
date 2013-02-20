@@ -37,12 +37,12 @@ describe("Portal.data.LayerStore", function() {
 
     function createOpenLayer(title, url) {
 
-        if(title == undefined)
+        if (title == undefined)
         {
             title = "the title";
         }
 
-        if(url == undefined)
+        if (url == undefined)
         {
             url = "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi";
         }
@@ -214,8 +214,6 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.getCount()).toBe(0);
         });
 
-        // I question whether we need both 'reset' and 'remove all layers', as the only difference
-        // is that 'reset' resets the zoom and extent (so why not just get rid of 'remove all layers'?).
         it('removeAll', function() {
             var openLayer = createOpenLayer();
             layerStore.addUsingOpenLayer(openLayer);
@@ -236,11 +234,15 @@ describe("Portal.data.LayerStore", function() {
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
+            spyOn(layerStore, 'reset').andCallThrough();
             spyOn(layerStore, 'removeAll').andCallThrough();
+            spyOn(layerStore, 'selectDefaultBaseLayer');
+            
             Ext.MsgBus.publish('reset');
 
+            expect(layerStore.reset).toHaveBeenCalled();
             expect(layerStore.removeAll).toHaveBeenCalled();
-            expect(layerStore.getCount()).toBe(0);
+            expect(layerStore.selectDefaultBaseLayer).toHaveBeenCalled();
         });
     });
 
@@ -274,6 +276,52 @@ describe("Portal.data.LayerStore", function() {
 
             layerStore.addUsingOpenLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
+        });
+    });
+
+    describe('getLayers', function() {
+
+        beforeEach(function() {
+
+            layerStore.addUsingOpenLayer(createOpenLayer("1"));
+            layerStore.addUsingOpenLayer(createOpenLayer("2"));
+            
+            var baseLayer = createOpenLayer("base");
+            baseLayer.options.isBaseLayer = true;
+            layerStore.addUsingOpenLayer(baseLayer);
+        });
+
+        it('get base layers', function() {
+
+            expect(layerStore.getLayers(true).getCount()).toBe(1);
+        });
+
+        it('get non base layers', function() {
+
+            expect(layerStore.getLayers(false).getCount()).toBe(2);
+        });
+    });
+
+    describe('base layers', function() {
+
+        var baseLayer;
+        var baseLayerRecord;
+        
+        beforeEach(function() {
+            baseLayer = createOpenLayer("base");
+            baseLayer.options.isBaseLayer = true;
+            baseLayerRecord = layerStore.addUsingOpenLayer(baseLayer);
+        });
+
+        it('selectDefaultBaseLayer', function() {
+            spyOn(Ext.MsgBus, 'publish');
+
+            layerStore.selectDefaultBaseLayer();
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith('baseLayerChanged', baseLayer);
+        });
+
+        it('getDefaultBaseLayer', function() {
+            expect(layerStore.getDefaultBaseLayer()).toBe(baseLayerRecord);
         });
     });
 });

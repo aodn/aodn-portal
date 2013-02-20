@@ -166,6 +166,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             // populate the stylecombo picker
             this.styleCombo.store.loadData(data);
             // change the displayed data in the style picker
+            this.styleCombo.collapse();
             this.styleCombo.show();
         }
         this.refreshLegend(this.selectedLayer);

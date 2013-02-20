@@ -217,8 +217,8 @@ class SecurityFilters {
     def _hasLayerFilterPermission(layer) {
         def server =layer.server;
 
-        def currentUser = SecurityUtils.getSubject()
-        def principal = currentUser?.getPrincipal()
+        def subject = SecurityUtils.getSubject()
+        def principal = subject?.getPrincipal()
         def userInstance = User.get(principal)
         if(server.owners.contains(userInstance))
         {

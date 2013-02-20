@@ -72,7 +72,7 @@ class Server {
         username(nullable:true)
         password(nullable:true)
         owners(nullable:  true, validator: {
-            //This is totally retarded
+            //This is totally not a great way to do things
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
             def valid = false

@@ -15,7 +15,7 @@
 	<p>This portal is the primary access point for search, discovery, access and download of data collected by the Australian marine community. Primary datasets are contributed by the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (Australian Antarctic Division, Australian Institute for Marine Science, Bureau of Meteorology, Commonwealth Science and Industrial Research Organisation, Geoscience Australia and the Royal Australian Navy). You can obtain full information about the AODN via the <a title="AODN home page" class="external" target="_blank"  href="http://www.imos.org.au/aodn.html" >AODN Webpage</a>.</p>
 
 	<h3>Want to contribute data to the AODN?</h3>
-	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
+	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/142" title="Contribute data" >contribute data</a>.</p>
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
@@ -42,17 +42,20 @@
 	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
 	<ul>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/14" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/21" title="forum" target="_blank">Newest Portal Features</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/27" title="map navigation help forum" target="_blank">Navigating the map</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/26" title="search help forum" target="_blank">Searching for data</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum" title="forum" target="_blank">Help forum</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/7" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/11" title="forum" target="_blank">Newest Portal Features</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=node/95" title="map navigation help forum" target="_blank">Navigating the map</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=node/108" title="search help forum" target="_blank">Searching for data</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }" title="forum" target="_blank">Help forum</a></li>
 	</ul>
 	</div>
 
 	<div class="clear spacer">
 	  <h3>Want to see data in your region?</h3>
       <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
+    </div>
+    <div class="clear spacer"></div>
+        <div >There is a technical summary for those interested in the <a class="external" href="${ grailsApplication.config.help.url }?q=node/99" title="technical summary" target="_blank">information infrastructure</a> behind this portal.
     </div>
 
     <div class="clear spacer"></div>

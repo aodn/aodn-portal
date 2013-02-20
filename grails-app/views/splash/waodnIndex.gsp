@@ -18,7 +18,7 @@
 Primary datasets are contributed by Commonwealth Government agencies, State Government agencies, Universities, the <a  target="_blank" class="external"  title="IMOS home page" href="http://www.imos.org.au" >Integrated Marine Observing System (IMOS)</a> an Australian Government Research Infrastructure project, and WAMSI (Western Australia Marine Science Institute).</p>
 
 	<h3>Want to contribute data to the AODN?</h3>
-	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/40" title="Contribute data" >contribute data</a>.</p>
+	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/142" title="Contribute data" >contribute data</a>.</p>
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
@@ -47,11 +47,11 @@ Primary datasets are contributed by Commonwealth Government agencies, State Gove
 	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
 	<ul>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/14" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/21" title="forum" target="_blank">Newest Portal Features</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/27" title="map navigation help forum" target="_blank">Navigating the map</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/26" title="search help forum" target="_blank">Searching for data</a></li>
-	<li><a class="external" href="${ grailsApplication.config.help.url }?q=forum" title="forum" target="_blank">Help forum</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/7" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/11" title="forum" target="_blank">Newest Portal Features</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=node/95" title="map navigation help forum" target="_blank">Navigating the map</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }?q=node/108" title="search help forum" target="_blank">Searching for data</a></li>
+        <li><a class="external" href="${ grailsApplication.config.help.url }" title="forum" target="_blank">Help forum</a></li>
 	</ul>
 	</div>
 

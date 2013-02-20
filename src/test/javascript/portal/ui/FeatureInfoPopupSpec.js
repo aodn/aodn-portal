@@ -102,5 +102,21 @@ describe("Portal.ui.FeatureInfoPopup", function()
         });
     });
 
+    describe("Popup maximise behaviour", function() {
 
+        it('Checks that setSize() is called on maximise', function() {
+            spyOn(Portal.ui.FeatureInfoPopup.prototype, 'setSize');
+
+            featureInfoPopup.maximisedPosition = { x: 0, y: 0 };
+            featureInfoPopup.fitContainer();
+
+            expect(Portal.ui.FeatureInfoPopup.prototype.setSize).toHaveBeenCalled();
+        });
+
+        // Ideally I'd check the size has changed but without the map being attached to a MapPanel the call to
+        // featureInfoPopup.getSize() fails down the chain because BoxComponent.getResizeEl() returns undefined
+        // I don't want to introduce the dependency of the MapPanel into this Spec so I'm uncomfortable but
+        // satisfied that the it() above confirms correct behaviour
+
+    });
 });

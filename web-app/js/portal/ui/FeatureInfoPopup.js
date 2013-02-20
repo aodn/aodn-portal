@@ -38,18 +38,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     unanchorPopup: function() {
-
     	this._makeResizable();
     	Portal.ui.FeatureInfoPopup.superclass.unanchorPopup.call(this);
     },
 
     _makeResizable: function() {
-
         this.resizable = true;
         var resizer = new Ext.Resizable(this.getEl());
-        var featureInfoPopup = this;
-
-        resizer.on('resize', this._onResize,this);
+        resizer.on('resize', this._onResize, this);
     },
 
     _onResize: function() {
@@ -365,14 +361,15 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     fitContainer: function() {
-    	if (this.maximisedSize) {
-	    	this.setSize(this.maximisedSize.width, this.maximisedSize.height);
+    	if (this.map.size) {
+	    	this.setSize(this.map.size.w, this.map.size.h);
 	    	if (this.dd) {
 	            this.dd.unlock();
 	        }
 
-	        if(this.maximisedX && this.maximisedY)
-	        	this.setPosition(this.maximisedX, this.maximisedY);
+	        if(this.maximisedPosition && this.maximisedPosition.x && this.maximisedPosition.y) {
+	        	this.setPosition(this.maximisedPosition.x, this.maximisedPosition.y);
+            }
     	}
     	else {
     		GeoExt.Popup.prototype.fitContainer.call(this);

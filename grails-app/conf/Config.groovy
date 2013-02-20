@@ -100,7 +100,7 @@ environments {
 
         // URLs
 		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
 		wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
 		openIdProvider.url = "http://openid.example.com"
 
