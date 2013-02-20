@@ -32,6 +32,15 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
 
+        it('on baseLayerChanged event', function() {
+            spyOn(mapPanel, 'onBaseLayerChanged');
+
+            var baseLayerRecord = { layer: "asdf" };
+            Ext.MsgBus.publish('baseLayerChanged', baseLayerRecord);
+
+            expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
+        });
+
     });
 
     describe('zoom to layer tests', function() {
