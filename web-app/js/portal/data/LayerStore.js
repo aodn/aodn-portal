@@ -197,12 +197,20 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _initBaseLayers:function () {
+        var gmap = new OpenLayers.Layer.Google("Google Streets", {isBaseLayer: true, queryable: false});
+        //var ghyb = new OpenLayers.Layer.Google("Google Hybrid",{type: google.maps.MapTypeId.HYBRID, sphericalMercator: false, numZoomLevels: 20, isBaseLayer: true, queryable: false});
+        //var gsat = new OpenLayers.Layer.Google("Google Satellite",{type: google.maps.MapTypeId.SATELLITE, sphericalMercator: false, numZoomLevels: 22, isBaseLayer: true, queryable: false});
+        //this.addUsingOpenLayer(gphy);
+        this.addUsingOpenLayer(gmap);
+        //this.addUsingOpenLayer(ghyb);
+        //this.addUsingOpenLayer(ghyb);
+        //this.addUsingOpenLayer(gsat);
 
-        // TODO: shouldn't these be set properly in the server in the first place?
+        /*// TODO: shouldn't these be set properly in the server in the first place?
         this._initWithLayersFromServer('layer/configuredbaselayers', {
             isBaseLayer:true,
             queryable:false
-        });
+        });             */
     },
 
     _initDefaultLayers:function () {
