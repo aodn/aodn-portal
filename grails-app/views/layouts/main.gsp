@@ -68,6 +68,7 @@
 
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
+            <li class="controllerMenuItems"><g:link controller="systemTest" action="controls" >System Test Controls</g:link></li>
 
 		   </user:loggedInUserInRole>
 		   <user:loggedInUserInRole roles="Administrator,ServerOwner">
