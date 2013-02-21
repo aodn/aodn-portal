@@ -118,7 +118,7 @@ ${_layerAndServerString(l1)}\
 		def server = layer.server
 
 		// Ensure timezone is set
-		def formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'")
+		def formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 		formatter.timeZone = TimeZone.getTimeZone("GMT")
 		def lastUpdatedString = formatter.format(layer.lastUpdated)
 
