@@ -147,9 +147,11 @@ environments {
     }
 }
 
+def defaultInstanceName = "AODN"
+
 portal {
 	header {
-		logo = "AODN_logo.png"
+		logo = "${defaultInstanceName}_logo.png"
 		externalLinks = [
 		    [
 				linkText: "eMII",
@@ -194,7 +196,6 @@ if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
 
-def defaultInstanceName = "AODN"
 try {
 	configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
 	grails.config.locations << "file:${configurationPath}"
