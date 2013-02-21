@@ -40,5 +40,29 @@ describe("Portal.ui.TermSelectionPanel", function()
         expect(selectPanel.doLayout).toHaveBeenCalled();
     });
 
+    it('disables empty panel', function() {
+        var mockSearcher = new Portal.service.CatalogSearcher();
+        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+        var selectPanel = new Portal.ui.TermSelectionPanel({
+            searcher: mockSearcher
+        });
+
+        spyOn(selectPanel, 'setDisabled');
+        selectPanel._loadStore('');
+        expect(selectPanel.setDisabled).toHaveBeenCalledWith(true);
+    });
+
+    it('sets subtitle when filter removed but others remain', function() {
+        var mockSearcher = new Portal.service.CatalogSearcher();
+        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+        var selectPanel = new Portal.ui.TermSelectionPanel({
+            searcher: mockSearcher
+        });
+        selectPanel.selectionStore.setFilterValue('test sub title');
+
+        spyOn(selectPanel, 'setSelectedSubTitle');
+        selectPanel._onFilterRemoved('');
+        expect(selectPanel.setSelectedSubTitle).toHaveBeenCalledWith('test sub title');
+    });
 
 });

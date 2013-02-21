@@ -67,7 +67,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     initComponent:function () {
         Portal.ui.TermSelectionPanel.superclass.initComponent.apply(this, arguments);
-        this.setVisible(false);
         this.on('afterrender', function () {
             this.on('collapse', this._onCollapsedChange, this);
             this.on('expand', this._onCollapsedChange, this);
@@ -234,8 +233,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         var filter = this.selectionStore.getFilterValue();
 
         this.termStore.loadTopTerms(response, fieldGroup, filter);
-
-        this.setVisible(this.selectionStore.getCount() != 0 || this.termStore.getCount() != 0);
+        
+        this.setDisabled(this.selectionStore.getCount() == 0 && this.termStore.getCount() == 0);
         this.filterView.setVisible(this.hierarchical || this.selectionStore.getCount() == 0);
         this.doLayout();
     },
@@ -280,26 +279,18 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         var rec = view.store.getAt(index);
         var filterValue = rec.get('value');
 
-        // Trim filter value for better fit
-        var trimmedFilterValue = filterValue;
-        if (trimmedFilterValue.length > 30) {
-
-            trimmedFilterValue = trimmedFilterValue.substr(0, 30) + '...'
-        }
-
-        this.setSelectedSubTitle(trimmedFilterValue);
-
         this.searcher.removeFilters(this._getCurrentFilterName());
         this.searcher.addFilter(this._getClickedFilterName(), filterValue);
         this.searcher.search();
 
         this.selectionStore.setFilterValue(filterValue);
+        this._onFilterValueChanged();
     },
 
     _onFilterRemoved:function () {
 
         var filter = this.selectionStore.getFilterValue();
-        this.removeSelectedSubTitle();
+        this._onFilterValueChanged();
         this.searcher.removeFilters(this.fieldName);
         this.searcher.addFilter(this._getCurrentFilterName(), filter);
     },
@@ -314,6 +305,23 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         //doLayout() doesn't work when collapsed,
         // so after uncollapsing we call it to make up for anything missed
         this.doLayout();
+    },
+
+    _onFilterValueChanged: function() {
+        var currentFilterValue = this.selectionStore.getFilterValue();
+
+        if (currentFilterValue.trim() == '') {
+            this.removeSelectedSubTitle();
+        } else {
+            // Trim filter value for better fit
+            var trimmedFilterValue = currentFilterValue;
+
+            if (trimmedFilterValue.length > 30) {
+               trimmedFilterValue = trimmedFilterValue.substr(0, 30) + '...'
+            }
+
+            this.setSelectedSubTitle(trimmedFilterValue);
+        }
     },
 
     removeAnyFilters:function () {

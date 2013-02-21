@@ -927,6 +927,10 @@ div.allwhite {
     background-color: #eeeeee;
 }
 
+.term-selection-panel .ext-el-mask {
+    background-color: #F4F4F4;
+}
+
 .search-filter-panel .term-selection-panel-header-selected {
     color: #666;
     font-weight: bold;
