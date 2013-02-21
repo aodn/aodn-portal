@@ -174,7 +174,7 @@ class LayerController {
         }
 
         // due to WMS issues there may be more than one. Using list then taking the first one
-        def layerInstance = criteria.list {
+        def layerInstances = criteria.list {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
@@ -198,8 +198,8 @@ class LayerController {
             eq("activeInLastScan", true)
         }
 
-        if (layerInstance) {
-            _renderLayer(layerInstance[0])
+        if (layerInstances) {
+            _renderLayer(layerInstances[0])
         } else {
             render text: "Layer '${namespace}:${localName}' does not exist", status: 404
         }
