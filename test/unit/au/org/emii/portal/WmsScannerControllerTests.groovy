@@ -9,6 +9,9 @@
 package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
+import org.apache.shiro.subject.Subject
+import org.apache.shiro.util.ThreadContext
+import org.apache.shiro.SecurityUtils
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
 
@@ -30,6 +33,21 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         
         mockDomain Server, [server1, server2, server3]
 
+        def user = new User(openIdUrl : "aaaaaaaa@afaaa.com", emailAddress : "aaaaaaaa@afaaa.com",
+                fullName : "aaaaaaaa@afaaa.com")
+        mockDomain(User, [user])
+
+        def subject = [ getPrincipal: { user.id },
+                isAuthenticated: { true },
+                isPermitted: {true}
+        ] as Subject
+
+        ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY,
+                [ getSubject: { subject } ] as SecurityManager )
+
+        SecurityUtils.metaClass.static.getSubject = { subject }
+
+
         controller.grailsApplication = [config: new ConfigSlurper().parse("""
                 grails.serverURL = "appBaseUrl/"
                 wmsScanner.url = "$expectedScannerBaseUrl"
@@ -46,7 +64,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     void testControls_NoProblems_ScanJobListReturned() {
         
         mockDomain Config, [validConfig]
-        
+
         // Prepare for calls
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
