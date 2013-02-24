@@ -54,3 +54,40 @@ describe("Portal.details.StylePanel", function() {
 		expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
 	});
 });
+
+describe("Portal.details.StylePanel", function () {
+    var server = {
+        type: "NCWMS-1.3.0",
+        uri: "http://geoserver.imos.org.au/geoserver/wms"
+    };
+
+    var ncwmsLayer = new OpenLayers.Layer.WMS(
+        "test layer",
+        "http://geoserver.imos.org.au/geoserver/wms",
+        {
+            queryable: true
+        },
+        {isBaseLayer: false,server: server}
+
+    );
+
+    ncwmsLayer.allStyles = [{title: "black", name: "sillynoncolour"},{title:"primary", name: "extremelylimiting"}];
+    var stylePanel = new Portal.details.StylePanel({});
+
+
+    it("ensure styleCombo collapse", function() {
+
+        spyOn(stylePanel.styleCombo, "collapse");
+        var ob = {};
+        ob.call = function(){return true;};
+        var func = function(){return true;};
+        stylePanel.refreshLegend = function(ncwmsLayer){};
+
+        stylePanel.update(ncwmsLayer,func,func,null);
+
+        expect(stylePanel.styleCombo.collapse).toHaveBeenCalled();
+
+
+    });
+
+});
