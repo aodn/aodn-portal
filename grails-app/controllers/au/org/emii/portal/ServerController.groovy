@@ -149,11 +149,6 @@ class ServerController {
 		}
 	}
 
-	def selectServerToCheckLinks = {
-		def userEmailAddress = SecurityUtils.getSubject().getPrincipal()
-		[userEmailAddress:userEmailAddress]
-	}
-
 	def checkForBrokenLinks = {
 		log.debug "Preparing to scan server with id=${params.server} and user email: ${params.userEmailAddress}"
 		def result = checkLinksService.check(params.server, params.userEmailAddress)
@@ -161,32 +156,23 @@ class ServerController {
 	}
 
     def listByOwner = {
-        def currentUser = SecurityUtils.getSubject()
-        def principal = currentUser?.getPrincipal()
 
-        if (principal) {
-            def userInstance = User.get(principal)
-
-            if (!userInstance)
-            {
-                log.error("No user found with id: " + principal)
+        def userInstance = User.current()
+        if(userInstance) {
+            def serverList = Server.withCriteria{
+                owners{
+                    eq('id', userInstance.id)
+                }
             }
-            else{
-                def serverList = Server.withCriteria{
-                    owners{
-                        eq('id', userInstance.id)
-                    }
-                }
 
-                def maps = [:]
-                serverList.each(){
-                    def layerList = Layer.findAllByServer(it)
-                    maps[it] = layerList
-                }
+            def maps = [:]
+            serverList.each(){
+                def layerList = Layer.findAllByServer(it)
+                maps[it] = layerList
+            }
 
-                if(serverList){
-                    render(view: "listByOwner", model: [maps: maps])
-                }
+            if(serverList){
+                render(view: "listByOwner", model: [maps: maps])
             }
         }
     }
