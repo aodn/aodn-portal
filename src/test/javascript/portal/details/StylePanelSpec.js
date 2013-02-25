@@ -21,73 +21,65 @@ function getParameterByNameFromUrlString(urlString, name)
 }
 
 function buildParams(type) {
-	
+
 	if (!type) {
 		return { layer: { params: {}, url: "http://someserver/wms"}};
 	}
-	
+
 	return { layer: { params: {}, url: "http://someserver/wms", server: { type: type}}};
 }
 
 describe("Portal.details.StylePanel", function() {
-	
-	var stylePanel = new Portal.details.StylePanel({});
 
-	it("no append when no type specified", function() {
-		
-		var urlString = stylePanel.buildGetLegend(buildParams());
-		expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("");
-	});
-	
-	it("WMS-1.1.0", function() {
-		var urlString = stylePanel.buildGetLegend(buildParams("WMS-1.1.0"));
-		expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
-	});
-	
-	it("WMS-1.1.1", function() {
-		var urlString = stylePanel.buildGetLegend(buildParams("WMS-1.1.1"));
-		expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
-	});
-	
-	it("NCWMS-1.1.1", function() {
-		var urlString = stylePanel.buildGetLegend(buildParams("NCWMS-1.1.1"));
-		expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
-	});
-});
+    describe("buildGetLegend()", function() {
 
-describe("Portal.details.StylePanel", function () {
-    var server = {
-        type: "NCWMS-1.3.0",
-        uri: "http://geoserver.imos.org.au/geoserver/wms"
-    };
+        var stylePanel = new Portal.details.StylePanel({});
 
-    var ncwmsLayer = new OpenLayers.Layer.WMS(
-        "test layer",
-        "http://geoserver.imos.org.au/geoserver/wms",
-        {
-            queryable: true
-        },
-        {isBaseLayer: false,server: server}
+        it("should have empty version when no type specified", function() {
 
-    );
+            var urlString = stylePanel.buildGetLegend(buildParams());
+            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("");
+        });
 
-    ncwmsLayer.allStyles = [{title: "black", name: "sillynoncolour"},{title:"primary", name: "extremelylimiting"}];
-    var stylePanel = new Portal.details.StylePanel({});
+        it("should remove version prefix (before '-')", function() {
+            var urlString = stylePanel.buildGetLegend(buildParams("WMS-1.1.0"));
+            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
 
-
-    it("ensure styleCombo collapse", function() {
-
-        spyOn(stylePanel.styleCombo, "collapse");
-        var ob = {};
-        ob.call = function(){return true;};
-        var func = function(){return true;};
-        stylePanel.refreshLegend = function(ncwmsLayer){};
-
-        stylePanel.update(ncwmsLayer,func,func,null);
-
-        expect(stylePanel.styleCombo.collapse).toHaveBeenCalled();
-
-
+            urlString = stylePanel.buildGetLegend(buildParams("NCWMS-1.1.1"));
+            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
+        });
     });
 
+    describe("update() (incomplete, only tests some functionality)", function() {
+
+        var server = {
+            type: "NCWMS-1.3.0",
+            uri: "http://geoserver.imos.org.au/geoserver/wms"
+        };
+
+        var ncwmsLayer = new OpenLayers.Layer.WMS(
+            "test layer",
+            "http://geoserver.imos.org.au/geoserver/wms",
+            {
+                queryable: true
+            },
+            {isBaseLayer: false,server: server}
+        );
+
+        ncwmsLayer.allStyles = [{title: "black", name: "sillynoncolour"},{title:"primary", name: "extremelylimiting"}];
+        var stylePanel = new Portal.details.StylePanel({});
+
+        it("should call collapse() on StyleCombo combo box", function() {
+
+            spyOn(stylePanel.styleCombo, "collapse");
+            var ob = {};
+            ob.call = function(){return true;};
+            var func = function(){return true;};
+            stylePanel.refreshLegend = function(ncwmsLayer){};
+
+            stylePanel.update(ncwmsLayer,func,func,null);
+
+            expect(stylePanel.styleCombo.collapse).toHaveBeenCalled();
+        });
+    });
 });
