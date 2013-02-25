@@ -16,8 +16,6 @@ class ConfigController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	def portalInstance
-
     def index = {
         redirect(action: "edit")
     }
@@ -52,16 +50,9 @@ class ConfigController {
         instanceAsGenericObj['enableMOTD'] = configInstance.enableMOTD
 
         // add current user details
-        def currentUser = SecurityUtils.getSubject()
-        def principal = currentUser?.getPrincipal()
+        def userInstance = User.current();
 
-        if (principal) {
-            def userInstance = User.get(principal)
-
-			if (!userInstance)
-			{
-				log.error("No user found with id: " + principal)
-			}
+        if(userInstance) {
 
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }

@@ -8,12 +8,14 @@
 
 package au.org.emii.portal
 
+import org.apache.shiro.SecurityUtils
+
 class User {
 
     String openIdUrl
     String emailAddress
     String fullName
-    
+
     // Relationships
     static hasMany = [ roles: UserRole, permissions: String ]
     
@@ -51,5 +53,22 @@ class User {
             def savedSearches = Search.findAllByOwner(this)
             savedSearches*.delete()
         }
+    }
+
+    static def current = {
+        def currentSubject = SecurityUtils.getSubject()
+        println("subject: " + currentSubject)
+        def principal = currentSubject?.getPrincipal()
+        println("principal: " + principal)
+        if (principal) {
+            def userInstance = User.get(principal)
+
+            if (!userInstance)
+            {
+                log.error("No user found with id: " + principal)
+            }
+            return userInstance
+        }
+        return false
     }
 }
