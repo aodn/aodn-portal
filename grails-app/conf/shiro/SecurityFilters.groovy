@@ -248,10 +248,8 @@ class SecurityFilters {
     def _hasLayerFilterPermission(layer) {
         def server = layer.server;
 
-        def subject = SecurityUtils.getSubject()
-        def principal = subject?.getPrincipal()
-        def userInstance = User.get(principal)
-        if (server.owners.contains(userInstance)) {
+        def userInstance = User.current()
+        if (userInstance && server.owners.contains(userInstance)) {
             // Allow all access
             return true
         }
@@ -262,23 +260,17 @@ class SecurityFilters {
     }
 
     def _isServerOwner(server) {
-        def currentUser = SecurityUtils.getSubject()
-        def principal = currentUser?.getPrincipal()
-        def serverList = [];
-        if (principal) {
-            def userInstance = User.get(principal)
+        def userInstance = User.current()
+        def serverList = []
 
-            if (!userInstance) {
-                log.error("No user found with id: " + principal)
-            }
-            else {
-                serverList = Server.withCriteria {
-                    owners {
-                        eq('id', userInstance.id)
-                    }
+        if (userInstance) {
+            serverList = Server.withCriteria {
+                owners {
+                    eq('id', userInstance.id)
                 }
             }
         }
+
         def allowedUris = serverList*.getUri()
 
         if (allowedUris.contains(server.uri.trim())) {

@@ -67,6 +67,6 @@ class User {
             }
             return userInstance
         }
-        return false
+        return null
     }
 }
