@@ -25,6 +25,9 @@
     <!-- Portal classes-->
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'portal-search.css')}"/>
 
+<!-- common styles and JavaScript for the map page and Grails admin pages -->
+    <g:render template="/common_includes"></g:render>
+
     <g:if env="development">
         <script src="${resource(dir: 'js', file: 'ext-3.3.1/adapter/ext/ext-base-debug.js')}"
                 type="text/javascript"></script>
@@ -270,9 +273,6 @@
     <g:else>
         <script src="${resource(dir: 'js', file: 'portal-all.js')}?${jsVerNum}" type="text/javascript"></script>
     </g:else>
-
-<!-- common styles and JavaScript for the map page and Grails admin pages -->
-    <g:render template="/common_includes"></g:render>
 
     <title>${configInstance?.name}</title>
 </head>
