@@ -59,20 +59,12 @@ class WmsScannerController {
 
         def currentUser = SecurityUtils.getSubject()
         if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
-            def principal = currentUser?.getPrincipal()
             def serverList = [];
-            if (principal) {
-                def userInstance = User.get(principal)
-
-                if (!userInstance)
-                {
-                    log.error("No user found with id: " + principal)
-                }
-                else{
-                    serverList = Server.withCriteria{
-                        owners{
-                            eq('id', userInstance.id)
-                        }
+            def userInstance = User.current();
+            if (userInstance){
+                serverList = Server.withCriteria{
+                    owners{
+                        eq('id', userInstance.id)
                     }
                 }
             }

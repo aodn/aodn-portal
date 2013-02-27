@@ -113,13 +113,7 @@ class UserController {
     }
 
 	def current = {
-		def result
-		def currentUser = SecurityUtils.getSubject()
-		def principal = currentUser.getPrincipal()
-
-		if (principal) {
-			result = User.findByEmailAddress(principal)
-		}
+		def result = User.current()
 		render result as JSON
 	}
 }
