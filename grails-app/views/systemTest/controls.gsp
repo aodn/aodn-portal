@@ -45,7 +45,11 @@
     <br />
 
     <h3>Test w/ Exception</h3>
-    <g:link action="throwException" target="_blank">Throw test Exception</g:link>
+    <g:link action="throwException" target="_blank">Throw test Exception</g:link><br />
+    <br />
+
+    <h3>Log4J config</h3>
+    ${log4jConfigSummary}
 </div>
 </body>
 </html>

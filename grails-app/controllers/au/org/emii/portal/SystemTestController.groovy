@@ -1,10 +1,15 @@
 package au.org.emii.portal
 
+import org.apache.log4j.LogManager
+import org.apache.log4j.Logger
 import org.apache.shiro.SecurityUtils
 
 class SystemTestController {
 
-	def controls = {}
+	def controls = {
+
+		[log4jConfigSummary: _log4jConfigSummary()]
+	}
 
 	def throwException = {
 
@@ -53,5 +58,42 @@ class SystemTestController {
 		def user = User.get( principal as Integer )
 
 		return "System test initiated by: $user"
+	}
+
+	def _log4jConfigSummary() {
+
+		// Reference: https://github.com/burtbeckwith/grails-app-info/blob/master/grails-app/services/grails/plugins/appinfo/Log4jInfoService.groovy
+
+		def allAppenders = [] as Set
+		def root = Logger.rootLogger
+
+		if (root.allAppenders) {
+
+			allAppenders.addAll root.allAppenders.toList()
+		}
+
+		for (logger in LogManager.currentLoggers) {
+			if (logger.allAppenders) {
+				allAppenders.addAll logger.allAppenders.toList()
+			}
+		}
+
+		def s = ""
+
+		allAppenders.each{
+			appender ->
+
+			s += "<h4>${appender.name}</h4>"
+
+			s += "<ul>"
+
+			appender.properties.each {
+				s += "<li>$it</li>"
+			}
+
+			s += "</ul><br />"
+		}
+
+		return s
 	}
 }
