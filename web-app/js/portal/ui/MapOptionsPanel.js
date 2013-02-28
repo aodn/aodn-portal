@@ -41,18 +41,11 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		}, this);
 				
 		this.hideDetailsPanelCheckbox = new Ext.form.Checkbox({
-			
             boxLabel: OpenLayers.i18n('hideDetailsPanel'),
             inputType: 'checkbox',
-            checked: (Portal.app.config.hideLayerOptions != undefined)? Portal.app.config.hideLayerOptions: false,
 			listeners: {
-				check: function(thisThingy,checked) {
-					Portal.app.config.hideLayerOptions = checked; // change the global option not a copy
-					if (checked) {
-						Ext.getCmp('rightDetailsPanel').collapse();
-					}
-					viewport.mainTabPanel.getPortalPanel().doLayout();
-					
+				check: function(me, checked) {
+                    Ext.MsgBus.publish('hideLayerDetailsCheck', this);
 				}
 			}
         });

@@ -147,8 +147,8 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.actionsPanel = new Portal.ui.ActionsPanel({
             map : this.appConfig.mapPanel.map,
             layerStore : this.appConfig.mapPanel.layers,
-            hideLayerOptions : this.appConfig.hideLayerOptions,
-            autoZoom : this.appConfig.autoZoom,
+            //hideLayerOptions : this.appConfig.hideLayerOptions,
+            //autoZoom : this.appConfig.autoZoom,
             mapScope : this.appConfig.mapPanel
         });        
 		
@@ -199,9 +199,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
         this.actionsPanel.on('autozoomchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);
         this.actionsPanel.on('autozoomunchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);
-        this.actionsPanel.on('hidelayeroptionschecked', this.appConfig.mapPanel.layerOptionsCheckboxHandler, this.appConfig.mapPanel);
-        this.actionsPanel.on('hidelayeroptionsunchecked', this.appConfig.mapPanel.layerOptionsCheckboxHandler, this.appConfig.mapPanel);
-        
+
         this.appConfig.mapPanel.relayEvents(this.actionsPanel, ['removelayer']);
     },
 

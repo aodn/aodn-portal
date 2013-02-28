@@ -20,7 +20,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
             rootVisible: false,
             
 	        root: new GeoExt.tree.OverlayLayerContainer({        
-	            layerStore: cfg.layerStore, 
+	            layerStore: cfg.layerStore,
 	            leaf: false,
 	            expanded: true,
                 loader: new GeoExt.tree.LayerLoader({
@@ -63,12 +63,14 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.mon(this.root, 'insert', this.updateTitle, this);
         this.mon(this.root, 'remove', this.updateTitle, this);
 		this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
+        this.on('remove', this.onActiveLayerRemoved, this);
+        this.on('beforeremove', this.beforeActiveLayerRemoved, this);
 	},
 	
 	setActiveNode: function(node) {		
 		this.getRootNode().eachChild(function(n) {
 			if (n === node) {	
-				n.setCls('x-tree-selected');	
+				n.setCls('x-tree-selected');
 			}
 			else {		
 				n.setCls('');
@@ -78,22 +80,19 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 	},	
 
 	activeLayersTreePanelClickHandler: function(node, event) {
-		this.setActiveNode(node);
+        this.setActiveNode(node);
 		node.getUI().toggleCheck(true);
-		
 	},
-	activeLayersTreePanelCheckChangeHandler: function(node, checked) {	
-		
-		var selectedNode = this.getSelectionModel().select(node);			
-		var checkedLayers = this.getChecked();
 
-		if (checkedLayers.length == 0) {
-			this.setActiveNode(null); // makes nothing active
-			
-			// Hide details panel if there are no checked active layers.
-			Ext.MsgBus.publish("selectedLayerChanged", null);
-		}
-	},
+    activeLayersTreePanelCheckChangeHandler: function(node, checked) {
+        var checkedLayers = this.getChecked();
+        if (checkedLayers.length == 0) {
+            this.setActiveNode(null); // makes nothing active
+
+            // Hide details panel if there are no checked active layers.
+            Ext.MsgBus.publish("selectedLayerChanged", null);
+        }
+    },
 		
 	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
 		if (node != null) {
@@ -101,6 +100,42 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 			Ext.MsgBus.publish("selectedLayerChanged", node.layer);
 	    } 
 	},
+
+    beforeActiveLayerRemoved: function(tree, parent, node) {
+        if (node.isSelected()) {
+            this.removingSelectedNode = true;
+
+            return;
+        }
+
+        if (node.isLast()) {
+            // Assume this is the most recently added node and that is the one we are removing
+            this.removingSelectedNode = true;
+        }
+        this.getRootNode().eachChild(function(n) {
+            if (n.isSelected()) {
+                // There is a node selected and it's not the one being removed
+                delete this.removingSelectedNode
+            }
+        });
+    },
+
+    onActiveLayerRemoved: function(tree, parent, node) {
+        //console.trace();
+        if (parent.hasChildNodes() && this.removingSelectedNode) {
+            delete this.removingSelectedNode;
+            parent.findChildBy(
+                function() {
+                    // Just get the first node
+                    return true;
+                }
+            ).select();
+        }
+        else {
+            console.log(this.getRootNode().hasChildNodes());
+            //this.activeLayersTreePanelCheckChangeHandler(null, false);
+        }
+    },
 
 	layerHasBoundingBox: function(layer)
 	{

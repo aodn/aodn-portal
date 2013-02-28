@@ -54,7 +54,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     showPortalPanel:function () {
         this.setActiveTab(1);
-        this.portalPanel.expandRightDetailsPanel();
     },
 
     setActiveTab:function (item) {

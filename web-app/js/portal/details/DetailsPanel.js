@@ -112,64 +112,57 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	// must be called when the panel is fully expanded for the slider
-	updateDetailsPanel: function(layer,forceOpen){
+	updateDetailsPanel: function(layer, forceOpen) {
 		
 		
 		// show new layer unless user requested 'hideLayerOptions' 
-		if (!(Portal.app.config.hideLayerOptions === true  ) || forceOpen ) {
-			
-			this.errorPanel.hide();
-			// check if there is a problem with this layer, with a bogusgetFetureInfo request		
-			if(layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
-				Ext.Ajax.request({
-					url: 'checkLayerAvailability/',
-					params: {
-						layerId: layer.grailsLayerId,
-						format: layer.getFeatureInfoFormat(),
-						proxy: layer.localProxy,
-						isNcwms: layer.isNcwms() // need this in grails land
-					},
-					scope: this,
-					failure: function(resp) {
-						this.hideDetailsPanelContents();
-						this.errorPanel.show();
-					}
-				});
-			}
-			
-			this.detailsPanelTabs.update(layer);			
-			this.transectControl.hide();
+        this.errorPanel.hide();
+        // check if there is a problem with this layer, with a bogusgetFetureInfo request
+        if(layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
+            Ext.Ajax.request({
+                url: 'checkLayerAvailability/',
+                params: {
+                    layerId: layer.grailsLayerId,
+                    format: layer.getFeatureInfoFormat(),
+                    proxy: layer.localProxy,
+                    isNcwms: layer.isNcwms() // need this in grails land
+                },
+                scope: this,
+                failure: function(resp) {
+                    this.hideDetailsPanelContents();
+                    this.errorPanel.show();
+                }
+            });
+        }
 
-			// remove any transect tabs for previous layer
-			var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
-			for (var i=0;i<transectTabs.length;i++) {
-				this.detailsPanelTabs.remove(transectTabs[i]);
-			}
+        this.detailsPanelTabs.update(layer);
+        this.transectControl.hide();
 
-			this.updateDimensions(layer); // time and elevation
+        // remove any transect tabs for previous layer
+        var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
+        for (var i=0;i<transectTabs.length;i++) {
+            this.detailsPanelTabs.remove(transectTabs[i]);
+        }
 
-			//turn on transect control if server is NCWMS and layer is not animated.
-			if(layer.server.type.search("NCWMS") > -1
-					&& !layer.isAnimated)  {
-				this.transectControl.setMapPanel(getMapPanel());
-				this.transectControl.layer = layer;	
-				this.transectControl.show();
-				this.transectControl.ownerCt.doLayout();
-			}			
-			
-			this.opacitySliderContainer.doLayout();		
-			this.opacitySliderContainer.show();	
-			//weird stuff happens if you set layer before showing the container, see Bug #1582
-			this.opacitySlider.setLayer(layer);
-			
-			// #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
-			// slider won't be rendered properly, for example).
-			this.doLayout();
-			
-		}
-		else {
-			this.hideDetailsPanelContents();
-		}
+        this.updateDimensions(layer); // time and elevation
+
+        //turn on transect control if server is NCWMS and layer is not animated.
+        if(layer.server.type.search("NCWMS") > -1
+                && !layer.isAnimated)  {
+            this.transectControl.setMapPanel(getMapPanel());
+            this.transectControl.layer = layer;
+            this.transectControl.show();
+            this.transectControl.ownerCt.doLayout();
+        }
+
+        this.opacitySliderContainer.doLayout();
+        this.opacitySliderContainer.show();
+        //weird stuff happens if you set layer before showing the container, see Bug #1582
+        this.opacitySlider.setLayer(layer);
+
+        // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
+        // slider won't be rendered properly, for example).
+        this.doLayout();
 	},
 
 	hideDetailsPanelContents: function(){

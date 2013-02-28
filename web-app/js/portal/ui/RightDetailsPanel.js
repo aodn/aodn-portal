@@ -17,67 +17,74 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 					id : 'rightDetailsPanel',
 					region : 'east',
 					title : OpenLayers.i18n('noActiveLayersSelected'),
-					// collapsed: true,
 					stateful : false,
 					padding : '10px 10px 5px 20px',
 					split : true,
 					width: 360,
 					minWidth : 320,
 					maxWidth : 500,
-					layout : 'fit'
+					layout : 'fit',
+                    collapseMode: 'header'
 				}, cfg);
 
 		Portal.ui.RightDetailsPanel.superclass.constructor.call(this, config);
-		
-        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, message) {
-            this.update(message)
+
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
+            this.selectedLayer = openLayer;
+
+            if (this.rendered) {
+                this.update(this.selectedLayer);
+            }
+            else {
+                this.on('afterlayout', this._delayedAddFirstLayer);
+            }
         }, this);
 
+        Ext.MsgBus.subscribe('hideLayerDetailsCheck', function (subject, checkBox) {
+            if (checkBox.checked) {
+                this.hideLayerDetailsChecked = true;
+                this.collapse();
+            }
+            else {
+                this.hideLayerDetailsChecked = false;
+                this.expand();
+            }
+        }, this);
 	},
 
-	// check whether the panel has been rendered before calling the default
-	// expand method
-	expand : function() {
-		if (this.rendered) {
-			Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
-		}
-	},
+    initComponent: function() {
+        this.detailsPanelItems = new Portal.details.DetailsPanel();
 
-    expandIfUnhidden: function() {
-        if(!(Portal.app.config.hideLayerOptions === true)) {
-            this.expand.call(this, arguments);
-        }
+        this.items = [this.detailsPanelItems];
+
+        this.detailsPanelItems.hideDetailsPanelContents();
+        Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
+        this.on("expand", function() {
+            this.update(this.selectedLayer);
+        }, this);
     },
 
-	expandFinished : function() {
+    expand: function(animate) {
+        if (this.hideLayerDetailsChecked) {
+            return this;
+        }
+        return Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
+    },
 
-		// should always be set, but a user could open the panel before adding
-		// layers!!
-		if (this.selectedLayer != null) {
-			this.detailsPanelItems.updateDetailsPanel(this.selectedLayer, true);
-		}
-	},
+    _delayedAddFirstLayer: function() {
+        this.un('afterlayout', this._delayedAddFirstLayer);
+        // The panel believes it is expanded so we have to trick it into thinking it's collapsed
+        this.collapsed = true;
+        this.update(this.selectedLayer);
+    },
 
-	initComponent : function() {
-		this.detailsPanelItems = new Portal.details.DetailsPanel();
-		this.selectedLayer = null;
-		this.lockedPanel = false;
-
-		this.items = [this.detailsPanelItems];
-
-		this.detailsPanelItems.hideDetailsPanelContents();
-		Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
-		this.on("expand", this.expandFinished, this);
-
-	},
-
-	getDetailsPanelItems : function() {
+	getDetailsPanelItems: function() {
 		return this.detailsPanelItems;
 	},
 
 	// A new layer has been added or selected ("openlayer" may be null, e.g. when "Remove All Layers"
 	// has been clicked).
-	update : function(openlayer) {
+	update: function(openlayer) {
 		this.selectedLayer = openlayer;
 		
 		if (openlayer) {
@@ -88,22 +95,11 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
     		
     		this.text = openlayer.name;
     		this.setTitle(openlayer.name);
-    
-    		// show new layer details unless user requested 'hideLayerOptions' or
-    		// || !viewport.isMapVisible() check if the map is still in focus - not
-    		// the search
-    		if (!(Portal.app.config.hideLayerOptions === true)) {
-    
-    			if (this.collapsed) {
-    				// will updateDetailsPanel after expand
-    				this.expand();
-    			} else {
-    				this.detailsPanelItems.updateDetailsPanel(openlayer);
-    			}
+    		if (this.hideLayerDetailsChecked) {
+                this.collapse(true);
     		}
             else {
-    			this.detailsPanelItems.updateDetailsPanel(openlayer);
-    			this.collapse(true);
+                this.collapsed ? this.expand() : this.detailsPanelItems.updateDetailsPanel(openlayer);
     		}
 		}
 		else {
