@@ -148,11 +148,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.autoZoom = checked;
     },
 
-    layerOptionsCheckboxHandler:function (box, checked) {
-        Portal.app.config.hideLayerOptions = checked;
-        this.hideLayerOptions = checked;
-    },
-
     reset:function () {
         this._closeFeatureInfoPopup();
         this.zoomToInitialBbox();

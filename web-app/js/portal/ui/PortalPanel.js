@@ -49,9 +49,5 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
 	getMapPanel: function() {
 		return this.mapPanel;
-    },
-
-    expandRightDetailsPanel: function() {
-        this.rightDetailsPanel.expandIfUnhidden();
     }
 });
