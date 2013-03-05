@@ -99,6 +99,8 @@ databaseChangeLog = {
 	include file: '20121218-DN-StyleAbstractTextColumn.groovy'
 
     include file: '20130218-AM-ServerOwnerPermissions.groovy'
+    
+    include file: '20130301-PBL-DefaultLayerZoom.groovy' 
 
 
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs

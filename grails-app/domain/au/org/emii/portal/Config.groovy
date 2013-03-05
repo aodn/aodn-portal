@@ -26,6 +26,8 @@ class Config {
     // Map behaviour
     String initialBbox
     Boolean autoZoom
+    Boolean enableDefaultDatelineZoom
+    String defaultDatelineZoomBbox
 
     // Menus
     Menu baselayerMenu
@@ -109,6 +111,8 @@ class Config {
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
         wmsScannerCallbackPassword( nullable: true )
+        enableDefaultDatelineZoom(nullable:true)
+        defaultDatelineZoomBbox(size:10..50)
     }
     
     static Config activeInstance() {

@@ -102,6 +102,16 @@ class ConfigTests extends GrailsUnitTestCase {
         testConfig.initialBbox = "123456789012345678901234567890123456789012345678901"
         assertFalse testConfig.validate()
         assertEquals "bbox size is too large", "size", testConfig.errors["initialBbox"]
+        
+        testConfig = getValidInstance()
+        testConfig.defaultDatelineZoomBbox = "123456789012345678901234567890123456789012345678901"
+        assertFalse testConfig.validate()
+        assertEquals "bbox size is too large", "size", testConfig.errors["defaultDatelineZoomBbox"]
+        
+        testConfig = getValidInstance()
+        testConfig.defaultDatelineZoomBbox = "123456789"
+        assertFalse testConfig.validate()
+        assertEquals "bbox size is too small", "size", testConfig.errors["defaultDatelineZoomBbox"]
 
         testConfig = getValidInstance()
         testConfig.downloadCartFilename= ""
