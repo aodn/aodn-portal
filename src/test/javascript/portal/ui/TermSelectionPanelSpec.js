@@ -74,10 +74,10 @@ describe("Portal.ui.TermSelectionPanel", function()
         });
         selectPanel.selectionStore.setFilterValue('filter1|filter2');
 
-	expect(selectPanel.selectionStore.getCount()).toEqual(2);
+        expect(selectPanel.selectionStore.getCount()).toEqual(2);
 
-	selectPanel.removeAnyFilters();
-	expect(selectPanel.selectionStore.getCount()).toEqual(0);
+        selectPanel.removeAnyFilters();
+        expect(selectPanel.selectionStore.getCount()).toEqual(0);
 	
     });
 
