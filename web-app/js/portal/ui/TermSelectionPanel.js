@@ -148,9 +148,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
                 this.deleteFrom(this.getStore().getCount() - 1, true);
             },
 
-            silentlyRemoveLast:function () {
+            clear: function () {
 
-                this.deleteFrom(this.getStore().getCount() - 1, false);
+                this.deleteFrom(0, false);
             },
 
             deleteFrom:function (index, searchAfterwards) {
@@ -326,7 +326,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     removeAnyFilters:function () {
 
-        this.selectedView.silentlyRemoveLast();
+        this.selectedView.clear();
         this.collapse();
     },
 
