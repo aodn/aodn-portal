@@ -159,7 +159,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.organisationFilter.removeAnyFilters();
         this.dateFilter.removeAnyFilters();
 
-        this.searcher.search();
+        this.searcher.search(true);
     },
 
     _setClearAllLinkVisibility: function() {
