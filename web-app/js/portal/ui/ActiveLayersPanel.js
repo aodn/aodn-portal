@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,82 +8,112 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
-	
-	constructor: function(cfg) {
-		
-		var config = Ext.apply({
-			title: "Active Layers<br><i><small>No layers added to map</small></i>",
-	        id: 'activeLayerTreePanel',
-	        enableDD: true,
-			useArrows: true,
-            rootVisible: false,
-            
-	        root: new GeoExt.tree.OverlayLayerContainer({        
-	            layerStore: cfg.layerStore,
-	            leaf: false,
-	            expanded: true,
-                loader: new GeoExt.tree.LayerLoader({
-					filter: function(record){
-						var layer = record.getLayer();
-						if(layer.isAnimatedSlice == undefined){
-							return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
-						}
-						return false;
-					},
-					
-					createNode: function(attr) {
-					    
-	                    attr.uiProvider = Portal.ui.ActiveLayersTreeNodeUI;
+
+    constructor:function (cfg) {
+
+        var config = Ext.apply({
+            title:"Active Layers<br><i><small>No layers added to map</small></i>",
+            id:'activeLayerTreePanel',
+            enableDD:true,
+            useArrows:true,
+            rootVisible:false,
+
+            root:new GeoExt.tree.OverlayLayerContainer({
+                layerStore:cfg.layerStore,
+                leaf:false,
+                expanded:true,
+                loader:new GeoExt.tree.LayerLoader({
+                    filter:function (record) {
+                        var layer = record.getLayer();
+                        if (layer.isAnimatedSlice == undefined) {
+                            return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
+                        }
+                        return false;
+                    },
+
+                    createNode:function (attr) {
+
+                        attr.uiProvider = Portal.ui.ActiveLayersTreeNodeUI;
                         return GeoExt.tree.LayerLoader.prototype.createNode.call(this, attr);
-	                }
-				}),
-				
-				listeners: {
-					// fake the selected node
-					// initial loading
-					scope: this,
-					append: function( tree, thisNode, node, index ) {
-							node.setCls('x-tree-selected');
-					},
-					// subsequent tree nodes
-					insert: function( tree, thisNode, node, refNode ) {
-						this.setActiveNode(node);
-					}
-				}
-	        })
-		
-		}, cfg);
-		Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
-		this.addEvents('zoomtolayer', 'selectedactivelayerchanged');
-		
-		this.on("click", this.activeLayersTreePanelClickHandler, this);
-		this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
+                    }
+                }),
+
+                listeners:{
+                    // fake the selected node
+                    // initial loading
+                    scope:this,
+                    append:function (tree, thisNode, node, index) {
+                        node.setCls('x-tree-selected');
+                    },
+                    // subsequent tree nodes
+                    insert:function (tree, thisNode, node, refNode) {
+                        this.setActiveNode(node);
+                    }
+                }
+            })
+
+        }, cfg);
+        Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
+        this.addEvents('zoomtolayer', 'selectedactivelayerchanged');
+
+        this.on("click", this.activeLayersTreePanelClickHandler, this);
+        this.on("checkchange", this.activeLayersTreePanelCheckChangeHandler, this);
         this.mon(this.root, 'append', this.updateTitle, this);
         this.mon(this.root, 'insert', this.updateTitle, this);
         this.mon(this.root, 'remove', this.updateTitle, this);
-		this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
-        this.on('remove', this.onActiveLayerRemoved, this);
+        this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
         this.on('beforeremove', this.beforeActiveLayerRemoved, this);
-	},
-	
-	setActiveNode: function(node) {		
-		this.getRootNode().eachChild(function(n) {
-			if (n === node) {	
-				n.setCls('x-tree-selected');
-			}
-			else {		
-				n.setCls('');
-				n.unselect(true);
-			}
-		});
-	},	
 
-	activeLayersTreePanelClickHandler: function(node, event) {
+        Ext.MsgBus.subscribe('layerRemoved', function (subject, openLayer) {
+
+            if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
+                //Ext gets confused if we don't select first node first
+                // it seems to get visually selected, but not really selected, automatically
+                this.getActiveLayerNodes()[0].select();
+
+                //if we found a node equivilant to the old node, then select it,
+                // other wise just keep the first node selected
+
+                if(this.oldSelected) {
+                    var newSelected = this.findNodeByLayer(this.oldSelected.attributes.layer);
+                    if (newSelected) {
+                        newSelected.select();
+                    }
+                    this.oldSelected = null;
+            }
+
+            }
+        }, this);
+    },
+
+    findNodeByLayer:function (layer) {
+        var nodes = this.getActiveLayerNodes();
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].attributes.layer === layer) {
+                return nodes[i]
+            }
+        }
+        return null;
+    },
+
+    setActiveNode:function (node) {
+        this.getRootNode().eachChild(function (n) {
+            if (n === node) {
+                n.setCls('x-tree-selected');
+            }
+            else {
+                n.setCls('');
+                n.unselect(true);
+            }
+        });
+    },
+
+    activeLayersTreePanelClickHandler:function (node, event) {
         this.setActiveNode(node);
-		node.getUI().toggleCheck(true);
-	},
+        node.getUI().toggleCheck(true);
+    },
 
-    activeLayersTreePanelCheckChangeHandler: function(node, checked) {
+    activeLayersTreePanelCheckChangeHandler:function (node, checked) {
         var checkedLayers = this.getChecked();
         if (checkedLayers.length == 0) {
             this.setActiveNode(null); // makes nothing active
@@ -93,101 +122,71 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
             Ext.MsgBus.publish("selectedLayerChanged", null);
         }
     },
-		
-	activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node)	{
-		if (node != null) {
-			this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
-			Ext.MsgBus.publish("selectedLayerChanged", node.layer);
-	    } 
-	},
 
-    beforeActiveLayerRemoved: function(tree, parent, node) {
-        if (node.isSelected()) {
-            this.removingSelectedNode = true;
-
-            return;
+    activeLayersTreePanelSelectionChangeHandler:function (selectionModel, node) {
+        if (node != null) {
+            this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
+            Ext.MsgBus.publish("selectedLayerChanged", node.layer);
         }
+    },
 
-        if (node.isLast()) {
-            // Assume this is the most recently added node and that is the one we are removing
-            this.removingSelectedNode = true;
+    beforeActiveLayerRemoved:function (tree, parent, node) {
+        var selected = this.getSelectedNode();
+
+        if (selected) {
+            this.oldSelected = selected;
         }
-        this.getRootNode().eachChild(function(n) {
-            if (n.isSelected()) {
-                // There is a node selected and it's not the one being removed
-                delete this.removingSelectedNode
+    },
+
+    layerHasBoundingBox:function (layer) {
+        // TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
+        // Or, can "hasBoundingBox" be made static?
+        return this.mapScope.hasBoundingBox(layer);
+    },
+
+    getActiveLayerNodes:function () {
+        var leafNodes = [];
+        this.addLeafNodes(this.getRootNode(), leafNodes);
+        return leafNodes;
+    },
+
+    addLeafNodes:function (node, leafNodes) {
+        Ext.each(node.childNodes, function (child, index, all) {
+            if (child.leaf) {
+                leafNodes.push(child);
             }
-        });
+            else {
+                this.addLeafNodes(child, leafNodes);
+            }
+        }, this);
     },
 
-    onActiveLayerRemoved: function(tree, parent, node) {
-        //console.trace();
-        if (parent.hasChildNodes() && this.removingSelectedNode) {
-            delete this.removingSelectedNode;
-            parent.findChildBy(
-                function() {
-                    // Just get the first node
-                    return true;
-                }
-            ).select();
-        }
-        else {
-            console.log(this.getRootNode().hasChildNodes());
-            //this.activeLayersTreePanelCheckChangeHandler(null, false);
+    getSelectedNode:function () {
+        return this.getSelectionModel().getSelectedNode();
+    },
+
+    getSelectedLayer:function () {
+        var node = this.getSelectedNode();
+        return (node != null) ? this.getSelectedNode().layer : null;
+    },
+
+    zoomToLayer:function () {
+        if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
+
         }
     },
 
-	layerHasBoundingBox: function(layer)
-	{
-		// TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
-		// Or, can "hasBoundingBox" be made static?
-		return this.mapScope.hasBoundingBox(layer);
-	},
-	
-	getActiveLayerNodes: function() {
-		var leafNodes = [];
-		this.addLeafNodes(this.getRootNode(), leafNodes);
-		return leafNodes;
-	},
-	
-	addLeafNodes: function (node, leafNodes) {
-		Ext.each(node.childNodes, function(child, index, all) {
-			if (child.leaf) {
-				leafNodes.push(child);
-			}
-			else {
-				this.addLeafNodes(child, leafNodes);
-			}
-		}, this);
-	},
-	
-	getSelectedNode: function() {
-		return this.getSelectionModel().getSelectedNode();
-	},
-	
-	getSelectedLayer: function () {
-		var node = this.getSelectedNode();
-		return (node != null) ? this.getSelectedNode().layer : null;
-	},
-	
-	zoomToLayer: function() {
-		if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
-			
-		}
-	},
-	
-	/**
-	 * Bug fix, see: http://www.sencha.com/forum/showthread.php?105047-Setting-TreeNode.uiProvider-Causes-RootVisible-to-be-Ignored
-	 */
-	setRootNode : function(node){
-       
-	    node = Portal.ui.ActiveLayersPanel.superclass.setRootNode.call(this, node);
-	    node.ui = new Ext.tree.RootTreeNodeUI(node);
-       
-	    return node;
-	},
+    /**
+     * Bug fix, see: http://www.sencha.com/forum/showthread.php?105047-Setting-TreeNode.uiProvider-Causes-RootVisible-to-be-Ignored
+     */
+    setRootNode:function (node) {
+        node = Portal.ui.ActiveLayersPanel.superclass.setRootNode.call(this, node);
+        node.ui = new Ext.tree.RootTreeNodeUI(node);
 
-    updateTitle: function() {
+        return node;
+    },
+
+    updateTitle:function () {
         var title = 'Active Layers';
         if (!this.root.hasChildNodes()) {
             title += '</br><i><small>No layers added to map</small></i>';

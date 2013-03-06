@@ -214,6 +214,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         Ext.MsgBus.subscribe('removeLayer', function (subject, openLayer) {
             this.removeUsingOpenLayer(openLayer);
+            Ext.MsgBus.publish('layerRemoved', openLayer);
         }, this);
 
         Ext.MsgBus.subscribe('removeAllLayers', function (subject, openLayer) {
