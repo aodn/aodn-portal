@@ -126,7 +126,8 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
 
             // create layer store with only baselayers
             this.store = new GeoExt.data.LayerStore({
-                layers : this.map.getLayersBy('isBaseLayer', true),
+                data : this.map.getLayersBy('isBaseLayer', true),
+                initDir: 0,
                 map : this.map,
                 onAddLayer: function(evt) {
 
