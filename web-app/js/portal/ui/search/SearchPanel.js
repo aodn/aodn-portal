@@ -85,6 +85,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.searcher, 'searchcomplete', this._checkSize, this);
         this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
+        this.searcher.on('summaryOnlySearchComplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
 
         this.relayEvents(this.resultsGrid, ['adddownload', 'addlayer']);
 
