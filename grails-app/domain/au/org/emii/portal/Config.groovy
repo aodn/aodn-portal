@@ -65,6 +65,7 @@ class Config {
     List defaultLayers
 
     String wmsScannerCallbackPassword
+    String wfsScannerCallbackPassword
 
     static hasMany = [defaultLayers:Layer]    
         
@@ -110,6 +111,7 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
+        wmsScannerCallbackPassword( nullable: true )
         wmsScannerCallbackPassword( nullable: true )
         enableDefaultDatelineZoom(nullable:true)
         defaultDatelineZoomBbox(size:10..50)

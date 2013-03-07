@@ -127,12 +127,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 					var filters = Ext.util.JSON.decode(resp.responseText);
 					if(filters.length > 0){
 						this.setVisible(true);
-						Ext.each(filters,
-							function(filter, index, all) {
-								this.createFilter(layer, filter);
-							},
-							this
-						);
+                        Ext.each(filters,
+                            function(filter, index, all) {
+                                if(filter.enabled){
+                                    this.createFilter(layer, filter);
+                                }
+                            },
+                            this
+                        );
 
 						this.addButton = new Ext.Button({
 							cls: "x-btn-text-icon",

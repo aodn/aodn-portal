@@ -57,7 +57,7 @@ class User {
 
     static def current = {
         def currentSubject = SecurityUtils.getSubject()
-        def principal = currentSubject?.getPrincipal()
+        def principal = currentSubject?.getPrincipal() as Integer
         if (principal) {
             def userInstance = User.get(principal)
 

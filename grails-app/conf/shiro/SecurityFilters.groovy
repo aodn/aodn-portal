@@ -194,7 +194,13 @@ class SecurityFilters {
             }
         }
 
-        filterAccess(controller: "filter", action: "edit|update|delete|") {
+        filterUpdateAccess(controller: "filter", action: "updateFilter") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
+        filterAccess(controller: "filter", action: "edit|update|delete") {
             before = {
                 def filter = Filter.get(params.id)
                 def permission = _hasLayerFilterPermission(filter.layer)

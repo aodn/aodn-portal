@@ -18,6 +18,7 @@ class Filter {
     static belongsTo = [layer: Layer]
     static hasMany = [possibleValues: String]
     List<String> possibleValues
+    boolean enabled
 
     public Filter(){
         possibleValues = []
@@ -50,6 +51,7 @@ class Filter {
         filterData["name"] = this.name
         filterData["possibleValues"] = this.possibleValues
         filterData["layerId"] = this.layer.id
+        filterData["enabled"] = this.enabled
         return filterData
      }
 

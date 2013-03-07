@@ -50,6 +50,15 @@
                                 </td>
                             </tr>
 
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label"><g:message code="filter.label.label" default="Enabled" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'enabled', 'errors')}">
+                                    <g:checkBox name="enabled" checked="${filterInstance?.label}" />
+                                </td>
+                            </tr>
+
                              <tr class="prop">
 								<td valign="top" class="name">
 								  <label for="label"><g:message code="filter.label.label" default="Label" /></label>
