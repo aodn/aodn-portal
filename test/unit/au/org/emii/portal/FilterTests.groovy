@@ -11,25 +11,13 @@ package au.org.emii.portal
 import grails.test.GrailsUnitTestCase
 
 class FilterTests extends GrailsUnitTestCase {
+
     protected void setUp() {
         super.setUp()
     }
 
     protected void tearDown() {
         super.tearDown()
-    }
-
-    void testConstraints() {
-
-        mockDomain(Filter)
-
-        def filter1 = new Filter(name : "vesselName", type : FilterTypes.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"]);
-        mockForConstraintsTests(Filter, [filter1])
-
-        def testFilter = new Filter()
-        assertFalse testFilter.validate()
-        assertEquals "nullable", testFilter.errors["name"]
-        assertEquals "nullable", testFilter.errors["type"]
     }
 
     void testToJSON(){
@@ -48,10 +36,10 @@ class FilterTests extends GrailsUnitTestCase {
         expected["name"] = "vesselName"
         expected["possibleValues"] = ["ship1", "ship2", "ship3"]
         expected["layerId"] = 3
-                         
+
         println "expected"
         println(expected)
-        
+
         println "generated"
         println filter1.toLayerData().toString()
 

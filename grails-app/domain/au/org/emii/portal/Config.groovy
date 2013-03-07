@@ -8,7 +8,7 @@
 
 package au.org.emii.portal
 
-import au.org.emii.portal.display.MenuJsonCache;
+import au.org.emii.portal.display.MenuJsonCache
 
 /*
 Configuration domain for the portal
@@ -42,7 +42,7 @@ class Config {
     Date motdEnd
     String footerContent
     Integer footerContentWidth
-    
+
     // heights and widths
     Integer popupWidth
     Integer popupHeight
@@ -50,7 +50,7 @@ class Config {
     Integer headerHeight
     Integer footerHeight
     Integer activeLayersHeight
-    
+
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
@@ -60,33 +60,33 @@ class Config {
 
     String metadataLinkProtocols
     String metadataLayerProtocols
-    Integer mapGetFeatureInfoBuffer    
-    String baselayerList    
+    Integer mapGetFeatureInfoBuffer
+    String baselayerList
     List defaultLayers
 
     String wmsScannerCallbackPassword
 
-    static hasMany = [defaultLayers:Layer]    
-        
-    static transients = [ 
+    static hasMany = [defaultLayers:Layer]
+
+    static transients = [
         "baselayerList" // baselayerMenu can be expanded to baselayers
-    ] 
+    ]
     static mapping = {
         footerContent type:'text'
         downloadCartConfirmationWindowContent type: "text"
     }
-    
+
     static constraints = {
         name(size:5..255,nullable:true)
         proxy(nullable:true)
         proxyPort(nullable:true)
         initialBbox(size:10..50)
-        autoZoom()    
+        autoZoom()
         enableMOTD(nullable:true)
         motd(nullable:true)
         motdStart(nullable:true)
         motdEnd(nullable:true)
-        footerContent(nullable:true,maxSize: 4000)   
+        footerContent(nullable:true,maxSize: 4000)
         footerContentWidth(nullable:true,range: 150..1000)
         catalogUrl(url: true)
         searchUsingBboxByDefault()
@@ -114,11 +114,11 @@ class Config {
         enableDefaultDatelineZoom(nullable:true)
         defaultDatelineZoomBbox(size:10..50)
     }
-    
+
     static Config activeInstance() {
         return Config.list()[0]
     }
-	
+
 	static def recacheDefaultMenu() {
 
 		def configInstance = Config.activeInstance()
