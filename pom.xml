@@ -406,7 +406,7 @@
 						<exclude>portal/common/DownloadCart.js</exclude>
 					</sourceExcludes>
                     <specIncludes>
-                        <include>spec-helper.js</include>
+                        <include>spec_helper.js</include>
                         <include>**/*.js</include>
                     </specIncludes>
 				</configuration>
