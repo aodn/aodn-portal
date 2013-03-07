@@ -60,6 +60,8 @@ class DummySetup extends GroovyTestCase{
 		dummy.save(flush:true)
 
 		Config conf = new Config(initialBbox: "180,10,-180,10", autoZoom: false,
+        enableDefaultDatelineZoom: false,
+        defaultDatelineZoomBbox: "-69,60,1.2,180",
 		searchUsingBboxByDefault: true,
 		baselayerMenu:dummy, defaultMenu: dummy, contributorMenu: dummy, regionMenu: dummy,
 		headerHeight: 100, footerHeight: 100, activeLayersHeight: 100, popupWidth: 1,
