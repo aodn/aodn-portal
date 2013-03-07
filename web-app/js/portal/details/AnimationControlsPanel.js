@@ -683,7 +683,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 					if (evt.property == "order" && this.map != null) 
 					{
-						for (var i = 0; i < this.slides.length; i++) 
+						for (var i = 0; i < this.slides.length; i++)
 						{
 							if (this.slides[i]==evt.layer)
 							{
@@ -702,20 +702,21 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						}
 					}
 				}
-				
+
+                //this runs everytime any layer is removed.
 				this.originalLayer._onLayerRemoved = function(evt) 
 				{
-					if (evt.layer == this)
+					if (evt.layer === this)
 					{
-						for (var i = 0; i < evt.layer.slides.length; i++)
-						{
-						    // Not sure when .map becomes defined, but it is undefined for slides that
-						    // haven't loaded, and hence without this check, removeLayer fails when removing
-						    // layer that hasn't fully loaded.
-						    if (evt.layer.slides[i].map) {
-						        evt.layer.slides[i].map.removeLayer(this.slides[i]);
-						    }
-						}
+                        for (var i = 0; i < evt.layer.slides.length; i++)
+                        {
+                            //if a slide has already been removed it won't have a map,
+                            // hence remove if it still has a map
+                            if (evt.layer.slides[i].map) {
+                                //removing from map directly ends up with a null pointer error
+                                Ext.MsgBus.publish("removeLayer", this.slides[i]);
+                            }
+                        }
 					}
 				}
 				
@@ -725,6 +726,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					{
 						for (var i = 0; i < this.slides.length; i++) 
 						{
+                            //this seems to also add the slides to the layerStore somehow...
 							this.map.addLayer(this.slides[i]);
 						}
 					}
