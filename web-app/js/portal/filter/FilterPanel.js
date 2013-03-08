@@ -86,7 +86,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 	_addLabel: function(filter){
 		var label = new Ext.form.Label({
 			text: filter.label + ": ",
-			style: 'font-size: 11px; text-align: top;'
+			style: 'font-size: 11px;'
 		});
 		this.add(label);
 	},
