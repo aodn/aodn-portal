@@ -234,8 +234,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		tup.link["type"] =  "application/x-msexcel";
 		tup.link["href"] =  this._makeWFSURL();
 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
-		tup.link["preferredFname"] = this.layer.params.LAYERS + ".csv";
+		tup.link["preferredFname"] = this._makePreferredFname();
 
         addToDownloadCart(tup);
+    },
+    
+    _makePreferredFname: function(){
+        // replace ':' used to namespace layers by geoserver with '#'
+        // as its not allowed in windows filenames
+        var preferredName = this.layer.params.LAYERS.replace(':', '#');
+        
+        return preferredName + ".csv"
     }
 });
