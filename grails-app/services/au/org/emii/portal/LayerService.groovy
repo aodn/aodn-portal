@@ -62,10 +62,8 @@ class LayerService {
                     // Check for duplicates
                     if ( existingLayers[ uid ] ) {
 
-                        log.warn "*********************************"
-                        log.warn "*** Duplicate name + title id: $uid"
-                        log.warn "*********************************"
-                    }
+						log.info "[PROBLEM] Duplicate name + title id: $uid"
+					}
 
                     // Record for stats
                     if ( it.activeInLastScan ) {
