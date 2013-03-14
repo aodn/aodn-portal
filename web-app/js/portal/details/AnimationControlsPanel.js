@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -590,181 +589,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			alert("You must select an end date that is later than the start date");
 			return false;
 		} else {
-			this.originalLayer = this.selectedLayer;
-
-			if (this.originalOpacity == -1)
-				this.originalOpacity = this.selectedLayer.opacity;
-
-			this.originalLayer.isAnimated = true;
-			if (this.originalLayer.name.indexOf("animated") < 0) {
-				this.originalLayer.setName(this.originalLayer.name
-						+ " (animated)");
-
-				// setup originalLayer as an animated layer adding and
-				// overriding methods and parameters
-
-				// NOTE: isAnimatedSlice = a layer that is part of the
-				// animation, whereas
-				// isAnimated denotes the ORIGINAL layer that is currently
-				// animated.
-
-				// can't clone later, or the sublayers will pick up the extra
-				// stuff we're about to add
-				this.originalLayer.template = this.originalLayer.clone();
-
-				for (var i = 0, len = this.originalLayer.div.childNodes.length; i < len; ++i) {
-					var element = this.originalLayer.div.childNodes[i].firstChild;
-					OpenLayers.Util.modifyDOMElement(element, null, null, null,
-							null, null, null, 0);
-				}
-
-				this.originalLayer.slides = new Array();
-
-				this.currentSlide = 0;
-				this.playing = false;
-				this.originalLayer.addSlide = function(openlayer) {
-					this.slides.push(openlayer);										
-
-				}
-				// might be better to go other way round, ie sublayers retrieve
-				// opacity from their parent, but think some things access
-				// opacity directly rather than through get method
-				this.originalLayer.setOpacity = function(opacity) {
-					this.opacity = opacity;
-					for (var i = 0; i < this.slides.length; i++) {
-						this.slides[i].setOpacity(opacity);
-					}
-				}
-
-				this.originalLayer.mergeNewParams = function(newParams) {
-					//TODO:things will go very wrong if fed a TIME param here...
-					for (var i = 0; i < this.slides.length; i++) {
-						this.slides[i].mergeNewParams(newParams);
-					}
-					return OpenLayers.Layer.WMS.prototype.mergeNewParams.apply(
-							this, newParams);
-				}
-
-				this.originalLayer.display = function(value) {
-					if (!value) {
-						for (var i = 0; i < this.slides.length; i++) {
-							this.slides[i].display(false);
-						}
-					}
-				}
-				this.originalLayer.setVisibility = function(value) {
-					this.visibility = value;
-					if (!value) {
-						for (var i = 0; i < this.slides.length; i++) {
-							this.slides[i].setVisibility(false);
-						}
-					} else {
-						// if visibility is off then won't update on zoom
-						for (var i = 0; i < this.slides.length; i++) {
-							this.slides[i].setVisibility(true);
-							this.slides[i].display(false);
-						}
-					}
-					this.display(false);
-					this.events.triggerEvent("visibilitychanged");
-				}
-				
-				this.originalLayer.setCurrentSlide = function(index) {
-					this.currentSlide = index;
-					for (var i = 0; i < this.slides.length; i++) {
-						this.slides[i].display(i == index);
-					}
-				}
-
-				this.originalLayer._onChangeLayer = function(evt) 
-				{
-					// if this layer's order(bottom,second from top, etc) is changed, change the order
-					// of the frames aswell. 
-
-					if (evt.property == "order" && this.map != null) 
-					{
-						for (var i = 0; i < this.slides.length; i++)
-						{
-							if (this.slides[i]==evt.layer)
-							{
-								return;
-							}
-						}
-
-						for (var i = 0; i < this.slides.length; i++) 
-						{
-							//Weird stuf happens here, but it works.
-							//just moving the slides doesn't register in the active layers panel
-							//So remove and add...
-							this.map.removeLayer(this.slides[i]);
-							this.map.addLayer(this.slides[i])
-							this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this)+1);
-						}
-					}
-				}
-
-                //this runs everytime any layer is removed.
-				this.originalLayer._onLayerRemoved = function(evt) 
-				{
-					if (evt.layer === this)
-					{
-                        for (var i = 0; i < evt.layer.slides.length; i++)
-                        {
-                            //if a slide has already been removed it won't have a map,
-                            // hence remove if it still has a map
-                            if (evt.layer.slides[i].map) {
-                                //removing from map directly ends up with a null pointer error
-                                Ext.MsgBus.publish("removeLayer", this.slides[i]);
-                            }
-                        }
-					}
-				}
-				
-				this.originalLayer._onLayerAdded = function(evt) 
-				{
-					if (evt.layer == this)
-					{
-						for (var i = 0; i < this.slides.length; i++) 
-						{
-                            //this seems to also add the slides to the layerStore somehow...
-							this.map.addLayer(this.slides[i]);
-						}
-					}
-				}
-				
-				this.originalLayer._onMove = function() {
-					// Openlayers.Map seems to reset display of layers after a move
-					// so rereset it back.
-					if(this.getVisibility())
-					{
-						for (var i = 0; i < this.slides.length; i++) {
-							var value = i == this.currentSlide
-							this.slides[i].display(value);
-							this.slides[i].redraw();
-						}
-					}
-				}
-
-				this.originalLayer.events.on({
-							"visibilitychanged" : this._onLayerVisibilityChanged,
-							scope : this
-						});
-
-				this.map.events.on({
-					"removelayer" : this.originalLayer._onLayerRemoved,
-					scope : this.originalLayer
-				});
-
-				this.map.events.on({
-							"addlayer" : this.originalLayer._onLayerAdded,
-							scope : this.originalLayer
-						});
-						
-				this.map.events.on({
-							"changelayer" : this.originalLayer._onChangeLayer,
-							scope : this.originalLayer
-						});
-			}
+            this._convertSelectedLayerToAnimatedLayer();
 
 			var startIndex;
 			var endIndex;
@@ -838,6 +663,189 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this._updateButtons(this.state.PLAYING);
 		}
 	},
+
+
+    /* Adds methods to the selectedLayer for supporting animation operations.
+        TODO:We should just extend the OpenLayers.WMS class to allow for animations in the first place,
+     */
+    _convertSelectedLayerToAnimatedLayer : function() {
+        this.originalLayer = this.selectedLayer;
+
+        if (this.originalOpacity == -1)
+            this.originalOpacity = this.selectedLayer.opacity;
+
+        this.originalLayer.isAnimated = true;
+        if (this.originalLayer.name.indexOf("animated") < 0) {
+            this.originalLayer.setName(this.originalLayer.name
+                + " (animated)");
+
+            // setup originalLayer as an animated layer adding and
+            // overriding methods and parameters
+
+            // NOTE: isAnimatedSlice = a layer that is part of the
+            // animation, whereas
+            // isAnimated denotes the ORIGINAL layer that is currently
+            // animated.
+
+            // can't clone later, or the sublayers will pick up the extra
+            // stuff we're about to add
+            this.originalLayer.template = this.originalLayer.clone();
+
+            for (var i = 0, len = this.originalLayer.div.childNodes.length; i < len; ++i) {
+                var element = this.originalLayer.div.childNodes[i].firstChild;
+                OpenLayers.Util.modifyDOMElement(element, null, null, null,
+                    null, null, null, 0);
+            }
+
+            this.originalLayer.slides = new Array();
+
+            this.currentSlide = 0;
+            this.playing = false;
+            this.originalLayer.addSlide = function(openlayer) {
+                this.slides.push(openlayer);
+
+            }
+            // might be better to go other way round, ie sublayers retrieve
+            // opacity from their parent, but think some things access
+            // opacity directly rather than through get method
+            this.originalLayer.setOpacity = function(opacity) {
+                this.opacity = opacity;
+                for (var i = 0; i < this.slides.length; i++) {
+                    this.slides[i].setOpacity(opacity);
+                }
+            }
+
+            this.originalLayer.mergeNewParams = function(newParams) {
+                //TODO:things will go very wrong if fed a TIME param here...
+                for (var i = 0; i < this.slides.length; i++) {
+                    this.slides[i].mergeNewParams(newParams);
+                }
+                return OpenLayers.Layer.WMS.prototype.mergeNewParams.apply(
+                    this, newParams);
+            }
+
+            this.originalLayer.display = function(value) {
+                if (!value) {
+                    for (var i = 0; i < this.slides.length; i++) {
+                        this.slides[i].display(false);
+                    }
+                }
+            }
+            this.originalLayer.setVisibility = function(value) {
+                this.visibility = value;
+                if (!value) {
+                    for (var i = 0; i < this.slides.length; i++) {
+                        this.slides[i].setVisibility(false);
+                    }
+                } else {
+                    // if visibility is off then won't update on zoom
+                    for (var i = 0; i < this.slides.length; i++) {
+                        this.slides[i].setVisibility(true);
+                        this.slides[i].display(false);
+                    }
+                }
+                this.display(false);
+                this.events.triggerEvent("visibilitychanged");
+            }
+
+            this.originalLayer.setCurrentSlide = function(index) {
+                this.currentSlide = index;
+                for (var i = 0; i < this.slides.length; i++) {
+                    this.slides[i].display(i == index);
+                }
+            }
+
+            this.originalLayer._onChangeLayer = function(evt)
+            {
+                // if this layer's order(bottom,second from top, etc) is changed, change the order
+                // of the frames aswell.
+
+                if (evt.property == "order" && this.map != null)
+                {
+                    for (var i = 0; i < this.slides.length; i++)
+                    {
+                        if (this.slides[i]==evt.layer)
+                        {
+                            return;
+                        }
+                    }
+
+                    for (var i = 0; i < this.slides.length; i++)
+                    {
+                        //Weird stuf happens here, but it works.
+                        //just moving the slides doesn't register in the active layers panel
+                        //So remove and add...
+                        this.map.removeLayer(this.slides[i]);
+                        this.map.addLayer(this.slides[i])
+                        this.map.setLayerIndex(this.slides[i], this.map.getLayerIndex(this)+1);
+                    }
+                }
+            }
+
+            //this runs everytime any layer is removed.
+            this.originalLayer._onLayerRemoved = function(evt)
+            {
+                if (evt.layer === this)
+                {
+                    for (var i = 0; i < evt.layer.slides.length; i++)
+                    {
+                        Ext.MsgBus.publish("removeLayer", this.slides[i]);
+
+                        //it seems that sometimes the store fails to remove the layer from the map.
+                        if(this.slides[i].map)
+                        {
+                            this.slides[i].map.removeLayer(this.slides[i]);
+                        }
+                    }
+                }
+            }
+
+            this.originalLayer._onLayerAdded = function(evt)
+            {
+                if (evt.layer == this)
+                {
+                    for (var i = 0; i < this.slides.length; i++)
+                    {
+                        //this seems to also add the slides to the layerStore somehow...
+                        this.map.addLayer(this.slides[i]);
+                    }
+                }
+            }
+
+            this.originalLayer._onMove = function() {
+                // Openlayers.Map seems to reset display of layers after a move
+                // so rereset it back.
+                if(this.getVisibility())
+                {
+                    for (var i = 0; i < this.slides.length; i++) {
+                        var value = i == this.currentSlide
+                        this.slides[i].display(value);
+                        this.slides[i].redraw();
+                    }
+                }
+            }
+
+            this.originalLayer.events.on({
+                "visibilitychanged" : this._onLayerVisibilityChanged,
+                scope : this
+            });
+
+            this.map.events.on({
+                "removelayer" : this.originalLayer._onLayerRemoved,
+                scope : this.originalLayer
+            });
+
+            this.map.events.on({
+                "addlayer" : this.originalLayer._onLayerAdded,
+                scope : this.originalLayer
+            });
+
+            this.map.events.on({
+                "changelayer" : this.originalLayer._onChangeLayer,
+                scope : this.originalLayer
+            });
+        }
+    },
 
 	_onLayerVisibilityChanged : function() {
 		if (!this.originalLayer.getVisibility()) {
