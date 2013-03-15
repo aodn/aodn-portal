@@ -209,5 +209,36 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(animationControlsPanel.isAnimating).toHaveBeenCalled();
             expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
         });
-	});
+    });
+
+
+
+        describe('animatedLayer', function() {
+            it("removes slide after parent layer is removed", function() {
+                var map = new OpenLayers.Map('map');
+                var layerStore = new Portal.data.LayerStore();
+                layerStore.bind(map);
+                map.addLayer(openLayer);
+
+                animationControlsPanel.setMap(map);
+                animationControlsPanel.setSelectedLayer(openLayer);
+
+                animationControlsPanel._convertSelectedLayerToAnimatedLayer();
+
+                var slide = new OpenLayers.Layer.WMS(
+                    "the title2",
+                    "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
+                    {},
+                    { isBaseLayer: false }
+                );
+                animationControlsPanel.originalLayer.addSlide(slide);
+
+                spyOn(Ext.MsgBus, 'publish');
+
+                openLayer._onLayerRemoved({layer:openLayer});
+
+
+                expect(Ext.MsgBus.publish).toHaveBeenCalledWith("removeLayer", slide);
+            });
+        });
 });
