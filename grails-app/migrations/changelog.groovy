@@ -104,6 +104,8 @@ databaseChangeLog = {
 
     include file: '20130305-PM-enableFilterFlag.groovy'
 
+    include file: '20130312-PM-WFSLayer.groovy'
+
 
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 

@@ -53,6 +53,8 @@ class Server {
                        "WMS-1.1.1",
                        "WMS-1.3.0",
                        "NCWMS-1.1.1",
+                       "GEO-1.1.1",
+                       "GEO-1.3.0",
                        //"NCWMS-1.3.0", // dont support until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
                        "THREDDS",
                        "GEORSS",

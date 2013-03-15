@@ -112,7 +112,7 @@ class Config {
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
         wmsScannerCallbackPassword( nullable: true )
-        wmsScannerCallbackPassword( nullable: true )
+        wfsScannerCallbackPassword( nullable: true )
         enableDefaultDatelineZoom(nullable:true)
         defaultDatelineZoomBbox(size:10..50)
     }

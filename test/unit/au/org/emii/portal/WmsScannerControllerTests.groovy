@@ -69,7 +69,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
             
-            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
+            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
 
             return [] // Test with empty server list
@@ -97,7 +97,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
             
-            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
+            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
             assertEquals "Allow discoveries should be 'true'", true, allowDiscoveries
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
             

@@ -19,9 +19,11 @@ class Filter {
     static hasMany = [possibleValues: String]
     List<String> possibleValues
     boolean enabled
+    boolean downloadOnly
 
     public Filter(){
         possibleValues = []
+        downloadOnly = false   //default
     }
 
     static constraints = {
@@ -29,6 +31,7 @@ class Filter {
         type()
         layer(nullable: false)
         label(blank: false)
+        downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
             if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox){
                 if(val.size() > 0)

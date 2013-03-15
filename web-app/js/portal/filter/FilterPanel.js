@@ -116,7 +116,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			Ext.Ajax.request({
 				url: this.GET_FILTER,
 				params: {
-					layerId: layer.grailsLayerId
+                    /*if(layer.hasWFSLayer())
+                        layerId: layer.wfsLayer.hrailsID
+                    else
+					    layerId: layer.grailsLayerId
+                    */
+                    layerId: layer.grailsLayerId
 				},
 				scope: this,
 				failure: function(resp) {
@@ -202,10 +207,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this._updateFilter();
     },
 
-    _makeWFSURL: function(){
+    _makeWFSURL: function(serverURL, layerName){
 
     	var query = Ext.urlEncode({
-			typeName: this.layer.params.LAYERS,
+			typeName: layerName,
 			SERVICE: "WFS",
 			outputFormat: "csv",
 			REQUEST: "GetFeature",
@@ -213,7 +218,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
 		});
 
-    	var wfsURL =  this.layer.server.uri.replace("/wms", "/wfs");
+    	var wfsURL =  serverURL.uri.replace("/wms", "/wfs");
 
     	if(wfsURL.indexOf("?") > -1)
     		wfsURL +=  "&" + query;
@@ -221,6 +226,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     		wfsURL += "?" + query;
 
 		return wfsURL;
+    },
+
+    _makeDownloadURL: function(){
+        if(this.layer.wfsLayer == null){
+            return this._makeWFSURL(this.layer.server.uri, this.layer.params.LAYERS);
+        }
+
+        return this._makeWFSURL(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
     _addToCart: function(){

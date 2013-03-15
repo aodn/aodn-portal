@@ -122,6 +122,9 @@ class FilterController {
 
     }
 
+    /**
+     * Note that values will be truncated to 256 characters, to fit the database schema.
+     */
     def updateFilter = {
         def postData = JSON.parse(params.filterData)
         if(_validateCredential(postData.password)){
@@ -150,11 +153,31 @@ class FilterController {
                 newFilters.each(){ name, theFilter ->
                     def filter = Filter.findByLayerAndName(layer, name)
 
-                    if(!filter){
-                        filter = new Filter(name: theFilter.name, type: theFilter.type, layer: layer, label: theFilter.name)
+                    def type = theFilter.type
+
+                    if(theFilter.type.startsWith("Geometry")){
+                        type = FilterTypes.BoundingBox
                     }
 
-                    filter.possibleValues = theFilter.possibleValues
+                    if(!filter){
+                        filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
+                    }
+
+                    /**
+                     * Currently restricting string values to 256 characters (as per database setting).  These
+                     * values should usually be something small, but there's been cases where a value contains
+                     * a long description.
+                     */
+                    filter.possibleValues = theFilter.possibleValues.collect{
+                        if(it.length() > 256){
+                            it[0..252] + "..."
+                        }
+                        else{
+                            it
+                        }
+                    }
+
+                    println filter.possibleValues
 
                     try{
                         if (!filter.hasErrors() && filter.save(flush: true)) {

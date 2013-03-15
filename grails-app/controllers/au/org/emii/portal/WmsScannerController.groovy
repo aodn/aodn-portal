@@ -17,7 +17,9 @@ class WmsScannerController {
     def serverTypesToShow = [ "WMS-1.1.1",
                               "WMS-1.3.0",
                               "NCWMS-1.1.1",
-                              "NCWMS-1.3.0" ]
+                              "NCWMS-1.3.0",
+                              "GEO-1.1.1",
+                              "GEO-1.3.0"]
 
     def statusText = [ (0): "Enabled",
                       (-1): "Enabled<br />(errors&nbsp;occurred)",
@@ -106,7 +108,7 @@ class WmsScannerController {
         try {
             Server server = Server.get( params.serverId )
 
-            def versionVal = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
+            def versionVal = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" ).replace("GEO-", "")
 
             def jobName     = URLEncoder.encode( "Server scan for '${server.name}'" )
             def jobDesc     = URLEncoder.encode( "Created by Portal, ${new Date().format( "dd/MM/yyyy hh:mm" )}" )
@@ -136,7 +138,7 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect action: "controls"
+        redirect controller: "scanner", action: "index"
     }
 
     def callUpdate = {
@@ -152,7 +154,7 @@ class WmsScannerController {
             return
         }
 
-        def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
+        def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" ).replace("GEO-", "")
 
         def jobType     = "WMS"
         def wmsVersion  = URLEncoder.encode( versionVal )
@@ -183,7 +185,7 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect action: "controls"
+        redirect controller: "scanner", action: "index"
     }
 
     def callDelete = {
@@ -208,7 +210,8 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect action: "controls"
+        redirect controller: "scanner", action: "index"
+
     }
 
     private void setFlashMessage(String response) {
@@ -280,5 +283,23 @@ class WmsScannerController {
     def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
 
         return url[-1..-1] != "/" ? "/" : ""
+    }
+
+    //Not catching exception here
+    def getStatus() {
+        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
+        def scanJobList = []
+
+        def url
+        def conn
+
+        url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
+        conn = url.openConnection()
+        conn.connect()
+
+        scanJobList = JSON.parse( conn.content.text ) // Makes the call
+
+
+        return scanJobList
     }
 }
