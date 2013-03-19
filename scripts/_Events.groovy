@@ -33,6 +33,10 @@ eventCompileStart = { kind ->
         println "Skipped gathering metadata as environment is 'development' or 'test'"
     }
     else {
+        if(System.getProperty("aodn.app.version"))
+        {
+            metadata.'app.version' = System.getProperty("aodn.app.version");
+        }
 
         println "Gathering metadata..."
 
