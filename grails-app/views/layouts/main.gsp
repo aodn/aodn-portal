@@ -72,7 +72,6 @@
 		   </user:loggedInUserInRole>
 		   <user:loggedInUserInRole roles="Administrator,ServerOwner">
                <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
-               <li class="controllerMenuItems"><g:link controller="scanner">Scanner Controls</g:link></li>
                 <li class="controllerMenuItems"><g:link controller="server" action="listByOwner">Edit Filters</g:link>
            </user:loggedInUserInRole>
 			</li>

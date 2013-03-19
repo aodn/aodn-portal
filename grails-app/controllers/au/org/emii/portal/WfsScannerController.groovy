@@ -52,7 +52,7 @@ class WfsScannerController {
             flash.message = "WFSScanner currently only supports GEOSERVER"
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
     }
 
 
@@ -93,7 +93,7 @@ class WfsScannerController {
             }
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
     }
 
     def _scanJobUrl() {
@@ -157,7 +157,7 @@ class WfsScannerController {
             flash.message = e.message
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
 
     }
 

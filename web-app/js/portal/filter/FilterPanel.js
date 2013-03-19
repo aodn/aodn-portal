@@ -218,7 +218,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
 		});
 
-    	var wfsURL =  serverURL.uri.replace("/wms", "/wfs");
+    	var wfsURL =  serverURL.replace("/wms", "/wfs");
 
     	if(wfsURL.indexOf("?") > -1)
     		wfsURL +=  "&" + query;
@@ -247,7 +247,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		tup.record.data["rec_title"] =  this.layer.title;
 		tup.record.data["title"] =  this.layer.title;
 		tup.link["type"] =  "application/x-msexcel";
-		tup.link["href"] =  this._makeWFSURL();
+		tup.link["href"] =  this._makeDownloadURL();
 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
 		tup.link["preferredFname"] = this.layer.params.LAYERS + ".csv";
 

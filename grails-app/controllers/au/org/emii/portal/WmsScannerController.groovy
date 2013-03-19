@@ -138,7 +138,7 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
     }
 
     def callUpdate = {
@@ -185,7 +185,7 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
     }
 
     def callDelete = {
@@ -210,7 +210,7 @@ class WmsScannerController {
             setFlashMessage e, conn
         }
 
-        redirect controller: "scanner", action: "index"
+        redirect controller: "server", action: "list"
 
     }
 
