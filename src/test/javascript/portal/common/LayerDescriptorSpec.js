@@ -82,4 +82,39 @@ describe("Portal.common.LayerDescriptor", function() {
             expect(layerDescriptor._getAllStyles()).toEqual([]);
         });
     });
+
+    describe('zoom override', function() {
+
+        var layerDesc = new Portal.common.LayerDescriptor({
+            "isBaseLayer": true,
+            "server": {
+                "type": "WMS-1.1.1",
+                "uri": "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+            }
+        });
+
+        it('no zoom override', function() {
+            var openLayer = layerDesc.toOpenLayer();
+            expect(openLayer.zoomOverride).toBeFalsy();
+        });
+
+        it('zoom override', function() {
+
+            var centreLon = 12;
+            var centreLat = 34;
+            var zoomLevel = 5;
+            
+            layerDesc.viewParams = {
+                centreLon: centreLon,
+                centreLat: centreLat,
+                openLayersZoomLevel: zoomLevel
+            };
+            
+            var openLayer = layerDesc.toOpenLayer();
+            expect(openLayer.zoomOverride).toBeTruthy();
+            expect(openLayer.zoomOverride.centreLon).toEqual(centreLon);
+            expect(openLayer.zoomOverride.centreLat).toEqual(centreLat);
+            expect(openLayer.zoomOverride.openLayersZoomLevel).toEqual(zoomLevel);
+        });
+    });
 });

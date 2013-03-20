@@ -49,19 +49,21 @@ describe("Portal.ui.MapPanel", function() {
 
         beforeEach(function() {
             spyOn(mapPanel, 'zoomTo');
+            spyOn(mapPanel.map, 'setCenter');
 
             mapPanel.getServer = function(openLayer) {
                 return { type: "WMS-1.1.0" };
             }
         });
 
-        it('zoomToLayer not called for layer without bounds', function() {
+        it('zoomTo not called for layer without bounds', function() {
 
             mapPanel.zoomToLayer(openLayer);
             expect(mapPanel.zoomTo).not.toHaveBeenCalled();
+            expect(mapPanel.map.setCenter).not.toHaveBeenCalled();
         });
 
-        it('zoomToLayer called for layer with bounds', function() {
+        it('zoomTo called for layer with bounds', function() {
 
             openLayer.bboxMinX = 10;
             openLayer.bboxMinY = 10;
@@ -70,6 +72,19 @@ describe("Portal.ui.MapPanel", function() {
 
             mapPanel.zoomToLayer(openLayer);
             expect(mapPanel.zoomTo).toHaveBeenCalled();
+            expect(mapPanel.map.setCenter).not.toHaveBeenCalled();
+        });
+
+        it('zoomToLayer called with layer having zoom override', function() {
+            openLayer.zoomOverride = {
+                centreLon: 12,
+                centreLat: 34,
+                openLayersZoomLevel: 5
+            }
+
+            mapPanel.zoomToLayer(openLayer);
+            expect(mapPanel.zoomTo).not.toHaveBeenCalled();
+            expect(mapPanel.map.setCenter).toHaveBeenCalled();
         });
     });
 

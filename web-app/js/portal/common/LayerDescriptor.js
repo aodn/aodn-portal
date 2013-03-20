@@ -89,6 +89,14 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.allStyles = this._getAllStyles();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
+
+        if (this.viewParams) {
+            openLayer.zoomOverride = {
+                centreLon: this.viewParams.centreLon,
+                centreLat: this.viewParams.centreLat,
+                openLayersZoomLevel: this.viewParams.openLayersZoomLevel
+            }
+        }
     },
 
     _getParent: function() {

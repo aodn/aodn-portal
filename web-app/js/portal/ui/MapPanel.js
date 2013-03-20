@@ -193,7 +193,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     zoomToLayer:function (openLayer) {
         if (openLayer) {
-            if (openLayer.hasBoundingBox()) {
+
+            if (openLayer.zoomOverride) {
+                this.map.setCenter(
+                    new OpenLayers.LonLat(
+                        openLayer.zoomOverride.centreLon,
+                        openLayer.zoomOverride.centreLat),
+                    openLayer.zoomOverride.openLayersZoomLevel);
+            }
+            else if (openLayer.hasBoundingBox()) {
                 // build openlayer bounding box
                 var bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
                 // ensure converted into this maps projection. convert metres into lat/lon etc
