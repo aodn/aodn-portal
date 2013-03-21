@@ -158,6 +158,9 @@ class FilterController {
                     if(theFilter.type.startsWith("Geometry")){
                         type = FilterTypes.BoundingBox
                     }
+                    else if(theFilter.type.equals("DateTime")){
+                        type = FilterTypes.Date
+                    }
 
                     if(!filter){
                         filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
@@ -169,8 +172,9 @@ class FilterController {
                      * a long description.
                      */
                     filter.possibleValues = theFilter.possibleValues.collect{
-                        if(it.length() > 256){
-                            it[0..252] + "..."
+                        if(it.length() > 255){
+                            println it[0..251] + "..."
+                            it[0..251] + "..."
                         }
                         else{
                             it
@@ -192,8 +196,8 @@ class FilterController {
                 }
             }
             else{
-                log.debug("Error while trying to save filter :(")
-                render(status: 500, text: "Layer does not exist")
+                log.debug("Unable to find layer on server $hostPattern with layer $layerName")
+                render(status: 500, text: "Unable to find layer on server $hostPattern with layer $layerName")
             }
         }
     }

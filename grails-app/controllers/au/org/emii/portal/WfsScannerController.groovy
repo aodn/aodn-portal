@@ -27,9 +27,9 @@ class WfsScannerController {
             def address;
 
             if (params.layerName)
-                address = "${_scanJobUrl()}register?serverUrl=${server.uri}&layerName=${params.layerName}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}"
+                address = "${_scanJobUrl()}register?serverUrl=${server.uri}&layerName=${params.layerName}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
             else
-                address =  "${_scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}"
+                address =  "${_scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
 
             try{
                 def url = address.toURL()

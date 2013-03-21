@@ -33,7 +33,7 @@ class Filter {
         label(blank: false)
         downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
-            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox){
+            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox && obj.type != FilterTypes.Date){
                 if(val.size() > 0)
                     return true
             }
