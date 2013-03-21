@@ -117,7 +117,7 @@
                                     <g:textField name="projection" maxlength="455" value="${layerInstance?.projection}" />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="isBaseLayer"><g:message code="layer.isBaseLayer.label" default="IsBaseLayer" /></label>
@@ -179,6 +179,16 @@
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'queryable', 'errors')}">
                                     <g:checkBox name="queryable" value="${true}"  /> <span class="hint">Defaulting to true.</span>
                                 </td>
+                            </tr>
+
+                            <!-- Zoom override -->
+                            <tr class="prop">
+                              <td valign="top" class="name">
+                                <label for="zoomOverride">Zoom Override</label>
+                              </td>
+                              <td valign="top" class="value">
+                                <g:render template="zoomOverride"></g:render>
+                              </td>
                             </tr>
 
                             <tr class="prop">

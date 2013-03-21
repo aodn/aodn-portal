@@ -109,5 +109,7 @@ databaseChangeLog = {
 	include file: 'imos-changelog.groovy'
 	include file: 'wa-changelog.groovy'
 	include file: 'soos-changelog.groovy'
+
+	include file: '20130320-JB-AddLayerViewParameters.groovy'
 }
 

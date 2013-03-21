@@ -70,6 +70,8 @@ class Layer {
     }
 
     static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Style]
+    static hasOne = [viewParams: LayerViewParameters]
+    
     static constraints = {
 		parent(nullable: true)
 		name( nullable: true, size:1..225 )
@@ -88,6 +90,7 @@ class Layer {
         projection(nullable: true)
         overrideMetadataUrl(nullable:  true)
         queryable()
+        viewParams(nullable: true)
 
         isBaseLayer()
 
