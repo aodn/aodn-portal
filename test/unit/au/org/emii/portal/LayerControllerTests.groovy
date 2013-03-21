@@ -15,15 +15,13 @@ import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor
 class LayerControllerTests extends ControllerUnitTestCase {
 
     def validConfig = new Config( wmsScannerCallbackPassword: "pwd" )
-
+    def messageArgs
+    
     protected void setUp() {
-
         super.setUp()
-    }
 
-    protected void tearDown() {
-
-        super.tearDown()
+        controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
+        controller.metaClass._recache = {}
     }
 
     void testIndex() {
@@ -69,8 +67,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         {
             e.printStackTrace()
         }
-        
-
     }
 
 	void testToResponseMap() {
@@ -171,6 +167,52 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals expected, this.controller.response.contentAsString
     }
 
+    void testUpdateNoViewParams() {
+        _updateViewParamsSetup()
+        def updatedLayer = Layer.get(controller.redirectArgs['id'])
+        assertNotNull(updatedLayer)
+        assertNull(updatedLayer.viewParams)
+    }
+    
+    void testUpdateFullViewParams() {
+        _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
+
+        def updatedLayer = Layer.get(controller.redirectArgs['id'])
+        assertNotNull(updatedLayer)
+        assertNotNull(updatedLayer.viewParams)
+        assertEquals(12f, updatedLayer.viewParams.centreLat)
+        assertEquals(54f, updatedLayer.viewParams.centreLon)
+        assertEquals(5, updatedLayer.viewParams.openLayersZoomLevel)
+    }
+    
+    void testUpdateFullThenNoViewParams() {
+        _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
+        def updatedLayer = Layer.get(controller.redirectArgs['id'])
+        assertNotNull(updatedLayer)
+        assertNotNull(updatedLayer.viewParams)
+        
+        _updateViewParamsSetup()
+        updatedLayer = Layer.get(controller.redirectArgs['id'])
+        assertNotNull(updatedLayer)
+        assertNull(updatedLayer.viewParams)
+    }
+
+    def _updateViewParamsSetup(viewParams) {
+        Layer layer = new Layer(dataSource: "abc", server: new Server())
+        mockDomain(Layer, [layer])
+        mockDomain(LayerViewParameters)
+        
+        layer.save(failOnError: true)
+
+        assertNotNull(layer.id)
+        controller.params.id = layer.id
+        controller.params.viewParams = viewParams
+
+        controller.update()
+        
+        return layer
+    }
+    
 	def _buildServers(sId, number) {
 		def servers = []
 		for (def i = 0; i < number; i++) {

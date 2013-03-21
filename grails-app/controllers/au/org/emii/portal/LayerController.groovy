@@ -248,13 +248,30 @@ class LayerController {
                     return
                 }
             }
+
+            layerInstance.viewParams?.delete()
+            if (   !params.viewParams
+                   || (   !params.viewParams.centreLat
+                       && !params.viewParams.centreLon
+                       && !params.viewParams.openLayersZoomLevel)) {
+                layerInstance.viewParams = null
+                params.remove('viewParams')
+            }
+
+            if (params.viewParams) {
+                layerInstance.viewParams = new LayerViewParameters(params.viewParams + [layer: layerInstance])
+                params.remove('viewParams')
+            }
+            
             layerInstance.properties = params
+
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'layer.label', default: 'Layer'), layerInstance.id])}"
                 _recache(layerInstance.server)
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
+                println "Errors: ${layerInstance.errors}"
                 render(view: "edit", model: [layerInstance: layerInstance])
             }
         }
