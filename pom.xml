@@ -5,7 +5,7 @@
 	<groupId>au.org.emii</groupId>
 	<artifactId>Portal2</artifactId>
 	<packaging>war</packaging>
-	<version>2.37rc</version>
+	<version>2.37-rc</version>
 
 	<name>Portal2</name>
 	<description>Portal v2</description>
@@ -273,7 +273,7 @@
 			<artifactId>svn</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>catalina</artifactId>
@@ -311,7 +311,7 @@
 				<version>${grails.version}</version>
 				<extensions>true</extensions>
 				<executions>
-					<!-- 
+					<!--
 					<execution>
 						<goals>
 							<goal>init</goal>
