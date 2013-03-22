@@ -24,7 +24,7 @@
                                     <g:textField name="name" maxlength="25" value="${layerInstance?.name}" />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="namespace"><g:message code="layer.namespace.label" default="Namespace" /></label>
@@ -42,7 +42,7 @@
                                     <g:select name="server.id" from="${au.org.emii.portal.Server.list()}" optionKey="id" value="${layerInstance?.server?.id}"  />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                    <g:message code="layer.dataSource.label" default="Data Source" />
@@ -52,7 +52,7 @@
                                     <g:hiddenField name="dataSource" value="${layerInstance?.dataSource}" />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                    <g:message code="layer.activeInLastScan.label" default="Active in last scan" />
@@ -61,7 +61,7 @@
                                     ${layerInstance?.activeInLastScan}
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <g:message code="layer.layers.label" default="Layers" />
@@ -70,9 +70,9 @@
                                     <g:each in="${layerInstance?.layers}">
                                         ${it}<br />
                                     </g:each>
-                                </td> 
+                                </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="bboxMinX"><g:message code="layer.bboxMinX.label" default="Bounding Box - Min X" /></label>
@@ -126,7 +126,7 @@
                                     <g:checkBox name="isBaseLayer" value="${layerInstance?.isBaseLayer}"  />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="blacklisted"><g:message code="layer.blacklisted.label" default="Blacklisted" /></label>
@@ -144,7 +144,7 @@
                                     <g:textField name="abstractTrimmed" maxlength="455" value="${layerInstance?.abstractTrimmed}" />
                                 </td>
                             </tr>
-                         
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="cache"><g:message code="layer.cache.label" default="Cache" /></label>
@@ -168,7 +168,9 @@
                                     <label for="styles"><g:message code="layer.styles.label" default="Styles" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'styles', 'errors')}">
-                                    <g:textField name="styles" value="${layerInstance?.styles}" />
+                                    <g:each in="${layerInstance?.styles}">
+                                        ${it.name}<br />
+                                    </g:each>
                                 </td>
                             </tr>
 
