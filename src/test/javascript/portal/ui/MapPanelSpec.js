@@ -144,5 +144,18 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
+    describe('tabchange event', function () {
+
+        it(' calls _updateLayerLoadingSpinner', function () {
+
+
+            spyOn(mapPanel, '_updateLayerLoadingSpinner');
+
+            mapPanel.fireEvent("tabchange")
+
+            expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
+        });
+    });
+
     Ext.Ajax.request.isSpy = false;
 });
