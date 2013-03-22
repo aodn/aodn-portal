@@ -78,6 +78,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.on('tabchange', function () {
             this._closeFeatureInfoPopup();
+            //if layers get loaded when the mappanel isn't visible, the loadingspinner gets stuck,
+            this._updateLayerLoadingSpinner(this.layers.getLayersLoadingCount());
         }, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
@@ -97,15 +99,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
 
         Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
-            this._updateLayerLoadingSpinner();
+            this._updateLayerLoadingSpinner(numLayersLoading);
         }, this);
 
         this.startSnapshot = cfg.startSnapshot;
     },
 
-    _updateLayerLoadingSpinner:function () {
+    _updateLayerLoadingSpinner:function (numLayersLoading) {
 
-        var numLayersLoading =  this.layers.getLayersLoadingCount()
         jQuery("#loader span").text(this.buildLayerLoadingString(numLayersLoading));
 
         // Show spinner.

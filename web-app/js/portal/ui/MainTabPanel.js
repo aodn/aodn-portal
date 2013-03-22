@@ -72,14 +72,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         if (!this.isMapVisible()) {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
         }
-        else {
-            //if layers get loaded when the mappanel isn't visible, the loadingspinner gets stuck,
-            // so we update it when moving back to mappanel, see github #135
-            this.getMapPanel()._updateLayerLoadingSpinner();
-        }
-
-
-
 
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
