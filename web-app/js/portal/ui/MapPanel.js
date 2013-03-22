@@ -97,14 +97,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
 
         Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
-            this._updateLayerLoadingSpinner(numLayersLoading);
+            this._updateLayerLoadingSpinner();
         }, this);
 
         this.startSnapshot = cfg.startSnapshot;
     },
 
-    _updateLayerLoadingSpinner:function (numLayersLoading) {
+    _updateLayerLoadingSpinner:function () {
 
+        var numLayersLoading =  this.layers.getLayersLoadingCount()
         jQuery("#loader span").text(this.buildLayerLoadingString(numLayersLoading));
 
         // Show spinner.

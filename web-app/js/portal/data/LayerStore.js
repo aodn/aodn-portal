@@ -185,6 +185,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }, this);
     },
 
+    getLayersLoadingCount:function () {
+        return this.currentlyLoadingLayers.getCount();
+    },
+
     _registerMessageListeners:function () {
         Ext.MsgBus.subscribe('addLayerUsingDescriptor', function (subject, layerDescriptor) {
             this.addUsingDescriptor(layerDescriptor)
