@@ -78,6 +78,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.on('tabchange', function () {
             this._closeFeatureInfoPopup();
+            //if layers get loaded when the mappanel isn't visible, the loadingspinner gets stuck,
+            // so we update it when moving back to mappanel, see github #135
+            this._updateLayerLoadingSpinner();
+
         }, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
