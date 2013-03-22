@@ -250,18 +250,19 @@ class LayerController {
             }
 
             layerInstance.viewParams?.delete()
-            if (   !params.viewParams
-                   || (   !params.viewParams.centreLat
-                       && !params.viewParams.centreLon
-                       && !params.viewParams.openLayersZoomLevel)) {
-                layerInstance.viewParams = null
-                params.remove('viewParams')
-            }
 
+            if (   !params.viewParams       // if viewParams not present at all, or it is but all its properties are nil...
+                || !(   params.viewParams.centreLat
+                     ||  params.viewParams.centreLon
+                     || params.viewParams.openLayersZoomLevel)) {
+                layerInstance.viewParams = null
+            }
+            
             if (params.viewParams) {
                 layerInstance.viewParams = new LayerViewParameters(params.viewParams + [layer: layerInstance])
-                params.remove('viewParams')
             }
+            
+            params.remove('viewParams')
             
             layerInstance.properties = params
 
@@ -271,7 +272,6 @@ class LayerController {
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
-                println "Errors: ${layerInstance.errors}"
                 render(view: "edit", model: [layerInstance: layerInstance])
             }
         }

@@ -102,6 +102,8 @@ databaseChangeLog = {
     
     include file: '20130301-PBL-DefaultLayerZoom.groovy' 
 
+	include file: '20130320-JB-AddLayerViewParameters.groovy'
+
 
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
@@ -109,7 +111,5 @@ databaseChangeLog = {
 	include file: 'imos-changelog.groovy'
 	include file: 'wa-changelog.groovy'
 	include file: 'soos-changelog.groovy'
-
-	include file: '20130320-JB-AddLayerViewParameters.groovy'
 }
 

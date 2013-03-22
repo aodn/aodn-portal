@@ -6,6 +6,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
 --%>
 <div class="dialog">
+  <span class="hint">Workaround for layers whose bounding box spans the dateline.</span>
   <table>
     <tbody>
       
@@ -38,6 +39,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
           <g:textField name="viewParams.openLayersZoomLevel" maxlength="455" value="${layerInstance?.viewParams?.openLayersZoomLevel}" />
         </td>
       </tr>
-      </tbody><span class="hint">Workaround for layers whose bounding box spans the dateline.</span>
+      </tbody>
   </table>
 </div>
