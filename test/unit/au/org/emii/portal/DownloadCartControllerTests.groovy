@@ -141,41 +141,47 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
         assertEquals "No data in cart to download", controller.flash.message
     }
 
-    void testGetCartContents() {
+    void testGetCartRecords() {
 
         def cartEntries = """
                              [
-                                 { "rec_uuid":"2", val: "A" },
-                                 { "rec_uuid":"1", val: "B" },
-                                 { "rec_uuid":"3", val: "C" },
-                                 { "rec_uuid":"2", val: "D" },
-                                 { "rec_uuid":"3", val: "E" },
+                                 { "rec_uuid":"2", rec_title: "A", title : "first"},
+                                 { "rec_uuid":"1", rec_title: "B", title : "first" },
+                                 { "rec_uuid":"3", rec_title: "C", title : "first" },
+                                 { "rec_uuid":"2", rec_title: "A", title : "second" },
+                                 { "rec_uuid":"3", rec_title: "C", title : "second" },
                              ]""".stripIndent()
 
         mockRequest.session.downloadCart = JSON.parse( cartEntries ).toArray() as Set
 
         // Make the call
-        controller.getCartContents()
+        controller.getCartRecords()
 
         def result = JSON.parse( mockResponse.contentAsString )
 
-        assert 3, result.size()
+        assertEquals 1, result.size()
 
         println "result: $result"
 
-        def rec1 = result.'1'
+        def recs = result.'records'
+
+        def rec0 = recs.findAll{ r -> r.uuid == "2" }[0]
+
+        assertNotNull rec0
+        assertEquals "A", rec0.title
+        assertEquals "2", rec0.uuid
+        assertEquals 2, rec0.downloads.size()
+
+        def rec1 = recs.findAll{ r -> r.uuid == "1" }[0]
         assertNotNull rec1
-        assertEquals 1, rec1.size()
-        assertEquals "B", rec1.collect( { it.val } ).join(",")
+        assertEquals "B", rec1.title
+        assertEquals "1", rec1.uuid
+        assertEquals 1, rec1.downloads.size()
 
-        def rec2 = result.'2'
+        def rec2 = recs.findAll{ r -> r.uuid == "3" }[0]
         assertNotNull rec2
-        assertEquals 2, rec2.size()
-        assertEquals "A,D", rec2.collect( { it.val } ).join(",")
-
-        def rec3 = result.'3'
-        assertNotNull rec3
-        assertEquals 2, rec3.size()
-        assertEquals "C,E", rec3.collect( { it.val } ).join(",")
+        assertEquals "C", rec2.title
+        assertEquals "3", rec2.uuid
+        assertEquals 2, rec2.downloads.size()
     }
 }

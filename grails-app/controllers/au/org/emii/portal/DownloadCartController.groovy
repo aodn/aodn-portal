@@ -47,25 +47,6 @@ class DownloadCartController {
         render _getCartSize().toString()
     }
 
-    def getCartContents = {
-
-        def cart = _getCart()
-        def compiledResult = [:]
-
-        cart.each{
-
-            def uuid = it.rec_uuid
-
-            def linksForRecord = compiledResult[uuid] ?: []
-
-            linksForRecord << it
-
-            compiledResult[uuid] = linksForRecord
-        }
-
-        render compiledResult as JSON
-    }
-
     def getCartRecords = {
 
         def cart = _getCart()
