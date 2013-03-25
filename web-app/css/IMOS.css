@@ -76,7 +76,7 @@ h6 {
 }
 
 
-#mainHomePanel{
+#mainHomePanel, #downloadCartPanel{
     background-color: whitesmoke;
    background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px);
    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
@@ -223,36 +223,34 @@ a.userlink {
     text-shadow: none! important;
 }
 
-#downloadCart {
+
+#downloadCartStatus {
     background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
     border-radius: 10px 3px 10px 3px;
     color: white;
     float: right;
     padding: 4px 10px 6px;
     position: absolute;
-    right: 6px;
+    right: 25px;
     top: 45px;
 }
 
-#downloadCart div {
+#downloadCartStatus div {
     padding-top: 3px;
 }
 
-#downloadCart a {
+#downloadCartStatus a {
     color: white;
     font-size: 11px;
     margin: 0 3px;
     text-decoration: none;
-}
-
-#downloadCart a:hover {
     font-weight: bold;
 }
 
-#header .hiddenCart {
-    display: none;
+#downloadCartStatus a:hover {
+    text-decoration: underline;
 }
 
-#downloadCartControls {
+#downloadCartStatus {
     text-align: right;
 }

@@ -403,7 +403,7 @@
 					<sourceExcludes>
 						<exclude>portal/portal.js</exclude>
 						<exclude>portal/config/grid2treedrag.js</exclude>
-						<exclude>portal/common/DownloadCart.js</exclude>
+						<exclude>portal/common/DownloadCartStatus.js</exclude>
 					</sourceExcludes>
                     <specIncludes>
                         <include>spec_helper.js</include>

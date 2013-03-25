@@ -95,7 +95,7 @@ input, select, textarea {
 
 }
 
-#mainHomePanel{
+#mainHomePanel, #downloadCartPanel{
    background-color: white;
    font-size: 12px;
    border-radius: 12px;
@@ -256,32 +256,29 @@ a.userlink {
     float: right;
     padding: 4px 10px 6px;
     position: absolute;
-    right: 6px;
+    right: 25px;
     top: 45px;
 }
 
-#downloadCart div {
+#downloadCartStatus div {
     padding-top: 3px;
 }
 
-#downloadCart a {
+#downloadCartStatus a {
     color: white;
     font-size: 11px;
     margin: 0 3px;
     text-decoration: none;
-}
-
-#downloadCart a:hover {
     font-weight: bold;
 }
 
- #header .hiddenCart {
-     display: none;
- }
+#downloadCartStatus a:hover {
+    text-decoration: underline;
+}
 
- #downloadCartControls {
-     text-align: right;
- }
+#downloadCartStatus {
+    text-align: right;
+}
 
 .x-tab-strip span.x-tab-strip-text {
     color: #6A6A6A;

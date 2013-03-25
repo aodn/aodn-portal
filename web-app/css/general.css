@@ -84,13 +84,14 @@ a img{
     border: none;
 }
 
+
 hr {
     border: 0;
     height: 1px;
     margin-top: 10px;
     margin-bottom: 15px;
-    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -webkit-linear-gradient(left, rgba(200,200,200,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(200,200,200,0), rgba(200,200,200,0.75));
     background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
     background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
 }
@@ -973,6 +974,45 @@ div.allwhite {
 
 #activeLayerTreePanel img.x-tree-node-icon {
 	width: 1px;
+}
+
+
+#header .hiddenCartStatus {
+    display: none ;
+}
+
+.styledButton {
+    background-color: #666666;
+    border-radius: 14px;
+    color: white;
+    float: right;
+    padding: 3px 10px 5px;
+    margin-right: 10px;
+}
+.styledButton a {
+    color: white;
+    font-size: 11px;
+    margin: 0 3px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.styledButton a:hover {
+    text-decoration: underline;
+}
+.cart-title {
+    padding: 10px;
+    font-size: 14px;
+    color: #666666;
+    font-weight: normal;
+}
+.cart-row {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #FAFAFA;
+}
+.cart-file-row {
+    margin-left:  15px;
 }
 
 /* Bug #9 - show blank tiles on image load error. */

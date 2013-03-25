@@ -172,6 +172,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         selectedView.on('click', selectedView.onSelectionClick, selectedView);
         selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
 
+
+
+
+
+
+        //Ext.apply(this, Ext.apply(this.initialConfig, config));
+
         return selectedView;
     },
 

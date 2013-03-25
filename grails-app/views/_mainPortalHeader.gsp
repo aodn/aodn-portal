@@ -49,11 +49,10 @@
                title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>
 
-    <div id="downloadCart" class="hiddenCart">
-        Download cart: <b><span id="downloadCartSize">0</span></b> item(s)<br/>
+    <div id="downloadCartStatus" class="hiddenCartStatus">
+        <img src="${resource(dir: 'images', file: 'cart.png')}" id="cartLogo"/> &nbsp; <b><span id="downloadCartSize">0</span></b> item(s)<br/>
+        <a href="#" onclick="javascript:showCartTabPanel();">Download Data</a>
 
-        <div id="downloadCartControls"><a href="#" onclick="javascript:doDownload();">download</a> | <a
-                href="javascript:clearDownloadCart();">clear cart</a></div>
     </div>
 </div>
 

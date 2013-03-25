@@ -66,6 +66,39 @@ class DownloadCartController {
         render compiledResult as JSON
     }
 
+    def getCartRecords = {
+
+        def cart = _getCart()
+        def compiledResult = [:]
+        def records = [:]
+        cart.each{
+
+            def uuid = it.rec_uuid
+
+            def record = records.get(uuid)
+            if (!record){
+                record = [:]
+                record.title = it.rec_title
+                record.uuid= uuid
+                record.downloads = []
+                records.put(uuid,record)
+            }
+
+            def download = [:]
+
+            download.protocol = it.protocol
+            download.title = it.title
+            download.href = it.href
+            download.type = it.type
+
+            record.downloads.add(download)
+        }
+
+        compiledResult.put("records", records.values())
+
+        render compiledResult as JSON
+    }
+
     def download = {
 
         // Break early if no cookies

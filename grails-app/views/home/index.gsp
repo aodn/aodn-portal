@@ -234,7 +234,7 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/ui/UserDefinedWMSPanel.js')}?${jsVerNum}"
                 type="text/javascript"></script>
-        <script src="${resource(dir: 'js', file: 'portal/ui/DownloadCartConfirmationWindow.js')}?${jsVerNum}"
+        <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}?${jsVerNum}"
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}?${jsVerNum}"
                 type="text/javascript"></script>
@@ -260,8 +260,6 @@
         <script src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}?${jsVerNum}" type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}?${jsVerNum}"
                 type="text/javascript"></script>
-        <script src="${resource(dir: 'js', file: 'portal/common/DownloadCart.js')}?${jsVerNum}"
-                type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/portal.js')}?${jsVerNum}" type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}?${jsVerNum}"
                 type="text/javascript"></script>
@@ -269,6 +267,13 @@
                 type="text/javascript"></script>
         <script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}?${jsVerNum}"
                 type="text/javascript"></script>
+
+    <script src="${resource(dir: 'js', file: 'portal/cart/DownloadList.js')}?${jsVerNum}"
+            type="text/javascript"></script>
+    <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}?${jsVerNum}"
+            type="text/javascript"></script>
+    <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartPanel.js')}?${jsVerNum}"
+            type="text/javascript"></script>
     </g:if>
     <g:else>
         <script src="${resource(dir: 'js', file: 'portal-all.js')}?${jsVerNum}" type="text/javascript"></script>
