@@ -173,7 +173,6 @@ class FilterController {
                      */
                     filter.possibleValues = theFilter.possibleValues.collect{
                         if(it.length() > 255){
-                            println it[0..251] + "..."
                             it[0..251] + "..."
                         }
                         else{

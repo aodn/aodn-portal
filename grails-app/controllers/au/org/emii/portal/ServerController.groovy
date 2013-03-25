@@ -26,9 +26,9 @@ class ServerController {
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
-        def serverMap = getScannerStatus()
+        def jobProperties = getScannerStatus()
 
-		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), serverMap:  serverMap]
+		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), jobProperties:  jobProperties]
 	}
 
     def listAllowDiscoveriesAsJson = {
@@ -193,12 +193,15 @@ class ServerController {
         //list of discoverable servers
         def serverMap = [:]
 
+        def wmsScannerContactable = true
+        def wfsScannerContactable = true
+
         try{
             wmsList = wmsScannerController.getStatus()
         }
         catch(Exception e){
             flash.message = "Cannot contact WMS scanner for a list of current jobs.  Please make sure WMS server is contactable"
-            return [serverMap: serverMap]
+            wmsScannerContactable = false
         }
 
         try{
@@ -206,7 +209,7 @@ class ServerController {
         }
         catch(Exception e){
             flash.message = "Cannot contact WFS scanner for a list of current jobs.  Please make sure WFS server is contactable"
-            return [serverMap: serverMap]
+            wfsScannerContactable = false
         }
 
         def discoverables = Server.findAllByAllowDiscoveries(true)
@@ -229,6 +232,6 @@ class ServerController {
             serverMap.put(discoverable, [wmsJob, wfsJob])
         }
 
-        return serverMap
+        return [serverMap: serverMap, wmsScannerContactable: wmsScannerContactable, wfsScannerContactable: wfsScannerContactable]
     }
 }
