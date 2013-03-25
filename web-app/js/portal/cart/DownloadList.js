@@ -54,13 +54,8 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
         Portal.cart.DownloadList.superclass.constructor.call(this, config);
 
 
-        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function(status, count) {
+        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function() {
             this.downloadItemsStore.load();
-            //if (String(count) == "0") {
-            //    console.log(count);
-            //    this.refresh();
-            //}
-
         }, this);
 
     }
