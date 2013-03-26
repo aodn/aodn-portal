@@ -11,7 +11,8 @@ package au.org.emii.portal
 import grails.converters.JSON
 
 class WfsScannerController {
-
+    def grailsApplication
+    def wfsScannerService
 
     //a call to register a job looks like this:
     //http://localhost:8200/wfsScanner/scanJob/register?serverUrl=http://geoserver.imos.org.au/geoserver/wfs&layerName=imos:csiro_harvest_pci&callbackUrl=http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
@@ -20,16 +21,16 @@ class WfsScannerController {
         Server server = Server.get(params.serverId)
 
         if (Config.activeInstance().wfsScannerCallbackPassword == null){
-            flash.message = "Both settings: 'WmfsScannerBaseUrl' and 'WmfScannerCallbackPassword' must have values to use a WMS Scanner."
+            flash.message = "Both settings: 'WfsScannerBaseUrl' and 'WfScannerCallbackPassword' must have values to use a WFSScanner."
         }
 
         if (server.type.startsWith("GEO")){
             def address;
 
             if (params.layerName)
-                address = "${_scanJobUrl()}register?serverUrl=${server.uri}&layerName=${params.layerName}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
+                address = "${wfsScannerService.scanJobUrl()}register?serverUrl=${server.uri}&layerName=${params.layerName}&callbackUrl=${wfsScannerService.saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
             else
-                address =  "${_scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${_saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
+                address =  "${wfsScannerService.scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${wfsScannerService.saveOrUpdateCallbackUrl()}&password=${Config.activeInstance().wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
 
             try{
                 def url = address.toURL()
@@ -75,8 +76,7 @@ class WfsScannerController {
             if (server.type.startsWith("GEO")){
                 def address;
 
-
-                address =  "${_scanJobUrl()}updateNow?id=${jobId}"
+                address =  "${wfsScannerService.scanJobUrl()}updateNow?id=${jobId}"
 
                 def url = address.toURL()
                 def conn = url.openConnection()
@@ -96,61 +96,11 @@ class WfsScannerController {
         redirect controller: "server", action: "list"
     }
 
-    def _scanJobUrl() {
-
-        def wfsScannerBaseUrl = grailsApplication.config.wfsScanner.url
-        def slash = _optionalSlash( wfsScannerBaseUrl )
-
-        return "${wfsScannerBaseUrl}${slash}scanJob/"
-    }
-
-    def _saveOrUpdateCallbackUrl() {
-
-        def portalBaseUrl = grailsApplication.config.grails.serverURL
-        def slash = _optionalSlash( portalBaseUrl )
-
-        return "${portalBaseUrl}${slash}filter/updateFilter"
-    }
-
-    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
-
-        return url[-1..-1] != "/" ? "/" : ""
-    }
-
-    //Not catching exception here
-    def getStatus(){
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-        def scanJobList = []
-
-        def url
-        def conn
-
-            url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
-            conn = url.openConnection()
-            conn.connect()
-
-            scanJobList = JSON.parse( conn.content.text ) // Makes the call
-
-        return scanJobList
-    }
-
 
     def callDelete = {
 
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-        def address = "${ _scanJobUrl() }delete?id=${params.scanJobId}"
-
-        def url
-        def conn
-
         try {
-            url = address.toURL()
-            conn = url.openConnection()
-            conn.connect()
-
-            def response = executeCommand( conn )
-
-            flash.message = response
+            flash.message = wfsScannerService.callDelete(params.scanJobId)
         }
         catch (Exception e) {
 

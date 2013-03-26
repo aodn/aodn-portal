@@ -48,6 +48,7 @@ class FilterTests extends GrailsUnitTestCase {
         expected["name"] = "vesselName"
         expected["possibleValues"] = ["ship1", "ship2", "ship3"]
         expected["layerId"] = 3
+        expected["enabled"] = false
                          
         println "expected"
         println(expected)

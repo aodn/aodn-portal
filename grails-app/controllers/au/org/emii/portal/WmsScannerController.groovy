@@ -13,6 +13,7 @@ import org.apache.shiro.SecurityUtils
 
 class WmsScannerController {
     def grailsApplication
+    def wmsScannerService
 
     def serverTypesToShow = [ "WMS-1.1.1",
                               "WMS-1.3.0",
@@ -27,8 +28,7 @@ class WmsScannerController {
 
     def controls = {
         def conf = Config.activeInstance()
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-        wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
+        def wmsScannerBaseUrl = wmsScannerService.scannerURL()
 
         // Check if WMS Scanner settings are valid
         if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
@@ -38,14 +38,14 @@ class WmsScannerController {
             return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
         }
 
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
+        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
         def scanJobList
 
         def url
         def conn
 
         try {
-            url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
+            url = "${ wmsScannerService.scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
             conn = url.openConnection()
             conn.connect()
 
@@ -91,7 +91,7 @@ class WmsScannerController {
         }
 
         return [ configInstance: conf,
-                 wmsScannerBaseUrl: wmsScannerBaseUrl,
+                 wmsScannerBaseUrl: grailsApplication.config.wmsScanner.url,
                  scanJobList: scanJobList,
                  statusText: statusText,
                  serversToList: serversToList
@@ -115,7 +115,7 @@ class WmsScannerController {
             def jobType     = "WMS"
             def wmsVersion  = URLEncoder.encode( versionVal )
             def uri         = URLEncoder.encode( server.uri )
-            def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
+            def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
             def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
             def scanFrequency = server.scanFrequency
 
@@ -123,7 +123,7 @@ class WmsScannerController {
             def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
 
             // Perform action
-            def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+            def address = "${ wmsScannerService.scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
 
             url = address.toURL()
             conn = url.openConnection()
@@ -150,7 +150,7 @@ class WmsScannerController {
         if ( !server ) {
 
             setFlashMessage "Unable to find server with uri: '${ params.scanJobUri }'"
-            redirect action: "controls"
+            redirect controller: "server", action: "list"
             return
         }
 
@@ -159,14 +159,14 @@ class WmsScannerController {
         def jobType     = "WMS"
         def wmsVersion  = URLEncoder.encode( versionVal )
         def uri         = URLEncoder.encode( server.uri )
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
+        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
         def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
         def scanFrequency = server.scanFrequency
 
         def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
         def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
 
-        def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+        def address = "${ wmsScannerService.scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
 
         def url
         def conn
@@ -190,8 +190,8 @@ class WmsScannerController {
 
     def callDelete = {
 
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-        def address = "${ _scanJobUrl() }delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
+        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
+        def address = "${ wmsScannerService.scanJobUrl() }delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
 
         def url
         def conn
@@ -262,44 +262,5 @@ class WmsScannerController {
         }
 
         return response
-    }
-
-    def _saveOrUpdateCallbackUrl() {
-
-        def portalBaseUrl = grailsApplication.config.grails.serverURL
-        def slash = _optionalSlash( portalBaseUrl )
-
-        return "${portalBaseUrl}${slash}layer/saveOrUpdate"
-    }
-
-    def _scanJobUrl() {
-
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-        def slash = _optionalSlash( wmsScannerBaseUrl )
-
-        return "${wmsScannerBaseUrl}${slash}scanJob/"
-    }
-
-    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
-
-        return url[-1..-1] != "/" ? "/" : ""
-    }
-
-    //Not catching exception here
-    def getStatus() {
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-        def scanJobList = []
-
-        def url
-        def conn
-
-        url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
-        conn = url.openConnection()
-        conn.connect()
-
-        scanJobList = JSON.parse( conn.content.text ) // Makes the call
-
-
-        return scanJobList
     }
 }

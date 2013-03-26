@@ -12,6 +12,7 @@ import grails.test.ControllerUnitTestCase
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.util.ThreadContext
 import org.apache.shiro.SecurityUtils
+import au.org.emii.portal.scanner.WmsScannerService
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
 
@@ -52,6 +53,21 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
                 grails.serverURL = "appBaseUrl/"
                 wmsScanner.url = "$expectedScannerBaseUrl"
                 """)]
+
+        def mockWmsScannerService = mockFor(WmsScannerService)
+        mockWmsScannerService.metaClass.scannerURL = {
+            return "scannerBaseUrl/"
+        }
+
+        mockWmsScannerService.metaClass.scanJobUrl = {
+            return "scannerBaseUrl/scanJob/"
+        }
+
+        mockWmsScannerService.metaClass.saveOrUpdateCallbackUrl = {
+            return "appBaseUrl/layer/saveOrUpdate"
+        }
+
+        controller.wmsScannerService = mockWmsScannerService
     }
 
     protected void tearDown() {
@@ -157,8 +173,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.get = { map -> return server3 }
         
         controller.callRegister() // Make the call
-        
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain response", "Response: Registered", controller.flash.message
     }
     
@@ -182,8 +199,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.get = { map -> return server2 }
         
         controller.callRegister() // Make the call
-        
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Error Text</b>", controller.flash.message
     }
     
@@ -209,8 +227,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         
         mockParams.scanJobId = 1
         controller.callUpdate() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should show response", "Response: Updated", controller.flash.message
     }
 
@@ -223,7 +242,8 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         mockParams.scanJobUri = "TheUri"
         controller.callUpdate() // Make the call
 
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain exception message", "Response: Unable to find server with uri: 'TheUri'", controller.flash.message
     }
 
@@ -247,8 +267,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         
         mockParams.scanJobId = 1
         controller.callUpdate() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
     }
     
@@ -261,8 +282,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
          
         mockParams.scanJobId = 4
         controller.callDelete() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should show response", "java.lang.Exception: Test Exception<br />Response: <br /><i>HTML response (HTTP code: 500)</i>", controller.flash.message
     }
     
@@ -276,8 +298,9 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         controller.flash.message = "Existing<br />Message" // Existing message
         mockParams.scanJobId = 5
         controller.callDelete() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain exception message", "Existing<br />Message<hr>java.lang.Exception: Test Exception", controller.flash.message
     }
     

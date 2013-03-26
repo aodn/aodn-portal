@@ -146,8 +146,8 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.params.layerId = 3
         this.controller.getFiltersAsJSON()
 
-        assertTrue this.controller.response.contentAsString.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3}""")
-        assertTrue this.controller.response.contentAsString.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3}""")
+        assertTrue this.controller.response.contentAsString.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3,"enabled":false}""")
+        assertTrue this.controller.response.contentAsString.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3,"enabled":false}""")
 
 
     }

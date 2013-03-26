@@ -180,8 +180,6 @@ class FilterController {
                         }
                     }
 
-                    println filter.possibleValues
-
                     try{
                         if (!filter.hasErrors() && filter.save(flush: true)) {
                             render status: 200, text: "Complete (saved)"
@@ -189,7 +187,6 @@ class FilterController {
                     }
                     catch(Exception e){
                         log.debug("Error while trying to save filter: $e.message")
-                        e.printStackTrace()
                         render(status: 500, text: "Error saving or updating filter: $e")
                     }
                 }

@@ -10,14 +10,15 @@ package au.org.emii.portal
 
 import grails.converters.deep.JSON
 import org.apache.shiro.SecurityUtils
+import au.org.emii.portal.scanner.*
 
 class ServerController {
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 	def checkLinksService
-    def wmsScannerController = new WmsScannerController()
-    def wfsScannerController = new WfsScannerController()
+    def wmsScannerService
+    def wfsScannerService
 
 	def index = {
 		redirect(action: "list", params: params)
@@ -197,7 +198,8 @@ class ServerController {
         def wfsScannerContactable = true
 
         try{
-            wmsList = wmsScannerController.getStatus()
+            wmsList = wmsScannerService.getStatus()
+
         }
         catch(Exception e){
             flash.message = "Cannot contact WMS scanner for a list of current jobs.  Please make sure WMS server is contactable"
@@ -205,7 +207,7 @@ class ServerController {
         }
 
         try{
-            wfsList =  wfsScannerController.getStatus()
+            wfsList =  wfsScannerService.getStatus()
         }
         catch(Exception e){
             flash.message = "Cannot contact WFS scanner for a list of current jobs.  Please make sure WFS server is contactable"
