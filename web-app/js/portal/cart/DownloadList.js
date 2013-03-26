@@ -5,17 +5,17 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
 
 
-    constructor: function (cfg) {
+    constructor:function (cfg) {
 
         this.downloadItemsStore = new Ext.data.JsonStore({
             // store configs
-            autoDestroy: true,
-            url: 'downloadCart/getCartRecords',
-            storeId: 'myStore',
+            autoDestroy:true,
+            url:'downloadCart/getCartRecords',
+            storeId:'myStore',
             // reader configs
-            root: 'records',
-            idProperty: 'title',
-            fields: ['title', 'uuid','downloads']
+            root:'records',
+            idProperty:'title',
+            fields:['title', 'uuid', 'downloads']
         });
         this.downloadItemsStore.load();
 
@@ -27,9 +27,9 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
             '</div>',
             '</tpl>',
             {
-                getFiles: function(values) {
+                getFiles:function (values) {
                     var html = "";
-                    Ext.each(values.downloads, function(f) {
+                    Ext.each(values.downloads, function (f) {
                         html += subFilesTemplate.apply(f);
                     });
                     return html;
@@ -43,18 +43,18 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
 
         var config = Ext.apply({
-            id: "downloadList",
-            store: this.downloadItemsStore,
-            emptyText: OpenLayers.i18n("emptyCartText"),
-            tpl: template,
-            autoScroll: true
+            id:"downloadList",
+            store:this.downloadItemsStore,
+            emptyText:OpenLayers.i18n("emptyCartText"),
+            tpl:template,
+            autoScroll:true
         }, cfg);
 
 
         Portal.cart.DownloadList.superclass.constructor.call(this, config);
 
 
-        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function() {
+        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
             this.downloadItemsStore.load();
         }, this);
 
