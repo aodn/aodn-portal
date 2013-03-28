@@ -1,44 +1,79 @@
 package au.org.emii.portal.scanner
 
 import grails.converters.JSON
+import au.org.emii.portal.Server
+import au.org.emii.portal.Config
+import javax.annotation.PostConstruct
 
 class WfsScannerService extends ScannerService {
 
     static transactional = true
+    static lazyInit = false
 
     public WfsScannerService(){
         super()
     }
 
-
-    def saveOrUpdateCallbackUrl() {
-        return "${portalBaseURL()}filter/updateFilter"
+    def getScannerBaseUrl(){
+        return grailsApplication.config.wfsScanner.url
     }
 
     def scanJobUrl() {
         return "${scannerURL()}scanJob/"
     }
 
-    def scannerURL(){
-        def wfsScannerBaseUrl = grailsApplication.config.wfsScanner.url
-        def slash = _optionalSlash( wfsScannerBaseUrl )
-        println "${wfsScannerBaseUrl}${slash}"
-        return "${wfsScannerBaseUrl}${slash}"
+    def saveOrUpdateCallbackUrl() {
+        return "${portalBaseURL()}filter/updateFilter"
     }
 
     def callDelete(scanJobId){
-
-        def callbackUrl = URLEncoder.encode( saveOrUpdateCallbackUrl() )
         def address = "${scanJobUrl() }delete?id=${scanJobId}"
 
-        def url
-        def conn
+        callService(address)
 
-        url = address.toURL()
-        conn = url.openConnection()
-        conn.connect()
-
-        def response = executeCommand( conn )
+        return "Job deleted."
     }
 
+
+    def callRegister(serverId, layerName, wfsScannerCallbackPassword){
+        //http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
+        Server server = Server.get(serverId)
+
+        if(server == null){
+            log.debug("Cannot find server with ID: " + serverId)
+            throw new Exception("Cannot find server.")
+        }
+
+        if (server.type.startsWith("GEO")){
+            def address;
+
+            if (layerName != null)
+                address = "${scanJobUrl()}register?serverUrl=${server.uri}&layerName=${layerName}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
+            else
+                address =  "${scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
+
+            callService(address)
+        }
+        else{
+            log.info("WFSScanner currently only supports GEOSERVER.")
+            throw new Exception("WFSScanner currently only supports GEOSERVER.  Please change the server type and try again.")
+        }
+
+        return "Registered new scan job for server."
+    }
+
+    def callUpdate(scanJobId){
+        def jobId = scanJobId
+
+        if (jobId == null){
+            log.debug("Cannot find job with ID: " + jobId)
+            throw new Exception("Cannot find job.")
+        }
+
+        def address =  "${scanJobUrl()}updateNow?id=${jobId}"
+
+        callService(address)
+
+        return "Running new scan job for WFS."
+    }
 }

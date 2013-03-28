@@ -11,6 +11,7 @@ import grails.converters.JSON
  */
 class ScannerService {
     def grailsApplication
+    def scannerBaseUrl
 
     def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
 
@@ -28,34 +29,29 @@ class ScannerService {
     }
 
     def getStatus() {
-        println "getStatus"
         def callbackUrl = URLEncoder.encode( saveOrUpdateCallbackUrl() )
 
-        def scanJobList = []
+        def url = "${scanJobUrl()}list?callbackUrl=$callbackUrl".toURL()
 
-        def url
-        def conn
+        def content = callService(url)
 
-        url = "${scanJobUrl()}list?callbackUrl=$callbackUrl".toURL()
-
-        println "${scanJobUrl()}list?callbackUrl=$callbackUrl"
-        conn = url.openConnection()
-        conn.connect()
-
-        scanJobList = JSON.parse( conn.content.text ) // Makes the call
-
-        return scanJobList
+        return JSON.parse( content )
     }
 
-
+    def getScannerBaseUrl(){
+        //to be overridden by subclass
+    }
 
     def scannerURL(){
-        //defined in subclasses
+        if(scannerBaseUrl == null)
+            scannerBaseUrl = getScannerBaseUrl()
+
+        def slash = _optionalSlash( scannerBaseUrl )
+        return "${scannerBaseUrl}${slash}"
     }
 
-
     def scanJobUrl() {
-        return "${scannerURL()}${slash}scanJob/"
+        return "${scannerURL()}scanJob/"
     }
 
     def executeCommand( conn ) {
@@ -69,4 +65,16 @@ class ScannerService {
 
         return response
     }
+
+    def callService(address){
+        def url
+        def conn
+
+        url = address.toURL()
+        conn = url.openConnection()
+        conn.connect()
+
+        return executeCommand( conn )
+    }
+
 }
