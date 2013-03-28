@@ -102,87 +102,27 @@ class WmsScannerController {
 
         def conf = Config.activeInstance()
 
-        def url
-        def conn
-
         try {
-            Server server = Server.get( params.serverId )
-
-            def versionVal = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" ).replace("GEO-", "")
-
-            def jobName     = URLEncoder.encode( "Server scan for '${server.name}'" )
-            def jobDesc     = URLEncoder.encode( "Created by Portal, ${new Date().format( "dd/MM/yyyy hh:mm" )}" )
-            def jobType     = "WMS"
-            def wmsVersion  = URLEncoder.encode( versionVal )
-            def uri         = URLEncoder.encode( server.uri )
-            def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
-            def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
-            def scanFrequency = server.scanFrequency
-
-            def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
-            def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
-
-            // Perform action
-            def address = "${ wmsScannerService.scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
-
-            url = address.toURL()
-            conn = url.openConnection()
-            conn.connect()
-
-            def response = executeCommand( conn )
-
-            setFlashMessage response
+            setFlashMessage nwmsScannerService.callRegister(params.serverId, conf.wmsScannerCallbackPassword)
         }
         catch (Exception e) {
 
-            setFlashMessage e, conn
+            setFlashMessage e.message
         }
 
         redirect controller: "server", action: "list"
     }
 
     def callUpdate = {
-
         def conf = Config.activeInstance()
 
-        def server = Server.findWhere( uri: params.scanJobUri )
-
-        if ( !server ) {
-
-            setFlashMessage "Unable to find server with uri: '${ params.scanJobUri }'"
-            redirect controller: "server", action: "list"
-            return
-        }
-
-        def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" ).replace("GEO-", "")
-
-        def jobType     = "WMS"
-        def wmsVersion  = URLEncoder.encode( versionVal )
-        def uri         = URLEncoder.encode( server.uri )
-        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
-        def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
-        def scanFrequency = server.scanFrequency
-
-        def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
-        def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
-
-        def address = "${ wmsScannerService.scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
-
-        def url
-        def conn
-
         try {
-            url = address.toURL()
-            conn = url.openConnection()
-            conn.connect()
-
-            def response = executeCommand( conn )
-
+            def response = wmsScannerService.callUpdate(params.scanJobId, params.scanJobUri, conf.wmsScannerCallbackPassword)
             setFlashMessage response
         }
         catch (Exception e) {
 
-            setFlashMessage e, conn
+            setFlashMessage e.message
         }
 
         redirect controller: "server", action: "list"
@@ -190,24 +130,12 @@ class WmsScannerController {
 
     def callDelete = {
 
-        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
-        def address = "${ wmsScannerService.scanJobUrl() }delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
-
-        def url
-        def conn
-
         try {
-            url = address.toURL()
-            conn = url.openConnection()
-            conn.connect()
-
-            def response = executeCommand( conn )
-
-            setFlashMessage response
+            setFlashMessage wmsScannerService.callDelete(params.scanJobId)
         }
         catch (Exception e) {
 
-            setFlashMessage e, conn
+            setFlashMessage e.message
         }
 
         redirect controller: "server", action: "list"

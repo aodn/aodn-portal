@@ -23,8 +23,12 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
     void testDeleteJob(){
         def count = 0
 
+        wmsScannerService.metaClass.saveOrUpdateCallbackUrl = {
+            return "http://blah.com/layer/update"
+        }
+
         wmsScannerService.metaClass.callService = { address ->
-            assertEquals address, "http://blah.au/scanJob/delete?id=3"
+            assertEquals address, "http://blah.au/scanJob/delete?id=3&callbackUrl=http://blah.com/layer/update"
             count++
         }
 
@@ -54,11 +58,11 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
         def count = 0
 
         wmsScannerService.metaClass.callService = { address ->
-            assertEquals address, "http://scannerHost.com/scanJob/register?serverUrl=http://geoserver.blah.com&layerName=abc&callbackUrl=http://localhost/filter/updateFilter&password=somePassword&scanFrequency=120"
+            assertEquals address, "http://scannerHost.com/scanJob/register?jobName=Server+scan+for+%27null%27&jobDescription=Created+by+Portal%2C+28%2F03%2F2013+04%3A57&jobType=WMS&wmsVersion=1.1.1&uri=http%3A%2F%2Fgeoserver.blah.com&callbackUrl=http%3A%2F%2Flocalhost%2Ffilter%2FupdateFilter&callbackPassword=somePassword&scanFrequency=120&password=somePassword"
             count++
         }
 
-        wmsScannerService.callRegister(1, "abc", "somePassword")
+        wmsScannerService.callRegister(1, "somePassword")
 
         assertEquals count, 1
     }
@@ -66,18 +70,38 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
 
     void testUpdate(){
 
+        def server = [
+                id: 1,
+                scanFrequency: 120,
+                password: "somePassword",
+                uri: "http://geoserver.blah.com",
+                type: "GEO-1.1.1",
+                username: "hello",
+        ]  as Server
+
+        mockDomain(Server, [server])
+
+        Server.metaClass.static.findWhere = { map ->
+            return server
+        }
+
+        wmsScannerService.metaClass.saveOrUpdateCallbackUrl = {
+            return "http://blah.com/layer/update"
+        }
+
         wmsScannerService.metaClass.scanJobUrl = {
             return "http://scannerHost.com/scanJob/"
         }
 
         def count = 0
 
+
         wmsScannerService.metaClass.callService = { address ->
-            assertEquals address, "http://scannerHost.com/scanJob/updateNow?id=100"
+            assertEquals address, "http://scannerHost.com/scanJob/update?id=100&callbackUrl=http%3A%2F%2Fblah.com%2Flayer%2Fupdate&callbackPassword=portalPassword&jobType=WMS&wmsVersion=1.1.1&uri=http%3A%2F%2Fgeoserver.blah.com&scanFrequency=120&username=hello&password=somePassword"
             count++
         }
 
-        wmsScannerService.callUpdate(100)
+        wmsScannerService.callUpdate(100, "http://geoserver.blah.com", "portalPassword")
 
         assertEquals count, 1
     }

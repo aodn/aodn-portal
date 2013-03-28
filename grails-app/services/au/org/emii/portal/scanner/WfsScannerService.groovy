@@ -27,6 +27,10 @@ class WfsScannerService extends ScannerService {
     }
 
     def callDelete(scanJobId){
+        if(scanJobId == null){
+            return "No job specified"
+        }
+
         def address = "${scanJobUrl() }delete?id=${scanJobId}"
 
         callService(address)
