@@ -11,11 +11,11 @@ describe("Portal.cart.DownLoadList", function() {
 
 
     it('on cart Changed event', function() {
-        spyOn(Ext.data.JsonStore.prototype,'load').andCallFake(function(options) {return true})
+        spyOn(Ext.data.Store.prototype,'load').andCallFake(function(options) {return true})
 
         var downloadList = new Portal.cart.DownloadList({});
 
-        Ext.data.JsonStore.prototype.load.reset(); //reset the spy
+        Ext.data.Store.prototype.load.reset(); //reset the spy
 
         Ext.MsgBus.publish('downloadCart.cartContentsUpdated');
 
