@@ -69,7 +69,7 @@ describe("Portal.data.LayerStore", function() {
 
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                 options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
-            })
+            });
 
             layerStore.addUsingLayerLink(layerLink);
 
@@ -81,7 +81,7 @@ describe("Portal.data.LayerStore", function() {
 
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                 options.failure.call(layerStore, {});
-            })
+            });
 
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
 
@@ -171,8 +171,6 @@ describe("Portal.data.LayerStore", function() {
 
     describe('layers loaded automatically on construction', function() {
 
-        var requestParams;
-
         beforeEach(function() {
 
             spyOn(Ext.Ajax, 'request');
@@ -237,7 +235,7 @@ describe("Portal.data.LayerStore", function() {
             spyOn(layerStore, 'reset').andCallThrough();
             spyOn(layerStore, 'removeAll').andCallThrough();
             spyOn(layerStore, 'selectDefaultBaseLayer');
-            
+
             Ext.MsgBus.publish('reset');
 
             expect(layerStore.reset).toHaveBeenCalled();
@@ -285,7 +283,7 @@ describe("Portal.data.LayerStore", function() {
 
             layerStore.addUsingOpenLayer(createOpenLayer("1"));
             layerStore.addUsingOpenLayer(createOpenLayer("2"));
-            
+
             var baseLayer = createOpenLayer("base");
             baseLayer.options.isBaseLayer = true;
             layerStore.addUsingOpenLayer(baseLayer);
@@ -306,7 +304,7 @@ describe("Portal.data.LayerStore", function() {
 
         var baseLayer;
         var baseLayerRecord;
-        
+
         beforeEach(function() {
             baseLayer = createOpenLayer("base");
             baseLayer.options.isBaseLayer = true;

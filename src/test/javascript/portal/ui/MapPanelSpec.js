@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -80,7 +79,7 @@ describe("Portal.ui.MapPanel", function() {
                 centreLon: 12,
                 centreLat: 34,
                 openLayersZoomLevel: 5
-            }
+            };
 
             mapPanel.zoomToLayer(openLayer);
             expect(mapPanel.zoomTo).not.toHaveBeenCalled();
@@ -151,7 +150,7 @@ describe("Portal.ui.MapPanel", function() {
 
             spyOn(mapPanel, '_updateLayerLoadingSpinner');
 
-            mapPanel.fireEvent("tabchange")
+            mapPanel.fireEvent("tabchange");
 
             expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
         });

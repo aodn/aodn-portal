@@ -9,7 +9,6 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-import org.apache.shiro.SecurityUtils
 import org.springframework.jdbc.core.JdbcTemplate
 
 class ConfigController {
@@ -152,11 +151,9 @@ class ConfigController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
 
             }
-            render(view: "edit", model: [configInstance: configInstance])
 
-
-
-        }
+			render(view: "edit", model: [configInstance: configInstance])
+  		}
         else {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
             redirect(action: "list")

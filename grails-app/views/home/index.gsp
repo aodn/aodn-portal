@@ -89,6 +89,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/Controller.js')}?${jsVerNum}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/config/PortalConfigLoader.js')}?${jsVerNum}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/LayerStore.js')}?${jsVerNum}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/MenuTreeLoader.js')}?${jsVerNum}"
