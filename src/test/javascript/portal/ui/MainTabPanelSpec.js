@@ -15,6 +15,10 @@ describe("Portal.ui.MainTabPanel", function() {
     var mockHomePanel = {};
     
     var buildMockMainTabPanel = function() {
+        spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
+            return true
+        });
+
         spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
         spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
         spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
