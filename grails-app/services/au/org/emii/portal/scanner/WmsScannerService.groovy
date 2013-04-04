@@ -38,7 +38,7 @@ class WmsScannerService extends ScannerService {
         def server = Server.findWhere(uri: scanJobUri)
 
         if (!server) {
-            throw new Exception("Unable to find server with uri: '${ scanJobUri }'")
+            throw new IllegalArgumentException("Unable to find server with uri: '${ scanJobUri }'")
         }
 
         def versionVal = server.type.replace("NCWMS-", "").replace("WMS-", "").replace("GEO-", "")

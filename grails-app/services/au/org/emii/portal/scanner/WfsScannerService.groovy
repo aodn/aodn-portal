@@ -18,10 +18,6 @@ class WfsScannerService extends ScannerService {
         return grailsApplication.config.wfsScanner.url
     }
 
-    def scanJobUrl() {
-        return "${scannerURL()}scanJob/"
-    }
-
     def saveOrUpdateCallbackUrl() {
         return "${portalBaseURL()}filter/updateFilter"
     }
@@ -43,24 +39,24 @@ class WfsScannerService extends ScannerService {
         //http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
         Server server = Server.get(serverId)
 
-        if(server == null){
-            log.debug("Cannot find server with ID: " + serverId)
-            throw new Exception("Cannot find server.")
+        if(!server){
+            log.error("Cannot find server with ID: " + serverId)
+            throw new IllegalArgumentException("Cannot find server.")
         }
 
         if (server.type.startsWith("GEO")){
-            def address;
+            def address
 
-            if (layerName != null)
-                address = "${scanJobUrl()}register?serverUrl=${server.uri}&layerName=${layerName}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
-            else
-                address =  "${scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
+            address = "${scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}"
 
+            if (layerName) {
+                address += "&layerName=${layerName}"
+            }
             callService(address)
         }
         else{
             log.info("WFSScanner currently only supports GEOSERVER.")
-            throw new Exception("WFSScanner currently only supports GEOSERVER.  Please change the server type and try again.")
+            throw new IllegalArgumentException("WFSScanner currently only supports GEOSERVER.  Please change the server type and try again.")
         }
 
         return "Registered new scan job for server."
@@ -70,8 +66,8 @@ class WfsScannerService extends ScannerService {
         def jobId = scanJobId
 
         if (jobId == null){
-            log.debug("Cannot find job with ID: " + jobId)
-            throw new Exception("Cannot find job.")
+            log.error("Cannot find job with ID: " + jobId)
+            throw new IllegalArgumentException("Cannot find job.")
         }
 
         def address =  "${scanJobUrl()}updateNow?id=${jobId}"
