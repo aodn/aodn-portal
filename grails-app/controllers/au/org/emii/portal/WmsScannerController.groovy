@@ -12,273 +12,184 @@ import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
 
 class WmsScannerController {
-	def grailsApplication
-
-	def serverTypesToShow = [ "WMS-1.1.1",
-		"WMS-1.3.0",
-		"NCWMS-1.1.1",
-		"NCWMS-1.3.0" ]
-
-	def statusText = [ (0): "Enabled",
-		(-1): "Enabled<br />(errors&nbsp;occurred)",
-		(-2): "Stopped<br />(too&nbsp;many&nbsp;errors)" ]
-
-	def controls = {
-		def conf = Config.activeInstance()
-		def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-		wmsScannerBaseUrl = _ensureTrailingSlash( wmsScannerBaseUrl )
-
-		// Check if WMS Scanner settings are valid
-		if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
-
-			flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
-
-			return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
-		}
-
-		def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-		def scanJobList
-
-		def url
-		def conn
-
-		try {
-			url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
-			conn = url.openConnection()
-			conn.connect()
+    def grailsApplication
+    def wmsScannerService
+
+    def serverTypesToShow = [ "WMS-1.1.1",
+                              "WMS-1.3.0",
+                              "NCWMS-1.1.1",
+                              "NCWMS-1.3.0",
+                              "GEO-1.1.1",
+                              "GEO-1.3.0"]
+
+    def statusText = [ (0): "Enabled",
+                      (-1): "Enabled<br />(errors&nbsp;occurred)",
+                      (-2): "Stopped<br />(too&nbsp;many&nbsp;errors)" ]
+
+    def controls = {
+        def conf = Config.activeInstance()
+        def wmsScannerBaseUrl = wmsScannerService.scannerURL()
+
+        // Check if WMS Scanner settings are valid
+        if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
+
+            flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
+
+            return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
+        }
+
+        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
+        def scanJobList
+
+        def url
+        def conn
+
+        try {
+            url = "${ wmsScannerService.scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
+            conn = url.openConnection()
+            conn.connect()
 
-			scanJobList = JSON.parse( conn.content.text ) // Makes the call
-		}
-		catch (Exception e) {
+            scanJobList = JSON.parse( conn.content.text ) // Makes the call
+        }
+        catch (Exception e) {
 
-			setFlashMessage e, conn
-			scanJobList = [] // Empty list
-		}
+            setFlashMessage e, conn
+            scanJobList = [] // Empty list
+        }
 
-		def serversToList = Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ])
+        def serversToList = Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ])
 
-		def currentUser = SecurityUtils.getSubject()
-		if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
-			def serverList = [];
-			def userInstance = User.current();
-			if (userInstance){
-				serverList = Server.withCriteria{
-					owners{
-						eq('id', userInstance.id)
-					}
-				}
-			}
-			def allowedUris = serverList*.getUri()
+        def currentUser = SecurityUtils.getSubject()
+        if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
+            def serverList = [];
+            def userInstance = User.current();
+            if (userInstance){
+                serverList = Server.withCriteria{
+                    owners{
+                        eq('id', userInstance.id)
+                    }
+                }
+            }
+            def allowedUris = serverList*.getUri()
 
-			def allowedJobs = []
-			for (job in scanJobList) {
-				if (allowedUris.contains(job.uri)) {
-					allowedJobs += job
-				}
-			}
-			scanJobList = allowedJobs
+            def allowedJobs = []
+            for (job in scanJobList) {
+                if (allowedUris.contains(job.uri)) {
+                    allowedJobs += job
+                }
+            }
+            scanJobList = allowedJobs
 
 
-			def allowedServers = []
-			for (server in serversToList) {
-				if (allowedUris.contains(server.uri)) {
-					allowedServers += server
-				}
-			}
-			serversToList = allowedServers
-		}
+            def allowedServers = []
+            for (server in serversToList) {
+                if (allowedUris.contains(server.uri)) {
+                    allowedServers += server
+                }
+            }
+            serversToList = allowedServers
+        }
 
-		return [ configInstance: conf,
-			wmsScannerBaseUrl: wmsScannerBaseUrl,
-			scanJobList: scanJobList,
-			statusText: statusText,
-			serversToList: serversToList
-		]
-	}
+        return [ configInstance: conf,
+                 wmsScannerBaseUrl: grailsApplication.config.wmsScanner.url,
+                 scanJobList: scanJobList,
+                 statusText: statusText,
+                 serversToList: serversToList
+               ]
+    }
 
-	def callRegister = {
+    def callRegister = {
 
-		def conf = Config.activeInstance()
+        def conf = Config.activeInstance()
 
-		def url
-		def conn
+        try {
+            setFlashMessage wmsScannerService.callRegister(params.serverId, conf.wmsScannerCallbackPassword)
+        }
+        catch (Exception e) {
 
-		try {
-			Server server = Server.get( params.serverId )
+            setFlashMessage e.message
+        }
 
-			def versionVal = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
+        redirect controller: "server", action: "list"
+    }
 
-			def jobName     = URLEncoder.encode( "Server scan for '${server.name}'" )
-			def jobDesc     = URLEncoder.encode( "Created by Portal, ${new Date().format( "dd/MM/yyyy hh:mm" )}" )
-			def jobType     = "WMS"
-			def wmsVersion  = URLEncoder.encode( versionVal )
-			def uri         = URLEncoder.encode( server.uri )
-			def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-			def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
-			def scanFrequency = server.scanFrequency
+    def callUpdate = {
+        def conf = Config.activeInstance()
 
-			def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
-			def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
+        try {
+            def response = wmsScannerService.callUpdate(params.scanJobId, params.scanJobUri, conf.wmsScannerCallbackPassword)
+            setFlashMessage response
+        }
+        catch (Exception e) {
 
-			// Perform action
-			def address = "${ _scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+            setFlashMessage e.message
+        }
 
-			url = address.toURL()
-			conn = url.openConnection()
-			conn.connect()
+        redirect controller: "server", action: "list"
+    }
 
-			def response = executeCommand( conn )
+    def callDelete = {
 
-			setFlashMessage response
-		}
-		catch (Exception e) {
+        try {
+            setFlashMessage wmsScannerService.callDelete(params.scanJobId)
+        }
+        catch (Exception e) {
 
-			setFlashMessage e, conn
-		}
+            setFlashMessage e.message
+        }
 
-		redirect action: "controls"
-	}
+        redirect controller: "server", action: "list"
 
-	def callUpdate = {
+    }
 
-		def conf = Config.activeInstance()
+    private void setFlashMessage(String response) {
 
-		def server = Server.findWhere( uri: params.scanJobUri )
+        flash.message = "Response: $response"
 
-		if ( !server ) {
+    }
 
-			setFlashMessage "Unable to find server with uri: '${ params.scanJobUri }'"
-			redirect action: "controls"
-			return
-		}
+    private void setFlashMessage(e, connection) {
 
-		def versionVal  = server.type.replace( "NCWMS-", "" ).replace( "WMS-", "" )
+        def msg = ""
 
-		def jobType     = "WMS"
-		def wmsVersion  = URLEncoder.encode( versionVal )
-		def uri         = URLEncoder.encode( server.uri )
-		def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-		def callbackPassword = URLEncoder.encode( conf.wmsScannerCallbackPassword )
-		def scanFrequency = server.scanFrequency
+        if ( connection?.errorStream ) {
 
-		def usernamePart = server.username ? "&username=" + URLEncoder.encode( server.username ) : ""
-		def passwordPart = server.password ? "&password=" + URLEncoder.encode( server.password ) : ""
+            Reader reader = new BufferedReader( new InputStreamReader( connection.errorStream ) )
+            def currentLine
 
-		def address = "${ _scanJobUrl() }update?id=${params.scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+            while ( ( currentLine = reader.readLine() ) != null ) {
 
-		def url
-		def conn
+                msg += "<br /><b>$currentLine</b>"
+            }
 
-		try {
-			url = address.toURL()
-			conn = url.openConnection()
-			conn.connect()
+            if ( msg.toLowerCase().contains( "<html" ) ) {
 
-			def response = executeCommand( conn )
+                msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
+            }
 
-			setFlashMessage response
-		}
-		catch (Exception e) {
+            msg = "<br />Response: $msg"
+        }
 
-			setFlashMessage e, conn
-		}
+        msg = "$e$msg"
 
-		redirect action: "controls"
-	}
+        if ( flash.message?.trim() ) {
 
-	def callDelete = {
+            flash.message += "<hr>$msg"
+        }
+        else {
+            flash.message = msg
+        }
+    }
 
-		def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
-		def address = "${ _scanJobUrl() }delete?id=${params.scanJobId}&callbackUrl=$callbackUrl"
+    def executeCommand( conn ) {
 
-		def url
-		def conn
+        def response = conn.content.text // Executes command
 
-		try {
-			url = address.toURL()
-			conn = url.openConnection()
-			conn.connect()
+        if ( response.toLowerCase().contains( "<html" ) ) {
 
-			def response = executeCommand( conn )
+            response = "HTML response (Code: ${ conn.responseCode })"
+        }
 
-			setFlashMessage response
-		}
-		catch (Exception e) {
-
-			setFlashMessage e, conn
-		}
-
-		redirect action: "controls"
-	}
-
-	private void setFlashMessage(String response) {
-
-		flash.message = "Response: $response"
-	}
-
-	private void setFlashMessage(e, connection) {
-
-		def msg = ""
-
-		if ( connection?.errorStream ) {
-
-			Reader reader = new BufferedReader( new InputStreamReader( connection.errorStream ) )
-			def currentLine
-
-			while ( ( currentLine = reader.readLine() ) != null ) {
-
-				msg += "<br /><b>$currentLine</b>"
-			}
-
-			if ( msg.toLowerCase().contains( "<html" ) ) {
-
-				msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
-			}
-
-			msg = "<br />Response: $msg"
-		}
-
-		msg = "$e$msg"
-
-		if ( flash.message?.trim() ) {
-
-			flash.message += "<hr>$msg"
-		}
-		else {
-			flash.message = msg
-		}
-	}
-
-	def executeCommand( conn ) {
-
-		def response = conn.content.text // Executes command
-
-		if ( response.toLowerCase().contains( "<html" ) ) {
-
-			response = "HTML response (Code: ${ conn.responseCode })"
-		}
-
-		return response
-	}
-
-	def _saveOrUpdateCallbackUrl() {
-
-		def portalBaseUrl = grailsApplication.config.grails.serverURL
-		portalBaseUrl = _ensureTrailingSlash( portalBaseUrl )
-
-		return "${portalBaseUrl}layer/saveOrUpdate"
-	}
-
-	def _scanJobUrl() {
-
-		def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-		wmsScannerBaseUrl = _ensureTrailingSlash( wmsScannerBaseUrl )
-
-		return "${wmsScannerBaseUrl}scanJob/"
-	}
-
-	def _ensureTrailingSlash( url ) {
-
-		return url[-1] != "/" ? "$url/" : url
-	}
+        return response
+    }
 }

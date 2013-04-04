@@ -12,6 +12,7 @@ import grails.test.ControllerUnitTestCase
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.util.ThreadContext
 import org.apache.shiro.SecurityUtils
+import au.org.emii.portal.scanner.WmsScannerService
 
 class WmsScannerControllerTests extends ControllerUnitTestCase {
 
@@ -52,6 +53,21 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
                 grails.serverURL = "appBaseUrl/"
                 wmsScanner.url = "$expectedScannerBaseUrl"
                 """)]
+
+        def mockWmsScannerService = mockFor(WmsScannerService)
+        mockWmsScannerService.metaClass.scannerURL = {
+            return "scannerBaseUrl/"
+        }
+
+        mockWmsScannerService.metaClass.scanJobUrl = {
+            return "scannerBaseUrl/scanJob/"
+        }
+
+        mockWmsScannerService.metaClass.saveOrUpdateCallbackUrl = {
+            return "appBaseUrl/layer/saveOrUpdate"
+        }
+
+        controller.wmsScannerService = mockWmsScannerService
     }
 
     protected void tearDown() {
@@ -69,7 +85,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
             
-            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
+            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
 
             return [] // Test with empty server list
@@ -97,7 +113,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
             
-            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0]", serverTypes.toString()
+            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
             assertEquals "Allow discoveries should be 'true'", true, allowDiscoveries
             assertEquals "Sort map should match", "[sort:name]", sort.toString()
             
@@ -136,30 +152,20 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     }
     
     void testCallRegister_NoProblem_RedirectedWithMessage() {
-       
-        mockDomain Config, [validConfig]
-        
-        def expectedQueryString = """\
-?jobName=Server+scan+for+%27Server+3%27\
-&jobDescription=Created+by+Portal%2C+${ URLEncoder.encode( new Date().format( "dd/MM/yyyy hh:mm" ) ) }\
-&jobType=WMS\
-&wmsVersion=1.3.0\
-&uri=svr3uri\
-&callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackPassword=pwd\
-&scanFrequency=120\
-&username=u+n\
-&password=p%2Fw%2Fd\
-"""
 
-        setUpToUrlForResponse "scannerBaseUrl/scanJob/register$expectedQueryString", "Registered"
-        
-        Server.metaClass.static.get = { map -> return server3 }
-        
-        controller.callRegister() // Make the call
-        
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain response", "Response: Registered", controller.flash.message
+
+        mockDomain Config, [validConfig]
+
+        def count = 0
+
+        controller.wmsScannerService.metaClass.callRegister = { a, b ->
+            count++
+        }
+
+        controller.callRegister()
+
+        assertEquals count, 1
+
     }
     
     void testCallRegister_ExceptionThrown_RedirectedWithMessage() {
@@ -176,15 +182,20 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &callbackPassword=pwd\
 &scanFrequency=45\
 """
-        
-        setUpToUrlForException "scannerBaseUrl/scanJob/register$expectedQueryString", "Error Text"
-        
+
+
+
         Server.metaClass.static.get = { map -> return server2 }
-        
+
+        controller.wmsScannerService.metaClass.callRegister = { a, b ->
+            throw new Exception("Error Text")
+        }
+
         controller.callRegister() // Make the call
-        
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Error Text</b>", controller.flash.message
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
+        assertEquals "Flash message should contain exception message", "Response: Error Text", controller.flash.message
     }
     
     void testCallUpdate_NoProblem_RedirectedWithMessage() {
@@ -208,51 +219,42 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findWhere = { map -> return server3 }
         
         mockParams.scanJobId = 1
+
+        def count = 0
+        controller.wmsScannerService.metaClass.callUpdate = { a, b, c ->
+            count++
+            return "Updated"
+        }
+
+
         controller.callUpdate() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
+        assertEquals 1, count
         assertEquals "Flash message should show response", "Response: Updated", controller.flash.message
     }
 
-    void testCallUpdate_ServerNotFound_RedirectedWithMessage() {
+    void testCallUpdate_WithException() {
 
         mockDomain Config, [validConfig]
 
         Server.metaClass.static.findWhere = { map -> return null }
 
+        def count = 0
+        controller.wmsScannerService.metaClass.callUpdate = { a, b, c ->
+            throw new Exception("Unable to find server with uri: 'TheUri'")
+        }
+
         mockParams.scanJobUri = "TheUri"
         controller.callUpdate() // Make the call
 
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
         assertEquals "Flash message should contain exception message", "Response: Unable to find server with uri: 'TheUri'", controller.flash.message
     }
-
-    void testCallUpdate_ExceptionThrown_RedirectedWithMessage() {
-             
-        mockDomain Config, [validConfig]
-        
-        def expectedQueryString = """\
-?id=1\
-&callbackUrl=appBaseUrl%2Flayer%2FsaveOrUpdate\
-&callbackPassword=pwd\
-&jobType=WMS\
-&wmsVersion=1.1.1\
-&uri=svr2uri\
-&scanFrequency=45\
-"""
-
-        setUpToUrlForException "scannerBaseUrl/scanJob/update$expectedQueryString", "Update Problem"
-        
-        Server.metaClass.static.findWhere = { map -> return server2 }
-        
-        mockParams.scanJobId = 1
-        controller.callUpdate() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "java.lang.Exception: Test Exception<br />Response: <br /><b>Update Problem</b>", controller.flash.message
-    }
     
-    void testCallDelete_NoProblemHtmlResponse_Redirected() {
+    void testCallDelete_WithoutException() {
          
         mockDomain Config, [validConfig]
         
@@ -260,13 +262,20 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         setUpToUrlForException "scannerBaseUrl/scanJob/delete$expectedQueryString", "<Doctype><hTMl>Blah blah blah..."
          
         mockParams.scanJobId = 4
+
+
+        controller.wmsScannerService.metaClass.callDelete = {
+            return "Deleted"
+        }
+
         controller.callDelete() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should show response", "java.lang.Exception: Test Exception<br />Response: <br /><i>HTML response (HTTP code: 500)</i>", controller.flash.message
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
+        assertEquals "Flash message should show response", "Response: Deleted", controller.flash.message
     }
     
-    void testCallDelete_ExceptionThrownWithExistingMessage_RedirectedWithNewAndExistingMessage() {
+    void testCallDelete_WithException() {
                         
         mockDomain Config, [validConfig]
         
@@ -275,10 +284,16 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         
         controller.flash.message = "Existing<br />Message" // Existing message
         mockParams.scanJobId = 5
+
+        controller.wmsScannerService.metaClass.callDelete = {
+            throw new Exception("Test Exception")
+        }
+
         controller.callDelete() // Make the call
-     
-        assertEquals "Should redirect to 'controls'", "controls", redirectArgs.action
-        assertEquals "Flash message should contain exception message", "Existing<br />Message<hr>java.lang.Exception: Test Exception", controller.flash.message
+
+        assertEquals "Should redirect to 'list'", "list", redirectArgs.action
+        assertEquals "Should redirect to server controller", "server", redirectArgs.controller
+        assertEquals "Flash message should contain exception message", "Response: Test Exception", controller.flash.message
     }
     
     void setUpToUrlForResponse( expectedUrl, responseText ) {

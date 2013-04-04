@@ -8,6 +8,8 @@
 
 package au.org.emii.portal
 
+import grails.converters.JSON
+
 class FilterController {
 
     def index = {
@@ -119,4 +121,98 @@ class FilterController {
         }
 
     }
+
+    /**
+     * Note that values will be truncated to 256 characters, to fit the database schema.
+     */
+    def updateFilter = {
+        def postData = JSON.parse(params.filterData)
+        if(_validateCredential(postData.password)){
+
+            def layerName = postData.layerName
+            def hostPattern = "%" + postData.serverHost + "%"
+            def namespace = null
+
+            if(postData.layerName.indexOf(":") > -1){
+                namespace = layerName.substring(0, layerName.indexOf(":"))
+                layerName = layerName.substring(layerName.indexOf(":") + 1)
+            }
+
+            log.debug("finding layer using: " + "from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'")
+            def layer  = null
+
+            if(namespace == null)
+                layer = Layer.find("from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'")
+            else{
+                layer = Layer.find("from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName' and l.namespace = '$namespace'")
+            }
+
+            def newFilters = postData.filters
+
+            if(layer){
+                newFilters.each(){ name, theFilter ->
+                    def filter = Filter.findByLayerAndName(layer, name)
+
+                    def type = theFilter.type
+
+                    if(theFilter.type.startsWith("Geometry")){
+                        type = FilterTypes.BoundingBox
+                    }
+                    else if(theFilter.type.equals("DateTime")){
+                        type = FilterTypes.Date
+                    }
+
+                    if(!filter){
+                        filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
+                    }
+
+                    /**
+                     * Currently restricting string values to 256 characters (as per database setting).  These
+                     * values should usually be something small, but there's been cases where a value contains
+                     * a long description.
+                     */
+                    filter.possibleValues = theFilter.possibleValues.collect{
+                        if(it.length() > 255){
+                            it[0..251] + "..."
+                        }
+                        else{
+                            it
+                        }
+                    }
+
+                    try{
+                        if (!filter.hasErrors() && filter.save(flush: true)) {
+                            render status: 200, text: "Complete (saved)"
+                        }
+                    }
+                    catch(Exception e){
+                        log.debug("Error while trying to save filter: $e.message")
+                        render(status: 500, text: "Error saving or updating filter: $e")
+                    }
+                }
+            }
+            else{
+                log.debug("Unable to find layer on server $hostPattern with layer $layerName")
+                render(status: 500, text: "Unable to find layer on server $hostPattern with layer $layerName")
+            }
+        }
+    }
+
+    def boolean _validateCredential(password){
+        def configuredPassword = Config.activeInstance().wfsScannerCallbackPassword
+
+        if(configuredPassword){
+            if(password.equals(configuredPassword)){
+                return true
+            }
+            else{
+                log.debug("Authentication failed")
+                return false
+            }
+        }
+
+        log.debug("No WFS Scanner password configured for portal")
+        return false
+    }
+
 }

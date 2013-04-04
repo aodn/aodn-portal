@@ -43,6 +43,7 @@ class Layer {
 	 * not possible to have a null parent with GORM.
 	 */
 	Layer parent
+    Layer wfsLayer
 
      /* <tns:name>Argo Oxygen Floats</tns:name>
         <tns:disabled>false</tns:disabled>
@@ -99,6 +100,7 @@ class Layer {
         lastUpdated(nullable:true)
         layerHierarchyPath(nullable: true)
         available(nullable: false)
+        wfsLayer(nullable: true)
     }
 
 	static transients = ['layers']

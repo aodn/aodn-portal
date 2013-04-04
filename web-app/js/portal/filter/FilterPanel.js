@@ -116,7 +116,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			Ext.Ajax.request({
 				url: this.GET_FILTER,
 				params: {
-					layerId: layer.grailsLayerId
+                    /*if(layer.hasWFSLayer())
+                        layerId: layer.wfsLayer.hrailsID
+                    else
+					    layerId: layer.grailsLayerId
+                    */
+                    layerId: layer.grailsLayerId
 				},
 				scope: this,
 				failure: function(resp) {
@@ -127,12 +132,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 					var filters = Ext.util.JSON.decode(resp.responseText);
 					if(filters.length > 0){
 						this.setVisible(true);
-						Ext.each(filters,
-							function(filter, index, all) {
-								this.createFilter(layer, filter);
-							},
-							this
-						);
+                        Ext.each(filters,
+                            function(filter, index, all) {
+                                if(filter.enabled){
+                                    this.createFilter(layer, filter);
+                                }
+                            },
+                            this
+                        );
 
 						this.addButton = new Ext.Button({
 							cls: "x-btn-text-icon",
@@ -200,10 +207,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this._updateFilter();
     },
 
-    _makeWFSURL: function(){
+    _makeWFSURL: function(serverURL, layerName){
 
     	var query = Ext.urlEncode({
-			typeName: this.layer.params.LAYERS,
+			typeName: layerName,
 			SERVICE: "WFS",
 			outputFormat: "csv",
 			REQUEST: "GetFeature",
@@ -211,7 +218,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
 		});
 
-    	var wfsURL =  this.layer.server.uri.replace("/wms", "/wfs");
+    	var wfsURL =  serverURL.replace("/wms", "/wfs");
 
     	if(wfsURL.indexOf("?") > -1)
     		wfsURL +=  "&" + query;
@@ -219,6 +226,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     		wfsURL += "?" + query;
 
 		return wfsURL;
+    },
+
+    _makeDownloadURL: function(){
+        if(this.layer.wfsLayer == null){
+            return this._makeWFSURL(this.layer.server.uri, this.layer.params.LAYERS);
+        }
+
+        return this._makeWFSURL(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
     _addToCart: function(){
@@ -232,7 +247,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		tup.record.data["rec_title"] =  this.layer.title;
 		tup.record.data["title"] =  this.layer.title;
 		tup.link["type"] =  "application/x-msexcel";
-		tup.link["href"] =  this._makeWFSURL();
+		tup.link["href"] =  this._makeDownloadURL();
 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
 		tup.link["preferredFname"] = this._makePreferredFname();
 

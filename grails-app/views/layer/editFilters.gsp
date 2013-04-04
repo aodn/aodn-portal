@@ -50,8 +50,7 @@
 				<div class="dialog">
 					<table>
 						<tbody>
-
-							<tr class="prop">
+                            <tr class="prop">
 								<td valign="top" class="name">
 									<label for="name"><g:message code="filter.name.label" default="Name" /></label>
 								</td>
@@ -59,6 +58,24 @@
 									<g:textField name="name" value="${filterInstance?.name}" />
 								</td>
 							</tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label"><g:message code="filter.enabled.label" default="Enabled" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'enabled', 'errors')}">
+                                    <g:checkBox name="enabled" checked="${filterInstance?.label}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadfOnly', 'errors')}">
+                                    <g:checkBox name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
+                                </td>
+                            </tr>
 
 							<tr class="prop">
 								<td valign="top" class="name">
@@ -103,11 +120,16 @@
 
 				<h2>Modify an existing filter</h2>
 
-				<div class="dialog">
-					<g:each in="${layerInstance?.filters}" var="filter">
-						<li><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></li>
-					</g:each>
-				</div>
+                <div class="dialog">
+                    <g:each in="${layerInstance?.filters}" var="filter">
+                        <g:if test="${filter.enabled}">
+                            <b><li><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></li></b>
+                        </g:if>
+                        <g:else>
+                            <i><li><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></li></i>
+                        </g:else>
+                    </g:each>
+                </div>
 			</g:if>
 		</div>
 	</body>

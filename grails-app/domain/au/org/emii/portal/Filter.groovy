@@ -18,9 +18,12 @@ class Filter {
     static belongsTo = [layer: Layer]
     static hasMany = [possibleValues: String]
     List<String> possibleValues
+    boolean enabled
+    boolean downloadOnly
 
     public Filter(){
         possibleValues = []
+        downloadOnly = false   //default
     }
 
     static constraints = {
@@ -28,8 +31,9 @@ class Filter {
         type()
         layer(nullable: false)
         label(blank: false)
+        downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
-            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox){
+            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox && obj.type != FilterTypes.Date){
                 if(val.size() > 0)
                     return true
             }
@@ -50,6 +54,7 @@ class Filter {
         filterData["name"] = this.name
         filterData["possibleValues"] = this.possibleValues
         filterData["layerId"] = this.layer.id
+        filterData["enabled"] = this.enabled
         return filterData
      }
 

@@ -10,12 +10,15 @@ package au.org.emii.portal
 
 import grails.converters.deep.JSON
 import org.apache.shiro.SecurityUtils
+import au.org.emii.portal.scanner.*
 
 class ServerController {
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 	def checkLinksService
+    def wmsScannerService
+    def wfsScannerService
 
 	def index = {
 		redirect(action: "list", params: params)
@@ -23,7 +26,10 @@ class ServerController {
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
-		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count()]
+
+        def jobProperties = getScannerStatus()
+
+		[serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), jobProperties:  jobProperties]
 	}
 
     def listAllowDiscoveriesAsJson = {
@@ -175,5 +181,59 @@ class ServerController {
                 render(view: "listByOwner", model: [maps: maps])
             }
         }
+    }
+
+    def getScannerStatus(){
+        //show servers
+
+        //callout to check status of WMS server
+        def wmsList
+        //callout to check the status of WFS servers
+        def wfsList
+
+        //list of discoverable servers
+        def serverMap = [:]
+
+        def wmsScannerContactable = true
+        def wfsScannerContactable = true
+
+        try{
+            wmsList = wmsScannerService.getStatus()
+
+        }
+        catch(Exception e){
+            flash.message = "Cannot contact WMS scanner for a list of current jobs.  Please make sure WMS server is contactable"
+            wmsScannerContactable = false
+        }
+
+        try{
+            wfsList =  wfsScannerService.getStatus()
+        }
+        catch(Exception e){
+            flash.message = "Cannot contact WFS scanner for a list of current jobs.  Please make sure WFS server is contactable"
+            wfsScannerContactable = false
+        }
+
+        def discoverables = Server.findAllByAllowDiscoveries(true)
+
+        discoverables.each(){ discoverable ->
+            def wmsJob = null
+            def wfsJob = null
+            wmsList.each(){ job ->
+                if(job.uri == discoverable.uri){
+                    wmsJob = job
+                }
+            }
+
+            wfsList.each(){ job ->
+                if(job.serverUrl == discoverable.uri){
+                    wfsJob = job
+                }
+            }
+
+            serverMap.put(discoverable, [wmsJob, wfsJob])
+        }
+
+        return [serverMap: serverMap, wmsScannerContactable: wmsScannerContactable, wfsScannerContactable: wfsScannerContactable]
     }
 }

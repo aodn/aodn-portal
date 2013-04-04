@@ -100,7 +100,11 @@ databaseChangeLog = {
 
     include file: '20130218-AM-ServerOwnerPermissions.groovy'
     
-    include file: '20130301-PBL-DefaultLayerZoom.groovy' 
+    include file: '20130301-PBL-DefaultLayerZoom.groovy'
+
+    include file: '20130305-PM-enableFilterFlag.groovy'
+
+    include file: '20130312-PM-WFSLayer.groovy'
 
 	include file: '20130320-JB-AddLayerViewParameters.groovy'
 
@@ -111,5 +115,7 @@ databaseChangeLog = {
 	include file: 'imos-changelog.groovy'
 	include file: 'wa-changelog.groovy'
 	include file: 'soos-changelog.groovy'
+
+
 }
 

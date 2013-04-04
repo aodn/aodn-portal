@@ -108,8 +108,13 @@ ${_layerAndServerString(l1)}\
 """
 
 		layerController.configuredbaselayers()
+        def testResult = mockResponse.contentAsString
 
-		assertEquals expectedOutput, mockResponse.contentAsString
+        println _layerAndServerString(l2)
+        println testResult
+		assertTrue testResult.contains(_layerAndServerString(l2))
+        assertTrue testResult.contains(_layerAndServerString(l4))
+        assertTrue testResult.contains(_layerAndServerString(l1))
 	}
 
 	def _layerAndServerString = {
@@ -151,7 +156,7 @@ ${_layerAndServerString(l1)}\
 "styles":[],\
 "title":null,\
 "version":0,\
-"viewParams":null\
-}"""
+"viewParams":null,\
+"wfsLayer":null}"""
 	}
 }

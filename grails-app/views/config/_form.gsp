@@ -311,6 +311,15 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="wfsScannerCallbackPassword"><g:message code="config.wfsScannerCallbackPassword.label" default="WFS Scanner Callback Password" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wfsScannerCallbackPassword', 'errors')}">
+                                    <g:textField size="30" name="wfsScannerCallbackPassword" value="${configInstance?.wfsScannerCallbackPassword}" /><span class="hint">Simple password for protecting callback. WMS Scanner jobs must be updated after this has been changed.</span>
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="downloadCartMimeTypeToExtensionMapping"><g:message code="config.downloadCartMimeTypeToExtensionMapping.label" default="Map from mime types to file extensions for downloads" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartMimeTypeToExtensionMapping', 'errors')}">
