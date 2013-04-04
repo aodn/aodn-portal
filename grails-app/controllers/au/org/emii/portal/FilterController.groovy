@@ -139,13 +139,14 @@ class FilterController {
             }
 
             log.debug("finding layer using: " + "from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'")
-            def layer  = null
 
-            if(namespace == null)
-                layer = Layer.find("from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'")
-            else{
-                layer = Layer.find("from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName' and l.namespace = '$namespace'")
+            def query = "from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'"
+
+            if(namespace){
+                query += " and l.namespace = '$namespace'"
             }
+
+            def layer = Layer.find(query)
 
             def newFilters = postData.filters
 
@@ -173,6 +174,7 @@ class FilterController {
                      */
                     filter.possibleValues = theFilter.possibleValues.collect{
                         if(it.length() > 255){
+                            log.warn("filter length longer than 255.  Value was trucated from this: " + it)
                             it[0..251] + "..."
                         }
                         else{
@@ -211,7 +213,7 @@ class FilterController {
             }
         }
 
-        log.debug("No WFS Scanner password configured for portal")
+        log.info("No WFS Scanner password configured for portal")
         return false
     }
 

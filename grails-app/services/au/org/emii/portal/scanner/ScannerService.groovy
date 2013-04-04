@@ -9,9 +9,8 @@ import grails.converters.JSON
  * Time: 12:31 PM
  * To change this template use File | Settings | File Templates.
  */
-class ScannerService {
+abstract class ScannerService {
     def grailsApplication
-    def scannerBaseUrl
 
     def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
 
@@ -24,29 +23,22 @@ class ScannerService {
         return "${portalBaseUrl}${slash}"
     }
 
-    def saveOrUpdateCallbackUrl(){
-        return ""
-    }
+    abstract def saveOrUpdateCallbackUrl()
 
     def getStatus() {
         def callbackUrl = URLEncoder.encode( saveOrUpdateCallbackUrl() )
 
-        def url = "${scanJobUrl()}list?callbackUrl=$callbackUrl".toURL()
+        def url = "${scanJobUrl()}list?callbackUrl=$callbackUrl"
 
         def content = callService(url)
 
         return JSON.parse( content )
     }
 
-    def getScannerBaseUrl(){
-        //to be overridden by subclass
-    }
+    abstract def getScannerBaseUrl()
 
     def scannerURL(){
-        if(scannerBaseUrl == null)
-            scannerBaseUrl = getScannerBaseUrl()
-
-        def slash = _optionalSlash( scannerBaseUrl )
+        def slash = _optionalSlash(getScannerBaseUrl())
         return "${scannerBaseUrl}${slash}"
     }
 

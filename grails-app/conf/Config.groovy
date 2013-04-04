@@ -134,7 +134,7 @@ environments {
 	    grails.serverURL = "http://myaodn.example.com"
 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
 	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
-        wfsScanner.url = "http://localhost:8200/wfsScanner"
+        wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
 	    openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = false

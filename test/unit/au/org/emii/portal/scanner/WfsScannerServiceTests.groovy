@@ -55,7 +55,7 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
         def count = 0
 
         wfsScannerService.metaClass.callService = { address ->
-            assertEquals address, "http://scannerHost.com/scanJob/register?serverUrl=http://geoserver.blah.com&layerName=abc&callbackUrl=http://localhost/filter/updateFilter&password=somePassword&scanFrequency=120"
+            assertEquals address, "http://scannerHost.com/scanJob/register?serverUrl=http://geoserver.blah.com&callbackUrl=http://localhost/filter/updateFilter&password=somePassword&scanFrequency=120&layerName=abc"
             count++
         }
 
