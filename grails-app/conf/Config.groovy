@@ -103,7 +103,7 @@ environments {
 	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
 		wmsScanner.url = "http://localhost:8100/WmsScannerGrails"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
-		openIdProvider.url = "https://devid.emii.org.au"
+		openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = true
 
@@ -243,14 +243,14 @@ log4j = {
             'grails.app.service.au.org.emii.portal.LayerService',
             'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
             'au.org.emii.portal.display.MenuJsonCache',
-            'org.apache.shiro'
+            'org.apache.shiro',
+            'grails.app.controller'
 
     debug   'grails.app.job',
             //'grails.app.service',
 		'grails.app.tagLib',
             'grails.app.domain',
-            'grails.app.realms',
-            'grails.app.controller'
+            'grails.app.realms'
             //'au.org.emii.portal'
             //'au.org.emii.portal.display'
 		    //'org.hibernate.SQL',
