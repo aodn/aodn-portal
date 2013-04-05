@@ -50,10 +50,6 @@
 
     <h3>Current scan jobs (${scanJobList?.size()})</h3>
     <g:if test="${scanJobList != '[]'}">
-        <shiro:lacksPermission permission="wmsScanner:callDelete">
-
-        </shiro:lacksPermission>
-
         <div class="list">
             <table>
                 <thead>

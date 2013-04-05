@@ -45,7 +45,6 @@
                             <g:sortableColumn property="type" title="${message(code: 'server.type.label', default: 'Type')}" />
 
                             <g:sortableColumn property="disable" title="${message(code: 'server.disable.label', default: 'Disable')}" />
-                            <g:sortableColumn property="infoFormat" title="${message(code: 'server.infoFormat.label', default: 'getFeatureInfo Format')}" />
                             <g:sortableColumn property="allowDiscoveries" title="${message(code: 'server.allowDiscoveries.label', default: 'Discoverable')}" />
                             <g:sortableColumn property="WMS Scanner" title="${message(code: 'server.allowDiscoveries.label', default: 'WMS Scanner Status')}" />
                             <g:sortableColumn property="WFS Scanner" title="${message(code: 'server.allowDiscoveries.label', default: 'WFS Scanner Status')}" />
@@ -57,17 +56,15 @@
                                         'disable' : '' }
                             ${(serverInstanceList[i].allowDiscoveries) ?
                                         '' : 'disable' }">
-                            <td>${fieldValue(bean: serverInstance, field: "name")}</td>
+                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "name")}</g:link></td>
 
                             <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
 
-                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "uri")}</g:link></td>
+                            <td>${fieldValue(bean: serverInstance, field: "uri")}</td>
 
                             <td>${fieldValue(bean: serverInstance, field: "type")}</td>
 
                             <td><g:formatBoolean boolean="${serverInstance.disable}" /></td>
-
-                            <td>${serverInstance.infoFormat}</td>
 
                             <td><g:formatBoolean boolean="${serverInstance.allowDiscoveries}" /></td>
 

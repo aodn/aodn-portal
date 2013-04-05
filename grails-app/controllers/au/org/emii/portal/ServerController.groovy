@@ -9,8 +9,6 @@
 package au.org.emii.portal
 
 import grails.converters.deep.JSON
-import org.apache.shiro.SecurityUtils
-import au.org.emii.portal.scanner.*
 
 class ServerController {
 
@@ -78,11 +76,8 @@ class ServerController {
 			redirect(action: "list")
 		}
 		else {
-            def allOwners = User.withCriteria{
-                roles{
-                    eq('name', UserRole.SERVEROWNER)
-                }
-            }
+			def serverOwnerRole = UserRole.findByName(UserRole.SERVEROWNER)
+			def allOwners = serverOwnerRole.users
 
 			return [serverInstance: serverInstance, allOwners: allOwners]
 		}
