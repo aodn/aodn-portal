@@ -40,7 +40,11 @@ class User {
     @Override
     public String toString() {
 
-        return "${fullName} [Roles: ${roles.join(", ")}] (${openIdUrl})"
+		String s = fullName
+		s += roles ? " [Roles: ${roles.join(", ")}]" : " [No Roles]"
+		s += " (${openIdUrl})"
+
+        return s
     }
 
     void beforeDelete(){

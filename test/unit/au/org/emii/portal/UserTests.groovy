@@ -8,18 +8,18 @@
 
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class UserTests extends GrailsUnitTestCase {
-    
+
     def user
-    
+
     protected void setUp() {
 
         super.setUp()
-        
-        mockForConstraintsTests User
-        
+
+        mockDomain User
+
         user = new User( openIdUrl: "http://www.example.com/openId",
                          emailAddress: "admin@utas.edu.au",
                          fullName: "Joe Bloggs")
@@ -29,14 +29,22 @@ class UserTests extends GrailsUnitTestCase {
 
         super.tearDown()
     }
-    
+
     void testValidUser() {
 
         assertTrue "Validation should have succeeded (unchanged, valid instance)", user.validate()
     }
 
     void testToString() {
-        
-        assertEquals "Joe Bloggs (http://www.example.com/openId)", user.toString()
+
+        assertEquals "Joe Bloggs [No Roles] (http://www.example.com/openId)", user.toString()
+
+		user.addToRoles( new UserRole(name: "Role1") )
+
+        assertEquals "Joe Bloggs [Roles: Role1] (http://www.example.com/openId)", user.toString()
+
+//		user.addToRoles( new UserRole(name: "Role2") )
+//
+//		assertEquals "Joe Bloggs [Roles: Role1, Role2] (http://www.example.com/openId)", user.toString()
     }
 }
