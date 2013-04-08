@@ -148,13 +148,16 @@ class FilterController {
 
             def layer = Layer.find(query)
 
+            log.debug("found layer: " + layer)
+
             def newFilters = postData.filters
 
             if(layer){
                 newFilters.each(){ name, theFilter ->
                     def filter = Filter.findByLayerAndName(layer, name)
 
-                    def type = theFilter.type
+                    log.debug(theFilter.type)
+                    def type = FilterTypes.String
 
                     if(theFilter.type.startsWith("Geometry")){
                         type = FilterTypes.BoundingBox
@@ -162,6 +165,19 @@ class FilterController {
                     else if(theFilter.type.equals("DateTime")){
                         type = FilterTypes.Date
                     }
+                    else if (theFilter.type.equals("MultiLineStringPropertyType")){
+                        type = FilterTypes.BoundingBox
+                    }
+                    else if (theFilter.type.equals("MultiLinePolygonPropertyType")){
+                        type = FilterTypes.BoundingBox
+                    }
+                    else if (theFilter.type.equals("MultiLinePolygonPropertyType")){
+                        type = FilterTypes.BoundingBox
+                    }
+                    else if (theFilter.type.equals("PointPropertyType")){
+                        type = FilterTypes.BoundingBox
+                    }
+
 
                     if(!filter){
                         filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
@@ -185,6 +201,9 @@ class FilterController {
                     try{
                         if (!filter.hasErrors() && filter.save(flush: true)) {
                             render status: 200, text: "Complete (saved)"
+                        }
+                        else{
+                            log.debug("Unable to save filter: " + filter.errors)
                         }
                     }
                     catch(Exception e){
