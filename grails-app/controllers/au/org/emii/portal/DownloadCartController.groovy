@@ -25,6 +25,8 @@ class DownloadCartController {
             return
         }
 
+        println(params.newEntries);
+
         def newEntries = JSON.parse( params.newEntries as String )
 
         def cart = _getCart()
@@ -38,6 +40,26 @@ class DownloadCartController {
     def clear = {
 
         _setCart null
+
+        render _getCartSize().toString()
+    }
+
+    def removeRecord = {
+        if ( !params.rec_uuid ) {
+            render text: "No item specified to remove", status: 500
+            return
+        }
+
+        def uuid = params.rec_uuid
+
+        def cart = _getCart()
+
+
+        cart.removeAll {
+            return (it.rec_uuid == uuid)
+        }
+
+        _setCart( cart )
 
         render _getCartSize().toString()
     }
