@@ -45,6 +45,15 @@ function addToDownloadCart( tuples ) {
     });
 }
 
+function removeDownloadCartRecord ( record_uuid ) {
+    Ext.Ajax.request({
+        url: 'downloadCart/removeRecord',
+        params: { rec_uuid: record_uuid },
+        success: _handleSuccessAndShow,
+        failure: _handleFailureAndShow
+    });
+}
+
 function getInitialDownloadCartCount() {
 
     Ext.Ajax.request({
