@@ -37,7 +37,7 @@
 
 				<ul>
 					<g:select name="owners"
-						  from="${server?.value}"
+						  from="${server?.value.sort {it.name}}"
 						  optionKey="id"
 						  onchange="goToPage(this.value)"/>
 				</ul>
