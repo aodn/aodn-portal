@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -243,13 +242,13 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		tup.link = new Object();
 
 		//pretending to be a geonetwork metadata record
-		tup.record.data["rec_uuid"] = this.layer.getMetadataUrl();
-		tup.record.data["rec_title"] =  this.layer.title;
-		tup.record.data["title"] =  this.layer.title;
-		tup.link["type"] =  "application/x-msexcel";
+		tup.record.data["uuid"] = this.layer.getMetadataUrl();
+		tup.record.data["title"] =  this.layer.name;
+		tup.link["type"] =  "text/csv";
 		tup.link["href"] =  this._makeDownloadURL();
 		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
 		tup.link["preferredFname"] = this._makePreferredFname();
+        tup.link["title"] = "Filtered " + this.layer.name + " data";
 
         addToDownloadCart(tup);
     },
