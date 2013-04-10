@@ -135,8 +135,44 @@ describe("Portal.snapshot.SnapshotController", function() {
 
         snapshotController.onSuccessfulLoad(snapshotInstance);
 
-        var options = Ext.MsgBus.publish.mostRecentCall.args[1].options;
+        var options = Ext.MsgBus.publish.mostRecentCall.args[1].layerOptions;
 
         expect(options.opacity).toBeUndefined();
     });
+
+    // test for missing style problem 
+    it("addSnapshotLayer calls Ext.MsgBus.publish with style in layerParams.styles", function() {
+        spyOn(Ext.MsgBus, 'publish');
+        var snapshotLayer = {
+                id : 101,
+                hidden : false,
+                opacity : null,
+                styles : "greyscale",
+                layer : {
+                    id : 301
+                }
+        };
+
+        snapshotController.addSnapshotLayer(snapshotLayer);
+
+        var params = Ext.MsgBus.publish.mostRecentCall.args[1].layerParams;
+
+        expect(params.styles).toEqual("greyscale");
+    });
+
+    // test for opacity not saved problem
+
+    it("getSnapshotLayer sets opacity from maplayer", function() {
+        var mapLayer = {
+                grailsLayerId: 1,
+                opacity : 1.0,
+                isBaseLayer: false,
+                getVisibility: function() { return false; }
+        }
+                
+        var snapshotLayer = snapshotController.getSnapshotLayer(mapLayer);
+
+        expect(snapshotLayer.opacity).toEqual(1.0);
+    });
+
 });

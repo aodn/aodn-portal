@@ -127,7 +127,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             layer.title = mapLayer.name;
             layer.serviceUrl = mapLayer.server.uri;
         }
-        if (layer.opacity != undefined) {
+        if (mapLayer.opacity != undefined) {
             layer.opacity = mapLayer.opacity;
         }
         if (mapLayer.params != undefined) {
@@ -175,8 +175,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 
                 Ext.MsgBus.publish('addLayerUsingServerId', {
                     id: snapshotLayer.layer.id, 
-                    options: options, 
-                    params: params,
+                    layerOptions: options, 
+                    layerParams: params,
                     animated: snapshotLayer.animated, 
                     chosenTimes: snapshotLayer.chosenTimes
                 });
