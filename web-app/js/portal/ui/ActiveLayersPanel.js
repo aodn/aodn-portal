@@ -80,8 +80,13 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                         newSelected.select();
                     }
                     this.oldSelected = null;
+                }
             }
+            else { // No Layers left on map
 
+                this.setActiveNode(null);
+
+                Ext.MsgBus.publish("selectedLayerChanged", null);
             }
         }, this);
     },
@@ -136,12 +141,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         if (selected) {
             this.oldSelected = selected;
         }
-    },
-
-    layerHasBoundingBox:function (layer) {
-        // TODO: move "hasBoundingBox" to somewhere common (i.e. not MapPanel).
-        // Or, can "hasBoundingBox" be made static?
-        return this.mapScope.hasBoundingBox(layer);
     },
 
     getActiveLayerNodes:function () {

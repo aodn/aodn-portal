@@ -9,7 +9,7 @@
 describe("Portal.cart.DownLoadList", function() {
 
     it('on cart Changed event', function() {
-        spyOn(Ext.data.Store.prototype,'load').andCallFake(function(options) {return true});
+        spyOn(Ext.data.Store.prototype,'load').andCallFake(function() {return true});
 
         var downloadList = new Portal.cart.DownloadList({});
 
