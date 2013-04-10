@@ -120,7 +120,7 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function () {
 };
 
 OpenLayers.Layer.WMS.prototype._is130 = function () {
-    return "WMS-1.3.0" == this.server.type;
+    return this.server.type.contains("1.3.0") && !this.isNcwms();
 };
 
 OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
