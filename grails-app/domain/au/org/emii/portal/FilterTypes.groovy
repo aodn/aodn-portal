@@ -18,9 +18,9 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterTypes {
-    String, Date, Number, Double, Boolean,BoundingBox
+    String, Date, Number, Double, Boolean, BoundingBox
 
-    def stringTypeMapping = [
+    static def stringTypeMapping = [
         "string": FilterTypes.String,
         "date": FilterTypes.Date,
         "double": FilterTypes.Number,
