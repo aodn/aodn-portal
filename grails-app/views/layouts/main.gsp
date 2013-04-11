@@ -35,9 +35,10 @@
 
       <g:layoutBody />
         <div id="controllerMenu">
+        <h2>Portal Config</h2>
+        <ul>
           <user:loggedInUserInRole roles="Administrator">
-          <h2>Portal Config</h2>
-          <ul>
+
             <li class="controllerMenuItems"><g:link controller="server" action="list" >Server</g:link>
               <span class="inline">
                 <g:link controller="server" action="create" class="" >create</g:link>
@@ -72,9 +73,9 @@
 		   </user:loggedInUserInRole>
 		   <user:loggedInUserInRole roles="Administrator,ServerOwner">
                <li class="controllerMenuItems"><g:link controller="wmsScanner" action="controls" >WMS Scanner Controls</g:link></li>
-                <li class="controllerMenuItems"><g:link controller="server" action="listByOwner">Edit Filters</g:link>
+                <li class="controllerMenuItems"><g:link controller="server" action="listByOwner">Edit Filters</g:link></li>
            </user:loggedInUserInRole>
-			</li>
+
           </ul>
           <br />
         <b>Portal project build info</b><br />

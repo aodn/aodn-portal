@@ -18,7 +18,7 @@ class User {
 
     // Relationships
     static hasMany = [ roles: UserRole, permissions: String ]
-    
+
     static constraints = {
 
         openIdUrl unique: true, blank: false
@@ -36,11 +36,13 @@ class User {
     static mapping = {
         table 'portal_user'
     }
-    
+
     @Override
     public String toString() {
 
-        return "${fullName} (${openIdUrl})"
+		def rolePart = roles ? "[Roles: ${roles.join(", ")}]" : "[No Roles]"
+
+        return "$fullName $rolePart ($openIdUrl)"
     }
 
     void beforeDelete(){

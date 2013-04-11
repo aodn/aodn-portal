@@ -52,8 +52,8 @@ Portal.app = {
         if (this.portal.config.enableMOTD) {
 
             Ext.Msg.show({
-                title: "<h2>" + this.config.motd.motdTitle + "</h2>",
-                msg: this.config.motd.motd,
+                title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
+                msg: this.portal.config.motd.motd,
                 buttons: Ext.Msg.OK,
                 cls: 'motd',
                 width: 600
@@ -77,11 +77,11 @@ Portal.app = {
                 buttons: Ext.Msg.OK,
                 cls: 'motd',
                 width: 600,
-                msg: this.config.footerContent
+                msg: this.portal.config.footerContent
             });
         }
 
-        this.portal.viewport = new Portal.ui.Viewport(
+        viewport = new Portal.ui.Viewport(
             {
                 appConfig: Portal.app.config,
                 activeTab: startTab,

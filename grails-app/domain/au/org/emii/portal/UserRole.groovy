@@ -13,7 +13,6 @@ class UserRole {
     public static String ADMINISTRATOR = "Administrator"
     public static String SELFREGISTERED = "SelfRegisteredUser"
 
-
     String name
 
     static hasMany = [ users: User, permissions: String ]
@@ -22,10 +21,10 @@ class UserRole {
     static constraints = {
         name(nullable: false, blank: false, unique: true)
     }
-    
+
     @Override
     public String toString() {
-        
+
         return name
     }
 }

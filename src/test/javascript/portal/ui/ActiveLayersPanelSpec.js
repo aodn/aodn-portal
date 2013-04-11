@@ -7,20 +7,44 @@
  */
 
 describe("Portal.ui.ActiveLayersPanel", function() {
-    
-    var activeLayersPanel = {};
-    activeLayersPanel.activeLayersTreePanelSelectionChangeHandler = Portal.ui.ActiveLayersPanel.prototype.activeLayersTreePanelSelectionChangeHandler;
-    activeLayersPanel.fireEvent = function(event) {}
 
-    it("selection change triggers selectedLayerChanged event", function() {
-        
-        var selectedLayerChangedFired = false;
-        
-        Ext.MsgBus.subscribe("selectedLayerChanged", function() {
-            selectedLayerChangedFired = true;
+    var activeLayersPanel = new Portal.ui.ActiveLayersPanel({});
+
+    describe("activeLayersTreePanelSelectionChangeHandler", function() {
+
+        it("triggers selectedLayerChanged event", function() {
+
+            var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
+            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+
+            activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
+            expect(selectedLayerChangedSpy).toHaveBeenCalled();
         });
-        
-        activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
-        expect(selectedLayerChangedFired).toBe(true);
+    });
+
+    describe("layerRemoved event", function() {
+
+        describe("when there are no active layer nodes", function() {
+
+            // Create spies
+            activeLayersPanel.setActiveNode = jasmine.createSpy('setActiveNodeSpy');
+            activeLayersPanel.getActiveLayerNodes = jasmine.createSpy('getActiveLayerNodes').andReturn([]); // No active layers
+
+            var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
+            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+
+            // Publish the event
+            Ext.MsgBus.publish('layerRemoved');
+
+            it("active node should be set to null", function() {
+
+                expect(activeLayersPanel.setActiveNode).toHaveBeenCalledWith(null);
+            });
+
+            it("slectedLayerChanged event should be published", function() {
+
+                expect(selectedLayerChangedSpy).toHaveBeenCalled();
+            });
+        });
     });
 });

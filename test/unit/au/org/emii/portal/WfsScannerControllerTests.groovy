@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.ControllerUnitTestCase
 
 class WfsScannerControllerTests extends ControllerUnitTestCase {
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
@@ -25,10 +25,11 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
     }
 
     protected void tearDown() {
-        super.tearDown()
+
+		super.tearDown()
+
+		String.metaClass = null
     }
-
-
 
     void testControls_NoProblems_ScanJobListReturned() {
 
