@@ -157,27 +157,7 @@ class FilterController {
                     def filter = Filter.findByLayerAndName(layer, name)
 
                     log.debug(theFilter.type)
-                    def type = FilterTypes.String
-
-                    if(theFilter.type.startsWith("Geometry")){
-                        type = FilterTypes.BoundingBox
-                    }
-                    else if(theFilter.type.equals("DateTime")){
-                        type = FilterTypes.Date
-                    }
-                    else if (theFilter.type.equals("MultiLineStringPropertyType")){
-                        type = FilterTypes.BoundingBox
-                    }
-                    else if (theFilter.type.equals("MultiLinePolygonPropertyType")){
-                        type = FilterTypes.BoundingBox
-                    }
-                    else if (theFilter.type.equals("MultiLinePolygonPropertyType")){
-                        type = FilterTypes.BoundingBox
-                    }
-                    else if (theFilter.type.equals("PointPropertyType")){
-                        type = FilterTypes.BoundingBox
-                    }
-
+                    def type = FilterTypes.typeFromString(theFilter.type)
 
                     if(!filter){
                         filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)

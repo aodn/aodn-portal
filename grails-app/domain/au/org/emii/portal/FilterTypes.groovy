@@ -20,5 +20,24 @@ package au.org.emii.portal
 public enum FilterTypes {
     String, Date, Number, Double, Boolean,BoundingBox
 
+    def stringTypeMapping = [
+        "string": FilterTypes.String,
+        "date": FilterTypes.Date,
+        "double": FilterTypes.Number,
+        "boolean": FilterTypes.Boolean,
+        "pointpropertytype": FilterTypes.BoundingBox
+    ]
+
+    static FilterTypes typeFromString(String s) {
+
+        s = s.toLowerCase()
+
+        if (s.startsWith("geometry"))
+            return BoundingBox
+        else if(s.startsWith("multiline"))
+            return BoundingBox
+        return stringTypeMapping[s]
+    }
+
     String getKey() { name() }
 }
