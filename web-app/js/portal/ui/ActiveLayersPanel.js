@@ -62,7 +62,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.mon(this.root, 'insert', this.updateTitle, this);
 
         // Be aware that this event is fired for _every_ item in the ActiveLayersPanel when you remove _any_ of them.
-        // (If I recall correctly, this is because GeoExt LayerStore removes and then readds every item after a change)
+        // Because of some odd logic (GeoExt or Ext somewhere) -
+        // <<Please update this comment if you find it. It might save you some time in the future.>>
         this.mon(this.root, 'remove', this.updateTitle, this);
 
         this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
