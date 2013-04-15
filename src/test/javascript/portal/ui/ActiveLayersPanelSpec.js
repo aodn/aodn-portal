@@ -28,7 +28,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
 
             // Create spies
             activeLayersPanel.setActiveNode = jasmine.createSpy('setActiveNodeSpy');
-            activeLayersPanel.getActiveLayerNodes = jasmine.createSpy('getActiveLayerNodes').andReturn([]); // No active layers
+            activeLayersPanel.getActiveLayerNodes = function() {return []};
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
             Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
@@ -41,7 +41,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
                 expect(activeLayersPanel.setActiveNode).toHaveBeenCalledWith(null);
             });
 
-            it("slectedLayerChanged event should be published", function() {
+            it("selectedLayerChanged event should be published", function() {
 
                 expect(selectedLayerChangedSpy).toHaveBeenCalled();
             });
