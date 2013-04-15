@@ -341,11 +341,20 @@ class LayerController {
             server.updateOperations serverCapabilities.operations
 
             server.lastScanDate = new Date()
+
+	        log.debug "Before save"
+
             server.save( failOnError: true )
+
+	        log.debug "After save, before render success message"
 
             render status: 200, text: "Complete (saved)"
 
+	        log.debug "After render. Before _recache(server)"
+
             _recache(server)
+
+	        log.debug "Recache complete"
         }
         catch (Exception e) {
 
