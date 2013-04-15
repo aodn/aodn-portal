@@ -13,26 +13,26 @@ describe("OpenLayers.Layer.WMS", function() {
     beforeEach(function() {
         openLayer = new OpenLayers.Layer.WMS();
     });
-    
+
     it("no bounding box", function() {
         expect(openLayer.hasBoundingBox()).toBeFalsy();
     });
-    
+
     it("no bounding box", function() {
         openLayer.bboxMinX = 10;
         expect(openLayer.hasBoundingBox()).toBeFalsy();
     });
-    
+
     it("no bounding box", function() {
         openLayer.bboxMinY = 10;
         expect(openLayer.hasBoundingBox()).toBeFalsy();
     });
-    
+
     it("no bounding box", function() {
         openLayer.bboxMaxX = 10;
         expect(openLayer.hasBoundingBox()).toBeFalsy();
     });
-    
+
     it("has bounding box", function() {
         openLayer.bboxMinX = 10;
         openLayer.bboxMinY = 10;
@@ -43,7 +43,7 @@ describe("OpenLayers.Layer.WMS", function() {
 
     describe("_is130", function() {
         it("returns false for ncwms", function() {
-            openLayer.isNcwms = function() { return true }
+            openLayer.isNcwms = function() { return true };
             openLayer.server= {type: "NCWMS 1.3.0"};
             expect(openLayer._is130()).toBeFalsy();
         });
