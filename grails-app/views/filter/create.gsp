@@ -9,8 +9,7 @@
 
 
 
-<%@ page import="au.org.emii.portal.Filter" %>
-<%@ page import="au.org.emii.portal.FilterTypes" %>
+<%@ page import="au.org.emii.portal.Filter; au.org.emii.portal.FilterType" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -46,17 +45,17 @@
                                     <g:textField name="name" value="${filterInstance?.name}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="type"><g:message code="filter.type.label" default="Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
 
-                                 <g:select name="type" from="${FilterTypes?.values()}" optionKey="key" />
+                                 <g:select name="type" from="${FilterType?.values()}" optionKey="key" />
 								</td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="label"><g:message code="filter.label.label" default="Label" /></label>
@@ -76,7 +75,7 @@
 							 </tr>
 
                              <g:hiddenField name="layerId" value="${layerInstance?.id}" />
-                        
+
                         </tbody>
                     </table>
                 </div>

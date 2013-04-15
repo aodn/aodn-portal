@@ -47,9 +47,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     createFilter: function(layer, filter){
+
     	var newFilter = undefined;
     	if(filter.type === "String"){
-    		newFilter = new  Portal.filter.FilterCombo({
+    		newFilter = new  Portal.filter.ComboFilter({
     			fieldLabel: filter.label
     		});
 
@@ -69,6 +70,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
             	fieldLabel: filter.label
             })
     	}
+        else if (filter.type === "Number") {
+            newFilter = new Portal.filter.NumberFilter({
+                fieldLabel: filter.label
+            });
+        }
     	else{
     		//Filter hasn't been defined
     	}
@@ -252,12 +258,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         addToDownloadCart(tup);
     },
-    
+
     _makePreferredFname: function(){
         // replace ':' used to namespace layers by geoserver with '#'
         // as its not allowed in windows filenames
         var preferredName = this.layer.params.LAYERS.replace(':', '#');
-        
+
         return preferredName + ".csv"
     }
 });

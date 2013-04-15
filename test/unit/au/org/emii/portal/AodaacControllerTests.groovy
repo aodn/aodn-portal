@@ -274,13 +274,13 @@ class AodaacControllerTests extends ControllerUnitTestCase {
             fail "Should not be called"
         }
 
-        controller.aodaacAggregatorService = [
-                updateJob: {
-                    job ->
+	    controller.aodaacAggregatorService = [
+		    updateJob: {
+			    job ->
 
-                    fail "Should not be called"
-                }
-        ]
+			    fail "Should not be called"
+		    }
+	    ]
 
         controller.userJobInfo()
 

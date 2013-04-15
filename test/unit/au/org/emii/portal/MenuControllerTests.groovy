@@ -8,15 +8,18 @@
 
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.ControllerUnitTestCase
 
 class MenuControllerTests extends ControllerUnitTestCase {
+
     protected void setUp() {
-        super.setUp()
+
+	    super.setUp()
     }
 
     protected void tearDown() {
-        super.tearDown()
+
+	    super.tearDown()
     }
 
     void testSetActiveFail() {

@@ -1,31 +1,28 @@
+
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 package au.org.emii.portal.scanner
 
 import grails.converters.JSON
 
-/**
- * Created with IntelliJ IDEA.
- * User: pmak
- * Date: 26/03/13
- * Time: 12:31 PM
- * To change this template use File | Settings | File Templates.
- */
 abstract class ScannerService {
+
     def grailsApplication
 
-    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
-
-        return url[-1..-1] != "/" ? "/" : ""
-    }
-
     def portalBaseURL(){
-        def portalBaseUrl = grailsApplication.config.grails.serverURL
-        def slash = _optionalSlash( portalBaseUrl )
-        return "${portalBaseUrl}${slash}"
+
+		return _ensureTrailingSlash(grailsApplication.config.grails.serverURL)
     }
 
     abstract def saveOrUpdateCallbackUrl()
 
     def getStatus() {
+
         def callbackUrl = URLEncoder.encode( saveOrUpdateCallbackUrl() )
 
         def url = "${scanJobUrl()}list?callbackUrl=$callbackUrl"
@@ -38,12 +35,13 @@ abstract class ScannerService {
     abstract def getScannerBaseUrl()
 
     def scannerURL(){
-        def slash = _optionalSlash(getScannerBaseUrl())
-        return "${scannerBaseUrl}${slash}"
+
+		_ensureTrailingSlash(scannerBaseUrl)
     }
 
     def scanJobUrl() {
-        return "${scannerURL()}scanJob/"
+
+		return "${scannerURL()}scanJob/"
     }
 
     def executeCommand( conn ) {
@@ -55,19 +53,24 @@ abstract class ScannerService {
             response = "HTML response (Code: ${ conn.responseCode })"
         }
 
-
         return response
     }
 
     def callService(address){
-        def url
-        def conn
 
-        url = address.toURL()
-        conn = url.openConnection()
+		def url = address.toURL()
+        def conn = url.openConnection()
         conn.connect()
 
         return executeCommand( conn )
     }
 
+	def _ensureTrailingSlash( s ) {
+
+		if ( !s ) return "/"
+
+		def slash = s[-1] != "/" ? "/" : ""
+
+		return "$s$slash"
+	}
 }

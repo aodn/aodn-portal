@@ -8,8 +8,6 @@
 
 package au.org.emii.portal
 
-import grails.converters.JSON
-
 class WfsScannerController {
     def grailsApplication
     def wfsScannerService
@@ -17,10 +15,15 @@ class WfsScannerController {
     //a call to register a job looks like this:
     //http://localhost:8200/wfsScanner/scanJob/register?serverUrl=http://geoserver.imos.org.au/geoserver/wfs&layerName=imos:csiro_harvest_pci&callbackUrl=http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
     def callRegister = {
-        try{
-            flash.message = wfsScannerService.callRegister(params.serverId, params.layerName, Config.activeInstance().wfsScannerCallbackPassword)
+        try {
+            flash.message = wfsScannerService.callRegister(
+				params.serverId,
+				params.layerName,
+				Config.activeInstance().wfsScannerCallbackPassword
+			)
         }
-        catch(Exception e){
+        catch (Exception e) {
+
             log.debug("Error encountered while registering WFS scan job: " + e.message)
             flash.message = "Cannot contact WFS server to register job. "
         }
@@ -29,10 +32,12 @@ class WfsScannerController {
     }
 
     def callUpdate = {
-        try{
+
+        try {
             flash.message = wfsScannerService.callUpdate(params.scanJobId)
         }
-        catch(Exception e){
+        catch (Exception e) {
+
             log.debug("Error encounterd while updating WFS scan job: " + e.message)
             flash.message = e.message
         }
@@ -42,6 +47,7 @@ class WfsScannerController {
 
 
     def callDelete = {
+
         try {
             flash.message = wfsScannerService.callDelete(params.scanJobId)
         }

@@ -59,7 +59,7 @@ class FilterController {
             if(concatValues.length() > 0)
                 concatValues = concatValues.substring(1)
 
-            return [filterInstance: filterInstance, filterTypes: FilterTypes.values(), concatValues: concatValues]
+            return [filterInstance: filterInstance, filterTypes: FilterType.values(), concatValues: concatValues]
         }
     }
 
@@ -67,7 +67,7 @@ class FilterController {
         def filterInstance = Filter.get(params.id)
 
         if(filterInstance){
-            
+
             if (params.version) {
                 def version = params.version.toLong()
                 if (filterInstance.version > version) {
@@ -157,7 +157,7 @@ class FilterController {
                     def filter = Filter.findByLayerAndName(layer, name)
 
                     log.debug(theFilter.type)
-                    def type = FilterTypes.typeFromString(theFilter.type)
+                    def type = FilterType.typeFromString(theFilter.type)
 
                     if(!filter){
                         filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
@@ -170,7 +170,7 @@ class FilterController {
                      */
                     filter.possibleValues = theFilter.possibleValues.collect{
                         if(it.length() > 255){
-                            log.warn("filter length longer than 255.  Value was trucated from this: " + it)
+                            log.info("filter length longer than 255.  Value was trucated from this: " + it)
                             it[0..251] + "..."
                         }
                         else{
@@ -180,21 +180,21 @@ class FilterController {
 
                     try{
                         if (!filter.hasErrors() && filter.save(flush: true)) {
-                            render status: 200, text: "Complete (saved)"
+                            render text: "Complete (saved)"
                         }
                         else{
                             log.debug("Unable to save filter: " + filter.errors)
                         }
                     }
                     catch(Exception e){
-                        log.debug("Error while trying to save filter: $e.message")
+                        log.warn("Error while trying to save filter: $e.message")
                         render(status: 500, text: "Error saving or updating filter: $e")
                     }
                 }
             }
             else{
-                log.debug("Unable to find layer on server $hostPattern with layer $layerName")
-                render(status: 500, text: "Unable to find layer on server $hostPattern with layer $layerName")
+                log.debug("Unable to find layer on server $hostPattern with name $layerName")
+                render text: "Unable to find layer on server $hostPattern with name $layerName"
             }
         }
     }

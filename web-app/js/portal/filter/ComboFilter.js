@@ -8,17 +8,18 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.FilterCombo = Ext.extend(Portal.filter.BaseFilter, {
-	constructor: function(cfg) {
+Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
+
+    constructor: function(cfg) {
 		var config = Ext.apply({
 			autoDestroy: true
 		}, cfg);
 
-    	Portal.filter.FilterCombo.superclass.constructor.call(this, config);
+    	Portal.filter.ComboFilter.superclass.constructor.call(this, config);
 	},
 
 	initComponent: function(cfg){
-		Portal.filter.FilterCombo.superclass.initComponent.call(this);
+		Portal.filter.ComboFilter.superclass.initComponent.call(this);
 	},
 
 	_createField: function(){

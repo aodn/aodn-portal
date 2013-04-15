@@ -9,8 +9,7 @@
 
 
 
-<%@ page import="au.org.emii.portal.Filter" %>
-<%@ page import="au.org.emii.portal.FilterTypes" %>
+<%@ page import="au.org.emii.portal.FilterType; au.org.emii.portal.Filter" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -40,7 +39,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="name"><g:message code="filter.name.label" default="Name" /></label>
@@ -77,17 +76,17 @@
 								</td>
 							</tr>
 
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="type"><g:message code="filter.type.label" default="Type" /></label>
                                 </td>
 
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
-								 	<g:select name="type" from="${FilterTypes?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
+								 	<g:select name="type" from="${FilterType?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
 								</td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
@@ -96,7 +95,7 @@
                                 	<g:textArea name="possibleValues" value="${concatValues}" />
                                 </td>
                             </tr>
-                        
+
 
                         </tbody>
                     </table>

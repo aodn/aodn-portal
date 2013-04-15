@@ -1,8 +1,13 @@
+
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 package au.org.emii.portal.scanner
 
-import grails.converters.JSON
-import javax.annotation.PostConstruct
-import au.org.emii.portal.Config
 import au.org.emii.portal.Server
 
 class WmsScannerService extends ScannerService {
@@ -11,15 +16,18 @@ class WmsScannerService extends ScannerService {
     static lazyInit = false
 
     public WmsScannerService() {
+
         super()
     }
 
     def getScannerBaseUrl() {
-        return grailsApplication.config.wmsScanner.url
+
+		return grailsApplication.config.wmsScanner.url
     }
 
     def saveOrUpdateCallbackUrl() {
-        return "${portalBaseURL()}layer/saveOrUpdate"
+
+		return "${portalBaseURL()}layer/saveOrUpdate"
     }
 
     def callDelete(scanJobId) {
@@ -33,8 +41,8 @@ class WmsScannerService extends ScannerService {
         return "Deleted"
     }
 
-
     def callUpdate(scanJobId, scanJobUri, wmsScannerCallbackPassword) {
+
         def server = Server.findWhere(uri: scanJobUri)
 
         if (!server) {
@@ -60,11 +68,7 @@ class WmsScannerService extends ScannerService {
         return "Updated"
     }
 
-
     def callRegister(serverId, wmsScannerCallbackPassword) {
-
-        def url
-        def conn
 
         Server server = Server.get(serverId)
 
@@ -89,6 +93,4 @@ class WmsScannerService extends ScannerService {
 
         return "Registered"
     }
-
-
 }

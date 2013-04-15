@@ -17,18 +17,20 @@ package au.org.emii.portal
  * as strings in the database.
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
-public enum FilterTypes {
+public enum FilterType {
     String, Date, Number, Double, Boolean, BoundingBox
 
     static def stringTypeMapping = [
-        "string": FilterTypes.String,
-        "date": FilterTypes.Date,
-        "double": FilterTypes.Number,
-        "boolean": FilterTypes.Boolean,
-        "pointpropertytype": FilterTypes.BoundingBox
+        "string": FilterType.String,
+        "date": FilterType.Date,
+        "double": FilterType.Number,
+        "float": FilterType.Number,
+        "integer": FilterType.Number,
+        "boolean": FilterType.Boolean,
+        "pointpropertytype": FilterType.BoundingBox
     ]
 
-    static FilterTypes typeFromString(String s) {
+    static FilterType typeFromString(String s) {
 
         s = s.toLowerCase()
 

@@ -185,13 +185,15 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}?${jsVerNum}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/FilterCombo.js')}?${jsVerNum}"
+<script src="${resource(dir: 'js', file: 'portal/filter/ComboFilter.js')}?${jsVerNum}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/TimeFilter.js')}?${jsVerNum}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BoundingBoxFilter.js')}?${jsVerNum}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}?${jsVerNum}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}?${jsVerNum}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/FilterPanel.js')}?${jsVerNum}"
         type="text/javascript"></script>

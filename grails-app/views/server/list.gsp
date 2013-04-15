@@ -20,7 +20,7 @@
         <div class="nav">
           <div id="logo"></div>
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><a class="refresh" href="${createLink(uri: '/server/refreshList')}">Refresh</a></span>
         </div>
         <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
@@ -120,7 +120,7 @@
                                             <%
                                         }
                                         else {  %>
-                                            <td>No job scheduled  <br />
+                                            <td>No job scheduled<br />
                                             <g:link controller="wmsScanner" action="callRegister"
                                                     params="[serverId: serverInstance.id]">${message(code: 'server.createScanJob.label', default: 'Create&nbsp;Scan&nbsp;Job')}</g:link></td>
                                             <%

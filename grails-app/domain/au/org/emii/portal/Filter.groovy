@@ -8,18 +8,20 @@
 
 package au.org.emii.portal
 
-import org.springframework.context.annotation.FilterType
-
 class Filter {
 
     String label //This is the human readable name
-    FilterTypes type  //String, time, etc, etc.
+    FilterType type  //String, time, etc, etc.
     String name  //note that this is the CQL name
     static belongsTo = [layer: Layer]
     static hasMany = [possibleValues: String]
     List<String> possibleValues
     boolean enabled
     boolean downloadOnly
+
+	static mapping = {
+		sort "name"
+	}
 
     public Filter(){
         possibleValues = []
@@ -33,7 +35,7 @@ class Filter {
         label(blank: false)
         downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
-            if(obj.type != FilterTypes.Boolean && obj.type != FilterTypes.BoundingBox && obj.type != FilterTypes.Date){
+            if(obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date){
                 if(val.size() > 0)
                     return true
             }

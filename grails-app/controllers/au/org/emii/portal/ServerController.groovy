@@ -1,6 +1,6 @@
 
 /*
- * Copyright 2012 IMOS
+ * Copyright 2013 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
@@ -22,10 +22,17 @@ class ServerController {
 		redirect(action: "list", params: params)
 	}
 
+	def refreshList = {
+
+		flash.message = ""
+
+		redirect actionName: 'list'
+	}
+
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
-        [serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), jobProperties:  getScannerStatus()]
+        [serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), jobProperties: scannerStatus]
 	}
 
     def listAllowDiscoveriesAsJson = {
@@ -177,12 +184,6 @@ class ServerController {
     }
 
     def getScannerStatus(){
-        //show servers
-
-        //callout to check status of WMS server
-        def wmsList
-        //callout to check the status of WFS servers
-        def wfsList
 
         //list of discoverable, with a list of w[m,f]s jobs
         def serverMap = [:]
@@ -195,13 +196,15 @@ class ServerController {
             scannerService, index ->
 
             try{
-                def jobList = scannerService.getStatus()
+                def jobList = scannerService.status
                 discoverables.each(){ discoverable ->
+
                     if (serverMap[discoverable] == null){
                         serverMap.put(discoverable, [null, null])
                     }
 
                     jobList.each(){ job ->
+
                         def checkURL
 
                         //TODO: Change WFS scanner to use the same variable name for uri...
@@ -222,7 +225,15 @@ class ServerController {
             }
             catch(Exception e){
                 log.debug(e.message)
-                flash.message = "Cannot contact scanner ${scannerService.getScannerBaseUrl()} for a list of current jobs.  Please make sure server is contactable."
+
+				if (flash.message) {
+					flash.message += "<hr>"
+				}
+				else {
+					flash.message = ""
+				}
+
+                flash.message += "Cannot contact scanner ${scannerService.scannerBaseUrl} for a list of current jobs.  Please make sure server is contactable."
                 scannersContactable[index]  = false
             }
         }

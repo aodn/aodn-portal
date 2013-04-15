@@ -7,7 +7,7 @@
 
 --%>
 
-<%@ page import="au.org.emii.portal.FilterTypes" %>
+<%@ page import="au.org.emii.portal.FilterType" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -92,7 +92,7 @@
 								</td>
 								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
 
-								 <g:select name="type" from="${FilterTypes?.values()}" optionKey="key" onselect="getCombo(this)" />
+								 <g:select name="type" from="${FilterType?.values()}" optionKey="key" onselect="getCombo(this)" />
 								</td>
 							</tr>
 

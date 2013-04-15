@@ -1,27 +1,37 @@
+
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 package au.org.emii.portal.scanner
 
-import grails.test.*
-import groovy.mock.interceptor.MockFor
 import au.org.emii.portal.Server
+import grails.test.GrailsUnitTestCase
 
 class WfsScannerServiceTests extends GrailsUnitTestCase {
+
     def wfsScannerService
 
     protected void setUp() {
+
         super.setUp()
+
         wfsScannerService = new WfsScannerService()
 
         //grailsApplication.config.wfsScanner.url
-        wfsScannerService.grailsApplication = [
-                config: [
-                        wfsScanner: [
-                                url: "http://blah.au"
-                        ]
-                ]
-        ]
+	    wfsScannerService.grailsApplication = [
+		    config: [
+			    wfsScanner: [
+				    url: "http://blah.au"
+			    ]
+		    ]
+	    ]
     }
 
-    void testDeleteJob(){
+    void testDeleteJob() {
         def count = 0
 
         wfsScannerService.metaClass.callService = { address ->
@@ -33,7 +43,7 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
         assertEquals count, 1
     }
 
-    void testRegister(){
+    void testRegister() {
         def server = [
                 id: 1,
                 scanFrequency: 120,
@@ -55,7 +65,7 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
         def count = 0
 
         wfsScannerService.metaClass.callService = { address ->
-            assertEquals address, "http://scannerHost.com/scanJob/register?serverUrl=http://geoserver.blah.com&callbackUrl=http://localhost/filter/updateFilter&password=somePassword&scanFrequency=120&layerName=abc"
+            assertEquals address, "http://scannerHost.com/scanJob/register?serverUrl=http://geoserver.blah.com&callbackUrl=http://localhost/filter/updateFilter&password=somePassword&scanFrequency=120&wfsVersion=1.1.1&layerName=abc"
             count++
         }
 
@@ -64,8 +74,7 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
         assertEquals count, 1
     }
 
-
-    void testUpdate(){
+    void testUpdate() {
 
         wfsScannerService.metaClass.scanJobUrl = {
             return "http://scannerHost.com/scanJob/"
@@ -82,5 +91,4 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
 
         assertEquals count, 1
     }
-
 }

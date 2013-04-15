@@ -10,13 +10,12 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 import org.codehaus.groovy.grails.web.json.JSONElement
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor
 
 class LayerControllerTests extends ControllerUnitTestCase {
 
     def validConfig = new Config( wmsScannerCallbackPassword: "pwd" )
     def messageArgs
-    
+
     protected void setUp() {
         super.setUp()
 
@@ -41,32 +40,25 @@ class LayerControllerTests extends ControllerUnitTestCase {
         UserRole.metaClass.findByName{
             return role
         }
-        
+
         User user = new User(id:  100, roles: [role])
         mockDomain User, [user]
-        
-        try{
-            def server = new Server(id : 10, uri : "http://serverUriText.com", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", infoFormat: 'text/html', comments : "", owners: [user] )
-            mockDomain Server, [server]
-            mockDomain Config, [validConfig]
+
+		def server = new Server(id : 10, uri : "http://serverUriText.com", shortAcron : "A", name : "name1", type : "WMS-1.1.1", lastScanDate: null, scanFrequency : 0, disable : false, allowDiscoveries : true, opacity : 3, imageFormat : "image/png", infoFormat: 'text/html', comments : "", owners: [user] )
+		mockDomain Server, [server]
+		mockDomain Config, [validConfig]
 
 
-            def mockLayer = new Layer()
-            def layerServiceControl = mockFor(LayerService)
-            layerServiceControl.demand.updateWithNewData(1..1) { JSONElement e, Server s, String ds -> mockLayer }
-            this.controller.layerService = layerServiceControl.createMock()
+		def mockLayer = new Layer()
+		def layerServiceControl = mockFor(LayerService)
+		layerServiceControl.demand.updateWithNewData(1..1) { JSONElement e, Server s, String ds -> mockLayer }
+		this.controller.layerService = layerServiceControl.createMock()
 
-            this.controller.saveOrUpdate()
+		this.controller.saveOrUpdate()
 
-            assertNotNull "Server should now have a lastScanDate", server.lastScanDate
+		assertNotNull "Server should now have a lastScanDate", server.lastScanDate
 
-            assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
-    
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace()
-        }
+		assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
     }
 
 	void testToResponseMap() {
@@ -121,7 +113,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		assertEquals 44, result.size()
 	}
 
-    void testGetLayerWithFilters(){
+    void testGetFiltersAsJson(){
         def server1 = new Server()
         server1.id = 1
 
@@ -129,23 +121,25 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type:  FilterTypes.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
-        def filter2 = new Filter(name: "sensorType", type:  FilterTypes.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer:  layer1)
+        def filter1 = new Filter(name: "vesselName", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true)
+        def filter2 = new Filter(name: "sensorType", type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: true)
+	    def filter3 = new Filter(name: "disabled filter", type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: false)
 
-        layer1.filters = [filter1, filter2]
+        layer1.filters = [filter1, filter2, filter3]
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1])
-        mockDomain(Filter, [filter1, filter2])
+        mockDomain(Filter, [filter1, filter2, filter3])
 
         //test layer with filters
         this.controller.params.layerId = 3
         this.controller.getFiltersAsJSON()
 
-        assertTrue this.controller.response.contentAsString.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3,"enabled":false}""")
-        assertTrue this.controller.response.contentAsString.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3,"enabled":false}""")
+	    def response = this.controller.response.contentAsString
 
-
+        assertTrue response.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3,"enabled":true}""")
+        assertTrue response.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3,"enabled":true}""")
+	    assertFalse response.contains("disabled filter")
     }
 
     void testGetLayerWithoutFilters(){
@@ -173,7 +167,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertNotNull(updatedLayer)
         assertNull(updatedLayer.viewParams)
     }
-    
+
     void testUpdateFullViewParams() {
         _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
 
@@ -184,13 +178,13 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals(54f, updatedLayer.viewParams.centreLon)
         assertEquals(5, updatedLayer.viewParams.openLayersZoomLevel)
     }
-    
+
     void testUpdateFullThenNoViewParams() {
         _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
         def updatedLayer = Layer.get(controller.redirectArgs['id'])
         assertNotNull(updatedLayer)
         assertNotNull(updatedLayer.viewParams)
-        
+
         _updateViewParamsSetup()
         updatedLayer = Layer.get(controller.redirectArgs['id'])
         assertNotNull(updatedLayer)
@@ -201,7 +195,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         Layer layer = new Layer(dataSource: "abc", server: new Server())
         mockDomain(Layer, [layer])
         mockDomain(LayerViewParameters)
-        
+
         layer.save(failOnError: true)
 
         assertNotNull(layer.id)
@@ -209,10 +203,10 @@ class LayerControllerTests extends ControllerUnitTestCase {
         controller.params.viewParams = viewParams
 
         controller.update()
-        
+
         return layer
     }
-    
+
 	def _buildServers(sId, number) {
 		def servers = []
 		for (def i = 0; i < number; i++) {

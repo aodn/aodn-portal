@@ -31,6 +31,8 @@
             <g:sortableColumn property="isBaseLayer" title="${message(code: 'layer.isBaseLayer.label', default: 'Base layer')}" params="${filters}" />
 
             <g:sortableColumn property="cache" title="${message(code: 'layer.cache.label', default: 'Cache')}" params="${filters}" />
+
+            <g:sortableColumn property="filters" title="${message(code: 'layer.filters.label', default: 'Filters')}" params="${filters}" />
         </tr>
         </thead>
         <tbody>
@@ -56,6 +58,8 @@
                 <td><g:formatBoolean boolean="${layerInstance.isBaseLayer}" /></td>
 
                 <td><g:formatBoolean boolean="${layerInstance.cache}" /></td>
+
+                <td>${layerInstance.filters.size()}</td>
             </tr>
         </g:each>
         </tbody>

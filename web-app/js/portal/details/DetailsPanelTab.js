@@ -9,7 +9,7 @@
 Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
-    
+
     constructor: function(cfg) {
     	var config = Ext.apply({
     defaults: {
@@ -23,7 +23,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     cls: 'floatingDetailsPanelContent',
     	    flex: 1
     	}, cfg);
-        
+
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
     },
 
@@ -57,14 +57,14 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 			the panel.
 		**/
         this.remove(this.filterPanel);
-        this.filterPanel = this.filterPanel = new Portal.filter.FilterPanel();
+        this.filterPanel = new Portal.filter.FilterPanel();
         this.add(this.filterPanel);
         this.filterPanel.update( layer, this._showTab, this._hideTab, this );
-        this._hideTab(this.filterPanel);
+//        this._hideTab(this.filterPanel);
 
         this.show();
     },
-    
+
     _hideTab: function(tab) {
     	this.hideTabStripItem(tab.id);
     	for(var i = 0; i < this.items.length; i++) {
@@ -77,7 +77,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
             }
         }
     },
-    
+
     _showTab: function(tab) {
     	this.unhideTabStripItem(tab.id);
     }
