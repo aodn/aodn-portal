@@ -144,8 +144,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.detailsPanelTabs.remove(transectTabs[i]);
         }
 
-        this.updateDimensions(layer); // time and elevation
-
         //turn on transect control if server is NCWMS and layer is not animated.
         if(layer.server.type.search("NCWMS") > -1
                 && !layer.isAnimated)  {
@@ -179,79 +177,5 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		if (this.transectControl != null) {
 			this.transectControl.deactivateDrawingControl();
 		}
-	},
-
-
-	//	TODO: revisit this method when elevation and other dimensions are passed into javascript
-	updateDimensions: function(layer){
-
-		var dims = layer.metadata.dimensions;
-		if(dims != undefined)
-		{
-			for(var dimType in dims)
-			{
-				if(dims[dimType].values != undefined)
-				{
-					var valList = dims[dimType].values;
-					var dimStore;
-					var dimData = new Array();
-
-					var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p></div></tpl>';
-
-					var fields = [{
-						name: 'myId'
-					},{
-						name: 'displayText'
-					}];
-
-					var valueStore  = new Ext.data.ArrayStore({
-						autoDestroy: true,
-						itemId: dimType,
-						name: type,
-						fields: fields
-					});
-
-					var dimCombo = new Ext.form.ComboBox({
-						fieldLabel: dimType,
-						triggerAction: 'all',
-						editable : false,
-						lazyRender:true,
-						mode: 'local',					
-						store: valueStore,
-						emptyText: OpenLayers.i18n('pickAStyle'),
-						valueField: 'myId',
-						displayField: 'displayText',
-						tpl: tpl,
-						style: {
-						// marginTop: '10px'
-						},
-						listeners:{
-							select: function(cbbox, record, index){
-								selectedLayer.mergeNewParams({
-									//Not sure if this works...
-									dimType : record.get('myId')
-								});
-							}
-						}
-					});
-
-					dimStore = dimCombo.store;
-					dimStore.removeAll();
-
-					for(var j = 0; j < valList.length; j++)
-					{
-						//trimming function thanks to
-						//http://developer.loftdigital.com/blog/trim-a-string-in-javascript
-						var trimmed = valList[j].replace(/^\s+|\s+$/g, '') ;
-						dimData.push([j, trimmed, trimmed]);
-					}
-
-					dimStore.loadData(dimData);
-					detailsPanel.add(dimCombo);
-				}
-
-			}
-		}
-
 	}
 });

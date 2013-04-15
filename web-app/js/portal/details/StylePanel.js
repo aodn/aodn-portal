@@ -126,39 +126,37 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         //var supportedStyles = layer.metadata.supportedStyles;
         // for WMS layers that we have scanned
-        if (this.selectedLayer.allStyles != undefined) {
+        if (this.selectedLayer.allStyles != undefined
+            && this.selectedLayer.allStyles.length > 1) {
 
             // populate 'data' for the style options dropdown
 
             var allStyles = this.selectedLayer.allStyles;
-            // do something if the user has more than one option
-            if (allStyles.length > 1) {
 
-                for (var j = 0; j < allStyles.length; j++) {
-                    var params = {
-                        layer:this.selectedLayer,
-                        colorbaronly:true
-                    };
-                    // its a ncwms layer
-                    if (this.selectedLayer.isNcwms()) {
-                        var s = allStyles[j].title.split("/");
-                        // if forward slash is found it is in the form  [type]/[palette]
-                        // we only care about the palette part
-                        s = (s.length > 1) ? s[1] : allStyles[j].title;
-                        params.palette = s;
-                    }
-                    params.style = allStyles[j].name;
-
-
-                    var imageUrl = this.buildGetLegend(params);
-
-                    if (params.palette != undefined) {
-                        allStyles[j].title = params.palette;
-                    }
-                    var label =  (allStyles[j].title != "") ? allStyles[j].title : allStyles[j].name;
-
-                    data.push([allStyles[j].name , label , imageUrl ]);
+            for (var j = 0; j < allStyles.length; j++) {
+                var params = {
+                    layer:this.selectedLayer,
+                    colorbaronly:true
+                };
+                // its a ncwms layer
+                if (this.selectedLayer.isNcwms()) {
+                    var s = allStyles[j].title.split("/");
+                    // if forward slash is found it is in the form  [type]/[palette]
+                    // we only care about the palette part
+                    s = (s.length > 1) ? s[1] : allStyles[j].title;
+                    params.palette = s;
                 }
+                params.style = allStyles[j].name;
+
+
+                var imageUrl = this.buildGetLegend(params);
+
+                if (params.palette != undefined) {
+                    allStyles[j].title = params.palette;
+                }
+                var label =  (allStyles[j].title != "") ? allStyles[j].title : allStyles[j].name;
+
+                data.push([allStyles[j].name , label , imageUrl ]);
             }
         }
 
@@ -176,7 +174,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         // get matching Style from layer.allStyles
         var style = {};
-        if (layer.allStyles.length > 1) {
+        if (layer.allStyles != undefined && layer.allStyles.length > 1) {
             for (var j = 0; j < layer.allStyles.length; j++) {
                 if  (layer.allStyles[j].name == name) {
                     style =  layer.allStyles[j];

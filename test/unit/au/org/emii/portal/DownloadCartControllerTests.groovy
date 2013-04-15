@@ -184,4 +184,30 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
         assertEquals "3", rec2.uuid
         assertEquals 2, rec2.downloads.size()
     }
+
+    void testRemoveRecord() {
+        def cartEntries = """
+                             [
+                                 { "rec_uuid":"2", rec_title: "A", title : "first"},
+                                 { "rec_uuid":"1", rec_title: "B", title : "first" },
+                                 { "rec_uuid":"3", rec_title: "C", title : "first" },
+                                 { "rec_uuid":"2", rec_title: "A", title : "second" },
+                                 { "rec_uuid":"3", rec_title: "C", title : "second" },
+                             ]""".stripIndent()
+
+        controller._setCart(JSON.parse( cartEntries ).toArray() as Set)
+        controller.params.rec_uuid = "2";
+        controller.removeRecord();
+
+        def cart = controller._getCart();
+
+        def entriesForRec2 = cart.findAll{ r -> r.rec_uuid == "2" }
+        assertEquals 0, entriesForRec2.size()
+
+        def entriesForRec3 = cart.findAll{ r -> r.rec_uuid == "3" }
+        assertEquals 2, entriesForRec3.size()
+
+        def entriesForRec1 = cart.findAll{ r -> r.rec_uuid == "1" }
+        assertEquals 1, entriesForRec1.size()
+    }
 }
