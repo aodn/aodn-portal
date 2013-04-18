@@ -40,7 +40,7 @@ function addToDownloadCart( tuples ) {
     Ext.Ajax.request({
         url: 'downloadCart/add',
         params: { newEntries: linksAsJson },
-        success: _handleSuccessAndShow,
+        success: _handleSuccess,
         failure: _handleFailureAndShow
     });
 }
@@ -54,7 +54,7 @@ function setDownloadCartRecordDisableFlag ( record_uuid,flag ) {
     Ext.Ajax.request({
         url: 'downloadCart/modRecordAvailability',
         params: { rec_uuid: record_uuid, disableFlag: flag },
-        success: getDownloadCartCount,
+        success: _handleSuccess,
         failure: _handleFailureAndShow
     });
     return false;
@@ -72,13 +72,13 @@ function getDownloadCartCount() {
 
                 _handleFailureAndHide( resp );
             }
-            else if ( count == "0" ) {
+            else if ( count === "0" ) {
 
-                _handleSuccessAndHide( resp );
+                _handleSuccess( resp );
             }
             else {
 
-                _handleSuccessAndShow( resp );
+                _handleSuccess( resp );
             }
         },
         failure: _handleFailureAndHide
@@ -118,10 +118,10 @@ function clearDownloadCart() {
 function _handleSuccessfulCartClear( resp) {
 
     Ext.MsgBus.publish("downloadCart.cartCleared");
-    _handleSuccessAndHide( resp);
+    _handleSuccess( resp);
 }
 
-function _handleSuccess( resp ) {
+function _checkSuccessfulResponse( resp ) {
     var response = resp.responseText;
 
     if ( !_isValidNumber( response ) ) {
@@ -134,21 +134,23 @@ function _handleSuccess( resp ) {
     }
 }
 
-function _handleSuccessAndShow( resp ) {
-    _handleSuccess(resp);
-    _showCartControl();
-    _flashUI();
-}
+function _handleSuccess( resp ) {
+    _checkSuccessfulResponse(resp);
 
-function _handleSuccessAndHide( resp ) {
-    _handleSuccess(resp);
-    _hideCartControl();
+    //response is a number, should be the the cart size
+    if(resp == "0")
+    {
+        _hideCartControl();
+    }
+    else
+    {
+        _showCartControl();
+    }
     _flashUI();
 }
 
 function _handleFailureAndShow( resp ) {
 
-    console.log(resp);
     console.log( 'Server-side failure: \'' + resp.responseText + '\' (status: ' + resp.status + ')' );
 
     _updateCount( "?" );
