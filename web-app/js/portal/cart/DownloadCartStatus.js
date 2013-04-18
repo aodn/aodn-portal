@@ -8,7 +8,7 @@
 
 Ext.namespace('Portal.cart.downloadCartStatus');
 
-Ext.EventManager.addListener( window, 'load', getInitialDownloadCartCount );
+Ext.EventManager.addListener( window, 'load', getDownloadCartCount );
 
 // Public methods
 function addToDownloadCart( tuples ) {
@@ -25,11 +25,11 @@ function addToDownloadCart( tuples ) {
             var prefname = null;
 
             if(tuple.link.preferredFname != null){
-            	condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol, preferredFname: link.preferredFname } );
+            	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol, preferredFname: link.preferredFname } );
             }
 
             else{
-            	condensedLinks.push( { rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
+            	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
             }
 
         }
@@ -45,16 +45,22 @@ function addToDownloadCart( tuples ) {
     });
 }
 
-function removeDownloadCartRecord ( record_uuid ) {
+function setDownloadCartRecordDisableFlag ( record_uuid,flag ) {
+
+    if (flag == "true") {
+        Ext.MsgBus.publish("downloadCart.cartRecordRemoved", record_uuid);
+    }
+
     Ext.Ajax.request({
-        url: 'downloadCart/removeRecord',
-        params: { rec_uuid: record_uuid },
-        success: _handleSuccessAndShow,
+        url: 'downloadCart/modRecordAvailability',
+        params: { rec_uuid: record_uuid, disableFlag: flag },
+        success: getDownloadCartCount,
         failure: _handleFailureAndShow
     });
+    return false;
 }
 
-function getInitialDownloadCartCount() {
+function getDownloadCartCount() {
 
     Ext.Ajax.request({
         url: 'downloadCart/getSize',
@@ -79,31 +85,40 @@ function getInitialDownloadCartCount() {
     });
 }
 
+function doDownload(){
+    Ext.Ajax.request({
+        url: 'downloadCart/getSize',
+        success: function(resp){
+            if(resp.responseText === "0"){
+                alert("The download cart is empty.  Please add an item to the cart and try again.");
+            }
+            else{
+                new Portal.cart.DownloadCartConfirmationWindow().show();
+
+            }
+        },
+        failure: function(){
+            alert("There is a problem with the download cart and please try again later.  Please refer to our Help section for further assistance.");
+        }
+    });
+}
+
+
 function clearDownloadCart() {
 
     Ext.Ajax.request({
         url: 'downloadCart/clear',
-        success: _handleSuccessAndHide,
+        success: _handleSuccessfulCartClear,
         failure: _handleFailureAndShow
     });
 }
 
-function doDownload(){
-	Ext.Ajax.request({
-		url: 'downloadCart/getSize',
-		success: function(resp){
-			if(resp.responseText === "0"){
-				alert("The download cart is empty.  Please add an item to the cart and try again.");
-			}
-			else{
-				new Portal.cart.DownloadCartConfirmationWindow().show();
 
-			}
-		},
-		failure: function(){
-			alert("There is a problem with the download cart and please try again later.  Please refer to our Help section for further assistance.");
-		}
-	});
+// Internal methods
+function _handleSuccessfulCartClear( resp) {
+
+    Ext.MsgBus.publish("downloadCart.cartCleared");
+    _handleSuccessAndHide( resp);
 }
 
 function _handleSuccess( resp ) {
@@ -117,11 +132,8 @@ function _handleSuccess( resp ) {
         _updateCount( response );
         Ext.MsgBus.publish("downloadCart.cartContentsUpdated", response);
     }
-
-
 }
 
-// Internal methods
 function _handleSuccessAndShow( resp ) {
     _handleSuccess(resp);
     _showCartControl();
@@ -136,6 +148,7 @@ function _handleSuccessAndHide( resp ) {
 
 function _handleFailureAndShow( resp ) {
 
+    console.log(resp);
     console.log( 'Server-side failure: \'' + resp.responseText + '\' (status: ' + resp.status + ')' );
 
     _updateCount( "?" );
@@ -162,8 +175,18 @@ function _updateCount( count ) {
 function _showCartControl() {
 
     var cartEl = Ext.get( 'downloadCartStatus' );
+    cartEl.removeClass( 'hidden' );
 
-    cartEl.removeClass( 'hiddenCartStatus' );
+    Ext.MsgBus.publish("downloadCart.toggleDownloadCartPanelButtons","enable");
+}
+
+function _hideCartControl() {
+
+    var cartEl = Ext.get( 'downloadCartStatus' );
+    cartEl.addClass( 'hidden' );
+
+    Ext.MsgBus.publish("downloadCart.toggleDownloadCartPanelButtons","disable");
+
 }
 
 function showCartTabPanel() {
@@ -171,12 +194,7 @@ function showCartTabPanel() {
     Ext.MsgBus.publish("openDownloadCartPanelItem","downloadCartPanel");
 }
 
-function _hideCartControl() {
 
-    var cartEl = Ext.get( 'downloadCartStatus' );
-
-    cartEl.addClass( 'hiddenCartStatus' );
-}
 
 function _flashUI() {
     

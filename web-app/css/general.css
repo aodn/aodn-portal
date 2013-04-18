@@ -977,7 +977,7 @@ div.allwhite {
 }
 
 
-#header .hiddenCartStatus {
+.hidden {
     display: none ;
 }
 
@@ -985,26 +985,18 @@ div.allwhite {
     background-color: #666666;
     border-radius: 14px;
     color: white;
-    float: right;
     padding: 3px 10px 5px;
-    margin-right: 10px;
-}
-.styledButton a {
-    color: white;
-    font-size: 11px;
     margin: 0 3px;
+    margin-right: 10px;
+    font-size: 11px;
     text-decoration: none;
     font-weight: bold;
 }
 
-.styledButton a:hover {
+a.styledButton:hover {
     text-decoration: underline;
 }
 .cart-title {
-    padding: 10px;
-    font-size: 14px;
-    color: #666666;
-    font-weight: normal;
 }
 .cart-row {
     margin-top: 5px;

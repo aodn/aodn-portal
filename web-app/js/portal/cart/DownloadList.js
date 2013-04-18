@@ -2,9 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
-
-
-
     constructor:function (cfg) {
 
         this.downloadItemsStore = new Ext.data.JsonStore({
@@ -15,16 +12,20 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
             // reader configs
             root:'records',
             idProperty:'title',
-            fields:['title', 'uuid', 'downloads']
+            fields:['title', 'uuid', 'downloads', 'disable' ]
         });
         this.downloadItemsStore.load();
 
         var template = new Ext.XTemplate(
-            '<tpl for=".">',
+            '<tpl  for=".">',
+            '<tpl if="values.disable == false" >',
             '<div class="cart-row">',
-            '<div class="cart-title">{title}</div>',
+            '<div class="cart-title-row">',
+            '<div  class="floatRight"><a href="#" onclick="Javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\')">Remove</a></div>',
+            '<span class="cart-title">{title}</span></div>',
             '<div class="cart-files" >{[ this.getFiles(values) ]}</div>',
             '</div>',
+            '</tpl>',
             '</tpl>',
             {
                 getFiles:function (values) {

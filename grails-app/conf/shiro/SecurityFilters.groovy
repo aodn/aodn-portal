@@ -142,7 +142,7 @@ class SecurityFilters {
             }
         }
 
-        downloadCartAccess(controller: "downloadCart", action: "add|clear|getSize|download|getCartRecords") {
+        downloadCartAccess(controller: "downloadCart", action: "add|clear|getSize|download|getCartRecords|modRecordAvailability") {
             before = {
 
                 logRequest("downloadCartAccess", controllerName, actionName)

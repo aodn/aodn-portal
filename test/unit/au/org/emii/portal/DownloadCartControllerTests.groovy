@@ -197,7 +197,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
 
         controller._setCart(JSON.parse( cartEntries ).toArray() as Set)
         controller.params.rec_uuid = "2";
-        controller.removeRecord();
+        controller.modRecordAvaiability();
 
         def cart = controller._getCart();
 
