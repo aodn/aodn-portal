@@ -15,7 +15,7 @@ describe("Portal.cart.DownloadCartStatus", function() {
         setDownloadCartRecordDisableFlag("blarg","flag");
 
         var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
-        expect(ajaxParams.url).toBe('downloadCart/modRecordAvailability');
+        expect(ajaxParams.url).toBe('downloadCart/modifyRecordAvailability');
         expect(ajaxParams.params.rec_uuid).toBe('blarg');
         expect(ajaxParams.success).toBe(_handleSuccess)
         expect(ajaxParams.failure).toBe(_handleFailureAndShow)

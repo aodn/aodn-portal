@@ -52,7 +52,7 @@ function setDownloadCartRecordDisableFlag ( record_uuid,flag ) {
     }
 
     Ext.Ajax.request({
-        url: 'downloadCart/modRecordAvailability',
+        url: 'downloadCart/modifyRecordAvailability',
         params: { rec_uuid: record_uuid, disableFlag: flag },
         success: _handleSuccess,
         failure: _handleFailureAndShow

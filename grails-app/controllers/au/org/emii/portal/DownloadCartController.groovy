@@ -44,7 +44,7 @@ class DownloadCartController {
         render _getCartSize().toString()
     }
 
-    def modRecordAvailability = {
+    def modifyRecordAvailability = {
         if ( !params.rec_uuid ) {
             render text: "No item specified to remove", status: 500
             return
