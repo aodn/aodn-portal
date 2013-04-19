@@ -105,20 +105,16 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
             this.doUndoButton.disable();
         }, this);
 
-        Ext.MsgBus.subscribe('downloadCart.toggleDownloadCartPanelButtons', function(name,toggle) {
-            if (toggle == "enable") {
+        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function (name, count) {
+            if(count === "0") {
+                this.doClearCartButton.disable();
+                this.doDownloadButton.disable();
+            }
+            else {
                 this.doDownloadButton.enable();
                 this.doClearCartButton.enable();
             }
-            else {
-                this.doDownloadButton.disable();
-                this.doClearCartButton.disable();
-            }
-
-        }, this)
-
-
-
+        }, this);
     },
 
     // cart last remove record undo

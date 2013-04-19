@@ -177,26 +177,18 @@ function _updateCount( count ) {
 function _showCartControl() {
 
     var cartEl = Ext.get( 'downloadCartStatus' );
-    cartEl.removeClass( 'hidden' );
-
-    Ext.MsgBus.publish("downloadCart.toggleDownloadCartPanelButtons","enable");
-}
+    cartEl.removeClass( 'hidden' );}
 
 function _hideCartControl() {
 
     var cartEl = Ext.get( 'downloadCartStatus' );
     cartEl.addClass( 'hidden' );
-
-    Ext.MsgBus.publish("downloadCart.toggleDownloadCartPanelButtons","disable");
-
 }
 
 function showCartTabPanel() {
 
     Ext.MsgBus.publish("openDownloadCartPanelItem","downloadCartPanel");
 }
-
-
 
 function _flashUI() {
     
