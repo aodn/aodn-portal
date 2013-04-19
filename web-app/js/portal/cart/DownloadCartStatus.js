@@ -138,7 +138,7 @@ function _handleSuccess( resp ) {
     _checkSuccessfulResponse(resp);
 
     //response is a number, should be the the cart size
-    if(resp == "0")
+    if(resp.responseText === "0")
     {
         _hideCartControl();
     }
