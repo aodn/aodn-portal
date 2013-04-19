@@ -17,7 +17,7 @@ describe("Portal.cart.DownloadCartStatus", function() {
         var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
         expect(ajaxParams.url).toBe('downloadCart/modRecordAvailability');
         expect(ajaxParams.params.rec_uuid).toBe('blarg');
-        expect(ajaxParams.success).toBe(getDownloadCartCount)
+        expect(ajaxParams.success).toBe(_handleSuccess)
         expect(ajaxParams.failure).toBe(_handleFailureAndShow)
     });
 });
