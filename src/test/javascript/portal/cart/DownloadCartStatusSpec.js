@@ -12,12 +12,13 @@ describe("Portal.cart.DownloadCartStatus", function() {
 
         spyOn(Ext.Ajax, 'request').andCallFake(function() {return true});
 
-        setDownloadCartRecordDisableFlag("blarg","flag");
+        setDownloadCartRecordDisableFlag("blarg","true");
 
         var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
         expect(ajaxParams.url).toBe('downloadCart/modifyRecordAvailability');
         expect(ajaxParams.params.rec_uuid).toBe('blarg');
-        expect(ajaxParams.success).toBe(_handleSuccess)
+        expect(ajaxParams.params.disableFlag).toBe("true");
+        expect(ajaxParams.success).toBe(getDownloadCartCount)
         expect(ajaxParams.failure).toBe(_handleFailureAndShow)
     });
 });

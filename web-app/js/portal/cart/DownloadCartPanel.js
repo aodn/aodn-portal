@@ -14,7 +14,7 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.listPanel = new Portal.cart.DownloadList();
+        this.listDataView = new Portal.cart.DownloadList();
         this.lastCartRemovedUuid = [];
 
         this.doUndoButton = new Ext.Button({
@@ -83,7 +83,7 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
                     padding: '0px 20px',
                     stateful: false,
                     items: [
-                        this.listPanel
+                        this.listDataView
                     ]
                 },
                 footer
