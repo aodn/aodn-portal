@@ -71,10 +71,6 @@ function getDownloadCartCount() {
 
                 _handleFailureAndHide( resp );
             }
-            else if ( count === "0" ) {
-
-                _handleSuccess( resp );
-            }
             else {
 
                 _handleSuccess( resp );

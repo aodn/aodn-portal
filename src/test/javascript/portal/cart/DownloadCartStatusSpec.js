@@ -18,5 +18,7 @@ describe("Portal.cart.DownloadCartStatus", function() {
         expect(ajaxParams.url).toBe('downloadCart/modifyRecordAvailability');
         expect(ajaxParams.params.rec_uuid).toBe('blarg');
         expect(ajaxParams.params.disableFlag).toBe("true");
+        expect(ajaxParams.success).toBe(_handleSuccess);
+        expect(ajaxParams.failure).toBe(_handleFailureAndShow);
     });
 });
