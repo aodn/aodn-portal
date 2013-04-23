@@ -42,25 +42,10 @@ class MenuController {
 
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
-            redirect(action: "show", id: menuInstance.id)
+            redirect(action: "list", id: menuInstance.id)
         }
         else {
             render(view: "create", model: [menuInstance: menuInstance])
-        }
-    }
-
-
-    def show = {
-        def menuInstance = Menu.get(params.id)
-        if (!menuInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
-            redirect(action: "list")
-        }
-        else {
-            def menuInstanceJson = JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
-				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
-            } // can easily create javascript object from this
-            [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
     }
 
@@ -96,7 +81,7 @@ class MenuController {
 			menuInstance.edited()
             if (!menuInstance.hasErrors() && menuInstance.save(flush: true, failOnError: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
-                redirect(action: "show", id: menuInstance.id)
+                redirect(action: "list", id: menuInstance.id)
 				_recache(menuInstance)
             }
             else {
@@ -120,7 +105,7 @@ class MenuController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deletedFromConfig.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
-                redirect(action: "show", id: params.id)
+                redirect(action: "edit", id: params.id)
             }
         }
         else {
@@ -142,7 +127,6 @@ class MenuController {
         else {
             render 'ERROR: Problem saving the new state!'
         }
-
     }
 
     def json = {

@@ -56,7 +56,7 @@
                                         'disable' : '' }
                             ${(serverInstanceList[i].allowDiscoveries) ?
                                         '' : 'disable' }">
-                            <td><g:link action="show" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "name")}</g:link></td>
+                            <td><g:link action="edit" id="${serverInstance.id}">${fieldValue(bean: serverInstance, field: "name")}</g:link></td>
 
                             <td>${fieldValue(bean: serverInstance, field: "shortAcron")}</td>
 
@@ -138,7 +138,7 @@
                                         if(wfsJob != null && wfsJob.status != null){
                                             %>
                                             <td>
-                                                <%= wfsJob.status.name %>     <br/>
+                                                <%= wfsJob.status.name %><br/>
                                                 <%
                                                 if(wfsJob.status.name.equals("ERROR")){
                                                     print wfsJob.error + "<br />"
@@ -151,7 +151,7 @@
                                                 </td>
                                                 <%
 
-                                         }
+                                        }
                                         else{
                                             if(serverInstance.type.startsWith("GEO")){
                                                 %>
@@ -173,7 +173,6 @@
                                             <td>Check scanner</td>
                                         <%
                                     }
-
                                 }
                             %>
 

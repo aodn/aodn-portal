@@ -65,17 +65,6 @@ class ServerController {
 		}
 	}
 
-	def show = {
-		def serverInstance = Server.get(params.id)
-		if (!serverInstance) {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-			redirect(action: "list")
-		}
-		else {
-			[serverInstance: serverInstance]
-		}
-	}
-
 	def edit = {
 		def serverInstance = Server.get(params.id)
 		if (!serverInstance) {
