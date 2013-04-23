@@ -27,24 +27,21 @@ class FilterController {
     }
 
     def save = {
-        def filterInstance = new Filter()
 
-        def layerInstance = Layer.get( Long.valueOf(params.layerId) )
-        filterInstance.name = params.name
+	    def filterInstance = new Filter(params)
+	    filterInstance.layer = Layer.get(params.layerId)
 
-        filterInstance.type = params.type
-        filterInstance.label = params.label
+	    // Split possible values on comma.
+	    filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
 
-        if(params.possibleValues.length() > 0)
-            filterInstance.possibleValues = params.possibleValues.split(",")
-        else
-            filterInstance.possibleValues = []
+	    if (filterInstance.save()) {
 
-        filterInstance.layer = layerInstance
+		    redirect(controller: "layer", action: "editFilters", id: filterInstance.layerId)
+	    }
+	    else {
 
-        filterInstance.save(flush: true)
-
-        redirect(controller:  "layer", action: "editFilters", id: layerInstance.id)
+		    redirect(action: 'edit', params: params)
+	    }
     }
 
     def edit = {
@@ -78,11 +75,7 @@ class FilterController {
             }
 
             filterInstance.properties = params
-
-            if(params.possibleValues.length() > 0)
-                filterInstance.possibleValues = params.possibleValues.split(",")
-            else
-                filterInstance.possibleValues = []
+	        filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
 
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'filter.label', default: 'Filter'), filterInstance.id])}"
@@ -215,5 +208,4 @@ class FilterController {
         log.info("No WFS Scanner password configured for portal")
         return false
     }
-
 }
