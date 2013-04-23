@@ -21,7 +21,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
             '<tpl if="values.disable == false" >',
             '<div class="cart-row">',
             '<div class="cart-title-row">',
-            '<div  class="floatRight"><a href="#" onclick="Javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\')">Remove</a></div>',
+            '<div  class="floatRight"><a href="#" onclick="Javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\')"return false;>Remove</a></div>',
             '<span class="cart-title">{title}</span></div>',
             '<div class="cart-files" >{[ this.getFiles(values) ]}</div>',
             '</div>',

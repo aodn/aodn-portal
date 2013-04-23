@@ -25,8 +25,6 @@ class DownloadCartController {
             return
         }
 
-        //println(params.newEntries);
-
         def newEntries = JSON.parse( params.newEntries as String )
 
         def cart = _getCart()
@@ -44,9 +42,13 @@ class DownloadCartController {
         render _getCartSize().toString()
     }
 
-    def modRecordAvailability = {
+    def modifyRecordAvailability = {
         if ( !params.rec_uuid ) {
             render text: "No item specified to remove", status: 500
+            return
+        }
+        if ( !params.disableFlag ) {
+            render text: "No flag specified to modify", status: 500
             return
         }
 

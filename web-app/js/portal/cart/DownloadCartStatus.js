@@ -52,12 +52,11 @@ function setDownloadCartRecordDisableFlag ( record_uuid,flag ) {
     }
 
     Ext.Ajax.request({
-        url: 'downloadCart/modRecordAvailability',
+        url: 'downloadCart/modifyRecordAvailability',
         params: { rec_uuid: record_uuid, disableFlag: flag },
         success: _handleSuccess,
         failure: _handleFailureAndShow
     });
-    return false;
 }
 
 function getDownloadCartCount() {
@@ -72,10 +71,6 @@ function getDownloadCartCount() {
 
                 _handleFailureAndHide( resp );
             }
-            else if ( count === "0" ) {
-
-                _handleSuccess( resp );
-            }
             else {
 
                 _handleSuccess( resp );
@@ -89,12 +84,8 @@ function doDownload(){
     Ext.Ajax.request({
         url: 'downloadCart/getSize',
         success: function(resp){
-            if(resp.responseText === "0"){
-                alert("The download cart is empty.  Please add an item to the cart and try again.");
-            }
-            else{
+            if(resp.responseText !== "0"){
                 new Portal.cart.DownloadCartConfirmationWindow().show();
-
             }
         },
         failure: function(){

@@ -188,21 +188,22 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
     void testRemoveRecord() {
         def cartEntries = """
                              [
-                                 { "rec_uuid":"2", rec_title: "A", title : "first"},
-                                 { "rec_uuid":"1", rec_title: "B", title : "first" },
-                                 { "rec_uuid":"3", rec_title: "C", title : "first" },
-                                 { "rec_uuid":"2", rec_title: "A", title : "second" },
-                                 { "rec_uuid":"3", rec_title: "C", title : "second" },
+                                 { disableFlag: "false", "rec_uuid":"2", rec_title: "A", title : "first"},
+                                 { disableFlag: "false", "rec_uuid":"1", rec_title: "B", title : "first" },
+                                 { disableFlag: "false", "rec_uuid":"3", rec_title: "C", title : "first" },
+                                 { disableFlag: "false", "rec_uuid":"5", rec_title: "A", title : "second" },
+                                 { disableFlag: "false", "rec_uuid":"3", rec_title: "C", title : "second" },
                              ]""".stripIndent()
 
         controller._setCart(JSON.parse( cartEntries ).toArray() as Set)
         controller.params.rec_uuid = "2";
-        controller.modRecordAvaiability();
+        controller.params.disableFlag = "true";
+        controller.modifyRecordAvailability();
 
         def cart = controller._getCart();
 
-        def entriesForRec2 = cart.findAll{ r -> r.rec_uuid == "2" }
-        assertEquals 0, entriesForRec2.size()
+        def entriesForRec2 = cart.findAll{ r -> r.disableFlag == true }
+        assertEquals 1, entriesForRec2.size()
 
         def entriesForRec3 = cart.findAll{ r -> r.rec_uuid == "3" }
         assertEquals 2, entriesForRec3.size()
