@@ -23,9 +23,11 @@ class HomeController {
             forward controller: "auth", action: "verifyResponse"
         }
 
-        def jsFileVersionNumber = grailsApplication.metadata.'app.svn.revision' ?: System.currentTimeMillis()
-
-        [configInstance: Config.activeInstance(), buildInfo: _appBuildInfo(), jsVerNum: jsFileVersionNumber ]
+        [
+	        configInstance: Config.activeInstance(),
+	        buildInfo: _appBuildInfo(),
+	        jsVerNum: grailsApplication.metadata.'app.version'
+        ]
     }
 
 	def config = {
