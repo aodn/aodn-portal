@@ -107,10 +107,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this.queryBy(function(record, id) {
 
             if (record.getLayer().options === null) {
-                return false
+                return false;
             }
 
-            return (record.getLayer().options.isBaseLayer == baseLayersOnly)
+            return (record.getLayer().options.isBaseLayer == true) == baseLayersOnly;
         });
     },
 

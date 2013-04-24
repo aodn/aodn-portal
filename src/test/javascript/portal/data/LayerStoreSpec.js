@@ -37,13 +37,13 @@ describe("Portal.data.LayerStore", function() {
 
     function createOpenLayer(title, url) {
 
-        if (title == undefined)
-        {
+        if (title == undefined) {
+
             title = "the title";
         }
 
-        if (url == undefined)
-        {
+        if (url == undefined) {
+
             url = "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi";
         }
 
@@ -281,12 +281,18 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
 
-            layerStore.addUsingOpenLayer(createOpenLayer("1"));
-            layerStore.addUsingOpenLayer(createOpenLayer("2"));
+            // Non-base layers
+            var l1 = createOpenLayer("1");
+            layerStore.addUsingOpenLayer(l1);
 
-            var baseLayer = createOpenLayer("base");
-            baseLayer.options.isBaseLayer = true;
-            layerStore.addUsingOpenLayer(baseLayer);
+            var l2 = createOpenLayer("2");
+            l2.options.isBaseLayer = undefined; // Happens with layers added from search
+            layerStore.addUsingOpenLayer(l2);
+
+            // Base layer
+            var l3 = createOpenLayer("base");
+            l3.options.isBaseLayer = true;
+            layerStore.addUsingOpenLayer(l3);
         });
 
         it('get base layers', function() {
