@@ -9,19 +9,19 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
-   
+
     constructor: function(config) {
+
         this.buttonsRendered = false;
         Portal.ui.ActiveLayersTreeNodeUI.superclass.constructor.call(this, config);
     },
-    
+
     render: function(bulkRender) {
 
         Portal.ui.ActiveLayersTreeNodeUI.superclass.render.apply(this, arguments);
         this.addButtons();
-
     },
-    
+
     addButtons: function() {
         var cb = this.checkbox;
         var node = this;
@@ -51,20 +51,21 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     removeLayer: function() {
-        
+
         Ext.MsgBus.publish('removeLayer', this.node.layer);
     },
-    
+
     zoomToLayer: function() {
+
         this.deferToDelegate("zoomToLayer");
     },
-    
+
     deferToDelegate: function(delegateFnName) {
-        
+
         // TODO: how else to either a) fire Ext event (this is not an Ext component)
         // or b) call removeLayer indirectly?
         var activeLayersTreePanel = Ext.getCmp('activeLayerTreePanel');
-        
+
         Ext.TaskMgr.start({
             run : function() {
                 activeLayersTreePanel[delegateFnName]();
