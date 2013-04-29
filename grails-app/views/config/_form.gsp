@@ -33,7 +33,7 @@
                                    <g:checkBox name="autoZoom" value="${configInstance?.autoZoom}" />
                                </td>
                            </tr>
-                           
+
                            <tr class="prop">
                                <td valign="top" class="name">
                                    <label for="enableDefaultDatelineZoom"><g:message code="config.enableDefaultDatelineZoom.label" default="Default Dateline Zoom" /></label>
@@ -41,13 +41,13 @@
                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'enableDefaultDatelineZoom', 'errors')}">
                                    <g:checkBox name="enableDefaultDatelineZoom" value="${configInstance?.enableDefaultDatelineZoom}" /> <font class="hint">(Zoom to specified region where bounding boxes cross the dateline)</font>
                                </td>
-                           </tr>                           
+                           </tr>
 
                            <tr class="prop">
                                <td valign="top" class="name">
                                    <label for="defaultDatelineZoomBbox"><g:message code="config.defaultDatelineZoomBbox.label" default="Default Dateline Zoom Bounding Box" /></label>
                                </td>
-                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultDatelineZoomBbox', 'errors')}"> 
+                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'defaultDatelineZoomBbox', 'errors')}">
                                    <g:textField name="defaultDatelineZoomBbox" maxlength="50" value="${configInstance?.defaultDatelineZoomBbox}" /> <font class="hint">(left,bottom,right,top)</font>
                                </td>
                            </tr>
@@ -314,7 +314,7 @@
                                     <label for="wfsScannerCallbackPassword"><g:message code="config.wfsScannerCallbackPassword.label" default="WFS Scanner Callback Password" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'wfsScannerCallbackPassword', 'errors')}">
-                                    <g:textField size="30" name="wfsScannerCallbackPassword" value="${configInstance?.wfsScannerCallbackPassword}" /><span class="hint">Simple password for protecting callback. WMS Scanner jobs must be updated after this has been changed.</span>
+                                    <g:textField size="30" name="wfsScannerCallbackPassword" value="${configInstance?.wfsScannerCallbackPassword}" /><span class="hint">Simple password for protecting callback. WFS Scanner jobs must be updated after this has been changed.</span>
                                 </td>
                             </tr>
 
