@@ -207,21 +207,23 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             		// Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
             		var defaultBbox = this.defaultDatelineZoomBbox.split(',');
             		bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
-            	} else {
+            	}
+                else {
             		bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
             	}
-            		// ensure converted into this maps projection. convert metres into lat/lon etc
+
+            	// ensure converted into this maps projection. convert metres into lat/lon etc
                 bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
 
                 // openlayers wants left, bottom, right, top
                 // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
-                if (this.getServer(openLayer).type == "WMS-1.3.0") {
+                if (openLayer._is130()) {
                     bounds = new OpenLayers.Bounds.fromArray(bounds.toArray(true));
                 }
 
                 if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
                     this.zoomTo(bounds);
-                } 
+                }
             }
         }
     },
