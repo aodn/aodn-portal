@@ -58,7 +58,7 @@ class ServerController {
 
 		if (serverInstance.save(flush: true)) {
 			flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
-			redirect(action: "edit", id: serverInstance.id)
+			redirect(action: "list", id: serverInstance.id)
 		}
 		else {
 			render(view: "create", model: [serverInstance: serverInstance])
