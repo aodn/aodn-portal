@@ -58,7 +58,7 @@ class ServerController {
 
 		if (serverInstance.save(flush: true)) {
 			flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
-			redirect(action: "show", id: serverInstance.id)
+			redirect(action: "edit", id: serverInstance.id)
 		}
 		else {
 			render(view: "create", model: [serverInstance: serverInstance])
@@ -97,7 +97,7 @@ class ServerController {
 
 			if (!serverInstance.hasErrors() && serverInstance.save(flush: true)) {
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
-				redirect(action: "show", id: serverInstance.id)
+				redirect(action: "edit", id: serverInstance.id)
 			}
 			else {
 				render(view: "edit", model: [serverInstance: serverInstance])
@@ -119,7 +119,7 @@ class ServerController {
 			}
 			catch (org.springframework.dao.DataIntegrityViolationException e) {
 				flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-				redirect(action: "show", id: params.id)
+				redirect(action: "edit", id: params.id)
 			}
 		}
 		else {
@@ -136,6 +136,7 @@ class ServerController {
 			def serverIdArr = params.serverId.split("_")
 			serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
 		}
+
 		if (serverInstance) {
 			render serverInstance as JSON
 		}
