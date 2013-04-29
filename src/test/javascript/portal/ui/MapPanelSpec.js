@@ -45,14 +45,11 @@ describe("Portal.ui.MapPanel", function() {
     describe('zoom to layer tests', function() {
 
         var openLayer = new OpenLayers.Layer.WMS();
+        openLayer.server = { type: "WMS-1.1.0" };
 
         beforeEach(function() {
             spyOn(mapPanel, 'zoomTo');
             spyOn(mapPanel.map, 'setCenter');
-
-            mapPanel.getServer = function(openLayer) {
-                return { type: "WMS-1.1.0" };
-            }
         });
 
         it('zoomTo not called for layer without bounds', function() {
