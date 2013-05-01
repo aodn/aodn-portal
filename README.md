@@ -48,7 +48,9 @@ we are in the process of removing that dependency, [you can help with that too](
 
 #### Can I Get A Pre-Built War?
 
-Yes you can. You can write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
+Yes you can get it [here](http://binary.aodn.org.au/).
+
+You can also write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
 version up to date.
 
 ## Configuring Portal
