@@ -303,7 +303,8 @@ class LayerController {
 
     def saveOrUpdate = {
 
-        log.info "Capabilities data length: ${params.capabilitiesData?.length()}"
+	    log.info "saveOrUpdate called with serverUri = ${metadata.serverUri}"
+        log.debug "Capabilities data length: ${params.capabilitiesData?.length()}"
         log.debug "metadata: ${params.metadata}"
 
         // Check credentials
