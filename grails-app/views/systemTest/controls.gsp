@@ -48,6 +48,10 @@
     <g:link action="throwException" target="_blank">Throw test Exception</g:link><br />
     <br />
 
+    <h3>Test email sending</h3>
+    <g:link action="sendEmail" target="_blank">Send test email</g:link><br />
+    <br />
+
     <h3>Log4J config</h3>
     ${log4jConfigSummary}
 </div>
