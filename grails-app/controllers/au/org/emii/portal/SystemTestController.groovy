@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
-import org.apache.shiro.SecurityUtils
 
 class SystemTestController {
 
@@ -52,12 +51,21 @@ class SystemTestController {
 		render messageText
 	}
 
+	def sendEmail = {
+
+		sendMail {
+			to User.current().emailAddress
+			subject "Test email from ${grailsApplication.config.grails.serverURL}"
+			body messageText
+			from grailsApplication.config.portal.systemEmail.fromAddress
+		}
+
+		render messageText
+	}
+
 	def getMessageText() {
 
-		def principal = SecurityUtils.subject?.principal
-		def user = User.get( principal as Integer )
-
-		return "System test initiated by: $user"
+		return "(${new Date()}) System test initiated by: ${User.current()}"
 	}
 
 	def _log4jConfigSummary() {
