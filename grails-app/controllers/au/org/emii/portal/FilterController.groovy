@@ -32,7 +32,7 @@ class FilterController {
 	    filterInstance.layer = Layer.get(params.layerId)
 
 	    // Split possible values on comma.
-	    filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
+	    filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: [] // Todo: separate (possibly into a 'before' filter?
 
 	    if (filterInstance.save()) {
 
