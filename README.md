@@ -10,6 +10,9 @@ You can view the portal in action at the following locations;
 * [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal
 * [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
 
+## Contact
+Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
+
 ## Features
 
 * Faceted search for easy navigation of datasets.
