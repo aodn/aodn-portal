@@ -134,12 +134,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
 	describe('layer messages', function() {
 	    it('on removeAll', function() {
 
-	        spyOn(animationControlsPanel, 'isAnimating').andReturn(true);
 	        spyOn(animationControlsPanel, 'removeAnimation');
 
 	        Ext.MsgBus.publish('removeAllLayers');
 
-	        expect(animationControlsPanel.isAnimating).toHaveBeenCalled();
 	        expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
 	    });
 
@@ -155,7 +153,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
             Ext.MsgBus.publish('removeLayer', openLayer);
 
             expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
-            expect(Portal.ui.AnimationPanel.prototype.setVisible).toHaveBeenCalledWith(false);
         });
 
         describe('on selectedLayerChanged', function() {
@@ -201,12 +198,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         it('on reset map', function() {
 
-            spyOn(animationControlsPanel, 'isAnimating').andReturn(true);
             spyOn(animationControlsPanel, 'removeAnimation');
 
             Ext.MsgBus.publish('reset');
 
-            expect(animationControlsPanel.isAnimating).toHaveBeenCalled();
             expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
         });
     });

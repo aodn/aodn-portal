@@ -87,10 +87,17 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
             else { // No Layers left on map
 
                 this.setActiveNode(null);
-
                 Ext.MsgBus.publish("selectedLayerChanged", null);
             }
         }, this);
+    },
+
+    activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node) {
+        if (node != null) {
+            this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
+            Ext.MsgBus.publish("selectedLayerChanged", this.getSelectedLayer());
+
+        }
     },
 
     findNodeByLayer: function(layer) {
@@ -120,12 +127,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.setActiveNode(node);
     },
 
-    activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node) {
-        if (node != null) {
-            this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
-            Ext.MsgBus.publish("selectedLayerChanged", node.layer);
-        }
-    },
 
     beforeActiveLayerRemoved: function(tree, parent, node) {
         var selected = this.getSelectedNode();

@@ -30,30 +30,44 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 		
 		Ext.MsgBus.subscribe('removeAllLayers', function() {
-	        if (this.isAnimating()) {
-	            this.removeAnimation();
-	        }
+	        this.removeAnimation();
 		}, this);
         Ext.MsgBus.subscribe('reset', function() {
             this.removeAnimation();
         }, this);
 
-        Ext.MsgBus.subscribe('removeLayer', function() {
-            this.removeAnimation();
+        Ext.MsgBus.subscribe('removeLayer', function(mesg,openLayer) {
+            if (openLayer === this.originalLayer && this.isAnimating()) {
+                this.removeAnimation();
+                // arrives here after selectedLayerChanged listener has completed
+                this.setSelectedLayer(this.activeLayersPanelSelectedLayer);
+            }
+
         }, this);
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
-            if (!this.isAnimating()) {
-                if (openLayer) {
-                    if (openLayer.isAnimatable()) {
-                        //show the panel for the first time!
-                        this.setSelectedLayer(openLayer);
-                        this.update();
+
+            if (openLayer) {
+
+                this.activeLayersPanelSelectedLayer = openLayer;
+
+                if (!this.isAnimating()) {
+
+                    if (openLayer) {
+                        if (openLayer.isAnimatable()) {
+                            //show the panel for the first time!
+                            this.setSelectedLayer(openLayer); //set to new
+                            this.update();
+                        }
+                    }
+                    else {
+                        this.removeAnimation();
                     }
                 }
-                else {
-                    this.removeAnimation();
-                }
+            }
+            // openlayer is null so there are no layers
+            else {
+                this.removeAnimation();
             }
         }, this);
 	},
@@ -68,6 +82,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		this.MAX_SPEED_MULTIPLIER = 32;
 
 		this.animatedLayers = new Array();
+        this.activeLayersPanelSelectedLayer = null;
 		var parent = this;
 
 		this.warn = new Ext.form.Label({
@@ -464,7 +479,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 
 	},
-
+    // this sets the selected animating layer not active layer in Active Layers panel
 	setSelectedLayer : function(layer) {
 		this.selectedLayer = layer;
 	},
@@ -563,6 +578,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	 * animation doesn't start.
 	 */
 	_waitForOriginalLayer : function(startString, endString) {
+
 		if (this.selectedLayer.numLoadingTiles > 0) {
 
 			this._updateButtons(this.state.LOADING);

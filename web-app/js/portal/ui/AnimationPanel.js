@@ -17,14 +17,13 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         var supr = Ext.Element.prototype;
         Ext.override(Ext.Layer, {
             hideAction : function(){
-                this.visible = false;
-                if(this.useDisplay === true){
-                    this.setDisplayed(false);
-                }else{
+                if(this.useDisplay !== true){
                     supr.setLeftTop.call(this, -10000, -10000);
                 }
             }
         });
+
+        this.setvisTimeoutId = null;
 
         this.animationControlsPanel = new Portal.details.AnimationControlsPanel();
 
@@ -105,28 +104,44 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         Portal.ui.AnimationPanel.superclass.constructor.call(this, config);
         
         this.setPosition(1, 0); // override with CSS later
-        
-        Ext.MsgBus.subscribe('removeLayer', function() {
-            this.setVisible(false);
-        }, this);
 
         Ext.MsgBus.subscribe('reset', function() {
             this.setVisible(false);
-        }, this);
+        }, this)
+
         
-        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
-            
-            if (!this.animationControlsPanel.isAnimating()) {
-                if (openLayer) {
-                    if (openLayer.isAnimatable()) {
-                        this.setVisible(true);
-                    }
-                    else {
-                        this.setVisible(false);
-                    }
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(msg,openLayer) {
+            var that = this;
+            if(!openLayer) {
+                window.clearTimeout(this.setvisTimeoutId);
+                this.setVisible(false);
+            }
+            else {
+                // delay until animation cleaned up
+                this.setvisTimeoutId = window.setTimeout(setVis, 500);
+            }
+
+            function setVis() {
+                that._setAnimationPanelVis(openLayer);
+            }
+
+        }, this);
+
+    },
+
+    _setAnimationPanelVis: function(openLayer) {
+
+        if (!this.animationControlsPanel.isAnimating()) {
+            // there is no animation running so it can be hidden if not applicable
+            if (openLayer) {
+                if (openLayer.isAnimatable()) {
+                    this.setVisible(true);
+                }
+                else {
+                    this.setVisible(false);
                 }
             }
-        }, this);
+        }
     },
     
     setMap: function(map) {
