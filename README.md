@@ -10,6 +10,9 @@ You can view the portal in action at the following locations;
 * [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal
 * [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
 
+## Contact
+Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
+
 ## Features
 
 * Faceted search for easy navigation of datasets.
@@ -48,7 +51,9 @@ we are in the process of removing that dependency, [you can help with that too](
 
 #### Can I Get A Pre-Built War?
 
-Yes you can. You can write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
+Yes, you can download it [here](http://binary.aodn.org.au/).
+
+You can also write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
 version up to date.
 
 ## Configuring Portal

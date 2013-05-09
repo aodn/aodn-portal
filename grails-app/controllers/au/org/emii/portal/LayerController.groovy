@@ -303,7 +303,7 @@ class LayerController {
 
     def saveOrUpdate = {
 
-        log.info "Capabilities data length: ${params.capabilitiesData?.length()}"
+        log.debug "Capabilities data length: ${params.capabilitiesData?.length()}"
         log.debug "metadata: ${params.metadata}"
 
         // Check credentials
@@ -328,6 +328,8 @@ class LayerController {
             // Check capabilities data
             def capabilitiesData = params.capabilitiesData
             _validateCapabilitiesData capabilitiesData
+
+	        log.info "saveOrUpdate Layer. Finding server with uri: ${metadata.serverUri}"
 
             // Get server w/ metdata
             def server = Server.findByUri( metadata.serverUri )
