@@ -265,6 +265,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
                     this
                 );
+                Ext.MsgBus.publish("layersLoadedFromServer")
             }
         });
     },

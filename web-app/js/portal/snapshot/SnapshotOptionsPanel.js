@@ -88,13 +88,15 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 		Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
     
 		this.mon(this.controller, 'snapshotAdded', this.onSnapshotAdded, this);
-		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);		
-		
-		this.map.events.register('blur', this, function(obj){
+		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);
+
+        this.map.events.register('blur', this, function(obj){
 			if (this.el != undefined) {
 				this.snapshotCombo.collapse();
 			}			
         });
+
+
 		
 		
 	},
@@ -104,9 +106,8 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 
 		if (!id || id == '') return;
 
-		this.controller.loadSnapshot(id, this.enableSnapshotButtons.createDelegate(this), this.onFailure.createDelegate(this,['Unexpected failure loading snapshot'],true));
-		
-		
+		this.controller.loadSnapshot(id);
+        this.enableSnapshotButtons();
 	},
 	
 	enableSnapshotButtons: function() {

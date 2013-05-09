@@ -129,14 +129,5 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	
 	fireRemoveAllLayers: function() { 
 		this.fireEvent('removealllayers');
-	},
-
-	loadSnapshot: function(id){
-        this.snapshotController.loadSnapshot(id, null, function(errors){
-        	Ext.MessageBox.show({
-			 title:'Saved Map',
-			 msg: 'The map you are attempting to view is not available.'
-		  });
-        });
 	}
 });

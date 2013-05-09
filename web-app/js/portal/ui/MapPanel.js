@@ -101,8 +101,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
             this._updateLayerLoadingSpinner(numLayersLoading);
         }, this);
-
-        this.startSnapshot = cfg.startSnapshot;
     },
 
     _updateLayerLoadingSpinner:function (numLayersLoading) {
@@ -137,14 +135,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
-
-        if(this.startSnapshot)
-            this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(this.startSnapshot);
-    },
-
-    loadSnapshot:function (id) {
-
-        this.mapOptions.mapActionsControl.actionsPanel.loadSnapshot(id);
     },
 
     autoZoomCheckboxHandler:function (box, checked) {

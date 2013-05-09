@@ -11,8 +11,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
         this.mainTabPanel = new Portal.ui.MainTabPanel({
             region: 'center',
-            activeTab: cfg.activeTab,
-            startSnapshot: cfg.startSnapshot
+            activeTab: cfg.activeTab
         });
 
         this.layerChooserPanel = new Portal.ui.LayerChooserPanel({
@@ -63,9 +62,5 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     isMapVisible: function() {
         return this.mainTabPanel.isMapVisible();
-    },
-
-    showSnapshot: function(id) {
-        this.mainTabPanel.loadSnapshot(id);
     }
 });

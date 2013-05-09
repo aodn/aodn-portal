@@ -21,6 +21,10 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
         Portal.snapshot.SnapshotController.superclass.constructor.apply(this,
                 arguments);
+
+        Ext.MsgBus.subscribe("loadSnapshot", function(subject, snapshot){
+            this.loadSnapshot(snapshot);
+        },this);
     },
 
     createSnapshot : function(name, successCallback, failureCallback) {
@@ -56,11 +60,10 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         }
     },
 
-    loadSnapshot : function(id, successCallback, failureCallback) {
+    loadSnapshot : function(id) {
         
         Ext.MsgBus.publish('reset');
-        this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this,
-                [ successCallback ], true), failureCallback);
+        this.proxy.get(id, this.onSuccessfulLoad, this.onFailedLoad);
     },
 
     _doLoadLayers : function(bounds, snapshot, successCallback) {
@@ -68,11 +71,15 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         for ( var i = 0; i < snapshot.layers.length; i++) {
             this.addSnapshotLayer(snapshot.layers[i]);
         }
+    },
 
-        if (successCallback) {
-            successCallback(snapshot);
-        }
-
+    onFailedLoad : function () {
+        this.snapshotController.loadSnapshot(id, null, function(errors){
+            Ext.MessageBox.show({
+                title:'Saved Map',
+                msg: 'The map you are attempting to view is not available.'
+            });
+        });
     },
 
     onSuccessfulLoad : function(snapshot, successCallback) {
@@ -81,12 +88,16 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY,
                 snapshot.maxX, snapshot.maxY);
 
+
+
         if (this.map.baseLayer === null) {
-            this.mapScope.on('baselayersloaded', function() {
-                this._doLoadLayers(bounds, snapshot, successCallback);
+            Ext.MsgBus.subscribe("layersLoadedFromServer", function() {
+                if(this.map.baseLayer != null) {
+                    this._doLoadLayers(bounds, snapshot);
+                }
             }, this);
         } else {
-            this._doLoadLayers(bounds, snapshot, successCallback);
+            this._doLoadLayers(bounds, snapshot);
         }
     },
 

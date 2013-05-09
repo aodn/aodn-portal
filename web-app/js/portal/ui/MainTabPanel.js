@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor:function (cfg) {
-        this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config, startSnapshot:cfg.startSnapshot});
+        this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = new Portal.search.SearchTabPanel({mapPanel:this.getMapPanel()});
         this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
         this.downloadCartPanel = new Portal.cart.DownloadCartPanel();
@@ -94,10 +94,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     isMapSelected:function () {
         return this.getActiveTab() === this.portalPanel;
-    },
-
-    loadSnapshot:function (id) {
-        this.getMapPanel().loadSnapshot(id);
     },
 
     onSelectedLayerChange:function () {
