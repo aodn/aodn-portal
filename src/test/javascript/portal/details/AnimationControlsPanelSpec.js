@@ -21,7 +21,33 @@ describe("Portal.details.AnimationControlsPanel", function() {
             );
     });
 
-	describe("_getNewTimeValue", function() {
+    describe("speedUp button", function() {
+        it("halves 'speed' and starts animation", function() {
+
+            animationControlsPanel.speed = 10;
+            spyOn(animationControlsPanel, '_startPlaying');
+            animationControlsPanel.speedUp.fireEvent("click");
+            expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
+            expect(animationControlsPanel.speed).toBe(5);
+
+        });
+    });
+
+
+    describe("slowDown button", function() {
+        it("doubles 'speed' and starts animation", function() {
+
+            animationControlsPanel.speed = 10;
+            spyOn(animationControlsPanel, '_startPlaying');
+            animationControlsPanel.slowDown.fireEvent("click");
+            expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
+            expect(animationControlsPanel.speed).toBe(20);
+
+        });
+    });
+
+
+    describe("_getNewTimeValue", function() {
 		it("select default if old time doesn't exist", function() {
 			var oldTime = "13:25:00 (+10:00)";
 
