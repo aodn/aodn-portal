@@ -107,7 +107,7 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
         Ext.MsgBus.subscribe('reset', function() {
             this.setVisible(false);
-        }, this)
+        }, this);
 
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(msg,openLayer) {
