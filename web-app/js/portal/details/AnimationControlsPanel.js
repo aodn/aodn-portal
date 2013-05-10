@@ -98,7 +98,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					listeners : {
 						scope : this,
 						'click' : function(button, event) {
-							this._resetTimer(this.speed / 2);
+                            this.speed=this.speed / 2;
+                            this._startPlaying();
 						}
 					},
 					tooltip : OpenLayers.i18n('speedUp')
@@ -110,7 +111,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					listeners : {
 						scope : this,
 						'click' : function(button, event) {
-							this._resetTimer(this.speed * 2);
+							this.speed = this.speed * 2;
+                            this._startPlaying();
 						}
 					},
 					tooltip : OpenLayers.i18n('slowDown')
@@ -319,6 +321,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	_startPlaying : function() {
 		var dates = this._getFormDates();
 		this._waitForOriginalLayer(dates[0], dates[1]);
+        this._updateButtons(this.state.PLAYING);
 	},
 
 
