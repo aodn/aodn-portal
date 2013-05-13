@@ -65,11 +65,8 @@ Portal.app = {
         if (window.location.search.length > 0) {
             var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
             var matches = regPattern.exec(window.location.search);
-            console.log(window.location.search);
-            console.log(matches)
 
             if (matches != null && matches.length == 2) {
-                console.log("MATCHED");
                 //coming from saved map, so start at map.
                 startTab = 1;
                 startSnapshot = matches[1];
@@ -92,7 +89,10 @@ Portal.app = {
             }
         );
         if(startSnapshot){
-            Ext.MsgBus.publish("loadSnapshot", startSnapshot);
+            Ext.MsgBus.subscribe("baseLayersLoadedFromServer", function() {
+                Ext.MsgBus.unsubscribe("baseLayersLoadedFromServer");
+                Ext.MsgBus.publish("loadSnapshot", startSnapshot);
+            },this);
         }
     },
 

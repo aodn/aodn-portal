@@ -239,6 +239,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initWithLayersFromServer('layer/configuredbaselayers', {
             isBaseLayer: true,
             queryable: false
+        }, function () {
+            Ext.MsgBus.publish("baseLayersLoadedFromServer")
         });
     },
 
@@ -246,7 +248,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initWithLayersFromServer('layer/defaultlayers');
     },
 
-    _initWithLayersFromServer: function(url, configOverrides) {
+    _initWithLayersFromServer: function(url, configOverrides, successCallback) {
 
         Ext.Ajax.request({
             url: url,
@@ -265,7 +267,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
                     this
                 );
-                Ext.MsgBus.publish("layersLoadedFromServer")
+
+                if(successCallback)
+                    successCallback();
+
             }
         });
     },

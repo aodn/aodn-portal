@@ -8,51 +8,51 @@
 Ext.namespace('Portal.snapshot');
 
 Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
-    constructor : function(config) {
+    constructor:function (config) {
         config = config || {};
         Ext.apply(this, config);
 
         this.addEvents({
-            snapshotAdded : true,
-            snapshotDeleted : true
+            snapshotAdded:true,
+            snapshotDeleted:true
         });
 
         this.proxy = new Portal.snapshot.SnapshotProxy();
 
         Portal.snapshot.SnapshotController.superclass.constructor.apply(this,
-                arguments);
+            arguments);
 
-        Ext.MsgBus.subscribe("loadSnapshot", function(subject, snapshot){
+        Ext.MsgBus.subscribe("loadSnapshot", function (subject, snapshot) {
             this.loadSnapshot(snapshot);
-        },this);
+        }, this);
     },
 
-    createSnapshot : function(name, successCallback, failureCallback) {
+    createSnapshot:function (name, successCallback, failureCallback) {
         var bbox = this.map.getExtent().toArray();
 
         var snapshot = {
-            owner : Portal.app.config.currentUser.id,
-            name : name,
-            minX : bbox[0],
-            minY : bbox[1],
-            maxX : bbox[2],
-            maxY : bbox[3],
-            layers : []
+            owner:Portal.app.config.currentUser.id,
+            name:name,
+            minX:bbox[0],
+            minY:bbox[1],
+            maxX:bbox[2],
+            maxY:bbox[3],
+            layers:[]
         };
 
         var mapLayers = this.map.layers;
 
-        for ( var i = 0; i < mapLayers.length; i++) {
+        for (var i = 0; i < mapLayers.length; i++) {
             var snapshotLayer = this.getSnapshotLayer(mapLayers[i]);
             snapshot.layers.push(snapshotLayer);
         }
         ;
 
         this.proxy.save(snapshot, this.onSuccessfulSave.createDelegate(this,
-                [ successCallback ], true), failureCallback);
+            [ successCallback ], true), failureCallback);
     },
 
-    onSuccessfulSave : function(snapshot, successCallback) {
+    onSuccessfulSave:function (snapshot, successCallback) {
         this.fireEvent('snapshotAdded', snapshot);
 
         if (successCallback) {
@@ -60,53 +60,42 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         }
     },
 
-    loadSnapshot : function(id) {
-        
+    loadSnapshot:function (id) {
+
         Ext.MsgBus.publish('reset');
-        this.proxy.get(id, this.onSuccessfulLoad, this.onFailedLoad);
+        this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this), this.onFailedLoad.createDelegate(this));
     },
 
-    _doLoadLayers : function(bounds, snapshot, successCallback) {
+    _doLoadLayers:function (bounds, snapshot) {
         this.map.zoomToExtent(bounds, true);
-        for ( var i = 0; i < snapshot.layers.length; i++) {
+        for (var i = 0; i < snapshot.layers.length; i++) {
             this.addSnapshotLayer(snapshot.layers[i]);
         }
     },
 
-    onFailedLoad : function () {
-        this.snapshotController.loadSnapshot(id, null, function(errors){
-            Ext.MessageBox.show({
-                title:'Saved Map',
-                msg: 'The map you are attempting to view is not available.'
-            });
+    onFailedLoad:function () {
+        Ext.MessageBox.show({
+            title:'Saved Map',
+            msg:'The map you are attempting to view is not available.'
         });
     },
 
-    onSuccessfulLoad : function(snapshot, successCallback) {
+    onSuccessfulLoad:function (snapshot) {
         this.fireEvent('snapshotLoaded');
 
         var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY,
-                snapshot.maxX, snapshot.maxY);
+            snapshot.maxX, snapshot.maxY);
 
+        this._doLoadLayers(bounds, snapshot);
 
-
-        if (this.map.baseLayer === null) {
-            Ext.MsgBus.subscribe("layersLoadedFromServer", function() {
-                if(this.map.baseLayer != null) {
-                    this._doLoadLayers(bounds, snapshot);
-                }
-            }, this);
-        } else {
-            this._doLoadLayers(bounds, snapshot);
-        }
     },
 
-    deleteSnapshot : function(id, successCallback, failureCallback) {
+    deleteSnapshot:function (id, successCallback, failureCallback) {
         this.proxy.remove(id, this.onSuccessfulDelete.createDelegate(this,
-                [ successCallback ]), failureCallback);
+            [ successCallback ]), failureCallback);
     },
 
-    onSuccessfulDelete : function(successCallback) {
+    onSuccessfulDelete:function (successCallback) {
         this.fireEvent('snapshotDeleted');
 
         if (successCallback) {
@@ -116,13 +105,13 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
     // private functions
 
-    getSnapshotLayer : function(mapLayer) {
+    getSnapshotLayer:function (mapLayer) {
         var layer = {};
         if (mapLayer.isAnimatedSlice != undefined) {
             return; // don't save it
         }
         if (mapLayer.isAnimated) { // changing isAnimated to indicate it is the
-                                    // original layer that is animated
+            // original layer that is animated
             // animated layers - save original layer details plus animation
             // settings
             layer.layer = mapLayer.grailsLayerId;
@@ -155,9 +144,9 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         return layer;
     },
 
-    addSnapshotLayer : function(snapshotLayer) {
+    addSnapshotLayer:function (snapshotLayer) {
         var options = {
-            visibility : !snapshotLayer.hidden
+            visibility:!snapshotLayer.hidden
         };
 
         if (snapshotLayer.opacity) {
@@ -165,7 +154,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         }
 
         var params = {
-            styles : snapshotLayer.styles
+            styles:snapshotLayer.styles
         };
 
         if (snapshotLayer.cql != undefined && snapshotLayer.cql.length > 0) {
@@ -176,22 +165,22 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             if (!snapshotLayer.hidden) {
                 // find and display baselayer if it still exists
                 var matchingLayers = this.map.getLayersBy("grailsLayerId",
-                        snapshotLayer.layer.id);
+                    snapshotLayer.layer.id);
                 if (matchingLayers.length > 0)
                     this.map.setBaseLayer(matchingLayers[0]);
             }
-        } 
+        }
         else {
             if (snapshotLayer.layer) {
-                
+
                 Ext.MsgBus.publish('addLayerUsingServerId', {
-                    id: snapshotLayer.layer.id, 
-                    layerOptions: options, 
-                    layerParams: params,
-                    animated: snapshotLayer.animated, 
-                    chosenTimes: snapshotLayer.chosenTimes
+                    id:snapshotLayer.layer.id,
+                    layerOptions:options,
+                    layerParams:params,
+                    animated:snapshotLayer.animated,
+                    chosenTimes:snapshotLayer.chosenTimes
                 });
-            } 
+            }
             else {
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
                 Ext.MsgBus.publish('addLayerUsingOpenLayer', layerDescriptor.toOpenLayer(options, params));
@@ -199,21 +188,21 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         }
     },
 
-    getLayerDef : function(snapshotLayer) {
+    getLayerDef:function (snapshotLayer) {
         return {
-            title : snapshotLayer.title,
-            server : {
-                uri : snapshotLayer.serviceUrl,
-                type : 'WMS'
+            title:snapshotLayer.title,
+            server:{
+                uri:snapshotLayer.serviceUrl,
+                type:'WMS'
             },
-            name : snapshotLayer.name
+            name:snapshotLayer.name
         };
     },
 
-    addMapLayer : function(layerDef, options, params) {
+    addMapLayer:function (layerDef, options, params) {
         if (Ext.isFunction(this.addMapLayerFn)) {
             var delegate = this.addMapLayerFn.createDelegate(this.mapScope, [
-                    layerDef, options, params ]);
+                layerDef, options, params ]);
             delegate.call();
         }
     }
