@@ -17,7 +17,10 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         var supr = Ext.Element.prototype;
         Ext.override(Ext.Layer, {
             hideAction : function(){
-                if(this.useDisplay !== true){
+                this.visible = false;
+                if(this.useDisplay === true){
+                    this.setDisplayed(false);
+                }else{
                     supr.setLeftTop.call(this, -10000, -10000);
                 }
             }
