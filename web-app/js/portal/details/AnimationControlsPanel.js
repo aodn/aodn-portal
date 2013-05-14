@@ -1147,7 +1147,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			valueField : 'time',
 			displayField : 'roundedTime',
-			width : 110
+			width : 115
 		};
 	}
 
