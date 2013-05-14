@@ -14,6 +14,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this.titleBar = new Ext.Panel({
 
+            cls: 'x-panel-header',
             layout: {
                 type: 'hbox',
                 defaultMargins: {top:0, right:0, bottom:4, left:0}
@@ -91,8 +92,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             padding: 3,
             layout: 'fit',
 
-	        cls: 'search-filter-panel',
-
 	        items: [
                 this.titleBar,
 
@@ -146,7 +145,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         var tb = this.titleBar;
         var title = tb.items.get( 0 );
 
-        title.update( '<h4>' + newText + '</h4>' );
+        title.update( '<span class="x-panel-header-text">' + newText + '</span>' );
         tb.doLayout();
     },
 

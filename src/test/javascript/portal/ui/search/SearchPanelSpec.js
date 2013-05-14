@@ -24,6 +24,11 @@ describe("Portal.ui.search.SearchPanel", function() {
         spyOn(bottomToolbar, 'onLoad');
     });
 
+    it("check layout/positioning", function() {
+        expect(searchPanel.filtersPanel.region).toBe('west');
+        expect(searchPanel.resultsGrid.region).toBe('center');
+    });
+    
     // Test helper
     function testStartAndLimit(start, limit) {
 

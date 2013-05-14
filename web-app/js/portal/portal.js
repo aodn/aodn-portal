@@ -84,13 +84,12 @@ Portal.app = {
             });
         }
 
-        viewport = new Portal.ui.Viewport(
-            {
-                appConfig: Portal.app.config,
-                activeTab: startTab,
-                startSnapshot: startSnapshot
-            }
-        );
+        viewport = new Portal.ui.Viewport({
+            appConfig: Portal.app.config,
+            activeTab: startTab,
+            startSnapshot: startSnapshot
+        });
+
         if(startSnapshot){
             Ext.MsgBus.publish("loadSnapshot", startSnapshot);
         }
