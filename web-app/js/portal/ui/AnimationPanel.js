@@ -114,19 +114,13 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(msg,openLayer) {
-            var that = this;
-            if(!openLayer) {
-                window.clearTimeout(this.setvisTimeoutId);
-                this.setVisible(false);
-            }
-            else {
-                // delay until animation cleaned up
-                this.setvisTimeoutId = window.setTimeout(setVis, 500);
-            }
+            // delay hiding/showing until animation cleaned up
+            var task = new Ext.util.DelayedTask(function(){
+                this._setAnimationPanelVis(openLayer);
+            }, this);
 
-            function setVis() {
-                that._setAnimationPanelVis(openLayer);
-            }
+            //calls function in 500ms
+            task.delay(500);
 
         }, this);
 
