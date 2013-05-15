@@ -10,8 +10,9 @@ Ext.namespace('Portal.ui');
 Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor:function (cfg) {
+
         this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
-        this.searchTabPanel = new Portal.search.SearchTabPanel({mapPanel:this.getMapPanel()});
+        this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
         this.downloadCartPanel = new Portal.cart.DownloadCartPanel();
 
@@ -19,7 +20,10 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
             xtype:'tabpanel', // TabPanel itself has no title
             autoDestroy:false, // wont destroy tab contents when switching
             activeTab:0,
-            margins:{right:5},
+            margins: {
+                left: 5,
+                right: 5
+            },
             unstyled:true,
             // method to hide the usual tab panel header with css
             headerCfg:{
@@ -45,7 +49,22 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
     },
 
+    _initSearchTabPanel: function(cfg) {
 
+        if (appConfigStore.isFacetedSearchEnabled()) {
+            return new Portal.ui.search.SearchPanel({
+                itemId: 'searchPanel',
+                proxyUrl: proxyURL,
+		        catalogUrl: Portal.app.config.catalogUrl,
+		        protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
+		        dragAndDrop: cfg.dragAndDrop,
+                resultGridSize: 10
+		    });
+        }
+        else {
+            return new Portal.search.SearchTabPanel({mapPanel:this.getMapPanel()});
+        }
+    },
 
     getPortalPanel:function () {
         return this.portalPanel;

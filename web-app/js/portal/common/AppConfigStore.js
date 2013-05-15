@@ -12,5 +12,9 @@ var appConfigStore = new Ext.data.JsonStore({
     // reader configs
     root: 'grailsConfig',
     idProperty: 'name',
-    fields: ['name', 'value']
+    fields: ['name', 'value'],
+    
+    isFacetedSearchEnabled: function() {
+        return this.getById('facetedSearch.enabled').data.value
+    }
 });

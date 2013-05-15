@@ -39,8 +39,11 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }
 
         this.filtersPanel = new Portal.ui.search.SearchFiltersPanel({
-            searcher:this.searcher,
-            region:'center'
+            searcher: this.searcher,
+            region: 'west',
+            split: true,
+            width: 340,
+            bodyCssClass: 'p-header-space'
         });
         itemsToDisplay.push(this.filtersPanel);
 
@@ -52,15 +55,17 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }, this.resultsStore);
 
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            title:"Search Results",
-            region:'south',
-            split:true,
-            height:350,
-            store:this.resultsStore,
-            onSearchComplete:function (response, page) {
+            title: "Search Results",
+            region: 'center',
+            split: true,
+            store: this.resultsStore,
+            onSearchComplete: function (response, page) {
                 this.store.loadData(response);
             },
-            pageSize:this.resultGridSize
+            pageSize: this.resultGridSize,
+            headerCfg: {
+                cls: 'x-panel-header p-header-space'
+            }
         });
         itemsToDisplay.push(this.resultsGrid);
 

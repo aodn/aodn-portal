@@ -18,20 +18,6 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
         });
         itemsToAdd.push(this.defaultMenuTree);
 
-        if (appConfigStore.getById('facetedSearch.enabled').data.value) {
-
-            this.selectionPanel = new Portal.ui.SelectionPanel({
-                title:'Faceted Search',
-                appConfig:Portal.app.config,
-                split:true,
-                searchRestriction:{
-                    protocols:Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
-                },
-                searchTabTitle:OpenLayers.i18n('layerSearchTabTitle')
-            });
-            itemsToAdd.push(this.selectionPanel);
-        }
-
         this.userDefinedWMSPanel = new Portal.ui.UserDefinedWMSPanel({});
         itemsToAdd.push(this.userDefinedWMSPanel);
 
