@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -291,6 +290,146 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 }
+
+
+function expandExtendedISO8601Dates(splitDates) {
+
+    /*
+    Expand setISO8601 repeating intervals
+    EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
+    */
+
+    var expandedDates = new Array();
+    var isoDate;
+
+    splitDates = splitDates.split(",");
+
+
+    for (var i = 0; i < splitDates.length; i++) {
+        isoDate = splitDates[i].split("/");
+
+        var x = isoDate.length;
+        // no default condition
+        switch (x)  {
+
+            case 1:
+                expandedDates.push(splitDates[i]);
+                break;
+            case 2:
+                console.log("unhandled date format: " + splitDates[i]);
+                break;
+            case 3:
+                expandedDates = expandedDates.concat(_expand3sectionExtendedISO8601Date(splitDates[i]));
+                break;
+        }
+
+    }
+
+   return expandedDates.join(",");
+}
+
+function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
+
+    /* expecting the 3 part format as seen from ncWMS
+        start / endate / interval
+        EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
+    */
+
+    var expandedDates = new Array();
+
+    var ISO8601DateParts = extendedISO8601Date.split("/");
+    var period = ISO8601DateParts[2];
+    var format = "YYYY-MM-DDThh:mm:ssZ";
+
+    // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
+    if (period.indexOf( "P" ) == 0 && period != "") {
+
+        var duration = moment.duration(_getISO8601Period(period));
+        var nextDate = moment(ISO8601DateParts[0]);
+        var endDate = moment(ISO8601DateParts[1]);
+
+        if (!nextDate.isValid()) {
+            console.log("Start Date was not valid: " + nextDate )
+        }
+        else {
+            expandedDates.push(nextDate.format(format));
+            // add dates + duration until equal the stop date
+            while (nextDate.isBefore(endDate)) {
+
+                nextDate = moment(nextDate.add(duration));
+                expandedDates.push(nextDate.format(format));
+                //console.log(nextDate.format(format));
+            }
+
+            expandedDates.push(endDate.format(format));
+        }
+
+    }
+    else {
+        console.log('Date  not understood: ' + period);
+    }
+
+    return expandedDates.sort();
+}
+
+
+function _getISO8601Period(period) {
+
+    // rip off the 'P'
+    period  = period.substring(1);
+
+    var moArray = new Array();
+
+    if (period.indexOf( "T" ) > -1) {
+
+        var parts =  period.split("T");
+        var dateParts = parts[0];
+        var timeParts = parts[1];
+
+        // expecting in order years, months, days
+        if (dateParts.indexOf( "Y" ) > -1) {
+            moArray[0] =  dateParts.split("Y")[0];
+            dateParts =  dateParts.split("Y")[1];
+        }
+        if (dateParts.indexOf( "M" ) > -1) {
+            moArray[1] =  dateParts.split("M")[0];
+            dateParts =  dateParts.split("M")[1];
+        }
+        if (dateParts.indexOf( "W" ) > -1) {
+            moArray[2] =  dateParts.split("W")[0];
+            dateParts =  dateParts.split("W")[1];
+        }
+        if (dateParts.indexOf( "D" ) > -1) {
+            moArray[3] =  dateParts.split("D")[0];
+        }
+        // expecting in order hours, minutes, and seconds
+        if (timeParts.indexOf( "H" ) > -1) {
+            moArray[4] =  timeParts.split("H")[0];
+            timeParts =  timeParts.split("H")[1];
+        }
+        if (timeParts.indexOf( "M" ) > -1) {
+            moArray[5] =  timeParts.split("M")[0];
+            timeParts =  timeParts.split("M")[1];
+        }
+        if (timeParts.indexOf( "S" ) > -1) {
+            moArray[6] =  timeParts.split("S")[0];
+        }
+
+
+    }
+
+    return {
+        'seconds': Number(moArray[6]),
+        'minutes': Number(moArray[5]),
+        'hours':   Number(moArray[4]),
+        'days':    Number(moArray[3]),
+        'weeks':   Number(moArray[2]),
+        'months':  Number(moArray[1]),
+        'years':   Number(moArray[0])
+    }
+
+}
+
 
 
 // IE 8 throws errors with console not existing

@@ -181,6 +181,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"

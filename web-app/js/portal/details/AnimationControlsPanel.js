@@ -932,8 +932,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		if (splitDates.length > 0) {
 			var startDate = this._parseIso8601Date(splitDates[0]);
 			var endDate = this._parseIso8601Date(splitDates.last());
-			
-					
 
 			// set the start/end date range for both pickers
 			this._setDateRange(this.startDatePicker, startDate, endDate);
@@ -1001,10 +999,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	getSelectedLayerTimeDimension : function() {
+
 		if ((this.selectedLayer != undefined)
 				&& (this.selectedLayer.dimensions != undefined)) {
 			for (var i = 0; i < this.selectedLayer.dimensions.length; i++) {
 				if (this.selectedLayer.dimensions[i].name == "time") {
+
+                    if (this.selectedLayer.dimensions[i].uncompressedTimeExtent == undefined) {
+                        this.selectedLayer.dimensions[i].extent = expandExtendedISO8601Dates(this.selectedLayer.dimensions[i].extent);
+                        this.selectedLayer.dimensions[i].uncompressedTimeExtent = true;
+                    }
+
 					return this.selectedLayer.dimensions[i];
 				}
 			}
@@ -1093,8 +1098,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_getTimeComboStartDate : function(dates) {
-		return this
-				._parseIso8601Date(dates[this._getTimeComboStartIndex(dates)]);
+		return this._parseIso8601Date(dates[this._getTimeComboStartIndex(dates)]);
 	},
 
 	_getTimeComboStartIndex : function(dates) {
