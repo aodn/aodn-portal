@@ -81,13 +81,12 @@ Portal.app = {
             });
         }
 
-        viewport = new Portal.ui.Viewport(
-            {
-                appConfig: Portal.app.config,
-                activeTab: startTab,
-                startSnapshot: startSnapshot
-            }
-        );
+        viewport = new Portal.ui.Viewport({
+            appConfig: Portal.app.config,
+            activeTab: startTab,
+            startSnapshot: startSnapshot
+        });
+
         if(startSnapshot){
             Ext.MsgBus.subscribe("baseLayersLoadedFromServer", function() {
                 Ext.MsgBus.unsubscribe("baseLayersLoadedFromServer");

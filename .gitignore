@@ -11,3 +11,4 @@ DELETED_UNIT_TESTS
 target-eclipse
 .link_to_grails_plugins
 *~
+*.lock
