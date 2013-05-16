@@ -302,24 +302,27 @@ function expandExtendedISO8601Dates(splitDates) {
     var expandedDates = new Array();
     var isoDate;
 
-    splitDates = splitDates.split(",");
+    var _splitDates = splitDates.split(",");
 
 
-    for (var i = 0; i < splitDates.length; i++) {
-        isoDate = splitDates[i].split("/");
+    for (var i = 0; i < _splitDates.length; i++) {
+        isoDate = _splitDates[i].split("/");
 
         var x = isoDate.length;
         // no default condition
         switch (x)  {
 
             case 1:
-                expandedDates.push(splitDates[i]);
+                expandedDates.push(_splitDates[i]);
                 break;
             case 2:
-                console.log("unhandled date format: " + splitDates[i]);
+                console.log("ERROR: Unhandled date format: " + _splitDates[i]);
                 break;
             case 3:
-                expandedDates = expandedDates.concat(_expand3sectionExtendedISO8601Date(splitDates[i]));
+                var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(_splitDates[i]);
+                for (var x = 0; x < arrayOfDateTimes.length; x++) {
+                    expandedDates.push(arrayOfDateTimes[x]);
+                }
                 break;
         }
 
@@ -337,30 +340,24 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
     var expandedDates = new Array();
 
-    var ISO8601DateParts = extendedISO8601Date.split("/");
-    var period = ISO8601DateParts[2];
+    var iSO8601DateParts = extendedISO8601Date.split("/");
+    var period = iSO8601DateParts[2];
     var format = "YYYY-MM-DDThh:mm:ssZ";
 
     // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
-    if (period.indexOf( "P" ) == 0 && period != "") {
+    if (period.indexOf( "P" ) == 0) {
 
         var duration = moment.duration(_getISO8601Period(period));
-        var nextDate = moment(ISO8601DateParts[0]);
-        var endDate = moment(ISO8601DateParts[1]);
+        var nextDate = moment(iSO8601DateParts[0]);
+        var endDate = moment(iSO8601DateParts[1]);
 
-        if (!nextDate.isValid()) {
-            console.log("Start Date was not valid: " + nextDate )
-        }
-        else {
+        if (nextDate.isValid()) {
             expandedDates.push(nextDate.format(format));
             // add dates + duration until equal the stop date
             while (nextDate.isBefore(endDate)) {
-
                 nextDate = moment(nextDate.add(duration));
                 expandedDates.push(nextDate.format(format));
-                //console.log(nextDate.format(format));
             }
-
             expandedDates.push(endDate.format(format));
         }
 
@@ -375,14 +372,16 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
 function _getISO8601Period(period) {
 
+
+
     // rip off the 'P'
-    period  = period.substring(1);
+    car _period  = period.substring(1);
 
     var moArray = new Array();
 
-    if (period.indexOf( "T" ) > -1) {
+    if (_period.indexOf( "T" ) > -1) {
 
-        var parts =  period.split("T");
+        var parts =  _period.split("T");
         var dateParts = parts[0];
         var timeParts = parts[1];
 
@@ -414,9 +413,8 @@ function _getISO8601Period(period) {
         if (timeParts.indexOf( "S" ) > -1) {
             moArray[6] =  timeParts.split("S")[0];
         }
-
-
     }
+
 
     return {
         'seconds': Number(moArray[6]),
@@ -427,6 +425,8 @@ function _getISO8601Period(period) {
         'months':  Number(moArray[1]),
         'years':   Number(moArray[0])
     }
+
+
 
 }
 

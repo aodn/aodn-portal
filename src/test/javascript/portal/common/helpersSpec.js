@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,7 +17,6 @@ describe("Portal.common.helpers", function() {
     it('expandExtendedISO8601Dates Correct Simple Request', function() {
         // uncompressed dates go through unaltered
         var res = expandExtendedISO8601Dates('2001-01-10T22:36:00.000Z');
-        var expectedResult = JSON.stringify(["2001-01-10T22:36:00.000Z"]);
         expect(res).toBe("2001-01-10T22:36:00.000Z");
     });
 
