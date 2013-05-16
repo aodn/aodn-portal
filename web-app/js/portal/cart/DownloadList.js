@@ -39,7 +39,15 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
         );
         var subFilesTemplate = new Ext.XTemplate(
             '<div class="cart-file-row" >' +
-                '<a href="{href}" target="_blank" title="{title}" >{title} ({type})</a></div>'
+                '{[this.markup(values)]}',
+            '</div>',
+            {
+                markup: function(values) {
+                    // todo fix metadata first? strip rubbish from titles? / markup as links when correctly flagged as such?
+                    return values.title;
+                }
+
+            }
         );
 
 
