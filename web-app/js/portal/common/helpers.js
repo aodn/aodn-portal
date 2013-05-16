@@ -375,7 +375,7 @@ function _getISO8601Period(period) {
 
 
     // rip off the 'P'
-    car _period  = period.substring(1);
+    var _period  = period.substring(1);
 
     var moArray = new Array();
 
