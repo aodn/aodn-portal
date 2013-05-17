@@ -37,8 +37,9 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                 }
             }
         );
+
         var subFilesTemplate = new Ext.XTemplate(
-            '<div class="cart-file-row" >' +
+            '<div class="cart-file-row" >',
                 '{[this.markup(values)]}',
             '</div>',
             {
@@ -46,10 +47,8 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                     // todo fix metadata first? strip rubbish from titles? / markup as links when correctly flagged as such?
                     return values.title;
                 }
-
             }
         );
-
 
         var config = Ext.apply({
             id:"downloadList",
@@ -59,13 +58,10 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
             autoScroll:true
         }, cfg);
 
-
         Portal.cart.DownloadList.superclass.constructor.call(this, config);
-
 
         Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
             this.downloadItemsStore.load();
         }, this);
-
     }
 });
