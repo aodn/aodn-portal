@@ -144,6 +144,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/MiniMapPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SavedSearchComboBox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SaveSearchDialog.js')}"
@@ -167,6 +169,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"
         type="text/javascript"></script>

@@ -9,26 +9,10 @@
 Ext.namespace('Portal.search');
 
 
-Portal.search.Options = Ext.extend(Object, {
-	
-	constructor: function() {
-		this.controls = [
-		    new OpenLayers.Control.Navigation(),
-		    new OpenLayers.Control.PanZoomBar({zoomStopHeight: 4})
-		];
-		
-		this.options = {
-			controls: this.controls,
-			resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125]
-		};
-	}	
-});
-
-
 Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
   
    constructor: function(cfg) {
-     this.initMap();
+     this.initMap(cfg.mapConfig);
      this.bboxInitialised = false;
 
      var config = Ext.apply({
@@ -44,17 +28,19 @@ Portal.search.MiniMapPanel = Ext.extend(Portal.common.MapPanel, {
      this.registerExtentChangeEvents();
    },
 
-   initMap: function() {
-     this.map = new OpenLayers.Map({
-		controls: [			
-			new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.PanZoomBar()//,
-		],
-		restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
-		displayProjection: new OpenLayers.Projection("EPSG:4326"),
-		resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
-	 });
+   initMap: function(mapConfig) {
 
+       var config = Ext.apply({
+           controls: [
+               new OpenLayers.Control.Navigation(),
+               new OpenLayers.Control.PanZoomBar()
+           ],
+           restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
+           displayProjection: new OpenLayers.Projection("EPSG:4326"),
+           resolutions: [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+       }, mapConfig);
+
+     this.map = new OpenLayers.Map(config);
    },
    
    // Synchronise with main map layer and extent changes

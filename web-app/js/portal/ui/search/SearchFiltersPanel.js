@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -74,6 +73,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
             searcher: config.searcher
+
+        });
+
+        this.geoFilter = new Portal.search.GeoSelectionPanel({
+            title: OpenLayers.i18n('geoFilter'),
+            hierarchical: false,
+            searcher: config.searcher
+
         });
 
 //		this.boundingBoxFilter = new Portal.search.field.BoundingBox({
@@ -100,7 +107,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 this.methodFilter,
                 this.locationFilter,
                 this.organisationFilter,
-                this.dateFilter
+                this.dateFilter,
+                this.geoFilter
                 /*,this.boundingBoxFilter*/
             ]
 		}, config);
@@ -157,6 +165,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.locationFilter.removeAnyFilters();
         this.organisationFilter.removeAnyFilters();
         this.dateFilter.removeAnyFilters();
+        this.geoFilter.removeAnyFilters();
 
         this.searcher.search(true);
     },
