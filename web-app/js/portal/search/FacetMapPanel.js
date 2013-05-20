@@ -45,23 +45,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         this.map.addLayer(this.polygonVector);
     },
 
-    startOrStopEquals:function (segment1, segment2) {
-
-        if (segment1.components[0].equals(segment2.components[0])) {
-            return true;
-        }
-        if (segment1.components[0].equals(segment2.components[1])) {
-            return true;
-        }
-        if (segment1.components[1].equals(segment2.components[0])) {
-            return true;
-        }
-        if (segment1.components[1].equals(segment2.components[1])) {
-            return true;
-        }
-        return false;
-    },
-
+    //Following three methods taken from a stackexchange thread at http://gis.stackexchange.com/questions/23755/determine-if-a-polygon-intersects-itself-in-openlayers
     checkSelfIntersection:function (polygon) {
         if (polygon.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
             //checking only outer ring
@@ -78,6 +62,14 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             }
         }
         return false;
+    },
+
+    startOrStopEquals:function (segment1, segment2) {
+
+        return segment1.components[0].equals(segment2.components[0])
+            || segment1.components[0].equals(segment2.components[1])
+            || segment1.components[1].equals(segment2.components[0])
+            || segment1.components[1].equals(segment2.components[1]);
     },
 
     segmentIntersects:function (segment, segments) {
