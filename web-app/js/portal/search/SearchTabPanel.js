@@ -57,7 +57,7 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			 items: [
 					 {
 						 region: 'north',
-						 xtype: 'portal.search.minimappanel',
+						 xtype: 'portal.search.clonemappanel',
 						 cls: 'map',
 						 ref: '../minimap',
 						 initialBbox: appConfig.initialBbox,

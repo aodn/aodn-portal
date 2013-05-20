@@ -98,5 +98,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
     onSearch:function () {
 
+    },
+
+    removeAnyFilters: function() {
+        this.facetMap.clearGeometry();
     }
+
 });

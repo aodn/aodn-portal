@@ -142,11 +142,11 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SaveSearchLink.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/MiniMapPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SavedSearchComboBox.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SaveSearchDialog.js')}"
         type="text/javascript"></script>

@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.FacetMapPanel = Ext.extend(Portal.search.MiniMapPanel, {
+Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
     constructor:function (cfg) {
         this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
