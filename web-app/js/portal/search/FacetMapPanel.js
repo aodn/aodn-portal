@@ -107,11 +107,15 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.MiniMapPanel, {
     switchToNavigation: function() {
         this.navigationController.activate();
         this.polygonDrawer.deactivate();
+        this.boxDrawer.deactivate();
+
     },
 
     switchToPolygonDrawer: function() {
         this.navigationController.deactivate();
         this.polygonDrawer.activate();
+        this.boxDrawer.deactivate();
+
     },
 
     switchToBoxDrawer: function() {
