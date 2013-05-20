@@ -73,23 +73,13 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
             searcher: config.searcher
-
         });
 
         this.geoFilter = new Portal.search.GeoSelectionPanel({
             title: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
             searcher: config.searcher
-
         });
-
-//		this.boundingBoxFilter = new Portal.search.field.BoundingBox({
-//            title: '<span class="term-selection-panel-header">' + OpenLayers.i18n('boundingBox') + '</span>',
-//            collapsed: true,
-//            collapsible: true,
-//            padding: 3,
-//            cls: 'term-selection-panel'
-//		});
 
 		config = Ext.apply({
 	        stateful: false,
@@ -109,7 +99,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 this.organisationFilter,
                 this.dateFilter,
                 this.geoFilter
-                /*,this.boundingBoxFilter*/
             ]
 		}, config);
 

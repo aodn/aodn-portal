@@ -68,7 +68,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.MiniMapPanel, {
             var outer = polygon.components[0].components;
             var segments = [];
             for (var i = 1; i < outer.length; i++) {
-                var segment = new OpenLayers.Geometry.LineString([outer[i - 1].clone(), outer  [i].clone()]);
+                var segment = new OpenLayers.Geometry.LineString([outer[i - 1].clone(), outer[i].clone()]);
                 segments.push(segment);
             }
             for (var j = 0; j < segments.length; j++) {
@@ -108,14 +108,12 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.MiniMapPanel, {
         this.navigationController.activate();
         this.polygonDrawer.deactivate();
         this.boxDrawer.deactivate();
-
     },
 
     switchToPolygonDrawer: function() {
         this.navigationController.deactivate();
         this.polygonDrawer.activate();
         this.boxDrawer.deactivate();
-
     },
 
     switchToBoxDrawer: function() {
@@ -126,4 +124,4 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.MiniMapPanel, {
 });
 
 Ext.reg('portal.search.facetmappanel', Portal.search.FacetMapPanel);
-    
+
