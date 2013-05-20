@@ -45,20 +45,21 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
                     },
                     scope:this
                 }}}),
-            new Ext.form.Radio({name:"mapSelectionRadio", fieldLabel:"Custom",
-                listeners:{check:{
-                    fn:function(radio,checked) {
-                        if(checked) {
-                            this.facetMap.switchToPolygonDrawer();
-                        }
-                    },
-                    scope:this
-                }}}),
+
             new Ext.form.Radio({name:"mapSelectionRadio", fieldLabel:"Box",
                 listeners:{check:{
                     fn:function(radio,checked) {
                         if(checked) {
                             this.facetMap.switchToBoxDrawer();
+                        }
+                    },
+                    scope:this
+                }}}),
+            new Ext.form.Radio({name:"mapSelectionRadio", fieldLabel:"Custom",
+                listeners:{check:{
+                    fn:function(radio,checked) {
+                        if(checked) {
+                            this.facetMap.switchToPolygonDrawer();
                         }
                     },
                     scope:this
