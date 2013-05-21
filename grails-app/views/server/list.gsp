@@ -24,6 +24,15 @@
         </div>
         <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+
+            <div>
+                <div style="font-family: monospace;">
+                    <strong>Scanners configured:</strong><br>
+                    WMS Scanner: <g:link url="${wmsScannerUrl}" target="_blank">${wmsScannerUrl}</g:link><br>
+                    WFS Scanner: <g:link url="${wfsScannerUrl}" target="_blank">${wfsScannerUrl}</g:link>
+                </div>
+            </div>
+
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>

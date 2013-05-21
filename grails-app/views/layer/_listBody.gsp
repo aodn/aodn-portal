@@ -32,7 +32,7 @@
 
             <g:sortableColumn property="cache" title="${message(code: 'layer.cache.label', default: 'Cache')}" params="${filters}" />
 
-            <g:sortableColumn property="filters" title="${message(code: 'layer.filters.label', default: 'Filters')}" params="${filters}" />
+            <th>Filters</th>
         </tr>
         </thead>
         <tbody>

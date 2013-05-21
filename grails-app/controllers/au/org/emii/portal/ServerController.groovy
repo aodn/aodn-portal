@@ -32,7 +32,13 @@ class ServerController {
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
-        [serverInstanceList: Server.list(params), serverInstanceTotal: Server.count(), jobProperties: scannerStatus]
+		[
+			serverInstanceList: Server.list(params),
+			serverInstanceTotal: Server.count(),
+			jobProperties: scannerStatus,
+			wmsScannerUrl: wmsScannerService.scannerBaseUrl,
+			wfsScannerUrl: wfsScannerService.scannerBaseUrl
+		]
 	}
 
     def listAllowDiscoveriesAsJson = {
