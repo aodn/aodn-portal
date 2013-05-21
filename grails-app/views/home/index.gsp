@@ -305,12 +305,5 @@ ${buildInfo}
 <body>
 
 <g:render template="/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
-
-<%-- Display message from Grails app --%>
-<g:if test="${flash.message}">
-    <script type="text/javascript">
-        Ext.Msg.alert("Message", "${flash.message.encodeAsHTML()}");
-    </script>
-</g:if>
 </body>
 </html>

@@ -26,10 +26,10 @@
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
 
             <div>
-                <div style="font-family: monospace;">
-                    <strong>Scanners configured:</strong><br>
-                    WMS Scanner: <g:link url="${wmsScannerUrl}" target="_blank">${wmsScannerUrl}</g:link><br>
-                    WFS Scanner: <g:link url="${wfsScannerUrl}" target="_blank">${wfsScannerUrl}</g:link>
+                <div>
+                    <b>Scanners configured</b><br>
+                    WMS Scanner (layers): <span style="font-family: monospace;"><g:link url="${wmsScannerUrl}" target="_blank">${wmsScannerUrl}</g:link></span><br>
+                    WFS Scanner (features): <span style="font-family: monospace;"><g:link url="${wfsScannerUrl}" target="_blank">${wfsScannerUrl}</g:link></span>
                 </div>
             </div>
 
