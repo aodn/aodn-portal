@@ -13,6 +13,15 @@
 <meta http-equiv="content-script-type" content="text/javascript"/>
 <meta http-equiv="X-UA-Compatible" content="IE=8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+
+    <!--[if lt IE 8]>
+ <script type="text/javascript">
+    alert("Sorry. The Portal requires IE8 or better! Although the site may appear to work, the functionality is not guaranteed or supported in your web browser. Please update!");
+ </script>
+   <![endif]-->
+
+
 ${buildInfo}
 
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir: 'css', file: 'mapprint.css')}" /-->
@@ -133,9 +142,12 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SaveSearchLink.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/MiniMapPanel.js')}"
-        type="text/javascript"></script>
+
 <script src="${resource(dir: 'js', file: 'portal/search/SavedSearchComboBox.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SaveSearchDialog.js')}"
         type="text/javascript"></script>
@@ -158,6 +170,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"
         type="text/javascript"></script>

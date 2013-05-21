@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -88,6 +87,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     precision: 'Precision',
     exactMatchesDesc: 'Must Match Search Terms Exactly',
     searchButton: 'Search',
+    clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
     saveSearchButtonText: 'Save',
     saveSearchButtonTip: 'Save the current search',
@@ -167,6 +167,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisationFilter: 'Organisation',
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date',
+    geoFilter: "Geographic Boundry",
     // facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search. We welcome feedback about this feature via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a>.', // Change this to be the empty string to have no message displayed
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',

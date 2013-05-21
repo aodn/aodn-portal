@@ -6,14 +6,14 @@
  *
  */
 
-describe("Portal.search.MiniMapPanel", function() {
+describe("Portal.search.CloneMapPanel", function() {
   
   var testWindow;
-  var miniMapPanel;
+  var cloneMapPanel;
   
   beforeEach(function() {
     testWindow = new Ext.Window();
-    miniMapPanel = new Portal.search.MiniMapPanel({initialBbox: '130,-60,160,-20'});
+    cloneMapPanel = new Portal.search.CloneMapPanel({initialBbox: '130,-60,160,-20'});
   });
   
   afterEach(function() {
@@ -30,20 +30,20 @@ describe("Portal.search.MiniMapPanel", function() {
        {tileSize: new OpenLayers.Size(256,256), buffer: 1 }
     );
     
-    miniMapPanel.map.addLayer(layer);
+    cloneMapPanel.map.addLayer(layer);
     
-    testWindow.add(miniMapPanel);
+    testWindow.add(cloneMapPanel);
     testWindow.show();
 
-    var oldBounds = miniMapPanel.map.getExtent();
+    var oldBounds = cloneMapPanel.map.getExtent();
     
-    spyOn(miniMapPanel, 'fireEvent');
+    spyOn(cloneMapPanel, 'fireEvent');
     
-    miniMapPanel.setBounds({northBL: -22, westBL: -55, eastBL: -20, southBL: -25});
+    cloneMapPanel.setBounds({northBL: -22, westBL: -55, eastBL: -20, southBL: -25});
     
-    var newBounds = miniMapPanel.map.getExtent();
+    var newBounds = cloneMapPanel.map.getExtent();
     
-    expect(miniMapPanel.fireEvent).not.toHaveBeenCalledWith('extentchange');
+    expect(cloneMapPanel.fireEvent).not.toHaveBeenCalledWith('extentchange');
     expect(newBounds.top).not.toEqual(oldBounds.top);
     expect(newBounds.left).not.toEqual(oldBounds.left);
     expect(newBounds.right).not.toEqual(oldBounds.right);

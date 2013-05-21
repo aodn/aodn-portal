@@ -398,6 +398,8 @@
 						<include>portal/search/field/CheckBox.js</include>
 						<include>portal/search/field/ValueCheckBox.js</include>
 						<include>portal/search/field/MapLayersCheckBox.js</include>
+                        <include>portal/common/MapPanel.js</include>
+                        <include>portal/search/CloneMapPanel.js</include><!-- needs to load before FacetMapPanel-->
 						<include>portal/**/*.js</include>
 					</sourceIncludes>
 					<sourceExcludes>
