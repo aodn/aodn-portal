@@ -1015,3 +1015,9 @@ a.styledButton:hover {
 
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError { display: none; }
+
+.WAMiniLogo {
+
+    vertical-align:middle;
+    margin-bottom: 6px;
+}

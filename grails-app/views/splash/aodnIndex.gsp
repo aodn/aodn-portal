@@ -26,18 +26,21 @@
 	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(2);return false;" href="">Search</a></div>
 	</div>
 
-	<div class="clear spacer"></div>
+    <div class="clear spacer"></div>
+    <div class="">
+        <h3>Want to see data in your region?</h3>
+        <p><img src="images/WAODN_logoPortal2Small.png" class="WAMiniLogo" alt="Western Australian AODN logo" /> <a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
+        <hr>
+    </div>
 
-	<div class="spacer floatLeft homePanelWidget"  style="width:230px">
-	  <a title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" />
-
-	  <font class="imageLabel">${oceanCurrent.speil}</font></a>
+	<div class="minispacer floatLeft homePanelWidget"  style="width:230px">
+	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" /> ${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
-
-	<div class="spacer floatLeft homePanelWidget"  style="width:250px">
+	<div class="minispacer floatLeft homePanelWidget"  style="width:250px">
 	The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas,
 	go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
+
 
 	<div class="spacer"></div>
 	<h4>Also please see our forum:</h4>
@@ -50,10 +53,7 @@
 	</ul>
 	</div>
 
-	<div class="clear spacer">
-	  <h3>Want to see data in your region?</h3>
-      <p><a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
-    </div>
+
     <div class="clear spacer"></div>
         <div >There is a technical summary for those interested in the <a class="external" href="${ grailsApplication.config.help.url }?q=node/99" title="technical summary" target="_blank">information infrastructure</a> behind this portal.
     </div>
