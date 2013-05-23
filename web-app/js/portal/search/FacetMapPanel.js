@@ -47,6 +47,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
     //Following three methods taken from a stackexchange thread at http://gis.stackexchange.com/questions/23755/determine-if-a-polygon-intersects-itself-in-openlayers
     checkSelfIntersection:function (polygon) {
+
         if (polygon.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
             //checking only outer ring
             var outer = polygon.components[0].components;
@@ -83,8 +84,9 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         return false;
     },
 
-    getCurrentGeometry:function () {
-        if(this.polygonVector.features.length > 0) {
+    getCurrentFeature: function () {
+
+        if (this.polygonVector.features.length > 0) {
             return this.polygonVector.features[0];
         }
         else {
@@ -92,8 +94,35 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         }
     },
 
+    getCurrentGeometry: function() {
+
+        if (!this.getCurrentFeature()) {
+            return false;
+        }
+
+        return this.getCurrentFeature().geometry;
+    },
+
+    hasCurrentFeature: function() {
+        return this.getCurrentFeature();
+    },
+
+    hasCurrentGeometry: function() {
+        return this.getCurrentGeometry();
+    },
+
     clearGeometry: function() {
         this.polygonVector.destroyFeatures();
+    },
+
+    getBoundingPolygonAsWKT: function() {
+
+        if (!this.getCurrentFeature()) {
+            return false;
+        }
+
+        var wktFormatter = new OpenLayers.Format.WKT();
+        return wktFormatter.write(this.getCurrentFeature());
     },
 
     switchToNavigation: function() {

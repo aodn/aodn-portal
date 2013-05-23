@@ -90,7 +90,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         Portal.search.GeoSelectionPanel.superclass.constructor.call(this, config);
 
         this.mon(this.searchButton, 'click', this.onSearch, this);
-        this.mon(this.clearButton, 'click', function() {this.facetMap.clearGeometry()}, this);
+        this.mon(this.clearButton, 'click', this.removeAnyFilters, this);
     },
 
     initComponent:function () {
@@ -99,6 +99,11 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
     onSearch:function () {
 
+        if (this.facetMap.hasCurrentFeature()) {
+
+            this.searcher.addFilter('boundingPolygon', this.facetMap.getBoundingPolygonAsWKT());
+            this.searcher.search();
+        }
     },
 
     removeAnyFilters: function() {
