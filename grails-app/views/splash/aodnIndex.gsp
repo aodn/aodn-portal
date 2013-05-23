@@ -30,10 +30,11 @@
     <div class="">
         <h3>Want to see data in your region?</h3>
         <p><img src="images/WAODN_logoPortal2Small.png" class="WAMiniLogo" alt="Western Australian AODN logo" /> <a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
-        <hr>
     </div>
 
+    <h2>Latest Ocean Currents and Temperature Graphs</h2>
 	<div class="minispacer floatLeft homePanelWidget"  style="width:230px">
+
 	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" /> ${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
@@ -43,7 +44,7 @@
 
 
 	<div class="spacer"></div>
-	<h4>Also please see our forum:</h4>
+	<h3>Also please see our forum:</h3>
 	<ul>
         <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/7" title="Frequently Asked Questions" target="_blank">Frequently Asked Questions</a></li>
         <li><a class="external" href="${ grailsApplication.config.help.url }?q=forum/11" title="forum" target="_blank">Newest Portal Features</a></li>
