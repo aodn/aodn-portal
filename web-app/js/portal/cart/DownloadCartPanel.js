@@ -5,12 +5,9 @@
  *
  */
 
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
-
-
 
     constructor: function(cfg) {
 
@@ -19,36 +16,34 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
 
         this.doUndoButton = new Ext.Button({
             tooltip: OpenLayers.i18n('downloadCartUndo'),
-            cls : 'floatRight',
+            cls: 'floatRight styledButton',
             hidden: true,
-            html: '<a  class=\"styledButton\" href="#">' + OpenLayers.i18n('downloadCartUndo') + '<\/a>',
+            text: OpenLayers.i18n('downloadCartUndo'),
             listeners: {
-
                 scope: this,
-                'click': function(button,event) {
+                'click': function() {
                     this.doUndo();
                     return false;
                 },
                 'render': function() {
                     if (this.lastCartRemovedUuid.length > 0){
                         this.doUndoButton.enable();
-                    };
+                    }
                 }
             }
         });
-        this.doDownloadButton = new Ext.Button({
-            tooltip: OpenLayers.i18n('okdownload') ,
-            cls : 'floatRight',
-            html: '<a  class="styledButton" href="#" onclick="javascript:doDownload();">' + OpenLayers.i18n('okdownload') + '</a>'
+
+        this.doDownloadLink = new Ext.Panel({
+            tooltip: OpenLayers.i18n('okdownload'),
+            cls: 'floatRight',
+            html: '<a class="styledButton" href="#" onclick="javascript:doDownload();">' + OpenLayers.i18n('okdownload') + '</a>'
         });
-        this.doClearCartButton = new Ext.Button({
+
+        this.doClearCartLink = new Ext.Panel({
             tooltip: OpenLayers.i18n('clearcart'),
-            cls : 'floatRight',
-            html: '<a  class="styledButton" href="#" onclick="javascript:clearDownloadCart();">' + OpenLayers.i18n('clearcart') + '</a>'
+            cls: 'floatRight',
+            html: '<a class="styledButton" href="#" onclick="javascript:clearDownloadCart();">' + OpenLayers.i18n('clearcart') + '</a>'
         });
-
-
-
 
         var footer = new Ext.Panel( {
             region: 'south',
@@ -57,10 +52,9 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
             unstyled: true,
             items: [
                 this.doUndoButton,
-                this.doClearCartButton,
-                this.doDownloadButton
+                this.doClearCartLink,
+                this.doDownloadLink
             ]
-
         });
 
         var config = Ext.apply({
@@ -87,11 +81,8 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
                     ]
                 },
                 footer
-
             ]
-
         }, cfg);
-
 
         Portal.cart.DownloadCartPanel.superclass.constructor.call(this, config);
 
@@ -100,19 +91,19 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
             this.doUndoButton.enable().show();
         }, this);
 
-        Ext.MsgBus.subscribe("downloadCart.cartCleared", function (name) {
+        Ext.MsgBus.subscribe("downloadCart.cartCleared", function () {
             this.lastCartRemovedUuid = [];
             this.doUndoButton.disable();
         }, this);
 
         Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function (name, count) {
             if(count === "0") {
-                this.doClearCartButton.disable();
-                this.doDownloadButton.disable();
+                this.doClearCartLink.disable();
+                this.doDownloadLink.disable();
             }
             else {
-                this.doDownloadButton.enable();
-                this.doClearCartButton.enable();
+                this.doDownloadLink.enable();
+                this.doClearCartLink.enable();
             }
         }, this);
     },
@@ -123,9 +114,7 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
         setDownloadCartRecordDisableFlag(this.lastCartRemovedUuid.pop(),false);
         if (this.lastCartRemovedUuid.length == 0){
             this.doUndoButton.disable();
-        };
-
-
+        }
     }
 });
 

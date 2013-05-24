@@ -27,11 +27,9 @@ function addToDownloadCart( tuples ) {
             if(tuple.link.preferredFname != null){
             	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol, preferredFname: link.preferredFname } );
             }
-
             else{
             	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
             }
-
         }
     );
 
@@ -81,6 +79,7 @@ function getDownloadCartCount() {
 }
 
 function doDownload(){
+
     Ext.Ajax.request({
         url: 'downloadCart/getSize',
         success: function(resp){
@@ -89,11 +88,10 @@ function doDownload(){
             }
         },
         failure: function(){
-            alert("There is a problem with the download cart and please try again later.  Please refer to our Help section for further assistance.");
+            alert("Download cart is empty.");
         }
     });
 }
-
 
 function clearDownloadCart() {
 
@@ -103,7 +101,6 @@ function clearDownloadCart() {
         failure: _handleFailureAndShow
     });
 }
-
 
 // Internal methods
 function _handleSuccessfulCartClear( resp) {
@@ -182,9 +179,9 @@ function showCartTabPanel() {
 }
 
 function _flashUI() {
-    
+
     var cartEl = Ext.get('downloadCartStatus');
-    
+
     // Animate UI
     cartEl.animate(
         // animation control object
@@ -202,12 +199,12 @@ function _flashUI() {
 var _downloadCartOriginalColor;
 
 function _getDownloadCartUIOriginalColor() {
-    
+
     if ( _downloadCartOriginalColor == undefined ) {
-        
+
         _downloadCartOriginalColor = Ext.get('downloadCartStatus').getStyles('backgroundColor').backgroundColor;
     }
-    
+
     return _downloadCartOriginalColor;
 }
 

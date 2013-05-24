@@ -17,12 +17,13 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
         this.downloadItemsStore.load();
 
         var template = new Ext.XTemplate(
-            '<tpl  for=".">',
-            '<tpl if="values.disable == false" >',
+            '<tpl for=".">',
+            '<tpl if="values.disable == false">',
             '<div class="cart-row">',
             '<div class="cart-title-row">',
-            '<div  class="floatRight"><a href="#" onclick="Javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\')"return false;>Remove</a></div>',
-            '<span class="cart-title">{title}</span></div>',
+            '<div class="floatRight"><a href="#" onclick="javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\'); return false;">Remove</a></div>',
+            '<span class="cart-title">{title}</span>',
+            '</div>',
             '<div class="cart-files" >{[ this.getFiles(values) ]}</div>',
             '</div>',
             '</tpl>',
