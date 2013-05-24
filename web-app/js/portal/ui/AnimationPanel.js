@@ -137,16 +137,10 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
             else if (!this.animationControlsPanel.isAnimating()) {
                 // there is no animation running so it can be hidden if not applicable
                 if (openLayer) {
-                    if (openLayer.isAnimatable()) {
-                        this.setVisible(true);
-                    }
-                    else {
-                        this.setVisible(false);
-                    }
+                    this.setVisible(openLayer.isAnimatable());
                 }
             }
         }
-
     },
     
     setMap: function(map) {
