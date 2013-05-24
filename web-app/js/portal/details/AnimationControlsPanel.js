@@ -509,6 +509,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
+    /**
+     * This function advances the current "frame"/"slice" for the layer, looping back to the beginning
+     * when necessary.
+     */
 	_cycleAnimation : function(forced) {
 		if (this.originalLayer.getVisibility() && this.originalLayer.map !=null) {
 			if (this.counter < this.animatedLayers.length - 1) {
@@ -616,7 +620,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			var startIndex;
 			var endIndex;
 			var dimSplit = this.getSelectedLayerTimeDimension().extent
-					.split(",");
+				.split(",");
 
 			for (var i = 0; !(startIndex && endIndex) && i < dimSplit.length; i++) {
 				var date = this._parseIso8601Date(dimSplit[i]);
