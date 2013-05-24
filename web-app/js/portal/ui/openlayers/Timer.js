@@ -10,9 +10,21 @@ OpenLayers.Timer = OpenLayers.Class({
 
     // TODO: add doco that the last time tick will include this value.
     endDateTime: null,
+
+    /**
+     * The number of ticks.  The ticks will be spaced evenly across the full range of time.
+     */
     numTicks: 10,
 
+    /**
+     * The interval between 'ticks'.
+     */
+    tickInterval: null,
+
     currTickIndex: 0,
+
+    observers: [],
+    intervalRef: null,
     
     initialize: function(options) {
 
@@ -22,6 +34,9 @@ OpenLayers.Timer = OpenLayers.Class({
         if (options.numTicks) {
             this.numTicks = options.numTicks;
         }
+
+        this.tickInterval = moment.duration(options.tickInterval ? options.tickInterval : 500);
+        this.observers = [];
     },
 
     getDuration: function() {
@@ -38,15 +53,48 @@ OpenLayers.Timer = OpenLayers.Class({
 
     tickForward: function() {
         this.currTickIndex = (this.currTickIndex + 1) % this.numTicks;
+        this.onTick(this.currTickIndex);
     },
 
     tickBackward: function() {
         this.currTickIndex = (this.numTicks + this.currTickIndex - 1) % this.numTicks;
+        this.onTick(this.currTickIndex);
     },
 
     getTickDateTime: function(tickIndex) {
         var tickDateTime = moment(this.startDateTime);
         return tickDateTime.add(tickIndex * this.getTickInterval());
+    },
+
+    on: function(eventName, observer) {
+        this.observers[eventName] = observer;
+    },
+
+    onTick: function(tickIndex) {
+        if (this.observers['tick']) {
+            this.observers['tick']({
+                index: tickIndex,
+                dateTime: this.getTickDateTime(tickIndex)
+            });
+        }
+    },
+
+    start: function() {
+
+        // Send one straight away.
+        this.onTick(this.currTickIndex);
+
+        var self = this;
+
+        this.intervalRef = window.setInterval(function() {
+            self.tickForward();
+        }, this.tickInterval.asMilliseconds());
+    },
+
+    stop: function() {
+        if (this.intervalRef) {
+            clearInterval(this.intervalRef);
+        }
     },
     
     CLASS_NAME: "OpenLayers.Timer"
