@@ -21,12 +21,12 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       templates: {
          cell: new Ext.Template(
             '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable{css}" style="{style}" tabIndex="0" {cellAttr}>',
-            '<div  class="x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
+            '<div class="x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
             '</td>'
          )
       }
    },
-   
+
    initComponent: function() {
      var config = {
         colModel: new Ext.grid.ColumnModel({
@@ -35,7 +35,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
            },
            columns: [
                {
-                  header: OpenLayers.i18n('logoHeading'), 
+                  header: OpenLayers.i18n('logoHeading'),
                   width: 50,
                   xtype: 'templatecolumn',
                   tpl: '<img class="p-logo" src="'+Portal.app.config.catalogUrl+'/images/logos/{source}.gif"/>',
@@ -118,19 +118,19 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             ]
         })
      };
- 
+
      Ext.apply(this, Ext.apply(this.initialConfig, config));
-     
+
      this.downloadProtocols = this._parseProtocols(Portal.app.config.downloadCartDownloadableProtocols);
- 
+
      Portal.search.ResultsGrid.superclass.initComponent.apply(this, arguments);
-     
-     // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below 
+
+     // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below
      this.getBottomToolbar().store = this.store;
-     
+
      this.addEvents('rowenter', 'rowleave');
   },
-  
+
   afterRender: function(){
     Portal.search.ResultsGrid.superclass.afterRender.call(this);
 
@@ -151,14 +151,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       this.loadMaskShowing = true;
     }
   },
-  
+
   hideMask: function(){
     if (this.rendered) {
       this.loadMask.hide();
       this.loadMaskShowing = false;
     }
   },
-  
+
   // trigger mouseenter event on row when applicable
   onMouseOver : function(e, target) {
     var row = this.getView().findRow(target);
@@ -180,14 +180,14 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       }
     }
   },
-  
+
   onViewMetadata: function(grid, rowIndex, colIndex) {
     var rec = this.store.getAt(rowIndex);
     var viewMetadataUrl = Portal.app.config.catalogUrl + '/srv/en/metadata.show\?uuid\='+rec.get('uuid');
 
     Portal.common.BrowserWindow.open(viewMetadataUrl);
   },
-  
+
   getMapAddClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) == 1) {
 		  return 'p-result-map-add';
@@ -210,7 +210,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       return 'p-result-disabled';
     }
   },
- 
+
   getShowLinkTooltip: function(v, metadata, rec, rowIndex, colIndex, store) {
     var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLinkProtocols);
     if (!linkRec) return '';
@@ -224,7 +224,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       return 'p-result-disabled';
     }
   },
- 
+
   getLayerSelectClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  if (this.getProtocolCount(rec.get('links'), Portal.app.config.metadataLayerProtocols) > 1) {
       return 'p-result-map-add';
@@ -236,7 +236,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
   getAddToDownloadClass: function(v, metadata, rec, rowIndex, colIndex, store) {
 	  var result = new Portal.search.data.CatalogResult({record: rec});
 	  var downloads = result.getDownloadLinks(this.downloadProtocols);
-      
+
       if (downloads.length > 0) {
               return 'p-result-cart-add';
       } else {
@@ -248,7 +248,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     var rec = this.store.getAt(rowIndex);
     var links = rec.get('links');
     var linkStore = new Portal.search.data.LinkStore({
-      data: {links: links} 
+      data: {links: links}
     });
     linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
@@ -256,11 +256,11 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       this.layerSelectionWindow = this.buildLayerSelectionWindow(linkStore);
     } else {
       this.layerSelectionWindow.bindStore(linkStore);
-    };
+    }
 
     this.layerSelectionWindow.show();
   },
-	  
+
   buildLayerSelectionWindow: function(linkStore) {
     return new Portal.search.LayerSelectionWindow({
       store: linkStore,
@@ -276,17 +276,17 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       }
     });
   },
-  
+
   showLink: function(grid, rowIndex, colIndex) {
     var linkRec = this.getLinkRec(rowIndex, Portal.app.config.metadataLinkProtocols);
     Portal.common.BrowserWindow.open(linkRec.get('url'));
   },
-    
+
   selectLink: function(grid, rowIndex, colIndex) {
     var rec = this.store.getAt(rowIndex);
     var links = rec.get('links');
     var linkStore = new Portal.search.data.LinkStore({
-      data: {links: links} 
+      data: {links: links}
     });
 
     linkStore.filterByProtocols(Portal.app.config.metadataLinkProtocols);
@@ -295,11 +295,11 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       this.linkSelectionWindow = this.buildLinkSelectionWindow(linkStore);
     } else {
       this.linkSelectionWindow.bindStore(linkStore);
-    };
+    }
 
     this.linkSelectionWindow.show();
   },
-    
+
   buildLinkSelectionWindow: function(linkStore) {
     return new Portal.search.LinkSelectionWindow({
       store: linkStore,
@@ -312,11 +312,11 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       }
     });
   },
-  
+
   addToMapExecute: function(grid, rowIndex, colIndex) {
       Ext.MsgBus.publish('addLayerUsingLayerLink', this.getLayerLink(rowIndex));
   },
-  
+
   getProtocolCount: function(links, values) {
     var protocols = Ext.isString(values)?values.split('\n'):values;
     var count = 0;
@@ -325,33 +325,33 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
       for (var j=0; j<protocols.length; j++) {
         if (links[i].protocol==protocols[j].trim()) {
           count++;
-        };
-      };
-    };
+        }
+      }
+    }
 
     return count;
   },
-    
+
   containsProtocol: function(protocolArray, protocolName) {
-	 
+
          if ( protocolName == undefined ) return false;
-         
+
          for (var i=0; i < protocolArray.length; i++) {
 
             if (protocolArray[i].trim() == protocolName.trim()) {
                 return true;
             }
 	 }
-	 
+
 	 return false;
   },
-  
+
   addLinkDataToCart: function(recs) {
       var tuplesToAdd = new Array();
 
       Ext.each(recs, function(rec) {
     	  var result = new Portal.search.data.CatalogResult({record: rec});
-    	  
+
     	  var recTuples = result.getDownloadLinks(this.downloadProtocols);
 
     	  Ext.each(recTuples, function(tuple) {
@@ -361,25 +361,25 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
       addToDownloadCart( tuplesToAdd );
   },
-  
+
   getLayerLink: function(rowIndex) {
      var rec = this.store.getAt(rowIndex);
      var links = rec.get('links');
      var linkStore = new Portal.search.data.LinkStore({
-    	data: {links: links} 
+    	data: {links: links}
      });
      linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
-	  
+
      return linkStore.getLayerLink(0);
   },
-  
+
  addToCartExecute: function(grid, rowIndex, colIndex) {
-    
+
      var rec = grid.store.getAt( rowIndex );
 
      this.addLinkDataToCart( [rec] );
   },
-  
+
   addAllToCartExecute: function() { // button, event
 
       var recordsToAdd = new Array();
@@ -394,25 +394,25 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
       this.addLinkDataToCart( recordsToAdd );
   },
-    
+
   getLinkRec: function(rowIndex, protocols) {
     var rec = this.store.getAt(rowIndex);
     var links = rec.get('links');
     var linkStore = new Portal.search.data.LinkStore({
-      data: {links: links} 
+      data: {links: links}
     });
 
     linkStore.filterByProtocols(protocols);
     return linkStore.getAt(0);
   },
-  
+
 	_parseProtocols: function(protocols) {
 		var result = [];
-		
+
 		Ext.each(protocols.split("\n"), function(protocol) {
 			result.push(protocol.trim())
 		});
-		
+
 		return result;
 	}
 });
