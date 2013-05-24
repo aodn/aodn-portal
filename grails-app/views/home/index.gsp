@@ -237,6 +237,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/Timer.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/AnimationPanel.js')}"
