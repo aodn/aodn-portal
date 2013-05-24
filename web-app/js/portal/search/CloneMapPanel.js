@@ -13,7 +13,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function(cfg) {
         this.initMap(cfg.mapConfig);
-        this.bboxInitialised = false;
 
         var config = Ext.apply({
             height: 400,
@@ -59,7 +58,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     mainMapLayerAdded: function(e) {
 
-
         var miniMapClone = e.layer.clone();
 
         // delete attibutes that cause problems in minimap
@@ -76,12 +74,17 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerRemoved: function(e) {
-        var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0];
 
-        this.map.removeLayer(miniMapClone);
+        if (this.map['sourceLayer']) {
+
+            var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0]; // Should only be one match
+
+            this.map.removeLayer(miniMapClone);
+        }
     },
 
     mainMapLayerChanged: function(e) {
+
         var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0];
 
         // When adding baselayers some property change events come before the addlayer event
@@ -121,7 +124,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
             var miniMapClone = this.map.getLayersBy('sourceLayer', mainLayer)[0];
             // main map layers come after mini map layers (i.e. bbox is displayed on top of main map layers)
             this.map.setLayerIndex(miniMapClone, nonMainMapLayerCount + mainMapLayerIndex);
-
         }
     },
 
@@ -174,4 +176,4 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
 });
 
 Ext.reg('portal.search.clonemappanel', Portal.search.CloneMapPanel);
-    
+
