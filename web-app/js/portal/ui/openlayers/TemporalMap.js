@@ -15,6 +15,17 @@ OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
     },
 
     stop: function() {
+    },
+    
+    toTime: function(dateTime) {
+
+        for (var i = 0, len = this.layers.length; i < len; i++) {
+            var layer = this.layers[i];
+
+            if (layer.toTime) {
+                layer.toTime(dateTime);
+            }
+        }
     }
 });
 

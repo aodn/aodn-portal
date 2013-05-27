@@ -267,7 +267,7 @@ describe("OpenLayers.Timer", function() {
             var tickIntervalMs = timer.tickInterval.asMilliseconds();
             var numTicksSoFar = 0;
             var referenceDateTime = moment().subtract(tickIntervalMs);
-            var tolerance = 0.1;
+            var tolerance = 1;
             
             timer.on('tick', function(tick) {
 

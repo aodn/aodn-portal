@@ -24,8 +24,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
 
-        console.log("toOpenLayer");
-
         var openLayer;
         if (this.dimensions != undefined) {
             openLayer = new OpenLayers.Layer.NcWMS(

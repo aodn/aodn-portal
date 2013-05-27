@@ -1,0 +1,30 @@
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+describe("OpenLayers.TemporalMap", function() {
+
+    var map;
+    
+    beforeEach(function() {
+        map = new OpenLayers.TemporalMap();
+    });
+    
+    it("toTime called on layers ncWMS layers but not others", function() {
+        var ncWmsLayer = new OpenLayers.Layer.NcWMS();
+        var nonNcWmsLayer = new OpenLayers.Layer.WMS();
+
+        map.addLayers([ncWmsLayer, nonNcWmsLayer]);
+        
+        var theDateTime = moment('2013-05-27T12:45:56');
+        
+        spyOn(ncWmsLayer, 'toTime');
+        
+        map.toTime(theDateTime);
+       
+        expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime) 
+        
+    });
+});
