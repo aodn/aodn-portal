@@ -43,10 +43,9 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                     unstyled: true
                 },
                 this.layerChooserPanel
-
         ];
     },
-    
+
     initComponent: function() {
         Portal.ui.Viewport.superclass.initComponent.call(this);
 
@@ -58,13 +57,13 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function () {
             this.doLayout(false, true);
         }, this);
-        this.setActiveTab(0);
+        this.setActiveTab(HomeTab);
     },
 
     setActiveTab: function(tabIndex) {
         this.mainTabPanel.setActiveTab(tabIndex);
 
-        if (appConfigStore.isFacetedSearchEnabled() && (tabIndex == 2)) {
+        if (appConfigStore.isFacetedSearchEnabled() && (tabIndex == SearchTab)) {
             this.layerChooserPanel.hide();
         }
         else {

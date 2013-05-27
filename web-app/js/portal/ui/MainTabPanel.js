@@ -7,6 +7,12 @@
 
 Ext.namespace('Portal.ui');
 
+// Tab indexes (global)
+HomeTab = 0;
+MapTab = 1;
+SearchTab = 2;
+DownloadCartTab = 3;
+
 Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor:function (cfg) {
@@ -19,7 +25,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         var config = Ext.apply({
             xtype:'tabpanel', // TabPanel itself has no title
             autoDestroy:false, // wont destroy tab contents when switching
-            activeTab:0,
+            activeTab:HomeTab,
             margins: {
                 left: 5,
                 right: 5
@@ -43,7 +49,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
             this.portalPanel.fireEvent('tabchange');
         }, this);
         Ext.MsgBus.subscribe('openDownloadCartPanelItem', function() {
-            this.setActiveTab(3);
+            this.setActiveTab(DownloadCartTab);
         }, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
@@ -79,7 +85,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     },
 
     showPortalPanel:function () {
-        this.setActiveTab(1);
+        this.setActiveTab(MapTab);
     },
 
     setActiveTab:function (item) {
