@@ -22,7 +22,7 @@
        <a href="http://www.soos.aq/index.php/science/themes" target="_blank" class="external wrap" >'theme-specific'</a> data networks. The 'points of truth' for all such data are listed in the metadata for each discovered dataset.</p>
 
    <h3>The portal provides two ways of discovering data:</h3>
-        <p>Either through our <a onclick="setViewPortTab(1);return false;" href="">map</a> interface or by searching our <a onclick="setViewPortTab(2);return false;" href="">metadata catalogue</a>.
+        <p>Either through our <a onclick="setViewPortTab(MapTab); return false;" href="">map</a> interface or by searching our <a onclick="setViewPortTab(SearchTab); return false;" href="">metadata catalogue</a>.
         </p>
 
 

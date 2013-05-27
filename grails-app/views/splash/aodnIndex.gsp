@@ -19,11 +19,11 @@
 
 	<h3>The portal provides two ways of discovering data:</h3>
 
-	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(1);return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(2);return false;" >metadata catalogue</a>.</div>
+	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(MapTab); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(SearchTab); return false;" >metadata catalogue</a>.</div>
 
 	<div id="viewPortHomepageLinks" class="floatLeft">
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(1);return false;" href="">Map</a></div>
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(2);return false;" href="">Search</a></div>
+	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(MapTab); return false;" href="">Map</a></div>
+	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(SearchTab); return false;" href="">Search</a></div>
 	</div>
 
     <div class="clear spacer"></div>
