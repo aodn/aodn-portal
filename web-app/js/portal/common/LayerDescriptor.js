@@ -24,12 +24,25 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
 
-        var openLayer = new OpenLayers.Layer.WMS(
-            this.title,
-            this._getServerUri(),
-            new Portal.ui.openlayers.LayerParams(this, paramOverrides),
-            new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
-        );
+        console.log("toOpenLayer");
+
+        var openLayer;
+        if (this.dimensions != undefined) {
+            openLayer = new OpenLayers.Layer.NcWMS(
+                this.title,
+                this._getServerUri(),
+                new Portal.ui.openlayers.LayerParams(this, paramOverrides),
+                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
+            );
+        }
+        else {
+            openLayer = new OpenLayers.Layer.WMS(
+                this.title,
+                this._getServerUri(),
+                new Portal.ui.openlayers.LayerParams(this, paramOverrides),
+                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
+            );
+        }
 
         this._setDomainLayerProperties(openLayer);
 
