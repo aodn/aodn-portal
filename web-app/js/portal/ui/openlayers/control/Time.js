@@ -11,15 +11,9 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
      */
     timer: null,
 
-    /**
-     * The map that this control is controlling.
-     */
-    map: null,
-
     initialize: function(options) {
 
         this.timer = new OpenLayers.Timer(options);
-        this.map = options.map;
 
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
     },
