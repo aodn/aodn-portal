@@ -24,6 +24,10 @@ OpenLayers.Timer = OpenLayers.Class({
     currTickIndex: 0,
 
     observers: [],
+
+    /**
+     * Reference to the javascript 'interval' object, which is used to generate the tick events.
+     */
     intervalRef: null,
     
     initialize: function(options) {
