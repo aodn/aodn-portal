@@ -80,4 +80,13 @@ describe("OpenLayers.Control.Time", function() {
             expect(timeControl.timer.observers['tick']).toBeFalsy();
         });
     });
+
+    describe('configure with NcWMS layer', function() {
+
+        // new layer stops if playing.
+
+        // take most recent 10
+
+        // timer extent = ten most recent.
+    });
 });
