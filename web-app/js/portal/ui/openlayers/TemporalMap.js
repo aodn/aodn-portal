@@ -11,12 +11,6 @@ OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
         OpenLayers.Map.prototype.initialize.apply(this, [div, options]);
     },
 
-    play: function() {
-    },
-
-    stop: function() {
-    },
-    
     toTime: function(dateTime) {
 
         for (var i = 0, len = this.layers.length; i < len; i++) {
