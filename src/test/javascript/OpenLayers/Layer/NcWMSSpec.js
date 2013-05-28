@@ -13,12 +13,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             return "http://someurl/page?param1=blaa";
         };
         ncwmsLayer = new OpenLayers.Layer.NcWMS();
-
-        this.addMatchers({
-            toBeSame: function(expected) {
-                return moment(this.actual).isSame(moment(expected));   // moment.js#isSame()
-            }
-        });
     });
 
     it("getURL includes 'time' parameter", function() {

@@ -8,14 +8,6 @@ describe("OpenLayers.Timer", function() {
 
     var timer;
 
-    beforeEach(function() {
-        this.addMatchers({
-            toBeSame: function(expected) {
-                return this.actual.isSame(expected);   // moment.js#isSame()
-            }
-        });
-    });
-
     describe("construction", function() {
         it("construct with strings", function() {
             timer = new OpenLayers.Timer({
