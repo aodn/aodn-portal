@@ -59,9 +59,6 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
 
         this.detailsPanelItems.hideDetailsPanelContents();
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
-        this.on("expand", function() {
-            this.update(this.selectedLayer);
-        }, this);
     },
 
     expand: function(animate) {
@@ -74,7 +71,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
     _delayedAddFirstLayer: function() {
         this.un('afterlayout', this._delayedAddFirstLayer);
         // The panel believes it is expanded so we have to trick it into thinking it's collapsed
-        this.collapsed = true;
+        this.collapse(false);
         this.update(this.selectedLayer);
     },
 
@@ -99,7 +96,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
                 this.collapse(true);
     		}
             else {
-                this.collapsed ? this.expand() : this.detailsPanelItems.updateDetailsPanel(openlayer);
+                this.detailsPanelItems.updateDetailsPanel(openlayer);
+                this.expand();
     		}
 		}
 		else {
