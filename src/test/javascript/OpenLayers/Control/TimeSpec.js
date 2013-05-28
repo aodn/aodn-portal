@@ -46,11 +46,11 @@ describe("OpenLayers.Control.Time", function() {
             timeControl = new OpenLayers.Control.Time({
                 map: map,
                 startDateTime: '2013-03-06T12:34:56',
-                endDateTime: '2013-04-07T02:12:43'
+                endDateTime: '2013-03-16T12:34:56'
             });
 
-            expect(timeControl.timer.startDateTime).toBeSame('2013-03-06T12:34:56');
-            expect(timeControl.timer.endDateTime).toBeSame('2013-04-07T02:12:43');
+            expect(timeControl.timer.getStartDateTime()).toBeSame('2013-03-06T12:34:56');
+            expect(timeControl.timer.getEndDateTime()).toBeSame('2013-03-16T12:34:56');
 
         });
     });

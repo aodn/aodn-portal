@@ -12,30 +12,30 @@ describe("OpenLayers.Timer", function() {
         it("construct with strings", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:34:56',
-                endDateTime: '2013-04-07T02:12:43'
+                endDateTime: '2013-03-16T12:34:56'
             });
-            
-            expect(timer.startDateTime).toBeSame(moment('2013-03-06T12:34:56'));
-            expect(timer.endDateTime).toBeSame(moment('2013-04-07T02:12:43'));
+
+            expect(timer.getStartDateTime()).toBeSame(moment('2013-03-06T12:34:56'));
+            expect(timer.getEndDateTime()).toBeSame(moment('2013-03-16T12:34:56'));
         });
 
         it("construct with moments", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: moment('2013-03-06T12:34:56'),
-                endDateTime: ('2013-04-07T02:12:43')
+                endDateTime: '2013-03-16T12:34:56'
             });
             
-            expect(timer.startDateTime).toBeSame(moment('2013-03-06T12:34:56'));
-            expect(timer.endDateTime).toBeSame(moment('2013-04-07T02:12:43'));
+            expect(timer.getStartDateTime()).toBeSame(moment('2013-03-06T12:34:56'));
+            expect(timer.getEndDateTime()).toBeSame(moment('2013-03-16T12:34:56'));
         });
 
         it("default ticks", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:34:56',
-                endDateTime: '2013-04-07T02:12:43'
+                endDateTime: '2013-03-16T12:34:56'
             });
 
-            expect(timer.numTicks).toBe(10);
+            expect(timer.getNumTicks()).toBe(10);
         });
 
         it("override ticks", function() {
@@ -45,7 +45,7 @@ describe("OpenLayers.Timer", function() {
                 numTicks: 12
             });
 
-            expect(timer.numTicks).toBe(12);
+            expect(timer.getNumTicks()).toBe(12);
         });
 
         it ("default tick interval", function() {
@@ -74,16 +74,6 @@ describe("OpenLayers.Timer", function() {
             });
 
             expect(timer.getDuration().hours()).toBe(2);
-        });
-
-        it("get tick interval", function() {
-            timer = new OpenLayers.Timer({
-                startDateTime: '2013-03-06T12:00:00',
-                endDateTime: '2013-03-06T13:00:00',
-                numTicks: 5
-            });
-
-            expect(timer.getTickInterval().minutes()).toBe(15);
         });
     });
 
