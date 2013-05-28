@@ -23,7 +23,7 @@ beforeEach(function() {
 
                 var equal = true;
                 for (var i = 0; i < expected.length; i++) {
-                    if (this.actual[i] != expected[i]) {
+                    if (!this.actual[i].isSame(expected[i])) {
                         equal = false;
                     }
                 }
