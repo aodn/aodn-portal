@@ -25,12 +25,14 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     toOpenLayer: function(optionOverrides, paramOverrides) {
 
         var openLayer;
-        if (this.dimensions != undefined) {
+
+        if (this._getTimeDimension()) {
             openLayer = new OpenLayers.Layer.NcWMS(
                 this.title,
                 this._getServerUri(),
                 new Portal.ui.openlayers.LayerParams(this, paramOverrides),
-                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
+                new Portal.ui.openlayers.LayerOptions(this, optionOverrides),
+                this._getTimeDimension().extent
             );
         }
         else {
@@ -45,6 +47,25 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         this._setDomainLayerProperties(openLayer);
 
         return openLayer;
+    },
+
+    _getTimeDimension: function() {
+        if (!this.dimensions) {
+            return false;
+        }
+
+        var timeDimension = false;
+
+        Ext.each(this.dimensions, function(dimension) {
+            if (dimension.name == 'time') {
+                timeDimension = dimension;
+                return false;
+            }
+
+            return true;
+        });
+
+        return timeDimension;
     },
 
     _getWmsVersionString: function(server) {

@@ -16,6 +16,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      */
     temporalExtent: null,
 
+    initialize: function(name, url, params, options, extent) {
+        this.temporalExtent = extent;
+        OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
+    },
+
     /**
      * Method: getURL
      * Return a GetMap query string for this layer
@@ -29,11 +34,15 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *          passed-in bounds and appropriate tile size specified as 
      *          parameters.
      */
-    getURL: function (bounds) {
+    getURL: function(bounds) {
         // 2011-03-18T13:00:00Z
         // 2012-10-28T08:00:00Z
+
         var url = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
-        url = url + '&TIME=' + this.time.format();
+
+        if (this.time) {
+            url = url + '&TIME=' + this.time.format();
+        }
 
         return url;
     },

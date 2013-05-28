@@ -7,7 +7,7 @@
 describe("OpenLayers.Layer.NcWMS", function() {
 
     var ncwmsLayer;
-    
+
     beforeEach(function() {
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
@@ -15,17 +15,25 @@ describe("OpenLayers.Layer.NcWMS", function() {
         ncwmsLayer = new OpenLayers.Layer.NcWMS();
     });
 
-    it("getURL includes 'time' parameter", function() {
+    describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z');
-        
-        ncwmsLayer.toTime(time);
-        expect(ncwmsLayer.getURL(new OpenLayers.Bounds({
-            left: 0,
-            right: 10,
-            top: 0,
-            bottom: 10
-        })).split('&')).toContain('TIME=' + time.format());
+        var bounds = new OpenLayers.Bounds({
+                left: 0,
+                right: 10,
+                top: 0,
+                bottom: 10
+        });
+
+        it('time specified', function() {
+            ncwmsLayer.toTime(time);
+            expect(ncwmsLayer.getURL(bounds).split('&')).toContain('TIME=' + time.format());
+        });
+
+        it('no time specified', function() {
+            ncwmsLayer.toTime(null);
+            expect(ncwmsLayer.getURL(bounds).split('&')).not.toContain('TIME=' + time.format());
+        });
     });
 
     it("extent as array of moments", function() {
