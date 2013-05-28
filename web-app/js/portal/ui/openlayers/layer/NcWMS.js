@@ -18,6 +18,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     initialize: function(name, url, params, options, extent) {
         this.temporalExtent = extent;
+        // TODO: why doesn't this work?
+        //this.setTemporalExtent(extent);
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
 

@@ -83,10 +83,36 @@ describe("OpenLayers.Control.Time", function() {
 
     describe('configure with NcWMS layer', function() {
 
-        // new layer stops if playing.
+        var extent = [
+            '2001-01-01T00:00',
+            '2001-01-02T00:00',
+            '2001-01-03T00:00',
+            '2001-01-04T00:00',
+            '2001-01-05T00:00',
+        ];
+        
+        var ncwmsLayer = new OpenLayers.Layer.NcWMS();
+        ncwmsLayer.setTemporalExtent(extent);
+        
+        it('timer extent is \'n\' most recent date/times from layer', function() {
+            timeControl.configureForLayer(ncwmsLayer, 3);
+            expect(timeControl.timer.getNumTicks()).toBe(3);
+            expect(timeControl.timer.getStartDateTime()).toBeSame('2001-01-03T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSame('2001-01-05T00:00');
 
-        // take most recent 10
+            timeControl.configureForLayer(ncwmsLayer, 2);
+            expect(timeControl.timer.getNumTicks()).toBe(2);
+            expect(timeControl.timer.getStartDateTime()).toBeSame('2001-01-04T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSame('2001-01-05T00:00');
+        });
 
-        // timer extent = ten most recent.
+        it('dummy tickEvent sent', function() {
+            spyOn(timeControl, 'onTick');
+            timeControl.configureForLayer(ncwmsLayer, 3);
+            expect(timeControl.onTick).toHaveBeenCalledWith({
+                index: 0,
+                dateTime: moment('2001-01-03T00:00')
+            });
+        });
     });
 });

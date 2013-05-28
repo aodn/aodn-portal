@@ -30,5 +30,16 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
     onTick: function(tickEvent) {
         this.map.toTime(tickEvent.dateTime);
+    },
+
+    configureForLayer: function(layer, numTicksToUse) {
+        var layerExtentLength = layer.getTemporalExtent().length;
+        this.timer.setTickDateTimes(layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength));
+
+        // Update the map straight away.
+        this.onTick({
+            index: 0,
+            dateTime: this.timer.getStartDateTime()
+        });
     }
 });

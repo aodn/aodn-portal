@@ -15,6 +15,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
         ncwmsLayer = new OpenLayers.Layer.NcWMS();
     });
 
+    describe('constructor', function() {
+        it('extent given', function() {
+            var extent = [
+                '2001-02-01T00:00',
+                '2001-02-03T00:00',
+                '2001-02-05T00:00'];
+
+            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+                null,
+                null,
+                null,
+                null,
+                extent);
+
+            expect(ncwmsLayer.temporalExtent).toBeSame(extent);
+        });
+    });
     describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z');
