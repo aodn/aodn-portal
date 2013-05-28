@@ -6,15 +6,10 @@
  */
 OpenLayers.Timer = OpenLayers.Class({
 
-    startDateTime: null,
-
-    // TODO: add doco that the last time tick will include this value.
-    endDateTime: null,
-
     /**
-     * The number of ticks.  The ticks will be spaced evenly across the full range of time.
+     * The set of dates that ticks correspond to.
      */
-    numTicks: 10,
+    tickDateTimes: [],
 
     /**
      * The interval between 'ticks'.
@@ -29,45 +24,76 @@ OpenLayers.Timer = OpenLayers.Class({
      * Reference to the javascript 'interval' object, which is used to generate the tick events.
      */
     intervalRef: null,
-    
+
     initialize: function(options) {
 
-        this.startDateTime = moment(options.startDateTime);
-        this.endDateTime = moment(options.endDateTime);
+        this.tickDateTimes = [];
 
-        if (options.numTicks) {
-            this.numTicks = options.numTicks;
+        if (options.startDateTime && options.endDateTime) {
+            var startDateTime = moment(options.startDateTime);
+            var endDateTime = moment(options.endDateTime);
+            var currDateTime = moment(startDateTime);
+            var numTicks = options.numTicks ? options.numTicks : 10;
+
+            var i = 0;
+
+            var interval =  this._getTickDateTimeInterval(startDateTime, endDateTime, numTicks);
+
+            while (!currDateTime.isAfter(endDateTime)) {
+                this.tickDateTimes[i] = moment(currDateTime);
+                currDateTime.add(interval);
+
+                i++;
+            }
+        }
+        else {
+            // error
         }
 
         this.tickInterval = moment.duration(options.tickInterval ? options.tickInterval : 500);
         this.observers = [];
     },
 
-    getDuration: function() {
-        return moment.duration(this.endDateTime.diff(this.startDateTime));
+    getStartDateTime: function() {
+        return this.tickDateTimes[0];
     },
 
-    getTickInterval: function() {
-        return moment.duration(this.getDuration() / (this.numTicks - 1));
+    getEndDateTime: function() {
+        return this.tickDateTimes[this.tickDateTimes.length - 1];
     },
-    
+
+    getNumTicks: function() {
+        return this.tickDateTimes.length;
+    },
+
+    _getDuration: function(startDateTime, endDateTime) {
+        return moment.duration(endDateTime.diff(startDateTime));
+    },
+
+    _getTickDateTimeInterval: function(startDateTime, endDateTime, numTicks) {
+        return moment.duration(this._getDuration(startDateTime, endDateTime) / (numTicks - 1));
+    },
+
+    getDuration: function() {
+        return moment.duration(this.getEndDateTime().diff(this.getStartDateTime()));
+    },
+
     getCurrTickIndex: function() {
         return this.currTickIndex;
     },
 
     tickForward: function() {
-        this.currTickIndex = (this.currTickIndex + 1) % this.numTicks;
+        this.currTickIndex = (this.currTickIndex + 1) % this.getNumTicks();
         this.onTick(this.currTickIndex);
     },
 
     tickBackward: function() {
-        this.currTickIndex = (this.numTicks + this.currTickIndex - 1) % this.numTicks;
+        this.currTickIndex = (this.getNumTicks() + this.currTickIndex - 1) % this.getNumTicks();
         this.onTick(this.currTickIndex);
     },
 
     getTickDateTime: function(tickIndex) {
-        var tickDateTime = moment(this.startDateTime);
-        return tickDateTime.add(tickIndex * this.getTickInterval());
+        return this.tickDateTimes[tickIndex];
     },
 
     on: function(eventName, observer) {
@@ -100,7 +126,6 @@ OpenLayers.Timer = OpenLayers.Class({
             clearInterval(this.intervalRef);
         }
     },
-    
+
     CLASS_NAME: "OpenLayers.Timer"
-    
 });
