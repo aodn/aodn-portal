@@ -46,6 +46,10 @@ OpenLayers.Timer = OpenLayers.Class({
                 i++;
             }
         }
+        else if (options.tickDateTimes) {
+            console.log("***");
+            this.tickDateTimes = options.tickDateTimes;
+        }
         else {
             // error
         }
