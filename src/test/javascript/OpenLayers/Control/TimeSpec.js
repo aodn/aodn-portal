@@ -18,13 +18,6 @@ describe("OpenLayers.Control.Time", function() {
 
         spyOn(timeControl.timer, 'start');
         spyOn(timeControl.timer, 'stop');
-
-        // TODO: refactor custom toBeSame matcher to somewhere common to all specs.
-        this.addMatchers({
-            toBeSame: function(expected) {
-                return this.actual.isSame(expected);   // moment.js#isSame()
-            }
-        });
     });
 
     describe('map', function() {
