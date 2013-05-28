@@ -47,8 +47,7 @@ OpenLayers.Timer = OpenLayers.Class({
             }
         }
         else if (options.tickDateTimes) {
-            console.log("***");
-            this.tickDateTimes = options.tickDateTimes;
+            this.setTickDateTimes(options.tickDateTimes);
         }
         else {
             // error
@@ -56,6 +55,10 @@ OpenLayers.Timer = OpenLayers.Class({
 
         this.tickInterval = moment.duration(options.tickInterval ? options.tickInterval : 500);
         this.observers = [];
+    },
+
+    setTickDateTimes: function(tickDateTimes) {
+        this.tickDateTimes = tickDateTimes;
     },
 
     getStartDateTime: function() {
