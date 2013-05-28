@@ -9,6 +9,7 @@ describe("OpenLayers.Timer", function() {
     var timer;
 
     describe("construction", function() {
+
         it("construct with strings", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:34:56',
@@ -29,6 +30,20 @@ describe("OpenLayers.Timer", function() {
             expect(timer.getEndDateTime()).toBeSame(moment('2013-03-16T12:34:56'));
         });
 
+        it('construct with arbitrary date/time array', function() {
+            timer = new OpenLayers.Timer({
+                tickDateTimes: [
+                    '2013-01-01T00:00',
+                    '2013-01-02T00:00',
+                    '2013-01-03T00:00'
+                ]
+            });
+
+            expect(timer.getStartDateTime()).toBeSame('2013-01-01T00:00');
+            expect(timer.getEndDateTime()).toBeSame('2013-01-03T00:00');
+            expect(timer.getNumTicks()).toBe(3);
+        });
+        
         it("default ticks", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:34:56',
