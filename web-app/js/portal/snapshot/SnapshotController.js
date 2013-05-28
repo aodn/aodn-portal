@@ -19,8 +19,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
         this.proxy = new Portal.snapshot.SnapshotProxy();
 
-        Portal.snapshot.SnapshotController.superclass.constructor.apply(this,
-            arguments);
+        Portal.snapshot.SnapshotController.superclass.constructor.apply(this, arguments);
 
         Ext.MsgBus.subscribe("loadSnapshot", function (subject, snapshot) {
             this.loadSnapshot(snapshot);
@@ -46,7 +45,6 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             var snapshotLayer = this.getSnapshotLayer(mapLayers[i]);
             snapshot.layers.push(snapshotLayer);
         }
-        ;
 
         this.proxy.save(snapshot, this.onSuccessfulSave.createDelegate(this,
             [ successCallback ], true), failureCallback);
@@ -66,8 +64,11 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this), this.onFailedLoad.createDelegate(this));
     },
 
-    _doLoadLayers:function (bounds, snapshot) {
+    _doLoadLayers: function(snapshot) {
+
+        var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY, snapshot.maxX, snapshot.maxY);
         this.map.zoomToExtent(bounds, true);
+
         for (var i = 0; i < snapshot.layers.length; i++) {
             this.addSnapshotLayer(snapshot.layers[i]);
         }
@@ -81,13 +82,10 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
     },
 
     onSuccessfulLoad:function (snapshot) {
+
         this.fireEvent('snapshotLoaded');
 
-        var bounds = new OpenLayers.Bounds(snapshot.minX, snapshot.minY,
-            snapshot.maxX, snapshot.maxY);
-
-        this._doLoadLayers(bounds, snapshot);
-
+        this._doLoadLayers(snapshot);
     },
 
     deleteSnapshot:function (id, successCallback, failureCallback) {
@@ -164,8 +162,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         if (snapshotLayer.isBaseLayer) {
             if (!snapshotLayer.hidden) {
                 // find and display baselayer if it still exists
-                var matchingLayers = this.map.getLayersBy("grailsLayerId",
-                    snapshotLayer.layer.id);
+                var matchingLayers = this.map.getLayersBy("grailsLayerId", snapshotLayer.layer.id);
                 if (matchingLayers.length > 0)
                     this.map.setBaseLayer(matchingLayers[0]);
             }
@@ -182,6 +179,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 });
             }
             else {
+
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
                 Ext.MsgBus.publish('addLayerUsingOpenLayer', layerDescriptor.toOpenLayer(options, params));
             }
@@ -206,5 +204,4 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             delegate.call();
         }
     }
-
 });

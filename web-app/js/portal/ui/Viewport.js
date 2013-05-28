@@ -57,7 +57,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function () {
             this.doLayout(false, true);
         }, this);
-        this.setActiveTab(HomeTab);
     },
 
     setActiveTab: function(tabIndex) {

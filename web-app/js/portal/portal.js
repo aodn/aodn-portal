@@ -60,15 +60,17 @@ Portal.app = {
             });
         }
 
-        var startTab = 0;
+        // Load saved map (snapshot) if required
+        var startTab = HomeTab;
         var startSnapshot = null;
         if (window.location.search.length > 0) {
             var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
             var matches = regPattern.exec(window.location.search);
 
             if (matches != null && matches.length == 2) {
+
                 //coming from saved map, so start at map.
-                startTab = 1;
+                startTab = MapTab;
                 startSnapshot = matches[1];
             }
 
