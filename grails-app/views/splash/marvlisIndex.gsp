@@ -32,12 +32,19 @@
 
 
 
-        <div class="spacer floatLeft homePanelWidget" >
-        MARVLIS is funded by the Australian National Data Service: &nbsp;
-        <a title="ANDS"  href="http://ands.org.au/"><img width="140" src="images/ands-logo-hi-res.png"/></a>
+        <div class="spacer floatLeft homePanelWidget" >This project is supported by the <a title="ANDS"  href="http://ands.org.au/">Australian National Data Service (ANDS)</a> through the National Collaborative Research Infrastructure Strategy Program and the Education Investment Fund (EIF) Super Science Initiative, as well as through the IMOS, TPAC, IMAS, CSIRO and the Derwent Estuary Program.
         </div>
 
-        <div class="floatLeft"><h3>MARVLIS is a partnership between IMOS, TPAC, IMAS, CSIRO<BR> and the Derwent Estuary Program</h3>
+
+        <div class="floatLeft">
+            <a title="ANDS"  href="http://ands.org.au/"><img class="logoSpacer" width="120" src="images/ands-logo-hi-res.png"/></a>
+            <a title="Research Data Australia"  href="http://researchdata.ands.org.au/"><img class="logoSpacer"  src="images/ResearchDataAustralia.png"/></a>
+        </div>
+
+        <div class="clear spacer"></div>
+
+        <div class="floatLeft">
+
             <a title="Integrated Marine Observation System"  href="http://imos.aodn.org.au/imos/"><img class="logoSpacer" width="120" src="/static/marvlis/Partner_Logos/IMOS.png"/></a>
             <a title="Tasmanian Partnership for Advanced Computing"  href="http://www.tpac.org.au/"><img class="logoSpacer" width="120" src="/static/marvlis/Partner_Logos/tpac.png"/></a>
             <a title="Institute for Marine and Antarctic Studies"  href="http://www.imas.utas.edu.au/"><img class="logoSpacer" width="70" src="/static/marvlis/Partner_Logos/IMAS-50mm.png"/></a>
