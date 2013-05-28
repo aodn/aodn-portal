@@ -29,7 +29,7 @@ OpenLayers.Timer = OpenLayers.Class({
 
         this.tickDateTimes = [];
 
-        if (options.startDateTime && options.endDateTime) {
+        if (options && options.startDateTime && options.endDateTime) {
             var startDateTime = moment(options.startDateTime);
             var endDateTime = moment(options.endDateTime);
             var currDateTime = moment(startDateTime);
@@ -46,14 +46,11 @@ OpenLayers.Timer = OpenLayers.Class({
                 i++;
             }
         }
-        else if (options.tickDateTimes) {
+        else if (options && options.tickDateTimes) {
             this.setTickDateTimes(options.tickDateTimes);
         }
-        else {
-            // error
-        }
 
-        this.tickInterval = moment.duration(options.tickInterval ? options.tickInterval : 500);
+        this.tickInterval = moment.duration(options && options.tickInterval ? options.tickInterval : 500);
         this.observers = [];
     },
 
@@ -70,6 +67,10 @@ OpenLayers.Timer = OpenLayers.Class({
     },
 
     getNumTicks: function() {
+        if (this.tickDateTimes.length == 0) {
+            return undefined;
+        }
+        
         return this.tickDateTimes.length;
     },
 

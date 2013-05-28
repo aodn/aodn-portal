@@ -43,6 +43,14 @@ describe("OpenLayers.Timer", function() {
             expect(timer.getEndDateTime()).toBeSame('2013-01-03T00:00');
             expect(timer.getNumTicks()).toBe(3);
         });
+
+        it('construct with no date/time restrictions', function() {
+            timer = new OpenLayers.Timer();
+            
+            expect(timer.getStartDateTime()).toBeUndefined();
+            expect(timer.getEndDateTime()).toBeUndefined();
+            expect(timer.getNumTicks()).toBeUndefined();
+        });
         
         it("default ticks", function() {
             timer = new OpenLayers.Timer({
