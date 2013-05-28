@@ -10,8 +10,8 @@ describe("Portal.common.helpers", function() {
 
     it('expandExtendedISO8601Dates Correct compressed Request', function() {
 
-        var res = expandExtendedISO8601Dates('2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M');
-        expect(res).toBe("2001-01-11T09:36:00+11:00,2001-01-12T09:12:00+11:00,2001-01-13T08:48:00+11:00,2001-01-13T08:48:00+11:00");
+        var res = expandExtendedISO8601Dates('2001-01-11T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M,2002-12-29T01:00:00.000Z/2002-12-31T06:00:00.000Z/P1D');
+        expect(res).toBe("2001-01-12T09:36:00+11:00,2001-01-13T08:48:00+11:00,2001-01-13T09:12:00+11:00,2002-12-29T12:00:00+11:00,2002-12-30T12:00:00+11:00,2002-12-31T05:00:00+11:00,2002-12-31T12:00:00+11:00,2003-01-01T12:00:00+11:00");
     });
 
     it('expandExtendedISO8601Dates Correct Simple Request', function() {

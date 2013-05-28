@@ -306,6 +306,7 @@ function expandExtendedISO8601Dates(splitDates) {
 
 
     for (var i = 0; i < _splitDates.length; i++) {
+
         isoDate = _splitDates[i].split("/");
 
         var x = isoDate.length;
@@ -327,7 +328,6 @@ function expandExtendedISO8601Dates(splitDates) {
         }
 
     }
-
    return expandedDates.join(",");
 }
 
@@ -378,42 +378,45 @@ function _getISO8601Period(period) {
     var _period  = period.substring(1);
 
     var moArray = new Array();
+    var dateParts = _period;
+    var timeParts = "";
 
+    // 'T' indicates start of time elements
     if (_period.indexOf( "T" ) > -1) {
-
         var parts =  _period.split("T");
-        var dateParts = parts[0];
-        var timeParts = parts[1];
-
-        // expecting in order years, months, days
-        if (dateParts.indexOf( "Y" ) > -1) {
-            moArray[0] =  dateParts.split("Y")[0];
-            dateParts =  dateParts.split("Y")[1];
-        }
-        if (dateParts.indexOf( "M" ) > -1) {
-            moArray[1] =  dateParts.split("M")[0];
-            dateParts =  dateParts.split("M")[1];
-        }
-        if (dateParts.indexOf( "W" ) > -1) {
-            moArray[2] =  dateParts.split("W")[0];
-            dateParts =  dateParts.split("W")[1];
-        }
-        if (dateParts.indexOf( "D" ) > -1) {
-            moArray[3] =  dateParts.split("D")[0];
-        }
-        // expecting in order hours, minutes, and seconds
-        if (timeParts.indexOf( "H" ) > -1) {
-            moArray[4] =  timeParts.split("H")[0];
-            timeParts =  timeParts.split("H")[1];
-        }
-        if (timeParts.indexOf( "M" ) > -1) {
-            moArray[5] =  timeParts.split("M")[0];
-            timeParts =  timeParts.split("M")[1];
-        }
-        if (timeParts.indexOf( "S" ) > -1) {
-            moArray[6] =  timeParts.split("S")[0];
-        }
+        dateParts = parts[0];
+        timeParts = parts[1];
     }
+
+    // expecting in order years, months, days
+    if (dateParts.indexOf( "Y" ) > -1) {
+        moArray[0] =  dateParts.split("Y")[0];
+        dateParts =  dateParts.split("Y")[1];
+    }
+    if (dateParts.indexOf( "M" ) > -1) {
+        moArray[1] =  dateParts.split("M")[0];
+        dateParts =  dateParts.split("M")[1];
+    }
+    if (dateParts.indexOf( "W" ) > -1) {
+        moArray[2] =  dateParts.split("W")[0];
+        dateParts =  dateParts.split("W")[1];
+    }
+    if (dateParts.indexOf( "D" ) > -1) {
+        moArray[3] =  dateParts.split("D")[0];
+    }
+    // expecting in order hours, minutes, and seconds
+    if (timeParts.indexOf( "H" ) > -1) {
+        moArray[4] =  timeParts.split("H")[0];
+        timeParts =  timeParts.split("H")[1];
+    }
+    if (timeParts.indexOf( "M" ) > -1) {
+        moArray[5] =  timeParts.split("M")[0];
+        timeParts =  timeParts.split("M")[1];
+    }
+    if (timeParts.indexOf( "S" ) > -1) {
+        moArray[6] =  timeParts.split("S")[0];
+    }
+
 
 
     return {
