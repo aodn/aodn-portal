@@ -184,7 +184,15 @@ describe("OpenLayers.Timer", function() {
         });
 
         it('on tick context', function() {
-            
+            var expectedContext = {};
+            var actualContext;
+
+            timer.on('tick', function(event) {
+                actualContext = this;
+            }, expectedContext);
+            timer.onTick(0);
+
+            expect(actualContext).toBe(expectedContext);
         });
         
         it("on tick forward", function() {
