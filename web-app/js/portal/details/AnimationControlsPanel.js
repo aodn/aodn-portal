@@ -607,7 +607,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		if (startDate.getTime() > endDate.getTime()) {
 			alert("You must select an end date that is later than the start date");
 			return false;
-		} else {
+		}
+        else {
             this._convertSelectedLayerToAnimatedLayer();
 
 			var startIndex;
@@ -697,6 +698,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (this.originalLayer.name.indexOf("animated") < 0) {
             this.originalLayer.setName(this.originalLayer.name
                 + " (animated)");
+            // update the name in details panel
+            Ext.MsgBus.publish("selectedLayerChanged", this.originalLayer);
 
             // setup originalLayer as an animated layer adding and
             // overriding methods and parameters
