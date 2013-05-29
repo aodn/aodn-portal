@@ -11,20 +11,34 @@ describe("OpenLayers.TemporalMap", function() {
     beforeEach(function() {
         map = new OpenLayers.TemporalMap();
     });
-    
-    it("toTime called on layers ncWMS layers but not others", function() {
-        var ncWmsLayer = new OpenLayers.Layer.NcWMS();
-        var nonNcWmsLayer = new OpenLayers.Layer.WMS();
 
-        map.addLayers([ncWmsLayer, nonNcWmsLayer]);
+    describe('toTime', function() {
+        it("toTime called on layers ncWMS layers but not others", function() {
+            var ncWmsLayer = new OpenLayers.Layer.NcWMS();
+            var nonNcWmsLayer = new OpenLayers.Layer.WMS();
+
+            map.addLayers([ncWmsLayer, nonNcWmsLayer]);
+            
+            var theDateTime = moment('2013-05-27T12:45:56');
+            
+            spyOn(ncWmsLayer, 'toTime');
+            map.toTime(theDateTime);
+            
+            expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime) 
+        });
         
-        var theDateTime = moment('2013-05-27T12:45:56');
-        
-        spyOn(ncWmsLayer, 'toTime');
-        
-        map.toTime(theDateTime);
-       
-        expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime) 
-        
+        it("redraw called on layers ncWMS layers but not others", function() {
+            var ncWmsLayer = new OpenLayers.Layer.NcWMS();
+            var nonNcWmsLayer = new OpenLayers.Layer.WMS();
+
+            map.addLayers([ncWmsLayer, nonNcWmsLayer]);
+            
+            var theDateTime = moment('2013-05-27T12:45:56');
+            
+            spyOn(ncWmsLayer, 'redraw');
+            map.toTime(theDateTime);
+            
+            expect(ncWmsLayer.redraw).toHaveBeenCalled();
+        });
     });
 });
