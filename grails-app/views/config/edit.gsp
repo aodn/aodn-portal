@@ -25,7 +25,8 @@
     <body>
         <div class="nav">
           <div id="logo"></div>
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></span>
+            <span class="menuButton"><a class="portal_button" href="${createLink(uri: '/')}"><g:message code="default.portal.label"/></a></span>
         </div>
         <div class="content">
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>

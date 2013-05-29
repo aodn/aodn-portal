@@ -199,13 +199,22 @@ img {
     text-decoration: underline;
 }
 
-.nav a.home, .nav a.list, .nav a.create, .nav a.refresh {
+.nav a.home, .nav a.list, .nav a.create, .nav a.refresh, .nav a.portal_button, .nav a.siteconfig_button  {
     background-position: 0.7em center;
     background-repeat: no-repeat;
 }
 
 .nav a.home {
     background-image: url(../images/skin/house.png);
+}
+
+
+.nav a.portal_button {
+    background-image: url(../images/world.png);
+}
+
+.nav a.siteconfig_button {
+    background-image: url(../images/cog.png);
 }
 
 .nav a.list {
