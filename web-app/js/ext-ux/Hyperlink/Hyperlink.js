@@ -1,8 +1,21 @@
+/*
+ adapted from : http://www.sencha.com/forum/showthread.php?89386-Ext.ux.Hyperlink
+ Sencha Inc
+ Andrea Cammarata, Solutions Engineer
+ CEO at SIMACS
+
+ @AndreaCammarata
+ www.andreacammarata.com
+ github: https://github.com/AndreaCammarata
+*/
+
 Ext.namespace('Ext.ux');
+
 
 Ext.ux.Hyperlink = Ext.extend(Ext.form.Label, {
     
     iconCls: '',
+    cls: 'x-hyperlink',
 
     initComponent : function(){
         this.addEvents(

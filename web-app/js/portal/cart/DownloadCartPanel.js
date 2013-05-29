@@ -14,9 +14,10 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
         this.listDataView = new Portal.cart.DownloadList();
         this.lastCartRemovedUuid = [];
 
-        this.doUndoButton = new Ext.Button({
+        this.doUndoButton = new Ext.ux.Hyperlink({
             tooltip: OpenLayers.i18n('downloadCartUndo'),
             cls: 'floatRight styledButton',
+            disabledClass: 'disabled',
             hidden: true,
             text: OpenLayers.i18n('downloadCartUndo'),
             listeners: {
@@ -35,14 +36,14 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
 
         this.doDownloadLink = new Ext.Panel({
             tooltip: OpenLayers.i18n('okdownload'),
-            cls: 'floatRight',
-            html: '<a class="styledButton" href="#" onclick="javascript:doDownload();">' + OpenLayers.i18n('okdownload') + '</a>'
+            cls: 'floatRight styledButton',
+            html: '<a href="#" onclick="javascript:doDownload();">' + OpenLayers.i18n('okdownload') + '</a>'
         });
 
         this.doClearCartLink = new Ext.Panel({
             tooltip: OpenLayers.i18n('clearcart'),
-            cls: 'floatRight',
-            html: '<a class="styledButton" href="#" onclick="javascript:clearDownloadCart();">' + OpenLayers.i18n('clearcart') + '</a>'
+            cls: 'floatRight styledButton',
+            html: '<a href="#" onclick="javascript:clearDownloadCart();">' + OpenLayers.i18n('clearcart') + '</a>'
         });
 
         var footer = new Ext.Panel( {

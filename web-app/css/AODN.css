@@ -279,8 +279,10 @@ a.userlink {
      text-align: right;
  }
 
-.styledButton {
+.styledButton, .styledButton * {
     background-color: #ff9900;
+}
+.styledButton {
     box-shadow: 2px 2px 3px 0 #EEEEEE;
 }
 

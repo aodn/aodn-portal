@@ -984,10 +984,12 @@ div.allwhite {
     display: none ;
 }
 
-.styledButton {
+.styledButton, .styledButton *  {
     background-color: #666666;
-    border-radius: 14px;
     color: white;
+}
+.styledButton {
+    border-radius: 14px;
     padding: 3px 10px 5px;
     margin: 0 3px;
     margin-right: 10px;
@@ -996,7 +998,10 @@ div.allwhite {
     font-weight: bold;
 }
 
-a.styledButton:hover {
+.styledButton a{
+    text-decoration: none;
+}
+.styledButton a:hover {
     text-decoration: underline;
 }
 .cart-title {
