@@ -183,6 +183,10 @@ describe("OpenLayers.Timer", function() {
             });
         });
 
+        it('on tick context', function() {
+            
+        });
+        
         it("on tick forward", function() {
 
             var tickObserverCalled = false;
@@ -220,6 +224,7 @@ describe("OpenLayers.Timer", function() {
             tickObserverCalled = false;
             timer.on('tick', undefined);
             timer.tickForward();
+
             expect(tickObserverCalled).toBe(false);
         });
     });

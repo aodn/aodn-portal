@@ -104,13 +104,24 @@ OpenLayers.Timer = OpenLayers.Class({
         return this.tickDateTimes[tickIndex];
     },
 
-    on: function(eventName, observer) {
-        this.observers[eventName] = observer;
+    on: function(eventName, observer, context) {
+
+        if (!observer) {
+            this.observers[eventName] = undefined;
+        }
+        else {
+            this.observers[eventName] = {
+                callback: observer
+            };
+        }
     },
 
     onTick: function(tickIndex) {
+        console.log('this.observers[\'tick\']', this.observers['tick']);
+        
         if (this.observers['tick']) {
-            this.observers['tick']({
+            console.log('callback', this.observers['tick'].callback);
+            this.observers['tick'].callback({
                 index: tickIndex,
                 dateTime: this.getTickDateTime(tickIndex)
             });
