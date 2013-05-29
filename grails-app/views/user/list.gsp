@@ -31,30 +31,38 @@
                 <table>
                     <thead>
                         <tr>
-                            <g:sortableColumn property="id" title="${message(code: 'user.id.label', default: 'Id')}" />
-                        
-                            <g:sortableColumn property="emailAddress" title="${message(code: 'user.emailAddress.label', default: 'Email Address')}" />
 
-                            <g:sortableColumn property="openIdUrl" title="${message(code: 'user.openIdUrl.label', default: 'OpenID URL')}" />
-                        
                             <g:sortableColumn property="fullName" title="${message(code: 'user.fullName.label', default: 'Name')}" />
 
+                            <g:sortableColumn property="emailAddress" title="${message(code: 'user.emailAddress.label', default: 'Email Address')}" />
+
                             <th>${message(code: 'user.roles.label', default: 'Roles')}</th>
+
+                            <g:sortableColumn property="openIdUrl" title="${message(code: 'user.openIdUrl.label', default: 'OpenID URL')}" />
+
+                            <g:sortableColumn property="id" title="${message(code: 'user.id.label', default: 'Id')}" />
+
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${userInstanceList}" status="i" var="userInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "id")}</g:link></td>
-                        
+
+
+                            <!--td>${fieldValue(bean: userInstance, field: "fullName")}</td-->
+                            <td><g:link action="edit" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "fullName")}</g:link></td>
+
                             <td>${fieldValue(bean: userInstance, field: "emailAddress")}</td>
+
+                            <td>${fieldValue(bean: userInstance, field: "roles")}</td>
 
                             <td>${fieldValue(bean: userInstance, field: "openIdUrl")}</td>
 
-                            <td>${fieldValue(bean: userInstance, field: "fullName")}</td>
+                            <td>${fieldValue(bean: userInstance, field: "id")}</td>
+                            <!--td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "id")}</g:link></td-->
 
-                            <td>${fieldValue(bean: userInstance, field: "roles")}</td>
+
                         </tr>
                     </g:each>
                     </tbody>
