@@ -19,7 +19,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     play: function() {
-        this.timer.on('tick', this.onTick);
+        this.timer.on('tick', this.onTick, this);
         this.timer.start()
     },
 
@@ -41,5 +41,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             index: 0,
             dateTime: this.timer.getStartDateTime()
         });
-    }
+    },
+
+    CLASS_NAME: 'OpenLayers.Control.Time'
 });

@@ -66,6 +66,7 @@ describe("OpenLayers.Control.Time", function() {
             expect(timeControl.timer.observers['tick']).toBeFalsy();
             timeControl.play();
             expect(timeControl.timer.observers['tick']).toBeTruthy();
+            expect(timeControl.timer.observers['tick'].context).toBe(timeControl);
             expect(timeControl.timer.observers['tick'].callback).toBe(timeControl.onTick);
         });
 

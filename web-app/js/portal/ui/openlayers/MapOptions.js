@@ -54,7 +54,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
                 }
             }),
             toolPanel,
-            this.clickControl
+            this.clickControl,
+            new OpenLayers.Control.Time()
         ];
 
         this.theme = null;
@@ -91,7 +92,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
      */
     newMap: function() {
         this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-        var map = new OpenLayers.Map(this);
+        var map = new OpenLayers.TemporalMap(this);
 
         this.mapPanel.add(this.animationPanel);
         this.animationPanel.setMap(map);
