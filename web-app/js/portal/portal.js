@@ -61,7 +61,7 @@ Portal.app = {
         }
 
         // Load saved map (snapshot) if required
-        var startTab = HomeTab;
+        var startTab = HOMT_TAB;
         var startSnapshot = null;
         if (window.location.search.length > 0) {
             var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
@@ -70,7 +70,7 @@ Portal.app = {
             if (matches != null && matches.length == 2) {
 
                 //coming from saved map, so start at map.
-                startTab = MapTab;
+                startTab = MAP_TAB;
                 startSnapshot = matches[1];
             }
 

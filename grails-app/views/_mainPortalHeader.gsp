@@ -12,11 +12,11 @@
     <h1 id="headerTitle">${configInstance?.name}</h1>
     <g:if test="${showLinks}">
         <div id="viewPortLinks">
-            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab0"><a href="" onClick="setViewPortTab(HomeTab); return false;">Home</a></div>
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab0"><a href="" onClick="setViewPortTab(HOMT_TAB); return false;">Home</a></div>
 
-            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(MapTab); return false;">Map</a></div>
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(MAP_TAB); return false;">Map</a></div>
 
-            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(SearchTab); return false;">Search</a></div>
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(SEARCH_TAB); return false;">Search</a></div>
         </div>
     </g:if>
 
