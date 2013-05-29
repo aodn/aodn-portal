@@ -8,7 +8,7 @@
 Ext.namespace('Portal.ui');
 
 // Tab indexes (global)
-HOMT_TAB = 0;
+HOME_TAB = 0;
 MAP_TAB = 1;
 SEARCH_TAB = 2;
 DOWNLOAD_CART_TAB = 3;
@@ -25,7 +25,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         var config = Ext.apply({
             xtype:'tabpanel', // TabPanel itself has no title
             autoDestroy:false, // wont destroy tab contents when switching
-            activeTab:HOMT_TAB,
+            activeTab:HOME_TAB,
             margins: {
                 left: 5,
                 right: 5

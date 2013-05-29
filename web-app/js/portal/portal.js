@@ -61,7 +61,7 @@ Portal.app = {
         }
 
         // Load saved map (snapshot) if required
-        var startTab = HOMT_TAB;
+        var startTab = HOME_TAB;
         var startSnapshot = null;
         if (window.location.search.length > 0) {
             var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
