@@ -88,7 +88,7 @@ function doDownload(){
             }
         },
         failure: function(){
-            alert("Download cart is empty.");
+            alert("There is a problem with the download cart, please try again later. Please refer to our Help section for further assistance.");
         }
     });
 }
