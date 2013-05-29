@@ -44,7 +44,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('time specified', function() {
             ncwmsLayer.toTime(time);
-            expect(ncwmsLayer.getURL(bounds).split('&')).toContain('TIME=' + time.format());
+            expect(ncwmsLayer.getURL(bounds).split('&')).toContain('TIME=' + time.utc().format('YYYY-MM-DDTHH:mm:ss'));
         });
 
         it('no time specified', function() {

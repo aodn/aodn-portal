@@ -44,7 +44,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var url = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
 
         if (this.time) {
-            url = url + '&TIME=' + this.time.format();
+            url = url + '&TIME=' + this.time.utc().format('YYYY-MM-DDTHH:mm:ss');
         }
 
         return url;
