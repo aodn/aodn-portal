@@ -72,9 +72,6 @@ class HomeController {
     Version:       ${ md.'app.version' }
     Instance name: ${ portalInstance.name() }
     Environment:   ${ Environment.current.name }
-    Build:         #${ md.'app.build.number' ?: "Unk." }
-    SVN revision:  #${ md.'app.svn.revision' ?: "Unk." }
-    SVN URL:       ${ md.'app.svn.url' ?: "Unk." }
 -->"""
     }
 }
