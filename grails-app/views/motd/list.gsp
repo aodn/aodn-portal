@@ -44,7 +44,7 @@
                     <g:each in="${motdInstanceList}" status="i" var="motdInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "motdTitle")}</g:link></td>
+                            <td><g:link action="edit" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "motdTitle")}</g:link></td>
                         
                             <td>${fieldValue(bean: motdInstance, field: "motd")}</td>
                         
