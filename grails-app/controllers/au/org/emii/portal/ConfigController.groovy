@@ -148,8 +148,7 @@ class ConfigController {
             }
 
             if (!configInstance.hasErrors() && configInstance.save(flush: true) && (flash.message == null)) {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
-
+                flash.message = 'Config updated'
             }
 
 			render(view: "edit", model: [configInstance: configInstance])
