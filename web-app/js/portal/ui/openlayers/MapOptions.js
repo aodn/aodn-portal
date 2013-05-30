@@ -41,6 +41,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             }
         });
 
+        this.timeControl = new OpenLayers.Control.Time();
+        
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
@@ -55,7 +57,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             }),
             toolPanel,
             this.clickControl,
-            new OpenLayers.Control.Time()
+            this.timeControl
         ];
 
         this.theme = null;
@@ -66,7 +68,9 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         // This is included here, as it is essentially just another control for the map, although
         // not an actual OpenLayers.Control.
         this.mapPanel = mapPanel;
-        this.animationPanel = new Portal.ui.AnimationPanel();
+        this.animationPanel = new Portal.ui.AnimationPanel({
+            timeControl: this.timeControl
+        });
     },
 
     afterRender: function(mapPanel) {

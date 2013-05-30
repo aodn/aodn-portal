@@ -24,6 +24,10 @@ describe("Portal.ui.openlayers.MapOptions", function() {
         map = mapOptions.newMap();
     });
 
+    it('animation controls panel configured with time control', function() {
+        expect(mapOptions.animationPanel.animationControlsPanel.timeControl).toBeInstanceOf(OpenLayers.Control.Time);
+    });
+    
     describe('newMap()', function() {
 
         it('construct temporal map', function() {
