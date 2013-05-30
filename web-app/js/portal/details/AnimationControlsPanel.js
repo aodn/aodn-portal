@@ -315,6 +315,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_stopPlaying : function() {
+        this.timeControl.stop();
 		clearTimeout(this.timerId);
 		this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
 		this._updateButtons(this.state.PAUSED);
@@ -324,6 +325,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		var dates = this._getFormDates();
 		this._waitForOriginalLayer(dates[0], dates[1]);
         this._updateButtons(this.state.PLAYING);
+
+        this.timeControl.play();
 	},
 
 

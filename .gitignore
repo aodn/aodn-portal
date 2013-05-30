@@ -13,3 +13,5 @@ target-eclipse
 *~
 *.lock
 plugins
+\#*\#
+.\#*
