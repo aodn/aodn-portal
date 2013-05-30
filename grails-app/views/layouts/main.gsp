@@ -82,9 +82,6 @@
         Instance name: ${ grailsApplication.config.portal.instance.name ?: '<span style="color: red;">None supplied</span>' }<br />
         Environment: ${Environment.current.name}<br />
         Build date: ${grailsApplication.metadata['app.build.date'] ?: "Unk."}<br />
-        Subversion revision: #${grailsApplication.metadata['app.svn.revision'] ?: "Unk."}<br />
-        Subversion url: ${grailsApplication.metadata['app.svn.url'] ?: "Unk."}<br />
-        Build: #${grailsApplication.metadata['app.build.number'] ?: "Unk."}<br />
         App version: ${grailsApplication.metadata['app.version']}
         </div>
     </body>

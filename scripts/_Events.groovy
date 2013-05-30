@@ -6,14 +6,7 @@
  *
  */
 
-import org.tmatesoft.svn.core.SVNException
-import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory
-import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory
-import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl
-import org.tmatesoft.svn.core.wc.SVNClientManager
-import org.tmatesoft.svn.core.wc.SVNInfo
-import org.tmatesoft.svn.core.wc.SVNRevision
-import org.tmatesoft.svn.core.wc.SVNWCClient
+
 
 import java.text.SimpleDateFormat
 
@@ -41,27 +34,7 @@ eventCompileStart = { kind ->
         println "Gathering metadata..."
 
         // Get build info
-        metadata.'app.build.number' = System.getenv('BUILD_NUMBER') ?: 'Not Jenkins build'
         metadata.'app.build.date' = new SimpleDateFormat( "dd/MM/yyyy HH:mm" ).format(new Date())
-
-        // Get subvsersion revision number
-        try {
-            DAVRepositoryFactory.setup()
-            SVNRepositoryFactoryImpl.setup()
-            FSRepositoryFactory.setup()
-            SVNClientManager clientManager = SVNClientManager.newInstance()
-            SVNWCClient wcClient = clientManager.getWCClient()
-            File baseFile = new File(basedir as String)
-            SVNInfo svninfo = wcClient.doInfo(baseFile, SVNRevision.WORKING)
-
-            metadata.'app.svn.revision' = svninfo.revision.toString()
-            metadata.'app.svn.url' = svninfo.URL.toString()
-        }
-        catch (SVNException ex) {
-            println "**************** SVN exception **************"
-            println ex.getMessage()
-        }
-
         metadata.persist()
 
         println "App metadata:"
