@@ -387,28 +387,21 @@ class LayerController {
                     def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
                     def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
-                    // DF: No need IMO for fancy xslt transformations
-                    // looks like it's just 2 types of elements we're parsing
-                    // where one is plain text and one is just a list of links
                     def html = "<!DOCTYPE html>\n"
                     html += "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>\n"
-                    // Have items sit in a nice list
-                    html += "<ul>"
+
+                    html += "<ul>\n"
                     onlineResourcesList.each {
                         if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
                             def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
-                            // No need to escape the URL proper escaping will work nicely only on local
-                            // URLs. Since we have no control on the URL form, we might as well leave it
-                            // the way it is.
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
                             def linkExternal = ""
-                            // Add a 'class="external" tag if link directs out of our website
-                            if(linkUrl != "" && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
+                            if(linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
                             // Overcome the case where the URL is valid but has no description
-                            if (linkText == "") {
-                                linkText = linkUrl;
+                            if (!linkText) {
+                                linkText = linkUrl
                             }
-                            html += "<li><a ${linkExternal} href=\"${linkUrl}\" target=\"_blank\">${linkText}</a></li>\n"
+                            html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
                         }
                     }
                     html += "</ul>"
