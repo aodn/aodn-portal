@@ -38,42 +38,6 @@ describe("Portal.ui.RightDetailsPanel", function() {
         });
     });
 
-    describe('Hide layer details checkbox', function() {
-
-        it('Expands if the checkbox is unchecked and a layer is added', function() {
-            var panel = _initDetailsPanelWithSpies(['expand']);
-            panel.collapsed = true;
-            panel.rendered = true;
-            Ext.MsgBus.publish('selectedLayerChanged', _initLayer());
-
-            expect(panel.expand).toHaveBeenCalled();
-        });
-
-        it('Does not expand if the checkbox is checked and a layer is added', function() {
-            var panel = _initDetailsPanelWithSpies(['expand']);
-            panel.collapsed = true;
-            panel.rendered = true;
-            panel.hideLayerDetailsChecked = true;
-            Ext.MsgBus.publish('selectedLayerChanged', _initLayer());
-
-            expect(panel.expand).not.toHaveBeenCalled();
-        });
-
-        it('Collapses when the checkbox is checked', function() {
-            var panel = _initDetailsPanelWithSpies(['collapse']);
-            Ext.MsgBus.publish('hideLayerDetailsCheck', { checked: true});
-
-            expect(panel.collapse).toHaveBeenCalled();
-        });
-
-        it('Expands when the checkbox is unchecked', function() {
-            var panel = _initDetailsPanelWithSpies(['expand']);
-            Ext.MsgBus.publish('hideLayerDetailsCheck', { checked: false});
-
-            expect(panel.expand).toHaveBeenCalled();
-        });
-    });
-
     function _initLayer() {
         var layer = new OpenLayers.Layer.WMS(
             'My Open Layer',

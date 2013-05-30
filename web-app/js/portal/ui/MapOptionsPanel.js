@@ -39,16 +39,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
 			box.fireEvent(event, box, checked);
 		}, this);
-				
-		this.hideDetailsPanelCheckbox = new Ext.form.Checkbox({
-            boxLabel: OpenLayers.i18n('hideDetailsPanel'),
-            inputType: 'checkbox',
-			listeners: {
-				check: function(me, checked) {
-                    Ext.MsgBus.publish('hideLayerDetailsCheck', this);
-				}
-			}
-        });
 		
 		this.snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
 			controller: this.snapshotController,
@@ -66,8 +56,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                         { 
                             flex: 3,
                             items: [ 
-								this.autoZoomCheckbox,
-								this.hideDetailsPanelCheckbox
+								this.autoZoomCheckbox
 							]
                         },
                         new Ext.BoxComponent({      
