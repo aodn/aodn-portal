@@ -179,7 +179,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 								}
 								else {
 									spinnerPanel.show();
-									setViewPortTab(MAP_TAB);
+									setViewPortTab(TAB_INDEX_MAP);
 									statusField.setTitle(OpenLayers.i18n('searching'));
 									statusField.hide();
 								}
@@ -188,7 +188,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							load: function() {
 
 								spinnerPanel.hide('slow');
-								setViewPortTab(MAP_TAB);
+								setViewPortTab(TAB_INDEX_MAP);
 								statusField.setTitle(OpenLayers.i18n('addYourURLSuccessful'));
 								// ADD TO LIST OF SUCCESSFULL SERVERS
 								statusField.update("");
