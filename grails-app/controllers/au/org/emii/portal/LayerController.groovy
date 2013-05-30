@@ -401,11 +401,14 @@ class LayerController {
                             // URLs. Since we have no control on the URL form, we might as well leave it
                             // the way it is.
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
+                            def linkExternal = ""
+                            // Add a 'class="external" tag if link directs out of our website
+                            if(linkUrl != "" && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
                             // Overcome the case where the URL is valid but has no description
                             if (linkText == "") {
                                 linkText = linkUrl;
                             }
-                            html += "<li><a href=\"${linkUrl}\" target=\"_blank\">${linkText}</a></li>\n"
+                            html += "<li><a ${linkExternal} href=\"${linkUrl}\" target=\"_blank\">${linkText}</a></li>\n"
                         }
                     }
                     html += "</ul>"
