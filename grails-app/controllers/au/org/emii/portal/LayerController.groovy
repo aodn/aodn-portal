@@ -13,6 +13,7 @@ import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
+import org.springframework.web.util.HtmlUtils
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -383,18 +384,31 @@ class LayerController {
                     //TODO: Validate schema before proceeding
 
                     //Extract Abstract and resource links
-                    def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
+                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
                     def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
-                    //TODO: transform to html in a better way. e.g. xslt
-                    def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
+                    // DF: No need IMO for fancy xslt transformations
+                    // looks like it's just 2 types of elements we're parsing
+                    // where one is plain text and one is just a list of links
+                    def html = "<!DOCTYPE html>\n"
+                    html += "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>\n"
+                    // Have items sit in a nice list
+                    html += "<ul>"
                     onlineResourcesList.each {
                         if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
-                            def linkText = it.CI_OnlineResource.description.CharacterString.text()
+                            def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
+                            // No need to escape the URL proper escaping will work nicely only on local
+                            // URLs. Since we have no control on the URL form, we might as well leave it
+                            // the way it is.
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-                            html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                            // Overcome the case where the URL is valid but has no description
+                            if (linkText == "") {
+                                linkText = linkUrl;
+                            }
+                            html += "<li><a href=\"${linkUrl}\" target=\"_blank\">${linkText}</a></li>\n"
                         }
                     }
+                    html += "</ul>"
 
                     responseText = html
                 }
