@@ -168,9 +168,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 	    });
 
         it('on removeLayer', function() {
-
-            var animationPanel = new Portal.ui.AnimationPanel(new OpenLayers.Map());
-
             spyOn(animationControlsPanel, 'removeAnimation');
             spyOn(Portal.ui.AnimationPanel.prototype, 'setVisible');
 
