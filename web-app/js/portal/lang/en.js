@@ -12,6 +12,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearcart: "Clear Cart",
     downloadCartUndo: "Undo Last Remove",
     emptyCartText: "The cart is empty of datasets to download.",
+    unavailableDataLink: "Sorry this data is currently unavailable",
 
     layerChooserMenuHeader: 'Map Layer Chooser',
 

@@ -47,6 +47,7 @@ class ConfigController {
         }
         instanceAsGenericObj['motd'] = JSON.parse(tmpMOTD.toString())
         instanceAsGenericObj['enableMOTD'] = configInstance.enableMOTD
+        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] =  JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
 
         // add current user details
         def userInstance = User.current();

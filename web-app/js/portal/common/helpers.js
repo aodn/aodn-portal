@@ -338,6 +338,8 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
     */
 
+    console.log(extendedISO8601Date);
+
     var expandedDates = new Array();
 
     var iSO8601DateParts = extendedISO8601Date.split("/");

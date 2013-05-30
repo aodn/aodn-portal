@@ -4,6 +4,8 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
     constructor:function (cfg) {
 
+        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping
+
         this.downloadItemsStore = new Ext.data.JsonStore({
             // store configs
             autoDestroy:true,
@@ -44,11 +46,20 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                 '{[this.markup(values)]}',
             '</div>',
             {
+
                 markup: function(values) {
-                    // todo fix metadata first? strip rubbish from titles? / markup as links when correctly flagged as such?
-                    return values.title;
+
+                    var ret = "";
+                    // todo remove this horrible hack when the df is truely gone
+                    if (values.href.indexOf("df.arcs.org.au") < 0) {
+                        ret += "<a href=\"" + values.href + "\" title=\"" + values.title + "\" >" + values.title + " (" + this.getSimpleType(values.type) + ")</a>";
+                    }
+                    else {
+                        ret += OpenLayers.i18n("unavailableDataLink");
+                    }
+                    return ret;
                 }
-            }
+            }, this
         );
 
         var config = Ext.apply({
@@ -64,5 +75,14 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
         Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
             this.downloadItemsStore.load();
         }, this);
+    },
+
+    getSimpleType: function(type) {
+
+        for (var key in this.mimeTypes) {
+            if (key == type) {
+                return this.mimeTypes[key];
+            }
+        }
     }
 });
