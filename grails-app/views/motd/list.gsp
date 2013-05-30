@@ -19,7 +19,8 @@
     <body>
         <div class="nav">
           <div id="logo"></div>
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></span>
+            <span class="menuButton"><a class="portal_button" href="${createLink(uri: '/')}"><g:message code="default.portal.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
@@ -43,7 +44,7 @@
                     <g:each in="${motdInstanceList}" status="i" var="motdInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "motdTitle")}</g:link></td>
+                            <td><g:link action="edit" id="${motdInstance.id}">${fieldValue(bean: motdInstance, field: "motdTitle")}</g:link></td>
                         
                             <td>${fieldValue(bean: motdInstance, field: "motd")}</td>
                         
