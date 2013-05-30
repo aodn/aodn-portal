@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function() {
+    constructor: function(config) {
         
         //setVisible(true) for floating panel doesn't work without this fix
         //http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
@@ -28,8 +28,8 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
         this.setvisTimeoutId = null;
 
-        this.animationControlsPanel = new Portal.details.AnimationControlsPanel();
-
+        this.animationControlsPanel = new Portal.details.AnimationControlsPanel(config);
+        
         this.controlButtonPanel = new Ext.Panel({
 
             bodyStyle:'padding: 6px; margin: 2px;',
