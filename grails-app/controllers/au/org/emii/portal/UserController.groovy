@@ -9,7 +9,6 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-import org.apache.shiro.SecurityUtils
 
 class UserController {
 
@@ -35,21 +34,10 @@ class UserController {
 
         if ( userInstance.save( flush: true ) ) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
-            redirect(action: "show", id: userInstance.id)
+            redirect(action: "list" )
         }
         else {
             render(view: "create", model: [userInstance: userInstance])
-        }
-    }
-
-    def show = {
-        def userInstance = User.get(params.id)
-        if (!userInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
-            redirect(action: "list")
-        }
-        else {
-            [userInstance: userInstance]
         }
     }
 
@@ -72,7 +60,7 @@ class UserController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (userInstance.version > version) {
-                    
+
                     userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated this User while you were editing")
                     render(view: "edit", model: [userInstance: userInstance])
                     return
@@ -81,7 +69,7 @@ class UserController {
             userInstance.properties = params
             if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
-                redirect(action: "show", id: userInstance.id)
+                redirect(action: "list" )
             }
             else {
                 render(view: "edit", model: [userInstance: userInstance])
@@ -103,7 +91,7 @@ class UserController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
-                redirect(action: "show", id: params.id)
+                redirect(action: "list" )
             }
         }
         else {

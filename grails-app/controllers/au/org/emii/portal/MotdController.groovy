@@ -34,21 +34,10 @@ class MotdController {
 
         if (motdInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
-            redirect(action: "show", id: motdInstance.id)
+            redirect(action: "list" )
         }
         else {
             render(view: "create", model: [motdInstance: motdInstance])
-        }
-    }
-
-    def show = {
-        def motdInstance = Motd.get(params.id)
-        if (!motdInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'motd.label', default: 'Motd'), params.id])}"
-            redirect(action: "list")
-        }
-        else {
-            [motdInstance: motdInstance]
         }
     }
 
@@ -78,7 +67,7 @@ class MotdController {
             motdInstance.properties = params
             if (!motdInstance.hasErrors() && motdInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
-                redirect(action: "show", id: motdInstance.id)
+                redirect(action: "list" )
             }
             else {
                 render(view: "edit", model: [motdInstance: motdInstance])
@@ -100,7 +89,7 @@ class MotdController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deletedFromConfig.message', args: [message(code: 'motd.label', default: 'Motd'), params.id])}"
-                redirect(action: "show", id: params.id)
+                redirect(action: "list" )
             }
         }
         else {
