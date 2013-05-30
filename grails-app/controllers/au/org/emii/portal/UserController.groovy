@@ -9,7 +9,6 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-import org.apache.shiro.SecurityUtils
 
 class UserController {
 
@@ -35,7 +34,7 @@ class UserController {
 
         if ( userInstance.save( flush: true ) ) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
-            redirect(action: "edit" )
+            redirect(action: "list" )
         }
         else {
             render(view: "create", model: [userInstance: userInstance])
@@ -61,7 +60,7 @@ class UserController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (userInstance.version > version) {
-                    
+
                     userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated this User while you were editing")
                     render(view: "edit", model: [userInstance: userInstance])
                     return

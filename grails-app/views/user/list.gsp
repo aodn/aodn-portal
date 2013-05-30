@@ -47,10 +47,7 @@
                     <tbody>
                     <g:each in="${userInstanceList}" status="i" var="userInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
 
-
-                            <!--td>${fieldValue(bean: userInstance, field: "fullName")}</td-->
                             <td><g:link action="edit" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "fullName")}</g:link></td>
 
                             <td>${fieldValue(bean: userInstance, field: "emailAddress")}</td>
@@ -60,8 +57,6 @@
                             <td>${fieldValue(bean: userInstance, field: "openIdUrl")}</td>
 
                             <td>${fieldValue(bean: userInstance, field: "id")}</td>
-                            <!--td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "id")}</g:link></td-->
-
 
                         </tr>
                     </g:each>
