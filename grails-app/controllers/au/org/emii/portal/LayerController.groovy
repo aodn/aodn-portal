@@ -399,7 +399,7 @@ class LayerController {
                             if(linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
                             // Overcome the case where the URL is valid but has no description
                             if (!linkText) {
-                                linkText = linkUrl
+                                linkText = "Unnamed resource"
                             }
                             html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
                         }
