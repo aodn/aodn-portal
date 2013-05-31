@@ -13,6 +13,7 @@ import grails.converters.JSON
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
+import org.springframework.web.util.HtmlUtils
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -383,18 +384,27 @@ class LayerController {
                     //TODO: Validate schema before proceeding
 
                     //Extract Abstract and resource links
-                    def abstractText = xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
+                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
                     def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
-                    //TODO: transform to html in a better way. e.g. xslt
-                    def html = "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>"
+                    def html = "<!DOCTYPE html>\n"
+                    html += "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>\n"
+
+                    html += "<ul>\n"
                     onlineResourcesList.each {
                         if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
-                            def linkText = it.CI_OnlineResource.description.CharacterString.text()
+                            def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-                            html += "<a href=${linkUrl} target=\"_blank\">${linkText}</a><BR>"
+                            def linkExternal = ""
+                            if(linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
+                            // Overcome the case where the URL is valid but has no description
+                            if (!linkText) {
+                                linkText = "<i>Unnamed Resource</i>"
+                            }
+                            html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
                         }
                     }
+                    html += "</ul>"
 
                     responseText = html
                 }
