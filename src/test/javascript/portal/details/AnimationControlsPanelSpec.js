@@ -10,9 +10,15 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
     var animationControlsPanel;
     var openLayer;
+    var timeControl;
 
     beforeEach(function() {
-        animationControlsPanel = new Portal.details.AnimationControlsPanel();
+        timeControl = new OpenLayers.Control.Time();
+        timeControl.onTick = function() {};
+        
+        animationControlsPanel = new Portal.details.AnimationControlsPanel({
+            timeControl: timeControl
+        });
         openLayer = new OpenLayers.Layer.WMS(
             "the title",
             "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
@@ -33,7 +39,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
     });
 
-
     describe("slowDown button", function() {
         it("doubles 'speed' and starts animation", function() {
 
@@ -45,7 +50,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         });
     });
-
 
     describe("_getNewTimeValue", function() {
 		it("select default if old time doesn't exist", function() {
@@ -69,7 +73,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 	});
 
 	describe("_onDateSelected", function() {
-
 
 		it("should, if there is only one time available, select it", function() {
 			var startDatePicker = new Ext.form.DateField({
@@ -229,8 +232,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
     });
 
-
-
     describe('animatedLayer', function() {
         it("removes slide after parent layer is removed", function() {
             var map = new OpenLayers.Map('map');
@@ -262,15 +263,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
     describe('time control', function() {
 
-        var timeControl;
         var animatedLayers;
         
         beforeEach(function() {
-            timeControl = new OpenLayers.Control.Time();
-            animationControlsPanel = new Portal.details.AnimationControlsPanel({
-                timeControl: timeControl
-            });
-
             // mock out unrelated functions.
             animationControlsPanel._getFormDates = function() { return [{}, {}] };
             animationControlsPanel._waitForOriginalLayer = function() {};
@@ -291,6 +286,33 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('initialisation', function() {
             expect(animationControlsPanel.timeControl).toBe(timeControl);
         });
+
+        it('on selectedLayerChanged, configureForLayer is not called for WMS layer', function() {
+            spyOn(timeControl, 'configureForLayer');
+            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+            expect(timeControl.configureForLayer).not.toHaveBeenCalled();
+        });
+        
+        it('on selectedLayerChanged, configureForLayer is called for NcWMS layer', function() {
+            spyOn(timeControl, 'configureForLayer');
+
+            var temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
+            var ncWmsLayer = new OpenLayers.Layer.NcWMS(
+                'some NcWMS layer',
+                'http://some.url',
+                {},
+                {},
+                temporalExtent
+            );
+            ncWmsLayer.dimensions = [{
+                'name': 'time',
+                'extent': temporalExtent
+            }];
+
+            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+            expect(timeControl.configureForLayer).toHaveBeenCalledWith(ncWmsLayer, 10);
+        });
+        
         
         it('on play, time.play is called', function() {
             spyOn(timeControl, 'play');
