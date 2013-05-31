@@ -52,7 +52,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                     var ret = "";
                     // todo remove this horrible hack when the df is truely gone
                     if (values.href.indexOf("df.arcs.org.au") < 0) {
-                        ret += "<a href=\"" + values.href + "\" title=\"" + values.title + "\" >" + values.title + " (" + this.getSimpleType(values.type) + ")</a>";
+                        ret += "<i>" + values.title + "</i> (" + this.getSimpleType(values.type) + ")<br/>";
                     }
                     else {
                         ret += OpenLayers.i18n("unavailableDataLink");

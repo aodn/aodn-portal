@@ -39,17 +39,6 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
                 this.on('afterlayout', this._delayedAddFirstLayer);
             }
         }, this);
-
-        Ext.MsgBus.subscribe('hideLayerDetailsCheck', function (subject, checkBox) {
-            if (checkBox.checked) {
-                this.hideLayerDetailsChecked = true;
-                this.collapse();
-            }
-            else {
-                this.hideLayerDetailsChecked = false;
-                this.expand();
-            }
-        }, this);
 	},
 
     initComponent: function() {
@@ -61,17 +50,8 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
         Portal.ui.RightDetailsPanel.superclass.initComponent.call(this);
     },
 
-    expand: function(animate) {
-        if (this.hideLayerDetailsChecked) {
-            return this;
-        }
-        return Portal.ui.RightDetailsPanel.superclass.expand.call(this, arguments);
-    },
-
     _delayedAddFirstLayer: function() {
         this.un('afterlayout', this._delayedAddFirstLayer);
-        // The panel believes it is expanded so we have to trick it into thinking it's collapsed
-        this.collapse(false);
         this.update(this.selectedLayer);
     },
 
@@ -92,23 +72,16 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
     		
     		this.text = openlayer.name;
     		this.setTitle(openlayer.name);
-    		if (this.hideLayerDetailsChecked) {
-                this.collapse(true);
-    		}
-            else {
-                this.detailsPanelItems.updateDetailsPanel(openlayer);
-                this.expand();
-    		}
+            this.detailsPanelItems.updateDetailsPanel(openlayer);
 		}
 		else {
-		    this.collapseAndHide();
+		    this.setNoActiveLayersMessage();
+
 		}
 	},
 
-	// call only when there are no layers in the map
-	collapseAndHide : function() {
-		this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
-		this.collapse(true);
-		this.detailsPanelItems.hideDetailsPanelContents();
-	}
+    setNoActiveLayersMessage: function() {
+        this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
+        this.detailsPanelItems.hideDetailsPanelContents();
+    }
 });

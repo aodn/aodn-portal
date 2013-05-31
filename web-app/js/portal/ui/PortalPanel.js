@@ -23,7 +23,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',
 			collapsible: true,
-			collapsed: true,
+			collapsed: false,
 			stateful: false
 		});
 
