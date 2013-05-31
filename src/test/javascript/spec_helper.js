@@ -7,3 +7,8 @@
 
 Ext.MessageBox.alert = function () {
 };
+
+
+//overwrite Ext.Ajax.request so it doesn't try to make requests.
+Ext.Ajax.request = function(options) {
+}
