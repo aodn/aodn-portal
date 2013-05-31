@@ -33,14 +33,21 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     configureForLayer: function(layer, numTicksToUse) {
-        var layerExtentLength = layer.getTemporalExtent().length;
-        this.timer.setTickDateTimes(layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength));
 
-        // Update the map straight away.
-        this.onTick({
-            index: 0,
-            dateTime: this.timer.getStartDateTime()
-        });
+        if (layer instanceof OpenLayers.Layer.NcWMS) { 
+            var layerExtentLength = layer.getTemporalExtent().length;
+            this.timer.setTickDateTimes(
+                layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength));
+
+            // Update the map straight away.
+            this.onTick({
+                index: 0,
+                dateTime: this.timer.getStartDateTime()
+            });
+        }
+        else {
+            // error
+        }
     },
 
     CLASS_NAME: 'OpenLayers.Control.Time'

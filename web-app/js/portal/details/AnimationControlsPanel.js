@@ -49,6 +49,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
             if (openLayer) {
 
+                if (openLayer.isAnimatable()) {
+                    this.timeControl.configureForLayer(openLayer, 10);
+                }
+                
                 this.activeLayersPanelSelectedLayer = openLayer;
 
                 if (!this.isAnimating()) {
@@ -316,14 +320,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	_stopPlaying : function() {
         this.timeControl.stop();
-		clearTimeout(this.timerId);
-		this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
+
+//		clearTimeout(this.timerId);
+//		this.pausedTime = this.animatedLayers[this.counter].params["TIME"];
 		this._updateButtons(this.state.PAUSED);
 	},
 
 	_startPlaying : function() {
-		var dates = this._getFormDates();
-		this._waitForOriginalLayer(dates[0], dates[1]);
+//  		var dates = this._getFormDates();
+//		this._waitForOriginalLayer(dates[0], dates[1]);
         this._updateButtons(this.state.PLAYING);
 
         this.timeControl.play();
