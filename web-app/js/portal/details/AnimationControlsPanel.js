@@ -1000,18 +1000,18 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	getSelectedLayerTimeDimension : function() {
 
+        if (this.selectedLayer.timeDimension ) {
+            return this.selectedLayer.timeDimension;
+        }
+
 		if ((this.selectedLayer != undefined)
 				&& (this.selectedLayer.dimensions != undefined)) {
 			for (var i = 0; i < this.selectedLayer.dimensions.length; i++) {
 				if (this.selectedLayer.dimensions[i].name == "time") {
-
-                    if (this.selectedLayer.dimensions[i].uncompressedTimeExtent == undefined) {
-                        this.selectedLayer.dimensions[i].extent = expandExtendedISO8601Dates(this.selectedLayer.dimensions[i].extent);
-                        this.selectedLayer.dimensions[i].uncompressedTimeExtent = true;
-                    }
-
-					return this.selectedLayer.dimensions[i];
-				}
+                    this.selectedLayer.dimensions[i].extent = expandExtendedISO8601Dates(this.selectedLayer.dimensions[i].extent);
+                    this.selectedLayer.timeDimension =  this.selectedLayer.dimensions[i];
+                    return this.selectedLayer.timeDimension;
+                }
 			}
 		}
 		return null;
