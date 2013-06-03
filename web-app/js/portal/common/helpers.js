@@ -352,18 +352,19 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         var endDate = moment(iSO8601DateParts[1]);
 
         if (nextDate.isValid()) {
-            expandedDates.push(nextDate.format(format));
             // add dates + duration until equal the stop date
-            while (nextDate.isBefore(endDate)) {
-                nextDate = moment(nextDate.add(duration));
+            do {
                 expandedDates.push(nextDate.format(format));
+                nextDate = moment(nextDate.add(duration));
+            } while (nextDate.isBefore(endDate));
+            // always end with the last date
+            if(!endDate.isSame(nextDate)) {
+                expandedDates.push(endDate.format(format));
             }
-            expandedDates.push(endDate.format(format));
         }
-
     }
     else {
-        console.log('Date  not understood: ' + period);
+        console.log('Date not understood: ' + period);
     }
 
     return expandedDates.sort();
