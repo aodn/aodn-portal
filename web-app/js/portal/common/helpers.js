@@ -342,7 +342,7 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
     var iSO8601DateParts = extendedISO8601Date.split("/");
     var period = iSO8601DateParts[2];
-    var format = "YYYY-MM-DDThh:mm:ssZ";
+    var format = "YYYY-MM-DDTHH:mm:ssZ";
 
     // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
     if (period.indexOf( "P" ) == 0) {
