@@ -43,12 +43,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('time specified', function() {
-            ncwmsLayer.toTime(time);
+            ncwmsLayer.toNearestTime(time);
             expect(ncwmsLayer.getURL(bounds).split('&')).toContain('TIME=' + time.utc().format('YYYY-MM-DDTHH:mm:ss'));
         });
 
         it('no time specified', function() {
-            ncwmsLayer.toTime(null);
+            ncwmsLayer.toNearestTime(null);
             expect(ncwmsLayer.getURL(bounds).split('&')).not.toContain('TIME=' + time.format());
         });
     });
@@ -96,9 +96,18 @@ describe("OpenLayers.Layer.NcWMS", function() {
         }
     });
 
+    describe('to time', function() {
+        it('redraw called when time is changed', function() {
+            spyOn(ncwmsLayer, 'redraw');
+            ncwmsLayer.toTime('2010-02-02T02:02:02');
+            expect(ncwmsLayer.redraw).toHaveBeenCalled();
+        });
+    });
+    
     describe('choose nearest available time', function() {
 
         it('no extent restriction', function() {
+            expect(ncwmsLayer.toNearestTime('2000-01-01T00:00:00Z')).toBeSame('2000-01-01T00:00:00Z');
             expect(ncwmsLayer.toTime('2000-01-01T00:00:00Z')).toBeSame('2000-01-01T00:00:00Z');
         });
 
@@ -108,22 +117,22 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                expect(ncwmsLayer.toTime('1900-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('1999-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('1900-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('1999-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
             });
 
             it ('around half way between two possible values', function() {
-                expect(ncwmsLayer.toTime('2000-01-01T00:15:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:15:01.000Z')).toBeSame('2000-01-01T00:30:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:15:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:15:01.000Z')).toBeSame('2000-01-01T00:30:00.000Z');
             });
 
             it ('around last date/time', function() {
-                expect(ncwmsLayer.toTime('2000-01-01T01:00:00.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:59:59.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(ncwmsLayer.toTime('2010-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T01:00:00.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:59:59.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2010-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
             });
         });
 
@@ -137,23 +146,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                expect(ncwmsLayer.toTime('1900-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('1999-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('1900-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('1999-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
             });
 
             it('around half way between two possible values', function() {
-                expect(ncwmsLayer.toTime('2000-01-01T11:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-01T12:00:01.000Z')).toBeSame('2000-01-02T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T11:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T12:00:01.000Z')).toBeSame('2000-01-02T00:00:00.000Z');
             });
 
             it('around last date/time', function() {
-                expect(ncwmsLayer.toTime('2000-01-02T23:59:59.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2000-01-03T00:00:01.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(ncwmsLayer.toTime('2010-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-02T23:59:59.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-03T00:00:01.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2010-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
             });
 
             it('unordered date/times', function() {
@@ -163,7 +172,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                     '2000-01-02T00:00:00.000Z'
                 ]);
 
-                expect(ncwmsLayer.toTime('2000-01-02T01:00:00.000Z')).toBeSame('2000-01-02T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-02T01:00:00.000Z')).toBeSame('2000-01-02T00:00:00.000Z');
             });
 
             it('unordered date/times with earlier date given later in array', function() {
@@ -173,7 +182,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                     '2000-01-03T00:00:00.000Z'
                 ]);
 
-                expect(ncwmsLayer.toTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(ncwmsLayer.toNearestTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
             });
         });
     });

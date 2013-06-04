@@ -50,7 +50,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return url;
     },
 
-    toTime: function(dateTime) {
+    toNearestTime: function(dateTime) {
 
         // No extent restriction.
         if (!this.temporalExtent || this.temporalExtent.length == 0) {
@@ -80,6 +80,19 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             this.time = closestDateTime;
         }
 
+        return this.time;
+    },
+
+    toTime: function(dateTime) {
+        this.time = dateTime;
+
+        var existingEvents = this.events;
+        this.events = new OpenLayers.Events(this, this.div, 
+                                            this.EVENT_TYPES);
+
+        this.redraw();
+        this.events = existingEvents;
+        
         return this.time;
     },
 
