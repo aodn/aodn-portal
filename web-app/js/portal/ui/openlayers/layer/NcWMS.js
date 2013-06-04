@@ -86,6 +86,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     toTime: function(dateTime) {
         this.time = dateTime;
 
+        // We do the following so that loadstart/loadend events aren't triggered (which would cause the
+        // "Layer Loading..." popup to be continually displayed).
         var existingEvents = this.events;
         this.events = new OpenLayers.Events(this, this.div, 
                                             this.EVENT_TYPES);
