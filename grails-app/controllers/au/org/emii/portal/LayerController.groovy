@@ -10,6 +10,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
+import groovy.time.TimeCategory
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
@@ -508,11 +509,13 @@ class LayerController {
     }
 
     def _isServerCollectable(server1, server2) {
-        return server2 && (!server1 || server1 != server2)
+
+	    return server2 && (!server1 || server1 != server2)
     }
 
     def _toResponseMap(data, total) {
-        return [data: data, total: total]
+
+	    return [data: data, total: total]
     }
 
     def _convertLayersToListOfMaps(layers) {
@@ -593,8 +596,17 @@ class LayerController {
     }
 
     def _recache(server) {
+
+	    def serverStart = new Date()
         server.recache(MenuJsonCache.instance())
+
+	    def menuStart = new Date()
         Config.recacheDefaultMenu()
+
+	    use (TimeCategory) {
+		    log.debug "Server recache took: ${menuStart - serverStart}"
+		    log.debug "Menu recache took:   ${new Date() - menuStart}"
+	    }
     }
 
     def getFiltersAsJSON = {
