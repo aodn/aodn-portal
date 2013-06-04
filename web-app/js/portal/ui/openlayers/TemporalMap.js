@@ -18,7 +18,6 @@ OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
 
             if (layer.toTime) {
                 layer.toTime(dateTime);
-                layer.redraw();
             }
         }
     },
