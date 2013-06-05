@@ -157,8 +157,15 @@ class Menu {
 	}
 
 	def _cache(theCache, displayableMenu) {
-		theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
-			displayableMenu as JSON
-		}.toString())
+        try {
+            theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
+                displayableMenu as JSON
+            }.toString())
+        }
+        catch(java.lang.NoSuchFieldException e){
+            //NoSuchFieldException getting thrown is a known problem with grails 1.3.7
+            //try/catch block added so we don't have meaningless exceptions in our logs
+            //see http://stackoverflow.com/questions/14510805/grails-1-3-7-java-7-compatibility
+        }
 	}
 }
