@@ -237,6 +237,8 @@ describe("OpenLayers.Timer", function() {
         });
     });
 
+    // TODO: see http://pivotal.github.io/jasmine/#section-Mocking_the_JavaScript_Clock re mocking
+    // the JavaScript clock, and making these tests more deterministic.
     describe("tick events", function() {
 
         it("tick date/times", function() {
