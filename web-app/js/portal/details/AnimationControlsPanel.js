@@ -341,6 +341,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
+        this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
     },
     
 	_onDateSelected : function(field, date) {
