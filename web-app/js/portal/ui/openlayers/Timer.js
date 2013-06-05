@@ -139,26 +139,43 @@ OpenLayers.Timer = OpenLayers.Class({
 
         // Send one straight away.
         this.onTick(this.currTickIndex);
+        this._setTimeout();
+    },
 
+    _setTimeout: function() {
         var self = this;
 
-        this.intervalRef = window.setInterval(function() {
+        var callbackWrapper = function() {
             self.tickForward();
-        }, this.tickInterval.asMilliseconds());
+            self.intervalRef = window.setTimeout(callbackWrapper, self.tickInterval.asMilliseconds());
+        };
+        
+        this.intervalRef = window.setTimeout(callbackWrapper, this.tickInterval.asMilliseconds());
     },
 
     stop: function() {
         if (this.intervalRef) {
-            clearInterval(this.intervalRef);
+            this._clearTimeout();
         }
     },
 
+    _clearTimeout: function() {
+        clearTimeout(this.intervalRef);
+    },
+
+    _resetTimeout: function() {
+        this._clearTimeout();
+        this._setTimeout();
+    },
+    
     doubleFrequency: function() {
         this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() / 2);
+        this._resetTimeout();
     },
 
     halveFrequency: function() {
         this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() * 2);
+        this._resetTimeout();
     },
     
     CLASS_NAME: "OpenLayers.Timer"
