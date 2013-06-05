@@ -71,6 +71,7 @@ describe("OpenLayers.Control.Time", function() {
         });
 
         it('on stop, timer is stopped', function() {
+            timeControl.state = timeControl.STATES.PLAYING;
             timeControl.stop();
             expect(timeControl.timer.stop).toHaveBeenCalled();
         });
@@ -79,6 +80,41 @@ describe("OpenLayers.Control.Time", function() {
             timeControl.play();   // Observer will now be registered.
             timeControl.stop();
             expect(timeControl.timer.observers['tick']).toBeFalsy();
+        });
+        
+        describe('various play/stop sequences testing that calls in to Timer are made only when necessary', function() {
+            it('play, play, timer start called only once', function() {
+                timeControl.play();
+                timeControl.play();
+                expect(timeControl.timer.start.callCount).toEqual(1);
+            });
+
+            it('stop', function() {
+                timeControl.stop();
+                expect(timeControl.timer.stop).not.toHaveBeenCalled();
+            });
+
+            it('play, stop, stop', function() {
+                timeControl.play();
+                timeControl.stop();
+                expect(timeControl.timer.stop.callCount).toEqual(1);
+                timeControl.stop();
+                expect(timeControl.timer.stop.callCount).toEqual(1);
+            });
+
+            it('play, stop, play', function() {
+                timeControl.play();
+                expect(timeControl.timer.start.callCount).toEqual(1);
+                expect(timeControl.timer.stop.callCount).toEqual(0);
+                
+                timeControl.stop();
+                expect(timeControl.timer.start.callCount).toEqual(1);
+                expect(timeControl.timer.stop.callCount).toEqual(1);
+                
+                timeControl.play();
+                expect(timeControl.timer.start.callCount).toEqual(2);
+                expect(timeControl.timer.stop.callCount).toEqual(1);
+            });
         });
     });
 
