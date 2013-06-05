@@ -153,5 +153,13 @@ OpenLayers.Timer = OpenLayers.Class({
         }
     },
 
+    doubleFrequency: function() {
+        this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() / 2);
+    },
+
+    halveFrequency: function() {
+        this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() * 2);
+    },
+    
     CLASS_NAME: "OpenLayers.Timer"
 });

@@ -42,6 +42,14 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
+    speedUp: function() {
+        this.timer.doubleFrequency();
+    },
+
+    slowDown: function() {
+        this.timer.halveFrequency();
+    },
+
     onTick: function(tickEvent) {
         this.map.toTime(tickEvent.dateTime);
     },
