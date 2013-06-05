@@ -362,6 +362,45 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
     });
 
+    describe('timechanged event handling', function() {
+
+        var map;
+        
+        beforeEach(function() {
+            map = new OpenLayers.TemporalMap('map');
+
+            animationControlsPanel.setMap(map);
+
+        });
+
+        it('onTimeChanged callback', function() {
+            spyOn(animationControlsPanel, '_onTimeChanged');
+            
+            // TODO: investigate why this has to be called again (otherwise
+            // the above spy doesn't seem to have any effect).
+            animationControlsPanel.setMap(map);  
+
+            var dateTime = moment();
+            map.toTime(dateTime);
+
+            expect(animationControlsPanel._onTimeChanged).toHaveBeenCalledWith(dateTime);
+        });
+
+        it('slider updated on timeChanged', function() {
+            timeControl.getStep = function() {
+                return 5;
+            }
+
+            expect(animationControlsPanel.stepSlider.getValue()).not.toBe(5);
+            map.toTime(moment());
+            expect(animationControlsPanel.stepSlider.getValue()).toBe(5);
+        });
+
+        // slider updated.
+
+        // labels updated.
+    });
+/**
     describe('slider', function() {
        // slider.minValue;
         //slider.maxValue;
@@ -375,4 +414,5 @@ describe("Portal.details.AnimationControlsPanel", function() {
     describe('calendar options', function() {
         // TODO
     });
+*/
 });

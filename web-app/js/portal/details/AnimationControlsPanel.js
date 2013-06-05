@@ -312,6 +312,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		// but hopefully this will vanish when animation is refactored.
 		this.map = theMap;
         this.map.events.register('moveend', this, this._onMove);
+        this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
 	_togglePlay : function(button, event) {
@@ -338,7 +339,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.timeControl.play();
 	},
 
-
+    _onTimeChanged: function(dateTime) {
+        this.stepSlider.setValue(this.timeControl.getStep());
+    },
+    
 	_onDateSelected : function(field, date) {
 			var key = this._toDateString(date);
 
