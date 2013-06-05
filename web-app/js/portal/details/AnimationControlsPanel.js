@@ -104,6 +104,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						'click' : function(button, event) {
                             this.speed=this.speed / 2;
                             this._startPlaying();
+                            this.timeControl.speedUp();
 						}
 					},
 					tooltip : OpenLayers.i18n('speedUp')
@@ -117,6 +118,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						'click' : function(button, event) {
 							this.speed = this.speed * 2;
                             this._startPlaying();
+                            this.timeControl.slowDown();
 						}
 					},
 					tooltip : OpenLayers.i18n('slowDown')

@@ -335,6 +335,18 @@ describe("Portal.details.AnimationControlsPanel", function() {
             animationControlsPanel.playButton.fireEvent('click');
             expect(timeControl.stop).toHaveBeenCalled();
         });
+
+        it('on speed up, time.speedUp is called', function() {
+            spyOn(timeControl, 'speedUp');
+            animationControlsPanel.speedUp.fireEvent('click');
+            expect(timeControl.speedUp).toHaveBeenCalled();
+        });
+
+        it('on slow down, time.slowDown is called', function() {
+            spyOn(timeControl, 'slowDown');
+            animationControlsPanel.slowDown.fireEvent('click');
+            expect(timeControl.slowDown).toHaveBeenCalled();
+        });
     });
 
     describe('slider', function() {
