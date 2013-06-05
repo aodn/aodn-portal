@@ -22,7 +22,7 @@ OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
             }
         }
 
-        this.events.triggerEvent('timechanged');
+        this.events.triggerEvent('timechanged', dateTime);
     },
 
     CLASS_NAME: "OpenLayers.TemporalMap"
