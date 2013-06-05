@@ -118,6 +118,20 @@ describe("OpenLayers.Control.Time", function() {
         });
     });
 
+    describe('speedUp/slowDown', function() {
+        it('speed up causes timer double frequency to be called', function() {
+            spyOn(timeControl.timer, 'doubleFrequency');
+            timeControl.speedUp();
+            expect(timeControl.timer.doubleFrequency).toHaveBeenCalled();
+        });
+
+        it('slow down causes timer halve frequency to be called', function() {
+            spyOn(timeControl.timer, 'halveFrequency');
+            timeControl.slowDown();
+            expect(timeControl.timer.halveFrequency).toHaveBeenCalled();
+        });
+    });
+    
     describe('configure with NcWMS layer', function() {
 
         var extent = [

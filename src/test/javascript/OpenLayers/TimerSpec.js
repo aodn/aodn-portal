@@ -309,4 +309,18 @@ describe("OpenLayers.Timer", function() {
             timer.start();
         });
     });
+
+    describe('double/halve frequency', function() {
+        it('doubleFrequency causes interval to halve', function() {
+            var origIntervalMs = timer.tickInterval.asMilliseconds();
+            timer.doubleFrequency();
+            expect(timer.tickInterval.asMilliseconds()).toBe(origIntervalMs / 2);
+        });
+        
+        it('halveFrequency causes interval to double', function() {
+            var origIntervalMs = timer.tickInterval.asMilliseconds();
+            timer.halveFrequency();
+            expect(timer.tickInterval.asMilliseconds()).toBe(origIntervalMs * 2);
+        });
+    });
 });
