@@ -323,6 +323,8 @@ class LayerController {
         }
 
         try {
+	        def startTime = new Date()
+
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
@@ -345,20 +347,16 @@ class LayerController {
             server.updateOperations serverCapabilities.operations
 
             server.lastScanDate = new Date()
-
-	        log.debug "Before save"
-
             server.save( failOnError: true )
 
-	        log.debug "After save, before render success message"
+	        use(TimeCategory) {
+
+		        log.debug "saveOrUpdate() on '$server' took ${new Date() - startTime}"
+	        }
 
             render status: 200, text: "Complete (saved)"
 
-	        log.debug "After render. Before _recache(server)"
-
             _recache(server)
-
-	        log.debug "Recache complete"
         }
         catch (Exception e) {
 
@@ -597,16 +595,8 @@ class LayerController {
 
     def _recache(server) {
 
-	    def serverStart = new Date()
         server.recache(MenuJsonCache.instance())
-
-	    def menuStart = new Date()
         Config.recacheDefaultMenu()
-
-	    use (TimeCategory) {
-		    log.debug "Server recache took: ${menuStart - serverStart}"
-		    log.debug "Menu recache took:   ${new Date() - menuStart}"
-	    }
     }
 
     def getFiltersAsJSON = {
