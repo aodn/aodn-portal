@@ -5,9 +5,10 @@
  *
  */
 OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
-    
+
     initialize: function(div, options) {
-    
+
+        this.EVENT_TYPES.push('timechanged');
         OpenLayers.Map.prototype.initialize.apply(this, arguments);
     },
 
@@ -20,6 +21,8 @@ OpenLayers.TemporalMap = OpenLayers.Class(OpenLayers.Map, {
                 layer.toTime(dateTime);
             }
         }
+
+        this.events.triggerEvent('timechanged');
     },
 
     CLASS_NAME: "OpenLayers.TemporalMap"

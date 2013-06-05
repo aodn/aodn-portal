@@ -13,7 +13,7 @@ describe("OpenLayers.TemporalMap", function() {
     });
 
     describe('toTime', function() {
-        it("toTime called on layers ncWMS layers but not others", function() {
+        it('toTime called on layers ncWMS layers but not others', function() {
             var ncWmsLayer = new OpenLayers.Layer.NcWMS();
             var nonNcWmsLayer = new OpenLayers.Layer.WMS();
 
@@ -25,6 +25,16 @@ describe("OpenLayers.TemporalMap", function() {
             map.toTime(theDateTime);
             
             expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime) 
+        });
+
+        it('timechanged event when toTime is called', function() {
+            var timechangedCallbackCalled = false;
+            map.events.on({
+                'timechanged': function() { timechangedCallbackCalled = true; }
+            });
+            
+            map.toTime(moment());
+            expect(timechangedCallbackCalled).toBeTruthy();
         });
     });
 });
