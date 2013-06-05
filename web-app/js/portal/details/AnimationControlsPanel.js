@@ -51,6 +51,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
                 if (openLayer.isAnimatable()) {
                     this.timeControl.configureForLayer(openLayer, 10);
+                    this.stepSlider.setMinValue(0);
+                    this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
                 }
                 
                 this.activeLayersPanelSelectedLayer = openLayer;

@@ -261,6 +261,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
     });
 
+    // Post refactor tests... ones above can probably be deleted when refactor is complete.
     describe('time control', function() {
 
         var animatedLayers;
@@ -287,33 +288,45 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(animationControlsPanel.timeControl).toBe(timeControl);
         });
 
-        it('on selectedLayerChanged, configureForLayer is not called for WMS layer', function() {
-            spyOn(timeControl, 'configureForLayer');
-            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
-            expect(timeControl.configureForLayer).not.toHaveBeenCalled();
-        });
-        
-        it('on selectedLayerChanged, configureForLayer is called for NcWMS layer', function() {
-            spyOn(timeControl, 'configureForLayer');
+        describe('on selectedLayerChanged', function() {
 
-            var temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
-            var ncWmsLayer = new OpenLayers.Layer.NcWMS(
-                'some NcWMS layer',
-                'http://some.url',
-                {},
-                {},
-                temporalExtent
-            );
-            ncWmsLayer.dimensions = [{
-                'name': 'time',
-                'extent': temporalExtent
-            }];
+            var temporalExtent;
+            var ncWmsLayer;
 
-            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
-            expect(timeControl.configureForLayer).toHaveBeenCalledWith(ncWmsLayer, 10);
+            beforeEach(function() {
+                temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
+                ncWmsLayer = new OpenLayers.Layer.NcWMS(
+                    'some NcWMS layer',
+                    'http://some.url',
+                    {},
+                    {},
+                    temporalExtent
+                );
+                ncWmsLayer.dimensions = [{
+                    'name': 'time',
+                    'extent': temporalExtent
+                }];
+            });
+            
+            it('configureForLayer is not called for WMS layer', function() {
+                spyOn(timeControl, 'configureForLayer');
+                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                expect(timeControl.configureForLayer).not.toHaveBeenCalled();
+            });
+            
+            it('configureForLayer is called for NcWMS layer', function() {
+                spyOn(timeControl, 'configureForLayer');
+                Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+                expect(timeControl.configureForLayer).toHaveBeenCalledWith(ncWmsLayer, 10);
+            });
+
+            it('slider updated', function() {
+                Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+                expect(animationControlsPanel.stepSlider.minValue).toBe(0);
+                expect(animationControlsPanel.stepSlider.maxValue).toBe(2);
+            });
         });
-        
-        
+            
         it('on play, time.play is called', function() {
             spyOn(timeControl, 'play');
             animationControlsPanel.playButton.fireEvent('click');
@@ -350,9 +363,15 @@ describe("Portal.details.AnimationControlsPanel", function() {
     });
 
     describe('slider', function() {
+       // slider.minValue;
+        //slider.maxValue;
         // TODO
     });
 
+    describe('labels', function() {
+        // TODO
+    });
+    
     describe('calendar options', function() {
         // TODO
     });
