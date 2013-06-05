@@ -239,27 +239,37 @@ describe("OpenLayers.Timer", function() {
 
     describe("tick events", function() {
 
+        var startTime;
+        var callbackTime;
+        var onTickCallback;
+
         beforeEach(function() {
             jasmine.Clock.useMock();
-
+            jasmine.Clock.reset();
+            
             this.addMatchers({
                 toHaveBeenCalledWithSame: function(expected) {
                     return (this.actual.argsForCall[this.actual.callCount - 1][0].index == expected.index)
                         && this.actual.argsForCall[this.actual.callCount - 1][0].dateTime.isSame(expected.dateTime);
                 }
             });
-        });
-
-        it('tick date/times', function() {
-            var onTickCallback = jasmine.createSpy('onTickCallback');
             
             // Use a local timer, otherwise this test and the next interfere with each other.
-            var timer = new OpenLayers.Timer({
+            timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:00:00',
                 endDateTime: '2013-03-06T12:30:00',
                 numTicks: 2
             });
-            
+
+            startTime = jasmine.Clock.defaultFakeTimer.nowMillis;
+            onTickCallback = jasmine.createSpy('onTickCallback').andCallFake(function() {
+                callbackTime = jasmine.Clock.defaultFakeTimer.nowMillis;
+            });
+
+            timer.on('tick', onTickCallback, this);
+        });
+
+        it('tick date/times', function() {
             var expectedDateTimes = [
                 '2013-03-06T12:00:00', '2013-03-06T12:30:00'];
 
@@ -299,40 +309,98 @@ describe("OpenLayers.Timer", function() {
         });
 
         it('tick elapsed duration', function() {
-            var timer = new OpenLayers.Timer({
-                startDateTime: '2013-03-06T12:00:00',
-                endDateTime: '2013-03-06T12:30:00',
-                numTicks: 2
-            });
-
-            var startTime = jasmine.Clock.defaultFakeTimer.nowMillis;
-            var callbackTime;
-            
-            var onTickCallback = jasmine.createSpy('onTickCallback').andCallFake(function() {
-                callbackTime = jasmine.Clock.defaultFakeTimer.nowMillis;
-            });
-
-            timer.on('tick', onTickCallback, this);
-
             timer.start();
-            expect(callbackTime).toBeSame(startTime);
+            expect(callbackTime).toBe(startTime);
 
             jasmine.Clock.tick(500);
             expect(callbackTime).toBe(startTime + 500);
         });
-    });
 
-    describe('double/halve frequency', function() {
         it('doubleFrequency causes interval to halve', function() {
             var origIntervalMs = timer.tickInterval.asMilliseconds();
             timer.doubleFrequency();
             expect(timer.tickInterval.asMilliseconds()).toBe(origIntervalMs / 2);
+        });
+
+        it('double frequency causes onTick call back to be called at twice the frequency', function() {
+            // 0ms
+            timer.start();
+            expect(callbackTime).toBe(0);
+            expect(onTickCallback.callCount).toBe(1);
+
+            // 250ms
+            jasmine.Clock.tick(250);
+            expect(callbackTime).toBe(0);
+            expect(onTickCallback.callCount).toBe(1);
+            
+            // 500ms
+            jasmine.Clock.tick(250);
+            expect(callbackTime).toBe(500);
+            expect(onTickCallback.callCount).toBe(2);
+
+            // double frequency.
+            timer.doubleFrequency();
+
+            // 749ms
+            jasmine.Clock.tick(249);
+            expect(callbackTime).toBe(500);
+            expect(onTickCallback.callCount).toBe(2);
+
+            // 750ms
+            jasmine.Clock.tick(1);
+            expect(callbackTime).toBe(750);
+            expect(onTickCallback.callCount).toBe(3);
+
+            // 999ms
+            jasmine.Clock.tick(249);
+            expect(callbackTime).toBe(750);
+            expect(onTickCallback.callCount).toBe(3);
+
+            // 1000ms
+            jasmine.Clock.tick(1);
+            expect(callbackTime).toBe(1000);
+            expect(onTickCallback.callCount).toBe(4);
         });
         
         it('halveFrequency causes interval to double', function() {
             var origIntervalMs = timer.tickInterval.asMilliseconds();
             timer.halveFrequency();
             expect(timer.tickInterval.asMilliseconds()).toBe(origIntervalMs * 2);
+        });
+
+        it('halve frequency causes onTick call back to be called at half the frequency', function() {
+            // 0ms
+            timer.start();
+            expect(callbackTime).toBe(0);
+            expect(onTickCallback.callCount).toBe(1);
+            
+            // 500ms
+            jasmine.Clock.tick(500);
+            expect(callbackTime).toBe(500);
+            expect(onTickCallback.callCount).toBe(2);
+
+            // half frequency
+            timer.halveFrequency();
+
+            // 1000ms
+            jasmine.Clock.tick(500);
+            expect(callbackTime).toBe(500);
+            expect(onTickCallback.callCount).toBe(2);
+            
+            // 1499ms
+            jasmine.Clock.tick(499);
+            expect(callbackTime).toBe(500);
+            expect(onTickCallback.callCount).toBe(2);
+
+            // 1500ms
+            jasmine.Clock.tick(1);
+            expect(callbackTime).toBe(1500);
+            expect(onTickCallback.callCount).toBe(3);
+
+            // 1501ms
+            jasmine.Clock.tick(1);
+            expect(callbackTime).toBe(1500);
+            expect(onTickCallback.callCount).toBe(3);
         });
     });
 });
