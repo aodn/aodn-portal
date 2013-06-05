@@ -6,6 +6,13 @@
  */
 OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
+	STATES : {
+		PLAYING : 'PLAYING',
+		STOPPED: 'STOPPED'
+	},
+
+    state: null,
+    
     /**
      * The timer generates 'tick' events given a date range and a frequency.
      */
@@ -14,18 +21,25 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     initialize: function(options) {
 
         this.timer = new OpenLayers.Timer(options);
-
+        this.state = this.STATES.STOPPED;
+        
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
     },
 
     play: function() {
-        this.timer.on('tick', this.onTick, this);
-        this.timer.start()
+        if (this.state != this.STATES.PLAYING) {
+            this.state = this.STATES.PLAYING;
+            this.timer.on('tick', this.onTick, this);
+            this.timer.start()
+        }
     },
 
     stop: function() {
-        this.timer.stop();
-        this.timer.on('tick', undefined);
+        if (this.state != this.STATES.STOPPED) {
+            this.timer.stop();
+            this.timer.on('tick', undefined);
+            this.state = this.STATES.STOPPED;
+        }
     },
 
     onTick: function(tickEvent) {
