@@ -10,6 +10,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.LayerPresenter
 import grails.converters.JSON
+import groovy.time.TimeCategory
 import org.apache.commons.codec.binary.Base64
 
 class Server {
@@ -149,13 +150,21 @@ class Server {
 	}
 
 	def recache(cache) {
+
+		def startTime = new Date()
+
 		def result = cache.get(this)
 		if (result) {
 			cache.add(this, toServerLayerJson())
 		}
+
+		use(TimeCategory) {
+			log.debug "recache() on '$this' took ${new Date() - startTime}"
+		}
 	}
 
 	def toServerLayerJson() {
+
 		def criteria = Layer.createCriteria()
 		def layerDescriptors = criteria.list() {
 			isNull 'parent'
