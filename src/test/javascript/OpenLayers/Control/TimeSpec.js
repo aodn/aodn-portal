@@ -165,5 +165,13 @@ describe("OpenLayers.Control.Time", function() {
                 dateTime: moment('2001-01-03T00:00')
             });
         });
+
+        it('returns animated extent', function() {
+            timeControl.configureForLayer(ncwmsLayer, 2);
+            expect(timeControl.getExtent()).toBeSame([
+                '2001-01-04T00:00',
+                '2001-01-05T00:00'
+            ]);
+        });
     });
 });

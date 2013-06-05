@@ -67,8 +67,11 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
                 dateTime: this.timer.getStartDateTime()
             });
         }
-        else {
-            // error
+    },
+
+    getExtent: function() {
+        if (this.timer) {
+            return this.timer.tickDateTimes;
         }
     },
 
