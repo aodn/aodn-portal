@@ -237,76 +237,88 @@ describe("OpenLayers.Timer", function() {
         });
     });
 
-    // TODO: see http://pivotal.github.io/jasmine/#section-Mocking_the_JavaScript_Clock re mocking
-    // the JavaScript clock, and making these tests more deterministic.
     describe("tick events", function() {
 
-        it("tick date/times", function() {
+        beforeEach(function() {
+            jasmine.Clock.useMock();
 
-            var numTicksToListenFor = 4;
+            this.addMatchers({
+                toHaveBeenCalledWithSame: function(expected) {
+                    return (this.actual.argsForCall[this.actual.callCount - 1][0].index == expected.index)
+                        && this.actual.argsForCall[this.actual.callCount - 1][0].dateTime.isSame(expected.dateTime);
+                }
+            });
+        });
 
+        it('tick date/times', function() {
+            var onTickCallback = jasmine.createSpy('onTickCallback');
+            
             // Use a local timer, otherwise this test and the next interfere with each other.
             var timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:00:00',
-                endDateTime: '2013-03-06T13:00:00',
-                numTicks: 3
+                endDateTime: '2013-03-06T12:30:00',
+                numTicks: 2
             });
             
-            var numTicksSoFar = 0;
             var expectedDateTimes = [
-                '2013-03-06T12:00:00', '2013-03-06T12:30:00', '2013-03-06T13:00:00', '2013-03-06T12:00:00'];
+                '2013-03-06T12:00:00', '2013-03-06T12:30:00'];
 
-            // TODO: refactor this fragment (it's used below, the only thing that's different is the
-            // expectation).
-            timer.on('tick', function(tick) {
-                var expectedUnixTime = moment(expectedDateTimes[numTicksSoFar]).valueOf();
-                var actualUnixTime = tick.dateTime.valueOf();
-                console.log("comparing actual/expected", actualUnixTime, expectedUnixTime);
-                expect(actualUnixTime).toEqual(expectedUnixTime);
-                
-                numTicksSoFar++;
+            // 0ms elasped
+            timer.on('tick', onTickCallback, this);
+            expect(onTickCallback).not.toHaveBeenCalled();
 
-                if (numTicksSoFar == numTicksToListenFor) {
-                    timer.stop();
-                }
+            timer.start();
+            expect(onTickCallback).toHaveBeenCalledWith({
+                index: 0,
+                dateTime: moment(expectedDateTimes[0])
             });
             
-            timer.start();
+            jasmine.Clock.tick(499);
+            // 499ms elapsed
+            expect(onTickCallback.callCount).toEqual(1);
+            
+            jasmine.Clock.tick(1);
+            // 500ms elapsed
+            expect(onTickCallback).toHaveBeenCalledWithSame({
+                index: 1,
+                dateTime: moment(expectedDateTimes[1])
+            });
+            expect(onTickCallback.callCount).toEqual(2);
+
+            jasmine.Clock.tick(499);
+            // 999ms elapsed
+            expect(onTickCallback.callCount).toEqual(2);
+
+            jasmine.Clock.tick(1);
+            // 1000ms elapsed
+            expect(onTickCallback).toHaveBeenCalledWithSame({
+                index: 0,
+                dateTime: moment(expectedDateTimes[0])
+            });
+            expect(onTickCallback.callCount).toEqual(3);
         });
 
-        it("tick elapsed duration", function() {
-
-            var numTicksToListenFor = 20;
-
+        it('tick elapsed duration', function() {
             var timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:00:00',
-                endDateTime: '2013-03-06T13:00:00',
-                numTicks: 3
+                endDateTime: '2013-03-06T12:30:00',
+                numTicks: 2
             });
 
-            var tickIntervalMs = timer.tickInterval.asMilliseconds();
-            var numTicksSoFar = 0;
-            var referenceDateTime = moment().subtract(tickIntervalMs);
-            var tolerance = 1;
+            var startTime = jasmine.Clock.defaultFakeTimer.nowMillis;
+            var callbackTime;
             
-            timer.on('tick', function(tick) {
-
-                var now = moment();
-                var actualElapsedDateTime = now.diff(referenceDateTime);
-
-                console.log("expected", tickIntervalMs, "actual", actualElapsedDateTime);
-                
-                expect(Math.abs(actualElapsedDateTime - tickIntervalMs) < tolerance * tickIntervalMs).toBeTruthy();
-
-                referenceDateTime = now;
-                numTicksSoFar++;
-
-                if (numTicksSoFar == numTicksToListenFor) {
-                    timer.stop();
-                }
+            var onTickCallback = jasmine.createSpy('onTickCallback').andCallFake(function() {
+                callbackTime = jasmine.Clock.defaultFakeTimer.nowMillis;
             });
-            
+
+            timer.on('tick', onTickCallback, this);
+
             timer.start();
+            expect(callbackTime).toBeSame(startTime);
+
+            jasmine.Clock.tick(500);
+            expect(callbackTime).toBe(startTime + 500);
         });
     });
 
