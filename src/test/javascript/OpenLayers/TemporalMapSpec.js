@@ -28,13 +28,14 @@ describe("OpenLayers.TemporalMap", function() {
         });
 
         it('timechanged event when toTime is called', function() {
-            var timechangedCallbackCalled = false;
+            var timechangedSpy = jasmine.createSpy('timechangedSpy');
             map.events.on({
-                'timechanged': function() { timechangedCallbackCalled = true; }
+                'timechanged': timechangedSpy
             });
-            
-            map.toTime(moment());
-            expect(timechangedCallbackCalled).toBeTruthy();
+
+            var dateTime = moment();
+            map.toTime(dateTime);
+            expect(timechangedSpy).toHaveBeenCalledWith(dateTime);
         });
     });
 });
