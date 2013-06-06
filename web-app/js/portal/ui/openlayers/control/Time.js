@@ -22,8 +22,9 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
         this.timer = new OpenLayers.Timer(options);
         this.state = this.STATES.STOPPED;
-        
+
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
+        this.timer.on('tick', this.onTick, this);
     },
 
     play: function() {
@@ -50,6 +51,10 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         this.timer.halveFrequency();
     },
 
+    setStep: function(stepIndex) {
+        this.timer.setCurrTickIndex(stepIndex);
+    },
+    
     onTick: function(tickEvent) {
         this.map.toTime(tickEvent.dateTime);
     },

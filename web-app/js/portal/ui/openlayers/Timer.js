@@ -90,6 +90,11 @@ OpenLayers.Timer = OpenLayers.Class({
         return this.currTickIndex;
     },
 
+    setCurrTickIndex: function(tickIndex) {
+        this.currTickIndex = tickIndex;
+        this.onTick(this.currTickIndex);
+    },
+    
     tickForward: function() {
         this.currTickIndex = (this.currTickIndex + 1) % this.getNumTicks();
         this.onTick(this.currTickIndex);
