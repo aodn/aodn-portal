@@ -309,6 +309,17 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 animationControlsPanel.speedUp.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('4x');
             });
+
+            it('speed up button disabled', function() {
+                animationControlsPanel.timeControl.relativeSpeed = 16;
+                expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
+                
+                animationControlsPanel.speedUp.fireEvent('click'); // 32
+                expect(animationControlsPanel.speedUp.disabled).toBeTruthy();
+
+                animationControlsPanel.slowDown.fireEvent('click'); // 16
+                expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
+            });
             
             it('slow down', function() {
                 animationControlsPanel.slowDown.fireEvent('click');
@@ -316,6 +327,18 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 animationControlsPanel.slowDown.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('0.25x');
             });
+            
+            it('slow down button disabled', function() {
+                animationControlsPanel.timeControl.relativeSpeed = 1/16;
+                expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
+                
+                animationControlsPanel.slowDown.fireEvent('click'); // 1/32
+                expect(animationControlsPanel.slowDown.disabled).toBeTruthy();
+
+                // animationControlsPanel.speedUp.fireEvent('click'); // 1/16
+                // expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
+            });
+            
         });
     });
 

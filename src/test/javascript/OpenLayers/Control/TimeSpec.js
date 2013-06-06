@@ -126,12 +126,35 @@ describe("OpenLayers.Control.Time", function() {
             expect(timeControl.getRelativeSpeed()).toBe(4);
         });
 
+        it('speed up limit of 32x', function() {
+            timeControl.relativeSpeed = 16;
+            
+            expect(timeControl.speedUp()).toBeTruthy();
+            expect(timeControl.getRelativeSpeed()).toBe(32);
+            expect(timeControl.isAtFastestSpeed()).toBeTruthy();
+            
+            expect(timeControl.speedUp()).toBeFalsy();
+            expect(timeControl.getRelativeSpeed()).toBe(32);
+        });
+        
         it('slow down causes timer halve frequency to be called', function() {
             spyOn(timeControl.timer, 'halveFrequency');
             timeControl.slowDown();
             expect(timeControl.timer.halveFrequency).toHaveBeenCalled();
         });
 
+        it('slow down limit of 1/32x', function() {
+            timeControl.relativeSpeed = 1/16;
+            expect(timeControl.isAtSlowestSpeed()).toBeFalsy();
+            
+            expect(timeControl.slowDown()).toBeTruthy();
+            expect(timeControl.getRelativeSpeed()).toBe(1/32);
+            expect(timeControl.isAtSlowestSpeed()).toBeTruthy();
+            
+            expect(timeControl.slowDown()).toBeFalsy();
+            expect(timeControl.getRelativeSpeed()).toBe(1/32);
+        });
+        
         it('slow down causes relative speed to half', function() {
             timeControl.slowDown();
             expect(timeControl.getRelativeSpeed()).toBe(0.5);
