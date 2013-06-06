@@ -1,4 +1,5 @@
-before_script: sudo echo 'Australia/Hobart' > /etc/timezone
+env:
+    - TZ="Australia/Hobart"
 
 before_install:
     - sudo apt-get install tzdata
