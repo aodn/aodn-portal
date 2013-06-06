@@ -10,6 +10,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
     var animationControlsPanel;
     var openLayer;
+    var ncWmsLayer;
     var timeControl;
 
     beforeEach(function() {
@@ -25,11 +26,24 @@ describe("Portal.details.AnimationControlsPanel", function() {
             {},
             { isBaseLayer: false }
         );
+        
+        temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
+        ncWmsLayer = new OpenLayers.Layer.NcWMS(
+            'some NcWMS layer',
+            'http://some.url',
+            {},
+            {},
+            temporalExtent
+        );
+        ncWmsLayer.dimensions = [{
+            'name': 'time',
+            'extent': temporalExtent
+        }];
     });
 
     describe("speedUp button", function() {
         it("halves 'speed' and starts animation", function() {
-
+            animationControlsPanel.timeControl.speedUp = function () {}
             animationControlsPanel.speed = 10;
             spyOn(animationControlsPanel, '_startPlaying');
             animationControlsPanel.speedUp.fireEvent("click");
@@ -41,13 +55,12 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
     describe("slowDown button", function() {
         it("doubles 'speed' and starts animation", function() {
-
+            animationControlsPanel.timeControl.slowDown = function () {}
             animationControlsPanel.speed = 10;
             spyOn(animationControlsPanel, '_startPlaying');
             animationControlsPanel.slowDown.fireEvent("click");
             expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
             expect(animationControlsPanel.speed).toBe(20);
-
         });
     });
 
@@ -291,22 +304,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
         describe('on selectedLayerChanged', function() {
 
             var temporalExtent;
-            var ncWmsLayer;
-
-            beforeEach(function() {
-                temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
-                ncWmsLayer = new OpenLayers.Layer.NcWMS(
-                    'some NcWMS layer',
-                    'http://some.url',
-                    {},
-                    {},
-                    temporalExtent
-                );
-                ncWmsLayer.dimensions = [{
-                    'name': 'time',
-                    'extent': temporalExtent
-                }];
-            });
             
             it('configureForLayer is not called for WMS layer', function() {
                 spyOn(timeControl, 'configureForLayer');
@@ -326,7 +323,58 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.stepSlider.maxValue).toBe(2);
             });
         });
+    });
+
+    describe('timechanged event handling', function() {
+
+        var map;
+        
+        beforeEach(function() {
+            map = new OpenLayers.TemporalMap('map');
+            animationControlsPanel.setMap(map);
+        });
+
+        it('onTimeChanged callback', function() {
+            spyOn(animationControlsPanel, '_onTimeChanged');
             
+            // TODO: investigate why this has to be called again (otherwise
+            // the above spy doesn't seem to have any effect).
+            animationControlsPanel.setMap(map);  
+
+            var dateTime = moment();
+            map.toTime(dateTime);
+
+            expect(animationControlsPanel._onTimeChanged).toHaveBeenCalledWith(dateTime);
+        });
+
+        it('slider updated on timeChanged', function() {
+            timeControl.getStep = function() {
+                return 5;
+            }
+
+            expect(animationControlsPanel.stepSlider.getValue()).not.toBe(5);
+            map.toTime(moment());
+            expect(animationControlsPanel.stepSlider.getValue()).toBe(5);
+        });
+
+        it('step label updated on timeChanged', function() {
+            spyOn(animationControlsPanel, '_setStepLabelText');
+            map.toTime(moment('2012-03-04T05:06:07'));
+
+            expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith('2012-03-04 05:06:07');
+        });
+    });
+
+    describe('UI controls', function() {
+        var map;
+        
+        beforeEach(function() {
+            map = new OpenLayers.TemporalMap('map');
+            animationControlsPanel.setMap(map);
+            animationControlsPanel.timeControl.map = map;
+            animationControlsPanel.timeControl.configureForLayer(ncWmsLayer);
+        });
+        
         it('on play, time.play is called', function() {
             spyOn(timeControl, 'play');
             animationControlsPanel.playButton.fireEvent('click');
@@ -360,63 +408,26 @@ describe("Portal.details.AnimationControlsPanel", function() {
             animationControlsPanel.slowDown.fireEvent('click');
             expect(timeControl.slowDown).toHaveBeenCalled();
         });
-    });
-
-    describe('timechanged event handling', function() {
-
-        var map;
-        
-        beforeEach(function() {
-            map = new OpenLayers.TemporalMap('map');
-
-            animationControlsPanel.setMap(map);
-
-        });
-
-        it('onTimeChanged callback', function() {
-            spyOn(animationControlsPanel, '_onTimeChanged');
-            
-            // TODO: investigate why this has to be called again (otherwise
-            // the above spy doesn't seem to have any effect).
-            animationControlsPanel.setMap(map);  
-
-            var dateTime = moment();
-            map.toTime(dateTime);
-
-            expect(animationControlsPanel._onTimeChanged).toHaveBeenCalledWith(dateTime);
-        });
-
-        it('slider updated on timeChanged', function() {
-            timeControl.getStep = function() {
-                return 5;
-            }
-
-            expect(animationControlsPanel.stepSlider.getValue()).not.toBe(5);
-            map.toTime(moment());
-            expect(animationControlsPanel.stepSlider.getValue()).toBe(5);
-        });
-
-        it('step label updated on timeChanged', function() {
-            spyOn(animationControlsPanel, '_setStepLabelText');
-            map.toTime(moment('2012-03-04T05:06:07'));
-
-            expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith('2012-03-04 05:06:07');
-        });
-        // labels updated.
-    });
-/**
-    describe('slider', function() {
-       // slider.minValue;
-        //slider.maxValue;
-        // TODO
-    });
-
-    describe('labels', function() {
-        // TODO
-    });
     
+        it('slider drag updates time control', function() {
+            spyOn(timeControl, 'setStep');
+            animationControlsPanel.stepSlider.setValue(3);
+            
+            animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
+            expect(timeControl.setStep).toHaveBeenCalledWith(3);
+        });
+
+        it('slider drag results in timechangedevent', function() {
+            spyOn(animationControlsPanel, '_onTimeChanged');
+            animationControlsPanel.setMap(map);  // TODO: why is this necessary - see above?
+            
+            animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
+            expect(animationControlsPanel._onTimeChanged).toHaveBeenCalled();
+        });
+    });
+
+    // TODO: reimplement "loading..." in label?
     describe('calendar options', function() {
         // TODO
     });
-*/
 });

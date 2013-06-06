@@ -137,6 +137,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					listeners : {
 						scope : this,
 						drag : function(slider, ev) {
+                            this.timeControl.setStep(slider.getValue());
 							this._setSlide(slider.getValue());
 						}
 					}

@@ -40,6 +40,9 @@ describe("OpenLayers.Control.Time", function() {
 
         it('initialisation', function() {
             expect(timeControl.timer).not.toBeNull();
+            expect(timeControl.timer.observers['tick']).toBeTruthy();
+            expect(timeControl.timer.observers['tick'].context).toBe(timeControl);
+            expect(timeControl.timer.observers['tick'].callback).toBe(timeControl.onTick);            
         });
 
         it('start/end date/time specified', function() {
@@ -62,26 +65,12 @@ describe("OpenLayers.Control.Time", function() {
             expect(timeControl.timer.start).toHaveBeenCalled();
         });
 
-        it('on play, onTick is registered observer for timer\'s ticks', function() {
-            expect(timeControl.timer.observers['tick']).toBeFalsy();
-            timeControl.play();
-            expect(timeControl.timer.observers['tick']).toBeTruthy();
-            expect(timeControl.timer.observers['tick'].context).toBe(timeControl);
-            expect(timeControl.timer.observers['tick'].callback).toBe(timeControl.onTick);
-        });
-
         it('on stop, timer is stopped', function() {
             timeControl.state = timeControl.STATES.PLAYING;
             timeControl.stop();
             expect(timeControl.timer.stop).toHaveBeenCalled();
         });
 
-        it('on stop, onTick is not registered observer for timer\'s ticks', function() {
-            timeControl.play();   // Observer will now be registered.
-            timeControl.stop();
-            expect(timeControl.timer.observers['tick']).toBeFalsy();
-        });
-        
         describe('various play/stop sequences testing that calls in to Timer are made only when necessary', function() {
             it('play, play, timer start called only once', function() {
                 timeControl.play();
