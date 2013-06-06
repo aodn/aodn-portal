@@ -8,3 +8,7 @@ language: groovy
 
 jdk:
     - openjdk7
+
+notifications:
+  email: false
+  
