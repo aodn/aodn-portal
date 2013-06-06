@@ -30,21 +30,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 		
         Ext.MsgBus.subscribe('removeLayer', function(mesg,openLayer) {
-            if (openLayer === this.originalLayer && this.isAnimating()) {
-
-            }
 
         }, this);
         
         Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
 
-            if (openLayer) {
-
-                if (openLayer.isAnimatable()) {
+            if (openLayer && openLayer.isAnimatable()) {
                     this.timeControl.configureForLayer(openLayer, 10);
                     this.stepSlider.setMinValue(0);
                     this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
-                }
             }
         }, this);
 	},
@@ -74,10 +68,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					listeners : {
 						scope : this,
 						'click' : function(button, event) {
-                            this.speed=this.speed / 2;
                             this._startPlaying();
+
                             this.timeControl.speedUp();
                             this._updateSpeedLabel();
+                            this._updateSpeedUpSlowDownButtons();
 						}
 					},
 					tooltip : OpenLayers.i18n('speedUp')
@@ -89,10 +84,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					listeners : {
 						scope : this,
 						'click' : function(button, event) {
-							this.speed = this.speed * 2;
                             this._startPlaying();
                             this.timeControl.slowDown();
                             this._updateSpeedLabel();
+                            this._updateSpeedUpSlowDownButtons();
 						}
 					},
 					tooltip : OpenLayers.i18n('slowDown')
@@ -287,6 +282,22 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
+    _updateSpeedUpSlowDownButtons: function() {
+        if (this.timeControl.isAtFastestSpeed()) {
+            this.speedUp.disable();
+        }
+        else {
+            this.speedUp.enable();
+        }
+
+        if (this.timeControl.isAtSlowestSpeed()) {
+            this.slowDown.disable();
+        }
+        else {
+            this.slowDown.enable();
+        }
+    },
+    
     _updateSpeedLabel: function() {
         this.speedLabel.setText(this.timeControl.getRelativeSpeed() + 'x');
     },

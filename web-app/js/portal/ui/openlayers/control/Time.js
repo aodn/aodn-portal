@@ -11,6 +11,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 		STOPPED: 'STOPPED'
 	},
 
+    SPEED_LIMIT: 32,
+
     state: null,
     
     /**
@@ -46,15 +48,33 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     speedUp: function() {
-        this.relativeSpeed = this.relativeSpeed * 2;
-        this.timer.doubleFrequency();
+        if (this.relativeSpeed <= (this.SPEED_LIMIT / 2)) {
+            this.relativeSpeed = this.relativeSpeed * 2;
+            this.timer.doubleFrequency();
+            return true;
+        }
+
+        return false;
     },
 
     slowDown: function() {
-        this.relativeSpeed = this.relativeSpeed / 2;
-        this.timer.halveFrequency();
+        if (this.relativeSpeed >= (2 / this.SPEED_LIMIT)) {
+            this.relativeSpeed = this.relativeSpeed / 2;
+            this.timer.halveFrequency();
+            return true;
+        }
+
+        return false;
     },
 
+    isAtSlowestSpeed: function() {
+        return this.relativeSpeed == 1 / this.SPEED_LIMIT;
+    },
+
+    isAtFastestSpeed: function() {
+        return this.relativeSpeed == 1 * this.SPEED_LIMIT;
+    },
+    
     setStep: function(stepIndex) {
         this.timer.setCurrTickIndex(stepIndex);
     },
