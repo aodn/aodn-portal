@@ -41,29 +41,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
         }];
     });
 
-    describe("speedUp button", function() {
-        it("halves 'speed' and starts animation", function() {
-            animationControlsPanel.timeControl.speedUp = function () {}
-            animationControlsPanel.speed = 10;
-            spyOn(animationControlsPanel, '_startPlaying');
-            animationControlsPanel.speedUp.fireEvent("click");
-            expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
-            expect(animationControlsPanel.speed).toBe(5);
-
-        });
-    });
-
-    describe("slowDown button", function() {
-        it("doubles 'speed' and starts animation", function() {
-            animationControlsPanel.timeControl.slowDown = function () {}
-            animationControlsPanel.speed = 10;
-            spyOn(animationControlsPanel, '_startPlaying');
-            animationControlsPanel.slowDown.fireEvent("click");
-            expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
-            expect(animationControlsPanel.speed).toBe(20);
-        });
-    });
-
     describe("_getNewTimeValue", function() {
 		it("select default if old time doesn't exist", function() {
 			var oldTime = "13:25:00 (+10:00)";
@@ -172,107 +149,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 			expect(animationControlsPanel.startTimeCombo.value).toBe("14:18:00 (+10:00)");
 		});
 	});
-
-	describe('layer messages', function() {
-	    it('on removeAll', function() {
-
-	        spyOn(animationControlsPanel, 'removeAnimation');
-
-	        Ext.MsgBus.publish('removeAllLayers');
-
-	        expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
-	    });
-
-        it('on removeLayer', function() {
-            spyOn(animationControlsPanel, 'removeAnimation');
-            spyOn(Portal.ui.AnimationPanel.prototype, 'setVisible');
-
-            openLayer.isAnimated = true;
-
-            Ext.MsgBus.publish('removeLayer', openLayer);
-
-            expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
-        });
-
-        describe('on selectedLayerChanged', function() {
-
-            beforeEach(function() {
-                spyOn(animationControlsPanel, 'setSelectedLayer');
-                spyOn(animationControlsPanel, 'update');
-                spyOn(animationControlsPanel, 'removeAnimation');
-                animationControlsPanel.isAnimating = function() { return false };
-            });
-
-            it('on selectedLayerChanged with openlayer, animatable', function() {
-
-                openLayer.isAnimatable = function() { return true };
-
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
-
-                expect(animationControlsPanel.setSelectedLayer).toHaveBeenCalledWith(openLayer);
-                expect(animationControlsPanel.update).toHaveBeenCalled();
-                expect(animationControlsPanel.removeAnimation).not.toHaveBeenCalled();
-            });
-
-            it('on selectedLayerChanged with openlayer, non animatable', function() {
-
-                openLayer.isAnimatable = function() { return false };
-
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
-
-                expect(animationControlsPanel.setSelectedLayer).not.toHaveBeenCalledWith();
-                expect(animationControlsPanel.update).not.toHaveBeenCalled();
-                expect(animationControlsPanel.removeAnimation).not.toHaveBeenCalled();
-            });
-
-            it('on selectedLayerChanged with undefined', function() {
-
-                Ext.MsgBus.publish('selectedLayerChanged');
-
-                expect(animationControlsPanel.setSelectedLayer).not.toHaveBeenCalled();
-                expect(animationControlsPanel.update).not.toHaveBeenCalled();
-                expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
-            });
-        });
-
-        it('on reset map', function() {
-
-            spyOn(animationControlsPanel, 'removeAnimation');
-
-            Ext.MsgBus.publish('reset');
-
-            expect(animationControlsPanel.removeAnimation).toHaveBeenCalled();
-        });
-    });
-
-    describe('animatedLayer', function() {
-        it("removes slide after parent layer is removed", function() {
-            var map = new OpenLayers.Map('map');
-            var layerStore = new Portal.data.LayerStore();
-            layerStore.bind(map);
-            map.addLayer(openLayer);
-
-            animationControlsPanel.setMap(map);
-            animationControlsPanel.setSelectedLayer(openLayer);
-
-            animationControlsPanel._convertSelectedLayerToAnimatedLayer();
-
-            var slide = new OpenLayers.Layer.WMS(
-                "the title2",
-                "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-                {},
-                { isBaseLayer: false }
-            );
-            animationControlsPanel.originalLayer.addSlide(slide);
-
-            spyOn(Ext.MsgBus, 'publish');
-
-            openLayer._onLayerRemoved({layer:openLayer});
-
-
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith("removeLayer", slide);
-        });
-    });
 
     // Post refactor tests... ones above can probably be deleted when refactor is complete.
     describe('time control', function() {
@@ -448,4 +324,8 @@ describe("Portal.details.AnimationControlsPanel", function() {
     describe('calendar options', function() {
         // TODO
     });
+
+    // TODO: reset/remove layer/add new layer
+
+    // TODO: load from saved map - shouldn't need any special handling?
 });
