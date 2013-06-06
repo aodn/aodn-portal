@@ -1,0 +1,15 @@
+env:
+    - TZ="Australia/Hobart"
+
+before_install:
+    - sudo apt-get install tzdata
+    - sudo dpkg-reconfigure tzdata
+    
+language: groovy
+
+jdk:
+    - openjdk7
+
+notifications:
+  email: false
+  
