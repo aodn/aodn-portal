@@ -25,21 +25,21 @@ class OceanCurrentService {
         def fileAddress = baseURL + "sitemap/updating.txt"
         def cfgInstanceName = portalInstance.code()
 
-        def waodn = ['NWS/latest.gif',
-                'Ningaloo/latest.gif',
-                'Perth/latest.gif',
-                'CLeeu/latest.gif',
-                'DonPer/latest.gif',
-                'AlbEsp/latest.gif',
-                'sst_anom/latest.gif',
-                'sst_n/latest.gif',
-                'sst_s/latest.gif',
-                'uv/latest.gif',
-                'profiles/map/latest.gif'
+        def waodn = [
+            'NWS/latest.gif',
+            'Ningaloo/latest.gif',
+            'Perth/latest.gif',
+            'CLeeu/latest.gif',
+            'DonPer/latest.gif',
+            'AlbEsp/latest.gif',
+            'sst_anom/latest.gif',
+            'sst_n/latest.gif',
+            'sst_s/latest.gif',
+            'uv/latest.gif',
+            'profiles/map/latest.gif'
         ]
 
         try {
-
             def con = fileAddress.toURL().openConnection()
             con.connectTimeout = 1000 // 1 second
             con.readTimeout = 2000 // 2 seconds
@@ -72,7 +72,8 @@ class OceanCurrentService {
             }
         }
         catch (Exception e) {
-            log.info "ERROR: Couldnt open $fileAddress", e
+            log.info "Unable to load latest OceanCurrent data from '$fileAddress'"
+	        log.debug "Caught:", e // Only print stack trace if logger set to 'debug' level
         }
 
         return [speil: speil, acron: acron, imageURL: imageURL, baseURL: baseURL, parentPage: parentPage]
