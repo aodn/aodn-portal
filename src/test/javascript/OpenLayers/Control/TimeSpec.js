@@ -108,16 +108,35 @@ describe("OpenLayers.Control.Time", function() {
     });
 
     describe('speedUp/slowDown', function() {
+
+        it('initial relative speed', function() {
+            expect(timeControl.getRelativeSpeed()).toBe(1);
+        });
+        
         it('speed up causes timer double frequency to be called', function() {
             spyOn(timeControl.timer, 'doubleFrequency');
             timeControl.speedUp();
             expect(timeControl.timer.doubleFrequency).toHaveBeenCalled();
         });
 
+        it('speed up causes relative speed to double', function() {
+            timeControl.speedUp();
+            expect(timeControl.getRelativeSpeed()).toBe(2);
+            timeControl.speedUp();
+            expect(timeControl.getRelativeSpeed()).toBe(4);
+        });
+
         it('slow down causes timer halve frequency to be called', function() {
             spyOn(timeControl.timer, 'halveFrequency');
             timeControl.slowDown();
             expect(timeControl.timer.halveFrequency).toHaveBeenCalled();
+        });
+
+        it('slow down causes relative speed to half', function() {
+            timeControl.slowDown();
+            expect(timeControl.getRelativeSpeed()).toBe(0.5);
+            timeControl.slowDown();
+            expect(timeControl.getRelativeSpeed()).toBe(0.25);
         });
     });
     

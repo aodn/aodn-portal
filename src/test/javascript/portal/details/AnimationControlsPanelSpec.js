@@ -299,6 +299,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         
         it('initialisation', function() {
             expect(animationControlsPanel.timeControl).toBe(timeControl);
+            expect(animationControlsPanel.speedLabel.text).toBe('1x');
         });
 
         describe('on selectedLayerChanged', function() {
@@ -424,8 +425,25 @@ describe("Portal.details.AnimationControlsPanel", function() {
             animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
             expect(animationControlsPanel._onTimeChanged).toHaveBeenCalled();
         });
+
+        describe('speed label', function() {
+            it('speed up', function() {
+                animationControlsPanel.speedUp.fireEvent('click');
+                expect(animationControlsPanel.speedLabel.text).toBe('2x');
+                animationControlsPanel.speedUp.fireEvent('click');
+                expect(animationControlsPanel.speedLabel.text).toBe('4x');
+            });
+            
+            it('slow down', function() {
+                animationControlsPanel.slowDown.fireEvent('click');
+                expect(animationControlsPanel.speedLabel.text).toBe('0.5x');
+                animationControlsPanel.slowDown.fireEvent('click');
+                expect(animationControlsPanel.speedLabel.text).toBe('0.25x');
+            });
+        });
     });
 
+    
     // TODO: reimplement "loading..." in label?
     describe('calendar options', function() {
         // TODO

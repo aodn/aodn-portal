@@ -107,6 +107,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                             this.speed=this.speed / 2;
                             this._startPlaying();
                             this.timeControl.speedUp();
+                            this._updateSpeedLabel();
 						}
 					},
 					tooltip : OpenLayers.i18n('speedUp')
@@ -121,6 +122,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 							this.speed = this.speed * 2;
                             this._startPlaying();
                             this.timeControl.slowDown();
+                            this._updateSpeedLabel();
 						}
 					},
 					tooltip : OpenLayers.i18n('slowDown')
@@ -164,9 +166,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				});
 
 		this.speedLabel = new Ext.form.Label({
-					flex : 1,
-					style : 'padding: 5'
-				});
+			flex : 1,
+			style : 'padding: 5',
+            text: '1x'
+		});
 
 		this.buttonsPanel = new Ext.Panel({
 					layout : 'hbox',
@@ -315,6 +318,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('moveend', this, this._onMove);
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
+
+    _updateSpeedLabel: function() {
+        this.speedLabel.setText(this.timeControl.getRelativeSpeed() + 'x');
+    },
 
 	_togglePlay : function(button, event) {
 		if (this.currentState == this.state.PLAYING) {
