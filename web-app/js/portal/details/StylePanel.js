@@ -114,51 +114,16 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         show.call(target, this);
 
-        var data = new Array();
         this.styleCombo.hide();
 
-        if (this.selectedLayer.isNcwms()) {
-            this.ncwmsColourScalePanel.makeNcWMSColourScale(this.selectedLayer);
+        if (layer.isNcwms()) {
+            this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
         }
         else {
             this.ncwmsColourScalePanel.hide();
         }
 
-        //var supportedStyles = layer.metadata.supportedStyles;
-        // for WMS layers that we have scanned
-        if (this.selectedLayer.allStyles != undefined
-            && this.selectedLayer.allStyles.length > 1) {
-
-            // populate 'data' for the style options dropdown
-
-            var allStyles = this.selectedLayer.allStyles;
-
-            for (var j = 0; j < allStyles.length; j++) {
-                var params = {
-                    layer:this.selectedLayer,
-                    colorbaronly:true
-                };
-                // its a ncwms layer
-                if (this.selectedLayer.isNcwms()) {
-                    var s = allStyles[j].title.split("/");
-                    // if forward slash is found it is in the form  [type]/[palette]
-                    // we only care about the palette part
-                    s = (s.length > 1) ? s[1] : allStyles[j].title;
-                    params.palette = s;
-                }
-                params.style = allStyles[j].name;
-
-
-                var imageUrl = this.buildGetLegend(params);
-
-                if (params.palette != undefined) {
-                    allStyles[j].title = params.palette;
-                }
-                var label =  (allStyles[j].title != "") ? allStyles[j].title : allStyles[j].name;
-
-                data.push([allStyles[j].name , label , imageUrl ]);
-            }
-        }
+        var data = this._styleData(layer);
 
         if (data.length > 0) {
             // populate the stylecombo picker
@@ -167,103 +132,86 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo.collapse();
             this.styleCombo.show();
         }
-        this.refreshLegend(this.selectedLayer);
+
+        this.refreshLegend(layer);
     },
 
-    getStyleFromName : function (layer,name)   {
+    _styleData: function (layer) {
 
-        // get matching Style from layer.allStyles
-        var style = {};
-        if (layer.allStyles != undefined && layer.allStyles.length > 1) {
-            for (var j = 0; j < layer.allStyles.length; j++) {
-                if  (layer.allStyles[j].name == name) {
-                    style =  layer.allStyles[j];
-                }
+        var data = [];
+        var allStyles = layer.allStyles;
+
+        if (allStyles != undefined && allStyles.length > 1) {
+
+            for (var j = 0; j < allStyles.length; j++) {
+
+                var title = allStyles[j].title;
+                var name = allStyles[j].name;
+
+                var label = (title != "") ? title : name;
+                var palette = this._getPalette(layer, title);
+                var imageUrl = this.buildGetLegend(layer, name, palette, true);
+
+                data.push([name, label, imageUrl]);
             }
         }
-        return style;
 
+        return data;
     },
 
     // full legend shown in layer option. The current legend
-    refreshLegend:function (layer) {
+    refreshLegend: function (layer) {
 
         // get openlayers style as string
         var styleName = layer.params.STYLES;
-        var style =  this.getStyleFromName(layer,styleName);
+        var palette = this._getPalette(layer, styleName);
+        var url = this.buildGetLegend(layer, styleName, palette, false);
 
-
-        var params = {
-            layer:layer,
-            colorbaronly:false,
-            style: styleName
-        };
-
-        // its a ncwms layer send 'palette'
-        if (layer.isNcwms()) {
-            var s = styleName.split("/");
-            // if forward slash is found it is in the form  [type]/[palette]
-            // we only care about the palette part
-            s = (s.length > 1) ? s[1] : styleName;
-            params.palette = s;
-        }
-
-        var url = this.buildGetLegend(params);
-
-        var img = Ext.getCmp('legendImage');
         this.legendImage.setUrl(url);
         this.legendImage.show();
         // dont worry if the form is visible here
         this.styleCombo.setValue(styleName);
-
     },
+
     // builds a getLegend image request for the combobox form and the selected palette
-    buildGetLegend:function (params) {
+    buildGetLegend: function (layer, style, palette, colorBarOnly) {
 
         var url = "";
         var useProxy = false;
 
-        var layer = params.layer;
-        var colorbaronly = params.colorbaronly;
-        var palette = params.palette;
-
-
-        if (layer.cache === true)  {
+        if (layer.cache === true) {
             url = layer.server.uri;
             useProxy = true;
         }
-        else   {
+        else {
             url = layer.url;
         }
 
-
         var opts = "";
 
-        // thisPalette used for once off. eg combobox picker
+        // Palette used for once off. eg combobox picker
         if (palette != undefined) {
             opts += "&PALETTE=" + palette;
         }
 
-        if (params.style != "") {
-            opts += "&STYLE=" + params.style;
+        if (style != "") {
+            opts += "&STYLE=" + style;
         }
 
-        if (colorbaronly) {
+        if (colorBarOnly) {
             opts += "&LEGEND_OPTIONS=forceLabels:off";
-            opts += "&COLORBARONLY=" + colorbaronly;
+            opts += "&COLORBARONLY=" + colorBarOnly;
         }
         else {
 
             opts += "&LEGEND_OPTIONS=forceLabels:on";
         }
 
-
         if (layer.params.COLORSCALERANGE != undefined) {
             if (url.contains("COLORSCALERANGE")) {
                 url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
             }
             opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
-
         }
 
         if (useProxy) {
@@ -281,8 +229,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         opts += "&REQUEST=GetLegendGraphic"
-            + "&LAYER=" + layer.params.LAYERS
-            + "&FORMAT=" + layer.params.FORMAT;
+             +  "&LAYER=" + layer.params.LAYERS
+             +  "&FORMAT=" + layer.params.FORMAT;
 
         if (layer && layer.server && layer.server.type) {
             var version = layer.server.type.split('-')[1];
@@ -294,5 +242,24 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         url += opts;
 
         return url;
+    },
+
+    _getPalette: function(layer, style) {
+
+        if (layer.isNcwms()) {
+
+            // Use palette if title is in the form [type]/[palette]
+            var parts = style.split("/");
+            if (parts.length > 1) {
+
+                return parts[1];
+            }
+            else {
+
+                return style;
+            }
+        }
+
+        return undefined;
     }
 });
