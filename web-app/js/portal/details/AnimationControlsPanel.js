@@ -45,26 +45,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                     this.stepSlider.setMinValue(0);
                     this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
                 }
-/**                
-
-                if (!this.isAnimating()) {
-
-                    if (openLayer) {
-                        if (openLayer.isAnimatable()) {
-                            //show the panel for the first time!
-                            this.update();
-                        }
-                    }
-                    else {
-                        this.removeAnimation();
-                    }
-                }
-*/
             }
-            // // openlayer is null so there are no layers
-            // else {
-            //     this.removeAnimation();
-            // }
         }, this);
 	},
 
@@ -129,7 +110,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						scope : this,
 						drag : function(slider, ev) {
                             this.timeControl.setStep(slider.getValue());
-							this._setSlide(slider.getValue());
 						}
 					}
 				});
@@ -455,26 +435,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
-	_setSlide : function(index) {
-		if (this.animatedLayers.length > 0) {
-			this.originalLayer.setCurrentSlide(index);
-
-			// this should still work even if there's no animation, i.e. paused
-			this.stepSlider.setValue(index);
-
-			// also set the label
-			var labelStr = this.animatedLayers[index].params.TIME;
-
-			this._setTimeAsStepLabelText(this.animatedLayers[index].params.TIME);
-
-			if (this._isLoadingAnimation()) {
-				this._setStepLabelText("Loading... "
-						+ Math.round((index + 1) / this.animatedLayers.length
-								* 100) + "%");
-			}
-		}
-	},
-
 	_onLayerVisibilityChanged : function() {
 		if (!this.originalLayer.getVisibility()) {
 			this._stopPlaying();
@@ -483,25 +443,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 	
-	update : function() {
-		this.controlPanel.hide();
-
-		if (this.getSelectedLayerTimeDimension() != null
-				&& this.getSelectedLayerTimeDimension().extent != null) {
-			// There's a animation already configured (paused, or playing)
-			if (this.animatedLayers.length == 0) {
-				// no animation has been set yet, so configure the panel
-				this._setLayerDatesByCapability();
-				this.controlPanel.setVisible(true);
-			} else if (this.selectedLayer.id == this.originalLayer.id) {
-				this.controlPanel.setVisible(true);
-			}
-		} else {
-			// No time dimension, it's a dud!
-			// hide.call(target, this);
-		}
-	},
-
 	_setDateRange : function(picker, startDate, endDate) {
 		picker.setMinValue(startDate);
 		picker.setMaxValue(endDate);
@@ -570,34 +511,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
-	_setLayerDatesByCapability : function() {
-		var dim = this.getSelectedLayerTimeDimension();
-		if (dim != null) {
-			this._extractDays(dim);
-			// TODO: set default to last 10 timestamp for instant animation
-		}
-
-	},
-
-	getSelectedLayerTimeDimension : function() {
-
-        if (this.selectedLayer.timeDimension ) {
-            return this.selectedLayer.timeDimension;
-        }
-
-		if ((this.selectedLayer != undefined)
-				&& (this.selectedLayer.dimensions != undefined)) {
-			for (var i = 0; i < this.selectedLayer.dimensions.length; i++) {
-				if (this.selectedLayer.dimensions[i].name == "time") {
-                    this.selectedLayer.dimensions[i].extent = expandExtendedISO8601Dates(this.selectedLayer.dimensions[i].extent);
-                    this.selectedLayer.timeDimension =  this.selectedLayer.dimensions[i];
-                    return this.selectedLayer.timeDimension;
-                }
-			}
-		}
-		return null;
-	},
-
 	_isLoadingAnimation : function() {
 		if (this.animatedLayers.length > 0) {
 			for (var i = 0; i < this.animatedLayers.length; i++) {
@@ -646,7 +559,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	loadFromSavedMap : function(layer, stamps) {
 		this.setSelectedLayer(layer);
-		this.update();
 	},
 
 	_parseIso8601Date : function(string) {
