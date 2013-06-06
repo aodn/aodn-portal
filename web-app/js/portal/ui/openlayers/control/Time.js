@@ -18,6 +18,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
      */
     timer: null,
 
+    relativeSpeed: 1,
+    
     initialize: function(options) {
 
         this.timer = new OpenLayers.Timer(options);
@@ -44,10 +46,12 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     speedUp: function() {
+        this.relativeSpeed = this.relativeSpeed * 2;
         this.timer.doubleFrequency();
     },
 
     slowDown: function() {
+        this.relativeSpeed = this.relativeSpeed / 2;
         this.timer.halveFrequency();
     },
 
@@ -84,5 +88,9 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
+    getRelativeSpeed: function() {
+        return this.relativeSpeed;
+    },
+    
     CLASS_NAME: 'OpenLayers.Control.Time'
 });
