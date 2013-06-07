@@ -129,5 +129,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getTemporalExtent: function() {
         return this.temporalExtent;
+    },
+
+    addTile: function(bounds, position) {
+        return new OpenLayers.Tile.TemporalImage(this, position, bounds, null, this.tileSize);
     }
 });

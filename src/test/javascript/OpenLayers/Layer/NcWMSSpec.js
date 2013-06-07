@@ -32,6 +32,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(ncwmsLayer.temporalExtent).toBeSame(extent);
         });
     });
+    
     describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z');
@@ -184,6 +185,15 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
                 expect(ncwmsLayer.toNearestTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
             });
+        });
+    });
+
+    describe('tiles', function() {
+        it('addTile returns TemporalImage', function() {
+            ncwmsLayer.tileSize = new OpenLayers.Size(10, 10);
+            var tile = ncwmsLayer.addTile(new OpenLayers.Bounds(1, 2, 3, 4), new OpenLayers.Pixel(1, 1));
+
+            expect(tile).toBeInstanceOf(OpenLayers.Tile.TemporalImage);
         });
     });
 });
