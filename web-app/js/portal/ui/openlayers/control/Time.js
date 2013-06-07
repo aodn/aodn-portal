@@ -28,6 +28,11 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         this.state = this.STATES.STOPPED;
 
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
+
+        // The 'addEventType' function is supposedly deprecated and unecessary, but be my guest
+        // if you can get the tests to pass without calling it.
+        this.events.addEventType('speedchanged');
+        
         this.timer.on('tick', this.onTick, this);
     },
 
@@ -51,6 +56,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         if (this.relativeSpeed <= (this.SPEED_LIMIT / 2)) {
             this.relativeSpeed = this.relativeSpeed * 2;
             this.timer.doubleFrequency();
+            this.events.triggerEvent('speedchanged', this);
             return true;
         }
 
@@ -61,6 +67,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         if (this.relativeSpeed >= (2 / this.SPEED_LIMIT)) {
             this.relativeSpeed = this.relativeSpeed / 2;
             this.timer.halveFrequency();
+            this.events.triggerEvent('speedchanged', this);
+            
             return true;
         }
 
