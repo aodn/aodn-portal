@@ -98,13 +98,18 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     describe('to time', function() {
-        it('redraw called when time is changed', function() {
-            spyOn(ncwmsLayer, 'redraw');
-            ncwmsLayer.toTime('2010-02-02T02:02:02');
-            expect(ncwmsLayer.redraw).toHaveBeenCalled();
+        it('toTime on tiles called', function() {
+            var toTimeSpy = jasmine.createSpy('toTimeSpy');
+            
+            ncwmsLayer.grid = [];
+            ncwmsLayer.grid[0] = [{ toTime: toTimeSpy }, { toTime: toTimeSpy }];
+            ncwmsLayer.grid[1] = [{ toTime: toTimeSpy }, { toTime: toTimeSpy }];
+
+            ncwmsLayer.toTime(moment());
+            expect(toTimeSpy.callCount).toBe(4);
         });
     });
-    
+
     describe('choose nearest available time', function() {
 
         it('no extent restriction', function() {

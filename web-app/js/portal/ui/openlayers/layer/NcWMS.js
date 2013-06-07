@@ -92,7 +92,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.events = new OpenLayers.Events(this, this.div, 
                                             this.EVENT_TYPES);
 
-        this.redraw();
+        // this.redraw();
+        
+        this.eachTile(function(tile) {
+            tile.toTime(dateTime);
+        });
+        
         this.events = existingEvents;
         
         return this.time;
@@ -133,5 +138,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     addTile: function(bounds, position) {
         return new OpenLayers.Tile.TemporalImage(this, position, bounds, null, this.tileSize);
-    }
+    },
+
+    eachTile: function(applyToTileFunction) {
+        for (var rowIndex = 0; rowIndex < this.grid.length; rowIndex++) {
+            for (var colIndex = 0; colIndex < this.grid[rowIndex].length; colIndex++) {
+                applyToTileFunction(this.grid[rowIndex][colIndex]);
+            }
+        }
+    }    
 });
