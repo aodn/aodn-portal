@@ -164,7 +164,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
                 units: layer.metadata.units,
-                animation: layer.isAnimated
+                animation: layer.isAnimated,
+                copyright: layer.metadata.copyright
             },
             success: function(resp, options) {
             	if (options.params.animation) {
