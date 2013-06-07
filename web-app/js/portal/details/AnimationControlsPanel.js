@@ -177,7 +177,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				});
 
 		this.startDatePicker = new Ext.form.DateField({
-					format : 'd-m-Y',
+                    format : this.DATE_FORMAT,
+                    disabledDatesText: "unavailable",
 					editable : false,
 					width : 100,
 					listeners : {
@@ -188,7 +189,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				});
 
 		this.endDatePicker = new Ext.form.DateField({
-					format : 'd-m-Y',
+                    format : this.DATE_FORMAT,
+                    disabledDatesText: "unavailable",
 					editable : false,
 					width : 100,
 					listeners : {
