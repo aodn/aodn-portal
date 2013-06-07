@@ -37,7 +37,7 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: "http://someserver/wms"
+                url: ""
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("");
@@ -47,7 +47,7 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: "http://someserver/wms",
+                url: "",
                 server: {type: "WMS-1.1.0"}
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
