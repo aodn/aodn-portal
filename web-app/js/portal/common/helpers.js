@@ -143,7 +143,6 @@ function setHTML_ncWMS(response,options) {
             var lat = parseFloat((xmldoc.getElementsByTagName('latitude'))[0].firstChild.nodeValue);
             var startval = parseFloat(xmldoc.getElementsByTagName('value')[0].firstChild.nodeValue);
             var x = xmldoc.getElementsByTagName('value');
-            var copyright = xmldoc.getElementsByTagName('copyright')[0];
             var vals = "";
             var origStartVal = startval;
 
@@ -221,8 +220,10 @@ function setHTML_ncWMS(response,options) {
                 html =  "<div class=\"feature\">";
                 html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
 
-                if(copyright != undefined) {
-                    html += "<p>" + copyright.childNodes[0].nodeValue + "</p>";
+                if(options.params.copyright != undefined) {
+                    // Decode html
+                    var decodedCopyright = $('<div/>').html(options.params.copyright).text();
+                    html += "<p>" + decodedCopyright + "</p>";
                 }
 
                 html = html +"</div>";
