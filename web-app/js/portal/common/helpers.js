@@ -220,8 +220,11 @@ function setHTML_ncWMS(response,options) {
                 html =  "<div class=\"feature\">";
                 html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
 
-                if(options.params.copyright != undefined) {
-                    // Decode html
+                if(xmldoc.getElementsByTagName('copyright')[0] != undefined) {
+                    // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
+                    html += "<p>" + xmldoc.getElementsByTagName('copyright')[0].childNodes[0].nodeValue + "</p>";
+                } else if (options.params.copyright != undefined) {
+                    // If copyright was returned in GetMetadata we need to decode the html
                     var decodedCopyright = $('<div/>').html(options.params.copyright).text();
                     html += "<p>" + decodedCopyright + "</p>";
                 }
