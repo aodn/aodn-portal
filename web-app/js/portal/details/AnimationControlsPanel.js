@@ -28,7 +28,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				}, cfg);
 
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
-		
+
+        
         Ext.MsgBus.subscribe('removeLayer', function(mesg,openLayer) {
 
         }, this);
@@ -41,6 +42,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                     this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
             }
         }, this);
+
+        if (this.timeControl) {
+            this.timeControl.events.on({
+                'speedchanged': this._onSpeedChanged,
+                scope: this
+            });
+        }
 	},
 
 	initComponent : function() {
@@ -71,8 +79,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                             this._startPlaying();
 
                             this.timeControl.speedUp();
-                            this._updateSpeedLabel();
-                            this._updateSpeedUpSlowDownButtons();
+                            // this._updateSpeedLabel();
+                            // this._updateSpeedUpSlowDownButtons();
 						}
 					},
 					tooltip : OpenLayers.i18n('speedUp')
@@ -86,8 +94,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						'click' : function(button, event) {
                             this._startPlaying();
                             this.timeControl.slowDown();
-                            this._updateSpeedLabel();
-                            this._updateSpeedUpSlowDownButtons();
+                            // this._updateSpeedLabel();
+                            // this._updateSpeedUpSlowDownButtons();
 						}
 					},
 					tooltip : OpenLayers.i18n('slowDown')
@@ -282,6 +290,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
+    _onSpeedChanged: function(timeControl) {
+        this._updateSpeedLabel();
+        this._updateSpeedUpSlowDownButtons();
+    },
+    
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
             this.speedUp.disable();
@@ -657,5 +670,5 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			width : 130
 		};
 	}
-
 });
+
