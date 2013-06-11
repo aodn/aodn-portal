@@ -17,8 +17,11 @@ beforeEach(function() {
         toBeSame: function(expected) {
 
             var notText = this.isNot ? " not" : "";
+            var actualText = this.actual ? moment(this.actual).format() : this.actual;
+            var expectedText = expected ? moment(expected).format() : this.expected;
+
             this.message = function() {
-                return "Expected " + this.actual.format() + notText + " to be same as " + expected.format();
+                return "Expected " + actualText + notText + " to be same as " + expectedText;
             }
             
             if (this.actual instanceof Array && expected instanceof Array) {

@@ -32,6 +32,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         // The 'addEventType' function is supposedly deprecated and unecessary, but be my guest
         // if you can get the tests to pass without calling it.
         this.events.addEventType('speedchanged');
+        this.events.addEventType('temporalextentchanged');
         
         this.timer.on('tick', this.onTick, this);
     },
@@ -82,7 +83,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
     
     setStep: function(stepIndex) {
-        console.log('setStep', stepIndex);
         this.timer.setCurrTickIndex(stepIndex);
     },
     
@@ -91,12 +91,25 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     configureForLayer: function(layer, numTicksToUse) {
-
         if (layer instanceof OpenLayers.Layer.NcWMS) { 
             var layerExtentLength = layer.getTemporalExtent().length;
-            this.timer.setTickDateTimes(
-                layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength));
+            var timerTickDateTimes = layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength);
+            this.timer.setTickDateTimes(timerTickDateTimes);
 
+            this.events.triggerEvent(
+                'temporalextentchanged',
+                {
+                    layer: {
+                        min: layer.getTemporalExtent()[0],
+                        max: layer.getTemporalExtent()[layerExtentLength - 1]
+                    },
+                    timer: {
+                        min: timerTickDateTimes[0],
+                        max: timerTickDateTimes[timerTickDateTimes.length - 1]
+                    }
+                }
+            );
+            
             // Update the map straight away.
             this.onTick({
                 index: 0,

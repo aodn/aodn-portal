@@ -305,11 +305,14 @@ describe("Portal.details.AnimationControlsPanel", function() {
              * spying on the instance function doesn't seem to work, for some reason.
              */
             var origOnSpeedChanged;
+            var origOnTemporalExtentChanged;
             var localAnimationControlsPanel;
 
             beforeEach(function() {
                 origOnSpeedChanged = Portal.details.AnimationControlsPanel._onSpeedChanged;
+                origOnTemporalExtentChanged = Portal.details.AnimationControlsPanel._onTemporalExtentChanged;
                 spyOn(Portal.details.AnimationControlsPanel.prototype, '_onSpeedChanged').andCallThrough();
+                spyOn(Portal.details.AnimationControlsPanel.prototype, '_onTemporalExtentChanged');
                 
                 localAnimationControlsPanel = new Portal.details.AnimationControlsPanel({
                     timeControl: timeControl
@@ -318,6 +321,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             afterEach(function() {
                 Portal.details.AnimationControlsPanel._onSpeedChanged = origOnSpeedChanged;
+                Portal.details.AnimationControlsPanel._onTemporalExtentChanged = origOnTemporalExtentChanged;
             });
 
             it('on speed up, _onSpeedChanged called', function() {
@@ -344,6 +348,15 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 localAnimationControlsPanel._onSpeedChanged();
                 expect(localAnimationControlsPanel._updateSpeedLabel).toHaveBeenCalled();
                 expect(localAnimationControlsPanel._updateSpeedUpSlowDownButtons).toHaveBeenCalled();
+            });
+
+            it('on temporal extent changed, _onTemporalExtentChanged called', function() {
+                localAnimationControlsPanel.timeControl.configureForLayer(ncWmsLayer, 2);
+                expect(localAnimationControlsPanel._onTemporalExtentChanged).toHaveBeenCalled();
+                expect(localAnimationControlsPanel._onTemporalExtentChanged.calls[0].args[0].layer.min).toBeSame(
+                    '2012-04-01T12:00:00');
+                expect(localAnimationControlsPanel._onTemporalExtentChanged.calls[0].args[0].layer.max).toBeSame(
+                    '2012-04-01T14:00:00');
             });
         });
 
@@ -384,6 +397,32 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
             });
 
+            describe('picker values on temporal extent changed', function() {
+                beforeEach(function() {
+                    animationControlsPanel._onTemporalExtentChanged({
+                        layer: {
+                            min: moment('2008-01-01T12:34:56'),
+                            max: moment('2010-01-01T12:34:56')
+                        },
+                        timer: {
+                            min: moment('2009-01-01T12:34:56'),
+                            max: moment('2010-01-01T12:34:56')
+                        }
+                    });
+                });
+
+                it('start picker', function() {
+                    expect(animationControlsPanel.startDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
+                    expect(animationControlsPanel.startDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
+                    expect(animationControlsPanel.startDatePicker.getValue()).toBeSame('2009-01-01');
+                });                
+                
+                it('end picker', function() {
+                    expect(animationControlsPanel.endDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
+                    expect(animationControlsPanel.endDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
+                    expect(animationControlsPanel.endDatePicker.getValue()).toBeSame('2010-01-01');
+                });
+            });
         });
     });
     
