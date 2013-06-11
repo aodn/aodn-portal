@@ -8,6 +8,15 @@ describe("OpenLayers.Control.Time", function() {
 
     var map;
     var timeControl;
+    var extent = [
+        '2001-01-01T00:00',
+        '2001-01-02T00:00',
+        '2001-01-03T00:00',
+        '2001-01-04T00:00',
+        '2001-01-05T00:00',
+    ];
+    
+    var ncwmsLayer;
 
     beforeEach(function() {
 
@@ -18,6 +27,9 @@ describe("OpenLayers.Control.Time", function() {
 
         spyOn(timeControl.timer, 'start');
         spyOn(timeControl.timer, 'stop');
+
+        ncwmsLayer = new OpenLayers.Layer.NcWMS();
+        ncwmsLayer.setTemporalExtent(extent);
     });
 
     describe('map', function() {
@@ -164,18 +176,6 @@ describe("OpenLayers.Control.Time", function() {
     });
     
     describe('configure with NcWMS layer', function() {
-
-        var extent = [
-            '2001-01-01T00:00',
-            '2001-01-02T00:00',
-            '2001-01-03T00:00',
-            '2001-01-04T00:00',
-            '2001-01-05T00:00',
-        ];
-        
-        var ncwmsLayer = new OpenLayers.Layer.NcWMS();
-        ncwmsLayer.setTemporalExtent(extent);
-        
         it('timer extent is \'n\' most recent date/times from layer', function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.timer.getNumTicks()).toBe(3);
@@ -203,6 +203,48 @@ describe("OpenLayers.Control.Time", function() {
                 '2001-01-04T00:00',
                 '2001-01-05T00:00'
             ]);
+        });
+    });
+
+    describe('events', function() {
+        describe('speedchanged', function() {
+            var speedchangedSpy;
+            
+            beforeEach(function() {
+                speedchangedSpy = jasmine.createSpy('speedChanged');
+                timeControl.events.on({
+                    'speedchanged': speedchangedSpy,
+                    scope: this
+                });
+            });
+            
+            it('speedchanged fired on speedUp', function() {
+                timeControl.speedUp();
+                expect(speedchangedSpy).toHaveBeenCalled();
+            });
+            
+            it('speedchanged fired on slowDown', function() {
+                timeControl.slowDown();
+                expect(speedchangedSpy).toHaveBeenCalled();
+            });
+        });
+
+        describe('temporalextentchanged', function() {
+            var temporalextentchangedSpy = jasmine.createSpy('temporalextentchanged');
+
+            it('temporalextentchanged fired on configureForLayer', function() {
+                timeControl.events.on({
+                    'temporalextentchanged': temporalextentchangedSpy,
+                    scope: this
+                });
+                
+                timeControl.configureForLayer(ncwmsLayer, 3);
+                expect(temporalextentchangedSpy).toHaveBeenCalled();
+                expect(temporalextentchangedSpy.calls[0].args[0].layer.min).toBeSame('2001-01-01T00:00');
+                expect(temporalextentchangedSpy.calls[0].args[0].layer.max).toBeSame('2001-01-05T00:00');
+                expect(temporalextentchangedSpy.calls[0].args[0].timer.min).toBeSame('2001-01-03T00:00');
+                expect(temporalextentchangedSpy.calls[0].args[0].timer.max).toBeSame('2001-01-05T00:00');
+            });
         });
     });
 });

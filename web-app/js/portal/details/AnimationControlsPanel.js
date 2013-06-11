@@ -46,6 +46,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (this.timeControl) {
             this.timeControl.events.on({
                 'speedchanged': this._onSpeedChanged,
+                'temporalextentchanged': this._onTemporalExtentChanged,
                 scope: this
             });
         }
@@ -290,6 +291,16 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
+    _onTemporalExtentChanged: function(evt) {
+        this.startDatePicker.setMinValue(evt.layer.min.toDate());
+        this.startDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.startDatePicker.setValue(evt.timer.min.toDate());
+        
+        this.endDatePicker.setMinValue(evt.layer.min.toDate());
+        this.endDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.endDatePicker.setValue(evt.timer.max.toDate());
+    },
+    
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
@@ -471,93 +482,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		picker.setMinValue(startDate);
 		picker.setMaxValue(endDate);
 		picker.setValue(startDate);
-	},
-
-	_extractDays : function(dim) {
-		var splitDates = dim.extent.split(",");
-		if (splitDates.length > 0) {
-			var startDate = this._parseIso8601Date(splitDates[0]);
-			var endDate = this._parseIso8601Date(splitDates.last());
-
-			// set the start/end date range for both pickers
-			this._setDateRange(this.startDatePicker, startDate, endDate);
-			this._setDateRange(this.endDatePicker, startDate, endDate);
-
-			this._setDayTimes(splitDates);
-			this._setMissingDays(splitDates);
-
-			var defaultStart = this._getTimeComboStartDate(splitDates);
-			//endDate gets stuffed up by the picker when we setDateRange, hence redoing the retrieval
-			var defaultEnd = this._parseIso8601Date(splitDates.last());
-			
-			this._setTime(this.startDatePicker, this.startTimeCombo, defaultStart);
-			this._setTime(this.endDatePicker, this.endTimeCombo, defaultEnd);
-		}
-	},
-
-	_setDayTimes : function(dateStringsArray) {
-		this.allTimes = {};
-
-		for (var j = 0; j < dateStringsArray.length; j++) {
-			var date = Date.parseDate(dateStringsArray[j], "c");
-			var dayString = this._toDateString(date);
-			var timeString = this._toTimeString(date);
-			var timeRoundedString = this._toTimeString(this
-					._roundToNearestFiveMinutes(date));
-
-			if (this.allTimes[dayString] == null) {
-				this.allTimes[dayString] = new Array();
-			}
-			this.allTimes[dayString].push([timeString, timeRoundedString]);
-		}
-		
-	},
-
-	_setMissingDays : function(dateStringsArray) {
-		if (!this.allTimes) {
-			this._setDayTimes(dateStringsArray);
-		}
-
-		var missingDays = [];
-		var curDate = this._parseIso8601Date(dateStringsArray[0]);
-		var endDate = this._parseIso8601Date(dateStringsArray.last());
-		while (curDate < endDate) {
-			var day = this._toDateString(curDate);
-			if (this.allTimes[day] == null) {
-				missingDays.push(day);
-			}
-			curDate.setDate(curDate.getDate() + 1);
-		}
-
-		if (missingDays.length > 1) {
-			this.startDatePicker.setDisabledDates(missingDays);
-			this.endDatePicker.setDisabledDates(missingDays);
-		}
-	},
-
-	_isLoadingAnimation : function() {
-		if (this.animatedLayers.length > 0) {
-			for (var i = 0; i < this.animatedLayers.length; i++) {
-				if (this.map.getLayer(this.animatedLayers[i].id) == null)
-					return true;
-				if (this.animatedLayers[i].numLoadingTiles > 0) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	},
-
-	_getIndexFromTime : function(timeStr) {
-		if (this.animatedLayers.length > 0) {
-			for (var i = 0; i < this.animatedLayers.length; i++) {
-				if (this.animatedLayers[i].params["TIME"] === timeStr)
-					return i;
-			}
-		}
-
-		return -1;
 	},
 
 	isAnimating : function() {
