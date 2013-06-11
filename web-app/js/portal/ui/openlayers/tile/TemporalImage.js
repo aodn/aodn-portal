@@ -9,13 +9,18 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     imgCache: {},
 
     parentDiv: null,
-    
+
     toTime: function(dateTime) {
         this._updateParentDiv();
         this._imageToTime(dateTime);
         this.show();
     },
 
+    precache: function(dateTime) {
+        this._updateParentDiv();
+        this._getCached(dateTime);
+    },
+    
     _updateParentDiv: function() {
         if (!this.parentDiv) {
             this.parentDiv = $(this.imgDiv).parent().get(0);
@@ -35,7 +40,7 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     },
 
     _createImageAtDateTime: function(dateTime) {
-        this.url = this.layer.getURL(this.bounds);
+        this.url = this.layer.getURLAtTime(this.bounds, dateTime);
 
         var img = new Image();
         img.src = this.url;
@@ -54,6 +59,7 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     },
 
     _imageToTime: function(dateTime) {
+        this._getCached(dateTime).style.display = '';
         $(this.parentDiv).empty();
         $(this.parentDiv).append(this._getCached(dateTime));
     }

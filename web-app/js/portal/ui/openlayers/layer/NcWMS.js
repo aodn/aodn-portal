@@ -24,6 +24,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
 
+    getURLAtTime: function(bounds, dateTime) {
+        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
+            + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+    },
+    
     /**
      * Method: getURL
      * Return a GetMap query string for this layer
@@ -41,13 +46,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // 2011-03-18T13:00:00Z
         // 2012-10-28T08:00:00Z
 
-        var url = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
-
         if (this.time) {
-            url = url + '&TIME=' + this.time.utc().format('YYYY-MM-DDTHH:mm:ss');
+            return this.getURLAtTime(bounds, this.time);
         }
 
-        return url;
+        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
     toNearestTime: function(dateTime) {
@@ -92,8 +95,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.events = new OpenLayers.Events(this, this.div, 
                                             this.EVENT_TYPES);
 
-        // this.redraw();
-        
+
         this.eachTile(function(tile) {
             tile.toTime(dateTime);
         });
@@ -140,6 +142,31 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return new OpenLayers.Tile.TemporalImage(this, position, bounds, null, this.tileSize);
     },
 
+    moveTo: function(bounds, zoomChanged, dragging) {
+        OpenLayers.Layer.WMS.prototype.moveTo.apply(this, arguments);
+
+        this._precache();
+    },
+    
+    _precache: function() {
+        var timesToCache = this._getTimesToCache();
+        for (var i = 0; i < timesToCache.length; i++) {
+            this.eachTile(function(tile) {
+                tile.precache(timesToCache[i]);
+            });
+        }
+    },
+
+    _getTimesToCache: function() {
+        var timeControl = this.map.getControlsByClass('OpenLayers.Control.Time')[0];
+
+        if (timeControl) {
+            return timeControl.timer.tickDateTimes;
+        }
+
+        return [];
+    },
+    
     eachTile: function(applyToTileFunction) {
         for (var rowIndex = 0; rowIndex < this.grid.length; rowIndex++) {
             for (var colIndex = 0; colIndex < this.grid[rowIndex].length; colIndex++) {

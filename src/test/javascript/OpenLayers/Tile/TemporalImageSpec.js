@@ -19,7 +19,8 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             new OpenLayers.Size(10, 10));
         
         tile.layer = {
-            getURL: function() { return 'http://host/image.png' }
+            getURL: function() { return 'http://host/image.png' },
+            getURLAtTime: function() { return 'http://host/image.png' }
         };
     });
 
@@ -167,6 +168,30 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             var dateTime = moment('2013-01-01');
             tile.toTime(dateTime);
             expect(tile._imageToTime).toHaveBeenCalledWith(dateTime);
+        });
+    });
+
+    describe('precache', function() {
+        it('precache loads image in to cache', function() {
+            spyOn(tile, '_getCached').andCallThrough();
+            var dateTime = moment('2010-03-03T03:03:03');
+            tile.precache(dateTime);
+            expect(tile._getCached.calls[0].args[0]).toBeSame(dateTime);
+        });
+
+        it('precache updates parent div', function() {
+            spyOn(tile, '_updateParentDiv');
+            var dateTime = moment('2010-03-03T03:03:03');
+            tile.precache(dateTime);
+            expect(tile._updateParentDiv).toHaveBeenCalled();
+        });
+
+        it('precache fills cache', function() {
+            var dateTime = moment('2010-03-03T03:03:03');
+            expect(tile.imgCache[tile._getKey(dateTime)]).toBeFalsy();
+            tile.precache(dateTime);
+            expect(tile.imgCache[tile._getKey(dateTime)]).toBeTruthy();
+            
         });
     });
 });
