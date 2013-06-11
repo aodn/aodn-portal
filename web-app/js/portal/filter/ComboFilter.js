@@ -55,7 +55,7 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
 	},
 
     _createCQL: function(combo, record, index){
-    	this.CQL = this.filter.name + " LIKE '%" + record.data.text + "%'";
+    	this.CQL = this.filter.name + " LIKE '%" + this._escapeSingleQuotes(record.data.text) + "%'";
     },
 
     _onSelected: function(combo, record, index){
@@ -79,5 +79,9 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
 				this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
 			}
 		}
+    },
+    
+    _escapeSingleQuotes: function(text){
+        return text.replace(/'/g, "''");
     }
 });
