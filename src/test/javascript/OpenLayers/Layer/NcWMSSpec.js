@@ -12,6 +12,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
         };
+        OpenLayers.Layer.WMS.prototype.moveTo = function() {};
+
         ncwmsLayer = new OpenLayers.Layer.NcWMS();
     });
 
@@ -51,6 +53,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('no time specified', function() {
             ncwmsLayer.toNearestTime(null);
             expect(ncwmsLayer.getURL(bounds).split('&')).not.toContain('TIME=' + time.format());
+        });
+
+        it('getURLAtTime', function() {
+            var dateTime = moment('2000-02-02T01:01:01+00:00');
+            expect(ncwmsLayer.getURLAtTime(bounds, dateTime).split('&')).toContain('TIME=2000-02-02T01:01:01');
         });
     });
 
@@ -199,6 +206,54 @@ describe("OpenLayers.Layer.NcWMS", function() {
             var tile = ncwmsLayer.addTile(new OpenLayers.Bounds(1, 2, 3, 4), new OpenLayers.Pixel(1, 1));
 
             expect(tile).toBeInstanceOf(OpenLayers.Tile.TemporalImage);
+        });
+    });
+
+    describe('precaching', function() {
+
+        beforeEach(function() {
+            spyOn(ncwmsLayer, '_getTimesToCache').andReturn([
+                moment('2000-01-01T00:00:00'),
+                moment('2000-01-01T01:00:00')
+            ]);
+        });
+        
+        it('precache called on moveTo', function() {
+            spyOn(ncwmsLayer, '_precache');
+            ncwmsLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            expect(ncwmsLayer._precache).toHaveBeenCalled();
+        });
+
+        it('precache called on each tile for each time', function() {
+
+            var tilePrecacheSpy = jasmine.createSpy('precache');
+            ncwmsLayer.grid = [];
+            ncwmsLayer.grid.push([
+                {
+                    precache: tilePrecacheSpy
+                },
+                {
+                    precache: tilePrecacheSpy
+                }
+            ]);
+            ncwmsLayer.grid.push([
+                {
+                    precache: tilePrecacheSpy
+                },
+                {
+                    precache: tilePrecacheSpy
+                }
+            ]);
+
+            ncwmsLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            expect(tilePrecacheSpy.callCount).toBe(8);
+
+            for (var i = 0; i < 4; i++) {
+                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T00:00:00'));
+            }
+            for (var i = 4; i < 8; i++) {
+                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T01:00:00'));
+            }
         });
     });
 });

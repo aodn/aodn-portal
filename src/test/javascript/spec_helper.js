@@ -16,6 +16,11 @@ beforeEach(function() {
     this.addMatchers({
         toBeSame: function(expected) {
 
+            var notText = this.isNot ? " not" : "";
+            this.message = function() {
+                return "Expected " + this.actual.format() + notText + " to be same as " + expected.format();
+            }
+            
             if (this.actual instanceof Array && expected instanceof Array) {
                 if (this.actual.length != expected.length) {
                     return false;
