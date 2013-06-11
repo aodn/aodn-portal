@@ -39,7 +39,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     play: function() {
         if (this.state != this.STATES.PLAYING) {
             this.state = this.STATES.PLAYING;
-            this.timer.on('tick', this.onTick, this);
             this.timer.start()
         }
     },
@@ -47,7 +46,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     stop: function() {
         if (this.state != this.STATES.STOPPED) {
             this.timer.stop();
-            this.timer.on('tick', undefined);
             this.state = this.STATES.STOPPED;
         }
     },
@@ -84,6 +82,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
     
     setStep: function(stepIndex) {
+        console.log('setStep', stepIndex);
         this.timer.setCurrTickIndex(stepIndex);
     },
     
