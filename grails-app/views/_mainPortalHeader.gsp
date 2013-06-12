@@ -6,6 +6,36 @@
 
 --%>
 
+<script type="text/javascript">
+    $(document).ready( function()
+    {
+        // hide the popup if user mouses out of area
+        $( "#loginpopup").mouseleave( function(){
+            $( "#loginpopup").hide();
+        } ) ;
+
+        // toggle tests existing state, so combines with mouseleave cleanly
+        // use the animation version of toggle()
+        $("#loginbutton").click(function(){
+            $( "#loginpopup").slideToggle();
+        });
+    }  ) ;
+
+    function clearOnce(input_element)
+    {
+        if (!input_element.alreadyCleared)
+        {
+            input_element.value = "";
+            input_element.alreadyCleared = true;
+        }
+    }
+</script>
+
+<style>
+    .highlight:hover { background-color : #ffff99 }
+</style>
+
+
 <div id="header" style="height:${configInstance?.headerHeight}px">
     <img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" id="logo"/>
 
@@ -25,8 +55,51 @@
             <strong>${flash.openidErrorMessage}</strong>
         </g:if>
         <shiro:notUser>
-            <g:link controller="auth" action="login">Log in</g:link> or
-            <g:link controller="auth" action="register">Register</g:link>
+
+            <%-- Drop down dialog, enable selection of openid providers --%>
+            <g:if test="${ grailsApplication.config.openId.enableUserSuppliedProvider || grailsApplication.config.openId.providers.size > 1 }">
+
+                <%-- button supported by script --%>
+                <a href="#" id="loginbutton">Login</a>
+
+                <%-- the popup --%>
+                <div id="loginpopup" style="	padding: 6px; display: none; border: solid 1px silver; background-color: #ffffff; position: absolute; border-radius: 10px;"><ol>
+
+                    <%-- Generate the customisable list of providers and icons --%>
+                    <g:each in="${grailsApplication.config.openId.providers}" var="link">
+                        <li style="margin: 5px">
+                            <g:link controller="auth" action="login" params='[ openIdProvider:"${link.providerHref}" ]' style='display: block;' class="highlight">
+                                <img width="32px" height="32px" src="${link.iconHref}" style="vertical-align: middle">
+                                ${link.name}
+                            </g:link>
+                        </li>
+                    </g:each>
+
+                    <%-- Text input option to enable user to supply their own provider --%>
+                    <g:if test="${ grailsApplication.config.openId.enableUserSuppliedProvider }">
+                    <li style="border-top: solid #888 1px; padding-top: 3px">
+                        <div>
+                            <g:form controller="auth">
+                                <g:textField onfocus="clearOnce(this)" name="openIdProvider" value="Other OpenID provider..." />
+                                <g:actionSubmit value="&raquo" action="login" />
+                            </g:form>
+                        </div>
+                    </li>
+                    </g:if>
+
+                </ol></div>
+            </g:if>
+
+            <%-- If there's a single provider then just create a simple link --%>
+            <g:else>
+                    <g:link controller="auth" action="login" params='[ openIdProvider:"${grailsApplication.config.openId.providers.first().providerHref }" ]' >Login</g:link>
+            </g:else>
+
+            <%-- Support registered provider --%>
+            <g:if test="${grailsApplication.config.openId.registerProvider}">
+                <g:link controller="auth" action="register" params='[ openIdProvider:"${grailsApplication.config.openId.registerProvider.providerHref}" ]' >Register</g:link>
+            </g:if>
+
         </shiro:notUser>
         <shiro:user>
             Welcome <user:loggedInUser property="fullName"/>
