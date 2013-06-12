@@ -144,96 +144,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					flex : 2
 				});
 
-		this.startLabel = new Ext.form.Label({
-					html : "Start:"
-				});
-
-		this.endLabel = new Ext.form.Label({
-					html : "End: ",
-					width : 70
-				});
-
-        // TODO: refactor date/time pickers in to own component.
-		this.startDatePicker = new Ext.form.DateField({
-                    format : this.DATE_FORMAT,
-                    disabledDatesText: "unavailable",
-					editable : false,
-					width : 100,
-					listeners : {
-						scope : this,
-                        select: this._onStartDateSelected
-					}
-
-				});
-
-		this.endDatePicker = new Ext.form.DateField({
-                    format : this.DATE_FORMAT,
-                    disabledDatesText: "unavailable",
-					editable : false,
-					width : 100,
-					listeners : {
-						scope : this,
-						select : this._onEndDateSelected
-					}
-				});
-
-        // Have to use a generic combo, as Ext.form.TimeField blats the date part of values (leaving just the
-        // time of day).
-        // TODO: refactor (new component?)
-		this.startTimeCombo = new Ext.form.ComboBox({
-            store: new Ext.data.ArrayStore({
-                autoLoad : false,
-			    autoDestroy : true,
-			    fields : ['momentValue', 'displayTime'],
-			    data : []
-            }),
-            mode: 'local',
-			triggerAction : "all",
-			editable : false,
-			valueField : 'momentValue',
-			displayField : 'displayTime',
-			width : 130
-        });
-        
-		this.endTimeCombo = new Ext.form.ComboBox({
-            store: new Ext.data.ArrayStore({
-                autoLoad : false,
-			    autoDestroy : true,
-			    fields : ['momentValue', 'displayTime'],
-			    data : []
-            }),
-            mode: 'local',
-			triggerAction : "all",
-			editable : false,
-			valueField : 'momentValue',
-			displayField : 'displayTime',
-			width : 130
-        });
-
         this.dateTimeSelectorPanel = new Portal.details.AnimationDateTimeSelectorPanel({
             parent: this,
             timeControl: this.timeControl,
             width: 350
         });
-/*        
-		this.timeSelectorPanel = new Ext.Panel({
-					layout : 'table',
-					layoutConfig : {
-						tableAttrs : {
-							style : {
-								width : '80%'
-							}
-						},
-						columns : 3
-					},
-					width : 350,
-					plain : true,
-					items : [this.startLabel, this.startDatePicker,
-							this.startTimeCombo, this.endLabel,
-							this.endDatePicker, this.endTimeCombo]
-				});
-*/
-        this.timeSelectorPanel = this.dateTimeSelectorPanel;
         
 		this.getAnimationButton = new Ext.Button({
 			icon : 'images/animation/download.png',
@@ -302,23 +217,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
 	},
 
-    // TODO: these can all go when pickers are moved.
-    getStartDatePicker: function() {
-        return this.dateTimeSelectorPanel.startDatePicker;
-    },
-    
-    getEndDatePicker: function() {
-        return this.dateTimeSelectorPanel.endDatePicker;
-    },
-
-    getStartTimeCombo: function() {
-        return this.dateTimeSelectorPanel.startTimeCombo;
-    },
-    
-    getEndTimeCombo: function() {
-        return this.dateTimeSelectorPanel.endTimeCombo;
-    },
-
 	setMap : function(theMap) {
 	    
 		// TODO: ok, there's now a dependency on the OpenLayers Map (instead of MapPanel),
@@ -337,55 +235,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
         }
     },
-    /*
-    _onTemporalExtentChanged: function(evt) {
-        this.dateTimeSelectorPanel._onTemporalExtentChanged(evt);
-        
-        this.getStartDatePicker().setMinValue(evt.layer.min.toDate());
-        this.getStartDatePicker().setMaxValue(evt.layer.max.toDate());
-        this.getStartDatePicker().setValue(evt.timer.min.toDate());
-        
-        this.getEndDatePicker().setMinValue(evt.layer.min.toDate());
-        this.getEndDatePicker().setMaxValue(evt.layer.max.toDate());
-        this.getEndDatePicker().setValue(evt.timer.max.toDate());
-
-        this._updateStartTimeCombo(evt.timer.min);
-        this._updateEndTimeCombo(evt.timer.max);
-    },
-    */
+    
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
     },
 
-    _onStartDateSelected: function(startDatePicker, jsDate) {
-        this._updateStartTimeCombo(moment(jsDate));
-    },
-
-    _updateStartTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.getStartTimeCombo(), dateTime);
-    },
-    
-    _onEndDateSelected: function(startDatePicker, jsDate) {
-        this._updateEndTimeCombo(moment(jsDate));
-    },
-
-    _updateEndTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.getEndTimeCombo(), dateTime);
-    },
-
-    _updateTimeCombo: function(timeCombo, dateTime) {
-        var datesOnDay = this.selectedLayer.getDatesOnDay(dateTime);
-
-        var data = [];
-        for (var i = 0; i < datesOnDay.length; i++) {
-            data.push([datesOnDay[i], datesOnDay[i].format('HH:mm:ss (Z)')]);
-        }
-
-        timeCombo.getStore().loadData(data);
-        timeCombo.setValue(dateTime.format('HH:mm:ss (Z)'));
-    },
-    
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
             this.speedUp.disable();
@@ -510,10 +365,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.speedLabel.setVisible(true);
 			this.getAnimationButton.setVisible(true);
 			this._updateSpeedButtons();
+
+            this.dateTimeSelectorPanel.disable();
 		} else if (state == this.state.REMOVED) {
 			this.playButton.setIcon('images/animation/play.png');
-			this.startTimeCombo.enable();
-			this.endTimeCombo.enable();
 			this.playButton.enable();
             this.stepSlider.setValue(0);
 			// nothing's playing, so stop and pause doesn't make sense
@@ -522,10 +377,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.getAnimationButton.setVisible(false);
 
 			this._updateSpeedButtons();
+            this.dateTimeSelectorPanel.enable();
 		} else if (state == this.state.PAUSED) {
             this.playButton.setIcon('images/animation/play.png');
-            this.startTimeCombo.enable();
-            this.endTimeCombo.enable();
             this.playButton.enable();
             // nothing's playing, so stop and pause doesn't make sense
 
@@ -533,8 +387,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.getAnimationButton.setVisible(true);
 
             this._updateSpeedButtons();
+            this.dateTimeSelectorPanel.enable();
         }
-
 	},
 
 	// Grey out speed buttonss if reached max multiplier
