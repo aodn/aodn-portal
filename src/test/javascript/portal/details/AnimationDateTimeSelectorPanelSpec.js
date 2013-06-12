@@ -8,11 +8,19 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
     var dateTimePanel;
     var extentEvent;
     var timeControl;
+    var parentAnimationControl;
+    var selectedLayer;
     
     beforeEach(function() {
         timeControl = new OpenLayers.Control.Time();
+        selectedLayer = {};
+        parentAnimationControl = {
+            selectedLayer: selectedLayer
+        };
+        
         dateTimePanel = new Portal.details.AnimationDateTimeSelectorPanel({
-            timeControl: timeControl
+            timeControl: timeControl,
+            parentAnimationControl: parentAnimationControl
         });
         
         extentEvent = {
@@ -133,7 +141,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                 });
 
                 it('updateStartTimeCombo', function() {
-                    dateTimePanel.parent = {
+                    dateTimePanel.parentAnimationControl = {
                         selectedLayer:  {
                             getDatesOnDay: function() {
 
@@ -177,7 +185,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                 });
 
                 it('updateEndTimeCombo', function() {
-                    dateTimePanel.parent = {
+                    dateTimePanel.parentAnimationControl = {
                         selectedLayer:  {
                             getDatesOnDay: function() {
 
@@ -238,17 +246,24 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         beforeEach(function() {
             dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22'));
             dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11'));
+            
             spyOn(timeControl, 'configureForLayer');
         });
         
         it('start time combo select', function() {
             dateTimePanel.startTimeCombo.fireEvent('select');
-            expect(timeControl.configureForLayer).toHaveBeenCalled();
+            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
+            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
+                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
+            ]);
         });
 
         it('end time combo select', function() {
             dateTimePanel.endTimeCombo.fireEvent('select');
-            expect(timeControl.configureForLayer).toHaveBeenCalled();
+            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
+            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
+                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
+            ]);
         });
     });
 });
