@@ -1157,5 +1157,4 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			width : 130
 		};
 	}
-
 });

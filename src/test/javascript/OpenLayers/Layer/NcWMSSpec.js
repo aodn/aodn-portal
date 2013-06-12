@@ -256,4 +256,36 @@ describe("OpenLayers.Layer.NcWMS", function() {
             }
         });
     });
+
+    describe('get dates on day', function() {
+        var extent;
+        
+        beforeEach(function() {
+            extent = [
+                '2001-01-01T00:00',
+                '2001-02-01T01:20',
+                '2001-02-01T20:45',
+                '2001-02-03T00:00',
+                '2001-02-03T23:59',
+                '2001-02-05T00:00'];
+        });
+
+        it('no extent', function() {
+            expect(ncwmsLayer.getDatesOnDay('2001-01-01')).toBeSame([]);
+        });
+
+        it('extent, but no dates falling on day', function() {
+            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+                null, null, null, null, extent);
+            expect(ncwmsLayer.getDatesOnDay('2000-01-01')).toBeSame([]);
+        });
+
+        it('dates on day', function() {
+            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+                null, null, null, null, extent);
+            expect(ncwmsLayer.getDatesOnDay('2001-02-01')).toBeSame([
+                '2001-02-01T01:20',
+                '2001-02-01T20:45'])
+        });
+    });
 });
