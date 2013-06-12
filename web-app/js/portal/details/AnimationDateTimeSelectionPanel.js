@@ -107,7 +107,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
     _onTimeSelected: function(startTimeCombo) {
         this.timeControl.configureForLayer(
-            parent.selectedLayer,
+            this.parentAnimationControl.selectedLayer,
             [
                 this.startTimeCombo.getValue(),
                 this.endTimeCombo.getValue()
@@ -141,7 +141,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateTimeCombo: function(timeCombo, dateTime) {
-        var datesOnDay = this.parent.selectedLayer.getDatesOnDay(dateTime);
+        var datesOnDay = this.parentAnimationControl.selectedLayer.getDatesOnDay(dateTime);
     
         var data = [];
         for (var i = 0; i < datesOnDay.length; i++) {

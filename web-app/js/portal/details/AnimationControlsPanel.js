@@ -45,7 +45,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	initComponent : function() {
-		var parent = this;
+		var parentAnimationControl = this;
 
 		this.warn = new Ext.form.Label({
 					padding : 5,
@@ -136,7 +136,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 				});
 
         this.dateTimeSelectorPanel = new Portal.details.AnimationDateTimeSelectorPanel({
-            parent: this,
+            parentAnimationControl: this,
             timeControl: this.timeControl,
             width: 350
         });
@@ -220,7 +220,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _onSelectedLayerChanged: function(subject, openLayer) {
         if (openLayer && openLayer.isAnimatable()) {
             this.selectedLayer = openLayer;
-            
+
             this.timeControl.configureForLayer(openLayer, 10);
             this.stepSlider.setMinValue(0);
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);

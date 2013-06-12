@@ -50,7 +50,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(animationControlsPanel.dateTimeSelectorPanel).toBeInstanceOf(
                 Portal.details.AnimationDateTimeSelectorPanel);
             expect(animationControlsPanel.dateTimeSelectorPanel.width).toBe(350);
-            expect(animationControlsPanel.dateTimeSelectorPanel.parent).toBe(animationControlsPanel);
+            expect(animationControlsPanel.dateTimeSelectorPanel.parentAnimationControl).toBe(animationControlsPanel);
         });
     });
     
