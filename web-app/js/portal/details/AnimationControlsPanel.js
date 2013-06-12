@@ -39,7 +39,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (this.timeControl) {
             this.timeControl.events.on({
                 'speedchanged': this._onSpeedChanged,
-                'temporalextentchanged': this._onTemporalExtentChanged,
                 scope: this
             });
         }
@@ -211,6 +210,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			width : 130
         });
 
+        this.dateTimeSelectorPanel = new Portal.details.AnimationDateTimeSelectorPanel({
+            parent: this,
+            timeControl: this.timeControl,
+            width: 350
+        });
+/*        
 		this.timeSelectorPanel = new Ext.Panel({
 					layout : 'table',
 					layoutConfig : {
@@ -227,7 +232,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 							this.startTimeCombo, this.endLabel,
 							this.endDatePicker, this.endTimeCombo]
 				});
-
+*/
+        this.timeSelectorPanel = this.dateTimeSelectorPanel;
+        
 		this.getAnimationButton = new Ext.Button({
 			icon : 'images/animation/download.png',
 			text : 'download',
@@ -279,7 +286,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 						},
 						items : [this.buttonsPanel, this.stepSlider,
 								this.speedLabel, this.stepLabel]
-					}, this.timeSelectorPanel, this.getAnimationButton],
+					}, this.dateTimeSelectorPanel, this.getAnimationButton],
 					width : 330,
 					height : '100%'
 				});
@@ -294,6 +301,23 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 		Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
 	},
+
+    // TODO: these can all go when pickers are moved.
+    getStartDatePicker: function() {
+        return this.dateTimeSelectorPanel.startDatePicker;
+    },
+    
+    getEndDatePicker: function() {
+        return this.dateTimeSelectorPanel.endDatePicker;
+    },
+
+    getStartTimeCombo: function() {
+        return this.dateTimeSelectorPanel.startTimeCombo;
+    },
+    
+    getEndTimeCombo: function() {
+        return this.dateTimeSelectorPanel.endTimeCombo;
+    },
 
 	setMap : function(theMap) {
 	    
@@ -313,20 +337,22 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
         }
     },
-    
+    /*
     _onTemporalExtentChanged: function(evt) {
-        this.startDatePicker.setMinValue(evt.layer.min.toDate());
-        this.startDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.startDatePicker.setValue(evt.timer.min.toDate());
+        this.dateTimeSelectorPanel._onTemporalExtentChanged(evt);
         
-        this.endDatePicker.setMinValue(evt.layer.min.toDate());
-        this.endDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.endDatePicker.setValue(evt.timer.max.toDate());
+        this.getStartDatePicker().setMinValue(evt.layer.min.toDate());
+        this.getStartDatePicker().setMaxValue(evt.layer.max.toDate());
+        this.getStartDatePicker().setValue(evt.timer.min.toDate());
+        
+        this.getEndDatePicker().setMinValue(evt.layer.min.toDate());
+        this.getEndDatePicker().setMaxValue(evt.layer.max.toDate());
+        this.getEndDatePicker().setValue(evt.timer.max.toDate());
 
         this._updateStartTimeCombo(evt.timer.min);
         this._updateEndTimeCombo(evt.timer.max);
     },
-    
+    */
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
@@ -337,7 +363,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateStartTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.startTimeCombo, dateTime);
+        this._updateTimeCombo(this.getStartTimeCombo(), dateTime);
     },
     
     _onEndDateSelected: function(startDatePicker, jsDate) {
@@ -345,7 +371,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateEndTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.endTimeCombo, dateTime);
+        this._updateTimeCombo(this.getEndTimeCombo(), dateTime);
     },
 
     _updateTimeCombo: function(timeCombo, dateTime) {

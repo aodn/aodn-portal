@@ -199,6 +199,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectionPanel.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/ComboFilter.js')}"

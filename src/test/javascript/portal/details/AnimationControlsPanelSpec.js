@@ -45,6 +45,15 @@ describe("Portal.details.AnimationControlsPanel", function() {
         animationControlsPanel.selectedLayer = ncWmsLayer;
     });
 
+    describe('initialisation', function() {
+        it('dateTimeSelectorPanel', function() {
+            expect(animationControlsPanel.dateTimeSelectorPanel).toBeInstanceOf(
+                Portal.details.AnimationDateTimeSelectorPanel);
+            expect(animationControlsPanel.dateTimeSelectorPanel.width).toBe(350);
+            expect(animationControlsPanel.dateTimeSelectorPanel.parent).toBe(animationControlsPanel);
+        });
+    });
+    
     describe("_getNewTimeValue", function() {
 		it("select default if old time doesn't exist", function() {
 			var oldTime = "13:25:00 (+10:00)";
@@ -323,14 +332,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
              * spying on the instance function doesn't seem to work, for some reason.
              */
             var origOnSpeedChanged;
-            var origOnTemporalExtentChanged;
             var localAnimationControlsPanel;
 
             beforeEach(function() {
                 origOnSpeedChanged = Portal.details.AnimationControlsPanel._onSpeedChanged;
-                origOnTemporalExtentChanged = Portal.details.AnimationControlsPanel._onTemporalExtentChanged;
                 spyOn(Portal.details.AnimationControlsPanel.prototype, '_onSpeedChanged').andCallThrough();
-                spyOn(Portal.details.AnimationControlsPanel.prototype, '_onTemporalExtentChanged');
                 
                 localAnimationControlsPanel = new Portal.details.AnimationControlsPanel({
                     timeControl: timeControl
@@ -339,7 +345,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             afterEach(function() {
                 Portal.details.AnimationControlsPanel._onSpeedChanged = origOnSpeedChanged;
-                Portal.details.AnimationControlsPanel._onTemporalExtentChanged = origOnTemporalExtentChanged;
             });
 
             it('on speed up, _onSpeedChanged called', function() {
@@ -366,15 +371,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 localAnimationControlsPanel._onSpeedChanged();
                 expect(localAnimationControlsPanel._updateSpeedLabel).toHaveBeenCalled();
                 expect(localAnimationControlsPanel._updateSpeedUpSlowDownButtons).toHaveBeenCalled();
-            });
-
-            it('on temporal extent changed, _onTemporalExtentChanged called', function() {
-                localAnimationControlsPanel.timeControl.configureForLayer(ncWmsLayer, 2);
-                expect(localAnimationControlsPanel._onTemporalExtentChanged).toHaveBeenCalled();
-                expect(localAnimationControlsPanel._onTemporalExtentChanged.calls[0].args[0].layer.min).toBeSame(
-                    '2012-04-01T12:00:00');
-                expect(localAnimationControlsPanel._onTemporalExtentChanged.calls[0].args[0].layer.max).toBeSame(
-                    '2012-04-01T14:00:00');
             });
         });
 
@@ -413,124 +409,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
                 animationControlsPanel.speedUp.fireEvent('click'); // 1/16
                 expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
-            });
-
-            describe('picker values on temporal extent changed', function() {
-                beforeEach(function() {
-                    animationControlsPanel._onTemporalExtentChanged({
-                        layer: {
-                            min: moment('2008-01-01T12:34:56'),
-                            max: moment('2010-01-01T12:34:56')
-                        },
-                        timer: {
-                            min: moment('2009-01-01T12:34:56'),
-                            max: moment('2010-01-01T12:34:56')
-                        }
-                    });
-                });
-
-                it('start date picker', function() {
-                    expect(animationControlsPanel.startDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
-                    expect(animationControlsPanel.startDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
-                    expect(animationControlsPanel.startDatePicker.getValue()).toBeSame('2009-01-01');
-                });                
-                
-                it('end date picker', function() {
-                    expect(animationControlsPanel.endDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
-                    expect(animationControlsPanel.endDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
-                    expect(animationControlsPanel.endDatePicker.getValue()).toBeSame('2010-01-01');
-                });
-            });
-
-            describe('time pickers updated on date picker change', function() {
-
-                var extentEvent = {
-                    layer: {
-                        min: moment('2008-01-01T12:34:56'),
-                        max: moment('2010-01-01T12:34:56')
-                    },
-                    timer: {
-                        min: moment('2009-01-01T12:34:56'),
-                        max: moment('2010-01-01T12:34:56')
-                    }
-                };
-                
-                it('start time picker updated on temporal extent change', function() {
-                    spyOn(animationControlsPanel, '_updateStartTimeCombo');
-
-                    animationControlsPanel._onTemporalExtentChanged(extentEvent);
-                    expect(animationControlsPanel._updateStartTimeCombo.calls[0].args[0]).toBeSame('2009-01-01T12:34:56');
-                });
-
-                it('start time picker updated', function() {
-
-                    spyOn(animationControlsPanel, '_updateStartTimeCombo');
-
-                    animationControlsPanel.startDatePicker.fireEvent(
-                        'select',
-                        animationControlsPanel.startDatePicker,
-                        moment('2001-01-01').toDate());
-                    expect(animationControlsPanel._updateStartTimeCombo.calls[0].args[0]).toBeSame('2001-01-01');
-                });
-
-                it('updateStartTimeCombo', function() {
-                    animationControlsPanel.selectedLayer = {
-                        getDatesOnDay: function() {
-
-                            return [
-                                moment('2001-01-01T05:00'),
-                                moment('2001-01-01T15:00')
-                            ];
-                        }
-                    };
-
-                    spyOn(animationControlsPanel.startTimeCombo.store, 'loadData').andCallThrough();
-                    
-                    animationControlsPanel._updateStartTimeCombo(moment('2001-01-01T05:00'));
-                    
-                    var addData = animationControlsPanel.startTimeCombo.store.loadData.calls[0].args[0];
-                    expect(addData[0][0]).toBeSame('2001-01-01T05:00');
-                    expect(addData[0][1]).toBe('05:00:00 (+11:00)');
-                    expect(addData[1][0]).toBeSame('2001-01-01T15:00');
-                    expect(animationControlsPanel.startTimeCombo.getValue()).toBe('05:00:00 (+11:00)');
-                });
-
-                it('end time picker updated on temporal extent change', function() {
-                    spyOn(animationControlsPanel, '_updateEndTimeCombo');
-
-                    animationControlsPanel._onTemporalExtentChanged(extentEvent);
-                    expect(animationControlsPanel._updateEndTimeCombo.calls[0].args[0]).toBeSame('2010-01-01T12:34:56');
-                });
-
-                it('end time picker updated', function() {
-                    spyOn(animationControlsPanel, '_updateEndTimeCombo');
-
-                    animationControlsPanel.endDatePicker.fireEvent(
-                        'select',
-                        animationControlsPanel.endDatePicker,
-                        moment('2001-01-07').toDate());
-                    expect(animationControlsPanel._updateEndTimeCombo.calls[0].args[0]).toBeSame('2001-01-07');
-                });
-
-                it('updateEndTimeCombo', function() {
-                    animationControlsPanel.selectedLayer = {
-                        getDatesOnDay: function() {
-                            return [
-                                moment('2001-01-01T05:00'),
-                                moment('2001-01-01T15:00')
-                            ];
-                        }
-                    };
-
-                    spyOn(animationControlsPanel.endTimeCombo.store, 'loadData');
-                    
-                    animationControlsPanel._updateEndTimeCombo(moment('2001-01-01T05:00'));
-                    
-                    var addData = animationControlsPanel.endTimeCombo.store.loadData.calls[0].args[0];
-                    expect(addData[0][0]).toBeSame('2001-01-01T05:00');
-                    expect(addData[0][1]).toBe('05:00:00 (+11:00)');
-                    expect(addData[1][0]).toBeSame('2001-01-01T15:00');
-                });
             });
         });
     });
