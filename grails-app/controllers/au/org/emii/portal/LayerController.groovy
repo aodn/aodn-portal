@@ -10,6 +10,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.MenuJsonCache
 import grails.converters.JSON
+import groovy.time.TimeCategory
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
@@ -322,6 +323,8 @@ class LayerController {
         }
 
         try {
+	        def startTime = new Date()
+
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
             _validateMetadata metadata
@@ -344,20 +347,16 @@ class LayerController {
             server.updateOperations serverCapabilities.operations
 
             server.lastScanDate = new Date()
-
-	        log.debug "Before save"
-
             server.save( failOnError: true )
 
-	        log.debug "After save, before render success message"
+	        use(TimeCategory) {
+
+		        log.debug "saveOrUpdate() on '$server' took ${new Date() - startTime}"
+	        }
 
             render status: 200, text: "Complete (saved)"
 
-	        log.debug "After render. Before _recache(server)"
-
             _recache(server)
-
-	        log.debug "Recache complete"
         }
         catch (Exception e) {
 
@@ -508,11 +507,13 @@ class LayerController {
     }
 
     def _isServerCollectable(server1, server2) {
-        return server2 && (!server1 || server1 != server2)
+
+	    return server2 && (!server1 || server1 != server2)
     }
 
     def _toResponseMap(data, total) {
-        return [data: data, total: total]
+
+	    return [data: data, total: total]
     }
 
     def _convertLayersToListOfMaps(layers) {
@@ -593,6 +594,7 @@ class LayerController {
     }
 
     def _recache(server) {
+
         server.recache(MenuJsonCache.instance())
         Config.recacheDefaultMenu()
     }

@@ -11,6 +11,7 @@ package au.org.emii.portal
 import au.org.emii.portal.config.JsonMarshallingRegistrar
 import au.org.emii.portal.display.MenuPresenter
 import grails.converters.JSON
+import groovy.time.TimeCategory
 import org.apache.commons.lang.builder.EqualsBuilder
 
 class Menu {
@@ -135,20 +136,41 @@ class Menu {
 	}
 
 	def recache(theCache) {
+
+		def startTime = new Date()
+
 		def displayableMenu = toDisplayableMenu()
 		def cachedJson = theCache.get(displayableMenu)
 		if (cachedJson) {
 			_cache(theCache, displayableMenu)
 		}
+
+		use(TimeCategory) {
+			log.debug "recache() on '$this' took ${new Date() - startTime}"
+		}
 	}
 
 	def cache(theCache) {
+
+		def startTime = new Date()
+
 		_cache(theCache, toDisplayableMenu())
+
+		use(TimeCategory) {
+			log.debug "cache() on '$this' took ${new Date() - startTime}"
+		}
 	}
 
 	def _cache(theCache, displayableMenu) {
-		theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
-			displayableMenu as JSON
-		}.toString())
+        try {
+            theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
+                displayableMenu as JSON
+            }.toString())
+        }
+        catch(java.lang.NoSuchFieldException e){
+            //NoSuchFieldException getting thrown is a known problem with grails 1.3.7
+            //try/catch block added so we don't have meaningless exceptions in our logs
+            //see http://stackoverflow.com/questions/14510805/grails-1-3-7-java-7-compatibility
+        }
 	}
 }

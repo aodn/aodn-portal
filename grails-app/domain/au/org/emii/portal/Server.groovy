@@ -147,9 +147,16 @@ class Server {
 	}
 
 	def recache(cache) {
+
+		def startTime = new Date()
+
 		def result = cache.get(this)
 		if (result) {
 			cache.add(this, toServerLayerJson())
+		}
+
+		use(TimeCategory) {
+			log.debug "recache() on '$this' took ${new Date() - startTime}"
 		}
 	}
 
