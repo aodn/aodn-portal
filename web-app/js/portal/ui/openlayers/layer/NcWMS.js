@@ -173,5 +173,27 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 applyToTileFunction(this.grid[rowIndex][colIndex]);
             }
         }
-    }    
+    },
+
+    getDatesOnDay: function(dateTime) {
+
+        var retDates = [];
+        
+        if (!this.temporalExtent) {
+            return retDates;
+        }
+
+        for (var i = 0; i < this.temporalExtent.length; i++) {
+            var dateTimeAsMoment = moment(dateTime);
+            var dateToCheck = this.temporalExtent[i];
+
+            if (   dateTimeAsMoment.year() == dateToCheck.year()
+                && dateTimeAsMoment.month() == dateToCheck.month()
+                && dateTimeAsMoment.date() == dateToCheck.date()) {
+                retDates.push(dateToCheck);
+            }
+        }
+        
+        return retDates;
+    }
 });

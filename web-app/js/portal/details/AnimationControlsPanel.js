@@ -34,14 +34,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         }, this);
         
-        Ext.MsgBus.subscribe('selectedLayerChanged', function(subject, openLayer) {
-
-            if (openLayer && openLayer.isAnimatable()) {
-                    this.timeControl.configureForLayer(openLayer, 10);
-                    this.stepSlider.setMinValue(0);
-                    this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
-            }
-        }, this);
+        Ext.MsgBus.subscribe('selectedLayerChanged', this._onSelectedLayerChanged, this);
 
         if (this.timeControl) {
             this.timeControl.events.on({
@@ -161,6 +154,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					width : 70
 				});
 
+        // TODO: refactor date/time pickers in to own component.
 		this.startDatePicker = new Ext.form.DateField({
                     format : this.DATE_FORMAT,
                     disabledDatesText: "unavailable",
@@ -168,7 +162,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					width : 100,
 					listeners : {
 						scope : this,
-						select : this._onDateSelected
+                        select: this._onStartDateSelected
 					}
 
 				});
@@ -180,23 +174,42 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					width : 100,
 					listeners : {
 						scope : this,
-						select : this._onDateSelected
+						select : this._onEndDateSelected
 					}
 				});
 
-		this.startTimeCombo = new Ext.form.ComboBox(Ext.apply({
-					listeners : {
-						scope : this,
-						select : this._onTimeSelected
-					}
-				}, this._timeComboOptions()));
-				
-		this.endTimeCombo = new Ext.form.ComboBox(Ext.apply({
-					listeners : {
-						scope : this,
-						select : this._onTimeSelected
-					}
-				}, this._timeComboOptions()));
+        // Have to use a generic combo, as Ext.form.TimeField blats the date part of values (leaving just the
+        // time of day).
+        // TODO: refactor (new component?)
+		this.startTimeCombo = new Ext.form.ComboBox({
+            store: new Ext.data.ArrayStore({
+                autoLoad : false,
+			    autoDestroy : true,
+			    fields : ['momentValue', 'displayTime'],
+			    data : []
+            }),
+            mode: 'local',
+			triggerAction : "all",
+			editable : false,
+			valueField : 'momentValue',
+			displayField : 'displayTime',
+			width : 130
+        });
+        
+		this.endTimeCombo = new Ext.form.ComboBox({
+            store: new Ext.data.ArrayStore({
+                autoLoad : false,
+			    autoDestroy : true,
+			    fields : ['momentValue', 'displayTime'],
+			    data : []
+            }),
+            mode: 'local',
+			triggerAction : "all",
+			editable : false,
+			valueField : 'momentValue',
+			displayField : 'displayTime',
+			width : 130
+        });
 
 		this.timeSelectorPanel = new Ext.Panel({
 					layout : 'table',
@@ -291,6 +304,16 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
+    _onSelectedLayerChanged: function(subject, openLayer) {
+        if (openLayer && openLayer.isAnimatable()) {
+            this.selectedLayer = openLayer;
+            
+            this.timeControl.configureForLayer(openLayer, 10);
+            this.stepSlider.setMinValue(0);
+            this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
+        }
+    },
+    
     _onTemporalExtentChanged: function(evt) {
         this.startDatePicker.setMinValue(evt.layer.min.toDate());
         this.startDatePicker.setMaxValue(evt.layer.max.toDate());
@@ -299,11 +322,42 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.endDatePicker.setMinValue(evt.layer.min.toDate());
         this.endDatePicker.setMaxValue(evt.layer.max.toDate());
         this.endDatePicker.setValue(evt.timer.max.toDate());
+
+        this._updateStartTimeCombo(evt.timer.min);
+        this._updateEndTimeCombo(evt.timer.max);
     },
     
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
+    },
+
+    _onStartDateSelected: function(startDatePicker, jsDate) {
+        this._updateStartTimeCombo(moment(jsDate));
+    },
+
+    _updateStartTimeCombo: function(dateTime) {
+        this._updateTimeCombo(this.startTimeCombo, dateTime);
+    },
+    
+    _onEndDateSelected: function(startDatePicker, jsDate) {
+        this._updateEndTimeCombo(moment(jsDate));
+    },
+
+    _updateEndTimeCombo: function(dateTime) {
+        this._updateTimeCombo(this.endTimeCombo, dateTime);
+    },
+
+    _updateTimeCombo: function(timeCombo, dateTime) {
+        var datesOnDay = this.selectedLayer.getDatesOnDay(dateTime);
+
+        var data = [];
+        for (var i = 0; i < datesOnDay.length; i++) {
+            data.push([datesOnDay[i], datesOnDay[i].format('HH:mm:ss (Z)')]);
+        }
+
+        timeCombo.getStore().loadData(data);
+        timeCombo.setValue(dateTime.format('HH:mm:ss (Z)'));
     },
     
     _updateSpeedUpSlowDownButtons: function() {
