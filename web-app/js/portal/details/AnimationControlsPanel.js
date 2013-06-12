@@ -45,15 +45,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	initComponent : function() {
-		this.DATE_FORMAT = 'Y-m-d';
-		this.TIME_FORMAT = 'H:i:s (P)';
-		this.DATE_TIME_FORMAT = this.DATE_FORMAT + ' ' + this.TIME_FORMAT;
-		this.STEP_LABEL_DATE_TIME_FORMAT = this.DATE_FORMAT + " H:i:s";
-
-		this.BASE_SPEED = 500;
-		this.MAX_SPEED_MULTIPLIER = 32;
-
-		this.animatedLayers = new Array();
 		var parent = this;
 
 		this.warn = new Ext.form.Label({
@@ -286,67 +277,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
     },
     
-	_onDateSelected : function(field, date) {
-			var key = this._toDateString(date);
-
-			var combo;
-	
-			if (field === this.startDatePicker) {
-				combo = this.startTimeCombo;
-			} else {
-				combo = this.endTimeCombo;
-			}
-	
-			var oldValue = combo.getValue();
-			
-			combo.clearValue();
-			combo.getStore().loadData(this.allTimes[key], false);
-			
-			var timeValues = new Array();
-			
-			for(var i =0;i < this.allTimes[key].length;i++)
-			{
-				timeValues[i] = this.allTimes[key][i][0]
-			}
-			
-			var newValue;
-			if (field === this.startDatePicker) {
-				newValue = this._getNewTimeValue(oldValue, timeValues,0);
-			} else {
-				newValue = this._getNewTimeValue(oldValue, timeValues,timeValues.length-1);
-			}
-
-			combo.setValue(newValue,true);
-			combo.fireEvent('select');
-	},
-	
-	//PRE: old time must be a String or NULL, newTimes must be an array of strings, 
-	//defaultIndex must be an positive integer less than the length of newTimes
-	_getNewTimeValue : function(oldTime,newTimes, defaultIndex){
-		for(var i =0;i < newTimes.length;i++)
-		{
-			if(newTimes[i] === oldTime)
-			{
-				return oldTime;
-			}
-		}
-		
-		//if we get to this point, then oldTime must not be available, so use default.
-		return newTimes[defaultIndex]
-		
-	},
-	
-	 _onTimeSelected : function(combo, record, index) {
-	 	if (this.currentState == this.state.PLAYING) {
-			this._stopPlaying();
-			this._startPlaying();
-		} else if(combo == this.startTimeCombo) {
-			var timeStr = this._getSelectedTimeString(true);
-			this._setTimeAsStepLabelText(timeStr);
-		}
-
-	},
-
 	_updateButtons : function(state) {
 		this.currentState = state;
 
@@ -404,129 +334,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		}
 	},
 
-	_onLayerVisibilityChanged : function() {
-		if (!this.originalLayer.getVisibility()) {
-			this._stopPlaying();
-		} else {
-			this.originalLayer.slides[this.stepSlider.getValue()].display(true);
-		}
-	},
-	
-	_setDateRange : function(picker, startDate, endDate) {
-		picker.setMinValue(startDate);
-		picker.setMaxValue(endDate);
-		picker.setValue(startDate);
-	},
-
 	isAnimating : function() {
-		return (this.animatedLayers.length > 0);
-	},
-
-	_setTime : function(picker, combo, timestamp) {
-		picker.setValue(timestamp);
-		this._onDateSelected(picker, timestamp);
-		combo.setValue(timestamp.format(this.TIME_FORMAT));
-
-	},
-
-	_getSelectedTimeString : function(isStart) {
-		if (isStart) {
-			return this._toUtcIso8601DateString(
-					this.startDatePicker.getValue(), this.startTimeCombo
-							.getValue());
-		}
-		return this._toUtcIso8601DateString(this.endDatePicker.getValue(),
-				this.endTimeCombo.getValue());
+        // TODO: this is most likely dodgy.
+        // Need to check when and how this function is called.
+        return false;
 	},
 
 	loadFromSavedMap : function(layer, stamps) {
 		this.setSelectedLayer(layer);
 	},
 
-	_parseIso8601Date : function(string) {
-		return Date.parseDate(string, "c");
-	},
-
-	_toDateString : function(date) {
-		return date.format(this.DATE_FORMAT);
-	},
-
-	_toUtcDateString : function(date) {
-		return date.getUTCFullYear() + "-"
-				+ this._pad((date.getUTCMonth() + 1)) + "-"
-				+ this._pad(date.getUTCDate());
-	},
-
-	_toTimeString : function(date) {
-		return date.format(this.TIME_FORMAT);
-	},
-
-	_toUtcTimeString : function(date) {
-		return this._pad(date.getUTCHours()) + ":"
-				+ this._pad(date.getUTCMinutes()) + ":"
-				+ this._pad(date.getUTCSeconds()) + 'Z';
-	},
-
-	_pad : function(val) {
-		return val < 10 ? '0' + val : val.toString();
-	},
-
-	_getTimeComboStartDate : function(dates) {
-		return this._parseIso8601Date(dates[this._getTimeComboStartIndex(dates)]);
-	},
-
-	_getTimeComboStartIndex : function(dates) {
-		return dates.length > 10 ? dates.length - 10 : 0;
-	},
-
-	_toUtcIso8601DateString : function(date, timeString) {
-		if (timeString) {
-			return this._toUtcIso8601DateString(Date.parseDate(date
-							.format(this.DATE_FORMAT)
-							+ ' ' + timeString, this.DATE_TIME_FORMAT));
-		}
-		return this._toUtcDateString(date) + 'T' + this._toUtcTimeString(date);
-	},
-
 	_setStepLabelText : function(text) {
 		this.stepLabel.setText(text, false);
-	},
-
-	_setTimeAsStepLabelText : function(dateTimeString) {
-		this._setStepLabelText(this._parseIso8601Date(dateTimeString)
-				.format(this.STEP_LABEL_DATE_TIME_FORMAT));
-	},
-
-	_roundToNearestFiveMinutes : function(date) {
-		var roundedDate = new Date(date.getTime());
-		if (roundedDate.getMinutes() > 57) {
-			roundedDate.setHours(roundedDate.getHours() + 1);
-		}
-		roundedDate.setMinutes((Math.round(roundedDate.getMinutes() / 5) * 5)
-				% 60);
-		roundedDate.setSeconds(0);
-		return roundedDate;
-	},
-
-	_timeComboStoreOptions : function() {
-		return {
-			autoLoad : false,
-			autoDestroy : true,
-			fields : ['time', 'roundedTime'],
-			data : []
-		};
-	},
-
-	_timeComboOptions : function() {
-		return {
-			store : new Ext.data.ArrayStore(this._timeComboStoreOptions()),
-			mode : 'local',
-			triggerAction : "all",
-			editable : false,
-			valueField : 'time',
-			displayField : 'roundedTime',
-			width : 130
-		};
 	}
 });
-
