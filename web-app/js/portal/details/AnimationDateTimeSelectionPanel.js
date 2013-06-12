@@ -63,6 +63,8 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 			}
 		});
         
+        // Have to use a generic combo, as Ext.form.TimeField blats the date part of values (leaving just the
+        // time of day).
 		this.startTimeCombo = new Ext.form.ComboBox({
             store: new Ext.data.ArrayStore({
                 autoLoad : false,
@@ -101,6 +103,14 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 		Portal.details.AnimationDateTimeSelectorPanel.superclass.initComponent.call(this);
     },
 
+    disable: function() {
+        // TODO
+    },
+    
+    enable: function() {
+        // TODO
+    },
+    
     _onStartDateSelected: function(startDatePicker, jsDate) {
         this._updateStartTimeCombo(moment(jsDate));
     },

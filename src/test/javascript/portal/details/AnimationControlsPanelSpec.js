@@ -277,6 +277,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 animationControlsPanel.playButton.fireEvent('click');
                 expect(timeControl.play).toHaveBeenCalled();
             });
+
+            it('on play, dateTimeSelectorPanel is disabled', function() {
+                spyOn(animationControlsPanel.dateTimeSelectorPanel, 'disable');
+                animationControlsPanel.playButton.fireEvent('click');
+                expect(animationControlsPanel.dateTimeSelectorPanel.disable).toHaveBeenCalled();
+                
+            });
             
             it('on stop, time.stop is called', function() {
                 animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
@@ -288,6 +295,14 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(timeControl.stop).toHaveBeenCalled();
             });
 
+            it('on stop, dateTimeSelectorPanel is enabled', function() {
+                animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
+                spyOn(animationControlsPanel.dateTimeSelectorPanel, 'enable');
+
+                animationControlsPanel.playButton.fireEvent('click');
+                expect(animationControlsPanel.dateTimeSelectorPanel.enable).toHaveBeenCalled();
+            });
+            
             it('on speed up, time.speedUp is called', function() {
                 spyOn(timeControl, 'speedUp');
                 animationControlsPanel.speedUp.fireEvent('click');
@@ -306,22 +321,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 
                 animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
                 expect(timeControl.setStep).toHaveBeenCalledWith(3);
-            });
-
-            it('startTimeCombo initialisation', function() {
-                expect(animationControlsPanel.startTimeCombo.store).toBeInstanceOf(Ext.data.ArrayStore);
-                expect(animationControlsPanel.startTimeCombo.mode).toBe('local');
-                expect(animationControlsPanel.startTimeCombo.editable).toBeFalsy();
-                expect(animationControlsPanel.startTimeCombo.valueField).toBe('momentValue');
-                expect(animationControlsPanel.startTimeCombo.displayField).toBe('displayTime');
-            });
-
-            it('endTimeCombo initialisation', function() {
-                expect(animationControlsPanel.endTimeCombo.store).toBeInstanceOf(Ext.data.ArrayStore);
-                expect(animationControlsPanel.endTimeCombo.mode).toBe('local');
-                expect(animationControlsPanel.endTimeCombo.editable).toBeFalsy();
-                expect(animationControlsPanel.endTimeCombo.valueField).toBe('momentValue');
-                expect(animationControlsPanel.endTimeCombo.displayField).toBe('displayTime');
             });
         });
 
