@@ -39,8 +39,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.endLabel = new Ext.form.Label({
-			html : "End: ",
-			width : 70
+			html : "End:"
 		});
         
 		this.startDatePicker = new Ext.form.DateField({
@@ -62,21 +61,8 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
                 select: this._onEndDateSelected
 			}
 		});
-        
-        // Have to use a generic combo, as Ext.form.TimeField blats the date part of values (leaving just the
-        // time of day).
-		this.startTimeCombo = new Ext.form.ComboBox({
-            store: new Ext.data.ArrayStore({
-                autoLoad : false,
-			    autoDestroy : true,
-			    fields : ['momentValue', 'displayTime'],
-			    data : []
-            }),
-            mode: 'local',
-			triggerAction : "all",
-			editable : false,
-			valueField : 'momentValue',
-			displayField : 'displayTime',
+
+        this.startTimeCombo = new Portal.details.MomentComboBox({
 			width : 130,
             listeners: {
                 scope: this,
@@ -84,18 +70,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
             }
         });
         
-		this.endTimeCombo = new Ext.form.ComboBox({
-            store: new Ext.data.ArrayStore({
-                autoLoad : false,
-			    autoDestroy : true,
-			    fields : ['momentValue', 'displayTime'],
-			    data : []
-            }),
-            mode: 'local',
-			triggerAction : "all",
-			editable : false,
-			valueField : 'momentValue',
-			displayField : 'displayTime',
+		this.endTimeCombo = new Portal.details.MomentComboBox({
 			width : 130,
             listeners: {
                 scope: this,

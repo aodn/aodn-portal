@@ -197,9 +197,11 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/details/MomentComboBox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectionPanel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"
         type="text/javascript"></script>
