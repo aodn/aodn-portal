@@ -77,7 +77,11 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			valueField : 'momentValue',
 			displayField : 'displayTime',
-			width : 130
+			width : 130,
+            listeners: {
+                scope: this,
+                select: this._onTimeSelected
+            }
         });
         
 		this.endTimeCombo = new Ext.form.ComboBox({
@@ -92,7 +96,11 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 			editable : false,
 			valueField : 'momentValue',
 			displayField : 'displayTime',
-			width : 130
+			width : 130,
+            listeners: {
+                scope: this,
+                select: this._onTimeSelected
+            }
         });
 
         this.items = [
@@ -122,6 +130,16 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         this._updateStartTimeCombo(moment(jsDate));
     },
 
+    _onTimeSelected: function(startTimeCombo) {
+        this.timeControl.configureForLayer(
+            parent.selectedLayer,
+            [
+                this.startTimeCombo.getValue(),
+                this.endTimeCombo.getValue()
+            ]
+        );
+    },
+    
     _onEndDateSelected: function(endDatePicker, jsDate) {
         this._updateEndTimeCombo(moment(jsDate));
     },
