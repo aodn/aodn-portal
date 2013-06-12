@@ -104,11 +104,18 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     disable: function() {
-        // TODO
+
+        this.startDatePicker.disable();
+		this.endDatePicker.disable();
+		this.startTimeCombo.disable();
+		this.endTimeCombo.disable();
     },
     
     enable: function() {
-        // TODO
+        this.startDatePicker.enable();
+		this.endDatePicker.enable();
+		this.startTimeCombo.enable();
+		this.endTimeCombo.enable();
     },
     
     _onStartDateSelected: function(startDatePicker, jsDate) {

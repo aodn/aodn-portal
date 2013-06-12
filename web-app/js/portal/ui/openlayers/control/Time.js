@@ -145,9 +145,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
         for (var i = 0; i < layerExtentLength; i++) {
 
-            console.log('start isSame', layer.getTemporalExtent()[i].isSame(startDateTime));
-            console.log('end isSame', layer.getTemporalExtent()[i].isSame(endDateTime));
-            
             if ((startIndex == undefined) && layer.getTemporalExtent()[i].isSame(startDateTime)) {
                 startIndex = i
             }

@@ -202,4 +202,34 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             });
         });
     });
+
+    describe('enable/disable', function() {
+        it('enable', function() {
+		    dateTimePanel.startDatePicker.disable();
+		    dateTimePanel.endDatePicker.disable();
+		    dateTimePanel.startTimeCombo.disable();
+		    dateTimePanel.endTimeCombo.disable();
+
+            dateTimePanel.enable();
+            
+		    expect(dateTimePanel.startDatePicker.disabled).toBeFalsy();
+		    expect(dateTimePanel.endDatePicker.disabled).toBeFalsy();
+		    expect(dateTimePanel.startTimeCombo.disabled).toBeFalsy();
+		    expect(dateTimePanel.endTimeCombo.disabled).toBeFalsy();
+        });
+
+        it('disable', function() {
+		    dateTimePanel.startDatePicker.enable();
+		    dateTimePanel.endDatePicker.enable();
+		    dateTimePanel.startTimeCombo.enable();
+		    dateTimePanel.endTimeCombo.enable();
+
+            dateTimePanel.disable();
+            
+		    expect(dateTimePanel.startDatePicker.disabled).toBeTruthy();
+		    expect(dateTimePanel.endDatePicker.disabled).toBeTruthy();
+		    expect(dateTimePanel.startTimeCombo.disabled).toBeTruthy();
+		    expect(dateTimePanel.endTimeCombo.disabled).toBeTruthy();
+        });
+    });
 });
