@@ -204,6 +204,19 @@ describe("OpenLayers.Control.Time", function() {
                 '2001-01-05T00:00'
             ]);
         });
+
+        it('start/end date/times specified', function() {
+            timeControl.configureForLayer(ncwmsLayer, [
+                '2001-01-01T00:00',
+                '2001-01-03T00:00'
+            ]);
+            expect(timeControl.getExtent()).toBeSame([
+                '2001-01-01T00:00',
+                '2001-01-02T00:00',
+                '2001-01-03T00:00'
+            ]);
+                                          
+        });
     });
 
     describe('events', function() {
