@@ -232,4 +232,23 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 		    expect(dateTimePanel.endTimeCombo.disabled).toBeTruthy();
         });
     });
+
+    describe('time control reconfigured on time select', function() {
+
+        beforeEach(function() {
+            dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22'));
+            dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11'));
+            spyOn(timeControl, 'configureForLayer');
+        });
+        
+        it('start time combo select', function() {
+            dateTimePanel.startTimeCombo.fireEvent('select');
+            expect(timeControl.configureForLayer).toHaveBeenCalled();
+        });
+
+        it('end time combo select', function() {
+            dateTimePanel.endTimeCombo.fireEvent('select');
+            expect(timeControl.configureForLayer).toHaveBeenCalled();
+        });
+    });
 });
