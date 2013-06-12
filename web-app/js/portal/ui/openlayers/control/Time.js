@@ -90,34 +90,76 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         this.map.toTime(tickEvent.dateTime);
     },
 
-    configureForLayer: function(layer, numTicksToUse) {
-        if (layer instanceof OpenLayers.Layer.NcWMS) { 
-            var layerExtentLength = layer.getTemporalExtent().length;
-            var timerTickDateTimes = layer.getTemporalExtent().slice(layerExtentLength - numTicksToUse, layerExtentLength);
-            this.timer.setTickDateTimes(timerTickDateTimes);
+    /**
+     * @range can be an integer, meaning use the last 'n' date times from the layer's extent;
+     * or it could be an array with two elements - a start date/time and an end date/time.
+     */
+    configureForLayer: function(layer, range) {
 
-            this.events.triggerEvent(
-                'temporalextentchanged',
-                {
-                    layer: {
-                        min: layer.getTemporalExtent()[0],
-                        max: layer.getTemporalExtent()[layerExtentLength - 1]
-                    },
-                    timer: {
-                        min: timerTickDateTimes[0],
-                        max: timerTickDateTimes[timerTickDateTimes.length - 1]
-                    }
-                }
-            );
-            
-            // Update the map straight away.
-            this.onTick({
-                index: 0,
-                dateTime: this.timer.getStartDateTime()
-            });
+        var timerTickDateTimes;
+        var layerExtentLength = layer.getTemporalExtent().length;
+        
+        if (range instanceof Array) {
+            timerTickDateTimes = this._getExtentForRange(layer, range);
         }
+        else {
+            timerTickDateTimes = this._getLastNFromExtent(layer, range);
+        }
+        
+        this.timer.setTickDateTimes(timerTickDateTimes);
+
+        this.events.triggerEvent(
+            'temporalextentchanged',
+            {
+                layer: {
+                    min: layer.getTemporalExtent()[0],
+                    max: layer.getTemporalExtent()[layerExtentLength - 1]
+                },
+                timer: {
+                    min: timerTickDateTimes[0],
+                    max: timerTickDateTimes[timerTickDateTimes.length - 1]
+                }
+            }
+        );
+        
+        // Update the map straight away.
+        this.onTick({
+            index: 0,
+            dateTime: this.timer.getStartDateTime()
+        });
     },
 
+    _getLastNFromExtent: function(layer, n) {
+        var layerExtentLength = layer.getTemporalExtent().length;
+        return layer.getTemporalExtent().slice(layerExtentLength - n, layerExtentLength);
+    },
+    
+    _getExtentForRange: function(layer, range) {
+        var layerExtentLength = layer.getTemporalExtent().length;
+        
+        var startDateTime = moment(range[0]);
+        var endDateTime = moment(range[1]);
+
+        var startIndex;
+        var endIndex;
+
+        for (var i = 0; i < layerExtentLength; i++) {
+
+            console.log('start isSame', layer.getTemporalExtent()[i].isSame(startDateTime));
+            console.log('end isSame', layer.getTemporalExtent()[i].isSame(endDateTime));
+            
+            if ((startIndex == undefined) && layer.getTemporalExtent()[i].isSame(startDateTime)) {
+                startIndex = i
+            }
+            
+            if (layer.getTemporalExtent()[i].isSame(endDateTime)) {
+                endIndex = i
+            }
+        }
+
+        return layer.getTemporalExtent().slice(startIndex, endIndex + 1);
+    },
+    
     getStep: function() {
         return this.timer.getCurrTickIndex();
     },
