@@ -39,6 +39,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (this.timeControl) {
             this.timeControl.events.on({
                 'speedchanged': this._onSpeedChanged,
+                'temporalextentchanged': this._onTemporalExtentChanged,
                 scope: this
             });
         }
@@ -230,6 +231,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
+    },
+
+    _onTemporalExtentChanged: function(evt) {
+        this.stepSlider.setMinValue(0);
+        this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
     },
 
     _updateSpeedUpSlowDownButtons: function() {

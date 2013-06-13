@@ -16,6 +16,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
         
         timeControl = new OpenLayers.Control.Time();
         timeControl.onTick = function() {};
+        timeControl.getExtent = function() {
+            return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        };
 
         animationControlsPanel = new Portal.details.AnimationControlsPanel({
             timeControl: timeControl
@@ -100,7 +103,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('slider updated', function() {
                 Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
                 expect(animationControlsPanel.stepSlider.minValue).toBe(0);
-                expect(animationControlsPanel.stepSlider.maxValue).toBe(2);
+                expect(animationControlsPanel.stepSlider.maxValue).toBe(9);
             });
 
             it('selectedLayer updated', function() {
@@ -216,10 +219,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         describe('event listeners', function() {
 
-            /**
-             * We have to do some ugly stuff here, namely spying on the prototype function, since
-             * spying on the instance function doesn't seem to work, for some reason.
-             */
+            
+            // We have to do some ugly stuff here, namely spying on the prototype function, since
+            // spying on the instance function doesn't seem to work, for some reason.
+            
             var origOnSpeedChanged;
             var localAnimationControlsPanel;
 
@@ -264,6 +267,25 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
 
         describe('UI state', function() {
+            var extentEvent;
+            
+            beforeEach(function() {
+                timeControl.getExtent = function() {
+                    return [0, 1, 2];
+                };
+                
+                extentEvent = {
+                    layer: {
+                        min: moment('2008-01-01T12:34:56'),
+                        max: moment('2010-01-01T12:34:56')
+                    },
+                    timer: {
+                        min: moment('2009-01-01T12:34:56'),
+                        max: moment('2010-01-01T12:34:56')
+                    }
+                };
+            });
+            
             it('speed label on speed up', function() {
                 animationControlsPanel.speedUp.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('2x');
@@ -298,6 +320,16 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
                 animationControlsPanel.speedUp.fireEvent('click'); // 1/16
                 expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
+            });
+
+            it('step slider updated on temporal extent changed event', function() {
+                spyOn(animationControlsPanel.stepSlider, 'setMinValue');
+                spyOn(animationControlsPanel.stepSlider, 'setMaxValue');
+                
+                timeControl.events.triggerEvent('temporalextentchanged', extentEvent);
+
+                expect(animationControlsPanel.stepSlider.setMinValue).toHaveBeenCalledWith(0);
+                expect(animationControlsPanel.stepSlider.setMaxValue).toHaveBeenCalledWith(2);
             });
         });
     });
