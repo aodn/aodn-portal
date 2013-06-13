@@ -56,14 +56,14 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 
         it('start date picker', function() {
             expect(dateTimePanel.getStartDatePicker()).toBeTruthy();
-            expect(dateTimePanel.getStartDatePicker().format).toBe('d-m-Y');
+            expect(dateTimePanel.getStartDatePicker().format).toBe(dateTimePanel.DATE_FORMAT);
             expect(dateTimePanel.getStartDatePicker().editable).toBeFalsy();
             expect(dateTimePanel.getStartDatePicker().width).toBe(100);
         });
 
         it('end date picker', function() {
             expect(dateTimePanel.getEndDatePicker()).toBeTruthy();
-            expect(dateTimePanel.getEndDatePicker().format).toBe('d-m-Y');
+            expect(dateTimePanel.getEndDatePicker().format).toBe(dateTimePanel.DATE_FORMAT);
             expect(dateTimePanel.getEndDatePicker().editable).toBeFalsy();
             expect(dateTimePanel.getEndDatePicker().width).toBe(100);
         });

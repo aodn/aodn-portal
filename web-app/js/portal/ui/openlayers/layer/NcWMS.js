@@ -172,13 +172,42 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             var dateTimeAsMoment = moment(dateTime);
             var dateToCheck = this.temporalExtent[i];
 
-            if (   dateTimeAsMoment.year() == dateToCheck.year()
-                && dateTimeAsMoment.month() == dateToCheck.month()
-                && dateTimeAsMoment.date() == dateToCheck.date()) {
+            if (this._momentIsEqualByYearMonthDate(dateTimeAsMoment, dateToCheck)) {
                 retDates.push(dateToCheck);
+            }
+            else {
+                if (retDates.length > 0) {
+                    break;
+                }
             }
         }
         
         return retDates;
+    },
+
+    getMissingDays: function() {
+        var missingDays = [];
+        var candidate = this.temporalExtent[0].clone();
+        for (var i = 0; i < this.temporalExtent.length; i++) {
+            var nextDate = this.temporalExtent[i].clone();
+
+            if (!this._momentIsEqualByYearMonthDate(candidate, nextDate)) {
+                var upperBound = nextDate.subtract('days', 1);
+                if (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
+                    while (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
+                        candidate.add('days', 1);
+                        missingDays.push(candidate.clone().startOf('day'));
+                    }
+                }
+                candidate = this.temporalExtent[i].clone();
+            }
+        }
+        return missingDays;
+    },
+
+    _momentIsEqualByYearMonthDate: function(left, right) {
+        return left.year() == right.year()
+            && left.month() == right.month()
+            && left.date() == right.date();
     }
 });

@@ -233,11 +233,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.timeControl.configureForLayer(openLayer, 10);
             this.stepSlider.setMinValue(0);
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
-
             this.selectedLayer.events.on({
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
                 scope: this
             });
+            this.dateTimeSelectorPanel.setMissingDays(this.selectedLayer.getMissingDays());
         }
     },
 
