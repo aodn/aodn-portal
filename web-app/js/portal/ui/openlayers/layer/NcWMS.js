@@ -186,7 +186,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getMissingDays: function() {
-        var missingDays = [];
+        // Memoize
+        if (this.missingDays) {
+            return this.missingDays;
+        }
+
+        this.missingDays = [];
         var candidate = this.temporalExtent[0].clone();
         for (var i = 0; i < this.temporalExtent.length; i++) {
             var nextDate = this.temporalExtent[i].clone();
@@ -196,13 +201,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 if (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
                     while (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
                         candidate.add('days', 1);
-                        missingDays.push(candidate.clone().startOf('day'));
+                        this.missingDays.push(candidate.clone().startOf('day'));
                     }
                 }
                 candidate = this.temporalExtent[i].clone();
             }
         }
-        return missingDays;
+        return this.missingDays;
     },
 
     _momentIsEqualByYearMonthDate: function(left, right) {
