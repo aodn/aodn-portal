@@ -64,7 +64,7 @@ describe("Portal.common.LayerDescriptor", function() {
                 }];
 
                 var openLayer = layerDesc.toOpenLayer();
-                expect(openLayer).toBeInstanceOf(OpenLayers.Layer.NcWMS);
+                expect(openLayer).toBeInstanceOf(OpenLayers.Layer.CachedNcWMS);
             });
 
             it('temporal extent', function() {
