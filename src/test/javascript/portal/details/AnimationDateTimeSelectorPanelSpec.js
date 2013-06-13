@@ -161,7 +161,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     expect(addData[0][0]).toBeSame('2001-01-01T05:00');
                     expect(addData[0][1]).toBe('05:00:00 (+11:00)');
                     expect(addData[1][0]).toBeSame('2001-01-01T15:00');
-                    expect(dateTimePanel.startTimeCombo.getValue()).toBe('05:00:00 (+11:00)');
+                    expect(dateTimePanel.startTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
             });
             
@@ -205,7 +205,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     expect(addData[0][0]).toBeSame('2001-01-01T05:00');
                     expect(addData[0][1]).toBe('05:00:00 (+11:00)');
                     expect(addData[1][0]).toBeSame('2001-01-01T15:00');
-                    expect(dateTimePanel.endTimeCombo.getValue()).toBe('05:00:00 (+11:00)');
+                    expect(dateTimePanel.endTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
             });
         });

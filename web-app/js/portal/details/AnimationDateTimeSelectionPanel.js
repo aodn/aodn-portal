@@ -105,7 +105,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         this._updateStartTimeCombo(moment(jsDate));
     },
 
-    _onTimeSelected: function(startTimeCombo) {
+    _onTimeSelected: function(combo, record, index) {
         this.timeControl.configureForLayer(
             this.parentAnimationControl.selectedLayer,
             [
@@ -149,7 +149,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         }
 
         timeCombo.getStore().loadData(data);
-        timeCombo.setValue(dateTime.format('HH:mm:ss (Z)'));
+        timeCombo.setValue(dateTime);
     },
     
     getStartDatePicker: function() {
