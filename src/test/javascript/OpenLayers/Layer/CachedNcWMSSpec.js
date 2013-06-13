@@ -7,15 +7,14 @@
 describe("OpenLayers.Layer.CachedNcWMS", function() {
     var cachedLayer;
     var extent;
-    
+
     beforeEach(function() {
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
         };
         OpenLayers.Layer.WMS.prototype.moveTo = function() {};
 
-        cachedLayer = new OpenLayers.Layer.NcWMS();
-        //cachedLayer = new OpenLayers.Layer.NcWMS();
+        cachedLayer = new OpenLayers.Layer.CachedNcWMS();
         
         spyOn(cachedLayer, '_getTimesToCache').andReturn([
             moment('2000-01-01T00:00:00'),
