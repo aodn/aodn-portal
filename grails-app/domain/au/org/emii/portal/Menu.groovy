@@ -127,6 +127,7 @@ class Menu {
 	}
 
 	def toDisplayableMenu() {
+
 		return new MenuPresenter(this)
 	}
 

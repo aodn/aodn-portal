@@ -596,7 +596,6 @@ class LayerController {
     def _recache(server) {
 
         server.recache(MenuJsonCache.instance())
-        Config.recacheDefaultMenu()
     }
 
     def getFiltersAsJSON = {
