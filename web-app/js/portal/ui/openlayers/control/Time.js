@@ -160,6 +160,10 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getStep: function() {
         return this.timer.getCurrTickIndex();
     },
+
+    getDateTimeForStep: function(step) {
+        return this.timer.getTickDateTime(step);
+    },
     
     getExtent: function() {
         if (this.timer) {

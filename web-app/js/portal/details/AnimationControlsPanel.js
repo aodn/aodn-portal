@@ -223,6 +223,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (this.selectedLayer) {
             this.selectedLayer.events.un({
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
+                'precacheend': this._onSelectedLayerPrecacheEnd,
                 scope: this
             });
         }
@@ -235,6 +236,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
             this.selectedLayer.events.on({
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
+                'precacheend': this._onSelectedLayerPrecacheEnd,
                 scope: this
             });
             this.dateTimeSelectorPanel.setMissingDays(this.selectedLayer.getMissingDays());
@@ -242,7 +244,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onSelectedLayerPrecacheProgress: function(evt) {
-//        console.log('onSelectedLayerPrecacheProgress', evt.progress);
+        this._setStepLabelText('Loading...' + Math.round(evt.progress * 100) + '%');
+    },
+
+    _onSelectedLayerPrecacheEnd: function() {
+        var dateTime = this.timeControl.getDateTimeForStep(this.stepSlider.getValue());
+        this._setStepLabelTextToDateTime(dateTime);
     },
     
     _onSpeedChanged: function(timeControl) {
@@ -297,7 +304,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
-        this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
+        this._setStepLabelTextToDateTime(dateTime);
     },
     
 	_updateButtons : function(state) {
@@ -367,6 +374,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		this.setSelectedLayer(layer);
 	},
 
+    _setStepLabelTextToDateTime: function(dateTime) {
+        this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
+    },
+    
 	_setStepLabelText : function(text) {
 		this.stepLabel.setText(text, false);
 	}
