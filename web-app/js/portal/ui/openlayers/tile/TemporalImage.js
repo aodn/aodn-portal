@@ -16,23 +16,25 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         this.show();
     },
 
-    precache: function(dateTime, onloadCallback) {
+    precache: function(dateTime, onloadCallback, context) {
         this._updateParentDiv();
         
         var cachedImg = this._getCached(dateTime);
-        this._registerOnLoad(cachedImg, onloadCallback);
+        this._registerOnLoad(cachedImg, onloadCallback, context);
 
         return cachedImg;
     },
 
-    _registerOnLoad: function(cachedImg, onloadCallback) {
+    _registerOnLoad: function(cachedImg, onloadCallback, context) {
+        context.onloadCallback = onloadCallback;
+        
         if (cachedImg.complete) {
-            onloadCallback(cachedImg);
+            context.onloadCallback(cachedImg);
         }
         else {
             $(cachedImg).load(function() {
                 if (onloadCallback) {
-                    onloadCallback(cachedImg);
+                    context.onloadCallback(cachedImg);
                 }
             });
         }
