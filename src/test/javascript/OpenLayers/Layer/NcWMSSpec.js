@@ -316,6 +316,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
                 expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-12-31']);
             });
+
+            it('gets the same missing days memoized', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
+            });
         }
     );
 });
