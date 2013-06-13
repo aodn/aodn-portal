@@ -24,11 +24,6 @@ class FilterTypeTests extends GrailsUnitTestCase {
 		super.tearDown()
 	}
 
-	void testDateTimeString() {
-		
-		assertEquals FilterType.Date, typeFromString( "DateTime" )
-	}
-
 	void testTypeFromString() {
 
 		FilterType.stringTypeMapping = [ "monkey": FilterType.Number ]
@@ -38,5 +33,4 @@ class FilterTypeTests extends GrailsUnitTestCase {
 		assertEquals FilterType.Number, typeFromString( "MONKEY" )
 		assertEquals null, typeFromString( "orangutan" )
 	}
-	
 }
