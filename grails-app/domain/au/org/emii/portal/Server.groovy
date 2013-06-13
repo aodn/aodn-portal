@@ -122,21 +122,23 @@ class Server {
         Config.activeInstance().defaultLayers
     }
 
-    def beforeValidate() {
+	def beforeValidate() {
 
-		// Save without whitespace to help avoid non-uniqueness
-        uri = uri?.trim()
+		//save without whitespace to help avoid non-uniqueness
+		uri = uri?.trim()
 
-		// Save without trailing question mark to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='?') {
+//		save without trailing question mark to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='?')
+		{
+			uri = uri.substring(0, uri.size()-1)
+		}
+//		//save without trailing slash to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='/')
+		{
 			uri = uri.substring(0, uri.size()-1)
 		}
 
-		// Save without trailing slash to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='/') {
-			uri = uri.substring(0, uri.size()-1)
-		}
-    }
+	}
 
 	def isCredentialled() {
 		return username && password
