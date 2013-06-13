@@ -213,7 +213,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         it('precacheend', function() {
             var precacheendSpy = jasmine.createSpy('precacheendSpy');
             cachedLayer.events.on({
-                'precacheend' : precacheendSpy,
+                'precacheend': precacheendSpy,
                 scope: this
             });
 

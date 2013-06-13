@@ -219,13 +219,30 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
     _onSelectedLayerChanged: function(subject, openLayer) {
+
+        if (this.selectedLayer) {
+            this.selectedLayer.events.un({
+                'precacheprogress': this._onSelectedLayerPrecacheProgress,
+                scope: this
+            });
+        }
+        
         if (openLayer && openLayer.isAnimatable()) {
             this.selectedLayer = openLayer;
 
             this.timeControl.configureForLayer(openLayer, 10);
             this.stepSlider.setMinValue(0);
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
+
+            this.selectedLayer.events.on({
+                'precacheprogress': this._onSelectedLayerPrecacheProgress,
+                scope: this
+            });
         }
+    },
+
+    _onSelectedLayerPrecacheProgress: function(evt) {
+//        console.log('onSelectedLayerPrecacheProgress', evt.progress);
     },
     
     _onSpeedChanged: function(timeControl) {

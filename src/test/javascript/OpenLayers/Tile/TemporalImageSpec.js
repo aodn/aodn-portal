@@ -175,21 +175,21 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         it('precache loads image in to cache', function() {
             spyOn(tile, '_getCached').andCallThrough();
             var dateTime = moment('2010-03-03T03:03:03');
-            tile.precache(dateTime);
+            tile.precache(dateTime, function() {}, this);
             expect(tile._getCached.calls[0].args[0]).toBeSame(dateTime);
         });
 
         it('precache updates parent div', function() {
             spyOn(tile, '_updateParentDiv');
             var dateTime = moment('2010-03-03T03:03:03');
-            tile.precache(dateTime);
+            tile.precache(dateTime, function() {}, this);
             expect(tile._updateParentDiv).toHaveBeenCalled();
         });
 
         it('precache fills cache', function() {
             var dateTime = moment('2010-03-03T03:03:03');
             expect(tile.imgCache[tile._getKey(dateTime)]).toBeFalsy();
-            tile.precache(dateTime);
+            tile.precache(dateTime, function() {}, this);
             expect(tile.imgCache[tile._getKey(dateTime)]).toBeTruthy();
             
         });
@@ -202,7 +202,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
                 };
                 var dateTime = moment('2010-03-03T03:03:03');
                 
-                tile.precache(dateTime, onloadSpy);
+                tile.precache(dateTime, onloadSpy, this);
                 expect(onloadSpy).toHaveBeenCalled();
             });
 
@@ -220,7 +220,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
                     return img;
                 };
                 
-                tile.precache(moment('2010-03-03T03:03:03'), onloadSpy);
+                tile.precache(moment('2010-03-03T03:03:03'), onloadSpy, this);
                 expect(onloadSpy).not.toHaveBeenCalled();
 
                 $(cachedImg).trigger('onload');

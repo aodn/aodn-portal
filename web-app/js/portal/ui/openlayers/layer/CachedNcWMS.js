@@ -36,14 +36,13 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         
         for (var i = 0; i < this.precachedTimes.length; i++) {
             this.eachTile(function(tile) {
-                var img = tile.precache(self.precachedTimes[i], self._imageLoaded);
+                var img = tile.precache(self.precachedTimes[i], self._imageLoaded, self);
                 self.precacheImages.push(img);
             });
         }
     },
 
     _imageLoaded: function(img) {
-        // Remove the img.
         var index = this.precacheImages.indexOf(img);
         this.precacheImages.splice(index, 1);
 

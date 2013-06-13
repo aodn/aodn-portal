@@ -48,6 +48,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
         animationControlsPanel.selectedLayer = ncWmsLayer;
     });
 
+    afterEach(function() {
+        Ext.MsgBus.unsubscribe(
+            'selectedLayerChanged', animationControlsPanel._onSelectedLayerChanged, animationControlsPanel);
+    });
+
     describe('initialisation', function() {
         it('dateTimeSelectorPanel', function() {
             expect(animationControlsPanel.dateTimeSelectorPanel).toBeInstanceOf(
@@ -237,6 +242,12 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             afterEach(function() {
                 Portal.details.AnimationControlsPanel._onSpeedChanged = origOnSpeedChanged;
+                afterEach(function() {
+                    Ext.MsgBus.unsubscribe(
+                        'selectedLayerChanged',
+                        localAnimationControlsPanel._onSelectedLayerChanged,
+                        localAnimationControlsPanel);
+                });
             });
 
             it('on speed up, _onSpeedChanged called', function() {
@@ -331,6 +342,53 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.stepSlider.setMinValue).toHaveBeenCalledWith(0);
                 expect(animationControlsPanel.stepSlider.setMaxValue).toHaveBeenCalledWith(2);
             });
+        });
+    });
+    
+    describe('layer progress', function() {
+
+        beforeEach(function() {
+        });
+        
+        it('register listener', function() {
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
+            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.8
+            });
+
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress).toHaveBeenCalled();
+        });
+
+        it('listener unregistered when layer changes', function() {
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
+            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.8
+            });
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
+
+            Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.8
+            });
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
+        });
+
+        it('listener called with correct value', function() {
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
+            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.8
+            });
+            
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].layer).toBe(ncWmsLayer);
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].progress).toBe(0.8);
         });
     });
     
