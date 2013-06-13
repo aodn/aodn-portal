@@ -209,54 +209,22 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('precaching', function() {
-
-        beforeEach(function() {
-            spyOn(ncwmsLayer, '_getTimesToCache').andReturn([
-                moment('2000-01-01T00:00:00'),
-                moment('2000-01-01T01:00:00')
-            ]);
-        });
-        
-        it('precache called on moveTo', function() {
-            spyOn(ncwmsLayer, '_precache');
-            ncwmsLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
-            expect(ncwmsLayer._precache).toHaveBeenCalled();
-        });
-
-        it('precache called on each tile for each time', function() {
-
-            var tilePrecacheSpy = jasmine.createSpy('precache');
-            ncwmsLayer.grid = [];
-            ncwmsLayer.grid.push([
-                {
-                    precache: tilePrecacheSpy
-                },
-                {
-                    precache: tilePrecacheSpy
-                }
-            ]);
-            ncwmsLayer.grid.push([
-                {
-                    precache: tilePrecacheSpy
-                },
-                {
-                    precache: tilePrecacheSpy
-                }
-            ]);
-
-            ncwmsLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
-            expect(tilePrecacheSpy.callCount).toBe(8);
-
-            for (var i = 0; i < 4; i++) {
-                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T00:00:00'));
-            }
-            for (var i = 4; i < 8; i++) {
-                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T01:00:00'));
-            }
+    describe('eachTile', function() {
+        it('returns an Array of tiles processed', function() {
+            var grid = [
+                [ 0, 1 ],
+                [ 2, 3 ]
+            ];
+            ncwmsLayer.grid = grid;
+            
+            var processedTiles = ncwmsLayer.eachTile(function(tile) {});
+            expect(processedTiles[0]).toBe(0);
+            expect(processedTiles[1]).toBe(1);
+            expect(processedTiles[2]).toBe(2);
+            expect(processedTiles[3]).toBe(3);
         });
     });
-
+        
     describe('get dates on day', function() {
         var extent;
         
