@@ -104,6 +104,55 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
     });
 
     describe('events', function() {
+
+        var img00;
+        var img01;
+        var img10;
+        var img11;
+        
+        beforeEach(function() {
+            // 1 x 2 grid of tiles, 2 date/times.
+            // First time.
+            img00 = document.createElement('img');  
+            img00.src = 'someurl';
+            img00.onload = function() {
+                cachedLayer._imageLoaded(img00);
+            };
+
+            img01 = document.createElement('img');  
+            img01.src = 'someurl';
+            img01.onload = function() {
+                cachedLayer._imageLoaded(img01);
+            };
+
+            // Second time.
+            img10 = document.createElement('img');  
+            img10.src = 'someurl';
+            img10.onload = function() {
+                cachedLayer._imageLoaded(img10);
+            };
+            
+            img11 = document.createElement('img');  
+            img11.src = 'someurl';
+            img11.onload = function() {
+                cachedLayer._imageLoaded(img11);
+            };
+
+            cachedLayer.grid = [];
+            cachedLayer.grid.push([
+                {
+                    precache: function(dateTime) {
+                        return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img00 : img10;
+                    }
+                },
+                {
+                    precache: function(dateTime) {
+                        return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img01 : img11;
+                    }
+                }
+            ]);
+        });
+            
         it('precachestart', function() {
             var precachestartSpy = jasmine.createSpy('precachestartSpy');
             cachedLayer.events.on({
@@ -115,10 +164,68 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             expect(precachestartSpy).toHaveBeenCalledWith(cachedLayer);
         });
 
-        it('precacheprogress', function() {
+        it('precacheprogress initially 0', function() {
+            var precacheprogressSpy = jasmine.createSpy('precacheprogressSpy');
+            cachedLayer.events.on({
+                'precacheprogress' : precacheprogressSpy,
+                scope: this
+            });
+
+            cachedLayer._precache();
+            expect(precacheprogressSpy).toHaveBeenCalled();
+            expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
+        });
+        
+        it('precacheprogress after image load', function() {
+            var precacheprogressSpy = jasmine.createSpy('precacheprogressSpy');
+            cachedLayer.events.on({
+                'precacheprogress' : precacheprogressSpy,
+                scope: this
+            });
+
+            cachedLayer._precache();
+            expect(cachedLayer.precacheImages.length).toBe(4);
+            expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
+
+            $(img00).trigger('onload');
+            expect(cachedLayer.precacheImages.length).toBe(3);
+            expect(precacheprogressSpy.calls[1].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[1].args[0].progress).toBe(1/4);
+
+            $(img01).trigger('onload');
+            expect(cachedLayer.precacheImages.length).toBe(2);
+            expect(precacheprogressSpy.calls[2].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[2].args[0].progress).toBe(2/4);
+
+            $(img10).trigger('onload');
+            expect(cachedLayer.precacheImages.length).toBe(1);
+            expect(precacheprogressSpy.calls[3].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[3].args[0].progress).toBe(3/4);
+
+            $(img11).trigger('onload');
+            expect(cachedLayer.precacheImages.length).toBe(0);
+            expect(precacheprogressSpy.calls[4].args[0].layer).toBe(cachedLayer);
+            expect(precacheprogressSpy.calls[4].args[0].progress).toBe(1);
         });
         
         it('precacheend', function() {
+            var precacheendSpy = jasmine.createSpy('precacheendSpy');
+            cachedLayer.events.on({
+                'precacheend' : precacheendSpy,
+                scope: this
+            });
+
+            expect(precacheendSpy).not.toHaveBeenCalled();
+            cachedLayer._precache();
+            $(img00).trigger('onload');
+            $(img01).trigger('onload');
+            $(img10).trigger('onload');
+            expect(precacheendSpy).not.toHaveBeenCalled();
+            
+            $(img11).trigger('onload');
+            expect(precacheendSpy).toHaveBeenCalledWith(cachedLayer);
         });
     });
 });
