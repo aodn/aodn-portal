@@ -5,17 +5,17 @@
  *
  */
 OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
-    
-    initialize: function(name, url, params, options, extent) {
-        OpenLayers.Layer.NcWMS.prototype.initialize.apply(this, arguments);
 
-    //     // Store the currently precaching images, so that we can calculate progress when precaching the layer.
-    //     // this.precacheImages = [];
-    //     // this.EVENT_TYPES.push('precachestart');
-    }
-/**
+    initialize: function(name, url, params, options, extent) {
+        // Store the currently precaching images, so that we can calculate progress when precaching the layer.
+        this.precacheImages = [];
+        this.EVENT_TYPES.push('precachestart');
+        
+        OpenLayers.Layer.NcWMS.prototype.initialize.apply(this, arguments);
+    },
+    
     moveTo: function(bounds, zoomChanged, dragging) {
-        OpenLayers.Layer.NcWMS.prototype.moveTo.apply(this, arguments);
+        OpenLayers.Layer.WMS.prototype.moveTo.apply(this, arguments);
 
         this.precacheImages = [];
         this._precache();
@@ -43,5 +43,4 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
 
         return [];
     }
-*/
 });
