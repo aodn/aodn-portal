@@ -93,49 +93,9 @@ class AuthControllerTests extends ControllerUnitTestCase {
         assertTrue st.empty()
     }
 
-    void testLoadAttributeValuesWithName() {
-
-        def userInstance = [:]
-        def testFields
-        def ext = [
-            getAttributeValue : { testFields[it] }
-        ]
-
-        // using ext1 as key
-        testFields = [
-                'ext1': 'john smith'
-        ]
-
-        controller._loadAttributeValues( ext, userInstance )
-        assertEquals "john smith",  userInstance.fullName
 
 
-        // using firstname and lastname keys
-        testFields = [
-                'firstname': 'fred',
-                'lastname': 'nurk'
-        ]
-
-        controller._loadAttributeValues( ext, userInstance )
-        assertEquals "fred nurk",  userInstance.fullName
-
-
-        // using nickname as key
-        testFields = [
-                'nickname': 'jess brown'
-        ]
-        controller._loadAttributeValues( ext, userInstance )
-        assertEquals "jess brown",  userInstance.fullName
-
-
-        // anything else
-        testFields = [:]
-
-        controller._loadAttributeValues( ext, userInstance )
-        assertEquals "Unk.",  userInstance.fullName
-    }
-
-    void testLoadAttributeValuesWithEmail() {
+    void testLoadOpenIDSchemaAttributeValues() {
 
         def userInstance = [:]
         def testFields
@@ -145,25 +105,66 @@ class AuthControllerTests extends ControllerUnitTestCase {
 
         // using ext0 as key
         testFields = [
-                'ext0': 'john@x.com'
+                'ext0': 'john@x.com',
+
         ]
 
-        controller._loadAttributeValues( ext, userInstance )
+        controller._loadOpenIDSchemaAttributeValues( ext, userInstance )
         assertEquals "john@x.com",  userInstance.emailAddress
 
+        // ext1
+        testFields = [
+                'ext1': 'john smith'
+        ]
+
+        controller._loadOpenIDSchemaAttributeValues( ext, userInstance )
+        assertEquals "john smith",  userInstance.fullName
+    }
+
+    void testLoadAxSchemaAttributeValues() {
+
+        def userInstance = [:]
+        def testFields
+        def ext = [
+                getAttributeValue : { testFields[it] }
+        ]
+
+        // using firstname and lastname keys
+        testFields = [
+                'firstname': 'fred',
+                'lastname': 'nurk'
+        ]
+
+        controller._loadAxSchemaAttributeValues( ext, userInstance )
+        assertEquals "fred nurk",  userInstance.fullName
+
+
+        // using nickname as key
+        testFields = [
+                'nickname': 'jess brown'
+        ]
+
+        controller._loadAxSchemaAttributeValues( ext, userInstance )
+        assertEquals "jess brown",  userInstance.fullName
 
         // using email as key
         testFields = [
                 'email': 'fred@x.com'
         ]
 
-        controller._loadAttributeValues( ext, userInstance )
+        controller._loadAxSchemaAttributeValues( ext, userInstance )
         assertEquals "fred@x.com",  userInstance.emailAddress
+    }
 
-        // anything else
-        testFields = [:]
+    void testLoadAttributeValuesWithNull() {
+
+        def userInstance = [:]
+        def ext = [
+                getAttributeValue : { a -> null }
+        ]
 
         controller._loadAttributeValues( ext, userInstance )
+        assertEquals "Unk.",  userInstance.fullName
         assertEquals "Unk.",  userInstance.emailAddress
     }
 

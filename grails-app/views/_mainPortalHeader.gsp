@@ -6,35 +6,6 @@
 
 --%>
 
-<script type="text/javascript">
-    $(document).ready( function()
-    {
-        // hide the popup if user mouses out of area
-        $( "#loginpopup").mouseleave( function(){
-            $( "#loginpopup").hide();
-        } ) ;
-
-        // toggle tests existing state, so combines with mouseleave cleanly
-        // use the animation version of toggle()
-        $("#loginbutton").click(function(){
-            $( "#loginpopup").slideToggle();
-        });
-    }  ) ;
-
-    function clearOnce(input_element)
-    {
-        if (!input_element.alreadyCleared)
-        {
-            input_element.value = "";
-            input_element.alreadyCleared = true;
-        }
-    }
-</script>
-
-<style>
-    .highlight:hover { background-color : #ffff99 }
-</style>
-
 
 <div id="header" style="height:${configInstance?.headerHeight}px">
     <img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" id="logo"/>

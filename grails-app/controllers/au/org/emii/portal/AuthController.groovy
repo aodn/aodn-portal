@@ -51,12 +51,9 @@ class AuthController {
         def discovered = session.getAttribute("discovered")
 
         // extract the receiving URL from the HTTP request
-        def portalUrl = grailsApplication.config.grails.serverURL
-        def receivingURL = portalUrl + ( request.forwardURI - request.contextPath )
-        def queryString = request.queryString
+        def receivingURL = grailsApplication.config.grails.serverURL + ( request.forwardURI - request.contextPath )
 
-
-        if (queryString) {
+        if (request.queryString) {
 
             receivingURL += "?${request.queryString}"
         }
@@ -177,13 +174,33 @@ class AuthController {
 
     def _setRequestAttributes(fetch) {
 
-        // setup request for important attributes to identify user name and email
-        // different openId providers will respond differently
+        _setOpenIDSchemaRequestAttributes(fetch)
+        _setAxSchemaRequestAttributesOpen(fetch)
+    }
+
+    def _loadAttributeValues(ext, userInstance) {
+
+        _loadOpenIDSchemaAttributeValues(ext, userInstance)
+        _loadAxSchemaAttributeValues(ext, userInstance)
+
+        if( !userInstance.fullName)  {
+
+            userInstance.fullName = "Unk."
+        }
+        if( !userInstance.emailAddress) {
+
+            userInstance.emailAddress = "Unk."
+        }
+    }
+
+    def _setOpenIDSchemaRequestAttributes(fetch) {
 
         // eMII
         fetch.addAttribute "ext0", "http://schema.openid.net/contact/email", true // required
         fetch.addAttribute "ext1", "http://schema.openid.net/namePerson", true // required
+    }
 
+    def _setAxSchemaRequestAttributesOpen(fetch) {
         // Google OpenID and probably others require extracting username as separate fields
         // see https://developers.google.com/accounts/docs/OpenID#Parameters
         fetch.addAttribute "firstname", "http://axschema.org/namePerson/first", true
@@ -195,9 +212,7 @@ class AuthController {
         fetch.addAttribute "c", 'http://axschema.org/namePerson' , true               // fullname
     }
 
-    def _loadAttributeValues(ext, userInstance) {
-
-        // depending on how the OpenID provider responded, try to extract the username and email
+    def _loadOpenIDSchemaAttributeValues(ext, userInstance) {
 
         // ext1 is the hardwired key for username.
         if(ext.getAttributeValue('ext1'))
@@ -205,7 +220,18 @@ class AuthController {
             // devid.emii
             userInstance.fullName =  ext.getAttributeValue('ext1')
         }
-        else if(ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname"))
+        // Extract email
+        if(ext.getAttributeValue('ext0'))
+        {
+            userInstance.emailAddress = ext.getAttributeValue('ext0')
+        }
+    }
+
+    def _loadAxSchemaAttributeValues(ext, userInstance) {
+
+        // depending on how the OpenID provider responded, try to extract the username and email
+
+        if(ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname"))
         {
             // Google
             userInstance.fullName = ext.getAttributeValue("firstname") + ' ' + ext.getAttributeValue("lastname")
@@ -215,23 +241,10 @@ class AuthController {
             // Yahoo
             userInstance.fullName = ext.getAttributeValue("nickname")
         }
-        else
-        {
-            userInstance.fullName = "Unk."
-        }
 
-        // Extract email
-        if(ext.getAttributeValue('ext0'))
-        {
-            userInstance.emailAddress = ext.getAttributeValue('ext0')
-        }
-        else if (ext.getAttributeValue('email'))
+        if(ext.getAttributeValue('email'))
         {
             userInstance.emailAddress = ext.getAttributeValue('email')
-        }
-        else
-        {
-            userInstance.emailAddress = "Unk."
         }
     }
 
