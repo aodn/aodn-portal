@@ -7,6 +7,8 @@
 Ext.namespace('Portal.details');
 
 Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
+
+    DATE_FORMAT: 'Y-m-d',
     
     constructor: function(cfg) {
         var config = Ext.apply({
@@ -43,8 +45,9 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 		});
         
 		this.startDatePicker = new Ext.form.DateField({
-			format : 'd-m-Y',
-			editable : false,
+            format : this.DATE_FORMAT,
+            disabledDatesText: "unavailable",
+            editable : false,
 			width : 100,
 			listeners : {
 				scope : this,
@@ -53,8 +56,9 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 		});
         
 		this.endDatePicker = new Ext.form.DateField({
-			format : 'd-m-Y',
-			editable : false,
+            format : this.DATE_FORMAT,
+            disabledDatesText: "unavailable",
+            editable : false,
 			width : 100,
 			listeners : {
 				scope : this,
@@ -166,5 +170,20 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
     getEndTimeCombo: function() {
         return this.endTimeCombo;
+    },
+
+    setMissingDays: function(missingDays) {
+        var missingDateStrings = [];
+        for (var i = 0; i < missingDays.length; i++) {
+            var v = missingDays[i];
+            if (typeof(v) == 'string') {
+                missingDateStrings.push(missingDays[i]);
+            }
+            else if (missingDays[i].format) {
+                missingDateStrings.push(missingDays[i].format('YYYY-MM-DD'));
+            }
+        }
+        this.startDatePicker.setDisabledDates(missingDateStrings);
+        this.endDatePicker.setDisabledDates(missingDateStrings);
     }
 });

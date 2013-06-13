@@ -253,7 +253,69 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 null, null, null, null, extent);
             expect(ncwmsLayer.getDatesOnDay('2001-02-01')).toBeSame([
                 '2001-02-01T01:20',
-                '2001-02-01T20:45'])
+                '2001-02-01T20:45']);
         });
     });
+
+    describe('getMissingDays',
+        function() {
+            var extent = [
+                '2001-01-01T00:00',
+                '2001-01-03T01:20',
+                '2001-01-03T20:45',
+                '2001-01-03T00:00',
+                '2001-01-03T23:59',
+                '2001-01-03T00:00',
+                '2001-01-04T00:00',
+                '2001-01-05T01:20',
+                '2001-01-05T20:45',
+                '2001-01-05T00:00',
+                '2001-01-05T23:59',
+                '2001-01-05T00:00',
+                '2001-01-07T00:00',
+                '2001-01-09T01:20',
+                '2001-01-09T20:45',
+                '2001-01-09T00:00',
+                '2001-01-09T23:59',
+                '2001-01-09T00:00',
+                '2001-01-13T00:00',
+                '2001-01-13T23:59',
+                '2001-01-14T00:00'];
+
+            it('gets missing days from temporal extent', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
+            });
+
+            it('gets missing days over a month boundary first of month', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-31', '2012-02-02']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-02-01']);
+            });
+
+            it('gets missing days over a month boundary end of month', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-30', '2012-02-01']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-01-31']);
+            });
+
+            it('gets missing days over a leap year month boundary start of month', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-29', '2012-03-02']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-03-01']);
+            });
+
+            it('gets missing days over a leap year month boundary end of month', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-28', '2012-03-01']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-02-29']);
+            });
+
+            it('gets missing days over a year boundary start of year', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-31', '2013-01-02']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2013-01-01']);
+            });
+
+            it('gets missing days over a year boundary end of year', function() {
+                ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
+                expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-12-31']);
+            });
+        }
+    );
 });
