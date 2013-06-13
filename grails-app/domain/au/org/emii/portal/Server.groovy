@@ -10,7 +10,6 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.LayerPresenter
 import grails.converters.JSON
-import groovy.time.TimeCategory
 import org.apache.commons.codec.binary.Base64
 
 class Server {
@@ -123,23 +122,23 @@ class Server {
         Config.activeInstance().defaultLayers
     }
 
-    def beforeValidate() {
+	def beforeValidate() {
 
-		//save without whitespace to help avoid non-uniqueness
-        uri = uri?.trim()
+		// Save without whitespace to help avoid non-uniqueness
+		uri = uri?.trim()
 
-//		save without trailing question mark to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='?')
-		{
-			uri = uri.substring(0, uri.size()-1)
-		}
-//		//save without trailing slash to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='/')
-		{
+		// Save without trailing question mark to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='?') {
+
 			uri = uri.substring(0, uri.size()-1)
 		}
 
-    }
+		// Save without trailing slash to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='/') {
+
+			uri = uri.substring(0, uri.size()-1)
+		}
+	}
 
 	def isCredentialled() {
 		return username && password
@@ -215,8 +214,5 @@ class Server {
 
             operations << operation
         }
-
-      }
-
-
+    }
 }

@@ -162,10 +162,14 @@ input.p-selector {
 .p-save-icon {
    background-image: url(../images/save-icon.png);
    background-repeat: no-repeat;
+   padding-left: 20px;
+   margin-left: 20px;
 }
 
 .p-back-icon {
    background-image: url(../images/go-back-icon.png);
    background-repeat: no-repeat;
+   padding-left: 20px;
+   margin-left: 20px;
 }
 
