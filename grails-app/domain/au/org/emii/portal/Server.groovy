@@ -124,20 +124,20 @@ class Server {
 
 	def beforeValidate() {
 
-		//save without whitespace to help avoid non-uniqueness
+		// Save without whitespace to help avoid non-uniqueness
 		uri = uri?.trim()
 
-//		save without trailing question mark to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='?')
-		{
-			uri = uri.substring(0, uri.size()-1)
-		}
-//		//save without trailing slash to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='/')
-		{
+		// Save without trailing question mark to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='?') {
+
 			uri = uri.substring(0, uri.size()-1)
 		}
 
+		// Save without trailing slash to help avoid non-uniqueness
+		if(uri.getAt(uri.size()-1)=='/') {
+
+			uri = uri.substring(0, uri.size()-1)
+		}
 	}
 
 	def isCredentialled() {
