@@ -128,10 +128,6 @@ class Menu {
 
 	def toDisplayableMenu() {
 
-		println "Calling toDisplayableMenu() on $this"
-		println "SLEEPING"
-		Thread.sleep(4000)
-
 		return new MenuPresenter(this)
 	}
 

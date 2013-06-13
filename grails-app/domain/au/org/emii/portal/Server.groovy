@@ -162,10 +162,6 @@ class Server {
 
 	def toServerLayerJson() {
 
-		println "Server.toServerLayerJson() called on $this"
-		println "SLEEPING"
-		Thread.sleep(4000)
-
 		def criteria = Layer.createCriteria()
 		def layerDescriptors = criteria.list() {
 			isNull 'parent'
