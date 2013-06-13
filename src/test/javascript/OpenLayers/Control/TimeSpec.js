@@ -50,6 +50,14 @@ describe("OpenLayers.Control.Time", function() {
 
     describe('timer', function() {
 
+        beforeEach(function() {
+            timeControl = new OpenLayers.Control.Time({
+                map: map,
+                startDateTime: '2013-03-06T12:34:56',
+                endDateTime: '2013-03-16T12:34:56'
+            });
+        });
+        
         it('initialisation', function() {
             expect(timeControl.timer).not.toBeNull();
             expect(timeControl.timer.observers['tick']).toBeTruthy();
@@ -58,15 +66,18 @@ describe("OpenLayers.Control.Time", function() {
         });
 
         it('start/end date/time specified', function() {
-            timeControl = new OpenLayers.Control.Time({
-                map: map,
-                startDateTime: '2013-03-06T12:34:56',
-                endDateTime: '2013-03-16T12:34:56'
-            });
-
             expect(timeControl.timer.getStartDateTime()).toBeSame('2013-03-06T12:34:56');
             expect(timeControl.timer.getEndDateTime()).toBeSame('2013-03-16T12:34:56');
+        });
 
+        it('getStep', function() {
+            expect(timeControl.getStep()).toBe(0);
+        });
+
+        it('getDateTimeForStep', function() {
+            expect(timeControl.getDateTimeForStep(0)).toBeSame('2013-03-06T12:34:56');
+            expect(timeControl.getDateTimeForStep(9)).toBeSame('2013-03-16T12:34:56');
+            expect(timeControl.getDateTimeForStep(10)).toBe(undefined);
         });
     });
 

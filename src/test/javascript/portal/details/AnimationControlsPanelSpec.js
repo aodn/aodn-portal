@@ -342,33 +342,39 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.stepSlider.setMinValue).toHaveBeenCalledWith(0);
                 expect(animationControlsPanel.stepSlider.setMaxValue).toHaveBeenCalledWith(2);
             });
+            
+            it('step label updated with slider time when loading finished', function() {
+                spyOn(animationControlsPanel, '_setStepLabelText');
+                var dateTime = moment('2011-11-11T11:11:11')
+                animationControlsPanel.timeControl.getDateTimeForStep = function() {
+                    return dateTime;
+                };
+                animationControlsPanel._onSelectedLayerPrecacheEnd();
+                expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith(
+                    dateTime.format('YYYY-MM-DD HH:mm:ss'))
+            });
         });
     });
     
     describe('layer progress', function() {
 
         beforeEach(function() {
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress').andCallThrough();
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd');
+            
+            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+            
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.12
+            });
         });
         
         it('register listener', function() {
-            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
-            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
-
-            ncWmsLayer.events.triggerEvent('precacheprogress', {
-                layer: ncWmsLayer,
-                progress: 0.8
-            });
-
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress).toHaveBeenCalled();
         });
 
         it('listener unregistered when layer changes', function() {
-            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
-            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
-            ncWmsLayer.events.triggerEvent('precacheprogress', {
-                layer: ncWmsLayer,
-                progress: 0.8
-            });
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
 
             Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
@@ -380,16 +386,53 @@ describe("Portal.details.AnimationControlsPanel", function() {
         });
 
         it('listener called with correct value', function() {
-            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress');
-            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].layer).toBe(ncWmsLayer);
+            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].progress).toBe(0.12);
+        });
+
+        it('step label updated with loading value', function() {
+            spyOn(animationControlsPanel, '_setStepLabelText');
+
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
-                progress: 0.8
+                progress: 0
+            });
+            expect(animationControlsPanel._setStepLabelText.calls[0].args[0]).toBe('Loading...0%');
+            
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.12
+            });
+            expect(animationControlsPanel._setStepLabelText.calls[1].args[0]).toBe('Loading...12%');
+            
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.123
+            });
+            expect(animationControlsPanel._setStepLabelText.calls[2].args[0]).toBe('Loading...12%');
+        });
+
+        describe('onprecacheend', function() {
+
+            it('onSelectedLayerPrecacheEnd called', function() {
+                ncWmsLayer.events.triggerEvent('precacheend');
+                expect(animationControlsPanel._onSelectedLayerPrecacheEnd).toHaveBeenCalled();
             });
             
-            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].layer).toBe(ncWmsLayer);
-            expect(animationControlsPanel._onSelectedLayerPrecacheProgress.calls[0].args[0].progress).toBe(0.8);
+            it('onSelectedLayerPrecacheEnd unregistered when layer changes', function() {
+                expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
+
+                Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+                ncWmsLayer.events.triggerEvent('precacheend');
+                expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
+            });
         });
+
+        // TODO: enable/disable controls when loading.
+
+        // TODO: onerror image load
+        
+        
     });
     
     // TODO: reimplement "loading..." in label?
