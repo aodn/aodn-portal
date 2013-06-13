@@ -9,7 +9,10 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     initialize: function(name, url, params, options, extent) {
         // Store the currently precaching images, so that we can calculate progress when precaching the layer.
         this.precacheImages = [];
+        this.precachedTimes = [];
         this.EVENT_TYPES.push('precachestart');
+        this.EVENT_TYPES.push('precacheprogress');
+        this.EVENT_TYPES.push('precacheend');
         
         OpenLayers.Layer.NcWMS.prototype.initialize.apply(this, arguments);
     },
@@ -23,14 +26,34 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     
     _precache: function() {
         this.events.triggerEvent('precachestart', this);
-
+        this.events.triggerEvent('precacheprogress', {
+            layer: this,
+            progress: 0
+        });
+        
+        this.precachedTimes = this._getTimesToCache();
         var self = this;
-        var timesToCache = this._getTimesToCache();
-        for (var i = 0; i < timesToCache.length; i++) {
+        
+        for (var i = 0; i < this.precachedTimes.length; i++) {
             this.eachTile(function(tile) {
-                var img = tile.precache(timesToCache[i]);
+                var img = tile.precache(self.precachedTimes[i], self._imageLoaded);
                 self.precacheImages.push(img);
             });
+        }
+    },
+
+    _imageLoaded: function(img) {
+        // Remove the img.
+        var index = this.precacheImages.indexOf(img);
+        this.precacheImages.splice(index, 1);
+
+        this.events.triggerEvent('precacheprogress', {
+            layer: this,
+            progress: 1 - (this.precacheImages.length / this._getTotalImages())
+        });
+
+        if (this.precacheImages.length == 0) {
+            this.events.triggerEvent('precacheend', this);
         }
     },
 
@@ -42,5 +65,9 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         }
 
         return [];
+    },
+
+    _getTotalImages: function() {
+        return this.precachedTimes.length * this._getNumTiles();
     }
 });

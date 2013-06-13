@@ -27,12 +27,12 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
 
     _registerOnLoad: function(cachedImg, onloadCallback) {
         if (cachedImg.complete) {
-//            onloadCallback(cachedImg);
+            onloadCallback(cachedImg);
         }
         else {
             $(cachedImg).load(function() {
                 if (onloadCallback) {
-//                    onloadCallback(cachedImg);
+                    onloadCallback(cachedImg);
                 }
             });
         }

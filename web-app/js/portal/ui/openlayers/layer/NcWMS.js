@@ -156,6 +156,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return processedTiles;
     },
 
+    _getNumTiles: function() {
+        return this.grid.length * this.grid[0].length;
+    },
+    
     getDatesOnDay: function(dateTime) {
 
         var retDates = [];
