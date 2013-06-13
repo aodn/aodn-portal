@@ -245,6 +245,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/CachedNcWMS.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"

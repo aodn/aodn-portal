@@ -193,5 +193,40 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             expect(tile.imgCache[tile._getKey(dateTime)]).toBeTruthy();
             
         });
+
+        describe('onload', function() {
+            it('onload called immediately if image is complete', function() {
+                var onloadSpy = jasmine.createSpy('onloadSpy');
+                tile._getCached = function(dateTime) {
+                    return { complete: true };
+                };
+                var dateTime = moment('2010-03-03T03:03:03');
+                
+                tile.precache(dateTime, onloadSpy);
+                expect(onloadSpy).toHaveBeenCalled();
+            });
+
+            it('onload called when image is loaded', function() {
+                var onloadSpy = jasmine.createSpy('onloadSpy');
+
+                var cachedImg;
+                tile._getCached = function(dateTime, onloadCallback) {
+                    var img = document.createElement('img');  
+                    img.src = 'someurl';
+                    img.onload = onloadSpy;
+
+                    cachedImg = img;
+                    
+                    return img;
+                };
+                
+                tile.precache(moment('2010-03-03T03:03:03'), onloadSpy);
+                expect(onloadSpy).not.toHaveBeenCalled();
+
+                $(cachedImg).trigger('onload');
+                expect(onloadSpy).toHaveBeenCalled();
+                
+            });
+        });
     });
 });

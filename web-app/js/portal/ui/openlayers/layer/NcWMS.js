@@ -21,6 +21,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             this.setTemporalExtent(extent);
         }
 
+        // Store the currently precaching images, so that we can calculate progress when precaching the layer.
+        this.precacheImages = [];
+        this.EVENT_TYPES.push('precachestart');
+        
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
 
@@ -145,14 +149,19 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     moveTo: function(bounds, zoomChanged, dragging) {
         OpenLayers.Layer.WMS.prototype.moveTo.apply(this, arguments);
 
+        this.precacheImages = [];
         this._precache();
     },
-    
+
     _precache: function() {
+        this.events.triggerEvent('precachestart', this);
+
+        var self = this;
         var timesToCache = this._getTimesToCache();
         for (var i = 0; i < timesToCache.length; i++) {
             this.eachTile(function(tile) {
-                tile.precache(timesToCache[i]);
+                var img = tile.precache(timesToCache[i]);
+                self.precacheImages.push(img);
             });
         }
     },
@@ -166,13 +175,19 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         return [];
     },
-    
+
     eachTile: function(applyToTileFunction) {
+
+        var processedTiles = [];
+        
         for (var rowIndex = 0; rowIndex < this.grid.length; rowIndex++) {
             for (var colIndex = 0; colIndex < this.grid[rowIndex].length; colIndex++) {
                 applyToTileFunction(this.grid[rowIndex][colIndex]);
+                processedTiles.push(this.grid[rowIndex][colIndex]);
             }
         }
+
+        return processedTiles;
     },
 
     getDatesOnDay: function(dateTime) {
