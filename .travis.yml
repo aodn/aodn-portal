@@ -4,8 +4,8 @@ jdk:
     - openjdk7
 
 env:
-    - TZ="Australia/Hobart"
-    - JAVA_OPTS="-Xmx1G -Xms512m -XX:PermSize=64m -XX:MaxPermSize=512m"
+    globa
+    - TZ="Australia/Hobart" JAVA_OPTS="-Xmx1G -Xms512m -XX:PermSize=64m -XX:MaxPermSize=512m"
     
 before_install:
     - sudo apt-get install tzdata
