@@ -33,6 +33,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             expect(ncwmsLayer.temporalExtent).toBeSame(extent);
         });
+
+        it('\'(animated)\' appended to name', function() {
+            ncwmsLayer = new OpenLayers.Layer.NcWMS('thename');
+            expect(ncwmsLayer.name).toBe('thename (animated)');
+        });
     });
     
     describe("getURL", function() {
