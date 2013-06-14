@@ -6,10 +6,15 @@
  */
 OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
 
-    imgCache: {},
+    imgCache: null,
 
     parentDiv: null,
 
+    initialize: function(layer, position, bounds, url, size) {
+        this.imgCache = {};
+        OpenLayers.Tile.Image.prototype.initialize.apply(this, arguments);
+    },
+    
     toTime: function(dateTime) {
         this._updateParentDiv();
         this._imageToTime(dateTime);
@@ -28,12 +33,12 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     getNumImagesComplete: function() {
         var numComplete = 0;
 
-        for (var i = 0; i < this.imgCache.length; i++) {
-            if (this.imgCache[i].complete) {
+        for (var key in this.imgCache) {
+            if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
                 numComplete++;
             }
         }
-        
+
         return numComplete;
     },
     
