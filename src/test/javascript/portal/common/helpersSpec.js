@@ -20,6 +20,9 @@ describe("Portal.common.helpers", function() {
         expect(res).toBe("2001-01-10T22:36:00.000Z");
     });
 
+    it('end date is included', function() {
+        expect(_expand3sectionExtendedISO8601Date('2000-01-01T00:00:00.000Z/2000-01-01T01:00:00.000Z/PT30M').length).toBe(3);
+    });
 
     it('expandExtendedISO8601Dates Invalid Start date Request', function() {
         var res = expandExtendedISO8601Dates('2001-59-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M');
@@ -37,10 +40,4 @@ describe("Portal.common.helpers", function() {
         var expectedResult = JSON.stringify({"seconds":24,"minutes":36,"hours":23,"days":5,"weeks":null,"months":null,"years":null});
         expect(JSON.stringify(res)).toBe(expectedResult);
     });
-
-
-
-    
-
-
 });

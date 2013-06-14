@@ -356,13 +356,13 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         var endDate = moment(iSO8601DateParts[1]);
 
         if (nextDate.isValid()) {
-            // add dates + duration until equal the stop date
-            do {
+            while (!nextDate.isAfter(endDate)) {
                 expandedDates.push(nextDate.format(format));
                 nextDate = moment(nextDate.add(duration));
-            } while (nextDate.isBefore(endDate));
+            }
+
             // always end with the last date
-            if(!endDate.isSame(nextDate)) {
+            if (!moment(expandedDates[expandedDates.length - 1]).isSame(endDate)) {
                 expandedDates.push(endDate.format(format));
             }
         }
