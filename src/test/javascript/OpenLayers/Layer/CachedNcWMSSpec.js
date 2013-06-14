@@ -187,40 +187,28 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             });
 
             cachedLayer._precache();
-//            expect(cachedLayer.precacheImages.length).toBe(4);
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
 
-            //$(img00).trigger('onload');
-            // img00.src = null;
-            // //$(img00).trigger('onload');
-            // expect(cachedLayer.precacheImages.length).toBe(3);
-            // expect(precacheprogressSpy.calls[1].args[0].layer).toBe(cachedLayer);
-            // expect(precacheprogressSpy.calls[1].args[0].progress).toBe(1/4);
-            
-/**
-            img00.complete = true;
-            console.log(img00.complete);
+            cachedLayer._calculateProgress = function() { return 1/4; }
             $(img00).trigger('onload');
-            expect(cachedLayer.precacheImages.length).toBe(3);
             expect(precacheprogressSpy.calls[1].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[1].args[0].progress).toBe(1/4);
 
+            cachedLayer._calculateProgress = function() { return 2/4; }
             $(img01).trigger('onload');
-            expect(cachedLayer.precacheImages.length).toBe(2);
             expect(precacheprogressSpy.calls[2].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[2].args[0].progress).toBe(2/4);
 
+            cachedLayer._calculateProgress = function() { return 3/4; }
             $(img10).trigger('onload');
-            expect(cachedLayer.precacheImages.length).toBe(1);
             expect(precacheprogressSpy.calls[3].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[3].args[0].progress).toBe(3/4);
 
+            cachedLayer._calculateProgress = function() { return 4/4; }
             $(img11).trigger('onload');
-            expect(cachedLayer.precacheImages.length).toBe(0);
             expect(precacheprogressSpy.calls[4].args[0].layer).toBe(cachedLayer);
-            expect(precacheprogressSpy.calls[4].args[0].progress).toBe(1);
-*/
+            expect(precacheprogressSpy.calls[4].args[0].progress).toBe(4/4);
         });
 
         it('precacheend', function() {
