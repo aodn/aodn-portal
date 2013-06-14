@@ -17,11 +17,15 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     temporalExtent: null,
 
     initialize: function(name, url, params, options, extent) {
+
+        name += ' (animated)';
+        
         if (extent) {
             this.setTemporalExtent(extent);
         }
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
+        
     },
 
     getURLAtTime: function(bounds, dateTime) {
