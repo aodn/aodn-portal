@@ -7,8 +7,6 @@
 OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
 
     initialize: function(name, url, params, options, extent) {
-        // Store the currently precaching images, so that we can calculate progress when precaching the layer.
-        this.precacheImages = [];
         this.precachedTimes = [];
         this.EVENT_TYPES.push('precachestart');
         this.EVENT_TYPES.push('precacheprogress');
@@ -20,7 +18,6 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     moveTo: function(bounds, zoomChanged, dragging) {
         OpenLayers.Layer.WMS.prototype.moveTo.apply(this, arguments);
 
-        this.precacheImages = [];
         this._precache();
     },
     
@@ -33,19 +30,15 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         
         this.precachedTimes = this._getTimesToCache();
         var self = this;
-        
+
         for (var i = 0; i < this.precachedTimes.length; i++) {
             this.eachTile(function(tile) {
-                var img = tile.precache(self.precachedTimes[i], self._imageLoaded, self);
-                self.precacheImages.push(img);
+                tile.precache(self.precachedTimes[i], self._imageLoaded, self);
             });
         }
     },
 
     _imageLoaded: function(img) {
-        var index = this.precacheImages.indexOf(img);
-        this.precacheImages.splice(index, 1);
-
         var progress = this._calculateProgress();
         this.events.triggerEvent('precacheprogress', {
             layer: this,
@@ -77,12 +70,11 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         this.eachTile(function(tile) {
             totalComplete += tile.getNumImagesComplete();
         });
-        
+
         return totalComplete;
     },
 
     _calculateProgress: function() {
-//        console.log('complete', this._getTotalImagesComplete(), 'total', this._getTotalImages());
         return this._getTotalImagesComplete() / this._getTotalImages();
     }
 });

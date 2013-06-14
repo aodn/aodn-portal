@@ -24,6 +24,19 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         };
     });
 
+    describe('initialisation', function() {
+        it('each tile has own cache', function() {
+            var differentTile = new OpenLayers.Tile.TemporalImage(
+                this,
+                new OpenLayers.Pixel(1, 1),
+                new OpenLayers.Bounds(1, 2, 3, 4),
+                null,
+                new OpenLayers.Size(10, 10));
+
+            expect(tile.imgCache).not.toBe(differentTile.imgCache);
+        });
+    });
+    
     describe('caching', function() {
         var dateTime;
         
@@ -67,11 +80,11 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         });
 
         it('num loaded', function() {
-            tile.imgCache = [
-                { complete: true },
-                { complete: false },
-                { complete: true }
-            ];
+            tile.imgCache = {
+                'key1': { complete: true },
+                'key2': { complete: false },
+                'key3': { complete: true }
+            };
 
             expect(tile.getNumImagesComplete()).toBe(2);
         });
