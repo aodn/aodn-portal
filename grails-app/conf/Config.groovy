@@ -92,6 +92,23 @@ aodaacAggregator {
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/depth"
 
+// OpenID
+openId {
+    // openID provider details to support login popup etc
+    providers = [
+        [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
+        [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
+        // Add your own providers here ...
+    ]
+
+    // Enable user to supply their their own OpenId url via textfield in popup list
+    enableUserSuppliedProvider = true
+
+    // Specify provider to work with register button/link (not an OpenId standard)
+    // registerProvider = providers.first();     // disabled by default
+}
+
+
 // set per-environment serverURL stem for creating absolute links
 environments {
 
@@ -103,7 +120,6 @@ environments {
 	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
 		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
-		openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = true
 
@@ -135,7 +151,6 @@ environments {
 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
 	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
-	    openIdProvider.url = "http://openid.example.com"
 
         facetedSearch.enabled = false
 

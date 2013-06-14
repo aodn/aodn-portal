@@ -1021,3 +1021,8 @@ div.allwhite {
     vertical-align:middle;
     margin-bottom: 6px;
 }
+
+.highlight:hover {
+    background-color : #ffff99
+}
+
