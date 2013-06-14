@@ -222,6 +222,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         if (this.selectedLayer) {
             this.selectedLayer.events.un({
+                'precachestart': this._onSelectedLayerPrecacheStart,
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
                 'precacheend': this._onSelectedLayerPrecacheEnd,
                 scope: this
@@ -235,6 +236,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.stepSlider.setMinValue(0);
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
             this.selectedLayer.events.on({
+                'precachestart': this._onSelectedLayerPrecacheStart,
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
                 'precacheend': this._onSelectedLayerPrecacheEnd,
                 scope: this
@@ -243,6 +245,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
+    _onSelectedLayerPrecacheStart: function() {
+        this.disable();
+    },
+    
     _onSelectedLayerPrecacheProgress: function(evt) {
         this._setStepLabelText('Loading...' + Math.round(evt.progress * 100) + '%');
     },
@@ -250,6 +256,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _onSelectedLayerPrecacheEnd: function() {
         var dateTime = this.timeControl.getDateTimeForStep(this.stepSlider.getValue());
         this._setStepLabelTextToDateTime(dateTime);
+
+        this.enable();
     },
     
     _onSpeedChanged: function(timeControl) {

@@ -359,8 +359,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
     describe('layer progress', function() {
 
         beforeEach(function() {
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheStart').andCallThrough();
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress').andCallThrough();
-            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd');
+            spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd').andCallThrough();
             
             Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
             
@@ -428,8 +429,38 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
         });
 
-        // TODO: enable/disable controls when loading.
+        describe('onprecachestart', function() {
 
+            it('onSelectedLayerPrecacheStart called', function() {
+                ncWmsLayer.events.triggerEvent('precachestart');
+                expect(animationControlsPanel._onSelectedLayerPrecacheStart).toHaveBeenCalled();
+            });
+            
+            it('onSelectedLayerPrecacheStart unregistered when layer changes', function() {
+                expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
+
+                Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+                ncWmsLayer.events.triggerEvent('precachestart');
+                expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('enable/disable as appropriate', function() {
+            it('controls disabled on precachestart', function() {
+                spyOn(animationControlsPanel, 'disable');
+                
+                ncWmsLayer.events.triggerEvent('precachestart');
+                expect(animationControlsPanel.disable).toHaveBeenCalled();
+            });
+            
+            it('controls enabled on precacheend', function() {
+                spyOn(animationControlsPanel, 'enable');
+                
+                ncWmsLayer.events.triggerEvent('precacheend');
+                expect(animationControlsPanel.enable).toHaveBeenCalled();
+            });
+        });
+        
         // TODO: onerror image load
         
         
