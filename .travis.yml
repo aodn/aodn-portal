@@ -2,13 +2,7 @@ env:
     - TZ="Australia/Hobart"
 
 before_script:
- - "echo $JAVA_OPTS"
- - "export JAVA_OPTS=-Xmx1024m"
- - "echo $JAVA_OPTS"
- - "ulimit -a"
- - "ulimit -u 2048"
- - "ulimit -a"
-
+    - export JAVA_OPTS="-Xmx1G -Xms512m -XX:PermSize=64m -XX:MaxPermSize=512m"
 
 before_install:
     - sudo apt-get install tzdata
