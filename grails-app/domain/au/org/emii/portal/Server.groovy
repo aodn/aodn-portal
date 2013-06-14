@@ -10,6 +10,7 @@ package au.org.emii.portal
 
 import au.org.emii.portal.display.LayerPresenter
 import grails.converters.JSON
+import groovy.time.TimeCategory
 import org.apache.commons.codec.binary.Base64
 
 class Server {
