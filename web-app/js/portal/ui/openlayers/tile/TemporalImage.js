@@ -25,6 +25,18 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         return cachedImg;
     },
 
+    getNumImagesComplete: function() {
+        var numComplete = 0;
+
+        for (var i = 0; i < this.imgCache.length; i++) {
+            if (this.imgCache[i].complete) {
+                numComplete++;
+            }
+        }
+        
+        return numComplete;
+    },
+    
     _registerOnLoad: function(cachedImg, onloadCallback, context) {
         context.onloadCallback = onloadCallback;
         
