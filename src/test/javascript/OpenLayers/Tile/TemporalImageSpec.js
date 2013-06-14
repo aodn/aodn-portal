@@ -65,6 +65,16 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             var dateTime = moment('2012-06-07T23:12:56+07:00');
             expect(tile._getKey(dateTime)).toBe('x=1,y=1-1339085576000');
         });
+
+        it('num loaded', function() {
+            tile.imgCache = [
+                { complete: true },
+                { complete: false },
+                { complete: true }
+            ];
+
+            expect(tile.getNumImagesComplete()).toBe(2);
+        });
     });
 
     describe('image creation', function() {

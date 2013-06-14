@@ -46,12 +46,13 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         var index = this.precacheImages.indexOf(img);
         this.precacheImages.splice(index, 1);
 
+        var progress = this._calculateProgress();
         this.events.triggerEvent('precacheprogress', {
             layer: this,
-            progress: 1 - (this.precacheImages.length / this._getTotalImages())
+            progress: progress
         });
 
-        if (this.precacheImages.length == 0) {
+        if (progress == 1) {
             this.events.triggerEvent('precacheend', this);
         }
     },
@@ -68,5 +69,20 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
 
     _getTotalImages: function() {
         return this.precachedTimes.length * this._getNumTiles();
+    },
+    
+    _getTotalImagesComplete: function() {
+        var totalComplete = 0;
+
+        this.eachTile(function(tile) {
+            totalComplete += tile.getNumImagesComplete();
+        });
+        
+        return totalComplete;
+    },
+
+    _calculateProgress: function() {
+//        console.log('complete', this._getTotalImagesComplete(), 'total', this._getTotalImages());
+        return this._getTotalImagesComplete() / this._getTotalImages();
     }
 });
