@@ -2,7 +2,7 @@ env:
     - TZ="Australia/Hobart"
 
 before_script:
-    - export JAVA_OPTS="-Xmx1G -Xms512m -XX:PermSize=64m -XX:MaxPermSize=512m"
+    - export MAVEN_OPTS="-Xmx2G -XX:MaxPermSize=512m"
 
 before_install:
     - sudo apt-get install tzdata
