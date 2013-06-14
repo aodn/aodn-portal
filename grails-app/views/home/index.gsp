@@ -294,6 +294,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"
+        type="text/javascript"></script>
 </g:if>
 <g:else>
     <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${jsVerNum}" type="text/javascript"></script>
@@ -305,5 +307,12 @@ ${buildInfo}
 <body>
 
 <g:render template="/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
+
+<%-- Display message from Grails app --%>
+<g:if test="${flash.openIdMessage }">
+    <script type="text/javascript">
+        Ext.Msg.alert("Message", "${flash.openIdMessage.encodeAsHTML()}");
+    </script>
+</g:if>
 </body>
 </html>
