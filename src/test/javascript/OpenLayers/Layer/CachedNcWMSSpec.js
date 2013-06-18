@@ -103,7 +103,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
     });
 
-    describe('events', function() {
+    describe('events and states', function() {
 
         var img00;
         var img01;
@@ -211,20 +211,61 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             expect(precacheprogressSpy.calls[4].args[0].progress).toBe(4/4);
         });
 
-        it('precacheend', function() {
-            var precacheendSpy = jasmine.createSpy('precacheendSpy');
-            cachedLayer.events.on({
-                'precacheend': precacheendSpy,
-                scope: this
+        describe('precacheend', function() {
+            var precacheendSpy;
+            
+            beforeEach(function() {
+                precacheendSpy = jasmine.createSpy('precacheendSpy');
+                cachedLayer.events.on({
+                    'precacheend': precacheendSpy,
+                    scope: this
+                });
             });
 
-            expect(precacheendSpy).not.toHaveBeenCalled();
+            it('precacheend', function() {
+                expect(precacheendSpy).not.toHaveBeenCalled();
+                cachedLayer._calculateProgress = function() { return 1; }
+                cachedLayer._precache();
+                
+                $(img11).trigger('onload');
+                expect(precacheendSpy).toHaveBeenCalledWith(cachedLayer);
+            });
 
-            cachedLayer._calculateProgress = function() { return 1; }
-            cachedLayer._precache();
+            it('precacheend sent only once', function() {
+                expect(precacheendSpy).not.toHaveBeenCalled();
+                cachedLayer._calculateProgress = function() { return 1; }
+                cachedLayer._precache();
+                
+                $(img01).trigger('onload');
+                $(img11).trigger('onload');
+                expect(precacheendSpy.callCount).toBe(1);
+            });
+        });
+
+        describe('caching state', function() {
+            it('initially UNCACHED', function() {
+                expect(cachedLayer.state).toBe(cachedLayer.STATES.UNCACHED);
+            });
             
-            $(img11).trigger('onload');
-            expect(precacheendSpy).toHaveBeenCalledWith(cachedLayer);
+            it('CACHING after precache called', function() {
+                cachedLayer._precache();
+                expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHING);
+            });
+            
+            it('CACHED after which progress reached 1', function() {
+                cachedLayer._precache();
+                cachedLayer._calculateProgress = function() { return 1; }
+                
+                $(img01).trigger('onload');
+                expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHED);
+            });
+
+            it('back to CACHING when precache called again', function() {
+                cachedLayer.state = cachedLayer.STATES.CACHED;
+                
+                cachedLayer._precache();
+                expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHING);
+            });
         });
     });
 });
