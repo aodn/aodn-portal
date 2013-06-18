@@ -174,6 +174,47 @@ describe("OpenLayers.Timer", function() {
         });
     });
 
+    describe('set tick date/times', function() {
+        var firstTickDateTime;
+        var lastTickDateTime;
+        var tickDateTimes;
+        
+        beforeEach(function() {
+            firstTickDateTime = moment('2013-03-06T12:00:00');
+            lastTickDateTime = moment('2013-03-06T13:00:00');
+            tickDateTimes = [
+                firstTickDateTime,
+                moment('2013-03-06T12:15:00'),
+                moment('2013-03-06T12:30:00'),
+                lastTickDateTime
+            ];
+            
+            timer.setTickDateTimes(tickDateTimes);
+        });
+
+        describe('setTickDateTimes', function() {
+            it('setTickDateTimes', function() {
+                expect(timer.tickDateTimes).toBeSame(tickDateTimes);
+            });
+
+            it('getTickDateTimeMin value', function() {
+                expect(timer.getTickDateTimeMin()).toBeSame(firstTickDateTime);
+            });
+            
+            it('getTickDateTimeMin is copy', function() {
+                expect(timer.getTickDateTimeMin()).not.toBe(firstTickDateTime);
+            });
+
+            it('getTickDateTimeMax value', function() {
+                expect(timer.getTickDateTimeMax()).toBeSame(lastTickDateTime);
+            });
+            
+            it('getTickDateTimeMax is copy', function() {
+                expect(timer.getTickDateTimeMax()).not.toBe(lastTickDateTime);
+            });
+        });
+    });
+    
     describe("timer observer", function() {
 
         beforeEach(function() {

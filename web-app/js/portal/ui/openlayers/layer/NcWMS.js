@@ -90,6 +90,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
+    getTemporalExtentMin: function() {
+        return moment(this.temporalExtent[0]);
+    },
+    
+    getTemporalExtentMax: function() {
+        return moment(this.temporalExtent.last());
+    },
+    
     toTime: function(dateTime) {
         this.time = dateTime;
 
