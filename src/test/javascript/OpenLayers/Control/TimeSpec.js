@@ -264,10 +264,12 @@ describe("OpenLayers.Control.Time", function() {
                 
                 timeControl.configureForLayer(ncwmsLayer, 3);
                 expect(temporalextentchangedSpy).toHaveBeenCalled();
-                expect(temporalextentchangedSpy.calls[0].args[0].layer.min).toBeSame('2001-01-01T00:00');
-                expect(temporalextentchangedSpy.calls[0].args[0].layer.max).toBeSame('2001-01-05T00:00');
-                expect(temporalextentchangedSpy.calls[0].args[0].timer.min).toBeSame('2001-01-03T00:00');
-                expect(temporalextentchangedSpy.calls[0].args[0].timer.max).toBeSame('2001-01-05T00:00');
+                expect(temporalextentchangedSpy.calls[0].args[0].layer.min).toBeSame(ncwmsLayer.getTemporalExtentMin());
+                expect(temporalextentchangedSpy.calls[0].args[0].layer.max).toBeSame(ncwmsLayer.getTemporalExtentMax());
+                expect(temporalextentchangedSpy.calls[0].args[0].timer.min).toBeSame(
+                    timeControl.timer.getTickDateTimeMin());
+                expect(temporalextentchangedSpy.calls[0].args[0].timer.max).toBeSame(
+                    timeControl.timer.getTickDateTimeMax());
             });
         });
     });

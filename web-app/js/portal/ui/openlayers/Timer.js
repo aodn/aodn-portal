@@ -109,6 +109,14 @@ OpenLayers.Timer = OpenLayers.Class({
         return this.tickDateTimes[tickIndex];
     },
 
+    getTickDateTimeMin: function() {
+        return moment(this.tickDateTimes[0]);
+    },
+
+    getTickDateTimeMax: function() {
+        return moment(this.tickDateTimes.last());
+    },
+    
     on: function(eventName, observer, context) {
 
         if (!observer) {

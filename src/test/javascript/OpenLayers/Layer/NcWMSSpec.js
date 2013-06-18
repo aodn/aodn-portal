@@ -262,6 +262,38 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('getExtent min/max', function() {
+
+        var minExtent = moment('2001-02-01T00:00');
+        var maxExtent = moment('2001-02-05T00:00');
+        
+        beforeEach(function() {
+            var extent = [
+                minExtent,
+                '2001-02-03T00:00',
+                maxExtent];
+
+            ncwmsLayer = new OpenLayers.Layer.NcWMS();
+            ncwmsLayer.temporalExtent = extent;
+        });
+
+        it('getTemporalExtentMin value', function() {
+            expect(ncwmsLayer.getTemporalExtentMin()).toBeSame('2001-02-01T00:00');
+        });
+
+        it('getTemporalExtentMin is copy', function() {
+            expect(ncwmsLayer.getTemporalExtentMin()).not.toBe(minExtent);
+        });
+
+        it('getTemporalExtentMax value', function() {
+            expect(ncwmsLayer.getTemporalExtentMax()).toBeSame('2001-02-05T00:00');
+        });
+        
+        it('getTemporalExtentMax is copy', function() {
+            expect(ncwmsLayer.getTemporalExtentMax()).not.toBe(maxExtent);
+        });
+    });
+    
     describe('getMissingDays',
         function() {
             var extent = [
