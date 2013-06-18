@@ -20,6 +20,8 @@ import javax.naming.InitialContext
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+println "Loading base Portal configuration..."
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -107,7 +109,6 @@ openId {
     // Specify provider to work with register button/link (not an OpenId standard)
     // registerProvider = providers.first();     // disabled by default
 }
-
 
 // set per-environment serverURL stem for creating absolute links
 environments {
@@ -217,10 +218,15 @@ try {
 	configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
 	grails.config.locations << "file:${configurationPath}"
 
+	println "Loading external config from '$configurationPath'..."
+
 	def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
 	System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
 }
 catch (e) {
+
+	println "Not loading external config"
+
 	portal.instance.name = defaultInstanceName
 	System.setProperty "INSTANCE_NAME", portal.instance.name
 }
