@@ -157,17 +157,11 @@ class Menu {
 	}
 
 	def _cache(theCache, displayableMenu) {
-        //NoSuchFieldException getting thrown is a known problem with grails 1.3.7
-        //it's caused by the use of a grails hack which trys to access no existent String properties
-        //There for disable the hack beforehand and reenable after.
-        //see http://stackoverflow.com/questions/14510805/grails-1-3-7-java-7-compatibility
-        //and http://grails.org/doc/1.1.1/api/org/codehaus/groovy/grails/web/util/StringCharArrayAccessor.html
-        System.setProperty("stringchararrayaccessor.disabled", "true")
 
-        theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
-            displayableMenu as JSON
-        }.toString())
-
-        System.setProperty("stringchararrayaccessor.disabled", "false")
+        StringCharArrayFixer.run {
+            theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
+                displayableMenu as JSON
+            }.toString())
+        }
 	}
 }
