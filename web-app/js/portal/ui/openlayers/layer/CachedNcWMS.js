@@ -6,8 +6,18 @@
  */
 OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
 
+    STATES: {
+        UNCACHED: 'UNCACHED',
+        CACHING: 'CACHING',
+        CACHED: 'CACHED'
+    },
+    
     initialize: function(name, url, params, options, extent) {
+        console.log('initialising layer', name);
+        
         this.precachedTimes = [];
+        this.state = this.STATES.UNCACHED;
+        
         this.EVENT_TYPES.push('precachestart');
         this.EVENT_TYPES.push('precacheprogress');
         this.EVENT_TYPES.push('precacheend');
@@ -22,6 +32,8 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     },
     
     _precache: function() {
+        this.state = this.STATES.CACHING;
+        
         this.events.triggerEvent('precachestart', this);
         this.events.triggerEvent('precacheprogress', {
             layer: this,
@@ -45,8 +57,9 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
             progress: progress
         });
 
-        if (progress == 1) {
+        if (progress == 1 && this.state == this.STATES.CACHING) {
             this.events.triggerEvent('precacheend', this);
+            this.state = this.STATES.CACHED;
         }
     },
 
