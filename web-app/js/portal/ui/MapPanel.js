@@ -82,6 +82,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._updateLayerLoadingSpinner(this.layers.getLayersLoadingCount());
         }, this);
 
+        Ext.MsgBus.subscribe('beforeselectedLayerChanged', function(subject, openlayer) {
+            this._onBeforeSelectedLayerChanged(openlayer);
+        }, this);
+        
         Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
@@ -116,6 +120,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
+    _onBeforeSelectedLayerChanged: function(openLayer) {
+        this.mapOptions.timeControl.configureForLayer(openLayer, 10);
+    },
+    
     onSelectedLayerChanged:function (openLayer) {
 
         if (this.autoZoom === true) {

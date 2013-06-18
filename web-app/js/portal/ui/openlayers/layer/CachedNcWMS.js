@@ -13,8 +13,6 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     },
     
     initialize: function(name, url, params, options, extent) {
-        console.log('initialising layer', name);
-        
         this.precachedTimes = [];
         this.state = this.STATES.UNCACHED;
         
@@ -27,7 +25,6 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     
     moveTo: function(bounds, zoomChanged, dragging) {
         OpenLayers.Layer.WMS.prototype.moveTo.apply(this, arguments);
-
         this._precache();
     },
     

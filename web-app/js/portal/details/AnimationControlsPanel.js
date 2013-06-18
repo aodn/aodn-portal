@@ -34,7 +34,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         }, this);
         
-        Ext.MsgBus.subscribe('selectedLayerChanged', this._onSelectedLayerChanged, this);
+        Ext.MsgBus.subscribe('beforeselectedLayerChanged', this._onBeforeSelectedLayerChanged, this);
 
         if (this.timeControl) {
             this.timeControl.events.on({
@@ -213,7 +213,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('timechanged', this, this._onTimeChanged);
 	},
 
-    _onSelectedLayerChanged: function(subject, openLayer) {
+    _onBeforeSelectedLayerChanged: function(subject, openLayer) {
 
         if (this.selectedLayer) {
             this.selectedLayer.events.un({
@@ -226,8 +226,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         
         if (openLayer && openLayer.isAnimatable()) {
             this.selectedLayer = openLayer;
-
-            this.timeControl.configureForLayer(openLayer, 10);
             this.stepSlider.setMinValue(0);
             this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
             this.selectedLayer.events.on({
