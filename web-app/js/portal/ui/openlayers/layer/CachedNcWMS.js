@@ -51,15 +51,18 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
     },
 
     _imageLoaded: function(img) {
-        var progress = this._calculateProgress();
-        this.events.triggerEvent('precacheprogress', {
-            layer: this,
-            progress: progress
-        });
 
-        if (progress == 1 && this.state == this.STATES.CACHING) {
-            this.events.triggerEvent('precacheend', this);
-            this.state = this.STATES.CACHED;
+        if (this.state != this.STATES.CACHED) {
+            var progress = this._calculateProgress();
+            this.events.triggerEvent('precacheprogress', {
+                layer: this,
+                progress: progress
+            });
+
+            if (progress == 1) {
+                this.events.triggerEvent('precacheend', this);
+                this.state = this.STATES.CACHED;
+            }
         }
     },
 

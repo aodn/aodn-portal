@@ -211,6 +211,27 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             expect(precacheprogressSpy.calls[4].args[0].progress).toBe(4/4);
         });
 
+        // This scenario can happen if several images load and caching is finished before the first of the several
+        // image load callbacks is called.
+        //
+        // Without this check, it would be possible for a precacheprogress event (with value 1.0) to be sent after
+        // the precacheend, resuling in "Loading... 100%" being displayed on the UI, rather than the appropriate
+        // date/time.
+        it('precacheprogress not sent if already CACHED', function() {
+            var precacheprogressSpy = jasmine.createSpy('precacheprogressSpy');
+            cachedLayer.events.on({
+                'precacheprogress' : precacheprogressSpy,
+                scope: this
+            });
+
+            cachedLayer._precache();
+            expect(precacheprogressSpy.callCount).toBe(1);
+
+            cachedLayer.state = cachedLayer.STATES.CACHED;
+            $(img00).trigger('onload');
+            expect(precacheprogressSpy.callCount).toBe(1);
+        });
+
         describe('precacheend', function() {
             var precacheendSpy;
             
