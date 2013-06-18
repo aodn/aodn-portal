@@ -186,7 +186,7 @@ describe("OpenLayers.Control.Time", function() {
         });
     });
     
-    describe('configure with NcWMS layer', function() {
+    describe('configure with layer', function() {
         it('timer extent is \'n\' most recent date/times from layer', function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.timer.getNumTicks()).toBe(3);
@@ -227,6 +227,14 @@ describe("OpenLayers.Control.Time", function() {
                 '2001-01-03T00:00'
             ]);
                                           
+        });
+
+        it('do nothing if layer without extent is given', function() {
+            spyOn(timeControl.timer, 'setTickDateTimes');
+            spyOn(timeControl.events, 'triggerEvent');
+            timeControl.configureForLayer({}, 10);
+            expect(timeControl.timer.setTickDateTimes).not.toHaveBeenCalled();
+            expect(timeControl.events.triggerEvent).not.toHaveBeenCalled();
         });
     });
 

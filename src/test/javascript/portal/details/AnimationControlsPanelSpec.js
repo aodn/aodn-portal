@@ -19,6 +19,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
         timeControl.getExtent = function() {
             return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         };
+        timeControl.getDateTimeForStep = function() {
+            return moment('2014-04-03T02:11:32');
+        }
 
         animationControlsPanel = new Portal.details.AnimationControlsPanel({
             timeControl: timeControl
@@ -46,11 +49,12 @@ describe("Portal.details.AnimationControlsPanel", function() {
         ncWmsLayer.getDatesOnDay = function() { return []; }
 
         animationControlsPanel.selectedLayer = ncWmsLayer;
+        timeControl.configureForLayer(ncWmsLayer, 10);
     });
 
     afterEach(function() {
         Ext.MsgBus.unsubscribe(
-            'selectedLayerChanged', animationControlsPanel._onSelectedLayerChanged, animationControlsPanel);
+            'selectedLayerChanged', animationControlsPanel._onBeforeSelectedLayerChanged, animationControlsPanel);
     });
 
     describe('initialisation', function() {
@@ -93,18 +97,6 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             var temporalExtent;
             
-            it('configureForLayer is not called for WMS layer', function() {
-                spyOn(timeControl, 'configureForLayer');
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
-                expect(timeControl.configureForLayer).not.toHaveBeenCalled();
-            });
-            
-            it('configureForLayer is called for NcWMS layer', function() {
-                spyOn(timeControl, 'configureForLayer');
-                Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
-                expect(timeControl.configureForLayer).toHaveBeenCalledWith(ncWmsLayer, 10);
-            });
-
             it('slider updated', function() {
                 Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
                 expect(animationControlsPanel.stepSlider.minValue).toBe(0);
@@ -245,7 +237,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 afterEach(function() {
                     Ext.MsgBus.unsubscribe(
                         'selectedLayerChanged',
-                        localAnimationControlsPanel._onSelectedLayerChanged,
+                        localAnimationControlsPanel._onBeforeSelectedLayerChanged,
                         localAnimationControlsPanel);
                 });
             });
@@ -362,8 +354,8 @@ describe("Portal.details.AnimationControlsPanel", function() {
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheStart').andCallThrough();
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress').andCallThrough();
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd').andCallThrough();
-            
-            Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+
+            Ext.MsgBus.publish('beforeselectedLayerChanged', ncWmsLayer);
             
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
@@ -378,7 +370,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('listener unregistered when layer changes', function() {
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
 
-            Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+            Ext.MsgBus.publish('beforeselectedLayerChanged', new OpenLayers.Layer.NcWMS());
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.8
@@ -423,7 +415,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('onSelectedLayerPrecacheEnd unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
 
-                Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+                var newLayer = new OpenLayers.Layer.NcWMS()
+                timeControl.configureForLayer(newLayer, 10);
+                Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
             });
@@ -439,7 +433,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('onSelectedLayerPrecacheStart unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
 
-                Ext.MsgBus.publish('selectedLayerChanged', new OpenLayers.Layer.NcWMS());
+                Ext.MsgBus.publish('beforeselectedLayerChanged', new OpenLayers.Layer.NcWMS());
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
             });

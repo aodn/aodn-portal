@@ -21,7 +21,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     timer: null,
 
     relativeSpeed: 1,
-    
+
     initialize: function(options) {
 
         this.timer = new OpenLayers.Timer(options);
@@ -96,6 +96,11 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
      */
     configureForLayer: function(layer, range) {
 
+        if (!layer || layer.getTemporalExtent == undefined || layer.getTemporalExtent() == undefined) {
+            // Ignore layers which don't have a temporal extent.
+            return;
+        }
+        
         var timerTickDateTimes;
         var layerExtentLength = layer.getTemporalExtent().length;
         
@@ -105,7 +110,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         else {
             timerTickDateTimes = this._getLastNFromExtent(layer, range);
         }
-        
+
         this.timer.setTickDateTimes(timerTickDateTimes);
 
         this.events.triggerEvent(
