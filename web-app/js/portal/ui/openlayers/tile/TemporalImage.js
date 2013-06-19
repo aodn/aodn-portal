@@ -21,6 +21,11 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         this.show();
     },
 
+    clearCache: function() {
+        this.imgCache = {};
+        this.parentDiv = null;
+    },
+   
     precache: function(dateTime, onloadCallback, context) {
         this._updateParentDiv();
         
