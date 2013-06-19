@@ -293,13 +293,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	_stopPlaying : function() {
         this.timeControl.stop();
-
 		this._updateButtons(this.state.PAUSED);
 	},
 
 	_startPlaying : function() {
         this._updateButtons(this.state.PLAYING);
-
         this.timeControl.play();
 	},
 
@@ -325,8 +323,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.stepSlider.enable();
 			this.speedLabel.setVisible(true);
 			this.getAnimationButton.setVisible(true);
-			this._updateSpeedButtons();
-
             this.dateTimeSelectorPanel.disable();
 		} else if (state == this.state.REMOVED) {
 			this.playButton.setIcon('images/animation/play.png');
@@ -336,8 +332,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 			this.speedLabel.setVisible(false);
 			this.getAnimationButton.setVisible(false);
-
-			this._updateSpeedButtons();
             this.dateTimeSelectorPanel.enable();
 		} else if (state == this.state.PAUSED) {
             this.playButton.setIcon('images/animation/play.png');
@@ -346,23 +340,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
             this.speedLabel.setVisible(false);
             this.getAnimationButton.setVisible(true);
-
-            this._updateSpeedButtons();
             this.dateTimeSelectorPanel.enable();
         }
-	},
-
-	// Grey out speed buttonss if reached max multiplier
-	_updateSpeedButtons : function() {
-		if (this.speed * 1000 <= this.BASE_SPEED * 1000
-				/ this.MAX_SPEED_MULTIPLIER) {
-			this.speedUp.disable();
-		} else if (this.speed >= this.MAX_SPEED_MULTIPLIER * this.BASE_SPEED) {
-			this.slowDown.disable();
-		} else {
-			this.slowDown.enable();
-			this.speedUp.enable();
-		}
 	},
 
 	isAnimating : function() {
