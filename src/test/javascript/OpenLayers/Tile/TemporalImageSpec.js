@@ -59,6 +59,17 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             expect(tile._isCached(dateTime)).toBeTruthy();
         });
 
+        it('clearCache', function() {
+            var imgCache = {};
+            var parentDiv = {};
+            tile.imgCache = imgCache;
+            tile.parentDiv = parentDiv;
+            
+            tile.clearCache();
+            expect(tile.imgCache).not.toBe(imgCache);
+            expect(tile.parentDiv).not.toBe(parentDiv);
+        });
+        
         describe('get cached', function() {
             it('not in cache', function() {
                 expect(tile._isCached(dateTime)).toBeFalsy();

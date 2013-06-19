@@ -40,6 +40,10 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.NcWMS, {
         this.precachedTimes = this._getTimesToCache();
         var self = this;
 
+        this.eachTile(function(tile) {
+            tile.clearCache();
+        });
+        
         for (var i = 0; i < this.precachedTimes.length; i++) {
             this.eachTile(function(tile) {
                 tile.precache(self.precachedTimes[i], self._imageLoaded, self);

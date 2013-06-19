@@ -28,48 +28,65 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         expect(cachedLayer._precache).toHaveBeenCalled();
     });
 
-    it('precache called on each tile for each time', function() {
+    describe('precache tiles', function() {
+        var tilePrecacheSpy;
+        var tileClearCacheSpy;
 
-        var tilePrecacheSpy = jasmine.createSpy('precache');
-        cachedLayer.grid = [];
-        cachedLayer.grid.push([
-            {
-                precache: tilePrecacheSpy,
-                getNumImagesComplete: function() {}
-            },
-            {
-                precache: tilePrecacheSpy,
-                getNumImagesComplete: function() {}
+        beforeEach(function() {
+            tilePrecacheSpy = jasmine.createSpy('precache');
+            tileClearCacheSpy = jasmine.createSpy('clearCache');
+            
+            cachedLayer.grid = [];
+            cachedLayer.grid.push([
+                {
+                    precache: tilePrecacheSpy,
+                    clearCache: tileClearCacheSpy,
+                    getNumImagesComplete: function() {}
+                },
+                {
+                    precache: tilePrecacheSpy,
+                    clearCache: tileClearCacheSpy,
+                    getNumImagesComplete: function() {}
+                }
+            ]);
+            cachedLayer.grid.push([
+                {
+                    precache: tilePrecacheSpy,
+                    clearCache: tileClearCacheSpy,
+                    getNumImagesComplete: function() {}
+                },
+                {
+                    precache: tilePrecacheSpy,
+                    clearCache: tileClearCacheSpy,
+                    getNumImagesComplete: function() {}
+                }
+            ]);
+        });
+
+        it('clearCache called on each tile', function() {
+            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            expect(tileClearCacheSpy.callCount).toBe(4);
+        });
+           
+        it('precache called on each tile for each time', function() {
+            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            expect(tilePrecacheSpy.callCount).toBe(8);
+
+            for (var i = 0; i < 4; i++) {
+                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T00:00:00'));
             }
-        ]);
-        cachedLayer.grid.push([
-            {
-                precache: tilePrecacheSpy,
-                getNumImagesComplete: function() {}
-            },
-            {
-                precache: tilePrecacheSpy,
-                getNumImagesComplete: function() {}
+            for (var i = 4; i < 8; i++) {
+                expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T01:00:00'));
             }
-        ]);
-
-        cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
-        expect(tilePrecacheSpy.callCount).toBe(8);
-
-        for (var i = 0; i < 4; i++) {
-            expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T00:00:00'));
-        }
-        for (var i = 4; i < 8; i++) {
-            expect(tilePrecacheSpy.calls[i].args[0]).toBeSame(moment('2000-01-01T01:00:00'));
-        }
+        });
     });
-
+    
     describe('currently precaching images', function() {
         describe('after precache', function() {
             beforeEach(function() {
                 var dummyTile = {
-                    precache: function() {
-                    },
+                    precache: function() {},
+                    clearCache: function() {},
                     getNumImagesComplete: function() {
                         return 1;
                     }
@@ -144,12 +161,14 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                     precache: function(dateTime) {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img00 : img10;
                     },
+                    clearCache: function() {},
                     getNumImagesComplete: function() {}
                 },
                 {
                     precache: function(dateTime) {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img01 : img11;
                     },
+                    clearCache: function() {},
                     getNumImagesComplete: function() {}
                 }
             ]);
