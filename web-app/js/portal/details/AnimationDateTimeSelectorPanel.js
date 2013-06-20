@@ -118,6 +118,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
                 moment(this.endTimeCombo.getValue())
             ]
         );
+        this.parentAnimationControl.selectedLayer._precache();
     },
     
     _onEndDateSelected: function(endDatePicker, jsDate) {
