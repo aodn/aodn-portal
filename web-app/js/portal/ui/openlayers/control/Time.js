@@ -121,8 +121,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
                     max: moment(layer.getTemporalExtentMax())
                 },
                 timer: {
-                    min: moment(this.timer.getTickDateTimeMin()),
-                    max: moment(this.timer.getTickDateTimeMax())
+                    min: moment(this.getExtentMin()),
+                    max: moment(this.getExtentMax())
                 }
             }
         );
@@ -176,6 +176,14 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
+    getExtentMin: function() {
+        return this.timer.getTickDateTimeMin();
+    },
+    
+    getExtentMax: function() {
+        return this.timer.getTickDateTimeMax();
+    },
+    
     getRelativeSpeed: function() {
         return this.relativeSpeed;
     },

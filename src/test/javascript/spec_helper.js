@@ -43,6 +43,10 @@ beforeEach(function() {
 
         toBeInstanceOf: function(expected) {
             return this.actual instanceof expected;
-        }
+        },
+
+        toStartWith: function(expected) {
+            return this.actual.indexOf(expected) == 0;
+        },
     });
 });

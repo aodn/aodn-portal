@@ -6,6 +6,8 @@
  */
 OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
+    DEFAULT_GIF_HEIGHT: 512,
+    
     /**
      * Moment in time that this layer represents.
      */
@@ -222,6 +224,46 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.missingDays;
     },
 
+    downloadAsGif: function(params) {
+        var gifUrl = this._getGifUrl(params);
+
+        window.open(
+            gifUrl,
+            '_blank',
+            'width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes');
+    },
+    
+    _getGifUrl: function(params) {
+        var url = this.getFullRequestString();
+
+        if (params) {
+            if (params.spatialExtent) {
+                url = this._appendParam(url, 'BBOX', params.spatialExtent.toBBOX());
+                url = this._appendParam(
+                    url,
+                    'HEIGHT',
+                    Math.floor(this.DEFAULT_GIF_HEIGHT * params.spatialExtent.getHeight() / params.spatialExtent.getWidth()));
+            }
+
+            if (params.temporalExtent) {
+                var format = 'YYYY-MM-DDTHH:mm:ss';
+                url = this._appendParam(url, 'TIME', params.temporalExtent.min.utc().format(format) + '/' +
+                                        params.temporalExtent.max.utc().format(format));
+            }
+        }
+        
+        url = this._appendParam(url, 'FORMAT', 'image/gif');
+        url = this._appendParam(url, 'WIDTH', this.DEFAULT_GIF_HEIGHT);
+
+        url = url.replace('FORMAT=image%2Fpng&', '')
+        
+        return 'proxy/downloadGif?url=' + url;
+    },
+
+    _appendParam: function(base, name, value) {
+        return base += '&' + name + '=' + value;
+    },
+    
     _momentIsEqualByYearMonthDate: function(left, right) {
         return left.year() == right.year()
             && left.month() == right.month()
