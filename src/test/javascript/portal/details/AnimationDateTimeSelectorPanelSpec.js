@@ -13,7 +13,9 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
     
     beforeEach(function() {
         timeControl = new OpenLayers.Control.Time();
-        selectedLayer = {};
+        selectedLayer = {
+            _precache: function() {}
+        };
         parentAnimationControl = {
             selectedLayer: selectedLayer
         };
@@ -232,7 +234,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         });
     });
 
-    describe('time control reconfigured on time select', function() {
+    describe('time control reconfigured on time/date select', function() {
 
         beforeEach(function() {
             dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22').valueOf());
@@ -255,6 +257,23 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
                 '2000-01-01T22:22:22', '2010-10-10T11:11:11'
             ]);
+        });
+
+        it('start date select', function() {
+        });
+    });
+
+    describe('layer precached on time select', function() {
+        it('start time combo select', function() {
+            spyOn(dateTimePanel.parentAnimationControl.selectedLayer, '_precache');
+            dateTimePanel.startTimeCombo.fireEvent('select');
+            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
+        });
+
+        it('end time combo select', function() {
+            spyOn(dateTimePanel.parentAnimationControl.selectedLayer, '_precache');
+            dateTimePanel.endTimeCombo.fireEvent('select');
+            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
         });
     });
 });
