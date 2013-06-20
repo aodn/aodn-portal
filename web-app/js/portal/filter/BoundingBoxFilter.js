@@ -30,7 +30,24 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 		this._setDefaultBounds();
 	},
 
-	_setExistingFilters: function(){
+    setLayerAndFilter: function(layer, filter)
+    {
+        Portal.filter.BaseFilter.prototype.setLayerAndFilter.apply(this, arguments);
+
+        layer.map.events.register("move", this, function(e) {
+
+            var extent = layer.map.getExtent();
+
+            this.bbox.setBox({
+                northBL:extent.top,
+                westBL: extent.left,
+                eastBL: extent.right,
+                southBL: extent.bottom
+            });
+        });
+    },
+
+    _setExistingFilters: function(){
 		this.re = new RegExp("BBOX\\(" + this.filter.name + ",(.*)\\)");
 
 		if(this.layer.params.CQL_FILTER != undefined){
