@@ -190,19 +190,24 @@ class FilterControllerTests extends ControllerUnitTestCase {
 			type: "int",
 			possibleValues: testPossibleValues
 		]
-		FilterType.metaClass.typeFromString = { FilterType.Number }
+		FilterType.metaClass.static.typeFromString = {
+			String s ->
+
+			assertEquals testFilterData.type, s
+			return FilterType.Number
+		}
 		Filter.metaClass.static.findByLayerAndName = {
 			layer, name ->
 
 			assertEquals testLayer, layer
 			assertEquals testName, name
-			null
+			return null
 		}
 
 		def filter = controller._updateFilterWithData(testLayer, testName, testFilterData)
 
-		assertEquals "newFilterName", filter.name
-		assertEquals "newFilterName", filter.label
+		assertEquals testFilterData.name, filter.name
+		assertEquals testFilterData.name, filter.label
 		assertEquals testLayer, filter.layer
 		assertEquals FilterType.Number, filter.type
 		assertEquals 2, filter.possibleValues.size()
