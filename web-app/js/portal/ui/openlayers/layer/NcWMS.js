@@ -183,8 +183,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         for (var i = 0; i < this.temporalExtent.length; i++) {
-            var dateTimeAsMoment = moment(dateTime);
-            var dateToCheck = this.temporalExtent[i];
+            var dateTimeAsMoment = moment(dateTime).local();
+            var dateToCheck = moment(this.temporalExtent[i]).local();
 
             if (this._momentIsEqualByYearMonthDate(dateTimeAsMoment, dateToCheck)) {
                 retDates.push(dateToCheck);
