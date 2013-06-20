@@ -20,6 +20,7 @@ class FilterControllerTests extends ControllerUnitTestCase {
         super.tearDown()
 
 	    Filter.metaClass = null
+	    FilterType.metaClass = null
     }
 
     void testDelete() {
@@ -189,7 +190,7 @@ class FilterControllerTests extends ControllerUnitTestCase {
 			type: "int",
 			possibleValues: testPossibleValues
 		]
-
+		FilterType.metaClass.typeFromString = { FilterType.Number }
 		Filter.metaClass.static.findByLayerAndName = {
 			layer, name ->
 
