@@ -10,11 +10,10 @@ Portal.details.TimeComboBox = Ext.extend(Ext.form.ComboBox, {
     constructor: function(cfg) {
         
         var config = Ext.apply({
-            store: new Ext.data.ArrayStore({
+            store: new Ext.data.JsonStore({
                 autoLoad : false,
 			    autoDestroy : true,
-			    fields : ['timeValue', 'displayTime'],
-			    data : []
+			    fields : ['timeValue', 'displayTime']
             }),
             mode: 'local',
 			triggerAction : "all",

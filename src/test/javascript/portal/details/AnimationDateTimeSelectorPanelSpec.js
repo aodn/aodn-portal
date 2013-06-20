@@ -149,9 +149,9 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     dateTimePanel._updateStartTimeCombo(moment('2001-01-01T05:00'));
                     
                     var addData = dateTimePanel.startTimeCombo.store.loadData.calls[0].args[0];
-                    expect(addData[0][0]).toBeSame('2001-01-01T05:00');
-                    expect(addData[0][1]).toBe('05:00:00 (+11:00)');
-                    expect(addData[1][0]).toBeSame('2001-01-01T15:00');
+                    expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
+                    expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
+                    expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.startTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
             });
@@ -193,9 +193,9 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     dateTimePanel._updateEndTimeCombo(moment('2001-01-01T05:00'));
                     
                     var addData = dateTimePanel.endTimeCombo.store.loadData.calls[0].args[0];
-                    expect(addData[0][0]).toBeSame('2001-01-01T05:00');
-                    expect(addData[0][1]).toBe('05:00:00 (+11:00)');
-                    expect(addData[1][0]).toBeSame('2001-01-01T15:00');
+                    expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
+                    expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
+                    expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.endTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
             });
@@ -235,8 +235,8 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
     describe('time control reconfigured on time select', function() {
 
         beforeEach(function() {
-            dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22'));
-            dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11'));
+            dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22').valueOf());
+            dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11').valueOf());
             
             spyOn(timeControl, 'configureForLayer');
         });

@@ -114,8 +114,8 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         this.timeControl.configureForLayer(
             this.parentAnimationControl.selectedLayer,
             [
-                this.startTimeCombo.getValue(),
-                this.endTimeCombo.getValue()
+                moment(this.startTimeCombo.getValue()),
+                moment(this.endTimeCombo.getValue())
             ]
         );
     },
@@ -125,16 +125,16 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
     
     _onTemporalExtentChanged: function(evt) {
-        this.startDatePicker.setMinValue(evt.layer.min.toDate());
-        this.startDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.startDatePicker.setValue(evt.timer.min.toDate());
+        this.startDatePicker.setMinValue(evt.layer.min.local().toDate());
+        this.startDatePicker.setMaxValue(evt.layer.max.local().toDate());
+        this.startDatePicker.setValue(evt.timer.min.local().toDate());
         
-        this.endDatePicker.setMinValue(evt.layer.min.toDate());
-        this.endDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.endDatePicker.setValue(evt.timer.max.toDate());
+        this.endDatePicker.setMinValue(evt.layer.min.local().toDate());
+        this.endDatePicker.setMaxValue(evt.layer.max.local().toDate());
+        this.endDatePicker.setValue(evt.timer.max.local().toDate());
 
-        this._updateStartTimeCombo(evt.timer.min);
-        this._updateEndTimeCombo(evt.timer.max);
+        this._updateStartTimeCombo(evt.timer.min.local());
+        this._updateEndTimeCombo(evt.timer.max.local());
     },    
 
     _updateStartTimeCombo: function(dateTime) {
@@ -150,11 +150,14 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     
         var data = [];
         for (var i = 0; i < datesOnDay.length; i++) {
-            data.push([datesOnDay[i], datesOnDay[i].local().format(this.TIME_FORMAT)]);
+            data.push({
+                timeValue: datesOnDay[i].valueOf(),
+                displayTime: datesOnDay[i].local().format(this.TIME_FORMAT)
+            });
         }
 
         timeCombo.getStore().loadData(data);
-        timeCombo.setValue(dateTime);
+        timeCombo.setValue(dateTime.valueOf());
     },
     
     getStartDatePicker: function() {

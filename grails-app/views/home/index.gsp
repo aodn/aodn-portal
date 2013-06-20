@@ -197,7 +197,7 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/MomentComboBox.js')}"
+<script src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"
         type="text/javascript"></script>
