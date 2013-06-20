@@ -89,11 +89,10 @@ class FilterController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'filter.label', default: 'Filter'), params.id])}"
             redirect(action: "list")
         }
-
-
     }
 
     def delete = {
+
         def filterInstance = Filter.get(params.id)
 
         if (filterInstance) {
@@ -112,100 +111,129 @@ class FilterController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'filter.label', default: 'Filter'), params.id])}"
             redirect(action: "list")
         }
-
     }
 
-    /**
-     * Note that values will be truncated to 256 characters, to fit the database schema.
-     */
     def updateFilter = {
+
         def postData = JSON.parse(params.filterData)
-        if(_validateCredential(postData.password)){
 
-            def layerName = postData.layerName
-            def hostPattern = "%" + postData.serverHost + "%"
-            def namespace = null
+        if (_validateCredential(postData.password)) {
 
-            if(postData.layerName.indexOf(":") > -1){
-                namespace = layerName.substring(0, layerName.indexOf(":"))
-                layerName = layerName.substring(layerName.indexOf(":") + 1)
-            }
+            def layer = _findLayerWith(postData.serverHost, postData.layerName)
 
-            log.debug("finding layer using: " + "from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'")
+	        if (layer) {
 
-            def query = "from Layer as l where l.server.uri like '$hostPattern' and l.name = '$layerName'"
+		        log.debug "Found layer: $layer"
 
-            if(namespace){
-                query += " and l.namespace = '$namespace'"
-            }
+		        def results = _updateFiltersForLayer(layer, postData.filters)
 
-            def layer = Layer.find(query)
+		        render results.join(" ")
+	        }
+	        else {
 
-            log.debug("found layer: " + layer)
+		        log.debug "No layer found"
 
-            def newFilters = postData.filters
+		        render "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
+	        }
+        }
+	    else {
 
-            if(layer){
-                newFilters.each(){ name, theFilter ->
-                    def filter = Filter.findByLayerAndName(layer, name)
-
-                    log.debug(theFilter.type)
-                    def type = FilterType.typeFromString(theFilter.type)
-
-                    if(!filter){
-                        filter = new Filter(name: theFilter.name, type: type, layer: layer, label: theFilter.name)
-                    }
-
-                    /**
-                     * Currently restricting string values to 256 characters (as per database setting).  These
-                     * values should usually be something small, but there's been cases where a value contains
-                     * a long description.
-                     */
-                    filter.possibleValues = theFilter.possibleValues.collect{
-                        if(it.length() > 255){
-                            log.info("filter length longer than 255.  Value was trucated from this: " + it)
-                            it[0..251] + "..."
-                        }
-                        else{
-                            it
-                        }
-                    }
-
-                    try{
-                        if (!filter.hasErrors() && filter.save(flush: true)) {
-                            render text: "Complete (saved)"
-                        }
-                        else{
-                            log.debug("Unable to save filter: " + filter.errors)
-                        }
-                    }
-                    catch(Exception e){
-                        log.warn("Error while trying to save filter: $e.message")
-                        render(status: 500, text: "Error saving or updating filter: $e")
-                    }
-                }
-            }
-            else{
-                log.debug("Unable to find layer on server $hostPattern with name $layerName")
-                render text: "Unable to find layer on server $hostPattern with name $layerName"
-            }
+	        render text: "Credentials incorrect", status: 500
         }
     }
 
-    def boolean _validateCredential(password){
-        def configuredPassword = Config.activeInstance().wfsScannerCallbackPassword
+	def _validateCredential(password) {
 
-        if(configuredPassword){
-            if(password.equals(configuredPassword)){
-                return true
-            }
-            else{
-                log.debug("Authentication failed")
-                return false
-            }
-        }
+		def configuredPassword = Config.activeInstance().wfsScannerCallbackPassword
 
-        log.info("No WFS Scanner password configured for portal")
-        return false
-    }
+		return configuredPassword && password.equals(configuredPassword)
+	}
+
+	def _trimFilterPossibleValues(filter) {
+
+		filter.possibleValues.collect{
+
+			if (it.length() > 255) {
+
+				log.debug "Filter length longer than 255. Value was trucated from this: '$it'"
+				it[0..251] + "..."
+			}
+			else {
+
+				it
+			}
+		}
+	}
+
+	def _findLayerWith(serverHost, fullLayerName) {
+
+		def (namespace, layerName) = _deconstructLayerName(fullLayerName)
+
+		Layer.createCriteria().get {
+			eq("name", layerName)
+			eq("activeInLastScan", true)
+			if (namespace) eq("namespace", namespace)
+
+			server {
+				like("uri", "%$serverHost%")
+			}
+		}
+	}
+
+	def _deconstructLayerName(layerName) {
+
+		def separatorIndex = layerName.indexOf(":")
+
+		// Has namespace
+		if (separatorIndex > -1) {
+
+			return [
+				layerName.substring(0, separatorIndex),
+				layerName.substring(separatorIndex + 1)
+			]
+		}
+
+		// No namespace
+		return [null, layerName]
+	}
+
+	def _updateFiltersForLayer(layer, incomingFilterInfo) {
+
+		def results = []
+
+		incomingFilterInfo.each {
+			name, newFilterData ->
+
+			def filter = _updateFilterWithData(layer, name, newFilterData)
+
+			if (!filter.hasErrors() && filter.save(flush: true)) {
+
+				results << "Saved filter '$name'."
+			}
+			else {
+
+				log.debug "Unable to save filter '$name' because of errors: ${filter.errors}"
+				results << "Unable to save filter '$name'."
+			}
+		}
+
+		return results
+	}
+
+	def _updateFilterWithData(layer, name, newFilterData) {
+
+		// Try to find existing Filter
+		def filter = Filter.findByLayerAndName(layer, name)
+
+		if (!filter) {
+
+			filter = new Filter(name: newFilterData.name, layer: layer, label: newFilterData.name)
+			filter.type = FilterType.typeFromString(newFilterData.type)
+		}
+
+		// Update possibleValues
+		filter.possibleValues = _trimFilterPossibleValues(newFilterData)
+
+		return filter
+	}
 }
