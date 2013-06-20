@@ -143,35 +143,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			hidden : true,
 			listeners : {
 				scope : this,
-				click : function() {
-					if (this.originalLayer.slides.length > 0) {
-						// need to workout BBOX
-						var clonedLayer = this.originalLayer.slides[0].clone();
-						var bounds = this.originalLayer.map.getExtent();
-
-						clonedLayer.mergeNewParams({
-							TIME : this.originalLayer.slides[0].params.TIME
-									+ "/"
-									+ this.originalLayer.slides[this.originalLayer.slides.length
-											- 1].params.TIME,
-							BBOX : bounds.toBBOX(),
-							FORMAT : "image/gif", // must be gif!!
-							WIDTH : 512,
-							HEIGHT : Math.floor(512
-									* (bounds.getHeight() / bounds.getWidth()))
-						});
-
-						clonedLayer.map = this.originalLayer.map;
-
-						var fullUrl = "proxy/downloadGif?url="
-								+ clonedLayer.getFullRequestString();
-						window
-								.open(
-										fullUrl,
-										'_blank',
-										"width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes");
-					}
-				}
+                click: function() {
+                    this.selectedLayer.downloadAsGif({
+                        spatialExtent: this.map.getExtent(),
+                        temporalExtent: {
+                            min: this.timeControl.getExtentMin(),
+                            max: this.timeControl.getExtentMax()
+                        }
+                    });
+                }
 			}
 		});
 

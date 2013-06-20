@@ -35,6 +35,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         );
         
         temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
+
         ncWmsLayer = new OpenLayers.Layer.NcWMS(
             'some NcWMS layer',
             'http://some.url',
@@ -454,18 +455,34 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel.enable).toHaveBeenCalled();
             });
         });
-        
-        // TODO: onerror image load
-        
-        
-    });
-    
-    // TODO: reimplement "loading..." in label?
-    describe('calendar options', function() {
-        // TODO
     });
 
-    // TODO: reset/remove layer/add new layer
+    describe('getAnimationButton', function() {
+        it('on click', function() {
+            spyOn(ncWmsLayer, 'downloadAsGif');
+
+            var theSpatialExent = {};
+            var theMinTemporalExtent = moment('2000');
+            var theMaxTemporalExtent = moment('2010');
+            
+            animationControlsPanel.map = {
+                getExtent: function() {
+                    return theSpatialExent;
+                }
+            }
+            animationControlsPanel.timeControl.getExtentMin = function() {
+                return theMinTemporalExtent;
+            }
+            animationControlsPanel.timeControl.getExtentMax = function() {
+                return theMaxTemporalExtent;
+            }
+            animationControlsPanel.getAnimationButton.fireEvent('click');
+            expect(ncWmsLayer.downloadAsGif).toHaveBeenCalled();
+            expect(ncWmsLayer.downloadAsGif.calls[0].args[0].spatialExtent).toBe(theSpatialExent);
+            expect(ncWmsLayer.downloadAsGif.calls[0].args[0].temporalExtent.min).toBe(theMinTemporalExtent);
+            expect(ncWmsLayer.downloadAsGif.calls[0].args[0].temporalExtent.max).toBe(theMaxTemporalExtent);
+        });
+    });
 
     // TODO: load from saved map - shouldn't need any special handling?
 });
