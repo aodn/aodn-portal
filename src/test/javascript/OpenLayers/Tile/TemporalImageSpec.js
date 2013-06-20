@@ -260,4 +260,14 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             });
         });
     });
+
+    describe('set opacity', function() {
+        it('each cached image has its opacity updated', function() {
+            var cachedImg = document.createElement('img');
+            tile.imgCache[moment('2012-03-04T05:12')] = cachedImg;
+
+            tile.setOpacity(0.75);
+            expect(cachedImg.style.opacity).toBe('0.75');
+        });
+    });
 });

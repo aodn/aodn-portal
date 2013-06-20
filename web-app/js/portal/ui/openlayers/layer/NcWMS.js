@@ -30,6 +30,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         
     },
 
+    setOpacity: function(opacity) {
+        OpenLayers.Layer.WMS.prototype.setOpacity.apply(this, arguments);
+
+        this.eachTile(function(tile) {
+            tile.setOpacity(opacity);
+        });
+    },
+    
     getURLAtTime: function(bounds, dateTime) {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
             + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');

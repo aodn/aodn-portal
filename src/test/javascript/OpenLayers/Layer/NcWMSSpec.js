@@ -370,17 +370,20 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('set opacity', function() {
+        it('set opacity called on each tile', function() {
+            var opacitySpy = jasmine.createSpy('setOpacity');
+            ncwmsLayer.grid = [];
+            ncwmsLayer.grid[0] = [{ setOpacity: opacitySpy }, { setOpacity: opacitySpy }];
+            ncwmsLayer.grid[1] = [{ setOpacity: opacitySpy }, { setOpacity: opacitySpy }];
+
+            ncwmsLayer.setOpacity(0.6);
+            expect(opacitySpy.callCount).toBe(4);
+            expect(opacitySpy.calls[0].args[0]).toBe(0.6);
+        });
+    });
+    
     describe('download as gif', function() {
-        // working
-        //http://localhost:8080/Portal2/proxy/downloadGif?url=http://ncwms.emii.org.au/ncWMS/wms?LAYERS=ACORN_CODAR_BONC%2FUCUR&TRANSPARENT=TRUE&VERSION=1.1.1&QUERYABLE=true&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A4326&TIME=2012-10-30T11:00/2012-10-30T23:00&BBOX=82.573242,-46.143555,187.426758,-6.856445&FORMAT=image/gif&WIDTH=512&HEIGHT=512
-
-        
-            // Math.floor
-            // png
-            // leading &
-
-            // http://localhost:8080/Portal2/proxy/downloadGif?url=http://ncwms.emii.org.au/ncWMS/wms?LAYERS=ACORN_CODAR_BONC%2FUCUR&TRANSPARENT=TRUE&VERSION=1.1.1&QUERYABLE=true&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A4326&BBOX=82.573242,-46.143555,187.426758,-6.856445&HEIGHT=191&TIME=2012-10-30T11:00:00/2012-10-30T23:00:00&FORMAT=image/gif&WIDTH=512
-
         beforeEach(function() {
             spyOn(window, 'open');
         });

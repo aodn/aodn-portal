@@ -14,6 +14,14 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         this.imgCache = {};
         OpenLayers.Tile.Image.prototype.initialize.apply(this, arguments);
     },
+
+    setOpacity: function(opacity) {
+        for (var key in this.imgCache) {
+            if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
+                $(this.imgCache[key]).css('opacity', opacity);
+            }
+        }
+    },
     
     toTime: function(dateTime) {
         this._updateParentDiv();
