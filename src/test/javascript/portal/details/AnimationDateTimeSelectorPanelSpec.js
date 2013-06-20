@@ -73,7 +73,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             expect(dateTimePanel.getStartTimeCombo().mode).toBe('local');
             expect(dateTimePanel.getStartTimeCombo().triggerAction).toBe('all');
             expect(dateTimePanel.getStartTimeCombo().editable).toBeFalsy();
-            expect(dateTimePanel.getStartTimeCombo().valueField).toBe('momentValue');
+            expect(dateTimePanel.getStartTimeCombo().valueField).toBe('timeValue');
             expect(dateTimePanel.getStartTimeCombo().displayField).toBe('displayTime');
             expect(dateTimePanel.getStartTimeCombo().width).toBe(130);
         });
@@ -83,21 +83,12 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             expect(dateTimePanel.getEndTimeCombo().mode).toBe('local');
             expect(dateTimePanel.getEndTimeCombo().triggerAction).toBe('all');
             expect(dateTimePanel.getEndTimeCombo().editable).toBeFalsy();
-            expect(dateTimePanel.getEndTimeCombo().valueField).toBe('momentValue');
+            expect(dateTimePanel.getEndTimeCombo().valueField).toBe('timeValue');
             expect(dateTimePanel.getEndTimeCombo().displayField).toBe('displayTime');
             expect(dateTimePanel.getEndTimeCombo().width).toBe(130);
         });
     });
-/** TODO:
-    describe('onTemporalEvent', function() {
-        it('_onTemporalEvent called when time control fires temporalextentchanged', function() {
-            spyOn(dateTimePanel, '_onTemporalExtentChanged');
-            
-//            timeControl.events.triggerEvent('temporalextentchanged', extentEvent);
-//            expect(dateTime._onTemporalExtentChanged).toHaveBeenCalledWith(extentEvent);
-        });
-    });
- */   
+
     describe('picker values on temporal extent changed', function() {
         var animationControlsPanel;
         

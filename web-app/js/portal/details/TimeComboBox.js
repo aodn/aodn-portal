@@ -6,23 +6,23 @@
  */
 Ext.namespace('Portal.details');
 
-Portal.details.MomentComboBox = Ext.extend(Ext.form.ComboBox, {
+Portal.details.TimeComboBox = Ext.extend(Ext.form.ComboBox, {
     constructor: function(cfg) {
         
         var config = Ext.apply({
             store: new Ext.data.ArrayStore({
                 autoLoad : false,
 			    autoDestroy : true,
-			    fields : ['momentValue', 'displayTime'],
+			    fields : ['timeValue', 'displayTime'],
 			    data : []
             }),
             mode: 'local',
 			triggerAction : "all",
 			editable : false,
-			valueField : 'momentValue',
+			valueField : 'timeValue',
             displayField : 'displayTime'
         }, cfg);
 
-        Portal.details.MomentComboBox.superclass.constructor.call(this, config);
+        Portal.details.TimeComboBox.superclass.constructor.call(this, config);
     }
 });
