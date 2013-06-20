@@ -241,6 +241,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11').valueOf());
             
             spyOn(timeControl, 'configureForLayer');
+            spyOn(dateTimePanel, '_updateTimeCombo');
         });
         
         it('start time combo select', function() {
@@ -260,19 +261,46 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         });
 
         it('start date select', function() {
+            dateTimePanel.startDatePicker.fireEvent('select');
+            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
+            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
+                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
+            ]);
+        });
+        
+        it('end date select', function() {
+            dateTimePanel.endDatePicker.fireEvent('select');
+            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
+            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
+                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
+            ]);
         });
     });
 
     describe('layer precached on time select', function() {
-        it('start time combo select', function() {
+        beforeEach(function() {
+            spyOn(timeControl, 'configureForLayer');
+            spyOn(dateTimePanel, '_updateTimeCombo');
             spyOn(dateTimePanel.parentAnimationControl.selectedLayer, '_precache');
+        });
+        
+        it('start time combo select', function() {
             dateTimePanel.startTimeCombo.fireEvent('select');
             expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
         });
 
         it('end time combo select', function() {
-            spyOn(dateTimePanel.parentAnimationControl.selectedLayer, '_precache');
             dateTimePanel.endTimeCombo.fireEvent('select');
+            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
+        });
+        
+        it('start date select', function() {
+            dateTimePanel.startDatePicker.fireEvent('select');
+            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
+        });
+
+        it('end date select', function() {
+            dateTimePanel.endDatePicker.fireEvent('select');
             expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
         });
     });

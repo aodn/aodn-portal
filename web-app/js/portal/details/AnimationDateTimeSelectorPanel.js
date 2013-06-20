@@ -108,9 +108,14 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     
     _onStartDateSelected: function(startDatePicker, jsDate) {
         this._updateStartTimeCombo(moment(jsDate));
+        this._onDateTimeSelectionChange();
     },
 
     _onTimeSelected: function(combo, record, index) {
+        this._onDateTimeSelectionChange();
+    },
+
+    _onDateTimeSelectionChange: function() {
         this.timeControl.configureForLayer(
             this.parentAnimationControl.selectedLayer,
             [
@@ -123,6 +128,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     
     _onEndDateSelected: function(endDatePicker, jsDate) {
         this._updateEndTimeCombo(moment(jsDate));
+        this._onDateTimeSelectionChange();
     },
     
     _onTemporalExtentChanged: function(evt) {
