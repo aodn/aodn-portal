@@ -138,14 +138,14 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },    
 
     _updateStartTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.startTimeCombo, dateTime);
+        this._updateTimeCombo(this.startTimeCombo, dateTime, true);
     },
 
     _updateEndTimeCombo: function(dateTime) {
-        this._updateTimeCombo(this.endTimeCombo, dateTime);
+        this._updateTimeCombo(this.endTimeCombo, dateTime, false);
     },
 
-    _updateTimeCombo: function(timeCombo, dateTime) {
+    _updateTimeCombo: function(timeCombo, dateTime, useFirstOfDatesOnDay) {
         var datesOnDay = this.parentAnimationControl.selectedLayer.getDatesOnDay(dateTime);
     
         var data = [];
@@ -157,7 +157,13 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         }
 
         timeCombo.getStore().loadData(data);
-        timeCombo.setValue(dateTime.valueOf());
+        if (useFirstOfDatesOnDay) {
+            timeCombo.setValue(datesOnDay[0].valueOf());
+        }
+        else {
+            timeCombo.setValue(datesOnDay.last().valueOf());
+        }
+        timeCombo.setValue(dateTime.valueOf())
     },
     
     getStartDatePicker: function() {
