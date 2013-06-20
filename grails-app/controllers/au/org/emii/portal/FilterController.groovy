@@ -89,8 +89,6 @@ class FilterController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'filter.label', default: 'Filter'), params.id])}"
             redirect(action: "list")
         }
-
-
     }
 
     def delete = {
@@ -123,40 +121,24 @@ class FilterController {
 
             def layer = _findLayerWith(postData.serverHost, postData.layerName)
 
-	        if (!layer) {
+	        if (layer) {
+
+		        log.debug "Found layer: $layer"
+
+		        def results = _updateFiltersForLayer(layer, postData.filters)
+
+		        render results.join(" ")
+	        }
+	        else {
 
 		        log.debug "No layer found"
-		        render text: "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
-		        return
+
+		        render "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
 	        }
+        }
+	    else {
 
-            log.debug "Found layer: $layer"
-
-            postData.filters.each {
-	            name, incomingData ->
-
-	            // Try to find existing Filter
-	            def filter = Filter.findByLayerAndName(layer, name)
-
-	            if (!filter) {
-
-		            filter = new Filter(name: incomingData.name, layer: layer, label: incomingData.name)
-		            filter.type = FilterType.typeFromString(incomingData.type)
-	            }
-
-                // Update possibleValues
-                filter.possibleValues = _trimFilterPossibleValues(incomingData)
-
-                if (!filter.hasErrors() && filter.save(flush: true)) {
-
-                    render text: "[Saved filter '$name']"
-                }
-                else {
-
-                    log.debug "Unable to save filter '$name' because of errors: ${filter.errors}"
-                    render text: "Unable to save '$name'", status: 500
-                }
-            }
+	        render text: "Credentials incorrect", status: 500
         }
     }
 
@@ -164,18 +146,7 @@ class FilterController {
 
 		def configuredPassword = Config.activeInstance().wfsScannerCallbackPassword
 
-		if (configuredPassword) {
-			if (password.equals(configuredPassword)) {
-				return true
-			}
-			else{
-				log.debug("Authentication failed")
-				return false
-			}
-		}
-
-		log.info("No WFS Scanner password configured for portal")
-		return false
+		return configuredPassword && password.equals(configuredPassword)
 	}
 
 	def _trimFilterPossibleValues(filter) {
@@ -198,16 +169,15 @@ class FilterController {
 
 		def (namespace, layerName) = _deconstructLayerName(fullLayerName)
 
-		def query = "from Layer as l where l.server.uri like '%$serverHost%' and l.name = '$layerName' and l.activeInLastScan = true"
+		Layer.createCriteria().get {
+			eq("name", layerName)
+			eq("activeInLastScan", true)
+			if (namespace) eq("namespace", namespace)
 
-		if (namespace) {
-
-			query += " and l.namespace = '$namespace'"
+			server {
+				like("uri", "%$serverHost%")
+			}
 		}
-
-		log.debug "Finding Layer using query: '$query'"
-
-		Layer.find(query)
 	}
 
 	def _deconstructLayerName(layerName) {
@@ -225,5 +195,45 @@ class FilterController {
 
 		// No namespace
 		return [null, layerName]
+	}
+
+	def _updateFiltersForLayer(layer, incomingFilterInfo) {
+
+		def results = []
+
+		incomingFilterInfo.each {
+			name, newFilterData ->
+
+			def filter = _updateFilterWithData(layer, name, newFilterData)
+
+			if (!filter.hasErrors() && filter.save(flush: true)) {
+
+				results << "Saved filter '$name'."
+			}
+			else {
+
+				log.debug "Unable to save filter '$name' because of errors: ${filter.errors}"
+				results << "Unable to save filter '$name'."
+			}
+		}
+
+		return results
+	}
+
+	def _updateFilterWithData(layer, name, newFilterData) {
+
+		// Try to find existing Filter
+		def filter = Filter.findByLayerAndName(layer, name)
+
+		if (!filter) {
+
+			filter = new Filter(name: newFilterData.name, layer: layer, label: newFilterData.name)
+			filter.type = FilterType.typeFromString(newFilterData.type)
+		}
+
+		// Update possibleValues
+		filter.possibleValues = _trimFilterPossibleValues(newFilterData)
+
+		return filter
 	}
 }
