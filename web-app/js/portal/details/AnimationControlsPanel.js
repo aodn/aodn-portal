@@ -140,7 +140,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		this.getAnimationButton = new Ext.Button({
 			icon : 'images/animation/download.png',
 			text : 'download',
-			hidden : true,
 			listeners : {
 				scope : this,
                 click: function() {
@@ -296,13 +295,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			this.speedUp.disable();
 			this.slowDown.disable();
 			this.speedLabel.setVisible(false);
-			this.getAnimationButton.setVisible(false);
+//			this.getAnimationButton.setVisible(false);
 		} else if (state == this.state.PLAYING) {
 			// can't change the time when it's playing
 			this.playButton.setIcon('images/animation/pause.png');
 			this.stepSlider.enable();
 			this.speedLabel.setVisible(true);
-			this.getAnimationButton.setVisible(true);
+//			this.getAnimationButton.setVisible(true);
             this.dateTimeSelectorPanel.disable();
 		} else if (state == this.state.REMOVED) {
 			this.playButton.setIcon('images/animation/play.png');
@@ -311,7 +310,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			// nothing's playing, so stop and pause doesn't make sense
 
 			this.speedLabel.setVisible(false);
-			this.getAnimationButton.setVisible(false);
+//			this.getAnimationButton.setVisible(false);
             this.dateTimeSelectorPanel.enable();
 		} else if (state == this.state.PAUSED) {
             this.playButton.setIcon('images/animation/play.png');
@@ -319,7 +318,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             // nothing's playing, so stop and pause doesn't make sense
 
             this.speedLabel.setVisible(false);
-            this.getAnimationButton.setVisible(true);
+//            this.getAnimationButton.setVisible(true);
             this.dateTimeSelectorPanel.enable();
         }
 	},

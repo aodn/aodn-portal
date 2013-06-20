@@ -458,6 +458,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
     });
 
     describe('getAnimationButton', function() {
+
+        it('is not hidden', function() {
+            expect(animationControlsPanel.getAnimationButton.hidden).toBeFalsy();
+        });
+        
         it('on click', function() {
             spyOn(ncWmsLayer, 'downloadAsGif');
 
