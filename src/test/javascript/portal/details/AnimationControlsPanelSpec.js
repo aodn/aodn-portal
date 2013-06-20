@@ -54,8 +54,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
     });
 
     afterEach(function() {
+        Ext.MsgBus.publish('beforeselectedLayerChanged', null);
         Ext.MsgBus.unsubscribe(
-            'selectedLayerChanged', animationControlsPanel._onBeforeSelectedLayerChanged, animationControlsPanel);
+            'beforeselectedLayerChanged', animationControlsPanel._onBeforeSelectedLayerChanged, animationControlsPanel);
     });
 
     describe('initialisation', function() {
@@ -453,6 +454,46 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel.enable).toHaveBeenCalled();
+            });
+        });
+
+        describe('temporarily pause while precaching', function() {
+
+            beforeEach(function() {
+                spyOn(animationControlsPanel, '_stopPlaying');
+                spyOn(animationControlsPanel, '_startPlaying');
+            });
+            
+            it('pause on precache start if playing', function() {
+                animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
+
+                ncWmsLayer.events.triggerEvent('precachestart');
+                expect(animationControlsPanel._stopPlaying).toHaveBeenCalled();
+                expect(animationControlsPanel.pausedWhilePrecaching).toBeTruthy();
+            });
+            
+            it('don\'t pause on precache start if not playing', function() {
+                animationControlsPanel.currentState = animationControlsPanel.state.PAUSED;
+
+                ncWmsLayer.events.triggerEvent('precachestart');
+                expect(animationControlsPanel._stopPlaying).not.toHaveBeenCalled();
+                expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();
+            });
+
+            it('start on precache end if paused while caching', function() {
+                animationControlsPanel.pausedWhilePrecaching = true;
+                
+                ncWmsLayer.events.triggerEvent('precacheend');
+                expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
+                expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();
+            });
+            
+            it('don\'t start on precache end if not paused while caching', function() {
+                animationControlsPanel.pausedWhilePrecaching = undefined;
+                
+                ncWmsLayer.events.triggerEvent('precacheend');
+                expect(animationControlsPanel._startPlaying).not.toHaveBeenCalled();
+                expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();
             });
         });
     });

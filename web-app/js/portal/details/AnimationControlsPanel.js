@@ -217,8 +217,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
+    isPlaying: function() {
+        return (this.currentState == this.state.PLAYING);
+    },
+    
     _onSelectedLayerPrecacheStart: function() {
         this.disable();
+
+        if (this.isPlaying()) {
+            this._stopPlaying();
+            this.pausedWhilePrecaching = true;
+        }
     },
     
     _onSelectedLayerPrecacheProgress: function(evt) {
@@ -230,6 +239,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this._setStepLabelTextToDateTime(dateTime);
 
         this.enable();
+
+        if (this.pausedWhilePrecaching) {
+            this.pausedWhilePrecaching = undefined;
+            this._startPlaying();
+        }
     },
     
     _onSpeedChanged: function(timeControl) {
@@ -263,7 +277,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
 	_togglePlay : function(button, event) {
-		if (this.currentState == this.state.PLAYING) {
+		if (this.isPlaying()) {
 			this._stopPlaying();
 		} else {
 			this._startPlaying();
