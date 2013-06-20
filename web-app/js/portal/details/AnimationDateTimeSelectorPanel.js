@@ -9,6 +9,7 @@ Ext.namespace('Portal.details');
 Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
     DATE_FORMAT: 'Y-m-d',
+    TIME_FORMAT: 'HH:mm:ss (Z)',
     
     constructor: function(cfg) {
         var config = Ext.apply({
@@ -149,7 +150,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     
         var data = [];
         for (var i = 0; i < datesOnDay.length; i++) {
-            data.push([datesOnDay[i], datesOnDay[i].format('HH:mm:ss (Z)')]);
+            data.push([datesOnDay[i], datesOnDay[i].local().format(this.TIME_FORMAT)]);
         }
 
         timeCombo.getStore().loadData(data);
