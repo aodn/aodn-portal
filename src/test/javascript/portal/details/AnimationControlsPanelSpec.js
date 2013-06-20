@@ -47,7 +47,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             'name': 'time',
             'extent': temporalExtent
         }];
-        ncWmsLayer.getDatesOnDay = function() { return []; }
+        ncWmsLayer.getDatesOnDay = function() { return [moment(0)]; }
 
         animationControlsPanel.selectedLayer = ncWmsLayer;
         timeControl.configureForLayer(ncWmsLayer, 10);
