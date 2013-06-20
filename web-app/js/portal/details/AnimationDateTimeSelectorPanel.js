@@ -67,7 +67,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
-        this.startTimeCombo = new Portal.details.MomentComboBox({
+        this.startTimeCombo = new Portal.details.TimeComboBox({
 			width : 130,
             listeners: {
                 scope: this,
@@ -75,7 +75,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
             }
         });
         
-		this.endTimeCombo = new Portal.details.MomentComboBox({
+		this.endTimeCombo = new Portal.details.TimeComboBox({
 			width : 130,
             listeners: {
                 scope: this,
