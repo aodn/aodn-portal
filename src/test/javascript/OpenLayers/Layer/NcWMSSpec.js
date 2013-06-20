@@ -235,12 +235,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
         
         beforeEach(function() {
             extent = [
-                '2001-01-01T00:00',
-                '2001-02-01T01:20',
-                '2001-02-01T20:45',
-                '2001-02-03T00:00',
-                '2001-02-03T23:59',
-                '2001-02-05T00:00'];
+                '2001-01-01T00:00+11:00',
+                '2001-02-01T01:20+11:00',
+                '2001-02-01T20:45+11:00',
+                '2001-02-03T00:00+11:00',
+                '2001-02-03T23:59+11:00',
+                '2001-02-05T00:00+11:00'];
         });
 
         it('no extent', function() {
@@ -259,6 +259,16 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(ncwmsLayer.getDatesOnDay('2001-02-01')).toBeSame([
                 '2001-02-01T01:20',
                 '2001-02-01T20:45']);
+        });
+
+        it('timezone handling', function() {
+            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+                null, null, null, null, extent);
+            expect(ncwmsLayer.getDatesOnDay(moment('2001-02-04T10:00+00:00').utc()).length).toBe(0);
+            expect(ncwmsLayer.getDatesOnDay(moment('2001-02-04T13:00+00:00').utc())).toBeSame([
+                '2001-02-05T00:00+11:00'
+            ]);
+            expect(ncwmsLayer.getDatesOnDay(moment('2001-02-05T20:00+00:00').utc()).length).toBe(0);
         });
     });
 
