@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2013 IMOS
  *
@@ -8,9 +9,9 @@
 $(document).ready( function() {
 
     // hide the popup if user mouses out of area
-    $( "#loginpopup").mouseleave( function(){
-        $( "#loginpopup").hide();
-    } ) ;
+    $("#loginpopup").mouseleave(function(){
+        $("#loginpopup").hide();
+    });
 
     if ($.browser.msie && $.browser.version < 10) {
 
@@ -18,24 +19,23 @@ $(document).ready( function() {
         // (Note that testing shows they do work with with jquery-1.10.1.js)
         // Instead use show()
         $("#loginbutton").click(function(){
-            $( "#loginpopup").show();
+            $("#loginpopup").show();
         });
     }
-    else
-    {
+    else {
+
         // Firefox, Chromium et al.
         // slideToggle() tests existing state, and combines well with mouseleave()
         $("#loginbutton").click(function(){
-            $( "#loginpopup").slideToggle();
+            $("#loginpopup").slideToggle();
         });
     }
-
 });
 
-function clearOnce(input_element)
-{
-    if (!input_element.alreadyCleared)
-    {
+function clearOnce(input_element) {
+
+    if (!input_element.alreadyCleared) {
+
         input_element.value = "";
         input_element.alreadyCleared = true;
     }
