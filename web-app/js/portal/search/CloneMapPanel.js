@@ -75,10 +75,8 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     mainMapLayerRemoved: function(e) {
 
-        if (this.map['sourceLayer']) {
-
-            var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0]; // Should only be one match
-
+        var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0]; // Should only be one match
+        if( miniMapClone) {
             this.map.removeLayer(miniMapClone);
         }
     },
