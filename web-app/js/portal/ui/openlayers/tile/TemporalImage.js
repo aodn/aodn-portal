@@ -18,7 +18,9 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     setOpacity: function(opacity) {
         for (var key in this.imgCache) {
             if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
-                $(this.imgCache[key]).css('opacity', opacity);
+                
+                //                $(this.imgCache[key]).css('opacity', opacity);
+                $(this.imgCache[key]).fadeTo(0, opacity);
             }
         }
     },
