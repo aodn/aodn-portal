@@ -107,7 +107,6 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         beforeEach(function() {
             imgDiv = document.createElement('img');
             imgDiv.className = 'olTile';
-            imgDiv.style = 'hidden=false;';
             tile.imgDiv = imgDiv;
             
             dateTime = moment('2013-06-09T06:07:08');
@@ -264,10 +263,12 @@ describe("OpenLayers.Tile.TemporalImage", function() {
     describe('set opacity', function() {
         it('each cached image has its opacity updated', function() {
             var cachedImg = document.createElement('img');
+            $(cachedImg).attr('complete', 'true');
             tile.imgCache[moment('2012-03-04T05:12')] = cachedImg;
 
             tile.setOpacity(0.75);
-            expect(cachedImg.style.opacity).toBe('0.75');
+            // This expectation will fail on IE - check for 'filter' instead (suckers).
+            expect($(cachedImg).css('opacity')).toBe('0.75');
         });
     });
 });
