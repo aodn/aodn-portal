@@ -29,8 +29,6 @@ class MotdController {
 
     def save = {
         def motdInstance = new Motd(params)
-        // escape the html
-        motdInstance.motd = params.motd.encodeAsHTML()
 
         if (motdInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
