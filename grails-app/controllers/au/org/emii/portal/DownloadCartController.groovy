@@ -123,7 +123,7 @@ class DownloadCartController {
 
         // Ask Service to create archive to outputStream
         try {
-            bulkDownloadService.generateArchiveOfFiles _getCart(), outputStream, request.locale
+            bulkDownloadService.generateArchiveOfFiles _getCartDownloadableItems(), outputStream, request.locale
 
             // Send response
             outputStream.flush()
@@ -139,8 +139,19 @@ class DownloadCartController {
      }
 
     def _getCart() {
-
         return session.downloadCart ?: [] as Set
+    }
+
+    def _getCartDownloadableItems() {
+
+        // only want to get the items not disabled
+        def cart = []
+        _getCart().each {
+            if (!it.disableFlag) {
+                cart.add(it)
+            }
+        }
+        return cart
     }
 
     // count of items not marked as disabled

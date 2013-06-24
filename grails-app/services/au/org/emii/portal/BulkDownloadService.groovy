@@ -59,12 +59,15 @@ class BulkDownloadService {
         zipStream.close()
     }
 
-    def getArchiveFilename( locale ) {
+    def getArchiveFilename(locale) {
 
         def currentDate = DateFormat.getDateInstance( DateFormat.MEDIUM, locale ).format( _currentDate() )
         def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT,  locale ).format( _currentDate() )
+        def now = (currentDate + "-" + currentTime).replaceAll("\\n", "-")
 
-        return String.format( cfg.downloadCartFilename, currentDate, currentTime )
+        def fileName = String.format( cfg.downloadCartFilename, now)
+
+        return fileName.replaceAll("\\s","_") // unix friendly
     }
 
     def _addFileEntry( fileInfo ) {
@@ -226,7 +229,8 @@ Result:              $statusMessage
     def _finaliseDownloadReport( locale ) {
 
         def currentDate = DateFormat.getDateInstance( DateFormat.LONG,  locale ).format( _currentDate() )
-        def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT, locale ).format( _currentDate() )
+        def currentTime = DateFormat.getTimeInstance( DateFormat.LONG, locale ).format( _currentDate() )
+
 
         def finalReportText = """\
 ========================================================================
