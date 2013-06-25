@@ -29,7 +29,7 @@ describe("Portal.common.helpers", function() {
     it('expandExtendedISO8601Dates Correct Simple Request', function() {
         // uncompressed dates go through unaltered
         var res = expandExtendedISO8601Dates('2001-01-10T22:36:00.000Z');
-        expect(res[0]).toBeSame(moment('2001-01-10T22:36:00.000Z'));
+        expect(res[0]).toBeSame('2001-01-10T22:36:00.000Z');
     });
 
     it('end date is included', function() {
