@@ -303,12 +303,17 @@ function expandExtendedISO8601Dates(splitDates) {
     EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
     */
 
-    var expandedDates = new Array();
     var isoDate;
 
     var _splitDates = splitDates.split(",");
 
+    // Optimize array length - we'll have at least splitDates.length items
+    // or more (usually)
+    var expandedDates = [];
+	expandedDates.length = _splitDates.length;
 
+    // Array insertion position
+    var j = 0;
     for (var i = 0; i < _splitDates.length; i++) {
 
         isoDate = _splitDates[i].split("/");
@@ -316,9 +321,8 @@ function expandExtendedISO8601Dates(splitDates) {
         var x = isoDate.length;
         // no default condition
         switch (x)  {
-
             case 1:
-                expandedDates.push(_splitDates[i]);
+                expandedDates[j++] = moment(_splitDates[i]);
                 break;
             case 2:
                 console.log("ERROR: Unhandled date format: " + _splitDates[i]);
@@ -326,13 +330,15 @@ function expandExtendedISO8601Dates(splitDates) {
             case 3:
                 var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(_splitDates[i]);
                 for (var x = 0; x < arrayOfDateTimes.length; x++) {
-                    expandedDates.push(arrayOfDateTimes[x]);
+                    expandedDates[j++] = arrayOfDateTimes[x];
                 }
                 break;
         }
 
-    }
-   return expandedDates.join(",");
+   }
+   // Readjust array
+   expandedDates.length = j;
+   return expandedDates;
 }
 
 function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
@@ -346,7 +352,6 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
     var iSO8601DateParts = extendedISO8601Date.split("/");
     var period = iSO8601DateParts[2];
-    var format = "YYYY-MM-DDTHH:mm:ssZ";
 
     // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
     if (period.indexOf( "P" ) == 0) {
@@ -357,13 +362,13 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
         if (nextDate.isValid()) {
             while (!nextDate.isAfter(endDate)) {
-                expandedDates.push(nextDate.format(format));
-                nextDate = moment(nextDate.add(duration));
+                expandedDates.push(nextDate.clone());
+                nextDate.add(duration);
             }
 
             // always end with the last date
-            if (!moment(expandedDates[expandedDates.length - 1]).isSame(endDate)) {
-                expandedDates.push(endDate.format(format));
+            if (!expandedDates[expandedDates.length - 1] .isSame (endDate)) {
+                expandedDates.push(endDate.clone());
             }
         }
     }
@@ -371,7 +376,9 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         console.log('Date not understood: ' + period);
     }
 
-    return expandedDates.sort();
+    // Don't try to sort it, it's an array of moment()s, it'll sort
+    // references in memory rather than compare dates.
+    return expandedDates;
 }
 
 

@@ -137,17 +137,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
         else {
             // ISO8601 repeating interval.
-            var expandedTimes = expandExtendedISO8601Dates(extent).split(',');
-
-            for (var i = 0; i < expandedTimes.length; i++) {
-                expandedTimes[i] = moment(expandedTimes[i]);
-            }
-            this.temporalExtent = this._arrayOfStringsToMoments(expandExtendedISO8601Dates(extent).split(','));
+            this.temporalExtent = expandExtendedISO8601Dates(extent);
         }
     },
 
     _arrayOfStringsToMoments: function(timesAsStrings) {
-
         var timesAsMoments = [];
         for (var i = 0; i < timesAsStrings.length; i++) {
             timesAsMoments[i] = moment(timesAsStrings[i]);
