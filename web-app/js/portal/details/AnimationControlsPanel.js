@@ -583,23 +583,23 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	 * animation doesn't start.
 	 */
 	_waitForOriginalLayer : function(startString, endString) {
+		var animationCtx = this;
 
 		if (this.selectedLayer.numLoadingTiles > 0) {
 
 			this._updateButtons(this.state.LOADING);
 			this.selectedLayer.events.register('loadend', this, function() {
-						this._loadAnimation(startString, endString);
+						this._processDates(startString, endString, animationCtx._loadAnimation);
 					});
 		} else {
-			this._loadAnimation(startString, endString)
+			this._processDates(startString, endString, animationCtx._loadAnimation);
 		}
 	},
 
-	_loadAnimation : function(startString, endString) {
+	_processDates : function(startString, endString, cbFunction) {
 		var startDate = this._parseIso8601Date(startString);
 		var endDate = this._parseIso8601Date(endString);
-		
-
+		var animationCtx = this;
 
 		if (startDate == endDate) {
 			alert("The start and end time must not be the same");
@@ -618,72 +618,100 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			var dimSplit = this.getSelectedLayerTimeDimension().extent
 					.split(",");
 
-			for (var i = 0; !(startIndex && endIndex) && i < dimSplit.length; i++) {
-				var date = this._parseIso8601Date(dimSplit[i]);
-				// Use >= because some strings have milliseconds on them meaning
-				// getting exact equality could be impossible
-				if (date.getTime() >= startDate.getTime() && !startIndex) {
-					startIndex = i;
-				} else if (date.getTime() >= endDate.getTime() && !endIndex) {
-					endIndex = i;
-				}
-			}
+			var parseIso8601DateFn = this._parseIso8601Date;
 
-			this.originalLayer.chosenTimes = dimSplit[startIndex] + "/"
-					+ dimSplit[endIndex];
+			/* Processing the date here can take some time, as sometimes the
+			 * dataset might be as large as 10,000 items, so we'll do some
+			 * batch processing asynchronously */
+			(function () {
+				var datesProcessed;
+				var length = dimSplit.length;
 
-			var newAnimatedLayers = new Array();
-			
-			// provide instant feedback that we're trying to load stuff
-			this._setStepLabelText("Loading... 0%");
-			
-			for (var j = startIndex; j <= endIndex; j++) {
-				var newLayer = null;
-
-				// find existing layer
-				if (this.originalLayer.slides.length > 0) {
-					for (var i = 0; i < this.originalLayer.slides.length; i++) {
-						if (dimSplit[j] === this.originalLayer.slides[i].params["TIME"]) {
-							newLayer = this.originalLayer.slides[i];
+				function processDates(cbFunction) {
+					var datesProcessed = 0;
+					(function () {
+						var i = datesProcessed;
+						do {
+							var date = parseIso8601DateFn(dimSplit[i]);
+							// Use >= because some strings have milliseconds on them meaning
+							// getting exact equality could be impossible
+							if (date.getTime() >= startDate.getTime() && !startIndex) {
+								startIndex = i;
+							} else if (date.getTime() >= endDate.getTime() && !endIndex) {
+								endIndex = i;
+							}
+							i++;
+							/* Batch process 1024 at a time */
+						} while (!(startIndex && endIndex) && i < length && (i % 1024));
+						datesProcessed = i;
+						if (!(startIndex && endIndex) && datesProcessed < dimSplit.length) {
+							setTimeout(arguments.callee, 0)
+						} else {
+							cbFunction (animationCtx, dimSplit, startIndex, endIndex);
 						}
+					})();
+				}
+
+				processDates(cbFunction);
+			})();
+		}
+	},
+
+	_loadAnimation : function(ctx, dimSplit, startIndex, endIndex) {
+		console.log("Loading animation");
+
+		ctx.originalLayer.chosenTimes = dimSplit[startIndex] + "/"
+				+ dimSplit[endIndex];
+
+		var newAnimatedLayers = new Array();
+		
+		// provide instant feedback that we're trying to load stuff
+		ctx._setStepLabelText("Loading... 0%");
+
+		for (var j = startIndex; j <= endIndex; j++) {
+			var newLayer = null;
+
+			// find existing layer
+			if (ctx.originalLayer.slides.length > 0) {
+				for (var i = 0; i < ctx.originalLayer.slides.length; i++) {
+					if (dimSplit[j] === ctx.originalLayer.slides[i].params["TIME"]) {
+						newLayer = ctx.originalLayer.slides[i];
 					}
 				}
-
-				// or create new layer, since it hasn't been animated before
-				if (newLayer == null) {
-
-					
-					newLayer = this._makeNextSlide(dimSplit[j]);
-					newLayer.parentLayer = this;
-				}
-				newAnimatedLayers.push(newLayer);
 			}
 
-			this.animatedLayers = newAnimatedLayers;
-			
-			this.originalLayer.slides.length = 0;
-			for (var i = 0; i < newAnimatedLayers.length; i++) {
-				this.originalLayer.slides.push(newAnimatedLayers[i]);
+			// or create new layer, since it hasn't been animated before
+			if (newLayer == null) {
+
+				newLayer = ctx._makeNextSlide(dimSplit[j]);
+				newLayer.parentLayer = ctx;
 			}
-			
-						
-			// always pre-load the first one
-			this.map.addLayer(this.originalLayer.slides[0], false);
-			this.map.setLayerIndex(this.originalLayer.slides[0], this.map.getLayerIndex(this.originalLayer));
-
-			// this.selectedLayer.setOpacity(1);
-			this.stepSlider.setMinValue(0);
-			this.stepSlider.setMaxValue(this.originalLayer.slides.length - 1);
-
-			if (this.pausedTime !== "") {
-				this.counter = this._getIndexFromTime(this.pausedTime);
-			} else {
-				this.counter = 0;
-			}
-
-			this._resetTimer(this.speed);
-			this._updateButtons(this.state.PLAYING);
+			newAnimatedLayers.push(newLayer);
 		}
+
+		ctx.animatedLayers = newAnimatedLayers;
+		
+		ctx.originalLayer.slides.length = 0;
+		for (var i = 0; i < newAnimatedLayers.length; i++) {
+			ctx.originalLayer.slides.push(newAnimatedLayers[i]);
+		}
+
+		// always pre-load the first one
+		ctx.map.addLayer(ctx.originalLayer.slides[0], false);
+		ctx.map.setLayerIndex(ctx.originalLayer.slides[0], ctx.map.getLayerIndex(ctx.originalLayer));
+
+		// ctx.selectedLayer.setOpacity(1);
+		ctx.stepSlider.setMinValue(0);
+		ctx.stepSlider.setMaxValue(ctx.originalLayer.slides.length - 1);
+
+		if (ctx.pausedTime !== "") {
+			ctx.counter = ctx._getIndexFromTime(ctx.pausedTime);
+		} else {
+			ctx.counter = 0;
+		}
+
+		ctx._resetTimer(ctx.speed);
+		ctx._updateButtons(ctx.state.PLAYING);
 	},
 
 
