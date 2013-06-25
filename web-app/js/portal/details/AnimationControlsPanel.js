@@ -658,8 +658,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_loadAnimation : function(ctx, dimSplit, startIndex, endIndex) {
-		console.log("Loading animation");
-
 		ctx.originalLayer.chosenTimes = dimSplit[startIndex] + "/"
 				+ dimSplit[endIndex];
 
