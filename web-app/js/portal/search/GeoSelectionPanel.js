@@ -107,7 +107,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     removeAnyFilters: function() {
+
         this.facetMap.clearGeometry();
+        this.searcher.removeFilters('boundingPolygon');
+        this.searcher.search();
     }
 
 });
