@@ -37,12 +37,11 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             onClick: function(event) {
 
                 mapPanel.handleFeatureInfoClick(event);
-                mapPanel.closeDropdowns(event);
             }
         });
 
         this.timeControl = new OpenLayers.Control.Time();
-        
+
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
