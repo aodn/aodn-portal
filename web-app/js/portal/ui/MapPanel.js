@@ -36,7 +36,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
         this.initMap();
-        this.map.events.register('movestart', this, this.closeDropdowns);
 
         this.on('hide', function () {
             // map is never hidden!!!!"
@@ -85,7 +84,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('beforeselectedLayerChanged', function(subject, openlayer) {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
-        
+
         Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
@@ -123,7 +122,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     _onBeforeSelectedLayerChanged: function(openLayer) {
         this.mapOptions.timeControl.configureForLayer(openLayer, 10);
     },
-    
+
     onSelectedLayerChanged:function (openLayer) {
 
         if (this.autoZoom === true) {
@@ -133,10 +132,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     onBaseLayerChanged: function(openLayer) {
         this.map.setBaseLayer(openLayer);
-    },
-
-    closeDropdowns:function (event) {
-        this.map.events.triggerEvent('blur', event); // listening in BaseLayerComboBox and mapOptionsPanel
     },
 
     afterRender:function () {
