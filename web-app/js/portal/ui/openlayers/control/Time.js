@@ -140,26 +140,38 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
     
     _getExtentForRange: function(layer, range) {
-        var layerExtentLength = layer.getTemporalExtent().length;
-        
         var startDateTime = moment(range[0]);
         var endDateTime = moment(range[1]);
 
-        var startIndex;
-        var endIndex;
+        var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
+        var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
 
-        for (var i = 0; i < layerExtentLength; i++) {
-
-            if ((startIndex == undefined) && layer.getTemporalExtent()[i].isSame(startDateTime)) {
-                startIndex = i
-            }
-            
-            if (layer.getTemporalExtent()[i].isSame(endDateTime)) {
-                endIndex = i
-            }
+        if (startIndex == -1) {
+            console.error("Date '" + startDateTime.format() + "' not found in temporalExtent");
+            return [];
+        }
+        if (endIndex   == -1) {
+            console.error("Date '" + endDateTime.format()   + "' not found in temporalExtent");
+            return [];
         }
 
         return layer.getTemporalExtent().slice(startIndex, endIndex + 1);
+    },
+
+    _findIndexOfDate: function(arrayOfDates, date) {
+        var min = 0;
+		var max = arrayOfDates.length - 1;
+        while (max >= min) {
+			var mid = Math.floor((max + min) / 2);
+            if (arrayOfDates[mid].isSame(date)) {
+                return mid;
+            } else if (arrayOfDates[mid].isAfter(date)) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return -1;
     },
     
     getStep: function() {
