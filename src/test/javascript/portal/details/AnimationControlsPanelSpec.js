@@ -34,15 +34,21 @@ describe("Portal.details.AnimationControlsPanel", function() {
             { isBaseLayer: false }
         );
         
-        temporalExtent = '2012-04-01T12:00:00,2012-04-01T13:00:00,2012-04-01T14:00:00';
+        temporalExtent = [
+            moment('2012-04-01T12:00:00'),
+            moment('2012-04-01T13:00:00'),
+            moment('2012-04-01T14:00:00')
+        ];
 
-        ncWmsLayer = new OpenLayers.Layer.NcWMS(
+        ncWmsLayer = new OpenLayers.Layer.CachedNcWMS(
             'some NcWMS layer',
             'http://some.url',
             {},
             {},
             temporalExtent
         );
+        // Mock temporalExtent in map class
+        ncWmsLayer.temporalExtent = temporalExtent;
         ncWmsLayer.dimensions = [{
             'name': 'time',
             'extent': temporalExtent
@@ -372,7 +378,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('listener unregistered when layer changes', function() {
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
 
-            Ext.MsgBus.publish('beforeselectedLayerChanged', new OpenLayers.Layer.NcWMS());
+            var newLayer = new OpenLayers.Layer.CachedNcWMS()
+            // Mock temporalExtent
+            newLayer.temporalExtent = [ moment() ];
+
+            Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.8
@@ -417,7 +427,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('onSelectedLayerPrecacheEnd unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
 
-                var newLayer = new OpenLayers.Layer.NcWMS()
+                var newLayer = new OpenLayers.Layer.CachedNcWMS()
+                // Mock temporalExtent
+                newLayer.temporalExtent = [ moment() ];
                 timeControl.configureForLayer(newLayer, 10);
                 Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
                 ncWmsLayer.events.triggerEvent('precacheend');
@@ -435,7 +447,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('onSelectedLayerPrecacheStart unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
 
-                Ext.MsgBus.publish('beforeselectedLayerChanged', new OpenLayers.Layer.NcWMS());
+                var newLayer = new OpenLayers.Layer.CachedNcWMS()
+                // Mock temporalExtent
+                newLayer.temporalExtent = [ moment() ];
+                Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
             });
@@ -482,7 +497,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             it('start on precache end if paused while caching', function() {
                 animationControlsPanel.pausedWhilePrecaching = true;
-                
+
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
                 expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();

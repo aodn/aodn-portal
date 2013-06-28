@@ -147,11 +147,9 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
 
         if (startIndex == -1) {
-            console.error("Date '" + startDateTime.format() + "' not found in temporalExtent");
             return [];
         }
         if (endIndex   == -1) {
-            console.error("Date '" + endDateTime.format()   + "' not found in temporalExtent");
             return [];
         }
 

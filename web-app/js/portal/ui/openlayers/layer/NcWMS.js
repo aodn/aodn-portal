@@ -23,7 +23,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         name += ' (animated)';
         
         if (extent) {
-            this.setTemporalExtent(extent);
+        //    this.setTemporalExtent(extent);
         }
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
