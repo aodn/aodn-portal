@@ -24,12 +24,20 @@ describe("OpenLayers.Control.Time", function() {
         timeControl = new OpenLayers.Control.Time({
             map: map
         });
+        OpenLayers.Layer.CachedNcWMS.prototype._getTimeControl = function() { return timeControl; }
 
         spyOn(timeControl.timer, 'start');
         spyOn(timeControl.timer, 'stop');
 
-        ncwmsLayer = new OpenLayers.Layer.NcWMS();
-        ncwmsLayer.setTemporalExtent(extent);
+        ncwmsLayer = new OpenLayers.Layer.CachedNcWMS();
+
+        // Process a temporal extent async
+        ncwmsLayer.rawTemporalExtent = extent;
+        ncwmsLayer.temporalExtent = null;
+        ncwmsLayer._processTemporalExtent();
+        waitsFor(function() {
+            return ncwmsLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
     });
 
     describe('map', function() {

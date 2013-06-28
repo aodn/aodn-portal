@@ -43,7 +43,7 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.rawTemporalExtent = extent;
         if (!extent) { this.temporalExtent = []; this.temporalExtentLength = 0; }
 
-        OpenLayers.Layer.NcWMS.prototype.initialize.apply(this, arguments);
+        OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
 
     moveTo: function(bounds, zoomChanged, dragging) {
