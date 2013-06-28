@@ -7,26 +7,81 @@
 describe("OpenLayers.Layer.CachedNcWMS", function() {
     var cachedLayer;
     var extent;
+    var timeControl;
 
     beforeEach(function() {
+        // Mock time control
+        timeControl = new OpenLayers.Control.Time();
+        timeControl.onTick = function() {};
+        timeControl.getExtent = function() {
+            return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        };
+        timeControl.getDateTimeForStep = function() {
+            return moment('2014-04-03T02:11:32');
+        }
+
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
         };
         OpenLayers.Layer.WMS.prototype.moveTo = function() {};
 
+        OpenLayers.Layer.CachedNcWMS.prototype._getTimesToCache = function() {
+            return [
+                moment('2000-01-01'), moment('2000-01-02')
+            ];
+        };
+
         cachedLayer = new OpenLayers.Layer.CachedNcWMS();
-        
+        cachedLayer._getTimeControl = function() { return timeControl; }
+        cachedLayer.grid = [];
+        cachedLayer.grid[0] = [];
+
         spyOn(cachedLayer, '_getTimesToCache').andReturn([
             moment('2000-01-01T00:00:00'),
             moment('2000-01-01T01:00:00')
         ]);
     });
-    
-    it('precache called on moveTo', function() {
-        spyOn(cachedLayer, '_precache');
-        cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
-        expect(cachedLayer._precache).toHaveBeenCalled();
+
+    it('Null temporal extent processed on moveTo', function() {
+        runs(function() {
+            cachedLayer.rawTemporalExtent = null;
+            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+        });
+        waitsFor(function() {
+            return cachedLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
+        runs(function() {
+            expect(cachedLayer.temporalExtent).toEqual([]);
+        });
     });
+
+    it('Temporal extent (string) processed on moveTo', function() {
+        temporalExtentResult = [
+            moment("2010-07-16T06:00:00Z"),
+            moment("2010-07-16T07:00:00Z"),
+            moment("2010-07-16T08:00:00Z"),
+            moment("2010-07-16T09:00:00Z"),
+            moment("2010-07-16T10:00:00Z")
+        ];
+        runs(function() {
+            cachedLayer.rawTemporalExtent = 
+                '2010-07-16T06:00:00Z,2010-07-16T07:00:00Z,2010-07-16T08:00:00Z,2010-07-16T09:00:00Z,2010-07-16T10:00:00Z';
+            cachedLayer.temporalExtent = null;
+            cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
+        });
+        waitsFor(function() {
+            return cachedLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
+        runs(function() {
+            expect(cachedLayer.temporalExtent).toEqual(temporalExtentResult);
+        });
+    });
+
+    /* Most tests below run _precache(true) which will run
+     * things synchronously in CachedNcWMS, this is to avoid
+     * designing nasty tests. Otherwise we check the behaviour
+     * of things by making sure that basic things in the async
+     * mechanism work. */
 
     describe('precache tiles', function() {
         var tilePrecacheSpy;
@@ -35,41 +90,28 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         beforeEach(function() {
             tilePrecacheSpy = jasmine.createSpy('precache');
             tileClearCacheSpy = jasmine.createSpy('clearCache');
-            
-            cachedLayer.grid = [];
-            cachedLayer.grid.push([
-                {
-                    precache: tilePrecacheSpy,
-                    clearCache: tileClearCacheSpy,
-                    getNumImagesComplete: function() {}
-                },
-                {
-                    precache: tilePrecacheSpy,
-                    clearCache: tileClearCacheSpy,
-                    getNumImagesComplete: function() {}
+
+            var dummyTile = {
+                precache: tilePrecacheSpy,
+                clearCache: tileClearCacheSpy,
+                getNumImagesComplete: function() {
+                    return 1;
                 }
-            ]);
-            cachedLayer.grid.push([
-                {
-                    precache: tilePrecacheSpy,
-                    clearCache: tileClearCacheSpy,
-                    getNumImagesComplete: function() {}
-                },
-                {
-                    precache: tilePrecacheSpy,
-                    clearCache: tileClearCacheSpy,
-                    getNumImagesComplete: function() {}
-                }
-            ]);
+            }
+            var grid = [
+                [ dummyTile, dummyTile ],
+                [ dummyTile, dummyTile ]
+            ];
+            cachedLayer.grid = grid;
         });
 
         it('clearCache called on each tile', function() {
-            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            cachedLayer._precache(true);
             expect(tileClearCacheSpy.callCount).toBe(4);
         });
-           
+
         it('precache called on each tile for each time', function() {
-            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            cachedLayer._precache(true);
             expect(tilePrecacheSpy.callCount).toBe(8);
 
             for (var i = 0; i < 4; i++) {
@@ -80,7 +122,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             }
         });
     });
-    
+
     describe('currently precaching images', function() {
         describe('after precache', function() {
             beforeEach(function() {
@@ -96,6 +138,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                     [ dummyTile, dummyTile ]
                 ];
                 cachedLayer.grid = grid;
+
                 cachedLayer._getTimesToCache = function() {
                     return [
                         moment('2000-01-01'), moment('2000-01-02')
@@ -104,18 +147,18 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             });
 
             it('total precaching', function() {
-                cachedLayer._precache();
+                cachedLayer._precache(true);
                 expect(cachedLayer._getTotalImagesComplete()).toBe(4);
             });
 
             it('total images', function() {
-                cachedLayer._precache();
+                cachedLayer._precache(true);
                 expect(cachedLayer._getTotalImages()).toBe(8);
             });
 
             it('calculate progress', function() {
-                cachedLayer._precache();
-                expect(cachedLayer._calculateProgress()).toBe(0.5);
+                cachedLayer._precache(true);
+                expect(cachedLayer._calculateProgress()).toBe(0.25);
             });
         });
     });
@@ -126,7 +169,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         var img01;
         var img10;
         var img11;
-        
+
         beforeEach(function() {
             // 1 x 2 grid of tiles, 2 date/times.
             // First time.
@@ -148,7 +191,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             img10.onload = function() {
                 cachedLayer._imageLoaded(img10);
             };
-            
+
             img11 = document.createElement('img');  
             img11.src = 'someurl';
             img11.onload = function() {
@@ -162,18 +205,18 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img00 : img10;
                     },
                     clearCache: function() {},
-                    getNumImagesComplete: function() {}
+                    getNumImagesComplete: function() { return 0; }
                 },
                 {
                     precache: function(dateTime) {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img01 : img11;
                     },
                     clearCache: function() {},
-                    getNumImagesComplete: function() {}
+                    getNumImagesComplete: function() { return 0; }
                 }
             ]);
         });
-            
+
         it('precachestart', function() {
             var precachestartSpy = jasmine.createSpy('precachestartSpy');
             cachedLayer.events.on({
@@ -181,7 +224,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 scope: this
             });
 
-            cachedLayer._precache();
+            cachedLayer._precache(true);
             expect(precachestartSpy).toHaveBeenCalledWith(cachedLayer);
         });
 
@@ -192,7 +235,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 scope: this
             });
 
-            cachedLayer._precache();
+            cachedLayer._precache(true);
             expect(precacheprogressSpy).toHaveBeenCalled();
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
@@ -205,7 +248,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 scope: this
             });
 
-            cachedLayer._precache();
+            cachedLayer._precache(true);
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
 
@@ -243,7 +286,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 scope: this
             });
 
-            cachedLayer._precache();
+            cachedLayer._precache(true);
             expect(precacheprogressSpy.callCount).toBe(1);
 
             cachedLayer.state = cachedLayer.STATES.CACHED;
@@ -253,7 +296,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
 
         describe('precacheend', function() {
             var precacheendSpy;
-            
+
             beforeEach(function() {
                 precacheendSpy = jasmine.createSpy('precacheendSpy');
                 cachedLayer.events.on({
@@ -264,18 +307,20 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
 
             it('precacheend', function() {
                 expect(precacheendSpy).not.toHaveBeenCalled();
-                cachedLayer._calculateProgress = function() { return 1; }
-                cachedLayer._precache();
-                
+                cachedLayer._getTotalImages = function() { return 1; }
+                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._precache(true);
+
                 $(img11).trigger('onload');
                 expect(precacheendSpy).toHaveBeenCalledWith(cachedLayer);
             });
 
             it('precacheend sent only once', function() {
                 expect(precacheendSpy).not.toHaveBeenCalled();
-                cachedLayer._calculateProgress = function() { return 1; }
-                cachedLayer._precache();
-                
+                cachedLayer._getTotalImages = function() { return 1; }
+                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._precache(true);
+
                 $(img01).trigger('onload');
                 $(img11).trigger('onload');
                 expect(precacheendSpy.callCount).toBe(1);
@@ -286,24 +331,25 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             it('initially UNCACHED', function() {
                 expect(cachedLayer.state).toBe(cachedLayer.STATES.UNCACHED);
             });
-            
+
             it('CACHING after precache called', function() {
-                cachedLayer._precache();
+                cachedLayer._precache(true);
                 expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHING);
             });
-            
-            it('CACHED after which progress reached 1', function() {
-                cachedLayer._precache();
-                cachedLayer._calculateProgress = function() { return 1; }
-                
+
+            it('CACHED when all tiles cached', function() {
+                cachedLayer._getTotalImages = function() { return 1; }
+                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._precache(true);
+
                 $(img01).trigger('onload');
                 expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHED);
             });
 
             it('back to CACHING when precache called again', function() {
                 cachedLayer.state = cachedLayer.STATES.CACHED;
-                
-                cachedLayer._precache();
+
+                cachedLayer._precache(true);
                 expect(cachedLayer.state).toBe(cachedLayer.STATES.CACHING);
             });
         });

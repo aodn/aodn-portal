@@ -56,28 +56,6 @@ describe("Portal.common.LayerDescriptor", function() {
             var openLayerWithOptionOverrides = layerDesc.toOpenLayer({ opacity: 2});
             expect(openLayerWithOptionOverrides.opacity).toBe(2);
         });
-
-        describe('NcWMS', function() {
-            it('NcWMS layer', function() {
-                layerDesc.dimensions = [{
-                    name: 'time'
-                }];
-
-                var openLayer = layerDesc.toOpenLayer();
-                expect(openLayer).toBeInstanceOf(OpenLayers.Layer.CachedNcWMS);
-            });
-
-            it('temporal extent', function() {
-                var extent = '2010-07-16T06:00:00Z,2010-07-16T07:00:00Z,2010-07-16T08:00:00Z,2010-07-16T09:00:00Z,2010-07-16T10:00:00Z'.split(',');
-                layerDesc.dimensions = [{
-                    name: 'time',
-                    extent: extent
-                }];
-
-                var openLayer = layerDesc.toOpenLayer();
-                expect(openLayer.temporalExtent).toBeSame(extent);
-            });
-        });
     });
 
     it('tests underlying access to parent', function() {

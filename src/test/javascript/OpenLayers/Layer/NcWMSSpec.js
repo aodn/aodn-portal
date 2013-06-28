@@ -7,14 +7,26 @@
 describe("OpenLayers.Layer.NcWMS", function() {
 
     var ncwmsLayer;
+    var timeControl;
 
     beforeEach(function() {
-        OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
+        // Mock time control
+        timeControl = new OpenLayers.Control.Time();
+        timeControl.onTick = function() {};
+        timeControl.getExtent = function() {
+            return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        };
+        timeControl.getDateTimeForStep = function() {
+            return moment('2014-04-03T02:11:32');
+        }
+
+        OpenLayers.Layer.CachedNcWMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
         };
-        OpenLayers.Layer.WMS.prototype.moveTo = function() {};
+        OpenLayers.Layer.CachedNcWMS.prototype.moveTo = function() {};
+        OpenLayers.Layer.CachedNcWMS.prototype._getTimeControl = function() { return timeControl; }
 
-        ncwmsLayer = new OpenLayers.Layer.NcWMS();
+        ncwmsLayer = new OpenLayers.Layer.CachedNcWMS();
     });
 
     describe('constructor', function() {
@@ -24,18 +36,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 '2001-02-03T00:00',
                 '2001-02-05T00:00'];
 
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(
                 null,
                 null,
                 null,
                 null,
                 extent);
+            ncwmsLayer._processTemporalExtent();
+
+            waitsFor(function() {
+                return ncwmsLayer.temporalExtent;
+            }, "Temporal extent not processed", 1000);
 
             expect(ncwmsLayer.temporalExtent).toBeSame(extent);
         });
 
         it('\'(animated)\' appended to name', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS('thename');
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS('thename');
             expect(ncwmsLayer.name).toBe('thename (animated)');
         });
     });
@@ -66,26 +83,22 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    it("extent as array of moments", function() {
-        ncwmsLayer.setTemporalExtent([
-            moment('2001-01-01T00:00:00'),
-            moment('2001-01-02T00:00:00'),
-            moment('2001-01-03T00:00:00')]);
-
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-01T00:00:00'));
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-02T00:00:00'));
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-03T00:00:00'));
-    });
-
     it("extent as array of strings", function() {
-        ncwmsLayer.setTemporalExtent([
+        ncwmsLayer.temporalExtent = null;
+        ncwmsLayer.rawTemporalExtent = [
             '2001-01-01T00:00:00',
             '2001-01-02T00:00:00',
-            '2001-01-03T00:00:00']);
+            '2001-01-03T00:00:00'
+        ];
+        ncwmsLayer._processTemporalExtent();
 
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-01T00:00:00'));
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-02T00:00:00'));
-        expect(ncwmsLayer.getTemporalExtent()).toContain(moment('2001-01-03T00:00:00'));
+        waitsFor(function() {
+            return ncwmsLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
+
+        expect(ncwmsLayer.temporalExtent).toContain(moment('2001-01-01T00:00:00'));
+        expect(ncwmsLayer.temporalExtent).toContain(moment('2001-01-02T00:00:00'));
+        expect(ncwmsLayer.temporalExtent).toContain(moment('2001-01-03T00:00:00'));
     });
 
     it("extent as repeating interval", function() {
@@ -95,8 +108,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
         //  TODO: hangs browser :-)
         //ncwmsLayer.setTemporalExtent('2000-01-01T00:00:00.000Z/2000-01-03T00:00:00.000Z/PT1D');
 
-        // TODO: this is returning 4 times - 3rd Jan is repeated.
-        ncwmsLayer.setTemporalExtent('2001-01-01T00:00:00Z/2001-01-03T00:00:00Z/PT24H');
+        ncwmsLayer.temporalExtent = null;
+        ncwmsLayer.rawTemporalExtent = ['2001-01-01T00:00:00Z/2001-01-03T00:00:00Z/PT24H'];
+        ncwmsLayer._processTemporalExtent();
+        waitsFor(function() {
+            return ncwmsLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
 
         var expectedDateStrings = [
             '2001-01-01T11:00:00+11:00',
@@ -105,7 +122,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         ];
 
         for (var i = 0; i < expectedDateStrings.length; i++) {
-            expect(ncwmsLayer.getTemporalExtent()[i]).toBeSame(moment(expectedDateStrings[i]));
+            expect(ncwmsLayer.temporalExtent[i]).toBeSame(moment(expectedDateStrings[i]));
         }
     });
 
@@ -131,7 +148,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         describe('repeating interval', function() {
             beforeEach(function() {
-                ncwmsLayer.setTemporalExtent('2000-01-01T00:00:00.000Z/2000-01-01T01:00:00.000Z/PT30M');
+                ncwmsLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000Z/2000-01-01T01:00:00.000Z/PT30M'];
+                ncwmsLayer.temporalExtent = null;
+                ncwmsLayer._processTemporalExtent();
+                waitsFor(function() {
+                    return ncwmsLayer.temporalExtent;
+                }, "Temporal extent not processed", 1000);
             });
 
             it('around first date/time', function() {
@@ -156,11 +178,16 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         describe('time set specified', function() {
             beforeEach(function() {
-                ncwmsLayer.setTemporalExtent([
+                ncwmsLayer.rawTemporalExtent = [
                     '2000-01-01T00:00:00.000Z',
                     '2000-01-02T00:00:00.000Z',
                     '2000-01-03T00:00:00.000Z'
                 ]);
+                ncwmsLayer.temporalExtent = null;
+                ncwmsLayer._processTemporalExtent();
+                waitsFor(function() {
+                    return ncwmsLayer.temporalExtent;
+                }, "Temporal extent not processed", 1000);
             });
 
             it('around first date/time', function() {
@@ -248,13 +275,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('extent, but no dates falling on day', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(
                 null, null, null, null, extent);
             expect(ncwmsLayer.getDatesOnDay('2000-01-01')).toBeSame([]);
         });
 
         it('dates on day', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(
                 null, null, null, null, extent);
             expect(ncwmsLayer.getDatesOnDay('2001-02-01')).toBeSame([
                 '2001-02-01T01:20',
@@ -262,7 +289,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('timezone handling', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(
                 null, null, null, null, extent);
             expect(ncwmsLayer.getDatesOnDay(moment('2001-02-04T10:00+00:00').utc()).length).toBe(0);
             expect(ncwmsLayer.getDatesOnDay(moment('2001-02-04T13:00+00:00').utc())).toBeSame([
@@ -283,7 +310,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 '2001-02-03T00:00',
                 maxExtent];
 
-            ncwmsLayer = new OpenLayers.Layer.NcWMS();
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS();
             ncwmsLayer.temporalExtent = extent;
         });
 
@@ -329,42 +356,42 @@ describe("OpenLayers.Layer.NcWMS", function() {
             '2001-01-14T00:00'];
 
         it('gets missing days from temporal extent', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, extent);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
         });
 
         it('gets missing days over a month boundary first of month', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-31', '2012-02-02']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-01-31', '2012-02-02']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-02-01']);
         });
 
         it('gets missing days over a month boundary end of month', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-30', '2012-02-01']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-01-30', '2012-02-01']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-01-31']);
         });
 
         it('gets missing days over a leap year month boundary start of month', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-29', '2012-03-02']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-02-29', '2012-03-02']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-03-01']);
         });
 
         it('gets missing days over a leap year month boundary end of month', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-28', '2012-03-01']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-02-28', '2012-03-01']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-02-29']);
         });
 
         it('gets missing days over a year boundary start of year', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-31', '2013-01-02']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-12-31', '2013-01-02']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2013-01-01']);
         });
 
         it('gets missing days over a year boundary end of year', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2012-12-31']);
         });
 
         it('gets the same missing days memoized', function() {
-            ncwmsLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
+            ncwmsLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, extent);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
             expect(ncwmsLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
         });
