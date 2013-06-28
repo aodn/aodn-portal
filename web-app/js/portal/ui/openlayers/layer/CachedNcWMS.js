@@ -51,8 +51,13 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this._precache();
     },
 
-    // This function is run asynchronously unless specified otherwise
-    // Normal behaviour is to run this asynchronously
+    /**
+     * private functions dealing with caching
+     */
+
+    /* This function is run asynchronously unless specified otherwise
+     * Normal behaviour is to run this asynchronously
+     */
     _precache: function(sync) {
         // Always run async, unless specified by a test
         sync = typeof sync !== 'undefined' ? sync : false;
@@ -155,16 +160,6 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    _imageLoaded: function(img) {
-        if (this.state !== this.STATES.CACHED) {
-            this._progressFeedback();
-        }
-
-        if (this._getTotalImages() == this._getTotalImagesComplete()) {
-            this._precacheDone();
-        }
-    },
-
     _precacheDone: function() {
         if (this.state !== this.STATES.CACHED) {
             this.events.triggerEvent('precacheend', this);
@@ -227,67 +222,19 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return (dateProcessProgress + imageCacheProgress) / 2;
     },
 
-    getURLAtTime: function(bounds, dateTime) {
-        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
-            + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+    _imageLoaded: function(img) {
+        if (this.state !== this.STATES.CACHED) {
+            this._progressFeedback();
+        }
+
+        if (this._getTotalImages() == this._getTotalImagesComplete()) {
+            this._precacheDone();
+        }
     },
 
     /**
-     * Method: getURL
-     * Return a GetMap query string for this layer
-     *
-     * Parameters:
-     * bounds - {<OpenLayers.Bounds>} A bounds representing the bbox for the
-     *                                request.
-     *
-     * Returns:
-     * {String} A string with the layer's url and parameters and also the
-     *          passed-in bounds and appropriate tile size specified as 
-     *          parameters.
+     * Temporal extent functions
      */
-    getURL: function(bounds) {
-        // 2011-03-18T13:00:00Z
-        // 2012-10-28T08:00:00Z
-
-        if (this.time) {
-            return this.getURLAtTime(bounds, this.time);
-        }
-
-        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
-    },
-
-    toNearestTime: function(dateTime) {
-
-        // No extent restriction.
-        if (!this.temporalExtent || this.temporalExtent.length == 0) {
-            this.time = moment(dateTime);
-        }
-        else {
-            // Find nearest in temporalExtent.
-            var goalDateTime = moment(dateTime);
-
-            var closestDateTime;
-
-            for (var i = 0; i < this.temporalExtent.length; i++) {
-                if (   closestDateTime == null
-                       || (  Math.abs(this.temporalExtent[i].diff(goalDateTime))
-                             < Math.abs(goalDateTime.diff(closestDateTime)))) {
-
-                    closestDateTime = this.temporalExtent[i];
-                }
-                // Handle the case where two dates are equally close - take the earlier.
-                else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
-                         == Math.abs(goalDateTime.diff(closestDateTime))) {
-                    closestDateTime =
-                        this.temporalExtent[i].isBefore(closestDateTime) ? this.temporalExtent[i] : closestDateTime;
-                }
-            }
-
-            this.time = closestDateTime;
-        }
-
-        return this.time;
-    },
 
     getTemporalExtent: function() {
         return this.temporalExtent;
@@ -370,6 +317,82 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.missingDays;
     },
 
+    _momentIsEqualByYearMonthDate: function(left, right) {
+        return left.year() == right.year()
+            && left.month() == right.month()
+            && left.date() == right.date();
+    },
+
+    /**
+     * URL handling functions
+     */
+
+    /**
+     * Method: getURL
+     * Return a GetMap query string for this layer
+     *
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>} A bounds representing the bbox for the
+     *                                request.
+     *
+     * Returns:
+     * {String} A string with the layer's url and parameters and also the
+     *          passed-in bounds and appropriate tile size specified as 
+     *          parameters.
+     */
+    getURL: function(bounds) {
+        // 2011-03-18T13:00:00Z
+        // 2012-10-28T08:00:00Z
+
+        if (this.time) {
+            return this.getURLAtTime(bounds, this.time);
+        }
+
+        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
+    },
+
+    getURLAtTime: function(bounds, dateTime) {
+        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
+            + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+    },
+
+    toNearestTime: function(dateTime) {
+
+        // No extent restriction.
+        if (!this.temporalExtent || this.temporalExtent.length == 0) {
+            this.time = moment(dateTime);
+        }
+        else {
+            // Find nearest in temporalExtent.
+            var goalDateTime = moment(dateTime);
+
+            var closestDateTime;
+
+            for (var i = 0; i < this.temporalExtent.length; i++) {
+                if (   closestDateTime == null
+                       || (  Math.abs(this.temporalExtent[i].diff(goalDateTime))
+                             < Math.abs(goalDateTime.diff(closestDateTime)))) {
+
+                    closestDateTime = this.temporalExtent[i];
+                }
+                // Handle the case where two dates are equally close - take the earlier.
+                else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
+                         == Math.abs(goalDateTime.diff(closestDateTime))) {
+                    closestDateTime =
+                        this.temporalExtent[i].isBefore(closestDateTime) ? this.temporalExtent[i] : closestDateTime;
+                }
+            }
+
+            this.time = closestDateTime;
+        }
+
+        return this.time;
+    },
+
+    /**
+     * Tile related functions
+     */
+
     addTile: function(bounds, position) {
         return new OpenLayers.Tile.TemporalImage(this, position, bounds, null, this.tileSize);
     },
@@ -427,12 +450,6 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         url = url.replace('FORMAT=image%2Fpng&', '')
 
         return 'proxy/downloadGif?url=' + url;
-    },
-
-    _momentIsEqualByYearMonthDate: function(left, right) {
-        return left.year() == right.year()
-            && left.month() == right.month()
-            && left.date() == right.date();
     },
 
     _appendParam: function(base, name, value) {
