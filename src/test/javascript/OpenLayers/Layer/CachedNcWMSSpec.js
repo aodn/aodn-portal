@@ -518,6 +518,28 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
     });
 
+    it('_precache called after moveTo', function() {
+        var precacheSpy = jasmine.createSpy('precache');
+        cachedLayer._precache = precacheSpy;
+        cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+        expect(precacheSpy).toHaveBeenCalled();
+    });
+
+    it('_processTemporalExtent called after _precache async', function() {
+        //var processTemporalExtentSpy = jasmine.createSpy('processTemporalExtent');
+        //cachedLayer._processTemporalExtent = processTemporalExtentSpy;
+        cachedLayer.temporalExtent = null;
+        cachedLayer.rawTemporalExtent = [];
+        cachedLayer._precache();
+        waitsFor(function() {
+            return cachedLayer.temporalExtent !== null;
+        }, "Temporal extent not processed", 1000);
+        runs(function() {
+            expect(cachedLayer.rawTemporalExtent).toEqual(null);
+            expect(cachedLayer.temporalExtent).toEqual([]);
+        });
+    });
+
     it('Null temporal extent processed on moveTo', function() {
         runs(function() {
             cachedLayer.rawTemporalExtent = null;
