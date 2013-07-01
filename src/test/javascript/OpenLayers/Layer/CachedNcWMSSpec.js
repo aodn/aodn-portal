@@ -526,11 +526,11 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
     });
 
     it('_processTemporalExtent called after _precache async', function() {
-        //var processTemporalExtentSpy = jasmine.createSpy('processTemporalExtent');
-        //cachedLayer._processTemporalExtent = processTemporalExtentSpy;
-        cachedLayer.temporalExtent = null;
-        cachedLayer.rawTemporalExtent = [];
-        cachedLayer._precache();
+        runs(function() {
+            cachedLayer.temporalExtent = null;
+            cachedLayer.rawTemporalExtent = [];
+            cachedLayer._precache();
+        });
         waitsFor(function() {
             return cachedLayer.temporalExtent !== null;
         }, "Temporal extent not processed", 1000);
