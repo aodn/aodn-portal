@@ -144,7 +144,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _precacheTiles: function() {
         this.events.triggerEvent('precacheprogress', {
             layer: this,
-            progress: 0
+            progress: 0.5
         });
 
         this.precachedTimes = this._getTimesToCache();
