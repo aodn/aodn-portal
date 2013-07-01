@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("OpenLayers.Layer.CachedNcWMS", function() {
+describe("OpenLayers.Layer.NcWMS", function() {
     var cachedLayer;
     var extent;
     var timeControl;
@@ -25,14 +25,14 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         };
         OpenLayers.Layer.WMS.prototype.moveTo = function() {};
 
-        OpenLayers.Layer.CachedNcWMS.prototype._getTimeControl = function() { return timeControl; }
-        OpenLayers.Layer.CachedNcWMS.prototype._getTimesToCache = function() {
+        OpenLayers.Layer.NcWMS.prototype._getTimeControl = function() { return timeControl; }
+        OpenLayers.Layer.NcWMS.prototype._getTimesToCache = function() {
             return [
                 moment('2000-01-01'), moment('2000-01-02')
             ];
         };
 
-        cachedLayer = new OpenLayers.Layer.CachedNcWMS();
+        cachedLayer = new OpenLayers.Layer.NcWMS();
         cachedLayer.grid = [];
         cachedLayer.grid[0] = [];
 
@@ -49,7 +49,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 '2001-02-03T00:00',
                 '2001-02-05T00:00'];
 
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(
+            cachedLayer = new OpenLayers.Layer.NcWMS(
                 null,
                 null,
                 null,
@@ -65,7 +65,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('\'(animated)\' appended to name', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS('thename');
+            cachedLayer = new OpenLayers.Layer.NcWMS('thename');
             expect(cachedLayer.name).toBe('thename (animated)');
         });
     });
@@ -299,7 +299,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
                 '2001-02-03T00:00',
                 maxExtent];
 
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS();
+            cachedLayer = new OpenLayers.Layer.NcWMS();
             cachedLayer.temporalExtent = extent;
         });
 
@@ -345,7 +345,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
             '2001-01-14T00:00'];
 
         it('gets missing days from temporal extent', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, extent);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -356,7 +356,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a month boundary first of month', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-01-31', '2012-02-02']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-31', '2012-02-02']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -367,7 +367,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a month boundary end of month', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-01-30', '2012-02-01']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-01-30', '2012-02-01']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -378,7 +378,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a leap year month boundary start of month', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-02-29', '2012-03-02']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-29', '2012-03-02']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -389,7 +389,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a leap year month boundary end of month', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-02-28', '2012-03-01']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-02-28', '2012-03-01']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -400,7 +400,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a year boundary start of year', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-12-31', '2013-01-02']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-31', '2013-01-02']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -411,7 +411,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets missing days over a year boundary end of year', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, ['2012-12-30', '2013-01-01']);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -422,7 +422,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
         });
 
         it('gets the same missing days memoized', function() {
-            cachedLayer = new OpenLayers.Layer.CachedNcWMS(null, null, null, null, extent);
+            cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
             cachedLayer._processTemporalExtent();
 
             waitsFor(function() {
@@ -576,7 +576,7 @@ describe("OpenLayers.Layer.CachedNcWMS", function() {
     });
 
     /* Most tests below run _precache(true) which will run
-     * things synchronously in CachedNcWMS, this is to avoid
+     * things synchronously in NcWMS, this is to avoid
      * designing nasty tests. Otherwise we check the behaviour
      * of things by making sure that basic things in the async
      * mechanism work. */
