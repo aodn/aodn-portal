@@ -68,10 +68,11 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         // Run synchronously ONLY for test/mock purposes as running
         // tests with jasmine and async calls proved to be rather difficult
+        var self = this;
         if (!sync) {
-            setTimeout(function(that) {
-                that._processTemporalExtent();
-            }, 0, this);
+            setTimeout(function() {
+                self._processTemporalExtent();
+            }, 0);
         } else {
             this._processTemporalExtent();
         }
