@@ -24,12 +24,12 @@ describe("OpenLayers.Control.Time", function() {
         timeControl = new OpenLayers.Control.Time({
             map: map
         });
-        OpenLayers.Layer.CachedNcWMS.prototype._getTimeControl = function() { return timeControl; }
+        OpenLayers.Layer.NcWMS.prototype._getTimeControl = function() { return timeControl; }
 
         spyOn(timeControl.timer, 'start');
         spyOn(timeControl.timer, 'stop');
 
-        ncwmsLayer = new OpenLayers.Layer.CachedNcWMS();
+        ncwmsLayer = new OpenLayers.Layer.NcWMS();
 
         // Process a temporal extent async
         ncwmsLayer.rawTemporalExtent = extent;

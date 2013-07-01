@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
+OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     DEFAULT_GIF_HEIGHT: 512,
 

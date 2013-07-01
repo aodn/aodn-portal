@@ -27,7 +27,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         var openLayer;
 
         if (this._getTimeDimension()) {
-            openLayer = new OpenLayers.Layer.CachedNcWMS(
+            openLayer = new OpenLayers.Layer.NcWMS(
                 this.title,
                 this._getServerUri(),
                 new Portal.ui.openlayers.LayerParams(this, paramOverrides),
