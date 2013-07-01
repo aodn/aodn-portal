@@ -41,7 +41,7 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // If it's a string, we'll process it later, asynchronously
         // If it's an array (assuming of moments), we'll just use it
         this.rawTemporalExtent = extent;
-        if (!extent) { this.temporalExtent = []; this.temporalExtentLength = 0; }
+        if (!extent) { this.temporalExtent = []; this.temporalExtentLengthToProcess = 0; }
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
@@ -93,9 +93,8 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent = [];
         var chunkSize = 1024;
-        var numDates = arrayOfStringDates.length;
-        // Used for showing progress
-        this.temporalExtentLength = numDates;
+        // Used for showing/tracking progress, also in _calculateProgress()
+        this.temporalExtentLengthToProcess = arrayOfStringDates.length;
         this._progressFeedback();
 
         var that = this;
@@ -105,8 +104,8 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 var chunkStart = 0;
                 (function () {
                     var chunkEnd = chunkStart + chunkSize;
-                    if (chunkEnd >= numDates) {
-                        chunkEnd = numDates;
+                    if (chunkEnd >= that.temporalExtentLengthToProcess) {
+                        chunkEnd = that.temporalExtentLengthToProcess;
                     }
 
                     // Concat array in place
@@ -118,7 +117,7 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     chunkStart = chunkEnd;
                     that._progressFeedback();
 
-                    if (numDates > chunkStart) {
+                    if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
                         // Need to reconfigure layer as we processed times
@@ -209,8 +208,8 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var dateProcessProgress = 0;
         var imageCacheProgress = 0;
 
-        if (this.temporalExtentLength != 0) {
-            dateProcessProgress = this.temporalExtent.length / this.temporalExtentLength;
+        if (this.temporalExtentLengthToProcess != 0) {
+            dateProcessProgress = this.temporalExtent.length / this.temporalExtentLengthToProcess;
         } else {
             dateProcessProgress = 0;
         }
