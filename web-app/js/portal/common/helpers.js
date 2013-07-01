@@ -296,12 +296,16 @@ Date.prototype.setISO8601 = function (string) {
 }
 
 
-function expandExtendedISO8601Dates(splitDates) {
+function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
     /*
     Expand setISO8601 repeating intervals from array
     EG: [ "2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M", "2002-01-10T22:36:00.000Z/2003-01-12T21:48:00.000Z/PT23H36M" ]
     */
+
+    // Allow passing start and end index, for handling really large arrays
+    startIndex = typeof startIndex !== 'undefined' ? startIndex : 0;
+    endIndex   = typeof endIndex   !== 'undefined' ? endIndex   : splitDates.length;
 
     var isoDate;
 
@@ -312,7 +316,7 @@ function expandExtendedISO8601Dates(splitDates) {
 
     // Array insertion position
     var j = 0;
-    for (var i = 0; i < splitDates.length; i++) {
+    for (var i = startIndex; i < endIndex; i++) {
 
         isoDate = splitDates[i].split("/");
 

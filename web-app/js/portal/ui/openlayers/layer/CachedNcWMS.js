@@ -109,10 +109,12 @@ OpenLayers.Layer.CachedNcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         chunkEnd = numDates;
                     }
 
-                    that.temporalExtent = that.temporalExtent.concat(
+                    // Concat array in place
+                    that.temporalExtent.push.apply(
+                        that.temporalExtent,
                         expandExtendedISO8601Dates(
-                            arrayOfStringDates.slice(chunkStart, chunkEnd)
-                    ));
+                            arrayOfStringDates,chunkStart, chunkEnd)
+                    );
                     chunkStart = chunkEnd;
                     that._progressFeedback();
 
