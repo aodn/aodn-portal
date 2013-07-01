@@ -399,10 +399,7 @@
 						<include>portal/search/field/MapLayersCheckBox.js</include>
                         <include>portal/common/MapPanel.js</include>
                         <include>portal/search/CloneMapPanel.js</include><!-- needs to load before FacetMapPanel-->
-
-                        <!-- Order is important for these two -->
                         <include>portal/ui/openlayers/layer/NcWMS.js</include>
-                        <include>portal/ui/openlayers/layer/CachedNcWMS.js</include>
                         
 						<include>portal/**/*.js</include>
 					</sourceIncludes>

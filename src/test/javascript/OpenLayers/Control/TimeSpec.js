@@ -24,12 +24,20 @@ describe("OpenLayers.Control.Time", function() {
         timeControl = new OpenLayers.Control.Time({
             map: map
         });
+        OpenLayers.Layer.NcWMS.prototype._getTimeControl = function() { return timeControl; }
 
         spyOn(timeControl.timer, 'start');
         spyOn(timeControl.timer, 'stop');
 
         ncwmsLayer = new OpenLayers.Layer.NcWMS();
-        ncwmsLayer.setTemporalExtent(extent);
+
+        // Process a temporal extent async
+        ncwmsLayer.rawTemporalExtent = extent;
+        ncwmsLayer.temporalExtent = null;
+        ncwmsLayer._processTemporalExtent();
+        waitsFor(function() {
+            return ncwmsLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
     });
 
     describe('map', function() {
@@ -187,6 +195,35 @@ describe("OpenLayers.Control.Time", function() {
     });
     
     describe('configure with layer', function() {
+        it('bin search date', function() {
+            var extentTest = [
+                moment('2000-01-01T00:00'),
+                moment('2001-01-01T00:00'),
+                moment('2002-01-01T00:00'),
+                moment('2003-01-01T00:00'),
+                moment('2004-01-01T00:00'),
+                moment('2005-01-01T00:00'),
+                moment('2006-01-01T00:00'),
+                moment('2007-01-01T00:00'),
+                moment('2008-01-01T00:00'),
+                moment('2009-01-01T00:00'),
+                moment('2010-01-01T00:00'),
+                moment('2011-01-01T00:00'),
+                moment('2012-01-01T00:00')
+            ];
+
+            var index = 0;
+            index = timeControl._findIndexOfDate(extentTest, moment("2000-01-01T00:00"));
+            expect(index).toBe(0);
+
+            index = timeControl._findIndexOfDate(extentTest, moment("2006-01-01T00:00"));
+            expect(index).toBe(6);
+
+            // does not exist
+            index = timeControl._findIndexOfDate(extentTest, moment("2000-01-02T00:00"));
+            expect(index).toBe(-1);
+        });
+
         it('timer extent is \'n\' most recent date/times from layer', function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.timer.getNumTicks()).toBe(3);

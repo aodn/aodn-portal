@@ -296,39 +296,41 @@ Date.prototype.setISO8601 = function (string) {
 }
 
 
-function expandExtendedISO8601Dates(splitDates) {
+function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
     /*
-    Expand setISO8601 repeating intervals
-    EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
+    Expand setISO8601 repeating intervals from array
+    EG: [ "2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M", "2002-01-10T22:36:00.000Z/2003-01-12T21:48:00.000Z/PT23H36M" ]
     */
 
-    var isoDate;
+    // Allow passing start and end index, for handling really large arrays
+    startIndex = typeof startIndex !== 'undefined' ? startIndex : 0;
+    endIndex   = typeof endIndex   !== 'undefined' ? endIndex   : splitDates.length;
 
-    var _splitDates = splitDates.split(",");
+    var isoDate;
 
     // Optimize array length - we'll have at least splitDates.length items
     // or more (usually)
     var expandedDates = [];
-	expandedDates.length = _splitDates.length;
+	expandedDates.length = splitDates.length;
 
     // Array insertion position
     var j = 0;
-    for (var i = 0; i < _splitDates.length; i++) {
+    for (var i = startIndex; i < endIndex; i++) {
 
-        isoDate = _splitDates[i].split("/");
+        isoDate = splitDates[i].split("/");
 
         var x = isoDate.length;
         // no default condition
         switch (x)  {
             case 1:
-                expandedDates[j++] = moment(_splitDates[i]);
+                expandedDates[j++] = moment(splitDates[i]);
                 break;
             case 2:
-                console.log("ERROR: Unhandled date format: " + _splitDates[i]);
+                console.log("ERROR: Unhandled date format: " + splitDates[i]);
                 break;
             case 3:
-                var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(_splitDates[i]);
+                var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(splitDates[i]);
                 for (var x = 0; x < arrayOfDateTimes.length; x++) {
                     expandedDates[j++] = arrayOfDateTimes[x];
                 }

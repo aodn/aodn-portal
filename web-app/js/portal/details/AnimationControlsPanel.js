@@ -206,14 +206,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         if (openLayer && openLayer.isAnimatable()) {
             this.selectedLayer = openLayer;
             this.stepSlider.setMinValue(0);
-            this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
+            this.stepSlider.setMaxValue(0);
             this.selectedLayer.events.on({
                 'precachestart': this._onSelectedLayerPrecacheStart,
                 'precacheprogress': this._onSelectedLayerPrecacheProgress,
                 'precacheend': this._onSelectedLayerPrecacheEnd,
                 scope: this
             });
-            this.dateTimeSelectorPanel.setMissingDays(this.selectedLayer.getMissingDays());
         }
     },
 
@@ -235,6 +234,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onSelectedLayerPrecacheEnd: function() {
+        this.stepSlider.setMinValue(0);
+        this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
+
+        this.dateTimeSelectorPanel.setMissingDays(this.selectedLayer.getMissingDays());
         var dateTime = this.timeControl.getDateTimeForStep(this.stepSlider.getValue());
         this._setStepLabelTextToDateTime(dateTime);
 
