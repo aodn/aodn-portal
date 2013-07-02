@@ -173,7 +173,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 		var max = arrayOfDates.length - 1;
         while (max >= min) {
 			var mid = Math.floor((max + min) / 2);
-            if (isSameDay(arrayOfDates[mid], date.utc())) {
+            if (isSameDay(arrayOfDates[mid], date)) {
                 return mid;
             } else if (arrayOfDates[mid].isAfter(date)) {
                 max = mid - 1;
