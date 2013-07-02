@@ -726,7 +726,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(precachestartSpy).toHaveBeenCalledWith(cachedLayer);
         });
 
-        it('precacheprogress initially 0', function() {
+        it('precacheprogress 0.5 before image caching', function() {
             var precacheprogressSpy = jasmine.createSpy('precacheprogressSpy');
             cachedLayer.events.on({
                 'precacheprogress' : precacheprogressSpy,
@@ -736,7 +736,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             cachedLayer._precache(true);
             expect(precacheprogressSpy).toHaveBeenCalled();
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
-            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
+            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0.5);
         });
 
         it('precacheprogress after image load', function() {
@@ -748,7 +748,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             cachedLayer._precache(true);
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
-            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0);
+            expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0.5);
 
             cachedLayer._calculateProgress = function() { return 1/4; }
             $(img00).trigger('onload');
