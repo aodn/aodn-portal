@@ -141,10 +141,22 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     
     _getExtentForRange: function(layer, range) {
         var startDateTime = moment(range[0]);
-        var endDateTime = moment(range[1]);
+        var endDateTime   = moment(range[1]);
 
         var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
+
+        // Traverse left, for first date that matches
+        while (startIndex > 0 &&
+            isSameDay(layer.getTemporalExtent()[startIndex - 1], startDateTime)) {
+            --startIndex;
+        }
+
+        // Traverse right, for last date that matches
+        while (endIndex + 1 < layer.getTemporalExtent().length &&
+            isSameDay(layer.getTemporalExtent()[endIndex + 1], endDateTime)) {
+            ++endIndex;
+        }
 
         if (startIndex == -1) {
             return [];
@@ -161,7 +173,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 		var max = arrayOfDates.length - 1;
         while (max >= min) {
 			var mid = Math.floor((max + min) / 2);
-            if (arrayOfDates[mid].isSame(date)) {
+            if (isSameDay(arrayOfDates[mid], date.utc())) {
                 return mid;
             } else if (arrayOfDates[mid].isAfter(date)) {
                 max = mid - 1;
