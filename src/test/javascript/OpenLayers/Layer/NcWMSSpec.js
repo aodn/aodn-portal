@@ -572,6 +572,25 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    it('Temporal extent utc/local timezone handling', function() {
+        expectedDates = [
+            moment("2010-07-16T20:00:00"),
+            moment("2010-07-16T21:00:00"),
+            moment("2010-07-16T22:00:00"),
+            moment("2010-07-16T23:00:00"),
+            moment("2010-07-17T00:00:00"),
+            moment("2010-07-17T01:00:00")
+        ];
+        cachedLayer.rawTemporalExtent = 
+            '2010-07-16T10:00:00Z,2010-07-16T11:00:00Z,2010-07-16T12:00:00Z,2010-07-16T13:00:00Z,2010-07-16T14:00:00Z,2010-07-16T15:00:00Z';
+        cachedLayer.temporalExtent = null;
+        cachedLayer._precache(true);
+
+        for (var i = 0; i < expectedDates.length; i++) {
+            expect(cachedLayer.temporalExtent[i]).toBeSame(expectedDates[i]);
+        }
+    });
+
     /* Most tests below run _precache(true) which will run
      * things synchronously in NcWMS, this is to avoid
      * designing nasty tests. Otherwise we check the behaviour
