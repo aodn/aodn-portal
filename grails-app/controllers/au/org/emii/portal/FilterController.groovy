@@ -169,7 +169,7 @@ class FilterController {
 
 		def (namespace, layerName) = _deconstructLayerName(fullLayerName)
 
-		Layer.createCriteria().get {
+		def matchingLayers = Layer.createCriteria().list {
 			eq("name", layerName)
 			eq("activeInLastScan", true)
 			if (namespace) eq("namespace", namespace)
@@ -178,6 +178,8 @@ class FilterController {
 				like("uri", "%$serverHost%")
 			}
 		}
+
+		matchingLayers ? matchingLayers.first() : null
 	}
 
 	def _deconstructLayerName(layerName) {
