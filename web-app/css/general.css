@@ -104,6 +104,9 @@ hr {
     content:"";
     clear:both;
 }
+.small {
+    font-size: 0.8em;
+}
 .homePanelWidget {
     margin-right: 10px;
 	padding-right: 20px;
@@ -943,7 +946,6 @@ div.allwhite {
     float: right;
     height: 16px;
     padding: 0;
-    margin-top: 2px;
 }
 
 .faceted-search-disclaimer {

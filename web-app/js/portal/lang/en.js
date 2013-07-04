@@ -7,6 +7,15 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    //
+    navigate: 'Select by Map Bounds',
+    navigateHelp: 'Drag the map. The map bounds is the selection area',
+    box: 'Drag a Box',
+    boxHelp: 'Drag a Box with a click and drag.',
+    polygon: 'Draw Polygon',
+    polygonHelp: 'Click to add points. Double click to close polygon.',
+    geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
+
     //DownloadCartPanel.js
     okdownload: 'Download All',
     clearcart: "Clear Cart",

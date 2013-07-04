@@ -279,6 +279,7 @@ div.olControlSaveFeaturesItemInactive {
     background-position: 18px 18px;
 }
 
+/*
 .olControlZoomPanel {
     top: 71px;
     left: 14px;
@@ -308,6 +309,27 @@ div.olControlSaveFeaturesItemInactive {
     top: 36px;
     left: 0px;
     background-position: 0px 18px;
+}
+*/
+
+div.olControlZoomPanel{
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+div.olControlZoomInItemInactive,div.olControlZoomOutItemInactive {
+    display: block;
+    margin: 2px;
+    padding: 0 4px;
+    height: 22px;
+    width: 15px;
+}
+
+div.olControlZoomInItemInactive {
+    background: url("img/zoom-plus-mini.png") no-repeat;
+}
+div.olControlZoomOutItemInactive {
+    background: url("img/zoom-minus-mini.png") no-repeat;
 }
 
 .olPopupCloseBox {

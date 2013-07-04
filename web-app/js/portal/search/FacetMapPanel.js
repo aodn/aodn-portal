@@ -10,6 +10,8 @@ Ext.namespace('Portal.search');
 Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
     constructor:function (cfg) {
+
+
         this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
 
         this.polygonDrawer = new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.Polygon, {title:"GeoFilter"});
@@ -27,10 +29,13 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             mapConfig: {
                 controls: [
                     this.navigationController=new OpenLayers.Control.Navigation(),
+                    new OpenLayers.Control.MousePosition(),
+                    this.zoom = new OpenLayers.Control.ZoomPanel(),
                     this.polygonDrawer,
                     this.boxDrawer
                 ],
-                restrictedExtent: new OpenLayers.Bounds.fromArray([-180, -90, 180, 90])
+                restrictedExtent: new OpenLayers.Bounds.fromArray([-180, -90, 180, 90]),
+                resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625]
             }
         }, cfg);
 
