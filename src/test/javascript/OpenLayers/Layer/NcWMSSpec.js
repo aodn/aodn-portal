@@ -485,7 +485,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('BBOX=1,2,3,4');
             });
 
-            it('temporal extent', function() {
+            it('temporal extent in local timezone', function() {
                 var temporalExtent = {
                     min: moment('2000-01-01T11:00'),
                     max: moment('2000-01-05T11:00')
@@ -494,6 +494,17 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 // get the request shifted to UTC, in other words, -11 hours
                 expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
                     'TIME=2000-01-01T00:00:00/2000-01-05T00:00:00');
+            });
+
+            it('temporal extent in utc', function() {
+                var temporalExtent = {
+                    min: moment('2000-01-01T11:00Z'),
+                    max: moment('2000-01-05T11:00Z')
+                }
+                // Note that _getGifUrl will use utc timezone, hence we gonna
+                // get the request shifted to UTC, in other words, -11 hours
+                expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
+                    'TIME=2000-01-01T11:00:00/2000-01-05T11:00:00');
             });
 
             it('format', function() {
@@ -581,14 +592,21 @@ describe("OpenLayers.Layer.NcWMS", function() {
             moment("2010-07-17T00:00:00"),
             moment("2010-07-17T01:00:00")
         ];
-        cachedLayer.rawTemporalExtent = 
-            '2010-07-16T10:00:00Z,2010-07-16T11:00:00Z,2010-07-16T12:00:00Z,2010-07-16T13:00:00Z,2010-07-16T14:00:00Z,2010-07-16T15:00:00Z';
-        cachedLayer.temporalExtent = null;
-        cachedLayer._precache(true);
+        runs(function() {
+            cachedLayer.rawTemporalExtent = 
+                '2010-07-16T10:00:00Z,2010-07-16T11:00:00Z,2010-07-16T12:00:00Z,2010-07-16T13:00:00Z,2010-07-16T14:00:00Z,2010-07-16T15:00:00Z';
+            cachedLayer.temporalExtent = null;
+            cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
+        });
+        waitsFor(function() {
+            return cachedLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
 
-        for (var i = 0; i < expectedDates.length; i++) {
-            expect(cachedLayer.temporalExtent[i]).toBeSame(expectedDates[i]);
-        }
+        runs(function() {
+            for (var i = 0; i < expectedDates.length; i++) {
+                expect(cachedLayer.temporalExtent[i]).toBeSame(expectedDates[i]);
+            }
+        });
     });
 
     /* Most tests below run _precache(true) which will run
