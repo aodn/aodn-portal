@@ -318,8 +318,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             // If we're at 0, then skip the first iteration, as we reference
             // temporalExtent[i-1]
             if (i > 0) {
-                var previousExistingDay = this.temporalExtent[i-1].startOf('day');
-                var currentExistingDay  = this.temporalExtent[i].startOf('day');
+                var previousExistingDay = this.temporalExtent[i-1].clone().startOf('day');
+                var currentExistingDay  = this.temporalExtent[i]  .clone().startOf('day');
 
                 // Fill in all the days in this gap (if there's any), a day after
                 // the previous existing date, until a day before the current
@@ -367,7 +367,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getURLAtTime: function(bounds, dateTime) {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
-            + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+            + dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss');
     },
 
     toNearestTime: function(dateTime) {
@@ -453,8 +453,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
             if (params.temporalExtent) {
                 var format = 'YYYY-MM-DDTHH:mm:ss';
-                url = this._appendParam(url, 'TIME', params.temporalExtent.min.utc().format(format) + '/' +
-                                        params.temporalExtent.max.utc().format(format));
+                url = this._appendParam(url, 'TIME', params.temporalExtent.min.clone().utc().format(format) + '/' +
+                                        params.temporalExtent.max.clone().utc().format(format));
             }
         }
 
