@@ -132,17 +132,17 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
     
     _onTemporalExtentChanged: function(evt) {
-        this.startDatePicker.setMinValue(evt.layer.min.local().toDate());
-        this.startDatePicker.setMaxValue(evt.layer.max.local().toDate());
-        this.startDatePicker.setValue(evt.timer.min.local().toDate());
+        this.startDatePicker.setMinValue(evt.layer.min.toDate());
+        this.startDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.startDatePicker.setValue(evt.timer.min.toDate());
         
-        this.endDatePicker.setMinValue(evt.layer.min.local().toDate());
-        this.endDatePicker.setMaxValue(evt.layer.max.local().toDate());
-        this.endDatePicker.setValue(evt.timer.max.local().toDate());
+        this.endDatePicker.setMinValue(evt.layer.min.toDate());
+        this.endDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.endDatePicker.setValue(evt.timer.max.toDate());
 
-        this._updateStartTimeCombo(evt.timer.min.local());
-        this._updateEndTimeCombo(evt.timer.max.local());
-    },    
+        this._updateStartTimeCombo(evt.timer.min);
+        this._updateEndTimeCombo(evt.timer.max);
+    },
 
     _updateStartTimeCombo: function(dateTime) {
         this._updateTimeCombo(this.startTimeCombo, dateTime, true);
@@ -159,7 +159,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         for (var i = 0; i < datesOnDay.length; i++) {
             data.push({
                 timeValue: datesOnDay[i].valueOf(),
-                displayTime: datesOnDay[i].local().format(this.TIME_FORMAT)
+                displayTime: datesOnDay[i].format(this.TIME_FORMAT)
             });
         }
 
