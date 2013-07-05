@@ -259,22 +259,6 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                 '2000-01-01T22:22:22', '2010-10-10T11:11:11'
             ]);
         });
-
-        it('start date select', function() {
-            dateTimePanel.startDatePicker.fireEvent('select');
-            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
-            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
-                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
-            ]);
-        });
-        
-        it('end date select', function() {
-            dateTimePanel.endDatePicker.fireEvent('select');
-            expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
-            expect(timeControl.configureForLayer.calls[0].args[1]).toBeSame([
-                '2000-01-01T22:22:22', '2010-10-10T11:11:11'
-            ]);
-        });
     });
 
     describe('layer precached on time select', function() {
@@ -282,6 +266,8 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             spyOn(timeControl, 'configureForLayer');
             spyOn(dateTimePanel, '_updateTimeCombo');
             spyOn(dateTimePanel.parentAnimationControl.selectedLayer, '_precache');
+            dateTimePanel.startTimeCombo.setValue(0);
+            dateTimePanel.endTimeCombo.setValue(1);
         });
         
         it('start time combo select', function() {
@@ -291,16 +277,6 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 
         it('end time combo select', function() {
             dateTimePanel.endTimeCombo.fireEvent('select');
-            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
-        });
-        
-        it('start date select', function() {
-            dateTimePanel.startDatePicker.fireEvent('select');
-            expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
-        });
-
-        it('end date select', function() {
-            dateTimePanel.endDatePicker.fireEvent('select');
             expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();
         });
     });

@@ -119,23 +119,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
         // that.
 
         //  TODO: hangs browser :-)
-        //cachedLayer.setTemporalExtent('2000-01-01T00:00:00.000Z/2000-01-03T00:00:00.000Z/PT1D');
+        //cachedLayer.setTemporalExtent('2000-01-01T00:00:00.000/2000-01-03T00:00:00.000/PT1D');
 
         cachedLayer.temporalExtent = null;
-        cachedLayer.rawTemporalExtent = ['2001-01-01T00:00:00Z/2001-01-03T00:00:00Z/PT24H'];
+        cachedLayer.rawTemporalExtent = ['2001-01-01T00:00:00/2001-01-03T00:00:00/PT24H'];
         cachedLayer._processTemporalExtent();
         waitsFor(function() {
             return cachedLayer.temporalExtent;
         }, "Temporal extent not processed", 1000);
 
-        var expectedDateStrings = [
-            '2001-01-01T11:00:00+11:00',
-            '2001-01-02T11:00:00+11:00',
-            '2001-01-03T11:00:00+11:00'
+        var expectedDates = [
+            moment('2001-01-01T00:00:00'),
+            moment('2001-01-02T00:00:00'),
+            moment('2001-01-03T00:00:00')
         ];
 
-        for (var i = 0; i < expectedDateStrings.length; i++) {
-            expect(cachedLayer.temporalExtent[i]).toBeSame(moment(expectedDateStrings[i]));
+        for (var i = 0; i < expectedDates.length; i++) {
+            expect(cachedLayer.temporalExtent[i]).toBeSame(expectedDates[i]);
         }
     });
 
@@ -155,13 +155,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
     describe('choose nearest available time', function() {
 
         it('no extent restriction', function() {
-            expect(cachedLayer.toNearestTime('2000-01-01T00:00:00Z')).toBeSame('2000-01-01T00:00:00Z');
-            expect(cachedLayer.toTime('2000-01-01T00:00:00Z')).toBeSame('2000-01-01T00:00:00Z');
+            expect(cachedLayer.toNearestTime('2000-01-01T00:00:00')).toBeSame('2000-01-01T00:00:00');
+            expect(cachedLayer.toTime('2000-01-01T00:00:00')).toBeSame('2000-01-01T00:00:00');
         });
 
         describe('repeating interval', function() {
             beforeEach(function() {
-                cachedLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000Z/2000-01-01T01:00:00.000Z/PT30M'];
+                cachedLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M'];
                 cachedLayer.temporalExtent = null;
                 cachedLayer._processTemporalExtent();
                 waitsFor(function() {
@@ -170,31 +170,31 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                expect(cachedLayer.toNearestTime('1900-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('1999-12-31T23:59:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(cachedLayer.toNearestTime('1900-12-31T23:59:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('1999-12-31T23:59:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:00:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:00:01.000')).toBeSame('2000-01-01T00:00:00.000');
             });
 
             it ('around half way between two possible values', function() {
-                expect(cachedLayer.toNearestTime('2000-01-01T00:15:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:15:01.000Z')).toBeSame('2000-01-01T00:30:00.000Z');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:15:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:15:01.000')).toBeSame('2000-01-01T00:30:00.000');
             });
 
             it ('around last date/time', function() {
-                expect(cachedLayer.toNearestTime('2000-01-01T01:00:00.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:59:59.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2010-01-01T01:00:01.000Z')).toBeSame('2000-01-01T01:00:00.000Z');
+                expect(cachedLayer.toNearestTime('2000-01-01T01:00:00.000')).toBeSame('2000-01-01T01:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:59:59.000')).toBeSame('2000-01-01T01:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T01:00:01.000')).toBeSame('2000-01-01T01:00:00.000');
+                expect(cachedLayer.toNearestTime('2010-01-01T01:00:01.000')).toBeSame('2000-01-01T01:00:00.000');
             });
         });
 
         describe('time set specified', function() {
             beforeEach(function() {
                 cachedLayer.rawTemporalExtent = [
-                    '2000-01-01T00:00:00.000Z',
-                    '2000-01-02T00:00:00.000Z',
-                    '2000-01-03T00:00:00.000Z'
+                    '2000-01-01T00:00:00.000',
+                    '2000-01-02T00:00:00.000',
+                    '2000-01-03T00:00:00.000'
                 ];
                 cachedLayer.temporalExtent = null;
                 cachedLayer._processTemporalExtent();
@@ -204,23 +204,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                expect(cachedLayer.toNearestTime('1900-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('1999-12-31T23:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T00:00:01.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
+                expect(cachedLayer.toNearestTime('1900-12-31T23:59:59.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('1999-12-31T23:59:59.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:00:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T00:00:01.000')).toBeSame('2000-01-01T00:00:00.000');
             });
 
             it('around half way between two possible values', function() {
-                expect(cachedLayer.toNearestTime('2000-01-01T11:59:59.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T12:00:00.000Z')).toBeSame('2000-01-01T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-01T12:00:01.000Z')).toBeSame('2000-01-02T00:00:00.000Z');
+                expect(cachedLayer.toNearestTime('2000-01-01T11:59:59.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T12:00:00.000')).toBeSame('2000-01-01T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-01T12:00:01.000')).toBeSame('2000-01-02T00:00:00.000');
             });
 
             it('around last date/time', function() {
-                expect(cachedLayer.toNearestTime('2000-01-02T23:59:59.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2000-01-03T00:00:01.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
-                expect(cachedLayer.toNearestTime('2010-01-03T00:00:00.000Z')).toBeSame('2000-01-03T00:00:00.000Z');
+                expect(cachedLayer.toNearestTime('2000-01-02T23:59:59.000')).toBeSame('2000-01-03T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-03T00:00:00.000')).toBeSame('2000-01-03T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2000-01-03T00:00:01.000')).toBeSame('2000-01-03T00:00:00.000');
+                expect(cachedLayer.toNearestTime('2010-01-03T00:00:00.000')).toBeSame('2000-01-03T00:00:00.000');
             });
         });
     });
@@ -255,36 +255,34 @@ describe("OpenLayers.Layer.NcWMS", function() {
         
         beforeEach(function() {
             cachedLayer.temporalExtent = [
-                moment('2001-01-01T00:00+11:00'),
-                moment('2001-02-01T01:20+11:00'),
-                moment('2001-02-01T20:45+11:00'),
-                moment('2001-02-03T00:00+11:00'),
-                moment('2001-02-03T23:59+11:00'),
-                moment('2001-02-05T00:00+11:00')
+                moment('2001-01-01T00:00'),
+                moment('2001-02-01T01:20'),
+                moment('2001-02-01T20:45'),
+                moment('2001-02-03T00:00'),
+                moment('2001-02-03T23:59'),
+                moment('2001-02-05T00:00')
             ];
         });
 
         it('no extent', function() {
             cachedLayer.temporalExtent = [];
-            expect(cachedLayer.getDatesOnDay('2001-01-01')).toBeSame([]);
+            expect(cachedLayer.getDatesOnDay(moment('2001-01-01'))).toBeSame([]);
         });
 
         it('extent, but no dates falling on day', function() {
-            expect(cachedLayer.getDatesOnDay('2000-01-01')).toBeSame([]);
+            expect(cachedLayer.getDatesOnDay(moment('2000-01-01'))).toBeSame([]);
         });
 
-        it('dates on day', function() {
-            var datesOnDay = cachedLayer.getDatesOnDay('2001-02-01');
+        it('dates on day, date exists', function() {
+            var datesOnDay = cachedLayer.getDatesOnDay(moment('2001-02-01'));
             expect(datesOnDay[0].format()).toBe(moment('2001-02-01T01:20').format());
             expect(datesOnDay[1].format()).toBe(moment('2001-02-01T20:45').format());
+            expect(cachedLayer.getDatesOnDay(moment('2001-02-05T20:00')).length).toBe(1);
         });
 
-        it('timezone handling', function() {
-            expect(cachedLayer.getDatesOnDay(moment('2001-02-04T10:00+00:00').utc()).length).toBe(0);
-            expect(cachedLayer.getDatesOnDay(moment('2001-02-04T13:00+00:00').utc())).toBeSame([
-                '2001-02-05T00:00+11:00'
-            ]);
-            expect(cachedLayer.getDatesOnDay(moment('2001-02-05T20:00+00:00').utc()).length).toBe(0);
+        it('dates on day, date doesn\'t exist', function() {
+            expect(cachedLayer.getDatesOnDay(moment('2001-02-04T10:00')).length).toBe(0);
+            expect(cachedLayer.getDatesOnDay(moment('2001-02-04T13:00'))).toBeSame([]);
         });
     });
 
@@ -347,11 +345,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('gets missing days from temporal extent', function() {
             cachedLayer = new OpenLayers.Layer.NcWMS(null, null, null, null, extent);
             cachedLayer._processTemporalExtent();
-
-            waitsFor(function() {
-                return cachedLayer.temporalExtent;
-            }, "Temporal extent not processed", 1000);
-
             expect(cachedLayer.getMissingDays()).toBeSame(['2001-01-02', '2001-01-06', '2001-01-08', '2001-01-10', '2001-01-11', '2001-01-12']);
         });
 
@@ -492,13 +485,26 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('BBOX=1,2,3,4');
             });
 
-            it('temporal extent', function() {
+            it('temporal extent in local timezone', function() {
                 var temporalExtent = {
-                    min: moment('2000-01-01T00:00Z'),
-                    max: moment('2000-01-05T00:00Z')
+                    min: moment('2000-01-01T11:00'),
+                    max: moment('2000-01-05T11:00')
                 }
+                // Note that _getGifUrl will use utc timezone, hence we gonna
+                // get the request shifted to UTC, in other words, -11 hours
                 expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
                     'TIME=2000-01-01T00:00:00/2000-01-05T00:00:00');
+            });
+
+            it('temporal extent in utc', function() {
+                var temporalExtent = {
+                    min: moment('2000-01-01T11:00Z'),
+                    max: moment('2000-01-05T11:00Z')
+                }
+                // Note that _getGifUrl will use utc timezone, hence we gonna
+                // get the request shifted to UTC, in other words, -11 hours
+                expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
+                    'TIME=2000-01-01T11:00:00/2000-01-05T11:00:00');
             });
 
             it('format', function() {
@@ -554,16 +560,16 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     it('Temporal extent (string) processed on moveTo', function() {
-        temporalExtentResult = [
-            moment("2010-07-16T06:00:00Z"),
-            moment("2010-07-16T07:00:00Z"),
-            moment("2010-07-16T08:00:00Z"),
-            moment("2010-07-16T09:00:00Z"),
-            moment("2010-07-16T10:00:00Z")
+        expectedDates = [
+            moment("2010-07-16T06:00:00"),
+            moment("2010-07-16T07:00:00"),
+            moment("2010-07-16T08:00:00"),
+            moment("2010-07-16T09:00:00"),
+            moment("2010-07-16T10:00:00")
         ];
         runs(function() {
             cachedLayer.rawTemporalExtent = 
-                '2010-07-16T06:00:00Z,2010-07-16T07:00:00Z,2010-07-16T08:00:00Z,2010-07-16T09:00:00Z,2010-07-16T10:00:00Z';
+                '2010-07-16T06:00:00,2010-07-16T07:00:00,2010-07-16T08:00:00,2010-07-16T09:00:00,2010-07-16T10:00:00';
             cachedLayer.temporalExtent = null;
             cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
         });
@@ -571,7 +577,35 @@ describe("OpenLayers.Layer.NcWMS", function() {
             return cachedLayer.temporalExtent;
         }, "Temporal extent not processed", 1000);
         runs(function() {
-            expect(cachedLayer.temporalExtent).toEqual(temporalExtentResult);
+            for (var i = 0; i < expectedDates.length; i++) {
+                expect(cachedLayer.temporalExtent[i].isSame(expectedDates[i]));
+            }
+        });
+    });
+
+    it('Temporal extent utc/local timezone handling', function() {
+        expectedDates = [
+            moment("2010-07-16T20:00:00"),
+            moment("2010-07-16T21:00:00"),
+            moment("2010-07-16T22:00:00"),
+            moment("2010-07-16T23:00:00"),
+            moment("2010-07-17T00:00:00"),
+            moment("2010-07-17T01:00:00")
+        ];
+        runs(function() {
+            cachedLayer.rawTemporalExtent = 
+                '2010-07-16T10:00:00Z,2010-07-16T11:00:00Z,2010-07-16T12:00:00Z,2010-07-16T13:00:00Z,2010-07-16T14:00:00Z,2010-07-16T15:00:00Z';
+            cachedLayer.temporalExtent = null;
+            cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
+        });
+        waitsFor(function() {
+            return cachedLayer.temporalExtent;
+        }, "Temporal extent not processed", 1000);
+
+        runs(function() {
+            for (var i = 0; i < expectedDates.length; i++) {
+                expect(cachedLayer.temporalExtent[i]).toBeSame(expectedDates[i]);
+            }
         });
     });
 

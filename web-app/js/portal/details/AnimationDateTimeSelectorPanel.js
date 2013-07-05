@@ -10,22 +10,24 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
     DATE_FORMAT: 'Y-m-d',
     TIME_FORMAT: 'HH:mm:ss (Z)',
-    
+
     constructor: function(cfg) {
         var config = Ext.apply({
             layout: 'table',
             layoutConfig: {
                 columns: 3,
-				tableAttrs : {
-					style : {
-						width : '80%'
-					}
-				}
+                tableAttrs : {
+                    style : {
+                        width : '80%'
+                    }
+                }
             },
             plain: true
         }, cfg);
 
         Portal.details.AnimationDateTimeSelectorPanel.superclass.constructor.call(this, config);
+
+        this.initialSetup = true;
 
         if (this.timeControl) {
             this.timeControl.events.on({
@@ -36,47 +38,47 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent: function() {
-        
-		this.startLabel = new Ext.form.Label({
-			html : "Start:"
-		});
 
-		this.endLabel = new Ext.form.Label({
-			html : "End:"
-		});
-        
-		this.startDatePicker = new Ext.form.DateField({
+        this.startLabel = new Ext.form.Label({
+            html : "Start:"
+        });
+
+        this.endLabel = new Ext.form.Label({
+            html : "End:"
+        });
+
+        this.startDatePicker = new Ext.form.DateField({
             format : this.DATE_FORMAT,
             disabledDatesText: "unavailable",
             editable : false,
-			width : 100,
-			listeners : {
-				scope : this,
+            width : 100,
+            listeners : {
+                scope : this,
                 select: this._onStartDateSelected
-			}
-		});
-        
-		this.endDatePicker = new Ext.form.DateField({
+            }
+        });
+
+        this.endDatePicker = new Ext.form.DateField({
             format : this.DATE_FORMAT,
             disabledDatesText: "unavailable",
             editable : false,
-			width : 100,
-			listeners : {
-				scope : this,
+            width : 100,
+            listeners : {
+                scope : this,
                 select: this._onEndDateSelected
-			}
-		});
+            }
+        });
 
         this.startTimeCombo = new Portal.details.TimeComboBox({
-			width : 130,
+            width : 130,
             listeners: {
                 scope: this,
                 select: this._onTimeSelected
             }
         });
-        
-		this.endTimeCombo = new Portal.details.TimeComboBox({
-			width : 130,
+
+        this.endTimeCombo = new Portal.details.TimeComboBox({
+            width : 130,
             listeners: {
                 scope: this,
                 select: this._onTimeSelected
@@ -87,28 +89,26 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
             this.startLabel, this.startDatePicker, this.startTimeCombo,
             this.endLabel, this.endDatePicker, this.endTimeCombo
         ];
-        
-		Portal.details.AnimationDateTimeSelectorPanel.superclass.initComponent.call(this);
+
+        Portal.details.AnimationDateTimeSelectorPanel.superclass.initComponent.call(this);
     },
 
     disable: function() {
-
         this.startDatePicker.disable();
-		this.endDatePicker.disable();
-		this.startTimeCombo.disable();
-		this.endTimeCombo.disable();
+        this.endDatePicker.disable();
+        this.startTimeCombo.disable();
+        this.endTimeCombo.disable();
     },
-    
+
     enable: function() {
         this.startDatePicker.enable();
-		this.endDatePicker.enable();
-		this.startTimeCombo.enable();
-		this.endTimeCombo.enable();
+        this.endDatePicker.enable();
+        this.startTimeCombo.enable();
+        this.endTimeCombo.enable();
     },
-    
+
     _onStartDateSelected: function(startDatePicker, jsDate) {
         this._updateStartTimeCombo(moment(jsDate));
-        this._onDateTimeSelectionChange();
     },
 
     _onTimeSelected: function(combo, record, index) {
@@ -116,33 +116,41 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     _onDateTimeSelectionChange: function() {
+        var startTime = moment(this.startTimeCombo.getValue());
+        var endTime   = moment(this.endTimeCombo.getValue());
+
+        // Handle the case when endTime is not after startTime
+        if (!endTime.isAfter(startTime)) {
+            // TODO: pop up box for user?
+            endTime = startTime.clone();
+        }
         this.timeControl.configureForLayer(
             this.parentAnimationControl.selectedLayer,
-            [
-                moment(this.startTimeCombo.getValue()),
-                moment(this.endTimeCombo.getValue())
-            ]
-        );
+                [ startTime, endTime ]);
         this.parentAnimationControl.selectedLayer._precache();
     },
-    
+
     _onEndDateSelected: function(endDatePicker, jsDate) {
         this._updateEndTimeCombo(moment(jsDate));
-        this._onDateTimeSelectionChange();
     },
-    
-    _onTemporalExtentChanged: function(evt) {
-        this.startDatePicker.setMinValue(evt.layer.min.local().toDate());
-        this.startDatePicker.setMaxValue(evt.layer.max.local().toDate());
-        this.startDatePicker.setValue(evt.timer.min.local().toDate());
-        
-        this.endDatePicker.setMinValue(evt.layer.min.local().toDate());
-        this.endDatePicker.setMaxValue(evt.layer.max.local().toDate());
-        this.endDatePicker.setValue(evt.timer.max.local().toDate());
 
-        this._updateStartTimeCombo(evt.timer.min.local());
-        this._updateEndTimeCombo(evt.timer.max.local());
-    },    
+    _onTemporalExtentChanged: function(evt) {
+        this.startDatePicker.setMinValue(evt.layer.min.toDate());
+        this.startDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.startDatePicker.setValue(evt.timer.min.toDate());
+
+        this.endDatePicker.setMinValue(evt.layer.min.toDate());
+        this.endDatePicker.setMaxValue(evt.layer.max.toDate());
+        this.endDatePicker.setValue(evt.timer.max.toDate());
+
+        // On the first time we get temporalextentchanged, we'll have to
+        // also select the right value in the time combos
+        if (this.initialSetup) {
+            this._updateStartTimeCombo(evt.timer.min);
+            this._updateEndTimeCombo(evt.timer.max);
+            this.initialSetup = false;
+        }
+    },
 
     _updateStartTimeCombo: function(dateTime) {
         this._updateTimeCombo(this.startTimeCombo, dateTime, true);
@@ -152,27 +160,31 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         this._updateTimeCombo(this.endTimeCombo, dateTime, false);
     },
 
-    _updateTimeCombo: function(timeCombo, dateTime, useFirstOfDatesOnDay) {
+    _updateTimeCombo: function(timeCombo, dateTime, useFirstIfNotFound) {
         var datesOnDay = this.parentAnimationControl.selectedLayer.getDatesOnDay(dateTime);
-    
+
+        exactDateFoundInCombo = false;
         var data = [];
         for (var i = 0; i < datesOnDay.length; i++) {
             data.push({
                 timeValue: datesOnDay[i].valueOf(),
-                displayTime: datesOnDay[i].local().format(this.TIME_FORMAT)
+                displayTime: datesOnDay[i].format(this.TIME_FORMAT)
             });
+            if (datesOnDay[i].isSame(dateTime)) {
+                exactDateFoundInCombo = true;
+            }
         }
 
         timeCombo.getStore().loadData(data);
-        if (useFirstOfDatesOnDay) {
+        if (exactDateFoundInCombo) {
+            timeCombo.setValue(dateTime.valueOf());
+        } else if (useFirstIfNotFound) {
             timeCombo.setValue(datesOnDay[0].valueOf());
-        }
-        else {
+        } else {
             timeCombo.setValue(datesOnDay.last().valueOf());
         }
-        timeCombo.setValue(dateTime.valueOf())
     },
-    
+
     getStartDatePicker: function() {
         return this.startDatePicker;
     },

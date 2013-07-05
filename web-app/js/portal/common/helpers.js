@@ -295,6 +295,12 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 }
 
+function isSameDay(left, right) {
+    return left.year() == right.year()
+        && left.month() == right.month()
+        && left.date() == right.date();
+}
+
 
 function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
