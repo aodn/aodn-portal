@@ -237,7 +237,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.stepSlider.setMinValue(0);
         this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
 
-        // TODO transform to array of strings
         this.dateTimeSelectorPanel.setMissingDays(this.selectedLayer.getMissingDays());
         var dateTime = this.timeControl.getDateTimeForStep(this.stepSlider.getValue());
         this._setStepLabelTextToDateTime(dateTime);
