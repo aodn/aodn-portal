@@ -157,19 +157,9 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
 
     _findIndexOfDate: function(arrayOfDates, date) {
-        var min = 0;
-		var max = arrayOfDates.length - 1;
-        while (max >= min) {
-			var mid = Math.floor((max + min) / 2);
-            if (date.isSame(arrayOfDates[mid])) {
-                return mid;
-            } else if (arrayOfDates[mid].isAfter(date)) {
-                max = mid - 1;
-            } else {
-                min = mid + 1;
-            }
-        }
-        return -1;
+        return binSearch(
+            arrayOfDates, date,
+            function(left, right) { return left.isSame(right); });
     },
     
     getStep: function() {

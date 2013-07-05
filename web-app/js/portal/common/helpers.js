@@ -257,6 +257,24 @@ function inArray (array,value) {
     return false;
 }
 
+// Performs a binary search on a sorted array using
+// compareFunction to compare two elements for equality
+function binSearch(sortedArray, value, compareFunction) {
+    var min = 0;
+    var max = sortedArray.length - 1;
+    while (max >= min) {
+        var mid = Math.floor((max + min) / 2);
+        if (compareFunction(value, sortedArray[mid])) { 
+            return mid;
+        } else if (sortedArray[mid].isAfter(value)) {
+            max = mid - 1;
+        } else {
+            min = mid + 1;
+        }
+    }
+    return -1;
+}
+
 
 Date.prototype.setISO8601 = function (string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
@@ -294,13 +312,6 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 }
-
-function isSameDay(left, right) {
-    return left.year() == right.year()
-        && left.month() == right.month()
-        && left.date() == right.date();
-}
-
 
 function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 

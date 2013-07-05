@@ -283,30 +283,46 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
-    // TODO: transform to binary search, or transform temporalExtent
-    // to a 2 dimensional array, indexed by date
+    // Returns true if left and right has the same date (not time),
+    // false otherwise
+    isSameDay: function(left, right) {
+        return left.year() == right.year()
+            && left.month() == right.month()
+            && left.date() == right.date();
+    },
+
+    // TODO: transform temporalExtent to a 2 dimensional array, indexed by date
+    // will be significantly more elegant than this binary search
+    // Returns all dates in temporalExtent which have the same date (not time)
+    // as dateTime
     getDatesOnDay: function(dateTime) {
+        if (!this.temporalExtent) { return []; }
 
-        var retDates = [];
+        // Will give us an occurance of the date given, not necessarily
+        // the first or last
+        var indexOfSameDate = binSearch(
+            this.temporalExtent, dateTime,
+            this.isSameDay);
 
-        if (!this.temporalExtent) {
-            return retDates;
+        // No dates found - return
+        if (indexOfSameDate == -1) { return []; }
+
+        // Find first date withing that day
+        // Go back (left) in array until we get to a different date
+        // then it means we find the first index of that date
+        var startIndex = indexOfSameDate;
+        while (startIndex - 1 >= 0 &&
+               this.isSameDay(this.temporalExtent[startIndex - 1], dateTime)) {
+            --startIndex;
         }
 
-        for (var i = 0; i < this.temporalExtent.length; i++) {
-            var dateToCheck = moment(this.temporalExtent[i]);
-
-            if (isSameDay(dateTime, dateToCheck)) {
-                retDates.push(dateToCheck);
-            }
-            else {
-                if (retDates.length > 0) {
-                    break;
-                }
-            }
+        var endIndex = indexOfSameDate;
+        while (endIndex + 1 < this.temporalExtent.length &&
+               this.isSameDay(this.temporalExtent[endIndex + 1], dateTime)) {
+            ++endIndex;
         }
 
-        return retDates;
+        return this.temporalExtent.slice(startIndex, endIndex + 1);
     },
 
     _generateMissingDays: function(startIndex, endIndex) {
