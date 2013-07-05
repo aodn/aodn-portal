@@ -50,7 +50,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
             });
 
             spyOn(searcher, 'search').andCallFake(function() {
-                var boundingPolygonIndex = searcher.searchFilters.find('name', 'boundingPolygon');
+                var boundingPolygonIndex = searcher.searchFilters.find('name', 'geometry');
                 expect(boundingPolygonIndex).toNotBe(-1);
                 expect(searcher.searchFilters.getAt(boundingPolygonIndex)).toNotBe(undefined);
                 expect(searcher.searchFilters.getAt(boundingPolygonIndex).get('value')).toBe('POLYGON((1 2,3 4,5 6,1 2))');

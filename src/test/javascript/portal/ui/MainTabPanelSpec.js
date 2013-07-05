@@ -10,6 +10,12 @@ describe("Portal.ui.MainTabPanel", function() {
 
     var facetsEnabled = false;
     appConfigStore.isFacetedSearchEnabled = function() { return facetsEnabled; }
+    appConfigStore.getById = function(id) {
+        if (id == 'spatialsearch.url') {
+            return { data: { value: "spatialsearch.aodn.org.au" }};
+        }
+        return "";
+    }
     
     var mockConfig = {};
     var mockSearchPanel = {};
@@ -33,7 +39,7 @@ describe("Portal.ui.MainTabPanel", function() {
         spyOn(Portal.ui.MainTabPanel.prototype, "on");
         spyOn(Portal.ui.MainTabPanel.superclass.setActiveTab, 'call');
 
-        return new Portal.ui.MainTabPanel({appConfig: mockConfig});
+        return new Portal.ui.MainTabPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
     };
 
     var mainTabPanel;

@@ -18,6 +18,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.searcher = new Portal.service.CatalogSearcher({
             proxyUrl:this.proxyUrl,
             catalogUrl:this.catalogUrl,
+            spatialSearchUrl: this.spatialSearchUrl,
             defaultParams:{
                 protocol:cfg.protocols
             }
