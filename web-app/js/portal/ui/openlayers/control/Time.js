@@ -141,7 +141,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     
     _getExtentForRange: function(layer, range) {
         var startDateTime = moment(range[0]);
-        var endDateTime = moment(range[1]);
+        var endDateTime   = moment(range[1]);
 
         var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
@@ -161,7 +161,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 		var max = arrayOfDates.length - 1;
         while (max >= min) {
 			var mid = Math.floor((max + min) / 2);
-            if (arrayOfDates[mid].isSame(date)) {
+            if (date.isSame(arrayOfDates[mid])) {
                 return mid;
             } else if (arrayOfDates[mid].isAfter(date)) {
                 max = mid - 1;

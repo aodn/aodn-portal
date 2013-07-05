@@ -28,6 +28,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      */
     rawTemporalExtent: null,
 
+    /**
+     * Missing days in temporal extent
+     */
+    missingDays: null,
+
     initialize: function(name, url, params, options, extent) {
         name += ' (animated)';
 
@@ -42,6 +47,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // If it's an array (assuming of moments), we'll just use it
         this.rawTemporalExtent = extent;
         if (!extent) { this.temporalExtent = []; this.temporalExtentLengthToProcess = 0; }
+
+        // Initialize missingDays
+        this.missingDays = [];
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, arguments);
     },
@@ -115,7 +123,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         expandExtendedISO8601Dates(
                             arrayOfStringDates,chunkStart, chunkEnd)
                     );
+                    // Process missing days
+                    that._generateMissingDays(chunkStart, chunkEnd);
+
+                    // Increment chunkEnd
                     chunkStart = chunkEnd;
+
+                    // Provide the user with some feedback, we're doing stuff.
                     that._progressFeedback();
 
                     if (that.temporalExtentLengthToProcess > chunkStart) {
@@ -269,6 +283,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
+    // TODO: transform to binary search, or transform temporalExtent
+    // to a 2 dimensional array, indexed by date
     getDatesOnDay: function(dateTime) {
 
         var retDates = [];
@@ -278,10 +294,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         for (var i = 0; i < this.temporalExtent.length; i++) {
-            var dateTimeAsMoment = moment(dateTime).local();
-            var dateToCheck = moment(this.temporalExtent[i]).local();
+            var dateToCheck = moment(this.temporalExtent[i]);
 
-            if (this._momentIsEqualByYearMonthDate(dateTimeAsMoment, dateToCheck)) {
+            if (isSameDay(dateTime, dateToCheck)) {
                 retDates.push(dateToCheck);
             }
             else {
@@ -294,35 +309,34 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return retDates;
     },
 
-    getMissingDays: function() {
-        // Memoize
-        if (this.missingDays) {
-            return this.missingDays;
-        }
+    _generateMissingDays: function(startIndex, endIndex) {
+        startIndex = typeof startIndex !== 'undefined' ? startIndex : 0;
+        endIndex   = typeof endIndex   !== 'undefined' ? endIndex   : this.temporalExtent.length;
 
-        this.missingDays = [];
-        var candidate = this.temporalExtent[0].clone();
-        for (var i = 0; i < this.temporalExtent.length; i++) {
-            var nextDate = this.temporalExtent[i].clone();
+        // Find leaps in the array, in terms of dates
+        // Note: i does not necessarily start from 0, as we do
+        // chunk processing here...
+        for (var i = startIndex; i < endIndex; i++) {
+            // If we're at 0, then skip the first iteration, as we reference
+            // temporalExtent[i-1]
+            if (i > 0) {
+                var previousExistingDay = this.temporalExtent[i-1].clone().startOf('day');
+                var currentExistingDay  = this.temporalExtent[i]  .clone().startOf('day');
 
-            if (!this._momentIsEqualByYearMonthDate(candidate, nextDate)) {
-                var upperBound = nextDate.subtract('days', 1);
-                if (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
-                    while (!this._momentIsEqualByYearMonthDate(candidate, upperBound)) {
-                        candidate.add('days', 1);
-                        this.missingDays.push(candidate.clone().startOf('day'));
-                    }
+                // Fill in all the days in this gap (if there's any), a day after
+                // the previous existing date, until a day before the current
+                // existing date
+                for (var nonExistingDay = previousExistingDay.clone().add('days', 1);
+                     nonExistingDay.isBefore(currentExistingDay);
+                     nonExistingDay = nonExistingDay.add('days', 1)) {
+                     this.missingDays.push(nonExistingDay.clone());
                 }
-                candidate = this.temporalExtent[i].clone();
             }
         }
-        return this.missingDays;
     },
 
-    _momentIsEqualByYearMonthDate: function(left, right) {
-        return left.year() == right.year()
-            && left.month() == right.month()
-            && left.date() == right.date();
+    getMissingDays: function() {
+        return this.missingDays;
     },
 
     /**
@@ -355,7 +369,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getURLAtTime: function(bounds, dateTime) {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
-            + dateTime.utc().format('YYYY-MM-DDTHH:mm:ss');
+            + dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss');
     },
 
     toNearestTime: function(dateTime) {
@@ -441,8 +455,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
             if (params.temporalExtent) {
                 var format = 'YYYY-MM-DDTHH:mm:ss';
-                url = this._appendParam(url, 'TIME', params.temporalExtent.min.utc().format(format) + '/' +
-                                        params.temporalExtent.max.utc().format(format));
+                url = this._appendParam(url, 'TIME', params.temporalExtent.min.clone().utc().format(format) + '/' +
+                                        params.temporalExtent.max.clone().utc().format(format));
             }
         }
 
