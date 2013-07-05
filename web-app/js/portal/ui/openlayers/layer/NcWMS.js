@@ -283,6 +283,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
+    // TODO: transform to binary search, or transform temporalExtent
+    // to a 2 dimensional array, indexed by date
     getDatesOnDay: function(dateTime) {
 
         var retDates = [];
