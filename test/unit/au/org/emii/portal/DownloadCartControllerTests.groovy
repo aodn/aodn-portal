@@ -105,7 +105,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
 
         loadCodec URLCodec
 
-        def cartContents = [[href: "http://example.com/file1.txt", title:"File One"],[href:"http://example.com/file3.jpeg", title:"File Three"],[href:"http://example.com/file2.gif", title:"File Too"]] as Set
+        def cartContents = [[href: "http://example.com/file1.txt", title:"File One"],[href:"http://example.com/file3.jpeg", title:"File Three"],[href:"http://example.com/file2.gif", title:"File Too"]]
 
         controller.bulkDownloadService = [
                 generateArchiveOfFiles: {

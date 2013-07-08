@@ -9,9 +9,11 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
+
         this.mainTabPanel = new Portal.ui.MainTabPanel({
             region: 'center',
-            activeTab: cfg.activeTab
+            activeTab: cfg.activeTab,
+            appConfigStore: appConfigStore
         });
 
         this.layerChooserPanel = new Portal.ui.LayerChooserPanel({

@@ -35,7 +35,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         def cfg = new Config( downloadCartMimeTypeToExtensionMapping: '{"text/xhtml":"html","text/plain":"txt"}',
                               downloadCartMaxNumFiles: 3,
                               downloadCartMaxFileSize: 100000,
-                              downloadCartFilename: "filename %s %s.zip" )
+                              downloadCartFilename: "filename %s.zip" )
 
         mockDomain Config, [cfg]
         mockLogging( BulkDownloadService, false )
@@ -56,7 +56,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         bulkDownloadService.metaClass._currentDate = { -> return knownDate.time }
 
-        assertEquals "filename 3 août 1900 12:17.zip", bulkDownloadService.getArchiveFilename( new Locale( "fr" ) )
+        assertEquals "filename_3_août_1900-12:17.zip", bulkDownloadService.getArchiveFilename( new Locale( "fr" ) )
     }
 
     void testGenerateArchiveOfFiles() {

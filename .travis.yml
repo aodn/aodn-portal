@@ -1,22 +1,16 @@
-env:
-    - TZ="Australia/Hobart"
-
-before_script:
-    - export MAVEN_OPTS="-Xmx2G -XX:MaxPermSize=512m"
-
-before_install:
-    - sudo apt-get install tzdata
-    - sudo dpkg-reconfigure tzdata
-    - sudo add-apt-repository -y ppa:groovy-dev/grails
-    - sudo apt-get update
-    - sudo apt-get install grails-ppa
-    - sudo apt-get install grails-1.3.7
-    
 language: groovy
 
 jdk:
     - openjdk7
 
+env:
+    global
+    - TZ="Australia/Hobart" JAVA_OPTS="-Xmx1G -Xms512m -XX:PermSize=64m -XX:MaxPermSize=512m"
+
+before_install:
+    - sudo apt-get install tzdata
+    - sudo dpkg-reconfigure tzdata
+
 notifications:
   email: false
-  
+
