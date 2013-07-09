@@ -28,6 +28,11 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                         //width:100,
                         xtype:'templatecolumn',
                         tpl:'<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
+                    },
+                    {
+                        header: '',
+                        renderer: this._viewButtonRenderer,
+                        scope: this
                     }
                 ]
             }),
@@ -91,18 +96,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         }
     },
 
-    onClick:function (e, target) {
-
-        var row = this.getView().findRow(target);
-        var rowIndex = this.getView().findRowIndex(row);
-
-        // Publish message if valid row selected (ie. not header row)
-        if ( rowIndex !== false ) {
-
-            Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
-        }
-    },
-
     _getLayerLink:function (rowIndex) {
 
         var rec = this.store.getAt(rowIndex);
@@ -114,6 +107,35 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
+    },
+
+    _viewButtonOnClick: function(button, e, rowIndex) {
+
+        Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
+
+        setViewPortTab(TAB_INDEX_MAP);
+    },
+
+    _viewButtonRenderer: function(value, metaData, record, rowIndex) {
+
+        var grid = this;
+
+        var createButton = function(value, id, record, handler) {
+            new Ext.Button({
+                text: value,
+                iconCls: '',
+                handler: handler,
+                scope: grid
+            }).render(document.body, id);
+        };
+
+        var componentId = Ext.id();
+        var buttonHandler = function(button, e) {
+            this._viewButtonOnClick(button, e, rowIndex);
+        };
+        createButton.defer(1, this, ['View', componentId, record, buttonHandler]);
+
+        return('<div id="' + componentId + '"></div>');
     }
 });
 
