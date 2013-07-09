@@ -15,7 +15,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         this.boxDrawer= new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.RegularPolygon, {title:"GeoFilter", handlerOptions:{irregular:true}});
 
         this.polygonVector.events.register("sketchstarted", this, function () {
-            this.polygonVector.destroyFeatures();
+            this.clearGeometry();
         });
 
         this.navigationController = new OpenLayers.Control.Navigation();

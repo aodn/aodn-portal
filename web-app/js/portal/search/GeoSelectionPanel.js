@@ -9,6 +9,8 @@ Ext.namespace('Portal.search');
 Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     padding:5,
 
+    GEOMETRY_FIELD: 'geometry',
+
     constructor:function (cfg) {
 
         cfg = cfg || {};
@@ -129,7 +131,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         Portal.search.GeoSelectionPanel.superclass.constructor.call(this, config);
 
         this.mon(this.searchButton, 'click', this.onSearch, this);
-        this.mon(this.clearButton, 'click', this.removeAnyFilters, this);
+        this.mon(this.clearButton, 'click', this.resetFilter, this);
     },
 
     initComponent:function () {
@@ -137,21 +139,24 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     onSearch:function () {
+        this.removeAnyFilters();
         if (this.facetMap.hasCurrentFeature()) {
-            this.searcher.removeFilters('geometry');
-            this.searcher.addFilter('geometry', this.facetMap.getBoundingPolygonAsWKT());
-            this.searcher.search();
+            this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());
         }
+        this.searcher.search();
     },
+
     _updateRadioStatus:function (comp) {
         this.radioStatus.update("<h4>" + OpenLayers.i18n(comp + 'Help') + "</h4>");
     },
 
-    removeAnyFilters: function() {
-
+    resetFilter: function() {
         this.facetMap.clearGeometry();
-        this.searcher.removeFilters('geometry');
-        this.searcher.search();
+        this.onSearch();
+    },
+
+    removeAnyFilters: function() {
+        this.searcher.removeFilters(this.GEOMETRY_FIELD);
     }
 
 });

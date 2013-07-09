@@ -23,15 +23,20 @@ describe("Portal.search.GeoSelectionPanel", function() {
                 searcher: searcher
             });
         });
+
+        it("expects the geometry field to be called geometry", function() {
+            expect(geoFilter.GEOMETRY_FIELD).toEqual('geometry');
+        });
+
         
-        it("doesn't do catalog search if no feature is specified", function() {
+        it("does do a catalog search if no feature is specified", function() {
 
             spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(false);
             spyOn(searcher, 'search');
             
             geoFilter.onSearch();
 
-            expect(searcher.search.callCount).toEqual(0);
+            expect(searcher.search).toHaveBeenCalled();
         });
 
         it("calls search when polygon vector is set", function() {
@@ -50,7 +55,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
             });
 
             spyOn(searcher, 'search').andCallFake(function() {
-                var boundingPolygonIndex = searcher.searchFilters.find('name', 'geometry');
+                var boundingPolygonIndex = searcher.searchFilters.find('name', geoFilter.GEOMETRY_FIELD);
                 expect(boundingPolygonIndex).toNotBe(-1);
                 expect(searcher.searchFilters.getAt(boundingPolygonIndex)).toNotBe(undefined);
                 expect(searcher.searchFilters.getAt(boundingPolygonIndex).get('value')).toBe('POLYGON((1 2,3 4,5 6,1 2))');
