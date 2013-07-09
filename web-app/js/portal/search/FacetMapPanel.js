@@ -18,10 +18,6 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             this.polygonVector.destroyFeatures();
         });
 
-        this.polygonVector.events.register("beforefeatureadded", this, function (evt) {
-            return !(this.checkSelfIntersection(evt.feature.geometry));
-        });
-
         this.navigationController = new OpenLayers.Control.Navigation();
         this.zoom = new OpenLayers.Control.ZoomPanel();
 
@@ -50,45 +46,6 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         this.map.addLayer(this.polygonVector);
         // Otherwise we end up off the west coast of Africa
         this.zoomToInitialBbox();
-    },
-
-    //Following three methods taken from a stackexchange thread at http://gis.stackexchange.com/questions/23755/determine-if-a-polygon-intersects-itself-in-openlayers
-    checkSelfIntersection:function (polygon) {
-
-        if (polygon.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
-            //checking only outer ring
-            var outer = polygon.components[0].components;
-            var segments = [];
-            for (var i = 1; i < outer.length; i++) {
-                var segment = new OpenLayers.Geometry.LineString([outer[i - 1].clone(), outer[i].clone()]);
-                segments.push(segment);
-            }
-            for (var j = 0; j < segments.length; j++) {
-                if (this.segmentIntersects(segments[j], segments)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    },
-
-    startOrStopEquals:function (segment1, segment2) {
-
-        return segment1.components[0].equals(segment2.components[0])
-            || segment1.components[0].equals(segment2.components[1])
-            || segment1.components[1].equals(segment2.components[0])
-            || segment1.components[1].equals(segment2.components[1]);
-    },
-
-    segmentIntersects:function (segment, segments) {
-        for (var i = 0; i < segments.length; i++) {
-            if (!segments[i].equals(segment)) {
-                if (segments[i].intersects(segment) && !this.startOrStopEquals(segments[i], segment)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     },
 
     getCurrentFeature: function () {
