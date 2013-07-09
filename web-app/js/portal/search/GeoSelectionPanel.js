@@ -137,9 +137,8 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     onSearch:function () {
-
         if (this.facetMap.hasCurrentFeature()) {
-
+            this.searcher.removeFilters('geometry');
             this.searcher.addFilter('geometry', this.facetMap.getBoundingPolygonAsWKT());
             this.searcher.search();
         }
