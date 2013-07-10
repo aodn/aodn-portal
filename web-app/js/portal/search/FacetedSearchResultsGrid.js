@@ -22,10 +22,17 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 },
                 columns:[
                     {
+                        header: '',
+                        width: 208,
+                        height: 208,
+                        renderer: this._miniMapRenderer,
+                        scope: this
+                        //xtype: 'portal.search.facetedsearchresultsgridmappanel'
+                    },
+                    {
                         id:'mdDesc',
                         header:OpenLayers.i18n('descHeading'),
                         dataIndex:'title',
-                        //width:100,
                         xtype:'templatecolumn',
                         tpl:'<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
                     },
@@ -136,6 +143,30 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         createButton.defer(1, this, ['View', componentId, record, buttonHandler]);
 
         return('<div id="' + componentId + '"></div>');
+    },
+
+    _miniMapRenderer: function(value, metaData, record, rowIndex) {
+        var componentId = Ext.id();
+        var map = new OpenLayers.Map({ controls: [] });
+        map.addLayer(this._baseLayer());
+
+        var bbox = record.get('bbox');
+
+        setTimeout(function() {
+                map.render(componentId);
+                map.zoomToExtent(new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north));
+            }, 10
+        );
+
+        return('<div id="' + componentId + '" style="width: 208; height: 208;"></div>');
+    },
+
+    _baseLayer: function() {
+        return new OpenLayers.Layer.WMS(
+            "IMOS Tile Cache Simple Baselayer",
+            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
+            { layers: 'default_basemap_simple' }
+        );
     }
 });
 
