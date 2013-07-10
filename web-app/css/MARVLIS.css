@@ -242,7 +242,7 @@ a.userlink {
     text-shadow: none! important;
 }
 
-#downloadCart {
+#downloadCartStatus {
     background: url("../images/mapshadow.png") repeat-x scroll left top #0079C2;
     border-radius: 10px 3px 10px 3px;
     color: white;
