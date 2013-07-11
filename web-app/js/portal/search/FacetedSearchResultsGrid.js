@@ -13,6 +13,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     border:false,
     autoExpandColumn: 'mdDesc',
     enableColumnResize: false,
+    mapWidth: 400,
+    mapHeight: 208,
 
     initComponent:function () {
         var config = {
@@ -23,11 +25,10 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 columns:[
                     {
                         header: '',
-                        width: 208,
-                        height: 208,
+                        width: this.mapWidth,
+                        height: this.mapHeight,
                         renderer: this._miniMapRenderer,
                         scope: this
-                        //xtype: 'portal.search.facetedsearchresultsgridmappanel'
                     },
                     {
                         id:'mdDesc',
@@ -152,14 +153,14 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         map.addLayer(this._baseLayer());
 
         var bbox = record.get('bbox');
+        var me = this;
 
         setTimeout(function() {
-                map.render(componentId);
-                map.zoomToExtent(new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north));
-            }, 10
-        );
+            map.render(componentId);
+            map.zoomToExtent(me._maxBounds());
+        }, 10);
 
-        return('<div id="' + componentId + '" style="width: 208; height: 208;"></div>');
+        return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
     },
 
     _baseLayer: function() {
@@ -168,6 +169,12 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
             { layers: 'default_basemap_simple' }
         );
+    },
+
+    _maxBounds: function() {
+        // This is an arbitrary bounds size, it appears to be about the largest you can have that fits
+        // within the size of the div as it is currently set
+        return new OpenLayers.Bounds(-100, -80, 180, 60);
     }
 });
 
