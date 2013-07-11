@@ -13,6 +13,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     border:false,
     autoExpandColumn: 'mdDesc',
     enableColumnResize: false,
+    mapWidth: 400,
+    mapHeight: 208,
 
     initComponent:function () {
         var config = {
@@ -23,11 +25,10 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 columns:[
                     {
                         header: '',
-                        width: 208,
-                        height: 208,
+                        width: this.mapWidth,
+                        height: this.mapHeight,
                         renderer: this._miniMapRenderer,
                         scope: this
-                        //xtype: 'portal.search.facetedsearchresultsgridmappanel'
                     },
                     {
                         id:'mdDesc',
@@ -147,19 +148,18 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     _miniMapRenderer: function(value, metaData, record, rowIndex) {
+        var me = this;
         var componentId = Ext.id();
         var map = new OpenLayers.Map({ controls: [] });
         map.addLayer(this._baseLayer());
-
-        var bbox = record.get('bbox');
+        map.addLayer(this._boundingBoxLayer(record.get('bbox')));
 
         setTimeout(function() {
-                map.render(componentId);
-                map.zoomToExtent(new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north));
-            }, 10
-        );
+            map.render(componentId);
+            map.zoomToExtent(me._maxBounds());
+        }, 10);
 
-        return('<div id="' + componentId + '" style="width: 208; height: 208;"></div>');
+        return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
     },
 
     _baseLayer: function() {
@@ -168,6 +168,44 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
             { layers: 'default_basemap_simple' }
         );
+    },
+
+    _maxBounds: function() {
+        // This is an arbitrary bounds size, it appears to be about the largest you can have that fits
+        // within the size of the div as it is currently set
+        return new OpenLayers.Bounds(120, -45, 160, -5);
+    },
+
+    _boundingBoxLayer: function(bbox) {
+        var boundingBoxLayer = new OpenLayers.Layer.Vector("Metadata Bounding Box");
+        boundingBoxLayer.addFeatures(this._vectorFeatures(bbox));
+
+        return boundingBoxLayer;
+    },
+
+    _boundingBoxPoints: function(bbox) {
+        return [
+            this._point(bbox.east, bbox.south),
+            this._point(bbox.east, bbox.north),
+            this._point(bbox.west, bbox.north),
+            this._point(bbox.west, bbox.south)
+        ]
+    },
+
+    _point: function(x, y) {
+        return new OpenLayers.Geometry.Point(x, y);
+    },
+
+    _vectorFeatures: function(bbox) {
+        return [new OpenLayers.Feature.Vector(this._boundingBoxPolygon(bbox))];
+    },
+
+    _boundingBoxPolygon: function(bbox) {
+        return new OpenLayers.Geometry.Polygon(this._boundingBoxLinearRings(bbox));
+    },
+
+    _boundingBoxLinearRings: function(bbox) {
+        return [new OpenLayers.Geometry.LinearRing(this._boundingBoxPoints(bbox))];
     }
 });
 

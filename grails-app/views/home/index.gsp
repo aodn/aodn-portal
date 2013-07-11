@@ -173,8 +173,6 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGridMapPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/MenuItemToNodeBuilder.js')}"

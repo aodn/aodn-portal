@@ -82,7 +82,7 @@ Portal.data.ResultsStore = Ext.extend(Ext.data.XmlStore, {
             south: parseFloat(bounds[1]),
             east: parseFloat(bounds[2]),
             north: parseFloat(bounds[3])
-        }
+        };
     },
 
     _mergeBounds: function(current, other) {
@@ -103,7 +103,7 @@ Portal.data.ResultsStore = Ext.extend(Ext.data.XmlStore, {
     },
 
     _easternMost: function(east1, east2) {
-        return this._greaterOf(east1, east2);
+        return this._unAdjustForAntiMeridian(this._greaterOf(this._adjustForAntiMeridian(east1), this._adjustForAntiMeridian(east2)));
     },
 
     _northernMost: function(north1, north2) {
@@ -111,10 +111,11 @@ Portal.data.ResultsStore = Ext.extend(Ext.data.XmlStore, {
     },
 
     _lesserOf: function(low1, low2) {
-        if (low1 == null || low2 < low1) {
-            return low2;
+        var lesser = low1;
+        if (low1 == null || (low2 != null && low2 < low1)) {
+            lesser = low2;
         }
-        return low1;
+        return lesser;
     },
 
     _greaterOf: function(high1, high2) {
@@ -122,6 +123,21 @@ Portal.data.ResultsStore = Ext.extend(Ext.data.XmlStore, {
             return high2;
         }
         return high1;
-    }
+    },
 
+    _adjustForAntiMeridian: function(east) {
+        var adjustment = east;
+        if (adjustment < 0) {
+            adjustment = 180 + (180 + adjustment);
+        }
+        return adjustment;
+    },
+
+    _unAdjustForAntiMeridian: function(east) {
+        var adjustment = east;
+        if (adjustment > 180) {
+            adjustment = -180 + (adjustment - 180);
+        }
+        return adjustment;
+    }
 });
