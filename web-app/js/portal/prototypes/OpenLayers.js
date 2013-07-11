@@ -138,6 +138,39 @@ OpenLayers.Layer.WMS.prototype.hasBoundingBox = function () {
     return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
 };
 
+OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
+    var propagate = true;
+    this.dragging = false;
+    if (this.checkModifiers(evt) && OpenLayers.Event.isLeftClick(evt)) {
+        this.started = true;
+        this.start = evt.xy;
+        this.last = evt.xy;
+        OpenLayers.Element.addClass(
+            this.map.viewPortDiv, "olDragDown"
+        );
+        this.down(evt);
+        this.callback("down", [evt.xy]);
+
+        // Leaving this commented out code here so that one can see what's different to the original function.
+        // This fixes bugs related to combo boxes not closing when the map is clicked (because the event never
+        // propagates to other elements, i.e. the comboboxes).
+//        OpenLayers.Event.stop(evt);
+
+        if(!this.oldOnselectstart) {
+            this.oldOnselectstart = (document.onselectstart) ? document.onselectstart : OpenLayers.Function.True;
+        }
+        document.onselectstart = OpenLayers.Function.False;
+
+        propagate = !this.stopDown;
+    } else {
+        this.started = false;
+        this.start = null;
+        this.last = null;
+    }
+    return propagate;
+};
+
+
 //overrides original openlayers method,
 // adds a check to not run the method if bounds are outside of vertical extent
 OpenLayers.Tile.Image.prototype.draw = function() {
@@ -212,4 +245,3 @@ OpenLayers.Tile.Image.prototype.draw = function() {
 
     return this.renderTile();
 };
-

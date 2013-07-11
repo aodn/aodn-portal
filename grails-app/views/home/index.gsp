@@ -197,6 +197,10 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"
@@ -234,6 +238,16 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapActionsControl.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapOptions.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/Timer.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/AnimationPanel.js')}"
         type="text/javascript"></script>

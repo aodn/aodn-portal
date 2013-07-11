@@ -30,25 +30,32 @@ describe("Portal.common.LayerDescriptor", function() {
         expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
     });
 
-    it('to openlayer WMS layer', function() {
+    describe('toOpenLayer', function() {
 
-        var layerDesc = new Portal.common.LayerDescriptor({
-            "isBaseLayer": true,
-            "server": {
-                "opacity": 100,
-                "type": "WMS-1.1.1",
-                "uri": "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
-            }
+        var layerDesc;
+
+        beforeEach(function() {
+            layerDesc = new Portal.common.LayerDescriptor({
+                "isBaseLayer": true,
+                "server": {
+                    "opacity": 100,
+                    "type": "WMS-1.1.1",
+                    "uri": "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+                }
+            });
         });
 
-        var openLayer = layerDesc.toOpenLayer();
+        it('WMS layer', function() {
+            var openLayer = layerDesc.toOpenLayer();
 
-        expect(openLayer.isBaseLayer).toBe(true);
-        expect(openLayer.url).toBe("http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi");
-        expect(openLayer.opacity).toBe(1);
+            expect(openLayer.isBaseLayer).toBe(true);
+            expect(openLayer.url).toBe("http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi");
+            expect(openLayer.opacity).toBe(1);
+            expect(openLayer).toBeInstanceOf(OpenLayers.Layer.WMS);
 
-        var openLayerWithOptionOverrides = layerDesc.toOpenLayer({ opacity: 2});
-        expect(openLayerWithOptionOverrides.opacity).toBe(2);
+            var openLayerWithOptionOverrides = layerDesc.toOpenLayer({ opacity: 2});
+            expect(openLayerWithOptionOverrides.opacity).toBe(2);
+        });
     });
 
     it('tests underlying access to parent', function() {
@@ -103,13 +110,13 @@ describe("Portal.common.LayerDescriptor", function() {
             var centreLon = 12;
             var centreLat = 34;
             var zoomLevel = 5;
-            
+
             layerDesc.viewParams = {
                 centreLon: centreLon,
                 centreLat: centreLat,
                 openLayersZoomLevel: zoomLevel
             };
-            
+
             var openLayer = layerDesc.toOpenLayer();
             expect(openLayer.zoomOverride).toBeTruthy();
             expect(openLayer.zoomOverride.centreLon).toEqual(centreLon);
