@@ -168,14 +168,14 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         def layer2 = new Layer()
         layer2.id = 4
-		layer2.name = "downloadfeaturetype"
+        layer2.name = "downloadfeaturetype"
         layer2.server = server1
 
         def layer1 = new Layer()
         layer1.id = 5
-		layer1.name = "maplayer"
+        layer1.name = "maplayer"
         layer1.server = server1
-		layer1.wfsLayer = layer2
+        layer1.wfsLayer = layer2
 		
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1, layer2])
@@ -183,12 +183,12 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.params.layerId = 5
         this.controller.showLayerByItsId()
 
-		def layerAsJson = JSON.parse(controller.response.contentAsString)
+        def layerAsJson = JSON.parse(controller.response.contentAsString)
 		
-		assertEquals 5, layerAsJson.id
-		assertEquals "maplayer", layerAsJson.name
-		assertEquals 4, layerAsJson.wfsLayer.id
-		assertEquals "downloadfeaturetype", layerAsJson.wfsLayer.name
+        assertEquals 5, layerAsJson.id
+        assertEquals "maplayer", layerAsJson.name
+        assertEquals 4, layerAsJson.wfsLayer.id
+        assertEquals "downloadfeaturetype", layerAsJson.wfsLayer.name
     }
 
     void testUpdateNoViewParams() {
