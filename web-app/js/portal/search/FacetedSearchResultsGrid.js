@@ -150,14 +150,15 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     _miniMapRenderer: function(value, metaData, record, rowIndex) {
         var me = this;
         var componentId = Ext.id();
+        var bbox = record.get('bbox');
         var map = new OpenLayers.Map({ controls: [] });
-        var bounds = new Portal.search.SearchResultsBounds({bbox: record.get('bbox')});
         map.addLayer(this._baseLayer());
-        map.addLayer(this._boundingBoxLayer(record.get('bbox')));
+        map.addLayer(this._boundingBoxLayer(bbox));
 
         setTimeout(function() {
             map.render(componentId);
-            map.setCenter(bounds.getCentreLonLat(), 4);
+            var zoomLevel = 4;
+            map.setCenter(new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north).getCenterLonLat(), zoomLevel);
         }, 10);
 
         return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
