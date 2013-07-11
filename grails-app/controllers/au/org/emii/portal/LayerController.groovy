@@ -265,6 +265,12 @@ class LayerController {
             }
 
             params.remove('viewParams')
+			
+			if (params.wfsLayer) {
+				layerInstance.wfsLayer = Layer.get(params.wfsLayer)
+			}
+			
+			params.remove('wfsLayer')
 
             layerInstance.properties = params
 
@@ -568,6 +574,9 @@ class LayerController {
                 if ("layers".equals(name)) {
                     layerData[name] = _convertLayersToListOfMaps(value)
                 }
+				else if ("wfsLayer".equals(name) && value) {
+					layerData[name] = _getLayerData(value, excludes)
+				}
                 else if (!excludes.contains(name)) {
                     layerData[name] = value
                 }
