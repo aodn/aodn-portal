@@ -257,6 +257,24 @@ function inArray (array,value) {
     return false;
 }
 
+// Performs a binary search on a sorted array using
+// compareFunction to compare two elements for equality
+function binSearch(sortedArray, value, compareFunction) {
+    var min = 0;
+    var max = sortedArray.length - 1;
+    while (max >= min) {
+        var mid = Math.floor((max + min) / 2);
+        if (compareFunction(value, sortedArray[mid])) { 
+            return mid;
+        } else if (sortedArray[mid].isAfter(value)) {
+            max = mid - 1;
+        } else {
+            min = mid + 1;
+        }
+    }
+    return -1;
+}
+
 
 Date.prototype.setISO8601 = function (string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
@@ -295,44 +313,51 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 }
 
-
-function expandExtendedISO8601Dates(splitDates) {
+function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
     /*
-    Expand setISO8601 repeating intervals
-    EG: 2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M
+    Expand setISO8601 repeating intervals from array
+    EG: [ "2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M", "2002-01-10T22:36:00.000Z/2003-01-12T21:48:00.000Z/PT23H36M" ]
     */
 
-    var expandedDates = new Array();
+    // Allow passing start and end index, for handling really large arrays
+    startIndex = typeof startIndex !== 'undefined' ? startIndex : 0;
+    endIndex   = typeof endIndex   !== 'undefined' ? endIndex   : splitDates.length;
+
     var isoDate;
 
-    var _splitDates = splitDates.split(",");
+    // Optimize array length - we'll have at least splitDates.length items
+    // or more (usually)
+    var expandedDates = [];
+	expandedDates.length = splitDates.length;
 
+    // Array insertion position
+    var j = 0;
+    for (var i = startIndex; i < endIndex; i++) {
 
-    for (var i = 0; i < _splitDates.length; i++) {
-
-        isoDate = _splitDates[i].split("/");
+        isoDate = splitDates[i].split("/");
 
         var x = isoDate.length;
         // no default condition
         switch (x)  {
-
             case 1:
-                expandedDates.push(_splitDates[i]);
+                expandedDates[j++] = moment(splitDates[i]);
                 break;
             case 2:
-                console.log("ERROR: Unhandled date format: " + _splitDates[i]);
+                console.log("ERROR: Unhandled date format: " + splitDates[i]);
                 break;
             case 3:
-                var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(_splitDates[i]);
+                var arrayOfDateTimes = _expand3sectionExtendedISO8601Date(splitDates[i]);
                 for (var x = 0; x < arrayOfDateTimes.length; x++) {
-                    expandedDates.push(arrayOfDateTimes[x]);
+                    expandedDates[j++] = arrayOfDateTimes[x];
                 }
                 break;
         }
 
-    }
-   return expandedDates.join(",");
+   }
+   // Readjust array
+   expandedDates.length = j;
+   return expandedDates;
 }
 
 function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
@@ -346,7 +371,6 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
     var iSO8601DateParts = extendedISO8601Date.split("/");
     var period = iSO8601DateParts[2];
-    var format = "YYYY-MM-DDTHH:mm:ssZ";
 
     // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
     if (period.indexOf( "P" ) == 0) {
@@ -356,14 +380,14 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         var endDate = moment(iSO8601DateParts[1]);
 
         if (nextDate.isValid()) {
-            // add dates + duration until equal the stop date
-            do {
-                expandedDates.push(nextDate.format(format));
-                nextDate = moment(nextDate.add(duration));
-            } while (nextDate.isBefore(endDate));
+            while (!nextDate.isAfter(endDate)) {
+                expandedDates.push(nextDate.clone());
+                nextDate.add(duration);
+            }
+
             // always end with the last date
-            if(!endDate.isSame(nextDate)) {
-                expandedDates.push(endDate.format(format));
+            if (!expandedDates[expandedDates.length - 1] .isSame (endDate)) {
+                expandedDates.push(endDate.clone());
             }
         }
     }
@@ -371,7 +395,9 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
         console.log('Date not understood: ' + period);
     }
 
-    return expandedDates.sort();
+    // Don't try to sort it, it's an array of moment()s, it'll sort
+    // references in memory rather than compare dates.
+    return expandedDates;
 }
 
 

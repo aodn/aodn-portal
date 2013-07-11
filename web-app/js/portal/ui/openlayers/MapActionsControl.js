@@ -21,7 +21,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * APIProperty: roundedCornerColor {String} The color of the rounded
-     * corners, only applies if roundedCorner is true, 
+     * corners, only applies if roundedCorner is true,
      */
     roundedCornerColor : "#34546E",
 
@@ -39,7 +39,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Constructor: OpenLayers.Control.LayerSwitcher
-     * 
+     *
      * Parameters: options - {Object}
      */
     initialize : function(options) {
@@ -64,7 +64,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Method: setMap
-     * 
+     *
      * Properties: map - {<OpenLayers.Map>}
      */
     setMap : function(map) {
@@ -73,7 +73,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Method: draw
-     * 
+     *
      * Returns: {DOMElement} A reference to the DIV DOMElement containing the
      * switcher tabs.
      */
@@ -150,8 +150,8 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             //hideLayerOptions : this.appConfig.hideLayerOptions,
             //autoZoom : this.appConfig.autoZoom,
             mapScope : this.appConfig.mapPanel
-        });        
-		
+        });
+
 		this.window = new Ext.Window({
             id : 'mapActionsWindow',
             draggable : false,
@@ -166,7 +166,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
                 type : 'auto'
             },
             afterRender : function() {
-			
+
                 Ext.Window.superclass.afterRender.apply(this);
                 this.el.dom.style.position = "";
             }
@@ -175,7 +175,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.layersDiv.appendChild(this.window.el.dom);
         this.initActionsPanel();
     },
-    
+
     initActionsPanel: function() {
         // These variables are used in "closures" below.
         var actionsPanel = this.actionsPanel;
@@ -183,18 +183,18 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
         Ext.TaskMgr.start({
             run : function() {
-                window.add(actionsPanel);	
+                window.add(actionsPanel);
                 window.doLayout();
             },
             interval : 0,
             repeat : 1
         });
-        
+
         this.registerActionPanelEventListeners();
     },
-    
+
     registerActionPanelEventListeners: function() {
-      
+
         this.actionsPanel.on('zoomtolayer', this.appConfig.mapPanel.zoomToLayer, this.appConfig.mapPanel);
 
         this.actionsPanel.on('autozoomchecked', this.appConfig.mapPanel.autoZoomCheckboxHandler, this.appConfig.mapPanel);
@@ -205,7 +205,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Method: maximizeControl Set up the labels and divs for the control
-     * 
+     *
      * Parameters: e - {Event}
      */
     maximizeControl : function(e) {
@@ -225,7 +225,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
     /**
      * Method: minimizeControl Hide all the contents of the control, shrink the
      * size, add the maximize icon
-     * 
+     *
      * Parameters: e - {Event}
      */
     minimizeControl : function(e) {
@@ -246,39 +246,37 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Method: ignoreEvent
-     * 
+     *
      * Parameters: evt - {Event}
      */
     ignoreEvent : function(evt) {
         OpenLayers.Event.stop(evt, true);
     },
 
-    /** 
+    /**
      * Method: mouseDown
      * Register a local 'mouseDown' flag so that we'll know whether or not
      *     to ignore a mouseUp event
-     * 
+     *
      * Parameters:
      * evt - {Event}
      */
     mouseDown : function(evt) {
         this.isMouseDown = true;
-        this.ignoreEvent(evt);
     },
 
-    /** 
+    /**
      * Method: mouseUp
-     * If the 'isMouseDown' flag has been set, that means that the drag was 
-     *     started from within the LayerSwitcher control, and thus we can 
+     * If the 'isMouseDown' flag has been set, that means that the drag was
+     *     started from within the LayerSwitcher control, and thus we can
      *     ignore the mouseup. Otherwise, let the Event continue.
-     *  
+     *
      * Parameters:
-     * evt - {Event} 
+     * evt - {Event}
      */
     mouseUp : function(evt) {
         if (this.isMouseDown) {
             this.isMouseDown = false;
-            this.ignoreEvent(evt);
         }
     },
 
@@ -286,7 +284,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      * Method: showControls
      * Hide/Show all LayerSwitcher controls depending on whether we are
      *     minimized or not
-     * 
+     *
      * Parameters:
      * minimize - {Boolean}
      */
