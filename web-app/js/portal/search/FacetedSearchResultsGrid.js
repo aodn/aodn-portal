@@ -151,12 +151,13 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var me = this;
         var componentId = Ext.id();
         var map = new OpenLayers.Map({ controls: [] });
+        var bounds = new Portal.search.SearchResultsBounds({bbox: record.get('bbox')});
         map.addLayer(this._baseLayer());
         map.addLayer(this._boundingBoxLayer(record.get('bbox')));
 
         setTimeout(function() {
             map.render(componentId);
-            map.zoomToExtent(me._maxBounds());
+            map.setCenter(bounds.getCentreLonLat(), 4);
         }, 10);
 
         return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
