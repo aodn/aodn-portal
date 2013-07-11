@@ -117,10 +117,11 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
-
-        Ext.MsgBus.publish('addLayerUsingLayerLink', this._getLayerLink(rowIndex));
-
-        setViewPortTab(TAB_INDEX_MAP);
+        var layerLink = this._getLayerLink(rowIndex);
+        if (layerLink) {
+            Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
+            setViewPortTab(TAB_INDEX_MAP);
+        }
     },
 
     _viewButtonRenderer: function(value, metaData, record, rowIndex) {
