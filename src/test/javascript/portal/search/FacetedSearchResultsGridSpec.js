@@ -12,6 +12,8 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
     var testTarget;
     var testLayerLink;
 
+    setViewPortTab = jasmine.createSpy();
+
     beforeEach(function() {
 
         fsrg = new Portal.search.FacetedSearchResultsGrid();
@@ -22,36 +24,18 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
 
         // Add spies
         spyOn(Ext.MsgBus, 'publish');
-        spyOn(fsrg.getView(), 'findRow').andCallFake(function(e, target) {
+    });
 
-            expect(target).not.toBe(testTarget);
-        });
+    it('should publish when a layer link is returned', function() {
         spyOn(fsrg, '_getLayerLink').andReturn(testLayerLink);
-    });
-
-    it('should publish when 0 is returned', function() {
-
-        spyOn(fsrg.getView(), 'findRowIndex').andReturn(0);
-
-        fsrg.onClick(null, testTarget);
+        fsrg._viewButtonOnClick(null, testTarget);
 
         expect(Ext.MsgBus.publish).toHaveBeenCalledWith('addLayerUsingLayerLink', testLayerLink);
     });
 
-    it('should publish when 10 is returned', function() {
-
-        spyOn(fsrg.getView(), 'findRowIndex').andReturn(10);
-
-        fsrg.onClick(null, testTarget);
-
-        expect(Ext.MsgBus.publish).toHaveBeenCalledWith('addLayerUsingLayerLink', testLayerLink);
-    });
-
-    it('shouldn\'t publish when false is returned', function() {
-
-        spyOn(fsrg.getView(), 'findRowIndex').andReturn(false);
-
-        fsrg.onClick(null, testTarget);
+    it('should not publish when undefined is returned as a layer link', function() {
+        spyOn(fsrg, '_getLayerLink').andReturn(undefined);
+        fsrg._viewButtonOnClick(null, testTarget);
 
         expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
     });
