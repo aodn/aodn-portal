@@ -248,7 +248,7 @@
                                     <label for="downloadCartFilename"><g:message code="config.downloadCartFilename.label" default="Download cart filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartFilename', 'errors')}">
-                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">The first %s will insert the date into the filename, the second one will insert the time</font>
+                                    <g:textField size="25" name="downloadCartFilename" value="${configInstance?.downloadCartFilename}" /><font class="hint">Use %s to insert the date and time into the filename</font>
                                 </td>
                             </tr>
 
