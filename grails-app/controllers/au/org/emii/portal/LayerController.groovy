@@ -251,20 +251,7 @@ class LayerController {
                 }
             }
 
-            layerInstance.viewParams?.delete()
-
-            if (   !params.viewParams       // if viewParams not present at all, or it is but all its properties are nil...
-                || !(   params.viewParams.centreLat
-                     ||  params.viewParams.centreLon
-                     || params.viewParams.openLayersZoomLevel)) {
-                layerInstance.viewParams = null
-            }
-
-            if (params.viewParams) {
-                layerInstance.viewParams = new LayerViewParameters(params.viewParams + [layer: layerInstance])
-            }
-
-            params.remove('viewParams')
+            _updateViewParams(layerInstance, params)
 
             layerInstance.properties = params
 
@@ -282,6 +269,25 @@ class LayerController {
             redirect(action: "list")
         }
     }
+
+	def _updateViewParams(layer, params) {
+
+		layer.viewParams?.delete()
+
+		def newVals = params.viewParams
+		def allValuePresent = newVals?.centreLat && newVals?.centreLon && newVals?.openLayersZoomLevel
+
+		if (allValuePresent) {
+
+			layer.viewParams = new LayerViewParameters([layer: layer] + newVals)
+		}
+		else {
+
+			layer.viewParams = null
+		}
+
+		params.remove('viewParams')
+	}
 
     def delete = {
         def layerInstance = Layer.get(params.id)
