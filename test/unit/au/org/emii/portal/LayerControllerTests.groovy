@@ -162,13 +162,15 @@ class LayerControllerTests extends ControllerUnitTestCase {
     }
 
     void testUpdateNoViewParams() {
-        _updateViewParamsSetup()
+
+        _updateViewParamsSetup(null)
         def updatedLayer = Layer.get(controller.redirectArgs['id'])
         assertNotNull(updatedLayer)
         assertNull(updatedLayer.viewParams)
     }
 
     void testUpdateFullViewParams() {
+
         _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
 
         def updatedLayer = Layer.get(controller.redirectArgs['id'])
@@ -179,13 +181,35 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals(5, updatedLayer.viewParams.openLayersZoomLevel)
     }
 
+	void testUpdatePartialViewParams() {
+
+		_updateViewParamsSetup([centreLat: 12f, openLayersZoomLevel: 5])
+
+		def updatedLayer = Layer.get(controller.redirectArgs['id'])
+		assertNotNull(updatedLayer)
+		assertNull(updatedLayer.viewParams)
+
+		_updateViewParamsSetup([centreLon: 54f, openLayersZoomLevel: 5])
+
+		updatedLayer = Layer.get(controller.redirectArgs['id'])
+		assertNotNull(updatedLayer)
+		assertNull(updatedLayer.viewParams)
+
+		_updateViewParamsSetup([centreLat: 12f, centreLon: 54f])
+
+		updatedLayer = Layer.get(controller.redirectArgs['id'])
+		assertNotNull(updatedLayer)
+		assertNull(updatedLayer.viewParams)
+	}
+
     void testUpdateFullThenNoViewParams() {
+
         _updateViewParamsSetup([centreLat: 12f, centreLon: 54f, openLayersZoomLevel: 5])
         def updatedLayer = Layer.get(controller.redirectArgs['id'])
         assertNotNull(updatedLayer)
         assertNotNull(updatedLayer.viewParams)
 
-        _updateViewParamsSetup()
+        _updateViewParamsSetup(null)
         updatedLayer = Layer.get(controller.redirectArgs['id'])
         assertNotNull(updatedLayer)
         assertNull(updatedLayer.viewParams)
