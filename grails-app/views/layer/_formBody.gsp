@@ -215,10 +215,10 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wfsLayer"><g:message code="layer.wfsLayer.label" default="WFS Layer" /></label>
+                                    <label for="wfsLayerId"><g:message code="layer.wfsLayer.label" default="WFS Layer" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayer', 'errors')}">
-                                    <g:select name="wfsLayer" from="${Layer.list()}" optionKey="id" onselect="getCombo(this)" value="${layerInstance?.wfsLayer?.id}"/>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
+                                    <g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" onselect="getCombo(this)" value="${layerInstance?.wfsLayer?.id}"/>
                                 </td>
                             </tr>
 

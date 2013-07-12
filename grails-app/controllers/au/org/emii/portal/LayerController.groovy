@@ -293,8 +293,8 @@ class LayerController {
 
 	def _updateWfsLayer(layer, params) {
 
-		if (params.wfsLayer) {
-			layer.wfsLayer = Layer.get(params.wfsLayer)
+		if (params.wfsLayerId) {
+			layer.wfsLayer = Layer.get(params.wfsLayerId)
 		}
 
 		params.remove('wfsLayer')
