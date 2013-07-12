@@ -151,14 +151,19 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var me = this;
         var componentId = Ext.id();
         var bbox = record.get('bbox');
-        var map = new OpenLayers.Map({ controls: [] });
+        var map = new OpenLayers.Map({
+            controls: [],
+            minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
+            maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90) }
+        );
         map.addLayer(this._baseLayer());
         map.addLayer(this._boundingBoxLayer(bbox));
 
+
         setTimeout(function() {
             map.render(componentId);
-            var zoomLevel = 4;
-            map.setCenter(new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north).getCenterLonLat(), zoomLevel);
+            var bounds = new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north);
+            map.setCenter(bounds.getCenterLonLat(), me._zoomLevel(map, bounds));
         }, 10);
 
         return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
@@ -172,10 +177,17 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         );
     },
 
-    _maxBounds: function() {
-        // This is an arbitrary bounds size, it appears to be about the largest you can have that fits
-        // within the size of the div as it is currently set
-        return new OpenLayers.Bounds(120, -45, 160, -5);
+    _zoomLevel: function(map, bounds) {
+        var zoomLevel = map.getZoomForExtent(bounds);
+        if (zoomLevel == 0) {
+            // 0 is too large
+            zoomLevel = 1;
+        }
+        else if (zoomLevel > 4) {
+            // Anything over 4 doesn't show enough to get an idea of where things are
+            zoomLevel = 4;
+        }
+        return zoomLevel;
     },
 
     _boundingBoxLayer: function(bbox) {
