@@ -72,7 +72,7 @@ class Layer {
 
     static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Style]
     static hasOne = [viewParams: LayerViewParameters]
-    
+
     static constraints = {
 		parent(nullable: true)
 		name( nullable: true, size:1..225 )
@@ -136,7 +136,11 @@ class Layer {
     }
 
     String toString() {
-        return "${server?.shortAcron} - ${name}"
+
+	    def n = name ?: "<no name>"
+	    def t = title ?: "<no title>"
+
+	    return "${server?.shortAcron} - $n - $t"
     }
 
     String getOverrideMetadataUrl(){
@@ -228,7 +232,6 @@ class Layer {
 	void removeFromLayers(Layer child) {
 		child.parent = null
 	}
-
 
     def getAllStyles() {
 
