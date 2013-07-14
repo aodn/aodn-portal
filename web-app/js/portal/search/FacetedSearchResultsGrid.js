@@ -152,10 +152,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         var componentId = Ext.id();
         var bbox = record.get('bbox');
         var map = new OpenLayers.Map({
-            controls: [],
-            minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
-            maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90) }
-        );
+            controls: []
+        });
         map.addLayer(this._baseLayer());
         map.addLayer(this._boundingBoxLayer(bbox));
 
