@@ -150,18 +150,16 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     _miniMapRenderer: function(value, metaData, record, rowIndex) {
         var me = this;
         var componentId = Ext.id();
-        var bbox = record.get('bbox');
+        var metadataExtent = record.get('bbox');
         var map = new OpenLayers.Map({
             controls: []
         });
         map.addLayer(this._baseLayer());
-        map.addLayer(this._boundingBoxLayer(bbox));
-
+        map.addLayer(metadataExtent.getLayer());
 
         setTimeout(function() {
             map.render(componentId);
-            var bounds = new OpenLayers.Bounds(bbox.west, bbox.south, bbox.east, bbox.north);
-            map.setCenter(bounds.getCenterLonLat(), me._zoomLevel(map, bounds));
+            map.setCenter(metadataExtent.getBounds().getCenterLonLat(), me._zoomLevel(map, metadataExtent.getBounds()));
         }, 10);
 
         return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
@@ -186,38 +184,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             zoomLevel = 4;
         }
         return zoomLevel;
-    },
-
-    _boundingBoxLayer: function(bbox) {
-        var boundingBoxLayer = new OpenLayers.Layer.Vector("Metadata Bounding Box");
-        boundingBoxLayer.addFeatures(this._vectorFeatures(bbox));
-
-        return boundingBoxLayer;
-    },
-
-    _boundingBoxPoints: function(bbox) {
-        return [
-            this._point(bbox.east, bbox.south),
-            this._point(bbox.east, bbox.north),
-            this._point(bbox.west, bbox.north),
-            this._point(bbox.west, bbox.south)
-        ]
-    },
-
-    _point: function(x, y) {
-        return new OpenLayers.Geometry.Point(x, y);
-    },
-
-    _vectorFeatures: function(bbox) {
-        return [new OpenLayers.Feature.Vector(this._boundingBoxPolygon(bbox))];
-    },
-
-    _boundingBoxPolygon: function(bbox) {
-        return new OpenLayers.Geometry.Polygon(this._boundingBoxLinearRings(bbox));
-    },
-
-    _boundingBoxLinearRings: function(bbox) {
-        return [new OpenLayers.Geometry.LinearRing(this._boundingBoxPoints(bbox))];
     }
 });
 
