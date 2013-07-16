@@ -13,8 +13,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     border:false,
     autoExpandColumn: 'mdDesc',
     enableColumnResize: false,
-    mapWidth: 400,
-    mapHeight: 208,
+    mapWidth: 200,
+    mapHeight: 104,
 
     initComponent:function () {
         var config = {
