@@ -88,25 +88,6 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         var wktFormatter = new OpenLayers.Format.WKT();
         return wktFormatter.write(this.getCurrentFeature());
     },
-
-    switchToNavigation: function() {
-        this.navigationController.activate();
-        this.polygonDrawer.deactivate();
-        this.boxDrawer.deactivate();
-    },
-
-    switchToPolygonDrawer: function() {
-        this.navigationController.deactivate();
-        this.polygonDrawer.activate();
-        this.boxDrawer.deactivate();
-    },
-
-    switchToBoxDrawer: function() {
-        this.navigationController.deactivate();
-        this.polygonDrawer.deactivate();
-        this.boxDrawer.activate();
-    }
 });
 
 Ext.reg('portal.search.facetmappanel', Portal.search.FacetMapPanel);
-
