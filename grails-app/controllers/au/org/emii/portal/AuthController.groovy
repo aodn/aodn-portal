@@ -100,7 +100,7 @@ class AuthController {
         if(configuredOpenIdProvider && configuredOpenIdProvider.supportsProviderLogout) {
 
             // If we support logout protocol...
-            log.info "Logout protocol supported - using custom logout for $openIdProvider"
+            log.debug "Logout protocol supported - using custom logout for $openIdProvider"
 
             redirect(url: "${openIdProvider}/logout")
         }
