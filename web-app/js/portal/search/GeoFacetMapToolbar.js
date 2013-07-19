@@ -6,52 +6,35 @@
  */
 Ext.namespace('Portal.search');
 
-Portal.search.GeoFacetMapToolbar = OpenLayers.Class(
-    OpenLayers.Control.Panel, {
+Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
 
-        /**
-         * Constructor: Portal.search.GeoFacetMapToolbar
-         * Create an geofacet toolbar for a given layer.
-         *
-         * Parameters:
-         * layer - {<OpenLayers.Layer.Vector>}
-         * options - {Object}
-         */
-        initialize: function(layer, options) {
+    /**
+     * Constructor: Portal.search.GeoFacetMapToolbar
+     * Create an geofacet toolbar for a given layer.
+     *
+     * Parameters:
+     * layer - {<OpenLayers.Layer.Vector>}
+     * options - {Object}
+     */
+    initialize: function(layer, options) {
 
-            options = Ext.apply({
-                displayClass: 'olControlEditingToolbar'
-            }, options);
+        options = Ext.apply({
+            displayClass: 'olControlEditingToolbar'
+        }, options);
 
-            OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
+        OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
 
-            this.addControls(
-                [ new OpenLayers.Control.Navigation() ]
-            );
-            var controls = [
-                new OpenLayers.Control.DrawFeature(
-                    layer,
-                    OpenLayers.Handler.Polygon,
-                    {
-                        'displayClass': 'olControlDrawFeaturePolygon'
-                    }
-                )
-            ];
-            this.addControls(controls);
-        },
+        this.addControls([
+            new OpenLayers.Control.Navigation(),
+            new OpenLayers.Control.DrawFeature(
+                layer,
+                OpenLayers.Handler.Polygon,
+                {
+                    'displayClass': 'olControlDrawFeaturePolygon'
+                }
+            )
+        ]);
+    },
 
-        /**
-         * Method: draw
-         * calls the default draw, and then activates mouse defaults.
-         *
-         * Returns:
-         * {DOMElement}
-         */
-        draw: function() {
-            var div = OpenLayers.Control.Panel.prototype.draw.apply(this, arguments);
-            this.activateControl(this.controls[0]);
-            return div;
-        },
-
-        CLASS_NAME: "Portal.search.GeoFacetMapToolbar"
-    });
+    CLASS_NAME: "Portal.search.GeoFacetMapToolbar"
+});
