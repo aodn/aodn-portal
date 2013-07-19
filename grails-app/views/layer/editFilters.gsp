@@ -123,12 +123,12 @@
 
                 <div class="dialog">
                     <ul>
-                    <g:each in="${layerInstance?.filters?.sort(){it.name}}" var="filter">
+                    <g:each in="${layerInstance?.filters?.sort(){it.label}}" var="filter">
                         <g:if test="${filter.enabled}">
-                            <li><b><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></b></li>
+                            <li><b><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></b></li>
                         </g:if>
                         <g:else>
-                            <li><i><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></i></li>
+                            <li><i><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></i></li>
                         </g:else>
                     </g:each>
                     </ul>

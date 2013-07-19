@@ -200,8 +200,13 @@
 								</td>
 								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'filters', 'errors')}">
 									<ul>
-									<g:each in="${layerInstance?.filters}" var="filter">
-										<li><g:link controller="filter" action="edit" id="${filter.id}">${filter.label}</g:link></li>
+									<g:each in="${layerInstance?.filters?.sort(){it.label}}" var="filter">
+                                        <g:if test="${filter.enabled}">
+                                            <li><b><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></b></li>
+                                        </g:if>
+                                        <g:else>
+                                            <li><i><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></i></li>
+                                        </g:else>
 									 </g:each>
 									 </ul>
 								</td>

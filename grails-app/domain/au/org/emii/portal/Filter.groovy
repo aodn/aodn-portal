@@ -64,4 +64,9 @@ class Filter {
         return o.id == this.id && o.name.equals(this.name)
     }
 
+	@Override
+	String toString() {
+
+		return label == name ? label : "$label ($name)"
+	}
 }
