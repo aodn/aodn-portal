@@ -9,28 +9,21 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
-    constructor:function (cfg) {
+    RESOLUTIONS: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625],
+
+    constructor: function (cfg) {
         this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
         this.polygonVector.events.register("sketchstarted", this, function () {
             this.clearGeometry();
         });
 
-        // Setting display class as below is not ideal - but our css is a bit of a mess.
-        this.controlPanel = new OpenLayers.Control.Panel({'displayClass': 'olControlEditingToolbar'});
-        this.controlPanel.addControls([
-            new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.Polygon, {'displayClass': 'olControlDrawFeaturePolygon'})
-        ]);
-
-        this.controlPanel.activateControl(this.controlPanel.controls[0]);
-
         var config = Ext.apply({
             mapConfig: {
                 controls: [
                     new OpenLayers.Control.ZoomPanel(),
-                    this.controlPanel
+                    new Portal.search.GeoFacetMapToolbar(this.polygonVector)
                 ],
-                resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625]
+                resolutions: this.RESOLUTIONS
             }
         }, cfg);
 
