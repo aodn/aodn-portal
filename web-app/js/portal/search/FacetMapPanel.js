@@ -11,26 +11,25 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
     constructor:function (cfg) {
         this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
-        this.polygonDrawer = new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.Polygon, {title:"GeoFilter"});
-        this.boxDrawer= new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.RegularPolygon, {title:"GeoFilter", handlerOptions:{irregular:true}});
-
         this.polygonVector.events.register("sketchstarted", this, function () {
             this.clearGeometry();
         });
 
-        this.navigationController = new OpenLayers.Control.Navigation();
-        this.zoom = new OpenLayers.Control.ZoomPanel();
+        // Setting display class as below is not ideal - but our css is a bit of a mess.
+        this.controlPanel = new OpenLayers.Control.Panel({'displayClass': 'olControlEditingToolbar'});
+        this.controlPanel.addControls([
+            new OpenLayers.Control.Navigation(),
+            new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.Polygon, {'displayClass': 'olControlDrawFeaturePolygon'})
+        ]);
+
+        this.controlPanel.activateControl(this.controlPanel.controls[0]);
 
         var config = Ext.apply({
             mapConfig: {
                 controls: [
-                    this.navigationController,
-                    new OpenLayers.Control.MousePosition(),
-                    this.zoom,
-                    this.polygonDrawer,
-                    this.boxDrawer
+                    new OpenLayers.Control.ZoomPanel(),
+                    this.controlPanel
                 ],
-                restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
                 resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625]
             }
         }, cfg);
