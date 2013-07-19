@@ -32,9 +32,6 @@ p, td{
     font-family: tahoma,verdana,arial,sans-serif;
 }
 
-
-
-
 h1 {
 	font-family: tahoma,arial,verdana,sans-serif;
 	color: #15428B;
@@ -74,7 +71,6 @@ h6 {
     font-size: 11px;
     margin: 2px 0 ;
 }
-
 
 #mainHomePanel, #downloadCartPanel{
     background-color: whitesmoke;
@@ -191,6 +187,11 @@ h6 {
 #toplinks a:hover {
     color: black;
     text-shadow: none;
+}
+
+#loginpopup a {
+    color: #15428B;
+    text-shadow: 2px 2px 6px grey;
 }
 
 a.userlink {
