@@ -43,14 +43,20 @@ class WfsScannerService extends ScannerService {
     }
 
     def callRegister(serverId, layerName, wfsScannerCallbackPassword){
+
         //http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
         Server server = Server.get(serverId)
 
         if (!server) {
 
-            log.error("Cannot find server with ID: " + serverId)
-            throw new IllegalArgumentException("Cannot find server.")
+            log.debug("Cannot find server with ID: " + serverId)
+            throw new IllegalStateException("Cannot find server.")
         }
+
+	    if (!wfsScannerCallbackPassword) {
+
+		    throw new IllegalArgumentException("No WFS Scanner callback password set in config.")
+	    }
 
         if (server.type.startsWith("GEO")){
 
@@ -65,8 +71,8 @@ class WfsScannerService extends ScannerService {
         }
         else {
 
-            log.info("WFSScanner currently only supports GEOSERVER.")
-            throw new IllegalArgumentException("WFSScanner currently only supports GEOSERVER.  Please change the server type and try again.")
+            log.debug("WFSScanner currently only supports GEOSERVER.")
+            throw new IllegalStateException("WFSScanner currently only supports GEOSERVER. Please change the server type and try again.")
         }
 
         return "Registered new scan job for server."

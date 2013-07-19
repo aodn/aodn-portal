@@ -25,7 +25,7 @@ class WfsScannerController {
         catch (Exception e) {
 
             log.debug("Error encountered while registering WFS scan job: " + e.message)
-            flash.message = "Cannot contact WFS server to register job. "
+            flash.message = "Cannot start scannig server. " + e.message
         }
 
         redirect controller: "server", action: "list"
