@@ -118,7 +118,7 @@ environments {
 
         // URLs
 		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-	    spatialsearch.url = "http://localhost:8888/spatialsearch/search/index"
+	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
 		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
 
@@ -165,7 +165,7 @@ environments {
     }
 }
 
-def defaultInstanceName = "IMOS"
+def defaultInstanceName = "AODN"
 
 portal {
 	header {
