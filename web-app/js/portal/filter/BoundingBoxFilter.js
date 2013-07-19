@@ -36,14 +36,16 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         layer.map.events.register("move", this, function(e) {
 
-            var extent = layer.map.getExtent();
-
-            this.bbox.setBox({
-                northBL:extent.top,
-                westBL: extent.left,
-                eastBL: extent.right,
-                southBL: extent.bottom
-            });
+        	if (this.items.length != 0) {
+	            var extent = layer.map.getExtent();
+	
+	            this.bbox.setBox({
+	                northBL:extent.top,
+	                westBL: extent.left,
+	                eastBL: extent.right,
+	                southBL: extent.bottom
+	            });
+        	}
         });
     },
 
