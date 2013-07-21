@@ -37,76 +37,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             width:250
         });
 
-        this.facetMap.switchToNavigation();
-
-        this.radioStatus = new Ext.Panel({
-            html: "<h4>" +  OpenLayers.i18n('geoSelectionPanelHelp') + "</h4>"
-        });
-        var radios = [
-            new Ext.form.Radio({
-                name:"mapSelectionRadio",
-                fieldLabel: OpenLayers.i18n('navigate'),
-                itemCls: "small",
-                checked:false,
-                listeners:{check:{
-                    fn:function(radio,checked) {
-                        if(checked) {
-                            this.facetMap.switchToNavigation();
-                            this._updateRadioStatus('navigate');
-                        }
-                    },
-                    scope:this
-                }}}),
-
-            new Ext.form.Radio({
-                name:"mapSelectionRadio",
-                fieldLabel: OpenLayers.i18n('box'),
-                itemCls: "small",
-                listeners:{check:{
-                    fn:function(radio,checked) {
-                        if(checked) {
-                            this.facetMap.switchToBoxDrawer();
-                            this._updateRadioStatus('box');
-                        }
-                    },
-                    scope:this
-                }}}),
-            new Ext.form.Radio({
-                name:"mapSelectionRadio",
-                fieldLabel: OpenLayers.i18n('polygon'),
-                itemCls: "small",
-                listeners:{check:{
-                    fn:function(radio,checked) {
-                        if(checked) {
-                            this.facetMap.switchToPolygonDrawer();
-                            this._updateRadioStatus('polygon');
-                        }
-                    },
-                    scope:this
-                }}})
-        ];
-
-
         var config = Ext.apply({
             layout:'form',
             cls:'search-filter-panel term-selection-panel',
             items:[
-                new Ext.Container({
-                    layout: 'hbox',
-                    margins: {top:0, right:10, bottom:0, left:0},
-                    defaults: {
-                        style: {
-                            padding: '6px'
-                        }
-                    },
-                    items:[
-                        {
-                            layout: 'form',
-                            items: [radios]
-                        },
-                        this.radioStatus
-                    ]
-                }),
                 this.facetMap,
                 new Ext.Container({
                     layout: 'hbox',
@@ -144,10 +78,6 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());
         }
         this.searcher.search();
-    },
-
-    _updateRadioStatus:function (comp) {
-        this.radioStatus.update("<h4>" + OpenLayers.i18n(comp + 'Help') + "</h4>");
     },
 
     resetFilter: function() {

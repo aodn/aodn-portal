@@ -13,26 +13,38 @@ describe("Portal.search.FacetMapPanel", function() {
             initialBbox: '1, 2, 3, 4'
         });
     });
-    
-    it("getBoundingPolygonAsWKT with no features", function() {
-        expect(facetMapPanel.getBoundingPolygonAsWKT()).toBeFalsy();
+
+    describe('map controls', function() {
+        it('zoom panel', function() {
+            expect(facetMapPanel.map.controls[0]).toBeInstanceOf(OpenLayers.Control.ZoomPanel);
+        });
+
+        it('geofacet map toolbar', function() {
+            expect(facetMapPanel.map.controls[1]).toBeInstanceOf(Portal.search.GeoFacetMapToolbar);
+        });
     });
-    
-    it("getBoundingPolygonAsWKT with three features", function() {
-        facetMapPanel.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
 
-        var points = [
-            new OpenLayers.Geometry.Point(1, 2),
-            new OpenLayers.Geometry.Point(3, 4),
-            new OpenLayers.Geometry.Point(5, 6)
-        ];
-        var ring = new OpenLayers.Geometry.LinearRing(points);
-        var polygon = new OpenLayers.Geometry.Polygon([ring]);
+    describe('getBoundingPolygonAsWKT', function() {
+        it("getBoundingPolygonAsWKT with no features", function() {
+            expect(facetMapPanel.getBoundingPolygonAsWKT()).toBeFalsy();
+        });
 
-        var feature = new OpenLayers.Feature.Vector(polygon); //, attributes);
-        facetMapPanel.polygonVector.addFeatures([feature]);
+        it("getBoundingPolygonAsWKT with three features", function() {
+            facetMapPanel.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
 
-        expect(facetMapPanel.getBoundingPolygonAsWKT()).toBeTruthy();
-        expect(facetMapPanel.getBoundingPolygonAsWKT()).toBe('POLYGON((1 2,3 4,5 6,1 2))');
+            var points = [
+                new OpenLayers.Geometry.Point(1, 2),
+                new OpenLayers.Geometry.Point(3, 4),
+                new OpenLayers.Geometry.Point(5, 6)
+            ];
+            var ring = new OpenLayers.Geometry.LinearRing(points);
+            var polygon = new OpenLayers.Geometry.Polygon([ring]);
+
+            var feature = new OpenLayers.Feature.Vector(polygon); //, attributes);
+            facetMapPanel.polygonVector.addFeatures([feature]);
+
+            expect(facetMapPanel.getBoundingPolygonAsWKT()).toBeTruthy();
+            expect(facetMapPanel.getBoundingPolygonAsWKT()).toBe('POLYGON((1 2,3 4,5 6,1 2))');
+        });
     });
 });

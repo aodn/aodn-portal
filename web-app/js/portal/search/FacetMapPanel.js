@@ -9,29 +9,21 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
 
-    constructor:function (cfg) {
-        this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
-        this.polygonDrawer = new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.Polygon, {title:"GeoFilter"});
-        this.boxDrawer= new OpenLayers.Control.DrawFeature(this.polygonVector, OpenLayers.Handler.RegularPolygon, {title:"GeoFilter", handlerOptions:{irregular:true}});
+    RESOLUTIONS: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625],
 
+    constructor: function (cfg) {
+        this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
         this.polygonVector.events.register("sketchstarted", this, function () {
             this.clearGeometry();
         });
 
-        this.navigationController = new OpenLayers.Control.Navigation();
-        this.zoom = new OpenLayers.Control.ZoomPanel();
-
         var config = Ext.apply({
             mapConfig: {
                 controls: [
-                    this.navigationController,
-                    new OpenLayers.Control.MousePosition(),
-                    this.zoom,
-                    this.polygonDrawer,
-                    this.boxDrawer
+                    new OpenLayers.Control.ZoomPanel(),
+                    new Portal.search.GeoFacetMapToolbar(this.polygonVector)
                 ],
-                restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
-                resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625]
+                resolutions: this.RESOLUTIONS
             }
         }, cfg);
 
@@ -88,25 +80,6 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         var wktFormatter = new OpenLayers.Format.WKT();
         return wktFormatter.write(this.getCurrentFeature());
     },
-
-    switchToNavigation: function() {
-        this.navigationController.activate();
-        this.polygonDrawer.deactivate();
-        this.boxDrawer.deactivate();
-    },
-
-    switchToPolygonDrawer: function() {
-        this.navigationController.deactivate();
-        this.polygonDrawer.activate();
-        this.boxDrawer.deactivate();
-    },
-
-    switchToBoxDrawer: function() {
-        this.navigationController.deactivate();
-        this.polygonDrawer.deactivate();
-        this.boxDrawer.activate();
-    }
 });
 
 Ext.reg('portal.search.facetmappanel', Portal.search.FacetMapPanel);
-
