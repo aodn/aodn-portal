@@ -12,49 +12,39 @@ import grails.test.ControllerUnitTestCase
 
 class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
 
-    protected void setUp() {
-
-        super.setUp()
-    }
-
-    protected void tearDown() {
-
-        super.tearDown()
-    }
-
-    void testIndex_NoParams() {
+    void testShow_NoParams() {
 
         // No params passed-in
-        controller.index()
+        controller.show()
 
         assertEquals 500, controller.renderArgs.status
-        assertEquals "layerId not supplied or not an integer. layerId: 'null'", mockResponse.contentAsString
+        assertEquals "id not supplied or not an integer. id: 'null'", mockResponse.contentAsString
 	}
 
-    void testIndex_NonIntegerLayerId() {
+    void testShow_NonIntegerLayerId() {
 
-        controller.params.layerId = "A"
-        controller.index()
+        controller.params.id = "A"
+        controller.show()
 
         assertEquals 500, controller.renderArgs.status
-        assertEquals "layerId not supplied or not an integer. layerId: 'A'", mockResponse.contentAsString
+        assertEquals "id not supplied or not an integer. id: 'A'", mockResponse.contentAsString
     }
 
-    void testIndex_LayerIsAlive() {
+    void testShow_LayerIsAlive() {
 
-        controller.params.layerId = "1"
+        controller.params.id = "1"
         controller.checkLayerAvailabilityService = [ isLayerAlive: { true } ]
-        controller.index()
+        controller.show()
 
         assertEquals 200, controller.renderArgs.status
         assertEquals "Layer is available", mockResponse.contentAsString
     }
 
-    void testIndex_LayerNotAlive() {
+    void testShow_LayerNotAlive() {
 
-        controller.params.layerId = "2"
+        controller.params.id = "2"
         controller.checkLayerAvailabilityService = [ isLayerAlive: { false } ]
-        controller.index()
+        controller.show()
 
         assertEquals 500, controller.renderArgs.status
         assertEquals "Layer is not available", mockResponse.contentAsString

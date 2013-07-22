@@ -9,7 +9,7 @@
 Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
-		
+
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			id: 'detailsPanelItems',
@@ -19,20 +19,20 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 				align: 'stretch'
 			}
 		}, cfg);
-        
+
 		Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 	},
 
 	initComponent: function(){
-		
+
 		this.errorPanel = new Ext.Panel({
 			cls: "errors",
-			hidden: true, 
+			hidden: true,
 			html:OpenLayers.i18n('wmsLayerProblem'
 		)});
-		
+
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
-		
+
 		this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
 			id: "opacitySlider",
 	        layer: new OpenLayers.Layer("Dummy Layer"),
@@ -40,19 +40,19 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			increment: 5,
 			minValue: 20, // we dont want a user to be able to give zero vis
 			maxValue: 100,
-	        aggressive: true, 
+	        aggressive: true,
 	        width: 175,
 	        isFormField: true,
 	        inverse: false,
 	        fieldLabel: "Opacity",
 			plugins: new GeoExt.LayerOpacitySliderTip({
 				template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-				}) 
+				})
 			});
-	
+
 		this.opacitySliderContainer = new Ext.Panel({
 			layout: 'form',
-			height: 26,			
+			height: 26,
 			margins: {
 				top: 5,
 				right: 5,
@@ -62,13 +62,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			items: [this.opacitySlider]
 		});
 
-	
+
 		this.transectControl = new Portal.mainMap.TransectControl({
 			ref: 'transectControl',
 			height: 30,
 			listeners: {
 				scope: this,
-				
+
 				transect: function(inf) {
 					var newTab = this.detailsPanelTabs.add({
 						xtype: 'panel',
@@ -83,7 +83,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 							}
 						]
 					});
-					
+
 					if (this.ownerCt.width <  430) {
 						this.ownerCt.setWidth(430);
 						if (this.ownerCt.ownerCt) {
@@ -93,7 +93,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
 					this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
 				}
-				
+
 			}
 		});
 
@@ -104,36 +104,46 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		this.detailsPanelTabs
 		];
 
-		Portal.details.DetailsPanel.superclass.initComponent.call(this);	
+		Portal.details.DetailsPanel.superclass.initComponent.call(this);
 	},
 
 	getOpacitySlider: function(){
 		return this.opacitySlider;
 	},
 
-	// must be called when the panel is fully expanded for the slider
-	updateDetailsPanel: function(layer, forceOpen) {
-		
-		
-		// show new layer unless user requested 'hideLayerOptions' 
-        this.errorPanel.hide();
+    _checkLayerAvailability: function(layer) {
+
         // check if there is a problem with this layer, with a bogusgetFetureInfo request
-        if(layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
+        if (layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
+
             Ext.Ajax.request({
-                url: 'checkLayerAvailability/',
+                method: 'GET',
+                url: 'checkLayerAvailability/show/' + layer.grailsLayerId,
                 params: {
-                    layerId: layer.grailsLayerId,
                     format: layer.getFeatureInfoFormat(),
                     proxy: layer.localProxy,
                     isNcwms: layer.isNcwms() // need this in grails land
                 },
                 scope: this,
+                success: function(resp) {
+                    console.log('*** success *** ');
+                },
                 failure: function(resp) {
+                    console.log("** error **");
                     this.hideDetailsPanelContents();
                     this.errorPanel.show();
                 }
             });
         }
+    },
+
+	// must be called when the panel is fully expanded for the slider
+	updateDetailsPanel: function(layer, forceOpen) {
+
+		// show new layer unless user requested 'hideLayerOptions'
+        this.errorPanel.hide();
+
+        this._checkLayerAvailability(layer);
 
         this.detailsPanelTabs.update(layer);
         this.transectControl.hide();
@@ -164,8 +174,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	hideDetailsPanelContents: function(){
-		// clear the details Panel. ie. Don't show any layer options	
-		
+		// clear the details Panel. ie. Don't show any layer options
+
 		//DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
 		this.opacitySliderContainer.setVisible(false);
 		this.detailsPanelTabs.setVisible(false);

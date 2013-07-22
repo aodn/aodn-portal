@@ -13,7 +13,8 @@ class CheckLayerAvailabilityService {
     static transactional = true
 
 	def isLayerAlive(params) {
-        def layer = Layer.get(params.layerId)
+
+        def layer = Layer.get(params.id)
 
 		if (layer) {
 
