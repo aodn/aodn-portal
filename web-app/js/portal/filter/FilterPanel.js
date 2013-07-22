@@ -218,23 +218,27 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     _makeWFSURL: function(serverURL, layerName){
 
-    	var query = Ext.urlEncode({
-			typeName: layerName,
-			SERVICE: "WFS",
-			outputFormat: "csv",
-			REQUEST: "GetFeature",
-			VERSION: "1.0.0",  	//This version has BBOX the same as WMS. It's flipped in 1.1.0
-			CQL_FILTER: this.layer.params.CQL_FILTER      //Geonetwork only works with URL encoded filters
-		});
+        var queryArgs = {
+            typeName: layerName,
+            SERVICE: "WFS",
+            outputFormat: "csv",
+            REQUEST: "GetFeature",
+            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
+        };
 
-    	var wfsURL =  serverURL.replace("/wms", "/wfs");
+        if (this.layer.params.CQL_FILTER) {
 
-    	if(wfsURL.indexOf("?") > -1)
-    		wfsURL +=  "&" + query;
-    	else
-    		wfsURL += "?" + query;
+            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER
+        }
 
-		return wfsURL;
+        var wfsURL = serverURL.replace("/wms", "/wfs");
+
+        if (wfsURL.indexOf("?") > -1)
+            wfsURL += "&";
+        else
+            wfsURL += "?";
+
+        return wfsURL + Ext.urlEncode(queryArgs);
     },
 
     _makeDownloadURL: function(){
