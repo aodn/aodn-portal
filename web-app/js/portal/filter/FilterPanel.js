@@ -216,20 +216,9 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this._updateFilter();
     },
 
-    _makeWFSURL: function(serverURL, layerName){
+    _makeWfsUrl: function(serverURL, layerName){
 
-        var queryArgs = {
-            typeName: layerName,
-            SERVICE: "WFS",
-            outputFormat: "csv",
-            REQUEST: "GetFeature",
-            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
-        };
-
-        if (this.layer.params.CQL_FILTER) {
-
-            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER
-        }
+        var queryArgs = this._makeWfsUrlQueryArgs(layerName);
 
         var wfsURL = serverURL.replace("/wms", "/wfs");
 
@@ -241,12 +230,30 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return wfsURL + Ext.urlEncode(queryArgs);
     },
 
-    _makeDownloadURL: function(){
-        if(this.layer.wfsLayer == null){
-            return this._makeWFSURL(this.layer.server.uri, this.layer.params.LAYERS);
+    _makeWfsUrlQueryArgs: function(layerName) {
+
+        var queryArgs = {
+            typeName: layerName,
+            SERVICE: "WFS",
+            outputFormat: "csv",
+            REQUEST: "GetFeature",
+            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
+        };
+
+        if (this.layer.params.CQL_FILTER) {
+
+            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER;
         }
 
-        return this._makeWFSURL(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
+        return queryArgs;
+    },
+
+    _makeDownloadURL: function(){
+        if(this.layer.wfsLayer == null){
+            return this._makeWfsUrl(this.layer.server.uri, this.layer.params.LAYERS);
+        }
+
+        return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
     _addToCart: function(){
