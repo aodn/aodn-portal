@@ -125,11 +125,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                     isNcwms: layer.isNcwms() // need this in grails land
                 },
                 scope: this,
-                success: function(resp) {
-                    console.log('*** success *** ');
-                },
                 failure: function(resp) {
-                    console.log("** error **");
                     this.hideDetailsPanelContents();
                     this.errorPanel.show();
                 }
