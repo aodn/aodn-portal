@@ -174,6 +174,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/search/MetadataExtent.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/MenuItemToNodeBuilder.js')}"
@@ -288,7 +290,7 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/ResultsStore.js')}"
+<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkResultsStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"
         type="text/javascript"></script>

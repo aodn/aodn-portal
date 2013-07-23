@@ -48,7 +48,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
         itemsToDisplay.push(this.filtersPanel);
 
-        this.resultsStore = new Portal.data.ResultsStore();
+        this.resultsStore = new Portal.data.GeoNetworkResultsStore();
         this.resultsStore.on('load', function (store, recs, opt) {
             if (this.totalLength == 0) {
                 Ext.Msg.alert('Info', 'The search returned no results.');
