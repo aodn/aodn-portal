@@ -159,7 +159,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         setTimeout(function() {
             map.render(componentId);
-            map.setCenter(metadataExtent.getBounds().getCenterLonLat(), me._zoomLevel(map, metadataExtent.getBounds()));
+            if (metadataExtent.getBounds()) {
+                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), me._zoomLevel(map, metadataExtent.getBounds()));
+            }
         }, 10);
 
         return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
