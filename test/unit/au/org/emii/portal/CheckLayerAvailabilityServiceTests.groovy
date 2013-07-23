@@ -35,7 +35,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
 		mockDomain Layer.class // No Layers in db
 
-		def params = [layerId: 100]
+		def params = [id: 100]
 
 		assertFalse service.isLayerAlive( params )
     }
@@ -63,7 +63,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         }
 
         // Make the call
-        assertTrue service.isLayerAlive( [layerId: 100] )
+        assertTrue service.isLayerAlive( [id: 100] )
     }
 
     void testIsLayerAlive_checkFeatureInfoResponse() {
@@ -103,7 +103,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         }
 
 		// Make the call
-		assertFalse service.isLayerAlive( [layerId: 100] )
+		assertFalse service.isLayerAlive( [id: 100] )
     }
 
     void testIsLayerAlive_ExceptionThrown() {
@@ -139,7 +139,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         }
 
 
-		def params = [layerId: 100]
+		def params = [id: 100]
 
 		assertFalse service.isLayerAlive( params )
     }
@@ -189,7 +189,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
         def conn = [contentType: 'XML', URL: [text: 'something']]
         def called = false
-        
+
         service.metaClass._isValidFromResponse = {
             String responseText ->
             called = true
@@ -201,7 +201,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
         assertTrue called
     }
-    
+
     void testFeatureInfoResponse() {
 
 		assertTrue service._checkFeatureInfoResponse( 'text/xml' )

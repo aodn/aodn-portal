@@ -12,12 +12,12 @@ class CheckLayerAvailabilityController {
 
 	def checkLayerAvailabilityService
 
-    def index = {
+    def show = {
 
-		if ( params.layerId?.isInteger() ) {
+		if (params.id?.isInteger()) {
 
-			if ( checkLayerAvailabilityService.isLayerAlive(params) ) {
-
+			if (checkLayerAvailabilityService.isLayerAlive(params)) {
+                log.warn('available')
 				render text: "Layer is available", status: 200
 			}
 			else {
@@ -26,7 +26,7 @@ class CheckLayerAvailabilityController {
 		}
 		else {
 
-			render text: "layerId not supplied or not an integer. layerId: '${params.layerId}'", contentType: "text/html", encoding: "UTF-8", status: 500
+			render text: "id not supplied or not an integer. id: '${params.id}'", contentType: "text/html", encoding: "UTF-8", status: 500
 		}
 	}
 }

@@ -94,7 +94,7 @@ class SecurityFilters {
             }
         }
 
-        checkLayerAvailabilityAccess(controller: "checkLayerAvailability", action: "index") {
+        checkLayerAvailabilityAccess(controller: "checkLayerAvailability", action: "show") {
             before = {
                 logRequest("checkLayerAvailabilityAccess", controllerName, actionName)
                 // Allow all access
