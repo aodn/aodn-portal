@@ -36,7 +36,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         layer.map.events.register("move", this, function(e) {
 
-        	if (this.items.length != 0) {
+        	if (this.items.length != 0 && layer.map) {
 	            var extent = layer.map.getExtent();
 	
 	            this.bbox.setBox({
