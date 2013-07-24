@@ -58,15 +58,16 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     makeNcWMSColourScale: function(layer) {
         this.selectedLayer = layer;
 
-        // see if the user has changed these values
-        if (layer.metadata.userScaleRange != undefined) {
-            this.colourScaleMin.setValue(layer.metadata.userScaleRange[0]);
-            this.colourScaleMax.setValue(layer.metadata.userScaleRange[1]);
+        if (layer.params && layer.params.COLORSCALERANGE) {
+            var range = layer.params.COLORSCALERANGE.split(',')
+            this.colourScaleMin.setValue(range[0]);
+            this.colourScaleMax.setValue(range[1]);
         }
-        else if (layer.metadata.scaleRange != undefined) {
-            this.colourScaleMin.setValue(layer.metadata.scaleRange[0]);
-            this.colourScaleMax.setValue(layer.metadata.scaleRange[1]);
+        else {
+            this.colourScaleMin.setValue(undefined);
+            this.colourScaleMax.setValue(undefined);
         }
+
         this.show();
     },
 

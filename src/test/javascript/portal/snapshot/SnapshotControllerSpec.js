@@ -6,27 +6,32 @@
  */
 
 describe("Portal.snapshot.SnapshotController", function() {
-    
-    var mockMap = {
-        getExtent : function() {
-            return new OpenLayers.Bounds(-40, -60, 110, 20);
-        },
-        layers : [ {
-            grailsLayerId : 1,
-            getVisibility : function() {
-                return true;
-            }
-        } ],
-        zoomToExtent : jasmine.createSpy()
-    };
 
-    // Mock required config settings
-    Ext.namespace('Portal.app.config.currentUser');
+    var mockMap;
+    var snapshotController;
 
-    Portal.app.config.currentUser.id = 1;
+    beforeEach(function() {
+        mockMap = {
+            getExtent : function() {
+                return new OpenLayers.Bounds(-40, -60, 110, 20);
+            },
+            layers : [ {
+                grailsLayerId : 1,
+                getVisibility : function() {
+                    return true;
+                }
+            } ],
+            zoomToExtent : jasmine.createSpy()
+        };
 
-    var snapshotController = new Portal.snapshot.SnapshotController({
-        map : mockMap
+        // Mock required config settings
+        Ext.namespace('Portal.app.config.currentUser');
+
+        Portal.app.config.currentUser.id = 1;
+
+        snapshotController = new Portal.snapshot.SnapshotController({
+            map : mockMap
+        });
     });
 
     it("creates snapshptController with a snapshot Proxy on instantiation", function() {
@@ -140,39 +145,87 @@ describe("Portal.snapshot.SnapshotController", function() {
         expect(options.opacity).toBeUndefined();
     });
 
-    // test for missing style problem 
-    it("addSnapshotLayer calls Ext.MsgBus.publish with style in layerParams.styles", function() {
-        spyOn(Ext.MsgBus, 'publish');
-        var snapshotLayer = {
-                id : 101,
-                hidden : false,
-                opacity : null,
+    describe('addSnapshotLayer', function() {
+        beforeEach(function() {
+            spyOn(Ext.MsgBus, 'publish');
+        });
+
+        // test for missing style problem
+        it("addSnapshotLayer calls Ext.MsgBus.publish with style in layerParams.styles", function() {
+            var snapshotLayer = {
                 styles : "greyscale",
                 layer : {
                     id : 301
                 }
-        };
+            };
 
-        snapshotController.addSnapshotLayer(snapshotLayer);
+            snapshotController.addSnapshotLayer(snapshotLayer);
+            var params = Ext.MsgBus.publish.mostRecentCall.args[1].layerParams;
+            expect(params.styles).toEqual("greyscale");
+        });
 
-        var params = Ext.MsgBus.publish.mostRecentCall.args[1].layerParams;
+        it('no ncwms param range', function() {
+            var snapshotLayer = {
+            }
 
-        expect(params.styles).toEqual("greyscale");
+            snapshotController.addSnapshotLayer(snapshotLayer);
+            var params = Ext.MsgBus.publish.mostRecentCall.args[1].params;
+            expect(params.COLORSCALERANGE).toBeUndefined();
+        });
+
+        it('ncwms param range', function() {
+            var snapshotLayer = {
+                ncwmsParamMin: 2.3,
+                ncwmsParamMax: 10.12
+            }
+
+            snapshotController.addSnapshotLayer(snapshotLayer);
+            expect(Ext.MsgBus.publish.mostRecentCall.args[1].params.COLORSCALERANGE).toEqual('2.3,10.12');
+        });
     });
 
-    // test for opacity not saved problem
+    describe('getSnapshotLayer', function() {
 
-    it("getSnapshotLayer sets opacity from maplayer", function() {
-        var mapLayer = {
+        // test for opacity not saved problem
+        it("getSnapshotLayer sets opacity from maplayer", function() {
+            var mapLayer = {
                 grailsLayerId: 1,
                 opacity : 1.0,
                 isBaseLayer: false,
                 getVisibility: function() { return false; }
-        }
-                
-        var snapshotLayer = snapshotController.getSnapshotLayer(mapLayer);
+            }
 
-        expect(snapshotLayer.opacity).toEqual(1.0);
+            var snapshotLayer = snapshotController.getSnapshotLayer(mapLayer);
+
+            expect(snapshotLayer.opacity).toEqual(1.0);
+        });
+
+        describe('ncwms parameter ranges', function() {
+
+            var mapLayer;
+
+            beforeEach(function() {
+                mapLayer = {
+                    grailsLayerId: 1,
+                    getVisibility: function() { return false; }
+                }
+            });
+
+            it('no range specified', function() {
+                var snapshotLayer = snapshotController.getSnapshotLayer(mapLayer);
+                expect(snapshotLayer.ncwmsParamMin).toBeUndefined();
+                expect(snapshotLayer.ncwmsParamMax).toBeUndefined();
+            });
+
+            it('range specifed', function() {
+                mapLayer.params = {
+                    COLORSCALERANGE: '2.3,6.7'
+                }
+                var snapshotLayer = snapshotController.getSnapshotLayer(mapLayer);
+
+                expect(snapshotLayer.ncwmsParamMin).toEqual(2.3);
+                expect(snapshotLayer.ncwmsParamMax).toEqual(6.7);
+            });
+        });
     });
-
 });
