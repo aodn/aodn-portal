@@ -99,7 +99,7 @@ databaseChangeLog = {
 	include file: '20121218-DN-StyleAbstractTextColumn.groovy'
 
     include file: '20130218-AM-ServerOwnerPermissions.groovy'
-    
+
     include file: '20130301-PBL-DefaultLayerZoom.groovy'
 
     include file: '20130305-PM-enableFilterFlag.groovy'
@@ -110,6 +110,8 @@ databaseChangeLog = {
 
 	include file: '20130708-CJ-UpdateDownloadFileFormat.groovy'
 
+	include file: '20130724-JB-NcWmsParamsInSnapshots.groovy'
+
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
 	// Instance-specific changes
@@ -118,5 +120,5 @@ databaseChangeLog = {
 	include file: 'soos-changelog.groovy'
 
 
-}
 
+}
