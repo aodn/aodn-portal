@@ -134,8 +134,7 @@ class SnapshotLayerTests extends GrailsUnitTestCase {
 
         snapshotLayer.save()
 
-        assertEquals(5, snapshotLayer.ncwmsParamMin)
-        assertEquals(23, snapshotLayer.ncwmsParamMax)
+        assertFalse(snapshotLayer.hasErrors())
     }
 
     void testParameterMaxLessThanMin() {
