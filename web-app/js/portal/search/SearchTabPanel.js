@@ -129,21 +129,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 			showlayer: this.onShowLayer
 		});
 
-		// set size of search form based on its content when its content is created and/or
-		// changed or the region containing the search is resized
-		// Ext isn't good at handling panels resizing based on content and scroll bars
-
-		this.mon(this.searchContainer, {
-			scope: this,
-			resize: this.setSearchContainerHeight
-		});
-
-		this.mon(this.searchForm, {
-			scope: this,
-			contentchange: this.setSearchContainerHeight,
-			afterrender: this.setSearchContainerHeight
-		});
-
 		this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
 	},
 
@@ -169,16 +154,6 @@ Portal.search.SearchTabPanel = Ext.extend(Ext.Panel, {
 	  this._changingBounds = true;
 	  this.minimap.setBounds(bounds);
 	  delete this._changingBounds;
-	},
-
-	setSearchContainerHeight: function() {
-		// wait a bit for new sizes to be reflected (there's no consistent
-		// resize event on elements across browsers or provided by Ext!)
-		this.setSearchContainerHeightDeferred.defer(50, this);
-	},
-
-	setSearchContainerHeightDeferred: function() {
-		this.searchPanel.doLayout();
 	},
 
 	resultsGridBbarBeforeChange: function(bbar, params) {
