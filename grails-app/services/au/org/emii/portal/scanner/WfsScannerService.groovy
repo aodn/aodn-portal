@@ -44,13 +44,11 @@ class WfsScannerService extends ScannerService {
 
     def callRegister(serverId, layerName, wfsScannerCallbackPassword){
 
-        //http://localhost:8080/Portal2/filter/updateFilter&password=thefreakingpassword
         Server server = Server.get(serverId)
 
         if (!server) {
 
-            log.debug("Cannot find server with ID: " + serverId)
-            throw new IllegalStateException("Cannot find server.")
+            throw new IllegalStateException("Cannot find Server with id: $serverId.")
         }
 
 	    if (!wfsScannerCallbackPassword) {
@@ -71,27 +69,23 @@ class WfsScannerService extends ScannerService {
         }
         else {
 
-            log.debug("WFSScanner currently only supports GEOSERVER.")
-            throw new IllegalStateException("WFSScanner currently only supports GEOSERVER. Please change the server type and try again.")
+            throw new IllegalStateException("WFS Scanner currently only supports Geoserver. Please change the server type and try again.")
         }
 
         return "Registered new scan job for server."
     }
 
-    def callUpdate(scanJobId) {
-
-        def jobId = scanJobId
+    def callUpdate(jobId) {
 
         if (!jobId) {
 
-            log.error("Cannot find job with ID: " + jobId)
-            throw new IllegalArgumentException("Cannot find job.")
+            throw new IllegalArgumentException("Invalid value for jobId: $jobId")
         }
 
         def address = "${scanJobUrl()}updateNow?id=${jobId}"
 
         callService(address)
 
-        return "Running new scan job for WFS."
+        return "Updated scan job $jobId"
     }
 }
