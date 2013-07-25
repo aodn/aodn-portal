@@ -135,7 +135,13 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 layer.cql = mapLayer.params.CQL_FILTER;
             }
 
+            if (mapLayer.params.COLORSCALERANGE) {
+                var range = mapLayer.params.COLORSCALERANGE.split(',');
+                layer.ncwmsParamMin = parseFloat(range[0]);
+                layer.ncwmsParamMax = parseFloat(range[1]);
+            }
         }
+
         layer.isBaseLayer = mapLayer.isBaseLayer;
         // using hidden as per OGC WMC spec but visible may make more sense!
         layer.hidden = !mapLayer.getVisibility();
@@ -157,6 +163,10 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
         if (snapshotLayer.cql != undefined && snapshotLayer.cql.length > 0) {
             params["CQL_FILTER"] = snapshotLayer.cql;
+        }
+
+        if (snapshotLayer.ncwmsParamMax && snapshotLayer.ncwmsParamMin) {
+            params['COLORSCALERANGE'] = snapshotLayer.ncwmsParamMin + ',' + snapshotLayer.ncwmsParamMax;
         }
 
         if (snapshotLayer.isBaseLayer) {
