@@ -81,11 +81,9 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     this.enableBubble('contentchange');
 
     this.mon(this.searchButton, 'click', this.onSearch, this);
-    this.mon(this.searchFiltersPanel, 'contentchange', this.refreshDisplay, this);
     
     this.mon(this.searchController, 'newsearch', this.handleNewSearch, this);
-    
-    this.on('activate', this.refreshDisplay, this);    
+ 
   },
 
   setExtent: function(bounds) {
@@ -98,14 +96,6 @@ Portal.search.SearchForm = Ext.extend(Ext.FormPanel, {
     }      
   },
   
-  refreshDisplay: function() {
-
-    this.doLayout();
-//  this.syncSize();
-    // let parent components know that the size of this component may have changed!
-    this.fireEvent('contentchange');
-  },
-
   afterRender: function() {
     Portal.search.SearchForm.superclass.afterRender.call(this);
 
