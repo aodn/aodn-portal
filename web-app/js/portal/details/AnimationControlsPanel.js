@@ -34,7 +34,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         }, this);
         
-        Ext.MsgBus.subscribe('beforeselectedLayerChanged', this._onBeforeSelectedLayerChanged, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, this._onBeforeSelectedLayerChanged, this);
 
         if (this.timeControl) {
             this.timeControl.events.on({

@@ -60,9 +60,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
     });
 
     afterEach(function() {
-        Ext.MsgBus.publish('beforeselectedLayerChanged', null);
+        Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, null);
         Ext.MsgBus.unsubscribe(
-            'beforeselectedLayerChanged', animationControlsPanel._onBeforeSelectedLayerChanged, animationControlsPanel);
+            PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, animationControlsPanel._onBeforeSelectedLayerChanged, animationControlsPanel);
     });
 
     describe('initialisation', function() {
@@ -363,7 +363,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheProgress').andCallThrough();
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd').andCallThrough();
 
-            Ext.MsgBus.publish('beforeselectedLayerChanged', ncWmsLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, ncWmsLayer);
             
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
@@ -382,7 +382,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             // Mock temporalExtent
             newLayer.temporalExtent = [ moment() ];
 
-            Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newLayer);
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.8
@@ -431,7 +431,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 // Mock temporalExtent
                 newLayer.temporalExtent = [ moment() ];
                 timeControl.configureForLayer(newLayer, 10);
-                Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newLayer);
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
             });
@@ -450,7 +450,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 var newLayer = new OpenLayers.Layer.NcWMS()
                 // Mock temporalExtent
                 newLayer.temporalExtent = [ moment() ];
-                Ext.MsgBus.publish('beforeselectedLayerChanged', newLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newLayer);
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
             });
