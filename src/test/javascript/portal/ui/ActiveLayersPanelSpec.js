@@ -20,6 +20,15 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
             expect(selectedLayerChangedSpy).toHaveBeenCalled();
         });
+
+        it("triggers " + PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED + " event", function() {
+
+            var beforeSelectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, beforeSelectedLayerChangedSpy);
+
+            activeLayersPanel.activeLayersTreePanelBeforeSelectHandler({}, { layer: { isAnimatable: function() { return false}}});
+            expect(beforeSelectedLayerChangedSpy).toHaveBeenCalled();
+        });
     });
 
     describe("layerRemoved event", function() {
