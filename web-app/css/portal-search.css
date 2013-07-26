@@ -84,6 +84,7 @@
 
 .p-result-map-add, .p-result-map-go, .p-result-select-layer {
    background-repeat: no-repeat;
+   max-width: 30px;
 }
 
 .p-result-disabled {
