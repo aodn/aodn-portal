@@ -81,7 +81,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._updateLayerLoadingSpinner(this.layers.getLayersLoadingCount());
         }, this);
 
-        Ext.MsgBus.subscribe('beforeselectedLayerChanged', function(subject, openlayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
 

@@ -75,6 +75,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+<script src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/OpenLayers.js')}"
