@@ -135,7 +135,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 title: openLayer.name
             });
 
-            Ext.MsgBus.publish('beforeselectedLayerChanged', openLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, openLayer);
             
             this.add(layerRecord);
 

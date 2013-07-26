@@ -64,6 +64,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.mon(this.root, 'remove', this.updateTitle, this);
 
         this.getSelectionModel().on("selectionchange", this.activeLayersTreePanelSelectionChangeHandler, this);
+        this.getSelectionModel().on("beforeselect", this.activeLayersTreePanelBeforeSelectHandler, this);
         this.on('beforeremove', this.beforeActiveLayerRemoved, this);
 
         Ext.MsgBus.subscribe('layerRemoved', function(subject, openLayer) {
@@ -92,11 +93,16 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         }, this);
     },
 
+    activeLayersTreePanelBeforeSelectHandler: function(selectionModel, newNode, oldNode) {
+        if (newNode != null) {
+            Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newNode.layer);
+        }
+    },
+
     activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node) {
         if (node != null) {
             this.fireEvent('selectedactivelayerchanged'); // zoom to layer call
             Ext.MsgBus.publish("selectedLayerChanged", this.getSelectedLayer());
-
         }
     },
 
@@ -159,7 +165,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 
     getSelectedLayer: function() {
         var node = this.getSelectedNode();
-        return (node != null) ? this.getSelectedNode().layer : null;
+        return (node != null) ? node.layer : null;
     },
 
     zoomToLayer: function() {
