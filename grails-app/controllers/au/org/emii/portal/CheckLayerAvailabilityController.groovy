@@ -17,7 +17,7 @@ class CheckLayerAvailabilityController {
 		if (params.id?.isInteger()) {
 
 			if (checkLayerAvailabilityService.isLayerAlive(params)) {
-                log.warn('available')
+
 				render text: "Layer is available", status: 200
 			}
 			else {
