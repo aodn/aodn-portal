@@ -15,29 +15,23 @@
             jQuery(this).toggleClass("hover")
               .next().stop(true, true).slideToggle();
 
-          });
+              });
 
-        // getFeatureInfo popup links
-        jQuery('.featureinfocontent a').live('hover',
-            function () {
-                jQuery(this).attr('target', '_blank').addClass('external');
-            });
-		  
 		  // activelayer/tree labels
 		  jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').live('hover',
           function () {
 			jQuery(this).attr('title', jQuery(this).html());
 			jQuery(this).die('hover'); // This removes the .live() functionality
           });
-		  
+
 		  // helper tooltip for unpin (popup)
 		  jQuery('.x-tool-unpin').live('hover',
           function () {
 			jQuery(this).attr('title', "Click to move and resize");
 			jQuery(this).die('hover'); // This removes the .live() functionality
           });
-		  
-		  
+
+
 		  jQuery('.layersDiv, .olControlOverviewMapElement')
 				.live("mouseenter", function () {
 				  $(this).addClass("fullTransparency");
@@ -46,7 +40,7 @@
 				  $(this).removeClass("fullTransparency");
 				});
 
-		  
+
       </script>
       <!-- Import extra pluggins-->
       <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery/jquery-autocomplete1.1.js')}"></script>
