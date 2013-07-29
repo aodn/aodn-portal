@@ -62,6 +62,20 @@ class LayerControllerTests extends ControllerUnitTestCase {
 		assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
     }
 
+    void testSetWfsLayerToNull() {
+		Layer wfsLayer = new Layer(id: 1000, name: "wfsLayer")
+		Layer layer = new Layer(id: 100, name: "mapLayer", wfsLayer: wfsLayer)
+		
+		mockDomain Layer, [layer, wfsLayer]
+		
+		controller.params.id = 100
+		controller.params.wfsLayer = ''
+		
+		controller.update()
+		
+		assertNull layer.wfsLayer 
+    }
+
 	void testToResponseMap() {
 		def data = ['a', 'b', 'c', 'd', 'e', 'f']
 		def response = this.controller._toResponseMap(data, data.size())
