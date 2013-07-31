@@ -79,7 +79,9 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
         if (node.attributes.grailsLayerId) {
             this.fireEvent('addlayerclicked');
 
-            Ext.MsgBus.publish('addLayerUsingServerId', { id: node.attributes.grailsLayerId});
+            Portal.data.LayerStore.instance().addUsingServerId({
+                id: node.attributes.grailsLayerId
+            });
         }
     },
 

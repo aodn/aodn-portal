@@ -289,7 +289,7 @@ function setExtWmsLayer(url, label, type, layer, sld, options, style) {
         }
     }
 
-    Ext.MsgBus.publish('addLayerUsingDescriptor', new Portal.common.LayerDescriptor({
+    Portal.data.LayerStore.instance().addUsingDescriptor(new Portal.common.LayerDescriptor({
         server:{
             uri:url,
             type:type,
