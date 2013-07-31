@@ -39,7 +39,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
             scope: this,
             success: function(resp) {
-
                 var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
                 if (layerDescriptor) {
                     layerDescriptor.cql = layerLink.cql;
@@ -47,7 +46,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 }
             },
             failure: function(resp) {
-
                 this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink));
             }
         });
@@ -190,32 +188,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _registerMessageListeners: function() {
-        Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
-            this.addUsingDescriptor(layerDescriptor)
-        }, this);
-
-        /**
-         * A "LayerLink" is a JSON object which is returned from GeoNetwork (I think :-)
-         */
-        Ext.MsgBus.subscribe('addLayerUsingLayerLink', function(subject, layerLink) {
-            this.addUsingLayerLink(layerLink)
-        }, this);
-
-        /**
-         * This is used when loading WMS layers from 3rd party servers.
-         */
-        Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
-            this.addUsingOpenLayer(openLayer)
-        }, this);
-
-        /**
-         * This will be called when a layer is selected from the "Map Layer Chooser" (in which
-         * case the layer relates to a layer stored on the server by the given ID).
-         */
-        Ext.MsgBus.subscribe('addLayerUsingServerId', function(subject, args) {
-            this.addUsingServerId(args)
-        }, this);
-
         Ext.MsgBus.subscribe('removeLayer', function(subject, openLayer) {
             this.removeUsingOpenLayer(openLayer);
             Ext.MsgBus.publish('layerRemoved', openLayer);
