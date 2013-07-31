@@ -24,7 +24,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions:this.appConfig.hideLayerOptions,
             layersLoading:0,
-            layers:new Portal.data.LayerStore(),
+            layers: Portal.data.LayerStore.instance(),
             html:" \
                     <div id='loader' style='position: absolute; top: 50%; left: 43%; z-index: 9000;'> \
                         <div id='jsloader' style='height: 70px; width: 70px; float: left;'></div> \

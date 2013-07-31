@@ -136,7 +136,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             });
 
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, openLayer);
-            
+
             this.add(layerRecord);
 
             // Only want to be notified of changes in no base layer
@@ -281,3 +281,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
     }
 });
+
+Portal.data.LayerStore.THE_INSTANCE;
+
+Portal.data.LayerStore.instance = function() {
+
+    if (!Portal.data.LayerStore.THE_INSTANCE) {
+        Portal.data.LayerStore.THE_INSTANCE = new Portal.data.LayerStore();
+    }
+
+    return Portal.data.LayerStore.THE_INSTANCE;
+};

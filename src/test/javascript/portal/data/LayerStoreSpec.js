@@ -31,8 +31,12 @@ describe("Portal.data.LayerStore", function() {
 
     beforeEach(function() {
 
-        layerStore = new Portal.data.LayerStore();
+        layerStore = Portal.data.LayerStore.instance();
         expect(layerStore.getCount()).toBe(0);
+    });
+
+    afterEach(function() {
+        Portal.data.LayerStore.THE_INSTANCE = undefined;
     });
 
     function createOpenLayer(title, url) {
@@ -326,6 +330,19 @@ describe("Portal.data.LayerStore", function() {
 
         it('getDefaultBaseLayer', function() {
             expect(layerStore.getDefaultBaseLayer()).toBe(baseLayerRecord);
+        });
+    });
+
+    describe('layer store as singleton', function() {
+
+        it('accessor function', function() {
+            expect(Portal.data.LayerStore.instance()).toBeTruthy();
+        });
+
+        it('singleton', function() {
+            var firstCall = Portal.data.LayerStore.instance();
+            var secondCall = Portal.data.LayerStore.instance();
+            expect(firstCall).toBe(secondCall);
         });
     });
 });
