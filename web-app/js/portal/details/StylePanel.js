@@ -190,7 +190,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var opts = "";
 
         // Palette used for once off. eg combobox picker
-        if (palette != undefined) {
+        if (palette && palette != "") {
             opts += "&PALETTE=" + palette;
         }
 

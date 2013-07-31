@@ -12,8 +12,9 @@ function getParameterByNameFromUrlString(urlString, name) {
 	var regexS = "[\\?&]" + name + "=([^&#]*)";
 	var regex = new RegExp(regexS);
 	var results = regex.exec(urlString);
+
 	if(results == null) {
-		return "";
+		return null;
 	}
 	else {
 		return decodeURIComponent(results[1].replace(/\+/g, " "));
@@ -40,7 +41,7 @@ describe("Portal.details.StylePanel", function() {
                 url: ""
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
-            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("");
+            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual(null);
         });
 
         it("should remove version prefix (before '-')", function() {
@@ -57,6 +58,46 @@ describe("Portal.details.StylePanel", function() {
             layer.server.type = "NCWMS-1.1.1";
             urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
+        });
+
+        it("should include style in url if style is not empty", function() {
+
+            var layer = {
+                params: {},
+                url: ""
+            };
+            var urlString = stylePanel.buildGetLegend(layer, 'style/palette', null, false);
+            expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual("style/palette");
+        });
+
+        it("should not include style in url if style is empty", function() {
+
+            var layer = {
+                params: {},
+                url: ""
+            };
+            var urlString = stylePanel.buildGetLegend(layer, '', null, false);
+            expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual(null);
+        });
+
+        it("should include palette in url if palette is not empty", function() {
+
+            var layer = {
+                params: {},
+                url: ""
+            };
+            var urlString = stylePanel.buildGetLegend(layer, '', 'palette', false);
+            expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual("palette");
+        });
+
+        it("should not include palette in url if palette is empty", function() {
+
+            var layer = {
+                params: {},
+                url: ""
+            };
+            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual(null);
         });
     });
 
