@@ -155,4 +155,28 @@ describe("Portal.search.ResultsGrid", function() {
             expect( resultGrid.containsProtocol( [], "ThirdProtocolName" )).toEqual( false );
         });
     });
+
+    describe('layer store interaction', function() {
+        var link;
+
+        beforeEach(function() {
+            link = {};
+            spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
+        });
+
+        it('addToMapExecute calls LayerStore.addUsingLayerLink', function() {
+            spyOn(resultGrid, 'getLayerLink').andReturn(link);
+
+            resultGrid.addToMapExecute({}, 0, 0);
+            expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalledWith(link);
+        });
+
+        it('LayerSelectionWindow.addLayer event results in LayerStore.addUsingLayerLink to be called', function() {
+            var linkStore = new Portal.search.data.LinkStore();
+            var layerSelectionWindow = resultGrid.buildLayerSelectionWindow(linkStore);
+
+            layerSelectionWindow.fireEvent('addlayer', link);
+            expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalledWith(link);
+        });
+    });
 });

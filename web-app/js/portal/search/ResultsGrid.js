@@ -271,7 +271,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                     delete this.layerSelectionWindow;
                 },
                 addlayer: function(layerLink) {
-                    Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
+                    Portal.data.LayerStore.instance().addUsingLayerLink(layerLink);
                 }
             }
         });
@@ -314,7 +314,7 @@ Portal.search.ResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     addToMapExecute: function(grid, rowIndex, colIndex) {
-        Ext.MsgBus.publish('addLayerUsingLayerLink', this.getLayerLink(rowIndex));
+        Portal.data.LayerStore.instance().addUsingLayerLink(this.getLayerLink(rowIndex));
     },
 
     getProtocolCount: function(links, values) {

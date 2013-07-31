@@ -120,7 +120,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     _viewButtonOnClick: function(button, e, rowIndex) {
         var layerLink = this._getLayerLink(rowIndex);
         if (layerLink) {
-            Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
+            Portal.data.LayerStore.instance().addUsingLayerLink(layerLink);
             setViewPortTab(TAB_INDEX_MAP);
         }
     },

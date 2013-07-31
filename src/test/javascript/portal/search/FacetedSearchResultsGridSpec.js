@@ -23,20 +23,20 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
         testLayerLink = {};
 
         // Add spies
-        spyOn(Ext.MsgBus, 'publish');
+        spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
     });
 
     it('should publish when a layer link is returned', function() {
         spyOn(fsrg, '_getLayerLink').andReturn(testLayerLink);
-        fsrg._viewButtonOnClick(null, testTarget);
 
-        expect(Ext.MsgBus.publish).toHaveBeenCalledWith('addLayerUsingLayerLink', testLayerLink);
+        fsrg._viewButtonOnClick(null, testTarget);
+        expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalledWith(testLayerLink);
     });
 
     it('should not publish when undefined is returned as a layer link', function() {
         spyOn(fsrg, '_getLayerLink').andReturn(undefined);
-        fsrg._viewButtonOnClick(null, testTarget);
 
-        expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
+        fsrg._viewButtonOnClick(null, testTarget);
+        expect(Portal.data.LayerStore.instance().addUsingLayerLink).not.toHaveBeenCalled();
     });
 });
