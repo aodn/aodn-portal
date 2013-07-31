@@ -135,21 +135,6 @@ describe("Portal.data.LayerStore", function() {
         });
     });
 
-    describe('layer related events', function() {
-
-        it('removeLayerUsingOpenLayer', function() {
-
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-
-            spyOn(layerStore, 'removeUsingOpenLayer').andCallThrough();
-            expect(layerStore.getCount()).toBe(1);
-            Ext.MsgBus.publish('removeLayerUsingOpenLayer', openLayer);
-            expect(layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(openLayer);
-            expect(layerStore.getCount()).toBe(0);
-        })
-    });
-
     describe('layers loaded automatically on construction', function() {
 
         beforeEach(function() {
@@ -174,23 +159,26 @@ describe("Portal.data.LayerStore", function() {
 
     describe('removing layers', function() {
 
-        it('remove open layer', function() {
+        describe('remove open layer', function() {
 
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(1);
+            var openLayer;
 
-            layerStore.removeUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(0);
-        });
+            beforeEach(function() {
+                openLayer = createOpenLayer();
+                layerStore.addUsingOpenLayer(openLayer);
+            });
 
-        it('remove open layer via message', function() {
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(1);
+            it('one less layer in store', function() {
+                expect(layerStore.getCount()).toBe(1);
+                layerStore.removeUsingOpenLayer(openLayer);
+                expect(layerStore.getCount()).toBe(0);
+            });
 
-            Ext.MsgBus.publish('removeLayer', openLayer);
-            expect(layerStore.getCount()).toBe(0);
+            it('layerRemoved event published', function() {
+                spyOn(Ext.MsgBus, 'publish');
+                layerStore.removeUsingOpenLayer(openLayer);
+                expect(Ext.MsgBus.publish).toHaveBeenCalledWith('layerRemoved', openLayer);
+            });
         });
 
         it('removeAll', function() {

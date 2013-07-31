@@ -43,8 +43,8 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
                 this.defaultMenuTree.toggleLayerNodes(openLayer.grailsLayerId,false,rootNode);
             }
         }, this);
-        Ext.MsgBus.subscribe('removeLayer', function(subject, message) {
-            this.removeLayer(message);
+        Ext.MsgBus.subscribe('layerRemoved', function(subject, message) {
+            this.layerRemoved(message);
         }, this);
         Ext.MsgBus.subscribe('removeAllLayers', function(subject, message) {
             this.resetTree();
@@ -85,7 +85,7 @@ Portal.ui.MapMenuPanel = Ext.extend(Ext.TabPanel, {
         }
     },
 
-    removeLayer: function(openLayer) {
+    layerRemoved: function(openLayer) {
         this.toggleLayerNodes(openLayer.grailsLayerId, true);
     }
 
