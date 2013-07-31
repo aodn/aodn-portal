@@ -179,19 +179,17 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
         }
         else {
             if (snapshotLayer.layer) {
-
-                Ext.MsgBus.publish('addLayerUsingServerId', {
-                    id:snapshotLayer.layer.id,
-                    layerOptions:options,
-                    layerParams:params,
-                    animated:snapshotLayer.animated,
-                    chosenTimes:snapshotLayer.chosenTimes
+                Portal.data.LayerStore.instance().addUsingServerId({
+                    id: snapshotLayer.layer.id,
+                    layerOptions: options,
+                    layerParams: params,
+                    animated: snapshotLayer.animated,
+                    chosenTimes: snapshotLayer.chosenTimes
                 });
             }
             else {
-
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
-                Ext.MsgBus.publish('addLayerUsingOpenLayer', layerDescriptor.toOpenLayer(options, params));
+                Portal.data.LayerStore.instance().addUsingOpenLayer(layerDescriptor.toOpenLayer(options, params));
             }
         }
     },
