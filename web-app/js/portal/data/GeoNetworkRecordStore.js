@@ -8,7 +8,7 @@
 
 Ext.namespace('Portal.data');
 
-Portal.data.GeoNetworkResultsStore = Ext.extend(Ext.data.XmlStore, {
+Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
 
     constructor : function(cfg) {
         cfg = cfg || {};
@@ -42,7 +42,7 @@ Portal.data.GeoNetworkResultsStore = Ext.extend(Ext.data.XmlStore, {
             }]
         }, cfg, defaults);
 
-        Portal.data.GeoNetworkResultsStore.superclass.constructor.call(this, config);
+        Portal.data.GeoNetworkRecordStore.superclass.constructor.call(this, config);
     },
 
     _getLinks: function(v, record){
