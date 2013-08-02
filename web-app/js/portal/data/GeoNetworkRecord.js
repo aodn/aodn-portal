@@ -6,28 +6,30 @@
  */
 Ext.namespace('Portal.data');
 
-// TODO: anyway to not have a global function here?
-_getLinks = function(v, record) {
-    var linkElems = Ext.DomQuery.jsSelect('link', record);
-    var links = new Array();
+Portal.data.LinksField = {
+    name: 'links',
+    convert: function(v, record) {
+        var linkElems = Ext.DomQuery.jsSelect('link', record);
+        var links = new Array();
 
-    Ext.each(linkElems, function(link) {
-        var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
-        var elements = linkValue.split('|');
+        Ext.each(linkElems, function(link) {
+            var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
+            var elements = linkValue.split('|');
 
-        links.push({
-            name: elements[0],
-            title: elements[1],
-            href: elements[2],
-            protocol: elements[3],
-            type: elements[4]
-        });
-    }, this);
+            links.push({
+                name: elements[0],
+                title: elements[1],
+                href: elements[2],
+                protocol: elements[3],
+                type: elements[4]
+            });
+        }, this);
 
-    return links;
+        return links;
+    }
 }
 
-Portal.data.Bbox = Ext.extend(Ext.data.Field, {
+Portal.data.BboxField = {
     name: 'bbox',
     convert: function(v, record) {
         var metaDataExtent = new Portal.search.MetadataExtent();
@@ -37,14 +39,14 @@ Portal.data.Bbox = Ext.extend(Ext.data.Field, {
 
         return metaDataExtent;
     }
-});
+}
 
 Portal.data.GeoNetworkRecord = Ext.data.Record.create([
     'title',
     'abstract',
     { name: 'uuid', mapping: 'info/uuid' },
-    { name: 'links', convert: _getLinks },
+    Portal.data.LinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-    new Portal.data.Bbox()
+    Portal.data.BboxField
 ]);
