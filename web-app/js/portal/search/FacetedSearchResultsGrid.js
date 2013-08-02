@@ -118,11 +118,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
-        var layerLink = this._getLayerLink(rowIndex);
-        if (layerLink) {
-            Portal.data.LayerStore.instance().addUsingLayerLink(layerLink);
-            setViewPortTab(TAB_INDEX_MAP);
-        }
+        var geoNetworkRecord = this.store.getAt(rowIndex);
+        Portal.data.ActiveGeoNetworkRecordStore.instance().add(geoNetworkRecord);
     },
 
     _viewButtonRenderer: function(value, metaData, record, rowIndex) {
