@@ -11,6 +11,7 @@ Ext.namespace('Portal.data');
 Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
 
     constructor : function(cfg) {
+
         cfg = cfg || {};
 
         var defaults = {
@@ -19,27 +20,7 @@ Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
         var config = Ext.apply({
             record : 'metadata',
             totalProperty: 'summary/@count',
-            fields: [{
-                name: 'title'
-            }, {
-                name: 'abstract'
-            }, {
-                name: 'uuid',
-                mapping: '*/uuid'
-            }, {
-                name: 'links',
-                convert: this._getLinks
-            }, {
-                name: 'source'
-            }, {
-                name: 'canDownload',
-                mapping: '*/canDownload',
-                defaultValue: true
-            }, {
-                name: 'bbox',
-                convert: this._getMetadataExtent,
-                scope: this
-            }]
+            fields: Portal.data.GeoNetworkRecord
         }, cfg, defaults);
 
         Portal.data.GeoNetworkRecordStore.superclass.constructor.call(this, config);

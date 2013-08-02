@@ -292,6 +292,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecordStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"
