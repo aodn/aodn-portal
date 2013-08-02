@@ -7,6 +7,7 @@
 Ext.namespace('Portal.data');
 
 Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecordStore, {
+
     constructor: function() {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
         this.on('add', this._onAdd, this);
