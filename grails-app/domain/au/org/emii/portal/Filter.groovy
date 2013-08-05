@@ -8,7 +8,7 @@
 
 package au.org.emii.portal
 
-class Filter implements Comparable{
+class Filter implements Comparable {
 
     String label //This is the human readable name
     FilterType type  //String, time, etc, etc.
@@ -55,8 +55,8 @@ class Filter implements Comparable{
 		filterData["label"] = label
 		filterData["type"] = type.toString()
 		filterData["name"] = name
-	    filterData["layerId"] = layer.id
-	    filterData["enabled"] = enabled
+		filterData["layerId"] = layer.id
+		filterData["enabled"] = enabled
 		filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues : []
 
 	    return filterData
@@ -67,8 +67,8 @@ class Filter implements Comparable{
 		type == FilterType.String || type == FilterType.Date
 	}
 
-    boolean equals(o){
-        return o.id == this.id && o.name.equals(this.name)
+    boolean equals(other){
+        return other.id == this.id && other.name.equals(this.name)
     }
 
 	@Override
@@ -78,8 +78,8 @@ class Filter implements Comparable{
 	}
 
 	@Override
-	int compareTo(o) {
+	int compareTo(other) {
 
-		label.toLowerCase() <=> o.label.toLowerCase()
+		label.toLowerCase() <=> other.label.toLowerCase()
 	}
 }
