@@ -623,17 +623,13 @@ class LayerController {
     def getFiltersAsJSON = {
         def layerInstance = Layer.get( params.layerId )
 
-        def results = []
-
         if ( layerInstance ) {
 
 			def filters = layerInstance.filters?.sort()
 
-            filters.findAll { it.enabled }.each {
-				results.add(it.toLayerData())
-			}
-
-            render results as JSON
+            render filters
+	            .findAll{ it.enabled }
+	            .collect{ it.toLayerData() } as JSON
         }
         else {
             def queryString = request.queryString ? "?$request.queryString" : ""

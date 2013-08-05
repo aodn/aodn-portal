@@ -65,15 +65,15 @@ class LayerControllerTests extends ControllerUnitTestCase {
     void testSetWfsLayerToNull() {
 		Layer wfsLayer = new Layer(id: 1000, name: "wfsLayer")
 		Layer layer = new Layer(id: 100, name: "mapLayer", wfsLayer: wfsLayer)
-		
+
 		mockDomain Layer, [layer, wfsLayer]
-		
+
 		controller.params.id = 100
 		controller.params.wfsLayer = ''
-		
+
 		controller.update()
-		
-		assertNull layer.wfsLayer 
+
+		assertNull layer.wfsLayer
     }
 
 	void testToResponseMap() {
@@ -137,10 +137,11 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.server = server1
 
         def filter1 = new Filter(name: "vesselName", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true)
-        def filter2 = new Filter(name: "sensorType", type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: true)
+        def filter2 = new Filter(name: "voyage dates", type: FilterType.Date, label: "Voyage Dates", possibleValues: ["date1", "date2"], layer: layer1, enabled: true)
 	    def filter3 = new Filter(name: "disabled filter", type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: false)
+	    def filter4 = new Filter(name: "numberFilter", type: FilterType.Number, label: "numberFilter", possibleValues: ["1", "2"], layer: layer1, enabled: true)
 
-        layer1.filters = [filter1, filter2, filter3]
+        layer1.filters = [filter1, filter2, filter3, filter4]
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1])
@@ -152,9 +153,13 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
 	    def response = this.controller.response.contentAsString
 
-        assertTrue response.contains("""{"label":"Vessel Name","type":"String","name":"vesselName","possibleValues":["ship1","ship2","ship3"],"layerId":3,"enabled":true}""")
-        assertTrue response.contains("""{"label":"Sensor Type","type":"String","name":"sensorType","possibleValues":["type1","type2"],"layerId":3,"enabled":true}""")
-	    assertFalse response.contains("disabled filter")
+	    def expected = """[\
+{"label":"numberFilter","type":"Number","name":"numberFilter","layerId":3,"enabled":true,"possibleValues":[]},\
+{"label":"Vessel Name","type":"String","name":"vesselName","layerId":3,"enabled":true,"possibleValues":["ship1","ship2","ship3"]},\
+{"label":"Voyage Dates","type":"Date","name":"voyage dates","layerId":3,"enabled":true,"possibleValues":["date1","date2"]}\
+]"""
+
+	    assertEquals expected, response // Validates encoding, ordering and only including 'enabled' filters
     }
 
     void testGetLayerWithoutFilters(){
