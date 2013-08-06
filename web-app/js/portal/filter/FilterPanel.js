@@ -131,7 +131,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
 					if(aFilterIsEnabled){
 						this.setVisible(true);
-		
+
 						this.addButton = new Ext.Button({
 							cls: "x-btn-text-icon",
 							icon: "images/basket_add.png",
@@ -151,7 +151,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 								click: this._clearFilters
 							}
 						});
-						
+
 						this.add(this.addButton);
 						this.add(this.clearFiltersButton);
 
@@ -202,6 +202,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		this._updateFilter();
     },
 
+    _clearFilters: function(){
+        for(var key in this.activeFilters){
+            this.activeFilters[key].handleRemoveFilter();
+        }
+    },
+
     _makeWfsUrl: function(serverURL, layerName){
 
         var queryArgs = this._makeWfsUrlQueryArgs(layerName);
@@ -234,43 +240,76 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return queryArgs;
     },
 
-    _makeDownloadURL: function(){
-        if(this.layer.wfsLayer == null){
+    _addToCart: function(){
+
+        addToDownloadCart(this._dataDownloadItem());
+
+        if (this.layer.getMetadataUrl()) {
+
+            addToDownloadCart(this._metadataItem());
+        }
+    },
+
+    _dataDownloadItem: function() {
+
+        return this._makeDownloadCartItem(
+            this.layer.getMetadataUrl(),
+            this.layer.name,
+            "Filtered " + this.layer.name + " data",
+            this._makeDataDownloadURL(),
+            "text/csv",
+            "WWW:DOWNLOAD-1.0-http--downloaddata",
+            this._sanitiseLayerNameForFilename() + ".csv"
+        );
+    },
+
+    _metadataItem: function() {
+
+        return this._makeDownloadCartItem(
+            this.layer.getMetadataUrl(),
+            this.layer.name,
+            this.layer.name + " metadata",
+            this.layer.getMetadataUrl(),
+            "application/xml",
+            "WWW:LINK-1.0-http--link",
+            this._sanitiseLayerNameForFilename() + "_metadata.xml"
+        );
+    },
+
+    _makeDownloadCartItem: function(recordUuid, recordTitle, linkTitle, linkHref, linkType, linkProtocol, linkPreferredFilename) {
+
+        var tup = {
+            record: {
+                data: {}
+            },
+            link: {}
+        };
+
+        tup.record.data["uuid"] = recordUuid;
+        tup.record.data["title"] = recordTitle;
+
+        tup.link["title"] = linkTitle;
+        tup.link["href"] = linkHref;
+        tup.link["type"] = linkType;
+        tup.link["protocol"] = linkProtocol;
+        tup.link["preferredFname"] = linkPreferredFilename;
+
+        return tup;
+    },
+
+    _makeDataDownloadURL: function() {
+
+        if (this.layer.wfsLayer == null) {
             return this._makeWfsUrl(this.layer.server.uri, this.layer.params.LAYERS);
         }
 
         return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
-    _addToCart: function(){
-		var tup = new Object();
-		tup.record = new Object();
-		tup.record.data = new Object();
-		tup.link = new Object();
+    _sanitiseLayerNameForFilename: function(){
 
-		//pretending to be a geonetwork metadata record
-		tup.record.data["uuid"] = this.layer.getMetadataUrl();
-		tup.record.data["title"] =  this.layer.name;
-		tup.link["type"] =  "text/csv";
-		tup.link["href"] =  this._makeDownloadURL();
-		tup.link["protocol"] =  "WWW:DOWNLOAD-1.0-http--downloaddata";
-		tup.link["preferredFname"] = this._makePreferredFname();
-        tup.link["title"] = "Filtered " + this.layer.name + " data";
-
-        addToDownloadCart(tup);
-    },
-    
-    _clearFilters: function(){
-        for(var key in this.activeFilters){
-            this.activeFilters[key].handleRemoveFilter();
-        }
-    },
-
-    _makePreferredFname: function(){
         // replace ':' used to namespace layers by geoserver with '#'
         // as its not allowed in windows filenames
-        var preferredName = this.layer.params.LAYERS.replace(':', '#');
-
-        return preferredName + ".csv"
+        return this.layer.params.LAYERS.replace(':', '#');
     }
 });
