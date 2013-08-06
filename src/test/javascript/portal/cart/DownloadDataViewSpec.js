@@ -6,17 +6,17 @@
  *
  */
 
-describe("Portal.cart.DownLoadList", function() {
+describe("Portal.cart.DownloadDataView", function() {
 
     it('on cart Changed event', function() {
         spyOn(Ext.data.Store.prototype,'load').andCallFake(function() {return true});
 
-        var downloadList = new Portal.cart.DownloadList({});
+        var downloadDataView = new Portal.cart.DownloadDataView({});
 
         Ext.data.Store.prototype.load.reset(); //reset the spy
 
         Ext.MsgBus.publish('downloadCart.cartContentsUpdated');
 
-        expect(downloadList.downloadItemsStore.load).toHaveBeenCalled();
+        expect(downloadDataView.downloadItemsStore.load).toHaveBeenCalled();
     });
 });

@@ -18,6 +18,8 @@
             <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab1"><a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;">Map</a></div>
 
             <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab2"><a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;">Search</a></div>
+
+            <div class="viewPortLinksBackground viewPortLinks" id="viewPortTab3"><a href="" onClick="setViewPortTab(TAB_INDEX_DOWNLOAD_CART); return false;">Download</a></div>
         </div>
     </g:if>
 

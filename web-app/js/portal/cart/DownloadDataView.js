@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
+Portal.cart.DownloadDataView = Ext.extend(Ext.DataView, {
 
     constructor:function (cfg) {
 
@@ -70,7 +70,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
             autoScroll:true
         }, cfg);
 
-        Portal.cart.DownloadList.superclass.constructor.call(this, config);
+        Portal.cart.DownloadDataView.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
             this.downloadItemsStore.load();

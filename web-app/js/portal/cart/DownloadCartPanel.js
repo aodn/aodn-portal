@@ -11,7 +11,7 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.listDataView = new Portal.cart.DownloadList();
+        this.listDataView = new Portal.cart.DownloadDataView();
         this.lastCartRemovedUuid = [];
 
         this.doUndoButton = new Ext.ux.Hyperlink({
@@ -118,4 +118,3 @@ Portal.cart.DownloadCartPanel = Ext.extend(Ext.Panel, {
         }
     }
 });
-

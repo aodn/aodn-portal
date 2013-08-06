@@ -311,7 +311,7 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
 
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadList.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadDataView.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"
         type="text/javascript"></script>
