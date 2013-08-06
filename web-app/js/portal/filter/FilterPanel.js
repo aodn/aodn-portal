@@ -208,38 +208,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _makeWfsUrl: function(serverURL, layerName){
-
-        var queryArgs = this._makeWfsUrlQueryArgs(layerName);
-
-        var wfsURL = serverURL.replace("/wms", "/wfs");
-
-        if (wfsURL.indexOf("?") > -1)
-            wfsURL += "&";
-        else
-            wfsURL += "?";
-
-        return wfsURL + Ext.urlEncode(queryArgs);
-    },
-
-    _makeWfsUrlQueryArgs: function(layerName) {
-
-        var queryArgs = {
-            typeName: layerName,
-            SERVICE: "WFS",
-            outputFormat: "csv",
-            REQUEST: "GetFeature",
-            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
-        };
-
-        if (this.layer.params.CQL_FILTER) {
-
-            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER;
-        }
-
-        return queryArgs;
-    },
-
     _addToCart: function(){
 
         addToDownloadCart(this._dataDownloadItem());
@@ -304,6 +272,39 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
 
         return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
+    },
+
+
+    _makeWfsUrl: function(serverURL, layerName){
+
+        var queryArgs = this._makeWfsUrlQueryArgs(layerName);
+
+        var wfsURL = serverURL.replace("/wms", "/wfs");
+
+        if (wfsURL.indexOf("?") > -1)
+            wfsURL += "&";
+        else
+            wfsURL += "?";
+
+        return wfsURL + Ext.urlEncode(queryArgs);
+    },
+
+    _makeWfsUrlQueryArgs: function(layerName) {
+
+        var queryArgs = {
+            typeName: layerName,
+            SERVICE: "WFS",
+            outputFormat: "csv",
+            REQUEST: "GetFeature",
+            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
+        };
+
+        if (this.layer.params.CQL_FILTER) {
+
+            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER;
+        }
+
+        return queryArgs;
     },
 
     _sanitiseLayerNameForFilename: function(){

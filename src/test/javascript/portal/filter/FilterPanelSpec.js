@@ -8,18 +8,105 @@ describe("Portal.filter.FilterPanel", function() {
 
     var filterPanel;
 
-    describe('_makePreferredFname()', function() {
+    describe('_sanitiseLayerNameForFilename()', function() {
 
         beforeEach(function() {
             filterPanel = new Portal.filter.FilterPanel({});
         });
 
-        it('Should return name + \'.csv\' replacing \':\' with \'#\'', function() {
+        it('Should return name replacing \':\' with \'#\'', function() {
             filterPanel.layer = {params: {LAYERS: 'imos:argo_float'}};
 
-            var preferredFname = filterPanel._makePreferredFname();
+            var safeName = filterPanel._sanitiseLayerNameForFilename();
 
-            expect(preferredFname).toEqual('imos#argo_float.csv');
+            expect(safeName).toEqual('imos#argo_float');
+        });
+    });
+
+    describe('_makeDownloadCartItem()', function() {
+
+        beforeEach(function() {
+            filterPanel = new Portal.filter.FilterPanel({});
+        });
+
+        it('Should create an item with the correct fields', function() {
+
+            var item = filterPanel._makeDownloadCartItem(
+                'record uuid',
+                'record title',
+                'title',
+                'href',
+                'type',
+                'protocol',
+                'filename'
+            );
+
+            expect(item.record.data.uuid).toEqual('record uuid');
+            expect(item.record.data.title).toEqual('record title');
+
+            expect(item.link.title).toEqual('title');
+            expect(item.link.href).toEqual('href');
+            expect(item.link.type).toEqual('type');
+            expect(item.link.protocol).toEqual('protocol');
+            expect(item.link.preferredFname).toEqual('filename');
+        });
+    });
+
+    describe('_dataDownloadItem()', function() {
+
+        it('Should call _makeDownloadCartItem() with correct parameters', function() {
+
+            filterPanel = new Portal.filter.FilterPanel({});
+            filterPanel.layer = {
+                name: 'layerName',
+                params: {LAYERS: 'imos:argo_float'},
+                getMetadataUrl: function() { return "metadataUrl" }
+            };
+            spyOn(filterPanel, '_makeDownloadCartItem');
+            spyOn(filterPanel, '_makeDataDownloadURL').andReturn('downloadUrl');
+            spyOn(filterPanel, '_sanitiseLayerNameForFilename').andReturn('filename');
+
+            filterPanel._dataDownloadItem();
+
+            expect(filterPanel._makeDownloadCartItem).toHaveBeenCalledWith(
+                'metadataUrl',
+                'layerName',
+                'Filtered layerName data',
+                'downloadUrl',
+                'text/csv',
+                'WWW:DOWNLOAD-1.0-http--downloaddata',
+                'filename.csv'
+            );
+            expect(filterPanel._makeDataDownloadURL).toHaveBeenCalled();
+            expect(filterPanel._sanitiseLayerNameForFilename).toHaveBeenCalled();
+        });
+    });
+
+    describe('_metadataItem()', function() {
+
+        it('Should call _makeDownloadCartItem() with correct parameters', function() {
+
+            filterPanel = new Portal.filter.FilterPanel({});
+            filterPanel.layer = {
+                name: 'layerName',
+                params: {LAYERS: 'imos:argo_float'},
+                getMetadataUrl: function() { return "metadataUrl" }
+            };
+            spyOn(filterPanel, '_makeDownloadCartItem');
+            spyOn(filterPanel, '_sanitiseLayerNameForFilename').andReturn('filename');
+
+            filterPanel._metadataItem();
+
+            expect(filterPanel._makeDownloadCartItem).toHaveBeenCalledWith(
+                'metadataUrl',
+                'layerName',
+                'layerName metadata',
+                'metadataUrl',
+                'application/xml',
+                'WWW:LINK-1.0-http--link',
+                'filename_metadata.xml'
+            );
+            expect(filterPanel._sanitiseLayerNameForFilename).toHaveBeenCalled();
         });
     });
 
