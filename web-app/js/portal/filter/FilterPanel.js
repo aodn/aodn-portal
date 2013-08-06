@@ -30,6 +30,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	this.GET_FILTER = "layer/getFiltersAsJSON";
     	this.activeFilters = {};
 
+
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -131,7 +132,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
 					if(aFilterIsEnabled){
 						this.setVisible(true);
-		
+
 						this.addButton = new Ext.Button({
 							cls: "x-btn-text-icon",
 							icon: "images/basket_add.png",
@@ -151,7 +152,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 								click: this._clearFilters
 							}
 						});
-						
+
 						this.add(this.addButton);
 						this.add(this.clearFiltersButton);
 
@@ -200,6 +201,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _handleAddFilter: function(aFilter){
     	this.activeFilters[aFilter.getFilterName()] = aFilter;
 		this._updateFilter();
+    },
+
+    _clearFilters: function(){
+        for(var key in this.activeFilters){
+            this.activeFilters[key].handleRemoveFilter();
+        }
     },
 
     _makeWfsUrl: function(serverURL, layerName){
@@ -258,12 +265,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         tup.link["title"] = "Filtered " + this.layer.name + " data";
 
         addToDownloadCart(tup);
-    },
-    
-    _clearFilters: function(){
-        for(var key in this.activeFilters){
-            this.activeFilters[key].handleRemoveFilter();
-        }
     },
 
     _makePreferredFname: function(){
