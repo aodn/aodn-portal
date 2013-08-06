@@ -282,7 +282,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
-
     _makeWfsUrl: function(serverURL, layerName){
 
         var queryArgs = this._makeWfsUrlQueryArgs(layerName);
