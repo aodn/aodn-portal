@@ -11,7 +11,7 @@ Ext.namespace('Portal.search.data');
 Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 	constructor : function(cfg) {
 		cfg = cfg || {};
-		
+
 		var config = Ext.apply({
 			root : 'links',
 			fields : [ {
@@ -49,7 +49,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		if (linkRec === undefined) {
 			return undefined;
 		}
-		
+
 		return {
 			title : linkRec.get('title'),
 			server : {
@@ -60,7 +60,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 			protocol : linkRec.get('protocol')
 		};
 	},
-	
+
 	getServerTypeFromProtocol: function(protocol) {
 		if (protocol) {
 			var match = protocol.match(/^(OGC:)((NC)*WMS-\d\.\d\.\d)/);
@@ -70,7 +70,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 		}
 		return 'WMS';
 	},
-	
+
 	_getTitle: function(title, rec) {
 		// Set title to name if there is no title
 		if (title.trim() == '') {
@@ -79,6 +79,4 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 			return title;
 		}
 	}
-
-
 });

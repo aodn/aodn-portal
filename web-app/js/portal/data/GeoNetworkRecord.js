@@ -6,7 +6,9 @@
  */
 Ext.namespace('Portal.data');
 
-Portal.data.LinksField = {
+Ext.namespace('Portal.data.GeoNetworkRecord');
+
+Portal.data.GeoNetworkRecord.LinksField = {
     name: 'links',
     convert: function(v, record) {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
@@ -29,7 +31,7 @@ Portal.data.LinksField = {
     }
 }
 
-Portal.data.BboxField = {
+Portal.data.GeoNetworkRecord.BboxField = {
     name: 'bbox',
     convert: function(v, record) {
         var metaDataExtent = new Portal.search.MetadataExtent();
@@ -41,12 +43,41 @@ Portal.data.BboxField = {
     }
 }
 
-Portal.data.GeoNetworkRecord = Ext.data.Record.create([
+Portal.data.GeoNetworkRecord.create = function(o){
+
+    var f = Ext.data.Record.create(o);
+
+    f.prototype.getFirstWmsLink = function() {
+        var links = this.get('links');
+
+        if (!links) {
+            return undefined;
+        }
+
+        var linkStore = new Portal.search.data.LinkStore({
+            data: {
+                links: links
+            }
+        });
+
+        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
+
+        return linkStore.getLayerLink(0);
+    }
+
+    f.prototype.hasWmsLink = function() {
+        return this.getFirstWmsLink() != undefined;
+    }
+
+    return f;
+};
+
+Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     'title',
     'abstract',
     { name: 'uuid', mapping: 'info/uuid' },
-    Portal.data.LinksField,
+    Portal.data.GeoNetworkRecord.LinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-    Portal.data.BboxField
+    Portal.data.GeoNetworkRecord.BboxField
 ]);
