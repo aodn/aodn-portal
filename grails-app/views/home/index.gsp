@@ -310,7 +310,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
-
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadDataViewTemplate.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadDataView.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"
