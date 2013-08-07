@@ -56,17 +56,13 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }, this.resultsStore);
 
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            title: "Search Results",
             region: 'center',
             split: true,
             store: this.resultsStore,
             onSearchComplete: function (response, page) {
                 this.store.loadData(response);
             },
-            pageSize: this.resultGridSize,
-            headerCfg: {
-                cls: 'x-panel-header p-header-space'
-            }
+            pageSize: this.resultGridSize
         });
         itemsToDisplay.push(this.resultsGrid);
 

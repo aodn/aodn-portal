@@ -18,6 +18,10 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     initComponent:function () {
         var config = {
+            title: "Search Results",
+            headerCfg: {
+                cls: 'x-panel-header p-header-space'
+            },
             colModel:new Ext.grid.ColumnModel({
                 defaults:{
                     menuDisabled:true
@@ -49,7 +53,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             })
         };
 
-        Ext.apply(this, Ext.apply(this.initialConfig, config));
+        Ext.apply(this, config);
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
