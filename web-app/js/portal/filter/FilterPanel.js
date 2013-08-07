@@ -115,6 +115,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 					hide.call(target, this);
 				},
 				success: function(resp, opts) {
+
 					var filters = Ext.util.JSON.decode(resp.responseText);
                     var aFilterIsEnabled = false;
 
@@ -260,7 +261,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
     
     _clearFilters: function(){
-        for(key in this.activeFilters){
+        for(var key in this.activeFilters){
             this.activeFilters[key].handleRemoveFilter();
         }
     },
