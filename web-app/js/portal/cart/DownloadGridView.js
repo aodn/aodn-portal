@@ -8,4 +8,13 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadGridView = Ext.extend(Ext.grid.GridView, {
 
+    constructor: function() {
+
+        var config = {
+            autoFill: true,
+            emptyText: 'No downloads selected'
+        };
+
+        Portal.cart.DownloadGridView.superclass.constructor.call(this, config);
+    }
 });
