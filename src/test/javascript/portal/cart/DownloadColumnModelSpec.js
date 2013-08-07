@@ -13,8 +13,18 @@ describe('Portal.cart.DownloadColumnModel', function() {
     });
 
     describe('initialisation', function() {
-        it('description', function() {
-            expect(columnModel.getColumnById('description')).toBeTruthy();
+        describe('description', function() {
+            it('exists', function() {
+                expect(columnModel.getColumnById('description')).toBeTruthy();
+            });
+
+            it('is a template column', function() {
+                expect(columnModel.getColumnById('description')).toBeInstanceOf(Ext.grid.TemplateColumn);
+            });
+
+            it('tpl is a DownloadPanelTemplate', function() {
+                expect(columnModel.getColumnById('description').tpl).toBeInstanceOf(Portal.cart.DownloadPanelTemplate);
+            });
         });
 
         it('remove', function() {
