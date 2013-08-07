@@ -68,14 +68,19 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             });
 
             describe('record with layer', function() {
-                var myRecord = new Portal.data.GeoNetworkRecord({
-                    links: [{
-                        href: 'http://somelayer/wms',
-                        name: 'the name',
-                        protocol: 'OGC:WMS-1.1.1-http-get-map',
-                        title: 'a really interesting record',
-                        type: 'some type'
-                    }]
+
+                var myRecord;
+
+                beforeEach(function() {
+                    myRecord = new Portal.data.GeoNetworkRecord({
+                        links: [{
+                            href: 'http://somelayer/wms',
+                            name: 'the name',
+                            protocol: 'OGC:WMS-1.1.1-http-get-map',
+                            title: 'a really interesting record',
+                            type: 'some type'
+                        }]
+                    });
                 });
 
                 it('layer added to LayerStore', function() {
@@ -83,18 +88,36 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                     activeRecordStore.add(myRecord);
 
-                    expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalledWith(
+                    expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalled();
+                    expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
                         myRecord.getFirstWmsLink());
                 });
 
-                // TODO
-                // it('layer removed from LayerStore', function() {
-                //     activeRecordStore.add(myRecord);
-                //     expect(Portal.data.LayerStore.instance().getCount()).toBe(1);
+                it('callback adds layer record to geonetwork record', function() {
+                    var layerRecord = new GeoExt.data.LayerRecord();
+                    spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
+                        function(layerLink, layerRecordCallback) {
+                            layerRecordCallback(layerRecord);
+                        });
 
-                //     activeRecordStore.remove(myRecord);
-                //     expect(Portal.data.LayerStore.instance().getCount()).toBe(0);
-                // });
+                    activeRecordStore.add(myRecord);
+
+                    expect(myRecord.layerRecord).toBe(layerRecord);
+                });
+
+                it('layer removed from LayerStore', function() {
+                    var layerRecord = new GeoExt.data.LayerRecord({
+                        layer: layer,
+                        title: layer.name
+                    });
+                    myRecord.layerRecord = layerRecord;
+                    spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
+                    activeRecordStore.add(myRecord);
+
+                    activeRecordStore.remove(myRecord);
+
+                    expect(Portal.data.LayerStore.instance().removeUsingOpenLayer).toHaveBeenCalledWith(layer);
+                });
             });
 
             describe('record without layer', function() {
@@ -102,15 +125,21 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     title: 'a really interesting record'
                 });
 
-                it('when geonetwork record without wmsLayer is added', function() {
+                it('when geonetwork record without layer is added', function() {
+                    spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
+
                     activeRecordStore.add(myRecord);
-                    expect(Portal.data.LayerStore.instance().getCount()).toBe(0);
+
+                    expect(Portal.data.LayerStore.instance().addUsingLayerLink).not.toHaveBeenCalled();
                 });
 
-                it('when geonetwork record without wmsLayer is removed', function() {
+                it('when geonetwork record without layer is removed', function() {
+                    spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
+
                     activeRecordStore.remove(myRecord);
-                    expect(Portal.data.LayerStore.instance().getCount()).toBe(0);
+
+                    expect(Portal.data.LayerStore.instance().removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
                 });
             });
         });

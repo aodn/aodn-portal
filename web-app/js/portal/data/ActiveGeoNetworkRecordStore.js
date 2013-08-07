@@ -17,7 +17,11 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     _onAdd: function(store, records, index) {
         Ext.each(records, function(record) {
             if (record.hasWmsLink()) {
-                Portal.data.LayerStore.instance().addUsingLayerLink(record.getFirstWmsLink());
+                Portal.data.LayerStore.instance().addUsingLayerLink(
+                    record.getFirstWmsLink(),
+                    function(layerRecord) {
+                        record.layerRecord = layerRecord;
+                    });
             }
         });
 
@@ -25,8 +29,9 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onRemove: function(store, record, index) {
-        if (record.get('wmsLayer')) {
-            Portal.data.LayerStore.instance().removeUsingOpenLayer(record.get('wmsLayer'));
+
+        if (record.layerRecord) {
+            Portal.data.LayerStore.instance().removeUsingOpenLayer(record.layerRecord.get('layer'));
         }
 
         Ext.MsgBus.publish('activegeonetworkrecordremoved', record);
