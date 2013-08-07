@@ -12,6 +12,7 @@ Portal.cart.DownloadGridView = Ext.extend(Ext.grid.GridView, {
 
         var config = {
             autoFill: true,
+            deferEmptyText: false,
             emptyText: 'No downloads selected'
         };
 

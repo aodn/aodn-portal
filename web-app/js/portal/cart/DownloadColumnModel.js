@@ -15,8 +15,10 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
             columns: [
                 {
                     id: 'description',
-                    header: OpenLayers.i18n('descHeading'),
-                    tpl: new Portal.cart.DownloadPanelTemplate()
+                    header: OpenLayers.i18n('descHeading')
+                },
+                {
+                    id: 'remove'
                 }
             ]
         }

@@ -13,6 +13,7 @@ describe("Portal.cart.DownloadGridView", function() {
         });
 
         it('empty text', function() {
+            expect(gridView.deferEmptyText).toBeFalsy();
             expect(gridView.emptyText).toBe('No downloads selected');
         });
 
