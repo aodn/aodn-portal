@@ -29,7 +29,7 @@
     <div class="clear spacer"></div>
     <div class="">
         <h3>Want to see data in your region?</h3>
-        <p><img src="images/WAODN_logoPortal2Small.png" class="WAMiniLogo" alt="Western Australian AODN logo" /> <a  href="http://wa.aodn.org.au/portal" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
+        <p><img src="images/WAODN_logoPortal2Small.png" class="WAMiniLogo" alt="Western Australian AODN logo" /> <a  href="http://wa.aodn.org.au/" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
     </div>
 
     <h2>Latest Ocean Currents and Temperature Graphs</h2>

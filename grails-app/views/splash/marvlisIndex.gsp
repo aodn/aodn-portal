@@ -73,7 +73,7 @@
         <div class="clear spacer"></div>
         <div class="clear spacer">
             <h5>Want to see data for all Australasia?</h5>
-            <p>See the <a href="http://portal.aodn.org.au/webportal" title="Australian Ocean Data Network" >AODN portal</a>.</p>
+            <p>See the <a href="http://portal.aodn.org.au/" title="Australian Ocean Data Network" >AODN portal</a>.</p>
         </div>
             <div class="clear spacer"></div>
 
