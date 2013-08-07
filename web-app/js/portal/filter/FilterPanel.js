@@ -15,7 +15,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 	        layout:'table',
 			layoutConfig: {
 				// The total column count must be specified here
-				columns: 3,
+				columns: 2,
 				tableAttrs: {
 					cellspacing: '10px',
 					style: {
@@ -29,7 +29,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     	this.GET_FILTER = "layer/getFiltersAsJSON";
     	this.activeFilters = {};
-
 
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
@@ -84,8 +83,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			this.relayEvents(newFilter, ['addFilter']);
 			this._addLabel(filter);
     		this.add(newFilter);
-    		this._addRemoveFieldButton(newFilter);
-    	}
+       	}
     },
 
 	_addLabel: function(filter){
@@ -95,23 +93,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		});
 		this.add(label);
 	},
-
-    _addRemoveFieldButton: function(field){
-    	var removeButton = new Ext.Button({
-			width: 14,
-			iconCls: 'p-remove-filter',
-			field: field,
-			listeners:{
-				scope: this,
-				'click': function(button, event){
-					this._handleRemoveFilter(button.field);
-					button.field.handleRemoveFilter();
-				}
-			}
-		});
-
-		this.add(removeButton);
-    },
 
     update: function(layer, show, hide, target){
 		this.layer = layer;
@@ -134,6 +115,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 					hide.call(target, this);
 				},
 				success: function(resp, opts) {
+
 					var filters = Ext.util.JSON.decode(resp.responseText);
                     var aFilterIsEnabled = false;
 
@@ -149,11 +131,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
 					if(aFilterIsEnabled){
 						this.setVisible(true);
-
+		
 						this.addButton = new Ext.Button({
 							cls: "x-btn-text-icon",
 							icon: "images/basket_add.png",
-							anchor: 'right',
 							text: 'Add to Cart',
 							listeners: {
 								scope: this,
@@ -161,8 +142,18 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 							}
 						});
 
-						this.add({html: "&nbsp;"});
+						this.clearFiltersButton = new Ext.Button({
+							cls: "x-btn-text-icon",
+							icon: "images/go-back-icon.png",
+							text: 'Clear Filters',
+							listeners: {
+								scope: this,
+								click: this._clearFilters
+							}
+						});
+						
 						this.add(this.addButton);
+						this.add(this.clearFiltersButton);
 
 						this.doLayout();
 						show.call(target, this);
@@ -209,11 +200,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _handleAddFilter: function(aFilter){
     	this.activeFilters[aFilter.getFilterName()] = aFilter;
 		this._updateFilter();
-    },
-
-    _handleRemoveFilter: function(aFilter){
-    	delete this.activeFilters[aFilter.getFilterName()];
-    	this._updateFilter();
     },
 
     _makeWfsUrl: function(serverURL, layerName){
@@ -272,6 +258,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         tup.link["title"] = "Filtered " + this.layer.name + " data";
 
         addToDownloadCart(tup);
+    },
+    
+    _clearFilters: function(){
+        for(var key in this.activeFilters){
+            this.activeFilters[key].handleRemoveFilter();
+        }
     },
 
     _makePreferredFname: function(){
