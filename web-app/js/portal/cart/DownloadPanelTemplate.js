@@ -22,10 +22,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '<tpl for=".">',
             '  <div class="cart-row">',
             '    <div class="cart-title-row">',
-            '      <div class="floatRight">',
-            // TODO: global functions must die.
-            '        <a href="#" onclick="javascript:setDownloadCartRecordDisableFlag(\'{uuid}\',\'true\'); return false;">Remove</a>',
-            '      </div>',
             '      <span class="cart-title">{title}</span>',
             '    </div>',
             '    <div class="cart-files" >{[this.getFileListMarkup(values)]}</div>',

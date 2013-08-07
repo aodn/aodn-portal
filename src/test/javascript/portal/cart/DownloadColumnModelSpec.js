@@ -27,8 +27,14 @@ describe('Portal.cart.DownloadColumnModel', function() {
             });
         });
 
-        it('remove', function() {
-            expect(columnModel.getColumnById('remove')).toBeTruthy();
+        describe('remove', function() {
+            it('exists', function() {
+                expect(columnModel.getColumnById('remove')).toBeTruthy();
+            });
+
+            it('custom renderer', function() {
+                expect(columnModel.getColumnById('remove').renderer).toBe(columnModel._removeColumnRenderer);
+            });
         });
     });
 });
