@@ -6,13 +6,17 @@
  */
 describe("Portal.cart.DownloadGridView", function() {
     describe('initialisation', function() {
+        var gridView;
+
+        beforeEach(function() {
+            gridView = new Portal.cart.DownloadGridView();
+        });
+
         it('empty text', function() {
-            var gridView = new Portal.cart.DownloadGridView();
             expect(gridView.emptyText).toBe('No downloads selected');
         });
 
         it('auto fill', function() {
-            var gridView = new Portal.cart.DownloadGridView();
             expect(gridView.autoFill).toBeTruthy();
         });
     });
