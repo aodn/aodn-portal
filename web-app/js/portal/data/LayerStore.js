@@ -26,12 +26,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initDefaultLayers();
     },
 
-    addUsingDescriptor: function(layerDescriptor) {
-
-        this.addUsingOpenLayer(layerDescriptor.toOpenLayer());
+    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
+        this.addUsingOpenLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    addUsingLayerLink: function(layerLink) {
+    addUsingLayerLink: function(layerLink, layerRecordCallback) {
 
         var serverUri = layerLink.server.uri;
 
@@ -42,17 +41,18 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
                 if (layerDescriptor) {
                     layerDescriptor.cql = layerLink.cql;
-                    this.addUsingDescriptor(layerDescriptor);
+                    this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
+
                 }
             },
             failure: function(resp) {
-                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink));
+                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
             }
         });
     },
 
-    addUsingOpenLayer: function(openLayer) {
-        return this._addLayer(openLayer);
+    addUsingOpenLayer: function(openLayer, layerRecordCallback) {
+        return this._addLayer(openLayer, layerRecordCallback);
     },
 
     addUsingServerId: function(args) {
@@ -121,7 +121,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.publish('layerRemoved', openLayer);
     },
 
-    _addLayer: function(openLayer) {
+    _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
             openLayer.events.register('loadstart', this, function() {
                 this.currentlyLoadingLayers.add(openLayer.name, openLayer);
@@ -138,6 +138,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, openLayer);
 
             this.add(layerRecord);
+
+            if (layerRecordCallback) {
+                layerRecordCallback(layerRecord);
+            }
 
             // Only want to be notified of changes in no base layer
             if (!openLayer.options.isBaseLayer) {

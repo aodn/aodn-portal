@@ -92,6 +92,25 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
         });
+
+        describe('layer record callback', function() {
+            it('no callback', function() {
+                layerStore.addUsingLayerLink(layerLink);
+            });
+
+            it('callback', function() {
+                var callback = jasmine.createSpy('callback');
+                spyOn(Ext.Ajax, 'request').andCallFake(function(params) {
+                    layerStore.failure = params.failure;
+                    layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
+                });
+
+                layerStore.addUsingLayerLink(layerLink, callback);
+                expect(callback).toHaveBeenCalled();
+                expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
+            });
+        });
+
     });
 
     describe('adding layers', function() {
