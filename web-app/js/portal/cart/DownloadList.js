@@ -52,7 +52,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                     var ret = "";
                     // todo remove this horrible hack when the df is truely gone
                     if (values.href.indexOf("df.arcs.org.au") < 0) {
-                        ret += "<i>" + values.title + "</i> (" + this.getSimpleType(values.type) + ")<br/>";
+                        ret += "<i>" + values.title + "</i>" + this.getFileTypeInfo(values.type) + "<br/>";
                     }
                     else {
                         ret += OpenLayers.i18n("unavailableDataLink");
@@ -77,12 +77,21 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
         }, this);
     },
 
-    getSimpleType: function(type) {
+    getFileTypeInfo: function(type) {
+
+        var extension = this.extensionForMimeType(type);
+
+        return extension ? " (." + extension + ")" : ""
+    },
+
+    extensionForMimeType: function(type) {
 
         for (var key in this.mimeTypes) {
             if (key == type) {
                 return this.mimeTypes[key];
             }
         }
+
+        return undefined;
     }
 });
