@@ -30,10 +30,4 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
         });
     });
-
-    describe('template', function() {
-        it('tpl is DownloadPanelTemplate', function() {
-            expect(downloadPanel.tpl).toBeInstanceOf(Portal.cart.DownloadPanelTemplate);
-        });
-    });
 });

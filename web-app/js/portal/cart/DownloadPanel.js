@@ -6,26 +6,43 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadPanel = Ext.extend(Ext.DataView, {
+Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
-    constructor:function (cfg) {
+    initComponent: function (cfg) {
 
         var config = Ext.apply({
+
+            autoExpandColumn: 'description',
+
             title: 'Data Download Cart',
+
             headerCfg: {
                 cls: 'x-panel-header p-header-space'
             },
+
             id: "downloadDataView",
             store: Portal.data.ActiveGeoNetworkRecordStore.instance(),
             emptyText: OpenLayers.i18n("emptyCartText"),
-            tpl: new Portal.cart.DownloadPanelTemplate(),
-            autoScroll: true
+            colModel: new Ext.grid.ColumnModel({
+                defaults: {
+                    menuDisabled: true
+                },
+                columns: [
+                    {
+                        id: 'description',
+                        header: OpenLayers.i18n('descHeading'),
+                        tpl: new Portal.cart.DownloadPanelTemplate()
+                    }
+                ]
+            })
+
         }, cfg);
 
-        Portal.cart.DownloadPanel.superclass.constructor.call(this, config);
+        Ext.apply(this, config);
+        Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
 
-        Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
-            this.downloadItemsStore.load();
-        }, this);
+        // Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
+        //     this.downloadItemsStore.load();
+        // }, this);
     }
 });
