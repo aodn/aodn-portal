@@ -12,17 +12,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
         var config = Ext.apply({
 
-            autoExpandColumn: 'description',
-
             title: 'Data Download Cart',
-
-            headerCfg: {
-                cls: 'x-panel-header p-header-space'
-            },
-
-            id: "downloadDataView",
             store: Portal.data.ActiveGeoNetworkRecordStore.instance(),
-            emptyText: OpenLayers.i18n("emptyCartText"),
             colModel: new Ext.grid.ColumnModel({
                 defaults: {
                     menuDisabled: true
