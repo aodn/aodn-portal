@@ -310,9 +310,9 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadDataViewTemplate.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadDataView.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"
         type="text/javascript"></script>

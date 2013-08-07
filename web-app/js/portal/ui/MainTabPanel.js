@@ -22,7 +22,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
-        this.downloadCartPanel = new Portal.cart.DownloadCartPanel();
+        this.downloadCartPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
             xtype:'tabpanel', // TabPanel itself has no title

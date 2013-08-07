@@ -6,7 +6,7 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadDataViewTemplate = Ext.extend(Ext.XTemplate, {
+Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function() {
 
@@ -33,7 +33,7 @@ Portal.cart.DownloadDataViewTemplate = Ext.extend(Ext.XTemplate, {
             '</tpl>'
         ];
 
-        Portal.cart.DownloadDataViewTemplate.superclass.constructor.call(this, templateLines);
+        Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
     },
 
     getFileListMarkup: function(values) {
