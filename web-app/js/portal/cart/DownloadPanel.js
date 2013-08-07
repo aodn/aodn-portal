@@ -14,26 +14,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
             title: 'Data Download Cart',
             store: Portal.data.ActiveGeoNetworkRecordStore.instance(),
-            colModel: new Ext.grid.ColumnModel({
-                defaults: {
-                    menuDisabled: true
-                },
-                columns: [
-                    {
-                        id: 'description',
-                        header: OpenLayers.i18n('descHeading'),
-                        tpl: new Portal.cart.DownloadPanelTemplate()
-                    }
-                ]
-            })
-
+            colModel: new Portal.cart.DownloadColumnModel(),
+            view: new Portal.cart.DownloadGridView()
         }, cfg);
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
-
-        // Ext.MsgBus.subscribe("downloadCart.cartContentsUpdated", function () {
-        //     this.downloadItemsStore.load();
-        // }, this);
     }
 });

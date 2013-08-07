@@ -312,6 +312,10 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadColumnModel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"

@@ -30,4 +30,14 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
         });
     });
+
+    describe('initialisation', function() {
+        it('column model', function() {
+            expect(downloadPanel.colModel).toBeInstanceOf(Portal.cart.DownloadColumnModel);
+        });
+
+        it('view', function() {
+            expect(downloadPanel.view).toBeInstanceOf(Portal.cart.DownloadGridView);
+        });
+    });
 });
