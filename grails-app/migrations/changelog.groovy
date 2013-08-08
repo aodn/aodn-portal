@@ -60,6 +60,7 @@ databaseChangeLog = {
 	include file: '20130320-JB-AddLayerViewParameters.groovy'
 	include file: '20130708-CJ-UpdateDownloadFileFormat.groovy'
 	include file: '20130724-JB-NcWmsParamsInSnapshots.groovy'
+	include file: '20130806-DN-UpdateKnownMimeTypes.groovy'
 
 	// Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
