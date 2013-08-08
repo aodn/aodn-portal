@@ -13,18 +13,6 @@ describe("Portal.cart.DownloadPanel", function() {
         downloadPanel = new Portal.cart.DownloadPanel();
     });
 
-    // it('on cart Changed event', function() {
-    //     spyOn(Ext.data.Store.prototype,'load').andCallFake(function() {return true});
-
-    //     var downloadPanel = new Portal.cart.DownloadPanel({});
-
-    //     Ext.data.Store.prototype.load.reset(); //reset the spy
-
-    //     Ext.MsgBus.publish('downloadCart.cartContentsUpdated');
-
-    //     expect(downloadPanel.downloadItemsStore.load).toHaveBeenCalled();
-    // });
-
     describe('ActiveGeoNetworkRecordStore interaction', function() {
         it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
             expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
@@ -38,6 +26,10 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('view', function() {
             expect(downloadPanel.view).toBeInstanceOf(Portal.cart.DownloadGridView);
+        });
+
+        it('bbar', function() {
+            expect(downloadPanel.getBottomToolbar()).toBeInstanceOf(Portal.cart.DownloadToolbar);
         });
     });
 });

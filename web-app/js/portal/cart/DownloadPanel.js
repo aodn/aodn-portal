@@ -8,14 +8,15 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
-    initComponent: function (cfg) {
+    initComponent: function(cfg) {
 
         var config = Ext.apply({
             autoExpandColumn: 'description',
             title: 'Data Download Cart',
             store: Portal.data.ActiveGeoNetworkRecordStore.instance(),
             colModel: new Portal.cart.DownloadColumnModel(),
-            view: new Portal.cart.DownloadGridView()
+            view: new Portal.cart.DownloadGridView(),
+            bbar: new Portal.cart.DownloadToolbar()
         }, cfg);
 
         Ext.apply(this, config);
