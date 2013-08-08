@@ -11,29 +11,37 @@ Ext.namespace('Portal.cart.downloadCartStatus');
 Ext.EventManager.addListener( window, 'load', getDownloadCartCount );
 
 // Public methods
-function addToDownloadCart( tuples ) {
+function addToDownloadCart(items) {
 
-    var condensedLinks = new Array();
+    var condensedLinks = [];
 
     // Extract only the fields we need
-    Ext.each( tuples,
-        function( tuple ){
+    Ext.each(items,
+        function(item) {
 
-            var rec = tuple.record.data;
-            var link = tuple.link;
+            var rec = item.record.data;
+            var link = item.link;
 
-            var prefname = null;
+            var newLink = {
+                disableFlag: false,
+                rec_uuid: rec.uuid,
+                rec_title: rec.title,
+                title: link.title,
+                type: link.type,
+                href: link.href,
+                protocol: link.protocol
+            };
 
-            if(tuple.link.preferredFname != null){
-            	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol, preferredFname: link.preferredFname } );
+            if (item.link.preferredFname != null) {
+
+                newLink.preferredFname = link.preferredFname
             }
-            else{
-            	condensedLinks.push( { disableFlag: false, rec_uuid: rec.uuid, rec_title: rec.title, title: link.title, type: link.type, href: link.href, protocol: link.protocol } );
-            }
+
+            condensedLinks.push(newLink);
         }
     );
 
-    var linksAsJson = Ext.util.JSON.encode( condensedLinks );
+    var linksAsJson = Ext.util.JSON.encode(condensedLinks);
 
     Ext.Ajax.request({
         url: 'downloadCart/add',
