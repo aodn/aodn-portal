@@ -4,7 +4,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
     constructor:function (cfg) {
 
-        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping
+        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping;
 
         this.downloadItemsStore = new Ext.data.JsonStore({
             // store configs
@@ -46,7 +46,6 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
                 '{[this.markup(values)]}',
             '</div>',
             {
-
                 markup: function(values) {
 
                     var ret = "";
@@ -81,7 +80,7 @@ Portal.cart.DownloadList = Ext.extend(Ext.DataView, {
 
         var extension = this.extensionForMimeType(type);
 
-        return extension ? " (." + extension + ")" : ""
+        return extension ? " (." + extension + ")" : "";
     },
 
     extensionForMimeType: function(type) {
