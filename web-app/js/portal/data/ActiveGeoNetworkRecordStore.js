@@ -44,6 +44,36 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.each(records, function(record) {
             store._removeFromLayerStore(record);
         });
+    },
+
+    initiateDownload: function() {
+
+        Ext.Ajax.request({
+            url: 'downloadCart/download',
+            success: this._onDownloadSuccess,
+            failure: this._onDownloadFailure,
+            params: {
+                items: this._getItemsEncodedAsJson()
+            }
+        });
+    },
+
+    _getItemsEncodedAsJson: function() {
+        var items = [];
+
+        Ext.each(this.data.items, function(item) {
+            items.push(item.data);
+        });
+
+        return Ext.util.JSON.encode(items)
+    },
+
+    _onDownloadSuccess: function() {
+        // TODO: not sure what we want to do here, but probably nothing.
+    },
+
+    _onDownloadFailure: function() {
+        // TODO: error message?
     }
 });
 

@@ -177,5 +177,113 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
             });
         });
+
+        describe('download', function() {
+            it('initiateDownload makes call to server', function() {
+                spyOn(Ext.Ajax, 'request');
+                activeRecordStore.initiateDownload();
+                expect(Ext.Ajax.request).toHaveBeenCalled();
+            });
+
+            describe('request params', function() {
+
+                var request;
+
+                addTestRecordsToStore = function() {
+                    var firstRecord = new Portal.data.GeoNetworkRecord({
+                        uuid: '111111',
+                        title: 'first title',
+                        links: [
+                            {
+                                href: 'http://host/some.html',
+                                name: 'imos:radar_stations',
+                                protocol: 'some protocol',
+                                title: 'the first title',
+                                type: 'text/html'
+                            }
+                        ],
+                    });
+
+                    var secondRecord = new Portal.data.GeoNetworkRecord({
+                        uuid: '222222',
+                        title: 'second title',
+                        links: [
+                            {
+                                href: 'http://host/some.pdf',
+                                name: 'imos:radar_stations',
+                                protocol: 'some protocol',
+                                title: 'the second title',
+                                type: 'text/pdf'
+                            }
+                        ],
+                    });
+
+                    activeRecordStore.add(firstRecord);
+                    activeRecordStore.add(secondRecord);
+                }
+
+                beforeEach(function() {
+                    spyOn(Ext.Ajax, 'request');
+
+                    addTestRecordsToStore();
+
+                    activeRecordStore.initiateDownload();
+                    request = Ext.Ajax.request.mostRecentCall.args[0];
+                });
+
+                it('url', function() {
+                    expect(request.url).toBe('downloadCart/download');
+                });
+
+                it('success', function() {
+                    expect(request.success).toBeTruthy();
+                    expect(request.success).toBe(activeRecordStore._onDownloadSuccess);
+                });
+
+                it('failure', function() {
+                    expect(request.failure).toBeTruthy();
+                    expect(request.failure).toBe(activeRecordStore._onDownloadFailure);
+                });
+
+                describe('params', function() {
+                    describe('items', function() {
+
+                        var itemsDecoded;
+
+                        beforeEach(function() {
+                            // Decode again as comparing strings would be too brittle.
+                            itemsDecoded = Ext.util.JSON.decode(request.params.items);
+                        });
+
+                        it('item per record', function() {
+                            expect(itemsDecoded.length).toBe(2);
+                        });
+
+                        describe('first item', function() {
+                            it('properties', function() {
+                                expect(itemsDecoded[0].uuid).toBe('111111');
+                                expect(itemsDecoded[0].title).toBe('first title');
+                            });
+
+                            it('links', function() {
+                                expect(itemsDecoded[0].links.length).toBe(1);
+                                expect(itemsDecoded[0].links[0].href).toBe('http://host/some.html');
+                                expect(itemsDecoded[0].links[0].name).toBe('imos:radar_stations');
+                                expect(itemsDecoded[0].links[0].protocol).toBe('some protocol');
+                                expect(itemsDecoded[0].links[0].title).toBe('the first title');
+                                expect(itemsDecoded[0].links[0].type).toBe('text/html');
+                            });
+                        });
+
+                        describe('second item', function() {
+                            it('properties', function() {
+                                expect(itemsDecoded[1].uuid).toBe('222222');
+                                expect(itemsDecoded[1].title).toBe('second title');
+                            });
+                        });
+                    });
+                });
+            });
+        });
     });
 });

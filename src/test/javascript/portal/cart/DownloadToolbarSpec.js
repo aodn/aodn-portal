@@ -42,7 +42,9 @@ describe("Portal.cart.DownloadToolbar", function() {
         });
 
         it('click makes call to server downloadCart/download', function() {
-
+            spyOn(store, 'initiateDownload');
+            downloadAllButton.fireEvent('click');
+            expect(store.initiateDownload).toHaveBeenCalled();
         });
     });
 

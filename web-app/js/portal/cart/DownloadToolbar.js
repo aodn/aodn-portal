@@ -20,7 +20,12 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
         });
 
         this.downloadAllButton = new Ext.Button({
-            text: OpenLayers.i18n('okdownload')
+            text: OpenLayers.i18n('okdownload'),
+            listeners: {
+                'click': function(button, event) {
+                    Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
+                }
+            }
         });
 
         var config = {
