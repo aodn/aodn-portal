@@ -262,23 +262,23 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         linkPreferredFilename)
     {
 
-        var tup = {
+        var item = {
             record: {
                 data: {}
             },
             link: {}
         };
 
-        tup.record.data["uuid"] = recordUuid;
-        tup.record.data["title"] = recordTitle;
+        item.record.data["uuid"] = recordUuid;
+        item.record.data["title"] = recordTitle;
 
-        tup.link["title"] = linkTitle;
-        tup.link["href"] = linkHref;
-        tup.link["type"] = linkType;
-        tup.link["protocol"] = linkProtocol;
-        tup.link["preferredFname"] = linkPreferredFilename;
+        item.link["title"] = linkTitle;
+        item.link["href"] = linkHref;
+        item.link["type"] = linkType;
+        item.link["protocol"] = linkProtocol;
+        item.link["preferredFname"] = linkPreferredFilename;
 
-        return tup;
+        return item;
     },
 
     _makeDataDownloadURL: function() {
