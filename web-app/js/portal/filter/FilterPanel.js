@@ -41,31 +41,31 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
-    setLayer: function(layer){
+    setLayer: function(layer) {
     	this.layer = layer;
     	this.update();
     },
 
-    createFilter: function(layer, filter){
+    createFilter: function(layer, filter) {
 
     	var newFilter = undefined;
-    	if(filter.type === "String"){
+    	if (filter.type === "String") {
     		newFilter = new  Portal.filter.ComboFilter({
     			fieldLabel: filter.label
     		});
 
     	}
-    	else if(filter.type == "Date"){
+    	else if (filter.type == "Date") {
     		newFilter = new Portal.filter.TimeFilter({
 				fieldLabel: filter.label
 			});
     	}
-    	else if(filter.type === "Boolean"){
+    	else if (filter.type === "Boolean") {
     		newFilter = new Portal.filter.BooleanFilter({
     		   fieldLabel: filter.label
     		});
     	}
-    	else if (filter.type === "BoundingBox"){
+    	else if (filter.type === "BoundingBox") {
             newFilter = new Portal.filter.BoundingBoxFilter({
             	fieldLabel: filter.label
             })
@@ -75,11 +75,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                 fieldLabel: filter.label
             });
         }
-    	else{
+    	else {
     		//Filter hasn't been defined
     	}
 
-    	if(newFilter != undefined){
+    	if (newFilter != undefined) {
     		newFilter.setLayerAndFilter(layer, filter);
 			this.relayEvents(newFilter, ['addFilter']);
 			this._addLabel(filter);
@@ -88,7 +88,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	}
     },
 
-	_addLabel: function(filter){
+	_addLabel: function(filter) {
 		var label = new Ext.form.Label({
 			text: filter.label + ": ",
 			style: 'font-size: 11px;'
@@ -96,7 +96,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		this.add(label);
 	},
 
-    _addRemoveFieldButton: function(field){
+    _addRemoveFieldButton: function(field) {
     	var removeButton = new Ext.Button({
 			width: 14,
 			iconCls: 'p-remove-filter',
@@ -113,10 +113,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		this.add(removeButton);
     },
 
-    update: function(layer, show, hide, target){
+    update: function(layer, show, hide, target) {
 		this.layer = layer;
 
-		if(layer.grailsLayerId != undefined){
+		if (layer.grailsLayerId != undefined) {
 
 			Ext.Ajax.request({
 				url: this.GET_FILTER,
@@ -139,7 +139,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
                     Ext.each(filters,
                         function(filter, index, all) {
-                            if(filter.enabled){
+                            if (filter.enabled) {
                                 this.createFilter(layer, filter);
                                 aFilterIsEnabled = true
                             }
@@ -147,7 +147,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                         this
                     );
 
-					if(aFilterIsEnabled){
+					if (aFilterIsEnabled) {
 						this.setVisible(true);
 
 						this.addButton = new Ext.Button({
@@ -167,32 +167,32 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 						this.doLayout();
 						show.call(target, this);
 					}
-					else{
+					else {
 						hide.call(target, this);
 					}
 				}
 			});
 		}
-		else{
+		else {
 			//probably some other layer added in through getfeatureinfo, or user added WMS
 		}
 	},
 
-    _updateFilter: function(){
+    _updateFilter: function() {
     	var combinedCQL = "";
     	var count = 0;
-		for(var key in this.activeFilters){
+		for (var key in this.activeFilters) {
 			count++;
 		}
 
-		if(count > 0){
-			for(var name in this.activeFilters){
-				if(this.activeFilters[name].hasValue()){
+		if (count > 0) {
+			for (var name in this.activeFilters) {
+				if (this.activeFilters[name].hasValue()) {
 					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
 				}
 			}
 
-			if(combinedCQL.length > 0){
+			if (combinedCQL.length > 0) {
 				combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
 
 				this.layer.mergeNewParams({
@@ -200,23 +200,23 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 				});
 			}
 		}
-		else{
+		else {
          	delete this.layer.params["CQL_FILTER"];
          	this.layer.redraw();
 		}
     },
 
-    _handleAddFilter: function(aFilter){
+    _handleAddFilter: function(aFilter) {
     	this.activeFilters[aFilter.getFilterName()] = aFilter;
 		this._updateFilter();
     },
 
-    _handleRemoveFilter: function(aFilter){
+    _handleRemoveFilter: function(aFilter) {
     	delete this.activeFilters[aFilter.getFilterName()];
     	this._updateFilter();
     },
 
-    _addToCart: function(){
+    _addToCart: function() {
 
         addToDownloadCart(this._dataDownloadItem());
 
@@ -290,7 +290,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
-    _makeWfsUrl: function(serverURL, layerName){
+    _makeWfsUrl: function(serverURL, layerName) {
 
         var queryArgs = this._makeWfsUrlQueryArgs(layerName);
 
@@ -322,7 +322,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return queryArgs;
     },
 
-    _sanitiseLayerNameForFilename: function(){
+    _sanitiseLayerNameForFilename: function() {
 
         // replace ':' used to namespace layers by geoserver with '#'
         // as its not allowed in windows filenames
