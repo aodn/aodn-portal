@@ -14,7 +14,7 @@ describe("Portal.cart.DownloadGridView", function() {
 
         it('empty text', function() {
             expect(gridView.deferEmptyText).toBeFalsy();
-            expect(gridView.emptyText).toBe('No downloads selected');
+            expect(gridView.emptyText).toBe(OpenLayers.i18n('emptyCartText'));
         });
 
         it('auto fill', function() {
