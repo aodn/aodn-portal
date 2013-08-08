@@ -12,61 +12,44 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping
 
-        // Some notes while this is in transition:
-        //
-        // - the disable flag is used to implement 'undo' functionality.  This probably better implemented
-        //   by actually removing items from the store, and into an undo queue (it would simplify things
-        //   quite a lot).
-        //
         var templateLines = [
-            '<tpl for=".">',
-            '  <div class="cart-row">',
-            '    <div class="cart-title-row">',
-            '      <span class="cart-title">{title}</span>',
-            '    </div>',
-            '    <div class="cart-files" >{[this.getFileListMarkup(values)]}</div>',
+            '<div class="cart-row">',
+            '  <div class="cart-title-row">',
+            '    <span class="cart-title">{title}</span>',
             '  </div>',
-            '</tpl>'
+            '  <div class="cart-files" >{[this._getFileListMarkup(values.links)]}</div>',
+            '</div>',
         ];
 
         Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
     },
 
-    getFileListMarkup: function(values) {
+    _getFileListMarkup: function(links) {
 
         var subFilesTemplate = new Ext.XTemplate(
             '<div class="cart-file-row" >',
-            '{[this.getMarkupForOneFile(values)]}',
+            '{[this._getMarkupForOneFile(values)]}',
             '</div>',
             this
         );
 
         var html = "";
-        Ext.each(values.downloads, function (f) {
-            html += subFilesTemplate.apply(f);
+        var self = this;
+
+        Ext.each(links, function(link) {
+            if (self._isDownloadable(link)) {
+                html += subFilesTemplate.apply(link);
+            }
         });
 
         return html;
     },
 
-    getMarkupForOneFile: function(values) {
-        var ret = "";
-        // todo remove this horrible hack when the df is truely gone
-        if (values.href.indexOf("df.arcs.org.au") < 0) {
-            ret += "<i>" + values.title + "</i> (" + this.getSimpleType(values.type) + ")<br/>";
-        }
-        else {
-            ret += OpenLayers.i18n("unavailableDataLink");
-        }
-        return ret;
+    _isDownloadable: function(link) {
+        return this.mimeTypes[link.type];
     },
 
-    getSimpleType: function(type) {
-
-        for (var key in this.mimeTypes) {
-            if (key == type) {
-                return this.mimeTypes[key];
-            }
-        }
+    _getMarkupForOneFile: function(values) {
+        return "<i>" + values.title + "</i> (" + this.mimeTypes[values.type] + ")<br/>";
     }
 });
