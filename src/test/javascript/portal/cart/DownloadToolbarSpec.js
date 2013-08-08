@@ -52,5 +52,11 @@ describe("Portal.cart.DownloadToolbar", function() {
         it('has correct text', function() {
             expect(clearCartButton.text).toBe(OpenLayers.i18n('clearcart'));
         });
+
+        it('click clears the ActiveGeoNetworkRecordStore', function() {
+            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'removeAll');
+            clearCartButton.fireEvent('click');
+            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll).toHaveBeenCalled();
+        });
     });
 });
