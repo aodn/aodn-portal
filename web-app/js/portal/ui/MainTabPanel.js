@@ -56,9 +56,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         this.on('tabchange', function () {
             this.portalPanel.fireEvent('tabchange');
         }, this);
-        Ext.MsgBus.subscribe('openDownloadCartPanelItem', function() {
-            this.setActiveTab(TAB_INDEX_DOWNLOAD_CART);
-        }, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
     },

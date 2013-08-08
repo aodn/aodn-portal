@@ -320,10 +320,6 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"
         type="text/javascript"></script>
 </g:if>
