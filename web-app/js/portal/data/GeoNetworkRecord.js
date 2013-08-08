@@ -75,7 +75,7 @@ Portal.data.GeoNetworkRecord.create = function(o){
 Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     'title',
     'abstract',
-    { name: 'uuid', mapping: 'info/uuid' },
+    { name: 'uuid', mapping: '*/uuid' },
     Portal.data.GeoNetworkRecord.LinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
