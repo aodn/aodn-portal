@@ -44,13 +44,15 @@ class BulkDownloadService {
         // Create a deep copy of filesToDownload to work with
         def copyOfFilesToDownload = filesToDownload.collect( mapDeepCopyJson )
 
+
         // Create Zip archive stream
         zipStream = new ZipOutputStream( outputStream )
 
         // Add all files to archive
         copyOfFilesToDownload.each {
-
-            _addFileEntry it
+            it.links.each { layerLink ->
+                _addFileEntry layerLink
+            }
         }
 
         _addDownloadReportToArchive( locale )
@@ -74,7 +76,7 @@ class BulkDownloadService {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
 
-        // todo kill this when the df is finally killed
+        // todo kill this when the df is totally removed from MEST's
         if (fileInfo.href.contains("df.arcs.org.au")) {
             log.debug "Datafabric entry excluded ${ fileInfo.href }"
             return

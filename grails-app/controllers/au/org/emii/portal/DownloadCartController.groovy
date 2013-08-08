@@ -13,103 +13,74 @@ import org.apache.catalina.connector.ClientAbortException
 
 class DownloadCartController {
 
-    static allowedMethods = [add: "POST"]
+    //static allowedMethods = [download: "POST"]
+
+    def downLoadCart = []
 
     def bulkDownloadService
 
-    def add = {
+    // for testing
+    def downloadInput =
+        """[
+    {
+        'uuid': '1111111',
+        'name': 'some record',
+        'title': 'its really interesting',
+        'links': [
+            {
+                "title":"NRSNSI Mooring diagram - surface",
+                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_surface_revA.pdf&access=private",
+                "type":"application/pdf",
+                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
+            },
+            {
+                "title":"NRSNSI Mooring diagram - sub-surface",
+                "type":"application/pdf",
+                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
+                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
+            }]
+    },
+    {
+        'uuid': '22222',
+        'name': 'another record',
+        'title': 'its really really interesting',
+        'links': [
+            {
+                "title":"NRSNSI Snoring diagram - Another Dimension",
+                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_surface_revA.pdf&access=private",
+                "type":"application/pdf",
+                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
+            },
+            {
+                "title":"NRSNSI Snoring diagram - Another Sub Dimension",
+                "type":"application/pdf",
+                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
+                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
+            }]
+    }
+]"""
 
-        if ( !params.newEntries ) {
 
+    def download = {
+
+        params.items = downloadInput // for testing
+
+        if ( !params.items ) {
             render text: "No items specified to add", status: 500
             return
         }
 
-        def newEntries = JSON.parse( params.newEntries as String )
+        def items = JSON.parse( params.items as String )
+        downLoadCart.addAll items.toArray()
+        return _download()
 
-        def cart = _getCart()
-
-        cart.addAll newEntries.toArray()
-        _setCart( cart )
-
-        render _getCartSize().toString()
-    }
-
-    def clear = {
-
-        _setCart null
-
-        render _getCartSize().toString()
-    }
-
-    def modifyRecordAvailability = {
-        if ( !params.rec_uuid ) {
-            render text: "No item specified to remove", status: 500
-            return
-        }
-        if ( !params.disableFlag ) {
-            render text: "No flag specified to modify", status: 500
-            return
-        }
-
-        def uuid = params.rec_uuid
-        def cart = _getCart()
-
-        cart.each{
-            if (it.rec_uuid == uuid) {
-                it.disableFlag = params.disableFlag.toBoolean()
-            }
-        }
-
-        _setCart( cart )
-        render _getCartSize().toString()
     }
 
 
-    def getSize = {
 
-        render _getCartSize().toString()
-    }
+    def _download = {
 
-    def getCartRecords = {
-
-        def cart = _getCart()
-        def compiledResult = [:]
-        def records = [:]
-        cart.each{
-
-            def uuid = it.rec_uuid
-
-            def record = records.get(uuid)
-            if (!record){
-                record = [:]
-                record.title = it.rec_title
-                record.disable = it.disableFlag
-                record.uuid= uuid
-                record.downloads = []
-                records.put(uuid,record)
-            }
-
-            def download = [:]
-
-
-            download.protocol = it.protocol
-            download.title = it.title
-            download.href = it.href
-            download.type = it.type
-
-            record.downloads.add(download)
-        }
-
-        compiledResult.put("records", records.values())
-
-        render compiledResult as JSON
-    }
-
-    def download = {
-
-        // Break early if no cookies
-        if ( !_getCartSize() ) {
+        if ( downLoadCart.size() == 0 ) {
 
             flash.message = "No data in cart to download"
             redirect controller: 'home'
@@ -123,7 +94,7 @@ class DownloadCartController {
 
         // Ask Service to create archive to outputStream
         try {
-            bulkDownloadService.generateArchiveOfFiles _getCartDownloadableItems(), outputStream, request.locale
+            bulkDownloadService.generateArchiveOfFiles( downLoadCart, outputStream, request.locale)
 
             // Send response
             outputStream.flush()
@@ -138,36 +109,7 @@ class DownloadCartController {
         }
      }
 
-    def _getCart() {
-        return session.downloadCart ?: [] as Set
-    }
 
-    def _getCartDownloadableItems() {
 
-        // only want to get the items not disabled
-        def cart = []
-        _getCart().each {
-            if (!it.disableFlag) {
-                cart.add(it)
-            }
-        }
-        return cart
-    }
 
-    // count of items not marked as disabled
-    def _getCartSize() {
-
-        def counter = 0
-        _getCart().each {
-            if (!it.disableFlag) {
-               counter += 1
-            }
-        }
-        return counter
-    }
-
-    void _setCart( newCart ) {
-
-        session.downloadCart = newCart
-    }
 }
