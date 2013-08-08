@@ -14,6 +14,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
         var activeRecordStore;
 
         beforeEach(function() {
+            Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE = undefined;
             activeRecordStore = Portal.data.ActiveGeoNetworkRecordStore.instance();
         });
 
@@ -61,11 +62,8 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 'the tile',
                 'http://some/wms/url',
                 {},
-                { isBaseLayer: false });
-
-            afterEach(function() {
-                Portal.data.LayerStore.THE_INSTANCE = undefined;
-            });
+                { isBaseLayer: false }
+            );
 
             describe('record with layer', function() {
 
@@ -140,6 +138,42 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     activeRecordStore.remove(myRecord);
 
                     expect(Portal.data.LayerStore.instance().removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
+                });
+            });
+
+            describe('on clear', function() {
+                it('all layers removed from LayerStore', function() {
+                    var layerRecord = new GeoExt.data.LayerRecord({
+                        layer: layer,
+                        title: layer.name
+                    });
+                    var myRecord = new Portal.data.GeoNetworkRecord({
+                        title: 'a really interesting record'
+                    });
+                    myRecord.layerRecord = layerRecord;
+
+                    var layer2 = new OpenLayers.Layer.WMS(
+                        'the tile',
+                        'http://some/wms/url',
+                        {},
+                        { isBaseLayer: false });
+                    var layerRecord2 = new GeoExt.data.LayerRecord({
+                        layer: layer2,
+                        title: layer2.name
+                    });
+                    var myRecord2 = new Portal.data.GeoNetworkRecord({
+                        title: 'my record'
+                    });
+
+                    spyOn(activeRecordStore, '_removeFromLayerStore');
+                    activeRecordStore.add(myRecord);
+                    activeRecordStore.add(myRecord2);
+
+                    activeRecordStore.removeAll();
+
+                    expect(activeRecordStore._removeFromLayerStore.calls.length).toBe(2);
+                    expect(activeRecordStore._removeFromLayerStore.calls[0].args[0]).toBe(myRecord);
+                    expect(activeRecordStore._removeFromLayerStore.calls[1].args[0]).toBe(myRecord2);
                 });
             });
         });

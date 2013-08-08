@@ -12,6 +12,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
         this.on('add', this._onAdd, this);
         this.on('remove', this._onRemove, this);
+        this.on('clear', this._onClear, this);
     },
 
     _onAdd: function(store, records, index) {
@@ -29,12 +30,20 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onRemove: function(store, record, index) {
+        this._removeFromLayerStore(record);
+        Ext.MsgBus.publish('activegeonetworkrecordremoved', record);
+    },
 
+    _removeFromLayerStore: function(record) {
         if (record.layerRecord) {
             Portal.data.LayerStore.instance().removeUsingOpenLayer(record.layerRecord.get('layer'));
         }
+    },
 
-        Ext.MsgBus.publish('activegeonetworkrecordremoved', record);
+    _onClear: function(store, records) {
+        Ext.each(records, function(record) {
+            store._removeFromLayerStore(record);
+        });
     }
 });
 
