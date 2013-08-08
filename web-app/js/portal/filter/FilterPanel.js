@@ -252,7 +252,15 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         );
     },
 
-    _makeDownloadCartItem: function(recordUuid, recordTitle, linkTitle, linkHref, linkType, linkProtocol, linkPreferredFilename) {
+    _makeDownloadCartItem: function(
+        recordUuid,
+        recordTitle,
+        linkTitle,
+        linkHref,
+        linkType,
+        linkProtocol,
+        linkPreferredFilename)
+    {
 
         var tup = {
             record: {

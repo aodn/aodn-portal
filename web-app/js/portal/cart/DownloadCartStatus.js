@@ -11,16 +11,16 @@ Ext.namespace('Portal.cart.downloadCartStatus');
 Ext.EventManager.addListener( window, 'load', getDownloadCartCount );
 
 // Public methods
-function addToDownloadCart(tuples) {
+function addToDownloadCart(items) {
 
     var condensedLinks = [];
 
     // Extract only the fields we need
-    Ext.each(tuples,
-        function(tuple) {
+    Ext.each(items,
+        function(item) {
 
-            var rec = tuple.record.data;
-            var link = tuple.link;
+            var rec = item.record.data;
+            var link = item.link;
 
             var newLink = {
                 disableFlag: false,
@@ -32,7 +32,7 @@ function addToDownloadCart(tuples) {
                 protocol: link.protocol
             };
 
-            if (tuple.link.preferredFname != null) {
+            if (item.link.preferredFname != null) {
 
                 newLink.preferredFname = link.preferredFname
             }
