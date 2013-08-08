@@ -40,6 +40,37 @@ describe("Portal.cart.DownloadToolbar", function() {
         it('has correct text', function() {
             expect(downloadAllButton.text).toBe(OpenLayers.i18n('okdownload'));
         });
+
+        it('click makes call to server downloadCart/download', function() {
+
+        });
+    });
+
+    describe('clear cart button', function() {
+
+        var clearCartButton;
+
+        beforeEach(function() {
+            clearCartButton = toolbar.items.get(1);
+        });
+
+        it('exists', function() {
+            expect(clearCartButton).toBeTruthy();
+        });
+
+        it('is of type button', function() {
+            expect(clearCartButton).toBeInstanceOf(Ext.Button);
+        });
+
+        it('has correct text', function() {
+            expect(clearCartButton.text).toBe(OpenLayers.i18n('clearcart'));
+        });
+
+        it('click clears the ActiveGeoNetworkRecordStore', function() {
+            spyOn(store, 'removeAll');
+            clearCartButton.fireEvent('click');
+            expect(store.removeAll).toHaveBeenCalled();
+        });
     });
 
     describe('button states', function() {
@@ -97,37 +128,6 @@ describe("Portal.cart.DownloadToolbar", function() {
             store.add(myRecord);
             expect(downloadAllButton.disabled).toBeFalsy();
             expect(clearCartButton.disabled).toBeFalsy();
-        });
-
-        // it('click makes call to server downloadCart/download', function() {
-        //     // TODO:
-        // });
-    });
-
-    describe('clear cart button', function() {
-
-        var clearCartButton;
-
-        beforeEach(function() {
-            clearCartButton = toolbar.items.get(1);
-        });
-
-        it('exists', function() {
-            expect(clearCartButton).toBeTruthy();
-        });
-
-        it('is of type button', function() {
-            expect(clearCartButton).toBeInstanceOf(Ext.Button);
-        });
-
-        it('has correct text', function() {
-            expect(clearCartButton.text).toBe(OpenLayers.i18n('clearcart'));
-        });
-
-        it('click clears the ActiveGeoNetworkRecordStore', function() {
-            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'removeAll');
-            clearCartButton.fireEvent('click');
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll).toHaveBeenCalled();
         });
     });
 });
