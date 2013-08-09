@@ -85,51 +85,47 @@ describe("Portal.cart.DownloadToolbar", function() {
             clearCartButton = toolbar.items.get(1);
         });
 
-        it('disabled when store is initially empty', function() {
-            toolbar = new Portal.cart.DownloadToolbar({
-                store: store
-            });
+        var expectButtonDisabledStates = function(downloadButtonDisabled, clearButtonDisabled) {
+            expect(downloadAllButton.disabled).toBe(downloadButtonDisabled, clearButtonDisabled);
+        }
 
-            expect(downloadAllButton.disabled).toBeTruthy();
-            expect(clearCartButton.disabled).toBeTruthy();
+        var initStoreWithRecord = function(record) {
+            store.add(record);
+
+            // This isn't strictly required (it's tested by the following test), but doesn't hurt to be sure.
+            expectButtonDisabledStates(false, false);
+        }
+
+        it('disabled when store is initially empty', function() {
+            expectButtonDisabledStates(true, true);
         });
 
         it('disabled when store becomes empty', function() {
-            store.add(myRecord);
-            expect(downloadAllButton.disabled).toBeFalsy();
-            expect(clearCartButton.disabled).toBeFalsy();
-
+            initStoreWithRecord(myRecord);
             store.remove(myRecord);
-            expect(downloadAllButton.disabled).toBeTruthy();
-            expect(clearCartButton.disabled).toBeTruthy();
+            expectButtonDisabledStates(true, true);
         });
 
         it('disabled when store is cleared', function() {
-            store.add(myRecord);
-            expect(downloadAllButton.disabled).toBeFalsy();
-            expect(clearCartButton.disabled).toBeFalsy();
-
+            initStoreWithRecord(myRecord);
             store.removeAll();
-            expect(downloadAllButton.disabled).toBeTruthy();
-            expect(clearCartButton.disabled).toBeTruthy();
+            expectButtonDisabledStates(true, true);
         });
 
         it('enabled when store initially has at least one item', function() {
-            store.add(myRecord);
+            initStoreWithRecord(myRecord);
+
+            // Create a new toolbar (so it gets a store with one record).
             toolbar = new Portal.cart.DownloadToolbar();
             downloadAllButton = toolbar.items.get(0);
 
-            expect(downloadAllButton.disabled).toBeFalsy();
-            expect(clearCartButton.disabled).toBeFalsy();
+            expectButtonDisabledStates(false, false);
         });
 
         it('enabled when store becomes non-empty', function() {
-            expect(downloadAllButton.disabled).toBeTruthy();
-            expect(clearCartButton.disabled).toBeTruthy();
-
+            expectButtonDisabledStates(true, true);
             store.add(myRecord);
-            expect(downloadAllButton.disabled).toBeFalsy();
-            expect(clearCartButton.disabled).toBeFalsy();
+            expectButtonDisabledStates(false, false);
         });
     });
 });
