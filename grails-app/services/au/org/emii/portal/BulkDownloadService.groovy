@@ -23,10 +23,10 @@ class BulkDownloadService {
 
     static final int BufferSize = 4096 // 4kB
     static final def FileDataFromUrl = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
-    static final def FileDataFromGeoServerUrl = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
-    static final def GeoServerDownloadUrl = "(.*)file.disclaimer(.*)"
+    static final def FileDataFromGeonetworkUrl = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
+    static final def GeonetworkDownloadUrl = "(.*)file.disclaimer(.*)"
 
-    static final def GeoServerDownloadDetailsQueryString = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
+    static final def GeonetworkDownloadDetailsQueryString = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
 
     def processingStartTime
     def cfg = Config.activeInstance()
@@ -260,13 +260,13 @@ Time taken: ${ _timeTaken() } seconds
 
     def _isGeoServerDisclaimerAddress( address ) {
 
-        return address ==~ GeoServerDownloadUrl
+        return address ==~ GeonetworkDownloadUrl
     }
 
     def _geoServerDownloadAddress( disclaimerAddress ) {
 
         def downloadAddress = disclaimerAddress.replaceFirst( "file.disclaimer", "resources.get" )
-        downloadAddress += GeoServerDownloadDetailsQueryString
+        downloadAddress += GeonetworkDownloadDetailsQueryString
 
         return downloadAddress
     }
@@ -277,10 +277,10 @@ Time taken: ${ _timeTaken() } seconds
         def fileExtensionFromUrl
 
         // Test for MEST/GeoNetwork URLs
-        def matches = fileInfo.href =~ FileDataFromGeoServerUrl
+        def matches = fileInfo.href =~ FileDataFromGeonetworkUrl
 
         if ( matches ) {
-            log.debug "FileDataFromGeoServerUrl matches[0]: ${ matches[0] }"
+            log.debug "FileDataFromGeonetworkUrl matches[0]: ${ matches[0] }"
             filenameFromUrl = _getFilenameMatch( matches )
             fileExtensionFromUrl = _getFileExtensionMatch( matches )
         }

@@ -15,75 +15,32 @@ class DownloadCartController {
 
     //static allowedMethods = [download: "POST"]
 
-    def downLoadCart = []
+
 
     def bulkDownloadService
-
-    // for testing
-    def downloadInput =
-        """[
-    {
-        'uuid': '1111111',
-        'name': 'some record',
-        'title': 'its really interesting',
-        'links': [
-            {
-                "title":"NRSNSI Mooring diagram - surface",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_surface_revA.pdf&access=private",
-                "type":"application/pdf",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            },
-            {
-                "title":"NRSNSI Mooring diagram - sub-surface",
-                "type":"application/pdf",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            }]
-    },
-    {
-        'uuid': '22222',
-        'name': 'another record',
-        'title': 'its really really interesting',
-        'links': [
-            {
-                "title":"NRSNSI Snoring diagram - Another Dimension",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_surface_revA.pdf&access=private",
-                "type":"application/pdf",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            },
-            {
-                "title":"NRSNSI Snoring diagram - Another Sub Dimension",
-                "type":"application/pdf",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            }]
-    }
-]"""
 
 
     def download = {
 
-        params.items = downloadInput // for testing
+        def downLoadCart = []
 
         if ( !params.items ) {
-            render text: "No items specified to add", status: 500
+            render text:"No items are in the Download Cart", status: 400
             return
         }
 
         def items = JSON.parse( params.items as String )
         downLoadCart.addAll items.toArray()
-        return _download()
+        return _download(downLoadCart)
 
     }
 
 
+    def _download(downLoadCart) {
 
-    def _download = {
 
         if ( downLoadCart.size() == 0 ) {
-
-            flash.message = "No data in cart to download"
-            redirect controller: 'home'
+            render text: "No items are selected to download in the Cart", status: 400
             return
         }
 
@@ -108,8 +65,5 @@ class DownloadCartController {
             log.error "Unhandled Exception caught during bulk download", e
         }
      }
-
-
-
 
 }
