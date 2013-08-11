@@ -83,7 +83,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			this.relayEvents(newFilter, ['addFilter']);
 			this._addLabel(filter);
     		this.add(newFilter);
-    		this._addRemoveFieldButton(newFilter);
     	}
     },
 
