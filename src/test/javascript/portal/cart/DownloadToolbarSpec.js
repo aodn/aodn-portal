@@ -163,11 +163,11 @@ describe("Portal.cart.DownloadToolbar", function() {
         }
 
         var successDownload = function() {
-            store._onDownloadSuccess();
+            store.downloader._onDownloadSuccess();
         }
 
         var failDownload = function() {
-            store._onDownloadFailure();
+            store.downloader._onDownloadFailure();
         }
     });
 });

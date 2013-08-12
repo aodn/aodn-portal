@@ -9,12 +9,27 @@ Ext.namespace('Portal.data');
 Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecordStore, {
 
     constructor: function() {
+
+        this._initDownloader();
+
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
+
         this.on('add', this._onAdd, this);
         this.on('remove', this._onRemove, this);
         this.on('clear', this._onClear, this);
+    },
 
-        this.currentlyDownloading = false;
+    _initDownloader: function() {
+        this.downloader = new Portal.cart.Downloader({
+            store: this
+        });
+
+        this.downloader.on('downloadsuccess', function() {
+            this.fireEvent('downloadsuccess');
+        }, this);
+        this.downloader.on('downloadfailure', function() {
+            this.fireEvent('downloadfailure');
+        }, this);
     },
 
     _onAdd: function(store, records, index) {
@@ -50,23 +65,14 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     initiateDownload: function() {
 
-        this.currentlyDownloading = true;
-
-        Ext.Ajax.request({
-            url: 'downloadCart/download',
-            success: this._onDownloadSuccess,
-            failure: this._onDownloadFailure,
-            params: {
-                items: this._getItemsEncodedAsJson()
-            }
-        });
+        this.downloader.start();
     },
 
     isDownloading: function() {
-        return this.currentlyDownloading;
+        return this.downloader.isDownloading();
     },
 
-    _getItemsEncodedAsJson: function() {
+    getItemsEncodedAsJson: function() {
         var items = [];
 
         Ext.each(this.data.items, function(item) {
@@ -74,16 +80,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         });
 
         return Ext.util.JSON.encode(items)
-    },
-
-    _onDownloadSuccess: function() {
-        this.currentlyDownloading = false;
-        this.fireEvent('downloadsuccess');
-    },
-
-    _onDownloadFailure: function() {
-        this.currentlyDownloading = false;
-        this.fireEvent('downloadfailure');
     }
 });
 
