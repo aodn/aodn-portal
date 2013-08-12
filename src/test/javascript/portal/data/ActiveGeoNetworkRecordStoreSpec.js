@@ -6,6 +6,11 @@
  */
 describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
+    beforeEach(function() {
+        Ext.namespace('Portal.app.config');
+        Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
+    });
+
     /**
      *  A singleton instance of the store is used to store the 'active' geonetwork records.
      */

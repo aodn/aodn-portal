@@ -7,16 +7,17 @@
 describe('Portal.cart.DownloadPanelTemplate', function() {
 
     var fragment;
-    Portal.app = {
-        config: {
-            downloadCartMimeTypeToExtensionMapping: {
-                "text/html":"html"
-            }
-        }
-    }
-
 
     beforeEach(function() {
+        Portal.app = {
+            config: {
+                downloadCartMimeTypeToExtensionMapping: {
+                    "text/html":"html"
+                },
+                downloadCartDownloadableProtocols: 'downloadable\nsome other downloadable protocol\n'
+            }
+        }
+
         var tpl = new Portal.cart.DownloadPanelTemplate();
         var geoNetworkRecord = new Portal.data.GeoNetworkRecord({
             title: 'the title',
@@ -24,7 +25,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 {
                     href: 'http://host/some.html',
                     name: 'imos:radar_stations',
-                    protocol: 'some protocol',
+                    protocol: 'downloadable',
                     title: 'the title one',
                     type: 'text/html'
                 }
@@ -68,12 +69,20 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 {
                     href: 'http://someurl',
                     title: 'wms layer',
-                    type: 'application/vnd.ogc.wms_xml'
+                    type: 'application/vnd.ogc.wms_xml',
+                    protocol: 'downloadable'
                 },
                 {
                     href: 'http://someurl',
                     title: htmlTitle,
-                    type: 'text/html'
+                    type: 'text/html',
+                    protocol: 'downloadable'
+                },
+                {
+                    href: 'http://someotherurl',
+                    title: htmlTitle,
+                    type: 'text/html',
+                    protocol: 'not downloadable'
                 }
             ];
 
@@ -81,7 +90,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         });
 
-        it('html links only shown', function() {
+        it('only known mimetypes and downloadable links shown', function() {
             expect($(fragment).length).toBe(1);
         });
 
