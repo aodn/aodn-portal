@@ -18,11 +18,10 @@
             });
 
     // getFeatureInfo popup links without internal javascript calls
-    jQuery('.featureinfocontent a').not( "['onclick','onClick']" ).live('hover',
+    jQuery('.featureinfocontent a').not("['onclick','onClick']").live('hover',
             function () {
                 jQuery(this).attr('target', '_blank').addClass('external');
             });
-
 
 
     // activelayer/tree labels
@@ -66,12 +65,9 @@
     <link rel="stylesheet" type="text/css" href="${grailsApplication.config.portal.instance.css}"/>
 </g:if>
 <g:elseif test="${grailsApplication.config.portal.instance?.name}">
-    <link rel="stylesheet" type="text/css"
-          href="${resource(dir: 'css', file: grailsApplication.config.portal.instance.name + '.css')}"/>
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.instance.name + '.css')}"/>
 </g:elseif>
 
 <g:if test="${grailsApplication.config.portal.instance?.name}">
-    <link rel="shortcut icon"
-          href="${resource(dir: 'images', file: grailsApplication.config.portal.instance.name + 'favicon.ico')}"
-          type="image/x-icon"/>
+    <link rel="shortcut icon" href="${resource(dir: 'images', file: grailsApplication.config.portal.instance.name + 'favicon.ico')}" type="image/x-icon"/>
 </g:if>
