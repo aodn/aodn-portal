@@ -26,7 +26,8 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
             failure: this._onDownloadFailure,
             params: {
                 items: this.store.getItemsEncodedAsJson()
-            }
+            },
+            scope: this
         });
     },
 
@@ -35,6 +36,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _onDownloadSuccess: function() {
+        console.log('success');
         this.currentlyDownloading = false;
         this.fireEvent('downloadsuccess');
     },
