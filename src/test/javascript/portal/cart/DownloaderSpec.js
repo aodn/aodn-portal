@@ -51,26 +51,22 @@ describe("Portal.cart.Downloader", function() {
                 expect(downloader.isDownloading()).toBe(false);
             });
 
-        //     it('true when download starts', function() {
-        //         activeRecordStore.initiateDownload();
-        //         expect(activeRecordStore.isDownloading()).toBe(true);
-        //     });
+            it('true when download starts', function() {
+                downloader.start();
+                expect(downloader.isDownloading()).toBe(true);
+            });
 
-        //     it('false when download succeeds', function() {
-        //         activeRecordStore.initiateDownload();
+            it('false when download succeeds', function() {
+                downloader.start();
+                downloader._onDownloadSuccess();
+                expect(downloader.isDownloading()).toBe(false);
+            });
 
-        //         activeRecordStore._onDownloadSuccess();
-
-        //         expect(activeRecordStore.isDownloading()).toBe(false);
-        //     });
-
-        //     it('false when download fails', function() {
-        //         activeRecordStore.initiateDownload();
-
-        //         activeRecordStore._onDownloadFailure();
-
-        //         expect(activeRecordStore.isDownloading()).toBe(false);
-        //     });
+            it('false when download fails', function() {
+                downloader.start();
+                downloader._onDownloadFailure();
+                expect(downloader.isDownloading()).toBe(false);
+            });
         });
     });
 });
