@@ -37,33 +37,13 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         var self = this;
 
         Ext.each(links, function(link) {
-            if (self._isDownloadable(link)) {
+            if (Portal.cart.Downloader.isDownloadableLink(link)) {
                 html += subFilesTemplate.apply(link);
             }
         });
 
         return html;
     },
-
-    _isDownloadable: function(link) {
-        return (this._isDownloadableProtocol(link.protocol) && this.mimeTypes[link.type]);
-    },
-
-    _isDownloadableProtocol: function(protocol) {
-        var protocols = this._parseProtocols(Portal.app.config.downloadCartDownloadableProtocols);
-        return (protocols.indexOf(protocol) != -1);
-    },
-
-    // TODO: refactor: cut and paste from ResultsGrid.
-    _parseProtocols: function(protocols) {
-		var result = [];
-
-		Ext.each(protocols.split("\n"), function(protocol) {
-			result.push(protocol.trim())
-		});
-
-		return result;
-	},
 
     _getMarkupForOneFile: function(values) {
         return "<i>" + values.title + "</i> (" + this.mimeTypes[values.type] + ")<br/>";
