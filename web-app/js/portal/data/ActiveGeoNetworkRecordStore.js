@@ -13,6 +13,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         this.on('add', this._onAdd, this);
         this.on('remove', this._onRemove, this);
         this.on('clear', this._onClear, this);
+
+        this.currentlyDownloading = false;
     },
 
     _onAdd: function(store, records, index) {
@@ -48,6 +50,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     initiateDownload: function() {
 
+        this.currentlyDownloading = true;
+
         Ext.Ajax.request({
             url: 'downloadCart/download',
             success: this._onDownloadSuccess,
@@ -56,6 +60,10 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
                 items: this._getItemsEncodedAsJson()
             }
         });
+    },
+
+    isDownloading: function() {
+        return this.currentlyDownloading;
     },
 
     _getItemsEncodedAsJson: function() {
@@ -69,11 +77,13 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onDownloadSuccess: function() {
-        // TODO: not sure what we want to do here, but probably nothing.
+        this.currentlyDownloading = false;
+        this.fireEvent('downloadsuccess');
     },
 
     _onDownloadFailure: function() {
-        // TODO: error message?
+        this.currentlyDownloading = false;
+        this.fireEvent('downloadfailure');
     }
 });
 

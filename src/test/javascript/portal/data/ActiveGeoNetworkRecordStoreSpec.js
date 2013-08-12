@@ -284,6 +284,33 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     });
                 });
             });
+
+            describe('is downloading', function() {
+                it('initially false', function() {
+                    expect(activeRecordStore.isDownloading()).toBe(false);
+                });
+
+                it('true when download starts', function() {
+                    activeRecordStore.initiateDownload();
+                    expect(activeRecordStore.isDownloading()).toBe(true);
+                });
+
+                it('false when download succeeds', function() {
+                    activeRecordStore.initiateDownload();
+
+                    activeRecordStore._onDownloadSuccess();
+
+                    expect(activeRecordStore.isDownloading()).toBe(false);
+                });
+
+                it('false when download fails', function() {
+                    activeRecordStore.initiateDownload();
+
+                    activeRecordStore._onDownloadFailure();
+
+                    expect(activeRecordStore.isDownloading()).toBe(false);
+                });
+            });
         });
     });
 });

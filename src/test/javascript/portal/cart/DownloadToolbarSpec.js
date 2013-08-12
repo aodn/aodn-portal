@@ -127,5 +127,47 @@ describe("Portal.cart.DownloadToolbar", function() {
             store.add(myRecord);
             expectButtonDisabledStates(false, false);
         });
+
+        describe('disabled during a download', function() {
+            it('goes from enabled to disabled', function() {
+                initStoreWithRecord(myRecord);
+                startDownload();
+                expectButtonDisabledStates(true, true);
+            });
+
+            it('goes from disabled to enabled after success', function() {
+                initStoreWithRecord(myRecord);
+                startDownload();
+
+                expectButtonDisabledStates(true, true);
+                successDownload();
+                expectButtonDisabledStates(false, false);
+            });
+
+            it('goes from disabled to enabled after failure', function() {
+                initStoreWithRecord(myRecord);
+                startDownload();
+
+                expectButtonDisabledStates(true, true);
+                failDownload();
+                expectButtonDisabledStates(false, false);
+            });
+
+            it('item added during download, buttons stay disabled', function() {
+                // TODO: is this even possible?
+            });
+        });
+
+        var startDownload = function() {
+            downloadAllButton.fireEvent('click');
+        }
+
+        var successDownload = function() {
+            store._onDownloadSuccess();
+        }
+
+        var failDownload = function() {
+            store._onDownloadFailure();
+        }
     });
 });

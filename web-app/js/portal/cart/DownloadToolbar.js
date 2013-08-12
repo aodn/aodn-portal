@@ -22,8 +22,10 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
         this.downloadAllButton = new Ext.Button({
             text: OpenLayers.i18n('okdownload'),
             listeners: {
+                scope: this,
                 'click': function(button, event) {
                     Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
+                    this._updateButtonStates();
                 }
             }
         });
@@ -43,16 +45,27 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
         this.store.on('add', this._updateButtonStates, this);
         this.store.on('remove', this._updateButtonStates, this);
         this.store.on('clear', this._updateButtonStates, this);
+        this.store.on('downloadsuccess', this._updateButtonStates, this);
+        this.store.on('downloadfailure', this._updateButtonStates, this);
     },
 
     _updateButtonStates: function() {
-        if (this.store.getCount() > 0) {
-            this.clearCartButton.enable();
-            this.downloadAllButton.enable();
+        if (   Portal.data.ActiveGeoNetworkRecordStore.instance().isDownloading()
+            || this.store.getCount() == 0) {
+            this._disableButtons();
         }
         else {
-            this.clearCartButton.disable();
-            this.downloadAllButton.disable();
+            this._enableButtons();
         }
+    },
+
+    _disableButtons: function() {
+        this.clearCartButton.disable();
+        this.downloadAllButton.disable();
+    },
+
+    _enableButtons: function() {
+        this.clearCartButton.enable();
+        this.downloadAllButton.enable();
     }
 });
