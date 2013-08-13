@@ -64,7 +64,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     setActiveTab: function(tabIndex) {
         this.mainTabPanel.setActiveTab(tabIndex);
 
-        if (appConfigStore.isFacetedSearchEnabled() && (tabIndex == TAB_INDEX_SEARCH)) {
+        if (tabIndex == TAB_INDEX_SEARCH) {
             this.layerChooserPanel.hide();
         }
         else {

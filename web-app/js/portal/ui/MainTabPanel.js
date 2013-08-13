@@ -59,20 +59,15 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
     _initSearchTabPanel: function(cfg) {
 
-        if (this.appConfigStore.isFacetedSearchEnabled()) {
-            return new Portal.ui.search.SearchPanel({
-                itemId: 'searchPanel',
-                proxyUrl: proxyURL,
-		        catalogUrl: Portal.app.config.catalogUrl,
-                spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-		        protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
-		        dragAndDrop: cfg.dragAndDrop,
-                resultGridSize: 10
-		    });
-        }
-        else {
-            return new Portal.search.SearchTabPanel({mapPanel:this.getMapPanel()});
-        }
+        return new Portal.ui.search.SearchPanel({
+            itemId: 'searchPanel',
+            proxyUrl: proxyURL,
+            catalogUrl: Portal.app.config.catalogUrl,
+            spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
+            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
+            dragAndDrop: cfg.dragAndDrop,
+            resultGridSize: 10
+        });
     },
 
     getPortalPanel:function () {
