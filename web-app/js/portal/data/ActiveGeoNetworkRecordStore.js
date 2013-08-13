@@ -24,6 +24,9 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
             store: this
         });
 
+        this.downloader.on('downloadstart', function() {
+            this.fireEvent('downloadstart');
+        }, this);
         this.downloader.on('downloadsuccess', function() {
             this.fireEvent('downloadsuccess');
         }, this);

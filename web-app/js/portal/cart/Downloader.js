@@ -14,11 +14,12 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
         Portal.cart.Downloader.superclass.constructor.call(this, cfg);
 
-        this.addEvents('downloadsuccess', 'downloadfailure');
+        this.addEvents('downloadstart', 'downloadsuccess', 'downloadfailure');
     },
 
     start: function() {
         this.currentlyDownloading = true;
+        this.fireEvent('downloadstart');
 
         Ext.Ajax.request({
             url: 'downloadCart/download',

@@ -41,10 +41,10 @@ describe("Portal.cart.DownloadToolbar", function() {
             expect(downloadAllButton.text).toBe(OpenLayers.i18n('okdownload'));
         });
 
-        it('click makes call to server downloadCart/download', function() {
-            spyOn(store, 'initiateDownload');
+        it('click opens confirmation window', function() {
+            spyOn(Portal.cart.DownloadCartConfirmationWindow.prototype, 'show');
             downloadAllButton.fireEvent('click');
-            expect(store.initiateDownload).toHaveBeenCalled();
+            expect(Portal.cart.DownloadCartConfirmationWindow.prototype.show).toHaveBeenCalled();
         });
     });
 
@@ -159,7 +159,7 @@ describe("Portal.cart.DownloadToolbar", function() {
         });
 
         var startDownload = function() {
-            downloadAllButton.fireEvent('click');
+            store.downloader.start();
         }
 
         var successDownload = function() {
