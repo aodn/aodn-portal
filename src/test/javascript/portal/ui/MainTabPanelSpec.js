@@ -8,6 +8,8 @@
 
 describe("Portal.ui.MainTabPanel", function() {
 
+    Portal.app.config.metadataLayerProtocols = "";
+
     appConfigStore.getById = function(id) {
         if (id == 'spatialsearch.url') {
             return { data: { value: "spatialsearch.aodn.org.au" }};
@@ -17,7 +19,6 @@ describe("Portal.ui.MainTabPanel", function() {
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockSearchTabPanel = {};
     var mockPortalPanel = {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
@@ -30,7 +31,6 @@ describe("Portal.ui.MainTabPanel", function() {
 
         spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
         spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
-        spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainTabPanel.superclass.constructor, "call");
         spyOn(Portal.ui.MainTabPanel.prototype, "mon");

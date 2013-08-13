@@ -24,21 +24,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        var itemsToDisplay = [];
-
-        var disclaimerMessage = OpenLayers.i18n('facetedSearchDisclaimer');
-
-        if (disclaimerMessage != 'facetedSearchDisclaimer') { // Apparently if the i18n entry is the empty string then the key name is returned instead of '', so we need to test for the key to see if the message has been set
-            this.disclaimerPanel = new Ext.Panel(
-                {
-                    region:'north',
-                    cls:'faceted-search-disclaimer',
-                    html:'<img src="images/information-icon.png" alt="infomation" style="position: absolute; top 4px; left: 3px;"><div style="margin-left: 18px;">' + disclaimerMessage + '</div>'
-                }
-            );
-            itemsToDisplay.push(this.disclaimerPanel);
-        }
-
         this.filtersPanel = new Portal.ui.search.SearchFiltersPanel({
             searcher: this.searcher,
             region: 'west',
@@ -46,7 +31,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             width: 340,
             bodyCssClass: 'p-header-space'
         });
-        itemsToDisplay.push(this.filtersPanel);
 
         this.resultsStore = new Portal.data.GeoNetworkResultsStore();
         this.resultsStore.on('load', function (store, recs, opt) {
@@ -68,12 +52,14 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
                 cls: 'x-panel-header p-header-space'
             }
         });
-        itemsToDisplay.push(this.resultsGrid);
 
         var config = Ext.apply({
-            layout:'border',
-            split:false,
-            items:itemsToDisplay
+            layout: 'border',
+            split: false,
+            items: [
+                this.filtersPanel,
+                this.resultsGrid
+            ]
         }, cfg, defaults);
 
         Portal.ui.search.SearchPanel.superclass.constructor.call(this, config);
