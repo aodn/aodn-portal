@@ -129,27 +129,22 @@ describe("Portal.cart.DownloadToolbar", function() {
         });
 
         describe('disabled during a download', function() {
-            it('goes from enabled to disabled', function() {
-                initStoreWithRecord(myRecord);
-                startDownload();
-                expectButtonDisabledStates(true, true);
-            });
 
             it('goes from disabled to enabled after success', function() {
+                spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(true);
+
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(true, true);
-                successDownload();
                 expectButtonDisabledStates(false, false);
             });
 
             it('goes from disabled to enabled after failure', function() {
+                spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(false);
+
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(true, true);
-                failDownload();
                 expectButtonDisabledStates(false, false);
             });
 

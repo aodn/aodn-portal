@@ -10,6 +10,7 @@ describe("Portal.cart.DownloadCartConfirmationWindow", function() {
         var confirmationWindow;
 
         beforeEach(function() {
+            spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(true);
             confirmationWindow = new Portal.cart.DownloadCartConfirmationWindow();
         });
 

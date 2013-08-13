@@ -21,15 +21,24 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         this.currentlyDownloading = true;
         this.fireEvent('downloadstart');
 
-        Ext.Ajax.request({
-            url: 'downloadCart/download',
-            success: this._onDownloadSuccess,
-            failure: this._onDownloadFailure,
-            params: {
+        var success = Portal.utils.FormUtil.createAndSubmit(
+            'downloadCart/download',
+            {
                 items: this.store.getItemsEncodedAsJson()
-            },
-            scope: this
-        });
+            }
+        );
+
+        // Note: success will currently always be 'true'.
+        //
+        // We could go to *alot* more trouble to properly handle success/failure,
+        // e.g. http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
+        // but I think we should wait and see whether it's actually necessary.
+        if (success) {
+            this._onDownloadSuccess();
+        }
+        else {
+            this._onDownloadFailure();
+        }
     },
 
     isDownloading: function() {
