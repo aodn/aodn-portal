@@ -24,14 +24,11 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
             store: this
         });
 
-        this.downloader.on('downloadstart', function() {
-            this.fireEvent('downloadstart');
-        }, this);
-        this.downloader.on('downloadsuccess', function() {
-            this.fireEvent('downloadsuccess');
-        }, this);
-        this.downloader.on('downloadfailure', function() {
-            this.fireEvent('downloadfailure');
+        // TODO: why doesn't relayEvents() work?
+        Ext.each(['downloadstart', 'downloadsuccess', 'downloadfailure'], function(eventName) {
+            this.downloader.on(eventName, function() {
+                this.fireEvent(eventName);
+            }, this);
         }, this);
     },
 
