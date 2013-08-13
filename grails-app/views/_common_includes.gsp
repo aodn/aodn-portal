@@ -7,8 +7,7 @@
 --%>
 
 <!-- First import JQUERY -->
-<script language="JavaScript" type="text/javascript"
-        src="${resource(dir: 'js', file: 'jquery/jquery-1.4.1.min.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js', file: 'jquery/jquery-1.4.1.min.js')}"></script>
 <script>
     jQuery('.button input').live('hover',
             function () {
