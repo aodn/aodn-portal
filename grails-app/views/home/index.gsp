@@ -108,10 +108,6 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/SuggestionStore.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/CatalogResult.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/LinkStore.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/data/FacetStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/field/FreeText.js')}"
