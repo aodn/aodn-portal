@@ -47,16 +47,12 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 });
 
 Portal.cart.Downloader.isDownloadableLink = function(link) {
-    return (   Portal.cart.Downloader.isDownloadableProtocol(link.protocol)
-            && Portal.app.config.downloadCartMimeTypeToExtensionMapping[link.type]);
-}
 
-Portal.cart.Downloader.isDownloadableProtocol = function(protocol) {
     var protocols = [];
 
-	Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
-		protocols.push(protocol.trim())
-	});
+    Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
+        protocols.push(protocol.trim())
+    });
 
-	return (protocols.indexOf(protocol) != -1);
-}
+    return (protocols.indexOf(link.protocol) != -1);
+};

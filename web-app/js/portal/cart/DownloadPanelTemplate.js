@@ -10,7 +10,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function() {
 
-        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping
+        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping;
 
         var templateLines = [
             '<div class="cart-row">',
@@ -18,7 +18,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '    <span class="cart-title">{title}</span>',
             '  </div>',
             '  <div class="cart-files" >{[this._getFileListMarkup(values.links)]}</div>',
-            '</div>',
+            '</div>'
         ];
 
         Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
@@ -34,7 +34,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         );
 
         var html = "";
-        var self = this;
 
         Ext.each(links, function(link) {
             if (Portal.cart.Downloader.isDownloadableLink(link)) {
@@ -46,6 +45,14 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getMarkupForOneFile: function(values) {
-        return "<i>" + values.title + "</i> (" + this.mimeTypes[values.type] + ")<br/>";
+
+        return "<i>" + values.title + "</i>" + this._fileExtensionInfo(values.type);
+    },
+
+    _fileExtensionInfo: function(type) {
+
+        var extension = this.mimeTypes[type];
+
+        return extension ? " (." + extension + ")" : "";
     }
 });
