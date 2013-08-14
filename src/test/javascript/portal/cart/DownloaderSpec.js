@@ -29,7 +29,6 @@ describe("Portal.cart.Downloader", function() {
 
             beforeEach(function() {
                 downloader.start();
-                // request = Portal.utils.FormUtil.createAndSubmit.mostRecentCall.args[0];
             });
 
             it('path', function() {
