@@ -51,7 +51,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     removeLayer: function() {
-        Portal.data.LayerStore.instance().removeUsingOpenLayer(this.node.layer);
+        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(this.node.layer.parentGeoNetworkRecord);
     },
 
     zoomToLayer: function() {

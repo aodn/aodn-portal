@@ -96,16 +96,34 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         myRecord.getFirstWmsLink());
                 });
 
-                it('callback adds layer record to geonetwork record', function() {
-                    var layerRecord = new GeoExt.data.LayerRecord();
-                    spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
-                        function(layerLink, layerRecordCallback) {
-                            layerRecordCallback(layerRecord);
+                describe('callback', function() {
+                    var layerRecord;
+
+                    beforeEach(function() {
+                        layerRecord = new GeoExt.data.LayerRecord({
+                            layer: layer,
+                            title: layer.name
                         });
 
-                    activeRecordStore.add(myRecord);
+                        spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
+                            function(layerLink, layerRecordCallback) {
+                                layerRecordCallback(layerRecord);
+                            });
 
-                    expect(myRecord.layerRecord).toBe(layerRecord);
+                        activeRecordStore.add(myRecord);
+                    });
+
+                    it('adds layer record to geonetwork record', function() {
+                        expect(myRecord.layerRecord).toBe(layerRecord);
+                    });
+
+                    it('adds geonetwork record to layer record', function() {
+                        expect(layerRecord.parentGeoNetworkRecord).toBe(myRecord);
+                    });
+
+                    it('adds geonetwork record to openlayer', function() {
+                        expect(layerRecord.get('layer').parentGeoNetworkRecord).toBe(myRecord);
+                    });
                 });
 
                 it('layer removed from LayerStore', function() {
