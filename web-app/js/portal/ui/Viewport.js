@@ -36,7 +36,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                 {
                     unstyled: true,
                     region: 'north',
-                    height: cfg.appConfig.headerHeight + 15
+                    height: cfg.appConfig.headerHeight + 40
                 },
                 this.mainTabPanel,
                 {

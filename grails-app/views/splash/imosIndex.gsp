@@ -16,20 +16,12 @@
 Integrated Marine Observing System (IMOS), an Australian Government Research Infrastructure project.
 You can obtain full information about IMOS via the <a class="external" title="IMOS home page" href="http://www.imos.org.au" target="_blank">IMOS Webpage</a>. IMOS is a contributor to the Australian Ocean Data Network (AODN). Please see the web site for information on the AODN and how you and your institution can <a class="external" href="${ grailsApplication.config.help.url }?q=node/142" target="_blank">contribute data</a>.</p>
 
-<h3>The portal provides two ways of discovering data:</h3>
 
-	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
 
-	<div id="viewPortHomepageLinks" class="floatLeft">
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_MAP); return false;" href="">Map</a></div>
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_SEARCH); return false;" href="">Search</a></div>
-	</div>
-
-	  <div class="clear spacer"></div>
 
 
 	<div class="spacer floatLeft homePanelWidget"  style="width:230px">
-	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" />${oceanCurrent.speil}</a>
+	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image "/>${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
 

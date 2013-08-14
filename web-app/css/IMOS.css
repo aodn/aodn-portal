@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,59 +7,55 @@
 
 
 body, html{
-    font-family: tahoma,verdana,arial,sans-serif;
     font-size: 11px;
-    background-color: white;
 	color: #030303;
-    /*margin: 5px! important;
-
-    margin-top: 2px! important; */
+    /*background-color: #DBD563;*/
 }
 
 #header {
-    background: url(../images/portal2header.jpg) no-repeat 0 0  #0165A1;
-    height: 300px;
     width: 100%;
-
+    background-color: #5A97b1;
+}
+#headerTitle {
+    color: white;
+    text-shadow: 1px 2px 9px #1B7399;
 }
 .mainlinks {
     color: white;
     border-left: 1px solid #99CCFF;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 p, td{
-    font-family: tahoma,verdana,arial,sans-serif;
 }
 
 h1 {
-	font-family: tahoma,arial,verdana,sans-serif;
-	color: #15428B;
+	color: #1b7399;
     font-size: 24px;
     font-weight: bold;
 }
 
 h2 {
-	font-family: tahoma,arial,verdana,sans-serif;
-	color: #15428B;
+	color: #1b7399;
     font-size: 16px;
     font-weight: bold;
 }
 
 h3 {
-	font-family: tahoma,arial,verdana,sans-serif;
-	color: #15428B;
+	color: #1b7399;
     font-size: 14px;
     font-weight: bold;
 }
 
 h4 {
-    color: #6A6A6A;
+    color: #1b7399;
     font-size: 12px;
-    margin: 2px 0px;
+    margin: 2px 0 ;
 }
 
 h5 {
-    color: #6A6A6A;
+    color: #1b7399;
     font-size: 11px;
     margin: 2px 0 ;
 }
@@ -73,10 +68,6 @@ h6 {
 }
 
 #mainHomePanel, #downloadCartPanel{
-    background-color: whitesmoke;
-   background-image: -moz-linear-gradient(center top , whitesmoke 0pt, white 245px);
-   background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#FFFFFF));
-   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='whitesmoke', endColorstr='#FFFFFF');
    font-size: 12px;
    border-radius: 6px;
    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
@@ -84,7 +75,6 @@ h6 {
 
 .footer {
     font-size: 10px;
-    background-color: white;
 }
 
 
@@ -93,91 +83,38 @@ h6 {
     overflow: visible;
 }
 
-#headerTail {
-    height: 30px;
-    background: url("../images/shadowLight.png") repeat-x scroll left top white;
-}
 
-#header h1 {
-    color: white;
-    padding: 50px 20px 0px 20px;
-    float: left;
-}
 
-#logo {
-    margin: 3px 5px;
-    float: left;
-}
-
-.viewPortLinksBackground {
-    float: left;
-    padding: 4px 10px;
-    margin-right: 5px;
-    background: url("../images/mapshadow.png") repeat-x scroll left top #0B5584;
-    border-radius: 14px;
-}
-#viewPortLinks  {
-   position: relative;
-   top: 48px;
-}
-
-.viewPortLinks a {
-    color: white;
-    text-shadow: 2px 2px 6px #014582;
-    padding: 8px 14px;
-    margin-right: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    outline: 0;
-}
-
-.viewPortLinks a:hover {
-    color: black;
-
-    text-shadow: 0px 0px 8px #6DA3C3;
-}
-
-.x-form-item-label {
-    color: #15428B;
+.x-form-item-label, .x-tab-strip span.x-tab-strip-text {
+    color: #1b7399;
 }
 
 .menuHeader {
-    /*background: url(../images/menuHeader.png) 0px -13px repeat-x;
+    /*background: url(../images/menuHeader.png) 0  -13px repeat-x;
     border: medium none;*/
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 13px;
     font-weight: bold;
     padding: 10px 1px 10px 10px;
-	color: #15428B;
+	color: #1b7399;
 }
 .x-panel-header {
-    background-image: none;
-	background-color: white;
     border: none;
     font-weight: bold;
-    padding: 10px 3px 4px 10px;
-    color: #15428B;
+    color: #1b7399;
     font-size: 13px;
 }
 .x-layout-split {
     background-color: #f3f3f3;
 }
-#headerTitle {
-    text-shadow: 3px 3px 3px #014582;
-}
+
 
 #toplinks {
     color: white;
-    float: right;
-    position: absolute;
-    right: 20px;
-    top: 12px;
 }
 
 #toplinks a {
     color: white;
-    text-shadow: 2px 2px 6px #014582;
     font-size: 13px;
     font-weight: bold;
     margin: 0 3px;
@@ -186,12 +123,10 @@ h6 {
 
 #toplinks a:hover {
     color: black;
-    text-shadow: none;
 }
 
 #loginpopup a {
-    color: #15428B;
-    text-shadow: 2px 2px 6px grey;
+    color: #1b7399;
 }
 
 a.userlink {
@@ -200,29 +135,7 @@ a.userlink {
     margin-right: 15px! important;
 }
 
-.community {
-    padding: 10px 0;
-}
 
-.topdrop  {
-    background-image:url(../images/mapshadow.png);
-    background-position:left top;
-    background-repeat:repeat-x;
-    z-index: 100;
-    width: 100%;
-    height:10px;
-    position: absolute;
-}
-
-.viewPortTabActive {
-    background: url("../images/mapshadow.png") repeat-x scroll left top #49B0E0;
-    color: #333333;
-}
-
-.viewPortTabActive a {
-    color: #333333! important;
-    text-shadow: none! important;
-}
 
 
 #downloadCartStatus {
@@ -254,4 +167,10 @@ a.userlink {
 
 #downloadCartStatus {
     text-align: right;
+}
+
+ul.x-tab-strip li {
+    background-color: #EFEFEF;
+    padding: 2px 1px;
+    border-radius: 3px;
 }

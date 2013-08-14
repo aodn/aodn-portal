@@ -46,6 +46,14 @@
                 $(this).removeClass("fullTransparency");
             });
 
+    jQuery('.viewPortTab:not(.viewPortTabDisabled)')
+            .live("mouseenter", function () {
+                $(this).addClass("viewPortTabHover");
+            })
+            .live("mouseleave", function () {
+                $(this).removeClass("viewPortTabHover");
+            });
+
 
 </script>
 <!-- Import extra pluggins-->

@@ -17,16 +17,7 @@
 	<h3>Want to contribute data to the AODN?</h3>
 	<p>Please see the web site for information on the AODN and how you and your institution can <a class="external" target="_blank" href="${ grailsApplication.config.help.url }?q=node/142" title="Contribute data" >contribute data</a>.</p>
 
-	<h3>The portal provides two ways of discovering data:</h3>
 
-	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
-
-	<div id="viewPortHomepageLinks" class="floatLeft">
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_MAP); return false;" href="">Map</a></div>
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_SEARCH); return false;" href="">Search</a></div>
-	</div>
-
-    <div class="clear spacer"></div>
     <div class="">
         <h3>Want to see data in your region?</h3>
         <p><img src="images/WAODN_logoPortal2Small.png" class="WAMiniLogo" alt="Western Australian AODN logo" /> <a  href="http://wa.aodn.org.au/" title="Western Australian Ocean Data Network" >Western Australia</a>.</p>
@@ -35,7 +26,7 @@
     <h2>Latest Ocean Currents and Temperature Graphs</h2>
 	<div class="minispacer floatLeft homePanelWidget"  style="width:230px">
 
-	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" /> ${oceanCurrent.speil}</a>
+	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image " /> ${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
 	<div class="minispacer floatLeft homePanelWidget"  style="width:250px">

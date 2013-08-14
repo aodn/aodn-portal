@@ -70,10 +70,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         });
     },
 
-    getPortalPanel:function () {
-        return this.portalPanel;
-    },
-
     getMapPanel:function () {
         return this.portalPanel.getMapPanel();
     },
@@ -108,7 +104,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
-        jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
+        jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
     },
 
     isMapVisible:function () {

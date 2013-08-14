@@ -9,7 +9,7 @@
  html{
 	background-color: #f9f9f9;
 	color: #030303;
-    margin-top: 0px! important;
+    margin-top: 0 ! important;
 
 
 }
@@ -67,7 +67,7 @@ h3 {
 h4 {
     color: #6A6A6A;
     font-size: 12px;
-    margin: 2px 0px;
+    margin: 2px 0 ;
 }
 
 h5 {
@@ -104,7 +104,7 @@ input, select, textarea {
 }
 
 #mainHomePanel h1 {
-	margin: 40px 0 30px 0px;
+	margin: 40px 0 30px 0 ;
 }
 
 #rightHomePanel {
@@ -182,17 +182,13 @@ input, select, textarea {
 
 #headerTitle {
     color: #FFFFFF;
-    padding: 61px 15px 0px 20px;
+    padding: 61px 15px 0  20px;
     font-size: 16px;
     float: left;
 }
 
 #toplinks {
     color: #FFFFFF;
-    float: right;
-    position: absolute;
-    right: 20px;
-    top: 12px;
 }
 
 #toplinks a {
@@ -210,44 +206,7 @@ a.userlink {
     margin-right: 15px! important;
 }
 
-.community {
-    padding: 10px 0;
-}
-#viewPortLinks  {
-   position: relative;
-   top: 55px;
-}
 
-.viewPortLinks a {
-    color: white;
-    text-shadow: 2px 2px 6px grey;
-    padding: 8px 14px;
-    margin-right: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    outline: 0;
-}
-
-.viewPortLinks a:hover {
-    color: black;
-    text-shadow: 0px 0px 8px grey;
-}
-.viewPortLinksBackground {
-    float: left;
-    padding: 6px 10px;
-    margin-right: 5px;
-    background: url("../images/mapshadow.png") repeat-x scroll left top grey;
-    border-radius: 14px;
-}
-.viewPortTabActive {
-    background: none repeat-x scroll left top #0079C1;
-}
-
-.viewPortTabActive a {
-    color: white! important;
-    text-shadow: none! important;
-}
 
 #downloadCartStatus {
     background: url("../images/mapshadow.png") repeat-x scroll left top #0079C2;

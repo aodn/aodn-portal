@@ -20,14 +20,7 @@
             <p><b>Public Health</b> - beach safety <BR><b>Ecosystem Health</b> - long-term environmental assessment and consequences of aquaculture management options.</p>
         </div>
 
-        <h3>The portal provides two ways of discovering data:</h3>
 
-        <div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
-
-        <div id="viewPortHomepageLinks" class="floatLeft">
-          <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_MAP); return false;" href="">Map</a></div>
-          <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_SEARCH);return false;" href="">Search</a></div>
-        </div>
 
 
 
@@ -37,19 +30,19 @@
 
 
         <div class="floatLeft">
-            <a title="ANDS"  href="http://ands.org.au/"><img class="logoSpacer" width="120" src="images/ands-logo-hi-res.png"/></a>
-            <a title="Research Data Australia"  href="http://researchdata.ands.org.au/"><img class="logoSpacer"  src="images/ResearchDataAustralia.png"/></a>
+            <a title="ANDS"  href="http://ands.org.au/"><img class="logoSpacer" width="120" src="images/ands-logo-hi-res.png" alt="ANDS logo "/></a>
+            <a title="Research Data Australia"  href="http://researchdata.ands.org.au/"><img class="logoSpacer"  src="images/ResearchDataAustralia.png" alt="Research Data Australia Logo"/></a>
         </div>
 
         <div class="clear spacer"></div>
 
         <div class="floatLeft">
 
-            <a title="Integrated Marine Observation System"  href="http://imos.aodn.org.au/imos/"><img class="logoSpacer" width="120" src="/static/marvlis/Partner_Logos/IMOS.png"/></a>
-            <a title="Tasmanian Partnership for Advanced Computing"  href="http://www.tpac.org.au/"><img class="logoSpacer" width="120" src="/static/marvlis/Partner_Logos/tpac.png"/></a>
-            <a title="Institute for Marine and Antarctic Studies"  href="http://www.imas.utas.edu.au/"><img class="logoSpacer" width="70" src="/static/marvlis/Partner_Logos/IMAS-50mm.png"/></a>
-            <a title="CSIRO"  href="http://www.cmar.csiro.au/" target="_blank"><img class="logoSpacer" width="60" src="/static/marvlis/Partner_Logos/Csiro.png"/></a>
-            <a title="Derwent Estuary Program"  href="http://www.derwentestuary.org.au/"><img class="logoSpacer" width="110" src="/static/marvlis/Partner_Logos/DEPlogo.png"/></a>
+            <a title="Integrated Marine Observation System"  href="http://imos.aodn.org.au/imos/"><img class="logoSpacer" alt="IMOS logo " width="120" src="/static/marvlis/Partner_Logos/IMOS.png"/></a>
+            <a title="Tasmanian Partnership for Advanced Computing"  href="http://www.tpac.org.au/"><img class="logoSpacer" width="120" alt="TPAC logo " src="/static/marvlis/Partner_Logos/tpac.png"/></a>
+            <a title="Institute for Marine and Antarctic Studies"  href="http://www.imas.utas.edu.au/"><img class="logoSpacer" width="70" alt="MARVLISlogo " src="/static/marvlis/Partner_Logos/IMAS-50mm.png"/></a>
+            <a title="CSIRO"  href="http://www.cmar.csiro.au/" target="_blank"><img class="logoSpacer" width="60" alt="CSIRO logo "src="/static/marvlis/Partner_Logos/Csiro.png"/></a>
+            <a title="Derwent Estuary Program"  href="http://www.derwentestuary.org.au/"><img class="logoSpacer" width="110" alt="DEP logo " src="/static/marvlis/Partner_Logos/DEPlogo.png"/></a>
 
         </div>
             <div class="clear spacer"></div>
