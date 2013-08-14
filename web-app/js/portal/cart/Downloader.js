@@ -58,11 +58,16 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
 Portal.cart.Downloader.isDownloadableLink = function(link) {
 
+    return Portal.cart.Downloader.isDownloadableProtocol(link.protocol);
+}
+
+Portal.cart.Downloader.isDownloadableProtocol = function(protocol) {
+
     var protocols = [];
 
     Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
         protocols.push(protocol.trim())
     });
 
-    return (protocols.indexOf(link.protocol) != -1);
+    return (protocols.indexOf(protocol) != -1);
 };
