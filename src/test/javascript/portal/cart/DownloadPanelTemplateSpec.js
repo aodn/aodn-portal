@@ -16,7 +16,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 },
                 downloadCartDownloadableProtocols: 'downloadable\nsome other downloadable protocol\n'
             }
-        }
+        };
 
         var tpl = new Portal.cart.DownloadPanelTemplate();
         var geoNetworkRecord = new Portal.data.GeoNetworkRecord({
@@ -29,7 +29,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                     title: 'the title one',
                     type: 'text/html'
                 }
-            ],
+            ]
         });
 
         fragment = tpl.apply(geoNetworkRecord.data);
@@ -68,12 +68,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             var links = [
                 {
                     href: 'http://someurl',
-                    title: 'wms layer',
-                    type: 'application/vnd.ogc.wms_xml',
-                    protocol: 'downloadable'
-                },
-                {
-                    href: 'http://someurl',
                     title: htmlTitle,
                     type: 'text/html',
                     protocol: 'downloadable'
@@ -87,7 +81,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             ];
 
             fragment = tpl._getFileListMarkup(links);
-
         });
 
         it('only known mimetypes and downloadable links shown', function() {
@@ -97,7 +90,27 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         it('links contents', function() {
             expect($(fragment).children('i').length).toBe(1);
             expect($(fragment).children('i').text()).toBe(htmlTitle);
-            expect($(fragment).text()).toBe(htmlTitle + ' (' + Portal.app.config.downloadCartMimeTypeToExtensionMapping['text/html'] + ')');
+            expect($(fragment).text()).toBe(htmlTitle + ' (.' + Portal.app.config.downloadCartMimeTypeToExtensionMapping['text/html'] + ')');
+        });
+    });
+
+    describe('_fileExtensionInfo', function() {
+
+        var tpl;
+
+        beforeEach(function() {
+
+            tpl = new Portal.cart.DownloadPanelTemplate();
+        });
+
+        it('should return a formatted extension for a known mime type', function() {
+
+            expect(tpl._fileExtensionInfo('text/html')).toBe(' (.html)');
+        });
+
+        it('should return an empty string for an unknown mime type', function() {
+
+            expect(tpl._fileExtensionInfo('text/unknown')).toBe('');
         });
     });
 });

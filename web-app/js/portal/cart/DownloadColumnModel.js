@@ -24,7 +24,7 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
                     renderer: this._removeColumnRenderer
                 }
             ]
-        }
+        };
 
         Portal.cart.DownloadColumnModel.superclass.constructor.call(this, config);
     },
@@ -45,7 +45,7 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
         };
 
         var componentId = Ext.id();
-        var buttonHandler = function(button, e) {
+        var buttonHandler = function() {
             store.remove(record)
         };
         createButton.defer(1, this, ['Remove', componentId, buttonHandler]);
