@@ -153,12 +153,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     _updateFilter: function() {
     	var combinedCQL = "";
-    	var count = 0;
-		for (var key in this.activeFilters) {
-			count++;
-		}
 
-		if (count > 0) {
+		if (this.activeFilters.length > 0) {
 			for (var name in this.activeFilters) {
 				if (this.activeFilters[name].hasValue()) {
 					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
