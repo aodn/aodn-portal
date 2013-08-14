@@ -50,7 +50,7 @@ class BulkDownloadService {
 
         // Add all files to archive
         copyOfFilesToDownload.each {
-            it.links.each { layerLink ->
+            it.downloadableLinks.each { layerLink ->
                 _addFileEntry layerLink
             }
         }

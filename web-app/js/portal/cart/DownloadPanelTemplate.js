@@ -17,7 +17,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  <div class="cart-title-row">',
             '    <span class="cart-title">{title}</span>',
             '  </div>',
-            '  <div class="cart-files" >{[this._getFileListMarkup(values.links)]}</div>',
+            '  <div class="cart-files" >{[this._getFileListMarkup(values.downloadableLinks)]}</div>',
             '</div>'
         ];
 
@@ -36,9 +36,9 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         var html = "";
 
         Ext.each(links, function(link) {
-            if (Portal.cart.Downloader.isDownloadableLink(link)) {
+            // if (Portal.cart.Downloader.isDownloadableLink(link)) {
                 html += subFilesTemplate.apply(link);
-            }
+            // }
         });
 
         return html;

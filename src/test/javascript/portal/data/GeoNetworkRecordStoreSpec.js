@@ -16,6 +16,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
     <source>987654321</source> \
     <link>|Point of truth URL of this metadata record|http://imosmest/metadata?uuid=1a69252d|WWW:LINK-1.0-http--metadata-URL|text/html</link> \
     <link>imos:radar_stations|ACORN Radar Stations|http://geoserver.imos.org.au/geoserver/wms|OGC:WMS-1.1.1-http-get-map|application/vnd.ogc.wms_xml</link> \
+    <link>imos:radar_stations|ACORN Radar Stations csv|http://geoserver/stations.csv|downloadable|text/csv</link> \
     <title>ANFOG</title> \
     <abstract>This is about ANFOGs, man</abstract> \
     <geoBox>112|-44|154|-9</geoBox> \
@@ -30,6 +31,9 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         var geoNetworkRecordStore;
 
         beforeEach(function() {
+            Ext.namespace('Portal.app.config');
+            Portal.app.config.downloadCartDownloadableProtocols = 'downloadable\nsome other downloadable protocol\n';
+
             geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
             geoNetworkRecordStore.loadData(doc);
         });
@@ -99,6 +103,22 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 
             it('north', function() {
                 expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().top).toBe(-9);
+            });
+        });
+
+        describe('downloadable links', function() {
+
+            beforeEach(function() {
+            });
+
+            it('field exists', function() {
+                expect(geoNetworkRecordStore.getAt(0).get('downloadableLinks')).toBeTruthy();
+            });
+
+            it('contains only downloadable links', function() {
+                var downloadableLinks = geoNetworkRecordStore.getAt(0).get('downloadableLinks');
+                expect(downloadableLinks.length).toBe(1);
+                expect(downloadableLinks[0].title).toBe('ACORN Radar Stations csv');
             });
         });
     });

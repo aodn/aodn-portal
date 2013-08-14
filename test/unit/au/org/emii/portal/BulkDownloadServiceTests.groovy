@@ -25,7 +25,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         'uuid': '1111111',
         'name': 'some record',
         'title': 'its really interesting',
-        'links': [
+        'downloadableLinks': [
             {"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
             {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"}
         ]
@@ -34,7 +34,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         'uuid': '22222',
         'name': 'another record',
         'title': 'its really really interesting',
-        'links': [
+        'downloadableLinks': [
             {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
             {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
             {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}
