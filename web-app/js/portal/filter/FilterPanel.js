@@ -48,11 +48,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     createFilter: function(layer, filter) {
 
     	var newFilter = undefined;
+
     	if (filter.type === "String") {
     		newFilter = new  Portal.filter.ComboFilter({
     			fieldLabel: filter.label
     		});
-
     	}
     	else if (filter.type == "Date") {
     		newFilter = new Portal.filter.TimeFilter({
@@ -78,7 +78,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     		//Filter hasn't been defined
     	}
 
-    	if (newFilter != undefined) {
+    	if (newFilter) {
     		newFilter.setLayerAndFilter(layer, filter);
 			this.relayEvents(newFilter, ['addFilter']);
 			this._addLabel(filter);
@@ -102,11 +102,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 			Ext.Ajax.request({
 				url: this.GET_FILTER,
 				params: {
-                    /*if(layer.hasWFSLayer())
-                        layerId: layer.wfsLayer.hrailsID
-                    else
-					    layerId: layer.grailsLayerId
-                    */
                     layerId: layer.grailsLayerId
 				},
 				scope: this,
@@ -121,26 +116,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
                     Ext.each(filters,
                         function(filter, index, all) {
-                            if (filter.enabled) {
-                                this.createFilter(layer, filter);
-                                aFilterIsEnabled = true
-                            }
+                            this.createFilter(layer, filter);
+                            aFilterIsEnabled = true
                         },
                         this
                     );
 
 					if (aFilterIsEnabled) {
 						this.setVisible(true);
-
-						this.addButton = new Ext.Button({
-							cls: "x-btn-text-icon",
-							icon: "images/basket_add.png",
-							text: 'Add to Cart',
-							listeners: {
-								scope: this,
-								click: this._addToCart
-							}
-						});
 
 						this.clearFiltersButton = new Ext.Button({
 							cls: "x-btn-text-icon",
@@ -152,7 +135,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 							}
 						});
 
-						this.add(this.addButton);
 						this.add(this.clearFiltersButton);
 
 						this.doLayout();
@@ -202,122 +184,18 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 		this._updateFilter();
     },
 
-    _clearFilters: function(){
-        for(var key in this.activeFilters){
+    _clearFilters: function() {
+
+        var keys = Object.keys(this.activeFilters);
+
+        for (var i = 0; i < keys.length; i++) {
+
+            var key = keys[i];
+
             this.activeFilters[key].handleRemoveFilter();
-        }
-    },
-
-    _addToCart: function() {
-
-        addToDownloadCart(this._dataDownloadItem());
-
-        if (this.layer.getMetadataUrl()) {
-
-            addToDownloadCart(this._metadataItem());
-        }
-    },
-
-    _dataDownloadItem: function() {
-
-        return this._makeDownloadCartItem(
-            this.layer.getMetadataUrl(),
-            this.layer.name,
-            "Filtered " + this.layer.name + " data",
-            this._makeDataDownloadURL(),
-            "text/csv",
-            "WWW:DOWNLOAD-1.0-http--downloaddata",
-            this._sanitiseLayerNameForFilename() + ".csv"
-        );
-    },
-
-    _metadataItem: function() {
-
-        return this._makeDownloadCartItem(
-            this.layer.getMetadataUrl(),
-            this.layer.name,
-            this.layer.name + " metadata",
-            this.layer.getMetadataUrl(),
-            "application/xml",
-            "WWW:LINK-1.0-http--link",
-            this._sanitiseLayerNameForFilename() + "_metadata.xml"
-        );
-    },
-
-    _makeDownloadCartItem: function(
-        recordUuid,
-        recordTitle,
-        linkTitle,
-        linkHref,
-        linkType,
-        linkProtocol,
-        linkPreferredFilename)
-    {
-
-        var item = {
-            record: {
-                data: {}
-            },
-            link: {}
-        };
-
-        item.record.data["uuid"] = recordUuid;
-        item.record.data["title"] = recordTitle;
-
-        item.link["title"] = linkTitle;
-        item.link["href"] = linkHref;
-        item.link["type"] = linkType;
-        item.link["protocol"] = linkProtocol;
-        item.link["preferredFname"] = linkPreferredFilename;
-
-        return item;
-    },
-
-    _makeDataDownloadURL: function() {
-
-        if (this.layer.wfsLayer == null) {
-            return this._makeWfsUrl(this.layer.server.uri, this.layer.params.LAYERS);
+            delete this.activeFilters[key];
         }
 
-        return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
-    },
-
-    _makeWfsUrl: function(serverURL, layerName) {
-
-        var queryArgs = this._makeWfsUrlQueryArgs(layerName);
-
-        var wfsURL = serverURL.replace("/wms", "/wfs");
-
-        if (wfsURL.indexOf("?") > -1)
-            wfsURL += "&";
-        else
-            wfsURL += "?";
-
-        return wfsURL + Ext.urlEncode(queryArgs);
-    },
-
-    _makeWfsUrlQueryArgs: function(layerName) {
-
-        var queryArgs = {
-            typeName: layerName,
-            SERVICE: "WFS",
-            outputFormat: "csv",
-            REQUEST: "GetFeature",
-            VERSION: "1.0.0" //This version has BBOX the same as WMS. It's flipped in 1.1.0
-        };
-
-        if (this.layer.params.CQL_FILTER) {
-
-            queryArgs.CQL_FILTER = this.layer.params.CQL_FILTER;
-        }
-
-        return queryArgs;
-    },
-
-    _sanitiseLayerNameForFilename: function() {
-
-        // replace ':' used to namespace layers by geoserver with '#'
-        // as its not allowed in windows filenames
-        return this.layer.params.LAYERS.replace(':', '#');
+        this._updateFilter();
     }
 });

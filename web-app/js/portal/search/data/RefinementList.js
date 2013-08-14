@@ -13,9 +13,9 @@ Ext.namespace('Portal.search.data');
  */
 /**
  * api: method[RefinementList]
- * 
+ *
  * Class used to maintain a list of refinements
- * 
+ *
  */
 
 Portal.search.data.RefinementList = function() {
@@ -29,7 +29,7 @@ Portal.search.data.RefinementList.prototype = {
 		}
 		this.refinements[facet][value] = null;
 	},
-	
+
 	remove : function(facet, value) {
 		if (!this.refinements[facet])
 			return;
@@ -88,5 +88,4 @@ Portal.search.data.RefinementList.prototype = {
 		}
 		return true;
 	}
-
 };
