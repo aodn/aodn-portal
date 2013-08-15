@@ -38,6 +38,7 @@ describe("Portal.ui.MainPanel", function() {
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
         spyOn(Portal.ui.MainPanel.superclass.setActiveTab, 'call');
+        spyOn(Ext.MsgBus, 'subscribe');
 
         return new Portal.ui.MainPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
     };
@@ -49,22 +50,31 @@ describe("Portal.ui.MainPanel", function() {
         mainPanel.items = [];
     };
 
-    var checkCommon = function() {
-        it("creates map, search and portal panels and monitors search panel layeradd events on instantiation", function() {
-            expect(Portal.ui.PortalPanel).toHaveBeenCalled();
-            expect(Portal.ui.HomePanel).toHaveBeenCalled();
-            expect(Portal.ui.MainPanel.superclass.constructor.call).toHaveBeenCalled();
-            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
-            expect(mainPanel.homePanel).toEqual(mockHomePanel);
-            expect(Portal.ui.MainPanel.prototype.on).toHaveBeenCalled();
+    describe('initialisation', function() {
+        beforeEach(function() {
+            initMainPanel();
         });
 
-        it('doLayout called during setActiveTab', function() {
-            spyOn(mainPanel, 'doLayout');
-            mainPanel.setActiveTab(new Ext.Panel());
-            expect(mainPanel.doLayout).toHaveBeenCalledWith(false, true);
+        it('should init portal panel', function() {
+            expect(Portal.ui.PortalPanel).toHaveBeenCalled();
+            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
         });
-    };
+
+        it('should init home panel', function() {
+            expect(Portal.ui.HomePanel).toHaveBeenCalled();
+            expect(mainPanel.homePanel).toEqual(mockHomePanel);
+        });
+
+        it('should subscribe to tabchange event', function() {
+            expect(Portal.ui.MainPanel.prototype.on).toHaveBeenCalledWith('tabchange', mainPanel._onTabChange, mainPanel);
+        });
+
+        it('should subscribe to selectedLayerChange event', function() {
+            expect(Ext.MsgBus.subscribe).toHaveBeenCalledWith(
+                'selectedLayerChanged', mainPanel.onSelectedLayerChange, mainPanel
+            );
+        });
+    });
 
     describe("facets enabled", function() {
         beforeEach(function() {
@@ -76,8 +86,6 @@ describe("Portal.ui.MainPanel", function() {
             expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
             expect(mainPanel.searchTabPanel).toEqual(mockSearchPanel);
         });
-
-        checkCommon();
     });
 
     describe("facets disabled", function() {
@@ -90,7 +98,12 @@ describe("Portal.ui.MainPanel", function() {
             expect(Portal.search.SearchTabPanel).toHaveBeenCalled();
             expect(mainPanel.searchTabPanel).toEqual(mockSearchTabPanel);
         });
+    });
 
-        checkCommon();
+    it('doLayout called during setActiveTab', function() {
+        initMainPanel();
+        spyOn(mainPanel, 'doLayout');
+        mainPanel.setActiveTab(new Ext.Panel());
+        expect(mainPanel.doLayout).toHaveBeenCalledWith(false, true);
     });
 });

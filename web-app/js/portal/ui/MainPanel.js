@@ -53,11 +53,13 @@ Portal.ui.MainPanel = Ext.extend(Ext.TabPanel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        this.on('tabchange', function () {
-            this.portalPanel.fireEvent('tabchange');
-        }, this);
+        this.on('tabchange', this._onTabChange, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
+    },
+
+    _onTabChange: function() {
+        this.portalPanel.fireEvent('tabchange');
     },
 
     _initSearchTabPanel: function(cfg) {
