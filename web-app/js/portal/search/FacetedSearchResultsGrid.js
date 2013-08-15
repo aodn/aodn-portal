@@ -17,6 +17,10 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     mapHeight: 104,
 
     initComponent:function () {
+
+        var selectionMod = new Ext.grid.RowSelectionModel({listeners:null})
+        selectionMod.suspendEvents();
+
         var config = {
             colModel:new Ext.grid.ColumnModel({
                 defaults:{
@@ -44,9 +48,17 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                     }
                 ]
             }),
+            sm: selectionMod,
+            stripeRows: false,
+            trackMouseOver: false,
             bbar:new Ext.PagingToolbar({
                 pageSize:this.pageSize
-            })
+            }),
+            listeners: {
+                'rowmousedown': function(evt) {
+                    Ext.preventDefault(evt);
+                }
+            }
         };
 
         Ext.apply(this, Ext.apply(this.initialConfig, config));
