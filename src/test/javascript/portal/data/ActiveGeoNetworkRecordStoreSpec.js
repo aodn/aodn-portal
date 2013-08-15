@@ -146,7 +146,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     title: 'a really interesting record'
                 });
 
-                it('shouldn\'t call addUsingLayerLink when record without layer is added', function() {
+                it('should not call addUsingLayerLink when record without layer is added', function() {
                     spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
@@ -154,7 +154,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink).not.toHaveBeenCalled();
                 });
 
-                it('shouldn\'t call removeUsingOpenLayer when record without layer is removed', function() {
+                it('should not call removeUsingOpenLayer when record without layer is removed', function() {
                     spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
@@ -216,7 +216,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
         describe('JSON encoding', function() {
             var itemsDecoded;
 
-            addTestRecordsToStore = function() {
+            var addTestRecordsToStore = function() {
                 var firstRecord = new Portal.data.GeoNetworkRecord({
                     uuid: '111111',
                     title: 'first title',
@@ -228,7 +228,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                             title: 'the first title',
                             type: 'text/html'
                         }
-                    ],
+                    ]
                 });
 
                 var secondRecord = new Portal.data.GeoNetworkRecord({
@@ -242,7 +242,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                             title: 'the second title',
                             type: 'text/pdf'
                         }
-                    ],
+                    ]
                 });
 
                 activeRecordStore.add(firstRecord);

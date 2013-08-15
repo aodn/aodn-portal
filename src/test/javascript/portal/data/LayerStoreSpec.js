@@ -15,7 +15,7 @@ describe("Portal.data.LayerStore", function() {
         title : 'test',
         server: {
             type: "WMS-1.1.1",
-            uri: "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+            uri: "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
         }
     });
 
@@ -38,7 +38,7 @@ describe("Portal.data.LayerStore", function() {
         Portal.data.LayerStore.THE_INSTANCE = undefined;
     });
 
-    function createOpenLayer(title, url) {
+    var createOpenLayer = function(title, url) {
 
         if (title == undefined) {
 
@@ -56,7 +56,7 @@ describe("Portal.data.LayerStore", function() {
             {},
             { isBaseLayer: false }
         );
-    }
+    };
 
     it('add layer descriptor', function() {
         layerStore.addUsingDescriptor(layerDescriptor);
