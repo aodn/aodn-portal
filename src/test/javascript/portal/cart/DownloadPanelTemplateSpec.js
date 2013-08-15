@@ -21,7 +21,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         var tpl = new Portal.cart.DownloadPanelTemplate();
         var geoNetworkRecord = new Portal.data.GeoNetworkRecord({
             title: 'the title',
-            links: [
+            downloadableLinks: [
                 {
                     href: 'http://host/some.html',
                     name: 'imos:radar_stations',
@@ -60,7 +60,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
     describe('sub template', function() {
 
-        var htmlTitle = 'the html title';
+        var expectedTitles = ['title 1', 'title 2'];
 
         beforeEach(function() {
             var tpl = new Portal.cart.DownloadPanelTemplate();
@@ -68,29 +68,27 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             var links = [
                 {
                     href: 'http://someurl',
-                    title: htmlTitle,
-                    type: 'text/html',
+                    title: expectedTitles[0],
+                    type: 'application/vnd.ogc.wms_xml',
                     protocol: 'downloadable'
                 },
                 {
-                    href: 'http://someotherurl',
-                    title: htmlTitle,
+                    href: 'http://someurl',
+                    title: expectedTitles[1],
                     type: 'text/html',
-                    protocol: 'not downloadable'
+                    protocol: 'downloadable'
                 }
             ];
 
             fragment = tpl._getFileListMarkup(links);
         });
 
-        it('only known mimetypes and downloadable links shown', function() {
-            expect($(fragment).length).toBe(1);
-        });
-
         it('links contents', function() {
-            expect($(fragment).children('i').length).toBe(1);
-            expect($(fragment).children('i').text()).toBe(htmlTitle);
-            expect($(fragment).text()).toBe(htmlTitle + ' (.' + Portal.app.config.downloadCartMimeTypeToExtensionMapping['text/html'] + ')');
+            expect($(fragment).children('i').length).toBe(2);
+
+            $(fragment).children('i').each(function(i, el) {
+                expect($(el).text()).toBe(expectedTitles[i]);
+            });
         });
     });
 
@@ -99,17 +97,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         var tpl;
 
         beforeEach(function() {
-
             tpl = new Portal.cart.DownloadPanelTemplate();
         });
 
         it('should return a formatted extension for a known mime type', function() {
-
             expect(tpl._fileExtensionInfo('text/html')).toBe(' (.html)');
         });
 
         it('should return an empty string for an unknown mime type', function() {
-
             expect(tpl._fileExtensionInfo('text/unknown')).toBe('');
         });
     });

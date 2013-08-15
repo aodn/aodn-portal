@@ -198,6 +198,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"

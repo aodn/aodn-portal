@@ -41,10 +41,10 @@ describe("Portal.cart.DownloadToolbar", function() {
             expect(downloadAllButton.text).toBe(OpenLayers.i18n('okdownload'));
         });
 
-        it('click makes call to server downloadCart/download', function() {
-            spyOn(store, 'initiateDownload');
+        it('click opens confirmation window', function() {
+            spyOn(Portal.cart.DownloadCartConfirmationWindow.prototype, 'show');
             downloadAllButton.fireEvent('click');
-            expect(store.initiateDownload).toHaveBeenCalled();
+            expect(Portal.cart.DownloadCartConfirmationWindow.prototype.show).toHaveBeenCalled();
         });
     });
 
@@ -85,31 +85,40 @@ describe("Portal.cart.DownloadToolbar", function() {
             clearCartButton = toolbar.items.get(1);
         });
 
-        var expectButtonDisabledStates = function(downloadButtonDisabled, clearButtonDisabled) {
-            expect(downloadAllButton.disabled).toBe(downloadButtonDisabled, clearButtonDisabled);
-        }
+        var expectButtonEnabledStates = function(downloadButtonEnabled, clearButtonEnabled) {
+            expect(downloadAllButton.disabled).not.toBe(downloadButtonEnabled);
+            expect(clearCartButton.disabled).not.toBe(clearButtonEnabled);
+        };
+
+        var expectButtonsEnabled = function() {
+            return expectButtonEnabledStates(true, true);
+        };
+
+        var expectButtonsDisabled = function() {
+            return expectButtonEnabledStates(false, false);
+        };
 
         var initStoreWithRecord = function(record) {
             store.add(record);
 
             // This isn't strictly required (it's tested by the following test), but doesn't hurt to be sure.
-            expectButtonDisabledStates(false, false);
-        }
+            expectButtonsEnabled();
+        };
 
         it('disabled when store is initially empty', function() {
-            expectButtonDisabledStates(true, true);
+            expectButtonsDisabled();
         });
 
         it('disabled when store becomes empty', function() {
             initStoreWithRecord(myRecord);
             store.remove(myRecord);
-            expectButtonDisabledStates(true, true);
+            expectButtonsDisabled();
         });
 
         it('disabled when store is cleared', function() {
             initStoreWithRecord(myRecord);
             store.removeAll();
-            expectButtonDisabledStates(true, true);
+            expectButtonsDisabled();
         });
 
         it('enabled when store initially has at least one item', function() {
@@ -119,38 +128,33 @@ describe("Portal.cart.DownloadToolbar", function() {
             toolbar = new Portal.cart.DownloadToolbar();
             downloadAllButton = toolbar.items.get(0);
 
-            expectButtonDisabledStates(false, false);
+            expectButtonsEnabled();
         });
 
         it('enabled when store becomes non-empty', function() {
-            expectButtonDisabledStates(true, true);
+            expectButtonsDisabled();
             store.add(myRecord);
-            expectButtonDisabledStates(false, false);
+            expectButtonsEnabled();
         });
 
         describe('disabled during a download', function() {
-            it('goes from enabled to disabled', function() {
-                initStoreWithRecord(myRecord);
-                startDownload();
-                expectButtonDisabledStates(true, true);
-            });
 
             it('goes from disabled to enabled after success', function() {
+                spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(true);
+
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(true, true);
-                successDownload();
-                expectButtonDisabledStates(false, false);
+                expectButtonsEnabled();
             });
 
             it('goes from disabled to enabled after failure', function() {
+                spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(false);
+
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(true, true);
-                failDownload();
-                expectButtonDisabledStates(false, false);
+                expectButtonsEnabled();
             });
 
             it('item added during download, buttons stay disabled', function() {
@@ -159,12 +163,12 @@ describe("Portal.cart.DownloadToolbar", function() {
         });
 
         var startDownload = function() {
-            downloadAllButton.fireEvent('click');
-        }
+            store.downloader.start();
+        };
 
         var successDownload = function() {
             store.downloader._onDownloadSuccess();
-        }
+        };
 
         var failDownload = function() {
             store.downloader._onDownloadFailure();

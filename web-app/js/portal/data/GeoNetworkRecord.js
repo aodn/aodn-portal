@@ -8,28 +8,48 @@ Ext.namespace('Portal.data');
 
 Ext.namespace('Portal.data.GeoNetworkRecord');
 
+// TODO: tried to namespace this, but unsuccessfully.
+convertXmlToLinks = function(v, record) {
+    var linkElems = Ext.DomQuery.jsSelect('link', record);
+    var links = [];
+
+    Ext.each(linkElems, function(link) {
+        var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
+        var elements = linkValue.split('|');
+
+        links.push({
+            name: elements[0],
+            title: elements[1],
+            href: elements[2],
+            protocol: elements[3],
+            type: elements[4]
+        });
+    }, this);
+
+    return links;
+};
+
 Portal.data.GeoNetworkRecord.LinksField = {
     name: 'links',
+    convert: convertXmlToLinks
+};
+
+Portal.data.GeoNetworkRecord.DownloadableLinksField = {
+    name: 'downloadableLinks',
     convert: function(v, record) {
-        var linkElems = Ext.DomQuery.jsSelect('link', record);
-        var links = new Array();
 
-        Ext.each(linkElems, function(link) {
-            var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
-            var elements = linkValue.split('|');
+        var allLinks = convertXmlToLinks(v, record);
+        var downloadableLinks = [];
 
-            links.push({
-                name: elements[0],
-                title: elements[1],
-                href: elements[2],
-                protocol: elements[3],
-                type: elements[4]
-            });
-        }, this);
+        Ext.each(allLinks, function(linkToCheck) {
+            if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
+                downloadableLinks.push(linkToCheck);
+            }
+        });
 
-        return links;
+        return downloadableLinks;
     }
-}
+};
 
 Portal.data.GeoNetworkRecord.BboxField = {
     name: 'bbox',
@@ -41,7 +61,7 @@ Portal.data.GeoNetworkRecord.BboxField = {
 
         return metaDataExtent;
     }
-}
+};
 
 Portal.data.GeoNetworkRecord.create = function(o){
 
@@ -63,11 +83,11 @@ Portal.data.GeoNetworkRecord.create = function(o){
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
-    }
+    };
 
     f.prototype.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
-    }
+    };
 
     return f;
 };
@@ -77,6 +97,7 @@ Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     'abstract',
     { name: 'uuid', mapping: '*/uuid' },
     Portal.data.GeoNetworkRecord.LinksField,
+    Portal.data.GeoNetworkRecord.DownloadableLinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
     Portal.data.GeoNetworkRecord.BboxField
