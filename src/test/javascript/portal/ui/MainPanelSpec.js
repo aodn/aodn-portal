@@ -34,7 +34,6 @@ describe("Portal.ui.MainPanel", function() {
         spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
         spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
-        spyOn(Portal.ui.MainPanel.superclass.constructor, "call");
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
         spyOn(Portal.ui.MainPanel.superclass.setActiveTab, 'call');
@@ -55,6 +54,18 @@ describe("Portal.ui.MainPanel", function() {
             initMainPanel();
         });
 
+        it('creates an instance of Panel', function() {
+            expect(mainPanel).toBeInstanceOf(Ext.Panel);
+        });
+
+        // it('does not create an instance of TabPanel', function() {
+        //     expect(mainPanel).not.toBeInstanceOf(Ext.TabPanel);
+        // });
+
+        it('should set layout to cardlayout', function() {
+            expect(mainPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
+        });
+
         it('should init portal panel', function() {
             expect(Portal.ui.PortalPanel).toHaveBeenCalled();
             expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
@@ -63,10 +74,6 @@ describe("Portal.ui.MainPanel", function() {
         it('should init home panel', function() {
             expect(Portal.ui.HomePanel).toHaveBeenCalled();
             expect(mainPanel.homePanel).toEqual(mockHomePanel);
-        });
-
-        it('should subscribe to tabchange event', function() {
-            expect(Portal.ui.MainPanel.prototype.on).toHaveBeenCalledWith('tabchange', mainPanel._onTabChange, mainPanel);
         });
 
         it('should subscribe to selectedLayerChange event', function() {
