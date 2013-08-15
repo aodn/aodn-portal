@@ -64,8 +64,7 @@ Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     onAccept:function () {
-
-        window.location.href = "downloadCart/download";
+        Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
         this.close();
     },
 

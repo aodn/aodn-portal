@@ -15,45 +15,35 @@ describe("Portal.cart.Downloader", function() {
     });
 
     describe('download', function() {
-        it('start makes call to server', function() {
-            spyOn(Ext.Ajax, 'request');
+
+        beforeEach(function() {
+            spyOn(Portal.utils.FormUtil, 'createAndSubmit');
+        });
+
+        it('start makes call to form util create and submit', function() {
             downloader.start();
-            expect(Ext.Ajax.request).toHaveBeenCalled();
+            expect(Portal.utils.FormUtil.createAndSubmit).toHaveBeenCalled();
         });
 
         describe('request params', function() {
 
-            var request;
-
             beforeEach(function() {
-                spyOn(Ext.Ajax, 'request');
                 downloader.start();
-                request = Ext.Ajax.request.mostRecentCall.args[0];
             });
 
-            it('url', function() {
-                expect(request.url).toBe('downloadCart/download');
+            it('path', function() {
+                expect(Portal.utils.FormUtil.createAndSubmit.mostRecentCall.args[0]).toBe('downloadCart/download');
             });
 
-            it('success', function() {
-                expect(request.success).toBeTruthy();
-                expect(request.success).toBe(downloader._onDownloadSuccess);
-            });
-
-            it('failure', function() {
-                expect(request.failure).toBeTruthy();
-                expect(request.failure).toBe(downloader._onDownloadFailure);
+            it('params', function() {
+                var params = Portal.utils.FormUtil.createAndSubmit.mostRecentCall.args[1];
+                expect(params.items).toEqual(downloader.store.getItemsEncodedAsJson());
             });
         });
 
         describe('is downloading', function() {
             it('initially false', function() {
                 expect(downloader.isDownloading()).toBe(false);
-            });
-
-            it('true when download starts', function() {
-                downloader.start();
-                expect(downloader.isDownloading()).toBe(true);
             });
 
             it('false when download succeeds', function() {
