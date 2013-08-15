@@ -37,11 +37,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
                 right: 5
             },
             unstyled:true,
-            // TODO: see https://github.com/aodn/aodn-portal/issues/315 - using a CardLayout, we wouldn't have to do this.
-            // method to hide the usual tab panel header with css
-            headerCfg:{
-                cls:'mainTabPanelHeader'  // Default class not applied if Custom element specified
-            },
             layout: 'card',
             items:[
                 this.homePanel,

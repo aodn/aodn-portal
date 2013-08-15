@@ -30,7 +30,6 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             layout: 'border',
             id: 'portalPanel',
-            title: 'Map',
             stateful: false,
             items: [
                 this.mapPanel,
