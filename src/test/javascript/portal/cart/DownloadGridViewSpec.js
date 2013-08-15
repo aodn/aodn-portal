@@ -12,12 +12,12 @@ describe("Portal.cart.DownloadGridView", function() {
             gridView = new Portal.cart.DownloadGridView();
         });
 
-        it('empty text', function() {
+        it('configures empty text', function() {
             expect(gridView.deferEmptyText).toBeFalsy();
             expect(gridView.emptyText).toBe(OpenLayers.i18n('emptyCartText'));
         });
 
-        it('auto fill', function() {
+        it('configures auto fill to be true', function() {
             expect(gridView.autoFill).toBeTruthy();
         });
     });
