@@ -7,7 +7,6 @@
 
 
 body, html{
-    font-size: 11px;
 	color: #030303;
     /*background-color: #DBD563;*/
 }
@@ -67,14 +66,9 @@ h6 {
     margin: 2px 0 ;
 }
 
-#mainHomePanel, #downloadCartPanel{
-   font-size: 12px;
-   border-radius: 6px;
-   /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.2) inset;*/
-}
 
 .footer {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 
@@ -173,4 +167,8 @@ ul.x-tab-strip li {
     background-color: #EFEFEF;
     padding: 2px 1px;
     border-radius: 3px;
+}
+
+.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
+    background-color: #4D7282 !important;
 }

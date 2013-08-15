@@ -260,30 +260,29 @@ Site navigation
 }
 
 .viewPortTab {
-    float: left;
-    display: block;
-    margin-right: 10px;
-    padding: 16px 50px 8px 50px;
-    width: 200px;
-    border-top-right-radius:    20px 60px;
     border-bottom-right-radius: 20px 60px;
-    border-right: 2px solid #6b6b6b;
-    /*-webkit-box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.15);
-    -moz-box-shadow:    7px 7px 5px rgba(50, 50, 50, 0.15);
-    box-shadow:         7px 7px 5px rgba(50, 50, 50, 0.15);*/
+    border-right: 2px solid #6B6B6B;
+    border-top-right-radius: 20px 60px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    padding: 12px 20px 6px 80px;
+    width: 200px;
 
 }
+
+
 .viewPortTab * {
-     color: white;
+     color: #fafafa;
      margin: 0 ;
  }
 
 .viewPortTab h1 {
-    text-align: center;
     line-height: 26px;
     font-size: 32px;
     font-weight: bold;
     margin-right: 10px;
+    margin-left: 10px;
 }
 .viewPortTab h2 {
     line-height: 12px;
@@ -291,21 +290,7 @@ Site navigation
 
 .viewPortTabActive {
     /* http://www.colorzilla.com/gradient-editor/ */
-    background: #484848; /* Old browsers */
-    background: -moz-linear-gradient(left,  #484848 0%, #4f4f4f 15%, #6b6b6b 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#484848), color-stop(15%,#4f4f4f), color-stop(100%,#6b6b6b)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* IE10+ */
-    background: linear-gradient(to right,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#6b6b6b',GradientType=1 ); /* IE6-9 */
-}
 
-.viewPortTabActive *{
-    color: white! important;
-}
-
-.viewPortTabHover {
     background: #999999; /* Old browsers */
     background: -moz-linear-gradient(left,  #484848 0%, #666666 15%, #7a7a7a 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,#484848), color-stop(15%,#666666), color-stop(100%,#7a7a7a)); /* Chrome,Safari4+ */
@@ -314,8 +299,28 @@ Site navigation
     background: -ms-linear-gradient(left,  #484848 0%,#666666 15%,#7a7a7a 100%); /* IE10+ */
     background: linear-gradient(to right,  #484848 0%,#666666 15%,#7a7a7a 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#7a7a7a',GradientType=1 ); /* IE6-9 */
+    -webkit-box-shadow: 5px 2px 5px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    5px 2px 5px rgba(50, 50, 50, 0.75);
+    box-shadow:         5px 2px 5px rgba(50, 50, 50, 0.75);
+    text-shadow: 2px 2px 10px #191919;
+    border-right: 3px solid #2F2E2E;
+    border-top-right-radius: 20px 60px;
+}
 
+.viewPortTabActive *{
+    color: white! important;
 
+}
+
+.viewPortTabHover {
+    background: #484848; /* Old browsers */
+    background: -moz-linear-gradient(left,  #484848 0%, #4f4f4f 15%, #6b6b6b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#484848), color-stop(15%,#4f4f4f), color-stop(100%,#6b6b6b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* IE10+ */
+    background: linear-gradient(to right,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#6b6b6b',GradientType=1 ); /* IE6-9 */
 }
 
 .viewPortTabDisabled * {
@@ -812,11 +817,6 @@ div.olControlMousePosition {
 }
 
 
-
-
-.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
-    background-color: #34546E! important;
-}
 .layersDiv {
 	opacity: 0.85;
     -ms-filter:"alpha(opacity=85)"; /* IE8 */

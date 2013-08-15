@@ -46,6 +46,7 @@
                 $(this).removeClass("fullTransparency");
             });
 
+    // highlight - exclude disabled main viewport tabs
     jQuery('.viewPortTab:not(.viewPortTabDisabled)')
             .live("mouseenter", function () {
                 $(this).addClass("viewPortTabHover");
