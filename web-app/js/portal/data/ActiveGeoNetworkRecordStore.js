@@ -41,7 +41,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
                         record.layerRecord = layerRecord;
                         layerRecord.parentGeoNetworkRecord = record;
                         layerRecord.get('layer').parentGeoNetworkRecord = record;
-                    });
+                    }
+                );
             }
         });
 

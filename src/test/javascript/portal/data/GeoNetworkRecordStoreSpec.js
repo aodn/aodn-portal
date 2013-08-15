@@ -25,7 +25,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
     </geonet:info> \
   </metadata> \
 </dataset> \
-"
+";
 
         var doc = new DOMParser().parseFromString(recordsAsXml, 'text/xml');
         var geoNetworkRecordStore;

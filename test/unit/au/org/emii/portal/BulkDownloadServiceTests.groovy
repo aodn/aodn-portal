@@ -42,7 +42,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
     }
 ]"""
 
-
     def resourcesDir = System.getProperty( "user.dir" ) + "/test/unit/au/org/emii/portal/resources/downloadcontroller"
 
     protected void setUp() {

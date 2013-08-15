@@ -27,12 +27,12 @@ convertXmlToLinks = function(v, record) {
     }, this);
 
     return links;
-}
+};
 
 Portal.data.GeoNetworkRecord.LinksField = {
     name: 'links',
     convert: convertXmlToLinks
-}
+};
 
 Portal.data.GeoNetworkRecord.DownloadableLinksField = {
     name: 'downloadableLinks',
@@ -50,7 +50,7 @@ Portal.data.GeoNetworkRecord.DownloadableLinksField = {
 
         return downloadableLinks;
     }
-}
+};
 
 Portal.data.GeoNetworkRecord.BboxField = {
     name: 'bbox',
@@ -62,7 +62,7 @@ Portal.data.GeoNetworkRecord.BboxField = {
 
         return metaDataExtent;
     }
-}
+};
 
 Portal.data.GeoNetworkRecord.create = function(o){
 
@@ -84,11 +84,11 @@ Portal.data.GeoNetworkRecord.create = function(o){
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
-    }
+    };
 
     f.prototype.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
-    }
+    };
 
     return f;
 };

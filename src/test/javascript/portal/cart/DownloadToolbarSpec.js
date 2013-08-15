@@ -87,14 +87,14 @@ describe("Portal.cart.DownloadToolbar", function() {
 
         var expectButtonDisabledStates = function(downloadButtonDisabled, clearButtonDisabled) {
             expect(downloadAllButton.disabled).toBe(downloadButtonDisabled, clearButtonDisabled);
-        }
+        };
 
         var initStoreWithRecord = function(record) {
             store.add(record);
 
             // This isn't strictly required (it's tested by the following test), but doesn't hurt to be sure.
             expectButtonDisabledStates(false, false);
-        }
+        };
 
         it('disabled when store is initially empty', function() {
             expectButtonDisabledStates(true, true);
@@ -155,11 +155,11 @@ describe("Portal.cart.DownloadToolbar", function() {
 
         var startDownload = function() {
             store.downloader.start();
-        }
+        };
 
         var successDownload = function() {
             store.downloader._onDownloadSuccess();
-        }
+        };
 
         var failDownload = function() {
             store.downloader._onDownloadFailure();
