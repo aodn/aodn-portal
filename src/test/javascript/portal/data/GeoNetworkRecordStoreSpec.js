@@ -107,10 +107,6 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         });
 
         describe('downloadable links', function() {
-
-            beforeEach(function() {
-            });
-
             it('field exists', function() {
                 expect(geoNetworkRecordStore.getAt(0).get('downloadableLinks')).toBeTruthy();
             });
