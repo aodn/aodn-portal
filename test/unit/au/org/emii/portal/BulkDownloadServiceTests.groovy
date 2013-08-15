@@ -257,8 +257,8 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         def testUrl1 = "http://www.google.com/file.disclaimer/a.html"
         def testUrl2 = "http://www.google.com/someDirectory/a.html"
 
-        assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GeonetworkDownloadDetailsQueryString}", bulkDownloadService._geoServerDownloadAddress( testUrl1 )
-        assertEquals testUrl2 + BulkDownloadService.GeonetworkDownloadDetailsQueryString, bulkDownloadService._geoServerDownloadAddress( testUrl2 ) // Unchanged
+        assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING}", bulkDownloadService._geoServerDownloadAddress( testUrl1 )
+        assertEquals testUrl2 + BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING, bulkDownloadService._geoServerDownloadAddress( testUrl2 ) // Unchanged
     }
 
     void testIsGeoServerDisclaimerAddress() {
