@@ -13,22 +13,19 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
             'leftTolerance':this.map.getResolution()
         };
         bounds = bounds.wrapDateLine(this.maxExtent, wrappingOptions);
-
     }
 
     if (this.gutter) {
         // Adjust the extent of a bounds in map units by the
         // layer's gutter in pixels.
 
-        var originalLeft = bounds.left;
-        var originalRight = bounds.right;
         var mapGutter = this.gutter * this.map.getResolution();
-        bounds = new OpenLayers.Bounds(bounds.left - mapGutter,
+        bounds = new OpenLayers.Bounds(
+            bounds.left - mapGutter,
             bounds.bottom - mapGutter,
             bounds.right + mapGutter,
             bounds.top + mapGutter);
     }
-
 
     return bounds;
 };
@@ -38,6 +35,8 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function () {
     if (this.server) {
         return ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"].indexOf(this.server.type) >= 0;
     }
+
+    return false;
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoint, overrideParams) {
@@ -170,13 +169,11 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
     return propagate;
 };
 
-
 //overrides original openlayers method,
 // adds a check to not run the method if bounds are outside of vertical extent
 OpenLayers.Tile.Image.prototype.draw = function() {
     if (this.layer != this.layer.map.baseLayer && this.layer.reproject) {
-        this.bounds = this.
-            BaseLayer(this.position);
+        this.bounds = this.BaseLayer(this.position);
     }
     var drawTile = OpenLayers.Tile.prototype.draw.apply(this, arguments);
 
@@ -217,7 +214,6 @@ OpenLayers.Tile.Image.prototype.draw = function() {
             this.isFirstDraw = false;
         }
     }
-
 
     //here is the if statement we add to the original method.
     /******Start added*******/
