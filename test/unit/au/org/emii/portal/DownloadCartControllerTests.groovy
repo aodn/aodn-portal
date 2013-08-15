@@ -14,67 +14,6 @@ import org.apache.commons.codec.net.URLCodec
 
 class DownloadCartControllerTests extends ControllerUnitTestCase {
 
-    protected void setUp() {
-
-        super.setUp()
-
-    }
-
-    protected void tearDown() {
-
-        super.tearDown()
-    }
-/*
-    void testAdd_NewEntries_EntriesAdded() {
-
-        def uniqueEntriesString  = """\
-            {
-                "title":"NRSNSI Mooring diagram - surface",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_surface_revA.pdf&access=private",
-                "type":"application/pdf",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            },
-            {
-                "title":"NRSNSI Mooring diagram - sub-surface",
-                "type":"application/pdf",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            }\
-        """
-
-        def entriesToTryToAdd = """\
-        [
-            $uniqueEntriesString,
-            {
-                "title":"NRSNSI Mooring diagram - sub-surface",
-                "href":"http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=8060&fname=NRSNSI_subsurface_revA.pdf&access=private",
-                "type":"application/pdf",
-                "protocol":"WWW:DOWNLOAD-1.0-http--downloadother"
-            }
-        ]"""
-
-        def expectedEntries = """\
-        [
-            $uniqueEntriesString
-        ]"""
-
-        def expectedSessionValue = [] as Set
-        expectedSessionValue.addAll JSON.parse( expectedEntries ).toArray()
-
-        // Reset cart
-        mockRequest.session.downloadCart = []
-
-        // Add first entries
-        controller.params.newEntries = entriesToTryToAdd
-        controller.add()
-
-        // Verify result
-        assertEquals expectedSessionValue, mockRequest.session.downloadCart
-        assertEquals "2", mockResponse.contentAsString
-    }
-   */
-
-
     void testDownload_NoEntries_ErrorReturned() {
 
         controller.download()
@@ -123,18 +62,14 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
             }]
     }
 ]"""
-        controller.metaClass._download =  {downLoadCart->
-            assertEquals( downLoadCart.size(), 2 )
-            assertEquals( downLoadCart[1].links[1].title, "NRSNSI Snoring diagram - Another Sub Dimension")
+        controller.metaClass._outputArchiveFromItemList =  {
+            
+            downloadCart->
+
+            assertEquals( downloadCart.size(), 2 )
+            assertEquals( downloadCart[1].links[1].title, "NRSNSI Snoring diagram - Another Sub Dimension")
         }
 
-
         controller.download()
-
-
     }
-
-
-
-
 }
