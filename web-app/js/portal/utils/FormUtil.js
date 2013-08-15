@@ -6,6 +6,12 @@
  */
 Ext.namespace('Portal.utils.FormUtil');
 
+/**
+ * Adapted from: http://stackoverflow.com/a/133997/627806
+ *
+ * This function exists so that a 'form submit' request, with parameters, can easily be made from
+ * javascript code (such as for the download cart).
+ */
 Portal.utils.FormUtil.createAndSubmit = function(path, params, method) {
 
     method = method || "post"; // Set method to post by default if not specified.
