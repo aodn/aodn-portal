@@ -14,7 +14,7 @@ import org.apache.commons.codec.net.URLCodec
 
 class DownloadCartControllerTests extends ControllerUnitTestCase {
 
-    void testDownload_NoEntries_ErrorReturned() {
+    void testDownloadNoEntriesErrorReturned() {
 
         controller.download()
 
@@ -22,7 +22,7 @@ class DownloadCartControllerTests extends ControllerUnitTestCase {
         // assertEquals 400, mockResponse.status // There is a bug in Grails testing code where response is always 200
     }
 
-    void testDownload_WithEntries() {
+    void testDownloadWithEntries() {
 
         controller.params.items = """[
     {
