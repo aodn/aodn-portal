@@ -11,7 +11,7 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 // TODO: tried to namespace this, but unsuccessfully.
 convertXmlToLinks = function(v, record) {
     var linkElems = Ext.DomQuery.jsSelect('link', record);
-    var links = new Array();
+    var links = [];
 
     Ext.each(linkElems, function(link) {
         var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
@@ -39,7 +39,6 @@ Portal.data.GeoNetworkRecord.DownloadableLinksField = {
     convert: function(v, record) {
 
         var allLinks = convertXmlToLinks(v, record);
-        var downloadableProtocols = Portal.app.config.downloadCartDownloadableProtocols.split('\n');
         var downloadableLinks = [];
 
         Ext.each(allLinks, function(linkToCheck) {
