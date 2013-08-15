@@ -85,31 +85,32 @@ describe("Portal.cart.DownloadToolbar", function() {
             clearCartButton = toolbar.items.get(1);
         });
 
-        var expectButtonDisabledStates = function(downloadButtonDisabled, clearButtonDisabled) {
-            expect(downloadAllButton.disabled).toBe(downloadButtonDisabled, clearButtonDisabled);
+        var expectButtonEnabledStates = function(downloadButtonEnabled, clearButtonEnabled) {
+            expect(downloadAllButton.disabled).not.toBe(downloadButtonEnabled);
+            expect(clearCartButton.disabled).not.toBe(clearButtonEnabled);
         };
 
         var initStoreWithRecord = function(record) {
             store.add(record);
 
             // This isn't strictly required (it's tested by the following test), but doesn't hurt to be sure.
-            expectButtonDisabledStates(false, false);
+            expectButtonEnabledStates(true, true);
         };
 
         it('disabled when store is initially empty', function() {
-            expectButtonDisabledStates(true, true);
+            expectButtonEnabledStates(false, false);
         });
 
         it('disabled when store becomes empty', function() {
             initStoreWithRecord(myRecord);
             store.remove(myRecord);
-            expectButtonDisabledStates(true, true);
+            expectButtonEnabledStates(false, false);
         });
 
         it('disabled when store is cleared', function() {
             initStoreWithRecord(myRecord);
             store.removeAll();
-            expectButtonDisabledStates(true, true);
+            expectButtonEnabledStates(false, false);
         });
 
         it('enabled when store initially has at least one item', function() {
@@ -119,13 +120,13 @@ describe("Portal.cart.DownloadToolbar", function() {
             toolbar = new Portal.cart.DownloadToolbar();
             downloadAllButton = toolbar.items.get(0);
 
-            expectButtonDisabledStates(false, false);
+            expectButtonEnabledStates(true, true);
         });
 
         it('enabled when store becomes non-empty', function() {
-            expectButtonDisabledStates(true, true);
+            expectButtonEnabledStates(false, false);
             store.add(myRecord);
-            expectButtonDisabledStates(false, false);
+            expectButtonEnabledStates(true, true);
         });
 
         describe('disabled during a download', function() {
@@ -136,7 +137,7 @@ describe("Portal.cart.DownloadToolbar", function() {
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(false, false);
+                expectButtonEnabledStates(true, true);
             });
 
             it('goes from disabled to enabled after failure', function() {
@@ -145,7 +146,7 @@ describe("Portal.cart.DownloadToolbar", function() {
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonDisabledStates(false, false);
+                expectButtonEnabledStates(true, true);
             });
 
             it('item added during download, buttons stay disabled', function() {
