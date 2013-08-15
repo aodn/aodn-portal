@@ -146,7 +146,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     title: 'a really interesting record'
                 });
 
-                it('when geonetwork record without layer is added', function() {
+                it('shouldn\'t call addUsingLayerLink when record without layer is added', function() {
                     spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
@@ -154,7 +154,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink).not.toHaveBeenCalled();
                 });
 
-                it('when geonetwork record without layer is removed', function() {
+                it('shouldn\'t call removeUsingOpenLayer when record without layer is removed', function() {
                     spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
