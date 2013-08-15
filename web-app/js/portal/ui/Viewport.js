@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
 
-        this.mainTabPanel = new Portal.ui.MainTabPanel({
+        this.mainPanel = new Portal.ui.MainPanel({
             region: 'center',
             activeTab: cfg.activeTab,
             appConfigStore: appConfigStore
@@ -19,7 +19,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.layerChooserPanel = new Portal.ui.LayerChooserPanel({
             region: 'west',
             appConfig: cfg.appConfig,
-            mapPanel: this.mainTabPanel.getMapPanel()
+            mapPanel: this.mainPanel.getMapPanel()
             // width: cfg.appConfig.westWidth // Todo - DN: Max and min are specified in JS, should default be too?
         });
 
@@ -38,7 +38,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                     region: 'north',
                     height: cfg.appConfig.headerHeight + 15
                 },
-                this.mainTabPanel,
+                this.mainPanel,
                 {
                     region: 'south',
                     height: 15,
@@ -62,7 +62,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     },
 
     setActiveTab: function(tabIndex) {
-        this.mainTabPanel.setActiveTab(tabIndex);
+        this.mainPanel.setActiveTab(tabIndex);
 
         if (appConfigStore.isFacetedSearchEnabled() && (tabIndex == TAB_INDEX_SEARCH)) {
             this.layerChooserPanel.hide();
@@ -74,6 +74,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     },
 
     isMapVisible: function() {
-        return this.mainTabPanel.isMapVisible();
+        return this.mainPanel.isMapVisible();
     }
 });

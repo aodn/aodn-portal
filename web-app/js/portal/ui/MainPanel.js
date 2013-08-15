@@ -13,7 +13,7 @@ TAB_INDEX_MAP = 1;
 TAB_INDEX_SEARCH = 2;
 TAB_INDEX_DOWNLOAD_CART = 3;
 
-Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
+Portal.ui.MainPanel = Ext.extend(Ext.TabPanel, {
 
     constructor:function (cfg) {
 
@@ -51,7 +51,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
             ]
         }, cfg);
 
-        Portal.ui.MainTabPanel.superclass.constructor.call(this, config);
+        Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         this.on('tabchange', function () {
             this.portalPanel.fireEvent('tabchange');
@@ -95,7 +95,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
     },
 
     setActiveTab:function (item) {
-        Portal.ui.MainTabPanel.superclass.setActiveTab.call(this, item);
+        Portal.ui.MainPanel.superclass.setActiveTab.call(this, item);
 
         //
         // Nasty hack for #27 - without this, the details panel on the right has no content

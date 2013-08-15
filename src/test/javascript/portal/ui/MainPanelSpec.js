@@ -6,7 +6,7 @@
  *
  */
 
-describe("Portal.ui.MainTabPanel", function() {
+describe("Portal.ui.MainPanel", function() {
 
     var facetsEnabled = false;
     appConfigStore.isFacetedSearchEnabled = function() { return facetsEnabled; }
@@ -16,7 +16,7 @@ describe("Portal.ui.MainTabPanel", function() {
         }
         return "";
     }
-    
+
     var mockConfig = {};
     var mockSearchPanel = {};
     var mockSearchTabPanel = {};
@@ -24,8 +24,8 @@ describe("Portal.ui.MainTabPanel", function() {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
     var mockHomePanel = {};
-    
-    var buildMockMainTabPanel = function() {
+
+    var buildMockMainPanel = function() {
         spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
             return true
         });
@@ -34,47 +34,47 @@ describe("Portal.ui.MainTabPanel", function() {
         spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
         spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
-        spyOn(Portal.ui.MainTabPanel.superclass.constructor, "call");
-        spyOn(Portal.ui.MainTabPanel.prototype, "mon");
-        spyOn(Portal.ui.MainTabPanel.prototype, "on");
-        spyOn(Portal.ui.MainTabPanel.superclass.setActiveTab, 'call');
+        spyOn(Portal.ui.MainPanel.superclass.constructor, "call");
+        spyOn(Portal.ui.MainPanel.prototype, "mon");
+        spyOn(Portal.ui.MainPanel.prototype, "on");
+        spyOn(Portal.ui.MainPanel.superclass.setActiveTab, 'call');
 
-        return new Portal.ui.MainTabPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
+        return new Portal.ui.MainPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
     };
 
-    var mainTabPanel;
+    var mainPanel;
 
-    var initMainTabPanel = function() {
-        mainTabPanel = buildMockMainTabPanel();
-        mainTabPanel.items = [];
+    var initMainPanel = function() {
+        mainPanel = buildMockMainPanel();
+        mainPanel.items = [];
     };
 
     var checkCommon = function() {
         it("creates map, search and portal panels and monitors search panel layeradd events on instantiation", function() {
             expect(Portal.ui.PortalPanel).toHaveBeenCalled();
             expect(Portal.ui.HomePanel).toHaveBeenCalled();
-            expect(Portal.ui.MainTabPanel.superclass.constructor.call).toHaveBeenCalled();
-            expect(mainTabPanel.portalPanel).toEqual(mockPortalPanel);
-            expect(mainTabPanel.homePanel).toEqual(mockHomePanel);
-            expect(Portal.ui.MainTabPanel.prototype.on).toHaveBeenCalled();
+            expect(Portal.ui.MainPanel.superclass.constructor.call).toHaveBeenCalled();
+            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
+            expect(mainPanel.homePanel).toEqual(mockHomePanel);
+            expect(Portal.ui.MainPanel.prototype.on).toHaveBeenCalled();
         });
-    
+
         it('doLayout called during setActiveTab', function() {
-            spyOn(mainTabPanel, 'doLayout');
-            mainTabPanel.setActiveTab(new Ext.Panel());
-            expect(mainTabPanel.doLayout).toHaveBeenCalledWith(false, true);
+            spyOn(mainPanel, 'doLayout');
+            mainPanel.setActiveTab(new Ext.Panel());
+            expect(mainPanel.doLayout).toHaveBeenCalledWith(false, true);
         });
     };
-    
+
     describe("facets enabled", function() {
         beforeEach(function() {
             facetsEnabled = true;
-            initMainTabPanel();
+            initMainPanel();
         });
 
         it("SearchTabPanel is faceted version", function() {
             expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
-            expect(mainTabPanel.searchTabPanel).toEqual(mockSearchPanel);
+            expect(mainPanel.searchTabPanel).toEqual(mockSearchPanel);
         });
 
         checkCommon();
@@ -83,12 +83,12 @@ describe("Portal.ui.MainTabPanel", function() {
     describe("facets disabled", function() {
         beforeEach(function() {
             facetsEnabled = false;
-            initMainTabPanel();
+            initMainPanel();
         });
-        
+
         it("SearchTabPanel is non-faceted version", function() {
             expect(Portal.search.SearchTabPanel).toHaveBeenCalled();
-            expect(mainTabPanel.searchTabPanel).toEqual(mockSearchTabPanel);
+            expect(mainPanel.searchTabPanel).toEqual(mockSearchTabPanel);
         });
 
         checkCommon();
