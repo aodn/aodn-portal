@@ -75,12 +75,6 @@ class BulkDownloadService {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
 
-        // todo kill this when the df is totally removed from MEST's
-        if (fileInfo.href.contains("df.arcs.org.au")) {
-            log.debug "Datafabric entry excluded ${ fileInfo.href }"
-            return
-        }
-
         def filenameToUse
 
         if(fileInfo.preferredFname != null){
