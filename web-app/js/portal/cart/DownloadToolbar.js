@@ -24,7 +24,7 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
             listeners: {
                 scope: this,
                 'click': function(button, event) {
-                    Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
+                    new Portal.cart.DownloadCartConfirmationWindow().show();
                     this._updateButtonStates();
                 }
             }
@@ -42,11 +42,13 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
 
         this._updateButtonStates();
 
-        this.store.on('add', this._updateButtonStates, this);
-        this.store.on('remove', this._updateButtonStates, this);
-        this.store.on('clear', this._updateButtonStates, this);
-        this.store.on('downloadsuccess', this._updateButtonStates, this);
-        this.store.on('downloadfailure', this._updateButtonStates, this);
+        this._registerStoreEventHandlers();
+    },
+
+    _registerStoreEventHandlers: function() {
+        Ext.each(['add', 'remove', 'clear', 'downloadstart', 'downloadsuccess', 'downloadfailure'], function(eventName) {
+            this.store.on(eventName, this._updateButtonStates, this);
+        }, this);
     },
 
     _updateButtonStates: function() {

@@ -44,13 +44,12 @@ class BulkDownloadService {
         // Create a deep copy of filesToDownload to work with
         def copyOfFilesToDownload = filesToDownload.collect( mapDeepCopyJson )
 
-
         // Create Zip archive stream
         zipStream = new ZipOutputStream( outputStream )
 
         // Add all files to archive
         copyOfFilesToDownload.each {
-            it.links.each { layerLink ->
+            it.downloadableLinks.each { layerLink ->
                 _addFileEntry layerLink
             }
         }
