@@ -36,7 +36,6 @@ describe("Portal.ui.MainPanel", function() {
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
-        spyOn(Portal.ui.MainPanel.superclass.setActiveTab, 'call');
         spyOn(Ext.MsgBus, 'subscribe');
 
         return new Portal.ui.MainPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
@@ -52,18 +51,6 @@ describe("Portal.ui.MainPanel", function() {
     describe('initialisation', function() {
         beforeEach(function() {
             initMainPanel();
-        });
-
-        it('creates an instance of Panel', function() {
-            expect(mainPanel).toBeInstanceOf(Ext.Panel);
-        });
-
-        // it('does not create an instance of TabPanel', function() {
-        //     expect(mainPanel).not.toBeInstanceOf(Ext.TabPanel);
-        // });
-
-        it('should set layout to cardlayout', function() {
-            expect(mainPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
         it('should init portal panel', function() {
@@ -107,10 +94,25 @@ describe("Portal.ui.MainPanel", function() {
         });
     });
 
-    it('doLayout called during setActiveTab', function() {
-        initMainPanel();
-        spyOn(mainPanel, 'doLayout');
-        mainPanel.setActiveTab(new Ext.Panel());
-        expect(mainPanel.doLayout).toHaveBeenCalledWith(false, true);
+    describe('card layout', function() {
+        beforeEach(function() {
+            initMainPanel();
+        });
+
+        it('creates an instance of Panel', function() {
+            expect(mainPanel).toBeInstanceOf(Ext.Panel);
+        });
+
+        it('does not create an instance of TabPanel', function() {
+            expect(mainPanel).not.toBeInstanceOf(Ext.TabPanel);
+        });
+
+        it('should set layout to cardlayout', function() {
+            expect(mainPanel.layout).toBe('card');
+        });
+
+        it('should initially have home as the active item', function() {
+            expect(mainPanel.activeItem).toBe(TAB_INDEX_HOME);
+        });
     });
 });
