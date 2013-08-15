@@ -32,21 +32,21 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         }, this);
     },
 
-    _onAdd: function(store, records, index) {
-        Ext.each(records, function(record) {
-            if (record.hasWmsLink()) {
+    _onAdd: function(store, geoNetworkRecords, index) {
+        Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
+            if (geoNetworkRecord.hasWmsLink()) {
                 Portal.data.LayerStore.instance().addUsingLayerLink(
-                    record.getFirstWmsLink(),
+                    geoNetworkRecord.getFirstWmsLink(),
                     function(layerRecord) {
-                        record.layerRecord = layerRecord;
-                        layerRecord.parentGeoNetworkRecord = record;
-                        layerRecord.get('layer').parentGeoNetworkRecord = record;
+                        geoNetworkRecord.layerRecord = layerRecord;
+                        layerRecord.parentGeoNetworkRecord = geoNetworkRecord;
+                        layerRecord.get('layer').parentGeoNetworkRecord = geoNetworkRecord;
                     }
                 );
             }
         });
 
-        Ext.MsgBus.publish('activegeonetworkrecordadded', records);
+        Ext.MsgBus.publish('activegeonetworkrecordadded', geoNetworkRecords);
     },
 
     _onRemove: function(store, record, index) {
