@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -27,6 +26,7 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
 			triggerAction: 'all',
 			mode: 'local',
 			width: 100,
+            emptyText : OpenLayers.i18n("pleasepickcondensed"),
 			editable: false,
 			store: new Ext.data.ArrayStore({
 			   fields: [

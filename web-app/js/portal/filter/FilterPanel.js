@@ -13,6 +13,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 	    	id: 'filterPanel',
 	        title: 'Filters',
 	        layout:'table',
+            autoScroll: true,
 			layoutConfig: {
 				// The total column count must be specified here
 				columns: 2,
@@ -46,6 +47,9 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     createFilter: function(layer, filter) {
+
+        // title case the labels
+        filter.label = filter.label.split('_').join(' ').toTitleCase();
 
     	var newFilter = undefined;
     	if (filter.type === "String") {

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -29,6 +28,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
+            emptyText : OpenLayers.i18n("pleasepickcondensed"),
             width: 170,
             editable: false,
             fieldLabel: "Value",

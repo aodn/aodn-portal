@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -12,6 +11,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
 
+
         this.items = [
             {
                 xtype: 'spacer',
@@ -23,7 +23,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: 250,
+                width: 150,
                 items: [{
                     xtype: 'label',
                     text: OpenLayers.i18n('northBL'),
@@ -41,7 +41,8 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: 250,
+                width: 170,
+                height: 30,
                 items: [
                     {
                         xtype: 'label',
@@ -77,7 +78,7 @@ Portal.search.field.BoundingBox = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: 250,
+                width: 150,
                 items: [{
                     xtype: 'label',
                     text: OpenLayers.i18n('southBL'),

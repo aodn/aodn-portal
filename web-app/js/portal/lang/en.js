@@ -7,6 +7,8 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    pleasepickcondensed: '**pick**',
+
     //
     navigate: 'Select by Map Bounds',
     navigateHelp: 'Drag the map. The map bounds is the selection area',
