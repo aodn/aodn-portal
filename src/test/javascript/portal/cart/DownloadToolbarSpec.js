@@ -90,27 +90,35 @@ describe("Portal.cart.DownloadToolbar", function() {
             expect(clearCartButton.disabled).not.toBe(clearButtonEnabled);
         };
 
+        var expectButtonsEnabled = function() {
+            return expectButtonEnabledStates(true, true);
+        };
+
+        var expectButtonsDisabled = function() {
+            return expectButtonEnabledStates(false, false);
+        };
+
         var initStoreWithRecord = function(record) {
             store.add(record);
 
             // This isn't strictly required (it's tested by the following test), but doesn't hurt to be sure.
-            expectButtonEnabledStates(true, true);
+            expectButtonsEnabled();
         };
 
         it('disabled when store is initially empty', function() {
-            expectButtonEnabledStates(false, false);
+            expectButtonsDisabled();
         });
 
         it('disabled when store becomes empty', function() {
             initStoreWithRecord(myRecord);
             store.remove(myRecord);
-            expectButtonEnabledStates(false, false);
+            expectButtonsDisabled();
         });
 
         it('disabled when store is cleared', function() {
             initStoreWithRecord(myRecord);
             store.removeAll();
-            expectButtonEnabledStates(false, false);
+            expectButtonsDisabled();
         });
 
         it('enabled when store initially has at least one item', function() {
@@ -120,13 +128,13 @@ describe("Portal.cart.DownloadToolbar", function() {
             toolbar = new Portal.cart.DownloadToolbar();
             downloadAllButton = toolbar.items.get(0);
 
-            expectButtonEnabledStates(true, true);
+            expectButtonsEnabled();
         });
 
         it('enabled when store becomes non-empty', function() {
-            expectButtonEnabledStates(false, false);
+            expectButtonsDisabled();
             store.add(myRecord);
-            expectButtonEnabledStates(true, true);
+            expectButtonsEnabled();
         });
 
         describe('disabled during a download', function() {
@@ -137,7 +145,7 @@ describe("Portal.cart.DownloadToolbar", function() {
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonEnabledStates(true, true);
+                expectButtonsEnabled();
             });
 
             it('goes from disabled to enabled after failure', function() {
@@ -146,7 +154,7 @@ describe("Portal.cart.DownloadToolbar", function() {
                 initStoreWithRecord(myRecord);
                 startDownload();
 
-                expectButtonEnabledStates(true, true);
+                expectButtonsEnabled();
             });
 
             it('item added during download, buttons stay disabled', function() {
