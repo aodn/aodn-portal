@@ -21,12 +21,12 @@ class BulkDownloadService {
     static transactional = true
     static scope = "request"
 
-    static final int BufferSize = 4096 // 4kB
-    static final def FileDataFromUrl = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
-    static final def FileDataFromGeonetworkUrl = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
-    static final def GeonetworkDownloadUrl = "(.*)file.disclaimer(.*)"
+    static final int BUFFER_SIZE = 4096 // 4kB
+    static final def FILE_DATA_FROM_URL = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
+    static final def FILE_DATA_FROM_GEONETWORK_URL = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
+    static final def GEONETWORK_DOWNLOAD_URL = "(.*)file.disclaimer(.*)"
 
-    static final def GeonetworkDownloadDetailsQueryString = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
+    static final def GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
 
     def processingStartTime
     def cfg = Config.activeInstance()
@@ -74,12 +74,6 @@ class BulkDownloadService {
     def _addFileEntry( fileInfo ) {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
-
-        // todo kill this when the df is totally removed from MEST's
-        if (fileInfo.href.contains("df.arcs.org.au")) {
-            log.debug "Datafabric entry excluded ${ fileInfo.href }"
-            return
-        }
 
         def filenameToUse
 
@@ -130,7 +124,7 @@ class BulkDownloadService {
             zipStream.putNextEntry new ZipEntry( filenameToUse as String )
 
             // Write data to new zip entry
-            def buffer = new byte[ BufferSize ]
+            def buffer = new byte[ BUFFER_SIZE ]
             def bytesRead
             def totalBytesRead = 0
             while ((bytesRead = stream.read( buffer )) != -1) {
@@ -259,13 +253,13 @@ Time taken: ${ _timeTaken() } seconds
 
     def _isGeoServerDisclaimerAddress( address ) {
 
-        return address ==~ GeonetworkDownloadUrl
+        return address ==~ GEONETWORK_DOWNLOAD_URL
     }
 
     def _geoServerDownloadAddress( disclaimerAddress ) {
 
         def downloadAddress = disclaimerAddress.replaceFirst( "file.disclaimer", "resources.get" )
-        downloadAddress += GeonetworkDownloadDetailsQueryString
+        downloadAddress += GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING
 
         return downloadAddress
     }
@@ -276,10 +270,10 @@ Time taken: ${ _timeTaken() } seconds
         def fileExtensionFromUrl
 
         // Test for MEST/GeoNetwork URLs
-        def matches = fileInfo.href =~ FileDataFromGeonetworkUrl
+        def matches = fileInfo.href =~ FILE_DATA_FROM_GEONETWORK_URL
 
         if ( matches ) {
-            log.debug "FileDataFromGeonetworkUrl matches[0]: ${ matches[0] }"
+            log.debug "FILE_DATA_FROM_GEONETWORK_URL matches[0]: ${ matches[0] }"
             filenameFromUrl = _getFilenameMatch( matches )
             fileExtensionFromUrl = _getFileExtensionMatch( matches )
         }
@@ -287,10 +281,10 @@ Time taken: ${ _timeTaken() } seconds
         // Test for general URLs
         if ( !filenameFromUrl ) {
 
-            matches = fileInfo.href =~ FileDataFromUrl
+            matches = fileInfo.href =~ FILE_DATA_FROM_URL
 
             if ( matches ) {
-                log.debug "FileDataFromUrl matches[0]: ${ matches[0] }"
+                log.debug "FILE_DATA_FROM_URL matches[0]: ${ matches[0] }"
                 filenameFromUrl = _getFilenameMatch( matches )
                 fileExtensionFromUrl = _getFileExtensionMatch( matches )
             }

@@ -13,16 +13,11 @@ import org.apache.catalina.connector.ClientAbortException
 
 class DownloadCartController {
 
-    //static allowedMethods = [download: "POST"]
-
-
-
     def bulkDownloadService
-
 
     def download = {
 
-        def downLoadCart = []
+        def downloadCart = []
 
         if ( !params.items ) {
             render text:"No items are in the Download Cart", status: 400
@@ -30,19 +25,11 @@ class DownloadCartController {
         }
 
         def items = JSON.parse( params.items as String )
-        downLoadCart.addAll items.toArray()
-        return _download(downLoadCart)
-
+        downloadCart.addAll items.toArray()
+        _outputArchiveFromItemList(downloadCart)
     }
 
-
-    def _download(downLoadCart) {
-
-
-        if ( downLoadCart.size() == 0 ) {
-            render text: "No items are selected to download in the Cart", status: 400
-            return
-        }
+    def _outputArchiveFromItemList(downloadCart) {
 
         // Prepare response stream and create zip stream
         response.setHeader( "Content-Disposition", "attachment; filename=${bulkDownloadService.getArchiveFilename( request.locale )}" )
@@ -51,7 +38,7 @@ class DownloadCartController {
 
         // Ask Service to create archive to outputStream
         try {
-            bulkDownloadService.generateArchiveOfFiles( downLoadCart, outputStream, request.locale)
+            bulkDownloadService.generateArchiveOfFiles( downloadCart, outputStream, request.locale)
 
             // Send response
             outputStream.flush()

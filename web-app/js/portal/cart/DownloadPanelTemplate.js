@@ -36,9 +36,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         var html = "";
 
         Ext.each(links, function(link) {
-            // if (Portal.cart.Downloader.isDownloadableLink(link)) {
-                html += subFilesTemplate.apply(link);
-            // }
+            html += subFilesTemplate.apply(link);
         });
 
         return html;

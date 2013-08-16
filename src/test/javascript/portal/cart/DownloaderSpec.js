@@ -31,11 +31,11 @@ describe("Portal.cart.Downloader", function() {
                 downloader.start();
             });
 
-            it('path', function() {
+            it('include expected path', function() {
                 expect(Portal.utils.FormUtil.createAndSubmit.mostRecentCall.args[0]).toBe('downloadCart/download');
             });
 
-            it('params', function() {
+            it('include expected params', function() {
                 var params = Portal.utils.FormUtil.createAndSubmit.mostRecentCall.args[1];
                 expect(params.items).toEqual(downloader.store.getItemsEncodedAsJson());
             });

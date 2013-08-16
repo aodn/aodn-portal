@@ -29,12 +29,12 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(record.hasWmsLink()).toBeTruthy();
         });
 
-        it('doesn\'t have wms link', function() {
+        it('does not have wms link', function() {
             record.get('links')[0].protocol = 'some protocol';
             expect(record.hasWmsLink()).toBeFalsy();
         });
 
-        it('doesn\'t have any links', function() {
+        it('does not have any links', function() {
             record.set('links', undefined);
             expect(record.hasWmsLink()).toBeFalsy();
         });

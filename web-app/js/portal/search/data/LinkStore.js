@@ -33,7 +33,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
 	},
 
 	filterByProtocols : function(values) {
-	    var protocols = Ext.isString(values)?values.split('\n'):values;
+	    var protocols = Ext.isString(values) ? values.split('\n') : values;
 		this.filterBy(function(record, id) {
 			for (var i = 0; i < protocols.length; i++) {
 				if (record.get('protocol') == protocols[i].trim())

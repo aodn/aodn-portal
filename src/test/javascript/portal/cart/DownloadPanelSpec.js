@@ -20,15 +20,15 @@ describe("Portal.cart.DownloadPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('column model', function() {
+        it('has column model of type DownloadColumnModel', function() {
             expect(downloadPanel.colModel).toBeInstanceOf(Portal.cart.DownloadColumnModel);
         });
 
-        it('view', function() {
+        it('has view of type DownloadGridView', function() {
             expect(downloadPanel.view).toBeInstanceOf(Portal.cart.DownloadGridView);
         });
 
-        it('bbar', function() {
+        it('has bbar of type DownloadToolbar', function() {
             expect(downloadPanel.getBottomToolbar()).toBeInstanceOf(Portal.cart.DownloadToolbar);
         });
     });

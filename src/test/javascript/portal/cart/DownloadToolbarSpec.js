@@ -156,10 +156,6 @@ describe("Portal.cart.DownloadToolbar", function() {
 
                 expectButtonsEnabled();
             });
-
-            it('item added during download, buttons stay disabled', function() {
-                // TODO: is this even possible?
-            });
         });
 
         var startDownload = function() {
