@@ -30,7 +30,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            autoDestroy:false, // wont destroy tab contents when switching
             activeItem: TAB_INDEX_HOME,
             margins: {
                 left: 5,

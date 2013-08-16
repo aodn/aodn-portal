@@ -147,8 +147,6 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.actionsPanel = new Portal.ui.ActionsPanel({
             map : this.appConfig.mapPanel.map,
             layerStore : this.appConfig.mapPanel.layers,
-            //hideLayerOptions : this.appConfig.hideLayerOptions,
-            //autoZoom : this.appConfig.autoZoom,
             mapScope : this.appConfig.mapPanel
         });
 
