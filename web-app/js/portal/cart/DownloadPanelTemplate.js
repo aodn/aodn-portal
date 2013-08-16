@@ -17,11 +17,17 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  <div class="cart-title-row">',
             '    <span class="cart-title">{title}</span>',
             '  </div>',
-            '  <div class="cart-files" >{[this._getFileListMarkup(values.downloadableLinks)]}</div>',
+            '  <tpl if="wmsLayer&& wmsLayer.params.CQL_FILTER"><div class=cart-data-filter>Filter applied: {[this._getWmsLayerCql(values.wmsLayer)]}</div></tpl>',
+            '  <div class="cart-files">{[this._getFileListMarkup(values.downloadableLinks)]}</div>',
             '</div>'
         ];
 
         Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
+    },
+
+    _getWmsLayerCql: function(wmsLayer) {
+
+        return wmsLayer.params.CQL_FILTER;
     },
 
     _getFileListMarkup: function(links) {

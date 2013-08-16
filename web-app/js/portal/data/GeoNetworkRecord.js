@@ -100,5 +100,6 @@ Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     Portal.data.GeoNetworkRecord.DownloadableLinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-    Portal.data.GeoNetworkRecord.BboxField
+    Portal.data.GeoNetworkRecord.BboxField,
+    'wmsLayer'
 ]);
