@@ -22,12 +22,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
-
-        // TODO: uneccessary nesting (but deliberate), see https://github.com/aodn/aodn-portal/issues/315
-        this.downloadCartPanel = new Ext.Panel({
-            layout: 'fit',
-            items: [new Portal.cart.DownloadPanel()]
-        });
+        this.downloadCartPanel = new Portal.cart.DownloadPanel()
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_HOME,
