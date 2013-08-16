@@ -149,25 +149,21 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
-		this.controlPanel = new Ext.Panel({
-					layout : 'form',
-					plain : true,
-					items : [{
-						xtype : 'container',
-						defaultMargins : "15 5 20 5",
-						layout : {
-							type : 'hbox',
-							pack : 'start'
+        this.items = [
+            {
+			    xtype : 'container',
+			    defaultMargins : "15 5 20 5",
+			    layout : {
+				    type : 'hbox',
+				    pack : 'start'
 
-						},
-						items : [this.buttonsPanel, this.stepSlider,
-								this.speedLabel, this.stepLabel]
-					}, this.dateTimeSelectorPanel, this.getAnimationButton],
-					width : 330,
-					height : '100%'
-				});
-
-		this.items = [this.controlPanel];
+			    },
+			    items : [this.buttonsPanel, this.stepSlider,
+					     this.speedLabel, this.stepLabel]
+		    },
+            this.dateTimeSelectorPanel,
+            this.getAnimationButton
+        ];
 
 		this.speed = this.BASE_SPEED;
 		this.mapPanel = undefined;
