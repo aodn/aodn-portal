@@ -22,7 +22,12 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
         this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
-        this.downloadCartPanel = new Portal.cart.DownloadCartPanel();
+
+        // TODO: uneccessary nesting (but deliberate), see https://github.com/aodn/aodn-portal/issues/315
+        this.downloadCartPanel = new Ext.Panel({
+            layout: 'fit',
+            items: [new Portal.cart.DownloadPanel()]
+        });
 
         var config = Ext.apply({
             xtype:'tabpanel', // TabPanel itself has no title
@@ -33,6 +38,7 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
                 right: 5
             },
             unstyled:true,
+            // TODO: see https://github.com/aodn/aodn-portal/issues/315 - using a CardLayout, we wouldn't have to do this.
             // method to hide the usual tab panel header with css
             headerCfg:{
                 cls:'mainTabPanelHeader'  // Default class not applied if Custom element specified
@@ -49,9 +55,6 @@ Portal.ui.MainTabPanel = Ext.extend(Ext.TabPanel, {
 
         this.on('tabchange', function () {
             this.portalPanel.fireEvent('tabchange');
-        }, this);
-        Ext.MsgBus.subscribe('openDownloadCartPanelItem', function() {
-            this.setActiveTab(TAB_INDEX_DOWNLOAD_CART);
         }, this);
 
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);

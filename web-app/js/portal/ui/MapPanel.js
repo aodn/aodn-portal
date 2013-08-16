@@ -24,7 +24,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions:this.appConfig.hideLayerOptions,
             layersLoading:0,
-            layers:new Portal.data.LayerStore(),
+            layers: Portal.data.LayerStore.instance(),
             html:" \
                     <div id='loader' style='position: absolute; top: 50%; left: 43%; z-index: 9000;'> \
                         <div id='jsloader' style='height: 70px; width: 70px; float: left;'></div> \
@@ -289,7 +289,7 @@ function setExtWmsLayer(url, label, type, layer, sld, options, style) {
         }
     }
 
-    Ext.MsgBus.publish('addLayerUsingDescriptor', new Portal.common.LayerDescriptor({
+    Portal.data.LayerStore.instance().addUsingDescriptor(new Portal.common.LayerDescriptor({
         server:{
             uri:url,
             type:type,

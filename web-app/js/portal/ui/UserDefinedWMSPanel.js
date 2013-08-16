@@ -228,7 +228,7 @@ Portal.ui.UserDefinedWMSPanel = Ext.extend(Ext.Panel, {
 							statusField.show();
 							layer.server = node.attributes.server;
 
-							Ext.MsgBus.publish('addLayerUsingOpenLayer', layer);
+                            Portal.data.LayerStore.instance().addUsingOpenLayer(layer);
 						}
 						else {
 							node.expand();

@@ -29,11 +29,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 
-        
-        Ext.MsgBus.subscribe('removeLayer', function(mesg,openLayer) {
-
-        }, this);
-        
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, this._onBeforeSelectedLayerChanged, this);
 
         if (this.timeControl) {
@@ -136,7 +131,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             timeControl: this.timeControl,
             width: 350
         });
-        
+
 		this.getAnimationButton = new Ext.Button({
 			icon : 'images/animation/download.png',
 			text : 'download',
@@ -184,7 +179,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
 	setMap : function(theMap) {
-	    
+
 		// TODO: ok, there's now a dependency on the OpenLayers Map (instead of MapPanel),
 		// but hopefully this will vanish when animation is refactored.
 		this.map = theMap;
@@ -202,7 +197,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                 scope: this
             });
         }
-        
+
         if (openLayer && openLayer.isAnimatable()) {
             this.selectedLayer = openLayer;
             this.stepSlider.setMinValue(0);
@@ -219,7 +214,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     isPlaying: function() {
         return (this.currentState == this.state.PLAYING);
     },
-    
+
     _onSelectedLayerPrecacheStart: function() {
         this.disable();
 
@@ -228,7 +223,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.pausedWhilePrecaching = true;
         }
     },
-    
+
     _onSelectedLayerPrecacheProgress: function(evt) {
         this._setStepLabelText('Loading...' + Math.round(evt.progress * 100) + '%');
     },
@@ -248,7 +243,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this._startPlaying();
         }
     },
-    
+
     _onSpeedChanged: function(timeControl) {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
@@ -274,7 +269,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.slowDown.enable();
         }
     },
-    
+
     _updateSpeedLabel: function() {
         this.speedLabel.setText(this.timeControl.getRelativeSpeed() + 'x');
     },
@@ -301,7 +296,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.stepSlider.setValue(this.timeControl.getStep());
         this._setStepLabelTextToDateTime(dateTime);
     },
-    
+
 	_updateButtons : function(state) {
 		this.currentState = state;
 
@@ -349,7 +344,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _setStepLabelTextToDateTime: function(dateTime) {
         this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
     },
-    
+
 	_setStepLabelText : function(text) {
 		this.stepLabel.setText(text, false);
 	}
