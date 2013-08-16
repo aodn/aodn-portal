@@ -97,7 +97,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     update: function(layer, show, hide, target){
 		this.layer = layer;
 
-		if (layer.grailsLayerId != undefined) {
+		if (layer.grailsLayerId) {
 
 			Ext.Ajax.request({
 				url: this.GET_FILTER,
@@ -154,10 +154,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _updateFilter: function() {
     	var combinedCQL = "";
 
-		if (this.activeFilters.length > 0) {
+		if (Object.keys(this.activeFilters).length > 0) {
 			for (var name in this.activeFilters) {
 				if (this.activeFilters[name].hasValue()) {
-					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY
+					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
 				}
 			}
 
@@ -182,11 +182,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     _clearFilters: function() {
 
-        var keys = Object.keys(this.activeFilters);
-
-        for (var i = 0; i < keys.length; i++) {
-
-            var key = keys[i];
+        for (var key in Object.keys(this.activeFilters)) {
 
             this.activeFilters[key].handleRemoveFilter();
             delete this.activeFilters[key];
