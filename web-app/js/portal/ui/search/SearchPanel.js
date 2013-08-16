@@ -48,7 +48,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
         itemsToDisplay.push(this.filtersPanel);
 
-        this.resultsStore = new Portal.data.GeoNetworkResultsStore();
+        this.resultsStore = new Portal.data.GeoNetworkRecordStore();
         this.resultsStore.on('load', function (store, recs, opt) {
             if (this.totalLength == 0) {
                 Ext.Msg.alert('Info', 'The search returned no results.');
@@ -56,17 +56,13 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }, this.resultsStore);
 
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            title: "Search Results",
             region: 'center',
             split: true,
             store: this.resultsStore,
             onSearchComplete: function (response, page) {
                 this.store.loadData(response);
             },
-            pageSize: this.resultGridSize,
-            headerCfg: {
-                cls: 'x-panel-header p-header-space'
-            }
+            pageSize: this.resultGridSize
         });
         itemsToDisplay.push(this.resultsGrid);
 

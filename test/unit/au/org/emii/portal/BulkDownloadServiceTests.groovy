@@ -20,11 +20,27 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
     def letterMatches = [["A", "B", "C"], ["D", "E", "F"]]
     def nullMatches = [[null, null, null]]
 
-    def filesToDownloadJson = """[{"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
-                                  {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"},
-                                  {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
-                                  {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
-                                  {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}]"""
+    def filesToDownloadJson = """[
+    {
+        'uuid': '1111111',
+        'name': 'some record',
+        'title': 'its really interesting',
+        'downloadableLinks': [
+            {"href":"http://example.com/file1.txt", title:"File One", type:"text/plain"},
+            {"href":"http://example.com/file3.jpeg", title:"File Three", type:"image/jpeg"}
+        ]
+    },
+    {
+        'uuid': '22222',
+        'name': 'another record',
+        'title': 'its really really interesting',
+        'downloadableLinks': [
+            {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
+            {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
+            {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}
+        ]
+    }
+]"""
 
     def resourcesDir = System.getProperty( "user.dir" ) + "/test/unit/au/org/emii/portal/resources/downloadcontroller"
 
@@ -157,7 +173,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         assertEquals "Report file count", 1, fileReportCount
 
         assertEquals "'download_report.txt' content should match expected", new File( "$resourcesDir/expected download report content.txt").text, reportData
-        assertEquals JSON.parse( filesToDownloadJson ), filesToDownload // Ensure original download cart data has not been modified
+
     }
 
     void testExtensionFromMimeType() {
@@ -241,8 +257,8 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         def testUrl1 = "http://www.google.com/file.disclaimer/a.html"
         def testUrl2 = "http://www.google.com/someDirectory/a.html"
 
-        assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GeoServerDownloadDetailsQueryString}", bulkDownloadService._geoServerDownloadAddress( testUrl1 )
-        assertEquals testUrl2 + BulkDownloadService.GeoServerDownloadDetailsQueryString, bulkDownloadService._geoServerDownloadAddress( testUrl2 ) // Unchanged
+        assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING}", bulkDownloadService._geoServerDownloadAddress( testUrl1 )
+        assertEquals testUrl2 + BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING, bulkDownloadService._geoServerDownloadAddress( testUrl2 ) // Unchanged
     }
 
     void testIsGeoServerDisclaimerAddress() {

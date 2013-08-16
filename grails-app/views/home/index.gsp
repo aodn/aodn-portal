@@ -198,6 +198,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
@@ -292,7 +294,13 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkResultsStore.js')}"
+<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecordStore.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/cart/Downloader.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"
         type="text/javascript"></script>
@@ -306,12 +314,15 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
-
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadList.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartStatus.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadColumnModel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadToolbar.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"
         type="text/javascript"></script>
