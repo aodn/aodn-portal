@@ -16,13 +16,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             appConfigStore: appConfigStore
         });
 
-        this.layerChooserPanel = new Portal.ui.LayerChooserPanel({
-            region: 'west',
-            appConfig: cfg.appConfig,
-            mapPanel: this.mainPanel.getMapPanel()
-            // width: cfg.appConfig.westWidth // Todo - DN: Max and min are specified in JS, should default be too?
-        });
-
         var config = Ext.apply({
             layout: 'border',
             boxMinWidth: 1050,
@@ -76,8 +69,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                     region: 'south',
                     height: 15,
                     unstyled: true
-                },
-                this.layerChooserPanel
+                }
         ];
     },
 
@@ -88,22 +80,10 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.on('afterrender', function() {
             jQuery("#loader").hide('slow'); // close the loader
         });
-
-        this.layerChooserPanel.on('afterrender', function () {
-            this.doLayout(false, true);
-        }, this);
     },
 
     setActiveTab: function(tabIndex) {
         this.mainPanel.setActiveTab(tabIndex);
-
-        if (appConfigStore.isFacetedSearchEnabled() && (tabIndex == TAB_INDEX_SEARCH)) {
-            this.layerChooserPanel.hide();
-        }
-        else {
-            this.layerChooserPanel.show();
-        }
-        this.doLayout();
     },
 
     isMapVisible: function() {
