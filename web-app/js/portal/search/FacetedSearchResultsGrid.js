@@ -52,7 +52,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             stripeRows: false,
             trackMouseOver: false,
             bbar:new Ext.PagingToolbar({
-                pageSize:this.pageSize
+                pageSize:this.pageSize,
+                store: this.store
             }),
             listeners: {
                 'rowmousedown': function(evt) {
@@ -65,17 +66,12 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
-        // TODO: Remove this HACK when proper paging service used - should bind the store not assign as below
-        this.getBottomToolbar().store = this.store;
-
-        this.addEvents('rowenter', 'rowleave');
     },
 
     afterRender:function () {
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.el, {msg:"Searching..."});
-
         this.getView().mainBody.on({
             scope:this,
             mouseover:this.onMouseOver,
@@ -127,6 +123,23 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
+    },
+
+    _showIntroMessage: function() {
+        this._setTitleText( OpenLayers.i18n('facetedSearchStartResultsTitle'));
+    },
+    _showSearchResultsMessage: function(pages) {
+        this.setTitle(null);
+        this.hideHeaders = true
+        this.doLayout();
+    },
+    _showError: function() {
+        this._setTitleText(OpenLayers.i18n('facetedSearchUnavailableText'));
+    },
+
+    _setTitleText: function(newText) {
+        this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
+        //tb.doLayout();
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
