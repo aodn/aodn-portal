@@ -18,14 +18,14 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 	constructor : function(cfg) {
 		var config = Ext.apply({
-					layout : 'form',
-					stateful : false,
-					bodyStyle : 'padding:6px; margin:2px',
-					defaults : {
-						cls : 'fullTransparency'
-					},
-					width : '100%'
-				}, cfg);
+			layout : 'form',
+			stateful : false,
+			bodyStyle : 'padding:6px; margin:2px',
+			defaults : {
+				cls : 'fullTransparency'
+			},
+			width : '100%'
+		}, cfg);
 
 		Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 
@@ -44,73 +44,73 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		var parentAnimationControl = this;
 
 		this.warn = new Ext.form.Label({
-					padding : 5,
-					width : 280,
-					text : OpenLayers.i18n('warn_label')
-				});
+			padding : 5,
+			width : 280,
+			text : OpenLayers.i18n('warn_label')
+		});
 
 		this.speedUp = new Ext.Button({
-					icon : 'images/animation/last.png',
-					plain : true,
-					padding : 5,
-					listeners : {
-						scope : this,
-						'click' : function(button, event) {
-                            this._startPlaying();
-                            this.timeControl.speedUp();
-						}
-					},
-					tooltip : OpenLayers.i18n('speedUp')
-				});
+			icon : 'images/animation/last.png',
+			plain : true,
+			padding : 5,
+			listeners : {
+				scope : this,
+				'click' : function(button, event) {
+                    this._startPlaying();
+                    this.timeControl.speedUp();
+				}
+			},
+			tooltip : OpenLayers.i18n('speedUp')
+		});
 
 		this.slowDown = new Ext.Button({
-					icon : 'images/animation/first.png',
-					padding : 5,
-					listeners : {
-						scope : this,
-						'click' : function(button, event) {
-                            this._startPlaying();
-                            this.timeControl.slowDown();
-						}
-					},
-					tooltip : OpenLayers.i18n('slowDown')
-				});
+			icon : 'images/animation/first.png',
+			padding : 5,
+			listeners : {
+				scope : this,
+				'click' : function(button, event) {
+                    this._startPlaying();
+                    this.timeControl.slowDown();
+				}
+			},
+			tooltip : OpenLayers.i18n('slowDown')
+		});
 
 		this.label = new Ext.form.Label({
-					html : "<h4>Select Time Period</h4>"
-				});
+			html : "<h4>Select Time Period</h4>"
+		});
 
 		this.stepSlider = new Ext.slider.SingleSlider({
-					ref : 'stepSlider',
-					width : 115,
-					flex : 3,
-					listeners : {
-						scope : this,
-						drag : function(slider, ev) {
-                            this.timeControl.setStep(slider.getValue());
-						}
-					}
-				});
+			ref : 'stepSlider',
+			width : 115,
+			flex : 3,
+			listeners : {
+				scope : this,
+				drag : function(slider, ev) {
+                    this.timeControl.setStep(slider.getValue());
+				}
+			}
+		});
 
 		this.playButton = new Ext.Button({
-					padding : 5,
-					plain : true,
-					disabled : false, // readonly
-					icon : 'images/animation/play.png',
-					listeners : {
-						scope : this,
-						'click' : this._togglePlay
-					},
-					tooltip : OpenLayers.i18n('play')
-				});
+			padding : 5,
+			plain : true,
+			disabled : false, // readonly
+			icon : 'images/animation/play.png',
+			listeners : {
+				scope : this,
+				'click' : this._togglePlay
+			},
+			tooltip : OpenLayers.i18n('play')
+		});
 
 		this.currentState = this.state.REMOVED;
 
 		this.stepLabel = new Ext.form.Label({
-					flex : 1,
-					width : 115,
-					style : 'padding-top: 5; padding-bottom: 5'
-				});
+			flex : 1,
+			width : 115,
+			style : 'padding-top: 5; padding-bottom: 5'
+		});
 
 		this.speedLabel = new Ext.form.Label({
 			flex : 1,
@@ -119,12 +119,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.buttonsPanel = new Ext.Panel({
-					layout : 'hbox',
-					plain : true,
-					items : [this.slowDown, this.playButton, this.speedUp],
-					height : 40,
-					flex : 2
-				});
+			layout : 'hbox',
+			plain : true,
+			items : [this.slowDown, this.playButton, this.speedUp],
+			height : 40,
+			flex : 2
+		});
 
         this.dateTimeSelectorPanel = new Portal.details.AnimationDateTimeSelectorPanel({
             parentAnimationControl: this,
