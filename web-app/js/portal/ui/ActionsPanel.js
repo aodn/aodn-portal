@@ -9,14 +9,13 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
-    
+
     constructor: function(cfg) {
         this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(cfg);
-		
+
         this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(cfg);
         var config = Ext.apply({
             id: 'activeMenuPanel',
-            //padding: '0px 0px 20px 0px',                      
             autoHeight: true,
             items:[
                 this.mapOptionsPanel,
@@ -24,10 +23,10 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
         Portal.ui.ActionsPanel.superclass.constructor.call(this, config);
-        
+
         this.relayEvents(this.activeLayersPanel, ['zoomtolayer', 'togglevisibility']);
         this.relayEvents(this.mapOptionsPanel, ['autozoomchecked', 'autozoomunchecked']);
-        
+
         //
         // This panel (which contains both the MapOptions and the ActiveLayers), needs to
         // orchestrate event handling between the two child panels, specifically when the
@@ -40,21 +39,21 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
                 this.activeLayersPanel.zoomToLayer();
             }
         }, this);
-        
+
         this.mapOptionsPanel.on('autozoomchecked', function()
         {
             this.activeLayersPanel.zoomToLayer();
         }, this);
     },
-    
+
     getActiveLayerNodes: function() {
         return this.activeLayersPanel.getActiveLayerNodes();
     },
-    
+
     layerOptionsVisible: function() {
         return this.mapOptionsPanel.layerOptionsVisible();
     },
-    
+
     autoZoomEnabled: function() {
         return this.mapOptionsPanel.autoZoomEnabled();
     }

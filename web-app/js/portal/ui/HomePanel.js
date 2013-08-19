@@ -19,7 +19,6 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
 
             layout: 'border',
             id: 'homePanel',
-            title: 'Home ',
             minHeight: 600,
             items: [
                 {
