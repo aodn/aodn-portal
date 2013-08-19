@@ -271,7 +271,7 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/LayerChooserPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MainTabPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/UserDefinedWMSPanel.js')}"
         type="text/javascript"></script>

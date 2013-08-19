@@ -153,12 +153,6 @@ hr {
     background-color: #7391AD;
 }
 
-/* the main tabPanel for the portal */
-.mainTabPanelHeader .x-tab-strip-wrap
-{
-    display: none;
-}
-
 /* added to buttons on hover with jQuery */
 .hover {
     color: black;
@@ -1027,4 +1021,3 @@ div.allwhite {
 .highlight:hover {
     background-color : #ffff99
 }
-
