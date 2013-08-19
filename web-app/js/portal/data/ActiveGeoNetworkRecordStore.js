@@ -82,10 +82,10 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         var items = [];
 
         Ext.each(this.data.items, function(item) {
-            items.push(item.data);
+            items.push(item.convertedData());
         });
 
-        return Ext.util.JSON.encode(items)
+        return Ext.util.JSON.encode(items);
     }
 });
 

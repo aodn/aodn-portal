@@ -52,6 +52,8 @@ class BulkDownloadService {
             it.downloadableLinks.each { layerLink ->
                 _addFileEntry layerLink
             }
+
+	        _addFileEntry _wfsDownloadItemFrom(it.wfsDownloadInfo)
         }
 
         _addDownloadReportToArchive( locale )
@@ -77,7 +79,7 @@ class BulkDownloadService {
 
         def filenameToUse
 
-        if(fileInfo.preferredFname != null){
+        if (fileInfo.preferredFname) {
             //For now, the preferred name is just <filename>.<file_extension>
             //Adding this option because WFS always returns a file with the name "wms",
             //which isn't going to be very helpful to users
@@ -85,7 +87,7 @@ class BulkDownloadService {
             fileInfo.filenameUsed = preferredFname.substring(0, preferredFname.indexOf("."))
             fileInfo.fileExtensionUsed = preferredFname.substring(preferredFname.indexOf("."))
         }
-        else{
+        else {
             _extractFilenameFromUrl( fileInfo )
         }
 
@@ -343,6 +345,53 @@ Time taken: ${ _timeTaken() } seconds
         return extensionToReturn ? ".$extensionToReturn" : ""
     }
 
+	def _wfsDownloadItemFrom(info) {
+
+		[
+			title: _wfsItemTitle(info),
+			preferredFname: _sanitiseFileName(info.layerName) + ".csv",
+			href: _wfsUrlFrom(info),
+			type: "text/csv" // Will be configurable later
+		]
+	}
+
+	def _wfsUrlFrom(info) {
+
+		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
+
+		return makeUrl(serverWfsUrl, _wfsQueryArgs(info))
+	}
+
+	def _wfsQueryArgs(info) {
+
+		def queryArgs = [
+			typeName: info.layerName,
+			SERVICE: "WFS",
+			outputFormat: "csv",
+			REQUEST: "GetFeature",
+			VERSION: "1.0.0" //This version has BBOX the same as WMS.
+		]
+
+		if (info.cqlFilter) {
+
+			queryArgs.CQL_FILTER = info.cqlFilter
+		}
+
+		return queryArgs
+	}
+
+	def _wfsItemTitle(info) {
+
+		def prefix = info.cqlFilter ? "Filtered " : ""
+
+		return prefix + info.layerName + " data"
+	}
+
+	def _sanitiseFileName(name) {
+
+		return name.replace(":", "#")
+	}
+
     def _currentDate() {
 
         return new Date()
@@ -367,4 +416,18 @@ Time taken: ${ _timeTaken() } seconds
 
         return map as JSONObject
     }
+
+	def makeUrl = { // Todo - DN: Move somewhere more re-usable
+		url, queryStringArgs ->
+
+		def joiner = url.contains("?") ? "&" : "?"
+
+		def queryString = queryStringArgs.collect{
+			k, v ->
+
+			k + "=" + URLEncoder.encode(v, "UTF-8")
+		}.join("&")
+
+		return url + joiner + queryString
+	}
 }

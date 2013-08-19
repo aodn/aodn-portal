@@ -89,6 +89,56 @@ Portal.data.GeoNetworkRecord.create = function(o){
         return this.getFirstWmsLink() != undefined;
     };
 
+    f.prototype.convertedData = function() {
+
+        var convertedData = {};
+
+        Ext.each(
+            Object.keys(this.data),
+            function(key) {
+
+                var item = this.data[key];
+
+                if (key == 'wmsLayer') {
+
+                    convertedData['wfsDownloadInfo'] = this.wfsDownloadInfoForLayer(item);
+                }
+                else {
+
+                    convertedData[key] = item;
+                }
+            },
+            this
+        );
+
+        return convertedData;
+    };
+
+    f.prototype.wfsDownloadInfoForLayer = function (layer) {
+
+        var wfsLayer = layer.wfsLayer;
+
+        var layerName;
+        var serverUri;
+
+        if (wfsLayer) {
+
+            layerName = wfsLayer.name;
+            serverUri = wfsLayer.server.uri;
+        }
+        else {
+
+            layerName = layer.params.LAYERS;
+            serverUri = layer.server.uri;
+        }
+
+        return {
+            layerName: layerName,
+            serverUri: serverUri,
+            cqlFilter: layer.params.CQL_FILTER ? layer.params.CQL_FILTER : ""
+        };
+    };
+
     return f;
 };
 
