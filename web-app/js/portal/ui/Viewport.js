@@ -31,6 +31,39 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         Portal.ui.Viewport.superclass.constructor.call(this, config);
     },
 
+    afterRender: function() {
+
+        Portal.ui.Viewport.superclass.afterRender.call(this);
+
+    },
+
+    /**
+     * TODO: this is not currently called, but leaving it here for now as it can be useful for detecting uneccessary
+     * nesting of containers.
+     */
+    _logContainersWithOnlyOneChild: function() {
+        var nestedCount = 0;
+
+        var countChildItems = function(container) {
+
+            if (container.items) {
+
+                if (container.items.length === 1) {
+                    nestedCount++;
+                    console.log('Component has only 1 child', typeof(container), container.id, 'layout', container.layout);
+                }
+
+                Ext.each(container.items.items, function(item) {
+                    countChildItems(item);
+                }, this);
+            }
+        };
+
+        countChildItems(this);
+
+        console.log('nested count: ' + nestedCount);
+    },
+
     _getItems: function(cfg) {
         return [
                 {
@@ -56,7 +89,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             jQuery("#loader").hide('slow'); // close the loader
         });
 
-        this.layerChooserPanel.leftTabMenuPanel.on('afterrender', function () {
+        this.layerChooserPanel.on('afterrender', function () {
             this.doLayout(false, true);
         }, this);
     },
