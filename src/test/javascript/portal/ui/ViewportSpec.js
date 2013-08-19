@@ -6,7 +6,7 @@
  *
  */
 
-describe("Portal.ui.ViewPort", function() {
+describe("Portal.ui.Viewport", function() {
     var mockConfig = {
         westWidth: 30,
         headerHeight: 40
@@ -14,33 +14,23 @@ describe("Portal.ui.ViewPort", function() {
 
     var mockMainPanel = {
         region: 'center',
-        getMapPanel: jasmine.createSpy().andReturn({}),
         setActiveTab: jasmine.createSpy(),
         isMapVisible: jasmine.createSpy().andReturn(true)
     };
 
-    var mockLayerChooserPanel = {
-        show: function() {},
-        hide: function() {}
-    };
-
     var buildMockViewport = function() {
         spyOn(Portal.ui, "MainPanel").andReturn(mockMainPanel);
-        spyOn(Portal.ui, "LayerChooserPanel").andReturn(mockLayerChooserPanel);
         spyOn(Portal.ui.Viewport.superclass.constructor, "call");
 
         return new Portal.ui.Viewport({appConfig: mockConfig});
     };
 
-    it("creates mainPanel and layerChooser on instantiation", function() {
+    it("creates mainPanel on instantiation", function() {
         var viewport = buildMockViewport();
 
         expect(Portal.ui.MainPanel).toHaveBeenCalled();
-        expect(Portal.ui.LayerChooserPanel).toHaveBeenCalled();
-        expect(mockMainPanel.getMapPanel).toHaveBeenCalled();
         expect(Portal.ui.Viewport.superclass.constructor.call).toHaveBeenCalled();
         expect(viewport.mainPanel).toEqual(mockMainPanel);
-        expect(viewport.layerChooserPanel).toEqual(mockLayerChooserPanel);
     });
 
     it("calls mainPanel.setActiveTab when setActiveTab called", function() {
@@ -58,5 +48,4 @@ describe("Portal.ui.ViewPort", function() {
 
         expect(isMapVisible).toEqual(true);
     });
-
 });

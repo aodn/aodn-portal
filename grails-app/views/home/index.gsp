@@ -265,15 +265,9 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MapMenuPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/PortalPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/LayerChooserPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/UserDefinedWMSPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"
         type="text/javascript"></script>
@@ -311,8 +305,6 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
         type="text/javascript"></script>
