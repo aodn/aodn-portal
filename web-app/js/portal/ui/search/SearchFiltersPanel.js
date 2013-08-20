@@ -20,7 +20,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             },
             items: [
                 new Ext.Panel({
-                    html: '<img src="images/spinner.gif" style="vertical-align: middle;" alt="Loading...">\&nbsp;<i>Loading search terms\u2025</i>',
+                    html: '<img src="images/spinner.gif" style="vertical-align: middle;" alt="Loading..." />&nbsp;<i>Loading search terms\u2025</i>',
                     flex: 3
                 }),
                 new Ext.Panel({
