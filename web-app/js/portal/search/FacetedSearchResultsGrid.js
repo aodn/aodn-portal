@@ -56,8 +56,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 store: this.store
             }),
             listeners: {
-                'rowmousedown': function(evt) {
-                    Ext.preventDefault(evt);
+                'rowmousedown': function(e) {
+                    return false;
                 }
             }
         };
