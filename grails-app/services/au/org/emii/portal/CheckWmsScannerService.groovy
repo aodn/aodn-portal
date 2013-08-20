@@ -67,9 +67,4 @@ class CheckWmsScannerService {
 
         return "${wmsScannerBaseUrl}${slash}scanJob/"
     }
-
-    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
-
-        return url[-1..-1] != "/" ? "/" : ""
-    }
 }

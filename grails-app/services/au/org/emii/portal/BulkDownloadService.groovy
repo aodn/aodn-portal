@@ -91,7 +91,6 @@ class BulkDownloadService {
             _extractFilenameFromUrl( fileInfo )
         }
 
-
         // Ensure we can add another file
         def resultMessage = _getAnyRestrictionsAddingFile()
 
@@ -357,9 +356,9 @@ Time taken: ${ _timeTaken() } seconds
 
 	def _wfsUrlFrom(info) {
 
-		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
+		String serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
 
-		return makeUrl(serverWfsUrl, _wfsQueryArgs(info))
+		return urlWithQueryString(serverWfsUrl, _wfsQueryArgs(info))
 	}
 
 	def _wfsQueryArgs(info) {
@@ -416,18 +415,4 @@ Time taken: ${ _timeTaken() } seconds
 
         return map as JSONObject
     }
-
-	def makeUrl = { // Todo - DN: Move somewhere more re-usable
-		url, queryStringArgs ->
-
-		def joiner = url.contains("?") ? "&" : "?"
-
-		def queryString = queryStringArgs.collect{
-			k, v ->
-
-			k + "=" + URLEncoder.encode(v, "UTF-8")
-		}.join("&")
-
-		return url + joiner + queryString
-	}
 }
