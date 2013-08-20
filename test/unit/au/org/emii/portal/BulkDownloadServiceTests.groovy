@@ -37,7 +37,12 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
             {"href":"http://example.com/fileX.txt", title:"Non-existent file", type:"text/plain"},
             {"href":"http://example.com/file2.gif", title:"File Two", type:"image/gif"},
             {"href":"http://example.com/file2.gif", title:"File Two (too)", type:"image/gif"}
-        ]
+        ],
+        'wfsDownloadInfo': {
+            'layerName': 'imos:argo_floats',
+            'cqlFilter': 'oxygen_sensor = true',
+            'serverUri': 'server_uri'
+        }
     }
 ]"""
 
@@ -102,12 +107,12 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
 		def filesToDownload = JSON.parse(filesToDownloadJson)
 
-		def responseBaos = new ByteArrayOutputStream()
+		def responseStream = new ByteArrayOutputStream()
 
-		bulkDownloadService.generateArchiveOfFiles(filesToDownload, responseBaos, new Locale("au"))
+		bulkDownloadService.generateArchiveOfFiles(filesToDownload, responseStream, new Locale("au"))
 
 		// Get ZipInputStream from response
-		def zipInStream = new ZipInputStream(new ByteArrayInputStream(responseBaos.toByteArray()))
+		def zipInStream = new ZipInputStream(new ByteArrayInputStream(responseStream.toByteArray()))
 
 		// File counts
 		def file1Count = 0
@@ -174,7 +179,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 		assertEquals "Report file count", 1, fileReportCount
 
 		assertEquals "'download_report.txt' content should match expected", new File("$resourcesDir/expected download report content.txt").text, reportData
-
 	}
 
 	void testExtensionFromMimeType() {

@@ -231,7 +231,6 @@ Result:              $statusMessage
         def currentDate = DateFormat.getDateInstance( DateFormat.LONG,  locale ).format( _currentDate() )
         def currentTime = DateFormat.getTimeInstance( DateFormat.LONG, locale ).format( _currentDate() )
 
-
         def finalReportText = """\
 ========================================================================
 Download cart report ($currentDate $currentTime)
@@ -241,7 +240,8 @@ $reportBodyText
 Total size before compression: $totalSizeBeforeCompression Bytes
 Number of files included: $numberOfFilesAdded/$numberOfFilesTried
 Time taken: ${ _timeTaken() } seconds
-========================================================================"""
+========================================================================
+"""
 
         return finalReportText.replace("\n","\r\n").getBytes( "UTF-8" )
     }
