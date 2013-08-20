@@ -22,6 +22,10 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         selectionMod.suspendEvents();
 
         var config = {
+            title: "Search Results",
+            headerCfg: {
+                cls: 'x-panel-header p-header-space'
+            },
             colModel:new Ext.grid.ColumnModel({
                 defaults:{
                     menuDisabled:true
@@ -62,7 +66,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             }
         };
 
-        Ext.apply(this, Ext.apply(this.initialConfig, config));
+        Ext.apply(this, config);
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
@@ -143,11 +147,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
-        var layerLink = this._getLayerLink(rowIndex);
-        if (layerLink) {
-            Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
-            setViewPortTab(TAB_INDEX_MAP);
-        }
+        var geoNetworkRecord = this.store.getAt(rowIndex);
+        Portal.data.ActiveGeoNetworkRecordStore.instance().add(geoNetworkRecord);
     },
 
     _viewButtonRenderer: function(value, metaData, record, rowIndex) {

@@ -24,11 +24,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                 expanded: true,
                 loader: new GeoExt.tree.LayerLoader({
                     filter: function(record) {
-                        var layer = record.getLayer();
-                        if (layer.isAnimatedSlice == undefined) {
-                            return layer.displayInLayerSwitcher === true && layer.isBaseLayer === false;
-                        }
-                        return false;
+                        return !record.getLayer().isBaseLayer;
                     },
                     createNode: function(attr) {
 

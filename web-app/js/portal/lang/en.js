@@ -23,8 +23,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     emptyCartText: "The cart is empty of datasets to download.",
     unavailableDataLink: "Sorry this data is currently unavailable",
 
-    layerChooserMenuHeader: 'Map Layer Chooser',
-
     // Animation Panel
     stop: 'Stop',
     start: 'Start',
@@ -139,20 +137,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
 
-    // UserDefinedWMSPanel
-    searching: 'Searching ...',
-    addYourURL: ' ** Add your URL ** ',
-    addYourURLHeader: "Enter WMS Server URL",
-    addYourLayerSuccess: '\'${layerName}\' added to map',
-    addYourURLHelp: '<i>Any OGC compliant Web Map Server URL can be entered here to add layers to the portal map. Only add required parameters specific to the server such as \'dataset\' or \'namespace\'. The map layers must also be available from this base URL.<BR>Due to Javascript restrictions, layer features cannot be retrieved when you click on the map. You may also note reduced functionality.</i>',
-    addYourURLSuccessful: 'Server successfully loaded',
-    addYourURLUnsuccessful: 'Unsuccessfully tried to load <a class=\"external\" target=\"_blank\" href=\"${url}\">${url}</a><BR>To diagnose the problem, click the link to see the full reponse from the server.',
-    addYourURLUnsuccessfulNoResponse: 'No response recieved from the WMS server. Connection timed out',
-    addYourURLDuplicate: 'The server has previously been loaded',
-    addYourURLDuplicateBody: 'Add parameters to the WMS server URL if required, to change the returned list of layers',
-    addYourURLSubmit: 'Submit',
-    addYourURLSubmitTip: 'Load layers from your OGC compliant Web Map Server URL',
-
     //snapshots
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
@@ -187,9 +171,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
     matchingLayers: 'Add Layer',
-
-    // UserDefinedWMSPanel
-    rourUrl: 'Choose a Saved Map',
 
     //MapOptionsPanel
     autozoom: 'Auto zoom to layer',

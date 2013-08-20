@@ -12,31 +12,22 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
     var testTarget;
     var testLayerLink;
 
-    setViewPortTab = jasmine.createSpy();
-
     beforeEach(function() {
 
-        fsrg = new Portal.search.FacetedSearchResultsGrid();
+        var store = new Portal.data.GeoNetworkRecordStore();
+        fsrg = new Portal.search.FacetedSearchResultsGrid({
+            store: store
+        });
 
-        // Test data
-        testTarget = {};
-        testLayerLink = {};
-
-        // Add spies
-        spyOn(Ext.MsgBus, 'publish');
+        spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
-    it('should publish when a layer link is returned', function() {
-        spyOn(fsrg, '_getLayerLink').andReturn(testLayerLink);
-        fsrg._viewButtonOnClick(null, testTarget);
+    describe('_viewButtonOnClick', function() {
+        it('add record to active geonetwork store when view is clicked', function() {
+            fsrg.store.add(new Portal.data.GeoNetworkRecord());
 
-        expect(Ext.MsgBus.publish).toHaveBeenCalledWith('addLayerUsingLayerLink', testLayerLink);
-    });
-
-    it('should not publish when undefined is returned as a layer link', function() {
-        spyOn(fsrg, '_getLayerLink').andReturn(undefined);
-        fsrg._viewButtonOnClick(null, testTarget);
-
-        expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
+            fsrg._viewButtonOnClick(null, testTarget, 0);
+            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalled();
+        });
     });
 });

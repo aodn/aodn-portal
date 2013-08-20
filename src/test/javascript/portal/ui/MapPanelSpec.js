@@ -16,8 +16,12 @@ describe("Portal.ui.MapPanel", function() {
         hideLayerOptions : false
     };
 
-    var mapPanel = new Portal.ui.MapPanel({
-        appConfig : appConfig
+    var mapPanel;
+
+    beforeEach(function() {
+        mapPanel = new Portal.ui.MapPanel({
+            appConfig : appConfig
+        });
     });
 
     describe('message bus tests', function() {
@@ -123,10 +127,26 @@ describe("Portal.ui.MapPanel", function() {
     });
 
     describe('Adding layer from Geoserver Feature Info response', function() {
+
+        var url = 'http://geoserver.imos.org.au/geoserver/wms';
+        var label = 'Argo Track 5901184';
+        var type = '1.1.1';
+        var layer = 'float_cycle_vw';
+        var options = 'float_id = 3189';
+
+        beforeEach(function() {
+            spyOn(Portal.data.LayerStore.instance(), 'addUsingDescriptor').andCallThrough();
+        });
+
         it('addingLayersFromGetFeatureInfo', function(){
             var oldCount = mapPanel.layers.getCount();
-            setExtWmsLayer('http://geoserver.imos.org.au/geoserver/wms','Argo Track 5901184','1.1.1','float_cycle_vw','','float_id = 3189','');
+            setExtWmsLayer(url, label, type, layer, '', options, '');
             expect(mapPanel.layers.getCount()).toBe(oldCount + 1);
+        });
+
+        it('LayerStore called directly', function() {
+            setExtWmsLayer(url, label, type, layer, '', options, '');
+            expect(Portal.data.LayerStore.instance().addUsingDescriptor).toHaveBeenCalled();
         });
     });
 
