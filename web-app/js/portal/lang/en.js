@@ -7,6 +7,8 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
+
     //
     navigate: 'Select by Map Bounds',
     navigateHelp: 'Drag the map. The map bounds is the selection area',
