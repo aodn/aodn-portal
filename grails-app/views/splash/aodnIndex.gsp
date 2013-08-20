@@ -21,10 +21,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
 	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
 
-	<div id="viewPortHomepageLinks" class="floatLeft">
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_MAP); return false;" href="">Map</a></div>
-	  <div  class="viewPortLinksBackground viewPortLinks"><a onclick="setViewPortTab(TAB_INDEX_SEARCH); return false;" href="">Search</a></div>
-	</div>
+    <g:render template='navigationSnippet' />
 
     <div class="clear spacer"></div>
     <div class="">
