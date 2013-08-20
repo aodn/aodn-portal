@@ -11,15 +11,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 <div class="p-centre">
   <div class="p-centre-item" style="width:560px">
 
-    <div class="clear spacer"></div>
-    <h1 style="color:#cccccc;">Welcome to the</h1>
-    <h1>Marine Virtual Laboratory Information System Portal</h1>
-    <div class="clear spacer"></div>
-    <div class="spacer">
-      <p>The MARVLIS portal delivers products that are tailored to support the management and assessment in the marine environment of:</p>
-      <p><b>Public Health</b> - beach safety <BR><b>Ecosystem Health</b> - long-term environmental assessment and consequences of aquaculture management options.</p>
-    </div>
-
+    <g:render template='marvlisIntroduction' />
     <g:render template='navigationSnippet' />
 
     <div class="spacer floatLeft homePanelWidget" >This project is supported by the <a title="ANDS"  href="http://ands.org.au/">Australian National Data Service (ANDS)</a> through the National Collaborative Research Infrastructure Strategy Program and the Education Investment Fund (EIF) Super Science Initiative, as well as through the IMOS, TPAC, IMAS, CSIRO and the Derwent Estuary Program.
