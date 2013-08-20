@@ -1,3 +1,11 @@
+<%--
+
+Copyright 2013 IMOS
+
+The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
 <h2>Latest Ocean Currents and Temperature Graphs</h2>
 <div class="minispacer floatLeft homePanelWidget"  style="width:230px">
 

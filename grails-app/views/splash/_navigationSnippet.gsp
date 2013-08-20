@@ -1,3 +1,11 @@
+<%--
+
+Copyright 2013 IMOS
+
+The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
 <h3>The portal provides two ways of discovering data:</h3>
 
 <div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>

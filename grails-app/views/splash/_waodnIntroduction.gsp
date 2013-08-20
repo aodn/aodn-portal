@@ -1,3 +1,11 @@
+<%--
+
+Copyright 2013 IMOS
+
+The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
 <h1>Welcome to the Western Australian Ocean Data Network</h1>
 
 <p>This portal is the primary access point for search, discovery, access and download of data for Western Australia collected by the Australian marine community. These data are presented as a regional view of all the data available from the <a  target="_blank" class="external"  title="Main AODN Portal" href="http://portal.aodn.org.au/webportal/" >Australian Ocean Data Network</a>.

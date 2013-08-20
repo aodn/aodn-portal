@@ -1,3 +1,11 @@
+<%--
+
+Copyright 2013 IMOS
+
+The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
 <div class="clear spacer"></div>
 <h1 style="color:#cccccc;">Welcome to the</h1>
 <h1>Marine Virtual Laboratory Information System Portal</h1>

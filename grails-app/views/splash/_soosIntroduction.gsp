@@ -1,3 +1,11 @@
+<%--
+
+Copyright 2013 IMOS
+
+The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+
+--%>
+
 <h1>Welcome to the SOOS Data Network</h1>
 
 <p>This Portal is the primary access point for search, discovery, mapping and download of data
