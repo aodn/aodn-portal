@@ -111,8 +111,8 @@ describe("Portal.ui.MainPanel", function() {
             expect(mainPanel.layout).toBe('card');
         });
 
-        it('should initially have home as the active item', function() {
-            expect(mainPanel.activeItem).toBe(TAB_INDEX_HOME);
+        it('should initially have search as the active item', function() {
+            expect(mainPanel.activeItem).toBe(TAB_INDEX_SEARCH);
         });
     });
 });
