@@ -12,8 +12,7 @@ class CheckWmsScannerService {
 
     def getServerFromJob(jobId) {
         def conf = Config.activeInstance()
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-        wmsScannerBaseUrl = ensureTrailingSlash(wmsScannerBaseUrl)
+        def wmsScannerBaseUrl = ensureTrailingSlash(grailsApplication.config.wmsScanner.url)
 
         // Check if WMS Scanner settings are valid
         if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
@@ -56,16 +55,15 @@ class CheckWmsScannerService {
 
     def _saveOrUpdateCallbackUrl() {
 
-        def portalBaseUrl = grailsApplication.config.grails.serverURL
-        ensureTrailingSlash(portalBaseUrl)
+        def portalBaseUrl = ensureTrailingSlash(grailsApplication.config.grails.serverURL)
 
-        return "${ensureTrailingSlash(portalBaseUrl)}layer/saveOrUpdate"
+        return "${portalBaseUrl}layer/saveOrUpdate"
     }
 
     def _scanJobUrl() {
 
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
+        def wmsScannerBaseUrl = ensureTrailingSlash(grailsApplication.config.wmsScanner.url)
 
-        return "${ensureTrailingSlash(wmsScannerBaseUrl)}scanJob/"
+        return "${wmsScannerBaseUrl}scanJob/"
     }
 }
