@@ -11,7 +11,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
-        
+
         this.mapPanel = new Portal.ui.MapPanel({
             appConfig: cfg.appConfig,
             region:'center',
@@ -19,7 +19,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             stateful: false,
             forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
         });
-        
+
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',
 			collapsible: true,
@@ -30,20 +30,14 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             layout: 'border',
             id: 'portalPanel',
-            title: 'Map',
             stateful: false,
             items: [
                 this.mapPanel,
                 this.rightDetailsPanel
             ]
         }, cfg);
-	
+
         Portal.ui.PortalPanel.superclass.constructor.call(this, config);
-        
-        this.addEvents('tabchange');
-        this.on('tabchange', function() {
-        	this.mapPanel.fireEvent('tabchange');
-        }, this);
     },
 
 	getMapPanel: function() {

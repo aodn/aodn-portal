@@ -15,7 +15,7 @@ describe("Portal.data.LayerStore", function() {
         title : 'test',
         server: {
             type: "WMS-1.1.1",
-            uri: "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+            uri: "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
         }
     });
 
@@ -30,12 +30,15 @@ describe("Portal.data.LayerStore", function() {
     };
 
     beforeEach(function() {
-
-        layerStore = new Portal.data.LayerStore();
+        layerStore = Portal.data.LayerStore.instance();
         expect(layerStore.getCount()).toBe(0);
     });
 
-    function createOpenLayer(title, url) {
+    afterEach(function() {
+        Portal.data.LayerStore.THE_INSTANCE = undefined;
+    });
+
+    var createOpenLayer = function(title, url) {
 
         if (title == undefined) {
 
@@ -53,11 +56,9 @@ describe("Portal.data.LayerStore", function() {
             {},
             { isBaseLayer: false }
         );
-    }
+    };
 
     it('add layer descriptor', function() {
-
-
         layerStore.addUsingDescriptor(layerDescriptor);
         expect(layerStore.getCount()).toBe(1);
     });
@@ -91,82 +92,66 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
         });
+
+        describe('layer record callback', function() {
+            it('no callback', function() {
+                layerStore.addUsingLayerLink(layerLink);
+            });
+
+            it('callback', function() {
+                var callback = jasmine.createSpy('callback');
+                spyOn(Ext.Ajax, 'request').andCallFake(function(params) {
+                    layerStore.failure = params.failure;
+                    layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
+                });
+
+                layerStore.addUsingLayerLink(layerLink, callback);
+                expect(callback).toHaveBeenCalled();
+                expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
+            });
+        });
+
     });
 
-    // add open layer
-    it('add open layer', function() {
+    describe('adding layers', function() {
+        it('add open layer', function() {
 
-        layerStore.addUsingOpenLayer(createOpenLayer());
-        expect(layerStore.getCount()).toBe(1);
-    });
-
-    it('add duplicate layer', function() {
-        spyOn(Ext.Msg, "alert");
-
-        layerStore.addUsingOpenLayer(createOpenLayer());
-        layerStore.addUsingOpenLayer(createOpenLayer());
-        expect(layerStore.getCount()).toBe(1);
-        expect(Ext.Msg.alert).toHaveBeenCalled();
-    });
-
-    describe('layer related events', function() {
-
-        it('addLayerUsingDescriptor', function() {
-
-            spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
-            expect(layerStore.getCount()).toBe(0);
-            Ext.MsgBus.publish('addLayerUsingDescriptor', layerDescriptor);
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(layerDescriptor);
+            layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
         });
 
-        it('addLayerUsingLayerLink', function() {
+        it('add duplicate layer', function() {
+            spyOn(Ext.Msg, "alert");
 
-            spyOn(layerStore, 'addUsingLayerLink');
-            Ext.MsgBus.publish('addLayerUsingLayerLink', layerLink);
-            expect(layerStore.addUsingLayerLink).toHaveBeenCalledWith(layerLink);
+            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore.addUsingOpenLayer(createOpenLayer());
+            expect(layerStore.getCount()).toBe(1);
+            expect(Ext.Msg.alert).toHaveBeenCalled();
+        });
+
+        it('addLayerUsingDescriptor', function() {
+            expect(layerStore.getCount()).toBe(0);
+            layerStore.addUsingDescriptor(layerDescriptor);
+            expect(layerStore.getCount()).toBe(1);
         });
 
         it('addLayerUsingOpenLayer', function() {
-
-            var openLayer = createOpenLayer();
-
-            spyOn(layerStore, 'addUsingOpenLayer').andCallThrough();
-            spyOn(Ext.MsgBus, 'publish').andCallThrough();
-
             expect(layerStore.getCount()).toBe(0);
-            Ext.MsgBus.publish('addLayerUsingOpenLayer', openLayer);
+            layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
-            expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(openLayer);
-            expect(Ext.MsgBus.publish).toHaveBeenCalled();
         });
 
         it('addLayerUsingOpenLayer base layer', function() {
 
             var openLayer = createOpenLayer();
             openLayer.options.isBaseLayer = true;
-
-            spyOn(layerStore, 'addUsingOpenLayer').andCallThrough();
             spyOn(Ext.MsgBus, 'publish').andCallThrough();
 
             expect(layerStore.getCount()).toBe(0);
-            Ext.MsgBus.publish('addLayerUsingOpenLayer', openLayer);
+            layerStore.addUsingOpenLayer(openLayer);
             expect(layerStore.getCount()).toBe(1);
-            expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(openLayer);
             expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith('selectedLayerChanged');
         });
-
-        it('removeLayerUsingOpenLayer', function() {
-
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-
-            spyOn(layerStore, 'removeUsingOpenLayer').andCallThrough();
-            expect(layerStore.getCount()).toBe(1);
-            Ext.MsgBus.publish('removeLayerUsingOpenLayer', openLayer);
-            expect(layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(openLayer);
-            expect(layerStore.getCount()).toBe(0);
-        })
     });
 
     describe('layers loaded automatically on construction', function() {
@@ -193,23 +178,26 @@ describe("Portal.data.LayerStore", function() {
 
     describe('removing layers', function() {
 
-        it('remove open layer', function() {
+        describe('remove open layer', function() {
 
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(1);
+            var openLayer;
 
-            layerStore.removeUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(0);
-        });
+            beforeEach(function() {
+                openLayer = createOpenLayer();
+                layerStore.addUsingOpenLayer(openLayer);
+            });
 
-        it('remove open layer via message', function() {
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-            expect(layerStore.getCount()).toBe(1);
+            it('one less layer in store', function() {
+                expect(layerStore.getCount()).toBe(1);
+                layerStore.removeUsingOpenLayer(openLayer);
+                expect(layerStore.getCount()).toBe(0);
+            });
 
-            Ext.MsgBus.publish('removeLayer', openLayer);
-            expect(layerStore.getCount()).toBe(0);
+            it('layerRemoved event published', function() {
+                spyOn(Ext.MsgBus, 'publish');
+                layerStore.removeUsingOpenLayer(openLayer);
+                expect(Ext.MsgBus.publish).toHaveBeenCalledWith('layerRemoved', openLayer);
+            });
         });
 
         it('removeAll', function() {
@@ -326,6 +314,19 @@ describe("Portal.data.LayerStore", function() {
 
         it('getDefaultBaseLayer', function() {
             expect(layerStore.getDefaultBaseLayer()).toBe(baseLayerRecord);
+        });
+    });
+
+    describe('layer store as singleton', function() {
+
+        it('accessor function', function() {
+            expect(Portal.data.LayerStore.instance()).toBeTruthy();
+        });
+
+        it('singleton', function() {
+            var firstCall = Portal.data.LayerStore.instance();
+            var secondCall = Portal.data.LayerStore.instance();
+            expect(firstCall).toBe(secondCall);
         });
     });
 });
