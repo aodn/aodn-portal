@@ -20,10 +20,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
       <p><b>Public Health</b> - beach safety <BR><b>Ecosystem Health</b> - long-term environmental assessment and consequences of aquaculture management options.</p>
     </div>
 
-    <h3>The portal provides two ways of discovering data:</h3>
-
-    <div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
-
     <g:render template='navigationSnippet' />
 
     <div class="spacer floatLeft homePanelWidget" >This project is supported by the <a title="ANDS"  href="http://ands.org.au/">Australian National Data Service (ANDS)</a> through the National Collaborative Research Infrastructure Strategy Program and the Education Investment Fund (EIF) Super Science Initiative, as well as through the IMOS, TPAC, IMAS, CSIRO and the Derwent Estuary Program.

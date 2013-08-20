@@ -14,10 +14,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     <p class="spacer">This portal is the primary access point for search, discovery, access and download of data collected by the Integrated Marine Observing System (IMOS), an Australian Government Research Infrastructure project. You can obtain full information about IMOS via the <a class="external" title="IMOS home page" href="http://www.imos.org.au" target="_blank">IMOS Webpage</a>. IMOS is a contributor to the Australian Ocean Data Network (AODN). Please see the web site for information on the AODN and how you and your institution can <a class="external" href="${ grailsApplication.config.help.url }?q=node/142" target="_blank">contribute data</a>.</p>
 
-    <h3>The portal provides two ways of discovering data:</h3>
-
-	<div class="floatLeft">Either through our <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;" >map</a> interface,<BR>or by searching our <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;" >metadata catalogue</a>.</div>
-
     <g:render template='navigationSnippet' />
 
 	<div class="clear spacer"></div>

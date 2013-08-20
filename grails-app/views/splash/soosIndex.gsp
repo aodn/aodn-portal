@@ -21,14 +21,10 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     <a href="http://www.soos.aq/index.php/links" target="_blank" class="external wrap" >communities</a> and existing,
     <a href="http://www.soos.aq/index.php/science/themes" target="_blank" class="external wrap" >'theme-specific'</a> data networks. The 'points of truth' for all such data are listed in the metadata for each discovered dataset.</p>
 
-    <h3>The portal provides two ways of discovering data:</h3>
-    <p>Either through our <a onclick="setViewPortTab(TAB_INDEX_MAP); return false;" href="">map</a> interface or by searching our <a onclick="setViewPortTab(TAB_INDEX_SEARCH); return false;" href="">metadata catalogue</a>.
-    </p>
-
-
     <h3>Want to contribute data to the SOOS Data Portal?</h3>
     <p>Please see how to <a href="http://www.soos.aq/index.php/data/data-portal" target="_blank" class="external wrap" >contribute data</a> to the SOOS Portal</p>
 
+    <g:render template='navigationSnippet' />
 
     <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the Centre
     for Australian Weather and Climate Research (CAWCR)
