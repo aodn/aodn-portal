@@ -13,7 +13,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     <g:render template='imosIntroduction' />
     <g:render template='navigationSnippet' />
 
-	<div class="clear spacer"></div>
+    <div class="clear spacer"></div>
 
     <g:render template='oceanCurrent' />
 
