@@ -12,7 +12,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         this.mainPanel = new Portal.ui.MainPanel({
             region: 'center',
-            activeTab: cfg.activeTab,
             appConfigStore: appConfigStore
         });
 
