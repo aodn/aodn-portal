@@ -114,7 +114,7 @@ Portal.data.GeoNetworkRecord.create = function(o){
         return convertedData;
     };
 
-    f.prototype.wfsDownloadInfoForLayer = function (layer) {
+    f.prototype.wfsDownloadInfoForLayer = function(layer) {
 
         var wfsLayer = layer.wfsLayer;
 
