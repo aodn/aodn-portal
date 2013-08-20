@@ -8,6 +8,8 @@
 
 package au.org.emii.portal
 
+import static au.org.emii.portal.UrlUtils.urlWithQueryString
+
 class CheckLayerAvailabilityService {
 
     static transactional = true
@@ -18,7 +20,7 @@ class CheckLayerAvailabilityService {
 
 		if (layer) {
 
-            def getMapURL =  _constructGetMapRequest(layer, params).toURL()
+            def getMapURL = _constructGetMapRequest(layer, params).toURL()
             def valid = _checkConnection(getMapURL, _testGetMap)
 
             //failed getmap test, now try getFeatureInfo
@@ -89,8 +91,6 @@ class CheckLayerAvailabilityService {
             e.printStackTrace()
             return false
         }
-
-        return false
     }
 
 	def _addAuthentication( connection, url ) {
@@ -130,21 +130,6 @@ class CheckLayerAvailabilityService {
         return valid
     }
 
-	String _buildUrl(layer, featureInfoParams) {
-
-		// use the uri stored in the database not munted in JS
-		def storedServerUri = layer.server.uri
-
-		if (storedServerUri.contains("?")) {
-			storedServerUri += '&'
-		}
-		else {
-			storedServerUri += '?'
-		}
-
-		return storedServerUri + featureInfoParams
-	}
-
 	String _constructFeatureInfoRequest(layer, params) {
 		// Construct the getFeatureInfo request.
 		// are returned at location 0,0.
@@ -161,19 +146,29 @@ class CheckLayerAvailabilityService {
 		if(layer.bboxMinY == layer.bboxMaxY)
 			minY -= 1;
 
-        def getFeatureInfoUrlString = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=' + URLEncoder.encode(layer.name)
-        getFeatureInfoUrlString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
-        getFeatureInfoUrlString += '&SRS=' + URLEncoder.encode(layer.projection)
-        getFeatureInfoUrlString += '&CRS=' + URLEncoder.encode(layer.projection)
-        getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
-        getFeatureInfoUrlString += '&QUERY_LAYERS=' +  URLEncoder.encode(layer.name)
-        getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
+		def queryStringArgs= [
+		    'VERSION': '1.1.1',
+			'REQUEST': 'GetFeatureInfo',
+			'LAYERS': layer.name,
+			'STYLES': '',
+			'SRS': layer.projection,
+			'CRS': layer.projection,
+			'BBOX': minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY,
+			'QUERY_LAYERS': layer.name,
+			'X': '0',
+			'Y': '0',
+			'I': '0',
+			'J': '0',
+			'WIDTH': '1',
+			'HEIGHT': '1',
+			'FEATURE_COUNT': '1'
+		]
 
         // Include INFO_FORMAT if we have a value for it
-        if(params.format)
-            getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode(params.format)
+        if (params.format)
+	        queryStringArgs.INFO_FORMAT = params.format
 
-		return _buildUrl(layer, getFeatureInfoUrlString)
+		return urlWithQueryString(layer.server.uri, queryStringArgs)
 	}
 
     String _constructGetMapRequest(layer, params) {
@@ -187,17 +182,22 @@ class CheckLayerAvailabilityService {
         if(layer.bboxMinY == layer.bboxMaxY)
             minY -= 1;
 
-        def getMapString = 'VERSION=1.1.1&REQUEST=GetMap&LAYERS=' + URLEncoder.encode(layer.name)
-        getMapString += '&STYLES=' //+ URLEncoder.encode(layer.styles)
-        getMapString += '&SRS=' + URLEncoder.encode(layer.projection)
-        getMapString += '&CRS=' + URLEncoder.encode(layer.projection)
-        getMapString += '&BBOX=' + URLEncoder.encode(minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
-        getMapString += '&FORMAT=' + URLEncoder.encode(layer.server.imageFormat)
-        getMapString += '&EXCEPTIONS=application/vnd.ogc.se_xml'
-        getMapString += '&width=50&height=50'
-        return _buildUrl(layer, getMapString)
-    }
+	    def queryStringArgs= [
+		    'VERSION': '1.1.1',
+		    'REQUEST': 'GetMap',
+		    'LAYERS': layer.name,
+		    'STYLES': '',
+		    'SRS': layer.projection,
+		    'CRS': layer.projection,
+		    'BBOX': minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY,
+		    'FORMAT': layer.server.imageFormat,
+		    'EXCEPTIONS': 'application/vnd.ogc.se_xml',
+		    'width': '50',
+		    'height': '50'
+	    ]
 
+        return urlWithQueryString(layer.server.uri, queryStringArgs)
+    }
 
     void notifyOwner(layer, failedOps){
         def ownerList = layer.server.owners
