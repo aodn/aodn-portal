@@ -25,7 +25,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.downloadCartPanel = new Portal.cart.DownloadPanel()
 
         var config = Ext.apply({
-            activeItem: TAB_INDEX_HOME,
+            activeItem: TAB_INDEX_SEARCH,
             margins: {
                 left: 5,
                 right: 5
