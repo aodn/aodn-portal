@@ -28,7 +28,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
-            emptyText : OpenLayers.i18n("pleasepickcondensed"),
+            emptyText : OpenLayers.i18n("pleasePickCondensed"),
             width: 170,
             editable: false,
             fieldLabel: "Value",

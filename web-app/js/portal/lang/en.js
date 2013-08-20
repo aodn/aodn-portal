@@ -7,7 +7,7 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    pleasepickcondensed: '**pick**',
+    pleasePickCondensed: '**pick**',
 
     //
     navigate: 'Select by Map Bounds',
