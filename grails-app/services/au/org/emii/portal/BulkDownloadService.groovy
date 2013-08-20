@@ -53,7 +53,10 @@ class BulkDownloadService {
                 _addFileEntry layerLink
             }
 
-	        _addFileEntry _wfsDownloadItemFrom(it.wfsDownloadInfo)
+            if (it.wfsDownloadInfo) {
+
+                _addFileEntry _wfsDownloadItemFrom(it.wfsDownloadInfo)
+            }
         }
 
         _addDownloadReportToArchive( locale )
