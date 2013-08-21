@@ -86,9 +86,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             load:this.resultsStoreLoad
         });
 
-        Ext.MsgBus.subscribe('facetedSearchClearAll', function() {
-            this._hideResultsGrid();
-        }, this);
+        this.filtersPanel.on('filtersCleared', this._hideResultsGrid, this);
     },
 
     resultsStoreLoad:function () {
