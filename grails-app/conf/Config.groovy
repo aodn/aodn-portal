@@ -97,9 +97,8 @@ depthService.url = "http://depthservice.aodn.org.au/depth"
 openId {
     // openID provider details to support login popup etc
     providers = [
-        //    [ name: "eMII",   iconHref : "images/AODNfavicon.ico", supportsProviderLogout : true, providerHref : "https://devid.emii.org.au" ],
         [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
-       // [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
+        [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
         // Add your own providers here ...
     ]
 
@@ -117,7 +116,7 @@ environments {
 		grails.resources.debug = true
 
         // URLs
-		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:7070/$appName"
+		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
 	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
 		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
