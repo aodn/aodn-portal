@@ -117,25 +117,29 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('main panel tab highlighting', function() {
+        
         beforeEach(function() {
             initMainPanel();
             spyOn(mainPanel, "_highlightActiveTab");
         });
 
-        it('initial load', function() {
+        it('on initial load', function() {
             spyOn(Portal.ui.MainPanel.superclass, "afterRender");
             mainPanel.afterRender();
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
 
-        it('switching tabs', function() {
-            // Mock layout
-            mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
-            mainPanel.layout.setActiveItem.andCallFake(function() {});
-
+        it('when switching tabs', function() {
+            mockLayout();
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
+
+        var mockLayout = function() {
+            mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
+            mainPanel.layout.setActiveItem.andCallFake(function() {});
+        };
+
     });
 
 });
