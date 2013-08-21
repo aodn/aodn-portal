@@ -118,12 +118,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     errorDialogTitle: 'Error',
 
     // Download Cart
-    ttAddToDownload: 'Add to download cart',
-    ttAddAllToDownload: 'Add all to download cart',
-    btnAddAllToDownload: 'Add all',
-    titlFileLimitReached: 'Unable to add',
-    msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
-
     downloadCartConfirmationWindowTitle: 'Download Cart',
     downloadCartConfirmationDownloadText: 'I understand, download',
     downloadCartConfirmationCancelText: 'Cancel',
@@ -207,10 +201,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     transectTab: 'Transect',
     transectDataHeading: 'Data along the transect: ',
     dimensionValuesHeading: 'For dimension values: ',
-
-    // Dropzone placeholders
-    downloadCartDropZonePlaceholder: 'Drag downloads here to add them to the cart',
-    mapDropZonePlaceholder: 'Drag layers here to add them to the map',
 
     layerSearchTabTitle: 'Layers',
     downloadSearchTabTitle: 'Downloads',
