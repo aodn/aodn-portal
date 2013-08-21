@@ -19,7 +19,6 @@ describe("Portal.ui.MainPanel", function() {
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockSearchTabPanel = {};
     var mockPortalPanel = {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
@@ -32,7 +31,6 @@ describe("Portal.ui.MainPanel", function() {
 
         spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
         spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
-        spyOn(Portal.search, "SearchTabPanel").andReturn(mockSearchTabPanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
@@ -70,29 +68,6 @@ describe("Portal.ui.MainPanel", function() {
         });
     });
 
-    describe("facets enabled", function() {
-        beforeEach(function() {
-            facetsEnabled = true;
-            initMainPanel();
-        });
-
-        it("SearchTabPanel is faceted version", function() {
-            expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
-            expect(mainPanel.searchTabPanel).toEqual(mockSearchPanel);
-        });
-    });
-
-    describe("facets disabled", function() {
-        beforeEach(function() {
-            facetsEnabled = false;
-            initMainPanel();
-        });
-
-        it("SearchTabPanel is non-faceted version", function() {
-            expect(Portal.search.SearchTabPanel).toHaveBeenCalled();
-            expect(mainPanel.searchTabPanel).toEqual(mockSearchTabPanel);
-        });
-    });
 
     describe('card layout', function() {
         beforeEach(function() {

@@ -62,8 +62,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     },
 
     _getItems: function(cfg) {
-        console.log(this.viewportTabsHeight);
-        console.log(cfg.appConfig.headerHeight);
         return [
                 {
                     unstyled: true,
