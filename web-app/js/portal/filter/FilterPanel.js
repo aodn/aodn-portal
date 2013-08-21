@@ -185,7 +185,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     _clearFilters: function() {
 
-		this.activeFilters[key].handleRemoveFilter();
-		delete this.activeFilters[key];
+        for (var key in Object.keys(this.activeFilters)) {
+
+            this.activeFilters[key].handleRemoveFilter();
+            delete this.activeFilters[key];
+        }
+
+        this._updateFilter();
 	}
 });
