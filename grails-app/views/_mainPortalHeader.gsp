@@ -24,7 +24,7 @@
             </div>
 
             <div class="viewPortTab viewPortTabDisabled" id="viewPortTab1">
-                <a href="" onClick="setViewPortTab(TAB_INDEX_MAP);    return false;">
+                <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;">
                         <h1 style="float:left">2</h1>
                         <h2>Step 2</h2>
                         <p>Visualize and Subset</p>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="viewPortTab viewPortTabDisabled" id="viewPortTab2">
-                <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH);     return false;">
+                <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;">
                         <h1 style="float:left">3</h1>
                         <h2>Step 3</h2>
                         <p>Download</p>
@@ -51,7 +51,7 @@
             <g:if test="${grailsApplication.config.openId.enableUserSuppliedProvider || grailsApplication.config.openId.providers.size > 1}">
 
             <%-- button supported by script --%>
-                <a href="#" id="loginbutton"  >Login</a>
+                <a href="#" id="loginbutton">Login</a>
 
             <%-- the popup --%>
                 <div id="loginpopup" style="padding: 6px; display: none; border: solid 1px silver; background-color: #ffffff; position: absolute; border-radius: 10px;"><ol>
@@ -106,8 +106,7 @@
 
         </shiro:user>
         <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
-            <a class="external mainlinks" target="_blank" href="${link.href}"
-               title="${link.tooltipText}">${link.linkText}</a></g:each>
+            <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>
 
     <div id="downloadCartStatus" class="hidden">

@@ -26,7 +26,7 @@
     <h2>Latest Ocean Currents and Temperature Graphs</h2>
 	<div class="minispacer floatLeft homePanelWidget"  style="width:230px">
 
-	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image " /> ${oceanCurrent.speil}</a>
+	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image" /> ${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
 	<div class="minispacer floatLeft homePanelWidget"  style="width:250px">

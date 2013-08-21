@@ -21,7 +21,7 @@ You can obtain full information about IMOS via the <a class="external" title="IM
 
 
 	<div class="spacer floatLeft homePanelWidget"  style="width:230px">
-	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image "/>${oceanCurrent.speil}</a>
+	  <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" ><img class="roundedImages" src="${oceanCurrent.imageURL}" width="230" alt="Ocean Current image"/>${oceanCurrent.speil}</a>
 	  <BR>
 	  </div>
 

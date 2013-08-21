@@ -30,7 +30,7 @@
 
 
         <div class="floatLeft">
-            <a title="ANDS"  href="http://ands.org.au/"><img class="logoSpacer" width="120" src="images/ands-logo-hi-res.png" alt="ANDS logo "/></a>
+            <a title="ANDS"  href="http://ands.org.au/"><img class="logoSpacer" width="120" src="images/ands-logo-hi-res.png" alt="ANDS logo"/></a>
             <a title="Research Data Australia"  href="http://researchdata.ands.org.au/"><img class="logoSpacer"  src="images/ResearchDataAustralia.png" alt="Research Data Australia Logo"/></a>
         </div>
 
