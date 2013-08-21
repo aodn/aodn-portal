@@ -277,6 +277,7 @@ Site navigation
 
 .viewPortTab h1 {
     line-height: 26px;
+    float: left;
     font-size: 32px;
     font-weight: bold;
     margin-right: 10px;
