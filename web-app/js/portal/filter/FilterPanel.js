@@ -8,7 +8,7 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
-    constructor: function (cfg) {
+    constructor: function(cfg){
         var config = Ext.apply({
             id: 'filterPanel',
             title: 'Filters',
@@ -34,19 +34,19 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function (cfg) {
+    initComponent: function(cfg){
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
-    setLayer: function (layer) {
+    setLayer: function(layer){
         this.layer = layer;
         this.update();
     },
 
-    createFilter: function (layer, filter) {
+    createFilter: function(layer, filter){
 
         filter.label = filter.label.split('_').join(' ').toTitleCase();
 
@@ -89,7 +89,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _addLabel: function (filter) {
+    _addLabel: function(filter){
         var label = new Ext.form.Label({
             text: filter.label + ": ",
             style: 'font-size: 11px;'
@@ -97,7 +97,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         this.add(label);
     },
 
-    update: function (layer, show, hide, target) {
+    update: function(layer, show, hide, target){
         this.layer = layer;
 
         if (layer.grailsLayerId != undefined) {
@@ -113,17 +113,17 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     layerId: layer.grailsLayerId
                 },
                 scope: this,
-                failure: function (resp) {
+                failure: function(resp){
                     this.setVisible(false);
                     hide.call(target, this);
                 },
-                success: function (resp, opts) {
+                success: function(resp, opts){
 
                     var filters = Ext.util.JSON.decode(resp.responseText);
                     var aFilterIsEnabled = false;
 
                     Ext.each(filters,
-                        function (filter, index, all) {
+                        function(filter, index, all){
                             if (filter.enabled) {
                                 this.createFilter(layer, filter);
                                 aFilterIsEnabled = true
@@ -172,7 +172,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _updateFilter: function () {
+    _updateFilter: function(){
         var combinedCQL = "";
         var count = 0;
         for (var key in this.activeFilters) {
@@ -200,18 +200,18 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _handleAddFilter: function (aFilter) {
+    _handleAddFilter: function(aFilter){
         this.activeFilters[aFilter.getFilterName()] = aFilter;
         this._updateFilter();
     },
 
-    _clearFilters: function () {
+    _clearFilters: function(){
         for (var key in this.activeFilters) {
             this.activeFilters[key].handleRemoveFilter();
         }
     },
 
-    _addToCart: function () {
+    _addToCart: function(){
 
         addToDownloadCart(this._dataDownloadItem());
 
@@ -221,7 +221,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _dataDownloadItem: function () {
+    _dataDownloadItem: function(){
 
         return this._makeDownloadCartItem(
             this.layer.getMetadataUrl(),
@@ -234,7 +234,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         );
     },
 
-    _metadataItem: function () {
+    _metadataItem: function(){
 
         return this._makeDownloadCartItem(
             this.layer.getMetadataUrl(),
@@ -247,7 +247,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         );
     },
 
-    _makeDownloadCartItem: function (recordUuid, recordTitle, linkTitle, linkHref, linkType, linkProtocol, linkPreferredFilename) {
+    _makeDownloadCartItem: function(recordUuid, recordTitle, linkTitle, linkHref, linkType, linkProtocol, linkPreferredFilename){
 
         var item = {
             record: {
@@ -268,7 +268,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return item;
     },
 
-    _makeDataDownloadURL: function () {
+    _makeDataDownloadURL: function(){
 
         if (this.layer.wfsLayer == null) {
             return this._makeWfsUrl(this.layer.server.uri, this.layer.params.LAYERS);
@@ -277,7 +277,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return this._makeWfsUrl(this.layer.wfsLayer.server.uri, this.layer.wfsLayer.name);
     },
 
-    _makeWfsUrl: function (serverURL, layerName) {
+    _makeWfsUrl: function(serverURL, layerName){
 
         var queryArgs = this._makeWfsUrlQueryArgs(layerName);
 
@@ -291,7 +291,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return wfsURL + Ext.urlEncode(queryArgs);
     },
 
-    _makeWfsUrlQueryArgs: function (layerName) {
+    _makeWfsUrlQueryArgs: function(layerName){
 
         var queryArgs = {
             typeName: layerName,
@@ -309,7 +309,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return queryArgs;
     },
 
-    _sanitiseLayerNameForFilename: function () {
+    _sanitiseLayerNameForFilename: function(){
 
         // replace ':' used to namespace layers by geoserver with '#'
         // as its not allowed in windows filenames
