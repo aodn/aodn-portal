@@ -10,6 +10,9 @@ Ext.namespace('Portal.ui');
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
 
+        // approximate height of viewport main tabs. css will impact on this buffer
+        this.viewportTabsHeight = 40;
+
         this.mainPanel = new Portal.ui.MainPanel({
             region: 'center',
             activeTab: cfg.activeTab,
@@ -23,8 +26,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         Portal.ui.Viewport.superclass.constructor.call(this, config);
 
-        // approximate height of viewport main tabs. css will impact on this buffer
-        this.viewportTabsHeight = 40;
     },
 
     afterRender: function() {
@@ -61,6 +62,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     },
 
     _getItems: function(cfg) {
+        console.log(this.viewportTabsHeight);
+        console.log(cfg.appConfig.headerHeight);
         return [
                 {
                     unstyled: true,
