@@ -292,13 +292,11 @@ Time taken: ${ _timeTaken() } seconds
                 filenameFromUrl = _getFilenameMatch(matches)
                 fileExtensionFromUrl = _getFileExtensionMatch(matches)
             }
-        }
+	        else {
 
-        // When unable to find filename in URL
-        if (!filenameFromUrl) {
-
-            filenameFromUrl = "unnamed_data"
-            fileExtensionFromUrl = _extensionFromMimeType(fileInfo.type)
+	            filenameFromUrl = "unnamed_data"
+	            fileExtensionFromUrl = _extensionFromMimeType(fileInfo.type)
+            }
         }
 
         log.debug "filenameFromUrl: $filenameFromUrl fileExtensionUsed: $fileExtensionFromUrl"
