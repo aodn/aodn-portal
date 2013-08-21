@@ -8,6 +8,8 @@
 
 package au.org.emii.portal
 
+import au.org.emii.portal.downloadcart.LinkedFileDownloader
+import au.org.emii.portal.downloadcart.WfsLayerDownloader
 import grails.converters.JSON
 import org.apache.catalina.connector.ClientAbortException
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -28,6 +30,9 @@ class BulkDownloadService {
 
     static final def GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
 
+	def linkedFileDownloader = new LinkedFileDownloader()
+	def wfsLayerDownloader = new WfsLayerDownloader()
+
     def processingStartTime
     def cfg = Config.activeInstance()
     def reportBodyText = ""
@@ -37,26 +42,22 @@ class BulkDownloadService {
     def numberOfFilesAdded = 0
     def zipStream
 
-    void generateArchiveOfFiles( filesToDownload, outputStream, locale ) throws ClientAbortException {
+    void generateArchiveOfFiles( itemsToDownload, outputStream, locale ) throws ClientAbortException {
 
         processingStartTime = System.currentTimeMillis()
 
-        // Create a deep copy of filesToDownload to work with
-        def copyOfFilesToDownload = filesToDownload.collect( mapDeepCopyJson )
+        // Create a deep copy of itemsToDownload to work with
+        def copyOfItemsToDownload = itemsToDownload.collect( mapDeepCopyJson )
 
         // Create Zip archive stream
         zipStream = new ZipOutputStream( outputStream )
 
         // Add all files to archive
-        copyOfFilesToDownload.each {
-            it.downloadableLinks.each { layerLink ->
-                _addFileEntry layerLink
-            }
+	    copyOfItemsToDownload.each {
 
-            if (it.wfsDownloadInfo) {
+		    _addFileEntries linkedFileDownloader.getMatchingEntries(it)
 
-                _addFileEntry _wfsDownloadItemFrom(it.wfsDownloadInfo)
-            }
+		    _addFileEntries wfsLayerDownloader.getMatchingEntries(it)
         }
 
         _addDownloadReportToArchive( locale )
@@ -75,6 +76,14 @@ class BulkDownloadService {
 
         return fileName.replaceAll("\\s","_") // unix friendly
     }
+
+	def _addFileEntries(entries ) {
+
+		entries.each{
+
+			_addFileEntry it
+		}
+	}
 
     def _addFileEntry( fileInfo ) {
 
@@ -348,53 +357,6 @@ Time taken: ${ _timeTaken() } seconds
         return extensionToReturn ? ".$extensionToReturn" : ""
     }
 
-	def _wfsDownloadItemFrom(info) {
-
-		[
-			title: _wfsItemTitle(info),
-			preferredFname: _sanitiseFileName(info.layerName) + ".csv",
-			href: _wfsUrlFrom(info),
-			type: "text/csv" // Will be configurable later
-		]
-	}
-
-	def _wfsUrlFrom(info) {
-
-		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
-
-		return makeUrl(serverWfsUrl, _wfsQueryArgs(info))
-	}
-
-	def _wfsQueryArgs(info) {
-
-		def queryArgs = [
-			typeName: info.layerName,
-			SERVICE: "WFS",
-			outputFormat: "csv",
-			REQUEST: "GetFeature",
-			VERSION: "1.0.0" //This version has BBOX the same as WMS.
-		]
-
-		if (info.cqlFilter) {
-
-			queryArgs.CQL_FILTER = info.cqlFilter
-		}
-
-		return queryArgs
-	}
-
-	def _wfsItemTitle(info) {
-
-		def prefix = info.cqlFilter ? "Filtered " : ""
-
-		return prefix + info.layerName + " data"
-	}
-
-	def _sanitiseFileName(name) {
-
-		return name.replace(":", "#")
-	}
-
     def _currentDate() {
 
         return new Date()
@@ -419,18 +381,4 @@ Time taken: ${ _timeTaken() } seconds
 
         return map as JSONObject
     }
-
-	def makeUrl = { // Todo - DN: Move somewhere more re-usable
-		url, queryStringArgs ->
-
-		def joiner = url.contains("?") ? "&" : "?"
-
-		def queryString = queryStringArgs.collect{
-			k, v ->
-
-			k + "=" + URLEncoder.encode(v, "UTF-8")
-		}.join("&")
-
-		return url + joiner + queryString
-	}
 }
