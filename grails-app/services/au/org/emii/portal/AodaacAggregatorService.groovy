@@ -10,8 +10,9 @@ package au.org.emii.portal
 
 import au.org.emii.portal.exceptions.AodaacException
 import grails.converters.JSON
-
 import java.text.SimpleDateFormat
+
+import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
 class AodaacAggregatorService {
 
@@ -353,21 +354,12 @@ class AodaacAggregatorService {
 
     def _aggregatorBaseAddress() {
 
-        return _ensureTrailingSlash( grailsApplication.config.aodaacAggregator.url )
+        return ensureTrailingSlash( grailsApplication.config.aodaacAggregator.url )
     }
 
     def _aggregatorEnvironment() {
 
         return grailsApplication.config.aodaacAggregator.environment
-    }
-
-    def _ensureTrailingSlash( s ) {
-
-        if ( !s ) return "/"
-
-        def slash = s[-1] != "/" ? "/" : ""
-
-        return "$s$slash"
     }
 
 	def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
