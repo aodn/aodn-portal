@@ -14,6 +14,7 @@ Ext.namespace('Portal.filter');
 Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	constructor: function(cfg) {
 		var config = Ext.apply({
+            emptyText : OpenLayers.i18n("pleasePickCondensed"),
 			listeners: {
 				beforeremove: function(panel, component){
 					this.removeAll(true);

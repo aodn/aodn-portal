@@ -76,7 +76,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             ]
 		}, cfg);
 		
-		Portal.ui.MapMenuPanel.superclass.constructor.call(this, config);
+		Portal.ui.MapOptionsPanel.superclass.constructor.call(this, config);
 
 		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
 	},

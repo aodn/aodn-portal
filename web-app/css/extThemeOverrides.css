@@ -7,7 +7,7 @@
  */
 
 p, h1, h2, h3 {
-    margin: 0px 0px 8px 0px;
+    margin: 0 0 8px 0;
 }
 
 .x-menu-floating {
@@ -49,7 +49,7 @@ p, h1, h2, h3 {
     /*background-color: #F4F4F4! important;*/
 }
 .gx-popup .x-tab-panel-header {
-    border-width: 0px;
+    border-width: 0 ;
     background-color: #F4F4F4;
 }
 .gx-popup .x-tab-panel-header ul.x-tab-strip-top {
@@ -62,14 +62,29 @@ p, h1, h2, h3 {
 }
    
 
-.x-panel-body {
+.x-panel-body, .x-tab-panel-body, ul.x-tab-strip-top, .x-tab-panel-header {
     -moz-border-bottom-colors: none;
     -moz-border-image: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    border: 0px;
-    /*background: none;*/
+    border: 0 ;
+    background-color: inherit;
+}
+
+
+ul.x-tab-strip li {
+    background-color: white;
+    padding: 2px 1px;
+    border-radius: 3px;
+}
+
+.x-grid3 {
+    background-color: inherit;
+}
+
+.x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
+    background: none;
 }
 
 
@@ -84,9 +99,9 @@ p, h1, h2, h3 {
 
 .x-panel-ghost {
     background-color: white! important; 
-    border: 0px;
+    border: 0 ;
     box-shadow: 3px 3px 5px 0 #666;
-    margin: 0px;
+    margin: 0 ;
 }
 .x-window-header-text {
     margin-right: 8px;
@@ -102,7 +117,7 @@ p, h1, h2, h3 {
   
 .x-window-mc {  
   background-color: white! important;  
-  border-width: 0px;  
+  border-width: 0 ;
 } 
 .x-combo-list-item img {
     width: 30px;
@@ -114,7 +129,7 @@ p, h1, h2, h3 {
     float: left;
 }
 .legendImage {
-    margin: 10px 0px;
+    margin: 10px 0 ;
 }
 .x-item-disabled {
     box-shadow: 0 0 0 0 white! important;

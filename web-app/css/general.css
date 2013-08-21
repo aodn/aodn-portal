@@ -7,8 +7,8 @@
  */
 
 body, html, td{
-    font-family: tahoma,verdana,arial,sans-serif;
-    font-size: 11px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
 }
 
 h1, h2,h3 {
@@ -16,7 +16,7 @@ h1, h2,h3 {
 }
 
 p, td{
-    font-family: tahoma,verdana,arial,sans-serif;
+    font-family: helvetica, arial, sans-serif;
 }
 
 body {
@@ -35,8 +35,6 @@ input.readonlyInput {
     background-color: #fafafa;
 }
 .roundedImages {
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
 	border-radius: 6px;
 }
 .imageLabel {
@@ -63,7 +61,7 @@ input.readonlyInput {
     display: block;
     height: 22px;
     padding: 10px;
-    margin: 0px 0px 10px 0px! important;
+    margin: 0  0  10px 0 ! important;
     font-size: 12px;
     color: inherit;
 }
@@ -73,7 +71,10 @@ input.readonlyInput {
 }
 
 a {
-    color: #6A6A6A;
+    color: #333333;
+}
+a:hover {
+    color: black;
 }
 
 a img{
@@ -113,7 +114,7 @@ hr {
 }
 
 .buttonPad {
-    padding: 2px 2px 5px 0px
+    padding: 2px 2px 5px 0
 }
 .arrowUp {
     background: url("../images/arrowUp.png") no-repeat left top transparent;
@@ -128,8 +129,21 @@ hr {
 	border-radius: 12px 12px 12px 12px;
 }
 
-#leftMenuTabPanel {
-    background-color: red;
+#logo {
+    margin: 3px 5px;
+    float: left;
+}
+
+#headerTitle {
+    padding: 30px 20px 0  20px;
+    margin-left: 250px;
+}
+
+#toplinks {
+    float: right;
+    position: absolute;
+    right: 20px;
+    top: 12px;
 }
 
 
@@ -138,7 +152,7 @@ hr {
 }
 
 .searchFieldSelectors {
-    margin: 3px 0px;
+    margin: 3px 0 ;
     background-color: #fafafa;
 }
 
@@ -151,12 +165,6 @@ hr {
 */
 .olMapViewport {
     background-color: #7391AD;
-}
-
-/* the main tabPanel for the portal */
-.mainTabPanelHeader .x-tab-strip-wrap
-{
-    display: none;
 }
 
 /* added to buttons on hover with jQuery */
@@ -178,7 +186,7 @@ hr {
 }
 
 #centerTabPanel {
-    border: 0px solid white;
+    border: 0  solid white;
 }
 
 #loader {
@@ -207,29 +215,118 @@ hr {
 
 #animationPanel {
     top: auto! important;
-    bottom: 0px! important;
+    bottom: 0 ! important;
     z-index: 900! important;
 }
 .spacer {
-    margin: 25px 0px;
+    margin: 25px 0 ;
 }
 .minispacer {
-    margin: 7px 0px;
+    margin: 7px 0 ;
 }
 .logoSpacer {
     margin: 2px;
 }
 
+/*
+Site navigation
+*/
 
-#viewPortHomepageLinks {
-    margin-left: 20px;
-    margin-top: 5px;
+#viewPortLinks {
+    background-color: #484848;
+    position: relative;
+    float: left;
+    padding-left: 20px;
+    z-index: 100000;
+    width: 100%;
+    border: 2px  solid #6b6b6b;
+    vertical-align: middle;
 }
-#viewPortHomepageLinks .viewPortLinksBackground{
-    background-color: #4F7B96;
+
+#viewPortLinks a {
+    text-decoration: none;
+    outline: none;
 }
-#viewPortHomepageLinks a{
-    font-size: 12px;
+#viewPortLinks a:hover {
+    text-decoration: none;
+}
+
+.viewPortTab {
+    border-bottom-right-radius: 20px 60px;
+    border-right: 2px solid #6B6B6B;
+    border-top-right-radius: 20px 60px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    padding: 12px 20px 6px 80px;
+    width: 200px;
+
+}
+
+
+.viewPortTab * {
+     color: #fafafa;
+     margin: 0 ;
+ }
+
+.viewPortTab h1 {
+    line-height: 26px;
+    float: left;
+    font-size: 32px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.viewPortTab h2 {
+    line-height: 12px;
+}
+
+.viewPortTabActive {
+    /* http://www.colorzilla.com/gradient-editor/ */
+
+    background: #999999; /* Old browsers */
+    background: -moz-linear-gradient(left,  #484848 0%, #666666 15%, #7a7a7a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#484848), color-stop(15%,#666666), color-stop(100%,#7a7a7a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #484848 0%,#666666 15%,#7a7a7a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #484848 0%,#666666 15%,#7a7a7a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #484848 0%,#666666 15%,#7a7a7a 100%); /* IE10+ */
+    background: linear-gradient(to right,  #484848 0%,#666666 15%,#7a7a7a 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#7a7a7a',GradientType=1 ); /* IE6-9 */
+    -webkit-box-shadow: 5px 2px 5px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    5px 2px 5px rgba(50, 50, 50, 0.75);
+    box-shadow:         5px 2px 5px rgba(50, 50, 50, 0.75);
+    text-shadow: 2px 2px 10px #191919;
+    border-right: 3px solid #2F2E2E;
+    border-top-right-radius: 20px 60px;
+}
+
+.viewPortTabActive *{
+    color: white! important;
+
+}
+
+.viewPortTabHover {
+    background: #484848; /* Old browsers */
+    background: -moz-linear-gradient(left,  #484848 0%, #4f4f4f 15%, #6b6b6b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#484848), color-stop(15%,#4f4f4f), color-stop(100%,#6b6b6b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* IE10+ */
+    background: linear-gradient(to right,  #484848 0%,#4f4f4f 15%,#6b6b6b 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#6b6b6b',GradientType=1 ); /* IE6-9 */
+}
+
+.viewPortTabDisabled * {
+    color: #888888! important;
+    cursor: default;
+
+
+}
+
+
+
+.community {
+    padding: 10px 0;
 }
 
 #mapSpinnerPanel {
@@ -248,8 +345,6 @@ hr {
 }
 
 .motd {
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
     border-radius: 6px;
     background-color: white;
     padding: 10px;
@@ -276,8 +371,6 @@ a[rel="external"], a.external {
 }
 
 .mainlinks {
-    font-size: 13px;
-    font-weight: bold;
     margin-right: 10px;
     padding-left: 10px;
 }
@@ -333,7 +426,7 @@ a:hover.mainlinks {
 .errors, .message {
     font-size: 0.9em;
     line-height: 2;
-    margin: 2em 0em;
+    margin: 2em 0;
     padding: 0.5em;
 }
 
@@ -449,8 +542,8 @@ table.featureInfo caption{
 }
 
 #mapinfo {
-    bottom: 0em;
-    left: 0px;
+    bottom: 0;
+    left: 0 ;
     padding: 10px 15px ;
     display: block;
     position: absolute;
@@ -458,7 +551,7 @@ table.featureInfo caption{
     z-index: 3;
     font-family: Arial;
     font-size: smaller;
-    -moz-border-radius: 5! important;
+    border-radius: 5! important;
     border-width: 1px 1px 0 0;
     background-color:#3c668d;
     opacity: 0.0;
@@ -487,10 +580,10 @@ table.featureInfo caption{
 
 #mapToolbarExpanderBar,
 #controlButton,
-animationPanel {
+#animationPanel {
 	opacity: 1.0;
 	-ms-filter:"alpha(opacity=100)"; /* IE8 */
-filter:alpha(opacity=100); /* IE6/IE7 */
+    filter:alpha(opacity=100); /* IE6/IE7 */
 }
 #maptools .x-panel-body {
     border-radius: 5px;
@@ -524,7 +617,7 @@ filter:alpha(opacity=100); /* IE6/IE7 */
 .popupHtml {
     color:#6A6A6A;
     background-color: #F4F4F4;
-    padding: 0px 0px 10px 10px;
+    padding: 0  0  10px 10px;
 
 }
 
@@ -536,7 +629,7 @@ filter:alpha(opacity=100); /* IE6/IE7 */
 }
 
 .nofeature {
-    margin: 2px 0px 5px 0px;
+    margin: 2px 0  5px 0 ;
     padding: 5px;
     width:100%;
     background-color: #fafafa;
@@ -586,7 +679,7 @@ filter:alpha(opacity=100); /* IE6/IE7 */
 }
 
 .featureinfocontent ul {
-    margin: 5px 0px;
+    margin: 5px 0 ;
     padding-left: 2px;
     list-style-type: circle;
 }
@@ -618,17 +711,22 @@ p.important {
 .extAjaxLoading div {
     background-color: #ffffff! important;
 }
-
-.addServerStatusPanel .x-panel-header {
-	padding-top: 0px;
-}
-
-.argodates {
-
-    font-size: .9em;
+.fb-like-box, .fb_iframe_widget {
     background-color: #ffffff;
-    padding: 2px 10px;
 }
+
+.x-panel-header {
+    background-image: none;
+    background-color: inherit;
+    border: none;
+    padding: 10px 3px 4px 10px;
+    font-size: 13px;
+}
+.addServerStatusPanel .x-panel-header {
+	padding-top: 0 ;
+}
+
+
 
 /* openlayers */
 
@@ -683,15 +781,11 @@ div.olControlMousePosition {
 
 .olControlLayerSwitcher {
 	box-shadow: inset -5px 1px 5px black;
-	-webkit-border-radius: 6px 0px 0px 6px;
-	-moz-border-radius: 6px 0px 0px 6px;
-	border-radius: 6px 0px 0px 6px;
+	border-radius: 6px 0  0  6px;
 }
 .olControlOverviewMapElement   {
 	 background-color: #34546E! important;
-	-webkit-border-radius: 6px 0px 0px 0px;
-	-moz-border-radius: 6px 0px 0px 0px;
-	border-radius: 6px 0px 0px 0px;
+	border-radius: 6px 0  0  0 ;
 	opacity: 0.85;
 	-ms-filter:"alpha(opacity=85)"; /* IE8 */
 	filter:alpha(opacity=85); /* IE6/IE7 */
@@ -710,11 +804,6 @@ div.olControlMousePosition {
 }
 
 
-
-
-.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
-    background-color: #34546E! important;
-}
 .layersDiv {
 	opacity: 0.85;
     -ms-filter:"alpha(opacity=85)"; /* IE8 */
@@ -752,7 +841,7 @@ JQUERY AUTO COMPLETE
 */
 
 .ac_results {
-    padding: 0px;
+    padding: 0 ;
     border: 1px solid #999;
     background-color: white;
     overflow: hidden;
@@ -768,7 +857,7 @@ JQUERY AUTO COMPLETE
 }
 
 .ac_results li {
-    margin: 0px;
+    margin: 0 ;
     padding: 2px 5px;
     cursor: default;
     display: block;
@@ -791,14 +880,11 @@ JQUERY AUTO COMPLETE
 }
 
 .smallIndentInputBox {
-    padding-left: 0px! important;
+    padding-left: 0 ! important;
 }
 
 #detailsPanel {z-index: 1200 !important}
 
-#detailsPanelTabs .x-tab-panel-header {
-    background-color: white;
-}
 
 #mapOptions {
     background-color: #F1F1F0;
@@ -835,16 +921,13 @@ JQUERY AUTO COMPLETE
 
 
 #menuHeaderTail{
-    background: url(../images/menuHeader.png) 0px -13px repeat-x;
+    background: url(../images/menuHeader.png) 0  -13px repeat-x;
 }
 
 .layer_blacklisted {
 	background-color: #333333;
 }
 
-.layer_inactive {
-	/*background-color: #FF0000;*/
-}
 .layer_inactive a span {
     color:  #888;
 }
@@ -858,13 +941,11 @@ JQUERY AUTO COMPLETE
 }
 
 #welcome ul {
-	padding: 0px 0px 10px 10px;
-	margin: 0px 0px 10px 10px;
+	padding: 0  0  10px 10px;
+	margin: 0  0  10px 10px;
 	list-style-type: disc;
 }
 
-#welcome ul li {
-}
 
 .clear {
 	clear: both;
@@ -891,6 +972,8 @@ JQUERY AUTO COMPLETE
 .p-search .x-grid3-row {
 	padding: 10px 0;
 }
+
+
 
 .p-header-space {
   border-radius: 12px 12px 0 0;
@@ -1018,13 +1101,8 @@ div.allwhite {
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError { display: none; }
 
-.WAMiniLogo {
 
-    vertical-align:middle;
-    margin-bottom: 6px;
-}
 
 .highlight:hover {
     background-color : #ffff99
 }
-

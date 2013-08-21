@@ -11,6 +11,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
 	constructor: function(config) {
 
+        this.spinner = new Ext.Panel({
+            html: OpenLayers.i18n('loadingSpinner',{'resource':'layers'}),
+            hidden: true,
+            flex: 2
+        });
+
         this.titleBar = new Ext.Panel({
 
             cls: 'x-panel-header',
@@ -20,9 +26,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             },
             items: [
                 new Ext.Panel({
-                    html: '<img src="images/spinner.gif" style="vertical-align: middle;" alt="Loading...">\&nbsp;<i>Loading search terms\u2025</i>',
-                    flex: 3
+                    html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
+                    flex: 2
                 }),
+                this.spinner,
                 new Ext.Panel({
                     items: [ this._buildClearAllLink() ],
                     cls: 'faceted-search-clear-all',
@@ -31,6 +38,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             ],
             boxMaxHeight: '1' // Not sure why this is needed
         });
+
+
 
         this.parameterFilter = new Portal.ui.TermSelectionPanel({
             title: OpenLayers.i18n('parameterFilter'),
@@ -119,6 +128,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _showIntroMessage: function() {
         this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle') );
+        this.spinner.hide();
     },
 
     _showError: function() {
@@ -155,12 +165,15 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.organisationFilter.removeAnyFilters();
         this.dateFilter.removeAnyFilters();
         this.geoFilter.removeAnyFilters();
-
         this.searcher.search(true);
+
+        this.fireEvent('filtersCleared');
     },
 
     _setClearAllLinkVisibility: function() {
 
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
+
+        this.spinner.show();
     }
 });

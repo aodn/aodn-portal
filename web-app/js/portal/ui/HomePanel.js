@@ -14,47 +14,36 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.appConfig = cfg.appConfig;
-        // containers
+
         var config = Ext.apply({
 
             layout: 'border',
             id: 'homePanel',
-            title: 'Home ',
             minHeight: 600,
             items: [
                 {
                     region:'center',
-                    layout:'fit',
-                    //minHeight: 600,
-                    padding:  '0px 5px 0px 0px',
+                    margins: { right: 5 },
                     unstyled: true,
                     stateful: false,
-                    items: [
-                        {
-                            autoScroll: true,
-                            unstyled: true,
-                            padding:  '15px',
-                            id: 'mainHomePanel',
-                            autoLoad:{
-                                url: 'splash',
-                                renderer: 'html',
-                                scripts: true,
-                                extraParams: {
-                                    showLoadIndicator: false
-                                }
-                            }
+                    autoScroll: true,
+                    id: 'mainHomePanel',
+                    autoLoad:{
+                        url: 'splash',
+                        renderer: 'html',
+                        scripts: true,
+                        extraParams: {
+                            showLoadIndicator: false
                         }
-                    ]
+                    }
                 },
                 {
-                    //xtype: 'panel',
                     id: 'rightHomePanel',
                     region: 'east',
                     stateful: false,
                     unstyled: true,
                     autoScroll: true,
                     padding:  '20px 5px 10px 10px',
-                    //html: 'ActiveLayers Details panel here',
                     width: 360,
                     items: [
                         {
@@ -94,4 +83,3 @@ Portal.ui.HomePanel = Ext.extend(Ext.Panel, {
         Portal.ui.HomePanel.superclass.constructor.call(this, config);
     }
 });
-

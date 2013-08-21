@@ -8,44 +8,47 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
-    constructor: function(cfg) {
-    	var config = Ext.apply({
-	    	id: 'filterPanel',
-	        title: 'Filters',
-	        layout:'table',
-			layoutConfig: {
-				// The total column count must be specified here
-				columns: 2,
-				tableAttrs: {
-					cellspacing: '10px',
-					style: {
-						width: '100%',
-						font: '11 px'
-					}
-				}
-			},
-	        autoDestroy: true
-    	}, cfg);
+    constructor: function(cfg){
+        var config = Ext.apply({
+            id: 'filterPanel',
+            title: 'Filters',
+            layout: 'table',
+            autoScroll: true,
+            layoutConfig: {
+                // The total column count must be specified here
+                columns: 2,
+                tableAttrs: {
+                    cellspacing: '10px',
+                    style: {
+                        width: '100%',
+                        font: '11 px'
+                    }
+                }
+            },
+            autoDestroy: true
+        }, cfg);
 
-    	this.GET_FILTER = "layer/getFiltersAsJSON";
-    	this.activeFilters = {};
+        this.GET_FILTER = "layer/getFiltersAsJSON";
+        this.activeFilters = {};
 
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg) {
-    	this.AND_QUERY = " AND ";
-    	this.on('addFilter', this._handleAddFilter);
+    initComponent: function(cfg){
+        this.AND_QUERY = " AND ";
+        this.on('addFilter', this._handleAddFilter);
 
-    	Portal.filter.FilterPanel.superclass.initComponent.call(this);
+        Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
-    setLayer: function(layer) {
-    	this.layer = layer;
-    	this.update();
+    setLayer: function(layer){
+        this.layer = layer;
+        this.update();
     },
 
-    createFilter: function(layer, filter) {
+    createFilter: function(layer, filter){
+
+        filter.label = filter.label.split('_').join(' ').toTitleCase();
 
     	var newFilter = undefined;
 
@@ -66,17 +69,17 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	}
     	else if (filter.type === "BoundingBox") {
             newFilter = new Portal.filter.BoundingBoxFilter({
-            	fieldLabel: filter.label
+                fieldLabel: filter.label
             })
-    	}
+        }
         else if (filter.type === "Number") {
             newFilter = new Portal.filter.NumberFilter({
                 fieldLabel: filter.label
             });
         }
-    	else {
-    		//Filter hasn't been defined
-    	}
+        else {
+            //Filter hasn't been defined
+        }
 
     	if (newFilter) {
     		newFilter.setLayerAndFilter(layer, filter);
@@ -86,16 +89,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     	}
     },
 
-	_addLabel: function(filter) {
-		var label = new Ext.form.Label({
-			text: filter.label + ": ",
-			style: 'font-size: 11px;'
-		});
-		this.add(label);
-	},
+    _addLabel: function(filter){
+        var label = new Ext.form.Label({
+            text: filter.label + ": ",
+            style: 'font-size: 11px;'
+        });
+        this.add(label);
+    },
 
     update: function(layer, show, hide, target){
-		this.layer = layer;
+        this.layer = layer;
 
 		if (layer.grailsLayerId) {
 
@@ -103,15 +106,15 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 				url: this.GET_FILTER,
 				params: {
                     layerId: layer.grailsLayerId
-				},
-				scope: this,
-				failure: function(resp) {
-					this.setVisible(false);
-					hide.call(target, this);
-				},
-				success: function(resp, opts) {
+                },
+                scope: this,
+                failure: function(resp){
+                    this.setVisible(false);
+                    hide.call(target, this);
+                },
+                success: function(resp, opts){
 
-					var filters = Ext.util.JSON.decode(resp.responseText);
+                    var filters = Ext.util.JSON.decode(resp.responseText);
                     var aFilterIsEnabled = false;
 
                     Ext.each(filters,
@@ -122,8 +125,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                         this
                     );
 
-					if (aFilterIsEnabled) {
-						this.setVisible(true);
+                    if (aFilterIsEnabled) {
+                        this.setVisible(true);
 
 						this.clearFiltersButton = new Ext.Button({
 							cls: "x-btn-text-icon",
@@ -137,19 +140,19 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
 						this.add(this.clearFiltersButton);
 
-						this.doLayout();
-						show.call(target, this);
-					}
-					else {
-						hide.call(target, this);
-					}
-				}
-			});
-		}
-		else {
-			//probably some other layer added in through getfeatureinfo, or user added WMS
-		}
-	},
+                        this.doLayout();
+                        show.call(target, this);
+                    }
+                    else {
+                        hide.call(target, this);
+                    }
+                }
+            });
+        }
+        else {
+            //probably some other layer added in through getfeatureinfo, or user added WMS
+        }
+    },
 
     _updateFilter: function() {
     	var combinedCQL = "";
@@ -161,33 +164,28 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 				}
 			}
 
-			if (combinedCQL.length > 0) {
-				combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
+            if (combinedCQL.length > 0) {
+                combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
 
-				this.layer.mergeNewParams({
-					CQL_FILTER: combinedCQL
-				});
-			}
-		}
-		else {
-         	delete this.layer.params["CQL_FILTER"];
-         	this.layer.redraw();
-		}
+                this.layer.mergeNewParams({
+                    CQL_FILTER: combinedCQL
+                });
+            }
+        }
+        else {
+            delete this.layer.params["CQL_FILTER"];
+            this.layer.redraw();
+        }
     },
 
-    _handleAddFilter: function(aFilter) {
-    	this.activeFilters[aFilter.getFilterName()] = aFilter;
-		this._updateFilter();
+    _handleAddFilter: function(aFilter){
+        this.activeFilters[aFilter.getFilterName()] = aFilter;
+        this._updateFilter();
     },
 
     _clearFilters: function() {
 
-        for (var key in Object.keys(this.activeFilters)) {
-
-            this.activeFilters[key].handleRemoveFilter();
-            delete this.activeFilters[key];
-        }
-
-        this._updateFilter();
-    }
+		this.activeFilters[key].handleRemoveFilter();
+		delete this.activeFilters[key];
+	}
 });

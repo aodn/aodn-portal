@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,6 +31,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 			mode: 'local',
 			width: 100,
 			editable: false,
+            emptyText : OpenLayers.i18n("pleasePickCondensed"),
 			fieldLabel: "Time",
 			store: new Ext.data.ArrayStore({
 			fields: [

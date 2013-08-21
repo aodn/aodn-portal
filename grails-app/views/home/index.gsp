@@ -75,6 +75,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+
+<script src="${resource(dir: 'js', file: 'portal/portal.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"
@@ -110,10 +112,6 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/SuggestionStore.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/CatalogResult.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/CatalogResultsStore.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/data/LinkStore.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/data/FacetStore.js')}"
@@ -134,43 +132,11 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/field/MapLayersCheckBox.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/filter/FilterComboBox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/filter/FiltersPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/filter/FilterStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/FilterSelector.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/NewSearchLink.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SaveSearchLink.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SavedSearchComboBox.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SaveSearchDialog.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SavedSearchPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SearchController.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SearchForm.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/RightSearchTabPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SearchTabPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/LinkSelectionWindow.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/LayerSelectionWindow.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/ResultsGrid.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"
         type="text/javascript"></script>
@@ -267,15 +233,9 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MapMenuPanel.js')}"
-        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/PortalPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/LayerChooserPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MainTabPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/UserDefinedWMSPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"
         type="text/javascript"></script>
@@ -309,12 +269,9 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/portal.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MenuPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
         type="text/javascript"></script>

@@ -291,8 +291,8 @@ input, select, textarea, .pretendPopup {
 
     -moz-border-radius: 3px;
     border-radius: 3px;
-    -moz-box-shadow: 2px 2px 3px 0px #eee;
-    box-shadow: 2px 2px 3px 0px #eee;
+    -moz-box-shadow: 2px 2px 3px 0  #eee;
+    box-shadow: 2px 2px 3px 0  #eee;
 }
 
 select {
