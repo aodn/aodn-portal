@@ -7,7 +7,6 @@
 
 describe("Portal.snapshot.SnapshotOptionsPanel", function() {
 
-
     var mockController = {
         on: jasmine.createSpy(),
         loadSnapshot: jasmine.createSpy(),
@@ -21,11 +20,11 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function() {
         }
     };
 
-    var Portal.app = {
-            config: {
-                currentUser: {id: 1}
-            }
-        };
+    Portal.app = {
+        config: {
+            currentUser: {id: 1}
+        }
+    };
 
     spyOn(Ext.Ajax, 'request').andReturn();
 
