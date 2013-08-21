@@ -115,4 +115,29 @@ describe("Portal.ui.MainPanel", function() {
             expect(mainPanel.activeItem).toBe(TAB_INDEX_SEARCH);
         });
     });
+
+    describe('main panel tab highlighting', function() {
+        beforeEach(function() {
+            initMainPanel();
+        });
+
+        it('initial load', function() {
+            spyOn(mainPanel, "_highlightActiveTab");
+            spyOn(Portal.ui.MainPanel.superclass, "afterRender");
+            mainPanel.afterRender();
+            expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
+        });
+
+        it('switching tabs', function() {
+            spyOn(mainPanel, "_highlightActiveTab");
+
+            // Mock layout
+            mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
+            mainPanel.layout.setActiveItem.andCallFake(function() {});
+
+            mainPanel.setActiveTab(0);
+            expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
+        });
+    });
+
 });
