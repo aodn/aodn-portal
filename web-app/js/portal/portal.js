@@ -61,16 +61,12 @@ Portal.app = {
         }
 
         // Load saved map (snapshot) if required
-        var startTabIndex = TAB_INDEX_HOME;
         var startSnapshot = null;
         if (window.location.search.length > 0) {
             var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
             var matches = regPattern.exec(window.location.search);
 
             if (matches != null && matches.length == 2) {
-
-                //coming from saved map, so start at map.
-                startTabIndex = TAB_INDEX_MAP;
                 startSnapshot = matches[1];
             }
 
@@ -85,7 +81,6 @@ Portal.app = {
 
         viewport = new Portal.ui.Viewport({
             appConfig: Portal.app.config,
-            activeTab: startTabIndex,
             startSnapshot: startSnapshot
         });
 
