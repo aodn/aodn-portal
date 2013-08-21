@@ -7,7 +7,9 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+
     pleasePickCondensed: '**pick**',
+    loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
 
     //
     navigate: 'Select by Map Bounds',
@@ -116,12 +118,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     errorDialogTitle: 'Error',
 
     // Download Cart
-    ttAddToDownload: 'Add to download cart',
-    ttAddAllToDownload: 'Add all to download cart',
-    btnAddAllToDownload: 'Add all',
-    titlFileLimitReached: 'Unable to add',
-    msgFileLimitReached: 'Maximum number of files now in download cart (${limit}). Not all selected files were added.',
-
     downloadCartConfirmationWindowTitle: 'Download Cart',
     downloadCartConfirmationDownloadText: 'I understand, download',
     downloadCartConfirmationCancelText: 'Cancel',
@@ -164,7 +160,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date',
     geoFilter: "Geographic Boundary",
-    // facetedSearchDisclaimer: 'This feature is currently under development, but available for use. We are currently working to improve the metadata for all layers and this will improve the results from this search. We welcome feedback about this feature via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a>.', // Change this to be the empty string to have no message displayed
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
     facetedSearchPanelTitle: 'Find layers by:',
@@ -189,10 +184,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     transectTab: 'Transect',
     transectDataHeading: 'Data along the transect: ',
     dimensionValuesHeading: 'For dimension values: ',
-
-    // Dropzone placeholders
-    downloadCartDropZonePlaceholder: 'Drag downloads here to add them to the cart',
-    mapDropZonePlaceholder: 'Drag layers here to add them to the map',
 
     layerSearchTabTitle: 'Layers',
     downloadSearchTabTitle: 'Downloads',
