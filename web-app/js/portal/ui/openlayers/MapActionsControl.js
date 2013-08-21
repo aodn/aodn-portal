@@ -147,8 +147,6 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         this.actionsPanel = new Portal.ui.ActionsPanel({
             map : this.appConfig.mapPanel.map,
             layerStore : this.appConfig.mapPanel.layers,
-            //hideLayerOptions : this.appConfig.hideLayerOptions,
-            //autoZoom : this.appConfig.autoZoom,
             mapScope : this.appConfig.mapPanel
         });
 
@@ -161,35 +159,16 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             bodyBorder : false,
             resizable : false,
             autoHeight: true,
-
-            layout : {
-                type : 'auto'
-            },
+            layout:  'fit',
             afterRender : function() {
 
                 Ext.Window.superclass.afterRender.apply(this);
                 this.el.dom.style.position = "";
-            }
+            },
+            items: this.actionsPanel
         });
 
         this.layersDiv.appendChild(this.window.el.dom);
-        this.initActionsPanel();
-    },
-
-    initActionsPanel: function() {
-        // These variables are used in "closures" below.
-        var actionsPanel = this.actionsPanel;
-		var window = this.window;
-
-        Ext.TaskMgr.start({
-            run : function() {
-                window.add(actionsPanel);
-                window.doLayout();
-            },
-            interval : 0,
-            repeat : 1
-        });
-
         this.registerActionPanelEventListeners();
     },
 

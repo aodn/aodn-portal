@@ -165,8 +165,9 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.organisationFilter.removeAnyFilters();
         this.dateFilter.removeAnyFilters();
         this.geoFilter.removeAnyFilters();
-
         this.searcher.search(true);
+
+        Ext.MsgBus.publish('facetedSearchClearAll');
     },
 
     _setClearAllLinkVisibility: function() {

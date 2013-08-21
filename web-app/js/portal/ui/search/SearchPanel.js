@@ -32,7 +32,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             bodyCssClass: 'p-header-space'
         });
 
-        this.resultsStore = new Portal.data.GeoNetworkResultsStore();
+        this.resultsStore = new Portal.data.GeoNetworkRecordStore();
         this.resultsStore.on('load', function (store, recs, opt) {
             if (this.totalLength == 0) {
                 Ext.Msg.alert('Info', 'The search returned no results.');
@@ -40,17 +40,15 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }, this.resultsStore);
 
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            title: "Search Results",
             region: 'center',
             split: true,
+            hidden: true,
             store: this.resultsStore,
             onSearchComplete: function (response, page) {
                 this.store.loadData(response);
+                this.show();
             },
-            pageSize: this.resultGridSize,
-            headerCfg: {
-                cls: 'x-panel-header p-header-space'
-            }
+            pageSize: this.resultGridSize
         });
 
         var config = Ext.apply({
@@ -75,9 +73,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             this.getEl().on('click', this._checkSize, this);
         }, this);
 
-        this.mon(this.searcher, 'searchcomplete', this._checkSize, this);
-        this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
-        this.searcher.on('summaryOnlySearchComplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
+        this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid, this._checkSize);
 
         this.relayEvents(this.resultsGrid, ['adddownload', 'addlayer']);
 
@@ -89,10 +85,18 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             scope:this,
             load:this.resultsStoreLoad
         });
+
+        Ext.MsgBus.subscribe('facetedSearchClearAll', function() {
+            this._hideResultsGrid();
+        }, this);
     },
 
     resultsStoreLoad:function () {
         this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:this.resultsStore.startRecord, limit:this.resultGridSize}});
+    },
+
+    _hideResultsGrid: function() {
+        this.resultsGrid.hide();
     },
 
     onSearch:function (e) {

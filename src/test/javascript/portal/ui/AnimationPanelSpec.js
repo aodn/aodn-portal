@@ -25,7 +25,7 @@ describe("Portal.ui.AnimationPanel", function() {
         openLayer.dimensions = [{'name': "time",'extent': "2011-03-06T09:00:00Z,2011-03-06T15:00:00Z"}];
 
         map = new OpenLayers.Map('map');
-        layerStore = new Portal.data.LayerStore();
+        layerStore = Portal.data.LayerStore.instance();
         layerStore.bind(map);
         map.addLayer(openLayer);
         animationPanel.setMap(map);

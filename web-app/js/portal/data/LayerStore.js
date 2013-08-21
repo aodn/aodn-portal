@@ -26,12 +26,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initDefaultLayers();
     },
 
-    addUsingDescriptor: function(layerDescriptor) {
-
-        this.addUsingOpenLayer(layerDescriptor.toOpenLayer());
+    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
+        this.addUsingOpenLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    addUsingLayerLink: function(layerLink) {
+    addUsingLayerLink: function(layerLink, layerRecordCallback) {
 
         var serverUri = layerLink.server.uri;
 
@@ -39,22 +38,21 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
             scope: this,
             success: function(resp) {
-
                 var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
                 if (layerDescriptor) {
                     layerDescriptor.cql = layerLink.cql;
-                    this.addUsingDescriptor(layerDescriptor);
+                    this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
+
                 }
             },
             failure: function(resp) {
-
-                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink));
+                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
             }
         });
     },
 
-    addUsingOpenLayer: function(openLayer) {
-        return this._addLayer(openLayer);
+    addUsingOpenLayer: function(openLayer, layerRecordCallback) {
+        return this._addLayer(openLayer, layerRecordCallback);
     },
 
     addUsingServerId: function(args) {
@@ -119,9 +117,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
         this.currentlyLoadingLayers.remove(openLayer);
+
+        Ext.MsgBus.publish('layerRemoved', openLayer);
     },
 
-    _addLayer: function(openLayer) {
+    _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
             openLayer.events.register('loadstart', this, function() {
                 this.currentlyLoadingLayers.add(openLayer.name, openLayer);
@@ -136,8 +136,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             });
 
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, openLayer);
-            
+
             this.add(layerRecord);
+
+            if (layerRecordCallback) {
+                layerRecordCallback(layerRecord);
+            }
 
             // Only want to be notified of changes in no base layer
             if (!openLayer.options.isBaseLayer) {
@@ -190,37 +194,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _registerMessageListeners: function() {
-        Ext.MsgBus.subscribe('addLayerUsingDescriptor', function(subject, layerDescriptor) {
-            this.addUsingDescriptor(layerDescriptor)
-        }, this);
-
-        /**
-         * A "LayerLink" is a JSON object which is returned from GeoNetwork (I think :-)
-         */
-        Ext.MsgBus.subscribe('addLayerUsingLayerLink', function(subject, layerLink) {
-            this.addUsingLayerLink(layerLink)
-        }, this);
-
-        /**
-         * This is used when loading WMS layers from 3rd party servers.
-         */
-        Ext.MsgBus.subscribe('addLayerUsingOpenLayer', function(subject, openLayer) {
-            this.addUsingOpenLayer(openLayer)
-        }, this);
-
-        /**
-         * This will be called when a layer is selected from the "Map Layer Chooser" (in which
-         * case the layer relates to a layer stored on the server by the given ID).
-         */
-        Ext.MsgBus.subscribe('addLayerUsingServerId', function(subject, args) {
-            this.addUsingServerId(args)
-        }, this);
-
-        Ext.MsgBus.subscribe('removeLayer', function(subject, openLayer) {
-            this.removeUsingOpenLayer(openLayer);
-            Ext.MsgBus.publish('layerRemoved', openLayer);
-        }, this);
-
         Ext.MsgBus.subscribe('removeAllLayers', function(subject, openLayer) {
             this.removeAll();
         }, this);
@@ -228,11 +201,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.subscribe('reset', function(subject, openLayer) {
             this.reset();
         }, this);
-
-        Ext.MsgBus.subscribe('removeLayerUsingOpenLayer', function(subject, openLayer) {
-            this.removeUsingOpenLayer(openLayer)
-        }, this);
-
     },
 
     _initBaseLayers: function() {
@@ -281,3 +249,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
     }
 });
+
+Portal.data.LayerStore.THE_INSTANCE;
+
+Portal.data.LayerStore.instance = function() {
+
+    if (!Portal.data.LayerStore.THE_INSTANCE) {
+        Portal.data.LayerStore.THE_INSTANCE = new Portal.data.LayerStore();
+    }
+
+    return Portal.data.LayerStore.THE_INSTANCE;
+};

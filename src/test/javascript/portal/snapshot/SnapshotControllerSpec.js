@@ -32,6 +32,8 @@ describe("Portal.snapshot.SnapshotController", function() {
         snapshotController = new Portal.snapshot.SnapshotController({
             map : mockMap
         });
+
+        spyOn(Portal.data.LayerStore.instance(), 'addUsingServerId');
     });
 
     it("creates snapshptController with a snapshot Proxy on instantiation", function() {
@@ -84,7 +86,6 @@ describe("Portal.snapshot.SnapshotController", function() {
 
     it("loads snapshot passed when onSuccessfulLoad is called",  function() {
         spyOn(snapshotController, 'fireEvent');
-        spyOn(Ext.MsgBus, 'publish');
 
         var snapshotInstance = {
             id : 1,
@@ -107,19 +108,13 @@ describe("Portal.snapshot.SnapshotController", function() {
         snapshotController.onSuccessfulLoad(snapshotInstance);
 
         expect(snapshotController.fireEvent).toHaveBeenCalled();
-        expect(
-                snapshotController.fireEvent.mostRecentCall.args[0])
-                .toEqual('snapshotLoaded');
+        expect(snapshotController.fireEvent.mostRecentCall.args[0]).toEqual('snapshotLoaded');
         expect(mockMap.zoomToExtent).toHaveBeenCalled();
-        expect(Ext.MsgBus.publish.mostRecentCall.args[0])
-                .toEqual('addLayerUsingServerId');
-        expect(Ext.MsgBus.publish.mostRecentCall.args[1].id)
-                .toEqual(301);
+        expect(Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].id).toEqual(301);
     });
 
     // test for ncwms opacity problem
     it("doesn't set opacity if snapshot opacity is null", function() {
-        spyOn(Ext.MsgBus, 'publish');
         var snapshotInstance = {
             id : 1,
             name : 'test snapshot',
@@ -139,19 +134,17 @@ describe("Portal.snapshot.SnapshotController", function() {
         };
 
         snapshotController.onSuccessfulLoad(snapshotInstance);
-
-        var options = Ext.MsgBus.publish.mostRecentCall.args[1].layerOptions;
-
+        var options = Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].layerOptions;
         expect(options.opacity).toBeUndefined();
     });
 
     describe('addSnapshotLayer', function() {
         beforeEach(function() {
-            spyOn(Ext.MsgBus, 'publish');
+            spyOn(Portal.data.LayerStore.instance(), 'addUsingOpenLayer');
         });
 
         // test for missing style problem
-        it("addSnapshotLayer calls Ext.MsgBus.publish with style in layerParams.styles", function() {
+        it("addSnapshotLayer calls Portal.data.LayerStore.addUsingServerId with style in layerParams.styles", function() {
             var snapshotLayer = {
                 styles : "greyscale",
                 layer : {
@@ -160,7 +153,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             };
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            var params = Ext.MsgBus.publish.mostRecentCall.args[1].layerParams;
+            var params = Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].layerParams;
             expect(params.styles).toEqual("greyscale");
         });
 
@@ -169,7 +162,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             }
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            var params = Ext.MsgBus.publish.mostRecentCall.args[1].params;
+            var params = Portal.data.LayerStore.instance().addUsingOpenLayer.mostRecentCall.args[0].params;
             expect(params.COLORSCALERANGE).toBeUndefined();
         });
 
@@ -180,7 +173,8 @@ describe("Portal.snapshot.SnapshotController", function() {
             }
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            expect(Ext.MsgBus.publish.mostRecentCall.args[1].params.COLORSCALERANGE).toEqual('2.3,10.12');
+            var params = Portal.data.LayerStore.instance().addUsingOpenLayer.mostRecentCall.args[0].params;
+            expect(params.COLORSCALERANGE).toEqual('2.3,10.12');
         });
     });
 
