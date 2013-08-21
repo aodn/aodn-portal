@@ -60,8 +60,8 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
                 store: this.store
             }),
             listeners: {
-                'rowmousedown': function(evt) {
-                    Ext.preventDefault(evt);
+                'rowmousedown': function(e) {
+                    return false;
                 }
             }
         };
@@ -143,7 +143,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     _setTitleText: function(newText) {
         this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
-        //tb.doLayout();
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
