@@ -122,8 +122,6 @@ environments {
 		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
 
-        facetedSearch.enabled = true
-
         grails {
             mail {
                 host = "localhost"
@@ -152,8 +150,6 @@ environments {
 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
 	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
-
-        facetedSearch.enabled = false
 
         grails {
             mail {

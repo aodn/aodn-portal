@@ -11,6 +11,11 @@ describe("Portal.cart.DownloadCartConfirmationWindow", function() {
 
         beforeEach(function() {
             spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(true);
+            Portal.app = {
+                config: {
+                    downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
+                }
+            };
             confirmationWindow = new Portal.cart.DownloadCartConfirmationWindow();
         });
 

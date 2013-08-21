@@ -75,6 +75,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+
+<script src="${resource(dir: 'js', file: 'portal/portal.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"
@@ -159,10 +161,6 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/search/SearchController.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/SearchForm.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/RightSearchTabPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/SearchTabPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/LinkSelectionWindow.js')}"
         type="text/javascript"></script>
@@ -301,7 +299,6 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/portal.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"

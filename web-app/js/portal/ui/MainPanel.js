@@ -47,24 +47,15 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     _initSearchTabPanel: function(cfg) {
 
-        if (this.appConfigStore.isFacetedSearchEnabled()) {
-            return new Portal.ui.search.SearchPanel({
-                itemId: 'searchPanel',
-                proxyUrl: proxyURL,
-		        catalogUrl: Portal.app.config.catalogUrl,
-                spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-		        protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
-		        dragAndDrop: cfg.dragAndDrop,
-                resultGridSize: 10
-		    });
-        }
-        else {
-            return new Portal.search.SearchTabPanel({mapPanel:this.getMapPanel()});
-        }
-    },
-
-    getPortalPanel:function () {
-        return this.portalPanel;
+        return new Portal.ui.search.SearchPanel({
+            itemId: 'searchPanel',
+            proxyUrl: proxyURL,
+            catalogUrl: Portal.app.config.catalogUrl,
+            spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
+            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
+            dragAndDrop: cfg.dragAndDrop,
+            resultGridSize: 10
+        });
     },
 
     getMapPanel:function () {
@@ -98,7 +89,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
-        jQuery('#viewPortTab' + tabIndex).addClass('viewPortTabActive');
+        jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
     },
 
     isMapVisible:function () {

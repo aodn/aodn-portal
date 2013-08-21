@@ -47,8 +47,7 @@ class HomeController {
 			 */
 
 			grailsConfig = [
-				[ name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url ],
-				[ name: 'facetedSearch.enabled', value: grailsApplication.config.facetedSearch.enabled ]
+				[ name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url ]
 				// To add another config add a column after the entry above and follow the same map format
 			]
 		}
