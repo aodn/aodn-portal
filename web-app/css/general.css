@@ -35,8 +35,6 @@ input.readonlyInput {
     background-color: #fafafa;
 }
 .roundedImages {
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
 	border-radius: 6px;
 }
 .imageLabel {
@@ -352,8 +350,6 @@ Site navigation
 }
 
 .motd {
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
     border-radius: 6px;
     background-color: white;
     padding: 10px;
@@ -560,7 +556,7 @@ table.featureInfo caption{
     z-index: 3;
     font-family: Arial;
     font-size: smaller;
-    -moz-border-radius: 5! important;
+    border-radius: 5! important;
     border-width: 1px 1px 0 0;
     background-color:#3c668d;
     opacity: 0.0;
@@ -592,7 +588,7 @@ table.featureInfo caption{
 #animationPanel {
 	opacity: 1.0;
 	-ms-filter:"alpha(opacity=100)"; /* IE8 */
-filter:alpha(opacity=100); /* IE6/IE7 */
+    filter:alpha(opacity=100); /* IE6/IE7 */
 }
 #maptools .x-panel-body {
     border-radius: 5px;
@@ -790,14 +786,10 @@ div.olControlMousePosition {
 
 .olControlLayerSwitcher {
 	box-shadow: inset -5px 1px 5px black;
-	-webkit-border-radius: 6px 0  0  6px;
-	-moz-border-radius: 6px 0  0  6px;
 	border-radius: 6px 0  0  6px;
 }
 .olControlOverviewMapElement   {
 	 background-color: #34546E! important;
-	-webkit-border-radius: 6px 0  0  0 ;
-	-moz-border-radius: 6px 0  0  0 ;
 	border-radius: 6px 0  0  0 ;
 	opacity: 0.85;
 	-ms-filter:"alpha(opacity=85)"; /* IE8 */
