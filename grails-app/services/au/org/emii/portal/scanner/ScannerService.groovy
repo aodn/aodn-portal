@@ -10,13 +10,16 @@ package au.org.emii.portal.scanner
 
 import grails.converters.JSON
 
+
+import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
+
 abstract class ScannerService {
 
     def grailsApplication
 
     def portalBaseURL(){
 
-		return _ensureTrailingSlash(grailsApplication.config.grails.serverURL)
+		return ensureTrailingSlash(grailsApplication.config.grails.serverURL)
     }
 
     abstract def saveOrUpdateCallbackUrl()
@@ -36,7 +39,7 @@ abstract class ScannerService {
 
     def scannerURL(){
 
-		_ensureTrailingSlash(scannerBaseUrl)
+		ensureTrailingSlash(scannerBaseUrl)
     }
 
     def scanJobUrl() {
@@ -64,13 +67,4 @@ abstract class ScannerService {
 
         return executeCommand( conn )
     }
-
-	def _ensureTrailingSlash( s ) {
-
-		if ( !s ) return "/"
-
-		def slash = s[-1] != "/" ? "/" : ""
-
-		return "$s$slash"
-	}
 }
