@@ -22,6 +22,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
                 ],
                 title: 'the layer title'
             });
+            Portal.app.config.metadataLayerProtocols = 'OGC:WMS-1.1.1-http-get-map';
         });
 
         it('has wms link', function() {

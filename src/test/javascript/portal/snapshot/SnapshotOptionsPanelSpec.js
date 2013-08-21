@@ -4,15 +4,8 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-beforeEach(function(){
-    Portal.app = {
-        config: {
-            currentUser: {id: 1}
-        }
-    };
-});
-describe("Portal.snapshot.SnapshotOptionsPanel", function() {
 
+describe("Portal.snapshot.SnapshotOptionsPanel", function() {
 
 
     var mockController = {
@@ -27,6 +20,12 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function() {
             }
         }
     };
+
+    var Portal.app = {
+            config: {
+                currentUser: {id: 1}
+            }
+        };
 
     spyOn(Ext.Ajax, 'request').andReturn();
 
@@ -57,4 +56,5 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function() {
         expect(mockController.deleteSnapshot).toHaveBeenCalled();
     });
     Ext.Ajax.request.isSpy = false;
+
 });		
