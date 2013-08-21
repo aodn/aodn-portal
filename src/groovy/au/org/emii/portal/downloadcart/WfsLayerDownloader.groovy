@@ -16,14 +16,9 @@ class WfsLayerDownloader {
 
 	def getMatchingEntries(record) {
 
-		if (record.wfsDownloadInfo) {
+		info = record.wfsDownloadInfo
 
-			info = record.wfsDownloadInfo
-
-			return _wfsDownloadItemFrom()
-		}
-
-		return []
+		return info ? [_wfsDownloadItemFrom()] : []
 	}
 
 	def _wfsDownloadItemFrom() {
@@ -40,7 +35,7 @@ class WfsLayerDownloader {
 
 		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
 
-		return makeUrl(serverWfsUrl, _wfsQueryArgs())
+		return urlWithQueryString(serverWfsUrl, _wfsQueryArgs())
 	}
 
 	def _wfsQueryArgs() {

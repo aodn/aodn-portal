@@ -42,12 +42,12 @@ class BulkDownloadService {
     def numberOfFilesAdded = 0
     def zipStream
 
-    void generateArchiveOfFiles(filesToDownload, outputStream, locale) throws ClientAbortException {
+    void generateArchiveOfFiles(itemsToDownload, outputStream, locale) throws ClientAbortException {
 
         processingStartTime = System.currentTimeMillis()
 
-        // Create a deep copy of filesToDownload to work with
-        def copyOfFilesToDownload = filesToDownload.collect(mapDeepCopyJson)
+        // Create a deep copy of itemsToDownload to work with
+        def copyOfItemsToDownload = itemsToDownload.collect(mapDeepCopyJson)
 
         // Create Zip archive stream
         zipStream = new ZipOutputStream(outputStream)
@@ -85,7 +85,6 @@ class BulkDownloadService {
 		}
 	}
 
-    def _addFileEntry( fileInfo ) {
     def _addFileEntry(fileInfo) {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
