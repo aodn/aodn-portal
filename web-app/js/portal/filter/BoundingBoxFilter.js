@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,9 +14,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 	},
 
 	_createField: function(){
-		this.bbox = new Portal.search.field.BoundingBox({
-			width: 250
-		});
+		this.bbox = new Portal.search.field.BoundingBox();
 		this.add(this.bbox);
 		this.bbox.bboxHint.setVisible(false);
 

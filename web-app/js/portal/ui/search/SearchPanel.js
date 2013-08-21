@@ -58,9 +58,11 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
             region: 'center',
             split: true,
+            hidden: true,
             store: this.resultsStore,
             onSearchComplete: function (response, page) {
                 this.store.loadData(response);
+                this.show();
             },
             pageSize: this.resultGridSize
         });
@@ -85,9 +87,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             this.getEl().on('click', this._checkSize, this);
         }, this);
 
-        this.mon(this.searcher, 'searchcomplete', this._checkSize, this);
-        this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
-        this.searcher.on('summaryOnlySearchComplete', this.resultsGrid.onSearchComplete, this.resultsGrid);
+        this.searcher.on('searchcomplete', this.resultsGrid.onSearchComplete, this.resultsGrid, this._checkSize);
 
         this.relayEvents(this.resultsGrid, ['adddownload', 'addlayer']);
 
@@ -99,10 +99,18 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             scope:this,
             load:this.resultsStoreLoad
         });
+
+        Ext.MsgBus.subscribe('facetedSearchClearAll', function() {
+            this._hideResultsGrid();
+        }, this);
     },
 
     resultsStoreLoad:function () {
         this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:this.resultsStore.startRecord, limit:this.resultGridSize}});
+    },
+
+    _hideResultsGrid: function() {
+        this.resultsGrid.hide();
     },
 
     onSearch:function (e) {
