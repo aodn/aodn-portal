@@ -12,11 +12,7 @@ final class UrlUtils {
 
 	static String ensureTrailingSlash(url) {
 
-		if (!url) return "/"
-
-		def slash = url.endsWith("/") ? "" : "/"
-
-		return url + slash
+		url.endsWith("/") ? url : "$url/"
 	}
 
 	static String urlWithQueryString(url, queryString) {
