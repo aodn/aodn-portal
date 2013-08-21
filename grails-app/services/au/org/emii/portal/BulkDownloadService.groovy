@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -20,64 +19,64 @@ import java.util.zip.ZipOutputStream
 
 class BulkDownloadService {
 
-    static transactional = true
-    static scope = "request"
+	static transactional = true
+	static scope = "request"
 
-    static final int BUFFER_SIZE = 4096 // 4kB
-    static final def FILE_DATA_FROM_URL = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
-    static final def FILE_DATA_FROM_GEONETWORK_URL = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
-    static final def GEONETWORK_DOWNLOAD_URL = "(.*)file.disclaimer(.*)"
+	static final int BUFFER_SIZE = 4096 // 4kB
+	static final def FILE_DATA_FROM_URL = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
+	static final def FILE_DATA_FROM_GEONETWORK_URL = ~".*fname=([\\w_-]*)(\\.[^&?/#]*)"
+	static final def GEONETWORK_DOWNLOAD_URL = "(.*)file.disclaimer(.*)"
 
-    static final def GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
+	static final def GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING = "&name=Portal%20Download&org=Unknown&email=info@aodn.org.au&comments=n%2Fa,%20Portal%20download%20cart"
 
 	def linkedFileDownloader = new LinkedFileDownloader()
 	def wfsLayerDownloader = new WfsLayerDownloader()
 
-    def processingStartTime
-    def cfg = Config.activeInstance()
-    def reportBodyText = ""
-    def usedFilenames = [:]
-    def totalSizeBeforeCompression = 0
-    def numberOfFilesTried = 0
-    def numberOfFilesAdded = 0
-    def zipStream
+	def processingStartTime
+	def cfg = Config.activeInstance()
+	def reportBodyText = ""
+	def usedFilenames = [:]
+	def totalSizeBeforeCompression = 0
+	def numberOfFilesTried = 0
+	def numberOfFilesAdded = 0
+	def zipStream
 
-    void generateArchiveOfFiles(itemsToDownload, outputStream, locale) throws ClientAbortException {
+	void generateArchiveOfFiles(itemsToDownload, outputStream, locale) throws ClientAbortException {
 
-        processingStartTime = System.currentTimeMillis()
+		processingStartTime = System.currentTimeMillis()
 
-        // Create a deep copy of itemsToDownload to work with
-        def copyOfItemsToDownload = itemsToDownload.collect(mapDeepCopyJson)
+		// Create a deep copy of itemsToDownload to work with
+		def copyOfItemsToDownload = itemsToDownload.collect(mapDeepCopyJson)
 
-        // Create Zip archive stream
-        zipStream = new ZipOutputStream(outputStream)
+		// Create Zip archive stream
+		zipStream = new ZipOutputStream(outputStream)
 
-        // Add all files to archive
-	    copyOfItemsToDownload.each {
+		// Add all files to archive
+		copyOfItemsToDownload.each {
 
-		    _addFileEntries linkedFileDownloader.getMatchingEntries(it)
+			_addFileEntries linkedFileDownloader.getMatchingEntries(it)
 
-		    _addFileEntries wfsLayerDownloader.getMatchingEntries(it)
-        }
+			_addFileEntries wfsLayerDownloader.getMatchingEntries(it)
+		}
 
-        _addDownloadReportToArchive(locale)
+		_addDownloadReportToArchive(locale)
 
-        // Close zip stream
-        zipStream.close()
-    }
+		// Close zip stream
+		zipStream.close()
+	}
 
-    def getArchiveFilename(locale) {
+	def getArchiveFilename(locale) {
 
-        def currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(_currentDate())
-        def currentTime = DateFormat.getTimeInstance(DateFormat.SHORT,  locale).format(_currentDate())
-        def now = (currentDate + "-" + currentTime).replaceAll("\\n", "-")
+		def currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(_currentDate())
+		def currentTime = DateFormat.getTimeInstance(DateFormat.SHORT,  locale).format(_currentDate())
+		def now = (currentDate + "-" + currentTime).replaceAll("\\n", "-")
 
-        def fileName = String.format(cfg.downloadCartFilename, now)
+		def fileName = String.format(cfg.downloadCartFilename, now)
 
-        return fileName.replaceAll("\\s","_") // unix friendly
-    }
+		return fileName.replaceAll("\\s", "_") // unix friendly
+	}
 
-	def _addFileEntries(entries ) {
+	def _addFileEntries(entries) {
 
 		entries.each{
 
@@ -85,104 +84,104 @@ class BulkDownloadService {
 		}
 	}
 
-    def _addFileEntry(fileInfo) {
+	def _addFileEntry(fileInfo) {
 
-        log.debug "Adding file entry for ${ fileInfo.href }"
+		log.debug "Adding file entry for ${ fileInfo.href }"
 
-        def filenameToUse
+		def filenameToUse
 
-        if (fileInfo.preferredFname) {
-            //For now, the preferred name is just <filename>.<file_extension>
-            //Adding this option because WFS always returns a file with the name "wms",
-            //which isn't going to be very helpful to users
-            def preferredFname = fileInfo.preferredFname
-            fileInfo.filenameUsed = preferredFname.substring(0, preferredFname.indexOf("."))
-            fileInfo.fileExtensionUsed = preferredFname.substring(preferredFname.indexOf("."))
-        }
-        else {
-            _extractFilenameFromUrl(fileInfo)
-        }
+		if (fileInfo.preferredFname) {
+			//For now, the preferred name is just <filename>.<file_extension>
+			//Adding this option because WFS always returns a file with the name "wms",
+			//which isn't going to be very helpful to users
+			def preferredFname = fileInfo.preferredFname
+			fileInfo.filenameUsed = preferredFname.substring(0, preferredFname.indexOf("."))
+			fileInfo.fileExtensionUsed = preferredFname.substring(preferredFname.indexOf("."))
+		}
+		else {
+			_extractFilenameFromUrl(fileInfo)
+		}
 
-        // Ensure we can add another file
-        def resultMessage = _getAnyRestrictionsAddingFile()
+		// Ensure we can add another file
+		def resultMessage = _getAnyRestrictionsAddingFile()
 
-        if (!resultMessage) {
+		if (!resultMessage) {
 
-            def fileStream = _getStreamForFile(fileInfo)
+			def fileStream = _getStreamForFile(fileInfo)
 
-            filenameToUse = _makeFilenameUnique(fileInfo.filenameUsed, fileInfo.fileExtensionUsed) // MUST occur after _getStreamForFile() as that may change filename (would be nice to refactor this dependancy out)
+			filenameToUse = _makeFilenameUnique(fileInfo.filenameUsed, fileInfo.fileExtensionUsed) // MUST occur after _getStreamForFile() as that may change filename (would be nice to refactor this dependancy out)
 
-            resultMessage = _writeStreamToArchive(filenameToUse, fileStream, fileInfo)
-        }
-        else {
+			resultMessage = _writeStreamToArchive(filenameToUse, fileStream, fileInfo)
+		}
+		else {
 
-            filenameToUse = "N/A - File not added to archive"
-        }
+			filenameToUse = "N/A - File not added to archive"
+		}
 
-        log.debug "Result of attempt: $resultMessage"
+		log.debug "Result of attempt: $resultMessage"
 
-        // Incremement counter and add to report
-        numberOfFilesTried++
+		// Incremement counter and add to report
+		numberOfFilesTried++
 
-        _writeNewDownloadReportEntry(fileInfo, filenameToUse, resultMessage)
-    }
+		_writeNewDownloadReportEntry(fileInfo, filenameToUse, resultMessage)
+	}
 
-    def _writeStreamToArchive(filenameToUse, stream, fileInfo) {
+	def _writeStreamToArchive(filenameToUse, stream, fileInfo) {
 
-        // Check for null stream
-        if (!stream) return "Could not obtain filestream for ${ fileInfo.href }"
+		// Check for null stream
+		if (!stream) return "Could not obtain filestream for ${ fileInfo.href }"
 
-        try {
-            // Create new Zip Entry
-            zipStream.putNextEntry new ZipEntry(filenameToUse as String)
+		try {
+			// Create new Zip Entry
+			zipStream.putNextEntry new ZipEntry(filenameToUse as String)
 
-            // Write data to new zip entry
-            def buffer = new byte[ BUFFER_SIZE ]
-            def bytesRead
-            def totalBytesRead = 0
-            while ((bytesRead = stream.read(buffer)) != -1) {
+			// Write data to new zip entry
+			def buffer = new byte[BUFFER_SIZE]
+			def bytesRead
+			def totalBytesRead = 0
+			while ((bytesRead = stream.read(buffer)) != -1) {
 
-                zipStream.write buffer, 0, bytesRead
-                totalBytesRead += bytesRead
-            }
+				zipStream.write buffer, 0, bytesRead
+				totalBytesRead += bytesRead
+			}
 
-            totalSizeBeforeCompression += totalBytesRead
+			totalSizeBeforeCompression += totalBytesRead
 
-            numberOfFilesAdded++
+			numberOfFilesAdded++
 
-            return "File added ($totalBytesRead Bytes)"
-        }
-        catch (Exception e) {
+			return "File added ($totalBytesRead Bytes)"
+		}
+		catch (Exception e) {
 
-            log.info "Exception writing stream to archive", e
+			log.info "Exception writing stream to archive", e
 
-            return "Unknown error adding file"
-        }
-        finally {
+			return "Unknown error adding file"
+		}
+		finally {
 
-            stream?.close()
-            zipStream.closeEntry()
-        }
-    }
+			stream?.close()
+			zipStream.closeEntry()
+		}
+	}
 
-    def _getAnyRestrictionsAddingFile() {
+	def _getAnyRestrictionsAddingFile() {
 
-        if (numberOfFilesAdded >= cfg.downloadCartMaxNumFiles) {
+		if (numberOfFilesAdded >= cfg.downloadCartMaxNumFiles) {
 
-            return "Unable to add file, maximum number of files allowed reached (${ numberOfFilesAdded }/${ cfg.downloadCartMaxNumFiles } files)"
-        }
+			return "Unable to add file, maximum number of files allowed reached (${ numberOfFilesAdded }/${ cfg.downloadCartMaxNumFiles } files)"
+		}
 
-        if (totalSizeBeforeCompression >= cfg.downloadCartMaxFileSize) {
+		if (totalSizeBeforeCompression >= cfg.downloadCartMaxFileSize) {
 
-            return "Unable to add file, maximum size of files allowed reached (${ totalSizeBeforeCompression }/${ cfg.downloadCartMaxFileSize } Bytes)"
-        }
+			return "Unable to add file, maximum size of files allowed reached (${ totalSizeBeforeCompression }/${ cfg.downloadCartMaxFileSize } Bytes)"
+		}
 
-        return null // No restrictions
-    }
+		return null // No restrictions
+	}
 
-    void _writeNewDownloadReportEntry(fileInfo, filenameInArchive, statusMessage) {
+	void _writeNewDownloadReportEntry(fileInfo, filenameInArchive, statusMessage) {
 
-        reportBodyText += """
+		reportBodyText += """
 --[ #$numberOfFilesTried ]------------------------------------
 Title:               ${fileInfo.title}
 URL:                 ${fileInfo.href}
@@ -190,56 +189,56 @@ Type:                ${fileInfo.type}
 Filename in archive: ${filenameInArchive}
 Result:              $statusMessage
 """
-    }
+	}
 
-    def _getStreamForFile(fileInfo) {
+	def _getStreamForFile(fileInfo) {
 
-        def address = fileInfo.href
+		def address = fileInfo.href
 
-        try {
-            if (!_isGeoServerDisclaimerAddress(address)) {
+		try {
+			if (!_isGeoServerDisclaimerAddress(address)) {
 
-                // Get stream of URL
-                return address.toURL().newInputStream()
-            }
-            else { // Handle special-case GeoServer URLs
+				// Get stream of URL
+				return address.toURL().newInputStream()
+			}
+			else { // Handle special-case GeoServer URLs
 
-                // Request disclaimer page (unmodified URL) first to create session on GeoNetwork
-                def firstRequestConn = address.toURL().openConnection()
-                firstRequestConn.connect()
+				// Request disclaimer page (unmodified URL) first to create session on GeoNetwork
+				def firstRequestConn = address.toURL().openConnection()
+				firstRequestConn.connect()
 
-                // Get cookie header (should only be one)
-                def cookieHeader = firstRequestConn.headerFields.find { it.key == "Set-Cookie" }
-                def cookieHeaderValue = cookieHeader.value.get(0) // Only has one value, a delimeted String of cookies
+				// Get cookie header (should only be one)
+				def cookieHeader = firstRequestConn.headerFields.find { it.key == "Set-Cookie" }
+				def cookieHeaderValue = cookieHeader.value.get(0) // Only has one value, a delimeted String of cookies
 
-                // Modify URL to ask for file directly, and pass-in dummy field values
-                def geoServerDownloadAddress = _geoServerDownloadAddress(address)
-                def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
+				// Modify URL to ask for file directly, and pass-in dummy field values
+				def geoServerDownloadAddress = _geoServerDownloadAddress(address)
+				def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
 
-                secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
-                secondRequestConn.connect()
+				secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
+				secondRequestConn.connect()
 
-                // Update file info as GeoNetwork returns file archives
-                fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
-                fileInfo.fileExtensionUsed = ".zip"
+				// Update file info as GeoNetwork returns file archives
+				fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
+				fileInfo.fileExtensionUsed = ".zip"
 
-                return secondRequestConn.inputStream
-            }
-        }
-        catch (Exception e) {
+				return secondRequestConn.inputStream
+			}
+		}
+		catch (Exception e) {
 
-            log.info "Exception while trying to get stream for '$address'", e
+			log.info "Exception while trying to get stream for '$address'", e
 
-            return null
-        }
-    }
+			return null
+		}
+	}
 
-    def _finaliseDownloadReport(locale) {
+	def _finaliseDownloadReport(locale) {
 
-        def currentDate = DateFormat.getDateInstance(DateFormat.LONG, locale).format(_currentDate())
-        def currentTime = DateFormat.getTimeInstance(DateFormat.LONG, locale).format(_currentDate())
+		def currentDate = DateFormat.getDateInstance(DateFormat.LONG, locale).format(_currentDate())
+		def currentTime = DateFormat.getTimeInstance(DateFormat.LONG, locale).format(_currentDate())
 
-        def finalReportText = """\
+		def finalReportText = """\
 ========================================================================
 Download cart report ($currentDate $currentTime)
 ========================================================================
@@ -251,132 +250,132 @@ Time taken: ${ _timeTaken() } seconds
 ========================================================================
 """
 
-        return finalReportText.replace("\n","\r\n").getBytes("UTF-8")
-    }
+		return finalReportText.replace("\n", "\r\n").getBytes("UTF-8")
+	}
 
-    void _addDownloadReportToArchive(locale) {
+	void _addDownloadReportToArchive(locale) {
 
-        def reportEntry = new ZipEntry("download_report.txt")
-        def bytes = _finaliseDownloadReport(locale)
+		def reportEntry = new ZipEntry("download_report.txt")
+		def bytes = _finaliseDownloadReport(locale)
 
-        zipStream.putNextEntry reportEntry
-        zipStream.write bytes, 0, bytes.length
-        zipStream.closeEntry()
-    }
+		zipStream.putNextEntry reportEntry
+		zipStream.write bytes, 0, bytes.length
+		zipStream.closeEntry()
+	}
 
-    def _isGeoServerDisclaimerAddress(address) {
+	def _isGeoServerDisclaimerAddress(address) {
 
-        return address ==~ GEONETWORK_DOWNLOAD_URL
-    }
+		return address ==~ GEONETWORK_DOWNLOAD_URL
+	}
 
-    def _geoServerDownloadAddress(disclaimerAddress) {
+	def _geoServerDownloadAddress(disclaimerAddress) {
 
-        def downloadAddress = disclaimerAddress.replaceFirst("file.disclaimer", "resources.get")
-        downloadAddress += GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING
+		def downloadAddress = disclaimerAddress.replaceFirst("file.disclaimer", "resources.get")
+		downloadAddress += GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING
 
-        return downloadAddress
-    }
+		return downloadAddress
+	}
 
-    void _extractFilenameFromUrl(fileInfo) {
+	void _extractFilenameFromUrl(fileInfo) {
 
-        def filenameFromUrl
-        def fileExtensionFromUrl
+		def filenameFromUrl
+		def fileExtensionFromUrl
 
-        // Test for MEST/GeoNetwork URLs
-        def matches = fileInfo.href =~ FILE_DATA_FROM_GEONETWORK_URL
+		// Test for MEST/GeoNetwork URLs
+		def matches = fileInfo.href =~ FILE_DATA_FROM_GEONETWORK_URL
 
-        if (matches) {
-            log.debug "FILE_DATA_FROM_GEONETWORK_URL matches[0]: ${ matches[0] }"
-            filenameFromUrl = _getFilenameMatch(matches)
-            fileExtensionFromUrl = _getFileExtensionMatch(matches)
-        }
+		if (matches) {
+			log.debug "FILE_DATA_FROM_GEONETWORK_URL matches[0]: ${ matches[0] }"
+			filenameFromUrl = _getFilenameMatch(matches)
+			fileExtensionFromUrl = _getFileExtensionMatch(matches)
+		}
 
-        // Test for general URLs
-        if (!filenameFromUrl) {
+		// Test for general URLs
+		if (!filenameFromUrl) {
 
-            matches = fileInfo.href =~ FILE_DATA_FROM_URL
+			matches = fileInfo.href =~ FILE_DATA_FROM_URL
 
-            if (matches) {
-                log.debug "FILE_DATA_FROM_URL matches[0]: ${ matches[0] }"
-                filenameFromUrl = _getFilenameMatch(matches)
-                fileExtensionFromUrl = _getFileExtensionMatch(matches)
-            }
-        }
+			if (matches) {
+				log.debug "FILE_DATA_FROM_URL matches[0]: ${ matches[0] }"
+				filenameFromUrl = _getFilenameMatch(matches)
+				fileExtensionFromUrl = _getFileExtensionMatch(matches)
+			}
+		}
 
-        if (!filenameFromUrl) {
+		if (!filenameFromUrl) {
 
-            filenameFromUrl = "unnamed_data"
-            fileExtensionFromUrl = _extensionFromMimeType(fileInfo.type)
-        }
+			filenameFromUrl = "unnamed_data"
+			fileExtensionFromUrl = _extensionFromMimeType(fileInfo.type)
+		}
 
-        log.debug "filenameFromUrl: $filenameFromUrl fileExtensionUsed: $fileExtensionFromUrl"
+		log.debug "filenameFromUrl: $filenameFromUrl fileExtensionUsed: $fileExtensionFromUrl"
 
-        // Write back to fileInfo
-        fileInfo.filenameUsed = filenameFromUrl
-        fileInfo.fileExtensionUsed = fileExtensionFromUrl
-    }
+		// Write back to fileInfo
+		fileInfo.filenameUsed = filenameFromUrl
+		fileInfo.fileExtensionUsed = fileExtensionFromUrl
+	}
 
-    def _getFilenameMatch(matches) {
+	def _getFilenameMatch(matches) {
 
-        return matches[0][1]
-    }
+		return matches[0][1]
+	}
 
-    def _getFileExtensionMatch(matches) {
+	def _getFileExtensionMatch(matches) {
 
-        return matches[0][2] ?: ""
-    }
+		return matches[0][2] ?: ""
+	}
 
-    def _makeFilenameUnique(filename, extension) {
+	def _makeFilenameUnique(filename, extension) {
 
-        def currentCount = usedFilenames[filename]
+		def currentCount = usedFilenames[filename]
 
-        // First usage of this filename
-        if (!currentCount) {
+		// First usage of this filename
+		if (!currentCount) {
 
-            usedFilenames[filename] = 1
+			usedFilenames[filename] = 1
 
-            return "$filename$extension"
-        }
+			return "$filename$extension"
+		}
 
-        // Subsequent usage of this filename
-        currentCount++
-        usedFilenames[filename] = currentCount
+		// Subsequent usage of this filename
+		currentCount++
+		usedFilenames[filename] = currentCount
 
-        return "$filename($currentCount)$extension"
-    }
+		return "$filename($currentCount)$extension"
+	}
 
-    def _extensionFromMimeType(type) {
+	def _extensionFromMimeType(type) {
 
-        def mapping = JSON.parse(cfg.downloadCartMimeTypeToExtensionMapping)
+		def mapping = JSON.parse(cfg.downloadCartMimeTypeToExtensionMapping)
 
-        def extensionToReturn = mapping[type]
+		def extensionToReturn = mapping[type]
 
-        // Use mapping to try and guess extension
-        return extensionToReturn ? ".$extensionToReturn" : ""
-    }
+		// Use mapping to try and guess extension
+		return extensionToReturn ? ".$extensionToReturn" : ""
+	}
 
-    def _currentDate() {
+	def _currentDate() {
 
-        return new Date()
-    }
+		return new Date()
+	}
 
-    def _timeTaken() {
+	def _timeTaken() {
 
-        long msTaken = System.currentTimeMillis() - processingStartTime
+		long msTaken = System.currentTimeMillis() - processingStartTime
 
-        return Math.max(Math.round(msTaken / 1000), 1) // Return value in whole seconds (min 1 for tidiness)
-    }
+		return Math.max(Math.round(msTaken / 1000), 1) // Return value in whole seconds (min 1 for tidiness)
+	}
 
-    def mapDeepCopyJson = {
+	def mapDeepCopyJson = {
 
-        def map = [:]
+		def map = [:]
 
-        it.collect {
-            k, v ->
+		it.collect {
+			k, v ->
 
-            map[k] = v
-        }
+				map[k] = v
+		}
 
-        return map as JSONObject
-    }
+		return map as JSONObject
+	}
 }
