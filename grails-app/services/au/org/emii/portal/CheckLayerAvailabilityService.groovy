@@ -131,20 +131,9 @@ class CheckLayerAvailabilityService {
     }
 
 	String _constructFeatureInfoRequest(layer, params) {
+
 		// Construct the getFeatureInfo request.
 		// are returned at location 0,0.
-
-		//if there's only one feature, the min and max values
-		//will be the same and geoserver will throw an exception
-		//so change minvalues if same as max values.
-
-		def minX = layer.bboxMinX.toDouble()
-		if(layer.bboxMinX == layer.bboxMaxX)
-			minX -= 1;
-
-		def minY = layer.bboxMinY.toDouble()
-		if(layer.bboxMinY == layer.bboxMaxY)
-			minY -= 1;
 
 		def queryStringArgs= [
 		    'VERSION': '1.1.1',
@@ -153,7 +142,7 @@ class CheckLayerAvailabilityService {
 			'STYLES': '',
 			'SRS': layer.projection,
 			'CRS': layer.projection,
-			'BBOX': minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY,
+			'BBOX': bboxFromLayer(layer),
 			'QUERY_LAYERS': layer.name,
 			'X': '0',
 			'Y': '0',
@@ -172,15 +161,8 @@ class CheckLayerAvailabilityService {
 	}
 
     String _constructGetMapRequest(layer, params) {
+
         // Construct the getMap request
-
-        def minX = layer.bboxMinX.toDouble()
-        if(layer.bboxMinX == layer.bboxMaxX)
-            minX -= 1;
-
-        def minY = layer.bboxMinY.toDouble()
-        if(layer.bboxMinY == layer.bboxMaxY)
-            minY -= 1;
 
 	    def queryStringArgs= [
 		    'VERSION': '1.1.1',
@@ -189,7 +171,7 @@ class CheckLayerAvailabilityService {
 		    'STYLES': '',
 		    'SRS': layer.projection,
 		    'CRS': layer.projection,
-		    'BBOX': minX +',' + minY+ ',' + layer.bboxMaxX + ',' + layer.bboxMaxY,
+		    'BBOX': bboxFromLayer(layer),
 		    'FORMAT': layer.server.imageFormat,
 		    'EXCEPTIONS': 'application/vnd.ogc.se_xml',
 		    'width': '50',
@@ -198,6 +180,25 @@ class CheckLayerAvailabilityService {
 
         return urlWithQueryString(layer.server.uri, queryStringArgs)
     }
+
+	def bboxFromLayer(layer) {
+
+		//if there's only one feature, the min and max values
+		//will be the same and geoserver will throw an exception
+		//so change minvalues if same as max values.
+
+		def minX = distinctMinimum(layer.bboxMinX, layer.bboxMaxX)
+		def minY = distinctMinimum(layer.bboxMinY, layer.bboxMaxY)
+
+		return "$minX,$minY,${layer.bboxMaxX},${layer.bboxMaxY}"
+	}
+
+	def distinctMinimum(min, max) {
+
+		min = min.toDouble()
+
+		return (min == max) ? min -1 : min
+	}
 
     void notifyOwner(layer, failedOps){
         def ownerList = layer.server.owners

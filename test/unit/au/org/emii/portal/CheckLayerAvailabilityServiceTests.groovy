@@ -249,4 +249,23 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
 
         assertEquals expectedResult, service._constructFeatureInfoRequest( testLayer, testParams )
     }
+
+	void testBboxFromLayer() {
+
+		def testLayer = [
+		    bboxMinX: 1.0,
+		    bboxMaxX: 2.0,
+		    bboxMinY: 3.0,
+		    bboxMaxY: 4.0
+		]
+
+		assertEquals "1.0,3.0,2.0,4.0", service.bboxFromLayer(testLayer)
+	}
+
+	void testDistinctMinimum() {
+
+		assertEquals 1.0, service.distinctMinimum(1.0, 3.0)
+		assertEquals 1.0, service.distinctMinimum(2.0, 2.0)
+		assertEquals( -10.0, service.distinctMinimum(-9.0, -9.0) )
+	}
 }
