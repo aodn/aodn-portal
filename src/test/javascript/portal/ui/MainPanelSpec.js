@@ -119,18 +119,16 @@ describe("Portal.ui.MainPanel", function() {
     describe('main panel tab highlighting', function() {
         beforeEach(function() {
             initMainPanel();
+            spyOn(mainPanel, "_highlightActiveTab");
         });
 
         it('initial load', function() {
-            spyOn(mainPanel, "_highlightActiveTab");
             spyOn(Portal.ui.MainPanel.superclass, "afterRender");
             mainPanel.afterRender();
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
 
         it('switching tabs', function() {
-            spyOn(mainPanel, "_highlightActiveTab");
-
             // Mock layout
             mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
             mainPanel.layout.setActiveItem.andCallFake(function() {});
