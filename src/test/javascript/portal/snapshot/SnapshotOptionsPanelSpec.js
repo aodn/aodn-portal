@@ -20,7 +20,7 @@ describe("Portal.snapshot.SnapshotOptionsPanel", function() {
         }
     };
 
-    var Portal.app = {
+    Portal.app = {
         config: {
             currentUser: {id: 1}
         }
