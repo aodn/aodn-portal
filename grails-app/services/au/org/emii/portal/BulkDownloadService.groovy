@@ -37,15 +37,15 @@ class BulkDownloadService {
     def numberOfFilesAdded = 0
     def zipStream
 
-    void generateArchiveOfFiles( filesToDownload, outputStream, locale ) throws ClientAbortException {
+    void generateArchiveOfFiles(filesToDownload, outputStream, locale) throws ClientAbortException {
 
         processingStartTime = System.currentTimeMillis()
 
         // Create a deep copy of filesToDownload to work with
-        def copyOfFilesToDownload = filesToDownload.collect( mapDeepCopyJson )
+        def copyOfFilesToDownload = filesToDownload.collect(mapDeepCopyJson)
 
         // Create Zip archive stream
-        zipStream = new ZipOutputStream( outputStream )
+        zipStream = new ZipOutputStream(outputStream)
 
         // Add all files to archive
         copyOfFilesToDownload.each {
@@ -59,7 +59,7 @@ class BulkDownloadService {
             }
         }
 
-        _addDownloadReportToArchive( locale )
+        _addDownloadReportToArchive(locale)
 
         // Close zip stream
         zipStream.close()
@@ -67,16 +67,16 @@ class BulkDownloadService {
 
     def getArchiveFilename(locale) {
 
-        def currentDate = DateFormat.getDateInstance( DateFormat.MEDIUM, locale ).format( _currentDate() )
-        def currentTime = DateFormat.getTimeInstance( DateFormat.SHORT,  locale ).format( _currentDate() )
+        def currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(_currentDate())
+        def currentTime = DateFormat.getTimeInstance(DateFormat.SHORT,  locale).format(_currentDate())
         def now = (currentDate + "-" + currentTime).replaceAll("\\n", "-")
 
-        def fileName = String.format( cfg.downloadCartFilename, now)
+        def fileName = String.format(cfg.downloadCartFilename, now)
 
         return fileName.replaceAll("\\s","_") // unix friendly
     }
 
-    def _addFileEntry( fileInfo ) {
+    def _addFileEntry(fileInfo) {
 
         log.debug "Adding file entry for ${ fileInfo.href }"
 
@@ -91,20 +91,19 @@ class BulkDownloadService {
             fileInfo.fileExtensionUsed = preferredFname.substring(preferredFname.indexOf("."))
         }
         else {
-            _extractFilenameFromUrl( fileInfo )
+            _extractFilenameFromUrl(fileInfo)
         }
-
 
         // Ensure we can add another file
         def resultMessage = _getAnyRestrictionsAddingFile()
 
-        if ( !resultMessage ) {
+        if (!resultMessage) {
 
-            def fileStream = _getStreamForFile( fileInfo )
+            def fileStream = _getStreamForFile(fileInfo)
 
-            filenameToUse = _makeFilenameUnique( fileInfo.filenameUsed, fileInfo.fileExtensionUsed ) // MUST occur after _getStreamForFile() as that may change filename (would be nice to refactor this dependancy out)
+            filenameToUse = _makeFilenameUnique(fileInfo.filenameUsed, fileInfo.fileExtensionUsed) // MUST occur after _getStreamForFile() as that may change filename (would be nice to refactor this dependancy out)
 
-            resultMessage = _writeStreamToArchive( filenameToUse, fileStream, fileInfo )
+            resultMessage = _writeStreamToArchive(filenameToUse, fileStream, fileInfo)
         }
         else {
 
@@ -116,23 +115,23 @@ class BulkDownloadService {
         // Incremement counter and add to report
         numberOfFilesTried++
 
-        _writeNewDownloadReportEntry( fileInfo, filenameToUse, resultMessage )
+        _writeNewDownloadReportEntry(fileInfo, filenameToUse, resultMessage)
     }
 
-    def _writeStreamToArchive( filenameToUse, stream, fileInfo ) {
+    def _writeStreamToArchive(filenameToUse, stream, fileInfo) {
 
         // Check for null stream
-        if ( !stream ) return "Could not obtain filestream for ${ fileInfo.href }"
+        if (!stream) return "Could not obtain filestream for ${ fileInfo.href }"
 
         try {
             // Create new Zip Entry
-            zipStream.putNextEntry new ZipEntry( filenameToUse as String )
+            zipStream.putNextEntry new ZipEntry(filenameToUse as String)
 
             // Write data to new zip entry
             def buffer = new byte[ BUFFER_SIZE ]
             def bytesRead
             def totalBytesRead = 0
-            while ((bytesRead = stream.read( buffer )) != -1) {
+            while ((bytesRead = stream.read(buffer)) != -1) {
 
                 zipStream.write buffer, 0, bytesRead
                 totalBytesRead += bytesRead
@@ -159,12 +158,12 @@ class BulkDownloadService {
 
     def _getAnyRestrictionsAddingFile() {
 
-        if ( numberOfFilesAdded >= cfg.downloadCartMaxNumFiles ) {
+        if (numberOfFilesAdded >= cfg.downloadCartMaxNumFiles) {
 
             return "Unable to add file, maximum number of files allowed reached (${ numberOfFilesAdded }/${ cfg.downloadCartMaxNumFiles } files)"
         }
 
-        if ( totalSizeBeforeCompression >= cfg.downloadCartMaxFileSize ) {
+        if (totalSizeBeforeCompression >= cfg.downloadCartMaxFileSize) {
 
             return "Unable to add file, maximum size of files allowed reached (${ totalSizeBeforeCompression }/${ cfg.downloadCartMaxFileSize } Bytes)"
         }
@@ -172,7 +171,7 @@ class BulkDownloadService {
         return null // No restrictions
     }
 
-    void _writeNewDownloadReportEntry( fileInfo, filenameInArchive, statusMessage ) {
+    void _writeNewDownloadReportEntry(fileInfo, filenameInArchive, statusMessage) {
 
         reportBodyText += """
 --[ #$numberOfFilesTried ]------------------------------------
@@ -184,12 +183,12 @@ Result:              $statusMessage
 """
     }
 
-    def _getStreamForFile( fileInfo ) {
+    def _getStreamForFile(fileInfo) {
 
         def address = fileInfo.href
 
         try {
-            if ( !_isGeoServerDisclaimerAddress( address ) ) {
+            if (!_isGeoServerDisclaimerAddress(address)) {
 
                 // Get stream of URL
                 return address.toURL().newInputStream()
@@ -202,10 +201,10 @@ Result:              $statusMessage
 
                 // Get cookie header (should only be one)
                 def cookieHeader = firstRequestConn.headerFields.find { it.key == "Set-Cookie" }
-                def cookieHeaderValue = cookieHeader.value.get( 0 ) // Only has one value, a delimeted String of cookies
+                def cookieHeaderValue = cookieHeader.value.get(0) // Only has one value, a delimeted String of cookies
 
                 // Modify URL to ask for file directly, and pass-in dummy field values
-                def geoServerDownloadAddress = _geoServerDownloadAddress( address )
+                def geoServerDownloadAddress = _geoServerDownloadAddress(address)
                 def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
 
                 secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
@@ -226,10 +225,10 @@ Result:              $statusMessage
         }
     }
 
-    def _finaliseDownloadReport( locale ) {
+    def _finaliseDownloadReport(locale) {
 
-        def currentDate = DateFormat.getDateInstance( DateFormat.LONG,  locale ).format( _currentDate() )
-        def currentTime = DateFormat.getTimeInstance( DateFormat.LONG, locale ).format( _currentDate() )
+        def currentDate = DateFormat.getDateInstance(DateFormat.LONG, locale).format(_currentDate())
+        def currentTime = DateFormat.getTimeInstance(DateFormat.LONG, locale).format(_currentDate())
 
 
         def finalReportText = """\
@@ -243,33 +242,33 @@ Number of files included: $numberOfFilesAdded/$numberOfFilesTried
 Time taken: ${ _timeTaken() } seconds
 ========================================================================"""
 
-        return finalReportText.replace("\n","\r\n").getBytes( "UTF-8" )
+        return finalReportText.replace("\n","\r\n").getBytes("UTF-8")
     }
 
-    void _addDownloadReportToArchive( locale ) {
+    void _addDownloadReportToArchive(locale) {
 
-        def reportEntry = new ZipEntry( "download_report.txt" )
-        def bytes = _finaliseDownloadReport( locale )
+        def reportEntry = new ZipEntry("download_report.txt")
+        def bytes = _finaliseDownloadReport(locale)
 
         zipStream.putNextEntry reportEntry
         zipStream.write bytes, 0, bytes.length
         zipStream.closeEntry()
     }
 
-    def _isGeoServerDisclaimerAddress( address ) {
+    def _isGeoServerDisclaimerAddress(address) {
 
         return address ==~ GEONETWORK_DOWNLOAD_URL
     }
 
-    def _geoServerDownloadAddress( disclaimerAddress ) {
+    def _geoServerDownloadAddress(disclaimerAddress) {
 
-        def downloadAddress = disclaimerAddress.replaceFirst( "file.disclaimer", "resources.get" )
+        def downloadAddress = disclaimerAddress.replaceFirst("file.disclaimer", "resources.get")
         downloadAddress += GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING
 
         return downloadAddress
     }
 
-    void _extractFilenameFromUrl( fileInfo ) {
+    void _extractFilenameFromUrl(fileInfo) {
 
         def filenameFromUrl
         def fileExtensionFromUrl
@@ -277,29 +276,28 @@ Time taken: ${ _timeTaken() } seconds
         // Test for MEST/GeoNetwork URLs
         def matches = fileInfo.href =~ FILE_DATA_FROM_GEONETWORK_URL
 
-        if ( matches ) {
+        if (matches) {
             log.debug "FILE_DATA_FROM_GEONETWORK_URL matches[0]: ${ matches[0] }"
-            filenameFromUrl = _getFilenameMatch( matches )
-            fileExtensionFromUrl = _getFileExtensionMatch( matches )
+            filenameFromUrl = _getFilenameMatch(matches)
+            fileExtensionFromUrl = _getFileExtensionMatch(matches)
         }
 
         // Test for general URLs
-        if ( !filenameFromUrl ) {
+        if (!filenameFromUrl) {
 
             matches = fileInfo.href =~ FILE_DATA_FROM_URL
 
-            if ( matches ) {
+            if (matches) {
                 log.debug "FILE_DATA_FROM_URL matches[0]: ${ matches[0] }"
-                filenameFromUrl = _getFilenameMatch( matches )
-                fileExtensionFromUrl = _getFileExtensionMatch( matches )
+                filenameFromUrl = _getFilenameMatch(matches)
+                fileExtensionFromUrl = _getFileExtensionMatch(matches)
             }
         }
 
-        // When unable to find filename in URL
-        if ( !filenameFromUrl ) {
+        if (!filenameFromUrl) {
 
             filenameFromUrl = "unnamed_data"
-            fileExtensionFromUrl = _extensionFromMimeType( fileInfo.type )
+            fileExtensionFromUrl = _extensionFromMimeType(fileInfo.type)
         }
 
         log.debug "filenameFromUrl: $filenameFromUrl fileExtensionUsed: $fileExtensionFromUrl"
@@ -309,22 +307,22 @@ Time taken: ${ _timeTaken() } seconds
         fileInfo.fileExtensionUsed = fileExtensionFromUrl
     }
 
-    def _getFilenameMatch( matches ) {
+    def _getFilenameMatch(matches) {
 
         return matches[0][1]
     }
 
-    def _getFileExtensionMatch( matches ) {
+    def _getFileExtensionMatch(matches) {
 
         return matches[0][2] ?: ""
     }
 
-    def _makeFilenameUnique( filename, extension ) {
+    def _makeFilenameUnique(filename, extension) {
 
         def currentCount = usedFilenames[filename]
 
         // First usage of this filename
-        if ( !currentCount ) {
+        if (!currentCount) {
 
             usedFilenames[filename] = 1
 
@@ -338,9 +336,9 @@ Time taken: ${ _timeTaken() } seconds
         return "$filename($currentCount)$extension"
     }
 
-    def _extensionFromMimeType( type ) {
+    def _extensionFromMimeType(type) {
 
-        def mapping = JSON.parse( cfg.downloadCartMimeTypeToExtensionMapping )
+        def mapping = JSON.parse(cfg.downloadCartMimeTypeToExtensionMapping)
 
         def extensionToReturn = mapping[type]
 
@@ -360,9 +358,9 @@ Time taken: ${ _timeTaken() } seconds
 
 	def _wfsUrlFrom(info) {
 
-		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
+		String serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
 
-		return makeUrl(serverWfsUrl, _wfsQueryArgs(info))
+		return urlWithQueryString(serverWfsUrl, _wfsQueryArgs(info))
 	}
 
 	def _wfsQueryArgs(info) {
@@ -404,7 +402,7 @@ Time taken: ${ _timeTaken() } seconds
 
         long msTaken = System.currentTimeMillis() - processingStartTime
 
-        return Math.max(Math.round( msTaken / 1000 ), 1) // Return value in whole seconds (min 1 for tidiness)
+        return Math.max(Math.round(msTaken / 1000), 1) // Return value in whole seconds (min 1 for tidiness)
     }
 
     def mapDeepCopyJson = {
@@ -419,18 +417,4 @@ Time taken: ${ _timeTaken() } seconds
 
         return map as JSONObject
     }
-
-	def makeUrl = { // Todo - DN: Move somewhere more re-usable
-		url, queryStringArgs ->
-
-		def joiner = url.contains("?") ? "&" : "?"
-
-		def queryString = queryStringArgs.collect{
-			k, v ->
-
-			k + "=" + URLEncoder.encode(v, "UTF-8")
-		}.join("&")
-
-		return url + joiner + queryString
-	}
 }
