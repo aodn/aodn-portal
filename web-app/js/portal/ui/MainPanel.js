@@ -45,6 +45,11 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
     },
 
+    afterRender: function() {
+        Portal.ui.MainPanel.superclass.afterRender.call(this);
+        this._highlightActiveTab();
+    },
+
     _initSearchTabPanel: function(cfg) {
 
         return new Portal.ui.search.SearchPanel({
@@ -84,6 +89,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
         }
 
+        this._highlightActiveTab();
+    },
+
+    _highlightActiveTab: function() {
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
 
