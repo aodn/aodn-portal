@@ -19,7 +19,7 @@ describe("Portal.ui.MainPanel", function() {
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockPortalPanel = {
+    var mockVisualizePanel = {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
 
@@ -28,7 +28,7 @@ describe("Portal.ui.MainPanel", function() {
             return true
         });
 
-        spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
+        spyOn(Portal.ui, "VisualizePanel").andReturn(mockVisualizePanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
@@ -50,8 +50,8 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should init portal panel', function() {
-            expect(Portal.ui.PortalPanel).toHaveBeenCalled();
-            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
+            expect(Portal.ui.VisualizePanel).toHaveBeenCalled();
+            expect(mainPanel.visualizePanel).toEqual(mockVisualizePanel);
         });
     });
 

@@ -231,7 +231,7 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/PortalPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/ui/VisualizePanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
         type="text/javascript"></script>
