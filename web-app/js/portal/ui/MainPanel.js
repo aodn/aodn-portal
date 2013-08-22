@@ -8,10 +8,9 @@
 Ext.namespace('Portal.ui');
 
 // Tab indexes (global)
-TAB_INDEX_HOME = 0;
-TAB_INDEX_MAP = 1;
-TAB_INDEX_SEARCH = 2;
-TAB_INDEX_DOWNLOAD_CART = 3;
+TAB_INDEX_SEARCH = 0;
+TAB_INDEX_VISUALIZE = 1;
+TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
@@ -19,9 +18,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg);
 
-        this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = this._initSearchTabPanel(cfg);
-        this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
+        this.visualizePanel = new Portal.ui.VisualizePanel({appConfig:Portal.app.config});
         this.downloadCartPanel = new Portal.cart.DownloadPanel()
 
         var config = Ext.apply({
@@ -33,9 +31,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             unstyled:true,
             layout: 'card',
             items:[
-                this.homePanel,
-                this.portalPanel,
                 this.searchTabPanel,
+                this.visualizePanel,
                 this.downloadCartPanel
             ]
         }, cfg);
@@ -64,7 +61,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     getMapPanel:function () {
-        return this.portalPanel.getMapPanel();
+        return this.visualizePanel.getMapPanel();
     },
 
     homePanelActive:function () {
@@ -72,7 +69,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     showPortalPanel:function () {
-        this.setActiveTab(TAB_INDEX_MAP);
+        this.setActiveTab(TAB_INDEX_VISUALIZE);
     },
 
     getActiveTab: function() {
@@ -86,7 +83,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         // Portal.ui.MainPanel.superclass.setActiveTab.call(this, item);
 
         if (!this.isMapVisible()) {
-            this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
+            this.visualizePanel.getMapPanel()._closeFeatureInfoPopup();
         }
 
         this._highlightActiveTab();
@@ -106,7 +103,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     isMapSelected:function () {
-        return this.getActiveTab() === this.portalPanel;
+        return this.getActiveTab() === this.visualizePanel;
     },
 
     onSelectedLayerChange:function () {

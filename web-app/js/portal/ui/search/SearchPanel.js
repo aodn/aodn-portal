@@ -37,18 +37,31 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             if (this.totalLength == 0) {
                 Ext.Msg.alert('Info', 'The search returned no results.');
             }
-        }, this.resultsStore);
+            else{
+                this._showResultsGrid();
+            }
+        }, this);
 
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            region: 'center',
-            split: true,
             hidden: true,
             store: this.resultsStore,
             onSearchComplete: function (response, page) {
                 this.store.loadData(response);
-                this.show();
             },
             pageSize: this.resultGridSize
+        });
+
+        this.splashPanel = new Portal.ui.HomePanel({});
+
+        this.bodyPanel =  new Ext.Panel({
+            region: 'center',
+            unstyled:true,
+            layout: 'card',
+            activeItem: 0,
+            items: [
+                this.splashPanel,
+                this.resultsGrid
+            ]
         });
 
         var config = Ext.apply({
@@ -56,7 +69,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             split: false,
             items: [
                 this.filtersPanel,
-                this.resultsGrid
+                this.bodyPanel
             ]
         }, cfg, defaults);
 
@@ -91,10 +104,14 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
     resultsStoreLoad:function () {
         this.resultsGrid.getBottomToolbar().onLoad(this.resultsStore, null, {params:{start:this.resultsStore.startRecord, limit:this.resultGridSize}});
+
     },
 
     _hideResultsGrid: function() {
-        this.resultsGrid.hide();
+        this.bodyPanel.layout.setActiveItem(0);
+    },
+    _showResultsGrid: function() {
+        this.bodyPanel.layout.setActiveItem(1);
     },
 
     onSearch:function (e) {

@@ -19,19 +19,19 @@ describe("Portal.ui.MainPanel", function() {
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockPortalPanel = {
+    var mockVisualize = {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
-    var mockHomePanel = {};
+    var mockDownloadPanel = {};
 
     var buildMockMainPanel = function() {
         spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
             return true
         });
 
-        spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
-        spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
+        spyOn(Portal.ui, "VisualizePanel").andReturn(mockVisualize);
+        spyOn(Portal.cart, "DownloadPanel").andReturn(mockDownloadPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
         spyOn(Ext.MsgBus, 'subscribe');
@@ -52,13 +52,13 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should init portal panel', function() {
-            expect(Portal.ui.PortalPanel).toHaveBeenCalled();
-            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
+            expect(Portal.ui.VisualizePanel).toHaveBeenCalled();
+            expect(mainPanel.visualizePanel).toEqual(mockVisualize);
         });
 
-        it('should init home panel', function() {
-            expect(Portal.ui.HomePanel).toHaveBeenCalled();
-            expect(mainPanel.homePanel).toEqual(mockHomePanel);
+        it('should init download panel', function() {
+            expect(Portal.cart.DownloadPanel).toHaveBeenCalled();
+            expect(mainPanel.downloadCartPanel).toEqual(mockDownloadPanel);
         });
 
         it('should subscribe to selectedLayerChange event', function() {

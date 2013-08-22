@@ -8,7 +8,7 @@
 
 Ext.namespace('Portal.ui');
 
-Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
+Portal.ui.VisualizePanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
@@ -29,7 +29,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout: 'border',
-            id: 'portalPanel',
+            id: 'visualizePanel',
             stateful: false,
             items: [
                 this.mapPanel,
@@ -37,7 +37,7 @@ Portal.ui.PortalPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Portal.ui.PortalPanel.superclass.constructor.call(this, config);
+        Portal.ui.VisualizePanel.superclass.constructor.call(this, config);
     },
 
 	getMapPanel: function() {
