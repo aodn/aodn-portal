@@ -53,12 +53,6 @@ describe("Portal.ui.MainPanel", function() {
             expect(Portal.ui.PortalPanel).toHaveBeenCalled();
             expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
         });
-
-        it('should subscribe to selectedLayerChange event', function() {
-            expect(Ext.MsgBus.subscribe).toHaveBeenCalledWith(
-                'selectedLayerChanged', mainPanel.onSelectedLayerChange, mainPanel
-            );
-        });
     });
 
 

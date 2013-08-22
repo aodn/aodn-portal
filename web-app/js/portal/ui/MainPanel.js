@@ -37,8 +37,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
-
-        Ext.MsgBus.subscribe('selectedLayerChanged', this.onSelectedLayerChange, this);
     },
 
     afterRender: function() {
@@ -63,10 +61,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         return this.portalPanel.getMapPanel();
     },
 
-    showPortalPanel:function () {
-        this.setActiveTab(TAB_INDEX_VIEW);
-    },
-
     getActiveTab: function() {
         return this.layout.activeItem;
     },
@@ -74,8 +68,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     setActiveTab:function (item) {
 
         this.layout.setActiveItem(item);
-
-        // Portal.ui.MainPanel.superclass.setActiveTab.call(this, item);
 
         if (!this.isMapVisible()) {
             this.portalPanel.getMapPanel()._closeFeatureInfoPopup();
@@ -99,11 +91,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     isMapSelected:function () {
         return this.getActiveTab() === this.portalPanel;
-    },
-
-    onSelectedLayerChange:function () {
-        if (this.homePanelActive()) {
-            this.showPortalPanel();
-        }
     }
 });
