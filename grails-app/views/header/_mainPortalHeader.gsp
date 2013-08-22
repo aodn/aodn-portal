@@ -17,8 +17,8 @@
         <div id="viewPortLinks">
             <g:each var="viewPortLink" status="i"
                     in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Search for Data Collections'],
-                           ['tabIndex': 'TAB_INDEX_MAP', 'description': 'Visualize and Subset'],
-                           ['tabIndex': 'TAB_INDEX_DOWNLOAD_CART', 'description': 'Download']]}" >
+                           ['tabIndex': 'TAB_INDEX_VIEW', 'description': 'Visualize and Subset'],
+                           ['tabIndex': 'TAB_INDEX_DOWNLOAD', 'description': 'Download']]}" >
                 <g:render template="/header/viewPortLink"
                           model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
             </g:each>

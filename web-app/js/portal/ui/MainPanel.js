@@ -8,8 +8,8 @@
 Ext.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;
-TAB_INDEX_MAP = 1;
-TAB_INDEX_DOWNLOAD_CART = 2;
+TAB_INDEX_VIEW = 1;
+TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
@@ -64,7 +64,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     showPortalPanel:function () {
-        this.setActiveTab(TAB_INDEX_MAP);
+        this.setActiveTab(TAB_INDEX_VIEW);
     },
 
     getActiveTab: function() {
