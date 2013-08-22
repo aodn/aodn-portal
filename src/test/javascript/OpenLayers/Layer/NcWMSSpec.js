@@ -286,6 +286,37 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('layer time synced with controller', function() {
+
+        beforeEach(function() {
+            var extent = [
+                moment('2001-02-01T00:00'),
+                moment('2001-02-02T00:00'),
+                moment('2001-02-03T00:00'),
+                moment('2001-02-04T00:00'),
+                moment('2001-02-05T00:00')
+            ]
+
+            cachedLayer = new OpenLayers.Layer.NcWMS();
+            cachedLayer.temporalExtent = extent;
+            cachedLayer._configureTimeControl();
+        });
+
+        it('start time on initialize', function() {
+            expect(cachedLayer.getStartTime()).toBeSame('2001-02-01T00:00');
+        });
+
+        it('end time on initialize', function() {
+            expect(cachedLayer.getEndTime()).toBeSame('2001-02-05T00:00');
+        });
+
+        it('start time on configureForLayer', function() {
+            // Load last 2 frames
+            cachedLayer._getTimeControl().configureForLayer(cachedLayer, 2));
+            expect(cachedLayer.getStartTime()).toBeSame('2001-02-04T00:00');
+        });
+    });
+
     describe('getExtent min/max', function() {
 
         var minExtent = moment('2001-02-01T00:00');
