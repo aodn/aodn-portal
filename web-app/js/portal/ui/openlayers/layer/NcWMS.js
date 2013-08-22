@@ -8,11 +8,19 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     DEFAULT_GIF_HEIGHT: 512,
 
+    FRAMES_TO_LOAD_ON_INIT: 10,
+
     STATES: {
         UNCACHED: 'UNCACHED',
         CACHING: 'CACHING',
         CACHED: 'CACHED'
     },
+
+    /**
+     * Moment range in time controller is showing user.
+     */
+    startTime: null,
+    endTime: null,
 
     /**
      * Moment in time that this layer represents.
@@ -135,17 +143,24 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
-                        // Need to reconfigure layer as we processed times
-                        // TODO: Configure for last 10 frames, a bit
-                        // ugly and hardcoded
-                        var timeControl = that._getTimeControl();
-                        timeControl.configureForLayer(that, 10);
+                        that._configureTimeControl();
                         that._processTemporalExtentDone();
                     }
                 })();
             }
             processDates();
         })();
+    },
+
+    _configureTimeControl: function() {
+        // Need to reconfigure layer as we processed times
+        // TODO: Configure for last 10 frames, a bit
+        // ugly and hardcoded
+        var timeControl  = this._getTimeControl();
+        var framesToLoad =
+            Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
+
+        timeControl.configureForLayer(this, framesToLoad);
     },
 
     _processTemporalExtentDone: function() {
@@ -262,6 +277,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getTemporalExtentMax: function() {
         return moment(this.temporalExtent.last());
+    },
+
+    // Returns end time as represented in controller
+    getStartTime: function() {
+        return this.startTime;
+    },
+
+    // Returns end time as represented in controller
+    getEndTime: function() {
+        return this.endTime;
     },
 
     toTime: function(dateTime) {
@@ -419,6 +444,30 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         return this.time;
+    },
+
+    getExtraFeatureInfo: function() {
+        extraParams = {};
+
+        extraParams.TIME =
+            this.getStartTime().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            + "/" +
+            this.getEndTime().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        extraParams.FORMAT = "image/png";
+        extraParams.INFO_FORMAT = "image/png";
+        return extraParams;
+    },
+
+    getFeatureInfoFormat: function() {
+        // Setting this in getExtraFeatureInfo, but we need to override the
+        // default 'text/xml' one
+        // See below as it is being wrapped with a <div> and <img src=''>
+        return "";
+    },
+
+    formatFeatureInfo: function(url) {
+        return "<div><img src='" + url + "'></div>";
     },
 
     /**

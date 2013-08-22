@@ -126,6 +126,11 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
                 }
             }
         );
+
+        // Synchronize with layer, so layer knows what's being displayed when
+        // it is asked for features (getFeatureInfo)
+        layer.startTime = timerTickDateTimes[0];
+        layer.endTime   = timerTickDateTimes.last();
         
         // Update the map straight away.
         this.onTick({
@@ -146,10 +151,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
 
-        if (startIndex == -1) {
-            return [];
-        }
-        if (endIndex   == -1) {
+        if (startIndex == -1 || endIndex == -1) {
             return [];
         }
 

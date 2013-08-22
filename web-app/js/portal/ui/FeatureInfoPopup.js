@@ -161,18 +161,20 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         	scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
             params: {
+                layer: layer,
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
                 units: layer.metadata.units,
-                animation: layer.isAnimated,
                 copyright: layer.metadata.copyright
             },
             success: function(resp, options) {
-            	if (options.params.animation) {
+                // See if layer supports custom formatting for features
+                if (options.params.layer.formatFeatureInfo) {
             		this.numGoodResults++;
-            		this._addPopupTabContent("<div><img src='" + options.url + "'></div>", options.params.name);
-            	}
-            	else {
+            		this._addPopupTabContent(
+                        options.params.layer.formatFeatureInfo(options.url),
+                        options.params.name);
+                } else {
 	                var newTabContent = formatGetFeatureInfo( resp, options );
 	                if (newTabContent) {
 	                    this.numGoodResults++;
@@ -195,12 +197,17 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     _getLayerFeatureInfoRequestString: function(layer) {
     	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
         var format = 'text/xml';
-    	if (layer.isAnimated && layer.startTime && layer.endTime) {
-			extraParams.TIME = layer.startTime.toISOString() + "/" + layer.endTime.toISOString();
-			extraParams.FORMAT = "image/png";
-			extraParams.INFO_FORMAT = "image/png";
-            delete format;
-		}
+
+        // If the layer implements getExtraFeatureInfo, call it and merge
+        // results (will override existing parameters)
+        if (layer.getExtraFeatureInfo) {
+            $.extend(extraParams, layer.getExtraFeatureInfo());
+        }
+
+        // Layer may also override feature format, if required
+        if (layer.getFeatureInfoFormat) {
+            format = layer.getFeatureInfoFormat();
+        }
 
         var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), extraParams));
         if (format) {
