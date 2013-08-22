@@ -12,9 +12,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 	constructor: function(config) {
 
         this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner',{'resource':'layers'}),
-            hidden: true,
-            flex: 2
+            html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
+            flex: 3
         });
 
         this.titleBar = new Ext.Panel({
@@ -25,10 +24,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 defaultMargins: {top:0, right:0, bottom:4, left:0}
             },
             items: [
-                new Ext.Panel({
-                    html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
-                    flex: 2
-                }),
                 this.spinner,
                 new Ext.Panel({
                     items: [ this._buildClearAllLink() ],
@@ -128,11 +123,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _showIntroMessage: function() {
         this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle') );
-        this.spinner.hide();
     },
 
     _showError: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailableText') );
+        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailable') );
     },
 
     _buildClearAllLink: function() {
@@ -148,15 +142,13 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setTitleText: function( newText ) {
-
-        var tb = this.titleBar;
-        var title = tb.items.get( 0 );
-
-        title.update( '<span class="x-panel-header-text">' + newText + '</span>' );
-        tb.doLayout();
+        this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
+        this.titleBar.doLayout();
     },
 
     _onClearAllClicked: function() {
+
+        this._setTitleText(OpenLayers.i18n('facetedSearchResetting'));
 
         this.parameterFilter.removeAnyFilters();
         this.themeFilter.removeAnyFilters();
@@ -171,9 +163,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setClearAllLinkVisibility: function() {
-
+        this.spinner.update( OpenLayers.i18n('loadingSpinner',{'resource':'layers'}));
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
-
-        this.spinner.show();
     }
 });
