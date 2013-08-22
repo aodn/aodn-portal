@@ -135,7 +135,8 @@ Portal.data.GeoNetworkRecord.create = function(o){
         return {
             layerName: layerName,
             serverUri: serverUri,
-            cqlFilter: layer.params.CQL_FILTER ? layer.params.CQL_FILTER : ""
+            cqlFilter: layer.params.CQL_FILTER ? layer.params.CQL_FILTER : "",
+            metadataUrl: layer.getMetadataUrl()
         };
     };
 

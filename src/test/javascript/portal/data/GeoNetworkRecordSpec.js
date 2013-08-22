@@ -29,6 +29,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
                     LAYERS: 'layer name',
                     CQL_FILTER: 'cql_filter'
                 },
+                getMetadataUrl: function() { return 'metadata_url' },
                 someUnusedField: 'la la la'
             }
         });
@@ -89,6 +90,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.layerName).toBe('layer name');
             expect(wfsInfo.serverUri).toBe('server_url');
             expect(wfsInfo.cqlFilter).toBe('cql_filter');
+            expect(wfsInfo.metadataUrl).toBe('metadata_url');
             expect(wfsInfo.unusedField).toBe(undefined);
         });
 
@@ -108,6 +110,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.layerName).toBe('wfs layer name');
             expect(wfsInfo.serverUri).toBe('wfs_server_uri');
             expect(wfsInfo.cqlFilter).toBe('cql_filter');
+            expect(wfsInfo.metadataUrl).toBe('metadata_url');
             expect(wfsInfo.unusedField).toBe(undefined);
         });
     });

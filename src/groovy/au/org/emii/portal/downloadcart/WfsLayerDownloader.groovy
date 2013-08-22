@@ -8,9 +8,9 @@
 
 package au.org.emii.portal.downloadcart
 
-import static au.org.emii.portal.UrlUtils.*
+import static au.org.emii.portal.UrlUtils.urlWithQueryString
 
-class WfsLayerDownloader {
+class WfsLayerDownloader implements Downloader {
 
 	def info
 
@@ -18,24 +18,46 @@ class WfsLayerDownloader {
 
 		info = record.wfsDownloadInfo
 
-		return info ? [_wfsDownloadItemFrom()] : []
+		if (info) {
+
+			return [_wfsDownloadItem(), _downloadMetadataItem()]
+		}
+		else {
+
+			return []
+		}
 	}
 
-	def _wfsDownloadItemFrom() {
+	def _wfsDownloadItem() {
 
 		[
-			title: _wfsItemTitle(),
-			preferredFname: _sanitiseFileName(info.layerName) + ".csv",
-			href: _wfsUrlFrom(),
+			title: _wfsDownloadItemTitle(),
+			preferredFname: _sanitiseFilename() + ".csv",
+			href: _wfsDownloadUrl(),
 			type: "text/csv" // Will be configurable later
 		]
 	}
 
-	def _wfsUrlFrom() {
+	def _downloadMetadataItem() {
+
+		[
+			title: _metadataItemTitle(),
+			preferredFname: _sanitiseFilename() + "_metadata.xml",
+			href: _metadataUrl(),
+			type: "application/xml"
+		]
+	}
+
+	def _wfsDownloadUrl() {
 
 		def serverWfsUrl = info.serverUri.replace("/wms", "/wfs")
 
 		return urlWithQueryString(serverWfsUrl, _wfsQueryArgs())
+	}
+
+	def _metadataUrl() {
+
+		return info.metadataUrl
 	}
 
 	def _wfsQueryArgs() {
@@ -56,15 +78,20 @@ class WfsLayerDownloader {
 		return queryArgs
 	}
 
-	def _wfsItemTitle() {
+	def _wfsDownloadItemTitle() {
 
 		def prefix = info.cqlFilter ? "Filtered " : ""
 
 		return prefix + info.layerName + " data"
 	}
 
-	static def _sanitiseFileName(name) {
+	def _metadataItemTitle() {
 
-		return name.replace(":", "#")
+		return info.layerName + " metadata"
+	}
+
+	def _sanitiseFilename() {
+
+		return info.layerName.replace(":", "#")
 	}
 }

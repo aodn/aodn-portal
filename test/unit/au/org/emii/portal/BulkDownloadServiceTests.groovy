@@ -41,7 +41,8 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         'wfsDownloadInfo': {
             'layerName': 'imos:argo_floats',
             'cqlFilter': 'oxygen_sensor = true',
-            'serverUri': 'server_uri'
+            'serverUri': 'server_uri',
+            'metadataUrl': 'metadata_url'
         }
     }
 ]"""

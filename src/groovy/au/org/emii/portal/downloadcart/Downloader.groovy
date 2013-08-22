@@ -5,13 +5,9 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-
 package au.org.emii.portal.downloadcart
 
-class LinkedFileDownloader implements Downloader {
+public interface Downloader {
 
-	def getMatchingEntries(record) {
-
-		record.downloadableLinks ?: []
-	}
+	def getMatchingEntries(record)
 }
