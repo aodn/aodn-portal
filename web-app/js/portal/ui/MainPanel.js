@@ -17,9 +17,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg);
 
-        this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.searchTabPanel = this._initSearchTabPanel(cfg);
-        this.homePanel = new Portal.ui.HomePanel({appConfig:Portal.app.config});
+        this.portalPanel = new Portal.ui.PortalPanel({appConfig:Portal.app.config});
         this.downloadCartPanel = new Portal.cart.DownloadPanel()
 
         var config = Ext.apply({
@@ -31,9 +30,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             unstyled:true,
             layout: 'card',
             items:[
-                this.homePanel,
-                this.portalPanel,
                 this.searchTabPanel,
+                this.portalPanel,
                 this.downloadCartPanel
             ]
         }, cfg);
@@ -63,10 +61,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     getMapPanel:function () {
         return this.portalPanel.getMapPanel();
-    },
-
-    homePanelActive:function () {
-        return this.getActiveTab() === this.homePanel;
     },
 
     showPortalPanel:function () {
