@@ -97,7 +97,6 @@ depthService.url = "http://depthservice.aodn.org.au/depth"
 openId {
     // openID provider details to support login popup etc
     providers = [
-        //    [ name: "eMII",   iconHref : "images/AODNfavicon.ico", supportsProviderLogout : true, providerHref : "https://devid.emii.org.au" ],
         [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
         [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
         // Add your own providers here ...
