@@ -719,7 +719,6 @@ p.important {
     background-image: none;
     background-color: inherit;
     border: none;
-    padding: 10px 3px 4px 10px;
     font-size: 13px;
 }
 .addServerStatusPanel .x-panel-header {
@@ -1015,6 +1014,16 @@ div.allwhite {
 
 .term-selection-panel .ext-el-mask {
     background-color: #F4F4F4;
+}
+.p-selected-view {
+    margin: 5px;
+}
+.p-selection-wrap *{
+    vertical-align: middle;
+}
+.p-selection-wrap input {
+    margin-bottom: 2px;
+    margin-right: 5px;
 }
 
 .search-filter-panel .term-selection-panel-header-selected {
