@@ -153,12 +153,6 @@ input, select, textarea {
     text-decoration: underline;
 }
 
-.menuHeader {
-    font-size: 14px;
-    color: #00AEEF;
-    padding: 15px 1px 10px 10px;
-}
-
 .x-panel-header,
 #rightHomePanel h3{
     font-size: 14px;
