@@ -1085,13 +1085,17 @@ div.allwhite {
 .styledButton a:hover {
     text-decoration: underline;
 }
+
 .cart-title {
+    font-weight: bold;
 }
+
 .cart-row {
     margin-top: 5px;
     padding: 10px;
     background-color: #FAFAFA;
 }
+
 .cart-file-row {
     margin-left:  15px;
     font-size: small;
@@ -1100,8 +1104,6 @@ div.allwhite {
 
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError { display: none; }
-
-
 
 .highlight:hover {
     background-color : #ffff99
