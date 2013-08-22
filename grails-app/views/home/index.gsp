@@ -242,6 +242,8 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/search/SearchBodyPanel.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/search/SearchPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"
