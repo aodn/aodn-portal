@@ -7,11 +7,9 @@
 
 Ext.namespace('Portal.ui');
 
-// Tab indexes (global)
-TAB_INDEX_HOME = 0;
+TAB_INDEX_SEARCH = 0;
 TAB_INDEX_MAP = 1;
-TAB_INDEX_SEARCH = 2;
-TAB_INDEX_DOWNLOAD_CART = 3;
+TAB_INDEX_DOWNLOAD_CART = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 

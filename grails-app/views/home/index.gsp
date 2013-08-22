@@ -293,7 +293,7 @@ ${buildInfo}
 
 <body>
 
-<g:render template="/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
+<g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
 
 <%-- Display message from Grails app --%>
 <g:if test="${flash.openIdMessage }">
