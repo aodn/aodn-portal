@@ -12,7 +12,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
   <div class="p-centre-item" style="width:560px">
 
     <g:render template='waodnIntroduction' />
-    <g:render template='navigationSnippet' />
 
     <div class="clear spacer"></div>
 
