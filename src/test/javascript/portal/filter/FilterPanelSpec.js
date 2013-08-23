@@ -45,4 +45,19 @@ describe("Portal.filter.FilterPanel", function() {
             expect(filterPanel._clearFilters).toHaveBeenCalled();
         });
     });
+
+    describe('_hasAnyActiveFilters()', function() {
+
+        it('returns false when there are not any active filters', function() {
+
+            expect(filterPanel._hasAnyActiveFilters()).toBe(false);
+        });
+
+        it('returns true when there are active filters', function() {
+
+            filterPanel.activeFilters['oxygen_sensor'] = "oxygen_senor = true";
+
+            expect(filterPanel._hasAnyActiveFilters()).toBe(true);
+        });
+    });
 });
