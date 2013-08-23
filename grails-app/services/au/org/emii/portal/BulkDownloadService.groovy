@@ -48,7 +48,6 @@ class BulkDownloadService {
 		// Create a deep copy of itemsToDownload to work with
 		def copyOfItemsToDownload = itemsToDownload.collect(mapDeepCopyJson)
 
-		// Create Zip archive stream
 		zipStream = new ZipOutputStream(outputStream)
 
 		// Add all files to archive
@@ -61,7 +60,6 @@ class BulkDownloadService {
 
 		_addDownloadReportToArchive(locale)
 
-		// Close zip stream
 		zipStream.close()
 	}
 
