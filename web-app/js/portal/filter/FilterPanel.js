@@ -50,24 +50,24 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         filter.label = filter.label.split('_').join(' ').toTitleCase();
 
-    	var newFilter = undefined;
+        var newFilter = undefined;
 
-    	if (filter.type === "String") {
-    		newFilter = new  Portal.filter.ComboFilter({
-    			fieldLabel: filter.label
-    		});
-    	}
-    	else if (filter.type == "Date") {
-    		newFilter = new Portal.filter.TimeFilter({
-				fieldLabel: filter.label
-			});
-    	}
-    	else if (filter.type === "Boolean") {
-    		newFilter = new Portal.filter.BooleanFilter({
-    		   fieldLabel: filter.label
-    		});
-    	}
-    	else if (filter.type === "BoundingBox") {
+        if (filter.type === "String") {
+            newFilter = new  Portal.filter.ComboFilter({
+                fieldLabel: filter.label
+            });
+        }
+        else if (filter.type == "Date") {
+            newFilter = new Portal.filter.TimeFilter({
+                fieldLabel: filter.label
+            });
+        }
+        else if (filter.type === "Boolean") {
+            newFilter = new Portal.filter.BooleanFilter({
+               fieldLabel: filter.label
+            });
+        }
+        else if (filter.type === "BoundingBox") {
             newFilter = new Portal.filter.BoundingBoxFilter({
                 fieldLabel: filter.label
             })
@@ -81,12 +81,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
             //Filter hasn't been defined
         }
 
-    	if (newFilter) {
-    		newFilter.setLayerAndFilter(layer, filter);
-			this.relayEvents(newFilter, ['addFilter']);
-			this._addLabel(filter);
-    		this.add(newFilter);
-    	}
+        if (newFilter) {
+            newFilter.setLayerAndFilter(layer, filter);
+            this.relayEvents(newFilter, ['addFilter']);
+            this._addLabel(filter);
+            this.add(newFilter);
+        }
     },
 
     _addLabel: function(filter){
@@ -100,11 +100,11 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     update: function(layer, show, hide, target){
         this.layer = layer;
 
-		if (layer.grailsLayerId) {
+        if (layer.grailsLayerId) {
 
-			Ext.Ajax.request({
-				url: this.GET_FILTER,
-				params: {
+            Ext.Ajax.request({
+                url: this.GET_FILTER,
+                params: {
                     layerId: layer.grailsLayerId
                 },
                 scope: this,
@@ -128,17 +128,17 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     if (aFilterIsEnabled) {
                         this.setVisible(true);
 
-						this.clearFiltersButton = new Ext.Button({
-							cls: "x-btn-text-icon",
-							icon: "images/go-back-icon.png",
-							text: 'Clear Filters',
-							listeners: {
-								scope: this,
-								click: this._clearFilters
-							}
-						});
+                        this.clearFiltersButton = new Ext.Button({
+                            cls: "x-btn-text-icon",
+                            icon: "images/go-back-icon.png",
+                            text: 'Clear Filters',
+                            listeners: {
+                                scope: this,
+                                click: this._clearFilters
+                            }
+                        });
 
-						this.add(this.clearFiltersButton);
+                        this.add(this.clearFiltersButton);
 
                         this.doLayout();
                         show.call(target, this);
@@ -155,14 +155,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateFilter: function() {
-    	var combinedCQL = "";
+        var combinedCQL = "";
 
-		if (_hasAnyActiveFilters()) {
-			for (var name in this.activeFilters) {
-				if (this.activeFilters[name].hasValue()) {
-					combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
-				}
-			}
+        if (_hasAnyActiveFilters()) {
+            for (var name in this.activeFilters) {
+                if (this.activeFilters[name].hasValue()) {
+                    combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
+                }
+            }
 
             if (combinedCQL.length > 0) {
                 combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
@@ -197,5 +197,5 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
 
         this._updateFilter();
-	}
+    }
 });
