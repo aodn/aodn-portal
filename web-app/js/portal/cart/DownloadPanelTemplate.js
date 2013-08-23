@@ -17,7 +17,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  <div class="cart-title-row">',
             '    <span class="cart-title">{title}</span>',
             '  </div>',
-            '  <tpl if="wmsLayer&& wmsLayer.params.CQL_FILTER"><div class=cart-data-filter>Filter applied: <code>{[this._getWmsLayerCql(values.wmsLayer)]}</code></div></tpl>',
+            '  <tpl if="wmsLayer && wmsLayer.params.CQL_FILTER"><div class=cart-data-filter>Filter applied: <code>{[this._getWmsLayerCql(values.wmsLayer)]}</code></div></tpl>',
             '  <div class="cart-files">{[this._getFileListMarkup(values.downloadableLinks)]}</div>',
             '</div>'
         ];
