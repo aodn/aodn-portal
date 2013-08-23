@@ -160,6 +160,10 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             resizable : false,
             autoHeight: true,
             layout:  'fit',
+            // This magic number exists because without it, the contents of this window don't show.
+            // There is no doubt a better way to do this (based on the sizes of content, for exmaple),
+            // be my guest if you can get it to work.
+            width: 300,
             afterRender : function() {
 
                 Ext.Window.superclass.afterRender.apply(this);
