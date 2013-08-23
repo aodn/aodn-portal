@@ -85,8 +85,6 @@ describe('Portal.data.GeoNetworkRecord', function() {
 
             var wfsInfo = convertedData['wfsDownloadInfo'];
 
-            console.log(wfsInfo);
-
             expect(wfsInfo.layerName).toBe('layer name');
             expect(wfsInfo.serverUri).toBe('server_url');
             expect(wfsInfo.cqlFilter).toBe('cql_filter');
