@@ -231,7 +231,7 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"
         type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/PortalPanel.js')}"
+<script src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
         type="text/javascript"></script>
@@ -241,6 +241,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"
+        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/ui/search/SearchBodyPanel.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/ui/search/SearchPanel.js')}"
         type="text/javascript"></script>
@@ -293,7 +295,7 @@ ${buildInfo}
 
 <body>
 
-<g:render template="/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
+<g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
 
 <%-- Display message from Grails app --%>
 <g:if test="${flash.openIdMessage }">

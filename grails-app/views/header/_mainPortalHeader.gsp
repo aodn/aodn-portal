@@ -15,29 +15,13 @@
 
     <g:if test="${showLinks}">
         <div id="viewPortLinks">
-            <div class="viewPortTab viewPortTabDisabled" id="viewPortTab0">
-                <a href="" onClick="setViewPortTab(TAB_INDEX_HOME); return false;">
-                        <h1>1</h1>
-                        <h2>Step 1</h2>
-                        <p>Search for Data Collections</p>
-                </a>
-            </div>
-
-            <div class="viewPortTab viewPortTabDisabled" id="viewPortTab1">
-                <a href="" onClick="setViewPortTab(TAB_INDEX_MAP); return false;">
-                        <h1>2</h1>
-                        <h2>Step 2</h2>
-                        <p>Visualize and Subset</p>
-                </a>
-            </div>
-
-            <div class="viewPortTab viewPortTabDisabled" id="viewPortTab2">
-                <a href="" onClick="setViewPortTab(TAB_INDEX_SEARCH); return false;">
-                        <h1>3</h1>
-                        <h2>Step 3</h2>
-                        <p>Download</p>
-                </a>
-            </div>
+            <g:each var="viewPortLink" status="i"
+                    in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Search for Data Collections'],
+                           ['tabIndex': 'TAB_INDEX_VISUALIZE', 'description': 'Visualise and Subset'],
+                           ['tabIndex': 'TAB_INDEX_DOWNLOAD', 'description': 'Download']]}" >
+                <g:render template="/header/viewPortLink"
+                          model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
+            </g:each>
         </div>
     </g:if>
 
@@ -116,4 +100,3 @@
 
     </div>
 </div>
-

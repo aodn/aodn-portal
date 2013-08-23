@@ -15,6 +15,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     enableColumnResize: false,
     mapWidth: 200,
     mapHeight: 104,
+    pageSize: 10,
 
     initComponent:function () {
 
@@ -70,6 +71,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
+        this.store.on('load', function() {
+            this._onStoreLoad();
+        }, this);
     },
 
     afterRender:function () {
@@ -211,6 +215,19 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             zoomLevel = 4;
         }
         return zoomLevel;
+    },
+
+    _onStoreLoad: function() {
+        this.getBottomToolbar().onLoad(
+            this.store,
+            null,
+            {
+                params: {
+                    start: this.store.startRecord,
+                    limit: 10
+                }
+            }
+        );
     }
 });
 
