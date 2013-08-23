@@ -63,12 +63,5 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.filtersPanel.on('filtersCleared', function() {
             this.bodyPanel.onFiltersCleared();
         }, this);
-    },
-
-    // TODO: where is this being called from.
-    onSearch: function (e) {
-        this.searcher.removeFilters("any");
-        this.searcher.addFilter("any", e);
-        this.searcher.search();
     }
 });
