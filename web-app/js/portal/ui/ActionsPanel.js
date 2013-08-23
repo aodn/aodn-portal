@@ -12,12 +12,12 @@ Portal.ui.ActionsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(cfg);
-
         this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(cfg);
+
         var config = Ext.apply({
             id: 'activeMenuPanel',
             autoHeight: true,
-            items:[
+            items: [
                 this.mapOptionsPanel,
                 this.activeLayersPanel
             ]
