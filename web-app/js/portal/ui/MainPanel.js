@@ -18,7 +18,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, cfg);
 
         this.searchTabPanel = this._initSearchTabPanel(cfg);
-        this.visualizePanel = new Portal.ui.VisualizePanel({appConfig:Portal.app.config});
+        this.visualisePanel = new Portal.ui.VisualisePanel({appConfig:Portal.app.config});
         this.downloadCartPanel = new Portal.cart.DownloadPanel()
 
         var config = Ext.apply({
@@ -31,7 +31,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             layout: 'card',
             items:[
                 this.searchTabPanel,
-                this.visualizePanel,
+                this.visualisePanel,
                 this.downloadCartPanel
             ]
         }, cfg);
@@ -57,7 +57,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     getMapPanel:function () {
-        return this.visualizePanel.getMapPanel();
+        return this.visualisePanel.getMapPanel();
     },
 
     getActiveTab: function() {
@@ -69,7 +69,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.layout.setActiveItem(item);
 
         if (!this.isMapVisible()) {
-            this.visualizePanel.getMapPanel()._closeFeatureInfoPopup();
+            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
         }
 
         this._highlightActiveTab();
@@ -89,6 +89,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     isMapSelected:function () {
-        return this.getActiveTab() === this.visualizePanel;
+        return this.getActiveTab() === this.visualisePanel;
     }
 });
