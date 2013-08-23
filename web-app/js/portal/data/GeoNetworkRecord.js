@@ -67,7 +67,17 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
     var f = Ext.data.Record.create(o);
 
-    f.prototype.getFirstWmsLink = function() {
+    Portal.data.GeoNetworkRecord._addGetFirstWmsLink(f.prototype);
+    Portal.data.GeoNetworkRecord._addHasWmsLink(f.prototype);
+    Portal.data.GeoNetworkRecord._addConvertData(f.prototype);
+    Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer(f.prototype);
+
+    return f;
+};
+
+Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
+
+    prototype.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -84,12 +94,19 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
         return linkStore.getLayerLink(0);
     };
+};
 
-    f.prototype.hasWmsLink = function() {
+Portal.data.GeoNetworkRecord._addHasWmsLink = function(prototype) {
+
+    prototype.hasWmsLink = function() {
+
         return this.getFirstWmsLink() != undefined;
     };
+};
 
-    f.prototype.convertedData = function() {
+Portal.data.GeoNetworkRecord._addConvertData = function(prototype) {
+
+    prototype.convertedData = function() {
 
         var convertedData = {};
 
@@ -113,8 +130,11 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
         return convertedData;
     };
+};
 
-    f.prototype.wfsDownloadInfoForLayer = function(layer) {
+Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer = function(prototype) {
+
+    prototype.wfsDownloadInfoForLayer = function(layer) {
 
         var wfsLayer = layer.wfsLayer;
 
@@ -139,8 +159,6 @@ Portal.data.GeoNetworkRecord.create = function(o){
             metadataUrl: layer.getMetadataUrl()
         };
     };
-
-    return f;
 };
 
 Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
