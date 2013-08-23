@@ -218,23 +218,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         assertTrue service._isValidFromResponse( 'Some String which is not empty but that does not match any of the other conditions' )
     }
 
-    void testBuildUrl() {
-
-        // Test 1 - storedUri contains '?'
-        def testLayer = [server: [uri: 'STORED_URI?A=B']]
-        def testFeatureInfoParams = "B=C"
-
-        assertEquals "STORED_URI?A=B&B=C", service._buildUrl( testLayer, testFeatureInfoParams )
-
-        // Test 2 - storedUri doesn't contain '?'
-        testLayer = [server: [uri: 'STORED_URI']]
-
-        assertEquals "STORED_URI?B=C", service._buildUrl( testLayer, testFeatureInfoParams )
-    }
-
     void testConstructFeatureInfoRequest() {
-
-        service.metaClass._buildUrl = { layer, params -> params }
 
         // Test data
         def testLayer = [
@@ -243,7 +227,8 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
             bboxMinY: 12,
             bboxMaxY: 30,
             name: 'Cool Layer',
-            projection: 'EPSG:1234'
+            projection: 'EPSG:1234',
+	        server: [uri: "url"]
         ]
 
         def testParams = [
@@ -251,7 +236,7 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         ]
 
         // Test 1 - Build URL with infoFormat
-        def expectedResult = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=Cool+Layer&STYLES=&SRS=EPSG%3A1234&CRS=EPSG%3A1234&BBOX=5.0%2C12.0%2C16%2C30&QUERY_LAYERS=Cool+Layer&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1&INFO_FORMAT=text%2Fplain'
+        def expectedResult = 'url?VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=Cool+Layer&STYLES=&SRS=EPSG%3A1234&CRS=EPSG%3A1234&BBOX=5.0%2C12.0%2C16%2C30&QUERY_LAYERS=Cool+Layer&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1&INFO_FORMAT=text%2Fplain'
 
         assertEquals expectedResult, service._constructFeatureInfoRequest( testLayer, testParams )
 
@@ -260,8 +245,27 @@ class CheckLayerAvailabilityServiceTests extends GrailsUnitTestCase {
         testLayer.bboxMaxY = testLayer.bboxMinY
         testParams.format = ""
 
-        expectedResult = 'VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=Cool+Layer&STYLES=&SRS=EPSG%3A1234&CRS=EPSG%3A1234&BBOX=4.0%2C11.0%2C5%2C12&QUERY_LAYERS=Cool+Layer&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
+        expectedResult = 'url?VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=Cool+Layer&STYLES=&SRS=EPSG%3A1234&CRS=EPSG%3A1234&BBOX=4.0%2C11.0%2C5%2C12&QUERY_LAYERS=Cool+Layer&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
 
         assertEquals expectedResult, service._constructFeatureInfoRequest( testLayer, testParams )
     }
+
+	void testBboxFromLayer() {
+
+		def testLayer = [
+		    bboxMinX: 1.0,
+		    bboxMaxX: 2.0,
+		    bboxMinY: 3.0,
+		    bboxMaxY: 4.0
+		]
+
+		assertEquals "1.0,3.0,2.0,4.0", service.bboxFromLayer(testLayer)
+	}
+
+	void testDistinctMinimum() {
+
+		assertEquals 1.0, service.distinctMinimum(1.0, 3.0)
+		assertEquals 1.0, service.distinctMinimum(2.0, 2.0)
+		assertEquals( -10.0, service.distinctMinimum(-9.0, -9.0) )
+	}
 }

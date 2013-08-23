@@ -81,6 +81,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/prototypes/Object.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/prototypes/OpenLayers.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/lang/en.js')}" type="text/javascript"></script>

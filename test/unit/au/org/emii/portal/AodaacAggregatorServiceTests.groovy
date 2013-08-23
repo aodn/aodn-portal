@@ -663,12 +663,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals 0, sendMailCalledCount
     }
 
-    void testEnsureTrailingSlash() {
-
-        assertEquals "string1/", aodaacAggregatorService._ensureTrailingSlash( "string1" )
-        assertEquals "string2/", aodaacAggregatorService._ensureTrailingSlash( "string2/" )
-    }
-
 	void testJobHasTakenToolong() {
 
 		def adjustedDate = new GregorianCalendar()

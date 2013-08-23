@@ -67,7 +67,17 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
     var f = Ext.data.Record.create(o);
 
-    f.prototype.getFirstWmsLink = function() {
+    Portal.data.GeoNetworkRecord._addGetFirstWmsLink(f.prototype);
+    Portal.data.GeoNetworkRecord._addHasWmsLink(f.prototype);
+    Portal.data.GeoNetworkRecord._addConvertData(f.prototype);
+    Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer(f.prototype);
+
+    return f;
+};
+
+Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
+
+    prototype.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -84,12 +94,71 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
         return linkStore.getLayerLink(0);
     };
+};
 
-    f.prototype.hasWmsLink = function() {
+Portal.data.GeoNetworkRecord._addHasWmsLink = function(prototype) {
+
+    prototype.hasWmsLink = function() {
+
         return this.getFirstWmsLink() != undefined;
     };
+};
 
-    return f;
+Portal.data.GeoNetworkRecord._addConvertData = function(prototype) {
+
+    prototype.convertedData = function() {
+
+        var convertedData = {};
+
+        Ext.each(
+            Object.keys(this.data),
+            function(key) {
+
+                var item = this.data[key];
+
+                if (key == 'wmsLayer') {
+
+                    convertedData['wfsDownloadInfo'] = this.wfsDownloadInfoForLayer(item);
+                }
+                else {
+
+                    convertedData[key] = item;
+                }
+            },
+            this
+        );
+
+        return convertedData;
+    };
+};
+
+Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer = function(prototype) {
+
+    prototype.wfsDownloadInfoForLayer = function(layer) {
+
+        var wfsLayer = layer.wfsLayer;
+
+        var layerName;
+        var serverUri;
+
+        if (wfsLayer) {
+
+            layerName = wfsLayer.name;
+            serverUri = wfsLayer.server.uri;
+        }
+        else {
+
+            layerName = layer.params.LAYERS;
+            serverUri = layer.server.uri;
+        }
+
+        return {
+            layerName: layerName,
+            serverUri: serverUri,
+            cqlFilter: layer.params.CQL_FILTER ? layer.params.CQL_FILTER : "",
+            metadataUrl: layer.getMetadataUrl()
+        };
+    };
 };
 
 Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
@@ -100,5 +169,6 @@ Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     Portal.data.GeoNetworkRecord.DownloadableLinksField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-    Portal.data.GeoNetworkRecord.BboxField
+    Portal.data.GeoNetworkRecord.BboxField,
+    'wmsLayer'
 ]);

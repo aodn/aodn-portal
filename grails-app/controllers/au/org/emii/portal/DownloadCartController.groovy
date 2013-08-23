@@ -52,5 +52,4 @@ class DownloadCartController {
             log.error "Unhandled Exception caught during bulk download", e
         }
      }
-
 }
