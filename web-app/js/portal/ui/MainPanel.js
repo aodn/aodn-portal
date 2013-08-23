@@ -51,8 +51,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             proxyUrl: proxyURL,
             catalogUrl: Portal.app.config.catalogUrl,
             spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
-            dragAndDrop: cfg.dragAndDrop
+            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
         });
     },
 
