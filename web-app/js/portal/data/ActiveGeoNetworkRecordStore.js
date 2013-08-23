@@ -32,15 +32,18 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         }, this);
     },
 
-    _onAdd: function(store, geoNetworkRecords, index) {
+    _onAdd: function(store, geoNetworkRecords) {
         Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
                 Portal.data.LayerStore.instance().addUsingLayerLink(
                     geoNetworkRecord.getFirstWmsLink(),
                     function(layerRecord) {
+                        var wmsLayer = layerRecord.get('layer');
+
                         geoNetworkRecord.layerRecord = layerRecord;
+                        geoNetworkRecord.data['wmsLayer'] = wmsLayer;
                         layerRecord.parentGeoNetworkRecord = geoNetworkRecord;
-                        layerRecord.get('layer').parentGeoNetworkRecord = geoNetworkRecord;
+                        wmsLayer.parentGeoNetworkRecord = geoNetworkRecord;
                     }
                 );
             }
@@ -49,7 +52,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.MsgBus.publish('activegeonetworkrecordadded', geoNetworkRecords);
     },
 
-    _onRemove: function(store, record, index) {
+    _onRemove: function(store, record) {
         this._removeFromLayerStore(record);
         Ext.MsgBus.publish('activegeonetworkrecordremoved', record);
     },
@@ -79,10 +82,10 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         var items = [];
 
         Ext.each(this.data.items, function(item) {
-            items.push(item.data);
+            items.push(item.convertedData());
         });
 
-        return Ext.util.JSON.encode(items)
+        return Ext.util.JSON.encode(items);
     }
 });
 

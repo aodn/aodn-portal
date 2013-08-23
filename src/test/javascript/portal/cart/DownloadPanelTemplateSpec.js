@@ -29,32 +29,44 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                     title: 'the title one',
                     type: 'text/html'
                 }
-            ]
+            ],
+            wmsLayer: {
+                getCqlFilter: function() {
+                    return "cql_filter"
+                }
+            }
         });
 
         fragment = tpl.apply(geoNetworkRecord.data);
     });
 
     describe('main template', function() {
-        it('div cart-row', function() {
+        it('has correct number of children', function() {
             expect($(fragment).attr('class')).toEqual('cart-row');
-            expect($(fragment).children().length).toBe(2);
+            expect($(fragment).children().length).toBe(3);
         });
 
-        it('div cart-title-row', function() {
+        it('children are of correct class', function() {
             expect($(fragment).find(':nth-child(1)').attr('class')).toEqual('cart-title-row');
-            expect($(fragment).find(':nth-child(2)').attr('class')).toEqual('cart-files');
+            expect($(fragment).find(':nth-child(2)').attr('class')).toEqual('cart-data-filter');
+            expect($(fragment).find(':nth-child(3)').attr('class')).toEqual('cart-files');
         });
 
-        it('div cart-files', function() {
-            expect($(fragment).find(':nth-child(2)').attr('class')).toEqual('cart-files');
-            expect($(fragment).find(':nth-child(2)').children().length).toEqual(1);
-            expect($(fragment).find(':nth-child(2)').children().attr('class')).toEqual('cart-file-row');
-        });
-
-        it('span cart-title', function() {
+        it('title is correct', function() {
             expect($(fragment).find('span').attr('class')).toEqual('cart-title');
             expect($(fragment).find('span').text()).toEqual('the title');
+        });
+
+        it('filter info is correct', function() {
+            expect($(fragment).find(':nth-child(2)').attr('class')).toEqual('cart-data-filter');
+            expect($(fragment).find(':nth-child(2)').children().length).toEqual(1);
+            expect($(fragment).find(':nth-child(2)').children().text()).toEqual('cql_filter');
+        });
+
+        it('files info is correct', function() {
+            expect($(fragment).find(':nth-child(3)').attr('class')).toEqual('cart-files');
+            expect($(fragment).find(':nth-child(3)').children().length).toEqual(1);
+            expect($(fragment).find(':nth-child(3)').children().attr('class')).toEqual('cart-file-row');
         });
     });
 
