@@ -48,19 +48,23 @@ class BulkDownloadService {
 		// Create a deep copy of itemsToDownload to work with
 		def copyOfItemsToDownload = itemsToDownload.collect(mapDeepCopyJson)
 
-		zipStream = new ZipOutputStream(outputStream)
+		try {
+			zipStream = new ZipOutputStream(outputStream)
 
-		// Add all files to archive
-		copyOfItemsToDownload.each {
+			// Add all files to archive
+			copyOfItemsToDownload.each {
 
-			_addFileEntries linkedFileDownloader.getMatchingEntries(it)
+				_addFileEntries linkedFileDownloader.getMatchingEntries(it)
 
-			_addFileEntries wfsLayerDownloader.getMatchingEntries(it)
+				_addFileEntries wfsLayerDownloader.getMatchingEntries(it)
+			}
+
+			_addDownloadReportToArchive(locale)
 		}
+		finally {
 
-		_addDownloadReportToArchive(locale)
-
-		zipStream.close()
+			zipStream.close()
+		}
 	}
 
 	def getArchiveFilename(locale) {
