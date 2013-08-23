@@ -15,6 +15,13 @@ class LinkedFileDownloaderTests extends GrailsUnitTestCase {
 
 	def downloader = new LinkedFileDownloader()
 
+	void setUp() {
+
+		super.setUp()
+
+		downloader = new LinkedFileDownloader()
+	}
+
 	void testGetMatchingEntriesReturnsDownloadableLinks() {
 
 		def testObj = new Object()

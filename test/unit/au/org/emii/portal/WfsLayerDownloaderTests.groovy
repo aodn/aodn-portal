@@ -17,7 +17,7 @@ class WfsLayerDownloaderTests extends GrailsUnitTestCase {
 
 	void setUp() {
 
-		super.setUp();
+		super.setUp()
 
 		downloader = new WfsLayerDownloader()
 		downloader.info = [
