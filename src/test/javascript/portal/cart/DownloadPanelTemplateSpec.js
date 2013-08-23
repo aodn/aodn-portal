@@ -31,8 +31,8 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 }
             ],
             wmsLayer: {
-                params: {
-                    CQL_FILTER: "cql_filter"
+                getCqlFilter: function() {
+                    return "cql_filter"
                 }
             }
         });
