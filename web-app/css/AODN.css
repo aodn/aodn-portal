@@ -91,7 +91,7 @@ input, select, textarea {
 
 }
 
-#mainHomePanel, #downloadCartPanel{
+#mainHomePanel, #downloadPanel{
    background-color: white;
    font-size: 12px;
    border-radius: 12px;

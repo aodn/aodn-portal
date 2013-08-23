@@ -12,7 +12,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
   <div class="p-centre-item" style="width:560px">
 
     <g:render template='marvlisIntroduction' />
-    <g:render template='navigationSnippet' />
 
     <div class="spacer floatLeft homePanelWidget" >This project is supported by the <a title="ANDS"  href="http://ands.org.au/">Australian National Data Service (ANDS)</a> through the National Collaborative Research Infrastructure Strategy Program and the Education Investment Fund (EIF) Super Science Initiative, as well as through the IMOS, TPAC, IMAS, CSIRO and the Derwent Estuary Program.
     </div>

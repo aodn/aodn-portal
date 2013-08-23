@@ -19,18 +19,16 @@ describe("Portal.ui.MainPanel", function() {
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockPortalPanel = {
+    var mockVisualisePanel = {
         getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
     };
-    var mockHomePanel = {};
 
     var buildMockMainPanel = function() {
         spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
             return true
         });
 
-        spyOn(Portal.ui, "PortalPanel").andReturn(mockPortalPanel);
-        spyOn(Portal.ui, "HomePanel").andReturn(mockHomePanel);
+        spyOn(Portal.ui, "VisualisePanel").andReturn(mockVisualisePanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
@@ -52,19 +50,8 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should init portal panel', function() {
-            expect(Portal.ui.PortalPanel).toHaveBeenCalled();
-            expect(mainPanel.portalPanel).toEqual(mockPortalPanel);
-        });
-
-        it('should init home panel', function() {
-            expect(Portal.ui.HomePanel).toHaveBeenCalled();
-            expect(mainPanel.homePanel).toEqual(mockHomePanel);
-        });
-
-        it('should subscribe to selectedLayerChange event', function() {
-            expect(Ext.MsgBus.subscribe).toHaveBeenCalledWith(
-                'selectedLayerChanged', mainPanel.onSelectedLayerChange, mainPanel
-            );
+            expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
+            expect(mainPanel.visualisePanel).toEqual(mockVisualisePanel);
         });
     });
 
@@ -92,7 +79,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('main panel tab highlighting', function() {
-        
+
         beforeEach(function() {
             initMainPanel();
             spyOn(mainPanel, "_highlightActiveTab");
