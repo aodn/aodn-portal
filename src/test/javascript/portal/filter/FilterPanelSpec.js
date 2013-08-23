@@ -27,7 +27,7 @@ describe("Portal.filter.FilterPanel", function() {
             var show = jasmine.createSpy('showCallBack');
             var hide = jasmine.createSpy('hideCallBack');
 
-            spyOn(filterPanel, 'createFilter');
+            spyOn(filterPanel, 'createFilterPanel');
             spyOn(filterPanel, '_clearFilters');
 
             filterPanel.update(
@@ -39,7 +39,7 @@ describe("Portal.filter.FilterPanel", function() {
                 target
             );
 
-            expect(filterPanel.createFilter).toHaveBeenCalled();
+            expect(filterPanel.createFilterPanel).toHaveBeenCalled();
             expect(show).toHaveBeenCalled();
             filterPanel.clearFiltersButton.fireEvent('click');
             expect(filterPanel._clearFilters).toHaveBeenCalled();

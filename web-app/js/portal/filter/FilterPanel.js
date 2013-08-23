@@ -46,46 +46,15 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         this.update();
     },
 
-    createFilter: function(layer, filter){
+    createFilterPanel: function(layer, filter){
 
-        filter.label = filter.label.split('_').join(' ').toTitleCase();
+        var newFilterPanel = Portal.ui.BaseFilter.newFilterPanelFor(filter);
 
-        var newFilter = undefined;
-
-        if (filter.type === "String") {
-            newFilter = new  Portal.filter.ComboFilter({
-                fieldLabel: filter.label
-            });
-        }
-        else if (filter.type == "Date") {
-            newFilter = new Portal.filter.TimeFilter({
-                fieldLabel: filter.label
-            });
-        }
-        else if (filter.type === "Boolean") {
-            newFilter = new Portal.filter.BooleanFilter({
-               fieldLabel: filter.label
-            });
-        }
-        else if (filter.type === "BoundingBox") {
-            newFilter = new Portal.filter.BoundingBoxFilter({
-                fieldLabel: filter.label
-            })
-        }
-        else if (filter.type === "Number") {
-            newFilter = new Portal.filter.NumberFilter({
-                fieldLabel: filter.label
-            });
-        }
-        else {
-            //Filter hasn't been defined
-        }
-
-        if (newFilter) {
-            newFilter.setLayerAndFilter(layer, filter);
-            this.relayEvents(newFilter, ['addFilter']);
+        if (newFilterPanel) {
+            newFilterPanel.setLayerAndFilter(layer, filter);
+            this.relayEvents(newFilterPanel, ['addFilter']);
             this._addLabel(filter);
-            this.add(newFilter);
+            this.add(newFilterPanel);
         }
     },
 
@@ -119,7 +88,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
                     Ext.each(filters,
                         function(filter, index, all) {
-                            this.createFilter(layer, filter);
+                            this.createFilterPanel(layer, filter);
                             aFilterIsEnabled = true
                         },
                         this
