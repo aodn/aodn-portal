@@ -312,7 +312,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('start time on configureForLayer', function() {
             // Load last 2 frames
-            cachedLayer._getTimeControl().configureForLayer(cachedLayer, 2));
+            cachedLayer._getTimeControl().configureForLayer(cachedLayer, 2);
             expect(cachedLayer.getStartTime()).toBeSame('2001-02-04T00:00');
         });
     });
