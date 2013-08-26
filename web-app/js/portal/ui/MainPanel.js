@@ -19,7 +19,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.visualisePanel = new Portal.ui.VisualisePanel({appConfig:Portal.app.config});
-        this.downloadPanel = new Portal.cart.DownloadPanel()
+        this.downloadPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
@@ -84,10 +84,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     isMapVisible:function () {
-        return this.isMapSelected();
-    },
-
-    isMapSelected:function () {
         return this.getActiveTab() === this.visualisePanel;
     }
 });
