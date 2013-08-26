@@ -19,7 +19,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     initComponent:function () {
 
-        var selectionMod = new Ext.grid.RowSelectionModel({listeners:null})
+        var selectionMod = new Ext.grid.RowSelectionModel({listeners:null});
         selectionMod.suspendEvents();
 
         var config = {
@@ -136,11 +136,13 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     _showIntroMessage: function() {
         this._setTitleText( OpenLayers.i18n('facetedSearchStartResultsTitle'));
     },
+
     _showSearchResultsMessage: function(pages) {
         this.setTitle(null);
-        this.hideHeaders = true
+        this.hideHeaders = true;
         this.doLayout();
     },
+
     _showError: function() {
         this._setTitleText(OpenLayers.i18n('facetedSearchUnavailableText'));
     },
