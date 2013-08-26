@@ -6,7 +6,12 @@
  */
 describe("Portal.filter.FilterPanel", function() {
 
-    var filterPanel = new Portal.filter.FilterPanel({});
+    var filterPanel;
+
+    beforeEach(function() {
+
+        filterPanel = new Portal.filter.FilterPanel({});
+    });
 
     describe('responds to expected methods', function() {
         it('has a _clearFilters method', function() {
@@ -15,6 +20,7 @@ describe("Portal.filter.FilterPanel", function() {
     });
 
     describe('the clear all filters button', function() {
+
         it('calls the _clearFilters method', function() {
 
             spyOn(Ext.Ajax, 'request').andCallFake(
@@ -43,6 +49,35 @@ describe("Portal.filter.FilterPanel", function() {
             expect(show).toHaveBeenCalled();
             filterPanel.clearFiltersButton.fireEvent('click');
             expect(filterPanel._clearFilters).toHaveBeenCalled();
+        });
+    });
+
+    describe('_clearFilters method', function() {
+
+        var _mockFilter = function(name) {
+
+            return {
+                getFilterName: function() {
+
+                    return name;
+                },
+                handleRemoveFilter: function() {}
+            }
+        };
+
+        it('clears all filters', function() {
+
+            spyOn(filterPanel, '_updateFilter');
+
+            filterPanel._handleAddFilter(_mockFilter('oxygen_sensor'));
+            filterPanel._handleAddFilter(_mockFilter('data_centre'));
+            filterPanel._handleAddFilter(_mockFilter('pi'));
+
+            expect(Object.keys(filterPanel.activeFilters).length).toBe(3);
+
+            filterPanel._clearFilters();
+
+            expect(Object.keys(filterPanel.activeFilters).length).toBe(0);
         });
     });
 
