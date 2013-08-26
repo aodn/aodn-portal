@@ -40,7 +40,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
     },
 
-	getMapPanel: function() {
-		return this.mapPanel;
+    afterHide: function() {
+
+        this.mapPanel._closeFeatureInfoPopup();
     }
 });

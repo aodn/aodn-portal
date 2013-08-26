@@ -8,20 +8,16 @@
 
 describe("Portal.ui.MainPanel", function() {
 
-    var facetsEnabled = false;
-    appConfigStore.isFacetedSearchEnabled = function() { return facetsEnabled; }
     appConfigStore.getById = function(id) {
         if (id == 'spatialsearch.url') {
             return { data: { value: "spatialsearch.aodn.org.au" }};
         }
         return "";
-    }
+    };
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockVisualisePanel = {
-        getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
-    };
+    var mockVisualisePanel = {};
 
     var buildMockMainPanel = function() {
         spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
@@ -55,7 +51,6 @@ describe("Portal.ui.MainPanel", function() {
         });
     });
 
-
     describe('card layout', function() {
         beforeEach(function() {
             initMainPanel();
@@ -83,6 +78,9 @@ describe("Portal.ui.MainPanel", function() {
         beforeEach(function() {
             initMainPanel();
             spyOn(mainPanel, "_highlightActiveTab");
+            spyOn(mainPanel, "_notifyPanelBeforeSelection");
+            spyOn(mainPanel, "_notifyPanelAfterDeselection");
+            spyOn(mainPanel, "_getIndexFor");
         });
 
         it('on initial load', function() {
@@ -104,4 +102,31 @@ describe("Portal.ui.MainPanel", function() {
 
     });
 
+    describe('main panel notifying child panels of change', function() {
+
+        beforeEach(function() {
+            initMainPanel();
+            spyOn(mainPanel, "_highlightActiveTab");
+            spyOn(mainPanel, "_notifyPanelBeforeSelection");
+            spyOn(mainPanel, "_notifyPanelAfterDeselection");
+            spyOn(mainPanel, "_getIndexFor");
+        });
+
+        it('on initial load', function() {
+            spyOn(Portal.ui.MainPanel.superclass, "afterRender");
+            mainPanel.afterRender();
+            expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
+        });
+
+        it('when switching tabs', function() {
+            mockLayout();
+            mainPanel.setActiveTab(0);
+            expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
+        });
+
+        var mockLayout = function() {
+            mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
+            mainPanel.layout.setActiveItem.andCallFake(function() {});
+        };
+    });
 });

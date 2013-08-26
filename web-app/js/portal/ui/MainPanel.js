@@ -55,40 +55,56 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    getMapPanel:function () {
-        return this.visualisePanel.getMapPanel();
-    },
-
     getActiveTab: function() {
         return this.layout.activeItem;
     },
 
-    setActiveTab: function(index) {
+    setActiveTab: function(tabIndex) {
 
-        this._notifyPanelBeingSelected(index);
+        var previousSelectedTabIndex = this._getIndexFor(this.layout.activeItem);
 
-        this.layout.setActiveItem(index);
+        this._notifyPanelBeforeSelection(tabIndex);
 
-        if (!this.isMapVisible()) {
-            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
-        }
+        this.layout.setActiveItem(tabIndex);
+
+        this._notifyPanelAfterDeselection(previousSelectedTabIndex);
 
         this._highlightActiveTab();
     },
 
-    _notifyPanelBeingSelected: function(index) {
+    _notifyPanelBeforeSelection: function(index) {
 
-        var panel = this._tabPanelForIndex(index);
+        var panel = this._getTabPanelFor(index);
 
-        if (panel.beforeDisplay) {
+        if (panel && panel.beforeDisplay) {
 
             panel.beforeDisplay();
         }
     },
 
-    _tabPanelForIndex: function(index) {
+    _notifyPanelAfterDeselection: function(index) {
 
-        return this.items.items[index];
+        var panel = this._getTabPanelFor(index);
+
+        if (panel && panel.afterHide) {
+
+            panel.afterHide();
+        }
+    },
+
+    _getTabPanelFor: function(index) {
+
+        return this._getTabPanelItems()[index];
+    },
+
+    _getIndexFor: function(panel) {
+
+        return this._getTabPanelItems().indexOf(panel);
+    },
+
+    _getTabPanelItems: function() {
+
+        return this.items.items;
     },
 
     _highlightActiveTab: function() {
@@ -98,9 +114,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
         jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
-    },
-
-    isMapVisible:function () {
-        return this.getActiveTab() === this.visualisePanel;
     }
 });

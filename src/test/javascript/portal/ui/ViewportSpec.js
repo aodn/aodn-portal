@@ -14,8 +14,7 @@ describe("Portal.ui.Viewport", function() {
 
     var mockMainPanel = {
         region: 'center',
-        setActiveTab: jasmine.createSpy(),
-        isMapVisible: jasmine.createSpy().andReturn(true)
+        setActiveTab: jasmine.createSpy()
     };
 
     var buildMockViewport = function() {
@@ -39,13 +38,5 @@ describe("Portal.ui.Viewport", function() {
         viewport.setActiveTab(1);
 
         expect(mockMainPanel.setActiveTab).toHaveBeenCalledWith(1);
-    });
-
-    it("returns value of mainPanel.isMapVisible when isMapVisible is called", function() {
-        var viewport = buildMockViewport();
-
-        var isMapVisible = viewport.isMapVisible();
-
-        expect(isMapVisible).toEqual(true);
     });
 });
