@@ -127,11 +127,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             }
         );
 
-        // Synchronize with layer, so layer knows what's being displayed when
-        // it is asked for features (getFeatureInfo)
-        layer.startTime = timerTickDateTimes[0];
-        layer.endTime   = timerTickDateTimes.last();
-        
         // Update the map straight away.
         this.onTick({
             index: 0,
@@ -185,7 +180,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getExtentMax: function() {
         return this.timer.getTickDateTimeMax();
     },
-    
+
     getRelativeSpeed: function() {
         return this.relativeSpeed;
     },

@@ -286,34 +286,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('layer time synced with controller', function() {
+    describe('layer access timer time on getFeatureInfo', function() {
 
         beforeEach(function() {
-            var extent = [
-                moment('2001-02-01T00:00'),
-                moment('2001-02-02T00:00'),
-                moment('2001-02-03T00:00'),
-                moment('2001-02-04T00:00'),
-                moment('2001-02-05T00:00')
-            ]
-
             cachedLayer = new OpenLayers.Layer.NcWMS();
-            cachedLayer.temporalExtent = extent;
-            cachedLayer._configureTimeControl();
+            var timeControl  = cachedLayer._getTimeControl();
+            spyOn(timeControl, 'getExtentMin').andReturn(moment());;
+            spyOn(timeControl, 'getExtentMax').andReturn(moment());;
         });
 
-        it('start time on initialize', function() {
-            expect(cachedLayer.getStartTime()).toBeSame('2001-02-01T00:00');
+        it('start time', function() {
+            cachedLayer.getExtraFeatureInfo();
+            expect(timeControl.getExtentMin).toHaveBeenCalled();
         });
 
-        it('end time on initialize', function() {
-            expect(cachedLayer.getEndTime()).toBeSame('2001-02-05T00:00');
-        });
-
-        it('start time on configureForLayer', function() {
-            // Load last 2 frames
-            cachedLayer._getTimeControl().configureForLayer(cachedLayer, 2);
-            expect(cachedLayer.getStartTime()).toBeSame('2001-02-04T00:00');
+        it('end time', function() {
+            cachedLayer.getExtraFeatureInfo();
+            expect(timeControl.getExtentMax).toHaveBeenCalled();
         });
     });
 

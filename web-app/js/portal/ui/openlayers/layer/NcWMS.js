@@ -17,12 +17,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     /**
-     * Moment range in time controller is showing user.
-     */
-    startTime: null,
-    endTime: null,
-
-    /**
      * Moment in time that this layer represents.
      */
     time: null,
@@ -279,16 +273,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return moment(this.temporalExtent.last());
     },
 
-    // Returns end time as represented in controller
-    getStartTime: function() {
-        return this.startTime;
-    },
-
-    // Returns end time as represented in controller
-    getEndTime: function() {
-        return this.endTime;
-    },
-
     toTime: function(dateTime) {
         this.time = dateTime;
 
@@ -448,11 +432,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getExtraFeatureInfo: function() {
         extraParams = {};
+        var timeControl  = this._getTimeControl();
 
         extraParams.TIME =
-            this.getStartTime().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
             + "/" +
-            this.getEndTime().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
 
         extraParams.FORMAT = "image/png";
         extraParams.INFO_FORMAT = "image/png";
