@@ -127,6 +127,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateFilter: function() {
+
         var combinedCQL = "";
 
         if (this._hasAnyActiveFilters()) {
@@ -155,14 +156,18 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return Object.keys(this.activeFilters).length > 0;
     },
 
-    _handleAddFilter: function(aFilter){
+    _handleAddFilter: function(aFilter) {
         this.activeFilters[aFilter.getFilterName()] = aFilter;
         this._updateFilter();
     },
 
     _clearFilters: function() {
 
-        for (var key in Object.keys(this.activeFilters)) {
+        var keys = Object.keys(this.activeFilters);
+
+        for (var i = 0; i < keys.length; i++) {
+
+            var key = keys[i];
 
             this.activeFilters[key].handleRemoveFilter();
             delete this.activeFilters[key];
