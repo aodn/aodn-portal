@@ -126,7 +126,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
                 }
             }
         );
-        
+
         // Update the map straight away.
         this.onTick({
             index: 0,
@@ -146,10 +146,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);
 
-        if (startIndex == -1) {
-            return [];
-        }
-        if (endIndex   == -1) {
+        if (startIndex == -1 || endIndex == -1) {
             return [];
         }
 
@@ -183,7 +180,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getExtentMax: function() {
         return this.timer.getTickDateTimeMax();
     },
-    
+
     getRelativeSpeed: function() {
         return this.relativeSpeed;
     },

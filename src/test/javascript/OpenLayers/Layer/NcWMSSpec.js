@@ -286,6 +286,27 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('layer access timer time on getFeatureInfo', function() {
+
+        beforeEach(function() {
+            cachedLayer = new OpenLayers.Layer.NcWMS();
+            var timeControl  = cachedLayer._getTimeControl();
+            spyOn(timeControl, 'getExtentMin').andReturn(moment());;
+            spyOn(timeControl, 'getExtentMax').andReturn(moment());;
+            spyOn(OpenLayers.Layer.WMS.prototype, 'getFeatureInfoRequestString');
+        });
+
+        it('start time', function() {
+            cachedLayer.getFeatureInfoRequestString('', {});
+            expect(timeControl.getExtentMin).toHaveBeenCalled();
+        });
+
+        it('end time', function() {
+            cachedLayer.getFeatureInfoRequestString('', {});
+            expect(timeControl.getExtentMax).toHaveBeenCalled();
+        });
+    });
+
     describe('getExtent min/max', function() {
 
         var minExtent = moment('2001-02-01T00:00');
