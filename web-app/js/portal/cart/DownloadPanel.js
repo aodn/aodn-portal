@@ -24,5 +24,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
+    },
+
+    beforeDisplay: function() {
+
+        this.view.refresh();
     }
 });

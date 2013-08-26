@@ -65,6 +65,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     setActiveTab: function(index) {
 
+        this._notifyPanelBeingSelected(index);
+
         this.layout.setActiveItem(index);
 
         if (!this.isMapVisible()) {
@@ -72,6 +74,21 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         }
 
         this._highlightActiveTab();
+    },
+
+    _notifyPanelBeingSelected: function(index) {
+
+        var panel = this._tabPanelForIndex(index);
+
+        if (panel.beforeDisplay) {
+
+            panel.beforeDisplay();
+        }
+    },
+
+    _tabPanelForIndex: function(index) {
+
+        return this.items.items[index];
     },
 
     _highlightActiveTab: function() {
