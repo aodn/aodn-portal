@@ -194,7 +194,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         if (format) {
             result += "&format=" + encodeURIComponent(format);
         }
-        console.log(result);
         return result;
     },
 
