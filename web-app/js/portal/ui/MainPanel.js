@@ -44,7 +44,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this._highlightActiveTab();
     },
 
-    _initSearchTabPanel: function(cfg) {
+    _initSearchTabPanel: function() {
 
         return new Portal.ui.search.SearchPanel({
             itemId: 'searchPanel',
@@ -63,9 +63,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         return this.layout.activeItem;
     },
 
-    setActiveTab:function (item) {
+    setActiveTab: function(index) {
 
-        this.layout.setActiveItem(item);
+        this.layout.setActiveItem(index);
 
         if (!this.isMapVisible()) {
             this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
