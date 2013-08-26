@@ -18,19 +18,21 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             appConfigStore: appConfigStore
         });
 
-        var config = Ext.apply({
-            layout: 'border',
-            boxMinWidth: 1050,
-            items: this._getItems(cfg) }, cfg);
+        var config = Ext.apply(
+            {
+                layout: 'border',
+                boxMinWidth: 1050,
+                items: this._getItems(cfg)
+            },
+            cfg
+        );
 
         Portal.ui.Viewport.superclass.constructor.call(this, config);
-
     },
 
     afterRender: function() {
 
         Portal.ui.Viewport.superclass.afterRender.call(this);
-
     },
 
     /**
