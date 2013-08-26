@@ -16,17 +16,7 @@ describe("Portal.filter.BaseFilter", function() {
 
         beforeEach(function() {
 
-            filter = {
-                label: "oxygen_sensor"
-            };
-        });
-
-        it("Should adjust title", function() {
-
-            filter.type = "String";
-            panel = newFilterPanelFor(filter);
-
-            expect(panel.fieldLabel).toBe("Oxygen Sensor");
+            filter = {};
         });
 
         it("Should return undefined", function() {

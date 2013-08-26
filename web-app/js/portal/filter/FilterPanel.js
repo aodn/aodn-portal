@@ -46,9 +46,9 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         this.update();
     },
 
-    createFilterPanel: function(layer, filter){
+    createFilterPanel: function(layer, filter) {
 
-        var newFilterPanel = Portal.ui.BaseFilter.newFilterPanelFor(filter);
+        var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
 
         if (newFilterPanel) {
             newFilterPanel.setLayerAndFilter(layer, filter);
@@ -58,9 +58,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _addLabel: function(filter){
+    _addLabel: function(filter) {
+
+        var labelText = filter.label.split('_').join(' ').toTitleCase();
+
         var label = new Ext.form.Label({
-            text: filter.label + ": ",
+            text: labelText + ": ",
             style: 'font-size: 11px;'
         });
         this.add(label);
@@ -126,7 +129,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _updateFilter: function() {
         var combinedCQL = "";
 
-        if (_hasAnyActiveFilters()) {
+        if (this._hasAnyActiveFilters()) {
             for (var name in this.activeFilters) {
                 if (this.activeFilters[name].hasValue()) {
                     combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;

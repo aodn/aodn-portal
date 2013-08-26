@@ -84,7 +84,7 @@ Portal.filter.BaseFilter.newFilterPanelFor = function(filter) {
     var newFilterPanel;
 
     if (filter.type === "String") {
-        newFilterPanel = new  Portal.filter.ComboFilter();
+        newFilterPanel = new Portal.filter.ComboFilter();
     }
     else if (filter.type == "Date") {
         newFilterPanel = new Portal.filter.TimeFilter();
@@ -100,10 +100,7 @@ Portal.filter.BaseFilter.newFilterPanelFor = function(filter) {
     }
     else {
         //Filter hasn't been defined
-        return undefined;
     }
-
-    newFilterPanel.fieldLabel = filter.label.split('_').join(' ').toTitleCase();
 
     return newFilterPanel;
 };
