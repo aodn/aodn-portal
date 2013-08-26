@@ -293,15 +293,16 @@ describe("OpenLayers.Layer.NcWMS", function() {
             var timeControl  = cachedLayer._getTimeControl();
             spyOn(timeControl, 'getExtentMin').andReturn(moment());;
             spyOn(timeControl, 'getExtentMax').andReturn(moment());;
+            spyOn(OpenLayers.Layer.WMS.prototype, 'getFeatureInfoRequestString');
         });
 
         it('start time', function() {
-            cachedLayer.getExtraFeatureInfo();
+            cachedLayer.getFeatureInfoRequestString('', {});
             expect(timeControl.getExtentMin).toHaveBeenCalled();
         });
 
         it('end time', function() {
-            cachedLayer.getExtraFeatureInfo();
+            cachedLayer.getFeatureInfoRequestString('', {});
             expect(timeControl.getExtentMax).toHaveBeenCalled();
         });
     });

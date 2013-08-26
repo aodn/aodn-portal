@@ -430,20 +430,21 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
-    getExtraFeatureInfo: function() {
-        extraParams = {};
-        var timeControl  = this._getTimeControl();
+    /* Overrides */
+    getFeatureInfoRequestString: function(clickPoint, overrideParams) {
+        var timeControl = this._getTimeControl();
 
-        extraParams.TIME =
+        overrideParams.TIME =
             timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
             + "/" +
             timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
 
-        extraParams.FORMAT = "image/png";
-        extraParams.INFO_FORMAT = "image/png";
-        return extraParams;
+        overrideParams.FORMAT = "image/png";
+        overrideParams.INFO_FORMAT = "image/png";
+        return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
     },
 
+    /* Overrides */
     getFeatureInfoFormat: function() {
         // Setting this in getExtraFeatureInfo, but we need to override the
         // default 'text/xml' one
@@ -451,8 +452,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return "";
     },
 
-    formatFeatureInfo: function(url) {
-        return "<div><img src='" + url + "'></div>";
+    /* Overrides */
+    formatFeatureInfoHtml: function(resp, options) {
+        return "<div><img src='" + options.url + "'></div>";
     },
 
     /**

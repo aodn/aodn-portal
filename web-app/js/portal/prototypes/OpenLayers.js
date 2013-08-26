@@ -70,6 +70,8 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoin
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
 
+    return 'text/xml';
+
     var result = this.server.infoFormat;
     if (this.isAnimated) {
         result = "image/png";
@@ -80,6 +82,11 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
     }
 
     return result;
+};
+
+// formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
+OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) {
+    return formatGetFeatureInfo(resp, options);
 };
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
