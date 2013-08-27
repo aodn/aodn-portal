@@ -13,7 +13,7 @@ TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
 
         Ext.apply(this, cfg);
 
@@ -61,7 +61,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     setActiveTab: function(tabIndex) {
 
-        var previousSelectedTabIndex = this._getIndexFor(this.layout.activeItem);
+        var previousSelectedTabIndex = this._getIndexFor(this.getActiveTab());
 
         this._notifyPanelBeforeSelection(tabIndex);
 
