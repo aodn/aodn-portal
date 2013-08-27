@@ -8,7 +8,7 @@
 Ext.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;
-TAB_INDEX_VISUALIZE = 1;
+TAB_INDEX_VISUALISE = 1;
 TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
@@ -42,7 +42,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     _onActiveGeoNetworkRecordAdded: function() {
-        this.setActiveTab(TAB_INDEX_VISUALIZE);
+        this.setActiveTab(TAB_INDEX_VISUALISE);
     },
 
     afterRender: function() {

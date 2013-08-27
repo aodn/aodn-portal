@@ -78,7 +78,7 @@ describe("Portal.ui.MainPanel", function() {
         it('should set visualise to active item when geonetwork record is added', function() {
             mockLayout();
             Ext.MsgBus.publish('activegeonetworkrecordadded');
-            expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALIZE);
+            expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
     });
 
