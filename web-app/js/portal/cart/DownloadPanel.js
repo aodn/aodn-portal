@@ -24,9 +24,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
+
+        this.on('beforeShow', this.onBeforeShow, this);
     },
 
-    beforeDisplay: function() {
+    onBeforeShow: function() {
 
         this.view.refresh();
     }

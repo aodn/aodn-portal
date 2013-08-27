@@ -61,50 +61,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     setActiveTab: function(tabIndex) {
 
-        var previousSelectedTabIndex = this._getIndexFor(this.getActiveTab());
-
-        this._notifyPanelBeforeSelection(tabIndex);
-
         this.layout.setActiveItem(tabIndex);
 
-        this._notifyPanelAfterDeselection(previousSelectedTabIndex);
-
         this._highlightActiveTab();
-    },
-
-    _notifyPanelBeforeSelection: function(index) {
-
-        var panel = this._getTabPanelFor(index);
-
-        if (panel && panel.beforeDisplay) {
-
-            panel.beforeDisplay();
-        }
-    },
-
-    _notifyPanelAfterDeselection: function(index) {
-
-        var panel = this._getTabPanelFor(index);
-
-        if (panel && panel.afterHide) {
-
-            panel.afterHide();
-        }
-    },
-
-    _getTabPanelFor: function(index) {
-
-        return this._getTabPanelItems()[index];
-    },
-
-    _getIndexFor: function(panel) {
-
-        return this._getTabPanelItems().indexOf(panel);
-    },
-
-    _getTabPanelItems: function() {
-
-        return this.items.items;
     },
 
     _highlightActiveTab: function() {

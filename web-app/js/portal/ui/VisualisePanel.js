@@ -38,9 +38,11 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
+
+        this.on('beforeHide', this.onBeforeHide, this);
     },
 
-    afterHide: function() {
+    onBeforeHide: function() {
 
         this.mapPanel._closeFeatureInfoPopup();
     }

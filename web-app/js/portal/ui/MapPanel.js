@@ -36,11 +36,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
 
-        this.on('hide', function () {
-            // map is never hidden!!!!"
-            this._closeFeatureInfoPopup();
-        }, this);
-
         // Without this, the mini-map does not load properly because it ends up without
         // any base layers.
         this.layers.bind(this.map);
