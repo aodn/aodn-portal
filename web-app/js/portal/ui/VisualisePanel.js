@@ -39,7 +39,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
 
-        this.on('beforeHide', this.onBeforeHide, this);
+        this.on('beforehide', this.onBeforeHide, this);
     },
 
     onBeforeHide: function() {
