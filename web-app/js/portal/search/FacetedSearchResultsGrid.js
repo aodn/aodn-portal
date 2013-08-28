@@ -41,6 +41,25 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
+        this.store.on('load', function() {
+            this._onStoreLoad();
+        }, this);
+
+        this._subscribeToActiveGeoNetworkRecordStoreEvents();
+    },
+
+    _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
+        Ext.each(['activegeonetworkrecordadded', 'activegeonetworkrecordremoved'], function(eventName) {
+            Ext.MsgBus.subscribe(eventName, function() {
+                this._refreshView();
+            }, this);
+        }, this);
+    },
+
+    _refreshView: function() {
+        if (this.view) {
+            this.view.refresh();
+        }
     },
 
     afterRender: function () {

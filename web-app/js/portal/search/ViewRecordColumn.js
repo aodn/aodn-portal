@@ -8,6 +8,10 @@ Ext.namespace('Portal.search');
 
 Portal.search.ViewRecordColumn = Ext.extend(Ext.grid.Column, {
 
+    constructor: function(config) {
+        Portal.search.ViewRecordColumn.superclass.constructor.call(this, config);
+    },
+
     renderer: function(value, metaData, record, rowIndex) {
 
         var self = this;
@@ -15,9 +19,9 @@ Portal.search.ViewRecordColumn = Ext.extend(Ext.grid.Column, {
         var createButton = function(value, id, record, handler) {
             new Ext.Button({
                 text: value,
-                iconCls: '',
                 handler: handler,
-                scope: self
+                scope: self,
+                disabled: Portal.data.ActiveGeoNetworkRecordStore.instance().containsUuid(record.get('uuid'))
             }).render(document.body, id);
         };
 

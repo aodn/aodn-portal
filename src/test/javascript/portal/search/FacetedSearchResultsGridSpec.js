@@ -8,14 +8,14 @@
 
 describe("Portal.search.FacetedSearchResultsGrid", function() {
 
-    var fsrg;
+    var resultsGrid;
     var testTarget;
     var testLayerLink;
 
     beforeEach(function() {
 
         var store = new Portal.data.GeoNetworkRecordStore();
-        fsrg = new Portal.search.FacetedSearchResultsGrid({
+        resultsGrid = new Portal.search.FacetedSearchResultsGrid({
             store: store
         });
 
@@ -24,7 +24,20 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
 
     describe('initialisation', function() {
         it('sets column model to correct type', function() {
-            expect(fsrg.colModel).toBeInstanceOf(Portal.search.FacetedSearchResultsColumnModel);
+            expect(resultsGrid.colModel).toBeInstanceOf(Portal.search.FacetedSearchResultsColumnModel);
+        });
+    });
+
+    describe('active geo network record store events', function() {
+        it('refreshes view on record added', function() {
+            spyOn(resultsGrid, '_refreshView');
+            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            expect(resultsGrid._refreshView).toHaveBeenCalled();
+        });
+        it('refreshes view on record removed', function() {
+            spyOn(resultsGrid, '_refreshView');
+            Ext.MsgBus.publish('activegeonetworkrecordremoved');
+            expect(resultsGrid._refreshView).toHaveBeenCalled();
         });
     });
 });
