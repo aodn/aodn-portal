@@ -13,7 +13,7 @@ TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
 
         Ext.apply(this, cfg);
 
@@ -61,21 +61,13 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    getMapPanel:function () {
-        return this.visualisePanel.getMapPanel();
-    },
-
     getActiveTab: function() {
         return this.layout.activeItem;
     },
 
-    setActiveTab: function(index) {
+    setActiveTab: function(tabIndex) {
 
-        this.layout.setActiveItem(index);
-
-        if (!this.isMapVisible()) {
-            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
-        }
+        this.layout.setActiveItem(tabIndex);
 
         this._highlightActiveTab();
     },
@@ -87,9 +79,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
         jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
-    },
-
-    isMapVisible:function () {
-        return this.getActiveTab() === this.visualisePanel;
     }
 });

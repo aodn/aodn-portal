@@ -89,9 +89,5 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     setActiveTab: function(tabIndex) {
         this.mainPanel.setActiveTab(tabIndex);
-    },
-
-    isMapVisible: function() {
-        return this.mainPanel.isMapVisible();
     }
 });
