@@ -13,8 +13,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     <g:render template='soosIntroduction' />
 
-    <g:render template='navigationSnippet' />
-
     <div class="clear spacer"></div>
 
     <p>The sea-ice around Antarctica is dynamic and ever-changing, to view the latest state of the Antarctic sea-ice go to the Centre

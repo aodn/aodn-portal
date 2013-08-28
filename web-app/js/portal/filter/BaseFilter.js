@@ -78,3 +78,29 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	_setExistingFilters: function(){
 	}
 });
+
+Portal.filter.BaseFilter.newFilterPanelFor = function(filter) {
+
+    var newFilterPanel;
+
+    if (filter.type === "String") {
+        newFilterPanel = new Portal.filter.ComboFilter();
+    }
+    else if (filter.type == "Date") {
+        newFilterPanel = new Portal.filter.TimeFilter();
+    }
+    else if (filter.type === "Boolean") {
+        newFilterPanel = new Portal.filter.BooleanFilter();
+    }
+    else if (filter.type === "BoundingBox") {
+        newFilterPanel = new Portal.filter.BoundingBoxFilter();
+    }
+    else if (filter.type === "Number") {
+        newFilterPanel = new Portal.filter.NumberFilter();
+    }
+    else {
+        //Filter hasn't been defined
+    }
+
+    return newFilterPanel;
+};

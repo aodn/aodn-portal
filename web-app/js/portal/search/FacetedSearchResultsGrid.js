@@ -15,10 +15,11 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     enableColumnResize: false,
     mapWidth: 200,
     mapHeight: 104,
+    pageSize: 10,
 
     initComponent:function () {
 
-        var selectionMod = new Ext.grid.RowSelectionModel({listeners:null})
+        var selectionMod = new Ext.grid.RowSelectionModel({listeners:null});
         selectionMod.suspendEvents();
 
         var config = {
@@ -64,6 +65,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
+        this.store.on('load', function() {
+            this._onStoreLoad();
+        }, this);
     },
 
     afterRender:function () {
@@ -76,7 +80,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             mouseover:this.onMouseOver,
             mouseout:this.onMouseOut
         });
-
     },
 
     showMask:function () {
@@ -123,6 +126,24 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
+    },
+
+    _showIntroMessage: function() {
+        this._setTitleText( OpenLayers.i18n('facetedSearchStartResultsTitle'));
+    },
+
+    _showSearchResultsMessage: function(pages) {
+        this.setTitle(null);
+        this.hideHeaders = true;
+        this.doLayout();
+    },
+
+    _showError: function() {
+        this._setTitleText(OpenLayers.i18n('facetedSearchUnavailableText'));
+    },
+
+    _setTitleText: function(newText) {
+        this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {
@@ -191,6 +212,19 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             zoomLevel = 4;
         }
         return zoomLevel;
+    },
+
+    _onStoreLoad: function() {
+        this.getBottomToolbar().onLoad(
+            this.store,
+            null,
+            {
+                params: {
+                    start: this.store.startRecord,
+                    limit: 10
+                }
+            }
+        );
     }
 });
 

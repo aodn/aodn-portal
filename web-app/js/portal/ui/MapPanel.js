@@ -14,20 +14,19 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.appConfig = cfg.appConfig;
 
         var config = Ext.apply({
-            id:'mapPanel',
-            region:"center",
-            split:true,
-            header:false,
-            initialBbox:this.appConfig.initialBbox,
-            autoZoom:this.appConfig.autoZoom,
-            enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
-            hideLayerOptions:this.appConfig.hideLayerOptions,
-            layersLoading:0,
-            layers: Portal.data.LayerStore.instance(),
-            html:" \
-                    <div id='loader' style='position: absolute; top: 50%; left: 43%; z-index: 9000;'> \
-                        <div id='jsloader' style='height: 70px; width: 70px; float: left;'></div> \
+            id: 'mapPanel',
+            split: true,
+            header: false,
+            initialBbox: this.appConfig.initialBbox,
+            autoZoom: this.appConfig.autoZoom,
+            enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
+            defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
+            hideLayerOptions: this.appConfig.hideLayerOptions,
+            layersLoading: 0,
+            layers:  Portal.data.LayerStore.instance(),
+            html: " \
+                    <div id='loader' style='position:  absolute; top:  50%; left:  43%; z-index:  9000;'> \
+                        <div id='jsloader' style='height:  70px; width:  70px; float:  left;'></div> \
                         <span></span> \
                     </div>" // This is the "Loading 'n' layers" pop-up; message is inserted into the span.
 

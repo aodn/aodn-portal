@@ -37,8 +37,22 @@ Type:                image/gif
 Filename in archive: N/A - File not added to archive
 Result:              Unable to add file, maximum number of files allowed reached (3/3 files)
 
+--[ #6 ]------------------------------------
+Title:               Filtered imos:argo_floats data
+URL:                 server_uri?typeName=imos%3Aargo_floats&SERVICE=WFS&outputFormat=csv&REQUEST=GetFeature&VERSION=1.0.0&CQL_FILTER=oxygen_sensor+%3D+true
+Type:                text/csv
+Filename in archive: N/A - File not added to archive
+Result:              Unable to add file, maximum number of files allowed reached (3/3 files)
+
+--[ #7 ]------------------------------------
+Title:               imos:argo_floats metadata
+URL:                 metadata_url
+Type:                application/xml
+Filename in archive: N/A - File not added to archive
+Result:              Unable to add file, maximum number of files allowed reached (3/3 files)
+
 ========================================================================
 Total size before compression: 1526 Bytes
-Number of files included: 3/5
+Number of files included: 3/7
 Time taken: 15 seconds
 ========================================================================

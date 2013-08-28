@@ -83,20 +83,12 @@ h6 {
     color: #1b7399;
 }
 
-.menuHeader {
-    /*background: url(../images/menuHeader.png) 0  -13px repeat-x;
-    border: medium none;*/
-    font-family: tahoma,arial,verdana,sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 10px 1px 10px 10px;
-	color: #1b7399;
-}
+
 .x-panel-header {
     border: none;
-    font-weight: bold;
+    font-weight: normal;
     color: #1b7399;
-    font-size: 13px;
+    font-size: 15px;
 }
 .x-layout-split {
     background-color: #f3f3f3;

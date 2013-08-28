@@ -2,6 +2,8 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 
+import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
+
 class CheckWmsScannerService {
 
     static transactional = true
@@ -10,8 +12,7 @@ class CheckWmsScannerService {
 
     def getServerFromJob(jobId) {
         def conf = Config.activeInstance()
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-        wmsScannerBaseUrl += _optionalSlash( wmsScannerBaseUrl ) // Ensure trailing slash
+        def wmsScannerBaseUrl = ensureTrailingSlash(grailsApplication.config.wmsScanner.url)
 
         // Check if WMS Scanner settings are valid
         if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
@@ -54,22 +55,15 @@ class CheckWmsScannerService {
 
     def _saveOrUpdateCallbackUrl() {
 
-        def portalBaseUrl = grailsApplication.config.grails.serverURL
-        def slash = _optionalSlash( portalBaseUrl )
+        def portalBaseUrl = ensureTrailingSlash(grailsApplication.config.grails.serverURL)
 
-        return "${portalBaseUrl}${slash}layer/saveOrUpdate"
+        return "${portalBaseUrl}layer/saveOrUpdate"
     }
 
     def _scanJobUrl() {
 
-        def wmsScannerBaseUrl = grailsApplication.config.wmsScanner.url
-        def slash = _optionalSlash( wmsScannerBaseUrl )
+        def wmsScannerBaseUrl = ensureTrailingSlash(grailsApplication.config.wmsScanner.url)
 
-        return "${wmsScannerBaseUrl}${slash}scanJob/"
-    }
-
-    def _optionalSlash( url ) { // Todo - DN: Change to _ensureTrailingSlash
-
-        return url[-1..-1] != "/" ? "/" : ""
+        return "${wmsScannerBaseUrl}scanJob/"
     }
 }

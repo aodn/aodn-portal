@@ -87,7 +87,7 @@ input, select, textarea {
 }
 
 
-#mainHomePanel, #downloadCartPanel{
+#mainHomePanel, #downloadPanel{
    background-color: white;
    font-size: 12px;
    border-radius: 12px;
@@ -136,12 +136,6 @@ input, select, textarea {
 
 .footer a:hover{
     text-decoration: underline;
-}
-
-.menuHeader {
-    font-size: 14px;
-    color: #666;
-    padding: 15px 1px 10px 10px;
 }
 
 .x-panel-header,

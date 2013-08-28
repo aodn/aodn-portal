@@ -23,6 +23,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                 leaf: false,
                 expanded: true,
                 loader: new GeoExt.tree.LayerLoader({
+                    store: cfg.layerStore,
                     filter: function(record) {
                         return !record.getLayer().isBaseLayer;
                     },
@@ -47,6 +48,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                 }
             })
         }, cfg);
+
         Portal.ui.ActiveLayersPanel.superclass.constructor.call(this, config);
         this.addEvents('zoomtolayer', 'selectedactivelayerchanged');
 

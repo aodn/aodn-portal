@@ -42,7 +42,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 if (layerDescriptor) {
                     layerDescriptor.cql = layerLink.cql;
                     this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-
                 }
             },
             failure: function(resp) {
