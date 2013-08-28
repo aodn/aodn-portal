@@ -6,8 +6,6 @@
  *
  */
 
-
-
 import java.text.SimpleDateFormat
 
 eventCreateWarStart = { warname, stagingDir ->

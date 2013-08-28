@@ -8,7 +8,7 @@
 Ext.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;
-TAB_INDEX_VISUALIZE = 1;
+TAB_INDEX_VISUALISE = 1;
 TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
@@ -19,7 +19,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.searchTabPanel = this._initSearchTabPanel(cfg);
         this.visualisePanel = new Portal.ui.VisualisePanel({appConfig:Portal.app.config});
-        this.downloadPanel = new Portal.cart.DownloadPanel()
+        this.downloadPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
@@ -37,6 +37,12 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
+
+        Ext.MsgBus.subscribe('activegeonetworkrecordadded', this._onActiveGeoNetworkRecordAdded, this);
+    },
+
+    _onActiveGeoNetworkRecordAdded: function() {
+        this.setActiveTab(TAB_INDEX_VISUALISE);
     },
 
     afterRender: function() {
@@ -44,7 +50,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this._highlightActiveTab();
     },
 
-    _initSearchTabPanel: function(cfg) {
+    _initSearchTabPanel: function() {
 
         return new Portal.ui.search.SearchPanel({
             itemId: 'searchPanel',
@@ -63,9 +69,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         return this.layout.activeItem;
     },
 
-    setActiveTab:function (item) {
+    setActiveTab: function(index) {
 
-        this.layout.setActiveItem(item);
+        this.layout.setActiveItem(index);
 
         if (!this.isMapVisible()) {
             this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
@@ -84,10 +90,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     isMapVisible:function () {
-        return this.isMapSelected();
-    },
-
-    isMapSelected:function () {
         return this.getActiveTab() === this.visualisePanel;
     }
 });
