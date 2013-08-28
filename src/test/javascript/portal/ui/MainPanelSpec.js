@@ -32,7 +32,6 @@ describe("Portal.ui.MainPanel", function() {
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
         spyOn(Portal.ui.MainPanel.prototype, "on");
-        spyOn(Ext.MsgBus, 'subscribe');
 
         return new Portal.ui.MainPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
     };
@@ -44,23 +43,22 @@ describe("Portal.ui.MainPanel", function() {
         mainPanel.items = [];
     };
 
-    describe('initialisation', function() {
-        beforeEach(function() {
-            initMainPanel();
-        });
+    beforeEach(function() {
+        initMainPanel();
+    });
 
+    afterEach(function() {
+        Ext.MsgBus.unsubscribe('activegeonetworkrecordadded', mainPanel._onActiveGeoNetworkRecordAdded, mainPanel);
+    });
+
+    describe('initialisation', function() {
         it('should init portal panel', function() {
             expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
             expect(mainPanel.visualisePanel).toEqual(mockVisualisePanel);
         });
     });
 
-
     describe('card layout', function() {
-        beforeEach(function() {
-            initMainPanel();
-        });
-
         it('creates an instance of Panel', function() {
             expect(mainPanel).toBeInstanceOf(Ext.Panel);
         });
@@ -76,12 +74,16 @@ describe("Portal.ui.MainPanel", function() {
         it('should initially have search as the active item', function() {
             expect(mainPanel.activeItem).toBe(TAB_INDEX_SEARCH);
         });
+
+        it('should set visualise to active item when geonetwork record is added', function() {
+            mockLayout();
+            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
+        });
     });
 
     describe('main panel tab highlighting', function() {
-
         beforeEach(function() {
-            initMainPanel();
             spyOn(mainPanel, "_highlightActiveTab");
         });
 
@@ -96,12 +98,10 @@ describe("Portal.ui.MainPanel", function() {
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
-
-        var mockLayout = function() {
-            mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
-            mainPanel.layout.setActiveItem.andCallFake(function() {});
-        };
-
     });
 
+    var mockLayout = function() {
+        mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
+        mainPanel.layout.setActiveItem.andCallFake(function() {});
+    };
 });
