@@ -63,8 +63,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Ext.apply(this, config);
 
-        //this.mon(this.store, 'searchcomplete', this.hideMask, this);
-
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
     },

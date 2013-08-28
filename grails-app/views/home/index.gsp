@@ -14,22 +14,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-
     <!--[if lt IE 8]>
  <script type="text/javascript">
     alert("Sorry. The Portal requires IE8 or better! Although the site may appear to work, the functionality is not guaranteed or supported in your web browser. Please update!");
  </script>
    <![endif]-->
 
-
 ${buildInfo}
 
 <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir: 'css', file: 'mapprint.css')}" /-->
-<link rel="stylesheet" type="text/css"
-      href="${resource(dir: 'js', file: 'GeoExt1.1/resources/css/geoext-all.css')}"/>
+<link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'GeoExt1.1/resources/css/geoext-all.css')}"/>
 <!-- User extensions -->
-<link rel="stylesheet" type="text/css"
-      href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}"/>
+<link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}"/>
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/Hyperlink/hyperlink.css')}"/>
 <!-- Portal classes-->
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'portal-search.css')}"/>
@@ -38,8 +34,7 @@ ${buildInfo}
 <g:render template="/common_includes"></g:render>
 
 <g:if env="development">
-    <script src="${resource(dir: 'js', file: 'ext-3.3.1/adapter/ext/ext-base-debug.js')}"
-            type="text/javascript"></script>
+    <script src="${resource(dir: 'js', file: 'ext-3.3.1/adapter/ext/ext-base-debug.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js', file: 'ext-3.3.1/ext-all-debug.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js', file: 'OpenLayers-2.10/OpenLayers.js')}" type="text/javascript"></script>
     <!--- GeoExt (Has to be after Openlayers and ExJS) -->
@@ -54,238 +49,128 @@ ${buildInfo}
 </g:else>
 
 <!-- GeoNetwork - required classes only -->
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}"
-        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/Util.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/lang/en.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/Catalogue.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/util/SearchTools.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}"
-        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/Catalogue.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/util/SearchTools.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
 
-<script src="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}"
-        type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
-
-<script src="${resource(dir: 'js', file: 'portal/portal.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/prototypes/Object.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/prototypes/String.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/prototypes/OpenLayers.js')}"
-type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/lang/en.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/LayerDescriptor.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/spin.min.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/BrowserWindow.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/ActionColumn.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/LoadMask.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/AppConfigStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/SaveDialog.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/MapPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/Controller.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/config/PortalConfigLoader.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/LayerStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/MenuTreeLoader.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/SuggestionStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/LinkStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/data/FacetStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/FreeText.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/DateRange.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/BoundingBox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/MultiSelectCombo.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/CheckBox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/field/ValueCheckBox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/search/MetadataExtent.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/MenuItemToNodeBuilder.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotProxy.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotController.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/snapshot/SaveSnapshotDialog.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotSaveButton.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotOptionsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersTreeNodeUI.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/ActionsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/ComboFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/TimeFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/BoundingBoxFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/filter/FilterPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/StylePanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/DetailsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/AodaacPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/DetailsPanelTab.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/details/InfoPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/ClickControl.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerOptions.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerParams.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapActionsControl.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapOptions.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/Timer.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/AnimationPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/RightDetailsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/HomePanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/search/SearchBodyPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/search/SearchPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/service/CatalogSearcher.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/search/SearchFiltersPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/TopTermStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecordStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/Downloader.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadColumnModel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadToolbar.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"
-        type="text/javascript"></script>
-<script src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"
-        type="text/javascript"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/portal.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/Object.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/String.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/OpenLayers.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/lang/en.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerDescriptor.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/spin.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/BrowserWindow.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/ActionColumn.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LoadMask.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/AppConfigStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/SaveDialog.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/MapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/Controller.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/config/PortalConfigLoader.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/LayerStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/MenuTreeLoader.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/SuggestionStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/data/LinkStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/data/FacetStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/FreeText.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/DateRange.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/BoundingBox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/MultiSelectCombo.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/CheckBox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/ValueCheckBox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MetadataExtent.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/MenuItemToNodeBuilder.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotProxy.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotController.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SaveSnapshotDialog.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotSaveButton.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotOptionsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersTreeNodeUI.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActionsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/TimeFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BoundingBoxFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/FilterPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/StylePanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AodaacPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanelTab.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/InfoPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/ClickControl.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerOptions.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerParams.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapActionsControl.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapOptions.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/Timer.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/AnimationPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/RightDetailsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/HomePanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchBodyPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/service/CatalogSearcher.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFiltersPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/TopTermStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecordStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/Downloader.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadColumnModel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadToolbar.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>
 <g:else>
     <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${jsVerNum}" type="text/javascript"></script>

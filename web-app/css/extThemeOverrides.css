@@ -40,6 +40,21 @@ p, h1, h2, h3 {
     font: inherit;
 }
 
+.ext-el-mask-msg {
+    background: none;
+    background-color: #fafafa;
+    border-radius: 4px;
+    margin : 20px;
+    -moz-box-shadow: 10px 6px 23px #b8b8b8;
+    -webkit-box-shadow: 10px 6px 23px #b8b8b8;
+    box-shadow: 10px 6px 33px #b8b8b8;
+}
+.ext-el-mask-msg div {
+    background-color: inherit;
+    border: none;
+    margin: 30px;
+    font-size: 14px;
+}
 
 .ext-el-mask, .x4-mask{
     background-color: #333333;
