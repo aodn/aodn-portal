@@ -63,17 +63,19 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Ext.apply(this, config);
 
+        //this.mon(this.store, 'searchcomplete', this.hideMask, this);
+
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
-        this.store.on('load', function() {
-            this._onStoreLoad();
-        }, this);
     },
 
     afterRender:function () {
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
-        this.loadMask = new Portal.common.LoadMask(this.getView().mainBody, {msg:"Searching..."});
+        this.loadMask = new Portal.common.LoadMask(this.getView().mainBody, {
+            msg: OpenLayers.i18n('maskText'),
+            setTopPixels: 50
+        });
 
         this.getView().mainBody.on({
             scope:this,
@@ -83,9 +85,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     showMask:function () {
-        //if (this.rendered) {
+        if (this.rendered) {
             this.loadMask.show();
-        //}
+        }
     },
 
     hideMask:function () {
@@ -125,12 +127,9 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
 
-        return linkStore.getLayerLink(0);
+            return linkStore.getLayerLink(0);
     },
 
-    _showIntroMessage: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchStartResultsTitle'));
-    },
 
     _showSearchResultsMessage: function(pages) {
         this.setTitle(null);
@@ -140,10 +139,12 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     _showError: function() {
         this._setTitleText(OpenLayers.i18n('facetedSearchUnavailableText'));
+        this.hideHeaders = false;
     },
 
     _setTitleText: function(newText) {
         this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
+        this.doLayout();
     },
 
     _viewButtonOnClick: function(button, e, rowIndex) {

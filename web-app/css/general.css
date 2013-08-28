@@ -1033,6 +1033,10 @@ div.allwhite {
     font-style: italic;
 }
 
+#mainHomePanel {
+    margin-top: 20px;
+}
+
 .faceted-search-clear-all div {
 
     float: right;

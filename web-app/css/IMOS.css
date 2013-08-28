@@ -32,19 +32,19 @@ p, td{
 h1 {
 	color: #1b7399;
     font-size: 24px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h2 {
 	color: #1b7399;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h3 {
 	color: #1b7399;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h4 {

@@ -13,6 +13,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this.spinner = new Ext.Panel({
             html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
+            hidden: true,
             flex: 3
         });
 
@@ -108,10 +109,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
 		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
-		this.mon(this.searcher, 'searchcomplete', this._showIntroMessage, this);
-    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._showIntroMessage, this);
+		this.mon(this.searcher, 'searchcomplete', this._clearTitleText, this);
+    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._clearTitleText, this);
 		this.mon(this.searcher, 'searcherror', this._showError, this);
-        this.mon(this.searcher, 'filteradded', this._setClearAllLinkVisibility, this);
+        this.mon(this.searcher, 'filteradded', this._setupFacetedSearchUpdating, this);
         this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
 
         this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
@@ -119,10 +120,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
         Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
-    },
-
-    _showIntroMessage: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle') );
     },
 
     _showError: function() {
@@ -143,7 +140,11 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _setTitleText: function( newText ) {
         this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
+        this.spinner.show();
         this.titleBar.doLayout();
+    },
+    _clearTitleText: function( ) {
+        this.spinner.hide();
     },
 
     _onClearAllClicked: function() {
@@ -162,8 +163,15 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.fireEvent('filtersCleared');
     },
 
+    _setupFacetedSearchUpdating: function() {
+        this.fireEvent('facetedSearchUpdating');
+        this._setClearAllLinkVisibility();
+    },
+
     _setClearAllLinkVisibility: function() {
-        this.spinner.update( OpenLayers.i18n('loadingSpinner',{'resource':'layers'}));
+
+
+        this._setTitleText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
     }
 });

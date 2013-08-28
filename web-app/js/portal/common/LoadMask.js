@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -13,32 +12,40 @@ Ext.namespace('Portal.common');
 
 Portal.common.LoadMask = Ext.extend(Ext.LoadMask, {
 
-  // override default unmasking behaviour
-  
-  onLoad : function(){
-    var me      = this,
-    dom     = me.el.dom,
-    maskMsg = Ext.Element.data(dom, 'maskMsg');
 
-    if (maskMsg) {
-        maskMsg.remove();
-        Ext.Element.data(dom, 'maskMsg', undefined);
+    initComponent: function(){
+        console.log(arguments);
+        Portal.common.LoadMask.superclass.initComponent.apply(this, arguments);
+    },
+
+
+    onLoad: function(){
+        var dom = this.el.dom,
+            maskMsg = Ext.Element.data(dom, 'maskMsg');
+
+        if (maskMsg) {
+            maskMsg.remove();
+            Ext.Element.data(dom, 'maskMsg', undefined);
+        }
+    },
+
+    // override default masking behaviour
+
+    onBeforeLoad: function(){
+        var me = this,
+            dom = me.el.dom,
+            dh = Ext.DomHelper;
+
+        var mm = dh.append(dom, {cls: 'ext-el-mask-msg', cn: {tag: 'div'}}, true);
+        Ext.Element.data(dom, 'maskMsg', mm);
+        mm.dom.className = 'ext-el-mask-msg ' + me.msgCls;
+        mm.dom.firstChild.innerHTML = me.msg;
+        mm.setDisplayed(true);
+        mm.center(me.el);
+        if (this.setTop) {
+            //mm.setTop(this.top);
+        }
+
     }
-  },
-
-  // override default masking behaviour
-  
-  onBeforeLoad : function(){
-    var me  = this,
-    dom = me.el.dom,
-    dh  = Ext.DomHelper;
-    
-    var mm = dh.append(dom, {cls: 'ext-el-mask-msg', cn:{tag:'div'}}, true);
-    Ext.Element.data(dom, 'maskMsg', mm);
-    mm.dom.className = 'ext-el-mask-msg ' + me.msgCls ;
-    mm.dom.firstChild.innerHTML = me.msg;
-    mm.setDisplayed(true);
-    mm.center(me.el);
-  }
 
 });
