@@ -164,7 +164,6 @@ describe("Portal.ui.MapPanel", function() {
 
         it('calls _updateLayerLoadingSpinner', function() {
 
-
             spyOn(mapPanel, '_updateLayerLoadingSpinner');
 
             mapPanel.fireEvent("tabchange");

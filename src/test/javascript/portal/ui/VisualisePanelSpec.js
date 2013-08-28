@@ -15,8 +15,8 @@ describe('Portal.ui.VisualisePanel', function() {
     };
 
     var panel = new Portal.ui.VisualisePanel({
-            appConfig: appConfig
-        });
+        appConfig: appConfig
+    });
 
     it('listens for beforehide event', function() {
 

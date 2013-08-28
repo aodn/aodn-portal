@@ -31,7 +31,7 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.getBottomToolbar()).toBeInstanceOf(Portal.cart.DownloadToolbar);
         });
 
-        it('listens for beforehide event', function() {
+        it('listens for beforeshow event', function() {
 
             spyOn(downloadPanel, 'onBeforeShow');
 
