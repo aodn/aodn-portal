@@ -22,12 +22,9 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
-    describe('_viewButtonOnClick', function() {
-        it('add record to active geonetwork store when view is clicked', function() {
-            fsrg.store.add(new Portal.data.GeoNetworkRecord());
-
-            fsrg._viewButtonOnClick(null, testTarget, 0);
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalled();
+    describe('initialisation', function() {
+        it('sets column model to correct type', function() {
+            expect(fsrg.colModel).toBeInstanceOf(Portal.search.FacetedSearchResultsColumnModel);
         });
     });
 });
