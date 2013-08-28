@@ -198,12 +198,12 @@ Result:              $statusMessage
 		def address = fileInfo.href
 
 		try {
-			if (!_isGeoServerDisclaimerAddress(address)) {
+			if (!_isGeoNetworkDisclaimerAddress(address)) {
 
 				// Get stream of URL
 				return address.toURL().newInputStream()
 			}
-			else { // Handle special-case GeoServer URLs
+			else { // Handle special-case GeoNetwork URLs
 
 				// Request disclaimer page (unmodified URL) first to create session on GeoNetwork
 				def firstRequestConn = address.toURL().openConnection()
@@ -214,8 +214,8 @@ Result:              $statusMessage
 				def cookieHeaderValue = cookieHeader.value.get(0) // Only has one value, a delimeted String of cookies
 
 				// Modify URL to ask for file directly, and pass-in dummy field values
-				def geoServerDownloadAddress = _geoServerDownloadAddress(address)
-				def secondRequestConn = geoServerDownloadAddress.toURL().openConnection()
+				def geoNetworkDownloadAddress = _geoNetworkDownloadAddress(address)
+				def secondRequestConn = geoNetworkDownloadAddress.toURL().openConnection()
 
 				secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
 				secondRequestConn.connect()
@@ -265,12 +265,12 @@ Time taken: ${ _timeTaken() } seconds
 		zipStream.closeEntry()
 	}
 
-	def _isGeoServerDisclaimerAddress(address) {
+	def _isGeoNetworkDisclaimerAddress(address) {
 
 		return address ==~ GEONETWORK_DOWNLOAD_URL
 	}
 
-	def _geoServerDownloadAddress(disclaimerAddress) {
+	def _geoNetworkDownloadAddress(disclaimerAddress) {
 
 		def downloadAddress = disclaimerAddress.replaceFirst("file.disclaimer", "resources.get")
 		downloadAddress += GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING
