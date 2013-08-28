@@ -8,23 +8,19 @@
 
 describe("Portal.ui.MainPanel", function() {
 
-    var facetsEnabled = false;
-    appConfigStore.isFacetedSearchEnabled = function() { return facetsEnabled; }
     appConfigStore.getById = function(id) {
         if (id == 'spatialsearch.url') {
             return { data: { value: "spatialsearch.aodn.org.au" }};
         }
         return "";
-    }
+    };
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockVisualisePanel = {
-        getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
-    };
+    var mockVisualisePanel = {};
 
     var buildMockMainPanel = function() {
-        spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
+        spyOn(Ext.data.Store.prototype, "load").andCallFake(function() {
             return true
         });
 

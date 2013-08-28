@@ -7,7 +7,6 @@
  */
 
 describe("Portal.cart.DownloadPanel", function() {
-    var downloadDataView;
 
     beforeEach(function() {
         downloadPanel = new Portal.cart.DownloadPanel();
@@ -30,6 +29,27 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('has bbar of type DownloadToolbar', function() {
             expect(downloadPanel.getBottomToolbar()).toBeInstanceOf(Portal.cart.DownloadToolbar);
+        });
+
+        it('listens for beforeshow event', function() {
+
+            spyOn(downloadPanel, 'onBeforeShow');
+
+            downloadPanel.fireEvent('beforeshow');
+
+            expect(downloadPanel.onBeforeShow).toHaveBeenCalled();
+        });
+    });
+
+    describe('onBeforeShow()', function() {
+
+        it('calls refresh() on its view', function() {
+
+            spyOn(downloadPanel.view, 'refresh');
+
+            downloadPanel.onBeforeShow();
+
+            expect(downloadPanel.view.refresh).toHaveBeenCalled();
         });
     });
 });

@@ -38,9 +38,12 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
+
+        this.on('beforehide', function() { this.onBeforeHide() }, this);
     },
 
-	getMapPanel: function() {
-		return this.mapPanel;
+    onBeforeHide: function() {
+
+        this.mapPanel.beforeParentHide();
     }
 });
