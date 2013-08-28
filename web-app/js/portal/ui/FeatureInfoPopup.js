@@ -156,31 +156,25 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _requestFeatureInfo: function(layer) {
-    	this.numResultsToLoad++;
-    	Ext.Ajax.request({
-        	scope: this,
+        this.numResultsToLoad++;
+        Ext.Ajax.request({
+            scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
             params: {
+                layer: layer,
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
                 units: layer.metadata.units,
-                animation: layer.isAnimated,
                 copyright: layer.metadata.copyright
             },
             success: function(resp, options) {
-            	if (options.params.animation) {
-            		this.numGoodResults++;
-            		this._addPopupTabContent("<div><img src='" + options.url + "'></div>", options.params.name);
-            	}
-            	else {
-	                var newTabContent = formatGetFeatureInfo( resp, options );
-	                if (newTabContent) {
-	                    this.numGoodResults++;
-	                    this._addPopupTabContent(newTabContent, options.params.name);
-	                }
-            	}
+                // Delegate HTML formatting of response to layer
+                this.numGoodResults++;
+                this._addPopupTabContent(
+                    options.params.layer.formatFeatureInfoHtml(resp, options),
+                    options.params.name);
                 this._featureInfoRequestCompleted();
-                setTimeout(imgSizer, 1000);
+                setTimeout(imgSizer, 0);
             },
 
             failure: this._featureInfoRequestCompleted
@@ -193,14 +187,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _getLayerFeatureInfoRequestString: function(layer) {
-    	var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
-        var format = 'text/xml';
-    	if (layer.isAnimated && layer.startTime && layer.endTime) {
-			extraParams.TIME = layer.startTime.toISOString() + "/" + layer.endTime.toISOString();
-			extraParams.FORMAT = "image/png";
-			extraParams.INFO_FORMAT = "image/png";
-            delete format;
-		}
+        var extraParams          = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
+        var format               = layer.getFeatureInfoFormat();
 
         var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), extraParams));
         if (format) {

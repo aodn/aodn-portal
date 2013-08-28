@@ -8,6 +8,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     DEFAULT_GIF_HEIGHT: 512,
 
+    FRAMES_TO_LOAD_ON_INIT: 10,
+
     STATES: {
         UNCACHED: 'UNCACHED',
         CACHING: 'CACHING',
@@ -135,17 +137,24 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
-                        // Need to reconfigure layer as we processed times
-                        // TODO: Configure for last 10 frames, a bit
-                        // ugly and hardcoded
-                        var timeControl = that._getTimeControl();
-                        timeControl.configureForLayer(that, 10);
+                        that._configureTimeControl();
                         that._processTemporalExtentDone();
                     }
                 })();
             }
             processDates();
         })();
+    },
+
+    _configureTimeControl: function() {
+        // Need to reconfigure layer as we processed times
+        // TODO: Configure for last 10 frames, a bit
+        // ugly and hardcoded
+        var timeControl  = this._getTimeControl();
+        var framesToLoad =
+            Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
+
+        timeControl.configureForLayer(this, framesToLoad);
     },
 
     _processTemporalExtentDone: function() {
@@ -419,6 +428,33 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         return this.time;
+    },
+
+    /* Overrides */
+    getFeatureInfoRequestString: function(clickPoint, overrideParams) {
+        var timeControl = this._getTimeControl();
+
+        overrideParams.TIME =
+            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            + "/" +
+            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        overrideParams.FORMAT = "image/png";
+        overrideParams.INFO_FORMAT = "image/png";
+        return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
+    },
+
+    /* Overrides */
+    getFeatureInfoFormat: function() {
+        // Setting this in getExtraFeatureInfo, but we need to override the
+        // default 'text/xml' one
+        // See below as it is being wrapped with a <div> and <img src=''>
+        return "";
+    },
+
+    /* Overrides */
+    formatFeatureInfoHtml: function(resp, options) {
+        return "<div><img src='" + options.url + "'></div>";
     },
 
     /**
