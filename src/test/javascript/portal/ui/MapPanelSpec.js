@@ -138,7 +138,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(Portal.data.LayerStore.instance(), 'addUsingDescriptor').andCallThrough();
         });
 
-        it('addingLayersFromGetFeatureInfo', function(){
+        it('addingLayersFromGetFeatureInfo', function() {
             var oldCount = mapPanel.layers.getCount();
             setExtWmsLayer(url, label, type, layer, '', options, '');
             expect(mapPanel.layers.getCount()).toBe(oldCount + 1);
@@ -162,7 +162,7 @@ describe("Portal.ui.MapPanel", function() {
 
     describe('tabchange event', function () {
 
-        it(' calls _updateLayerLoadingSpinner', function () {
+        it('calls _updateLayerLoadingSpinner', function() {
 
 
             spyOn(mapPanel, '_updateLayerLoadingSpinner');
@@ -170,6 +170,18 @@ describe("Portal.ui.MapPanel", function() {
             mapPanel.fireEvent("tabchange");
 
             expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
+        });
+    });
+
+    describe('beforeParentHide()', function() {
+
+        it('calls _closeFeatureInfoPopup()', function() {
+
+            spyOn(mapPanel, '_closeFeatureInfoPopup');
+
+            mapPanel.beforeParentHide();
+
+            expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
     });
 

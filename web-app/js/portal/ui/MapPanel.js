@@ -262,6 +262,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getPanelY:function () {
         return this.getPosition()[1];
+    },
+
+    beforeParentHide: function() {
+
+        this._closeFeatureInfoPopup();
     }
 });
 
