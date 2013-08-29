@@ -43,7 +43,7 @@ describe("Portal.ui.search.SearchPanel", function() {
     describe('searcher events', function() {
         it('loads data on completed search', function() {
             spyOn(searchPanel.resultsStore, 'loadData');
-            spyOn(searchPanel.filtersPanel, '_setTitleText');
+            spyOn(searchPanel.filtersPanel, '_setSpinnerText');
             var response = {};
 
             searchPanel.searcher.fireEvent('searchcomplete', response);
