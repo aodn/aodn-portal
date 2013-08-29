@@ -13,12 +13,14 @@ TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
 
         Ext.apply(this, cfg);
 
-        this.searchTabPanel = this._initSearchTabPanel(cfg);
-        this.visualisePanel = new Portal.ui.VisualisePanel({appConfig:Portal.app.config});
+        this.mapPanel = new Portal.ui.MapPanel();
+
+        this.searchPanel = new Portal.ui.search.SearchPanel({ mapPanel: this.mapPanel });
+        this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
         this.downloadPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
@@ -30,7 +32,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             unstyled:true,
             layout: 'card',
             items:[
-                this.searchTabPanel,
+                this.searchPanel,
                 this.visualisePanel,
                 this.downloadPanel
             ]
@@ -50,32 +52,13 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this._highlightActiveTab();
     },
 
-    _initSearchTabPanel: function() {
-
-        return new Portal.ui.search.SearchPanel({
-            itemId: 'searchPanel',
-            proxyUrl: proxyURL,
-            catalogUrl: Portal.app.config.catalogUrl,
-            spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
-        });
-    },
-
-    getMapPanel:function () {
-        return this.visualisePanel.getMapPanel();
-    },
-
     getActiveTab: function() {
         return this.layout.activeItem;
     },
 
-    setActiveTab: function(index) {
+    setActiveTab: function(tabIndex) {
 
-        this.layout.setActiveItem(index);
-
-        if (!this.isMapVisible()) {
-            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
-        }
+        this.layout.setActiveItem(tabIndex);
 
         this._highlightActiveTab();
     },
@@ -87,9 +70,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
         jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
-    },
-
-    isMapVisible:function () {
-        return this.getActiveTab() === this.visualisePanel;
     }
 });

@@ -11,10 +11,12 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor:function (cfg) {
 
-        this.appConfig = cfg.appConfig;
+        this.appConfig = Portal.app.config;
 
         var config = Ext.apply({
             id: 'mapPanel',
+            stateful: false,
+            forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
             split: true,
             header: false,
             initialBbox: this.appConfig.initialBbox,
@@ -35,11 +37,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
         this.initMap();
-
-        this.on('hide', function () {
-            // map is never hidden!!!!"
-            this._closeFeatureInfoPopup();
-        }, this);
 
         // Without this, the mini-map does not load properly because it ends up without
         // any base layers.
@@ -267,6 +264,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getPanelY:function () {
         return this.getPosition()[1];
+    },
+
+    beforeParentHide: function() {
+
+        this._closeFeatureInfoPopup();
     }
 });
 

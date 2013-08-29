@@ -12,13 +12,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.mapPanel = new Portal.ui.MapPanel({
-            appConfig: cfg.appConfig,
-            region:'center',
-            id: 'mainMapPanel',
-            stateful: false,
-            forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
-        });
+        this.mapPanel = cfg.mapPanel;
+        this.mapPanel.region = 'center';
 
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',
@@ -38,9 +33,12 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
+
+        this.on('beforehide', function() { this.onBeforeHide() }, this);
     },
 
-	getMapPanel: function() {
-		return this.mapPanel;
+    onBeforeHide: function() {
+
+        this.mapPanel.beforeParentHide();
     }
 });

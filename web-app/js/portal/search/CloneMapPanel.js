@@ -174,4 +174,3 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
 });
 
 Ext.reg('portal.search.clonemappanel', Portal.search.CloneMapPanel);
-
