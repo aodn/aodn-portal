@@ -88,7 +88,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 	        items:[
 		        {
 		        	xtype: 'button',
-		        	text: 'Remove All Layers',
+		        	text: OpenLayers.i18n("removeAllControlLabel"),
 		        	cls: "floatLeft buttonPad",
 		            tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
 		            scope: this,
@@ -98,7 +98,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 		        },
 		        {
 		        	xtype: 'button',
-		        	text: 'Reset Map',
+                    text: OpenLayers.i18n("resetMapControlLabel"),
 		            tooltip:  OpenLayers.i18n("mapOptionsResetButton"),
 		            cls: "floatLeft buttonPad",
 		            scope: this,

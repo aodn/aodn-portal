@@ -98,10 +98,10 @@ function updatePopupStatus(popup) {
 
     //popup.setTitle("Features at " + popup.locationString);
     if (popup.numGoodResults > 0) {
-        popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
+        popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " collections");
     }
     else if (popup.numResultQueries == popup.numResultsToLoad) {
-        var layerStr = (popup.numResultsToLoad == 1) ? "layer" : "layers";
+        var layerStr = (popup.numResultsToLoad == 1) ? "collection" : "collections";
         popup.setTitle("No features found for " + popup.numResultsToLoad + " queryable " + layerStr);
     }
 }

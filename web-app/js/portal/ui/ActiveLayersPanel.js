@@ -12,7 +12,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(cfg) {
 
         var config = Ext.apply({
-            title: "Active Layers<br><i><small>No layers added to map</small></i>",
+            title: this._getDefaultEmptyMapText(),
             id: 'activeLayerTreePanel',
             enableDD: true,
             useArrows: true,
@@ -95,6 +95,10 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         if (newNode != null) {
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newNode.layer);
         }
+    },
+
+    _getDefaultEmptyMapText: function() {
+        return OpenLayers.i18n('noActiveLayersSelected') + "<br/><i><small>" + OpenLayers.i18n('noCollectionSelectedHelp') + "</small></i>";
     },
 
     activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node) {
@@ -183,9 +187,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     updateTitle: function() {
-        var title = 'Active Layers';
+        var title = OpenLayers.i18n('collectionsTitle');
         if (!this.root.hasChildNodes()) {
-            title += '</br><i><small>No layers added to map</small></i>';
+            title = this._getDefaultEmptyMapText();
         }
         this.setTitle(title);
     }
