@@ -17,15 +17,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg);
 
-        this.mapPanel = new Portal.ui.MapPanel({
-            appConfig: Portal.app.config,
-            stateful: false,
-            forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
-        });
-        this.searchPanel = this._initSearchPanel();
-        this.visualisePanel = new Portal.ui.VisualisePanel({
-            mapPanel: this.mapPanel
-        });
+        this.mapPanel = new Portal.ui.MapPanel();
+
+        this.searchPanel = new Portal.ui.search.SearchPanel({ mapPanel: this.mapPanel });
+        this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
         this.downloadPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
@@ -46,18 +41,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe('activegeonetworkrecordadded', this._onActiveGeoNetworkRecordAdded, this);
-    },
-
-    _initSearchPanel: function() {
-
-        return new Portal.ui.search.SearchPanel({
-            itemId: 'searchPanel',
-            proxyUrl: proxyURL,
-            catalogUrl: Portal.app.config.catalogUrl,
-            spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
-            mapPanel: this.mapPanel
-        });
     },
 
     _onActiveGeoNetworkRecordAdded: function() {

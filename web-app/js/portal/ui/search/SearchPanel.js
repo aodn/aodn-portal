@@ -16,11 +16,11 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, cfg || {}, defaults);
 
         this.searcher = new Portal.service.CatalogSearcher({
-            proxyUrl:this.proxyUrl,
-            catalogUrl:this.catalogUrl,
-            spatialSearchUrl: this.spatialSearchUrl,
-            defaultParams:{
-                protocol:cfg.protocols
+            proxyUrl: proxyURL,
+            catalogUrl: Portal.app.config.catalogUrl,
+            spatialSearchUrl: appConfigStore.getById('spatialsearch.url').data.value,
+            defaultParams: {
+                protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
             }
         });
 
@@ -43,6 +43,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
+            itemId: 'searchPanel',
             layout: 'border',
             split: false,
             items: [
