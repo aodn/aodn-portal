@@ -56,7 +56,8 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
     initComponent: function () {
         Portal.ui.search.SearchPanel.superclass.initComponent.apply(this);
 
-        this.searcher.on('searchcomplete', function(response) {
+        this.searcher.on('searchcomplete', function(response, page) {
+            this.resultsStore.startRecord = page.from - 1;
             this.resultsStore.loadData(response);
         }, this);
 

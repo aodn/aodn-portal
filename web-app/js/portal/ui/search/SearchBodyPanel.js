@@ -69,7 +69,6 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
         this.resultsGrid.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
-        this.resultsStore.startRecord = params.start;
         this.resultsGrid.hideMask();
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging
