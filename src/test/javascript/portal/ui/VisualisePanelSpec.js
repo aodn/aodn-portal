@@ -8,14 +8,16 @@
 
 describe('Portal.ui.VisualisePanel', function() {
 
-    var appConfig = {
-        initialBbox: '130,-60,160,-20',
-        autoZoom: false,
-        hideLayerOptions: false
+    Portal.app = {
+        config: {
+            initialBbox: '130,-60,160,-20',
+            autoZoom: false,
+            hideLayerOptions: false
+        }
     };
 
     var panel = new Portal.ui.VisualisePanel({
-        appConfig: appConfig
+        mapPanel: new Portal.ui.MapPanel()
     });
 
     it('listens for beforehide event', function() {

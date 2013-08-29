@@ -18,12 +18,14 @@ describe("Portal.ui.MainPanel", function() {
     var mockConfig = {};
     var mockSearchPanel = {};
     var mockVisualisePanel = {};
+    var mockMapPanel = {};
 
     var buildMockMainPanel = function() {
         spyOn(Ext.data.Store.prototype, "load").andCallFake(function() {
             return true
         });
 
+        spyOn(Portal.ui, "MapPanel").andReturn(mockMapPanel);
         spyOn(Portal.ui, "VisualisePanel").andReturn(mockVisualisePanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
@@ -48,9 +50,21 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('initialisation', function() {
+
+        it('should init map panel', function() {
+            expect(Portal.ui.MapPanel).toHaveBeenCalled();
+            expect(mainPanel.mapPanel).toEqual(mockMapPanel);
+        });
+
         it('should init portal panel', function() {
             expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
             expect(mainPanel.visualisePanel).toEqual(mockVisualisePanel);
+        });
+
+        it('should init search panel', function() {
+            expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
+            expect(Portal.ui.search.SearchPanel.calls[0].args[0].mapPanel).toBe(mockMapPanel);
+            expect(mainPanel.searchPanel).toEqual(mockSearchPanel);
         });
     });
 
