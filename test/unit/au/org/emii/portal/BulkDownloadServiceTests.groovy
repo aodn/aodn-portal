@@ -263,14 +263,14 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 		def testUrl1 = "http://www.google.com/file.disclaimer/a.html"
 		def testUrl2 = "http://www.google.com/someDirectory/a.html"
 
-		assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING}", bulkDownloadService._geoServerDownloadAddress(testUrl1)
-		assertEquals testUrl2 + BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING, bulkDownloadService._geoServerDownloadAddress(testUrl2) // Unchanged
+		assertEquals "http://www.google.com/resources.get/a.html${BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING}", bulkDownloadService._geoNetworkDownloadAddress(testUrl1)
+		assertEquals testUrl2 + BulkDownloadService.GEONETWORK_DOWNLOAD_DETAILS_QUERY_STRING, bulkDownloadService._geoNetworkDownloadAddress(testUrl2) // Unchanged
 	}
 
 	void testIsGeoServerDisclaimerAddress() {
 
-		assertTrue bulkDownloadService._isGeoServerDisclaimerAddress("http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=4629&fname=IMOS_SOOP-CO2_GST_20080228T083851Z_SSCO2_fv01_REPORT.doc&a=b&c=d")
-		assertFalse bulkDownloadService._isGeoServerDisclaimerAddress("http://imosmest.aodn.org.au:80/geonetwork/srv/en/resources.get?id=4629&fname=IMOS_SOOP-CO2_GST_20080228T083851Z_SSCO2_fv01_REPORT.doc&a=b&c=d")
+		assertTrue bulkDownloadService._isGeoNetworkDisclaimerAddress("http://imosmest.aodn.org.au:80/geonetwork/srv/en/file.disclaimer?id=4629&fname=IMOS_SOOP-CO2_GST_20080228T083851Z_SSCO2_fv01_REPORT.doc&a=b&c=d")
+		assertFalse bulkDownloadService._isGeoNetworkDisclaimerAddress("http://imosmest.aodn.org.au:80/geonetwork/srv/en/resources.get?id=4629&fname=IMOS_SOOP-CO2_GST_20080228T083851Z_SSCO2_fv01_REPORT.doc&a=b&c=d")
 	}
 
 	void testCheckRestrictionAddingFile() {
