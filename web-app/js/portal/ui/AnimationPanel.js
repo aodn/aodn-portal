@@ -31,7 +31,7 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
         this.animationControlsPanel = new Portal.details.AnimationControlsPanel(config);
         
         this.controlButtonPanel = new Ext.Panel({
-
+            cls: 'animationSubPanel',
             bodyStyle:'padding: 6px; margin: 2px;',
             items: [{
                 xtype: 'button',
