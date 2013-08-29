@@ -220,10 +220,6 @@ Result:              $statusMessage
 				secondRequestConn.setRequestProperty "Cookie", cookieHeaderValue
 				secondRequestConn.connect()
 
-				// Update file info as GeoNetwork returns file archives
-				fileInfo.filenameUsed = "archive_containing_${ fileInfo.filenameUsed }${ fileInfo.fileExtensionUsed }"
-				fileInfo.fileExtensionUsed = ".zip"
-
 				return secondRequestConn.inputStream
 			}
 		}
