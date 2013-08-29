@@ -41,6 +41,8 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsStoreLoad: function() {
+
+        this.resultsGrid.hideMask();
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
@@ -66,6 +68,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsGridBbarBeforeChange: function (bbar, params) {
+
 
         this.resultsGrid.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
