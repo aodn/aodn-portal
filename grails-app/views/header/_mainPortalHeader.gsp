@@ -92,11 +92,4 @@
         <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
             <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>
-
-    <div id="downloadCartStatus" class="hidden">
-        <img src="${resource(dir: 'images', file: 'cart.png')}" id="cartLogo"/> &nbsp; <b><span id="downloadCartSize">0</span>
-    </b> item(s)<br/>
-        <a href="#" onclick="showCartTabPanel();">Download Data</a>
-
-    </div>
 </div>

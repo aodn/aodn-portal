@@ -204,42 +204,6 @@ a.userlink {
     margin-right: 15px! important;
 }
 
-
-
-
-#downloadCartStatus {
-    background: url("../images/mapshadow.png") repeat-x scroll left top #0079C2;
-    border-radius: 14px ;
-    color: white;
-    float: right;
-    padding: 4px 10px 6px;
-    position: absolute;
-    right: 25px;
-    top: 45px;
-
-    box-shadow: 2px 2px 1px 0 #cccccc;
-}
-
-#downloadCartStatus div {
-    padding-top: 3px;
-}
-
-#downloadCartStatus a {
-    color: white;
-    font-size: 11px;
-    margin: 0 3px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#downloadCartStatus a:hover {
-    text-decoration: underline;
-}
-
- #downloadCartStatus {
-     text-align: right;
- }
-
 .styledButton, .styledButton * {
     background-color: #ff9900;
 }
