@@ -87,7 +87,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.geoFilter = new Portal.search.GeoSelectionPanel({
             title: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
-            searcher: config.searcher
+            searcher: config.searcher,
+            mapPanel: config.mapPanel
         });
 
 		config = Ext.apply({

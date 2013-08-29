@@ -12,13 +12,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.mapPanel = new Portal.ui.MapPanel({
-            appConfig: cfg.appConfig,
-            region:'center',
-            id: 'mainMapPanel',
-            stateful: false,
-            forceLayout: true   // Makes the map appear (almost) instantly when user clicks the 'map' button.
-        });
+        this.mapPanel = cfg.mapPanel;
+        this.mapPanel.region = 'center';
 
         this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
 			region: 'east',

@@ -14,8 +14,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         this.viewportTabsHeight = 40;
 
         this.mainPanel = new Portal.ui.MainPanel({
-            region: 'center',
-            appConfigStore: appConfigStore
+            region: 'center'
         });
 
         var config = Ext.apply(
