@@ -82,10 +82,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         // don't break YET AGAIN
         this.doLayout(false, true /* force update */);
 
-        if (!this.isMapVisible()) {
-            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
-        }
-
         this._highlightActiveTab();
     },
 
