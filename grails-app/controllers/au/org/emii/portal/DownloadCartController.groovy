@@ -45,7 +45,8 @@ class DownloadCartController {
         }
         catch (ClientAbortException e) {
 
-            log.info "ClientAbortException caught during bulk download", e
+            // ClientAbortException is thrown when a user cancels a download
+            log.debug "ClientAbortException caught during bulk download", e
         }
         catch (Exception e) {
 
