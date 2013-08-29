@@ -42,6 +42,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     initComponent : function() {
         var parentAnimationControl = this;
+        this.cls = 'animationSubPanel';
 
         this.warn = new Ext.form.Label({
             padding : 5,

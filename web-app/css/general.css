@@ -588,6 +588,11 @@ table.featureInfo caption{
 #maptools .x-panel-body {
     border-radius: 5px;
 }
+.animationSubPanel {
+    border: 0;
+    background-color: #F4F4F4;
+    border-radius: 12px;
+}
 
 .semiTransparent .x-item-disabled * {
     color:  #eee! important;

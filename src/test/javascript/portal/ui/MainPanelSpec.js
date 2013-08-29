@@ -111,6 +111,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     var mockLayout = function() {
+        spyOn(Portal.ui.MainPanel.prototype, "doLayout").andReturn(function() {});
         mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
         mainPanel.layout.setActiveItem.andCallFake(function() {});
     };
