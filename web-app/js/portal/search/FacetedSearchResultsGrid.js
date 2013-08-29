@@ -136,7 +136,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     },
 
     _showError: function() {
-        this._setTitleText(OpenLayers.i18n('facetedSearchUnavailableText'));
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailableText'));
         this.hideHeaders = false;
     },
 

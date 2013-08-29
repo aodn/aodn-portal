@@ -109,8 +109,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
 		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
-		this.mon(this.searcher, 'searchcomplete', this._clearTitleText, this);
-    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._clearTitleText, this);
+		this.mon(this.searcher, 'searchcomplete', this._hideSpinnerText, this);
+    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._hideSpinnerText, this);
 		this.mon(this.searcher, 'searcherror', this._showError, this);
         this.mon(this.searcher, 'filteradded', this._setupFacetedSearchUpdating, this);
         this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
@@ -123,7 +123,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _showError: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailable') );
+        this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
     },
 
     _buildClearAllLink: function() {
@@ -138,18 +138,18 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         return this.clearAllLink;
     },
 
-    _setTitleText: function( newText ) {
+    _setSpinnerText: function( newText ) {
         this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
         this.spinner.show();
         this.titleBar.doLayout();
     },
-    _clearTitleText: function( ) {
+    _hideSpinnerText: function( ) {
         this.spinner.hide();
     },
 
     _onClearAllClicked: function() {
 
-        this._setTitleText(OpenLayers.i18n('facetedSearchResetting'));
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
 
         this.parameterFilter.removeAnyFilters();
         this.themeFilter.removeAnyFilters();
@@ -170,8 +170,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _setClearAllLinkVisibility: function() {
 
-
-        this._setTitleText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
+        this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
     }
 });
