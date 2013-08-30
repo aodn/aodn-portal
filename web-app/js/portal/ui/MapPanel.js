@@ -27,12 +27,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             hideLayerOptions: this.appConfig.hideLayerOptions,
             layersLoading: 0,
             layers:  Portal.data.LayerStore.instance()
-            /*html: " \
-                    <div id='loader' style='position:  absolute; top:  50%; left:  43%; z-index:  9000;'> \
-                        <div id='jsloader' style='height:  70px; width:  70px; float:  left;'></div> \
-                        <span></span> \
-                    </div>" // This is the "Loading 'n' layers" pop-up; message is inserted into the span.*/
-
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -86,6 +80,9 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     _updateLayerLoadingSpinner: function (numLayersLoading) {
+        // When running tests, loadSpinner will not be available
+        if (!this.loadSpinner) { return; }
+
         if (numLayersLoading > 0) {
             this.loadSpinner.show();
         } else {
