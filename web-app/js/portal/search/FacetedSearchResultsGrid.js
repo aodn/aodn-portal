@@ -70,7 +70,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
     afterRender:function () {
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
-        this.loadMask = new Portal.common.LoadMask(this.getView().mainBody, {
+        this.loadMask = new Ext.LoadMask(this.getView().mainBody, {
             msg: OpenLayers.i18n('maskText'),
             setTopPixels: 50
         });
