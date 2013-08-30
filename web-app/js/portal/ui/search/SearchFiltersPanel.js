@@ -144,6 +144,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.spinner.show();
         this.titleBar.doLayout();
     },
+
     _hideSpinnerText: function( ) {
         this.spinner.hide();
     },
