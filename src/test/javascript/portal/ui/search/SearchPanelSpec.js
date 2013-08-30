@@ -45,9 +45,11 @@ describe("Portal.ui.search.SearchPanel", function() {
             spyOn(searchPanel.resultsStore, 'loadData');
             spyOn(searchPanel.filtersPanel, '_setTitleText');
             var response = {};
+            var page = {from: 20, to: 40};
 
-            searchPanel.searcher.fireEvent('searchcomplete', response);
+            searchPanel.searcher.fireEvent('searchcomplete', response, page);
             expect(searchPanel.resultsStore.loadData).toHaveBeenCalledWith(response);
+            expect(searchPanel.resultsStore.startRecord).toEqual(19);
         });
     });
 
