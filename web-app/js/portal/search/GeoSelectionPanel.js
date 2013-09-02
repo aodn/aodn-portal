@@ -66,6 +66,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.searchButton, 'click', this.onSearch, this);
         this.mon(this.clearButton, 'click', this.resetFilter, this);
+        this.mon(this.facetMap, 'polygonadded', this._onPolygonAdded, this);
     },
 
     initComponent:function () {
@@ -97,6 +98,9 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
     _clearFacetGeometry: function() {
         this.facetMap.clearGeometry();
-    }
+    },
 
+    _onPolygonAdded: function() {
+        this.searcher.fireEvent('polygonadded');
+    }
 });

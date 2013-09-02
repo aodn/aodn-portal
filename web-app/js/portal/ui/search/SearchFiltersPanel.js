@@ -115,6 +115,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 		this.mon(this.searcher, 'searcherror', this._showError, this);
         this.mon(this.searcher, 'filteradded', this._setupFacetedSearchUpdating, this);
         this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
+        this.mon(this.searcher, 'polygonadded', this._showClearAllForGeoFacet, this);
 
         this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
 	},
@@ -171,8 +172,13 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setClearAllLinkVisibility: function() {
-
         this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
+    },
+
+    _showClearAllForGeoFacet: function() {
+        this._setSpinnerText('');
+        this.clearAllLink.setVisible(true);
+        this._hideSpinnerText();
     }
 });

@@ -36,6 +36,15 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         });
     });
 
+    describe('clear all link display behaviour for the geo facet', function() {
+        it('displays the clear all link when a polygon is added', function() {
+            // Ideally I want to test this by firing a 'polygonadded' event but because of timing the expectation fails
+            spyOn(searchFiltersPanel.clearAllLink, 'setVisible');
+            searchFiltersPanel._showClearAllForGeoFacet();
+            expect(searchFiltersPanel.clearAllLink.setVisible).toHaveBeenCalledWith(true);
+        });
+    });
+
     function spyOnFilter(filter) {
         spyOn(filter, 'removeAnyFilters');
     }
