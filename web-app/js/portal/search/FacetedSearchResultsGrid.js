@@ -69,12 +69,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
             msg: OpenLayers.i18n('maskText'),
             setTopPixels: 50
         });
-
-        this.getView().mainBody.on({
-            scope:this,
-            mouseover:this.onMouseOver,
-            mouseout:this.onMouseOut
-        });
     },
 
     showMask: function () {
@@ -87,36 +81,6 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         if (this.rendered) {
             this.loadMask.hide();
         }
-    },
-
-    _getLayerLink: function (rowIndex) {
-
-        var rec = this.store.getAt(rowIndex);
-        var links = rec.get('links');
-        var linkStore = new Portal.search.data.LinkStore({
-            data:{links:links}
-        });
-
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
-
-            return linkStore.getLayerLink(0);
-    },
-
-
-    _showSearchResultsMessage: function(pages) {
-        this.setTitle(null);
-        this.hideHeaders = true;
-        this.doLayout();
-    },
-
-    _showError: function() {
-        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailableText'));
-        this.hideHeaders = false;
-    },
-
-    _setTitleText: function(newText) {
-        this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
-        this.doLayout();
     },
 
     _onStoreLoad: function() {

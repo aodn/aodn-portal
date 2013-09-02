@@ -16,12 +16,11 @@ Portal.search.ViewRecordColumn = Ext.extend(Ext.grid.Column, {
 
         var self = this;
 
-        var createButton = function(value, id, record, handler) {
+        var createButton = function(id, record, handler) {
             new Ext.Button({
-                text: value,
+                text: self._getViewButtonText(record),
                 handler: handler,
-                scope: self,
-                disabled: Portal.data.ActiveGeoNetworkRecordStore.instance().containsUuid(record.get('uuid'))
+                scope: self
             }).render(document.body, id);
         };
 
@@ -29,13 +28,26 @@ Portal.search.ViewRecordColumn = Ext.extend(Ext.grid.Column, {
         var buttonHandler = function(button, e) {
             this._viewButtonOnClick(record);
         };
-        createButton.defer(1, this, ['View', componentId, record, buttonHandler]);
+        createButton.defer(1, this, [componentId, record, buttonHandler]);
 
         return('<div id="' + componentId + '"></div>');
     },
 
-    _viewButtonOnClick: function(recordToView) {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().add(recordToView);
+    _viewButtonOnClick: function(record) {
+        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
+            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
+        }
+
+        Ext.MsgBus.publish('viewgeonetworkrecord', record);
+    },
+
+    _getViewButtonText: function(record) {
+        if (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
+            return 'View';
+        }
+        else {
+            return 'Add & View';
+        }
     }
 });
 

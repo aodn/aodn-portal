@@ -19,9 +19,9 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         this.on('clear', this._onClear, this);
     },
 
-    containsUuid: function(uuid) {
+    isRecordActive: function(recordToCheck) {
         return Portal.data.ActiveGeoNetworkRecordStore.instance().findBy(function(record) {
-            return record.get('uuid') == uuid;
+            return record.get('uuid') == recordToCheck.get('uuid');
         }) != -1;
     },
 
