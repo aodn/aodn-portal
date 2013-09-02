@@ -42,7 +42,16 @@ p, h1, h2, h3 {
 
 
 .ext-el-mask, .x4-mask{
-    background-color: #333333;
+    background-color: #CCCCCC;
+    margin: 2px;
+    border-radius: 4px;
+
+}
+
+.x-form-text,
+textarea.x-form-field,
+.x-form-field-wrap .x-form-trigger  {
+    box-shadow: none;
 }
 /* getfeatureinfo popup */
 .gx-popup .x-window-body {
