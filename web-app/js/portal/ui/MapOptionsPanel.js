@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -10,18 +9,18 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 
-	constructor: function(cfg) {
+    constructor: function (cfg) {
 
-		this.snapshotController = new Portal.snapshot.SnapshotController({
-			map: cfg.map,
-			mapScope: cfg.mapScope
-		});
+        this.snapshotController = new Portal.snapshot.SnapshotController({
+            map: cfg.map,
+            mapScope: cfg.mapScope
+        });
 
-		this.snapshotController.on('snapshotLoaded', function() {
-			this.fireRemoveAllLayers();
-		}, this);
+        this.snapshotController.on('snapshotLoaded', function () {
+            this.fireRemoveAllLayers();
+        }, this);
 
-		this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
+        this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
             map: cfg.map,
             editable: false,
             width: 175,
@@ -29,26 +28,26 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             emptyText: 'Choose a Base Layer'
         });
 
-		this.autoZoomCheckbox = new Ext.form.Checkbox({
+        this.autoZoomCheckbox = new Ext.form.Checkbox({
             boxLabel: OpenLayers.i18n('autozoom'),
             inputType: 'checkbox',
             checked: cfg.autoZoom
         });
-		this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
-		this.autoZoomCheckbox.on('check', function(box, checked) {
-			var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
-			box.fireEvent(event, box, checked);
-		}, this);
+        this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
+        this.autoZoomCheckbox.on('check', function (box, checked) {
+            var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
+            box.fireEvent(event, box, checked);
+        }, this);
 
-		this.snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
-			controller: this.snapshotController,
-			map: cfg.map
-		});
+        this.snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
+            controller: this.snapshotController,
+            map: cfg.map
+        });
 
-		var config = Ext.apply({
-	        collapseMode : 'mini',
-            id : 'mapOptions',
-			padding: 5,
+        var config = Ext.apply({
+            collapseMode: 'mini',
+            id: 'mapOptions',
+            padding: 5,
             items: [
                 new Ext.Panel({
                     height: 20,
@@ -56,8 +55,8 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                         {
                             flex: 3,
                             items: [
-								this.autoZoomCheckbox
-							]
+                                this.autoZoomCheckbox
+                            ]
                         }
                     ]
                 }),
@@ -67,49 +66,49 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                 this.snapshotOptionsPanel,
                 this.baseLayerCombo
             ]
-		}, cfg);
+        }, cfg);
 
-		Portal.ui.MapOptionsPanel.superclass.constructor.call(this, config);
+        Portal.ui.MapOptionsPanel.superclass.constructor.call(this, config);
 
-		this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
-	},
+        this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
+    },
 
-	initButtonPanel: function() {
-		this.buttonPanel = new Ext.Panel({
-	        border: true,
-	        flex: 1,
-	        items:[
-		        {
-		        	xtype: 'button',
-		        	text: 'Remove All Layers',
-		        	cls: "floatLeft buttonPad",
-		            tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
-		            scope: this,
-		            handler: function() {
-		                Ext.MsgBus.publish('removeAllLayers');
-		            }
-		        },
-		        {
-		        	xtype: 'button',
-		        	text: 'Reset Map',
-		            tooltip:  OpenLayers.i18n("mapOptionsResetButton"),
-		            cls: "floatLeft buttonPad",
-		            scope: this,
-		            handler: function() {
+    initButtonPanel: function () {
+        this.buttonPanel = new Ext.Panel({
+            border: true,
+            flex: 1,
+            items: [
+                {
+                    xtype: 'button',
+                    text: 'Remove All Layers',
+                    cls: "floatLeft buttonPad",
+                    tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
+                    scope: this,
+                    handler: function () {
+                        Ext.MsgBus.publish('removeAllLayers');
+                    }
+                },
+                {
+                    xtype: 'button',
+                    text: 'Reset Map',
+                    tooltip: OpenLayers.i18n("mapOptionsResetButton"),
+                    cls: "floatLeft buttonPad",
+                    scope: this,
+                    handler: function () {
                         Ext.MsgBus.publish('reset');
                     }
-		        },
-		        new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
-	        ]
-	    });
-		return this.buttonPanel;
-	},
+                },
+                new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
+            ]
+        });
+        return this.buttonPanel;
+    },
 
-	autoZoomEnabled: function() {
-		return this.autoZoomCheckbox.getValue();
-	},
+    autoZoomEnabled: function () {
+        return this.autoZoomCheckbox.getValue();
+    },
 
-	fireRemoveAllLayers: function() {
-		this.fireEvent('removealllayers');
-	}
+    fireRemoveAllLayers: function () {
+        this.fireEvent('removealllayers');
+    }
 });
