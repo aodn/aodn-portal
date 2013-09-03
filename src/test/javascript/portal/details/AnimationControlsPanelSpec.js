@@ -402,19 +402,25 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 layer: ncWmsLayer,
                 progress: 0
             });
-            expect(animationControlsPanel._setStepLabelText.calls[0].args[0]).toBe('Loading...0%');
+            expect(animationControlsPanel._setStepLabelText.mostRecentCall.args[0]).toBe('Loading...0%');
 
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.12
             });
-            expect(animationControlsPanel._setStepLabelText.calls[1].args[0]).toBe('Loading...12%');
+            expect(animationControlsPanel._setStepLabelText.mostRecentCall.args[0]).toBe('Loading...12%');
 
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.123
             });
-            expect(animationControlsPanel._setStepLabelText.calls[2].args[0]).toBe('Loading...12%');
+            expect(animationControlsPanel._setStepLabelText.mostRecentCall.args[0]).toBe('Loading...12%');
+
+            ncWmsLayer.events.triggerEvent('precacheprogress', {
+                layer: ncWmsLayer,
+                progress: 0.99999
+            });
+            expect(animationControlsPanel._setStepLabelText.mostRecentCall.args[0]).toBe('Loading...99%');
         });
 
         describe('onprecacheend', function() {

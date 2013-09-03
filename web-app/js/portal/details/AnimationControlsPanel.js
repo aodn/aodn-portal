@@ -219,7 +219,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onSelectedLayerPrecacheProgress: function(evt) {
-        this._setStepLabelText('Loading...' + Math.round(evt.progress * 100) + '%');
+        this._setStepLabelText('Loading...' + Math.floor(evt.progress * 100) + '%');
     },
 
     _onSelectedLayerPrecacheEnd: function() {
