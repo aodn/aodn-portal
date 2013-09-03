@@ -41,7 +41,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent : function() {
-        var parentAnimationControl = this;
+
         this.cls = 'animationSubPanel';
 
         this.warn = new Ext.form.Label({
@@ -56,7 +56,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             padding : 5,
             listeners : {
                 scope : this,
-                'click' : function(button, event) {
+                'click' : function() {
                     this._startPlaying();
                     this.timeControl.speedUp();
                 }
@@ -69,7 +69,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             padding : 5,
             listeners : {
                 scope : this,
-                'click' : function(button, event) {
+                'click' : function() {
                     this._startPlaying();
                     this.timeControl.slowDown();
                 }
@@ -87,7 +87,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             flex : 3,
             listeners : {
                 scope : this,
-                drag : function(slider, ev) {
+                drag : function(slider) {
                     this.timeControl.setStep(slider.getValue());
                 }
             }
@@ -169,7 +169,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.speed = this.BASE_SPEED;
         this.mapPanel = undefined;
 
-        this.pausedTime = "";
         this.timerId = -1;
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
@@ -241,12 +240,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _onSpeedChanged: function(timeControl) {
+    _onSpeedChanged: function() {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
     },
 
-    _onTemporalExtentChanged: function(evt) {
+    _onTemporalExtentChanged: function() {
         this.stepSlider.setMinValue(0);
         this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
     },
@@ -271,7 +270,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.speedLabel.setText(this.timeControl.getRelativeSpeed() + 'x');
     },
 
-    _togglePlay : function(button, event) {
+    _togglePlay : function() {
         if (this.isPlaying()) {
             this._stopPlaying();
         } else {
@@ -304,13 +303,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.speedUp.disable();
             this.slowDown.disable();
             this.speedLabel.setVisible(false);
-        } else if (state == this.state.PLAYING) {
+        }
+        else if (state == this.state.PLAYING) {
             // can't change the time when it's playing
             this.playButton.setIcon('images/animation/pause.png');
             this.stepSlider.enable();
             this.speedLabel.setVisible(true);
             this.dateTimeSelectorPanel.disable();
-        } else if (state == this.state.REMOVED) {
+        }
+        else if (state == this.state.REMOVED) {
             this.playButton.setIcon('images/animation/play.png');
             this.playButton.enable();
             this.stepSlider.setValue(0);
@@ -318,7 +319,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
             this.speedLabel.setVisible(false);
             this.dateTimeSelectorPanel.enable();
-        } else if (state == this.state.PAUSED) {
+        }
+        else if (state == this.state.PAUSED) {
             this.playButton.setIcon('images/animation/play.png');
             this.playButton.enable();
             // nothing's playing, so stop and pause doesn't make sense
@@ -332,10 +334,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         // TODO: this is most likely dodgy.
         // Need to check when and how this function is called.
         return false;
-    },
-
-    loadFromSavedMap : function(layer, stamps) {
-        this.setSelectedLayer(layer);
     },
 
     _setStepLabelTextToDateTime: function(dateTime) {
