@@ -166,7 +166,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.getAnimationButton
         ];
 
-        this.speed = this.BASE_SPEED;
         this.mapPanel = undefined;
 
         this.timerId = -1;
@@ -179,7 +178,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         // TODO: ok, there's now a dependency on the OpenLayers Map (instead of MapPanel),
         // but hopefully this will vanish when animation is refactored.
         this.map = theMap;
-        this.map.events.register('moveend', this, this._onMove);
         this.map.events.register('timechanged', this, this._onTimeChanged);
     },
 
