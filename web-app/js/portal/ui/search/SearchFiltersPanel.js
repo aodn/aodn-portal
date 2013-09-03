@@ -35,9 +35,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             boxMaxHeight: '1' // Not sure why this is needed
         });
 
-
-
-        this.parameterFilter = new Portal.ui.TermSelectionPanel({
+        this._buildTermFilter('parameterFilter', {
             title: OpenLayers.i18n('parameterFilter'),
             hierarchical: false,
             fieldGroup: 'longParamNames',
@@ -45,28 +43,29 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
-        this.themeFilter = new Portal.ui.TermSelectionPanel({
+
+        this._buildTermFilter('themeFilter', {
             title: OpenLayers.i18n('themeFilter'),
             hierarchical: true,
             fieldName: 'Gcmd538',
             searcher: config.searcher
         });
 
-        this.methodFilter = new Portal.ui.TermSelectionPanel({
+        this._buildTermFilter('methodFilter', {
             title: OpenLayers.i18n('methodFilter'),
             hierarchical: true,
             fieldName: 'Mcp14Cmv',
             searcher: config.searcher
         });
 
-        this.locationFilter = new Portal.ui.TermSelectionPanel({
+        this._buildTermFilter('locationFilter', {
             title: OpenLayers.i18n('locationFilter'),
             hierarchical: true,
             fieldName: 'Mcp14Gev',
             searcher: config.searcher
         });
 
-        this.organisationFilter = new Portal.ui.TermSelectionPanel({
+        this._buildTermFilter('organisationFilter', {
             title: OpenLayers.i18n('organisationFilter'),
             hierarchical: false,
             fieldGroup: 'organisationNames',
@@ -74,13 +73,13 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
-        this.dateFilter = new Portal.search.DateSelectionPanel({
+        this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
             searcher: config.searcher
         });
 
-        this.geoFilter = new Portal.search.GeoSelectionPanel({
+        this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
             title: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
             searcher: config.searcher,
@@ -89,33 +88,23 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         config = Ext.apply({
             stateful: false,
-
-            //height: 200,
             autoScroll: true,
             padding: 3,
             layout: 'fit',
-
-            items: [
-                this.titleBar,
-
-                this.parameterFilter,
-                this.themeFilter,
-                this.methodFilter,
-                this.locationFilter,
-                this.organisationFilter,
-                this.dateFilter,
-                this.geoFilter
-            ]
+            items: [this.titleBar].concat(this.filters)
         }, config);
 
         Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searcher, 'searchcomplete', this._hideSpinnerText, this);
-        this.mon(this.searcher, 'summaryOnlySearchComplete', this._hideSpinnerText, this);
-        this.mon(this.searcher, 'searcherror', this._showError, this);
-        this.mon(this.searcher, 'filteradded', this._setupFacetedSearchUpdating, this);
-        this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
-        this.mon(this.searcher, 'polygonadded', this._showClearAllForGeoFacet, this);
+        var searcherEvents = [
+            { event: 'searchcomplete', callback: this._hideSpinnerText },
+            { event: 'summaryOnlySearchComplete', callback: this._hideSpinnerText },
+            { event: 'searcherror', callback: this._showError },
+            { event: 'filteradded', callback: this._setupFacetedSearchUpdating },
+            { event: 'filterremoved', callback: this._setClearAllLinkVisibility },
+            { event: 'polygonadded', callback: this._showClearAllForGeoFacet }
+        ];
+        this._monitor(this.searcher, searcherEvents, this);
 
         this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
     },
@@ -153,14 +142,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _onClearAllClicked: function() {
 
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
+        Ext.each(this.filters, function(filter, index, all) {
+            filter.removeAnyFilters();
+        });
 
-        this.parameterFilter.removeAnyFilters();
-        this.themeFilter.removeAnyFilters();
-        this.methodFilter.removeAnyFilters();
-        this.locationFilter.removeAnyFilters();
-        this.organisationFilter.removeAnyFilters();
-        this.dateFilter.removeAnyFilters();
-        this.geoFilter.removeAnyFilters();
         this.searcher.search(true);
 
         this.fireEvent('filtersCleared');
@@ -180,5 +165,31 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._setSpinnerText('');
         this.clearAllLink.setVisible(true);
         this._hideSpinnerText();
+    },
+
+    _buildTermFilter: function(name, config) {
+        return this._buildFilter(Portal.ui.TermSelectionPanel, name, config);
+    },
+
+    _buildFilter: function(constructor, name, config) {
+        if (this.filters === undefined) {
+            this.filters = [];
+        }
+
+        if (this.filterFactory === undefined) {
+            this.filterFactory = new Portal.ui.search.SearchFilterPanelFactory();
+        }
+
+        var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+        this.filters.push(termFilter);
+        this[name] = termFilter;
+        return termFilter;
+    },
+
+    _monitor: function(object, events, scope) {
+        Ext.each(events, function(event, index, all) {
+            this.mon(object, event.event, event.callback, scope);
+        }, this);
     }
+
 });
