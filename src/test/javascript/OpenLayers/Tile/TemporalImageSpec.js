@@ -89,9 +89,9 @@ describe("OpenLayers.Tile.TemporalImage", function() {
 
         it('num loaded', function() {
             tile.imgCache = {
-                'key1': { complete: true },
-                'key2': { complete: false },
-                'key3': { complete: true }
+                'key1': { width: 250 },
+                'key2': { width: 0 },
+                'key3': { width: 100 }
             };
 
             expect(tile.getNumImagesComplete()).toBe(2);
@@ -228,7 +228,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             it('onload called immediately if image is complete', function() {
                 var onloadSpy = jasmine.createSpy('onloadSpy');
                 tile._getCached = function(dateTime) {
-                    return { complete: true };
+                    return { width: 250 };
                 };
                 var dateTime = moment('2010-03-03T03:03:03');
 
