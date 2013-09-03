@@ -47,7 +47,7 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         var numComplete = 0;
 
         for (var key in this.imgCache) {
-            if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
+            if (this.imgCache.hasOwnProperty(key) && this._imageIsLoaded(this.imgCache[key])) {
                 numComplete++;
             }
         }
@@ -56,17 +56,17 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     },
 
     _registerOnLoad: function(cachedImg, onloadCallback, context) {
-        context.onloadCallback = onloadCallback;
 
-        if (cachedImg.complete) {
-            context.onloadCallback(cachedImg);
-        }
-        else {
-            $(cachedImg).load(function() {
-                if (onloadCallback) {
-                    context.onloadCallback(cachedImg);
-                }
-            });
+        if (onloadCallback) {
+
+            if (this._imageIsLoaded(cachedImg)) {
+                onloadCallback.call(context);
+            }
+            else {
+                $(cachedImg).load(function() {
+                    onloadCallback.call(context);
+                });
+            }
         }
     },
 
@@ -111,5 +111,10 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         this._getCached(dateTime).style.display = '';
         $(this.parentDiv).empty();
         $(this.parentDiv).append(this._getCached(dateTime));
+    },
+
+    _imageIsLoaded: function(img) {
+
+        return img.width > 0;
     }
 });
