@@ -51,21 +51,14 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 			padding: 5,
             items: [
                 new Ext.Panel({
-                    height: 40,
+                    height: 20,
                     items: [
                         {
                             flex: 3,
                             items: [
 								this.autoZoomCheckbox
 							]
-                        },
-                        new Ext.BoxComponent({
-                            flex: 2,
-                            border: true,
-                            padding: 4,
-                            id: 'mapSpinnerPanel',
-                            html: '<div class="extAjaxLoading"  style="display:none" >\n<div class="loading-indicator"> Loading...</div>\n</div>'
-                        })
+                        }
                     ]
                 }),
                 new Ext.Spacer({height: 5}),
