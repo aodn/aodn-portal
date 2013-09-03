@@ -11,9 +11,9 @@ describe("Portal.details.AnimationControlsPanel", function() {
     var openLayer;
     var ncWmsLayer;
     var timeControl;
-    
+
     beforeEach(function() {
-        
+
         timeControl = new OpenLayers.Control.Time();
         timeControl.onTick = function() {};
         timeControl.getExtent = function() {
@@ -21,7 +21,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         };
         timeControl.getDateTimeForStep = function() {
             return moment('2014-04-03T02:11:32');
-        }
+        };
 
         animationControlsPanel = new Portal.details.AnimationControlsPanel({
             timeControl: timeControl
@@ -33,7 +33,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             {},
             { isBaseLayer: false }
         );
-        
+
         temporalExtent = [
             moment('2012-04-01T12:00:00'),
             moment('2012-04-01T13:00:00'),
@@ -53,7 +53,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             'name': 'time',
             'extent': temporalExtent
         }];
-        ncWmsLayer.getDatesOnDay = function() { return [moment(0)]; }
+        ncWmsLayer.getDatesOnDay = function() { return [moment(0)]; };
 
         animationControlsPanel.selectedLayer = ncWmsLayer;
         timeControl.configureForLayer(ncWmsLayer, 10);
@@ -73,11 +73,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(animationControlsPanel.dateTimeSelectorPanel.parentAnimationControl).toBe(animationControlsPanel);
         });
     });
-    
+
     describe('time control', function() {
 
         var animatedLayers;
-        
+
         beforeEach(function() {
             // mock out unrelated functions.
             animationControlsPanel._getFormDates = function() { return [{}, {}] };
@@ -95,7 +95,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         afterEach(function() {
             animationControlsPanel.animatedLayers = animatedLayers;
         });
-        
+
         it('initialisation', function() {
             expect(animationControlsPanel.timeControl).toBe(timeControl);
             expect(animationControlsPanel.speedLabel.text).toBe('1x');
@@ -104,7 +104,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         describe('on selectedLayerChanged', function() {
 
             var temporalExtent;
-            
+
             it('slider updated', function() {
                 Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
                 expect(animationControlsPanel.stepSlider.minValue).toBe(0);
@@ -121,7 +121,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
     describe('timechanged event handling', function() {
 
         var map;
-        
+
         beforeEach(function() {
             map = new OpenLayers.TemporalMap('map');
             animationControlsPanel.setMap(map);
@@ -129,10 +129,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         it('onTimeChanged callback', function() {
             spyOn(animationControlsPanel, '_onTimeChanged');
-            
+
             // TODO: investigate why this has to be called again (otherwise
             // the above spy doesn't seem to have any effect).
-            animationControlsPanel.setMap(map);  
+            animationControlsPanel.setMap(map);
 
             var dateTime = moment();
             map.toTime(dateTime);
@@ -143,7 +143,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('slider updated on timeChanged', function() {
             timeControl.getStep = function() {
                 return 5;
-            }
+            };
 
             expect(animationControlsPanel.stepSlider.getValue()).not.toBe(5);
             map.toTime(moment());
@@ -160,7 +160,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
     describe('UI controls', function() {
         var map;
-        
+
         beforeEach(function() {
             map = new OpenLayers.TemporalMap('map');
 
@@ -180,13 +180,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 spyOn(animationControlsPanel.dateTimeSelectorPanel, 'disable');
                 animationControlsPanel.playButton.fireEvent('click');
                 expect(animationControlsPanel.dateTimeSelectorPanel.disable).toHaveBeenCalled();
-                
+
             });
-            
+
             it('on stop, time.stop is called', function() {
                 animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
                 animationControlsPanel.counter = 0;
-                
+
                 spyOn(timeControl, 'stop');
 
                 animationControlsPanel.playButton.fireEvent('click');
@@ -200,23 +200,23 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 animationControlsPanel.playButton.fireEvent('click');
                 expect(animationControlsPanel.dateTimeSelectorPanel.enable).toHaveBeenCalled();
             });
-            
+
             it('on speed up, time.speedUp is called', function() {
                 spyOn(timeControl, 'speedUp');
                 animationControlsPanel.speedUp.fireEvent('click');
                 expect(timeControl.speedUp).toHaveBeenCalled();
             });
-            
+
             it('on slow down, time.slowDown is called', function() {
                 spyOn(timeControl, 'slowDown');
                 animationControlsPanel.slowDown.fireEvent('click');
                 expect(timeControl.slowDown).toHaveBeenCalled();
             });
-            
+
             it('slider drag updates time control', function() {
                 spyOn(timeControl, 'setStep');
                 animationControlsPanel.stepSlider.setValue(3);
-                
+
                 animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
                 expect(timeControl.setStep).toHaveBeenCalledWith(3);
             });
@@ -224,17 +224,17 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         describe('event listeners', function() {
 
-            
+
             // We have to do some ugly stuff here, namely spying on the prototype function, since
             // spying on the instance function doesn't seem to work, for some reason.
-            
+
             var origOnSpeedChanged;
             var localAnimationControlsPanel;
 
             beforeEach(function() {
                 origOnSpeedChanged = Portal.details.AnimationControlsPanel._onSpeedChanged;
                 spyOn(Portal.details.AnimationControlsPanel.prototype, '_onSpeedChanged').andCallThrough();
-                
+
                 localAnimationControlsPanel = new Portal.details.AnimationControlsPanel({
                     timeControl: timeControl
                 });
@@ -263,11 +263,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('slider drag results in timechangedevent', function() {
                 spyOn(animationControlsPanel, '_onTimeChanged');
                 animationControlsPanel.setMap(map);  // TODO: why is this necessary - see above?
-                
+
                 animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
                 expect(animationControlsPanel._onTimeChanged).toHaveBeenCalled();
             });
-            
+
             it('speed label and slow/speed buttons updated on speedchanged', function() {
                 spyOn(localAnimationControlsPanel, '_updateSpeedLabel');
                 spyOn(localAnimationControlsPanel, '_updateSpeedUpSlowDownButtons');
@@ -279,12 +279,12 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
         describe('UI state', function() {
             var extentEvent;
-            
+
             beforeEach(function() {
                 timeControl.getExtent = function() {
                     return [0, 1, 2];
                 };
-                
+
                 extentEvent = {
                     layer: {
                         min: moment('2008-01-01T12:34:56'),
@@ -296,7 +296,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                     }
                 };
             });
-            
+
             it('speed label on speed up', function() {
                 animationControlsPanel.speedUp.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('2x');
@@ -307,25 +307,25 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('speed up button disabled', function() {
                 animationControlsPanel.timeControl.relativeSpeed = 16;
                 expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
-                
+
                 animationControlsPanel.speedUp.fireEvent('click'); // 32
                 expect(animationControlsPanel.speedUp.disabled).toBeTruthy();
 
                 animationControlsPanel.slowDown.fireEvent('click'); // 16
                 expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
             });
-            
+
             it('slow down label on slow down', function() {
                 animationControlsPanel.slowDown.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('0.5x');
                 animationControlsPanel.slowDown.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('0.25x');
             });
-            
+
             it('slow down button disabled', function() {
                 animationControlsPanel.timeControl.relativeSpeed = 1/16;
                 expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
-                
+
                 animationControlsPanel.slowDown.fireEvent('click'); // 1/32
                 expect(animationControlsPanel.slowDown.disabled).toBeTruthy();
 
@@ -336,16 +336,16 @@ describe("Portal.details.AnimationControlsPanel", function() {
             it('step slider updated on temporal extent changed event', function() {
                 spyOn(animationControlsPanel.stepSlider, 'setMinValue');
                 spyOn(animationControlsPanel.stepSlider, 'setMaxValue');
-                
+
                 timeControl.events.triggerEvent('temporalextentchanged', extentEvent);
 
                 expect(animationControlsPanel.stepSlider.setMinValue).toHaveBeenCalledWith(0);
                 expect(animationControlsPanel.stepSlider.setMaxValue).toHaveBeenCalledWith(2);
             });
-            
+
             it('step label updated with slider time when loading finished', function() {
                 spyOn(animationControlsPanel, '_setStepLabelText');
-                var dateTime = moment('2011-11-11T11:11:11')
+                var dateTime = moment('2011-11-11T11:11:11');
                 animationControlsPanel.timeControl.getDateTimeForStep = function() {
                     return dateTime;
                 };
@@ -355,7 +355,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
         });
     });
-    
+
     describe('layer progress', function() {
 
         beforeEach(function() {
@@ -364,13 +364,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
             spyOn(animationControlsPanel, '_onSelectedLayerPrecacheEnd').andCallThrough();
 
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, ncWmsLayer);
-            
+
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.12
             });
         });
-        
+
         it('register listener', function() {
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress).toHaveBeenCalled();
         });
@@ -378,7 +378,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('listener unregistered when layer changes', function() {
             expect(animationControlsPanel._onSelectedLayerPrecacheProgress.callCount).toBe(1);
 
-            var newLayer = new OpenLayers.Layer.NcWMS()
+            var newLayer = new OpenLayers.Layer.NcWMS();
             // Mock temporalExtent
             newLayer.temporalExtent = [ moment() ];
 
@@ -403,13 +403,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 progress: 0
             });
             expect(animationControlsPanel._setStepLabelText.calls[0].args[0]).toBe('Loading...0%');
-            
+
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.12
             });
             expect(animationControlsPanel._setStepLabelText.calls[1].args[0]).toBe('Loading...12%');
-            
+
             ncWmsLayer.events.triggerEvent('precacheprogress', {
                 layer: ncWmsLayer,
                 progress: 0.123
@@ -423,11 +423,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).toHaveBeenCalled();
             });
-            
+
             it('onSelectedLayerPrecacheEnd unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheEnd).not.toHaveBeenCalled();
 
-                var newLayer = new OpenLayers.Layer.NcWMS()
+                var newLayer = new OpenLayers.Layer.NcWMS();
                 // Mock temporalExtent
                 newLayer.temporalExtent = [ moment() ];
                 timeControl.configureForLayer(newLayer, 10);
@@ -443,11 +443,11 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).toHaveBeenCalled();
             });
-            
+
             it('onSelectedLayerPrecacheStart unregistered when layer changes', function() {
                 expect(animationControlsPanel._onSelectedLayerPrecacheStart).not.toHaveBeenCalled();
 
-                var newLayer = new OpenLayers.Layer.NcWMS()
+                var newLayer = new OpenLayers.Layer.NcWMS();
                 // Mock temporalExtent
                 newLayer.temporalExtent = [ moment() ];
                 Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newLayer);
@@ -459,14 +459,14 @@ describe("Portal.details.AnimationControlsPanel", function() {
         describe('enable/disable as appropriate', function() {
             it('controls disabled on precachestart', function() {
                 spyOn(animationControlsPanel, 'disable');
-                
+
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel.disable).toHaveBeenCalled();
             });
-            
+
             it('controls enabled on precacheend', function() {
                 spyOn(animationControlsPanel, 'enable');
-                
+
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel.enable).toHaveBeenCalled();
             });
@@ -478,7 +478,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 spyOn(animationControlsPanel, '_stopPlaying');
                 spyOn(animationControlsPanel, '_startPlaying');
             });
-            
+
             it('pause on precache start if playing', function() {
                 animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
 
@@ -486,7 +486,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel._stopPlaying).toHaveBeenCalled();
                 expect(animationControlsPanel.pausedWhilePrecaching).toBeTruthy();
             });
-            
+
             it('don\'t pause on precache start if not playing', function() {
                 animationControlsPanel.currentState = animationControlsPanel.state.PAUSED;
 
@@ -502,10 +502,10 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 expect(animationControlsPanel._startPlaying).toHaveBeenCalled();
                 expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();
             });
-            
+
             it('don\'t start on precache end if not paused while caching', function() {
                 animationControlsPanel.pausedWhilePrecaching = undefined;
-                
+
                 ncWmsLayer.events.triggerEvent('precacheend');
                 expect(animationControlsPanel._startPlaying).not.toHaveBeenCalled();
                 expect(animationControlsPanel.pausedWhilePrecaching).toBeFalsy();
@@ -518,25 +518,25 @@ describe("Portal.details.AnimationControlsPanel", function() {
         it('is not hidden', function() {
             expect(animationControlsPanel.getAnimationButton.hidden).toBeFalsy();
         });
-        
+
         it('on click', function() {
             spyOn(ncWmsLayer, 'downloadAsGif');
 
             var theSpatialExent = {};
             var theMinTemporalExtent = moment('2000');
             var theMaxTemporalExtent = moment('2010');
-            
+
             animationControlsPanel.map = {
                 getExtent: function() {
                     return theSpatialExent;
                 }
-            }
+            };
             animationControlsPanel.timeControl.getExtentMin = function() {
                 return theMinTemporalExtent;
-            }
+            };
             animationControlsPanel.timeControl.getExtentMax = function() {
                 return theMaxTemporalExtent;
-            }
+            };
             animationControlsPanel.getAnimationButton.fireEvent('click');
             expect(ncWmsLayer.downloadAsGif).toHaveBeenCalled();
             expect(ncWmsLayer.downloadAsGif.calls[0].args[0].spatialExtent).toBe(theSpatialExent);
