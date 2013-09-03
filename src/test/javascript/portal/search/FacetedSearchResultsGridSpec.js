@@ -8,26 +8,36 @@
 
 describe("Portal.search.FacetedSearchResultsGrid", function() {
 
-    var fsrg;
+    var resultsGrid;
     var testTarget;
     var testLayerLink;
 
     beforeEach(function() {
 
         var store = new Portal.data.GeoNetworkRecordStore();
-        fsrg = new Portal.search.FacetedSearchResultsGrid({
+        resultsGrid = new Portal.search.FacetedSearchResultsGrid({
             store: store
         });
 
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
-    describe('_viewButtonOnClick', function() {
-        it('add record to active geonetwork store when view is clicked', function() {
-            fsrg.store.add(new Portal.data.GeoNetworkRecord());
+    describe('initialisation', function() {
+        it('sets column model to correct type', function() {
+            expect(resultsGrid.colModel).toBeInstanceOf(Portal.search.FacetedSearchResultsColumnModel);
+        });
+    });
 
-            fsrg._viewButtonOnClick(null, testTarget, 0);
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalled();
+    describe('active geo network record store events', function() {
+        it('refreshes view on record added', function() {
+            spyOn(resultsGrid, '_refreshView');
+            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            expect(resultsGrid._refreshView).toHaveBeenCalled();
+        });
+        it('refreshes view on record removed', function() {
+            spyOn(resultsGrid, '_refreshView');
+            Ext.MsgBus.publish('activegeonetworkrecordremoved');
+            expect(resultsGrid._refreshView).toHaveBeenCalled();
         });
     });
 });

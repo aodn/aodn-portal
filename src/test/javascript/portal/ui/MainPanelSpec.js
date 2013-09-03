@@ -46,7 +46,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     afterEach(function() {
-        Ext.MsgBus.unsubscribe('activegeonetworkrecordadded', mainPanel._onActiveGeoNetworkRecordAdded, mainPanel);
+        Ext.MsgBus.unsubscribe('viewgeonetworkrecord', mainPanel._onViewGeoNetworkRecord, mainPanel);
     });
 
     describe('initialisation', function() {
@@ -85,9 +85,9 @@ describe("Portal.ui.MainPanel", function() {
             expect(mainPanel.activeItem).toBe(TAB_INDEX_SEARCH);
         });
 
-        it('should set visualise to active item when geonetwork record is added', function() {
+        it('should set visualise to active item when geonetwork record is viewed', function() {
             mockLayout();
-            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            Ext.MsgBus.publish('viewgeonetworkrecord');
             expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
     });
