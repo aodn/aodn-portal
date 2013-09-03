@@ -544,6 +544,4 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(ncWmsLayer.downloadAsGif.calls[0].args[0].temporalExtent.max).toBe(theMaxTemporalExtent);
         });
     });
-
-    // TODO: load from saved map - shouldn't need any special handling?
 });
