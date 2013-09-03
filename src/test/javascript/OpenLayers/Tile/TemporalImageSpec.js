@@ -243,6 +243,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
                 tile._getCached = function(dateTime, onloadCallback) {
                     var img = document.createElement('img');
                     img.src = 'someurl';
+                    img.width = 0;
                     img.onload = onloadSpy;
 
                     cachedImg = img;
