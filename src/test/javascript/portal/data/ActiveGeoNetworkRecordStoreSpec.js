@@ -283,5 +283,24 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
             });
         });
+
+        describe('is record active', function() {
+            var record;
+
+            beforeEach(function() {
+                record = new Portal.data.GeoNetworkRecord({
+                    uuid: '1111'
+                });
+            });
+
+            it('returns true when record is in store', function() {
+                activeRecordStore.add(record);
+                expect(activeRecordStore.isRecordActive(record)).toBeTruthy();
+            });
+
+            it('returns false when record is not in store', function() {
+                expect(activeRecordStore.isRecordActive(record)).toBeFalsy();
+            });
+        });
     });
 });
