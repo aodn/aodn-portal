@@ -9,7 +9,7 @@ Ext.namespace('Portal.ui.search');
 
 Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
-	constructor: function(config) {
+    constructor: function(config) {
 
         this.spinner = new Ext.Panel({
             html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
@@ -45,34 +45,34 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
-		this.themeFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('themeFilter'),
-			hierarchical: true,
-			fieldName: 'Gcmd538',
-			searcher: config.searcher
-		});
+        this.themeFilter = new Portal.ui.TermSelectionPanel({
+            title: OpenLayers.i18n('themeFilter'),
+            hierarchical: true,
+            fieldName: 'Gcmd538',
+            searcher: config.searcher
+        });
 
-		this.methodFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('methodFilter'),
-			hierarchical: true,
-			fieldName: 'Mcp14Cmv',
-			searcher: config.searcher
-		});
+        this.methodFilter = new Portal.ui.TermSelectionPanel({
+            title: OpenLayers.i18n('methodFilter'),
+            hierarchical: true,
+            fieldName: 'Mcp14Cmv',
+            searcher: config.searcher
+        });
 
-		this.locationFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('locationFilter'),
-			hierarchical: true,
-			fieldName: 'Mcp14Gev',
-			searcher: config.searcher
-		});
+        this.locationFilter = new Portal.ui.TermSelectionPanel({
+            title: OpenLayers.i18n('locationFilter'),
+            hierarchical: true,
+            fieldName: 'Mcp14Gev',
+            searcher: config.searcher
+        });
 
-		this.organisationFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('organisationFilter'),
-			hierarchical: false,
-			fieldGroup: 'organisationNames',
-			fieldName: 'orgName',
-			searcher: config.searcher
-		});
+        this.organisationFilter = new Portal.ui.TermSelectionPanel({
+            title: OpenLayers.i18n('organisationFilter'),
+            hierarchical: false,
+            fieldGroup: 'organisationNames',
+            fieldName: 'orgName',
+            searcher: config.searcher
+        });
 
         this.dateFilter = new Portal.search.DateSelectionPanel({
             title: OpenLayers.i18n('dateFilter'),
@@ -87,15 +87,15 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             mapPanel: config.mapPanel
         });
 
-		config = Ext.apply({
-	        stateful: false,
+        config = Ext.apply({
+            stateful: false,
 
             //height: 200,
-	        autoScroll: true,
+            autoScroll: true,
             padding: 3,
             layout: 'fit',
 
-	        items: [
+            items: [
                 this.titleBar,
 
                 this.parameterFilter,
@@ -106,19 +106,19 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 this.dateFilter,
                 this.geoFilter
             ]
-		}, config);
+        }, config);
 
-		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
+        Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
-		this.mon(this.searcher, 'searchcomplete', this._hideSpinnerText, this);
-    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._hideSpinnerText, this);
-		this.mon(this.searcher, 'searcherror', this._showError, this);
+        this.mon(this.searcher, 'searchcomplete', this._hideSpinnerText, this);
+        this.mon(this.searcher, 'summaryOnlySearchComplete', this._hideSpinnerText, this);
+        this.mon(this.searcher, 'searcherror', this._showError, this);
         this.mon(this.searcher, 'filteradded', this._setupFacetedSearchUpdating, this);
         this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
         this.mon(this.searcher, 'polygonadded', this._showClearAllForGeoFacet, this);
 
         this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
-	},
+    },
 
     initComponent: function() {
         Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
