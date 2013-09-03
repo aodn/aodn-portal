@@ -237,7 +237,6 @@ Site navigation
     position: relative;
     float: left;
     padding-left: 20px;
-    z-index: 100000;
     width: 100%;
     border: 2px  solid #6b6b6b;
     vertical-align: middle;
