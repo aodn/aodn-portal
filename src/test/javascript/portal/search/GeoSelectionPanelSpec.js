@@ -6,23 +6,20 @@
  */
 describe("Portal.search.GeoSelectionPanel", function() {
 
+    var geoFilter;
+    var searcher;
+
     beforeEach(function() {
         Portal.app.config.initialBbox = '1, 2, 3, 4';  // So that mini-map doesn't get upset.
+        searcher = new Portal.service.CatalogSearcher();
+        geoFilter = new Portal.search.GeoSelectionPanel({
+            title: "Geo Filter",
+            hierarchical: false,
+            searcher: searcher
+        });
     });
     
     describe("onSearch", function() {
-
-        var geoFilter;
-        var searcher;
-            
-        beforeEach(function() {
-            searcher = new Portal.service.CatalogSearcher();
-            geoFilter = new Portal.search.GeoSelectionPanel({
-                title: "Geo Filter",
-                hierarchical: false,
-                searcher: searcher
-            });
-        });
 
         it("expects the geometry field to be called geometry", function() {
             expect(geoFilter.GEOMETRY_FIELD).toEqual('geometry');
@@ -62,6 +59,26 @@ describe("Portal.search.GeoSelectionPanel", function() {
             });
 
             geoFilter.onSearch();
+        });
+    });
+
+    describe('removeAnyFilters', function() {
+        it('it clears filters from the searcher', function() {
+            spyOn(searcher, 'removeFilters');
+            geoFilter.removeAnyFilters();
+            expect(searcher.removeFilters).toHaveBeenCalled();
+        });
+
+        it('removes the geometry from facet map', function() {
+            spyOn(geoFilter.facetMap, 'clearGeometry');
+            geoFilter.removeAnyFilters();
+            expect(geoFilter.facetMap.clearGeometry).toHaveBeenCalled();
+        });
+
+        it('collapses the geo facet', function() {
+            spyOn(geoFilter, 'collapse');
+            geoFilter.removeAnyFilters();
+            expect(geoFilter.collapse).toHaveBeenCalled();
         });
     });
 });
