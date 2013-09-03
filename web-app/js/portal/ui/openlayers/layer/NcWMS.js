@@ -36,7 +36,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     missingDays: null,
 
     initialize: function(name, url, params, options, extent) {
-        name += ' (animated)';
 
         this.precachedTimes = [];
         this.state = this.STATES.UNCACHED;
@@ -48,7 +47,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // If it's a string, we'll process it later, asynchronously
         // If it's an array (assuming of moments), we'll just use it
         this.rawTemporalExtent = extent;
-        if (!extent) { this.temporalExtent = []; this.temporalExtentLengthToProcess = 0; }
+        if (!extent) {
+            this.temporalExtent = [];
+            this.temporalExtentLengthToProcess = 0;
+        }
 
         // Initialize missingDays
         this.missingDays = [];
@@ -110,7 +112,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var that = this;
         (function () {
-            var chunkStart;
             function processDates() {
                 var chunkStart = 0;
                 (function () {
@@ -279,9 +280,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // We do the following so that loadstart/loadend events aren't triggered (which would cause the
         // "Layer Loading..." popup to be continually displayed).
         var existingEvents = this.events;
-        this.events = new OpenLayers.Events(this, this.div, 
+        this.events = new OpenLayers.Events(this, this.div,
                                             this.EVENT_TYPES);
-
 
         this.eachTile(function(tile) {
             tile.toTime(dateTime);
@@ -378,7 +378,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *
      * Returns:
      * {String} A string with the layer's url and parameters and also the
-     *          passed-in bounds and appropriate tile size specified as 
+     *          passed-in bounds and appropriate tile size specified as
      *          parameters.
      */
     getURL: function(bounds) {
@@ -515,13 +515,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         url = this._appendParam(url, 'FORMAT', 'image/gif');
         url = this._appendParam(url, 'WIDTH', this.DEFAULT_GIF_HEIGHT);
 
-        url = url.replace('FORMAT=image%2Fpng&', '')
+        url = url.replace('FORMAT=image%2Fpng&', '');
 
         return 'proxy/downloadGif?url=' + url;
     },
 
     _appendParam: function(base, name, value) {
-        return base += '&' + name + '=' + value;
+        return base + '&' + name + '=' + value;
     },
 
     setOpacity: function(opacity) {
