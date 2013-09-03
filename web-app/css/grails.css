@@ -17,7 +17,7 @@ html {
 body, html {
     background: #ffffff;
     color: #333333;
-    font-size: 12px;	
+    font-size: 12px;
 	height: 100%;
 
 }
@@ -45,7 +45,7 @@ html.no-cssgradients {
 
 a, a:link {
     color: #666666;
-} 
+}
 
 a:hover {
     color: black;
@@ -154,8 +154,6 @@ img {
 .nav {
     background-color: #efefef;
     padding: 3em 0.75em 0.3em 0.75em;
-    -moz-box-shadow: 0 0 3px 1px #aaaaaa;
-    -webkit-box-shadow: 0 0 3px 1px #aaaaaa;
     box-shadow: 0 0 3px 1px #aaaaaa;
     zoom: 1;
 }
@@ -291,7 +289,6 @@ input, select, textarea, .pretendPopup {
 
     -moz-border-radius: 3px;
     border-radius: 3px;
-    -moz-box-shadow: 2px 2px 3px 0  #eee;
     box-shadow: 2px 2px 3px 0  #eee;
 }
 
@@ -350,8 +347,6 @@ fieldset.embedded {
     border: 1px solid #CCCCCC;
     padding-left: 0;
     padding-right: 0;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
     box-shadow: none;
 }
 
@@ -373,8 +368,6 @@ fieldset.embedded legend {
     background: #f3f3ff;
     border: 1px solid #b2d1ff;
     color: #006dba;
-    -moz-box-shadow: 0 0 0.25em #b2d1ff;
-    -webkit-box-shadow: 0 0 0.25em #b2d1ff;
     box-shadow: 0 0 0.25em #b2d1ff;
 }
 
@@ -382,8 +375,6 @@ fieldset.embedded legend {
     background: #fff3f3;
     border: 1px solid #ffaaaa;
     color: #cc0000;
-    -moz-box-shadow: 0 0 0.25em #ff8888;
-    -webkit-box-shadow: 0 0 0.25em #ff8888;
     box-shadow: 0 0 0.25em #ff8888;
 }
 
@@ -413,8 +404,6 @@ fieldset.embedded legend {
 }
 
 .error input:focus, .error select:focus, .error textarea:focus {
-    -moz-box-shadow: 0 0 0.5em #ffaaaa;
-    -webkit-box-shadow: 0 0 0.5em #ffaaaa;
     box-shadow: 0 0 0.5em #ffaaaa;
 }
 
@@ -427,8 +416,6 @@ input:invalid, select:invalid, textarea:invalid {
 }
 
 input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
-    -moz-box-shadow: 0 0 0.5em #ffaaaa;
-    -webkit-box-shadow: 0 0 0.5em #ffaaaa;
     box-shadow: 0 0 0.5em #ffaaaa;
 }
 
