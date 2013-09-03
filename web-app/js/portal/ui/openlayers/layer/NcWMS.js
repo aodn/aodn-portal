@@ -36,6 +36,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     missingDays: null,
 
     initialize: function(name, url, params, options, extent) {
+        arguments[0] = name + ' (animated)';
 
         this.precachedTimes = [];
         this.state = this.STATES.UNCACHED;
@@ -248,7 +249,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return (dateProcessProgress + imageCacheProgress) / 2;
     },
 
-    _imageLoaded: function(img) {
+    _imageLoaded: function() {
         if (this.state !== this.STATES.CACHED) {
             this._progressFeedback();
         }
