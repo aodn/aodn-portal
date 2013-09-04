@@ -95,6 +95,9 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MiniMapColumn.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/ViewRecordColumn.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsColumnModel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"></script>
@@ -154,6 +157,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/service/CatalogSearcher.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFiltersPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFilterPanelFactory.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/TopTermStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"></script>

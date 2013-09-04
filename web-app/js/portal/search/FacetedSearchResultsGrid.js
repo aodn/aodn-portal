@@ -8,13 +8,11 @@
 Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
-    frame:false,
-    layout:'fit',
-    border:false,
+    frame: false,
+    layout: 'fit',
+    border: false,
     autoExpandColumn: 'mdDesc',
     enableColumnResize: false,
-    mapWidth: 200,
-    mapHeight: 104,
     pageSize: 10,
 
     initComponent:function () {
@@ -23,35 +21,13 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         selectionMod.suspendEvents();
 
         var config = {
-                hideHeaders: true,
-                colModel:new Ext.grid.ColumnModel({
-                defaults:{
-                    menuDisabled:true
-                },
-                columns:[
-                    {
-                        width: this.mapWidth,
-                        height: this.mapHeight,
-                        renderer: this._miniMapRenderer,
-                        scope: this
-                    },
-                    {
-                        id:'mdDesc',
-                        dataIndex:'title',
-                        xtype:'templatecolumn',
-                        tpl:'<div style="white-space:normal !important;" title="{abstract}"><p>{title}</p></div>'
-                    },
-                    {
-                        renderer: this._viewButtonRenderer,
-                        scope: this
-                    }
-                ]
-            }),
+            hideHeaders: true,
+            colModel: new Portal.search.FacetedSearchResultsColumnModel(),
             sm: selectionMod,
             stripeRows: false,
             trackMouseOver: false,
-            bbar:new Ext.PagingToolbar({
-                pageSize:this.pageSize,
+            bbar: new Ext.PagingToolbar({
+                pageSize: this.pageSize,
                 store: this.store
             }),
             listeners: {
@@ -65,152 +41,46 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
         Portal.search.FacetedSearchResultsGrid.superclass.initComponent.apply(this, arguments);
 
+        this.store.on('load', function() {
+            this._onStoreLoad();
+        }, this);
+
+        this._subscribeToActiveGeoNetworkRecordStoreEvents();
     },
 
-    afterRender:function () {
+    _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
+        Ext.each(['activegeonetworkrecordadded', 'activegeonetworkrecordremoved'], function(eventName) {
+            Ext.MsgBus.subscribe(eventName, function() {
+                this._refreshView();
+            }, this);
+        }, this);
+    },
+
+    _refreshView: function() {
+        if (this.view) {
+            this.view.refresh();
+        }
+    },
+
+    afterRender: function () {
         Portal.search.FacetedSearchResultsGrid.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.getView().mainBody, {
             msg: OpenLayers.i18n('maskText'),
             setTopPixels: 50
         });
-
-        this.getView().mainBody.on({
-            scope:this,
-            mouseover:this.onMouseOver,
-            mouseout:this.onMouseOut
-        });
     },
 
-    showMask:function () {
+    showMask: function () {
         if (this.rendered) {
             this.loadMask.show();
         }
     },
 
-    hideMask:function () {
+    hideMask: function () {
         if (this.rendered) {
             this.loadMask.hide();
         }
-    },
-
-    // trigger mouseenter event on row when applicable
-    onMouseOver:function (e, target) {
-        var row = this.getView().findRow(target);
-        if (row && row !== this.lastRow) {
-            var rowIndex = this.getView().findRowIndex(row);
-            this.fireEvent("mouseenter", this, rowIndex, this.store.getAt(rowIndex), e);
-            this.lastRow = row;
-        }
-    },
-
-    // trigger mouseleave event on row when applicable
-    onMouseOut:function (e) {
-        if (this.lastRow) {
-            if (!e.within(this.lastRow, true, true)) {
-                var lastRowIndex = this.getView().findRowIndex(this.lastRow);
-                this.fireEvent("mouseleave", this, lastRowIndex, this.store.getAt(lastRowIndex), e);
-                delete this.lastRow;
-            }
-        }
-    },
-
-    _getLayerLink:function (rowIndex) {
-
-        var rec = this.store.getAt(rowIndex);
-        var links = rec.get('links');
-        var linkStore = new Portal.search.data.LinkStore({
-            data:{links:links}
-        });
-
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
-
-            return linkStore.getLayerLink(0);
-    },
-
-
-    _showSearchResultsMessage: function(pages) {
-        this.setTitle(null);
-        this.hideHeaders = true;
-        this.doLayout();
-    },
-
-    _showError: function() {
-        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailableText'));
-        this.hideHeaders = false;
-    },
-
-    _setTitleText: function(newText) {
-        this.setTitle( '<span class="x-panel-header-text">' + newText + '</span>' );
-        this.doLayout();
-    },
-
-    _viewButtonOnClick: function(button, e, rowIndex) {
-        var geoNetworkRecord = this.store.getAt(rowIndex);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().add(geoNetworkRecord);
-    },
-
-    _viewButtonRenderer: function(value, metaData, record, rowIndex) {
-
-        var grid = this;
-
-        var createButton = function(value, id, record, handler) {
-            new Ext.Button({
-                text: value,
-                iconCls: '',
-                handler: handler,
-                scope: grid
-            }).render(document.body, id);
-        };
-
-        var componentId = Ext.id();
-        var buttonHandler = function(button, e) {
-            this._viewButtonOnClick(button, e, rowIndex);
-        };
-        createButton.defer(1, this, ['View', componentId, record, buttonHandler]);
-
-        return('<div id="' + componentId + '"></div>');
-    },
-
-    _miniMapRenderer: function(value, metaData, record, rowIndex) {
-        var me = this;
-        var componentId = Ext.id();
-        var metadataExtent = record.get('bbox');
-        var map = new OpenLayers.Map({
-            controls: []
-        });
-        map.addLayer(this._baseLayer());
-        map.addLayer(metadataExtent.getLayer());
-
-        setTimeout(function() {
-            map.render(componentId);
-            if (metadataExtent.getBounds()) {
-                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), me._zoomLevel(map, metadataExtent.getBounds()));
-            }
-        }, 10);
-
-        return('<div id="' + componentId + '" style="width: ' + this.mapWidth + '; height: ' + this.mapHeight + ';"></div>');
-    },
-
-    _baseLayer: function() {
-        return new OpenLayers.Layer.WMS(
-            "IMOS Tile Cache Simple Baselayer",
-            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
-            { layers: 'default_basemap_simple' }
-        );
-    },
-
-    _zoomLevel: function(map, bounds) {
-        var zoomLevel = map.getZoomForExtent(bounds);
-        if (zoomLevel == 0) {
-            // 0 is too large
-            zoomLevel = 1;
-        }
-        else if (zoomLevel > 4) {
-            // Anything over 4 doesn't show enough to get an idea of where things are
-            zoomLevel = 4;
-        }
-        return zoomLevel;
     },
 
     _onStoreLoad: function() {

@@ -130,3 +130,13 @@ ul.x-tab-strip li {
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
     background-color: #4D7282 !important;
 }
+.olControlOverviewMapElement   {
+    background-color: #4D7282! important;
+    border-radius: 6px 0  0  0 ;
+    opacity: 0.85;
+    -ms-filter:"alpha(opacity=85)"; /* IE8 */
+    filter:alpha(opacity=85); /* IE6/IE7 */
+}
+.semiTransparent {
+    background-color: #4D7282 !important;
+}

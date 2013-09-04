@@ -17,6 +17,10 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             this.clearGeometry();
         });
 
+        this.polygonVector.events.register("sketchcomplete", this, function () {
+            this.fireEvent('polygonadded', this.getCurrentFeature());
+        });
+
         var config = Ext.apply({
             mapConfig: {
                 controls: [
@@ -35,28 +39,23 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             this.map.updateSize();
         });
 
+        this.addEvents('polygonadded');
+
         this.map.addLayer(this.polygonVector);
         // Otherwise we end up off the west coast of Africa
         this.zoomToInitialBbox();
     },
 
     getCurrentFeature: function () {
-
         if (this.polygonVector.features.length > 0) {
             return this.polygonVector.features[0];
-        }
-        else {
-            return false;
         }
     },
 
     getCurrentGeometry: function() {
-
-        if (!this.getCurrentFeature()) {
-            return false;
+        if (this.getCurrentFeature()) {
+            return this.getCurrentFeature().geometry;
         }
-
-        return this.getCurrentFeature().geometry;
     },
 
     hasCurrentFeature: function() {
@@ -72,14 +71,11 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
     },
 
     getBoundingPolygonAsWKT: function() {
-
-        if (!this.getCurrentFeature()) {
-            return false;
+        if (this.getCurrentFeature()) {
+            var wktFormatter = new OpenLayers.Format.WKT();
+            return wktFormatter.write(this.getCurrentFeature());
         }
-
-        var wktFormatter = new OpenLayers.Format.WKT();
-        return wktFormatter.write(this.getCurrentFeature());
-    },
+    }
 });
 
 Ext.reg('portal.search.facetmappanel', Portal.search.FacetMapPanel);
