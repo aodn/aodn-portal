@@ -1044,6 +1044,7 @@ div.allwhite {
 }
 
 .term-selection-panel .ext-el-mask {
+    background: none;
     background-color: #F4F4F4;
 }
 .p-selected-view {
