@@ -101,7 +101,8 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
 
 OpenLayers.Layer.WMS.prototype.proxy = function (proxy) {
     if (this.server.username && this.server.password && !this.localProxy) {
-        this.server.uri = proxy + this.server.uri + "?";
+    	var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
+        this.server.uri = proxy + this.server.uri + separator;   
         this.url = this.server.uri;
         this.localProxy = proxy;
     }
