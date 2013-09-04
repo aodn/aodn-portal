@@ -29,8 +29,6 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
         this.initialSetup = true;
 
-        this.state = new Portal.visualise.animations.AnimationState();
-
         if (this.timeControl) {
             this.timeControl.events.on({
                 'temporalextentchanged': this._onTemporalExtentChanged,
@@ -110,10 +108,10 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     updateForState: function(state) {
-        if (state == this.state.PLAYING) {
+        if (state.isPlaying()) {
             this.disable();
         }
-        else if (state == this.state.REMOVED || state == this.state.PAUSED) {
+        else if (state.isRemoved() || state.isPaused()) {
             this.enable();
         }
     },

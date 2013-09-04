@@ -10,8 +10,6 @@ Ext.namespace('Portal.details');
 Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
-        this.state = new Portal.visualise.animations.AnimationState();
-
         var config = Ext.apply({
             layout : 'form',
             stateful : false,
@@ -97,8 +95,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('play')
         });
 
-        this.currentState = this.state.REMOVED;
-
         this.stepLabel = new Ext.form.Label({
             flex : 1,
             width : 115,
@@ -161,7 +157,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.mapPanel = undefined;
 
         this.timerId = -1;
-
         this.stateBasedControls = [
             this.playButton,
             this.stepSlider,
@@ -170,6 +165,14 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.speedLabel,
             this.dateTimeSelectorPanel
         ];
+
+//        this.state = new Portal.visualise.animations.AnimationState({
+//            observers: [
+//                { fn: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
+//            ]
+//        });
+        this.state = new Portal.visualise.animations.AnimationState({});
+        this.state.setRemoved();
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
     },
@@ -279,11 +282,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _stopPlaying : function() {
         this.timeControl.stop();
-        this._updateButtons(this.state.PAUSED);
+        this.state.setPaused();
+        this._updateButtons();
     },
 
     _startPlaying : function() {
-        this._updateButtons(this.state.PLAYING);
+        this.state.setPlaying();
+        this._updateButtons();
         this.timeControl.play();
     },
 
@@ -292,10 +297,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this._setStepLabelTextToDateTime(dateTime);
     },
 
-    _updateButtons : function(state) {
-        this.currentState = state;
+    _updateButtons : function() {
         Ext.each(this.stateBasedControls, function(control, index, all) {
-            control.updateForState(state);
+            control.updateForState(this.state);
         }, this);
     },
 
