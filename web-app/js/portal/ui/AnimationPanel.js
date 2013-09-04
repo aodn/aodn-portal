@@ -11,6 +11,9 @@ Ext.namespace('Portal.ui');
 Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config) {
+
+        this.animationPanelMinimizedHeight = 48;
+        this.animationPanelExpandedHeight = 140;
         
         //setVisible(true) for floating panel doesn't work without this fix
         //http://www.sencha.com/forum/showthread.php?49848-2.2-panel-setVisible-true-not-working
@@ -35,9 +38,10 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
             bodyStyle:'padding: 6px; margin: 2px;',
             items: [{
                 xtype: 'button',
-                iconCls: 'arrowUp',
+                iconCls: 'arrowUpWhite',
                 ref: 'controlButton',
                 iconAlign: 'right',
+                padding: 10,
                 text: OpenLayers.i18n('controlButton_4AnimationControlsPanel'),
                 listeners:{
                     // stops the click bubbling to a getFeatureInfo request on the map
@@ -75,8 +79,6 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        this.maplinksHeight = 52;
-
         this.expandBar = this.initToolBarExpanderBar();
 
         var config = Ext.apply({
@@ -84,11 +86,11 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
             shadow: false,
             width: '100%',
             hidden: true,
-            height: this.maplinksHeight,
+            height: this.animationPanelMinimizedHeight,
             floating: true,
             unstyled: true,
             items: [
-                this.expandBar,
+                //this.expandBar,
                 this.mapToolbar
             ],
             listeners:{
@@ -181,23 +183,22 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
     },
 
     _contract: function() {
-        this.setHeight(this.maplinksHeight);
+        this.setHeight(this.animationPanelMinimizedHeight);
         this.expandBar.addClass("expandUpLink");
         this.expandBar.removeClass("expandDownLink");
-        this.controlButtonPanel.controlButton.setIconClass("arrowUp");
-
+        this.controlButtonPanel.controlButton.setIconClass("arrowUpWhite");
     },
 
     _expand: function() {
-        this.setHeight(200);
+        this.setHeight(this.animationPanelExpandedHeight);
         this.expandBar.addClass("expandDownLink");
         this.expandBar.removeClass("expandUpLink");
-        this.controlButtonPanel.controlButton.setIconClass("arrowDown");
+        this.controlButtonPanel.controlButton.setIconClass("arrowDownWhite");
     },
 
     toggle: function() {
 
-        if (this.getHeight() > this.maplinksHeight) {
+        if (this.getHeight() > this.animationPanelMinimizedHeight) {
             this._contract();
         }
         else {
