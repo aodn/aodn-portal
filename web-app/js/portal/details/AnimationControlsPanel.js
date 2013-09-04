@@ -21,9 +21,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             layout : 'form',
             stateful : false,
             bodyStyle : 'padding:6px; margin:2px',
-            defaults : {
-                cls : 'fullTransparency'
-            },
             width : '100%'
         }, cfg);
 
@@ -51,7 +48,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.speedUp = new Ext.Button({
-            icon : 'images/animation/last.png',
+            iconCls : 'ffButton',
             plain : true,
             padding : 5,
             listeners : {
@@ -65,7 +62,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.slowDown = new Ext.Button({
-            icon : 'images/animation/first.png',
+            iconCls : 'rewindButton',
             padding : 5,
             listeners : {
                 scope : this,
@@ -97,7 +94,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             padding : 5,
             plain : true,
             disabled : false, // readonly
-            icon : 'images/animation/play.png',
+            iconCls : 'playButton',
             listeners : {
                 scope : this,
                 'click' : this._togglePlay
@@ -134,7 +131,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.getAnimationButton = new Ext.Button({
-            icon : 'images/animation/download.png',
+            iconCls : 'downloadButton',
             text : 'download',
             listeners : {
                 scope : this,
@@ -299,19 +296,19 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         if (state == this.state.LOADING) {
             // can't change the time when it's loading
-            this.playButton.setIcon('images/animation/pause.png');
+            this.playButton.setIconClass('pauseButton');
             this.stepSlider.disable();
             this.speedUp.disable();
             this.slowDown.disable();
             this.speedLabel.setVisible(false);
         } else if (state == this.state.PLAYING) {
             // can't change the time when it's playing
-            this.playButton.setIcon('images/animation/pause.png');
+            this.playButton.setIconClass('pauseButton');
             this.stepSlider.enable();
             this.speedLabel.setVisible(true);
             this.dateTimeSelectorPanel.disable();
         } else if (state == this.state.REMOVED) {
-            this.playButton.setIcon('images/animation/play.png');
+            this.playButton.setIconClass('playButton');
             this.playButton.enable();
             this.stepSlider.setValue(0);
             // nothing's playing, so stop and pause doesn't make sense
@@ -319,7 +316,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.speedLabel.setVisible(false);
             this.dateTimeSelectorPanel.enable();
         } else if (state == this.state.PAUSED) {
-            this.playButton.setIcon('images/animation/play.png');
+            this.playButton.setIconClass('playButton');
             this.playButton.enable();
             // nothing's playing, so stop and pause doesn't make sense
 
