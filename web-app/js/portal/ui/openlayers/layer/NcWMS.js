@@ -36,7 +36,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     missingDays: null,
 
     initialize: function(name, url, params, options, extent) {
-        name += ' (animated)';
+
+        var nameWithStatus = name + ' (animated)';
 
         this.precachedTimes = [];
         this.state = this.STATES.UNCACHED;
@@ -56,7 +57,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // Initialize missingDays
         this.missingDays = [];
 
-        OpenLayers.Layer.WMS.prototype.initialize.apply(this, name, url, params, options, extent);
+        OpenLayers.Layer.WMS.prototype.initialize.apply(this, [nameWithStatus, url, params, options, extent]);
     },
 
     moveTo: function(bounds, zoomChanged, dragging) {
