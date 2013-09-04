@@ -20,9 +20,9 @@ Portal.visualise.animations.AnimationState = Ext.extend(Object, {
     },
 
     notifyObservers: function() {
-        Ext.each(this.observers, function() {
-            if (observer.fn) {
-                observer.fn.call(observer.scope, this);
+        Ext.each(this.observers, function(observer, index, all) {
+            if (observer.onStateChanged) {
+                observer.onStateChanged.call(observer.scope, this);
             }
         }, this);
     },

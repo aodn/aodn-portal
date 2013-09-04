@@ -157,21 +157,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.mapPanel = undefined;
 
         this.timerId = -1;
-        this.stateBasedControls = [
-            this.playButton,
-            this.stepSlider,
-            this.speedUp,
-            this.slowDown,
-            this.speedLabel,
-            this.dateTimeSelectorPanel
-        ];
 
-//        this.state = new Portal.visualise.animations.AnimationState({
-//            observers: [
-//                { fn: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
-//            ]
-//        });
-        this.state = new Portal.visualise.animations.AnimationState({});
+        this.state = new Portal.visualise.animations.AnimationState({
+            observers: [
+                { onStateChanged: this.playButton.updateForState, scope: this.playButton },
+                { onStateChanged: this.stepSlider.updateForState, scope: this.stepSlider },
+                { onStateChanged: this.speedUp.updateForState, scope: this.speedUp },
+                { onStateChanged: this.slowDown.updateForState, scope: this.slowDown },
+                { onStateChanged: this.speedLabel.updateForState, scope: this.speedLabel },
+                { onStateChanged: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
+            ]
+        });
         this.state.setRemoved();
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
@@ -210,7 +206,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     isPlaying: function() {
-        return (this.currentState == this.state.PLAYING);
+        return this.state.isPlaying();
     },
 
     _onSelectedLayerPrecacheStart: function() {
@@ -283,24 +279,16 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _stopPlaying : function() {
         this.timeControl.stop();
         this.state.setPaused();
-        this._updateButtons();
     },
 
     _startPlaying : function() {
         this.state.setPlaying();
-        this._updateButtons();
         this.timeControl.play();
     },
 
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
         this._setStepLabelTextToDateTime(dateTime);
-    },
-
-    _updateButtons : function() {
-        Ext.each(this.stateBasedControls, function(control, index, all) {
-            control.updateForState(this.state);
-        }, this);
     },
 
     isAnimating : function() {

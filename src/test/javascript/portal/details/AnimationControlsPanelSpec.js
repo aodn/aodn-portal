@@ -183,8 +183,14 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             });
 
+            it('has a state of is playing true when playing', function() {
+                animationControlsPanel.playButton.fireEvent('click');
+                expect(animationControlsPanel.isPlaying()).toBeTruthy();
+
+            });
+
             it('on stop, time.stop is called', function() {
-                animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
+                animationControlsPanel.state.setPlaying();
                 animationControlsPanel.counter = 0;
 
                 spyOn(timeControl, 'stop');
@@ -194,7 +200,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
 
             it('on stop, dateTimeSelectorPanel is enabled', function() {
-                animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
+                animationControlsPanel.state.setPlaying();
                 spyOn(animationControlsPanel.dateTimeSelectorPanel, 'enable');
 
                 animationControlsPanel.playButton.fireEvent('click');
@@ -486,7 +492,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
 
             it('pause on precache start if playing', function() {
-                animationControlsPanel.currentState = animationControlsPanel.state.PLAYING;
+                animationControlsPanel.state.setPlaying();
 
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._stopPlaying).toHaveBeenCalled();
@@ -494,7 +500,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
 
             it('don\'t pause on precache start if not playing', function() {
-                animationControlsPanel.currentState = animationControlsPanel.state.PAUSED;
+                animationControlsPanel.state.setPaused();
 
                 ncWmsLayer.events.triggerEvent('precachestart');
                 expect(animationControlsPanel._stopPlaying).not.toHaveBeenCalled();
