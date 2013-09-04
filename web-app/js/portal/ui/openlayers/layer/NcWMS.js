@@ -57,7 +57,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // Initialize missingDays
         this.missingDays = [];
 
-        OpenLayers.Layer.WMS.prototype.initialize.apply(this, nameWithStatus, url, params, options, extent);
+        OpenLayers.Layer.WMS.prototype.initialize.apply(this, [nameWithStatus, url, params, options, extent]);
     },
 
     moveTo: function(bounds, zoomChanged, dragging) {
