@@ -9,14 +9,9 @@ Ext.namespace('Portal.details');
 
 Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
-    state : {
-        LOADING : "LOADING",
-        PLAYING : "PLAYING",
-        REMOVED : "REMOVED",
-        PAUSED : "PAUSED"
-    },
-
     constructor : function(cfg) {
+        this.state = new Portal.visualise.animations.AnimationState();
+
         var config = Ext.apply({
             layout : 'form',
             stateful : false,
@@ -50,7 +45,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             text : OpenLayers.i18n('warn_label')
         });
 
-        this.speedUp = new Ext.Button({
+        this.speedUp = new Portal.visualise.animations.AnimationSpeedButton({
             icon : 'images/animation/last.png',
             plain : true,
             padding : 5,
@@ -64,7 +59,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('speedUp')
         });
 
-        this.slowDown = new Ext.Button({
+        this.slowDown = new Portal.visualise.animations.AnimationSpeedButton({
             icon : 'images/animation/first.png',
             padding : 5,
             listeners : {
@@ -81,7 +76,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             html : "<h4>Select Time Period</h4>"
         });
 
-        this.stepSlider = new Ext.slider.SingleSlider({
+        this.stepSlider = new Portal.visualise.animations.AnimationStepSlider({
             ref : 'stepSlider',
             width : 115,
             flex : 3,
@@ -93,7 +88,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        this.playButton = new Ext.Button({
+        this.playButton = new Portal.visualise.animations.AnimationPlayButton({
             padding : 5,
             plain : true,
             disabled : false, // readonly
@@ -113,7 +108,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             style : 'padding-top: 5; padding-bottom: 5'
         });
 
-        this.speedLabel = new Ext.form.Label({
+        this.speedLabel = new Portal.visualise.animations.AnimationSpeedLabel({
             flex : 1,
             style : 'padding: 5',
             text: '1x'
@@ -169,6 +164,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.mapPanel = undefined;
 
         this.timerId = -1;
+
+        this.stateBasedControls = [
+            this.playButton,
+            this.stepSlider,
+            this.speedUp,
+            this.slowDown,
+            this.speedLabel,
+            this.dateTimeSelectorPanel
+        ];
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
     },
@@ -293,39 +297,9 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _updateButtons : function(state) {
         this.currentState = state;
-
-        if (state == this.state.LOADING) {
-            // can't change the time when it's loading
-            this.playButton.setIcon('images/animation/pause.png');
-            this.stepSlider.disable();
-            this.speedUp.disable();
-            this.slowDown.disable();
-            this.speedLabel.setVisible(false);
-        }
-        else if (state == this.state.PLAYING) {
-            // can't change the time when it's playing
-            this.playButton.setIcon('images/animation/pause.png');
-            this.stepSlider.enable();
-            this.speedLabel.setVisible(true);
-            this.dateTimeSelectorPanel.disable();
-        }
-        else if (state == this.state.REMOVED) {
-            this.playButton.setIcon('images/animation/play.png');
-            this.playButton.enable();
-            this.stepSlider.setValue(0);
-            // nothing's playing, so stop and pause doesn't make sense
-
-            this.speedLabel.setVisible(false);
-            this.dateTimeSelectorPanel.enable();
-        }
-        else if (state == this.state.PAUSED) {
-            this.playButton.setIcon('images/animation/play.png');
-            this.playButton.enable();
-            // nothing's playing, so stop and pause doesn't make sense
-
-            this.speedLabel.setVisible(false);
-            this.dateTimeSelectorPanel.enable();
-        }
+        Ext.each(this.stateBasedControls, function(control, index, all) {
+            control.updateForState(state);
+        }, this);
     },
 
     isAnimating : function() {
