@@ -38,7 +38,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
-    clearButton_tip: "Stops animation and remove all animated collection layers from map",
+    clearButton_tip: "Stops animation and remove all animated collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
@@ -160,7 +160,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected:	"No collections selected !!",
+    noActiveLayersSelected:	"No collections selected",
     // ActiveLayersPanel.js
     collectionsTitle: "Collections",
     noCollectionSelectedHelp: "Please return and search for collections.",
