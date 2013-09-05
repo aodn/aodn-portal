@@ -97,6 +97,10 @@ input.readonlyInput {
     font-size: 12px;
     color: inherit;
 }
+.x-panel .faceted-search-clear-all {
+    font-size: smaller;
+    font-weight: bold;
+}
 
 #activeTreePanel input {
     margin: 0;

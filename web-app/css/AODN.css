@@ -40,21 +40,19 @@ body, html, td {
     color: #333333;
 }
 
-
 #header {
     width: 100%;
     background: #2b2b2b;
 }
 
-
 #logo {
     margin: 3px 25px;
 }
 #headerTitle {
-    padding: 30px 20px 0  20px;
+    margin-left: 230px;
+    padding: 45px 5px 0 20px;
     margin-left: 250px;
     color: #004F7E;
-    padding: 61px 15px 0  20px;
     font-size: 24px;
     text-shadow: 1px 2px 5px  #222222;
 }
@@ -82,6 +80,11 @@ body, html, td {
 }
 
 
+#viewPortLinks {
+    border: none;
+}
+
+
 .mainlinks {
     color: white;
     border-left: 1px solid #CCCCCC;
@@ -93,9 +96,14 @@ p {
 }
 
 
-h1,h2,h3 {
-	font-family: tahoma,arial,verdana,sans-serif;
-	color: #999999;
+h1,h2,h3,h4,
+.x-panel-header,
+.x-window-header-text,
+#rightHomePanel h3,
+cart-title,
+.search-filter-panel .term-selection-panel-header-selected
+{
+	color: #505C63;
 }
 
 h1 {
@@ -104,7 +112,6 @@ h1 {
 }
 
 h4 {
-    color: #6A6A6A;
     font-size: 12px;
     margin: 4px 0 ;
 }
@@ -165,19 +172,11 @@ input, select, textarea {
     text-decoration: underline;
 }
 
-.menuHeader {
-    font-size: 14px;
-    color: #666;
-    padding: 15px 1px 10px 10px;
-}
-
 .x-panel-header,
 .x-window-header-text,
 #rightHomePanel h3{
-    color: #666;
     font-size: 14px;
-	font-weight: normal;
-    color: #666;
+	font-weight: bold;
 }
 .x-panel-noborder .x-panel-bbar-noborder .x-toolbar {
     border: none;
@@ -194,4 +193,18 @@ a.userlink {
 .x-tab-strip span.x-tab-strip-text {
     color: #666;
 }
-
+ul.x-tab-strip-top {
+    border: none;
+}
+.x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
+    background-color:  #E6E9EB;
+}
+.semiTransparent {
+    background-color: #596169 !important;
+    opacity: 0.6;
+}
+.faceted-search-clear-all .x-hyperlink{
+    background-color:  #E6E9EB;
+    padding: 1px 3px;
+    border-radius: 4px;
+}

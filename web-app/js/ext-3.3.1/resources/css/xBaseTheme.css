@@ -104,14 +104,14 @@
 ul.x-tab-strip-top {
     background-image: url(../images/xBase/window/top-bottom.png);
     background: none;
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
     padding-top: 10px;
 }
 
 ul.x-tab-strip-bottom {
     background-color: #dbdbdb;
     background-image: url(../images/xBase/tabs/tab-strip-btm-bg.gif);
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 ul.x-tab-strip li {
@@ -122,7 +122,7 @@ ul.x-tab-strip li {
 
 .x-tab-panel-header-plain .x-tab-strip-spacer,
 .x-tab-panel-footer-plain .x-tab-strip-spacer {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
     background-color: #eaeaea;
 }
 
@@ -145,7 +145,11 @@ ul.x-tab-strip li {
 }
 
 .x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
-    background-image: url(../images/xBase/tabs/tabs-sprite.gif);
+    border-radius: 4px;
+    background-color: #d3d3d3;
+}
+.x-tab-strip-top .x-tab-strip-active .x-tab-right {
+    margin-bottom: -3px;
 }
 
 .x-tab-strip-bottom .x-tab-right {
@@ -194,7 +198,7 @@ ul.x-tab-strip li {
 
 .x-tab-scroller-left {
     background-image: url(../images/xBase/tabs/scroll-left.gif);
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-tab-scroller-left-over {
@@ -211,11 +215,11 @@ ul.x-tab-strip li {
 
 .x-tab-scroller-right {
     background-image: url(../images/xBase/tabs/scroll-right.gif);
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-tab-panel-bbar .x-toolbar, .x-tab-panel-tbar .x-toolbar {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-form-field {
@@ -239,7 +243,7 @@ ul.x-tab-strip li {
 }
 
 .x-form-check-group-label {
-    border-bottom: 1px solid #d0d0d0;
+    border-bottom: 1px solid #eeeeee;
     color: #333;
 }
 .x-form-cb-label {
@@ -254,8 +258,8 @@ ul.x-tab-strip li {
     height: 20px;
     margin-bottom: 0px;
     background-image: url(../images/xBase/form/trigger.gif);
-    border: 1px solid #d0d0d0;
-    border-bottom: 2px solid #d0d0d0;
+    border: 1px solid #eeeeee;
+    border-bottom: 2px solid #eeeeee;
     background-position: 1px -1px;
     border-radius: 3px;
 }
@@ -433,7 +437,7 @@ ul.x-tab-strip li {
 }
 
 .x-toolbar {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
     background-color: #f0f0f0;
 }
 
@@ -570,7 +574,7 @@ ul.x-tab-strip li {
 }
 
 .x-grid-panel .x-panel-mc .x-panel-body {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-grid3-row td, .x-grid3-summary-row td {
@@ -583,7 +587,7 @@ ul.x-tab-strip li {
 
 .x-grid3-hd-row td {
     border-left-color: #eee;
-    border-right-color: #d0d0d0;
+    border-right-color: #eeeeee;
 }
 
 .x-grid-row-loading {
@@ -619,7 +623,7 @@ ul.x-tab-strip li {
 }
 
 .x-grid3-header-pop {
-    border-left-color: #d0d0d0;
+    border-left-color: #eeeeee;
 }
 
 .x-grid3-header-pop-inner {
@@ -793,7 +797,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-grid-group-hd {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-grid-group-hd div.x-grid-group-title {
@@ -839,8 +843,8 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
     background: url(../images/xBase/grid/grid3-hrow2.gif) repeat-x 50% 100%;
     border-left: 1px solid;
     border-right: 1px solid;
-    border-left-color: #D0D0D0;
-    border-right-color: #D0D0D0;
+    border-left-color: #eeeeee;
+    border-right-color: #eeeeee;
 }
 
 .x-pivotgrid .x-grid3-row-headers {
@@ -852,9 +856,9 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
     border-left: 1px solid;
     border-right: 1px solid;
     border-left-color: #EEE;
-    border-right-color: #D0D0D0;
+    border-right-color: #eeeeee;
     border-bottom: 1px solid;
-    border-bottom-color: #D0D0D0;
+    border-bottom-color: #eeeeee;
     height: 18px;
 }
 
@@ -1396,7 +1400,7 @@ a.x-menu-item {
 }
 
 .x-panel {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-panel-header {
@@ -1404,7 +1408,7 @@ a.x-menu-item {
     font-weight: bold;
     font-size: 11px;
     font-family: tahoma, arial, verdana, sans-serif;
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
     background-image: url(../images/xBase/window/top-bottom.png);
 }
 
@@ -1413,15 +1417,15 @@ a.x-menu-item {
 }
 
 .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 .x-panel-body-noheader, .x-panel-mc .x-panel-body {
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 .x-panel-tl .x-panel-header {
@@ -1435,7 +1439,7 @@ a.x-menu-item {
 
 .x-panel-tl, .x-panel-tr, .x-panel-bl, .x-panel-br {
     background-image: url(../images/xBase/panel/corners-sprite.gif);
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-panel-bc {
@@ -1469,11 +1473,11 @@ a.x-menu-item {
 }
 
 .x-panel-ghost ul {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-panel-dd-spacer {
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-panel-fbar td, .x-panel-fbar span, .x-panel-fbar input, .x-panel-fbar div, .x-panel-fbar select, .x-panel-fbar label {
@@ -1482,7 +1486,7 @@ a.x-menu-item {
 
 .x-window-proxy {
     background-color: #fcfcfc;
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 
@@ -1544,15 +1548,15 @@ a.x-menu-item {
 }
 
 .x-window-bbar .x-toolbar {
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 .x-panel-ghost .x-window-tl {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-panel-collapsed .x-window-tl {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-dlg-mask {
@@ -1561,11 +1565,11 @@ a.x-menu-item {
 
 .x-window-plain .x-window-mc {
     background-color: #E8E8E8;
-    border-color: #D0D0D0 #EEEEEE #EEEEEE #D0D0D0;
+    border-color: #eeeeee #EEEEEE #EEEEEE #eeeeee;
 }
 
 .x-window-plain .x-window-body {
-    border-color: #EEEEEE #D0D0D0 #D0D0D0 #EEEEEE;
+    border-color: #EEEEEE #eeeeee #eeeeee #EEEEEE;
     border-width: 1px;
 }
 
@@ -1583,23 +1587,23 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-panel-noborder .x-panel-header-noborder {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-panel-noborder .x-panel-tbar-noborder .x-toolbar {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-panel-noborder .x-panel-bbar-noborder .x-toolbar {
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 .x-tab-panel-bbar-noborder .x-toolbar {
-    border-top-color: #d0d0d0;
+    border-top-color: #eeeeee;
 }
 
 .x-tab-panel-tbar-noborder .x-toolbar {
-    border-bottom-color: #d0d0d0;
+    border-bottom-color: #eeeeee;
 }
 
 .x-accordion-hd {
@@ -1610,7 +1614,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 .x-layout-collapsed {
     background-color: #dfdfdf;
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-layout-collapsed-over {
@@ -1705,7 +1709,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 .x-list-header-inner em.sort-asc, .x-list-header-inner em.sort-desc {
     background-image: url(../images/xBase/grid/sort-hd.gif);
-    border-color: #d0d0d0;
+    border-color: #eeeeee;
 }
 
 .x-slider-horz, .x-slider-horz .x-slider-end, .x-slider-horz .x-slider-inner {
