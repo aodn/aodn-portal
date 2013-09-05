@@ -162,13 +162,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             observers: [
                 { onStateChanged: this.playButton.updateForState, scope: this.playButton },
                 { onStateChanged: this.stepSlider.updateForState, scope: this.stepSlider },
-                { onStateChanged: this.speedUpButton.updateForState, scope: this.speedUpButton },
-                { onStateChanged: this.slowDownButton.updateForState, scope: this.slowDownButton },
                 { onStateChanged: this.speedLabel.updateForState, scope: this.speedLabel },
                 { onStateChanged: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
             ]
         });
-        this.state.setRemoved();
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
     },
