@@ -15,7 +15,7 @@ describe("Portal.visualise.animations.AnimationPlayButton", function() {
 
     describe('update for state', function() {
 
-         it('is enabled when animation is paused', function() {
+        it('is enabled when animation is paused', function() {
             spyOn(playButton, 'enable');
             playButton.updateForState(state.setPaused());
         });
