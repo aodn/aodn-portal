@@ -10,8 +10,6 @@ Ext.namespace('Portal.details');
 Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
-        this.state = new Portal.visualise.animations.AnimationState();
-
         var config = Ext.apply({
             layout : 'form',
             stateful : false,
@@ -42,7 +40,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             text : OpenLayers.i18n('warn_label')
         });
 
-        this.speedUp = new Portal.visualise.animations.AnimationSpeedButton({
+        this.speedUpButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'ffButton',
             plain : true,
             padding : 5,
@@ -56,7 +54,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('speedUp')
         });
 
-        this.slowDown = new Portal.visualise.animations.AnimationSpeedButton({
+        this.slowDownButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'rewindButton',
             padding : 5,
             listeners : {
@@ -97,8 +95,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('play')
         });
 
-        this.currentState = this.state.REMOVED;
-
         this.stepLabel = new Ext.form.Label({
             flex : 1,
             width : 115,
@@ -114,7 +110,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel = new Ext.Panel({
             layout : 'hbox',
             plain : true,
-            items : [this.slowDown, this.playButton, this.speedUp],
+            items : [this.slowDownButton, this.playButton, this.speedUpButton],
             height : 40,
             flex : 2
         });
@@ -162,14 +158,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         this.timerId = -1;
 
-        this.stateBasedControls = [
-            this.playButton,
-            this.stepSlider,
-            this.speedUp,
-            this.slowDown,
-            this.speedLabel,
-            this.dateTimeSelectorPanel
-        ];
+        this.state = new Portal.visualise.animations.AnimationState({
+            observers: [
+                { onStateChanged: this.playButton.updateForState, scope: this.playButton },
+                { onStateChanged: this.stepSlider.updateForState, scope: this.stepSlider },
+                { onStateChanged: this.speedUpButton.updateForState, scope: this.speedUpButton },
+                { onStateChanged: this.slowDownButton.updateForState, scope: this.slowDownButton },
+                { onStateChanged: this.speedLabel.updateForState, scope: this.speedLabel },
+                { onStateChanged: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
+            ]
+        });
+        this.state.setRemoved();
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
     },
@@ -207,7 +206,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     isPlaying: function() {
-        return (this.currentState == this.state.PLAYING);
+        return this.state.isPlaying();
     },
 
     _onSelectedLayerPrecacheStart: function() {
@@ -251,17 +250,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
-            this.speedUp.disable();
+            this.speedUpButton.disable();
         }
         else {
-            this.speedUp.enable();
+            this.speedUpButton.enable();
         }
 
         if (this.timeControl.isAtSlowestSpeed()) {
-            this.slowDown.disable();
+            this.slowDownButton.disable();
         }
         else {
-            this.slowDown.enable();
+            this.slowDownButton.enable();
         }
     },
 
@@ -279,24 +278,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _stopPlaying : function() {
         this.timeControl.stop();
-        this._updateButtons(this.state.PAUSED);
+        this.state.setPaused();
     },
 
     _startPlaying : function() {
-        this._updateButtons(this.state.PLAYING);
+        this.state.setPlaying();
         this.timeControl.play();
     },
 
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
         this._setStepLabelTextToDateTime(dateTime);
-    },
-
-    _updateButtons : function(state) {
-        this.currentState = state;
-        Ext.each(this.stateBasedControls, function(control, index, all) {
-            control.updateForState(state);
-        }, this);
     },
 
     isAnimating : function() {

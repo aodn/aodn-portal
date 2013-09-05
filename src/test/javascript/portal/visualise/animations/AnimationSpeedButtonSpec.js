@@ -6,7 +6,7 @@
  */
 describe("Portal.visualise.animations.AnimationSpeedButton", function() {
 
-    var state = new Portal.visualise.animations.AnimationState();
+    var state = new Portal.visualise.animations.AnimationState({});
     var speedButton;
 
     beforeEach(function() {
@@ -16,7 +16,7 @@ describe("Portal.visualise.animations.AnimationSpeedButton", function() {
     describe('update for state', function() {
         it('is disabled during loading', function() {
             spyOn(speedButton, 'disable');
-            speedButton.updateForState(state.LOADING);
+            speedButton.updateForState(state.setLoading());
             expect(speedButton.disable).toHaveBeenCalled();
         });
     });

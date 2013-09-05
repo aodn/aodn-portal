@@ -3,18 +3,17 @@ Ext.namespace('Portal.visualise.animations');
 Portal.visualise.animations.AnimationStepSlider = Ext.extend(Ext.slider.SingleSlider, {
 
     constructor: function(config) {
-        this.state = new Portal.visualise.animations.AnimationState();
         Portal.visualise.animations.AnimationStepSlider.superclass.constructor.call(this, config);
     },
 
     updateForState: function(state) {
-        if (state == this.state.LOADING) {
+        if (state.isLoading()) {
             this.disable();
         }
-        else if (state == this.state.PLAYING) {
+        else if (state.isPlaying()) {
             this.enable();
         }
-        else if (state == this.state.REMOVED) {
+        else if (state.isRemoved()) {
             this.setValue(0);
         }
     }
