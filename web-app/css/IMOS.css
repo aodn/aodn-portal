@@ -4,21 +4,28 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+/*
+IMOS colours
 
 
-body, html{
-	color: #030303;
-    /*background-color: #DBD563;*/
+*/
+
+body, html {
+    color: #030303;
 }
 
 #header {
     width: 100%;
     background-color: #5A97b1;
 }
+
 #headerTitle {
     color: white;
     text-shadow: 1px 2px 9px #1B7399;
+    padding: 30px 20px 0 20px;
+    margin-left: 250px;
 }
+
 .mainlinks {
     color: white;
     border-left: 1px solid #99CCFF;
@@ -26,23 +33,20 @@ body, html{
     font-weight: bold;
 }
 
-p, td{
-}
-
 h1 {
-	color: #1b7399;
+    color: #1b7399;
     font-size: 24px;
     font-weight: normal;
 }
 
 h2 {
-	color: #1b7399;
+    color: #1b7399;
     font-size: 16px;
     font-weight: normal;
 }
 
 h3 {
-	color: #1b7399;
+    color: #1b7399;
     font-size: 14px;
     font-weight: normal;
 }
@@ -50,50 +54,47 @@ h3 {
 h4 {
     color: #1b7399;
     font-size: 12px;
-    margin: 2px 0 ;
 }
 
 h5 {
     color: #1b7399;
     font-size: 11px;
-    margin: 2px 0 ;
 }
 
 h6 {
     color: #6A6A6A;
     display: inline;
     font-size: 11px;
-    margin: 2px 0 ;
+    margin: 2px 0;
 }
-
 
 .footer {
     font-size: 11px;
 }
 
-
-
 .footer .x-box-inner {
     overflow: visible;
 }
-
-
 
 .x-form-item-label, .x-tab-strip span.x-tab-strip-text {
     color: #1b7399;
 }
 
-
-.x-panel-header {
-    border: none;
-    font-weight: normal;
-    color: #1b7399;
-    font-size: 15px;
-}
 .x-layout-split {
     background-color: #f3f3f3;
 }
+.x-toolbar {
+    border: none;
+    background-color: #fAFAFA;
+}
 
+.x-panel-header,
+.x-window-header-text,
+#rightHomePanel h3 {
+    font-size: 14px;
+    font-weight: normal;
+    color: #1b7399;
+}
 
 #toplinks {
     color: white;
@@ -116,9 +117,9 @@ h6 {
 }
 
 a.userlink {
-    font-size: inherit! important;
-    text-decoration: underline! important;
-    margin-right: 15px! important;
+    font-size: inherit ! important;
+    text-decoration: underline ! important;
+    margin-right: 15px ! important;
 }
 
 ul.x-tab-strip li {
@@ -130,13 +131,15 @@ ul.x-tab-strip li {
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
     background-color: #4D7282 !important;
 }
-.olControlOverviewMapElement   {
-    background-color: #4D7282! important;
-    border-radius: 6px 0  0  0 ;
+
+.olControlOverviewMapElement {
+    background-color: #4D7282 ! important;
+    border-radius: 6px 0 0 0;
     opacity: 0.85;
-    -ms-filter:"alpha(opacity=85)"; /* IE8 */
-    filter:alpha(opacity=85); /* IE6/IE7 */
+    -ms-filter: "alpha(opacity=85)"; /* IE8 */
+    filter: alpha(opacity=85); /* IE6/IE7 */
 }
+
 .semiTransparent {
     background-color: #4D7282 !important;
 }
