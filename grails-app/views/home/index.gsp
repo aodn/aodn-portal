@@ -74,7 +74,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/spin.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/BrowserWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/ActionColumn.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LoadMask.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/AppConfigStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/SaveDialog.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/MapPanel.js')}"></script>

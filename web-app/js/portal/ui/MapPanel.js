@@ -8,6 +8,7 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
+    loadSpinner: null,
 
     constructor:function (cfg) {
 
@@ -25,13 +26,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions,
             layersLoading: 0,
-            layers:  Portal.data.LayerStore.instance(),
-            html: " \
-                    <div id='loader' style='position:  absolute; top:  50%; left:  43%; z-index:  9000;'> \
-                        <div id='jsloader' style='height:  70px; width:  70px; float:  left;'></div> \
-                        <span></span> \
-                    </div>" // This is the "Loading 'n' layers" pop-up; message is inserted into the span.
-
+            layers:  Portal.data.LayerStore.instance()
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -51,24 +46,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function () {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
-
-            // The 'afterLayout' event is called many times, this check prevents us from creating more than one spinner.
-            // Alternatively we could move this spinner creation but it needs to happen in the proper place
-            if ( !this.spinnerCreated ) {
-
-                new Spinner({
-                    lines:12, // The number of lines to draw
-                    length:16, // The length of each line
-                    width:4, // The line thickness
-                    radius:12, // The radius of the inner circle
-                    color:'#0d67a0', //#18394E', // #rgb or #rrggbb
-                    speed:1, // Rounds per second
-                    trail:60, // Afterglow percentage
-                    shadow:true // Whether to render a shadow
-                }).spin(document.getElementById("jsloader"));
-
-                this.spinnerCreated = true;
-            }
         }, this);
 
         this.on('tabchange', function () {
@@ -102,16 +79,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
     },
 
-    _updateLayerLoadingSpinner:function (numLayersLoading) {
+    _updateLayerLoadingSpinner: function (numLayersLoading) {
+        // When running tests, loadSpinner will not be available
+        if (!this.loadSpinner) { return; }
 
-        jQuery("#loader span").text(this.buildLayerLoadingString(numLayersLoading));
-
-        // Show spinner.
         if (numLayersLoading > 0) {
-            jQuery("#loader").show();
-        }
-        else {
-            jQuery("#loader").hide('slow');
+            this.loadSpinner.show();
+        } else {
+            this.loadSpinner.hide();
         }
     },
 
@@ -131,7 +106,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     afterRender:function () {
-
+        this.loadSpinner = new Ext.LoadMask(this.el, {msg: "Loading data collection..."});
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
     },
