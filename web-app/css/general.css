@@ -929,11 +929,6 @@ JQUERY AUTO COMPLETE
     background-color: #F1F1F0;
 }
 
-.emptyActiveLayerTreePanelText {
-    margin: 10px;
-    font-weight: normal;
-    font-style: italic;
-}
 
 .p-btn-transect {
    background-image: url(../images/draw.png);

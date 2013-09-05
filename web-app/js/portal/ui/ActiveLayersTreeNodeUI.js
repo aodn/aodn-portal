@@ -29,12 +29,12 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         if (!this.buttonsRendered) {
             Ext.each([
                     {
-                        tooltip: 'Remove layer',
+                        tooltip: 'Remove collection',
                         cls: 'remove-layer-button',
                         clickHandler: this.removeLayer
                     },
                     {
-                        tooltip: 'Zoom to layer',
+                        tooltip: 'Zoom to collection',
                         cls: 'zoom-to-layer-button',
                         clickHandler: this.zoomToLayer
                     }

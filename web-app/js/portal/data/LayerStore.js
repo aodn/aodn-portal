@@ -70,7 +70,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 // TODO: chosen times?
             },
             failure: function(resp) {
-                Ext.MessageBox.alert('Error', "Sorry I could not load the requested layer:\n" + resp.responseText);
+                Ext.MessageBox.alert('Error', "Sorry I could not load the requested collection:\n" + resp.responseText);
             }
         });
     },
