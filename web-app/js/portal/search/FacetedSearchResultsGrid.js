@@ -73,13 +73,7 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
 
     showMask: function () {
         if (this.rendered) {
-            this.loadMask.show();
-        }
-    },
-
-    hideMask: function () {
-        if (this.rendered) {
-            this.loadMask.hide();
+            this.loadMask.showAtTop();
         }
     },
 
