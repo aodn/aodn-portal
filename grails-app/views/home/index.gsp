@@ -92,10 +92,12 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/MultiSelectCombo.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/CheckBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/ValueCheckBox.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/MapLayersCheckBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MiniMapColumn.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/ViewRecordColumn.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsColumnModel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"></script>
@@ -155,6 +157,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/service/CatalogSearcher.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFiltersPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFilterPanelFactory.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/TopTermStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"></script>
@@ -171,6 +174,11 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationState.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationPlayButton.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedButton.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedLabel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationStepSlider.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>
 <g:else>

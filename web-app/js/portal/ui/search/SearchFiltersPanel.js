@@ -9,12 +9,12 @@ Ext.namespace('Portal.ui.search');
 
 Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
-	constructor: function(config) {
+    constructor: function(config) {
 
         this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner',{'resource':'layers'}),
+            html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
             hidden: true,
-            flex: 2
+            flex: 3
         });
 
         this.titleBar = new Ext.Panel({
@@ -25,10 +25,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 defaultMargins: {top:0, right:0, bottom:4, left:0}
             },
             items: [
-                new Ext.Panel({
-                    html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
-                    flex: 2
-                }),
                 this.spinner,
                 new Ext.Panel({
                     items: [ this._buildClearAllLink() ],
@@ -39,9 +35,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             boxMaxHeight: '1' // Not sure why this is needed
         });
 
-
-
-        this.parameterFilter = new Portal.ui.TermSelectionPanel({
+        this._buildTermFilter('parameterFilter', {
             title: OpenLayers.i18n('parameterFilter'),
             hierarchical: false,
             fieldGroup: 'longParamNames',
@@ -49,90 +43,78 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
-		this.themeFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('themeFilter'),
-			hierarchical: true,
-			fieldName: 'Gcmd538',
-			searcher: config.searcher
-		});
 
-		this.methodFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('methodFilter'),
-			hierarchical: true,
-			fieldName: 'Mcp14Cmv',
-			searcher: config.searcher
-		});
+        this._buildTermFilter('themeFilter', {
+            title: OpenLayers.i18n('themeFilter'),
+            hierarchical: true,
+            fieldName: 'Gcmd538',
+            searcher: config.searcher
+        });
 
-		this.locationFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('locationFilter'),
-			hierarchical: true,
-			fieldName: 'Mcp14Gev',
-			searcher: config.searcher
-		});
+        this._buildTermFilter('methodFilter', {
+            title: OpenLayers.i18n('methodFilter'),
+            hierarchical: true,
+            fieldName: 'Mcp14Cmv',
+            searcher: config.searcher
+        });
 
-		this.organisationFilter = new Portal.ui.TermSelectionPanel({
-			title: OpenLayers.i18n('organisationFilter'),
-			hierarchical: false,
-			fieldGroup: 'organisationNames',
-			fieldName: 'orgName',
-			searcher: config.searcher
-		});
+        this._buildTermFilter('locationFilter', {
+            title: OpenLayers.i18n('locationFilter'),
+            hierarchical: true,
+            fieldName: 'Mcp14Gev',
+            searcher: config.searcher
+        });
 
-        this.dateFilter = new Portal.search.DateSelectionPanel({
+        this._buildTermFilter('organisationFilter', {
+            title: OpenLayers.i18n('organisationFilter'),
+            hierarchical: false,
+            fieldGroup: 'organisationNames',
+            fieldName: 'orgName',
+            searcher: config.searcher
+        });
+
+        this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
             searcher: config.searcher
         });
 
-        this.geoFilter = new Portal.search.GeoSelectionPanel({
+        this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
             title: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
-            searcher: config.searcher
+            searcher: config.searcher,
+            mapPanel: config.mapPanel
         });
 
-		config = Ext.apply({
-	        stateful: false,
-
-            //height: 200,
-	        autoScroll: true,
+        config = Ext.apply({
+            stateful: false,
+            autoScroll: true,
             padding: 3,
             layout: 'fit',
+            items: [this.titleBar].concat(this.filters)
+        }, config);
 
-	        items: [
-                this.titleBar,
+        Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
-                this.parameterFilter,
-                this.themeFilter,
-                this.methodFilter,
-                this.locationFilter,
-                this.organisationFilter,
-                this.dateFilter,
-                this.geoFilter
-            ]
-		}, config);
-
-		Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
-
-		this.mon(this.searcher, 'searchcomplete', this._showIntroMessage, this);
-    	this.mon(this.searcher, 'summaryOnlySearchComplete', this._showIntroMessage, this);
-		this.mon(this.searcher, 'searcherror', this._showError, this);
-        this.mon(this.searcher, 'filteradded', this._setClearAllLinkVisibility, this);
-        this.mon(this.searcher, 'filterremoved', this._setClearAllLinkVisibility, this);
+        var searcherEvents = [
+            { event: 'searchcomplete', callback: this._hideSpinnerText },
+            { event: 'summaryOnlySearchComplete', callback: this._hideSpinnerText },
+            { event: 'searcherror', callback: this._showError },
+            { event: 'filteradded', callback: this._setupFacetedSearchUpdating },
+            { event: 'filterremoved', callback: this._setClearAllLinkVisibility },
+            { event: 'polygonadded', callback: this._showClearAllForGeoFacet }
+        ];
+        this._monitor(this.searcher, searcherEvents, this);
 
         this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
-	},
+    },
 
     initComponent: function() {
         Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
-    _showIntroMessage: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchPanelTitle') );
-        this.spinner.hide();
-    },
-
     _showError: function() {
-        this._setTitleText( OpenLayers.i18n('facetedSearchUnavailableText') );
+        this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
     },
 
     _buildClearAllLink: function() {
@@ -147,33 +129,67 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         return this.clearAllLink;
     },
 
-    _setTitleText: function( newText ) {
+    _setSpinnerText: function( newText ) {
+        this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
+        this.spinner.show();
+        this.titleBar.doLayout();
+    },
 
-        var tb = this.titleBar;
-        var title = tb.items.get( 0 );
-
-        title.update( '<span class="x-panel-header-text">' + newText + '</span>' );
-        tb.doLayout();
+    _hideSpinnerText: function( ) {
+        this.spinner.hide();
     },
 
     _onClearAllClicked: function() {
 
-        this.parameterFilter.removeAnyFilters();
-        this.themeFilter.removeAnyFilters();
-        this.methodFilter.removeAnyFilters();
-        this.locationFilter.removeAnyFilters();
-        this.organisationFilter.removeAnyFilters();
-        this.dateFilter.removeAnyFilters();
-        this.geoFilter.removeAnyFilters();
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
+        Ext.each(this.filters, function(filter, index, all) {
+            filter.removeAnyFilters();
+        });
+
         this.searcher.search(true);
 
         this.fireEvent('filtersCleared');
     },
 
+    _setupFacetedSearchUpdating: function() {
+        this.fireEvent('facetedSearchUpdating');
+        this._setClearAllLinkVisibility();
+    },
+
     _setClearAllLinkVisibility: function() {
-
+        this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
         this.clearAllLink.setVisible( this.searcher.hasFilters() );
+    },
 
-        this.spinner.show();
+    _showClearAllForGeoFacet: function() {
+        this._setSpinnerText('');
+        this.clearAllLink.setVisible(true);
+        this._hideSpinnerText();
+    },
+
+    _buildTermFilter: function(name, config) {
+        return this._buildFilter(Portal.ui.TermSelectionPanel, name, config);
+    },
+
+    _buildFilter: function(constructor, name, config) {
+        if (this.filters === undefined) {
+            this.filters = [];
+        }
+
+        if (this.filterFactory === undefined) {
+            this.filterFactory = new Portal.ui.search.SearchFilterPanelFactory();
+        }
+
+        var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+        this.filters.push(termFilter);
+        this[name] = termFilter;
+        return termFilter;
+    },
+
+    _monitor: function(object, events, scope) {
+        Ext.each(events, function(event, index, all) {
+            this.mon(object, event.event, event.callback, scope);
+        }, this);
     }
+
 });

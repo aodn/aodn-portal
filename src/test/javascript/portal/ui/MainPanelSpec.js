@@ -8,26 +8,24 @@
 
 describe("Portal.ui.MainPanel", function() {
 
-    var facetsEnabled = false;
-    appConfigStore.isFacetedSearchEnabled = function() { return facetsEnabled; }
     appConfigStore.getById = function(id) {
         if (id == 'spatialsearch.url') {
             return { data: { value: "spatialsearch.aodn.org.au" }};
         }
         return "";
-    }
+    };
 
     var mockConfig = {};
     var mockSearchPanel = {};
-    var mockVisualisePanel = {
-        getMapPanel: function() {return { _closeFeatureInfoPopup: function() {}};}
-    };
+    var mockVisualisePanel = {};
+    var mockMapPanel = {};
 
     var buildMockMainPanel = function() {
-        spyOn(Ext.data.Store.prototype, "load").andCallFake(function (options) {
+        spyOn(Ext.data.Store.prototype, "load").andCallFake(function() {
             return true
         });
 
+        spyOn(Portal.ui, "MapPanel").andReturn(mockMapPanel);
         spyOn(Portal.ui, "VisualisePanel").andReturn(mockVisualisePanel);
         spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
         spyOn(Portal.ui.MainPanel.prototype, "mon");
@@ -48,13 +46,25 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     afterEach(function() {
-        Ext.MsgBus.unsubscribe('activegeonetworkrecordadded', mainPanel._onActiveGeoNetworkRecordAdded, mainPanel);
+        Ext.MsgBus.unsubscribe('viewgeonetworkrecord', mainPanel._onViewGeoNetworkRecord, mainPanel);
     });
 
     describe('initialisation', function() {
+
+        it('should init map panel', function() {
+            expect(Portal.ui.MapPanel).toHaveBeenCalled();
+            expect(mainPanel.mapPanel).toEqual(mockMapPanel);
+        });
+
         it('should init portal panel', function() {
             expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
             expect(mainPanel.visualisePanel).toEqual(mockVisualisePanel);
+        });
+
+        it('should init search panel', function() {
+            expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
+            expect(Portal.ui.search.SearchPanel.calls[0].args[0].mapPanel).toBe(mockMapPanel);
+            expect(mainPanel.searchPanel).toEqual(mockSearchPanel);
         });
     });
 
@@ -75,9 +85,9 @@ describe("Portal.ui.MainPanel", function() {
             expect(mainPanel.activeItem).toBe(TAB_INDEX_SEARCH);
         });
 
-        it('should set visualise to active item when geonetwork record is added', function() {
+        it('should set visualise to active item when geonetwork record is viewed', function() {
             mockLayout();
-            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            Ext.MsgBus.publish('viewgeonetworkrecord');
             expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
     });
@@ -101,6 +111,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     var mockLayout = function() {
+        spyOn(Portal.ui.MainPanel.prototype, "doLayout").andReturn(function() {});
         mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
         mainPanel.layout.setActiveItem.andCallFake(function() {});
     };

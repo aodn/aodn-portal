@@ -16,11 +16,11 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, cfg || {}, defaults);
 
         this.searcher = new Portal.service.CatalogSearcher({
-            proxyUrl:this.proxyUrl,
-            catalogUrl:this.catalogUrl,
-            spatialSearchUrl: this.spatialSearchUrl,
-            defaultParams:{
-                protocol:cfg.protocols
+            proxyUrl: proxyURL,
+            catalogUrl: Portal.app.config.catalogUrl,
+            spatialSearchUrl: appConfigStore.getById('spatialsearch.url').data.value,
+            defaultParams: {
+                protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
             }
         });
 
@@ -31,7 +31,8 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             region: 'west',
             split: true,
             width: 340,
-            bodyCssClass: 'p-header-space'
+            bodyCssClass: 'p-header-space',
+            mapPanel: this.mapPanel
         });
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
@@ -42,6 +43,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
+            itemId: 'searchPanel',
             layout: 'border',
             split: false,
             items: [
@@ -56,12 +58,17 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
     initComponent: function () {
         Portal.ui.search.SearchPanel.superclass.initComponent.apply(this);
 
-        this.searcher.on('searchcomplete', function(response) {
+        this.searcher.on('searchcomplete', function(response, page) {
+            this.resultsStore.startRecord = page.from - 1;
             this.resultsStore.loadData(response);
         }, this);
 
         this.filtersPanel.on('filtersCleared', function() {
             this.bodyPanel.onFiltersCleared();
+        }, this);
+
+        this.filtersPanel.on('facetedSearchUpdating', function() {
+            this.bodyPanel.resultsGrid.showMask();
         }, this);
     }
 });

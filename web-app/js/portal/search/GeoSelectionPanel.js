@@ -31,10 +31,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, cfg, defaults);
 
         this.facetMap = new Portal.search.FacetMapPanel({
-            initialBbox:Portal.app.config.initialBbox,
-            mainMap:Ext.getCmp("mainMapPanel"),
-            height:250,
-            width:250
+            initialBbox: Portal.app.config.initialBbox,
+            mainMap: cfg.mapPanel,
+            height: 250,
+            width: 250
         });
 
         var config = Ext.apply({
@@ -66,6 +66,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.searchButton, 'click', this.onSearch, this);
         this.mon(this.clearButton, 'click', this.resetFilter, this);
+        this.mon(this.facetMap, 'polygonadded', this._onPolygonAdded, this);
     },
 
     initComponent:function () {
@@ -73,7 +74,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     onSearch:function () {
-        this.removeAnyFilters();
+        this._removeFacetFilters();
         if (this.facetMap.hasCurrentFeature()) {
             this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());
         }
@@ -81,12 +82,25 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     resetFilter: function() {
-        this.facetMap.clearGeometry();
+        this._clearFacetGeometry();
         this.onSearch();
     },
 
     removeAnyFilters: function() {
-        this.searcher.removeFilters(this.GEOMETRY_FIELD);
-    }
+        this._clearFacetGeometry();
+        this._removeFacetFilters();
+        this.collapse();
+    },
 
+    _removeFacetFilters: function() {
+        this.searcher.removeFilters(this.GEOMETRY_FIELD);
+    },
+
+    _clearFacetGeometry: function() {
+        this.facetMap.clearGeometry();
+    },
+
+    _onPolygonAdded: function() {
+        this.searcher.fireEvent('polygonadded');
+    }
 });

@@ -10,7 +10,7 @@ Ext.MessageBox.alert = function () {
 
 //overwrite Ext.Ajax.request so it doesn't try to make requests.
 Ext.Ajax.request = function(options) {
-}
+};
 
 beforeEach(function() {
     this.addMatchers({
@@ -22,8 +22,8 @@ beforeEach(function() {
 
             this.message = function() {
                 return "Expected " + actualText + notText + " to be same as " + expectedText;
-            }
-            
+            };
+
             if (this.actual instanceof Array && expected instanceof Array) {
                 if (this.actual.length != expected.length) {
                     return false;
@@ -47,6 +47,6 @@ beforeEach(function() {
 
         toStartWith: function(expected) {
             return this.actual.indexOf(expected) == 0;
-        },
+        }
     });
 });

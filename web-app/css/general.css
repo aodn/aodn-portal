@@ -122,6 +122,12 @@ hr {
 .arrowDown {
     background: url("../images/arrowDown.png") no-repeat left top transparent;
 }
+.arrowUpWhite {
+    background: url("../images/arrowUpWhite.png") no-repeat left top transparent;
+}
+.arrowDownWhite {
+    background: url("../images/arrowDownWhite.png") no-repeat left top transparent;
+}
 
 
 .leftMenus {
@@ -213,11 +219,26 @@ hr {
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
 
-#animationPanel {
-    top: auto! important;
-    bottom: 0 ! important;
-    z-index: 900! important;
+/* animation buttons */
+.ffButton {
+    background: url("../images/animation/fastForward-white.png") no-repeat left top transparent;
 }
+.rewindButton {
+    background: url("../images/animation/rewind-white.png") no-repeat left top transparent;
+}
+.pauseButton {
+    background: url("../images/animation/pause-white.png") no-repeat left top transparent;
+}
+.playButton {
+    background: url("../images/animation/play-white.png") no-repeat left top transparent;
+}
+.stopButton {
+    background: url("../images/animation/stop-white.png") no-repeat left top transparent;
+}
+.downloadButton {
+    background: url("../images/animation/download-white.png") no-repeat left top transparent;
+}
+
 .spacer {
     margin: 25px 0 ;
 }
@@ -237,7 +258,6 @@ Site navigation
     position: relative;
     float: left;
     padding-left: 20px;
-    z-index: 100000;
     width: 100%;
     border: 2px  solid #6b6b6b;
     vertical-align: middle;
@@ -292,8 +312,6 @@ Site navigation
     background: -ms-linear-gradient(left,  #484848 0%,#666666 15%,#7a7a7a 100%); /* IE10+ */
     background: linear-gradient(to right,  #484848 0%,#666666 15%,#7a7a7a 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#484848', endColorstr='#7a7a7a',GradientType=1 ); /* IE6-9 */
-    -webkit-box-shadow: 5px 2px 5px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    5px 2px 5px rgba(50, 50, 50, 0.75);
     box-shadow:         5px 2px 5px rgba(50, 50, 50, 0.75);
     text-shadow: 2px 2px 10px #191919;
     border-right: 3px solid #2F2E2E;
@@ -434,8 +452,6 @@ a:hover.mainlinks {
     background: #f3f3ff;
     border: 1px solid #b2d1ff;
     color: #006dba;
-    -moz-box-shadow: 0 0 0.25em #b2d1ff;
-    -webkit-box-shadow: 0 0 0.25em #b2d1ff;
     box-shadow: 0 0 0.25em #b2d1ff;
 }
 
@@ -443,8 +459,6 @@ a:hover.mainlinks {
     background: #fff3f3;
     border: 1px solid #ffaaaa;
     color: #cc0000;
-    -moz-box-shadow: 0 0 0.25em #ff8888;
-    -webkit-box-shadow: 0 0 0.25em #ff8888;
     box-shadow: 0 0 0.25em #ff8888;
 }
 
@@ -585,9 +599,27 @@ table.featureInfo caption{
 	-ms-filter:"alpha(opacity=100)"; /* IE8 */
     filter:alpha(opacity=100); /* IE6/IE7 */
 }
-#maptools .x-panel-body {
-    border-radius: 5px;
+
+#animationPanel {
+    top: auto! important;
+    bottom: 0 ! important;
+    z-index: 900! important;
 }
+
+.animationSubPanel label,
+.animationSubPanel button {
+    /*border: 0;
+    background-color: #F4F4F4;
+    border-radius: 12px;*/
+    color: white;
+    font-weight: bold;
+
+}
+
+.animationSubPanel .x-btn-over button {
+    color: black;
+}
+
 
 .semiTransparent .x-item-disabled * {
     color:  #eee! important;
@@ -781,6 +813,10 @@ div.olControlMousePosition {
 .olControlLayerSwitcher {
 	box-shadow: inset -5px 1px 5px black;
 	border-radius: 6px 0  0  6px;
+}
+
+.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
+    background-color: #34546E !important;
 }
 .olControlOverviewMapElement   {
 	 background-color: #34546E! important;
@@ -1026,6 +1062,10 @@ div.allwhite {
     font-weight: bold;
     /*  background-color: #fffacd;*/
     font-style: italic;
+}
+
+#mainHomePanel {
+    margin-top: 20px;
 }
 
 .faceted-search-clear-all div {

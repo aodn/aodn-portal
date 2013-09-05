@@ -32,19 +32,19 @@ p, td{
 h1 {
 	color: #1b7399;
     font-size: 24px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h2 {
 	color: #1b7399;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h3 {
 	color: #1b7399;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 h4 {
@@ -121,40 +121,6 @@ a.userlink {
     margin-right: 15px! important;
 }
 
-
-
-
-#downloadCartStatus {
-    background: url("../images/mapshadow.png") repeat-x scroll left top #024880;
-    border-radius: 10px 3px 10px 3px;
-    color: white;
-    float: right;
-    padding: 4px 10px 6px;
-    position: absolute;
-    right: 25px;
-    top: 45px;
-}
-
-#downloadCartStatus div {
-    padding-top: 3px;
-}
-
-#downloadCartStatus a {
-    color: white;
-    font-size: 11px;
-    margin: 0 3px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#downloadCartStatus a:hover {
-    text-decoration: underline;
-}
-
-#downloadCartStatus {
-    text-align: right;
-}
-
 ul.x-tab-strip li {
     background-color: #EFEFEF;
     padding: 2px 1px;
@@ -162,5 +128,15 @@ ul.x-tab-strip li {
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
+    background-color: #4D7282 !important;
+}
+.olControlOverviewMapElement   {
+    background-color: #4D7282! important;
+    border-radius: 6px 0  0  0 ;
+    opacity: 0.85;
+    -ms-filter:"alpha(opacity=85)"; /* IE8 */
+    filter:alpha(opacity=85); /* IE6/IE7 */
+}
+.semiTransparent {
     background-color: #4D7282 !important;
 }

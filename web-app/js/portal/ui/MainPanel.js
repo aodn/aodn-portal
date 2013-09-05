@@ -13,12 +13,14 @@ TAB_INDEX_DOWNLOAD = 2;
 
 Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
 
         Ext.apply(this, cfg);
 
-        this.searchTabPanel = this._initSearchTabPanel(cfg);
-        this.visualisePanel = new Portal.ui.VisualisePanel({appConfig:Portal.app.config});
+        this.mapPanel = new Portal.ui.MapPanel();
+
+        this.searchPanel = new Portal.ui.search.SearchPanel({ mapPanel: this.mapPanel });
+        this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
         this.downloadPanel = new Portal.cart.DownloadPanel();
 
         var config = Ext.apply({
@@ -30,7 +32,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             unstyled:true,
             layout: 'card',
             items:[
-                this.searchTabPanel,
+                this.searchPanel,
                 this.visualisePanel,
                 this.downloadPanel
             ]
@@ -38,10 +40,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe('activegeonetworkrecordadded', this._onActiveGeoNetworkRecordAdded, this);
+        Ext.MsgBus.subscribe('viewgeonetworkrecord', this._onViewGeoNetworkRecord, this);
     },
 
-    _onActiveGeoNetworkRecordAdded: function() {
+    _onViewGeoNetworkRecord: function() {
         this.setActiveTab(TAB_INDEX_VISUALISE);
     },
 
@@ -50,32 +52,26 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this._highlightActiveTab();
     },
 
-    _initSearchTabPanel: function() {
-
-        return new Portal.ui.search.SearchPanel({
-            itemId: 'searchPanel',
-            proxyUrl: proxyURL,
-            catalogUrl: Portal.app.config.catalogUrl,
-            spatialSearchUrl: this.appConfigStore.getById('spatialsearch.url').data.value,
-            protocols: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
-        });
-    },
-
-    getMapPanel:function () {
-        return this.visualisePanel.getMapPanel();
-    },
-
     getActiveTab: function() {
         return this.layout.activeItem;
     },
 
-    setActiveTab: function(index) {
+    setActiveTab: function(tabIndex) {
 
-        this.layout.setActiveItem(index);
+        this.layout.setActiveItem(tabIndex);
 
-        if (!this.isMapVisible()) {
-            this.visualisePanel.getMapPanel()._closeFeatureInfoPopup();
-        }
+        //
+        // Nasty hack for #27 - without this, the details panel on the right has no content
+        // and it partially obscures the MapPanel.
+        //
+        // It's probably worth having a look at how the RightDetailsPanel/DetailsPanel/DetailsTabPanel
+        // etc etc etc interact in terms of layout when selected layer changes - and perhaps this forced
+        // layout can be removed.
+        //
+        // DF: In addition, if you remove this, you'll also get problems such
+        // as #343. So please if you do decide to remove it - make sure things
+        // don't break YET AGAIN
+        this.doLayout(false, true /* force update */);
 
         this._highlightActiveTab();
     },
@@ -87,9 +83,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         //TODO: componentise this
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
         jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
-    },
-
-    isMapVisible:function () {
-        return this.getActiveTab() === this.visualisePanel;
     }
 });

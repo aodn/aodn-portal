@@ -11,7 +11,6 @@ p, h1, h2, h3 {
 }
 
 .x-menu-floating {
-    -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
@@ -40,9 +39,31 @@ p, h1, h2, h3 {
     font: inherit;
 }
 
+.ext-el-mask-msg {
+    background: none;
+    background-color: #fafafa;
+    border-radius: 4px;
+    margin : 20px;
+    box-shadow: 10px 6px 33px #b8b8b8;
+}
+.ext-el-mask-msg div {
+    background-color: inherit;
+    border: none;
+    margin: 30px;
+    font-size: 14px;
+}
 
 .ext-el-mask, .x4-mask{
-    background-color: #333333;
+    background-color: #CCCCCC;
+    margin: 2px;
+    border-radius: 4px;
+
+}
+
+.x-form-text,
+textarea.x-form-field,
+.x-form-field-wrap .x-form-trigger  {
+    box-shadow: none;
 }
 /* getfeatureinfo popup */
 .gx-popup .x-window-body {
@@ -63,12 +84,7 @@ p, h1, h2, h3 {
    
 
 .x-panel-body, .x-tab-panel-body, ul.x-tab-strip-top, .x-tab-panel-header {
-    -moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border: 0 ;
+    border: none ;
     background-color: inherit;
 }
 

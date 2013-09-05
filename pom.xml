@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>au.org.emii</groupId>
-	<artifactId>Portal2</artifactId>
+	<artifactId>aodn-portal</artifactId>
 	<packaging>war</packaging>
 	<version>3.0.0-SNAPSHOT</version>
 
-	<name>Portal2</name>
-	<description>Portal v2</description>
+	<name>aodn-portal</name>
+	<description>Portal v3</description>
 	<url>http://www.emii.org.au</url>
 
 	<properties>
@@ -406,7 +406,6 @@
 					<sourceExcludes>
 						<exclude>portal/portal.js</exclude>
 						<exclude>portal/config/grid2treedrag.js</exclude>
-						<exclude>portal/common/DownloadCartStatus.js</exclude>
 					</sourceExcludes>
                     <specIncludes>
                         <include>spec_helper.js</include>

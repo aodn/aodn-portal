@@ -7,7 +7,7 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    maskText: "Searching .... ",
+    maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
     loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
 
@@ -149,7 +149,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
     facetedSearchClearAllLink: 'Clear all',
-    facetedSearchUnavailableText: 'Search is currently unavailable.',
+    facetedSearchUnavailable: 'Search is currently unavailable.',
+    facetedSearchResetting: 'Resetting search',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 

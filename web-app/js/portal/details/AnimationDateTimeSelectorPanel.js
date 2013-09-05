@@ -107,6 +107,15 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         this.endTimeCombo.enable();
     },
 
+    updateForState: function(state) {
+        if (state.isPlaying()) {
+            this.disable();
+        }
+        else if (state.isPaused()) {
+            this.enable();
+        }
+    },
+
     _onStartDateSelected: function(startDatePicker, jsDate) {
         this._updateStartTimeCombo(moment(jsDate));
     },
