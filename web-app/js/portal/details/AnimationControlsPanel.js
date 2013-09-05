@@ -9,13 +9,6 @@ Ext.namespace('Portal.details');
 
 Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
-    state : {
-        LOADING : "LOADING",
-        PLAYING : "PLAYING",
-        REMOVED : "REMOVED",
-        PAUSED : "PAUSED"
-    },
-
     constructor : function(cfg) {
         var config = Ext.apply({
             layout : 'form',
@@ -38,7 +31,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent : function() {
-        var parentAnimationControl = this;
+
         this.cls = 'animationSubPanel';
 
         this.warn = new Ext.form.Label({
@@ -47,13 +40,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             text : OpenLayers.i18n('warn_label')
         });
 
-        this.speedUp = new Ext.Button({
+        this.speedUpButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'ffButton',
             plain : true,
             padding : 5,
             listeners : {
                 scope : this,
-                'click' : function(button, event) {
+                'click' : function() {
                     this._startPlaying();
                     this.timeControl.speedUp();
                 }
@@ -61,12 +54,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('speedUp')
         });
 
-        this.slowDown = new Ext.Button({
+        this.slowDownButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'rewindButton',
             padding : 5,
             listeners : {
                 scope : this,
-                'click' : function(button, event) {
+                'click' : function() {
                     this._startPlaying();
                     this.timeControl.slowDown();
                 }
@@ -78,19 +71,19 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             html : "<h4>Select Time Period</h4>"
         });
 
-        this.stepSlider = new Ext.slider.SingleSlider({
+        this.stepSlider = new Portal.visualise.animations.AnimationStepSlider({
             ref : 'stepSlider',
             width : 115,
             flex : 3,
             listeners : {
                 scope : this,
-                drag : function(slider, ev) {
+                drag : function(slider) {
                     this.timeControl.setStep(slider.getValue());
                 }
             }
         });
 
-        this.playButton = new Ext.Button({
+        this.playButton = new Portal.visualise.animations.AnimationPlayButton({
             padding : 5,
             plain : true,
             disabled : false, // readonly
@@ -102,15 +95,13 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('play')
         });
 
-        this.currentState = this.state.REMOVED;
-
         this.stepLabel = new Ext.form.Label({
             flex : 1,
             width : 115,
             style : 'padding-top: 5; padding-bottom: 5'
         });
 
-        this.speedLabel = new Ext.form.Label({
+        this.speedLabel = new Portal.visualise.animations.AnimationSpeedLabel({
             flex : 1,
             style : 'padding: 5',
             text: '1x'
@@ -119,7 +110,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel = new Ext.Panel({
             layout : 'hbox',
             plain : true,
-            items : [this.slowDown, this.playButton, this.speedUp],
+            items : [this.slowDownButton, this.playButton, this.speedUpButton],
             height : 40,
             flex : 2
         });
@@ -163,11 +154,18 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             this.getAnimationButton
         ];
 
-        this.speed = this.BASE_SPEED;
         this.mapPanel = undefined;
 
-        this.pausedTime = "";
         this.timerId = -1;
+
+        this.state = new Portal.visualise.animations.AnimationState({
+            observers: [
+                { onStateChanged: this.playButton.updateForState, scope: this.playButton },
+                { onStateChanged: this.stepSlider.updateForState, scope: this.stepSlider },
+                { onStateChanged: this.speedLabel.updateForState, scope: this.speedLabel },
+                { onStateChanged: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
+            ]
+        });
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
     },
@@ -177,7 +175,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         // TODO: ok, there's now a dependency on the OpenLayers Map (instead of MapPanel),
         // but hopefully this will vanish when animation is refactored.
         this.map = theMap;
-        this.map.events.register('moveend', this, this._onMove);
         this.map.events.register('timechanged', this, this._onTimeChanged);
     },
 
@@ -206,7 +203,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     isPlaying: function() {
-        return (this.currentState == this.state.PLAYING);
+        return this.state.isPlaying();
     },
 
     _onSelectedLayerPrecacheStart: function() {
@@ -219,7 +216,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onSelectedLayerPrecacheProgress: function(evt) {
-        this._setStepLabelText('Loading...' + Math.round(evt.progress * 100) + '%');
+        this._setStepLabelText('Loading...' + Math.floor(evt.progress * 100) + '%');
     },
 
     _onSelectedLayerPrecacheEnd: function() {
@@ -238,29 +235,29 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _onSpeedChanged: function(timeControl) {
+    _onSpeedChanged: function() {
         this._updateSpeedLabel();
         this._updateSpeedUpSlowDownButtons();
     },
 
-    _onTemporalExtentChanged: function(evt) {
+    _onTemporalExtentChanged: function() {
         this.stepSlider.setMinValue(0);
         this.stepSlider.setMaxValue(this.timeControl.getExtent().length - 1);
     },
 
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
-            this.speedUp.disable();
+            this.speedUpButton.disable();
         }
         else {
-            this.speedUp.enable();
+            this.speedUpButton.enable();
         }
 
         if (this.timeControl.isAtSlowestSpeed()) {
-            this.slowDown.disable();
+            this.slowDownButton.disable();
         }
         else {
-            this.slowDown.enable();
+            this.slowDownButton.enable();
         }
     },
 
@@ -268,7 +265,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.speedLabel.setText(this.timeControl.getRelativeSpeed() + 'x');
     },
 
-    _togglePlay : function(button, event) {
+    _togglePlay : function() {
         if (this.isPlaying()) {
             this._stopPlaying();
         } else {
@@ -278,11 +275,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _stopPlaying : function() {
         this.timeControl.stop();
-        this._updateButtons(this.state.PAUSED);
+        this.state.setPaused();
     },
 
     _startPlaying : function() {
-        this._updateButtons(this.state.PLAYING);
+        this.state.setPlaying();
         this.timeControl.play();
     },
 
@@ -291,48 +288,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this._setStepLabelTextToDateTime(dateTime);
     },
 
-    _updateButtons : function(state) {
-        this.currentState = state;
-
-        if (state == this.state.LOADING) {
-            // can't change the time when it's loading
-            this.playButton.setIconClass('pauseButton');
-            this.stepSlider.disable();
-            this.speedUp.disable();
-            this.slowDown.disable();
-            this.speedLabel.setVisible(false);
-        } else if (state == this.state.PLAYING) {
-            // can't change the time when it's playing
-            this.playButton.setIconClass('pauseButton');
-            this.stepSlider.enable();
-            this.speedLabel.setVisible(true);
-            this.dateTimeSelectorPanel.disable();
-        } else if (state == this.state.REMOVED) {
-            this.playButton.setIconClass('playButton');
-            this.playButton.enable();
-            this.stepSlider.setValue(0);
-            // nothing's playing, so stop and pause doesn't make sense
-
-            this.speedLabel.setVisible(false);
-            this.dateTimeSelectorPanel.enable();
-        } else if (state == this.state.PAUSED) {
-            this.playButton.setIconClass('playButton');
-            this.playButton.enable();
-            // nothing's playing, so stop and pause doesn't make sense
-
-            this.speedLabel.setVisible(false);
-            this.dateTimeSelectorPanel.enable();
-        }
-    },
-
     isAnimating : function() {
         // TODO: this is most likely dodgy.
         // Need to check when and how this function is called.
         return false;
-    },
-
-    loadFromSavedMap : function(layer, stamps) {
-        this.setSelectedLayer(layer);
     },
 
     _setStepLabelTextToDateTime: function(dateTime) {
