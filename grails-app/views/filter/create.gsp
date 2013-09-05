@@ -49,21 +49,21 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="label"><g:message code="filter.label.label" default="Label Text" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
+                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="type"><g:message code="filter.type.label" default="Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
 
                                  <g:select name="type" from="${FilterType?.values()}" optionKey="key" />
 								</td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="label"><g:message code="filter.label.label" default="Label" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-                                    <g:textField name="label" value="${filterInstance?.label}" />
-                                </td>
                             </tr>
 
                              <tr class="prop">
