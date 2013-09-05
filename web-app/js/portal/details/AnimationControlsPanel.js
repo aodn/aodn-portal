@@ -40,7 +40,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             text : OpenLayers.i18n('warn_label')
         });
 
-        this.speedUp = new Portal.visualise.animations.AnimationSpeedButton({
+        this.speedUpButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'ffButton',
             plain : true,
             padding : 5,
@@ -54,7 +54,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             tooltip : OpenLayers.i18n('speedUp')
         });
 
-        this.slowDown = new Portal.visualise.animations.AnimationSpeedButton({
+        this.slowDownButton = new Portal.visualise.animations.AnimationSpeedButton({
             iconCls : 'rewindButton',
             padding : 5,
             listeners : {
@@ -110,7 +110,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel = new Ext.Panel({
             layout : 'hbox',
             plain : true,
-            items : [this.slowDown, this.playButton, this.speedUp],
+            items : [this.slowDownButton, this.playButton, this.speedUpButton],
             height : 40,
             flex : 2
         });
@@ -162,8 +162,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             observers: [
                 { onStateChanged: this.playButton.updateForState, scope: this.playButton },
                 { onStateChanged: this.stepSlider.updateForState, scope: this.stepSlider },
-                { onStateChanged: this.speedUp.updateForState, scope: this.speedUp },
-                { onStateChanged: this.slowDown.updateForState, scope: this.slowDown },
+                { onStateChanged: this.speedUpButton.updateForState, scope: this.speedUpButton },
+                { onStateChanged: this.slowDownButton.updateForState, scope: this.slowDownButton },
                 { onStateChanged: this.speedLabel.updateForState, scope: this.speedLabel },
                 { onStateChanged: this.dateTimeSelectorPanel.updateForState, scope: this.dateTimeSelectorPanel }
             ]
@@ -250,17 +250,17 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
-            this.speedUp.disable();
+            this.speedUpButton.disable();
         }
         else {
-            this.speedUp.enable();
+            this.speedUpButton.enable();
         }
 
         if (this.timeControl.isAtSlowestSpeed()) {
-            this.slowDown.disable();
+            this.slowDownButton.disable();
         }
         else {
-            this.slowDown.enable();
+            this.slowDownButton.enable();
         }
     },
 

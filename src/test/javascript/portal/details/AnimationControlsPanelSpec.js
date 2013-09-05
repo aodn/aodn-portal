@@ -209,13 +209,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
 
             it('on speed up, time.speedUp is called', function() {
                 spyOn(timeControl, 'speedUp');
-                animationControlsPanel.speedUp.fireEvent('click');
+                animationControlsPanel.speedUpButton.fireEvent('click');
                 expect(timeControl.speedUp).toHaveBeenCalled();
             });
 
             it('on slow down, time.slowDown is called', function() {
                 spyOn(timeControl, 'slowDown');
-                animationControlsPanel.slowDown.fireEvent('click');
+                animationControlsPanel.slowDownButton.fireEvent('click');
                 expect(timeControl.slowDown).toHaveBeenCalled();
             });
 
@@ -257,12 +257,12 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
 
             it('on speed up, _onSpeedChanged called', function() {
-                localAnimationControlsPanel.speedUp.fireEvent('click');
+                localAnimationControlsPanel.speedUpButton.fireEvent('click');
                 expect(localAnimationControlsPanel._onSpeedChanged).toHaveBeenCalled();
             });
 
             it('on slow down, _onSpeedChanged called', function() {
-                localAnimationControlsPanel.slowDown.fireEvent('click');
+                localAnimationControlsPanel.slowDownButton.fireEvent('click');
                 expect(localAnimationControlsPanel._onSpeedChanged).toHaveBeenCalled();
             });
 
@@ -304,39 +304,39 @@ describe("Portal.details.AnimationControlsPanel", function() {
             });
 
             it('speed label on speed up', function() {
-                animationControlsPanel.speedUp.fireEvent('click');
+                animationControlsPanel.speedUpButton.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('2x');
-                animationControlsPanel.speedUp.fireEvent('click');
+                animationControlsPanel.speedUpButton.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('4x');
             });
 
             it('speed up button disabled', function() {
                 animationControlsPanel.timeControl.relativeSpeed = 16;
-                expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
+                expect(animationControlsPanel.speedUpButton.disabled).toBeFalsy();
 
-                animationControlsPanel.speedUp.fireEvent('click'); // 32
-                expect(animationControlsPanel.speedUp.disabled).toBeTruthy();
+                animationControlsPanel.speedUpButton.fireEvent('click'); // 32
+                expect(animationControlsPanel.speedUpButton.disabled).toBeTruthy();
 
-                animationControlsPanel.slowDown.fireEvent('click'); // 16
-                expect(animationControlsPanel.speedUp.disabled).toBeFalsy();
+                animationControlsPanel.slowDownButton.fireEvent('click'); // 16
+                expect(animationControlsPanel.speedUpButton.disabled).toBeFalsy();
             });
 
             it('slow down label on slow down', function() {
-                animationControlsPanel.slowDown.fireEvent('click');
+                animationControlsPanel.slowDownButton.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('0.5x');
-                animationControlsPanel.slowDown.fireEvent('click');
+                animationControlsPanel.slowDownButton.fireEvent('click');
                 expect(animationControlsPanel.speedLabel.text).toBe('0.25x');
             });
 
             it('slow down button disabled', function() {
                 animationControlsPanel.timeControl.relativeSpeed = 1/16;
-                expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
+                expect(animationControlsPanel.slowDownButton.disabled).toBeFalsy();
 
-                animationControlsPanel.slowDown.fireEvent('click'); // 1/32
-                expect(animationControlsPanel.slowDown.disabled).toBeTruthy();
+                animationControlsPanel.slowDownButton.fireEvent('click'); // 1/32
+                expect(animationControlsPanel.slowDownButton.disabled).toBeTruthy();
 
-                animationControlsPanel.speedUp.fireEvent('click'); // 1/16
-                expect(animationControlsPanel.slowDown.disabled).toBeFalsy();
+                animationControlsPanel.speedUpButton.fireEvent('click'); // 1/16
+                expect(animationControlsPanel.slowDownButton.disabled).toBeFalsy();
             });
 
             it('step slider updated on temporal extent changed event', function() {
