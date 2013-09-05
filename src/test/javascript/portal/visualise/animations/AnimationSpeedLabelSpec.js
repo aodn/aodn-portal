@@ -22,18 +22,6 @@ describe("Portal.visualise.animations.AnimationSpeedLabel", function() {
             expect(speedLabel.setVisible).toHaveBeenCalledWith(true);
         });
 
-        it('is not visible when the animation is removed', function() {
-            spyOn(speedLabel, 'setVisible');
-            speedLabel.updateForState(state.setRemoved());
-            expect(speedLabel.setVisible).toHaveBeenCalledWith(false);
-        });
-
-        it('is not visible when the animation is loading', function() {
-            spyOn(speedLabel, 'setVisible');
-            speedLabel.updateForState(state.setLoading());
-            expect(speedLabel.setVisible).toHaveBeenCalledWith(false);
-        });
-
         it('is not visible when the animation is paused', function() {
             spyOn(speedLabel, 'setVisible');
             speedLabel.updateForState(state.setPaused());

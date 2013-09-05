@@ -111,7 +111,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         if (state.isPlaying()) {
             this.disable();
         }
-        else if (state.isRemoved() || state.isPaused()) {
+        else if (state.isPaused()) {
             this.enable();
         }
     },

@@ -14,16 +14,10 @@ describe("Portal.visualise.animations.AnimationPlayButton", function() {
     });
 
     describe('update for state', function() {
-        it('is enabled when animation is removed', function() {
-            spyOn(playButton, 'enable');
-            playButton.updateForState(state.setRemoved());
-            expect(playButton.enable).toHaveBeenCalled();
-        });
 
-        it('is enabled when animation is paused', function() {
+         it('is enabled when animation is paused', function() {
             spyOn(playButton, 'enable');
             playButton.updateForState(state.setPaused());
-            expect(playButton.enable).toHaveBeenCalled();
         });
     });
 });
