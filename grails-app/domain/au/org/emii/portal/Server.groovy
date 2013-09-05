@@ -37,7 +37,7 @@ class Server {
     static hasMany = [operations: Operation, owners: User]
 
     static mapping = {
-        sort "shortAcron"
+        sort "name"
 
         operations cascade: 'all-delete-orphan'
     }
