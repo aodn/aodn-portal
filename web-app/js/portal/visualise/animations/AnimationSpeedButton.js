@@ -4,11 +4,5 @@ Portal.visualise.animations.AnimationSpeedButton = Ext.extend(Ext.Button, {
 
     constructor: function(config) {
         Portal.visualise.animations.AnimationSpeedButton.superclass.constructor.call(this, config);
-    },
-
-    updateForState: function(state) {
-        if (state.isLoading()) {
-            this.disable();
-        }
     }
 });
