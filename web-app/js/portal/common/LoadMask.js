@@ -8,36 +8,19 @@
 
 Ext.namespace('Portal.common');
 
-// Override Ext LoadMask to provide a LoadMask that doesn't mask (grey out)
-// the element being masked - just overlay a message
-
 Portal.common.LoadMask = Ext.extend(Ext.LoadMask, {
 
-    onLoad: function(){
-        var dom = this.el.dom,
-            maskMsg = Ext.Element.data(dom, 'maskMsg');
-        if (maskMsg) {
-            maskMsg.remove();
-            Ext.Element.data(dom, 'maskMsg', undefined);
-        }
-    },
 
-    onBeforeLoad: function(){
-        var me = this,
-            dom = me.el.dom,
-            dh = Ext.DomHelper;
-        var mm = dh.append(dom, {cls: 'ext-el-mask-msg', cn: {tag: 'div'}}, true);
-        Ext.Element.data(dom, 'maskMsg', mm);
-        mm.dom.className = 'ext-el-mask-msg ' + me.msgCls;
-        mm.dom.firstChild.innerHTML = me.msg;
-        mm.setDisplayed(true);
-        mm.center(me.el);
+    showAtTop: function(){
+
+        this.show();
 
         if (this.setTopPixels) {
-            mm.setTop(this.setTopPixels);
+            var msg = Ext.get(this.el.dom).down('.ext-el-mask-msg');
+            if (msg.getBox().y > (this.setTopPixels * 4)) {
+                msg.setTop(this.setTopPixels);
+            }
         }
-
     }
-
 
 });
