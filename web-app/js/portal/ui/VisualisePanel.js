@@ -22,6 +22,11 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 			stateful: false
 		});
 
+        this.animationWindow = new Portal.ui.AnimationWindow({
+            map: this.mapPanel.map,  // TODO: demeter violation
+            timeControl: this.mapPanel.mapOptions.timeControl  // TODO: demeter violation
+        });
+
         var config = Ext.apply({
             layout: 'border',
             id: 'visualisePanel',
@@ -29,16 +34,31 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             items: [
                 this.mapPanel,
                 this.rightDetailsPanel
-            ]
+            ],
+            listeners: {
+                render: function() {
+                    this.animationWindow.render(this.getEl());
+                }
+            }
         }, cfg);
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
 
         this.on('beforehide', function() { this.onBeforeHide() }, this);
+        this.on('afterlayout', this._positionAnimationWindowAtBottom, this);
+        this.on('show', this._positionAnimationWindowAtBottom, this);
+    },
+
+    _onAfterLayout: function() {
+        this._positionAnimationWindowAtBottom();
+    },
+
+    _positionAnimationWindowAtBottom: function() {
+        this.animationWindow.setPosition(0);
+        this.animationWindow.setWidth(this.mapPanel.getWidth());
     },
 
     onBeforeHide: function() {
-
         this.mapPanel.beforeParentHide();
     }
 });

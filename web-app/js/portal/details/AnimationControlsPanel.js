@@ -11,10 +11,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
         var config = Ext.apply({
-            layout : 'form',
-            stateful : false,
-            bodyStyle : 'padding:6px; margin:2px',
-            width : '100%'
+            layout: 'form',
+            stateful: false,
+            width: '400px',
+            padding: '2px 6px 0px 6px',
+            margins: '2px'
         }, cfg);
 
         Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
@@ -101,7 +102,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             style : 'padding-top: 5; padding-bottom: 5'
         });
 
-        this.speedLabel = new Portal.visualise.animations.AnimationSpeedLabel({
+        this.speedLabel = new Ext.form.Label({
             flex : 1,
             style : 'padding: 5',
             text: '1x'
@@ -140,13 +141,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         this.items = [
             {
-                xtype : 'container',
-                defaultMargins : "15 5 20 5",
-                layout : {
-                    type : 'hbox',
-                    pack : 'start'
-
-                },
+                xtype : 'panel',
+                layout : 'hbox',
                 items : [this.buttonsPanel, this.stepSlider,
                          this.speedLabel, this.stepLabel]
             },
@@ -168,6 +164,16 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
+    },
+
+    contract: function() {
+        this.dateTimeSelectorPanel.hide();
+        this.getAnimationButton.hide();
+    },
+
+    expand: function() {
+        this.dateTimeSelectorPanel.show();
+        this.getAnimationButton.show();
     },
 
     setMap : function(theMap) {

@@ -71,7 +71,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         // DF: In addition, if you remove this, you'll also get problems such
         // as #343. So please if you do decide to remove it - make sure things
         // don't break YET AGAIN
-        this.doLayout(false, true /* force update */);
+//        this.doLayout(false, true /* force update */);
 
         this._highlightActiveTab();
     },

@@ -67,9 +67,9 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         // This is included here, as it is essentially just another control for the map, although
         // not an actual OpenLayers.Control.
         this.mapPanel = mapPanel;
-        this.animationPanel = new Portal.ui.AnimationPanel({
-            timeControl: this.timeControl
-        });
+        // this.animationPanel = new Portal.ui.AnimationPanel({
+        //     timeControl: this.timeControl
+        // });
     },
 
     afterRender: function(mapPanel) {
@@ -97,8 +97,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
         var map = new OpenLayers.TemporalMap(this);
 
-        this.mapPanel.add(this.animationPanel);
-        this.animationPanel.setMap(map);
+        // this.mapPanel.add(this.animationPanel);
+        // this.animationPanel.setMap(map);
 
         return map;
     }

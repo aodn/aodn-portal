@@ -642,29 +642,21 @@ table.featureInfo caption {
     background: url('../images/mini-down.png') center 2px no-repeat;
 }
 
-#mapToolbarExpanderBar,
-#controlButton,
-#animationPanel {
-    opacity: 1.0;
-    -ms-filter: "alpha(opacity=100)"; /* IE8 */
-    filter: alpha(opacity=100); /* IE6/IE7 */
-    top: auto ! important;
-    bottom: 0 ! important;
-    z-index: 900 ! important;
-}
-
 #maptools .x-panel-body {
     border-radius: 5px;
 }
 
+.animationWindow {
+    bottom: 0 ! important;
+    top: auto ! important;
+    left: 0;
+    z-index: 900! important;
+}
+
 .animationSubPanel label,
 .animationSubPanel button {
-    /*border: 0;
-    background-color: #F4F4F4;
-    border-radius: 12px;*/
     color: white;
     font-weight: bold;
-
 }
 
 .animationSubPanel .x-btn-over button {

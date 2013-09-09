@@ -24,11 +24,7 @@ describe("Portal.ui.openlayers.MapOptions", function() {
         map = mapOptions.newMap();
     });
 
-    it('animation controls panel configured with time control', function() {
-        expect(mapOptions.animationPanel.animationControlsPanel.timeControl).toBeInstanceOf(OpenLayers.Control.Time);
-    });
-    
-    describe('newMap()', function() {
+    describe('new map', function() {
 
         it('construct temporal map', function() {
             expect(map.CLASS_NAME).toBe('OpenLayers.TemporalMap');
@@ -37,7 +33,7 @@ describe("Portal.ui.openlayers.MapOptions", function() {
         it('time control added to map', function() {
             expect(map.getControlsByClass("OpenLayers.Control.Time")[0]).toBeTruthy();
         });
-        
+
         it('Should return map with bounds set as 90 and -90 for latitude', function() {
 
             expect(map.restrictedExtent).not.toBe(null);
