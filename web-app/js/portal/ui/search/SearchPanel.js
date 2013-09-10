@@ -36,7 +36,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
             id: 'searchBodypanel',
-            margins: {left : 10, top : 32, right : 0, bottom : 0},
+            margins: {left : 10, top : 37, right : 0, bottom : 0},
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,

@@ -80,9 +80,6 @@ h6 {
     color: #1b7399;
 }
 
-.x-layout-split {
-    background-color: #f3f3f3;
-}
 .x-toolbar {
     border: none;
     background-color: #fAFAFA;
@@ -143,3 +140,31 @@ ul.x-tab-strip li {
 .semiTransparent {
     background-color: #4D7282 !important;
 }
+
+.x-tab-strip span.x-tab-strip-text, .x-btn-text {
+    color: #666;
+}
+
+ul.x-tab-strip-top {
+    border: none;
+}
+
+.x-btn {
+    padding: 0px 6px;
+}
+
+.x-btn,
+.faceted-search-clear-all div.x-hyperlink {
+    background-color: #E6E9EB;
+    border-radius: 3px;
+    margin-right: 3px;
+}
+
+.animationSubPanel .x-btn {
+    background-color: inherit;
+}
+
+.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
+    background: none;
+}
+
