@@ -21,39 +21,12 @@ describe("Portal.cart.DownloadToolbar", function() {
         Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE = undefined;
     });
 
-    describe('download all button', function() {
-
-        var downloadAllButton;
-
-        beforeEach(function() {
-            downloadAllButton = toolbar.items.get(0);
-        });
-
-        it('exists', function() {
-            expect(downloadAllButton).toBeTruthy();
-        });
-
-        it('is of type button', function() {
-            expect(downloadAllButton).toBeInstanceOf(Ext.Button);
-        });
-
-        it('has correct text', function() {
-            expect(downloadAllButton.text).toBe(OpenLayers.i18n('okdownload'));
-        });
-
-        it('click opens confirmation window', function() {
-            spyOn(Portal.cart.DownloadCartConfirmationWindow.prototype, 'show');
-            downloadAllButton.fireEvent('click');
-            expect(Portal.cart.DownloadCartConfirmationWindow.prototype.show).toHaveBeenCalled();
-        });
-    });
-
     describe('clear cart button', function() {
 
         var clearCartButton;
 
         beforeEach(function() {
-            clearCartButton = toolbar.items.get(1);
+            clearCartButton = toolbar.items.get(0);
         });
 
         it('exists', function() {
@@ -78,24 +51,21 @@ describe("Portal.cart.DownloadToolbar", function() {
     describe('button states', function() {
 
         var clearCartButton;
-        var downloadAllButton;
 
         beforeEach(function() {
-            downloadAllButton = toolbar.items.get(0);
-            clearCartButton = toolbar.items.get(1);
+            clearCartButton = toolbar.items.get(0);
         });
 
-        var expectButtonEnabledStates = function(downloadButtonEnabled, clearButtonEnabled) {
-            expect(downloadAllButton.disabled).not.toBe(downloadButtonEnabled);
+        var expectButtonEnabledStates = function(clearButtonEnabled) {
             expect(clearCartButton.disabled).not.toBe(clearButtonEnabled);
         };
 
         var expectButtonsEnabled = function() {
-            return expectButtonEnabledStates(true, true);
+            return expectButtonEnabledStates(true);
         };
 
         var expectButtonsDisabled = function() {
-            return expectButtonEnabledStates(false, false);
+            return expectButtonEnabledStates(false);
         };
 
         var initStoreWithRecord = function(record) {
@@ -126,7 +96,6 @@ describe("Portal.cart.DownloadToolbar", function() {
 
             // Create a new toolbar (so it gets a store with one record).
             toolbar = new Portal.cart.DownloadToolbar();
-            downloadAllButton = toolbar.items.get(0);
 
             expectButtonsEnabled();
         });
