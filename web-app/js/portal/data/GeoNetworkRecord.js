@@ -51,6 +51,24 @@ Portal.data.GeoNetworkRecord.DownloadableLinksField = {
     }
 };
 
+Portal.data.GeoNetworkRecord.PointOfTruthLinkField = {
+    name: 'pointOfTruthLink',
+    convert: function(v, record) {
+
+        var allLinks = convertXmlToLinks(v, record);
+        var pointOfTruthLink = undefined;
+
+        Ext.each(allLinks, function(linkToCheck) {
+            if (linkToCheck.protocol == 'WWW:LINK-1.0-http--metadata-URL') {
+
+                pointOfTruthLink = linkToCheck;
+            }
+        });
+
+        return pointOfTruthLink;
+    }
+};
+
 Portal.data.GeoNetworkRecord.BboxField = {
     name: 'bbox',
     convert: function(v, record) {
@@ -67,12 +85,34 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
     var f = Ext.data.Record.create(o);
 
+    Portal.data.GeoNetworkRecord._addGetPointOfTruthUrl(f.prototype);
     Portal.data.GeoNetworkRecord._addGetFirstWmsLink(f.prototype);
     Portal.data.GeoNetworkRecord._addHasWmsLink(f.prototype);
     Portal.data.GeoNetworkRecord._addConvertData(f.prototype);
     Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer(f.prototype);
 
     return f;
+};
+
+Portal.data.GeoNetworkRecord._addGetPointOfTruthUrl = function(prototype) {
+
+    prototype.getPointOfTruthUrl = function() {
+        var links = this.get('links');
+
+        if (!links) {
+            return undefined;
+        }
+
+        var linkStore = new Portal.search.data.LinkStore({
+            data: {
+                links: links
+            }
+        });
+
+        linkStore.filterByProtocols();
+
+        return linkStore.getLayerLink(0);
+    };
 };
 
 Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
@@ -167,6 +207,7 @@ Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     { name: 'uuid', mapping: '*/uuid' },
     Portal.data.GeoNetworkRecord.LinksField,
     Portal.data.GeoNetworkRecord.DownloadableLinksField,
+    Portal.data.GeoNetworkRecord.PointOfTruthLinkField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
     Portal.data.GeoNetworkRecord.BboxField,

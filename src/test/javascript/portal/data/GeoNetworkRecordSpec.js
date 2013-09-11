@@ -112,4 +112,9 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.unusedField).toBe(undefined);
         });
     });
+
+    describe('point of truth URL', function() {
+
+        expect(false).toBe('WRITE SOME TESTS');
+    });
 });
