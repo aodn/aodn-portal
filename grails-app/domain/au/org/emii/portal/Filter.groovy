@@ -57,7 +57,7 @@ class Filter implements Comparable {
 		filterData["name"] = name
 		filterData["layerId"] = layer.id
 		filterData["enabled"] = enabled
-		filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues : []
+		filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues.sort() : []
 
 		return filterData
 	}

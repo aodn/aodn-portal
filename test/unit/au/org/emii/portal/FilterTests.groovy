@@ -23,7 +23,7 @@ class FilterTests extends GrailsUnitTestCase {
         def server1 = new Server(id: 1)
         def layer1 = new Layer(id: 3, server: server1)
 
-        def filter1 = new Filter(name: "vesselName", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true)
+        def filter1 = new Filter(name: "vesselName", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship3", "ship2", "ship1"], layer: layer1, enabled: true)
 
         def expected = [:]
         expected["label"] = "Vessel Name"
