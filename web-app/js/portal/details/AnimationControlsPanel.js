@@ -13,7 +13,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             layout: 'form',
             stateful: false,
-            width: '400px',
+            width: '450px',
             padding: '2px 6px 0px 6px',
             margins: '2px'
         }, cfg);
@@ -97,8 +97,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.stepLabel = new Ext.form.Label({
-            flex : 1,
-            width : 115,
+            flex : 0.8,
+            width : 130,
             style : 'padding-top: 5; padding-bottom: 5'
         });
 
