@@ -49,7 +49,7 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
             var elementId = 'download-button-' + recordId;
 
             var menuItems = [
-                {text: 'Download as .csv (default)', handler: function() { alert('CSV handler') }},
+                {text: 'Download as .csv', handler: function() { alert('CSV handler') }},
                 {text: 'Download as .kml', handler: function() { alert('KML handler') }}
             ];
 
