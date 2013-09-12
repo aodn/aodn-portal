@@ -12,7 +12,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
         var config = Ext.apply({
             autoExpandColumn: 'description',
-            title: 'Data Download Cart',
+            title: 'Data Download Tools',
             headerCfg: {
                 cls: 'x-panel-header p-header-space'
             },
