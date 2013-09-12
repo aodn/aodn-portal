@@ -10,6 +10,8 @@ describe("Portal.cart.DownloadPanel", function() {
 
     beforeEach(function() {
         downloadPanel = new Portal.cart.DownloadPanel();
+
+        expect("Write unit test").toBe('');
     });
 
     describe('ActiveGeoNetworkRecordStore interaction', function() {
@@ -19,10 +21,6 @@ describe("Portal.cart.DownloadPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('has column model of type DownloadColumnModel', function() {
-            expect(downloadPanel.colModel).toBeInstanceOf(Portal.cart.DownloadColumnModel);
-        });
-
         it('has view of type DownloadGridView', function() {
             expect(downloadPanel.view).toBeInstanceOf(Portal.cart.DownloadGridView);
         });

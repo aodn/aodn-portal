@@ -1111,7 +1111,7 @@ div.allwhite {
 }
 
 .download-collection {
-    margin-top: 5px;
+    margin: 0.5em 0 1.5em 0;
     background-color: #FAFAFA;
 }
 
@@ -1142,6 +1142,11 @@ div.allwhite {
 .download-collection .row code {
     background-color: #EEE;
     border-radius: 4px;
+}
+
+.download-collection .secondary-text {
+    font-style: italic;
+    color: #666;
 }
 
 /* Bug #9 - show blank tiles on image load error. */

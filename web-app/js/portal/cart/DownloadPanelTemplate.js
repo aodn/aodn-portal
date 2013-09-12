@@ -60,7 +60,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             }
             else {
 
-                html = "<i>No filters applied.</i>";
+                html = "No data filters applied.";
             }
 
             return this._wrapInEntryMarkup(html);
@@ -78,11 +78,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         if (wmsLayer) {
 
-            html = '<div id="download-button-' + values.source + '"></div>'; // Download button placeholder
+            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
         }
         else {
 
-            html = "<i>No direct-access to data available currently.</i>"
+            html = '<span class="secondary-text">No direct-access to data available currently.</span>'
         }
 
         return this._wrapInEntryMarkup(html);
@@ -93,17 +93,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         var links = values.downloadableLinks;
         var html = "";
 
-        links = [
-            {
-                title: "cool_report.pdf",
-                href: ""
-            },
-            {
-                title: "presentation.ppt",
-                href: ""
-            }
-        ];
-
         Ext.each(
             links,
             function(link) {
@@ -112,7 +101,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             this
         );
 
-        if (html == "") html = this._wrapInEntryMarkup("<i>No attached files.</i>");
+        if (html == "") html = this._wrapInEntryMarkup('<span class="secondary-text">No attached files.</span>');
 
         return html;
     },
