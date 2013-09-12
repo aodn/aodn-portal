@@ -1,4 +1,3 @@
-
 <%--
 
 Copyright 2012 IMOS
@@ -26,7 +25,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     <div >There is a technical summary for those interested in the <a class="external" href="${ grailsApplication.config.help.url }?q=node/99" title="technical summary" target="_blank">information infrastructure</a> behind this portal.
     </div>
 
-    <div class="clear spacer"></div>
     <div class="spacer clear footer">
       <div class="spacer floatLeft homePanelWidget"  style="width:100px">
         <img class="minispacer" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>

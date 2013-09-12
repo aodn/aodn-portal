@@ -63,7 +63,7 @@ Portal.ui.AnimationPanel = Ext.extend(Ext.Panel, {
             items: [
                 {
                     xtype: 'tbspacer',
-                    width: 230
+                    width: 300
                 },
                 this.animationControlsPanel,
                 this.controlButtonPanel
