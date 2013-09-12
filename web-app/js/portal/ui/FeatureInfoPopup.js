@@ -168,7 +168,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             },
             success: function(resp, options) {
                 // Delegate HTML formatting of response to layer
-                this.numGoodResults++;
                 this._addPopupTabContent(
                     options.params.layer.formatFeatureInfoHtml(resp, options),
                     options.params.name);
@@ -186,14 +185,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _getLayerFeatureInfoRequestString: function(layer) {
-        var extraParams = { BUFFER: this.appConfig.mapGetFeatureInfoBuffer };
-        var format = layer.getFeatureInfoFormat();
-
-        var result = proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), extraParams));
-        if (format) {
-            result += "&format=" + encodeURIComponent(format);
-        }
-        return result;
+        return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), { BUFFER: this.appConfig.mapGetFeatureInfoBuffer }));
     },
 
     _clickPoint: function() {
@@ -316,6 +308,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _addPopupTabContent: function(content, title) {
+        if(!content) {
+            return;
+        }
 
         // We'll need to set the active tab index later, if there's not one currently.
         var activeTab = this.popupTab.getActiveTab();
@@ -339,13 +334,13 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }
         });
 
-
         if (!activeTab) {
             this.popupTab.setActiveTab(0);
         }
 
         this.popupTab.doLayout();
         this.popupTab.show();
+        this.numGoodResults++;
     },
 
     fitContainer: function() {

@@ -125,13 +125,6 @@ OpenLayers.Layer.WMS.prototype._is130 = function () {
 };
 
 OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
-    if (this.dimensions != undefined) {
-        for (var i = 0; i < this.dimensions.length; i++) {
-            if (this.dimensions[i].name == "time") {
-                return true;
-            }
-        }
-    }
     return false;
 };
 
