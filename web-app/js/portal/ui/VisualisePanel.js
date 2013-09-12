@@ -23,8 +23,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 		});
 
         this.animationWindow = new Portal.ui.AnimationWindow({
-            map: this.mapPanel.map,  // TODO: demeter violation
-            timeControl: this.mapPanel.mapOptions.timeControl  // TODO: demeter violation
+            mapPanel: this.mapPanel
         });
 
         var config = Ext.apply({

@@ -22,6 +22,11 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, this._onBeforeSelectedLayerChanged, this);
 
+        if (config.mapPanel) {
+            this.timeControl = config.mapPanel.getTimeControl();
+            this.setMap(config.mapPanel.map);
+        }
+
         if (this.timeControl) {
             this.timeControl.events.on({
                 'speedchanged': this._onSpeedChanged,
@@ -292,12 +297,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
         this._setStepLabelTextToDateTime(dateTime);
-    },
-
-    isAnimating : function() {
-        // TODO: this is most likely dodgy.
-        // Need to check when and how this function is called.
-        return false;
     },
 
     _setStepLabelTextToDateTime: function(dateTime) {

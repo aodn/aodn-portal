@@ -11,9 +11,8 @@ Portal.ui.AnimationWindow = Ext.extend(Ext.Window, {
 
     constructor: function(cfg) {
         this.animationControlsPanel = new Portal.details.AnimationControlsPanel({
-            timeControl: cfg.timeControl
+            mapPanel: cfg.mapPanel
         });
-        this.animationControlsPanel.setMap(cfg.map);
 
         this.toggleVisibilityButton = new Ext.Button({
             cls: 'animationSubPanel',
