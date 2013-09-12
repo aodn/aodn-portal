@@ -27,8 +27,8 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
         });
 
         it('initialises results grid', function() {
-            var resultsGrid = searchBodyPanel.resultsGrid;
-            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsGrid);
+            var resultsGrid = searchBodyPanel.SearchResultsView;
+            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResults);
             expect(searchBodyPanel.items.get(1)).toBe(resultsGrid);
             expect(resultsGrid.hidden).toBeTruthy();
             expect(resultsGrid.store).toBe(searchBodyPanel.resultsStore);

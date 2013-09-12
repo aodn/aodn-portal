@@ -98,7 +98,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MiniMapColumn.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/ViewRecordColumn.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsColumnModel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsGrid.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResults.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MetadataExtent.js')}"></script>

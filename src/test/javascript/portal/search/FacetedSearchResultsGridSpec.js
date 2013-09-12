@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -6,7 +5,7 @@
  *
  */
 
-describe("Portal.search.FacetedSearchResultsGrid", function() {
+describe("Portal.search.FacetedSearchResults", function() {
 
     var resultsGrid;
     var testTarget;
@@ -15,7 +14,7 @@ describe("Portal.search.FacetedSearchResultsGrid", function() {
     beforeEach(function() {
 
         var store = new Portal.data.GeoNetworkRecordStore();
-        resultsGrid = new Portal.search.FacetedSearchResultsGrid({
+        resultsGrid = new Portal.search.FacetedSearchResults({
             store: store
         });
 
