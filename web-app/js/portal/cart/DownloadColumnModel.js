@@ -29,13 +29,17 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
 
         var scope = this;
 
-        var createButton = function(value, id, handler) {
+        var createButton = function(value, id, menuItems) {
+
+            var downloadMenu = new Ext.menu.Menu({
+                items: menuItems
+            });
 
             new Ext.Button({
                 text: value,
                 iconCls: '',
-                handler: handler,
-                scope: scope
+                scope: scope,
+                menu: downloadMenu
             }).render(document.body, id);
         };
 
@@ -43,12 +47,16 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
 
             var recordId = item.data.source;
             var elementId = 'download-button-' + recordId;
-            var buttonHandler = function() { alert('button clicked (' + elementId + ')') };
+
+            var menuItems = [
+                {text: 'Download as .csv (default)', handler: function() { alert('CSV handler') }},
+                {text: 'Download as .kml', handler: function() { alert('KML handler') }}
+            ];
 
             // Don't create button if no placeholder exists
             if (document.body.innerHTML.indexOf(elementId) != -1) {
 
-                createButton.defer(1, null, ['Download as...', elementId, buttonHandler]);
+                createButton.defer(1, null, ['Download as...', elementId, menuItems]);
             }
         });
     }
