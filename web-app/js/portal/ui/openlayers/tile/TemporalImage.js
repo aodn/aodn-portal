@@ -18,13 +18,12 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     setOpacity: function(opacity) {
         for (var key in this.imgCache) {
             if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
-                
-                //                $(this.imgCache[key]).css('opacity', opacity);
+
                 $(this.imgCache[key]).fadeTo(0, opacity);
             }
         }
     },
-    
+
     toTime: function(dateTime) {
         this._updateParentDiv();
         this._imageToTime(dateTime);
@@ -34,10 +33,10 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
     clearCache: function() {
         this.imgCache = {};
     },
-   
+
     precache: function(dateTime, onloadCallback, context) {
         this._updateParentDiv();
-        
+
         var cachedImg = this._getCached(dateTime);
         this._registerOnLoad(cachedImg, onloadCallback, context);
 
@@ -48,35 +47,35 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         var numComplete = 0;
 
         for (var key in this.imgCache) {
-            if (this.imgCache.hasOwnProperty(key) && this.imgCache[key].complete) {
+            if (this.imgCache.hasOwnProperty(key) && this._imageIsLoaded(this.imgCache[key])) {
                 numComplete++;
             }
         }
 
         return numComplete;
     },
-    
+
     _registerOnLoad: function(cachedImg, onloadCallback, context) {
-        context.onloadCallback = onloadCallback;
-        
-        if (cachedImg.complete) {
-            context.onloadCallback(cachedImg);
-        }
-        else {
-            $(cachedImg).load(function() {
-                if (onloadCallback) {
-                    context.onloadCallback(cachedImg);
-                }
-            });
+
+        if (onloadCallback) {
+
+            if (this._imageIsLoaded(cachedImg)) {
+                onloadCallback.call(context);
+            }
+            else {
+                $(cachedImg).load(function() {
+                    onloadCallback.call(context);
+                });
+            }
         }
     },
-    
+
     _updateParentDiv: function() {
         if (!this.parentDiv) {
             this.parentDiv = $(this.imgDiv).parent().get(0);
         }
     },
-    
+
     _getKey: function(dateTime) {
         return this.position.toString() + '-' + dateTime.valueOf();
     },
@@ -99,7 +98,7 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
 
         return img;
     },
-    
+
     _getCached: function(dateTime) {
         if (!this._isCached(dateTime)) {
             this._cache(dateTime);
@@ -112,5 +111,10 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
         this._getCached(dateTime).style.display = '';
         $(this.parentDiv).empty();
         $(this.parentDiv).append(this._getCached(dateTime));
+    },
+
+    _imageIsLoaded: function(img) {
+
+        return img.width > 0;
     }
 });

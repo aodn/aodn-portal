@@ -18,14 +18,14 @@ describe("OpenLayers.Layer.NcWMS", function() {
         };
         timeControl.getDateTimeForStep = function() {
             return moment('2014-04-03T02:11:32');
-        }
+        };
 
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
         };
         OpenLayers.Layer.WMS.prototype.moveTo = function() {};
 
-        OpenLayers.Layer.NcWMS.prototype._getTimeControl = function() { return timeControl; }
+        OpenLayers.Layer.NcWMS.prototype._getTimeControl = function() { return timeControl; };
         OpenLayers.Layer.NcWMS.prototype._getTimesToCache = function() {
             return [
                 moment('2000-01-01'), moment('2000-01-02')
@@ -69,7 +69,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(cachedLayer.name).toBe('thename (animated)');
         });
     });
-    
+
     describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z');
@@ -142,7 +142,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
     describe('to time', function() {
         it('toTime on tiles called', function() {
             var toTimeSpy = jasmine.createSpy('toTimeSpy');
-            
+
             cachedLayer.grid = [];
             cachedLayer.grid[0] = [{ toTime: toTimeSpy }, { toTime: toTimeSpy }];
             cachedLayer.grid[1] = [{ toTime: toTimeSpy }, { toTime: toTimeSpy }];
@@ -241,7 +241,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 [ 2, 3 ]
             ];
             cachedLayer.grid = grid;
-            
+
             var processedTiles = cachedLayer.eachTile(function(tile) {});
             expect(processedTiles[0]).toBe(0);
             expect(processedTiles[1]).toBe(1);
@@ -249,10 +249,10 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(processedTiles[3]).toBe(3);
         });
     });
-    
+
     describe('get dates on day', function() {
         var extent;
-        
+
         beforeEach(function() {
             cachedLayer.temporalExtent = [
                 moment('2001-01-01T00:00'),
@@ -291,8 +291,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
         beforeEach(function() {
             cachedLayer = new OpenLayers.Layer.NcWMS();
             var timeControl  = cachedLayer._getTimeControl();
-            spyOn(timeControl, 'getExtentMin').andReturn(moment());;
-            spyOn(timeControl, 'getExtentMax').andReturn(moment());;
+            spyOn(timeControl, 'getExtentMin').andReturn(moment());
+            spyOn(timeControl, 'getExtentMax').andReturn(moment());
             spyOn(OpenLayers.Layer.WMS.prototype, 'getFeatureInfoRequestString');
         });
 
@@ -311,7 +311,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         var minExtent = moment('2001-02-01T00:00');
         var maxExtent = moment('2001-02-05T00:00');
-        
+
         beforeEach(function() {
             var extent = [
                 minExtent,
@@ -333,12 +333,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('getTemporalExtentMax value', function() {
             expect(cachedLayer.getTemporalExtentMax()).toBeSame('2001-02-05T00:00');
         });
-        
+
         it('getTemporalExtentMax is copy', function() {
             expect(cachedLayer.getTemporalExtentMax()).not.toBe(maxExtent);
         });
     });
-    
+
     describe('getMissingDays', function() {
         var extent = [
             '2001-01-01T00:00',
@@ -460,12 +460,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(opacitySpy.calls[0].args[0]).toBe(0.6);
         });
     });
-    
+
     describe('download as gif', function() {
         beforeEach(function() {
             spyOn(window, 'open');
         });
-        
+
         it('_getGifUrl called', function() {
             var params = {};
             spyOn(cachedLayer, '_getGifUrl');
@@ -476,23 +476,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('window.open called', function() {
             cachedLayer._getGifUrl = function() {
                 return 'http://theurl';
-            }
-            
+            };
+
             cachedLayer.downloadAsGif();
             expect(window.open).toHaveBeenCalledWith(
                 'http://theurl',
                 '_blank',
                 'width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes');
-            
+
         });
-        
+
         describe('_getGifUrl', function() {
             beforeEach(function() {
                 cachedLayer.getFullRequestString = function() {
                     return 'http://somehost/somepath?FORMAT=image%2Fpng';
                 }
             });
-            
+
             it('path', function() {
                 expect(cachedLayer._getGifUrl()).toStartWith('proxy/downloadGif?');
             });
@@ -500,7 +500,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             it('url param', function() {
                 expect(cachedLayer._getGifUrl()).toContain('url=http://somehost/somepath');
             });
-            
+
             it('spatial extent', function() {
                 var spatialExtent = new OpenLayers.Bounds(1, 2, 3, 4);
                 expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('BBOX=1,2,3,4');
@@ -510,7 +510,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 var temporalExtent = {
                     min: moment('2000-01-01T11:00'),
                     max: moment('2000-01-05T11:00')
-                }
+                };
                 // Note that _getGifUrl will use utc timezone, hence we gonna
                 // get the request shifted to UTC, in other words, -11 hours
                 expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
@@ -521,7 +521,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 var temporalExtent = {
                     min: moment('2000-01-01T11:00Z'),
                     max: moment('2000-01-05T11:00Z')
-                }
+                };
                 // Note that _getGifUrl will use utc timezone, hence we gonna
                 // get the request shifted to UTC, in other words, -11 hours
                 expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
@@ -532,11 +532,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer._getGifUrl()).toContain('FORMAT=image/gif');
                 expect(cachedLayer._getGifUrl()).not.toContain('FORMAT=image/png');
             });
-            
+
             it('width', function() {
                 expect(cachedLayer._getGifUrl()).toContain('WIDTH=512');
             });
-            
+
             it('height', function() {
                 var spatialExtent = new OpenLayers.Bounds(1, 2, 3.99, 4);
                 expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('HEIGHT=342');
@@ -589,7 +589,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             moment("2010-07-16T10:00:00")
         ];
         runs(function() {
-            cachedLayer.rawTemporalExtent = 
+            cachedLayer.rawTemporalExtent =
                 '2010-07-16T06:00:00,2010-07-16T07:00:00,2010-07-16T08:00:00,2010-07-16T09:00:00,2010-07-16T10:00:00';
             cachedLayer.temporalExtent = null;
             cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
@@ -614,7 +614,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             moment("2010-07-17T01:00:00")
         ];
         runs(function() {
-            cachedLayer.rawTemporalExtent = 
+            cachedLayer.rawTemporalExtent =
                 '2010-07-16T10:00:00Z,2010-07-16T11:00:00Z,2010-07-16T12:00:00Z,2010-07-16T13:00:00Z,2010-07-16T14:00:00Z,2010-07-16T15:00:00Z';
             cachedLayer.temporalExtent = null;
             cachedLayer.moveTo(new OpenLayers.Bounds(4, 3, 2, 1), false, false);
@@ -650,7 +650,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 getNumImagesComplete: function() {
                     return 1;
                 }
-            }
+            };
             var grid = [
                 [ dummyTile, dummyTile ],
                 [ dummyTile, dummyTile ]
@@ -685,7 +685,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                     getNumImagesComplete: function() {
                         return 1;
                     }
-                }
+                };
                 var grid = [
                     [ dummyTile, dummyTile ],
                     [ dummyTile, dummyTile ]
@@ -726,26 +726,26 @@ describe("OpenLayers.Layer.NcWMS", function() {
         beforeEach(function() {
             // 1 x 2 grid of tiles, 2 date/times.
             // First time.
-            img00 = document.createElement('img');  
+            img00 = document.createElement('img');
             img00.src = 'someurl';
             img00.onload = function() {
                 cachedLayer._imageLoaded(img00);
             };
 
-            img01 = document.createElement('img');  
+            img01 = document.createElement('img');
             img01.src = 'someurl';
             img01.onload = function() {
                 cachedLayer._imageLoaded(img01);
             };
 
             // Second time.
-            img10 = document.createElement('img');  
+            img10 = document.createElement('img');
             img10.src = 'someurl';
             img10.onload = function() {
                 cachedLayer._imageLoaded(img10);
             };
 
-            img11 = document.createElement('img');  
+            img11 = document.createElement('img');
             img11.src = 'someurl';
             img11.onload = function() {
                 cachedLayer._imageLoaded(img11);
@@ -805,22 +805,22 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(precacheprogressSpy.calls[0].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[0].args[0].progress).toBe(0.5);
 
-            cachedLayer._calculateProgress = function() { return 1/4; }
+            cachedLayer._calculateProgress = function() { return 1/4; };
             $(img00).trigger('onload');
             expect(precacheprogressSpy.calls[1].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[1].args[0].progress).toBe(1/4);
 
-            cachedLayer._calculateProgress = function() { return 2/4; }
+            cachedLayer._calculateProgress = function() { return 2/4; };
             $(img01).trigger('onload');
             expect(precacheprogressSpy.calls[2].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[2].args[0].progress).toBe(2/4);
 
-            cachedLayer._calculateProgress = function() { return 3/4; }
+            cachedLayer._calculateProgress = function() { return 3/4; };
             $(img10).trigger('onload');
             expect(precacheprogressSpy.calls[3].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[3].args[0].progress).toBe(3/4);
 
-            cachedLayer._calculateProgress = function() { return 4/4; }
+            cachedLayer._calculateProgress = function() { return 4/4; };
             $(img11).trigger('onload');
             expect(precacheprogressSpy.calls[4].args[0].layer).toBe(cachedLayer);
             expect(precacheprogressSpy.calls[4].args[0].progress).toBe(4/4);
@@ -860,8 +860,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             it('precacheend', function() {
                 expect(precacheendSpy).not.toHaveBeenCalled();
-                cachedLayer._getTotalImages = function() { return 1; }
-                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._getTotalImages = function() { return 1; };
+                cachedLayer._getTotalImagesComplete = function() { return 1; };
                 cachedLayer._precache(true);
 
                 $(img11).trigger('onload');
@@ -870,8 +870,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             it('precacheend sent only once', function() {
                 expect(precacheendSpy).not.toHaveBeenCalled();
-                cachedLayer._getTotalImages = function() { return 1; }
-                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._getTotalImages = function() { return 1; };
+                cachedLayer._getTotalImagesComplete = function() { return 1; };
                 cachedLayer._precache(true);
 
                 $(img01).trigger('onload');
@@ -891,8 +891,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('CACHED when all tiles cached', function() {
-                cachedLayer._getTotalImages = function() { return 1; }
-                cachedLayer._getTotalImagesComplete = function() { return 1; }
+                cachedLayer._getTotalImages = function() { return 1; };
+                cachedLayer._getTotalImagesComplete = function() { return 1; };
                 cachedLayer._precache(true);
 
                 $(img01).trigger('onload');

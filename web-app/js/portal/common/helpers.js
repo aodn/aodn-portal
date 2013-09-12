@@ -233,7 +233,7 @@ function setHTML_ncWMS(response,options) {
             }
         }
         else {
-            html = "Can't get feature info data for this layer <a href='javascript:popUp('whynot.html', 200, 200)'>(why not?)</a>";
+            html = "Can't get feature info data for this collection";
         }
     }
     else {

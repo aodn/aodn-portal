@@ -49,7 +49,16 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="label"><g:message code="filter.label.label" default="Enabled" /></label>
+                                    <label for="label"><g:message code="filter.label.label" default="Label text" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
+                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label"><g:message code="filter.enabled.label" default="Enabled" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'enabled', 'errors')}">
                                     <g:checkBox name="enabled" checked="${filterInstance?.enabled}" />
@@ -64,15 +73,6 @@
                                     <g:checkBox name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
                                 </td>
                             </tr>
-
-                             <tr class="prop">
-								<td valign="top" class="name">
-								  <label for="label"><g:message code="filter.label.label" default="Label" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-									<g:textField name="label" value="${filterInstance?.label}" />
-								</td>
-							</tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">

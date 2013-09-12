@@ -35,32 +35,22 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     end: 'End',
     time: 'Animation time',
     speed: ' (x 1)',
-    warn_label: "Only one layer can be animated at a time.  You must remove an existing animation to create a new animation.",
+    warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
-    clearButton_tip: "Stops animation and remove all animated layers from map",
+    clearButton_tip: "Stops animation and remove all animated collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
 
     // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will re-load the default set of map layers and reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all overlay layers from the map",
+    mapOptionsResetButton: 'This will remove all collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all collections from the map and download pages",
 
     // Search results
-    selectLayer: 'Select layer',
-    bboxLayer: 'Extent',
-    logoHeading: 'Logo',
     descHeading: 'Description',
-    actionsHeading: 'Actions',
-    datasetInfo: 'Dataset information',
-    showOnMinimap: "Show '${layerDesc}' on mini-map",
-    addToMap: "Add '${layerDesc}' to map",
-    layerSelectionWindowShowOnMinimap: "Show on mini-map",
-    layerSelectionWindowAddToMap: "Add to map",
-    datasetLayers: 'Dataset layers',
-    selectLink: 'Select linked page',
+    addToMap: "Add '${layerDesc}' to portal",
 
     // Refine search panel
     filterNames: {
@@ -71,7 +61,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // DetailsPanel.js
     opacity: "Opacity",
-    wmsLayerProblem: "There is a problem with the availability of this layer",
+    wmsLayerProblem: "There is a problem with the availability of this collection",
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -91,10 +81,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadsOnly: 'Downloads Only',
     downloads: 'Downloads',
     downloadsText: 'Show me results with downloads only',
-    mapLayersOnly: 'Map Layers Only',
-    mapLayers: 'Map Layers',
-    mapLayer: 'Map Layer',
-    mapLayersOnlyDesc: 'Show Me Results With Map Layers Only',
+    mapLayers: 'Map Collections',
+    mapLayer: 'Map Collections',
     exactMatches: 'Exact Matches',
     precision: 'Precision',
     exactMatchesDesc: 'Must Match Search Terms Exactly',
@@ -123,14 +111,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadCartConfirmationCancelText: 'Cancel',
 
     //mainMapPanel
-    layerExistsTitle: 'Add layer',
-    layerExistsMsg: 'This layer has already been added to the map',
-    layerAddedTitle: 'Add layer',
-    layerAddedMsg: "'${layerDesc}' has been added to the map",
+    layerExistsTitle: 'Add collection',
+    layerExistsMsg: 'This collection has already been added to the map',
+    layerAddedTitle: 'Add collection',
+    layerAddedMsg: "'${layerDesc}' has been added",
     layerActions: 'Actions',
-    autoZoomControlLabel: 'Auto zoom to layer',
-    removeAllControlLabel: 'Remove all\u2025',
-    resetMapControlLabel: 'Reset map\u2025',
+
+
 
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
@@ -152,7 +139,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Faceted layer search
     searchTabTitle: 'Search',
-    layerSearch: 'Map Layers',
     themeFilter: 'Theme',
     locationFilter: 'Location',
     methodFilter: 'Collection method',
@@ -162,31 +148,32 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoFilter: "Geographic Boundary",
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
-    facetedSearchPanelTitle: 'Find layers by:',
     facetedSearchClearAllLink: 'Clear all',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
-    matchingLayers: 'Add Layer',
 
     //MapOptionsPanel
-    autozoom: 'Auto zoom to layer',
-    hideDetailsPanel: 'Hide layer details',
+    autozoom: 'Auto zoom to collection extent',
+    hideDetailsPanel: 'Hide collection details',
+    removeAllControlLabel: 'Remove all collections',
+    resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected:	"No layers have been added to the map",
-    layerOptions: "Layer Options",
+    noActiveLayersSelected:	"No collections selected",
+    // ActiveLayersPanel.js
+    collectionsTitle: "Collections",
+    noCollectionSelectedHelp: "Please return and search for collections.",
 
     //Options Panel
-    turnOnTransect: 'Turn on transect graphing for this layer:',
+    turnOnTransect: 'Turn on transect graphing for this collection:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',
     transectTab: 'Transect',
     transectDataHeading: 'Data along the transect: ',
     dimensionValuesHeading: 'For dimension values: ',
 
-    layerSearchTabTitle: 'Layers',
     downloadSearchTabTitle: 'Downloads',
 
     // AODAAC aggregator

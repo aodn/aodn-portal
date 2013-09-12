@@ -42,7 +42,6 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
     _onResultsStoreLoad: function() {
 
-        this.resultsGrid.hideMask();
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
@@ -72,7 +71,6 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
         this.resultsGrid.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
-        this.resultsGrid.hideMask();
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging
         return false;
