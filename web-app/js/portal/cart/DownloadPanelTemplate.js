@@ -23,12 +23,12 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  </div>',
             '  <div class="row">',
             '    <div class="subheading">Data</div>',
-            '    {[this._getDataFilterEntry(values.wmsLayer)]}',
-            '    {[this._getDataDownloadEntry(values.wmsLayer)]}',
+            '    {[this._getDataFilterEntry(values)]}',
+            '    {[this._getDataDownloadEntry(values)]}',
             '  </div>',
             '  <div class="row">',
             '    <div class="subheading">Attached files</div>',
-            '    {[this._getFileListMarkup(values.downloadableLinks)]}',
+            '    {[this._getFileListMarkup(values)]}',
             '  </div>',
             '</div>'
         ];
@@ -45,7 +45,9 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         return this._wrapInEntryMarkup(html);
     },
 
-    _getDataFilterEntry: function(wmsLayer) {
+    _getDataFilterEntry: function(values) {
+
+        var wmsLayer = values.wmsLayer;
 
         if (wmsLayer) {
 
@@ -69,13 +71,14 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
     },
 
-    _getDataDownloadEntry: function(wmsLayer) {
+    _getDataDownloadEntry: function(values) {
 
+        var wmsLayer = values.wmsLayer;
         var html;
 
         if (wmsLayer) {
 
-            html = '<table cellspacing="0" class="x-btn x-btn-noicon" id="ext-comp-999999" style="width: auto;"><tbody class="x-btn-small x-btn-icon-small-left"><tr><td class="x-btn-tl"><i>&nbsp;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i>&nbsp;</i></td></tr><tr><td class="x-btn-ml"><i>&nbsp;</i></td><td class="x-btn-mc"><em unselectable="on" class="x-btn-split" id="ext-gen9999"><button type="button" id="ext-gen99999" class=" x-btn-text">Download as...</button></em></td><td class="x-btn-mr"><i>&nbsp;</i></td></tr><tr><td class="x-btn-bl"><i>&nbsp;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i>&nbsp;</i></td></tr></tbody></table>';
+            html = '<div id="download-button-' + values.source + '"></div>'; // Download button placeholder
         }
         else {
 
@@ -85,8 +88,9 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         return this._wrapInEntryMarkup(html);
     },
 
-    _getFileListMarkup: function(links) {
+    _getFileListMarkup: function(values) {
 
+        var links = values.downloadableLinks;
         var html = "";
 
         links = [

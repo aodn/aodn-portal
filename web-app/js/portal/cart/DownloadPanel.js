@@ -30,6 +30,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
     onBeforeShow: function() {
 
+        this.colModel.refresh(this.store);
+
         this.view.refresh();
     }
 });

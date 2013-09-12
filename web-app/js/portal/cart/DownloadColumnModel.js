@@ -18,10 +18,6 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
                     header: OpenLayers.i18n('descHeading'),
                     xtype: 'templatecolumn',
                     tpl: new Portal.cart.DownloadPanelTemplate()
-                },
-                {
-                    id: 'remove',
-                    renderer: this._removeColumnRenderer
                 }
             ]
         };
@@ -29,27 +25,31 @@ Portal.cart.DownloadColumnModel = Ext.extend(Ext.grid.ColumnModel, {
         Portal.cart.DownloadColumnModel.superclass.constructor.call(this, config);
     },
 
-    _removeColumnRenderer: function(value, metadata, record, rowIndex, colIndex, store) {
+    refresh: function(store) {
 
-        // This funky stuff has been copied/adapted from FacetedSearchResultsGrid.
-        // It's where the worlds of Ext and HTML collide :-(
-        var grid = this;
+        var scope = this;
 
         var createButton = function(value, id, handler) {
+
             new Ext.Button({
                 text: value,
                 iconCls: '',
                 handler: handler,
-                scope: grid
+                scope: scope
             }).render(document.body, id);
         };
 
-        var componentId = Ext.id();
-        var buttonHandler = function() {
-            store.remove(record)
-        };
-        createButton.defer(1, this, ['Remove', componentId, buttonHandler]);
+        Ext.each(store.data.items, function(item) {
 
-        return('<div id="' + componentId + '"></div>');
+            var recordId = item.data.source;
+            var elementId = 'download-button-' + recordId;
+            var buttonHandler = function() { alert('button clicked (' + elementId + ')') };
+
+            // Don't create button if no placeholder exists
+            if (document.body.innerHTML.indexOf(elementId) != -1) {
+
+                createButton.defer(1, null, ['Download as...', elementId, buttonHandler]);
+            }
+        });
     }
 });
