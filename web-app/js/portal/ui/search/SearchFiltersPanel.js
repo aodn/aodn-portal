@@ -14,22 +14,22 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.spinner = new Ext.Panel({
             html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
             hidden: true,
-            flex: 3
+            flex:3
         });
 
         this.titleBar = new Ext.Panel({
 
             cls: 'x-panel-header',
             layout: {
-                type: 'hbox',
-                defaultMargins: {top:0, right:0, bottom:4, left:0}
+                type: 'hbox'
             },
             items: [
                 this.spinner,
                 new Ext.Panel({
                     items: [ this._buildClearAllLink() ],
                     cls: 'faceted-search-clear-all',
-                    flex: 1
+                    flex: 1,
+                    height: 25
                 })
             ],
             boxMaxHeight: '1' // Not sure why this is needed

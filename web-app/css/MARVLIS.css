@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -103,10 +102,7 @@ input, select, textarea {
    border-radius: 12px;
 }
 
-#headerTail {
-    height: 30px;
 
-}
 
 #logo {
     margin: 3px 5px;

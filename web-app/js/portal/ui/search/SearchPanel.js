@@ -31,11 +31,12 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             region: 'west',
             split: true,
             width: 340,
-            bodyCssClass: 'p-header-space',
             mapPanel: this.mapPanel
         });
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
+            id: 'searchBodypanel',
+            margins: {left : 10, top : 37, right : 0, bottom : 0},
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,

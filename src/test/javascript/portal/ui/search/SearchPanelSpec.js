@@ -23,7 +23,6 @@ describe("Portal.ui.search.SearchPanel", function() {
             expect(searchPanel.filtersPanel.region).toBe('west');
             expect(searchPanel.filtersPanel.split).toBeTruthy();
             expect(searchPanel.filtersPanel.width).toBe(340);
-            expect(searchPanel.filtersPanel.bodyCssClass).toBe('p-header-space');
         });
 
 
