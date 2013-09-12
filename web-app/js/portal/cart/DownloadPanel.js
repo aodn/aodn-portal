@@ -6,21 +6,18 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
+Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function(cfg) {
 
         var config = Ext.apply({
-            autoExpandColumn: 'description',
             title: 'Data Download Tools',
             headerCfg: {
                 cls: 'x-panel-header p-header-space'
-            },
-            store: Portal.data.ActiveGeoNetworkRecordStore.instance(),
-            colModel: new Portal.cart.DownloadColumnModel(),
-            view: new Portal.cart.DownloadGridView(),
-            bbar: new Portal.cart.DownloadToolbar()
+            }
         }, cfg);
+
+        this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
@@ -30,6 +27,21 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.grid.GridPanel, {
 
     onBeforeShow: function() {
 
-        this.view.refresh();
+        this.generateContent();
+    },
+
+    generateContent: function() {
+
+        var tpl = new Portal.cart.DownloadPanelTemplate();
+        var html = '';
+
+        Ext.each(this.store.data.items, function(item) {
+
+            var collection = item.data;
+
+            html += tpl.apply(collection);
+        });
+
+        this.update(html);
     }
 });
