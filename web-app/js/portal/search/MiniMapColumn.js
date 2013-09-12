@@ -26,7 +26,7 @@ Portal.search.MiniMapColumn = Ext.extend(Ext.grid.Column, {
             }
         }, 10);
 
-        return('<div id="' + componentId + '" style="width: ' + this.width + '; height: ' + this.height + ';"></div>');
+        return('<div id="' + componentId + '" style="width: ' + this.width + 'px; height: ' + this.height + 'px;"></div>');
     },
 
     _baseLayer: function() {
