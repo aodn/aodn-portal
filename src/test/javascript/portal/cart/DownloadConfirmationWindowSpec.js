@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.cart.DownloadCartConfirmationWindow", function() {
+describe("Portal.cart.DownloadConfirmationWindow", function() {
     describe('on accept', function() {
 
         var confirmationWindow;
@@ -16,7 +16,7 @@ describe("Portal.cart.DownloadCartConfirmationWindow", function() {
                     downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
                 }
             };
-            confirmationWindow = new Portal.cart.DownloadCartConfirmationWindow();
+            confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
         });
 
         it('starts download', function() {

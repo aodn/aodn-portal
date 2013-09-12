@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
+Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
     initComponent:function () {
 
@@ -60,7 +60,7 @@ Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
             }
         });
 
-        Portal.cart.DownloadCartConfirmationWindow.superclass.initComponent.apply(this, arguments);
+        Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
     },
 
     onAccept:function () {

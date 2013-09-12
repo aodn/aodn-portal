@@ -148,7 +148,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadConfirmationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"></script>

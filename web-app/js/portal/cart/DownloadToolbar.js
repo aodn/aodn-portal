@@ -24,7 +24,7 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
             listeners: {
                 scope: this,
                 'click': function(button, event) {
-                    new Portal.cart.DownloadCartConfirmationWindow().show();
+                    new Portal.cart.DownloadConfirmationWindow().show();
                     this._updateButtonStates();
                 }
             }

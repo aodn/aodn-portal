@@ -42,9 +42,9 @@ describe("Portal.cart.DownloadToolbar", function() {
         });
 
         it('click opens confirmation window', function() {
-            spyOn(Portal.cart.DownloadCartConfirmationWindow.prototype, 'show');
+            spyOn(Portal.cart.DownloadConfirmationWindow.prototype, 'show');
             downloadAllButton.fireEvent('click');
-            expect(Portal.cart.DownloadCartConfirmationWindow.prototype.show).toHaveBeenCalled();
+            expect(Portal.cart.DownloadConfirmationWindow.prototype.show).toHaveBeenCalled();
         });
     });
 
