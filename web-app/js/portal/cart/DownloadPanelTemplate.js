@@ -99,14 +99,16 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             this
         );
 
-        if (html == "") html = this._wrapInEntryMarkup('<span class="secondary-text">No attached files.</span>');
+        if (html == ""){
+            html = this._wrapInEntryMarkup('<span class="secondary-text">No attached files.</span>');
+        }
 
         return html;
     },
 
     _getSingleFileEntry: function(link) {
 
-        var html = this._externalLinkMarkup(link.href, link.title); // Todo - DN: link.title or link.name ?
+        var html = this._externalLinkMarkup(link.href, link.title);
 
         return this._wrapInEntryMarkup(html);
     },

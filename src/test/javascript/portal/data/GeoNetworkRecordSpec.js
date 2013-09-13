@@ -18,6 +18,13 @@ describe('Portal.data.GeoNetworkRecord', function() {
                     protocol: 'OGC:WMS-1.1.1-http-get-map',
                     title: 'ACORN Radar Stations',
                     type: 'application/vnd.ogc.wms_xml'
+                },
+                {
+                    href: 'http://geonetwork.imos.org.au/1234',
+                    name: 'imos:radar_stations',
+                    protocol: 'WWW:LINK-1.0-http--metadata-URL',
+                    title: 'ACORN Radar Stations',
+                    type: 'text/html'
                 }
             ],
             title: 'the layer title',
@@ -111,10 +118,5 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.metadataUrl).toBe('metadata_url');
             expect(wfsInfo.unusedField).toBe(undefined);
         });
-    });
-
-    describe('point of truth URL', function() {
-
-        expect(false).toBe('WRITE SOME TESTS');
     });
 });

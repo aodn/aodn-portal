@@ -85,34 +85,12 @@ Portal.data.GeoNetworkRecord.create = function(o){
 
     var f = Ext.data.Record.create(o);
 
-    Portal.data.GeoNetworkRecord._addGetPointOfTruthUrl(f.prototype);
     Portal.data.GeoNetworkRecord._addGetFirstWmsLink(f.prototype);
     Portal.data.GeoNetworkRecord._addHasWmsLink(f.prototype);
     Portal.data.GeoNetworkRecord._addConvertData(f.prototype);
     Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer(f.prototype);
 
     return f;
-};
-
-Portal.data.GeoNetworkRecord._addGetPointOfTruthUrl = function(prototype) {
-
-    prototype.getPointOfTruthUrl = function() {
-        var links = this.get('links');
-
-        if (!links) {
-            return undefined;
-        }
-
-        var linkStore = new Portal.search.data.LinkStore({
-            data: {
-                links: links
-            }
-        });
-
-        linkStore.filterByProtocols();
-
-        return linkStore.getLayerLink(0);
-    };
 };
 
 Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
