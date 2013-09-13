@@ -653,6 +653,12 @@ table.featureInfo caption {
     z-index: 900! important;
 }
 
+.animationControlsPanel {
+     width: 450px;
+     padding: 2px 6px 0px 6px;
+     margins: 2px;
+}
+
 .animationSubPanel label,
 .animationSubPanel button {
     color: white;

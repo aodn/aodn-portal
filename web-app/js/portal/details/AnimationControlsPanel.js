@@ -11,11 +11,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
         var config = Ext.apply({
-            layout: 'form',
-            stateful: false,
-            width: '450px',
-            padding: '2px 6px 0px 6px',
-            margins: '2px'
+            cls: 'animationControlsPanel animationSubPanel',
+            layout: 'form'
         }, cfg);
 
         Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
@@ -37,8 +34,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent : function() {
-
-        this.cls = 'animationSubPanel';
 
         this.warn = new Ext.form.Label({
             padding : 5,
