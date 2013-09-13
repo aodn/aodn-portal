@@ -85,7 +85,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
 
         it('wmsLayer should not be set', function() {
 
-            expect(convertedData['wmsLayer']).toBe(undefined);
+            expect(convertedData['wmsLayer']).toBeUndefined();
         });
 
         it('wfsDownloadInfo should have correct fields', function() {
@@ -96,7 +96,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.serverUri).toBe('server_url');
             expect(wfsInfo.cqlFilter).toBe('cql_filter');
             expect(wfsInfo.metadataUrl).toBe('metadata_url');
-            expect(wfsInfo.unusedField).toBe(undefined);
+            expect(wfsInfo.unusedField).toBeUndefined();
         });
 
         it('wfsDownloadInfo should have correct fields when wfsLayer is present', function() {
@@ -116,7 +116,7 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.serverUri).toBe('wfs_server_uri');
             expect(wfsInfo.cqlFilter).toBe('cql_filter');
             expect(wfsInfo.metadataUrl).toBe('metadata_url');
-            expect(wfsInfo.unusedField).toBe(undefined);
+            expect(wfsInfo.unusedField).toBeUndefined();
         });
     });
 });
