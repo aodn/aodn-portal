@@ -86,6 +86,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     scope: this,
                     handler: function () {
                         Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
+                        Ext.MsgBus.publish('removeAllLayers');
                     }
                 },
                 {
@@ -95,6 +96,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     cls: "floatLeft buttonPad",
                     scope: this,
                     handler: function () {
+                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
                         Ext.MsgBus.publish('reset');
                     }
                 },
@@ -107,4 +109,8 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
     autoZoomEnabled: function () {
         return this.autoZoomCheckbox.getValue();
     },
+
+    fireRemoveAllLayers: function () {
+        this.fireEvent('removealllayers');
+    }
 });
