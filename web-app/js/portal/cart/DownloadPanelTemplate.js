@@ -10,8 +10,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function() {
 
-        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping;
-
         var templateLines = [
             '<div class="download-collection">',
             '  <div class="title-row">',
@@ -28,7 +26,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  </div>',
             '  <div class="row">',
             '    <div class="subheading">Attached files</div>',
-            '    {[this._getFileListMarkup(values)]}',
+            '    {[this._getFileListEntries(values)]}',
             '  </div>',
             '</div>'
         ];
@@ -88,7 +86,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         return this._wrapInEntryMarkup(html);
     },
 
-    _getFileListMarkup: function(values) {
+    _getFileListEntries: function(values) {
 
         var links = values.downloadableLinks;
         var html = "";
@@ -96,7 +94,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         Ext.each(
             links,
             function(link) {
-                html += this._getMarkupForOneFile(link);
+                html += this._getSingleFileEntry(link);
             },
             this
         );
@@ -104,6 +102,13 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         if (html == "") html = this._wrapInEntryMarkup('<span class="secondary-text">No attached files.</span>');
 
         return html;
+    },
+
+    _getSingleFileEntry: function(link) {
+
+        var html = this._externalLinkMarkup(link.href, link.title); // Todo - DN: link.title or link.name ?
+
+        return this._wrapInEntryMarkup(html);
     },
 
     _wrapInEntryMarkup: function(text) {
@@ -116,12 +121,5 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         if (!text) text = href;
 
         return "<a href='" + href + "' target='_blank' class='external'>" + text + "</a>";
-    },
-
-    _getMarkupForOneFile: function(link) {
-
-        var html = this._externalLinkMarkup(link.href, link.title); // Todo - DN: link.title or link.name ?
-
-        return this._wrapInEntryMarkup(html);
     }
 });
