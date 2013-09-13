@@ -32,7 +32,6 @@ Portal.cart.DownloadToolbar = Ext.extend(Ext.Toolbar, {
 
         var config = {
             items: [
-                this.downloadAllButton,
                 this.clearCartButton
             ],
             store: Portal.data.ActiveGeoNetworkRecordStore.instance()
