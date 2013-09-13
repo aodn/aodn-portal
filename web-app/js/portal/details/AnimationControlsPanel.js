@@ -11,15 +11,18 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
         var config = Ext.apply({
-            layout : 'form',
-            stateful : false,
-            bodyStyle : 'padding:6px; margin:2px',
-            width : '100%'
+            cls: 'animationControlsPanel animationSubPanel',
+            layout: 'form'
         }, cfg);
 
         Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, this._onBeforeSelectedLayerChanged, this);
+
+        if (config.mapPanel) {
+            this.timeControl = config.mapPanel.getTimeControl();
+            this.setMap(config.mapPanel.map);
+        }
 
         if (this.timeControl) {
             this.timeControl.events.on({
@@ -31,8 +34,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent : function() {
-
-        this.cls = 'animationSubPanel';
 
         this.warn = new Ext.form.Label({
             padding : 5,
@@ -96,12 +97,12 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.stepLabel = new Ext.form.Label({
-            flex : 1,
-            width : 115,
+            flex : 0.8,
+            width : 130,
             style : 'padding-top: 5; padding-bottom: 5'
         });
 
-        this.speedLabel = new Portal.visualise.animations.AnimationSpeedLabel({
+        this.speedLabel = new Ext.form.Label({
             flex : 1,
             style : 'padding: 5',
             text: '1x'
@@ -140,13 +141,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
         this.items = [
             {
-                xtype : 'container',
-                defaultMargins : "15 5 20 5",
-                layout : {
-                    type : 'hbox',
-                    pack : 'start'
-
-                },
+                xtype : 'panel',
+                layout : 'hbox',
                 items : [this.buttonsPanel, this.stepSlider,
                          this.speedLabel, this.stepLabel]
             },
@@ -168,6 +164,16 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         Portal.details.AnimationControlsPanel.superclass.initComponent.call(this);
+    },
+
+    contract: function() {
+        this.dateTimeSelectorPanel.hide();
+        this.getAnimationButton.hide();
+    },
+
+    expand: function() {
+        this.dateTimeSelectorPanel.show();
+        this.getAnimationButton.show();
     },
 
     setMap : function(theMap) {
@@ -286,12 +292,6 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _onTimeChanged: function(dateTime) {
         this.stepSlider.setValue(this.timeControl.getStep());
         this._setStepLabelTextToDateTime(dateTime);
-    },
-
-    isAnimating : function() {
-        // TODO: this is most likely dodgy.
-        // Need to check when and how this function is called.
-        return false;
     },
 
     _setStepLabelTextToDateTime: function(dateTime) {
