@@ -85,7 +85,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
                     scope: this,
                     handler: function () {
-                        Ext.MsgBus.publish('removeAllLayers');
+                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
                     }
                 },
                 {
@@ -107,8 +107,4 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
     autoZoomEnabled: function () {
         return this.autoZoomCheckbox.getValue();
     },
-
-    fireRemoveAllLayers: function () {
-        this.fireEvent('removealllayers');
-    }
 });

@@ -75,6 +75,10 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         });
     },
 
+    removeAll: function(store) {
+        Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
+    },
+
     initiateDownload: function() {
 
         this.downloader.start();
