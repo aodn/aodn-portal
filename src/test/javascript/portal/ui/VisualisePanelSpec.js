@@ -16,8 +16,12 @@ describe('Portal.ui.VisualisePanel', function() {
         }
     };
 
-    var panel = new Portal.ui.VisualisePanel({
-        mapPanel: new Portal.ui.MapPanel()
+    var panel;
+
+    beforeEach(function() {
+        panel = new Portal.ui.VisualisePanel({
+            mapPanel: new Portal.ui.MapPanel()
+        });
     });
 
     it('listens for beforehide event', function() {

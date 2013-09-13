@@ -79,6 +79,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }, this);
     },
 
+    getTimeControl: function() {
+        return this.mapOptions.timeControl;
+    },
+
     _updateLayerLoadingSpinner:function (numLayersLoading) {
         // When running tests, loadSpinner will not be available
         // Or... just be safe!

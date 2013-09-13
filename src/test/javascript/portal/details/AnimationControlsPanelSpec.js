@@ -556,4 +556,26 @@ describe("Portal.details.AnimationControlsPanel", function() {
             expect(ncWmsLayer.downloadAsGif.calls[0].args[0].temporalExtent.max).toBe(theMaxTemporalExtent);
         });
     });
+
+    describe('expand and contract', function() {
+        it('show detailed controls on expand', function() {
+            spyOn(animationControlsPanel.dateTimeSelectorPanel, 'show');
+            spyOn(animationControlsPanel.getAnimationButton, 'show');
+
+            animationControlsPanel.expand();
+
+            expect(animationControlsPanel.dateTimeSelectorPanel.show).toHaveBeenCalled();
+            expect(animationControlsPanel.getAnimationButton.show).toHaveBeenCalled();
+        });
+
+        it('hide detailed controls on contract', function() {
+            spyOn(animationControlsPanel.dateTimeSelectorPanel, 'hide');
+            spyOn(animationControlsPanel.getAnimationButton, 'hide');
+
+            animationControlsPanel.contract();
+
+            expect(animationControlsPanel.dateTimeSelectorPanel.hide).toHaveBeenCalled();
+            expect(animationControlsPanel.getAnimationButton.hide).toHaveBeenCalled();
+        });
+    });
 });

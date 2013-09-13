@@ -141,7 +141,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/AnimationPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/AnimationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/RightDetailsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/HomePanel.js')}"></script>
@@ -177,7 +177,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationState.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationPlayButton.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedButton.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedLabel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationStepSlider.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>

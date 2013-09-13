@@ -10,7 +10,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
     var timeControl;
     var parentAnimationControl;
     var selectedLayer;
-    
+
     beforeEach(function() {
         timeControl = new OpenLayers.Control.Time();
         selectedLayer = {
@@ -19,12 +19,12 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         parentAnimationControl = {
             selectedLayer: selectedLayer
         };
-        
+
         dateTimePanel = new Portal.details.AnimationDateTimeSelectorPanel({
             timeControl: timeControl,
             parentAnimationControl: parentAnimationControl
         });
-        
+
         extentEvent = {
             layer: {
                 min: moment('2008-01-01T12:34:56'),
@@ -39,8 +39,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 
     describe('initialisation', function() {
         it('layout', function() {
-            expect(dateTimePanel.layout).toBe('table');
-            expect(dateTimePanel.layoutConfig.columns).toBe(3);
+            expect(dateTimePanel.layout).toBe('vbox');
         });
 
         it('timeControl', function() {
@@ -48,26 +47,26 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         });
 
         it('items', function() {
-            expect(dateTimePanel.items.get(0)).toBe(dateTimePanel.startLabel);
-            expect(dateTimePanel.items.get(1)).toBe(dateTimePanel.startDatePicker);
-            expect(dateTimePanel.items.get(2)).toBe(dateTimePanel.startTimeCombo);
-            expect(dateTimePanel.items.get(3)).toBe(dateTimePanel.endLabel);
-            expect(dateTimePanel.items.get(4)).toBe(dateTimePanel.endDatePicker);
-            expect(dateTimePanel.items.get(5)).toBe(dateTimePanel.endTimeCombo);
+            expect(dateTimePanel.items.get(0).items.get(0)).toBe(dateTimePanel.startLabel);
+            expect(dateTimePanel.items.get(0).items.get(1)).toBe(dateTimePanel.startDatePicker);
+            expect(dateTimePanel.items.get(0).items.get(2)).toBe(dateTimePanel.startTimeCombo);
+            expect(dateTimePanel.items.get(1).items.get(0)).toBe(dateTimePanel.endLabel);
+            expect(dateTimePanel.items.get(1).items.get(1)).toBe(dateTimePanel.endDatePicker);
+            expect(dateTimePanel.items.get(1).items.get(2)).toBe(dateTimePanel.endTimeCombo);
         });
 
         it('start date picker', function() {
             expect(dateTimePanel.getStartDatePicker()).toBeTruthy();
             expect(dateTimePanel.getStartDatePicker().format).toBe(dateTimePanel.DATE_FORMAT);
             expect(dateTimePanel.getStartDatePicker().editable).toBeFalsy();
-            expect(dateTimePanel.getStartDatePicker().width).toBe(100);
+            expect(dateTimePanel.getStartDatePicker().width).toBe(120);
         });
 
         it('end date picker', function() {
             expect(dateTimePanel.getEndDatePicker()).toBeTruthy();
             expect(dateTimePanel.getEndDatePicker().format).toBe(dateTimePanel.DATE_FORMAT);
             expect(dateTimePanel.getEndDatePicker().editable).toBeFalsy();
-            expect(dateTimePanel.getEndDatePicker().width).toBe(100);
+            expect(dateTimePanel.getEndDatePicker().width).toBe(120);
         });
 
         it('start time combo', function() {
@@ -79,7 +78,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             expect(dateTimePanel.getStartTimeCombo().displayField).toBe('displayTime');
             expect(dateTimePanel.getStartTimeCombo().width).toBe(130);
         });
-        
+
         it('end time combo', function() {
             expect(dateTimePanel.getEndTimeCombo()).toBeTruthy();
             expect(dateTimePanel.getEndTimeCombo().mode).toBe('local');
@@ -93,7 +92,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 
     describe('picker values on temporal extent changed', function() {
         var animationControlsPanel;
-        
+
         beforeEach(function() {
         });
 
@@ -103,8 +102,8 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             expect(dateTimePanel.startDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
             expect(dateTimePanel.startDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
             expect(dateTimePanel.startDatePicker.getValue()).toBeSame('2009-01-01');
-        });                
-        
+        });
+
         it('end date picker', function() {
             spyOn(dateTimePanel, '_updateTimeCombo');
             dateTimePanel._onTemporalExtentChanged(extentEvent);
@@ -147,9 +146,9 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     };
 
                     spyOn(dateTimePanel.startTimeCombo.store, 'loadData').andCallThrough();
-                    
+
                     dateTimePanel._updateStartTimeCombo(moment('2001-01-01T05:00'));
-                    
+
                     var addData = dateTimePanel.startTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
                     expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
@@ -157,7 +156,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     expect(dateTimePanel.startTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
             });
-            
+
             describe('end', function() {
                 it('end time picker updated on temporal extent change', function() {
                     spyOn(dateTimePanel, '_updateStartTimeCombo');
@@ -191,9 +190,9 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     };
 
                     spyOn(dateTimePanel.endTimeCombo.store, 'loadData').andCallThrough();
-                    
+
                     dateTimePanel._updateEndTimeCombo(moment('2001-01-01T05:00'));
-                    
+
                     var addData = dateTimePanel.endTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
                     expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
@@ -212,7 +211,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 		    dateTimePanel.endTimeCombo.disable();
 
             dateTimePanel.enable();
-            
+
 		    expect(dateTimePanel.startDatePicker.disabled).toBeFalsy();
 		    expect(dateTimePanel.endDatePicker.disabled).toBeFalsy();
 		    expect(dateTimePanel.startTimeCombo.disabled).toBeFalsy();
@@ -226,7 +225,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
 		    dateTimePanel.endTimeCombo.enable();
 
             dateTimePanel.disable();
-            
+
 		    expect(dateTimePanel.startDatePicker.disabled).toBeTruthy();
 		    expect(dateTimePanel.endDatePicker.disabled).toBeTruthy();
 		    expect(dateTimePanel.startTimeCombo.disabled).toBeTruthy();
@@ -239,11 +238,11 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         beforeEach(function() {
             dateTimePanel.startTimeCombo.setValue(moment('2000-01-01T22:22:22').valueOf());
             dateTimePanel.endTimeCombo.setValue(moment('2010-10-10T11:11:11').valueOf());
-            
+
             spyOn(timeControl, 'configureForLayer');
             spyOn(dateTimePanel, '_updateTimeCombo');
         });
-        
+
         it('start time combo select', function() {
             dateTimePanel.startTimeCombo.fireEvent('select');
             expect(timeControl.configureForLayer.calls[0].args[0]).toBe(selectedLayer);
@@ -269,7 +268,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             dateTimePanel.startTimeCombo.setValue(0);
             dateTimePanel.endTimeCombo.setValue(1);
         });
-        
+
         it('start time combo select', function() {
             dateTimePanel.startTimeCombo.fireEvent('select');
             expect(dateTimePanel.parentAnimationControl.selectedLayer._precache).toHaveBeenCalled();

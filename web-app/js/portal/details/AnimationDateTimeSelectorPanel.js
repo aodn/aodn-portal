@@ -11,18 +11,13 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     DATE_FORMAT: 'Y-m-d',
     TIME_FORMAT: 'HH:mm:ss (Z)',
 
+    ROW_HEIGHT: 30,
+
     constructor: function(cfg) {
         var config = Ext.apply({
-            layout: 'table',
-            layoutConfig: {
-                columns: 3,
-                tableAttrs : {
-                    style : {
-                        width : '80%'
-                    }
-                }
-            },
-            plain: true
+            height: this.ROW_HEIGHT * 2,
+            layout: 'vbox',
+            align: 'stretch'
         }, cfg);
 
         Portal.details.AnimationDateTimeSelectorPanel.superclass.constructor.call(this, config);
@@ -40,18 +35,20 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
 
         this.startLabel = new Ext.form.Label({
-            html : "Start:"
+            html : "Start:",
+            width: 50
         });
 
         this.endLabel = new Ext.form.Label({
-            html : "End:"
+            html : "End:",
+            width: 50
         });
 
         this.startDatePicker = new Ext.form.DateField({
             format : this.DATE_FORMAT,
             disabledDatesText: "unavailable",
             editable : false,
-            width : 100,
+            width : 120,
             listeners : {
                 scope : this,
                 select: this._onStartDateSelected
@@ -62,7 +59,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
             format : this.DATE_FORMAT,
             disabledDatesText: "unavailable",
             editable : false,
-            width : 100,
+            width : 120,
             listeners : {
                 scope : this,
                 select: this._onEndDateSelected
@@ -86,8 +83,24 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
-            this.startLabel, this.startDatePicker, this.startTimeCombo,
-            this.endLabel, this.endDatePicker, this.endTimeCombo
+            {
+                xtype: 'panel',
+                layout: 'hbox',
+                width: '100%',
+                height: this.ROW_HEIGHT,
+                items: [
+                    this.startLabel, this.startDatePicker, this.startTimeCombo,
+                ]
+            },
+            {
+                xtype: 'panel',
+                layout: 'hbox',
+                width: '100%',
+                height: this.ROW_HEIGHT,
+                items: [
+                    this.endLabel, this.endDatePicker, this.endTimeCombo
+                ]
+            }
         ];
 
         Portal.details.AnimationDateTimeSelectorPanel.superclass.initComponent.call(this);
