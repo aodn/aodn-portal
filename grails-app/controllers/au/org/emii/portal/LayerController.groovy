@@ -396,7 +396,7 @@ class LayerController {
                 def con = new URL(params.metaURL).openConnection()
                 def metadataText = con.content.text
 
-                if (con.contentType.contains("text/xml")) {
+                if (con.contentType.find(/(text|application)\/xml/)) {
 
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
