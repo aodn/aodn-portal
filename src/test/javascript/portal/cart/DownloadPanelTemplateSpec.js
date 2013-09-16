@@ -45,8 +45,8 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_externalLinkMarkup').andReturn('link markup');
-            spyOn(tpl, '_wrapInEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
+            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
 
             html = tpl._getPointOfTruthLinkEntry(geoNetworkRecord);
         });
@@ -56,14 +56,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             expect(html).toBe('entry markup');
         });
 
-        it('calls _wrapInEntryMarkup', function() {
+        it('calls _makeEntryMarkup', function() {
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('link markup');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('link markup');
         });
 
-        it('calls _externalLinkMarkup', function() {
+        it('calls _makeExternalLinkMarkup', function() {
 
-            expect(tpl._externalLinkMarkup).toHaveBeenCalledWith('point of truth url', 'View metadata record');
+            expect(tpl._makeExternalLinkMarkup).toHaveBeenCalledWith('point of truth url', 'View metadata record');
         });
     });
 
@@ -71,7 +71,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_wrapInEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
         });
 
         it('returns the entry markup', function() {
@@ -85,7 +85,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
         });
 
         it('calls entry markup with no filter message', function() {
@@ -94,7 +94,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
         });
 
         it('returns empty string when no layer', function() {
@@ -104,12 +104,12 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
             expect(html).toBe('');
-            expect(tpl._wrapInEntryMarkup).not.toHaveBeenCalled();
+            expect(tpl._makeEntryMarkup).not.toHaveBeenCalled();
         });
 
         afterEach(function() {
 
-            tpl._wrapInEntryMarkup.reset();
+            tpl._makeEntryMarkup.reset();
         });
     });
 
@@ -119,7 +119,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_wrapInEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
 
             html = tpl._getDataDownloadEntry(geoNetworkRecord);
         });
@@ -131,7 +131,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
         });
 
         it('include message when there is no layer', function() {
@@ -140,12 +140,12 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct-access to data available currently.</span>');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct-access to data available currently.</span>');
         });
 
         afterEach(function() {
 
-            tpl._wrapInEntryMarkup.reset();
+            tpl._makeEntryMarkup.reset();
         });
     });
 
@@ -154,7 +154,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         beforeEach(function() {
 
             spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
-            spyOn(tpl, '_wrapInEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
         });
 
         it('calls _getSingleFileEntry for each link', function() {
@@ -188,14 +188,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No attached files.</span>');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No attached files.</span>');
             expect(html).toBe('entry markup');
         });
 
         afterEach(function() {
 
             tpl._getSingleFileEntry.reset();
-            tpl._wrapInEntryMarkup.reset();
+            tpl._makeEntryMarkup.reset();
         });
     });
 
@@ -205,8 +205,8 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_externalLinkMarkup').andReturn('link markup');
-            spyOn(tpl, '_wrapInEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
+            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
 
             var link = geoNetworkRecord.downloadableLinks[0];
 
@@ -218,39 +218,49 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             expect(html).toBe('entry markup');
         });
 
-        it('calls _wrapInEntryMarkup', function() {
+        it('calls _makeEntryMarkup', function() {
 
-            expect(tpl._wrapInEntryMarkup).toHaveBeenCalledWith('link markup');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('link markup');
         });
 
-        it('calls _externalLinkMarkup', function() {
+        it('calls _makeExternalLinkMarkup', function() {
 
-            expect(tpl._externalLinkMarkup).toHaveBeenCalledWith('http://host/some.html', 'the title one');
+            expect(tpl._makeExternalLinkMarkup).toHaveBeenCalledWith('http://host/some.html', 'the title one');
         });
     });
 
-    describe('_wrapInEntryMarkup', function() {
+    describe('_makeEntryMarkup', function() {
 
         it('wraps the text in a div', function() {
 
-            var html = tpl._wrapInEntryMarkup('text');
+            var html = tpl._makeEntryMarkup('text');
 
             expect(html).toBe('<div class="entry">text</div>');
         });
     });
 
-    describe('_externalLinkMarkup', function() {
+    describe('_makeEntryMarkup', function() {
+
+        it('wraps the text in a span', function() {
+
+            var html = tpl._makeSecondaryTextMarkup('text');
+
+            expect(html).toBe('<span class="secondary-text">text</span>');
+        });
+    });
+
+    describe('_makeExternalLinkMarkup', function() {
 
         it('wraps the text in an anchor tag', function() {
 
-            var html = tpl._externalLinkMarkup('http://host.com/', 'text');
+            var html = tpl._makeExternalLinkMarkup('http://host.com/', 'text');
 
             expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>text</a>");
         });
 
         it('uses href as text if text is undefined', function() {
 
-            var html = tpl._externalLinkMarkup('http://host.com/');
+            var html = tpl._makeExternalLinkMarkup('http://host.com/');
 
             expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>http://host.com/</a>");
         });

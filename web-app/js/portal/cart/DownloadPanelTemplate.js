@@ -38,9 +38,9 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         var href = record.pointOfTruthLink.href;
 
-        var html = this._externalLinkMarkup(href, "View metadata record");
+        var html = this._makeExternalLinkMarkup(href, "View metadata record");
 
-        return this._wrapInEntryMarkup(html);
+        return this._makeEntryMarkup(html);
     },
 
     _getDataFilterEntry: function(values) {
@@ -61,7 +61,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
                 html = "No data filters applied.";
             }
 
-            return this._wrapInEntryMarkup(html);
+            return this._makeEntryMarkup(html);
         }
         else {
 
@@ -80,10 +80,10 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = '<span class="secondary-text">No direct-access to data available currently.</span>'
+            html = this._makeSecondaryTextMarkup('No direct-access to data available currently.');
         }
 
-        return this._wrapInEntryMarkup(html);
+        return this._makeEntryMarkup(html);
     },
 
     _getFileListEntries: function(values) {
@@ -99,26 +99,34 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             this
         );
 
-        if (html == ""){
-            html = this._wrapInEntryMarkup('<span class="secondary-text">No attached files.</span>');
+        if (html) {
+
+            return html;
         }
 
-        return html;
+        return this._makeEntryMarkup(
+            this._makeSecondaryTextMarkup('No attached files.')
+        );
     },
 
     _getSingleFileEntry: function(link) {
 
-        var html = this._externalLinkMarkup(link.href, link.title);
+        var html = this._makeExternalLinkMarkup(link.href, link.title);
 
-        return this._wrapInEntryMarkup(html);
+        return this._makeEntryMarkup(html);
     },
 
-    _wrapInEntryMarkup: function(text) {
+    _makeEntryMarkup: function(text) {
 
         return '<div class="entry">' + text + '</div>';
     },
 
-    _externalLinkMarkup: function(href, text) {
+    _makeSecondaryTextMarkup: function(text) {
+
+        return '<span class="secondary-text">' + text + '</span>';
+    },
+
+    _makeExternalLinkMarkup: function(href, text) {
 
         if (!text) text = href;
 
