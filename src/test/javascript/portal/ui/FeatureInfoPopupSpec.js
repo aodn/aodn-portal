@@ -38,33 +38,52 @@ describe("Portal.ui.FeatureInfoPopup", function()
         featureInfoPopup.destroy();
     });
 
-	// Simple case, two tabs, first one remains selected.
-	it("load two tabs, first remains selected", function()
-	{
-		featureInfoPopup._addPopupTabContent("", "tab 1");
-		featureInfoPopup._addPopupTabContent("", "tab 2");
+    describe('Tab content', function() {
+        it('does not create a tab when content is undefined', function() {
+            featureInfoPopup._addPopupTabContent(undefined, "tab 1");
+            expect(featureInfoPopup.popupTab.getActiveTab()).toBeNull();
+        });
 
-		expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 1");
-	});
+        it('does not create a tab when content is empty', function() {
+            featureInfoPopup._addPopupTabContent("", "tab 1");
+            expect(featureInfoPopup.popupTab.getActiveTab()).toBeNull();
+        });
 
-	// Case for #1726.
-	// - 2 tabs load
-	it("load two tabs, select 2nd, load 3rd - 2nd remains selected", function()
-	{
-		featureInfoPopup._addPopupTabContent("", "tab 1");
-		featureInfoPopup._addPopupTabContent("", "tab 2");
-		expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 1");
+        it('does create a tab when there is content', function() {
+            featureInfoPopup._addPopupTabContent("content for tab 1", "tab 1");
+            expect(featureInfoPopup.popupTab.getActiveTab()).not.toBeNull();
+        });
+    });
 
-		// - user clicks/activates 2nd tab
-		featureInfoPopup.popupTab.setActiveTab(1);
-		expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 2");
+    describe('Tab selection', function() {
+        // Simple case, two tabs, first one remains selected.
+        it("load two tabs, first remains selected", function()
+        {
+            featureInfoPopup._addPopupTabContent("content for tab 1", "tab 1");
+            featureInfoPopup._addPopupTabContent("content for tab 2", "tab 2");
 
-		// - third tab loads
-		featureInfoPopup._addPopupTabContent("", "tab 3");
+            expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 1");
+        });
 
-		// 2nd tab remains selected.
-		expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 2");
-	});
+        // Case for #1726.
+        // - 2 tabs load
+        it("load two tabs, select 2nd, load 3rd - 2nd remains selected", function()
+        {
+            featureInfoPopup._addPopupTabContent("content for tab 1", "tab 1");
+            featureInfoPopup._addPopupTabContent("content for tab 2", "tab 2");
+            expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 1");
+
+            // - user clicks/activates 2nd tab
+            featureInfoPopup.popupTab.setActiveTab(1);
+            expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 2");
+
+            // - third tab loads
+            featureInfoPopup._addPopupTabContent("", "tab 3");
+
+            // 2nd tab remains selected.
+            expect(featureInfoPopup.popupTab.getActiveTab().title).toEqual("tab 2");
+        });
+    });
 
    it('on reset', function() {
 
