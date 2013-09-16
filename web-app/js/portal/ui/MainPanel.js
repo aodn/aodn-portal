@@ -23,19 +23,24 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
         this.downloadPanel = new Portal.cart.DownloadPanel();
 
+        this.addEvents('tabchange');
+
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
             margins: {
                 left: 5,
                 right: 5
             },
-            unstyled:true,
+            unstyled: true,
             layout: 'card',
-            items:[
+            items: [
                 this.searchPanel,
                 this.visualisePanel,
                 this.downloadPanel
-            ]
+            ],
+            bbar: new Portal.ui.MainToolbar({
+                mainPanel: this
+            })
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
@@ -57,9 +62,44 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     setActiveTab: function(tabIndex) {
-
         this.layout.setActiveItem(tabIndex);
         this._highlightActiveTab();
+        this.fireEvent('tabchange', this);
+    },
+
+    hasNextTab: function() {
+        return this.layout.activeItem != this.downloadPanel
+    },
+
+    hasPrevTab: function() {
+        return this.layout.activeItem != this.searchPanel
+    },
+
+    navigateToNextTab: function() {
+        if (this._getActiveItemIndex() < TAB_INDEX_DOWNLOAD) {
+            this.setActiveTab(this._getActiveItemIndex() + 1);
+        }
+    },
+
+    navigateToPrevTab: function() {
+        if (this._getActiveItemIndex() > TAB_INDEX_SEARCH) {
+            this.setActiveTab(this._getActiveItemIndex() - 1);
+        }
+    },
+
+    _getActiveItemIndex: function() {
+        var activeItemIndex;
+        if (this.layout.activeItem == TAB_INDEX_SEARCH || this.layout.activeItem == this.searchPanel) {
+            activeItemIndex = TAB_INDEX_SEARCH;
+        }
+        else if (this.layout.activeItem == TAB_INDEX_VISUALISE || this.layout.activeItem == this.visualisePanel) {
+            activeItemIndex = TAB_INDEX_VISUALISE;
+        }
+        else if (this.layout.activeItem == TAB_INDEX_DOWNLOAD || this.layout.activeItem == this.downloadPanel) {
+            activeItemIndex = TAB_INDEX_DOWNLOAD;
+        }
+
+        return activeItemIndex;
     },
 
     _highlightActiveTab: function() {
