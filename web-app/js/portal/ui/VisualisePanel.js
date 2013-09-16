@@ -15,11 +15,14 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         this.mapPanel = cfg.mapPanel;
         this.mapPanel.region = 'center';
 
-        this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
-			region: 'east',
+        this.detailsPanel = new Portal.details.DetailsPanel({
+			region: 'west',
 			collapsible: true,
 			collapsed: false,
-			stateful: false
+            split: true,
+            width: 360,
+            minWidth: 320,
+            maxWidth: 500
 		});
 
         this.animationWindow = new Portal.ui.AnimationWindow({
@@ -32,7 +35,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             stateful: false,
             items: [
                 this.mapPanel,
-                this.rightDetailsPanel
+                this.detailsPanel
             ],
             listeners: {
                 render: function() {
