@@ -140,7 +140,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
-                        that._configureTimeControl();
                         that._processTemporalExtentDone();
                     }
                 })();
@@ -161,6 +160,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _processTemporalExtentDone: function() {
+        this._configureTimeControl();
         // Unset rawTemporalExtent, meaning that we're done
         this.rawTemporalExtent = null;
         this._precacheTiles();
