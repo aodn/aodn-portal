@@ -29,6 +29,17 @@ convertXmlToLinks = function(v, record) {
     return links;
 };
 
+isDownloadableProtocol = function(protocol) {
+
+    var protocols = [];
+
+    Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
+        protocols.push(protocol.trim())
+    });
+
+    return (protocols.indexOf(protocol) != -1);
+};
+
 Portal.data.GeoNetworkRecord.LinksField = {
     name: 'links',
     convert: convertXmlToLinks
@@ -42,7 +53,7 @@ Portal.data.GeoNetworkRecord.DownloadableLinksField = {
         var downloadableLinks = [];
 
         Ext.each(allLinks, function(linkToCheck) {
-            if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
+            if (isDownloadableProtocol(linkToCheck.protocol)) {
                 downloadableLinks.push(linkToCheck);
             }
         });

@@ -54,14 +54,14 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         // Don't create button if no placeholder exists
         if (html.indexOf(elementId) != -1) {
 
-            this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId]);
+            this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId, collection]);
         }
     },
 
-    _createDownloadButton: function(html, value, id) {
+    _createDownloadButton: function(html, value, id, collection) {
 
         var downloadMenu = new Ext.menu.Menu({
-            items: this._createMenuItems()
+            items: this._createMenuItems(collection)
         });
 
         new Ext.Button({
@@ -72,11 +72,26 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         }).render(html, id);
     },
 
-    _createMenuItems: function() {
+    _createMenuItems: function(collection) {
 
         return [
-            {text: 'Download as .csv', handler: function() { alert('CSV handler') }},
-            {text: 'Download as .kml', handler: function() { alert('KML handler') }}
+            {text: 'Download as .csv', handler: this._downloadHandlerFor(collection, 'csv')},
+            {text: 'Download as .kml', handler: this._downloadHandlerFor(collection, 'kml')}
         ];
+    },
+
+    _downloadHandlerFor: function(collection, format) {
+
+        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+
+        return function() {
+
+            alert('Download from ' + downloadUrl);
+        };
+    },
+
+    _wfsUrlForGeoNetworkRecord: function(record, format) {
+
+        return record.wmsLayer.getFeatureRequestUrl(format);
     }
 });

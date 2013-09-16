@@ -82,6 +82,24 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
     return formatGetFeatureInfo(resp, options);
 };
 
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
+
+    var wmsUrl = this.server.uri;
+    var wfsUrl = wmsUrl.replace('/wms', '/wfs');
+
+    wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
+    wfsUrl += 'typeName=' + this.params.LAYERS;
+    wfsUrl += '&SERVICE=WFS';
+    wfsUrl += '&outputFormat=' + outputFormat;
+    wfsUrl += '&REQUEST=GetFeature';
+    wfsUrl += '&VERSION=1.0.0';
+
+    if (this.getCqlFilter())
+        wfsUrl += '&CQL_FILTER=' + this.getCqlFilter();
+
+    return wfsUrl;
+};
+
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
     var result = undefined;
 
@@ -102,7 +120,7 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
 OpenLayers.Layer.WMS.prototype.proxy = function (proxy) {
     if (this.server.username && this.server.password && !this.localProxy) {
     	var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
-        this.server.uri = proxy + this.server.uri + separator;   
+        this.server.uri = proxy + this.server.uri + separator;
         this.url = this.server.uri;
         this.localProxy = proxy;
     }

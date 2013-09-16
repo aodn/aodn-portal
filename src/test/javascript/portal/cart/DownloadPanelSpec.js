@@ -129,7 +129,7 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel._createDownloadButton.defer).toHaveBeenCalledWith(
                 1,
                 downloadPanel,
-                [htmlMock, 'Download as...', expectedEmlementId]
+                [htmlMock, 'Download as...', expectedEmlementId, collectionMock]
             );
         });
     });
@@ -139,6 +139,7 @@ describe("Portal.cart.DownloadPanel", function() {
         var mockMenu = {};
         var mockMenuItems = {};
         var mockButton = {};
+        var mockCollection = {};
 
         beforeEach(function() {
 
@@ -147,12 +148,12 @@ describe("Portal.cart.DownloadPanel", function() {
             spyOn(Ext, 'Button').andReturn(mockButton);
             mockButton.render = jasmine.createSpy('button render');
 
-            downloadPanel._createDownloadButton('html', 'value', '12345');
+            downloadPanel._createDownloadButton('html', 'value', '12345', mockCollection);
         });
 
         it('calls _createMenuItems', function() {
 
-            expect(downloadPanel._createMenuItems).toHaveBeenCalled();
+            expect(downloadPanel._createMenuItems).toHaveBeenCalledWith(mockCollection);
         });
 
         it('create a new Menu', function() {
@@ -180,7 +181,9 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('returns array of menu items', function() {
 
-            var items = downloadPanel._createMenuItems();
+            spyOn(downloadPanel, '_downloadHandlerFor');
+
+            var items = downloadPanel._createMenuItems({});
 
             expect(items.length).not.toBe(0);
 
@@ -188,10 +191,31 @@ describe("Portal.cart.DownloadPanel", function() {
 
                 expect(item.text).toBeDefined();
                 expect(typeof item.text === 'string').toBeTruthy();
-
-                expect(item.handler).toBeDefined();
-                expect(typeof item.handler === 'function').toBeTruthy();
             });
+
+            expect(downloadPanel._downloadHandlerFor.callCount).toBe(items.length);
+        });
+    });
+
+    describe('_downloadHandlerFor', function() {
+
+        beforeEach(function() {
+
+            spyOn(downloadPanel, '_wfsUrlForGeoNetworkRecord');
+        });
+
+        it('calls _wfsUrlForGeoNetworkRecord', function() {
+
+            downloadPanel._downloadHandlerFor('collection', 'format');
+
+            expect(downloadPanel._wfsUrlForGeoNetworkRecord).toHaveBeenCalledWith('collection', 'format');
+        });
+
+        it('returns a function to be called', function() {
+
+            var returnValue = downloadPanel._downloadHandlerFor();
+
+            expect(typeof returnValue !== 'function');
         });
     });
 });
