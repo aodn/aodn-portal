@@ -300,7 +300,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             beforeEach(function() {
 
-                titleRow = $(rootElement.children()[0]); // Todo - DN: Can find() with nth-child ?
+                titleRow = $(rootElement.children()[0]);
             });
 
             it('has the correct class', function() {
