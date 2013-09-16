@@ -85,6 +85,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
                     scope: this,
                     handler: function () {
+                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
                         Ext.MsgBus.publish('removeAllLayers');
                     }
                 },
@@ -95,6 +96,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     cls: "floatLeft buttonPad",
                     scope: this,
                     handler: function () {
+                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
                         Ext.MsgBus.publish('reset');
                     }
                 },
