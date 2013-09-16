@@ -262,10 +262,10 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            tpl._getPointOfTruthLinkEntry = function() { return "point of truth" };
-            tpl._getDataFilterEntry = function() { return "data filter" };
-            tpl._getDataDownloadEntry = function() { return "data download" };
-            tpl._getFileListEntries = function() { return "file list" };
+            tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
+            tpl._getDataFilterEntry = function() { return "data_filter" };
+            tpl._getDataDownloadEntry = function() { return "data_download" };
+            tpl._getFileListEntries = function() { return "file_list" };
 
             var html = tpl.apply(geoNetworkRecord);
             rootElement = $(html);
@@ -298,7 +298,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 expect(titleRow.attr('class')).toBe('title-row');
             });
 
-            it('has the correct text', function() {
+            it('has the correct text value from function', function() {
 
                 var trimmedText = $.trim(titleRow.text());
 
@@ -310,13 +310,11 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var row;
             var rowHeading;
-            var rowContent;
 
             beforeEach(function() {
 
                 row = $(rootElement.children()[1]);
                 rowHeading = $(row.children()[0]);
-                rowContent = $(row.children()[1]);
             });
 
             it('has the correct class', function() {
@@ -326,11 +324,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             it('has correct number of children', function() {
 
-                console.log(row);
-                console.log(rowHeading);
-                console.log(rowContent);
-
-                expect(rootElement.children().length).toBe(2);
+                expect(row.children().length).toBe(1);
             });
 
             it('has correct row heading', function() {
@@ -339,47 +333,95 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 expect(rowHeading.text()).toBe('Metadata');
             });
 
-            it('has correct text value', function() {
+            it('has correct text value from function', function() {
 
-                expect(rowContent).toBe('point of truth');
+                expect(getText(row)).toBe('point_of_truth');
             });
         });
 
         describe('download row', function() {
 
             var row;
+            var rowHeading;
 
             beforeEach(function() {
 
                 row = $(rootElement.children()[2]);
+                rowHeading = $(row.children()[0]);
             });
 
+            it('has the correct class', function() {
 
+                expect(row.attr('class')).toBe('row');
+            });
+
+            it('has correct number of children', function() {
+
+                expect(row.children().length).toBe(1);
+            });
+
+            it('has correct row heading', function() {
+
+                expect(rowHeading.attr('class')).toBe('subheading');
+                expect(rowHeading.text()).toBe('Data');
+            });
+
+            it('has correct text value from function', function() {
+
+                var rowText = getText(row);
+
+                expect(rowText.length).toBe(2);
+                expect(rowText[0]).toBe('data_filter');
+                expect(rowText[1]).toBe('data_download');
+            });
         });
 
         describe('files row', function() {
 
             var row;
+            var rowHeading;
 
             beforeEach(function() {
 
                 row = $(rootElement.children()[3]);
+                rowHeading = $(row.children()[0]);
+            });
+
+            it('has the correct class', function() {
+
+                expect(row.attr('class')).toBe('row');
+            });
+
+            it('has correct number of children', function() {
+
+                expect(row.children().length).toBe(1);
+            });
+
+            it('has correct row heading', function() {
+
+                expect(rowHeading.attr('class')).toBe('subheading');
+                expect(rowHeading.text()).toBe('Attached files');
+            });
+
+            it('has correct text value from function', function() {
+
+                expect(getText(row)).toBe('file_list');
             });
         });
     });
 
+    function getText(element) {
 
+        // Based on http://stackoverflow.com/questions/298750/how-do-i-select-text-nodes-with-jquery
 
-//
-//        it('filter info is correct', function() {
-//            expect($(html).find(':nth-child(2)').attr('class')).toBe('cart-data-filter');
-//            expect($(html).find(':nth-child(2)').children().length).toBe(1);
-//            expect($(html).find(':nth-child(2)').children().text()).toBe('cql_filter');
-//        });
-//
-//        it('files info is correct', function() {
-//            expect($(html).find(':nth-child(3)').attr('class')).toBe('cart-files');
-//            expect($(html).find(':nth-child(3)').children().length).toBe(1);
-//            expect($(html).find(':nth-child(3)').children().attr('class')).toBe('cart-file-row');
-//        });
+        var text = $(element)
+            .contents()
+            .filter(function() {
+                return this.nodeType === Node.TEXT_NODE;
+            }).text();
+
+        var elements = text.split(" ").filter(function(val) { return val.length });
+
+        return (elements.length == 1) ? elements[0] : elements;
+    }
 });
