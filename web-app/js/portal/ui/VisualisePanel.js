@@ -19,7 +19,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             region: 'east',
             collapsible: true,
             collapsed: false,
-            stateful: false
+            stateful: false,
+            map: this.mapPanel.map
         });
 
         this.animationWindow = new Portal.ui.AnimationWindow({

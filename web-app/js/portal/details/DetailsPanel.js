@@ -31,7 +31,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             html: OpenLayers.i18n('wmsLayerProblem')
         });
 
-        this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
+        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({ map: this.map });
 
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
             id: "opacitySlider",

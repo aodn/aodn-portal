@@ -9,7 +9,7 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-        detailsPanel = new Portal.details.DetailsPanel();
+        detailsPanel = new Portal.details.DetailsPanel({ map: _mockMap() });
     });
 
     it('checkLayerAvailability', function() {
@@ -28,4 +28,11 @@ describe("Portal.details.DetailsPanel", function() {
         expect(Ext.Ajax.request).toHaveBeenCalled();
         expect(Ext.Ajax.request.mostRecentCall.args[0].url).toBe('checkLayerAvailability/show/123');
     });
+
+    function _mockMap() {
+        return {
+            events: { register: function() {}}
+        };
+    }
+
 });

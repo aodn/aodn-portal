@@ -4,8 +4,6 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.data');
-
 Ext.namespace('Portal.data.GeoNetworkRecord');
 
 Portal.data.GeoNetworkRecord.create = function() {

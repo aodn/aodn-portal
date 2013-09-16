@@ -52,7 +52,7 @@ describe("Portal.ui.RightDetailsPanel", function() {
     }
 
     function _initDetailsPanelWithSpies(spies) {
-        var panel = new Portal.ui.RightDetailsPanel();
+        var panel = new Portal.ui.RightDetailsPanel({ map: _mockMap() });
 
         // Mock some drawing related aspects
         panel.el = {
@@ -69,6 +69,14 @@ describe("Portal.ui.RightDetailsPanel", function() {
             spyOn(panel, spy);
         });
         return panel;
+    }
+
+    function _mockMap() {
+        return {
+            events: {
+                register: function() {}
+            }
+        };
     }
 
 });

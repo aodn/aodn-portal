@@ -15,7 +15,6 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
             defaults: {
                 margin: 10
             },
-            id: 'detailsPanelTabs',
             ref: 'detailsPanelTabs',
             border: false,
             activeTab: 0,
@@ -31,7 +30,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
         this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
-        this.aodaacPanel = new Portal.details.AodaacPanel();
+        this.aodaacPanel = new Portal.details.AodaacPanel({ map: this.map });
         this.filterPanel = new Portal.filter.FilterPanel();
 
         this.items = [
