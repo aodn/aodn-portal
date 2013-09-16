@@ -42,7 +42,7 @@ Portal.ui.RightDetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent: function() {
-        this.detailsPanelItems = new Portal.details.DetailsPanel();
+        this.detailsPanelItems = new Portal.details.DetailsPanel({ map: this.map });
 
         this.items = [this.detailsPanelItems];
 
