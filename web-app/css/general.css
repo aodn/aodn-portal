@@ -261,6 +261,10 @@ hr {
     line-height: 75px;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 .mapFooter {
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
@@ -1136,47 +1140,57 @@ div.allwhite {
     height: 14px;
     vertical-align: bottom;
     margin: 1px;
-    background-color : #ffff99
+    background-color: #ffff99
 }
 
 .facetedSearchResultRow {
     background: #eeeeee;
-    background: rgb(239,239,239);
-    background: -moz-linear-gradient(top,  rgba(239,239,239,1) 2%, rgba(229,229,229,1) 40%, rgba(229,229,229,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(239,239,239,1)), color-stop(40%,rgba(229,229,229,1)), color-stop(100%,rgba(229,229,229,1)));
-    background: -webkit-linear-gradient(top,  rgba(239,239,239,1) 2%,rgba(229,229,229,1) 40%,rgba(229,229,229,1) 100%);
-    background: -o-linear-gradient(top,  rgba(239,239,239,1) 2%,rgba(229,229,229,1) 40%,rgba(229,229,229,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(239,239,239,1) 2%,rgba(229,229,229,1) 40%,rgba(229,229,229,1) 100%);
-    background: linear-gradient(to bottom,  rgba(239,239,239,1) 2%,rgba(229,229,229,1) 40%,rgba(229,229,229,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#e5e5e5',GradientType=0 );
+    background: rgb(239, 239, 239);
+    background: -moz-linear-gradient(top, rgba(239, 239, 239, 1) 2%, rgba(229, 229, 229, 1) 40%, rgba(229, 229, 229, 1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, rgba(239, 239, 239, 1)), color-stop(40%, rgba(229, 229, 229, 1)), color-stop(100%, rgba(229, 229, 229, 1)));
+    background: -webkit-linear-gradient(top, rgba(239, 239, 239, 1) 2%, rgba(229, 229, 229, 1) 40%, rgba(229, 229, 229, 1) 100%);
+    background: -o-linear-gradient(top, rgba(239, 239, 239, 1) 2%, rgba(229, 229, 229, 1) 40%, rgba(229, 229, 229, 1) 100%);
+    background: -ms-linear-gradient(top, rgba(239, 239, 239, 1) 2%, rgba(229, 229, 229, 1) 40%, rgba(229, 229, 229, 1) 100%);
+    background: linear-gradient(to bottom, rgba(239, 239, 239, 1) 2%, rgba(229, 229, 229, 1) 40%, rgba(229, 229, 229, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#e5e5e5', GradientType=0);
     padding: 3px 10px;
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
 }
+
 .facetedSearchBtn {
     float: right;
     margin-right: 10px;
 }
+
 .facetedSearchResultHeader {
     float: left;
     line-height: 25px;
 }
-.facetedSearchBtn.x-btn{
+
+    .facetedSearchBtn .x-btn {
+    background: white;
 }
 
-.facetedSearchBtn button{
-    background: white;
-    padding: 5px;
+.facetedSearchBtn button {
     font-weight: bolder;
-    border: medium none;
 }
-.facetedSearchBtn button.x-btn-selected {
-     background: none;
- }
-.facetedSearchBtn button:hover{
+
+.facetedSearchBtn .x-btn-selected {
+    background: none;
+    border: 1px solid #C1C1C1;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+}
+
+.facetedSearchBtn button:hover {
     color: black;
+
 }
+
 .facetedSearchResultTextBody {
     padding: 6px 4px;
 }
+
 .remove-layer-button {
     background: url(../images/remove_layer2.png) center no-repeat transparent;
 }

@@ -71,7 +71,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                 this.mainPanel,
                 {
                     region: 'south',
-                    height: 15,
+                    height: 5,
                     unstyled: true
                 }
         ];

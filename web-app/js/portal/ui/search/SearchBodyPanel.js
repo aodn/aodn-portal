@@ -37,8 +37,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             this._onResultsStoreLoad();
         }, this);
 
-        // todo paging
-        //this.SearchResultsView.getBottomToolbar().on('beforechange', this._onResultsGridBbarBeforeChange, this);
+        this.SearchResultsView.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
     },
 
     _onResultsStoreLoad: function() {

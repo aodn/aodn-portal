@@ -11,6 +11,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickCondensed: '**pick**',
     loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
 
+
+    unavailableExtent: "The data extent is unavailable",
+
     //
     navigate: 'Select by Map Bounds',
     navigateHelp: 'Drag the map. The map bounds is the selection area',

@@ -9,7 +9,6 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
 
-    layout: 'fit',
 
     initComponent:function () {
 
@@ -18,60 +17,54 @@ Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
                 '<div class="">',
                     '<div class="x-panel-header facetedSearchResultRow">',
                         '<h3 class="facetedSearchResultHeader">{title}</h3>',
-                        '<div class="facetedSearchBtn" >',
-                        '<tpl if="this.isRecActive(values)" >',
-                        '   <button type="button" id="fsSearchAddBtn{uuid}" class="x-btn x-btn-text x-btn-selected">Selected ></button></tpl>',
-                        '<tpl if="!this.isRecActive(values)" >',
-                        '   <button type="button" id="fsSearchAddBtn{uuid}" class="x-btn x-btn-text">Select ></button></tpl>',
-                        '</div>',
+                        '<div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">{[this.getButton(values)]}</div>',
                     '</div>',
-                    '<div class="x-panel-body x-box-layout-ct" style=" height: 120px;">',
-                        '<div class="x-panel x-box-item">',
-                            '<img width="240" height="120" src="map.png">',
-                        '</div>',
-                        '<div class="x-panel x-box-item facetedSearchResultTextBody" style=" left: 240px; ">',
+                    '<div class="x-panel-body x-box-layout-ct" style="height:120px;">',
+                        '<div class="x-panel x-box-item" style="height:120px;width:240px;padding:5px;" id="fsSearchMap{uuid}">{[this.getMiniMap(values)]}</div>',
+                        '<div class="x-panel x-box-item facetedSearchResultTextBody" style="left:240px; ">',
                             '<div><span class="x-panel-header">Organisation</span>',
                                 '<span>- Shooters and Chainsaw Operators Party</span>',
                             '</div>',
-                            '<p class="facetedSearchResultTextBody"><i>{abstract}</i>',
-                            '&nbsp;<a href="http://mest.aodn.org.au"> read more </a></p>',
+                            '<p class="facetedSearchResultTextBody"><i>{[this.trimAbstract(values.abstract,40)]}</i>',
+                            '&nbsp;{[this.getMetadataLink(values)]}</p>',
                         '</div>',
                     '</div>',
                 '</div>',
             '</tpl>',
             this,
-            {   isRecActive: function(values) {
-                    var record = this._getRecordFromUuid(values.uuid);
-                    return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record))
+            {
+                getButton: function(values) {
+                    this.createButton.defer(1, this,[values.uuid]);
+                    return "";
                 }
+
             }
         )
 
+        this.pagingBar = new Ext.PagingToolbar({
+            pageSize: 25,
+            store: this.store,
+            height: 60,
+            flex: 1,
+            autoLoad: true
+        });
 
         var config = {
             title: false,
-
-            items: new Ext.DataView({
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            items: [
+                new Ext.DataView({
                 autoScroll: true,
-                autoWidth: true,
+                flex:15,
                 store: this.store,
-                tpl: tpl,
-                multiSelect: true,
-                listeners: {
-                    click: {
-                        fn: this.onClick,
-                        scope: this
-                    }
-                },
-                onClick: function(event, item, options) {
-                    if (item.className === "x-btn x-btn-text") {
-                        // a better way to do this?
-                        this.findParentByType(Ext.Panel)._viewButtonOnClick(item.id);
-                        Ext.get(item.id).addClass("x-btn-selected");
-                        Ext.get(item.id).update("Selected >");
-                    }
-                }
-            })
+                tpl: tpl
+            }),
+                this.pagingBar
+
+            ]
         };
 
 
@@ -86,6 +79,124 @@ Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
         this._subscribeToActiveGeoNetworkRecordStoreEvents();
     },
 
+    createButton: function(uuid) {
+        var cls = "";
+        if (this.isRecActive(uuid)) {
+            cls = "x-btn-selected";
+        }
+
+        new Ext.Button({
+            text: "Select",
+            cls: cls,
+            scope: this,
+            renderTo: "fsSearchAddBtn" + uuid,
+            listeners: {
+                click: {
+                    fn: this._viewButtonOnClick,
+                    scope: this
+                }
+            }
+        })
+    },
+
+    getMetadataLink: function(values) {
+        var ret = "";
+        var links = values.links;
+
+        console.log(values);
+        for (var i = 0; i < links.length; i++) {
+            if (links[i].protocol == "WWW:LINK-1.0-http--metadata-URL") {
+                ret = '<a href="' + links[i].href + '"  class="nowrap" title="' + links[i].title + '"> more </a>';
+            }
+        }
+        return ret;
+
+    },
+
+    getMiniMap: function(values) {
+
+
+        function _baseLayer() {
+            return new OpenLayers.Layer.WMS(
+                "IMOS Tile Cache Simple Baselayer",
+                "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
+                { layers: 'default_basemap_simple' }
+            );
+        };
+
+        function _zoomLevel(map, bounds) {
+            var zoomLevel = map.getZoomForExtent(bounds);
+            if (zoomLevel == 0) {
+                // 0 is too large
+                zoomLevel = 1;
+            }
+            else if (zoomLevel > 4) {
+                // Anything over 4 doesn't show enough to get an idea of where things are
+                zoomLevel = 4;
+            }
+            return zoomLevel;
+        };
+
+
+        function getBestBbox(bbox) {
+            if (bbox.getBounds() != undefined) {
+                return bbox;
+            }
+            else {
+                return new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox);
+            }
+        };
+
+        var componentId = Ext.id();
+
+        var metadataExtent = values.bbox;
+        var emptyString =  (metadataExtent.getBounds() == undefined) ? OpenLayers.i18n('unavailableExtent') : '';
+
+        var map = new OpenLayers.Map({
+            controls: [
+                new OpenLayers.Control.MousePosition({
+                    emptyString: emptyString
+                })
+            ]
+        });
+        map.addLayer(_baseLayer());
+        map.addLayer(metadataExtent.getLayer());
+
+        setTimeout(function() {
+            map.render("fsSearchMap" + values.uuid);
+            if (metadataExtent.getBounds()) {
+                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), _zoomLevel(map, metadataExtent.getBounds()));
+            }
+            else {
+                map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
+            }
+        }, 10);
+        return "";
+
+
+    },
+
+    isRecActive: function(uuid) {
+        var record = this._getRecordFromUuid(uuid);
+        return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record))
+    },
+
+    trimAbstract: function(text,wordCount) {
+        return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
+    },
+
+    _viewButtonOnClick: function(btn) {
+
+        btn.addClass("x-btn-selected");
+        var uuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var record = this._getRecordFromUuid(uuid);
+
+        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
+            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
+        }
+        Ext.MsgBus.publish('viewgeonetworkrecord', record);
+    },
+
     _getRecordFromUuid: function(uuid) {
         var record;
         this.store.each(function(rec) {
@@ -95,20 +206,6 @@ Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
         });
         return record;
     },
-
-
-    _viewButtonOnClick: function(identifier) {
-
-        var uuid = identifier.replace("fsSearchAddBtn",'');
-        var record = this._getRecordFromUuid(uuid);
-
-        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
-            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
-        }
-
-        Ext.MsgBus.publish('viewgeonetworkrecord', record);
-    },
-
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
         Ext.each(['activegeonetworkrecordadded', 'activegeonetworkrecordremoved'], function(eventName) {
             Ext.MsgBus.subscribe(eventName, function() {
@@ -140,8 +237,8 @@ Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
     },
 
     _onStoreLoad: function() {
-/*
-        this.getBottomToolbar().onLoad(
+
+        this.pagingBar.onLoad(
             this.store,
             null,
             {
@@ -150,8 +247,8 @@ Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
                     limit: 10
                 }
             }
-        );*/
+        );
     }
 });
 
-Ext.reg('portal.search.facetedsearchresultsgrid', Portal.search.FacetedSearchResults);
+Ext.reg('portal.search.facetedsearchresults', Portal.search.FacetedSearchResults);

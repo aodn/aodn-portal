@@ -133,6 +133,7 @@ ul.x-tab-strip li {
 
 .x-tab-strip-over span.x-tab-strip-text {
     color: #111;
+    font-weight: bold;
 }
 
 .x-tab-strip-active span.x-tab-strip-text {
@@ -1410,7 +1411,8 @@ a.x-menu-item {
 }
 
 .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
-    border-color: #eeeeee;
+
+    border: none;
 }
 
 .x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {

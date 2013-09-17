@@ -198,7 +198,9 @@ input, select, textarea {
     font-size: 14px;
 	font-weight: bold;
 }
-.x-panel-noborder .x-panel-bbar-noborder .x-toolbar {
+
+.x-toolbar {
+    padding-top: 15px;
     border: none;
     background: none;
 }
@@ -219,6 +221,7 @@ ul.x-tab-strip-top {
 .x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
     background-color:  #E6E9EB;
 }
+
 .semiTransparent {
     background-color: #596169 !important;
     opacity: 0.6;
@@ -231,14 +234,20 @@ ul.x-tab-strip-top {
 
 
 .x-btn {
-    padding: 0px 6px;
+    padding: 0px 4px;
 }
+
 .x-btn,
 .faceted-search-clear-all div.x-hyperlink{
     background-color:  #E6E9EB;
     border-radius: 3px;
     margin-right: 3px;
 }
+
+.x-toolbar-ct .x-btn {
+
+}
+
 .animationSubPanel .x-btn {
     background-color: inherit;
 }
