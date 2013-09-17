@@ -14,3 +14,4 @@ before_install:
 notifications:
   email:
     - jkburges@utas.edu.au
+    - dnahodil@utas.edu.au
