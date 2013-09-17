@@ -104,6 +104,6 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
     _setWindowLocation: function(url) {
 
-        window.location.assign(url);
+        window.open(url, '_blank');
     }
 });
