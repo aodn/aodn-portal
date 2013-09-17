@@ -8,19 +8,9 @@
 
 describe("Portal.ui.MainPanel", function() {
 
-    appConfigStore.getById = function(id) {
-        if (id == 'spatialsearch.url') {
-            return { data: { value: "spatialsearch.aodn.org.au" }};
-        }
-        return "";
-    };
-
     var mainPanel;
 
     beforeEach(function() {
-        Ext.namespace('Portal.app.config');
-        Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
-
         mainPanel = new Portal.ui.MainPanel();
     });
 
@@ -29,7 +19,6 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('initialisation', function() {
-
         it('should init map panel', function() {
             expect(mainPanel.mapPanel).toBeInstanceOf(Portal.ui.MapPanel);
         });
@@ -50,6 +39,10 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('card layout', function() {
+        beforeEach(function() {
+            mockLayoutForMainPanel(mainPanel);
+        });
+
         it('creates an instance of Panel', function() {
             expect(mainPanel).toBeInstanceOf(Ext.Panel);
         });
@@ -59,7 +52,7 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should set layout to cardlayout', function() {
-            expect(mainPanel.layout).toBe('card');
+            expect(mainPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
         it('should initially have search as the active item', function() {
@@ -67,98 +60,12 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should set visualise to active item when geonetwork record is viewed', function() {
-            mockLayout();
+            spyOn(mainPanel.layout, 'setActiveItem');
             Ext.MsgBus.publish('viewgeonetworkrecord');
             expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
 
-        describe('navigation', function() {
-            describe('hasNext, hasPrev', function() {
-                it('when on search tab', function() {
-                    mainPanel.layout = {
-                        activeItem: mainPanel.searchPanel
-                    };
-
-                    expect(mainPanel.hasNextTab()).toBe(true);
-                    expect(mainPanel.hasPrevTab()).toBe(false);
-                });
-
-                it('when on visualise tab', function() {
-                    mainPanel.layout = {
-                        activeItem: mainPanel.visualisePanel
-                    };
-
-                    expect(mainPanel.hasNextTab()).toBe(true);
-                    expect(mainPanel.hasPrevTab()).toBe(true);
-                });
-
-                it('when on download tab', function() {
-                    mainPanel.layout = {
-                        activeItem: mainPanel.downloadPanel
-                    };
-
-                    expect(mainPanel.hasNextTab()).toBe(false);
-                    expect(mainPanel.hasPrevTab()).toBe(true);
-                });
-            });
-
-            describe('nagivateToNextTab', function() {
-                it('should change from search to visualise', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_SEARCH);
-                    mainPanel.navigateToNextTab();
-                    expect(mainPanel.setActiveTab).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
-                });
-
-                it('should change from visualise to download', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_VISUALISE);
-                    mainPanel.navigateToNextTab();
-                    expect(mainPanel.setActiveTab).toHaveBeenCalledWith(TAB_INDEX_DOWNLOAD);
-                });
-
-                it('should not change from download', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_DOWNLOAD);
-                    mainPanel.navigateToNextTab();
-                    expect(mainPanel.setActiveTab).not.toHaveBeenCalled();
-                });
-            });
-
-            describe('nagivateToPrevTab', function() {
-                it('should change from download to visualise', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_DOWNLOAD);
-                    mainPanel.navigateToPrevTab();
-                    expect(mainPanel.setActiveTab).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
-                });
-
-                it('should change from visualise to search', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_VISUALISE);
-                    mainPanel.navigateToPrevTab();
-                    expect(mainPanel.setActiveTab).toHaveBeenCalledWith(TAB_INDEX_SEARCH);
-                });
-
-                it('should not change from search', function() {
-                    spyOn(mainPanel, 'setActiveTab');
-                    _setActiveItem(TAB_INDEX_SEARCH);
-                    mainPanel.navigateToPrevTab();
-                    expect(mainPanel.setActiveTab).not.toHaveBeenCalled();
-                });
-            });
-
-            var _setActiveItem = function(itemIndex) {
-                mainPanel.layout = {
-                    activeItem: itemIndex
-                };
-            };
-        });
-
         it('should fire tabchange event', function() {
-            mainPanel.layout = {
-                setActiveItem: function() {}
-            };
             var tabChangeSpy = jasmine.createSpy('tabchange');
             mainPanel.on('tabchange', tabChangeSpy);
             mainPanel.setActiveTab(0);
@@ -168,6 +75,7 @@ describe("Portal.ui.MainPanel", function() {
 
     describe('main panel tab highlighting', function() {
         beforeEach(function() {
+            mockLayoutForMainPanel(mainPanel);
             spyOn(mainPanel, "_highlightActiveTab");
         });
 
@@ -178,15 +86,8 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('when switching tabs', function() {
-            mockLayout();
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
     });
-
-    var mockLayout = function() {
-        spyOn(Portal.ui.MainPanel.prototype, "doLayout").andReturn(function() {});
-        mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
-        mainPanel.layout.setActiveItem.andCallFake(function() {});
-    };
 });

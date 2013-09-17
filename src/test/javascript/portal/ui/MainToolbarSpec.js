@@ -10,14 +10,12 @@ describe("Portal.ui.MainToolbar", function() {
     var mainToolbar;
 
     beforeEach(function() {
-
-        Ext.namespace('Portal.app.config');
-        Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
-
         mainPanel = new Portal.ui.MainPanel();
         mainToolbar = new Portal.ui.MainToolbar({
             mainPanel: mainPanel
         });
+
+        mainPanel.render(document.body);
     });
 
     describe('on main panel tab change', function() {
@@ -29,8 +27,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to first tab', function() {
             beforeEach(function() {
-                mainPanel.hasPrevTab = function() { return false; }
-                mainPanel.hasNextTab = function() { return true; }
+                mainPanel.layout.hasPrevTab = function() { return false; }
+                mainPanel.layout.hasNextTab = function() { return true; }
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
@@ -45,8 +43,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to middle tab', function() {
             beforeEach(function() {
-                mainPanel.hasPrevTab = function() { return true; }
-                mainPanel.hasNextTab = function() { return true; }
+                mainPanel.layout.hasPrevTab = function() { return true; }
+                mainPanel.layout.hasNextTab = function() { return true; }
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
@@ -61,8 +59,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to last tab', function() {
             beforeEach(function() {
-                mainPanel.hasPrevTab = function() { return true; }
-                mainPanel.hasNextTab = function() { return false; }
+                mainPanel.layout.hasPrevTab = function() { return true; }
+                mainPanel.layout.hasNextTab = function() { return false; }
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
@@ -78,15 +76,15 @@ describe("Portal.ui.MainToolbar", function() {
 
     describe('button handlers', function() {
         it('calls next tab on next click', function() {
-            spyOn(mainPanel, 'navigateToNextTab');
+            spyOn(mainPanel.layout, 'navigateToNextTab');
             mainToolbar.nextButton.fireEvent('click');
-            expect(mainPanel.navigateToNextTab).toHaveBeenCalled();
+            expect(mainPanel.layout.navigateToNextTab).toHaveBeenCalled();
         });
 
         it('calls prev tab on prev click', function() {
-            spyOn(mainPanel, 'navigateToPrevTab');
+            spyOn(mainPanel.layout, 'navigateToPrevTab');
             mainToolbar.prevButton.fireEvent('click');
-            expect(mainPanel.navigateToPrevTab).toHaveBeenCalled();
+            expect(mainPanel.layout.navigateToPrevTab).toHaveBeenCalled();
         });
     });
 });

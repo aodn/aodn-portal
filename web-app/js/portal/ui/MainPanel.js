@@ -32,7 +32,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
                 right: 5
             },
             unstyled: true,
-            layout: 'card',
+            layout: new Portal.ui.NavigableCardLayout(),
             items: [
                 this.searchPanel,
                 this.visualisePanel,
@@ -58,48 +58,11 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     getActiveTab: function() {
-        return this.layout.activeItem;
+        return this.layout.getActiveTab();
     },
 
     setActiveTab: function(tabIndex) {
-        this.layout.setActiveItem(tabIndex);
-        this._highlightActiveTab();
-        this.fireEvent('tabchange', this);
-    },
-
-    hasNextTab: function() {
-        return this.layout.activeItem != this.downloadPanel
-    },
-
-    hasPrevTab: function() {
-        return this.layout.activeItem != this.searchPanel
-    },
-
-    navigateToNextTab: function() {
-        if (this._getActiveItemIndex() < TAB_INDEX_DOWNLOAD) {
-            this.setActiveTab(this._getActiveItemIndex() + 1);
-        }
-    },
-
-    navigateToPrevTab: function() {
-        if (this._getActiveItemIndex() > TAB_INDEX_SEARCH) {
-            this.setActiveTab(this._getActiveItemIndex() - 1);
-        }
-    },
-
-    _getActiveItemIndex: function() {
-        var activeItemIndex;
-        if (this.layout.activeItem == TAB_INDEX_SEARCH || this.layout.activeItem == this.searchPanel) {
-            activeItemIndex = TAB_INDEX_SEARCH;
-        }
-        else if (this.layout.activeItem == TAB_INDEX_VISUALISE || this.layout.activeItem == this.visualisePanel) {
-            activeItemIndex = TAB_INDEX_VISUALISE;
-        }
-        else if (this.layout.activeItem == TAB_INDEX_DOWNLOAD || this.layout.activeItem == this.downloadPanel) {
-            activeItemIndex = TAB_INDEX_DOWNLOAD;
-        }
-
-        return activeItemIndex;
+        this.layout.setActiveTab(tabIndex);
     },
 
     _highlightActiveTab: function() {

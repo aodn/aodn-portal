@@ -18,14 +18,14 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             disabled: true
         });
         this.prevButton.on('click', function() {
-            this.mainPanel.navigateToPrevTab();
+            this.mainPanel.layout.navigateToPrevTab();
         }, this);
 
         this.nextButton = new Ext.Button({
             text: 'next >>'
         });
         this.nextButton.on('click', function() {
-            this.mainPanel.navigateToNextTab();
+            this.mainPanel.layout.navigateToNextTab();
         }, this);
 
         var config = Ext.apply({
@@ -41,7 +41,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _onMainPanelTabChange: function(mainPanel) {
-        this.prevButton.setDisabled(!mainPanel.hasPrevTab());
-        this.nextButton.setDisabled(!mainPanel.hasNextTab());
+        this.prevButton.setDisabled(!mainPanel.layout.hasPrevTab());
+        this.nextButton.setDisabled(!mainPanel.layout.hasNextTab());
     }
 });
