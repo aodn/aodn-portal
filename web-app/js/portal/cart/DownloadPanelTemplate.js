@@ -24,7 +24,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '    {[this._getDataFilterEntry(values)]}',
             '    {[this._getDataDownloadEntry(values)]}',
             '  </div>',
-            '  <tpl if="downloadableLinks.length > 0">',
+            '  <tpl if="downloadableLinks.length &gt; 0">',
             '  <div class="row">',
             '    <div class="subheading">Attached files</div>',
             '    {[this._getFileListEntries(values)]}',

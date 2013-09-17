@@ -190,7 +190,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             expect(Ext.Button).toHaveBeenCalledWith({
                 text: 'value',
-                iconCls: '',
+                icon: 'images/down.png',
                 scope: downloadPanel,
                 menu: mockMenu
             });
