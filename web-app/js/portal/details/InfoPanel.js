@@ -45,7 +45,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 		this.body.update("Loading...");
 		if (layer.getMetadataUrl()) {
 			Ext.Ajax.request({
-				url: 'layer/getFormattedMetadata?metaURL=' + layer.getMetadataUrl(),
+				url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(layer.getMetadataUrl()),
 				scope: this,
 				success: function(resp, options) {
 					this.body.update(resp.responseText);
