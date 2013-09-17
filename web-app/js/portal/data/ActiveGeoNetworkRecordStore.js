@@ -10,8 +10,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     constructor: function() {
 
-        this._initDownloader();
-
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
 
         this.on('add', this._onAdd, this);
@@ -23,19 +21,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         return Portal.data.ActiveGeoNetworkRecordStore.instance().findBy(function(record) {
             return record.get('uuid') == recordToCheck.get('uuid');
         }) != -1;
-    },
-
-    _initDownloader: function() {
-        this.downloader = new Portal.cart.Downloader({
-            store: this
-        });
-
-        // TODO: why doesn't relayEvents() work?
-        Ext.each(['downloadstart', 'downloadsuccess', 'downloadfailure'], function(eventName) {
-            this.downloader.on(eventName, function() {
-                this.fireEvent(eventName);
-            }, this);
-        }, this);
     },
 
     _onAdd: function(store, geoNetworkRecords) {
@@ -73,15 +58,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.each(records, function(record) {
             store._removeFromLayerStore(record);
         });
-    },
-
-    initiateDownload: function() {
-
-        this.downloader.start();
-    },
-
-    isDownloading: function() {
-        return this.downloader.isDownloading();
     },
 
     getItemsEncodedAsJson: function() {
