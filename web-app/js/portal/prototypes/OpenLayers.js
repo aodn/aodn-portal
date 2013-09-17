@@ -94,8 +94,10 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
-    if (this.getCqlFilter())
+    if (this.getCqlFilter()) {
+
         wfsUrl += '&CQL_FILTER=' + this.getCqlFilter();
+    }
 
     return wfsUrl;
 };

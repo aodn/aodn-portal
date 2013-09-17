@@ -45,8 +45,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             this._replacePlaceholderWithButton(html, collection);
         }, this);
 
-        if (!html)
+        if (!html) {
+
             html = this._contentForEmptyView();
+        }
 
         this.update(html);
     },
