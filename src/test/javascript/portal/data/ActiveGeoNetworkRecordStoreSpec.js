@@ -197,6 +197,12 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     expect(activeRecordStore._removeFromLayerStore.calls[0].args[0]).toBe(myRecord);
                     expect(activeRecordStore._removeFromLayerStore.calls[1].args[0]).toBe(myRecord2);
                 });
+
+                it('published activegeonetworkrecordremoved', function() {
+                    spyOn(Ext.MsgBus, 'publish');
+                    activeRecordStore.removeAll();
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('activegeonetworkrecordremoved');
+                });
             });
         });
 
