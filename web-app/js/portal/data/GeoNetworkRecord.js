@@ -8,64 +8,74 @@ Ext.namespace('Portal.data');
 
 Ext.namespace('Portal.data.GeoNetworkRecord');
 
-// TODO: tried to namespace this, but unsuccessfully.
-convertXmlToLinks = function(v, record) {
-    var linkElems = Ext.DomQuery.jsSelect('link', record);
-    var links = [];
+Portal.data.GeoNetworkRecord.create = function() {
 
-    Ext.each(linkElems, function(link) {
-        var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
-        var elements = linkValue.split('|');
+    var convertXmlToLinks = function(v, record) {
+        var linkElems = Ext.DomQuery.jsSelect('link', record);
+        var links = [];
 
-        links.push({
-            name: elements[0],
-            title: elements[1],
-            href: elements[2],
-            protocol: elements[3],
-            type: elements[4]
-        });
-    }, this);
+        Ext.each(linkElems, function(link) {
+            var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
+            var elements = linkValue.split('|');
 
-    return links;
-};
+            links.push({
+                name: elements[0],
+                title: elements[1],
+                href: elements[2],
+                protocol: elements[3],
+                type: elements[4]
+            });
+        }, this);
 
-Portal.data.GeoNetworkRecord.LinksField = {
-    name: 'links',
-    convert: convertXmlToLinks
-};
+        return links;
+    };
 
-Portal.data.GeoNetworkRecord.DownloadableLinksField = {
-    name: 'downloadableLinks',
-    convert: function(v, record) {
+    var LinksField = {
+        name: 'links',
+        convert: convertXmlToLinks
+    };
 
-        var allLinks = convertXmlToLinks(v, record);
-        var downloadableLinks = [];
+    var DownloadableLinksField = {
+        name: 'downloadableLinks',
+        convert: function(v, record) {
 
-        Ext.each(allLinks, function(linkToCheck) {
-            if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
-                downloadableLinks.push(linkToCheck);
-            }
-        });
+            var allLinks = convertXmlToLinks(v, record);
+            var downloadableLinks = [];
 
-        return downloadableLinks;
-    }
-};
+            Ext.each(allLinks, function(linkToCheck) {
+                if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
+                    downloadableLinks.push(linkToCheck);
+                }
+            });
 
-Portal.data.GeoNetworkRecord.BboxField = {
-    name: 'bbox',
-    convert: function(v, record) {
-        var metaDataExtent = new Portal.search.MetadataExtent();
-        Ext.each(Ext.DomQuery.jsSelect('geoBox', record), function(geoBox) {
-            metaDataExtent.addPolygon(geoBox.firstChild.nodeValue);
-        }, this.scope);
+            return downloadableLinks;
+        }
+    };
 
-        return metaDataExtent;
-    }
-};
+    var BboxField = {
+        name: 'bbox',
+        convert: function(v, record) {
+            var metaDataExtent = new Portal.search.MetadataExtent();
+            Ext.each(Ext.DomQuery.jsSelect('geoBox', record), function(geoBox) {
+                metaDataExtent.addPolygon(geoBox.firstChild.nodeValue);
+            }, this.scope);
 
-Portal.data.GeoNetworkRecord.create = function(o) {
+            return metaDataExtent;
+        }
+    };
 
-    var f = Ext.data.Record.create(o);
+    var f = Ext.data.Record.create([
+        'title',
+        'abstract',
+        { name: 'uuid', mapping: '*/uuid' },
+        LinksField,
+        DownloadableLinksField,
+        'source',
+        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
+        BboxField,
+        'wmsLayer'
+    ]);
+
     var p = f.prototype;
 
     p.getFirstWmsLink = function() {
@@ -135,14 +145,4 @@ Portal.data.GeoNetworkRecord.create = function(o) {
     return f;
 };
 
-Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
-    'title',
-    'abstract',
-    { name: 'uuid', mapping: '*/uuid' },
-    Portal.data.GeoNetworkRecord.LinksField,
-    Portal.data.GeoNetworkRecord.DownloadableLinksField,
-    'source',
-    { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-    Portal.data.GeoNetworkRecord.BboxField,
-    'wmsLayer'
-]);
+Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create();
