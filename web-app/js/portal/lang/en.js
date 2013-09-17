@@ -24,7 +24,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     okdownload: 'Download All',
     clearcart: "Clear Cart",
     downloadCartUndo: "Undo Last Remove",
-    emptyCartText: "The cart is empty of datasets to download.",
+    emptyCartText: "No collections have been added.",
     unavailableDataLink: "Sorry this data is currently unavailable",
 
     // Animation Panel

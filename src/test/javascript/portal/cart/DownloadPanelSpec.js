@@ -92,7 +92,32 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('calls update', function() {
 
-            expect(downloadPanel.update.mostRecentCall.args[0]).toBe('[Content 1][Content 2]');
+            expect(downloadPanel.update).toHaveBeenCalledWith('[Content 1][Content 2]');
+        });
+
+        it('calls _contentForEmptyView when empty', function() {
+
+            spyOn(downloadPanel, '_contentForEmptyView').andReturn('empty cart content');
+
+            downloadPanel.store.data.items = [];
+
+            downloadPanel.generateContent();
+
+            expect(downloadPanel._contentForEmptyView).toHaveBeenCalled();
+            expect(downloadPanel.update).toHaveBeenCalledWith('empty cart content');
+        });
+    });
+
+    describe('generateContent', function() {
+
+        it('returns marked-up text', function() {
+
+            spyOn(OpenLayers, 'i18n').andReturn('empty');
+
+            var content = downloadPanel._contentForEmptyView();
+
+            expect(content).toBe('<i>empty</i>');
+            expect(OpenLayers.i18n).toHaveBeenCalled();
         });
     });
 
