@@ -13,6 +13,8 @@ Ext.Ajax.request = function(options) {
 };
 
 beforeEach(function() {
+
+    setupTestConfigAndStubs();
     this.addMatchers({
         toBeSame: function(expected) {
 
@@ -50,3 +52,27 @@ beforeEach(function() {
         }
     });
 });
+
+var setupTestConfigAndStubs = function() {
+    appConfigStore.getById = function(id) {
+        if (id == 'spatialsearch.url') {
+            return { data: { value: "spatialsearch.aodn.org.au" }};
+        }
+        return "";
+    };
+
+    Ext.namespace('Portal.app.config');
+    Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
+
+    // Stop 404s.
+    OpenLayers.Lang.en.loadingSpinner = '';
+};
+
+var mockLayoutForMainPanel = function(mainPanel) {
+    // This is required because these things are normally set when the panel is rendered - but
+    // we don't want to render in tests, because it is slow.
+    mainPanel.layout.container = mainPanel;
+    mainPanel.layout.setActiveItem = function(item) {
+        mainPanel.layout.activeItem = mainPanel.getComponent(item);
+    };
+};
