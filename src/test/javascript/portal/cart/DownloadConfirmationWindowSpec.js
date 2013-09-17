@@ -5,29 +5,51 @@
  *
  */
 describe("Portal.cart.DownloadConfirmationWindow", function() {
+
+    var confirmationWindow;
+
+    beforeEach(function() {
+
+        Portal.app = {
+            config: {
+                downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
+            }
+        };
+        confirmationWindow = new Portal.cart.DownloadConfirmationWindow(
+            {downloadUrl: 'download_url'}
+        );
+
+        spyOn(confirmationWindow, 'close');
+        spyOn(confirmationWindow, '_setWindowLocation');
+    });
+
     describe('on accept', function() {
 
-        var confirmationWindow;
-
         beforeEach(function() {
-            spyOn(Portal.utils.FormUtil, 'createAndSubmit').andReturn(true);
-            Portal.app = {
-                config: {
-                    downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
-                }
-            };
-            confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
+
+            confirmationWindow.onAccept();
         });
 
         it('starts download', function() {
-            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'initiateDownload');
-            confirmationWindow.onAccept();
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload).toHaveBeenCalled();
+
+            expect(confirmationWindow._setWindowLocation).toHaveBeenCalledWith('download_url');
         });
 
         it('closes window', function() {
-            spyOn(confirmationWindow, 'close');
-            confirmationWindow.onAccept();
+
+            expect(confirmationWindow.close).toHaveBeenCalled();
+        });
+    });
+
+    describe('on cancel', function() {
+
+        beforeEach(function() {
+
+            confirmationWindow.onCancel();
+        });
+
+        it('closes window', function() {
+
             expect(confirmationWindow.close).toHaveBeenCalled();
         });
     });

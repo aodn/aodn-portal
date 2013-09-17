@@ -9,7 +9,16 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
-    initComponent:function () {
+    constructor: function(cfg) {
+
+        cfg = cfg || {};
+
+        this.downloadUrl = cfg.downloadUrl;
+
+        Portal.cart.DownloadConfirmationWindow.superclass.constructor.call(this, cfg);
+    },
+
+    initComponent: function() {
 
         // Content
         var contentPanel = new Ext.Panel({
@@ -63,12 +72,23 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
     },
 
-    onAccept:function () {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
+    onAccept: function() {
+
+        this.close();
+
+        if (this.downloadUrl) {
+
+            this._setWindowLocation(this.downloadUrl);
+        }
+    },
+
+    onCancel: function() {
+
         this.close();
     },
 
-    onCancel:function () {
-        this.close();
+    _setWindowLocation: function(url) {
+
+        window.location.assign(url);
     }
 });

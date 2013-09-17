@@ -86,7 +86,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         return function() {
 
-            alert('Download from ' + downloadUrl);
+            new Portal.cart.DownloadConfirmationWindow({downloadUrl: downloadUrl}).show();
         };
     },
 
