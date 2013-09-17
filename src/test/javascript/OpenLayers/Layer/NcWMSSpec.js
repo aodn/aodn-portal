@@ -676,6 +676,18 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('zooming/moving', function() {
+	    it('_configureTimeControl called on moveTo', function() {
+	        var configureTimeControlSpy = jasmine.createSpy('configureTimeControl');
+	        cachedLayer._configureTimeControl = configureTimeControlSpy;
+	        cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+	        
+	        waitsFor(function() {
+	            return configureTimeControlSpy.wasCalled;
+	        }, "configureTimeControl has not been called", 1000);
+	    });
+    });
+
     describe('currently precaching images', function() {
         describe('after precache', function() {
             beforeEach(function() {
