@@ -15,7 +15,7 @@ describe("Portal.ui.MainToolbar", function() {
             mainPanel: mainPanel
         });
 
-        mainPanel.render(document.body);
+        mockLayoutForMainPanel(mainPanel);
     });
 
     describe('on main panel tab change', function() {
