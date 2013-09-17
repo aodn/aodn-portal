@@ -84,8 +84,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     _createMenuItems: function(collection) {
 
         return [
-            {text: 'Download as .csv', handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: 'Download as .kml', handler: this._downloadHandlerFor(collection, 'kml'), scope: this}
+            {text: 'Download as CSV', handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
+            {text: 'Download as GML3', handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
+            {text: 'Download as Shapefile', handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
         ];
     },
 
