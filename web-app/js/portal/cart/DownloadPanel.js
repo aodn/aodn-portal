@@ -19,6 +19,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
+        this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
@@ -75,8 +76,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     _createMenuItems: function(collection) {
 
         return [
-            {text: 'Download as .csv', handler: this._downloadHandlerFor(collection, 'csv')},
-            {text: 'Download as .kml', handler: this._downloadHandlerFor(collection, 'kml')}
+            {text: 'Download as .csv', handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
+            {text: 'Download as .kml', handler: this._downloadHandlerFor(collection, 'kml'), scope: this}
         ];
     },
 
@@ -86,7 +87,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         return function() {
 
-            new Portal.cart.DownloadConfirmationWindow({downloadUrl: downloadUrl}).show();
+            this.confirmationWindow.showIfNeeded(downloadUrl);
         };
     },
 

@@ -72,19 +72,34 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
     },
 
+    showIfNeeded: function(downloadUrl) {
+
+        this.downloadUrl = downloadUrl;
+
+        if (!this.hasBeenShown) {
+
+            this.show();
+        }
+        else {
+
+            this.onAccept();
+        }
+    },
+
     onAccept: function() {
 
-        this.close();
+        this.hide();
 
         if (this.downloadUrl) {
 
+            this.hasBeenShown = true;
             this._setWindowLocation(this.downloadUrl);
         }
     },
 
     onCancel: function() {
 
-        this.close();
+        this.hide();
     },
 
     _setWindowLocation: function(url) {

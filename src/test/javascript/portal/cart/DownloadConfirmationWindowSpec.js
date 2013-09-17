@@ -7,6 +7,7 @@
 describe("Portal.cart.DownloadConfirmationWindow", function() {
 
     var confirmationWindow;
+    var downloadUrl = 'the download url';
 
     beforeEach(function() {
 
@@ -15,42 +16,83 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
             }
         };
-        confirmationWindow = new Portal.cart.DownloadConfirmationWindow(
-            {downloadUrl: 'download_url'}
-        );
+        confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
-        spyOn(confirmationWindow, 'close');
+        spyOn(confirmationWindow, 'show');
+        spyOn(confirmationWindow, 'hide');
         spyOn(confirmationWindow, '_setWindowLocation');
     });
 
-    describe('on accept', function() {
+    describe('showIfNeeded', function() {
 
         beforeEach(function() {
 
+            confirmationWindow.showIfNeeded(downloadUrl);
+        });
+
+        it('shows window if not shown', function() {
+
+            expect(confirmationWindow.show).toHaveBeenCalled();
+        });
+
+        it('shows window if not accepted', function() {
+
+            confirmationWindow.onCancel();
+
+            confirmationWindow.showIfNeeded(downloadUrl);
+
+            expect(confirmationWindow.show).toHaveBeenCalled();
+        });
+
+        it('does not show if it has been accepted', function() {
+
+            confirmationWindow.show.reset();
+
+            confirmationWindow.onAccept();
+
+            spyOn(confirmationWindow, 'onAccept');
+
+            confirmationWindow.showIfNeeded(downloadUrl);
+
+            expect(confirmationWindow.onAccept).toHaveBeenCalled();
+            expect(confirmationWindow.show).not.toHaveBeenCalled();
+        });
+
+        afterEach(function() {
+
+            confirmationWindow.show.reset();
+        });
+    });
+
+    describe('onAccept', function() {
+
+        beforeEach(function() {
+
+            confirmationWindow.downloadUrl = downloadUrl;
             confirmationWindow.onAccept();
         });
 
         it('starts download', function() {
 
-            expect(confirmationWindow._setWindowLocation).toHaveBeenCalledWith('download_url');
+            expect(confirmationWindow._setWindowLocation).toHaveBeenCalledWith(downloadUrl);
         });
 
-        it('closes window', function() {
+        it('hides window', function() {
 
-            expect(confirmationWindow.close).toHaveBeenCalled();
+            expect(confirmationWindow.hide).toHaveBeenCalled();
         });
     });
 
-    describe('on cancel', function() {
+    describe('onCancel', function() {
 
         beforeEach(function() {
 
             confirmationWindow.onCancel();
         });
 
-        it('closes window', function() {
+        it('hides window', function() {
 
-            expect(confirmationWindow.close).toHaveBeenCalled();
+            expect(confirmationWindow.hide).toHaveBeenCalled();
         });
     });
 });
