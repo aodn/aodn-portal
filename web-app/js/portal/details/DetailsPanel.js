@@ -13,7 +13,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	constructor: function(cfg) {
 		var config = Ext.apply({
 			id: 'detailsPanelItems',
-			//hidden: true,
+			title : OpenLayers.i18n('noActiveLayersSelected'),
 			layout: 'vbox',
 			layoutConfig: {
 				align: 'stretch'
@@ -21,6 +21,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		}, cfg);
 
 		Portal.details.DetailsPanel.superclass.constructor.call(this, config);
+
+        Ext.MsgBus.subscribe('selectedLayerChanged', function(eventName, openlayer) {
+            this.updateDetailsPanel(openlayer);
+        }, this);
 	},
 
 	initComponent: function(){
@@ -28,8 +32,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		this.errorPanel = new Ext.Panel({
 			cls: "errors",
 			hidden: true,
-			html:OpenLayers.i18n('wmsLayerProblem'
-		)});
+			html:OpenLayers.i18n('wmsLayerProblem')
+        });
 
 		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
 
@@ -47,8 +51,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	        fieldLabel: "Opacity",
 			plugins: new GeoExt.LayerOpacitySliderTip({
 				template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-				})
-			});
+			})
+		});
 
 		this.opacitySliderContainer = new Ext.Panel({
 			layout: 'form',
@@ -98,13 +102,15 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.items = [
-		this.opacitySliderContainer,
-		this.transectControl,
-		this.errorPanel,
-		this.detailsPanelTabs
+		    this.opacitySliderContainer,
+		    this.transectControl,
+		    this.errorPanel,
+		    this.detailsPanelTabs
 		];
 
 		Portal.details.DetailsPanel.superclass.initComponent.call(this);
+
+        this.hideDetailsPanelContents();
 	},
 
 	getOpacitySlider: function(){
@@ -136,37 +142,46 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 	// must be called when the panel is fully expanded for the slider
 	updateDetailsPanel: function(layer, forceOpen) {
 
-		// show new layer unless user requested 'hideLayerOptions'
-        this.errorPanel.hide();
+        if (layer) {
 
-        this._checkLayerAvailability(layer);
+            this.setTitle(layer.name);
 
-        this.detailsPanelTabs.update(layer);
-        this.transectControl.hide();
+		    // show new layer unless user requested 'hideLayerOptions'
+            this.errorPanel.hide();
 
-        // remove any transect tabs for previous layer
-        var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
-        for (var i=0;i<transectTabs.length;i++) {
-            this.detailsPanelTabs.remove(transectTabs[i]);
-        }
+            this._checkLayerAvailability(layer);
 
-        //turn on transect control if server is NCWMS and layer is not animated.
-        if(layer.server.type.search("NCWMS") > -1
+            this.detailsPanelTabs.update(layer);
+            this.transectControl.hide();
+
+            // remove any transect tabs for previous layer
+            var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
+            for (var i=0;i<transectTabs.length;i++) {
+                this.detailsPanelTabs.remove(transectTabs[i]);
+            }
+
+            //turn on transect control if server is NCWMS and layer is not animated.
+            if (   layer.server.type.search("NCWMS") > -1
                 && !layer.isAnimated)  {
-            this.transectControl.setMapPanel(getMapPanel());
-            this.transectControl.layer = layer;
-            this.transectControl.show();
-            this.transectControl.ownerCt.doLayout();
+                this.transectControl.setMapPanel(getMapPanel());
+                this.transectControl.layer = layer;
+                this.transectControl.show();
+                this.transectControl.ownerCt.doLayout();
+            }
+
+            this.opacitySliderContainer.doLayout();
+            this.opacitySliderContainer.show();
+            //weird stuff happens if you set layer before showing the container, see Bug #1582
+            this.opacitySlider.setLayer(layer);
+
+            // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
+            // slider won't be rendered properly, for example).
+            this.doLayout();
         }
-
-        this.opacitySliderContainer.doLayout();
-        this.opacitySliderContainer.show();
-        //weird stuff happens if you set layer before showing the container, see Bug #1582
-        this.opacitySlider.setLayer(layer);
-
-        // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
-        // slider won't be rendered properly, for example).
-        this.doLayout();
+        else {
+            this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
+            this.hideDetailsPanelContents();
+        }
 	},
 
 	hideDetailsPanelContents: function(){

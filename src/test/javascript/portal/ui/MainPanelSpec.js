@@ -8,41 +8,10 @@
 
 describe("Portal.ui.MainPanel", function() {
 
-    appConfigStore.getById = function(id) {
-        if (id == 'spatialsearch.url') {
-            return { data: { value: "spatialsearch.aodn.org.au" }};
-        }
-        return "";
-    };
-
-    var mockConfig = {};
-    var mockSearchPanel = {};
-    var mockVisualisePanel = {};
-    var mockMapPanel = {};
-
-    var buildMockMainPanel = function() {
-        spyOn(Ext.data.Store.prototype, "load").andCallFake(function() {
-            return true
-        });
-
-        spyOn(Portal.ui, "MapPanel").andReturn(mockMapPanel);
-        spyOn(Portal.ui, "VisualisePanel").andReturn(mockVisualisePanel);
-        spyOn(Portal.ui.search, "SearchPanel").andReturn(mockSearchPanel);
-        spyOn(Portal.ui.MainPanel.prototype, "mon");
-        spyOn(Portal.ui.MainPanel.prototype, "on");
-
-        return new Portal.ui.MainPanel({appConfig: mockConfig, appConfigStore: appConfigStore});
-    };
-
     var mainPanel;
 
-    var initMainPanel = function() {
-        mainPanel = buildMockMainPanel();
-        mainPanel.items = [];
-    };
-
     beforeEach(function() {
-        initMainPanel();
+        mainPanel = new Portal.ui.MainPanel();
     });
 
     afterEach(function() {
@@ -50,25 +19,30 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('initialisation', function() {
-
         it('should init map panel', function() {
-            expect(Portal.ui.MapPanel).toHaveBeenCalled();
-            expect(mainPanel.mapPanel).toEqual(mockMapPanel);
+            expect(mainPanel.mapPanel).toBeInstanceOf(Portal.ui.MapPanel);
         });
 
         it('should init portal panel', function() {
-            expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
-            expect(mainPanel.visualisePanel).toEqual(mockVisualisePanel);
+            expect(mainPanel.visualisePanel).toBeInstanceOf(Portal.ui.VisualisePanel);
         });
 
         it('should init search panel', function() {
-            expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
-            expect(Portal.ui.search.SearchPanel.calls[0].args[0].mapPanel).toBe(mockMapPanel);
-            expect(mainPanel.searchPanel).toEqual(mockSearchPanel);
+            expect(mainPanel.searchPanel).toBeInstanceOf(Portal.ui.search.SearchPanel);
+            expect(mainPanel.searchPanel.mapPanel).toBe(mainPanel.mapPanel);
+        });
+
+        it('should init toolbar', function() {
+            expect(mainPanel.getBottomToolbar()).toBeTruthy();
+            expect(mainPanel.getBottomToolbar()).toBeInstanceOf(Portal.ui.MainToolbar);
         });
     });
 
     describe('card layout', function() {
+        beforeEach(function() {
+            mockLayoutForMainPanel(mainPanel);
+        });
+
         it('creates an instance of Panel', function() {
             expect(mainPanel).toBeInstanceOf(Ext.Panel);
         });
@@ -78,7 +52,7 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should set layout to cardlayout', function() {
-            expect(mainPanel.layout).toBe('card');
+            expect(mainPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
         it('should initially have search as the active item', function() {
@@ -86,14 +60,22 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should set visualise to active item when geonetwork record is viewed', function() {
-            mockLayout();
+            spyOn(mainPanel.layout, 'setActiveItem');
             Ext.MsgBus.publish('viewgeonetworkrecord');
             expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
+        });
+
+        it('should fire tabchange event', function() {
+            var tabChangeSpy = jasmine.createSpy('tabchange');
+            mainPanel.on('tabchange', tabChangeSpy);
+            mainPanel.setActiveTab(0);
+            expect(tabChangeSpy).toHaveBeenCalledWith(mainPanel);
         });
     });
 
     describe('main panel tab highlighting', function() {
         beforeEach(function() {
+            mockLayoutForMainPanel(mainPanel);
             spyOn(mainPanel, "_highlightActiveTab");
         });
 
@@ -104,15 +86,8 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('when switching tabs', function() {
-            mockLayout();
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
     });
-
-    var mockLayout = function() {
-        spyOn(Portal.ui.MainPanel.prototype, "doLayout").andReturn(function() {});
-        mainPanel.layout = jasmine.createSpyObj('mainPanel.layout', [ 'setActiveItem' ]);
-        mainPanel.layout.setActiveItem.andCallFake(function() {});
-    };
 });

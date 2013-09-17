@@ -23,19 +23,24 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
         this.downloadPanel = new Portal.cart.DownloadPanel();
 
+        this.addEvents('tabchange');
+
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
             margins: {
                 left: 5,
                 right: 5
             },
-            unstyled:true,
-            layout: 'card',
-            items:[
+            unstyled: true,
+            layout: new Portal.ui.NavigableCardLayout(),
+            items: [
                 this.searchPanel,
                 this.visualisePanel,
                 this.downloadPanel
-            ]
+            ],
+            bbar: new Portal.ui.MainToolbar({
+                mainPanel: this
+            })
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
@@ -53,13 +58,11 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     getActiveTab: function() {
-        return this.layout.activeItem;
+        return this.layout.getActiveTab();
     },
 
     setActiveTab: function(tabIndex) {
-
-        this.layout.setActiveItem(tabIndex);
-        this._highlightActiveTab();
+        this.layout.setActiveTab(tabIndex);
     },
 
     _highlightActiveTab: function() {
