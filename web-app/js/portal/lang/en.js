@@ -105,10 +105,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // errors
     errorDialogTitle: 'Error',
 
-    // Download Cart
-    downloadCartConfirmationWindowTitle: 'Download Cart',
-    downloadCartConfirmationDownloadText: 'I understand, download',
-    downloadCartConfirmationCancelText: 'Cancel',
+    // Download View
+    downloadConfirmationWindowTitle: 'Data Download',
+    downloadConfirmationDownloadText: 'I understand, download',
+    downloadConfirmationCancelText: 'Cancel',
 
     //mainMapPanel
     layerExistsTitle: 'Add collection',

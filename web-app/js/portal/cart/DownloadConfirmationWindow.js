@@ -29,14 +29,14 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         // Controls
         var downloadButton = {
-            text:OpenLayers.i18n('downloadCartConfirmationDownloadText'),
+            text:OpenLayers.i18n('downloadConfirmationDownloadText'),
             listeners:{
                 scope:this,
                 click:this.onAccept
             }
         };
         var cancelButton = {
-            text:OpenLayers.i18n('downloadCartConfirmationCancelText'),
+            text:OpenLayers.i18n('downloadConfirmationCancelText'),
             listeners:{
                 scope:this,
                 click:this.onCancel
@@ -44,7 +44,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         };
 
         Ext.apply(this, {
-            title:OpenLayers.i18n('downloadCartConfirmationWindowTitle'),
+            title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal:true,
             padding:15,
             layout:'fit',
