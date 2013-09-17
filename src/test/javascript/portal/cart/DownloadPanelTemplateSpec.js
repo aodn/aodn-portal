@@ -418,6 +418,41 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 expect(getText(row)).toBe('file_list');
             });
         });
+
+        describe('template output when no attached files', function() {
+
+            var rootElement;
+            var html;
+
+            beforeEach(function() {
+
+                tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
+                tpl._getDataFilterEntry = function() { return "data_filter" };
+                tpl._getDataDownloadEntry = function() { return "data_download" };
+                tpl._getFileListEntries = function() { return "file_list" };
+
+                geoNetworkRecord.downloadableLinks = [];
+
+                html = tpl.apply(geoNetworkRecord);
+                rootElement = $(html);
+            });
+
+            describe('root element', function() {
+
+                it('has correct number of children', function() {
+
+                    expect(rootElement.children().length).toBe(3);
+                });
+            });
+
+            describe('files row', function() {
+
+                it('should not be present when there are no links', function() {
+
+                    expect(html.indexOf('file_list')).toBe(-1);
+                });
+            });
+        });
     });
 
     function getText(element) {
