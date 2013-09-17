@@ -1203,6 +1203,19 @@ div.allwhite {
     border-radius: 4px;
 }
 
+
+.download-collection .x-btn {
+
+    border: 2px solid #E0E0E0;
+    background-color: #EEE;
+}
+
+
+.download-collection .x-btn-text {
+
+    color: black;
+}
+
 .download-collection .secondary-text {
     font-style: italic;
     color: #666;

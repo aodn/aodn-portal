@@ -75,7 +75,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         new Ext.Button({
             text: value,
-            iconCls: '',
+            icon: 'images/down.png',
             scope: this,
             menu: downloadMenu
         }).render(html, id);
