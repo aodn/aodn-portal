@@ -63,21 +63,12 @@ Portal.data.GeoNetworkRecord.BboxField = {
     }
 };
 
-Portal.data.GeoNetworkRecord.create = function(o){
+Portal.data.GeoNetworkRecord.create = function(o) {
 
     var f = Ext.data.Record.create(o);
+    var p = f.prototype;
 
-    Portal.data.GeoNetworkRecord._addGetFirstWmsLink(f.prototype);
-    Portal.data.GeoNetworkRecord._addHasWmsLink(f.prototype);
-    Portal.data.GeoNetworkRecord._addConvertData(f.prototype);
-    Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer(f.prototype);
-
-    return f;
-};
-
-Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
-
-    prototype.getFirstWmsLink = function() {
+    p.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -94,34 +85,22 @@ Portal.data.GeoNetworkRecord._addGetFirstWmsLink = function(prototype) {
 
         return linkStore.getLayerLink(0);
     };
-};
 
-Portal.data.GeoNetworkRecord._addHasWmsLink = function(prototype) {
-
-    prototype.hasWmsLink = function() {
-
+    p.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
     };
-};
 
-Portal.data.GeoNetworkRecord._addConvertData = function(prototype) {
-
-    prototype.convertedData = function() {
-
+    p.convertedData = function() {
         var convertedData = {};
 
         Ext.each(
             Object.keys(this.data),
             function(key) {
-
                 var item = this.data[key];
-
                 if (key == 'wmsLayer') {
-
                     convertedData['wfsDownloadInfo'] = this.wfsDownloadInfoForLayer(item);
                 }
                 else {
-
                     convertedData[key] = item;
                 }
             },
@@ -130,24 +109,17 @@ Portal.data.GeoNetworkRecord._addConvertData = function(prototype) {
 
         return convertedData;
     };
-};
 
-Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer = function(prototype) {
-
-    prototype.wfsDownloadInfoForLayer = function(layer) {
-
+    p.wfsDownloadInfoForLayer = function(layer) {
         var wfsLayer = layer.wfsLayer;
-
         var layerName;
         var serverUri;
 
         if (wfsLayer) {
-
             layerName = wfsLayer.name;
             serverUri = wfsLayer.server.uri;
         }
         else {
-
             layerName = layer.params.LAYERS;
             serverUri = layer.server.uri;
         }
@@ -159,6 +131,8 @@ Portal.data.GeoNetworkRecord._addWfsDownloadInfoForLayer = function(prototype) {
             metadataUrl: layer.getMetadataUrl()
         };
     };
+
+    return f;
 };
 
 Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
