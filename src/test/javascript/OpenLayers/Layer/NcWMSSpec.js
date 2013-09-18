@@ -647,6 +647,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             var dummyTile = {
                 precache: tilePrecacheSpy,
                 clearCache: tileClearCacheSpy,
+                toTime: function() {},
                 getNumImagesComplete: function() {
                     return 1;
                 }
@@ -676,12 +677,24 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe('zooming/moving', function() {
+        it('render called on moveTo', function() {
+            spyOn(cachedLayer, 'render');
+            cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
+            
+            waitsFor(function() {
+                return cachedLayer.render.wasCalled;
+            }, "render has not been called", 1000);
+        });
+    });
+
     describe('currently precaching images', function() {
         describe('after precache', function() {
             beforeEach(function() {
                 var dummyTile = {
                     precache: function() {},
                     clearCache: function() {},
+                    toTime: function() {},
                     getNumImagesComplete: function() {
                         return 1;
                     }
@@ -758,6 +771,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img00 : img10;
                     },
                     clearCache: function() {},
+                    toTime: function() {},
                     getNumImagesComplete: function() { return 0; }
                 },
                 {
@@ -765,6 +779,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                         return dateTime.isSame(moment('2000-01-01T00:00:00')) ? img01 : img11;
                     },
                     clearCache: function() {},
+                    toTime: function() {},
                     getNumImagesComplete: function() { return 0; }
                 }
             ]);
