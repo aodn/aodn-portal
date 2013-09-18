@@ -96,6 +96,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (this.temporalExtent) {
             // Already processed
             this._processTemporalExtentDone();
+            this.render();
             return;
         }
 
@@ -140,8 +141,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
-                        that._configureTimeControl();
                         that._processTemporalExtentDone();
+                        that._configureTimeControl();
                     }
                 })();
             }
@@ -284,16 +285,20 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var existingEvents = this.events;
         this.events = new OpenLayers.Events(this, this.div,
                                             this.EVENT_TYPES);
-
-        this.eachTile(function(tile) {
-            tile.toTime(dateTime);
-        });
-
+        this.render();
         this.events = existingEvents;
-
+        
         return this.time;
     },
 
+    render: function() {
+        var dateTime = this.time;
+        
+        this.eachTile(function(tile) {
+            tile.toTime(dateTime);
+        });
+    },
+    
     // Returns true if left and right has the same date (not time),
     // false otherwise
     isSameDay: function(left, right) {
