@@ -9,9 +9,9 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-        detailsPanel = new Portal.details.DetailsPanel();
-        spyOn(detailsPanel, 'hideDetailsPanelContents');
 
+        detailsPanel = new Portal.details.DetailsPanel({ map: _mockMap() });
+        spyOn(detailsPanel, 'hideDetailsPanelContents');
         detailsPanel.initComponent();
     });
 
@@ -77,4 +77,10 @@ describe("Portal.details.DetailsPanel", function() {
             });
         });
     });
+
+    function _mockMap() {
+        return {
+            events: { register: function() {}}
+        };
+    }
 });

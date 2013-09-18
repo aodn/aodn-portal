@@ -31,8 +31,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Portal.details.AodaacPanel.superclass.constructor.call( this, config );
     },
 
-    initComponent: function(){
+    initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call( this );
+
+        this.map.events.register("move", this, this._setBounds);
     },
 
     update: function( layer, show, hide, target ) {
@@ -94,10 +96,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.productInfoText.html = newText;
 
         // Populate spatial extent controls
-        this.southBL.setValue( productInfo.extents.lat.min );
-        this.westBL.setValue( productInfo.extents.lon.min );
-        this.northBL.setValue( productInfo.extents.lat.max );
-        this.eastBL.setValue( productInfo.extents.lon.max );
+        this._setBounds();
 
         // Populate temporal extent controls
         var timeRangeStart = productInfo.extents.dateTime.min;
@@ -169,7 +168,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         ref: '../../northBL',
                         name: 'northBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        disabled: true
                     }
                 ]
             },{
@@ -190,7 +190,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'westBL',
                         ref: '../../westBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        disabled: true
                     },
                     {
                         xtype: 'label',
@@ -202,7 +203,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'eastBL',
                         ref: '../../eastBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        disabled: true
                     },
                     {
                         xtype: 'label',
@@ -230,7 +232,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         name: 'southBL',
                         ref: '../../southBL',
                         decimalPrecision: 2,
-                        width: 50
+                        width: 50,
+                        disabled: true
                     }
                 ]
             }
@@ -500,5 +503,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         if ( returnValue == "24:00" ) returnValue = "23:59";
 
         return returnValue;
+    },
+
+    _setBounds: function() {
+        var bounds = this.map.getExtent().toArray();
+        this.southBL.setValue(bounds[1]);
+        this.westBL.setValue(bounds[0]);
+        this.northBL.setValue(bounds[3]);
+        this.eastBL.setValue(bounds[2]);
     }
 });

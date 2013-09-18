@@ -35,7 +35,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 			html:OpenLayers.i18n('wmsLayerProblem')
         });
 
-		this.detailsPanelTabs = new Portal.details.DetailsPanelTab();
+		this.detailsPanelTabs = new Portal.details.DetailsPanelTab({ map: this.map });
 
 		this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
 			id: "opacitySlider",
@@ -139,11 +139,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-	// must be called when the panel is fully expanded for the slider
-	updateDetailsPanel: function(layer, forceOpen) {
+    // must be called when the panel is fully expanded for the slider
+    updateDetailsPanel: function (layer, forceOpen) {
 
         if (layer) {
-
             this.setTitle(layer.name);
 
 		    // show new layer unless user requested 'hideLayerOptions'
