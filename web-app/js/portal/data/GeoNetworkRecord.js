@@ -6,37 +6,7 @@
  */
 Ext.namespace('Portal.data.GeoNetworkRecord');
 
-Portal.data.GeoNetworkRecord.create = function() {
-
-    var convertXmlToLinks = function(v, record) {
-        var linkElems = Ext.DomQuery.jsSelect('link', record);
-        var links = [];
-
-        Ext.each(linkElems, function(link) {
-            var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
-            var elements = linkValue.split('|');
-            links.push({
-                name: elements[0],
-                title: elements[1],
-                href: elements[2],
-                protocol: elements[3],
-                type: elements[4]
-            });
-        }, this);
-
-        return links;
-    };
-
-    isDownloadableProtocol = function(protocol) {
-
-        var protocols = [];
-
-        Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
-            protocols.push(protocol.trim())
-        });
-
-        return (protocols.indexOf(protocol) >= 0);
-    };
+Portal.data.GeoNetworkRecord = function() {
 
     var LinksField = {
         name: 'links',
@@ -90,22 +60,37 @@ Portal.data.GeoNetworkRecord.create = function() {
         }
     };
 
-    var f = Ext.data.Record.create([
-        'title',
-        'abstract',
-        { name: 'uuid', mapping: '*/uuid' },
-        LinksField,
-        DownloadableLinksField,
-        PointOfTruthLinkField,
-        'source',
-        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-        BboxField,
-        'wmsLayer'
-    ]);
+    function convertXmlToLinks(v, record) {
+        var linkElems = Ext.DomQuery.jsSelect('link', record);
+        var links = [];
 
-    var p = f.prototype;
+        Ext.each(linkElems, function(link) {
+            var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
+            var elements = linkValue.split('|');
+            links.push({
+                name: elements[0],
+                title: elements[1],
+                href: elements[2],
+                protocol: elements[3],
+                type: elements[4]
+            });
+        }, this);
 
-    p.getFirstWmsLink = function() {
+        return links;
+    };
+
+    function isDownloadableProtocol(protocol) {
+
+        var protocols = [];
+
+        Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
+            protocols.push(protocol.trim())
+        });
+
+        return (protocols.indexOf(protocol) >= 0);
+    };
+
+    this.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -123,11 +108,11 @@ Portal.data.GeoNetworkRecord.create = function() {
         return linkStore.getLayerLink(0);
     };
 
-    p.hasWmsLink = function() {
+    this.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
-    p.convertedData = function() {
+    this.convertedData = function() {
         var convertedData = {};
 
         Ext.each(
@@ -147,7 +132,7 @@ Portal.data.GeoNetworkRecord.create = function() {
         return convertedData;
     };
 
-    p.wfsDownloadInfoForLayer = function(layer) {
+    this.wfsDownloadInfoForLayer = function(layer) {
         var wfsLayer = layer.wfsLayer;
         var layerName;
         var serverUri;
@@ -169,7 +154,20 @@ Portal.data.GeoNetworkRecord.create = function() {
         };
     };
 
-    return f;
-};
+    var f = Ext.data.Record.create([
+        'title',
+        'abstract',
+        { name: 'uuid', mapping: '*/uuid' },
+        LinksField,
+        DownloadableLinksField,
+        PointOfTruthLinkField,
+        'source',
+        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
+        BboxField,
+        'wmsLayer'
+    ]);
 
-Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create();
+    Ext.apply(f.prototype, this);
+
+    return f;
+}();
