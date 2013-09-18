@@ -11,11 +11,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
     beforeEach(function() {
 
-        Portal.app = {
-            config: {
-                downloadCartConfirmationWindowContent:  'why am i doing this stuff\n'
-            }
-        };
         confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
         spyOn(confirmationWindow, 'show');
