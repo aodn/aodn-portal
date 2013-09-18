@@ -80,8 +80,8 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.store.data.items = [
                 {data: testCollection1},
-                {data: testCollection2}
-                {data: testCollection3}
+                {data: testCollection2},
+                {data: testCollection3},
                 {data: testCollection4}
             ];
             downloadPanel.generateContent();
