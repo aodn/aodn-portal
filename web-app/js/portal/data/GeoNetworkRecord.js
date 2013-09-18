@@ -32,7 +32,7 @@ Portal.data.GeoNetworkRecord.create = function() {
         var protocols = [];
 
         Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
-        protocols.push(protocol.trim())
+            protocols.push(protocol.trim())
         });
 
         return (protocols.indexOf(protocol) >= 0);
