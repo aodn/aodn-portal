@@ -122,11 +122,10 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('layer removed from LayerStore', function() {
-                    var layerRecord = new GeoExt.data.LayerRecord({
+                    myRecord.layerRecord = new GeoExt.data.LayerRecord({
                         layer: layer,
                         title: layer.name
                     });
-                    myRecord.layerRecord = layerRecord;
                     spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
@@ -202,18 +201,6 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             });
         });
 
-        describe('downloader delegation', function() {
-            it('downloader initialised', function() {
-                expect(activeRecordStore.downloader).toBeTruthy();
-            });
-
-            it('initiate download', function() {
-                spyOn(activeRecordStore.downloader, 'start');
-                activeRecordStore.initiateDownload();
-                expect(activeRecordStore.downloader.start).toHaveBeenCalled();
-            });
-        });
-
         describe('JSON encoding', function() {
             var itemsDecoded;
 
@@ -248,7 +235,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                 activeRecordStore.add(firstRecord);
                 activeRecordStore.add(secondRecord);
-            }
+            };
 
             beforeEach(function() {
                 addTestRecordsToStore();

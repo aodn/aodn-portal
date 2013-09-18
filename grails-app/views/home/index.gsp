@@ -149,7 +149,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MainToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/NavigableCardLayout.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MainPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadCartConfirmationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"></script>
@@ -163,7 +162,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecord.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/GeoNetworkRecordStore.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/Downloader.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}"></script>
@@ -171,10 +169,8 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadColumnModel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadGridView.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadConfirmationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationState.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationPlayButton.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedButton.js')}"></script>

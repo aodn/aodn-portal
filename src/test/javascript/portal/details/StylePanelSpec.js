@@ -193,7 +193,7 @@ describe("Portal.details.StylePanel", function() {
 
             var retVal = stylePanel._getPalette(otherLayer, "style name");
 
-            expect(retVal).toBe(undefined);
+            expect(retVal).toBeUndefined();
         });
     });
 });

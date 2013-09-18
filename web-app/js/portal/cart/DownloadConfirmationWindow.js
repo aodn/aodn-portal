@@ -7,9 +7,9 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
+Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
-    initComponent:function () {
+    initComponent: function() {
 
         // Content
         var contentPanel = new Ext.Panel({
@@ -20,14 +20,14 @@ Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
 
         // Controls
         var downloadButton = {
-            text:OpenLayers.i18n('downloadCartConfirmationDownloadText'),
+            text:OpenLayers.i18n('downloadConfirmationDownloadText'),
             listeners:{
                 scope:this,
                 click:this.onAccept
             }
         };
         var cancelButton = {
-            text:OpenLayers.i18n('downloadCartConfirmationCancelText'),
+            text:OpenLayers.i18n('downloadConfirmationCancelText'),
             listeners:{
                 scope:this,
                 click:this.onCancel
@@ -35,7 +35,7 @@ Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
         };
 
         Ext.apply(this, {
-            title:OpenLayers.i18n('downloadCartConfirmationWindowTitle'),
+            title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal:true,
             padding:15,
             layout:'fit',
@@ -60,15 +60,41 @@ Portal.cart.DownloadCartConfirmationWindow = Ext.extend(Ext.Window, {
             }
         });
 
-        Portal.cart.DownloadCartConfirmationWindow.superclass.initComponent.apply(this, arguments);
+        Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
     },
 
-    onAccept:function () {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().initiateDownload();
-        this.close();
+    showIfNeeded: function(downloadUrl) {
+
+        this.downloadUrl = downloadUrl;
+
+        if (!this.hasBeenShown) {
+
+            this.show();
+        }
+        else {
+
+            this.onAccept();
+        }
     },
 
-    onCancel:function () {
-        this.close();
+    onAccept: function() {
+
+        this.hide();
+
+        if (this.downloadUrl) {
+
+            this.hasBeenShown = true;
+            this._openDownload(this.downloadUrl);
+        }
+    },
+
+    onCancel: function() {
+
+        this.hide();
+    },
+
+    _openDownload: function(url) {
+
+        window.open(url, '_blank');
     }
 });
