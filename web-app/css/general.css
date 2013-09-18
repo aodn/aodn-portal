@@ -1150,6 +1150,7 @@ div.allwhite {
     width: 1px;
 }
 
+
 .hidden {
     display: none;
 }
@@ -1168,27 +1169,56 @@ div.allwhite {
     border: none;
 }
 
-.cart-title {
-    font-weight: bold;
-}
-
-.cart-row {
-    margin-top: 5px;
-    padding: 10px;
+.download-collection {
+    margin: 0.5em 0 1.5em 0;
     background-color: #FAFAFA;
 }
 
-.cart-row code {
-
-    background-color: #EEE;
-    border-radius: 4px;
-    padding: 0 2px;
+.download-collection .title-row {
+    background-color: #C0C0C0;
+    padding: 0.4em;
+    font-size: 1.5em;
 }
 
-.cart-file-row {
-    margin-left: 15px;
-    font-size: small;
-    color: #666666;
+.download-collection .row {
+    margin: 0.6em 0.2em 0.2em 0.2em;
+    border: 1px solid #E0E0E0;
+    background-color: #FAFAFA;
+}
+
+.download-collection .subheading {
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #E0E0E0;
+    padding: 0.3em;
+}
+
+.download-collection .entry {
+    margin-top: 0.1em;
+    padding: 0.4em;
+}
+
+.download-collection .row code {
+    background-color: #EEE;
+    border-radius: 4px;
+}
+
+
+.download-collection .x-btn {
+
+    border: 2px solid #E0E0E0;
+    background-color: #EEE;
+}
+
+
+.download-collection .x-btn-text {
+
+    color: black;
+}
+
+.download-collection .secondary-text {
+    font-style: italic;
+    color: #666;
 }
 
 /* Bug #9 - show blank tiles on image load error. */

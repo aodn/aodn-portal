@@ -29,6 +29,17 @@ convertXmlToLinks = function(v, record) {
     return links;
 };
 
+isDownloadableProtocol = function(protocol) {
+
+    var protocols = [];
+
+    Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
+        protocols.push(protocol.trim())
+    });
+
+    return (protocols.indexOf(protocol) >= 0);
+};
+
 Portal.data.GeoNetworkRecord.LinksField = {
     name: 'links',
     convert: convertXmlToLinks
@@ -42,12 +53,30 @@ Portal.data.GeoNetworkRecord.DownloadableLinksField = {
         var downloadableLinks = [];
 
         Ext.each(allLinks, function(linkToCheck) {
-            if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
+            if (isDownloadableProtocol(linkToCheck.protocol)) {
                 downloadableLinks.push(linkToCheck);
             }
         });
 
         return downloadableLinks;
+    }
+};
+
+Portal.data.GeoNetworkRecord.PointOfTruthLinkField = {
+    name: 'pointOfTruthLink',
+    convert: function(v, record) {
+
+        var allLinks = convertXmlToLinks(v, record);
+        var pointOfTruthLink = undefined;
+
+        Ext.each(allLinks, function(linkToCheck) {
+            if (linkToCheck.protocol == 'WWW:LINK-1.0-http--metadata-URL') {
+
+                pointOfTruthLink = linkToCheck;
+            }
+        });
+
+        return pointOfTruthLink;
     }
 };
 
@@ -167,6 +196,7 @@ Portal.data.GeoNetworkRecord = Portal.data.GeoNetworkRecord.create([
     { name: 'uuid', mapping: '*/uuid' },
     Portal.data.GeoNetworkRecord.LinksField,
     Portal.data.GeoNetworkRecord.DownloadableLinksField,
+    Portal.data.GeoNetworkRecord.PointOfTruthLinkField,
     'source',
     { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
     Portal.data.GeoNetworkRecord.BboxField,

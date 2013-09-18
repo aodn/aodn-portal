@@ -10,53 +10,121 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function() {
 
-        this.mimeTypes = Portal.app.config.downloadCartMimeTypeToExtensionMapping;
-
         var templateLines = [
-            '<div class="cart-row">',
-            '  <div class="cart-title-row">',
-            '    <span class="cart-title">{title}</span>',
+            '<div class="download-collection">',
+            '  <div class="title-row">',
+            '    {title}',
             '  </div>',
-            '  <tpl if="wmsLayer && wmsLayer.getCqlFilter()"><div class=cart-data-filter>Filter applied: <code>{[this._getLayerFilterDisplayString(values.wmsLayer)]}</code></div></tpl>',
-            '  <div class="cart-files">{[this._getFileListMarkup(values.downloadableLinks)]}</div>',
+            '  <div class="row">',
+            '    <div class="subheading">Metadata</div>',
+            '    {[this._getPointOfTruthLinkEntry(values)]}',
+            '  </div>',
+            '  <div class="row">',
+            '    <div class="subheading">Data</div>',
+            '    {[this._getDataFilterEntry(values)]}',
+            '    {[this._getDataDownloadEntry(values)]}',
+            '  </div>',
+            '  <tpl if="downloadableLinks.length &gt; 0">',
+            '  <div class="row">',
+            '    <div class="subheading">Attached files</div>',
+            '    {[this._getFileListEntries(values)]}',
+            '  </div>',
+            '  </tpl>',
             '</div>'
         ];
 
         Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
     },
 
-    _getLayerFilterDisplayString: function(wmsLayer) {
+    _getPointOfTruthLinkEntry: function(record) {
 
-        return wmsLayer.getCqlFilter();
+        var href = record.pointOfTruthLink.href;
+
+        var html = this._makeExternalLinkMarkup(href, "View metadata record");
+
+        return this._makeEntryMarkup(html);
     },
 
-    _getFileListMarkup: function(links) {
+    _getDataFilterEntry: function(values) {
 
-        var subFilesTemplate = new Ext.XTemplate(
-            '<div class="cart-file-row" >',
-            '{[this._getMarkupForOneFile(values)]}',
-            '</div>',
+        var wmsLayer = values.wmsLayer;
+
+        if (wmsLayer) {
+
+            var cqlText = wmsLayer.getCqlFilter();
+
+            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
+
+            return this._makeEntryMarkup(html);
+        }
+
+        return "";
+    },
+
+    _getDataDownloadEntry: function(values) {
+
+        var wmsLayer = values.wmsLayer;
+        var html;
+
+        if (wmsLayer) {
+
+            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
+        }
+        else {
+
+            html = this._makeSecondaryTextMarkup('No direct-access to data available currently.');
+        }
+
+        return this._makeEntryMarkup(html);
+    },
+
+    _getFileListEntries: function(values) {
+
+        var links = values.downloadableLinks;
+        var html = "";
+
+        Ext.each(
+            links,
+            function(link) {
+                html += this._getSingleFileEntry(link);
+            },
             this
         );
 
-        var html = "";
+        if (html) {
 
-        Ext.each(links, function(link) {
-            html += subFilesTemplate.apply(link);
-        });
+            return html;
+        }
 
-        return html;
+        return this._makeEntryMarkup(
+            this._makeSecondaryTextMarkup('No attached files.')
+        );
     },
 
-    _getMarkupForOneFile: function(values) {
+    _getSingleFileEntry: function(link) {
 
-        return "<i>" + values.title + "</i>" + this._fileExtensionInfo(values.type);
+        var html = this._makeExternalLinkMarkup(link.href, link.title);
+
+        return this._makeEntryMarkup(html);
     },
 
-    _fileExtensionInfo: function(type) {
+    _makeEntryMarkup: function(text) {
 
-        var extension = this.mimeTypes[type];
+        return '<div class="entry">' + text + '</div>';
+    },
 
-        return extension ? " (." + extension + ")" : "";
+    _makeSecondaryTextMarkup: function(text) {
+
+        return '<span class="secondary-text">' + text + '</span>';
+    },
+
+    _makeExternalLinkMarkup: function(href, text) {
+
+        if (!text) {
+
+            text = href;
+        }
+
+        return "<a href='" + href + "' target='_blank' class='external'>" + text + "</a>";
     }
 });
