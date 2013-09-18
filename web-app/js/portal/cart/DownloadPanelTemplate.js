@@ -51,10 +51,9 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         if (wmsLayer) {
 
-            var html;
             var cqlText = wmsLayer.getCqlFilter();
 
-            html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
+            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
 
             return this._makeEntryMarkup(html);
         }

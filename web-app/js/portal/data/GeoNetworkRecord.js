@@ -37,7 +37,7 @@ isDownloadableProtocol = function(protocol) {
         protocols.push(protocol.trim())
     });
 
-    return (protocols.indexOf(protocol) != -1);
+    return (protocols.indexOf(protocol) >= 0);
 };
 
 Portal.data.GeoNetworkRecord.LinksField = {
