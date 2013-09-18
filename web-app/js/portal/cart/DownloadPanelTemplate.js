@@ -72,7 +72,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = this._makeSecondaryTextMarkup('No direct-access to data available currently.');
+            html = this._makeSecondaryTextMarkup('No direct access to data available currently.');
         }
 
         return this._makeEntryMarkup(html);
