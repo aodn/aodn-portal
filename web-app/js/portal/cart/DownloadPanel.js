@@ -63,7 +63,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var elementId = 'download-button-' + collection.uuid;
 
         // Don't create button if no placeholder exists
-        if (html.indexOf(elementId) != -1) {
+        if (html.indexOf(elementId) >= 0) {
 
             this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId, collection]);
         }
