@@ -48,6 +48,8 @@ describe("Portal.cart.DownloadPanel", function() {
         var mockTemplate;
         var testCollection1 = {value: '[Content 1]'};
         var testCollection2 = {value: '[Content 2]'};
+        var testCollection3 = {value: '[Content 3]'};
+        var testCollection4 = {value: '[Content 4]'};
 
         beforeEach(function() {
 
@@ -74,25 +76,44 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(Portal.cart.DownloadPanelTemplate).toHaveBeenCalled();
         });
 
+        it('reverse view order enforced', function() {
+
+            downloadPanel.store.data.items = [
+                {data: testCollection1},
+                {data: testCollection2}
+                {data: testCollection3}
+                {data: testCollection4}
+            ];
+            downloadPanel.generateContent();
+
+            expect(mockTemplate.apply.argsForCall[3][0]).toBe(testCollection1);
+            expect(mockTemplate.apply.argsForCall[2][0]).toBe(testCollection2);
+            expect(mockTemplate.apply.argsForCall[1][0]).toBe(testCollection3);
+            expect(mockTemplate.apply.argsForCall[0][0]).toBe(testCollection4);
+        });
+
         it('calls apply on the template', function() {
 
+            // Order of items is reversed!!
             expect(mockTemplate.apply.callCount).toBe(2);
-            expect(mockTemplate.apply.argsForCall[0][0]).toBe(testCollection1);
-            expect(mockTemplate.apply.argsForCall[1][0]).toBe(testCollection2);
+            expect(mockTemplate.apply.argsForCall[1][0]).toBe(testCollection1);
+            expect(mockTemplate.apply.argsForCall[0][0]).toBe(testCollection2);
         });
 
         it('calls _replacePlaceholderWithButton', function() {
 
+            // Order of items is reversed!!
             expect(downloadPanel._replacePlaceholderWithButton.callCount).toBe(2);
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][0]).toBe(testCollection1.value);
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][1]).toBe(testCollection1);
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][0]).toBe(testCollection1.value + testCollection2.value);
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][1]).toBe(testCollection2);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][0]).toBe(testCollection2.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][1]).toBe(testCollection2);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][0]).toBe(testCollection2.value + testCollection1.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][1]).toBe(testCollection1);
         });
 
         it('calls update', function() {
 
-            expect(downloadPanel.update).toHaveBeenCalledWith('[Content 1][Content 2]');
+            // Order of items is reversed!!
+            expect(downloadPanel.update).toHaveBeenCalledWith('[Content 2][Content 1]');
         });
 
         it('calls _contentForEmptyView when empty', function() {
