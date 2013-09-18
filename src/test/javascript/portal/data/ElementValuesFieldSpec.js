@@ -7,7 +7,7 @@
 describe('Portal.data.ElementValuesField', function() {
     describe('convert method', function() {
         it('converts multiple matching elements into an array', function() {
-            var xmlDoc  = document.implementation.createDocument('', 'root');
+            var xmlDoc  = document.implementation.createDocument('', 'root',null);
             
             xmlDoc.documentElement
             .appendChild(xmlDoc.createElement('parameter'))
