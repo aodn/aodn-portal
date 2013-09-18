@@ -15,7 +15,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         spyOn(confirmationWindow, 'show');
         spyOn(confirmationWindow, 'hide');
-        spyOn(confirmationWindow, '_setWindowLocation');
+        spyOn(confirmationWindow, '_openDownload');
     });
 
     describe('showIfNeeded', function() {
@@ -69,7 +69,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         it('starts download', function() {
 
-            expect(confirmationWindow._setWindowLocation).toHaveBeenCalledWith(downloadUrl);
+            expect(confirmationWindow._openDownload).toHaveBeenCalledWith(downloadUrl);
         });
 
         it('hides window', function() {

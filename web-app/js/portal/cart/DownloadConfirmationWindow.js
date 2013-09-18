@@ -84,7 +84,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         if (this.downloadUrl) {
 
             this.hasBeenShown = true;
-            this._setWindowLocation(this.downloadUrl);
+            this._openDownload(this.downloadUrl);
         }
     },
 
@@ -93,7 +93,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         this.hide();
     },
 
-    _setWindowLocation: function(url) {
+    _openDownload: function(url) {
 
         window.open(url, '_blank');
     }
