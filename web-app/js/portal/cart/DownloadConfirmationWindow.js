@@ -9,15 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
-    constructor: function(cfg) {
-
-        cfg = cfg || {};
-
-        this.downloadUrl = cfg.downloadUrl;
-
-        Portal.cart.DownloadConfirmationWindow.superclass.constructor.call(this, cfg);
-    },
-
     initComponent: function() {
 
         // Content
