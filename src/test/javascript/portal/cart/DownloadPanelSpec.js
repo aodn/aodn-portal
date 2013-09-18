@@ -240,7 +240,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             var returnValue = downloadPanel._downloadHandlerFor();
 
-            expect(typeof returnValue !== 'function');
+            expect(typeof returnValue).toBe('function');
         });
     });
 });
