@@ -140,7 +140,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct-access to data available currently.</span>');
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct access to data available currently.</span>');
         });
 
         afterEach(function() {
