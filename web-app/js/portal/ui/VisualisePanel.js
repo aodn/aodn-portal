@@ -15,17 +15,16 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         this.mapPanel = cfg.mapPanel;
         this.mapPanel.region = 'center';
 
-        this.rightDetailsPanel = new Portal.ui.RightDetailsPanel({
-            region: 'east',
-            collapsible: true,
-            collapsed: false,
-            stateful: false,
+        this.detailsPanel = new Portal.details.DetailsPanel({
+			region: 'west',
+			collapsible: true,
+			collapsed: false,
+            split: true,
+            width: 360,
+            minWidth: 320,
+            maxWidth: 500,
             map: this.mapPanel.map
-        });
-
-        this.animationWindow = new Portal.ui.AnimationWindow({
-            mapPanel: this.mapPanel
-        });
+		});
 
         var config = Ext.apply({
             layout: 'border',
@@ -33,29 +32,13 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             stateful: false,
             items: [
                 this.mapPanel,
-                this.rightDetailsPanel
-            ],
-            listeners: {
-                render: function() {
-                    this.animationWindow.render(this.getEl());
-                }
-            }
+                this.detailsPanel
+            ]
         }, cfg);
 
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
 
         this.on('beforehide', function() { this.onBeforeHide() }, this);
-        this.on('afterlayout', this._positionAnimationWindowAtBottom, this);
-        this.on('show', this._positionAnimationWindowAtBottom, this);
-    },
-
-    _onAfterLayout: function() {
-        this._positionAnimationWindowAtBottom();
-    },
-
-    _positionAnimationWindowAtBottom: function() {
-        this.animationWindow.setPosition(0);
-        this.animationWindow.setWidth(this.mapPanel.getWidth());
     },
 
     onBeforeHide: function() {

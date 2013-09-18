@@ -481,6 +481,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return processedTiles;
     },
 
+    isAnimatable: function() {
+        return true;
+    },
+
     _getNumTiles: function() {
         if(!this.grid || !this.grid[0]) { return 0; }
         return this.grid.length * this.grid[0].length;

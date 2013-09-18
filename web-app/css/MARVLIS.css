@@ -152,9 +152,6 @@ input, select, textarea {
 
 #mainMapCentrePanel, .map {
 }
-#rightDetailsPanel {
-	border-radius: 12px 12px 0 0;
-}
 
 #headerTitle {
     color: #FFF;

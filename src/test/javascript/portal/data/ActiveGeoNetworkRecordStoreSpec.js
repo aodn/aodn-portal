@@ -6,11 +6,6 @@
  */
 describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
-    beforeEach(function() {
-        Ext.namespace('Portal.app.config');
-        Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
-    });
-
     /**
      *  A singleton instance of the store is used to store the 'active' geonetwork records.
      */
@@ -197,6 +192,12 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                     expect(activeRecordStore._removeFromLayerStore.calls.length).toBe(2);
                     expect(activeRecordStore._removeFromLayerStore.calls[0].args[0]).toBe(myRecord);
                     expect(activeRecordStore._removeFromLayerStore.calls[1].args[0]).toBe(myRecord2);
+                });
+
+                it('published activegeonetworkrecordremoved', function() {
+                    spyOn(Ext.MsgBus, 'publish');
+                    activeRecordStore.removeAll();
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('activegeonetworkrecordremoved');
                 });
             });
         });
