@@ -262,19 +262,27 @@ class LayerControllerTests extends ControllerUnitTestCase {
     }
 
     void testApplicationXmlIsXmlContent() {
-        assertEquals("application/xml", controller._isXmlContent("application/xml"))
+        if (!controller._isXmlContent("application/xml")) {
+            fail()
+        }
     }
 
     void testTextXmlIsXmlContent() {
-        assertEquals("text/xml", controller._isXmlContent("text/xml"))
+        if (!controller._isXmlContent("text/xml")) {
+            fail()
+        }
     }
 
     void testTextPlainIsNotXmlContent() {
-        assertNull(controller._isXmlContent("text/plain"))
+        if (controller._isXmlContent("text/plain")) {
+            fail()
+        }
     }
 
     void testTextHtmlIsNotXmlContent() {
-        assertNull(controller._isXmlContent("text/html"))
+        if (controller._isXmlContent("text/html")) {
+            fail()
+        }
     }
 
     def _updateViewParamsSetup(viewParams) {
