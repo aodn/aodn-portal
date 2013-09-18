@@ -17,7 +17,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
         this.splashPanel = new Portal.ui.HomePanel({});
 
-        this.SearchResultsView = new Portal.search.FacetedSearchResults({
+        this.searchResultsView = new Portal.search.FacetedSearchResults({
             hidden: true,
             store: this.resultsStore
         });
@@ -27,7 +27,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             activeItem: this.splashPanel,
             items: [
                 this.splashPanel,
-                this.SearchResultsView
+                this.searchResultsView
             ]
         }, cfg);
 
@@ -37,7 +37,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             this._onResultsStoreLoad();
         }, this);
 
-        this.SearchResultsView.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
+        this.searchResultsView.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
     },
 
     _onResultsStoreLoad: function() {
@@ -55,7 +55,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _activateResultsGridCard: function() {
-        this.layout.setActiveItem(this.SearchResultsView);
+        this.layout.setActiveItem(this.searchResultsView);
     },
 
     onFiltersCleared: function() {
@@ -69,7 +69,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     _onResultsGridBbarBeforeChange: function (bbar, params) {
 
 
-        this.SearchResultsView.showMask();
+        this.searchResultsView.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging

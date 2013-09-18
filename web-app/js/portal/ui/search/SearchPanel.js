@@ -62,6 +62,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.searcher.on('searchcomplete', function(response, page) {
             this.resultsStore.startRecord = page.from - 1;
             this.resultsStore.loadData(response);
+            this.bodyPanel.searchResultsView.hideMask();
         }, this);
 
         this.filtersPanel.on('filtersCleared', function() {
@@ -69,7 +70,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         this.filtersPanel.on('facetedSearchUpdating', function() {
-            this.bodyPanel.SearchResultsView.showMask();
+            this.bodyPanel.searchResultsView.showMask();
         }, this);
     }
 });

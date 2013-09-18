@@ -1478,6 +1478,9 @@ a.x-menu-item {
 .x-panel-fbar td, .x-panel-fbar span, .x-panel-fbar input, .x-panel-fbar div, .x-panel-fbar select, .x-panel-fbar label {
     font: normal 11px arial, tahoma, helvetica, sans-serif;
 }
+.x-panel-footer {
+    margin: 7px;
+}
 
 .x-window-proxy {
     background-color: #fcfcfc;
