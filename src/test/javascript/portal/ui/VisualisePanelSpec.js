@@ -16,29 +16,51 @@ describe('Portal.ui.VisualisePanel', function() {
         }
     };
 
-    var panel;
+    var visualisePanel;
 
     beforeEach(function() {
-        panel = new Portal.ui.VisualisePanel({
+        visualisePanel = new Portal.ui.VisualisePanel({
             mapPanel: new Portal.ui.MapPanel()
         });
     });
 
-    it('listens for beforehide event', function() {
+    describe('before hide', function() {
+        it('listens for beforehide event', function() {
 
-        spyOn(panel, 'onBeforeHide');
+            spyOn(visualisePanel, 'onBeforeHide');
 
-        panel.fireEvent('beforehide');
+            visualisePanel.fireEvent('beforehide');
 
-        expect(panel.onBeforeHide).toHaveBeenCalled();
+            expect(visualisePanel.onBeforeHide).toHaveBeenCalled();
+        });
+
+        it('tells the mappanel before it hides', function() {
+
+            spyOn(visualisePanel.mapPanel, 'beforeParentHide');
+
+            visualisePanel.onBeforeHide();
+
+            expect(visualisePanel.mapPanel.beforeParentHide).toHaveBeenCalled();
+        });
     });
 
-    it('tells the mappanel before it hides', function() {
+    describe('initialisation', function() {
 
-        spyOn(panel.mapPanel, 'beforeParentHide');
+        it('intialises details panel', function() {
+            expect(visualisePanel.detailsPanel.width).toBe(360);
+            expect(visualisePanel.detailsPanel.minWidth).toBe(320);
+            expect(visualisePanel.detailsPanel.maxWidth).toBe(500);
+            expect(visualisePanel.detailsPanel.split).toBeTruthy();
+        });
 
-        panel.onBeforeHide();
+        describe('layout', function() {
+            it('positions mapPanel in center region', function() {
+                expect(visualisePanel.mapPanel.region).toBe('center');
+            });
 
-        expect(panel.mapPanel.beforeParentHide).toHaveBeenCalled();
+            it('positions details panel in west region', function() {
+                expect(visualisePanel.detailsPanel.region).toBe('west');
+            });
+        });
     });
 });

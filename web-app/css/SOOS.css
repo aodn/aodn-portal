@@ -166,8 +166,7 @@ input, select, textarea {
     color: #666;
 }
 
-#mainMapCentrePanel,
-#rightDetailsPanel > .x-panel-header {
+#mainMapCentrePanel {
 	border-radius: 12px 12px 0 0;
 }
 

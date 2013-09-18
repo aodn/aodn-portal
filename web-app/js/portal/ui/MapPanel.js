@@ -26,12 +26,21 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions,
             layersLoading: 0,
-            layers:  Portal.data.LayerStore.instance()
+            layers:  Portal.data.LayerStore.instance(),
+            listeners: {
+                render: function() {
+                    this.animationWindow.render(this.getEl());
+                }
+            }
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
         this.initMap();
+
+        this.animationWindow = new Portal.ui.AnimationWindow({
+            mapPanel: this
+        });
 
         // Without this, the mini-map does not load properly because it ends up without
         // any base layers.
@@ -46,6 +55,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function () {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
+            this._positionAnimationWindowAtBottom();
         }, this);
 
         this.on('tabchange', function () {
@@ -77,6 +87,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
             this._updateLayerLoadingSpinner(numLayersLoading);
         }, this);
+    },
+
+    _positionAnimationWindowAtBottom: function() {
+        this.animationWindow.setPosition(0);
+        this.animationWindow.setWidth(this.getWidth());
     },
 
     getTimeControl: function() {
