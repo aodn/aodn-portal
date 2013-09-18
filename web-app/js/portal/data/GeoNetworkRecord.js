@@ -15,7 +15,6 @@ Portal.data.GeoNetworkRecord.create = function() {
         Ext.each(linkElems, function(link) {
             var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
             var elements = linkValue.split('|');
-
             links.push({
                 name: elements[0],
                 title: elements[1],
@@ -26,6 +25,17 @@ Portal.data.GeoNetworkRecord.create = function() {
         }, this);
 
         return links;
+    };
+
+    isDownloadableProtocol = function(protocol) {
+
+        var protocols = [];
+
+        Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
+        protocols.push(protocol.trim())
+        });
+
+        return (protocols.indexOf(protocol) >= 0);
     };
 
     var LinksField = {
@@ -41,7 +51,7 @@ Portal.data.GeoNetworkRecord.create = function() {
             var downloadableLinks = [];
 
             Ext.each(allLinks, function(linkToCheck) {
-                if (Portal.cart.Downloader.isDownloadableProtocol(linkToCheck.protocol)) {
+                if (isDownloadableProtocol(linkToCheck.protocol)) {
                     downloadableLinks.push(linkToCheck);
                 }
             });
@@ -62,12 +72,31 @@ Portal.data.GeoNetworkRecord.create = function() {
         }
     };
 
+    var PointOfTruthLinkField = {
+        name: 'pointOfTruthLink',
+        convert: function(v, record) {
+
+            var allLinks = convertXmlToLinks(v, record);
+            var pointOfTruthLink = undefined;
+
+            Ext.each(allLinks, function(linkToCheck) {
+                if (linkToCheck.protocol == 'WWW:LINK-1.0-http--metadata-URL') {
+
+                    pointOfTruthLink = linkToCheck;
+                }
+            });
+
+            return pointOfTruthLink;
+        }
+    };
+
     var f = Ext.data.Record.create([
         'title',
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
         LinksField,
         DownloadableLinksField,
+        PointOfTruthLinkField,
         'source',
         { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
         BboxField,

@@ -23,7 +23,7 @@ describe("Portal.filter.BaseFilter", function() {
 
             panel = newFilterPanelFor(filter);
 
-            expect(panel).toBe(undefined);
+            expect(panel).toBeUndefined();
         });
 
         it("Should create ComboFilter", function() {
