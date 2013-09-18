@@ -121,7 +121,10 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _makeExternalLinkMarkup: function(href, text) {
 
-        if (!text) text = href;
+        if (!text) {
+
+            text = href;
+        }
 
         return "<a href='" + href + "' target='_blank' class='external'>" + text + "</a>";
     }
