@@ -19,11 +19,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="subheading">Metadata</div>',
             '    {[this._getPointOfTruthLinkEntry(values)]}',
             '  </div>',
-            '  <div class="row">',
-            '    <div class="subheading">Data</div>',
-            '    {[this._getDataFilterEntry(values)]}',
-            '    {[this._getDataDownloadEntry(values)]}',
-            '  </div>',
+            '  {[this._dataRowTemplate(values)]}',
             '  <tpl if="downloadableLinks.length &gt; 0">',
             '  <div class="row">',
             '    <div class="subheading">Attached files</div>',
@@ -45,37 +41,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         return this._makeEntryMarkup(html);
     },
 
-    _getDataFilterEntry: function(values) {
+    _dataRowTemplate: function(values) {
 
-        var wmsLayer = values.wmsLayer;
+        var template = new Portal.cart.DataRowTemplate(this);
 
-        if (wmsLayer) {
-
-            var cqlText = wmsLayer.getCqlFilter();
-
-            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
-
-            return this._makeEntryMarkup(html);
-        }
-
-        return "";
-    },
-
-    _getDataDownloadEntry: function(values) {
-
-        var wmsLayer = values.wmsLayer;
-        var html;
-
-        if (wmsLayer) {
-
-            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
-        }
-        else {
-
-            html = this._makeSecondaryTextMarkup('No direct access to data available currently.');
-        }
-
-        return this._makeEntryMarkup(html);
+        return template.apply(values);
     },
 
     _getFileListEntries: function(values) {

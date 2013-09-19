@@ -67,88 +67,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         });
     });
 
-    describe('_getDataFilterEntry', function() {
-
-        beforeEach(function() {
-
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
-        });
-
-        it('returns the entry markup', function() {
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(html).toBe('entry markup');
-        });
-
-        it('calls entry markup with filter description', function() {
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
-        });
-
-        it('calls entry markup with no filter message', function() {
-
-            geoNetworkRecord.wmsLayer.getCqlFilter = function() { return null };
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
-        });
-
-        it('returns empty string when no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(html).toBe('');
-            expect(tpl._makeEntryMarkup).not.toHaveBeenCalled();
-        });
-
-        afterEach(function() {
-
-            tpl._makeEntryMarkup.reset();
-        });
-    });
-
-    describe('_getDataDownloadEntry', function() {
-
-        var html;
-
-        beforeEach(function() {
-
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
-
-            html = tpl._getDataDownloadEntry(geoNetworkRecord);
-        });
-
-        it('returns the entry markup', function() {
-
-            expect(html).toBe('entry markup');
-        });
-
-        it('include placeholder when layer is present', function() {
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
-        });
-
-        it('include message when there is no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
-
-            tpl._getDataDownloadEntry(geoNetworkRecord);
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct access to data available currently.</span>');
-        });
-
-        afterEach(function() {
-
-            tpl._makeEntryMarkup.reset();
-        });
-    });
-
     describe('_getFileListEntries', function() {
 
         beforeEach(function() {
@@ -273,8 +191,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         beforeEach(function() {
 
             tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-            tpl._getDataFilterEntry = function() { return "data_filter" };
-            tpl._getDataDownloadEntry = function() { return "data_download" };
+            tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
             tpl._getFileListEntries = function() { return "file_list" };
 
             var html = tpl.apply(geoNetworkRecord);
@@ -349,43 +266,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             });
         });
 
-        describe('download row', function() {
-
-            var row;
-            var rowHeading;
-
-            beforeEach(function() {
-
-                row = $(rootElement.children()[2]);
-                rowHeading = $(row.children()[0]);
-            });
-
-            it('has the correct class', function() {
-
-                expect(row.attr('class')).toBe('row');
-            });
-
-            it('has correct number of children', function() {
-
-                expect(row.children().length).toBe(1);
-            });
-
-            it('has correct row heading', function() {
-
-                expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Data');
-            });
-
-            it('has correct text value from function', function() {
-
-                var rowText = getText(row);
-
-                expect(rowText.length).toBe(2);
-                expect(rowText[0]).toBe('data_filter');
-                expect(rowText[1]).toBe('data_download');
-            });
-        });
-
         describe('files row', function() {
 
             var row;
@@ -427,8 +307,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             beforeEach(function() {
 
                 tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-                tpl._getDataFilterEntry = function() { return "data_filter" };
-                tpl._getDataDownloadEntry = function() { return "data_download" };
+                tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
                 tpl._getFileListEntries = function() { return "file_list" };
 
                 geoNetworkRecord.downloadableLinks = [];
