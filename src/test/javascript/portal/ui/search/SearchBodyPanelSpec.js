@@ -10,7 +10,8 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
 
     beforeEach(function() {
         searchBodyPanel = new Portal.ui.search.SearchBodyPanel({
-            resultsStore: new Portal.data.GeoNetworkRecordStore()
+            resultsStore: new Portal.data.GeoNetworkRecordStore(),
+            searcher: new Portal.service.CatalogSearcher()
         });
     });
 
@@ -41,6 +42,33 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
                 searchBodyPanel._onResultsStoreLoad();
                 expect(searchBodyPanel._displayNoResultsAlert).toHaveBeenCalled();
             });
+        });
+    });
+
+    describe('searcher events', function() {
+        beforeEach(function() {
+            spyOn(searchBodyPanel.resultsGrid, 'showLoadMask');
+            spyOn(searchBodyPanel.resultsGrid, 'hideLoadMask');
+        });
+
+        it('calls resultsGrid showLoadMask on searchstart', function() {
+            searchBodyPanel.searcher.fireEvent('searchstart');
+            expect(searchBodyPanel.resultsGrid.showLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on searchcomplete', function() {
+            searchBodyPanel.searcher.fireEvent('searchcomplete');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on summaryOnlySearchComplete', function() {
+            searchBodyPanel.searcher.fireEvent('summaryOnlySearchComplete');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on searcherror', function() {
+            searchBodyPanel.searcher.fireEvent('searcherror');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
         });
     });
 });
