@@ -154,9 +154,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
-    //MapOptionsPanel
+    // MapOptionsPanel
     autozoom: 'Auto zoom to collection extent',
     hideDetailsPanel: 'Hide collection details',
+    clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all collections',
     resetMapControlLabel: 'Reset map',
 
