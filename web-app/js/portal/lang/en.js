@@ -86,7 +86,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     exactMatches: 'Exact Matches',
     precision: 'Precision',
     exactMatchesDesc: 'Must Match Search Terms Exactly',
-    searchButton: 'Search',
+    goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
     saveSearchButtonText: 'Save',
