@@ -90,7 +90,22 @@ Portal.data.GeoNetworkRecord = function() {
         return (protocols.indexOf(protocol) >= 0);
     };
 
-    this.getFirstWmsLink = function() {
+    var f = Ext.data.Record.create([
+        'title',
+        'abstract',
+        { name: 'uuid', mapping: '*/uuid' },
+        LinksField,
+        DownloadableLinksField,
+        PointOfTruthLinkField,
+        'source',
+        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
+        BboxField,
+        'wmsLayer'
+    ]);
+
+    var p = f.prototype;
+
+    p.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -108,11 +123,11 @@ Portal.data.GeoNetworkRecord = function() {
         return linkStore.getLayerLink(0);
     };
 
-    this.hasWmsLink = function() {
+    p.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
-    this.convertedData = function() {
+    p.convertedData = function() {
         var convertedData = {};
 
         Ext.each(
@@ -132,7 +147,7 @@ Portal.data.GeoNetworkRecord = function() {
         return convertedData;
     };
 
-    this.wfsDownloadInfoForLayer = function(layer) {
+    p.wfsDownloadInfoForLayer = function(layer) {
         var wfsLayer = layer.wfsLayer;
         var layerName;
         var serverUri;
@@ -154,24 +169,10 @@ Portal.data.GeoNetworkRecord = function() {
         };
     };
 
-    this.updateAodaac = function(aodaac) {
+    p.updateAodaac = function(aodaac) {
         this.aodaac = aodaac;
     };
 
-    var f = Ext.data.Record.create([
-        'title',
-        'abstract',
-        { name: 'uuid', mapping: '*/uuid' },
-        LinksField,
-        DownloadableLinksField,
-        PointOfTruthLinkField,
-        'source',
-        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-        BboxField,
-        'wmsLayer'
-    ]);
-
-    Ext.apply(f.prototype, this);
-
     return f;
+
 }();
