@@ -44,6 +44,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             scope: this,
             success: function( resp ) {
 
+                this.geoNetworkRecord = layer.parentGeoNetworkRecord;
                 this.productsInfo = JSON.parse( resp.responseText );
 
                 if ( this.productsInfo.length > 0 ) {
@@ -95,9 +96,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         this.productInfoText.html = newText;
 
-        // Populate spatial extent controls
-        this._setBounds();
-
         // Populate temporal extent controls
         var timeRangeStart = productInfo.extents.dateTime.min;
         var timeRangeEnd = productInfo.extents.dateTime.max;
@@ -109,6 +107,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.dateRangeEndPicker.setMinValue( timeRangeStart );
         this.dateRangeEndPicker.setValue( maxTimeValue ); // From above, handles 'ongoing' data sets
         this.dateRangeEndPicker.setMaxValue( timeRangeEnd );
+
+        // Populate spatial extent controls this will also update the aodaac object in the record store
+        // so please keep it last so all values are set
+        this._setBounds();
     },
 
     _addBlurb: function ( items ) {
@@ -285,7 +287,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
                     return String.format( '{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage );
                 }
-            })
+            }),
+            listeners: {
+                scope: this,
+                changecomplete: this._updateGeoNetworkAodaac
+            }
         });
 
         var timeRangeSliderContainer = new Ext.Panel({
@@ -321,7 +327,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             format: 'd/m/Y',
             anchor: '100%',
             showToday: false,
-            maxValue: yesterday
+            maxValue: yesterday,
+            listeners: {
+                scope: this,
+                change: this._updateGeoNetworkAodaac,
+                select: this._updateGeoNetworkAodaac
+            }
         };
 
         var dateRangeEndPicker = {
@@ -333,7 +344,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             format: 'd/m/Y',
             anchor: '100%',
             showToday: true,
-            maxValue: today // Can't select date after today
+            maxValue: today, // Can't select date after today
+            listeners: {
+                scope: this,
+                change: this._updateGeoNetworkAodaac,
+                select: this._updateGeoNetworkAodaac
+            }
         };
 
         var datePickers = {
@@ -511,5 +527,29 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.westBL.setValue(bounds[0]);
         this.northBL.setValue(bounds[3]);
         this.eastBL.setValue(bounds[2]);
+        this._updateGeoNetworkAodaac();
+    },
+
+    _updateGeoNetworkAodaac: function() {
+        if (this.geoNetworkRecord) {
+            this.geoNetworkRecord.updateAodaac(this._buildAodaac());
+        }
+    },
+
+    _buildAodaac: function() {
+        if (this.productsInfo) {
+            return {
+                productId: this.productsInfo[ this.selectedProductInfoIndex ].productId,
+                dateRangeStart: this.dateRangeStartPicker.value,
+                dateRangeEnd: this.dateRangeEndPicker.value,
+                timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
+                timeOfDayRangeEnd: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[1].value),
+                southBL: this.southBL.value,
+                westBL: this.westBL.value,
+                northBL: this.northBL.value,
+                eastBL: this.eastBL.value
+            };
+        }
+        return {};
     }
 });

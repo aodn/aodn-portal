@@ -76,3 +76,12 @@ var mockLayoutForMainPanel = function(mainPanel) {
         mainPanel.layout.activeItem = mainPanel.getComponent(item);
     };
 };
+
+var mockMap = function() {
+    return {
+        events: { register: function(event, scope, fn) {}}
+    };
+}
+
+// An empty function to pass as a parameter
+var nil = function() {}

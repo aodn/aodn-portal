@@ -154,6 +154,10 @@ Portal.data.GeoNetworkRecord = function() {
         };
     };
 
+    this.updateAodaac = function(aodaac) {
+        this.aodaac = aodaac;
+    };
+
     var f = Ext.data.Record.create([
         'title',
         'abstract',
