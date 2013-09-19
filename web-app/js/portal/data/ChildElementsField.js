@@ -8,8 +8,8 @@
 Ext.namespace('Portal.data');
 
 /*
- * Creates a field object with a convert function that returns all values of the 
- * matched element as an array
+ * Creates a field object with a convert function that returns all matching
+ * child elements as an array
  *  
  */
  
