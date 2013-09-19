@@ -84,4 +84,4 @@ var mockMap = function() {
 }
 
 // An empty function to pass as a parameter
-var nil = function() {}
+var noOp = function() {}

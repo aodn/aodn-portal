@@ -8,12 +8,12 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 
 Portal.data.GeoNetworkRecord = function() {
 
-    var LinksField = {
+    var linksField = {
         name: 'links',
         convert: convertXmlToLinks
     };
 
-    var DownloadableLinksField = {
+    var downloadableLinksField = {
         name: 'downloadableLinks',
         convert: function(v, record) {
 
@@ -30,7 +30,7 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var BboxField = {
+    var bboxField = {
         name: 'bbox',
         convert: function(v, record) {
             var metaDataExtent = new Portal.search.MetadataExtent();
@@ -42,7 +42,7 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var PointOfTruthLinkField = {
+    var pointOfTruthLinkField = {
         name: 'pointOfTruthLink',
         convert: function(v, record) {
 
@@ -90,22 +90,22 @@ Portal.data.GeoNetworkRecord = function() {
         return (protocols.indexOf(protocol) >= 0);
     };
 
-    var f = Ext.data.Record.create([
+    var constructor = Ext.data.Record.create([
         'title',
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
-        LinksField,
-        DownloadableLinksField,
-        PointOfTruthLinkField,
+        linksField,
+        downloadableLinksField,
+        pointOfTruthLinkField,
         'source',
         { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
-        BboxField,
+        bboxField,
         'wmsLayer'
     ]);
 
-    var p = f.prototype;
+    var prototype = constructor.prototype;
 
-    p.getFirstWmsLink = function() {
+    prototype.getFirstWmsLink = function() {
         var links = this.get('links');
 
         if (!links) {
@@ -123,11 +123,11 @@ Portal.data.GeoNetworkRecord = function() {
         return linkStore.getLayerLink(0);
     };
 
-    p.hasWmsLink = function() {
+    prototype.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
-    p.convertedData = function() {
+    prototype.convertedData = function() {
         var convertedData = {};
 
         Ext.each(
@@ -147,7 +147,7 @@ Portal.data.GeoNetworkRecord = function() {
         return convertedData;
     };
 
-    p.wfsDownloadInfoForLayer = function(layer) {
+    prototype.wfsDownloadInfoForLayer = function(layer) {
         var wfsLayer = layer.wfsLayer;
         var layerName;
         var serverUri;
@@ -169,10 +169,10 @@ Portal.data.GeoNetworkRecord = function() {
         };
     };
 
-    p.updateAodaac = function(aodaac) {
+    prototype.updateAodaac = function(aodaac) {
         this.aodaac = aodaac;
     };
 
-    return f;
+    return constructor;
 
 }();

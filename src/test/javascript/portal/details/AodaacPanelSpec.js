@@ -6,23 +6,25 @@
  */
 describe('Portal.details.AodaacPanel', function() {
 
+    var map;
     var aodaacPanel;
     var geoNetworkRecord = {
         id: "45678",
-        updateAodaac: nil
+        updateAodaac: noOp
+    };
+    var layer = {
+        parentGeoNetworkRecord: geoNetworkRecord
     };
 
     beforeEach(function() {
-        aodaacPanel = new Portal.details.AodaacPanel({ map: mockMap() });
+        map = mockMap();
+        spyOn(map.events, 'register');
+        aodaacPanel = new Portal.details.AodaacPanel({ map: map });
     });
 
     describe('initialisation', function() {
         it('registers a handler for the map move event', function() {
-            var map = mockMap();
-            spyOn(map.events, 'register');
-            var _aodaacPanel = new Portal.details.AodaacPanel({ map: map });
-
-            expect(map.events.register).toHaveBeenCalledWith('move', _aodaacPanel, _aodaacPanel._setBounds);
+            expect(map.events.register).toHaveBeenCalledWith('move', aodaacPanel, aodaacPanel._setBounds);
         });
     });
 
@@ -38,7 +40,7 @@ describe('Portal.details.AodaacPanel', function() {
             _applyCommonSpies();
             spyOn(aodaacPanel, '_populateFormFields');
 
-            aodaacPanel.update(_mockLayer(), nil, nil, {});
+            aodaacPanel.update(layer, noOp, noOp, {});
             expect(aodaacPanel.geoNetworkRecord).toBeTruthy();
             expect(aodaacPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
         });
@@ -60,7 +62,7 @@ describe('Portal.details.AodaacPanel', function() {
             );
 
             delete aodaacPanel.geoNetworkRecord;
-            aodaacPanel.update(_mockLayer(), nil, nil, {});
+            aodaacPanel.update(layer, noOp, noOp, {});
             expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
         });
 
@@ -121,12 +123,6 @@ describe('Portal.details.AodaacPanel', function() {
         );
 
         return map;
-    }
-
-    function _mockLayer() {
-        return {
-            parentGeoNetworkRecord: geoNetworkRecord
-        };
     }
 
     function _applyCommonSpies(panel) {
