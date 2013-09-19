@@ -261,6 +261,30 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertNull(updatedLayer.viewParams)
     }
 
+    void testApplicationXmlIsXmlContent() {
+        if (!controller._isXmlContent("application/xml")) {
+            fail()
+        }
+    }
+
+    void testTextXmlIsXmlContent() {
+        if (!controller._isXmlContent("text/xml")) {
+            fail()
+        }
+    }
+
+    void testTextPlainIsNotXmlContent() {
+        if (controller._isXmlContent("text/plain")) {
+            fail()
+        }
+    }
+
+    void testTextHtmlIsNotXmlContent() {
+        if (controller._isXmlContent("text/html")) {
+            fail()
+        }
+    }
+
     def _updateViewParamsSetup(viewParams) {
         Layer layer = new Layer(dataSource: "abc", server: new Server())
         mockDomain(Layer, [layer])
