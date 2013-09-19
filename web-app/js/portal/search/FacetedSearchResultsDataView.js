@@ -67,10 +67,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (values.platform) {
             html += paramTpl.apply({"label":"Platform","value":values.platform});
         }
-        if (values.tempExtentBegin) {
+        if (values.temporalExtentBegin) {
             html += paramTpl.apply({
                 "label":"Date Range",
-                "value": moment(values.tempExtentBegin).format("YYYY-MM-DD Z") + " - " + moment(values.tempExtentEnd).format("YYYY-MM-DD Z")
+                "value": moment(values.temporalExtentBegin).format("YYYY-MM-DD Z") + " - " + moment(values.temporalExtentEnd).format("YYYY-MM-DD Z")
             });
         }
         if (values.parameter.size > 0) {

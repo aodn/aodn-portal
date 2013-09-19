@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('Portal.data.ElementValuesField', function() {
+describe('Portal.data.ChildElementsField', function() {
     describe('convert method', function() {
         it('converts multiple matching elements into an array', function() {
             var xmlDoc  = document.implementation.createDocument('', 'root',null);
@@ -17,7 +17,7 @@ describe('Portal.data.ElementValuesField', function() {
             .appendChild(xmlDoc.createElement('parameter'))
             .appendChild(xmlDoc.createTextNode('parameter 2'));
 
-            var field = new Portal.data.ElementValuesField({name: 'parameter'});
+            var field = new Portal.data.ChildElementsField({name: 'parameter'});
             
             var result = field.convert(undefined, xmlDoc);
         	
