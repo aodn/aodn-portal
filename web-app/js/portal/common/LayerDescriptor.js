@@ -50,19 +50,15 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _getTimeDimension: function() {
+        var timeDimension = undefined;
         if (!this.dimensions) {
-            return false;
+            return timeDimension;
         }
-
-        var timeDimension = false;
 
         Ext.each(this.dimensions, function(dimension) {
             if (dimension.name == 'time') {
                 timeDimension = dimension;
-                return false;
             }
-
-            return true;
         });
 
         return timeDimension;

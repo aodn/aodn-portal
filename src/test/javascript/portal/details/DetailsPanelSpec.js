@@ -9,7 +9,6 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-
         detailsPanel = new Portal.details.DetailsPanel({ map: _mockMap() });
         spyOn(detailsPanel, 'hideDetailsPanelContents');
         detailsPanel.initComponent();

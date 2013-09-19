@@ -124,4 +124,31 @@ describe("Portal.common.LayerDescriptor", function() {
             expect(openLayer.zoomOverride.openLayersZoomLevel).toEqual(zoomLevel);
         });
     });
+
+    describe('Temporal attributes', function() {
+        it('returns undefined if there is no dimensions attribute', function() {
+            expect(new Portal.common.LayerDescriptor({})._getTimeDimension()).toBeUndefined();
+        });
+
+        it('returns undefined if there is no time dimension', function() {
+            var layerDescriptor = new Portal.common.LayerDescriptor({
+                dimensions: []
+            });
+            expect(layerDescriptor._getTimeDimension()).toBeUndefined();
+        });
+
+        it('returns the time dimension if it exists', function() {
+            var times = [1, 2, 3, 4, 5];
+            var layerDescriptor = new Portal.common.LayerDescriptor({
+                dimensions: [
+                    {
+                        name: 'time',
+                        extent: times
+                    }
+                ]
+            });
+            expect(layerDescriptor._getTimeDimension()).toBeTruthy();
+            expect(layerDescriptor._getTimeDimension().extent).toEqual(times);
+        });
+    });
 });
