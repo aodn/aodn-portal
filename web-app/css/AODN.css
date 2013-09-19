@@ -222,27 +222,26 @@ ul.x-tab-strip-top {
 .faceted-search-clear-all .x-hyperlink {
     background-color: #E6E9EB;
     padding: 1px 3px;
-    border-radius: 4px;
 }
 
 .x-btn {
-    padding: 0px 4px;
+    padding: 0px 6px;
 }
 
 .x-btn,
 .faceted-search-clear-all div.x-hyperlink {
     background-color: #E6E9EB;
-    border-radius: 3px;
+    border-radius: 6px;
     margin-right: 3px;
 }
 
-.mainNavigationButton.x-btn {
+.navigationButton.x-btn {
     background-color: #F4A62B;
-    border: 1px solid #744646   ;
 }
 
-.mainNavigationButton .x-btn-text {
+.navigationButton .x-btn-text {
     color: white;
+    font-weight: bold;
     text-shadow: 1px 2px 6px #AD5D5D;
 }
 

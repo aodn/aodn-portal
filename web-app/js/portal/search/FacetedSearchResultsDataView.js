@@ -88,8 +88,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         new Ext.Button({
-            text: "Select  >",
-            cls: "mainNavigationButton drop-shadow " + cls,
+            text: OpenLayers.i18n('navigationButtonSelect'),
+            cls: "navigationButton forwardsButton" + cls,
+            width: 100,
             scope: this,
             renderTo: "fsSearchAddBtn" + uuid,
             listeners: {

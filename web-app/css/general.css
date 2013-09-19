@@ -396,6 +396,13 @@ Site navigation
 
 }
 
+.x-btn.forwardsButton {
+    border-radius: 0px 12px 12px 0px;
+}
+.x-btn.backwardsButton {
+    border-radius: 12px 0px 0px 12px;
+}
+
 .community {
     padding: 10px 0;
 }
@@ -1185,7 +1192,7 @@ div.allwhite {
 
 
 
-.mainNavigationButton button:hover {
+.navigationButton button:hover {
     color: black;
 
 }

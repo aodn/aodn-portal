@@ -7,6 +7,10 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    navigationButtonNext: "Next >>",
+    navigationButtonPrevious: "<< Previous",
+    navigationButtonSelect: "Select >>",
+
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
     loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
