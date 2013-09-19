@@ -18,23 +18,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         parentTemplate = new Portal.cart.DownloadPanelTemplate();
         tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
-            title: 'the title',
-            uuid: 4,
-            pointOfTruthLink: {
-                href: 'point of truth url'
-            },
-            downloadableLinks: [
-                {
-                    href: 'http://host/some.html',
-                    name: 'imos:radar_stations',
-                    title: 'the title one'
-                },
-                {
-                    href: 'http://host/2.html',
-                    name: 'imos:argo_floats',
-                    title: 'the title too'
-                }
-            ],
+            uuid: 9,
             wmsLayer: {
                 getCqlFilter: function() {
                     return "cql_filter"
@@ -107,7 +91,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-9"></div>');
         });
 
         it('include message when there is no layer', function() {

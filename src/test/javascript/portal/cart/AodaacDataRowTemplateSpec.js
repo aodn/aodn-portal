@@ -18,23 +18,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         parentTemplate = new Portal.cart.DownloadPanelTemplate();
         tpl = new Portal.cart.AodaacDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
-            title: 'the title',
-            uuid: 4,
-            pointOfTruthLink: {
-                href: 'point of truth url'
-            },
-            downloadableLinks: [
-                {
-                    href: 'http://host/some.html',
-                    name: 'imos:radar_stations',
-                    title: 'the title one'
-                },
-                {
-                    href: 'http://host/2.html',
-                    name: 'imos:argo_floats',
-                    title: 'the title too'
-                }
-            ],
+            uuid: 7,
             wmsLayer: {
                 getCqlFilter: function() {
                     return "cql_filter"
@@ -107,7 +91,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-7"></div>');
         });
 
         it('include message when there is no layer', function() {

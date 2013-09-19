@@ -15,7 +15,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         tpl = new Portal.cart.DownloadPanelTemplate();
         geoNetworkRecord = {
             title: 'the title',
-            uuid: 4,
             pointOfTruthLink: {
                 href: 'point of truth url'
             },
@@ -30,12 +29,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                     name: 'imos:argo_floats',
                     title: 'the title too'
                 }
-            ],
-            wmsLayer: {
-                getCqlFilter: function() {
-                    return "cql_filter"
-                }
-            }
+            ]
         };
     });
 
