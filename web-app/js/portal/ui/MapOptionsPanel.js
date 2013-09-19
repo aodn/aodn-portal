@@ -44,6 +44,8 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             map: cfg.map
         });
 
+        this.initButtonPanel();
+
         var config = Ext.apply({
             collapseMode: 'mini',
             id: 'mapOptions',
@@ -61,7 +63,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                     ]
                 }),
                 new Ext.Spacer({height: 5}),
-                this.initButtonPanel(),
+                this.buttonPanel,
                 new Ext.Spacer({height: 2}),
                 this.snapshotOptionsPanel,
                 this.baseLayerCombo
@@ -80,30 +82,17 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             items: [
                 {
                     xtype: 'button',
-                    text: OpenLayers.i18n("removeAllControlLabel"),
-                    cls: "floatLeft buttonPad",
-                    tooltip: OpenLayers.i18n("mapOptionsRemoveLayersButton"),
-                    scope: this,
-                    handler: function () {
-                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
-                        Ext.MsgBus.publish('removeAllLayers');
-                    }
-                },
-                {
-                    xtype: 'button',
-                    text: OpenLayers.i18n("resetMapControlLabel"),
-                    tooltip: OpenLayers.i18n("mapOptionsResetButton"),
+                    text: OpenLayers.i18n("clearAllButtonLabel"),
                     cls: "floatLeft buttonPad",
                     scope: this,
-                    handler: function () {
-                        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
-                        Ext.MsgBus.publish('reset');
-                    }
-                },
-                new Portal.snapshot.SnapshotSaveButton({controller: this.snapshotController})
+                    handler: this._clearAll
+                }
             ]
         });
-        return this.buttonPanel;
+    },
+
+    _clearAll: function () {
+        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
     },
 
     autoZoomEnabled: function () {
