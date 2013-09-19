@@ -16,15 +16,15 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         this.mapPanel.region = 'center';
 
         this.detailsPanel = new Portal.details.DetailsPanel({
-			region: 'west',
-			collapsible: true,
-			collapsed: false,
+            region: 'west',
+            collapsible: true,
+            collapsed: false,
             split: true,
             width: 360,
             minWidth: 320,
             maxWidth: 500,
             map: this.mapPanel.map
-		});
+        });
 
         var config = Ext.apply({
             layout: 'border',

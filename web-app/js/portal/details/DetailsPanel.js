@@ -10,112 +10,112 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
-	constructor: function(cfg) {
-		var config = Ext.apply({
-			id: 'detailsPanelItems',
-			title : OpenLayers.i18n('noActiveLayersSelected'),
-			layout: 'vbox',
-			layoutConfig: {
-				align: 'stretch'
-			}
-		}, cfg);
+    constructor: function (cfg) {
+        var config = Ext.apply({
+            id: 'detailsPanelItems',
+            title: OpenLayers.i18n('noActiveLayersSelected'),
+            layout: 'vbox',
+            layoutConfig: {
+                align: 'stretch'
+            }
+        }, cfg);
 
-		Portal.details.DetailsPanel.superclass.constructor.call(this, config);
+        Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', function(eventName, openlayer) {
+        Ext.MsgBus.subscribe('selectedLayerChanged', function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
-	},
+    },
 
-	initComponent: function(){
+    initComponent: function () {
 
-		this.errorPanel = new Ext.Panel({
-			cls: "errors",
-			hidden: true,
-			html:OpenLayers.i18n('wmsLayerProblem')
+        this.errorPanel = new Ext.Panel({
+            cls: "errors",
+            hidden: true,
+            html: OpenLayers.i18n('wmsLayerProblem')
         });
 
-		this.detailsPanelTabs = new Portal.details.DetailsPanelTab({ map: this.map });
+        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({ map: this.map });
 
-		this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
-			id: "opacitySlider",
-	        layer: new OpenLayers.Layer("Dummy Layer"),
-	        keyIncrement: 10,
-			increment: 5,
-			minValue: 20, // we dont want a user to be able to give zero vis
-			maxValue: 100,
-	        aggressive: true,
-	        width: 175,
-	        isFormField: true,
-	        inverse: false,
-	        fieldLabel: "Opacity",
-			plugins: new GeoExt.LayerOpacitySliderTip({
-				template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-			})
-		});
+        this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
+            id: "opacitySlider",
+            layer: new OpenLayers.Layer("Dummy Layer"),
+            keyIncrement: 10,
+            increment: 5,
+            minValue: 20, // we dont want a user to be able to give zero vis
+            maxValue: 100,
+            aggressive: true,
+            width: 175,
+            isFormField: true,
+            inverse: false,
+            fieldLabel: "Opacity",
+            plugins: new GeoExt.LayerOpacitySliderTip({
+                template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
+            })
+        });
 
-		this.opacitySliderContainer = new Ext.Panel({
-			layout: 'form',
-			height: 26,
-			margins: {
-				top: 5,
-				right: 5,
-				bottom: 0,
-				left: 5
-			},
-			items: [this.opacitySlider]
-		});
+        this.opacitySliderContainer = new Ext.Panel({
+            layout: 'form',
+            height: 26,
+            margins: {
+                top: 5,
+                right: 5,
+                bottom: 0,
+                left: 5
+            },
+            items: [this.opacitySlider]
+        });
 
 
-		this.transectControl = new Portal.mainMap.TransectControl({
-			ref: 'transectControl',
-			height: 30,
-			listeners: {
-				scope: this,
+        this.transectControl = new Portal.mainMap.TransectControl({
+            ref: 'transectControl',
+            height: 30,
+            listeners: {
+                scope: this,
 
-				transect: function(inf) {
-					var newTab = this.detailsPanelTabs.add({
-						xtype: 'panel',
-						title: OpenLayers.i18n('transectTab'),
-						closable: true,
-						layout:'form',
-						autoScroll: true,
-						items : [
-						    {
-								//TODO: use template
-								html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading')+ "', '"+inf.line+"');\" />"
-							}
-						]
-					});
+                transect: function (inf) {
+                    var newTab = this.detailsPanelTabs.add({
+                        xtype: 'panel',
+                        title: OpenLayers.i18n('transectTab'),
+                        closable: true,
+                        layout: 'form',
+                        autoScroll: true,
+                        items: [
+                            {
+                                //TODO: use template
+                                html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading') + "', '" + inf.line + "');\" />"
+                            }
+                        ]
+                    });
 
-					if (this.ownerCt.width <  430) {
-						this.ownerCt.setWidth(430);
-						if (this.ownerCt.ownerCt) {
-							this.ownerCt.ownerCt.doLayout();
-						}
-					}
+                    if (this.ownerCt.width < 430) {
+                        this.ownerCt.setWidth(430);
+                        if (this.ownerCt.ownerCt) {
+                            this.ownerCt.ownerCt.doLayout();
+                        }
+                    }
 
-					this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
-				}
+                    this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
+                }
 
-			}
-		});
+            }
+        });
 
-		this.items = [
-		    this.opacitySliderContainer,
-		    this.transectControl,
-		    this.errorPanel,
-		    this.detailsPanelTabs
-		];
+        this.items = [
+            this.opacitySliderContainer,
+            this.transectControl,
+            this.errorPanel,
+            this.detailsPanelTabs
+        ];
 
-		Portal.details.DetailsPanel.superclass.initComponent.call(this);
+        Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
         this.hideDetailsPanelContents();
-	},
+    },
 
-	getOpacitySlider: function(){
-		return this.opacitySlider;
-	},
+    getOpacitySlider: function () {
+        return this.opacitySlider;
+    },
 
     _checkLayerAvailability: function(layer) {
 
@@ -181,21 +181,21 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
             this.hideDetailsPanelContents();
         }
-	},
+    },
 
-	hideDetailsPanelContents: function(){
-		// clear the details Panel. ie. Don't show any layer options
+    hideDetailsPanelContents: function () {
+        // clear the details Panel. ie. Don't show any layer options
 
-		//DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
-		this.opacitySliderContainer.setVisible(false);
-		this.detailsPanelTabs.setVisible(false);
-		this.deactivateDrawingControl();
-		this.transectControl.hide();
-	},
+        //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
+        this.opacitySliderContainer.setVisible(false);
+        this.detailsPanelTabs.setVisible(false);
+        this.deactivateDrawingControl();
+        this.transectControl.hide();
+    },
 
-	deactivateDrawingControl: function() {
-		if (this.transectControl != null) {
-			this.transectControl.deactivateDrawingControl();
-		}
+    deactivateDrawingControl: function () {
+        if (this.transectControl != null) {
+            this.transectControl.deactivateDrawingControl();
+        }
 	}
 });
