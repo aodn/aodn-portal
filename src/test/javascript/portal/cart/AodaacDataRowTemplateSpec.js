@@ -19,11 +19,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         tpl = new Portal.cart.AodaacDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             uuid: 7,
-            wmsLayer: {
-                getCqlFilter: function() {
-                    return "cql_filter"
-                }
-            }
+            aodaac: {}
         };
     });
 
@@ -31,6 +27,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         beforeEach(function() {
 
+            spyOn(tpl, '_aodaacParamatersMarkup').andReturn('parameter_markup');
             spyOn(parentTemplate, '_makeEntryMarkup').andReturn('entry markup');
         });
 
@@ -41,25 +38,17 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             expect(html).toBe('entry markup');
         });
 
-        it('calls entry markup with filter description', function() {
+        it('calls entry markup with parameter description', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
+            expect(tpl._aodaacParamatersMarkup).toHaveBeenCalledWith(geoNetworkRecord.aodaac);
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('parameter_markup');
         });
 
-        it('calls entry markup with no filter message', function() {
+        it('returns empty string when no aodaac parameters', function() {
 
-            geoNetworkRecord.wmsLayer.getCqlFilter = function() { return null };
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
-        });
-
-        it('returns empty string when no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
+            geoNetworkRecord.aodaac = null;
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
@@ -96,7 +85,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         it('include message when there is no layer', function() {
 
-            geoNetworkRecord.wmsLayer = null;
+            geoNetworkRecord.aodaac = null;
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
@@ -107,6 +96,11 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             parentTemplate._makeEntryMarkup.reset();
         });
+    });
+
+    describe('_adoaacParameterMarkup', function() {
+
+
     });
 
     describe('template output', function() {

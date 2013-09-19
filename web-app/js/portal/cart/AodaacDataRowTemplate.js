@@ -25,13 +25,11 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _getDataFilterEntry: function(values) {
 
-        var wmsLayer = values.wmsLayer;
+        var aodaacParameters = values.aodaac;
 
-        if (wmsLayer) {
+        if (aodaacParameters) {
 
-            var cqlText = wmsLayer.getCqlFilter();
-
-            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
+            var html = this._aodaacParamatersMarkup(aodaacParameters);
 
             return this.downloadPanelTemplate._makeEntryMarkup(html);
         }
@@ -41,10 +39,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _getDataDownloadEntry: function(values) {
 
-        var wmsLayer = values.wmsLayer;
+        var aodaacParameters = values.aodaac;
         var html;
 
-        if (wmsLayer) {
+        if (aodaacParameters) {
 
             html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
         }
@@ -54,5 +52,14 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
+    },
+
+    _aodaacParamatersMarkup: function(params) {
+
+        return "" + // Todo - DN: Dictionarise
+            "Parameters:<br>" +
+            "<code>" +
+            "Date range start: " + aodaacParameters.dateRangeStart +
+            "</code>";
     }
 });

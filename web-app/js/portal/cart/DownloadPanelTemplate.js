@@ -43,9 +43,18 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _dataRowTemplate: function(values) {
 
-        var template = new Portal.cart.WfsDataRowTemplate(this);
+        var template;
 
-        return template.apply(values);
+        if (values.wmsLayer) {
+
+            template = new Portal.cart.WfsDataRowTemplate(this);
+        }
+        else if (values.aodaac) {
+
+            template = new Portal.cart.AodaacDataRowTemplate(this);
+        }
+
+        return template ? template.apply(values) : '';
     },
 
     _getFileListEntries: function(values) {
