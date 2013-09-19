@@ -6,7 +6,7 @@
  *
  */
 
-describe('Portal.cart.DataRowTemplate', function() {
+describe('Portal.cart.WfsDataRowTemplate', function() {
 
     var html;
     var parentTemplate;
@@ -16,7 +16,7 @@ describe('Portal.cart.DataRowTemplate', function() {
     beforeEach(function() {
 
         parentTemplate = new Portal.cart.DownloadPanelTemplate();
-        tpl = new Portal.cart.DataRowTemplate(parentTemplate);
+        tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             title: 'the title',
             uuid: 4,

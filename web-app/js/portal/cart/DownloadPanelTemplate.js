@@ -43,7 +43,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _dataRowTemplate: function(values) {
 
-        var template = new Portal.cart.DataRowTemplate(this);
+        var template = new Portal.cart.WfsDataRowTemplate(this);
 
         return template.apply(values);
     },

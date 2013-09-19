@@ -67,6 +67,35 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         });
     });
 
+    describe('_dataRowTemplate', function() {
+
+        var childTemplate;
+
+        beforeEach(function() {
+
+            childTemplate = {};
+            childTemplate.apply = jasmine.createSpy('apply');
+            spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
+            spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
+        });
+
+        it('uses AodaacDataRowTemplate where applicable', function() {
+
+            tpl._dataRowTemplate(geoNetworkRecord);
+
+            expect(Portal.cart.AodaacDataRowTemplate).toHaveBeenCalledWith(tpl);
+            expect(childTemplate.apply).toHaveBeenCalledWith(geoNetworkRecord);
+        });
+
+        it('uses WfsDataRowTemplate where applicable', function() {
+
+            tpl._dataRowTemplate(geoNetworkRecord);
+
+            expect(Portal.cart.WfsDataRowTemplate).toHaveBeenCalledWith(tpl);
+            expect(childTemplate.apply).toHaveBeenCalledWith(geoNetworkRecord);
+        });
+    });
+
     describe('_getFileListEntries', function() {
 
         beforeEach(function() {

@@ -6,7 +6,7 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DataRowTemplate = Ext.extend(Ext.XTemplate, {
+Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function(downloadPanelTemplate) {
 
@@ -20,7 +20,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Ext.XTemplate, {
             '  </div>'
         ];
 
-        Portal.cart.DataRowTemplate.superclass.constructor.call(this, templateLines);
+        Portal.cart.WfsDataRowTemplate.superclass.constructor.call(this, templateLines);
     },
 
     _getDataFilterEntry: function(values) {
