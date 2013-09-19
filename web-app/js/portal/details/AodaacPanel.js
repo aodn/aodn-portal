@@ -15,11 +15,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
         var items = [];
-        this._addBlurb( items );
-        this._addProductInfo( items );
-        this._addSpatialControls( items );
-        this._addTemporalControls( items );
-        this._addProcessingControls( items );
+        this._addBlurb(items);
+        this._addProductInfo(items);
+        this._addSpatialControls(items);
+        this._addTemporalControls(items);
+        this._addProcessingControls(items);
 
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -28,40 +28,40 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             bodyCls: 'aodaacTab'
         }, cfg );
 
-        Portal.details.AodaacPanel.superclass.constructor.call( this, config );
+        Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function() {
-        Portal.details.AodaacPanel.superclass.initComponent.call( this );
+        Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
         this.map.events.register("move", this, this._setBounds);
     },
 
-    update: function( layer, show, hide, target ) {
+    update: function(layer, show, hide, target) {
 
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
-            success: function( resp ) {
+            success: function(resp) {
 
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                this.productsInfo = JSON.parse( resp.responseText );
+                this.productsInfo = JSON.parse(resp.responseText);
 
-                if ( this.productsInfo.length > 0 ) {
+                if (this.productsInfo.length > 0) {
 
                     this._populateFormFields();
                     this._showAllControls();
 
-                    show.call( target, this );
+                    show.call(target, this);
                 }
                 else {
 
-                    hide.call( target, this );
+                    hide.call(target, this);
                 }
             },
             failure: function() {
 
-                hide.call( target, this );
+                hide.call(target, this);
             }
         });
     },
@@ -81,7 +81,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var maxTimeText = productInfo.extents.dateTime.max;
         var maxTimeValue = new Date();
 
-        if ( maxTimeText.trim() == "" ) {
+        if (maxTimeText.trim() == "") {
             maxTimeText = ', ongoing'
         }
         else {
@@ -100,20 +100,20 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var timeRangeStart = productInfo.extents.dateTime.min;
         var timeRangeEnd = productInfo.extents.dateTime.max;
 
-        this.dateRangeStartPicker.setMinValue( timeRangeStart );
-        this.dateRangeStartPicker.setValue( timeRangeStart );
-        this.dateRangeStartPicker.setMaxValue( timeRangeEnd );
+        this.dateRangeStartPicker.setMinValue(timeRangeStart);
+        this.dateRangeStartPicker.setValue(timeRangeStart);
+        this.dateRangeStartPicker.setMaxValue(timeRangeEnd);
 
-        this.dateRangeEndPicker.setMinValue( timeRangeStart );
-        this.dateRangeEndPicker.setValue( maxTimeValue ); // From above, handles 'ongoing' data sets
-        this.dateRangeEndPicker.setMaxValue( timeRangeEnd );
+        this.dateRangeEndPicker.setMinValue(timeRangeStart);
+        this.dateRangeEndPicker.setValue(maxTimeValue); // From above, handles 'ongoing' data sets
+        this.dateRangeEndPicker.setMaxValue(timeRangeEnd);
 
         // Populate spatial extent controls this will also update the aodaac object in the record store
         // so please keep it last so all values are set
         this._setBounds();
     },
 
-    _addBlurb: function ( items ) {
+    _addBlurb: function (items) {
 
         var blurbText = new Ext.Container({
             autoEl: 'div',
@@ -123,7 +123,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         items.push( blurbText, this._newSectionSpacer() );
     },
 
-    _addProductInfo: function ( items ) {
+    _addProductInfo: function (items) {
 
         var productInfoHeader = new Ext.Container({
             autoEl: 'div',
@@ -137,10 +137,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             html: "<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>"
         });
 
-        items.push( productInfoHeader, this.productInfoText, this._newSectionSpacer() );
+        items.push(productInfoHeader, this.productInfoText, this._newSectionSpacer());
     },
 
-    _addSpatialControls: function( items ) {
+    _addSpatialControls: function(items) {
 
         var spatialExtentText = new Ext.Container({
             autoEl: 'div',
@@ -247,10 +247,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        items.push( this.spatialControls );
+        items.push(this.spatialControls);
     },
 
-    _addTemporalControls: function( items ) {
+    _addTemporalControls: function(items) {
 
         var temporalExtentText = new Ext.Container({
             autoEl: 'div',
@@ -365,10 +365,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        items.push( this.temporalControls );
+        items.push(this.temporalControls);
     },
 
-    _addProcessingControls: function( items ) {
+    _addProcessingControls: function(items) {
 
         var processingControlsText = new Ext.Container({
             autoEl: 'div',
@@ -424,7 +424,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        items.push( this.processingControls );
+        items.push(this.processingControls);
     },
 
     _newSectionSpacer: function() {
@@ -436,9 +436,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var emailAddress = this.emailAddressTextbox.getValue();
 
-        if ( !this._validateEmailAddress( emailAddress ) ) {
+        if (!this._validateEmailAddress(emailAddress)) {
 
-            Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg') );
+            Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
             return;
         }
 
@@ -469,25 +469,27 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             url: 'aodaac/createJob?' + args,
             scope: this,
             success: function() {
-                Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreatedMsg', {email: emailAddress} ) );
+                Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreatedMsg', {email: emailAddress}));
             },
             failure: function() {
-                Ext.Msg.alert( OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreateErrorMsg') );
+                Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreateErrorMsg'));
             }
         });
     },
 
-    _validateEmailAddress: function( address ) {
+    _validateEmailAddress: function(address) {
 
-        if ( address == undefined )
+        if (address == undefined) {
+
             return false;
+        }
 
         // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test( address );
+        return re.test(address);
     },
 
-    _convertTimeSliderValue: function( quarterHours ) {
+    _convertTimeSliderValue: function(quarterHours) {
 
         // 'value' will be 0 - 96 (representing quarter-hours throughout the day)
 
@@ -504,7 +506,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return hourPart + '' + minutePart;
     },
 
-    _hoursFromThumb: function( thumb ) {
+    _hoursFromThumb: function(thumb) {
 
         var value = thumb.value;
 
@@ -513,10 +515,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var quarterHours = ["00", "15", "30", "45"];
 
-        var returnValue = String.format( "{0}:{1}", fullHours, quarterHours[partHours] );
+        var returnValue = String.format("{0}:{1}", fullHours, quarterHours[partHours]);
 
         // Tweak not to show 24:00
-        if ( returnValue == "24:00" ) returnValue = "23:59";
+        if (returnValue == "24:00") returnValue = "23:59";
 
         return returnValue;
     },

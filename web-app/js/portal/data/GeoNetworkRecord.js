@@ -77,7 +77,7 @@ Portal.data.GeoNetworkRecord = function() {
         }, this);
 
         return links;
-    };
+    }
 
     function isDownloadableProtocol(protocol) {
 
@@ -88,7 +88,7 @@ Portal.data.GeoNetworkRecord = function() {
         });
 
         return (protocols.indexOf(protocol) >= 0);
-    };
+    }
 
     var constructor = Ext.data.Record.create([
         'title',
@@ -174,5 +174,4 @@ Portal.data.GeoNetworkRecord = function() {
     };
 
     return constructor;
-
 }();

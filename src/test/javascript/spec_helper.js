@@ -81,7 +81,7 @@ var mockMap = function() {
     return {
         events: { register: function(event, scope, fn) {}}
     };
-}
+};
 
 // An empty function to pass as a parameter
-var noOp = function() {}
+var noOp = function() {};
