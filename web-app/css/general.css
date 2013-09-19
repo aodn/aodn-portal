@@ -1215,15 +1215,9 @@ div.allwhite {
     display: none;
 }
 
-.gx-popup .x-tab-panel-header {
-    border-width: 0;
-    background-color: #F4F4F4;
-}
 
-.gx-popup .x-tab-panel-header ul.x-tab-strip-top {
-    background: none ! important;
-    background-color: #F4F4F4 ! important;
-}
+
+
 
 .gx-popup .x-tab-panel-body {
     border: none;

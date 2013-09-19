@@ -220,7 +220,6 @@ ul.x-tab-strip-top {
 }
 
 .faceted-search-clear-all .x-hyperlink {
-    background-color: #E6E9EB;
     padding: 1px 3px;
 }
 
@@ -242,7 +241,6 @@ ul.x-tab-strip-top {
 .navigationButton .x-btn-text {
     color: white;
     font-weight: bold;
-    text-shadow: 1px 2px 6px #AD5D5D;
 }
 
 .x-btn-selected {

@@ -1765,7 +1765,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .gx-popup .x-tab-panel-header ul.x-tab-strip-top {
-    background: none;
+    background: #FFFFFF;
 }
 
 .gx-popup .x-tab-panel-body {
