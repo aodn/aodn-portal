@@ -17,7 +17,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             cls: "navigationButton backwardsButton",
             text: OpenLayers.i18n('navigationButtonPrevious'),
             width: 100,
-            disabled: true
+            hidden: true
         });
         this.prevButton.on('click', function() {
             this.mainPanel.layout.navigateToPrevTab();
@@ -26,7 +26,8 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         this.nextButton = new Ext.Button({
             cls: "navigationButton forwardsButton",
             width: 100,
-            text: OpenLayers.i18n('navigationButtonNext')
+            text: OpenLayers.i18n('navigationButtonNext'),
+            hidden: false
         });
         this.nextButton.on('click', function() {
             this.mainPanel.layout.navigateToNextTab();
@@ -45,7 +46,13 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _onMainPanelTabChange: function(mainPanel) {
-        this.prevButton.setDisabled(!mainPanel.layout.hasPrevTab());
-        this.nextButton.setDisabled(!mainPanel.layout.hasNextTab());
+
+        this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
+        this.nextButton.setVisible(mainPanel.layout.hasNextTab());
+
+        var label = (mainPanel.getActiveTab().id == "visualisePanel") ?
+                        OpenLayers.i18n('navigationButtonDownload'):
+                        OpenLayers.i18n('navigationButtonNext');
+        this.nextButton.setText(label);
     }
 });

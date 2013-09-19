@@ -102,6 +102,7 @@ input.readonlyInput {
     font-size: smaller;
     font-weight: normal;
 }
+
 .faceted-search-results {
     box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.05) inset;
     border-radius: 6px;
@@ -399,6 +400,7 @@ Site navigation
 .x-btn.forwardsButton {
     border-radius: 0px 12px 12px 0px;
 }
+
 .x-btn.backwardsButton {
     border-radius: 12px 0px 0px 12px;
 }
@@ -657,13 +659,14 @@ table.featureInfo caption {
     bottom: 0 ! important;
     top: auto ! important;
     left: 0;
-    z-index: 900! important;
+    z-index: 900 ! important;
+    border-radius: 0;
 }
 
 .animationControlsPanel {
-     width: 450px;
-     padding: 2px 6px 0px 6px;
-     margins: 2px;
+    width: 450px;
+    padding: 2px 6px 0px 6px;
+    margins: 2px;
 }
 
 .animationSubPanel label,
@@ -1116,6 +1119,7 @@ div.allwhite {
     margin-bottom: 2px;
     margin-right: 5px;
 }
+
 .term-selection-panel-header {
     padding-left: 3px;
 }
@@ -1125,12 +1129,12 @@ div.allwhite {
     font-weight: bold;
     font-style: italic;
 }
+
 .facetedSearchResultBody {
     overflow: auto;
 }
 
-
-.facetedSearchResultTextBody .x-panel-header{
+.facetedSearchResultTextBody .x-panel-header {
     font-size: 13px;
 }
 
@@ -1189,14 +1193,10 @@ div.allwhite {
     margin: 5px;
 }
 
-
-
-
 .navigationButton button:hover {
     color: black;
 
 }
-
 
 .remove-layer-button {
     background: url(../images/remove_layer2.png) center no-repeat transparent;
@@ -1263,13 +1263,11 @@ div.allwhite {
     border-radius: 4px;
 }
 
-
 .download-collection .x-btn {
 
     border: 2px solid #E0E0E0;
     background-color: #EEE;
 }
-
 
 .download-collection .x-btn-text {
 

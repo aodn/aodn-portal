@@ -95,9 +95,8 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MiniMapColumn.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/ViewRecordColumn.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResults.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsDataView.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoSelectionPanel.js')}"></script>

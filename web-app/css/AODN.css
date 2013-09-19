@@ -265,11 +265,7 @@ ul.x-tab-strip-top {
     text-shadow: 1px 2px 6px #AD5D5D;
 }
 
-.x-toolbar-ct .x-btn {
-
-}
-
-.animationSubPanel .x-btn {
+.animationSubPanel .x-btn, .animationSubPanel.x-btn {
     background-color: inherit;
 }
 

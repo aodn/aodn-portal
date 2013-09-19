@@ -14,19 +14,19 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
-            '<div class="">',
-            '<div class="x-panel-header facetedSearchResultRow">',
-            ' <h3 class="facetedSearchResultHeader">{title}</h3>',
-            ' <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">{[this.getButton(values)]}</div>',
-            '</div>',
-            '<div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
-            '<div class="x-panel x-box-item" style="height:118px;width:238px;border:1px solid #cccccc;" id="fsSearchMap{uuid}">{[this.getMiniMap(values)]}</div>',
-            '<div class="x-panel x-box-item facetedSearchResultTextBody" style="left:240px; ">',
-            '{[this.getParameters(values)]}',
-            '<p class="facetedSearchResultTextBody"><i>{[this.trimAbstract(values.abstract,30)]}</i>',
-            '&nbsp;{[this.getMetadataLink(values)]}</p>',
-            '</div>',
-            '</div>',
+            '<div>',
+            '   <div class="x-panel-header facetedSearchResultRow">',
+            '       <h3 class="facetedSearchResultHeader">{title}</h3>',
+            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">{[this.getButton(values)]}</div>',
+            '   </div>',
+            '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
+            '       <div class="x-panel x-box-item" style="height:118px;width:238px;border:1px solid #cccccc;" id="fsSearchMap{uuid}">{[this.getMiniMap(values)]}</div>',
+            '       <div class="x-panel x-box-item facetedSearchResultTextBody" style="left:240px; ">',
+            '           {[this.getParametersAsHtml(values)]}',
+            '           <p class="facetedSearchResultTextBody"><i>{[this.trimAbstract(values.abstract,30)]}</i>',
+            '           &nbsp;{[this.getMetadataLinksAsHtml(values)]}</p>',
+            '       </div>',
+            '   </div>',
             '</div>',
             '</tpl>',
             this,
@@ -36,7 +36,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return "";
                 }
             }
-        )
+        );
 
 
         var config = {
@@ -49,15 +49,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     },
 
-
-
-
-
-    getParameters: function(values){
+    getParametersAsHtml: function(values){
 
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
-            '<span>- {value}</span>',
+            '   <span>- {value}</span>',
             '</div>'
         );
         var html= "";
@@ -78,7 +74,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         return html;
-
     },
 
     createButton: function(uuid) {
@@ -89,7 +84,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         new Ext.Button({
             text: OpenLayers.i18n('navigationButtonSelect'),
-            cls: "navigationButton forwardsButton" + cls,
+            cls: "navigationButton forwardsButton " + cls,
             width: 100,
             scope: this,
             renderTo: "fsSearchAddBtn" + uuid,
@@ -102,7 +97,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         })
     },
 
-    getMetadataLink: function(values) {
+    getMetadataLinksAsHtml: function(values) {
         var ret = "";
         var links = values.links;
 
@@ -112,7 +107,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         }
         return ret;
-
     },
 
     getMiniMap: function(values) {
@@ -139,15 +133,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             return zoomLevel;
         };
 
-
-        function getBestBbox(bbox) {
-            if (bbox.getBounds() != undefined) {
-                return bbox;
-            }
-            else {
-                return new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox);
-            }
-        };
 
         var componentId = Ext.id();
 
@@ -208,7 +193,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
         Ext.MsgBus.publish('viewgeonetworkrecord', record);
     }
-
 });
 
 Ext.reg('portal.search.facetedsearchresultsdataview', Portal.search.FacetedSearchResultsDataView);
