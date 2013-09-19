@@ -119,4 +119,10 @@ describe('Portal.data.GeoNetworkRecord', function() {
             expect(wfsInfo.unusedField).toBeUndefined();
         });
     });
+
+    describe('collaborates with an AODAAC like object', function() {
+        it('responds to updateAodaac', function() {
+            expect(record.updateAodaac).toBeTruthy();
+        });
+    });
 });
