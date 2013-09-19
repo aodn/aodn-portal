@@ -63,6 +63,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     removeAll: function(store) {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
         Ext.MsgBus.publish('activegeonetworkrecordremoved');
+        Ext.MsgBus.publish('reset');
     },
 
     getItemsEncodedAsJson: function() {
