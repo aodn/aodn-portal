@@ -19,7 +19,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
         });
     });
     
-    describe("onSearch", function() {
+    describe("onGo", function() {
 
         it("expects the geometry field to be called geometry", function() {
             expect(geoFilter.GEOMETRY_FIELD).toEqual('geometry');
@@ -31,7 +31,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
             spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(false);
             spyOn(searcher, 'search');
             
-            geoFilter.onSearch();
+            geoFilter.onGo();
 
             expect(searcher.search).toHaveBeenCalled();
         });
@@ -40,7 +40,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
 
             spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(true);
             spyOn(searcher, 'search');
-            geoFilter.onSearch();
+            geoFilter.onGo();
             expect(searcher.search.callCount).toEqual(1);
         });
 
@@ -58,7 +58,7 @@ describe("Portal.search.GeoSelectionPanel", function() {
                 expect(searcher.searchFilters.getAt(boundingPolygonIndex).get('value')).toBe('POLYGON((1 2,3 4,5 6,1 2))');
             });
 
-            geoFilter.onSearch();
+            geoFilter.onGo();
         });
     });
 
