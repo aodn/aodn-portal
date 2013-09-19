@@ -6,6 +6,9 @@
  */
 Ext.namespace('Portal.ui.search');
 
+// TODO: note that this panel is probably redundant now that it has only one child - we can just use
+// FacetedSearchResultsGrid where this panel is used - however, waiting for Phil's latest changes
+// to be merged before getting rid of this (else there will be conflicts).
 Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
@@ -15,20 +18,14 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         this.resultsStore = cfg.resultsStore;
         this.searcher = cfg.searcher;
 
-        this.splashPanel = new Portal.ui.HomePanel({});
-
         this.resultsGrid = new Portal.search.FacetedSearchResultsGrid({
-            hidden: true,
             store: this.resultsStore
         });
 
         var config = Ext.apply({
-            layout: 'card',
-            activeItem: this.splashPanel,
-            items: [
-                this.splashPanel,
-                this.resultsGrid
-            ]
+            layout: 'fit',
+            activeItem: this.resultsGrid,
+            items: [this.resultsGrid]
         }, cfg);
 
         Portal.ui.search.SearchBodyPanel.superclass.constructor.call(this, config);
@@ -41,12 +38,8 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsStoreLoad: function() {
-
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
-        }
-        else {
-            this._activateResultsGridCard();
         }
     },
 
@@ -54,21 +47,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         Ext.Msg.alert('Info', 'The search returned no results.');
     },
 
-    _activateResultsGridCard: function() {
-        this.layout.setActiveItem(this.resultsGrid);
-    },
-
-    onFiltersCleared: function() {
-        this._activateSplashCard();
-    },
-
-    _activateSplashCard: function() {
-        this.layout.setActiveItem(this.splashPanel);
-    },
-
     _onResultsGridBbarBeforeChange: function (bbar, params) {
-
-
         this.resultsGrid.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment

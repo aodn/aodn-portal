@@ -15,22 +15,14 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('sets card layout', function() {
-            expect(searchBodyPanel.layout).toBe('card');
-        });
-
-        it('initialises splash panel', function() {
-            var splashPanel = searchBodyPanel.splashPanel;
-            expect(splashPanel).toBeInstanceOf(Portal.ui.HomePanel);
-            expect(searchBodyPanel.items.get(0)).toBe(splashPanel);
-            expect(searchBodyPanel.activeItem).toBe(splashPanel);
+        it('sets fit layout', function() {
+            expect(searchBodyPanel.layout).toBe('fit');
         });
 
         it('initialises results grid', function() {
             var resultsGrid = searchBodyPanel.resultsGrid;
             expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsGrid);
-            expect(searchBodyPanel.items.get(1)).toBe(resultsGrid);
-            expect(resultsGrid.hidden).toBeTruthy();
+            expect(searchBodyPanel.items.get(0)).toBe(resultsGrid);
             expect(resultsGrid.store).toBe(searchBodyPanel.resultsStore);
         });
     });
@@ -49,21 +41,6 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
                 searchBodyPanel._onResultsStoreLoad();
                 expect(searchBodyPanel._displayNoResultsAlert).toHaveBeenCalled();
             });
-
-            it('activates results grid card when store is not empty', function() {
-                spyOn(searchBodyPanel, '_activateResultsGridCard');
-                searchBodyPanel.resultsStore.getTotalCount = function() { return 1; };
-                searchBodyPanel._onResultsStoreLoad();
-                expect(searchBodyPanel._activateResultsGridCard).toHaveBeenCalled();
-            });
-        });
-    });
-
-    describe('filters panel events', function() {
-        it('displays splash page on cleared filters', function() {
-            spyOn(searchBodyPanel, '_activateSplashCard');
-            searchBodyPanel.onFiltersCleared();
-            expect(searchBodyPanel._activateSplashCard).toHaveBeenCalled();
         });
     });
 });
