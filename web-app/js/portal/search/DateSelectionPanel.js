@@ -33,8 +33,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cls:'search-filter-panel term-selection-panel',
             items:[
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
-                this.searchButton = new Ext.Button({
-                    text: OpenLayers.i18n("searchButton"),
+                this.goButton = new Ext.Button({
+                    text: OpenLayers.i18n("goButton"),
                     width: 65
                 })
             ]
@@ -43,14 +43,14 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searchButton, 'click', this.onSearch, this);
+        this.mon(this.goButton, 'click', this.onGo, this);
     },
 
     initComponent:function () {
         Portal.search.DateSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
-    onSearch: function() {
+    onGo: function() {
         var range = this.dateRange.getFilterValue();
 
         this.searcher.removeFilters("extFrom");
