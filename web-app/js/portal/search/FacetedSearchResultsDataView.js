@@ -11,13 +11,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
 
-        // Functions
-        // this.getButton(values)
-        // this.getMiniMap(values)
-        // this.getParametersAsHtml(values)
-        // this.trimAbstract(values.abstract,30)
-        // this.getMetadataLinksAsHtml(values)
-
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
