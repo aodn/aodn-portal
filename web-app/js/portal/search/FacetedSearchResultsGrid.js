@@ -71,9 +71,15 @@ Portal.search.FacetedSearchResultsGrid = Ext.extend(Ext.grid.GridPanel, {
         });
     },
 
-    showMask: function () {
+    showLoadMask: function () {
         if (this.rendered) {
             this.loadMask.showAtTop();
+        }
+    },
+
+    hideLoadMask: function() {
+        if (this.loadMask) {
+            this.loadMask.hide();
         }
     },
 

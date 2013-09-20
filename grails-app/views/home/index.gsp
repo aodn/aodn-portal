@@ -143,7 +143,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/AnimationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/HomePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MainToolbar.js')}"></script>
