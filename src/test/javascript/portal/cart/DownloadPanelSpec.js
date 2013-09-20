@@ -93,20 +93,16 @@ describe("Portal.cart.DownloadPanel", function() {
             // Order of items is reversed!!
             expect(downloadPanel._replacePlaceholderWithButton.callCount).toBe(4);
 
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][0]).toBe(
-                testCollection4.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][0]).toBe(testCollection4.value);
             expect(downloadPanel._replacePlaceholderWithButton.argsForCall[0][1]).toBe(testCollection4);
 
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][0]).toBe(
-                testCollection4.value + testCollection3.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][0]).toBe(testCollection4.value + testCollection3.value);
             expect(downloadPanel._replacePlaceholderWithButton.argsForCall[1][1]).toBe(testCollection3);
 
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[2][0]).toBe(
-                testCollection4.value + testCollection3.value + testCollection2.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[2][0]).toBe(testCollection4.value + testCollection3.value + testCollection2.value);
             expect(downloadPanel._replacePlaceholderWithButton.argsForCall[2][1]).toBe(testCollection2);
 
-            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[3][0]).toBe(
-                testCollection4.value + testCollection3.value + testCollection2.value + testCollection1.value);
+            expect(downloadPanel._replacePlaceholderWithButton.argsForCall[3][0]).toBe(testCollection4.value + testCollection3.value + testCollection2.value + testCollection1.value);
             expect(downloadPanel._replacePlaceholderWithButton.argsForCall[3][1]).toBe(testCollection1);
         });
 
@@ -154,7 +150,7 @@ describe("Portal.cart.DownloadPanel", function() {
                 uuid: 12345
             };
 
-            expectedEmlementId = 'download-button-12345';
+            expectedEmlementId = 'wfs-download-button-12345';
 
             htmlMock = {
                 indexOf: jasmine.createSpy('html indexOf').andReturn(1)

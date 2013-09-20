@@ -39,7 +39,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         // Reverse the order of items, last item added will be displayed first
         for (i = this.store.data.items.length - 1; i >= 0; i--) {
-            item = this.store.data.items[i];
+
+            var item = this.store.data.items[i];
 
             var collection = item.data;
 
@@ -63,7 +64,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     _replacePlaceholderWithButton: function(html, collection) {
 
-        var elementId = 'download-button-' + collection.uuid;
+        var elementId = 'wfs-download-button-' + collection.uuid;
 
         // Don't create button if no placeholder exists
         if (html.indexOf(elementId) >= 0) {
