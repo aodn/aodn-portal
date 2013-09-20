@@ -1138,14 +1138,6 @@ div.allwhite {
     font-size: 13px;
 }
 
-.faceted-search-clear-all div {
-    float: right;
-}
-
-.faceted-search-clear-all div.x-hyperlink {
-    padding: 3px 10px;
-}
-
 .faceted-search-disclaimer {
     border: 1px solid #ffcc55;
 }
@@ -1288,6 +1280,16 @@ div.allwhite {
     margin-bottom: 6px;
 }
 
+.search-filters-toolbar.x-toolbar {
+	background-color: inherit;
+	border-width: 0px;
+}
+
+.search-filters-toolbar .x-panel-header-text {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .mainNavigationButton.x-btn {
     background: none repeat scroll 0 0 #F4A62B;
 }
@@ -1296,3 +1298,4 @@ div.allwhite {
     font-size: 12px;
 
 }
+
