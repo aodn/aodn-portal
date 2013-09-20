@@ -29,7 +29,6 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     setActiveTab: function(tabIndex) {
         this.setActiveItem(tabIndex);
 
-        // TODO: remove dependency on container?
         this.container._highlightActiveTab();
         this.container.fireEvent('tabchange', this.container);
     },
@@ -44,5 +43,26 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
         if (this.hasPrevTab()) {
             this.setActiveTab(this.getActiveItemIndex() - 1);
         }
+    },
+
+    getNextNavigationLabel: function() {
+        return this._getNeighbouringNavigationLabel(1, OpenLayers.i18n('navigationButtonNext'));
+    },
+
+    getPrevNavigationLabel: function() {
+        return this._getNeighbouringNavigationLabel(-1, OpenLayers.i18n('navigationButtonPrevious'));
+    },
+
+    _getNeighbouringNavigationLabel: function(relativeIndex, defaultLabel) {
+        if (this._getNeighbouringItem(relativeIndex) && this._getNeighbouringItem(relativeIndex).navigationText) {
+            return this._getNeighbouringItem(relativeIndex).navigationText;
+        }
+        else {
+            return defaultLabel;
+        }
+    },
+
+    _getNeighbouringItem: function(relativeIndex) {
+        return this.container.items.get(this.getActiveItemIndex() + relativeIndex);
     }
 });

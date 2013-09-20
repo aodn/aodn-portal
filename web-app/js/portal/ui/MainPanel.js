@@ -21,7 +21,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.searchPanel = new Portal.ui.search.SearchPanel({ mapPanel: this.mapPanel });
         this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
-        this.downloadPanel = new Portal.cart.DownloadPanel();
+        this.downloadPanel = new Portal.cart.DownloadPanel({
+            navigationText: OpenLayers.i18n('navigationButtonDownload')
+        });
 
         this.addEvents('tabchange');
 

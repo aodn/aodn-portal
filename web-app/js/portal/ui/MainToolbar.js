@@ -46,13 +46,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _onMainPanelTabChange: function(mainPanel) {
-
         this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
         this.nextButton.setVisible(mainPanel.layout.hasNextTab());
 
-        var label = (mainPanel.getActiveTab().id == "visualisePanel") ?
-                        OpenLayers.i18n('navigationButtonDownload'):
-                        OpenLayers.i18n('navigationButtonNext');
-        this.nextButton.setText(label);
+        this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
+        this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
     }
 });
