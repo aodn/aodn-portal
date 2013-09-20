@@ -148,7 +148,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoFilter: "Geographic Boundary",
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
-    facetedSearchClearAllLink: 'Clear all',
+    facetedSearchNewSearchButton: 'Start new search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
 

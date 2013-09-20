@@ -1114,14 +1114,6 @@ div.allwhite {
     font-style: italic;
 }
 
-.faceted-search-clear-all div {
-    float: right;
-}
-
-.faceted-search-clear-all div.x-hyperlink {
-    padding: 3px 10px;
-}
-
 .faceted-search-disclaimer {
     border: 1px solid #ffcc55;
 }
@@ -1234,4 +1226,14 @@ div.allwhite {
 
     vertical-align: middle;
     margin-bottom: 6px;
+}
+
+.search-filters-toolbar.x-toolbar {
+	background-color: inherit;
+	border-width: 0px;
+}
+
+.search-filters-toolbar .x-panel-header-text {
+    font-size: 14px;
+    font-weight: bold;
 }
