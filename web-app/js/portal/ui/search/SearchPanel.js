@@ -63,5 +63,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             this.resultsStore.startRecord = page.from - 1;
             this.resultsStore.loadData(response);
         }, this);
+
+        this.searcher.search();
     }
 });
