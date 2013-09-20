@@ -10,31 +10,6 @@ Ext.namespace('Portal.ui.search');
 Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config) {
-
-        this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner',{'resource':'search terms'}),
-            hidden: true,
-            flex:3
-        });
-
-        this.titleBar = new Ext.Panel({
-
-            cls: 'x-panel-header',
-            layout: {
-                type: 'hbox'
-            },
-            items: [
-                this.spinner,
-                new Ext.Panel({
-                    items: [ this._buildClearAllLink() ],
-                    cls: 'faceted-search-clear-all',
-                    flex: 1,
-                    height: 25
-                })
-            ],
-            boxMaxHeight: '1' // Not sure why this is needed
-        });
-
         this._buildTermFilter('parameterFilter', {
             title: OpenLayers.i18n('parameterFilter'),
             hierarchical: false,
@@ -68,8 +43,9 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             stateful: false,
             autoScroll: true,
             padding: 3,
-            layout: 'fit',
-            items: [this.titleBar].concat(this.filters)
+            layout: 'auto',
+            tbar: this._buildToolBar(),
+            items: this.filters
         }, config);
 
         Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
@@ -79,12 +55,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             { event: 'summaryOnlySearchComplete', callback: this._hideSpinnerText },
             { event: 'searcherror', callback: this._showError },
             { event: 'filteradded', callback: this._setupFacetedSearchUpdating },
-            { event: 'filterremoved', callback: this._setClearAllLinkVisibility },
-            { event: 'polygonadded', callback: this._showClearAllForGeoFacet }
+            { event: 'filterremoved', callback: this._setNewSearchButtonVisibility },
+            { event: 'polygonadded', callback: this._showNewSearchForGeoFacet }
         ];
         this._monitor(this.searcher, searcherEvents, this);
 
-        this.mon(this.titleBar, 'afterrender', function() { this.searcher.search( true ); return true; }, this );
+        this.on('afterrender', function() { this.searcher.search( true ); return true; }, this );
     },
 
     initComponent: function() {
@@ -95,29 +71,46 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
     },
 
-    _buildClearAllLink: function() {
+    _buildToolBar: function() {
+        return new Ext.Toolbar({
+            cls: 'search-filters-toolbar',
+            border: false,
+            frame: false,
+            items: [this._buildSpinner(), '->', this._buildNewSearchButton()]  
+        });
+    },
 
-        this.clearAllLink = new Ext.ux.Hyperlink({
-            text: OpenLayers.i18n('facetedSearchClearAllLink'),
+    _buildSpinner: function() {
+        this.spinner = new Ext.Panel({
+            html: OpenLayers.i18n('loadingSpinner', {'resource':'search terms'}),
             hidden: true
         });
 
-        this.clearAllLink.on( 'click', this._onClearAllClicked, this );
+        return this.spinner;
+    },
+    
+    _buildNewSearchButton: function() {
 
-        return this.clearAllLink;
+        this.newSearchButton = new Ext.Button({
+            text: OpenLayers.i18n('facetedSearchNewSearchButton'),
+            hidden: true
+        });
+
+        this.newSearchButton.on( 'click', this._onNewSearchClicked, this );
+
+        return this.newSearchButton;
     },
 
     _setSpinnerText: function( newText ) {
         this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
         this.spinner.show();
-        this.titleBar.doLayout();
     },
 
     _hideSpinnerText: function( ) {
         this.spinner.hide();
     },
 
-    _onClearAllClicked: function() {
+    _onNewSearchClicked: function() {
 
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
         Ext.each(this.filters, function(filter, index, all) {
@@ -131,17 +124,17 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _setupFacetedSearchUpdating: function() {
         this.fireEvent('facetedSearchUpdating');
-        this._setClearAllLinkVisibility();
+        this._setNewSearchButtonVisibility();
     },
 
-    _setClearAllLinkVisibility: function() {
+    _setNewSearchButtonVisibility: function() {
         this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
-        this.clearAllLink.setVisible( this.searcher.hasFilters() );
+        this.newSearchButton.setVisible( this.searcher.hasFilters() );
     },
 
-    _showClearAllForGeoFacet: function() {
+    _showNewSearchForGeoFacet: function() {
         this._setSpinnerText('');
-        this.clearAllLink.setVisible(true);
+        this.newSearchButton.setVisible(true);
         this._hideSpinnerText();
     },
 
