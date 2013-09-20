@@ -25,7 +25,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions,
-            layersLoading: 0,
             layers:  Portal.data.LayerStore.instance(),
             listeners: {
                 render: function() {
@@ -60,8 +59,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.on('tabchange', function () {
             this._closeFeatureInfoPopup();
-            //if layers get loaded when the mappanel isn't visible, the loadingspinner gets stuck,
-            this._updateLayerLoadingSpinner(this.layers.getLayersLoadingCount());
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
@@ -83,10 +80,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
         }, this);
-
-        Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
-            this._updateLayerLoadingSpinner(numLayersLoading);
-        }, this);
     },
 
     _positionAnimationWindowAtBottom: function() {
@@ -96,21 +89,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getTimeControl: function() {
         return this.mapOptions.timeControl;
-    },
-
-    _updateLayerLoadingSpinner: function (numLayersLoading) {
-        // When running tests, loadSpinner will not be available
-        // Or... just be safe!
-        if (!this.loadSpinner) { return; }
-
-        // Show spinner.
-        if (numLayersLoading > 0) {
-            this.loadSpinner.msg = this.buildLayerLoadingString(numLayersLoading);
-            this.loadSpinner.show();
-        }
-        else {
-            this.loadSpinner.hide();
-        }
     },
 
     _onBeforeSelectedLayerChanged: function(openLayer) {
