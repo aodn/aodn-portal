@@ -71,20 +71,12 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                 this.mainPanel,
                 {
                     region: 'south',
-                    height: 15,
+                    height: 5,
                     unstyled: true
                 }
         ];
     },
 
-    initComponent: function() {
-        Portal.ui.Viewport.superclass.initComponent.call(this);
-
-        //TODO: find a better home for this
-        this.on('afterrender', function() {
-            jQuery("#loader").hide('slow'); // close the loader
-        });
-    },
 
     setActiveTab: function(tabIndex) {
         this.mainPanel.setActiveTab(tabIndex);

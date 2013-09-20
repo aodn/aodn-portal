@@ -21,8 +21,8 @@ describe("Portal.ui.MainToolbar", function() {
     describe('on main panel tab change', function() {
 
         beforeEach(function() {
-            spyOn(mainToolbar.prevButton, 'setDisabled');
-            spyOn(mainToolbar.nextButton, 'setDisabled');
+            spyOn(mainToolbar.prevButton, 'setVisible');
+            spyOn(mainToolbar.nextButton, 'setVisible');
         });
 
         describe('to first tab', function() {
@@ -32,12 +32,12 @@ describe("Portal.ui.MainToolbar", function() {
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
-            it('disables prev button', function() {
-                expect(mainToolbar.prevButton.setDisabled).toHaveBeenCalledWith(true);
+            it('hides prev button', function() {
+                expect(mainToolbar.prevButton.setVisible).toHaveBeenCalledWith(false);
             });
 
-            it('enables next button', function() {
-                expect(mainToolbar.nextButton.setDisabled).toHaveBeenCalledWith(false);
+            it('show next button', function() {
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
         });
 
@@ -48,12 +48,12 @@ describe("Portal.ui.MainToolbar", function() {
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
-            it('enables prev button', function() {
-                expect(mainToolbar.prevButton.setDisabled).toHaveBeenCalledWith(false);
+            it('shows prev button', function() {
+                expect(mainToolbar.prevButton.setVisible).toHaveBeenCalledWith(true);
             });
 
-            it('enables next button', function() {
-                expect(mainToolbar.nextButton.setDisabled).toHaveBeenCalledWith(false);
+            it('shows next button', function() {
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
         });
 
@@ -64,12 +64,32 @@ describe("Portal.ui.MainToolbar", function() {
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
-            it('enables prev button', function() {
-                expect(mainToolbar.prevButton.setDisabled).toHaveBeenCalledWith(false);
+            it('shows prev button', function() {
+                expect(mainToolbar.prevButton.setVisible).toHaveBeenCalledWith(true);
             });
 
-            it('enables next button', function() {
-                expect(mainToolbar.nextButton.setDisabled).toHaveBeenCalledWith(true);
+            it('hides next button', function() {
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(false);
+            });
+        });
+
+        describe('updates button labels', function() {
+            it('next button', function() {
+                spyOn(mainPanel.layout, 'getNextNavigationLabel').andReturn('ppp');
+                spyOn(mainToolbar.nextButton, 'setText');
+
+                mainPanel.fireEvent('tabchange', mainPanel);
+                expect(mainPanel.layout.getNextNavigationLabel).toHaveBeenCalled();
+                expect(mainToolbar.nextButton.setText).toHaveBeenCalledWith('ppp');
+            });
+
+            it('prev button', function() {
+                spyOn(mainPanel.layout, 'getPrevNavigationLabel').andReturn('ppp');
+                spyOn(mainToolbar.prevButton, 'setText');
+
+                mainPanel.fireEvent('tabchange', mainPanel);
+                expect(mainPanel.layout.getPrevNavigationLabel).toHaveBeenCalled();
+                expect(mainToolbar.prevButton.setText).toHaveBeenCalledWith('ppp');
             });
         });
     });
