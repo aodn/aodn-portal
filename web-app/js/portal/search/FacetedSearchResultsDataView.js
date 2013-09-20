@@ -11,6 +11,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
 
+        // Functions
+        // this.getButton(values)
+        // this.getMiniMap(values)
+        // this.getParametersAsHtml(values)
+        // this.trimAbstract(values.abstract,30)
+        // this.getMetadataLinksAsHtml(values)
+
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
@@ -32,7 +39,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '               <i>',
             '                   {[this.trimAbstract(values.abstract,30)]}',
             '               </i>',
-            '               &nbsp;{[this.getMetadataLinksAsHtml(values)]}',
+            '               &nbsp;{[this.getPointOfTruthLinkAsHtml(values)]}',
             '           </p>',
             '       </div>',
             '   </div>',
@@ -142,16 +149,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
     },
 
-    getMetadataLinksAsHtml: function(values) {
-        var ret = "";
-        var links = values.links;
-
-        for (var i = 0; i < links.length; i++) {
-            if (links[i].protocol == "WWW:LINK-1.0-http--metadata-URL") {
-                ret = '<a href="' + links[i].href + '" target="_blank" class="nowrap" title="' + links[i].title + '"> more </a>';
-            }
-        }
-        return ret;
+    getPointOfTruthLinkAsHtml: function(values) {
+        return '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
+            + values.pointOfTruthLink.title + '"> more </a>';
     },
 
     getMiniMap: function(values) {
