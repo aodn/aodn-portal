@@ -35,12 +35,12 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         this.searcher.on('searchstart', function() {
-            this.resultsGrid.showLoadMask();
+            this.searchResultsView.showLoadMask();
         }, this);
 
         Ext.each(['searchcomplete', 'summaryOnlySearchComplete', 'searcherror'], function(eventName) {
             this.searcher.on(eventName, function() {
-                this.resultsGrid.hideLoadMask();
+                this.searchResultsView.hideLoadMask();
             }, this);
         }, this);
 
@@ -58,7 +58,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsGridBbarBeforeChange: function (bbar, params) {
-        this.resultsGrid.showMask();
+        this.searchResultsView.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging

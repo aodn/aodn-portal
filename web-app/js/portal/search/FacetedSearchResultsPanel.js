@@ -86,12 +86,13 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     },
 
-    showMask: function () {
+    showLoadMask: function () {
         if (this.rendered) {
             this.loadMask.showAtTop();
         }
     },
-    hideMask: function () {
+
+    hideLoadMask: function () {
         if (this.rendered) {
             this.loadMask.hide();
         }

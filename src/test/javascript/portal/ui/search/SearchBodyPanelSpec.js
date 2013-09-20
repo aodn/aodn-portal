@@ -21,10 +21,9 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
         });
 
         it('initialises results grid', function() {
-            var resultsGrid = searchBodyPanel.searchResultsView;
-            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsPanel);
-            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsGrid);
-            expect(resultsGrid.store).toBe(searchBodyPanel.resultsStore);
+            var searchResultsView = searchBodyPanel.searchResultsView;
+            expect(searchResultsView).toBeInstanceOf(Portal.search.FacetedSearchResultsPanel);
+            expect(searchResultsView.store).toBe(searchBodyPanel.resultsStore);
         });
     });
 
@@ -47,28 +46,28 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
 
     describe('searcher events', function() {
         beforeEach(function() {
-            spyOn(searchBodyPanel.resultsGrid, 'showLoadMask');
-            spyOn(searchBodyPanel.resultsGrid, 'hideLoadMask');
+            spyOn(searchBodyPanel.searchResultsView, 'showLoadMask');
+            spyOn(searchBodyPanel.searchResultsView, 'hideLoadMask');
         });
 
-        it('calls resultsGrid showLoadMask on searchstart', function() {
+        it('calls searchResultsView showLoadMask on searchstart', function() {
             searchBodyPanel.searcher.fireEvent('searchstart');
-            expect(searchBodyPanel.resultsGrid.showLoadMask).toHaveBeenCalled();
+            expect(searchBodyPanel.searchResultsView.showLoadMask).toHaveBeenCalled();
         });
 
-        it('calls resultsGrid hideLoadMask on searchcomplete', function() {
+        it('calls searchResultsView hideLoadMask on searchcomplete', function() {
             searchBodyPanel.searcher.fireEvent('searchcomplete');
-            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+            expect(searchBodyPanel.searchResultsView.hideLoadMask).toHaveBeenCalled();
         });
 
-        it('calls resultsGrid hideLoadMask on summaryOnlySearchComplete', function() {
+        it('calls searchResultsView hideLoadMask on summaryOnlySearchComplete', function() {
             searchBodyPanel.searcher.fireEvent('summaryOnlySearchComplete');
-            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+            expect(searchBodyPanel.searchResultsView.hideLoadMask).toHaveBeenCalled();
         });
 
-        it('calls resultsGrid hideLoadMask on searcherror', function() {
+        it('calls searchResultsView hideLoadMask on searcherror', function() {
             searchBodyPanel.searcher.fireEvent('searcherror');
-            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+            expect(searchBodyPanel.searchResultsView.hideLoadMask).toHaveBeenCalled();
         });
     });
 });
