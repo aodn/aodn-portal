@@ -154,7 +154,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             return new OpenLayers.Layer.WMS(
                 "IMOS Tile Cache Simple Baselayer",
                 "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
-                { layers: 'satellite' }
+                { layers: 'default_basemap_simple' }
             );
         };
 
