@@ -15,11 +15,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
         var items = [];
-        this._addBlurb(items);
         this._addProductInfo(items);
         this._addSpatialControls(items);
         this._addTemporalControls(items);
-        this._addProcessingControls(items);
 
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -70,7 +68,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         this.spatialControls.show();
         this.temporalControls.show();
-        this.processingControls.show();
     },
 
     _populateFormFields: function() {
@@ -111,16 +108,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         // Populate spatial extent controls this will also update the aodaac object in the record store
         // so please keep it last so all values are set
         this._setBounds();
-    },
-
-    _addBlurb: function (items) {
-
-        var blurbText = new Ext.Container({
-            autoEl: 'div',
-            html: "This tool can be used to partition gridded datasets spatially and temporally, and then aggregate the results."
-        });
-
-        items.push( blurbText, this._newSectionSpacer() );
     },
 
     _addProductInfo: function (items) {
@@ -243,7 +230,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.spatialControls = new Ext.Container({
-            items: [spatialExtentText, bboxControl, this._newSectionSpacer()],
+            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, bboxControl, this._newSectionSpacer()],
             hidden: true
         });
 
@@ -274,18 +261,18 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     var endThumb = slider.thumbs[1];
 
                     // Format value for reading
-                    var timeRangeStart = target._hoursFromThumb( startThumb );
-                    var timeRangeEnd = target._hoursFromThumb( endThumb );
+                    var timeRangeStart = target._hoursFromThumb(startThumb);
+                    var timeRangeEnd = target._hoursFromThumb(endThumb);
 
                     // Whole day message
                     var wholeDayMessage = "";
                     if ( timeRangeStart == "0:00" && timeRangeEnd == "23:59" ) wholeDayMessage = "<br />(Whole day)";
 
                     // Emphasise value being modified
-                    if ( thumb == startThumb ) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
-                    if ( thumb == endThumb ) timeRangeEnd = "<span style=\"font-size: 1.4em;\">" + timeRangeEnd + "</span>";
+                    if (thumb == startThumb) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
+                    if (thumb == endThumb) timeRangeEnd = "<span style=\"font-size: 1.4em;\">" + timeRangeEnd + "</span>";
 
-                    return String.format( '{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage );
+                    return String.format('{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage);
                 }
             }),
             listeners: {
@@ -316,7 +303,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         // Calculate dates for max/min
         var today = new Date();
         var yesterday = new Date();
-        yesterday.setDate(  today.getDate() - 1  );
+        yesterday.setDate(today.getDate() - 1);
 
         var dateRangeStartPicker = {
             name: 'dateRangeStartPicker',
@@ -368,125 +355,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         items.push(this.temporalControls);
     },
 
-    _addProcessingControls: function(items) {
-
-        var processingControlsText = new Ext.Container({
-            autoEl: 'div',
-            html: "<b>Output</b><br/>If you specify an email address you will be notified by email when the processing is complete."
-        });
-
-        this.outputSelector = new Ext.form.ComboBox({
-            id: 'outputSelector',
-            fieldLabel: 'Output format',
-            mode: 'local',
-            store: new Ext.data.ArrayStore({
-                fields: [ 'code', 'name' ],
-                data: [
-                    ['nc', 'NetCDF file'],
-                    ['hdf', 'HDF file'],
-                    ['txt', 'ASCII text'],
-                    ['urls', 'List of OPeNDAP URLs']
-                ],
-                autoDestroy: true
-            }),
-            value: 'nc', // Default selection
-            valueField: 'code',
-            displayField: 'name',
-            triggerAction: 'all',
-            editable: false
-        });
-
-        this.emailAddressTextbox = new Ext.form.TextField({
-            id: 'emailAddress',
-            fieldLabel: 'Email address',
-            value: Portal.app.config.currentUser ? Portal.app.config.currentUser.emailAddress : ''
-        });
-
-        var startProcessingButton = new Ext.Button({
-            text: "Start processing job&nbsp;",
-            scale: "medium",
-            icon: "images/start.png",
-            scope: this,
-            handler: this.startProcessing
-        });
-
-        // Group controls for hide/show
-        this.processingControls = new Ext.Container({
-            items: [
-                processingControlsText,
-                new Ext.Container({
-                    layout: 'form',
-                    items: [this.outputSelector, this.emailAddressTextbox]
-                }),
-                this._newSectionSpacer(),
-                startProcessingButton
-            ],
-            hidden: true
-        });
-
-        items.push(this.processingControls);
-    },
-
     _newSectionSpacer: function() {
 
         return new Ext.Spacer({ height: 7 });
-    },
-
-    startProcessing: function() {
-
-        var emailAddress = this.emailAddressTextbox.getValue();
-
-        if (!this._validateEmailAddress(emailAddress)) {
-
-            Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
-            return;
-        }
-
-        var args = "";
-        args += "outputFormat=" + this.outputSelector.value;
-        args += "&";
-        args += "dateRangeStart=" + this.dateRangeStartPicker.value;
-        args += "&";
-        args += "dateRangeEnd=" + this.dateRangeEndPicker.value;
-        args += "&";
-        args += "timeOfDayRangeStart=" + this._convertTimeSliderValue( this.timeRangeSlider.thumbs[0].value );
-        args += "&";
-        args += "timeOfDayRangeEnd=" + this._convertTimeSliderValue( this.timeRangeSlider.thumbs[1].value );
-        args += "&";
-        args += "latitudeRangeStart=" + this.southBL.value;
-        args += "&";
-        args += "latitudeRangeEnd=" + this.northBL.value;
-        args += "&";
-        args += "longitudeRangeStart=" + this.westBL.value;
-        args += "&";
-        args += "longitudeRangeEnd=" + this.eastBL.value;
-        args += "&";
-        args += "productId=" + this.productsInfo[ this.selectedProductInfoIndex ].productId;
-        args += "&";
-        args += "notificationEmailAddress=" + emailAddress;
-
-        Ext.Ajax.request({
-            url: 'aodaac/createJob?' + args,
-            scope: this,
-            success: function() {
-                Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreatedMsg', {email: emailAddress}));
-            },
-            failure: function() {
-                Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreateErrorMsg'));
-            }
-        });
-    },
-
-    _validateEmailAddress: function(address) {
-
-        if (address == undefined) {
-
-            return false;
-        }
-
-        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(address);
     },
 
     _convertTimeSliderValue: function(quarterHours) {

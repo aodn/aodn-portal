@@ -66,13 +66,13 @@ describe("Portal.search.DateSelectionPanel", function()
         });
     });
 
-    describe("onSearch", function() {
+    describe("onGo", function() {
         it("doesn't do catalog search if start and end are empty", function() {
             var dateFilter = buildMockSelectionPanel();
 
             dateFilter.dateRange.setFilterValue({fromDate:"",toDate:""});
 
-            dateFilter.onSearch();
+            dateFilter.onGo();
             expect(dateFilter.searcher.timesSearchCalled).toEqual(0);
         });
 
@@ -81,19 +81,19 @@ describe("Portal.search.DateSelectionPanel", function()
 
             dateFilter.dateRange.setFilterValue({fromDate:Date.parseDate("2012-10-20","Y-m-d"),toDate:Date.parseDate("2012-10-27","Y-m-d")});
 
-            dateFilter.onSearch();
+            dateFilter.onGo();
 
             expect(dateFilter.searcher.timesSearchCalled).toEqual(1);
 
             dateFilter.dateRange.setFilterValue({fromDate:null,toDate:Date.parseDate("2012-10-27","Y-m-d")});
 
-            dateFilter.onSearch();
+            dateFilter.onGo();
 
             expect(dateFilter.searcher.timesSearchCalled).toEqual(2);
 
             dateFilter.dateRange.setFilterValue({fromDate:Date.parseDate("2012-10-20","Y-m-d"),toDate:null});
 
-            dateFilter.onSearch();
+            dateFilter.onGo();
 
             expect(dateFilter.searcher.timesSearchCalled).toEqual(3);
         });

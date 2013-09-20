@@ -7,9 +7,17 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    navigationButtonNext: "Next &#187;",
+    navigationButtonPrevious: "&#171; Previous",
+    navigationButtonSelect: "Select &#187;",
+    navigationButtonDownload: "Download &#187;",
+
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
     loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
+
+
+    unavailableExtent: "The data extent is unavailable",
 
     //
     navigate: 'Select by Map Bounds',
@@ -86,7 +94,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     exactMatches: 'Exact Matches',
     precision: 'Precision',
     exactMatchesDesc: 'Must Match Search Terms Exactly',
-    searchButton: 'Search',
+    goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
     saveSearchButtonText: 'Save',

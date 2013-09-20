@@ -49,8 +49,8 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
                             padding: '2px'
                         }
                     },
-                    items: [  this.searchButton = new Ext.Button({
-                        text:OpenLayers.i18n("searchButton"),
+                    items: [  this.goButton = new Ext.Button({
+                        text:OpenLayers.i18n("goButton"),
                         width:65
                     }),
                         this.clearButton = new Ext.Button({
@@ -64,7 +64,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
         Portal.search.GeoSelectionPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searchButton, 'click', this.onSearch, this);
+        this.mon(this.goButton, 'click', this.onGo, this);
         this.mon(this.clearButton, 'click', this.resetFilter, this);
         this.mon(this.facetMap, 'polygonadded', this._onPolygonAdded, this);
     },
@@ -73,7 +73,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         Portal.search.GeoSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
-    onSearch:function () {
+    onGo:function () {
         this._removeFacetFilters();
         if (this.facetMap.hasCurrentFeature()) {
             this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());
@@ -83,7 +83,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
     resetFilter: function() {
         this._clearFacetGeometry();
-        this.onSearch();
+        this.onGo();
     },
 
     removeAnyFilters: function() {

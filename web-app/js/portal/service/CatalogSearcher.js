@@ -32,7 +32,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-        this.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+        this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
     reset: function() {
@@ -40,7 +40,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     search: function(summaryOnly) {
-
+        this.fireEvent('searchstart');
         var page = {from: 1, to: this.pageSize};
         this._search(page, summaryOnly);
     },

@@ -103,6 +103,11 @@ input.readonlyInput {
     font-weight: normal;
 }
 
+.faceted-search-results {
+    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.05) inset;
+    border-radius: 6px;
+}
+
 .faceted-search-clear-all a:hover {
     text-decoration: none;
 }
@@ -261,6 +266,10 @@ hr {
     line-height: 75px;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 .mapFooter {
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
@@ -310,7 +319,6 @@ Site navigation
     background-color: #484848;
     position: relative;
     float: left;
-    padding-left: 20px;
     width: 100%;
     border: 2px solid #6b6b6b;
     vertical-align: middle;
@@ -331,7 +339,6 @@ Site navigation
     border-top-right-radius: 20px 60px;
     display: block;
     float: left;
-    margin-right: 5px;
     padding: 12px 20px 6px 80px;
     width: 200px;
 
@@ -356,35 +363,29 @@ Site navigation
 }
 
 .viewPortTabActive {
-    /* http://www.colorzilla.com/gradient-editor/ */
-    background: -moz-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(153, 153, 153, 0.5) 15%, rgba(148, 148, 148, 1) 30%, rgba(133, 133, 133, 1) 71%, rgba(124, 124, 124, 0.8) 96%, rgba(122, 122, 122, 0.8) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(72, 72, 72, 0)), color-stop(15%, rgba(153, 153, 153, 0.5)), color-stop(30%, rgba(148, 148, 148, 1)), color-stop(71%, rgba(133, 133, 133, 1)), color-stop(96%, rgba(124, 124, 124, 0.8)), color-stop(100%, rgba(122, 122, 122, 0.8))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(153, 153, 153, 0.5) 15%, rgba(148, 148, 148, 1) 30%, rgba(133, 133, 133, 1) 71%, rgba(124, 124, 124, 0.8) 96%, rgba(122, 122, 122, 0.8) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(153, 153, 153, 0.5) 15%, rgba(148, 148, 148, 1) 30%, rgba(133, 133, 133, 1) 71%, rgba(124, 124, 124, 0.8) 96%, rgba(122, 122, 122, 0.8) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(153, 153, 153, 0.5) 15%, rgba(148, 148, 148, 1) 30%, rgba(133, 133, 133, 1) 71%, rgba(124, 124, 124, 0.8) 96%, rgba(122, 122, 122, 0.8) 100%); /* IE10+ */
-    background: linear-gradient(to right, rgba(72, 72, 72, 0) 0%, rgba(153, 153, 153, 0.5) 15%, rgba(148, 148, 148, 1) 30%, rgba(133, 133, 133, 1) 71%, rgba(124, 124, 124, 0.8) 96%, rgba(122, 122, 122, 0.8) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00484848', endColorstr='#cc7a7a7a', GradientType=1); /* IE6-9 */
-
+    background: black;
     box-shadow: 5px 2px 5px rgba(50, 50, 50, 0.75);
-    text-shadow: 2px 2px 10px #191919;
     border-right: 2px solid #2F2E2E;
     border-bottom: 1px solid #2F2E2E;
     border-top-right-radius: 20px 60px;
-}
+}#744646
 
 .viewPortTabActive * {
-    color: white ! important;
+    /*color: white ! important;*/
 
 }
 
 .viewPortTabHover {
-    background: -moz-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(79, 79, 79, 0.68) 15%, rgba(81, 81, 81, 1) 22%, rgba(107, 107, 107, 1) 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(72, 72, 72, 0)), color-stop(15%, rgba(79, 79, 79, 0.68)), color-stop(22%, rgba(81, 81, 81, 1)), color-stop(100%, rgba(107, 107, 107, 1)));
-    background: -webkit-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(79, 79, 79, 0.68) 15%, rgba(81, 81, 81, 1) 22%, rgba(107, 107, 107, 1) 100%);
-    background: -o-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(79, 79, 79, 0.68) 15%, rgba(81, 81, 81, 1) 22%, rgba(107, 107, 107, 1) 100%);
-    background: -ms-linear-gradient(left, rgba(72, 72, 72, 0) 0%, rgba(79, 79, 79, 0.68) 15%, rgba(81, 81, 81, 1) 22%, rgba(107, 107, 107, 1) 100%);
-    background: linear-gradient(to right, rgba(72, 72, 72, 0) 0%, rgba(79, 79, 79, 0.68) 15%, rgba(81, 81, 81, 1) 22%, rgba(107, 107, 107, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00484848', endColorstr='#6b6b6b', GradientType=1);
+
+    background: #696969;
+    background: -moz-linear-gradient(left,  rgba(105,105,105,0) 0%, rgba(105,105,105,1) 14%, rgba(105,105,105,1) 17%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(105,105,105,0)), color-stop(14%,rgba(105,105,105,1)), color-stop(17%,rgba(105,105,105,1)));
+    background: -webkit-linear-gradient(left,  rgba(105,105,105,0) 0%,rgba(105,105,105,1) 14%,rgba(105,105,105,1) 17%);
+    background: -o-linear-gradient(left,  rgba(105,105,105,0) 0%,rgba(105,105,105,1) 14%,rgba(105,105,105,1) 17%);
+    background: -ms-linear-gradient(left,  rgba(105,105,105,0) 0%,rgba(105,105,105,1) 14%,rgba(105,105,105,1) 17%);
+    background: linear-gradient(to right,  rgba(105,105,105,0) 0%,rgba(105,105,105,1) 14%,rgba(105,105,105,1) 17%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00696969', endColorstr='#696969',GradientType=1 );
+
 
     border-right: 3px solid #2F2E2E;
     border-bottom: 1px solid #000000;
@@ -394,6 +395,14 @@ Site navigation
     color: #888888 ! important;
     cursor: default;
 
+}
+
+.x-btn.forwardsButton {
+    border-radius: 0px 12px 12px 0px;
+}
+
+.x-btn.backwardsButton {
+    border-radius: 12px 0px 0px 12px;
 }
 
 .community {
@@ -650,13 +659,14 @@ table.featureInfo caption {
     bottom: 0 ! important;
     top: auto ! important;
     left: 0;
-    z-index: 900! important;
+    z-index: 900 ! important;
+    border-radius: 0;
 }
 
 .animationControlsPanel {
-     width: 450px;
-     padding: 2px 6px 0px 6px;
-     margins: 2px;
+    width: 450px;
+    padding: 2px 6px 0px 6px;
+    margins: 2px;
 }
 
 .animationSubPanel label,
@@ -690,6 +700,8 @@ table.featureInfo caption {
 .fullTransparency button, .fullTransparency a {
     color: #333;
 }
+
+
 
 /* getFeatureInfo popup
 */
@@ -1108,10 +1120,22 @@ div.allwhite {
     margin-right: 5px;
 }
 
+.term-selection-panel-header {
+    padding-left: 3px;
+}
+
 .search-filter-panel .term-selection-panel-header-selected {
     color: #666;
     font-weight: bold;
     font-style: italic;
+}
+
+.facetedSearchResultBody {
+    overflow: auto;
+}
+
+.facetedSearchResultTextBody .x-panel-header {
+    font-size: 13px;
 }
 
 .faceted-search-clear-all div {
@@ -1136,6 +1160,42 @@ div.allwhite {
     height: 14px;
     vertical-align: bottom;
     margin: 1px;
+    background-color: #ffff99
+}
+
+.facetedSearchResultRow {
+    background: #eeeeee;
+    background: rgb(239, 239, 239);
+    background: -moz-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, #F8F7F7), color-stop(40%, #F9F9F9), color-stop(100%, #FBFBFB));
+    background: -webkit-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -o-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -ms-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: linear-gradient(to bottom, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#FBFBFB', GradientType=0);
+
+    border-left: 1px solid #CCCCCC;
+    margin-top: 4px;
+    padding: 3px 10px;
+}
+
+.facetedSearchBtn {
+    float: right;
+    margin-right: 10px;
+}
+
+.facetedSearchResultHeader {
+    float: left;
+    line-height: 25px;
+}
+
+.facetedSearchResultTextBody {
+    margin: 5px;
+}
+
+.navigationButton button:hover {
+    color: black;
+
 }
 
 .remove-layer-button {
@@ -1155,15 +1215,9 @@ div.allwhite {
     display: none;
 }
 
-.gx-popup .x-tab-panel-header {
-    border-width: 0;
-    background-color: #F4F4F4;
-}
 
-.gx-popup .x-tab-panel-header ul.x-tab-strip-top {
-    background: none ! important;
-    background-color: #F4F4F4 ! important;
-}
+
+
 
 .gx-popup .x-tab-panel-body {
     border: none;
@@ -1234,4 +1288,13 @@ div.allwhite {
 
     vertical-align: middle;
     margin-bottom: 6px;
+}
+
+.mainNavigationButton.x-btn {
+    background: none repeat scroll 0 0 #F4A62B;
+}
+
+.mainNavigationButton .x-btn-text {
+    font-size: 12px;
+
 }

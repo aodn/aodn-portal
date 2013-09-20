@@ -14,15 +14,20 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         this.mainPanel = cfg.mainPanel;
 
         this.prevButton = new Ext.Button({
-            text: '<< prev',
-            disabled: true
+            cls: "navigationButton backwardsButton",
+            text: OpenLayers.i18n('navigationButtonPrevious'),
+            width: 100,
+            hidden: true
         });
         this.prevButton.on('click', function() {
             this.mainPanel.layout.navigateToPrevTab();
         }, this);
 
         this.nextButton = new Ext.Button({
-            text: 'next >>'
+            cls: "navigationButton forwardsButton",
+            width: 100,
+            text: OpenLayers.i18n('navigationButtonNext'),
+            hidden: false
         });
         this.nextButton.on('click', function() {
             this.mainPanel.layout.navigateToNextTab();
@@ -41,7 +46,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _onMainPanelTabChange: function(mainPanel) {
-        this.prevButton.setDisabled(!mainPanel.layout.hasPrevTab());
-        this.nextButton.setDisabled(!mainPanel.layout.hasNextTab());
+        this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
+        this.nextButton.setVisible(mainPanel.layout.hasNextTab());
+
+        this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
+        this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
     }
 });
