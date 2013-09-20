@@ -15,6 +15,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
         var items = [];
+        this._addProductInfo(items);
         this._addSpatialControls(items);
         this._addTemporalControls(items);
 
@@ -77,9 +78,20 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var maxTimeText = productInfo.extents.dateTime.max;
         var maxTimeValue = new Date();
 
-        if (maxTimeText.trim() != "") {
-            maxTimeValue = maxTimeText;
+        if (maxTimeText.trim() == "") {
+            maxTimeText = ', ongoing'
         }
+        else {
+            maxTimeValue = maxTimeText;
+            maxTimeText = " to " + maxTimeText;
+        }
+
+        var newText = "";
+        newText += productInfo.name + "<br />";
+        newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
+        newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
+
+        this.productInfoText.html = newText;
 
         // Populate temporal extent controls
         var timeRangeStart = productInfo.extents.dateTime.min;
@@ -96,6 +108,23 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         // Populate spatial extent controls this will also update the aodaac object in the record store
         // so please keep it last so all values are set
         this._setBounds();
+    },
+
+    _addProductInfo: function (items) {
+
+        var productInfoHeader = new Ext.Container({
+            autoEl: 'div',
+            html: "<b>Product info</b>"
+        });
+
+        // Todo - DN: Add product picker in case of multiple products per Layer
+
+        this.productInfoText = new Ext.Container({
+            autoEl: 'div',
+            html: "<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>"
+        });
+
+        items.push(productInfoHeader, this.productInfoText, this._newSectionSpacer());
     },
 
     _addSpatialControls: function(items) {
@@ -232,18 +261,18 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     var endThumb = slider.thumbs[1];
 
                     // Format value for reading
-                    var timeRangeStart = target._hoursFromThumb( startThumb );
-                    var timeRangeEnd = target._hoursFromThumb( endThumb );
+                    var timeRangeStart = target._hoursFromThumb(startThumb);
+                    var timeRangeEnd = target._hoursFromThumb(endThumb);
 
                     // Whole day message
                     var wholeDayMessage = "";
                     if ( timeRangeStart == "0:00" && timeRangeEnd == "23:59" ) wholeDayMessage = "<br />(Whole day)";
 
                     // Emphasise value being modified
-                    if ( thumb == startThumb ) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
-                    if ( thumb == endThumb ) timeRangeEnd = "<span style=\"font-size: 1.4em;\">" + timeRangeEnd + "</span>";
+                    if (thumb == startThumb) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
+                    if (thumb == endThumb) timeRangeEnd = "<span style=\"font-size: 1.4em;\">" + timeRangeEnd + "</span>";
 
-                    return String.format( '{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage );
+                    return String.format('{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage);
                 }
             }),
             listeners: {
@@ -274,7 +303,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         // Calculate dates for max/min
         var today = new Date();
         var yesterday = new Date();
-        yesterday.setDate(  today.getDate() - 1  );
+        yesterday.setDate(today.getDate() - 1);
 
         var dateRangeStartPicker = {
             name: 'dateRangeStartPicker',
