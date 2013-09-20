@@ -70,12 +70,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _parameterString: function(label, value1, value2) {
 
-        return '' +
-            label + ': ' +
-            '<code>' + value1 + '</code>' +
-            ' – ' +
-            '<code>' + value2 + '</code>' +
-            '<br>';
+        return String.format('{0}: <code>{1}</code> – <code>{2}</code><br>', label, value1, value2);
     },
 
     _replacePlaceholdersWithControls: function(html, collection) {
