@@ -21,15 +21,18 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.searchPanel = new Portal.ui.search.SearchPanel({ mapPanel: this.mapPanel });
         this.visualisePanel = new Portal.ui.VisualisePanel({ mapPanel: this.mapPanel });
-        this.downloadPanel = new Portal.cart.DownloadPanel();
+        this.downloadPanel = new Portal.cart.DownloadPanel({
+            navigationText: OpenLayers.i18n('navigationButtonDownload')
+        });
 
         this.addEvents('tabchange');
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
             margins: {
-                left: 5,
-                right: 5
+                left: 10,
+                right: 10,
+                top: 10
             },
             unstyled: true,
             layout: new Portal.ui.NavigableCardLayout(),

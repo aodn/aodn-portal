@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -6,38 +5,33 @@
  *
  */
 
-describe("Portal.search.FacetedSearchResultsGrid", function() {
+describe("Portal.search.FacetedSearchResultsPanel", function() {
 
-    var resultsGrid;
+    var resultsView;
     var testTarget;
     var testLayerLink;
 
     beforeEach(function() {
 
         var store = new Portal.data.GeoNetworkRecordStore();
-        resultsGrid = new Portal.search.FacetedSearchResultsGrid({
+        resultsView = new Portal.search.FacetedSearchResultsPanel({
             store: store
         });
 
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
-    describe('initialisation', function() {
-        it('sets column model to correct type', function() {
-            expect(resultsGrid.colModel).toBeInstanceOf(Portal.search.FacetedSearchResultsColumnModel);
-        });
-    });
 
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {
-            spyOn(resultsGrid, '_refreshView');
+            spyOn(resultsView, '_refreshView');
             Ext.MsgBus.publish('activegeonetworkrecordadded');
-            expect(resultsGrid._refreshView).toHaveBeenCalled();
+            expect(resultsView._refreshView).toHaveBeenCalled();
         });
         it('refreshes view on record removed', function() {
-            spyOn(resultsGrid, '_refreshView');
+            spyOn(resultsView, '_refreshView');
             Ext.MsgBus.publish('activegeonetworkrecordremoved');
-            expect(resultsGrid._refreshView).toHaveBeenCalled();
+            expect(resultsView._refreshView).toHaveBeenCalled();
         });
     });
 });
