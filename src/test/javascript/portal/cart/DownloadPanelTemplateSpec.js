@@ -67,8 +67,9 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         beforeEach(function() {
 
-            childTemplate = {};
-            childTemplate.apply = jasmine.createSpy('apply');
+            childTemplate = {
+                apply: jasmine.createSpy('apply')
+            };
             spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
             spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
         });
