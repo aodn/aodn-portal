@@ -13,7 +13,7 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         spyOn(searchFiltersPanel, '_setSpinnerText');
     });
 
-    describe('clear all', function() {
+    describe('new search', function() {
         it('calls removeAnyFilters for each filter', function() {
 
             var filters = [
@@ -28,17 +28,17 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
             }
 
             for (var i = 0; i < filters.length; i++) {
-                testClearAllLink(searchFiltersPanel[filters[i]]);
+                testNewSearchButton(searchFiltersPanel[filters[i]]);
             }
         });
     });
 
-    describe('clear all link display behaviour for the geo facet', function() {
-        it('displays the clear all link when a polygon is added', function() {
+    describe('new search button display behaviour for the geo facet', function() {
+        it('displays the new search button when a polygon is added', function() {
             // Ideally I want to test this by firing a 'polygonadded' event but because of timing the expectation fails
-            spyOn(searchFiltersPanel.clearAllLink, 'setVisible');
-            searchFiltersPanel._showClearAllForGeoFacet();
-            expect(searchFiltersPanel.clearAllLink.setVisible).toHaveBeenCalledWith(true);
+            spyOn(searchFiltersPanel.newSearchButton, 'setVisible');
+            searchFiltersPanel._showNewSearchForGeoFacet();
+            expect(searchFiltersPanel.newSearchButton.setVisible).toHaveBeenCalledWith(true);
         });
     });
 
@@ -46,8 +46,8 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         spyOn(filter, 'removeAnyFilters');
     }
 
-    function testClearAllLink(filter) {
-        searchFiltersPanel.clearAllLink.fireEvent('click');
+    function testNewSearchButton(filter) {
+        searchFiltersPanel.newSearchButton.fireEvent('click');
         expect(filter.removeAnyFilters).toHaveBeenCalled();
     }
 
