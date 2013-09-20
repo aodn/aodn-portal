@@ -100,7 +100,8 @@ Portal.data.GeoNetworkRecord = function() {
         'source',
         { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
         bboxField,
-        'wmsLayer'
+        'wmsLayer',
+        'aodaac'
     ]);
 
     var prototype = constructor.prototype;
@@ -170,7 +171,8 @@ Portal.data.GeoNetworkRecord = function() {
     };
 
     prototype.updateAodaac = function(aodaac) {
-        this.aodaac = aodaac;
+
+        this.set('aodaac', aodaac);
     };
 
     return constructor;

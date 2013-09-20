@@ -23,6 +23,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         Portal.cart.WfsDataRowTemplate.superclass.constructor.call(this, templateLines);
     },
 
+    applyWithControls: function(values) {
+
+        return this._replacePlaceholdersWithControls(this.apply(values), values);
+    },
+
     _getDataFilterEntry: function(values) {
 
         var wmsLayer = values.wmsLayer;
@@ -31,7 +36,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
             var cqlText = wmsLayer.getCqlFilter();
 
-            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
+            var html = cqlText ? "<b>Filter applied:</b> <code>" + cqlText + "</code>" : "No data filters applied.";
 
             return this.downloadPanelTemplate._makeEntryMarkup(html);
         }
@@ -54,5 +59,56 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
+    },
+
+    _replacePlaceholdersWithControls: function(html, collection) {
+
+        var elementId = 'wfs-download-button-' + collection.uuid;
+
+        // Don't create button if no placeholder exists
+        if (html.indexOf(elementId) >= 0) {
+
+            this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId, collection]);
+        }
+
+        return html;
+    },
+
+    _createDownloadButton: function(html, value, id, collection) {
+
+        var downloadMenu = new Ext.menu.Menu({
+            items: this._createMenuItems(collection)
+        });
+
+        new Ext.Button({
+            text: value,
+            icon: 'images/down.png',
+            scope: this,
+            menu: downloadMenu
+        }).render(html, id);
+    },
+
+    _createMenuItems: function(collection) {
+
+        return [
+            {text: 'Download as CSV', handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
+            {text: 'Download as GML3', handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
+            {text: 'Download as Shapefile', handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
+        ];
+    },
+
+    _downloadHandlerFor: function(collection, format) {
+
+        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+
+        return function() {
+
+            this.downloadPanelTemplate.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl); // Todo - DN: Tidy this up
+        };
+    },
+
+    _wfsUrlForGeoNetworkRecord: function(record, format) {
+
+        return record.wmsLayer.getFeatureRequestUrl(format);
     }
 });

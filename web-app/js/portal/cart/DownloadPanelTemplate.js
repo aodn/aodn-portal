@@ -8,7 +8,9 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
-    constructor: function() {
+    constructor: function(downloadPanel) {
+
+        this.downloadPanel = downloadPanel;
 
         var templateLines = [
             '<div class="download-collection">',
@@ -47,12 +49,12 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         if (values.wmsLayer) {
 
-            html += new Portal.cart.WfsDataRowTemplate(this).apply(values)
+            html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
         }
 
         if (values.aodaac) {
 
-            html += new Portal.cart.AodaacDataRowTemplate(this).apply(values);
+            html += new Portal.cart.AodaacDataRowTemplate(this).applyWithControls(values);
         }
 
         return html;
