@@ -94,7 +94,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     scope: this
                 }
             }
-        })
+        });
     },
 
     getMetadataLinksAsHtml: function(values) {
