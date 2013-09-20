@@ -80,7 +80,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-7"></div>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="aodaac-download-button-7"></div>');
         });
 
         it('include message when there is no layer', function() {

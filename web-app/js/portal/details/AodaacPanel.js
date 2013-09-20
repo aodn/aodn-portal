@@ -529,6 +529,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.westBL.setValue(bounds[0]);
         this.northBL.setValue(bounds[3]);
         this.eastBL.setValue(bounds[2]);
+
         this._updateGeoNetworkAodaac();
     },
 

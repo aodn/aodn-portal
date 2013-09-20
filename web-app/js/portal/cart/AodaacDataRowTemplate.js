@@ -44,7 +44,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (aodaacParameters) {
 
-            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
+            html = '<div id="aodaac-download-button-' + values.uuid + '"></div>'; // Download button placeholder
         }
         else {
 

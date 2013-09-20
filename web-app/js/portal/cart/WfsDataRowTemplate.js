@@ -46,7 +46,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (wmsLayer) {
 
-            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
+            html = '<div id="wfs-download-button-' + values.uuid + '"></div>'; // Download button placeholder
         }
         else {
 

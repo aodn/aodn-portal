@@ -91,7 +91,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-9"></div>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="wfs-download-button-9"></div>');
         });
 
         it('include message when there is no layer', function() {
