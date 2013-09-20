@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.search.FacetedSearchResults", function() {
+describe("Portal.search.FacetedSearchResultsPanel", function() {
 
     var resultsView;
     var testTarget;
@@ -14,7 +14,7 @@ describe("Portal.search.FacetedSearchResults", function() {
     beforeEach(function() {
 
         var store = new Portal.data.GeoNetworkRecordStore();
-        resultsView = new Portal.search.FacetedSearchResults({
+        resultsView = new Portal.search.FacetedSearchResultsPanel({
             store: store
         });
 

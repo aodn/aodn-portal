@@ -17,7 +17,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
         this.splashPanel = new Portal.ui.HomePanel({});
 
-        this.searchResultsView = new Portal.search.FacetedSearchResults({
+        this.searchResultsView = new Portal.search.FacetedSearchResultsPanel({
             hidden: true,
             store: this.resultsStore
         });

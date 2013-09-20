@@ -1,4 +1,4 @@
-    /*
+/*
  * Copyright 2012 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
@@ -7,8 +7,7 @@
 
 Ext.namespace('Portal.search');
 
-    Portal.search.FacetedSearchResults = Ext.extend(Ext.Panel, {
-
+Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     initComponent:function () {
 
@@ -37,7 +36,7 @@ Ext.namespace('Portal.search');
 
         Ext.apply(this, config);
 
-        Portal.search.FacetedSearchResults.superclass.initComponent.apply(this, arguments);
+        Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
 
         this.store.on('load', function() {
             this._onStoreLoad();
@@ -78,7 +77,7 @@ Ext.namespace('Portal.search');
     },
 
     afterRender: function () {
-        Portal.search.FacetedSearchResults.superclass.afterRender.call(this);
+        Portal.search.FacetedSearchResultsPanel.superclass.afterRender.call(this);
 
         this.loadMask = new Portal.common.LoadMask(this.el, {
             msg: OpenLayers.i18n('maskText'),
@@ -113,4 +112,4 @@ Ext.namespace('Portal.search');
     }
 });
 
-Ext.reg('portal.search.facetedsearchresults', Portal.search.FacetedSearchResults);
+Ext.reg('portal.search.facetedsearchresultspanel', Portal.search.FacetedSearchResultsPanel);

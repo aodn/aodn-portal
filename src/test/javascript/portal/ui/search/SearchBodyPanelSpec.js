@@ -28,7 +28,7 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
 
         it('initialises results grid', function() {
             var resultsGrid = searchBodyPanel.searchResultsView;
-            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResults);
+            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsPanel);
             expect(searchBodyPanel.items.get(1)).toBe(resultsGrid);
             expect(resultsGrid.hidden).toBeTruthy();
             expect(resultsGrid.store).toBe(searchBodyPanel.resultsStore);
