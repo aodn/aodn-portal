@@ -1201,15 +1201,15 @@ div.allwhite {
 .download-collection .row code {
     background-color: #EEE;
     border-radius: 4px;
+    padding: 1px 3px;
+    line-height: 1.4em;
 }
-
 
 .download-collection .x-btn {
 
     border: 2px solid #E0E0E0;
     background-color: #EEE;
 }
-
 
 .download-collection .x-btn-text {
 

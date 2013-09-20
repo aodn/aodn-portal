@@ -547,10 +547,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 dateRangeEnd: this.dateRangeEndPicker.value,
                 timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
                 timeOfDayRangeEnd: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[1].value),
-                southBL: this.southBL.value,
-                westBL: this.westBL.value,
-                northBL: this.northBL.value,
-                eastBL: this.eastBL.value
+                latitudeRangeStart: this.southBL.value,
+                latitudeRangeEnd: this.westBL.value,
+                longitudeRangeStart: this.northBL.value,
+                longitudeRangeEnd: this.eastBL.value
             };
         }
         return {};

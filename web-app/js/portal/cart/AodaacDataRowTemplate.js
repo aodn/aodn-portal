@@ -63,7 +63,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         return "" + // Todo - DN: Dictionarise
             "<b>Parameters:</b><br>" +
-            this._parameterString('Area', params.southBL + ' N, ' + params.westBL + ' E', params.northBL + ' N, ' + params.eastBL + ' E') +
+            this._parameterString('Area', params.latitudeRangeStart + '&nbsp;N,&nbsp;' + params.longitudeRangeStart + '&nbsp;E', params.latitudeRangeEnd + '&nbsp;N,&nbsp;' + params.longitudeRangeEnd + '&nbsp;E') +
             this._parameterString('Date range', params.dateRangeStart, params.dateRangeEnd) +
             this._parameterString('Time-of-day range', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
     },
@@ -72,9 +72,9 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         return '' +
             label + ': ' +
-            '<code>' +
-            value1 + ' – ' + value2 +
-            '</code>' +
+            '<code>' + value1 + '</code>' +
+            ' – ' +
+            '<code>' + value2 + '</code>' +
             '<br>';
     },
 
@@ -115,18 +115,58 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         ];
     },
 
-    _downloadHandlerFor: function(collection, format) {
-
-        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+    _downloadHandlerFor: function(collection, format, emailAddress) {
 
         return function() {
 
-            this.downloadPanelTemplate.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl); // Todo - DN: Tidy this up
+            // Todo - DN: We're not showing the DownloadConfirmationWindow currently
+
+            if (!this._validateEmailAddress(emailAddress)) {
+
+                Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
+                return;
+            }
+
+            var downloadUrl = this._aodaacUrl(collection.aodaac, format, emailAddress);
+
+            Ext.Ajax.request({
+                url: downloadUrl,
+                scope: this,
+                success: function() {
+                    Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreatedMsg', {email: emailAddress}));
+                },
+                failure: function() {
+                    Ext.Msg.alert(OpenLayers.i18n('aodaacDialogTitle'), OpenLayers.i18n('aodaacJobCreateErrorMsg'));
+                }
+            });
         };
     },
 
-    _wfsUrlForGeoNetworkRecord: function(record, format) {
+    _aodaacUrl: function(params, format, emailAddress) {
 
-        return record.wmsLayer.getFeatureRequestUrl(format);
+        var args = "outputFormat=" + format;
+        args += "&dateRangeStart=" + params.dateRangeStart;
+        args += "&dateRangeEnd=" + params.dateRangeEnd;
+        args += "&timeOfDayRangeStart=" + params.timeOfDayRangeStart;
+        args += "&timeOfDayRangeEnd=" + params.timeOfDayRangeEnd;
+        args += "&latitudeRangeStart=" + params.latitudeRangeStart;
+        args += "&latitudeRangeEnd=" + params.latitudeRangeEnd;
+        args += "&longitudeRangeStart=" + params.longitudeRangeStart;
+        args += "&longitudeRangeEnd=" + params.longitudeRangeEnd;
+        args += "&productId=" + params.productId;
+        args += "&notificationEmailAddress=" + emailAddress;
+
+        return 'aodaac/createJob?' + args;
+    },
+
+    _validateEmailAddress: function(address) {
+
+        if (!address) {
+            return false;
+        }
+
+        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(address);
     }
 });
