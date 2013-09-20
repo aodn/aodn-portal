@@ -14,7 +14,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = [
             '  <div class="row">',
-            '    <div class="subheading">Data</div>',
+            '    <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
             '    {[this._getDataFilterEntry(values)]}',
             '    {[this._getDataDownloadEntry(values)]}',
             '  </div>'
@@ -53,7 +53,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup('No direct access to data available currently.');
+            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noData'));
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);

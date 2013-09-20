@@ -14,7 +14,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = [
             '  <div class="row">',
-            '    <div class="subheading">Data</div>',
+            '    <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
             '    {[this._getDataFilterEntry(values)]}',
             '    {[this._getDataDownloadEntry(values)]}',
             '  </div>'
@@ -36,7 +36,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
             var cqlText = wmsLayer.getCqlFilter();
 
-            var html = cqlText ? "<b>Filter applied:</b> <code>" + cqlText + "</code>" : "No data filters applied.";
+            var html = cqlText ? "<b>" + OpenLayers.i18n('filterLabel') + "</b> <code>" + cqlText + "</code>" : OpenLayers.i18n('noFilterApplied');
 
             return this.downloadPanelTemplate._makeEntryMarkup(html);
         }
@@ -55,7 +55,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup('No direct access to data available currently.');
+            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noData'));
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
@@ -68,20 +68,20 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         // Don't create button if no placeholder exists
         if (html.indexOf(elementId) >= 0) {
 
-            this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId, collection]);
+            this._createDownloadButton.defer(1, this, [html, elementId, collection]);
         }
 
         return html;
     },
 
-    _createDownloadButton: function(html, value, id, collection) {
+    _createDownloadButton: function(html, id, collection) {
 
         var downloadMenu = new Ext.menu.Menu({
             items: this._createMenuItems(collection)
         });
 
         new Ext.Button({
-            text: value,
+            text: OpenLayers.i18n('downloadAs'),
             icon: 'images/down.png',
             scope: this,
             menu: downloadMenu
@@ -91,9 +91,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _createMenuItems: function(collection) {
 
         return [
-            {text: 'Download as CSV', handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: 'Download as GML3', handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: 'Download as Shapefile', handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
+            {text: OpenLayers.i18n('downloadAsCsv'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
+            {text: OpenLayers.i18n('downloadAsGml3'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
+            {text: OpenLayers.i18n('downloadAsShapefile'), handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
         ];
     },
 

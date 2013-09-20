@@ -11,7 +11,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     initComponent: function(cfg) {
 
         var config = Ext.apply({
-            title: 'Data Download Tools',
+            title: OpenLayers.i18n('stepHeadingDownload'),
             headerCfg: {
                 cls: 'x-panel-header p-header-space'
             },
@@ -55,6 +55,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     _contentForEmptyView: function() {
 
-        return '<i>' + OpenLayers.i18n('emptyCartText') + '</i>';
+        return '<i>' + OpenLayers.i18n('noCollections') + '</i>';
     }
 });

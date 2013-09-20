@@ -45,7 +45,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<b>' + OpenLayers.i18n('filterLabel') + '</b> <code>cql_filter</code>');
         });
 
         it('calls entry markup with no filter message', function() {
@@ -54,7 +54,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilterApplied'));
         });
 
         it('returns empty string when no layer', function() {
@@ -100,7 +100,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct access to data available currently.</span>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noData') + '</span>');
         });
 
         afterEach(function() {
@@ -140,7 +140,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Data');
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingData'));
             });
 
             it('has correct text value from function', function() {

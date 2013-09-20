@@ -63,6 +63,7 @@ Portal.data.GeoNetworkRecord = function() {
     var parameterField = new Portal.data.ChildElementsField({
         name: 'parameter'
     });
+
     var organisationField = new Portal.data.ChildElementsField({
         name: 'organisation'
     });

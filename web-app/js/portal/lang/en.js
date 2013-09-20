@@ -28,12 +28,23 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     polygonHelp: 'Click to add points. Double click to close polygon.',
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
-    //DownloadCartPanel.js
-    okdownload: 'Download All',
-    clearcart: "Clear Cart",
-    downloadCartUndo: "Undo Last Remove",
-    emptyCartText: "No collections have been added.",
-    unavailableDataLink: "Sorry this data is currently unavailable",
+    // Download Step
+    stepHeadingDownload: 'ggggData Download Tools',
+    subheadingMetadata: 'gggggggggggggggggggMetadata',
+    subheadingData: 'gggggggggggggggggggData',
+    subheadingFiles: 'gggggggggggggggggggAttached files',
+    noCollections: 'No collections to show',
+    filterLabel: 'gggggFilter applied:',
+    noFilterApplied: 'gggggNo data filter applied.',
+    noData: 'gggggNo direct access to data available currently.',
+    downloadAs: 'ggggDownload as\u2026',
+    downloadAsCsv: 'Download as CSV',
+    downloadAsGml3: 'Download as GML3',
+    downloadAsShapefile: 'Download as Shapefile',
+    parametersLabel: 'ggggggParameters:',
+    parameterArea: 'ggggggArea',
+    parameterDate: 'gggggDate range',
+    parameterTime: 'gggggTime-of-day range',
 
     // Animation Panel
     stop: 'Stop',

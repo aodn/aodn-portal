@@ -68,7 +68,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         beforeEach(function() {
 
             childTemplate = {
-                apply: jasmine.createSpy('apply')
+                applyWithControls: jasmine.createSpy('applyWithControls')
             };
             spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
             spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
@@ -82,7 +82,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             tpl._dataRowTemplate(geoNetworkRecord);
 
             expect(Portal.cart.AodaacDataRowTemplate).toHaveBeenCalledWith(tpl);
-            expect(childTemplate.apply).toHaveBeenCalledWith(geoNetworkRecord);
+            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
         });
 
         it('uses WfsDataRowTemplate where applicable', function() {
@@ -93,7 +93,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             tpl._dataRowTemplate(geoNetworkRecord);
 
             expect(Portal.cart.WfsDataRowTemplate).toHaveBeenCalledWith(tpl);
-            expect(childTemplate.apply).toHaveBeenCalledWith(geoNetworkRecord);
+            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
         });
     });
 
@@ -287,7 +287,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Metadata');
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingMetadata'));
             });
 
             it('has correct text value from function', function() {
@@ -320,7 +320,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Attached files');
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingFiles'));
             });
 
             it('has correct text value from function', function() {
