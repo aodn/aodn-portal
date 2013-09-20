@@ -66,7 +66,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             items: [this.opacitySlider]
         });
 
-
         this.transectControl = new Portal.mainMap.TransectControl({
             ref: 'transectControl',
             height: 30,
@@ -97,7 +96,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
                     this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
                 }
-
             }
         });
 
@@ -111,10 +109,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
         this.hideDetailsPanelContents();
-    },
-
-    getOpacitySlider: function () {
-        return this.opacitySlider;
     },
 
     _checkLayerAvailability: function(layer) {
@@ -145,7 +139,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         if (layer) {
             this.setTitle(layer.name);
 
-		    // show new layer unless user requested 'hideLayerOptions'
+            // show new layer unless user requested 'hideLayerOptions'
             this.errorPanel.hide();
 
             this._checkLayerAvailability(layer);
