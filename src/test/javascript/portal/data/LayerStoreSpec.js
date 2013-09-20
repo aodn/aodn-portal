@@ -72,7 +72,7 @@ describe("Portal.data.LayerStore", function() {
                 options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
             });
 
-            layerStore.addUsingLayerLink(layerLink);
+            layerStore.addUsingLayerLink("layerName", layerLink);
 
             expect(Ext.Ajax.request).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
@@ -86,7 +86,7 @@ describe("Portal.data.LayerStore", function() {
 
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
 
-            layerStore.addUsingLayerLink(layerLink);
+            layerStore.addUsingLayerLink("LayerName", layerLink);
 
             expect(Ext.Ajax.request).toHaveBeenCalled();
             expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe("Portal.data.LayerStore", function() {
 
         describe('layer record callback', function() {
             it('no callback', function() {
-                layerStore.addUsingLayerLink(layerLink);
+                layerStore.addUsingLayerLink("layerName", layerLink);
             });
 
             it('callback', function() {
@@ -105,7 +105,7 @@ describe("Portal.data.LayerStore", function() {
                     layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
                 });
 
-                layerStore.addUsingLayerLink(layerLink, callback);
+                layerStore.addUsingLayerLink("layerName", layerLink, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });
