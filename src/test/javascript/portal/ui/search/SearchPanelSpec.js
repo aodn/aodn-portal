@@ -51,12 +51,4 @@ describe("Portal.ui.search.SearchPanel", function() {
             expect(searchPanel.resultsStore.startRecord).toEqual(19);
         });
     });
-
-    describe('filters panel events', function() {
-        it('notifies body panel on cleared filters', function() {
-            spyOn(searchPanel.bodyPanel, 'onFiltersCleared');
-            searchPanel.filtersPanel.fireEvent('filtersCleared');
-            expect(searchPanel.bodyPanel.onFiltersCleared).toHaveBeenCalled();
-        });
-    });
 });

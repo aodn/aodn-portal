@@ -63,13 +63,5 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             this.resultsStore.startRecord = page.from - 1;
             this.resultsStore.loadData(response);
         }, this);
-
-        this.filtersPanel.on('filtersCleared', function() {
-            this.bodyPanel.onFiltersCleared();
-        }, this);
-
-        this.filtersPanel.on('facetedSearchUpdating', function() {
-            this.bodyPanel.resultsGrid.showMask();
-        }, this);
     }
 });
