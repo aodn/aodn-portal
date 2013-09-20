@@ -1130,8 +1130,6 @@ div.allwhite {
     font-style: italic;
 }
 
-<<<<<<< HEAD
-=======
 .facetedSearchResultBody {
     overflow: auto;
 }
@@ -1140,15 +1138,6 @@ div.allwhite {
     font-size: 13px;
 }
 
-.faceted-search-clear-all div {
-    float: right;
-}
-
-.faceted-search-clear-all div.x-hyperlink {
-    padding: 3px 10px;
-}
-
->>>>>>> master
 .faceted-search-disclaimer {
     border: 1px solid #ffcc55;
 }
