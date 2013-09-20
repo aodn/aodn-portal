@@ -7,10 +7,10 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    navigationButtonNext: "Next >>",
-    navigationButtonPrevious: "<< Previous",
-    navigationButtonSelect: "Select >>",
-    navigationButtonDownload: "Download >>",
+    navigationButtonNext: "Next &#187;",
+    navigationButtonPrevious: "&#171; Previous",
+    navigationButtonSelect: "Select &#187;",
+    navigationButtonDownload: "Download &#187;",
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
