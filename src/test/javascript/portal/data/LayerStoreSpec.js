@@ -72,7 +72,7 @@ describe("Portal.data.LayerStore", function() {
                 options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
             });
 
-            layerStore.addUsingLayerLink("layeName", layerLink);
+            layerStore.addUsingLayerLink("layerName", layerLink);
 
             expect(Ext.Ajax.request).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
