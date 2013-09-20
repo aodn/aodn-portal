@@ -71,23 +71,27 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                 beforeEach(function() {
                     myRecord = new Portal.data.GeoNetworkRecord({
+                        title: 'geonetwork data collection name',
                         links: [{
                             href: 'http://somelayer/wms',
                             name: 'the name',
                             protocol: 'OGC:WMS-1.1.1-http-get-map',
-                            title: 'a really interesting record',
                             type: 'some type'
                         }]
                     });
                 });
 
-                it('layer added to LayerStore', function() {
+                it('layer added to LayerStore with geonetwork name', function() {
                     spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
 
+                    // Expect data collection in layer store to have the
+                    // geonetwork layer (data collection) name
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalled();
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
+                        myRecord.data.title);
+                    expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[1]).toEqual(
                         myRecord.getFirstWmsLink());
                 });
 
@@ -101,7 +105,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         });
 
                         spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
-                            function(layerLink, layerRecordCallback) {
+                            function(layerDisplayName, layerLink, layerRecordCallback) {
                                 layerRecordCallback(layerRecord);
                             });
 
