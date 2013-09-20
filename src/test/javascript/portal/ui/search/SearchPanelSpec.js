@@ -25,7 +25,6 @@ describe("Portal.ui.search.SearchPanel", function() {
             expect(searchPanel.filtersPanel.width).toBe(340);
         });
 
-
         it('initialises results store', function() {
             var resultsStore = searchPanel.resultsStore;
             expect(resultsStore).toBeInstanceOf(Portal.data.GeoNetworkRecordStore);
@@ -49,6 +48,15 @@ describe("Portal.ui.search.SearchPanel", function() {
             searchPanel.searcher.fireEvent('searchcomplete', response, page);
             expect(searchPanel.resultsStore.loadData).toHaveBeenCalledWith(response);
             expect(searchPanel.resultsStore.startRecord).toEqual(19);
+        });
+    });
+
+    describe('initComponent', function() {
+        it('calls searcher search', function() {
+            spyOn(searchPanel.searcher, 'search');
+            spyOn(Portal.ui.search.SearchPanel.superclass, 'initComponent');
+            searchPanel.initComponent();
+            expect(searchPanel.searcher.search).toHaveBeenCalled();
         });
     });
 });
