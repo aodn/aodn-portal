@@ -10,27 +10,20 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
 
     beforeEach(function() {
         searchBodyPanel = new Portal.ui.search.SearchBodyPanel({
-            resultsStore: new Portal.data.GeoNetworkRecordStore()
+            resultsStore: new Portal.data.GeoNetworkRecordStore(),
+            searcher: new Portal.service.CatalogSearcher()
         });
     });
 
     describe('initialisation', function() {
-        it('sets card layout', function() {
-            expect(searchBodyPanel.layout).toBe('card');
-        });
-
-        it('initialises splash panel', function() {
-            var splashPanel = searchBodyPanel.splashPanel;
-            expect(splashPanel).toBeInstanceOf(Portal.ui.HomePanel);
-            expect(searchBodyPanel.items.get(0)).toBe(splashPanel);
-            expect(searchBodyPanel.activeItem).toBe(splashPanel);
+        it('sets fit layout', function() {
+            expect(searchBodyPanel.layout).toBe('fit');
         });
 
         it('initialises results grid', function() {
             var resultsGrid = searchBodyPanel.searchResultsView;
             expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsPanel);
-            expect(searchBodyPanel.items.get(1)).toBe(resultsGrid);
-            expect(resultsGrid.hidden).toBeTruthy();
+            expect(resultsGrid).toBeInstanceOf(Portal.search.FacetedSearchResultsGrid);
             expect(resultsGrid.store).toBe(searchBodyPanel.resultsStore);
         });
     });
@@ -49,21 +42,33 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
                 searchBodyPanel._onResultsStoreLoad();
                 expect(searchBodyPanel._displayNoResultsAlert).toHaveBeenCalled();
             });
-
-            it('activates results grid card when store is not empty', function() {
-                spyOn(searchBodyPanel, '_activateResultsGridCard');
-                searchBodyPanel.resultsStore.getTotalCount = function() { return 1; };
-                searchBodyPanel._onResultsStoreLoad();
-                expect(searchBodyPanel._activateResultsGridCard).toHaveBeenCalled();
-            });
         });
     });
 
-    describe('filters panel events', function() {
-        it('displays splash page on cleared filters', function() {
-            spyOn(searchBodyPanel, '_activateSplashCard');
-            searchBodyPanel.onFiltersCleared();
-            expect(searchBodyPanel._activateSplashCard).toHaveBeenCalled();
+    describe('searcher events', function() {
+        beforeEach(function() {
+            spyOn(searchBodyPanel.resultsGrid, 'showLoadMask');
+            spyOn(searchBodyPanel.resultsGrid, 'hideLoadMask');
+        });
+
+        it('calls resultsGrid showLoadMask on searchstart', function() {
+            searchBodyPanel.searcher.fireEvent('searchstart');
+            expect(searchBodyPanel.resultsGrid.showLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on searchcomplete', function() {
+            searchBodyPanel.searcher.fireEvent('searchcomplete');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on summaryOnlySearchComplete', function() {
+            searchBodyPanel.searcher.fireEvent('summaryOnlySearchComplete');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
+        });
+
+        it('calls resultsGrid hideLoadMask on searcherror', function() {
+            searchBodyPanel.searcher.fireEvent('searcherror');
+            expect(searchBodyPanel.resultsGrid.hideLoadMask).toHaveBeenCalled();
         });
     });
 });

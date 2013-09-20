@@ -64,13 +64,5 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             this.resultsStore.loadData(response);
             this.bodyPanel.searchResultsView.hideMask();
         }, this);
-
-        this.filtersPanel.on('filtersCleared', function() {
-            this.bodyPanel.onFiltersCleared();
-        }, this);
-
-        this.filtersPanel.on('facetedSearchUpdating', function() {
-            this.bodyPanel.searchResultsView.showMask();
-        }, this);
     }
 });
