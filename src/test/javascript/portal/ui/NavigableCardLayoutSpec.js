@@ -80,4 +80,42 @@ describe('Portal.ui.NavigableCardLayout', function() {
             expect(layout.setActiveTab).not.toHaveBeenCalled();
         });
     });
+
+    describe('navigation labels', function() {
+        describe('get next label', function() {
+            it("returns 'next' as default", function() {
+                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext'));
+            });
+
+            it("returns 'next' if there is no next tab", function() {
+                layout.setActiveItem(TAB_INDEX_DOWNLOAD);
+                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext'));
+            });
+
+            it('returns custom label if next panel has one', function() {
+                var someText = 'something else';
+                layout.setActiveItem(TAB_INDEX_SEARCH);
+                layout.container.items.get(1).navigationText = someText;
+                expect(layout.getNextNavigationLabel()).toBe(someText);
+            });
+        });
+
+        describe('get prev label', function() {
+            it("returns 'prev' as default", function() {
+                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious'));
+            });
+
+            it("returns 'prev' if there is no prev tab", function() {
+                layout.setActiveItem(TAB_INDEX_SEARCH);
+                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious'));
+            });
+
+            it('returns custom label if prev panel has one', function() {
+                var someText = 'something else';
+                layout.setActiveItem(TAB_INDEX_DOWNLOAD);
+                layout.container.items.get(1).navigationText = someText;
+                expect(layout.getPrevNavigationLabel()).toBe(someText);
+            });
+        });
+    });
 });

@@ -89,7 +89,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
                 width: '100%',
                 height: this.ROW_HEIGHT,
                 items: [
-                    this.startLabel, this.startDatePicker, this.startTimeCombo,
+                    this.startLabel, this.startDatePicker, this.startTimeCombo
                 ]
             },
             {

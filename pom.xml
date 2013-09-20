@@ -400,6 +400,7 @@
                         <include>portal/common/MapPanel.js</include>
                         <include>portal/search/CloneMapPanel.js</include><!-- needs to load before FacetMapPanel-->
                         <include>portal/ui/openlayers/layer/NcWMS.js</include>
+                        <include>portal/data/ChildElementsField.js</include>
                         <include>portal/data/GeoNetwork*.js</include>
 						<include>portal/ui/MapPanel.js</include>
 						<include>portal/ui/SearchPanel.js</include>

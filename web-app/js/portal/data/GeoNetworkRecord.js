@@ -60,6 +60,13 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
+    var parameterField = new Portal.data.ChildElementsField({
+        name: 'parameter'
+    });
+    var organisationField = new Portal.data.ChildElementsField({
+        name: 'organisation'
+    });
+
     function convertXmlToLinks(v, record) {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
         var links = [];
@@ -94,6 +101,11 @@ Portal.data.GeoNetworkRecord = function() {
         'title',
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
+        parameterField,
+        'platform',
+        organisationField,
+        { name: 'temporalExtentBegin', mapping: 'tempExtentBegin' },
+        { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
         linksField,
         downloadableLinksField,
         pointOfTruthLinkField,
