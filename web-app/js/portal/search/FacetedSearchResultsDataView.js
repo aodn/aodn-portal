@@ -9,7 +9,6 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
-
     initComponent:function () {
 
         var tpl = new Ext.XTemplate(
@@ -32,12 +31,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             this,
             {
                 getButton: function(values) {
-                    this.createButton.defer(1, this,[values.uuid]);
+                    this.createButton.defer(1, this, [values.uuid]);
                     return "";
                 }
             }
         );
-
 
         var config = {
             store: this.store,
@@ -46,7 +44,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         Ext.apply(this, config);
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
-
     },
 
     getParametersAsHtml: function(values){
@@ -149,7 +146,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     getMiniMap: function(values) {
 
-
         function _baseLayer() {
             return new OpenLayers.Layer.WMS(
                 "IMOS Tile Cache Simple Baselayer",
@@ -170,7 +166,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
             return zoomLevel;
         };
-
 
         var componentId = Ext.id();
 
@@ -197,8 +192,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         }, 10);
         return "";
-
-
     },
 
     isRecActive: function(uuid) {
