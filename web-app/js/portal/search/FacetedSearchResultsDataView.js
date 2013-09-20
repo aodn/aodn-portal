@@ -57,23 +57,61 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '</div>'
         );
         var html= "";
-        if (values.organisation) {
-            html += paramTpl.apply({"label":"Organisation","value":values.organisation});
-        }
-        if (values.platform) {
-            html += paramTpl.apply({"label":"Platform","value":values.platform});
-        }
-        if (values.temporalExtentBegin) {
-            html += paramTpl.apply({
-                "label":"Date Range",
-                "value": moment(values.temporalExtentBegin).format("YYYY-MM-DD Z") + " - " + moment(values.temporalExtentEnd).format("YYYY-MM-DD Z")
-            });
-        }
-        if (values.parameter.size > 0) {
-            html += paramTpl.apply({"label":"Parameters","value": values.parameter.join(" - ")});
-        }
+
+        html += this._getOrganisationAsHtml(paramTpl, values.organisation);
+        html += this._getPlatformAsHtml(paramTpl, values.platform);
+        html += this._getTemporalExtentAsHtml(paramTpl, {
+            begin: values.temporalExtentBegin,
+            end: values.temporalExtentEnd
+        });
+        html += this._getParametersAsHtml(paramTpl, values.parameter)
 
         return html;
+    },
+
+    _getOrganisationAsHtml: function(template, organisation) {
+        if (organisation) {
+            return template.apply({
+                "label": "Organisation",
+                "value": organisation
+            });
+        }
+
+        return "";
+    },
+
+    _getPlatformAsHtml: function(template, platform) {
+        if (platform) {
+            return template.apply({
+                "label": "Platform",
+                "value": platform
+            });
+        }
+
+        return "";
+    },
+
+    _getTemporalExtentAsHtml: function(template, temporalExtent) {
+        if (temporalExtent.begin && temporalExtent.end) {
+            return template.apply({
+                "label": "Date Range",
+                "value": moment(temporalExtent.begin).format("YYYY-MM-DD Z")
+                         + " - " + moment(temporalExtent.end).format("YYYY-MM-DD Z")
+            });
+        }
+
+        return "";
+    },
+
+    _getParametersAsHtml: function(template, parameters) {
+        if (parameters.size > 0) {
+            return template.apply({
+                "label": "Parameters",
+                "value": parameters.join(" - ")
+            });
+        }
+
+        return "";
     },
 
     createButton: function(uuid) {
