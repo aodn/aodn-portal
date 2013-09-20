@@ -27,12 +27,9 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
-                // Use GeoNetwork data collection (layer) name
-                var geoNetworkRecordLink = geoNetworkRecord.getFirstWmsLink();
-                geoNetworkRecordLink.title = geoNetworkRecord.data.title;
-
                 Portal.data.LayerStore.instance().addUsingLayerLink(
-                    geoNetworkRecordLink,
+                    geoNetworkRecord.data.title,
+                    geoNetworkRecord.getFirstWmsLink(),
                     function(layerRecord) {
                         var wmsLayer = layerRecord.get('layer');
 

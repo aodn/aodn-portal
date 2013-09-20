@@ -88,12 +88,11 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                     // Expect data collection in layer store to have the
                     // geonetwork layer (data collection) name
-                    linkWithGeonetworkTitle = myRecord.getFirstWmsLink();
-                    linkWithGeonetworkTitle.title = myRecord.data.title;
-
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalled();
                     expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
-                        linkWithGeonetworkTitle);
+                        myRecord.data.title);
+                    expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[1]).toEqual(
+                        myRecord.getFirstWmsLink());
                 });
 
                 describe('callback', function() {
@@ -106,7 +105,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         });
 
                         spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
-                            function(layerLink, layerRecordCallback) {
+                            function(layerDisplayName, layerLink, layerRecordCallback) {
                                 layerRecordCallback(layerRecord);
                             });
 
