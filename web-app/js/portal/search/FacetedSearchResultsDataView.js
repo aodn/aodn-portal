@@ -32,7 +32,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '               <i>',
             '                   {[this.trimAbstract(values.abstract,30)]}',
             '               </i>',
-            '               &nbsp;{[this.getPointOfTruthLinkAsHtml(values)]}',
+            '               &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '           </p>',
             '       </div>',
             '   </div>',
@@ -142,7 +142,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
     },
 
-    getPointOfTruthLinkAsHtml: function(values) {
+    getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {
         return '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
             + values.pointOfTruthLink.title + '"> more </a>';
     },
