@@ -16,8 +16,8 @@
     <g:if test="${showLinks}">
         <div id="viewPortLinks">
             <g:each var="viewPortLink" status="i"
-                    in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Select Data Collections'],
-                           ['tabIndex': 'TAB_INDEX_VISUALISE', 'description': 'View and Subset'],
+                    in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Select Data Collection'],
+                           ['tabIndex': 'TAB_INDEX_VISUALISE', 'description': 'Create Subset'],
                            ['tabIndex': 'TAB_INDEX_DOWNLOAD', 'description': 'Download']]}" >
                 <g:render template="/header/viewPortLink"
                           model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
