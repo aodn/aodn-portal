@@ -56,4 +56,43 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             });
         });
     });
+
+    describe("layerLoading events", function() {
+
+        beforeEach(function() {
+            // Return an array with at least one element...
+            spyOn(activeLayersPanel, 'getActiveLayerNodes').andReturn([ '' ]);
+
+            // Mock a layer
+            spyOn(activeLayersPanel, 'findNodeByLayer').andReturn('stubValue');
+        });
+
+        describe("layerLoadingStart", function() {
+            it("_onLayerLoadingStart called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingStart');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingStart).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationStart called", function() {
+                spyOn(activeLayersPanel, '_layerLoadingIndicationStart');
+                activeLayersPanel._onLayerLoadingStart('stubValue');
+                expect(activeLayersPanel._layerLoadingIndicationStart).toHaveBeenCalledWith('stubValue');
+            });
+        });
+
+        describe("layerLoadingEnd", function() {
+            it("_onLayerLoadingEnd called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingEnd');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingEnd).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationEnd called", function() {
+                spyOn(activeLayersPanel, '_layerLoadingIndicationEnd');
+                activeLayersPanel._onLayerLoadingEnd('stubValue');
+                expect(activeLayersPanel._layerLoadingIndicationEnd).toHaveBeenCalledWith('stubValue');
+            });
+        });
+    });
 });
