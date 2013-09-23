@@ -11,7 +11,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg){
         var config = Ext.apply({
             id: 'filterPanel',
-            title: 'Filters',
+            title: OpenLayers.i18n('filterPanelTitle'),
             layout: 'table',
             autoScroll: true,
             layoutConfig: {
