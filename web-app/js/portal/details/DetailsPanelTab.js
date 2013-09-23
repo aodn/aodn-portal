@@ -34,10 +34,10 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.filterPanel = new Portal.filter.FilterPanel();
 
         this.items = [
-            this.infoPanel,
-            this.stylePanel,
+            this.filterPanel,
             this.aodaacPanel,
-            this.filterPanel
+            this.infoPanel,
+            this.stylePanel
         ];
 
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
@@ -56,7 +56,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
          **/
         this.remove(this.filterPanel);
         this.filterPanel = new Portal.filter.FilterPanel();
-        this.add(this.filterPanel);
+        this.insert(0, this.filterPanel);  // filter tab first when shown
         this.filterPanel.update( layer, this._showTab, this._hideTab, this );
 
         this.show();
