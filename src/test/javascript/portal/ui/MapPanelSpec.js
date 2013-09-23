@@ -115,15 +115,18 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    it('layersLoading', function() {
+    it('layerLoadingStart', function() {
 
-        spyOn(mapPanel, '_updateLayerLoadingSpinner');
+        spyOn(mapPanel, '_onLayerLoadingStart');
+        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, "");
+        expect(mapPanel._onLayerLoadingStart).toHaveBeenCalledWith("");
+    });
 
-        Ext.MsgBus.publish('layersLoading', 0);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
+    it('layerLoadingEnd', function() {
 
-        Ext.MsgBus.publish('layersLoading', 1);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
+        spyOn(mapPanel, '_onLayerLoadingEnd');
+        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, "");
+        expect(mapPanel._onLayerLoadingEnd).toHaveBeenCalledWith("");
     });
 
     describe('Adding layer from Geoserver Feature Info response', function() {
@@ -157,18 +160,6 @@ describe("Portal.ui.MapPanel", function() {
 
         it('Checks that getPanelY() can be called', function() {
             expect(mapPanel.getPanelY).toBeDefined();
-        });
-    });
-
-    describe('tabchange event', function () {
-
-        it('calls _updateLayerLoadingSpinner', function() {
-
-            spyOn(mapPanel, '_updateLayerLoadingSpinner');
-
-            mapPanel.fireEvent("tabchange");
-
-            expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
         });
     });
 

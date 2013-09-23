@@ -127,9 +127,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         if (!this.containsOpenLayer(openLayer)) {
             openLayer.events.register('loadstart', this, function() {
                 this.currentlyLoadingLayers.add(openLayer.name, openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
             openLayer.events.register('loadend', this, function() {
                 this.currentlyLoadingLayers.remove(openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
             var layerRecord = new GeoExt.data.LayerRecord({
@@ -180,15 +182,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initCurrentlyLoadingLayers: function() {
         this.currentlyLoadingLayers = new Ext.util.MixedCollection();
-        this.currentlyLoadingLayers.on('add', function(index, object) {
-            this._publishLayersLoadingMessage();
-        }, this);
-        this.currentlyLoadingLayers.on('clear', function() {
-            this._publishLayersLoadingMessage();
-        }, this);
-        this.currentlyLoadingLayers.on('remove', function(index, object) {
-            this._publishLayersLoadingMessage();
-        }, this);
     },
 
     getLayersLoadingCount: function() {
@@ -246,10 +239,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
         });
     },
-
-    _publishLayersLoadingMessage: function() {
-        Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
-    }
 });
 
 Portal.data.LayerStore.THE_INSTANCE;
