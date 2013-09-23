@@ -38,8 +38,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
-        for (i = this.store.data.items.length - 1; i >= 0; i--) {
-            item = this.store.data.items[i];
+        for (var i = this.store.data.items.length - 1; i >= 0; i--) {
+            var item = this.store.data.items[i];
 
             var collection = item.data;
 
