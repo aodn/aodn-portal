@@ -179,22 +179,15 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     zoomToLayer: function() {
-        if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
-
-        }
-    },
-
-    _layerLoadingIndicationStart: function(layerEntry) {
-    },
-
-    _layerLoadingIndicationEnd: function(layerEntry) {
+        this.fireEvent('zoomtolayer', this.getSelectedLayer());
     },
 
     _onLayerLoadingStart: function(openLayer) {
         if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
             var layerEntry = this.findNodeByLayer(openLayer);
-            if (layerEntry) {
-                this._layerLoadingIndicationStart(layerEntry);
+            if (layerEntry && layerEntry.ui) {
+                // Delegate to layer
+                layerEntry.ui.layerLoadingStart();
             }
         }
     },
@@ -202,8 +195,9 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     _onLayerLoadingEnd: function(openLayer) {
         if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
             var layerEntry = this.findNodeByLayer(openLayer);
-            if (layerEntry) {
-                this._layerLoadingIndicationEnd(layerEntry);
+            if (layerEntry && layerEntry.ui) {
+                // Delegate to layer
+                layerEntry.ui.layerLoadingEnd();
             }
         }
     },

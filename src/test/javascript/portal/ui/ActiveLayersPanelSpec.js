@@ -59,12 +59,21 @@ describe("Portal.ui.ActiveLayersPanel", function() {
 
     describe("layerLoading events", function() {
 
+        var mockedLayer;
+
+        mockLayers = (function() {
+            mockedLayer = { ui: {} };
+            mockedLayer.ui.layerLoadingStart = function() {};
+            mockedLayer.ui.layerLoadingEnd   = function() {};
+            return [ mockedLayer ];
+        });
+
         beforeEach(function() {
             // Return an array with at least one element...
-            spyOn(activeLayersPanel, 'getActiveLayerNodes').andReturn([ '' ]);
+            spyOn(activeLayersPanel, 'getActiveLayerNodes').andReturn(mockLayers());
 
-            // Mock a layer
-            spyOn(activeLayersPanel, 'findNodeByLayer').andReturn('stubValue');
+            // Always returned the mocked layer
+            spyOn(activeLayersPanel, 'findNodeByLayer').andReturn(mockedLayer);
         });
 
         describe("layerLoadingStart", function() {
@@ -74,10 +83,10 @@ describe("Portal.ui.ActiveLayersPanel", function() {
                 expect(activeLayersPanel._onLayerLoadingStart).toHaveBeenCalledWith("someLayer");
             });
 
-            it("_layerLoadingIndicationStart called", function() {
-                spyOn(activeLayersPanel, '_layerLoadingIndicationStart');
-                activeLayersPanel._onLayerLoadingStart('stubValue');
-                expect(activeLayersPanel._layerLoadingIndicationStart).toHaveBeenCalledWith('stubValue');
+            it("_layerLoadingIndicationStart delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingStart');
+                activeLayersPanel._onLayerLoadingStart(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingStart).toHaveBeenCalled();
             });
         });
 
@@ -88,10 +97,10 @@ describe("Portal.ui.ActiveLayersPanel", function() {
                 expect(activeLayersPanel._onLayerLoadingEnd).toHaveBeenCalledWith("someLayer");
             });
 
-            it("_layerLoadingIndicationEnd called", function() {
-                spyOn(activeLayersPanel, '_layerLoadingIndicationEnd');
-                activeLayersPanel._onLayerLoadingEnd('stubValue');
-                expect(activeLayersPanel._layerLoadingIndicationEnd).toHaveBeenCalledWith('stubValue');
+            it("_layerLoadingIndicationEnd delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingEnd');
+                activeLayersPanel._onLayerLoadingEnd(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingEnd).toHaveBeenCalled();
             });
         });
     });

@@ -59,6 +59,12 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         this.deferToDelegate("zoomToLayer");
     },
 
+    layerLoadingStart: function() {
+    },
+
+    layerLoadingEnd: function() {
+    },
+
     deferToDelegate: function(delegateFnName) {
 
         // TODO: how else to either a) fire Ext event (this is not an Ext component)
