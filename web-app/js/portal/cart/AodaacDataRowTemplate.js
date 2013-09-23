@@ -14,7 +14,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = [
             '<div class="row data">',
-            '  <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
+            '  <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
             '  {[this._getDataFilterEntry(values)]}',
             '  {[this._getDataDownloadEntry(values)]}',
             '</div>'
