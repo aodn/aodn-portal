@@ -17,17 +17,18 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  <div class="title-row">',
             '    {title}',
             '  </div>',
-            '  <div class="row">',
+            '  {[this._dataRowTemplate(values)]}',
+            '  <div class="row metadata">',
             '    <div class="subheading">' + OpenLayers.i18n('subheadingMetadata') + '</div>',
             '    {[this._getPointOfTruthLinkEntry(values)]}',
             '  </div>',
-            '  {[this._dataRowTemplate(values)]}',
             '  <tpl if="downloadableLinks.length &gt; 0">',
-            '  <div class="row">',
+            '  <div class="row files">',
             '    <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
             '    {[this._getFileListEntries(values)]}',
             '  </div>',
             '  </tpl>',
+            '  <div class="clear"></div>', // Only for CSS styling
             '</div>'
         ];
 

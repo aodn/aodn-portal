@@ -13,11 +13,11 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         this.downloadPanelTemplate = downloadPanelTemplate;
 
         var templateLines = [
-            '  <div class="row">',
-            '    <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
-            '    {[this._getDataFilterEntry(values)]}',
-            '    {[this._getDataDownloadEntry(values)]}',
-            '  </div>'
+            '<div class="row data">',
+            '  <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
+            '  {[this._getDataFilterEntry(values)]}',
+            '  {[this._getDataDownloadEntry(values)]}',
+            '</div>'
         ];
 
         Portal.cart.AodaacDataRowTemplate.superclass.constructor.call(this, templateLines);

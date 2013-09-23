@@ -13,11 +13,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         this.downloadPanelTemplate = downloadPanelTemplate;
 
         var templateLines = [
-            '  <div class="row">',
-            '    <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
-            '    {[this._getDataFilterEntry(values)]}',
-            '    {[this._getDataDownloadEntry(values)]}',
-            '  </div>'
+            '<div class="row data">',
+            '  <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
+            '  {[this._getDataFilterEntry(values)]}',
+            '  {[this._getDataDownloadEntry(values)]}',
+            '</div>'
         ];
 
         Portal.cart.WfsDataRowTemplate.superclass.constructor.call(this, templateLines);
