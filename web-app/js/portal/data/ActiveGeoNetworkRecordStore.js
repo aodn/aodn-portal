@@ -42,12 +42,12 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
             }
         });
 
-        Ext.MsgBus.publish('activegeonetworkrecordadded', geoNetworkRecords);
+        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, geoNetworkRecords);
     },
 
     _onRemove: function(store, record) {
         this._removeFromLayerStore(record);
-        Ext.MsgBus.publish('activegeonetworkrecordremoved', record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, record);
     },
 
     _removeFromLayerStore: function(record) {
@@ -64,8 +64,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     removeAll: function(store) {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
-        Ext.MsgBus.publish('activegeonetworkrecordremoved');
-        Ext.MsgBus.publish('reset');
+        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
     getItemsEncodedAsJson: function() {

@@ -55,12 +55,12 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
-        Ext.MsgBus.publish('viewgeonetworkrecord', record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
     },
 
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
-        Ext.each(['activegeonetworkrecordadded', 'activegeonetworkrecordremoved'], function(eventName) {
+        Ext.each([PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED], function(eventName) {
             Ext.MsgBus.subscribe(eventName, function() {
                 this._refreshView();
             }, this);

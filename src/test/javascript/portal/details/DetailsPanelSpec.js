@@ -51,7 +51,7 @@ describe("Portal.details.DetailsPanel", function() {
                     type: 'some type'
                 };
 
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             });
 
             it('set title to layer name', function() {
@@ -66,12 +66,12 @@ describe("Portal.details.DetailsPanel", function() {
             it("set title to 'no selected layer'", function() {
                 detailsPanel.title = 'something';
                 expect(detailsPanel.title).toBe('something');
-                Ext.MsgBus.publish('selectedLayerChanged');
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
             });
 
             it('hide contents', function() {
-                Ext.MsgBus.publish('selectedLayerChanged');
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
         });

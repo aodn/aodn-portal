@@ -21,7 +21,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
         Portal.snapshot.SnapshotController.superclass.constructor.apply(this, arguments);
 
-        Ext.MsgBus.subscribe("loadSnapshot", function (subject, snapshot) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LOAD_SNAPSHOT, function (subject, snapshot) {
             this.loadSnapshot(snapshot);
         }, this);
     },
@@ -60,7 +60,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
     loadSnapshot:function (id) {
 
-        Ext.MsgBus.publish('reset');
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
         this.proxy.get(id, this.onSuccessfulLoad.createDelegate(this), this.onFailedLoad.createDelegate(this));
     },
 
