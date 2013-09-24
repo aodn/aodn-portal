@@ -51,7 +51,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (wmsLayer) {
 
-            html = '<div id="wfs-download-button-' + values.uuid + '"></div>'; // Download button placeholder
+            html = String.format('<div id="wfs-download-button-{0}"></div>', values.uuid); // Download button placeholder
         }
         else {
 
@@ -81,7 +81,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         });
 
         new Ext.Button({
-            text: OpenLayers.i18n('downloadAs'),
+            text: OpenLayers.i18n('downloadButtonLabel'),
             icon: 'images/down.png',
             scope: this,
             menu: downloadMenu

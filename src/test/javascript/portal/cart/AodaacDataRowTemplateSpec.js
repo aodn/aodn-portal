@@ -23,6 +23,23 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         };
     });
 
+    describe('applyWithControls', function() {
+
+        it('calls relevant functions', function() {
+
+            var values = {};
+
+            spyOn(tpl, '_replacePlaceholdersWithControls').andReturn('final output');
+            spyOn(tpl, 'apply').andReturn('template with placeholders');
+
+            var returnVal = tpl.applyWithControls(values);
+
+            expect(tpl.apply).toHaveBeenCalledWith(values);
+            expect(tpl._replacePlaceholdersWithControls).toHaveBeenCalledWith('template with placeholders', values);
+            expect(returnVal).toBe('final output');
+        });
+    });
+
     describe('_getDataFilterEntry', function() {
 
         beforeEach(function() {
@@ -137,7 +154,192 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
     describe('_parameterString', function() {
 
-        expect('write moar tests').toBe('true');
+        beforeEach(function() {
+
+            spyOn(OpenLayers, 'i18n').andReturn('i18n value');
+            spyOn(String, 'format');
+
+            tpl._parameterString('the_key', 'val1', 'val2');
+        });
+
+        it('calls OpenLayers.i18n()', function() {
+
+            expect(OpenLayers.i18n).toHaveBeenCalledWith('the_key');
+        });
+
+        it('calls String.format()', function() {
+
+            expect(String.format).toHaveBeenCalledWith('{0}: <code>{1}</code> – <code>{2}</code><br>', 'i18n value', 'val1', 'val2')
+        });
+    });
+
+    describe('_replacePlaceholdersWithControls', function() {
+
+        var collectionMock;
+        var htmlMock;
+        var expectedEmlementId;
+
+        beforeEach(function() {
+
+            collectionMock = {
+                uuid: 12345
+            };
+
+            expectedEmlementId = 'aodaac-download-button-12345';
+
+            htmlMock = {
+                indexOf: jasmine.createSpy('html indexOf').andReturn(1)
+            };
+
+            spyOn(tpl._createDownloadButton, 'defer');
+
+            tpl._replacePlaceholdersWithControls(htmlMock, collectionMock);
+        });
+
+        it('calls indexOf with correct id', function() {
+
+            expect(htmlMock.indexOf).toHaveBeenCalledWith(expectedEmlementId);
+        });
+
+        it('calls _createDownloadButton.defer', function() {
+
+            expect(tpl._createDownloadButton.defer).toHaveBeenCalledWith(
+                1,
+                tpl,
+                [htmlMock, OpenLayers.i18n('downloadButtonLabel'), expectedEmlementId, collectionMock]
+            );
+        });
+    });
+
+    describe('_createDownloadButton', function() {
+
+        var mockMenu = {};
+        var mockMenuItems = {};
+        var mockButton = {};
+        var mockCollection = {};
+
+        beforeEach(function() {
+
+            spyOn(tpl, '_createMenuItems').andReturn(mockMenuItems);
+            spyOn(Ext.menu, 'Menu').andReturn(mockMenu);
+            spyOn(Ext, 'Button').andReturn(mockButton);
+            mockButton.render = jasmine.createSpy('button render');
+
+            tpl._createDownloadButton('html', 'value', '12345', mockCollection);
+        });
+
+        it('calls _createMenuItems', function() {
+
+            expect(tpl._createMenuItems).toHaveBeenCalledWith(mockCollection);
+        });
+
+        it('create a new Menu', function() {
+
+            expect(Ext.menu.Menu).toHaveBeenCalledWith({items: mockMenuItems})
+        });
+
+        it('creates a new Button', function() {
+
+            expect(Ext.Button).toHaveBeenCalledWith({
+                text: 'value',
+                icon: 'images/down.png',
+                scope: tpl,
+                menu: mockMenu
+            });
+        });
+
+        it('calls render on the button', function() {
+
+            expect(mockButton.render).toHaveBeenCalledWith('html', '12345');
+        });
+    });
+
+    describe('_createMenuItems', function() {
+
+        it('returns array of menu items', function() {
+
+            spyOn(tpl, '_downloadHandlerFor');
+
+            var items = tpl._createMenuItems({});
+
+            expect(items.length).not.toBe(0);
+
+            Ext.each(items, function(item){
+
+                expect(item.text).toBeDefined();
+                expect(typeof item.text === 'string').toBeTruthy();
+            });
+
+            expect(tpl._downloadHandlerFor.callCount).toBe(items.length);
+        });
+    });
+
+    describe('_downloadHandlerFor', function() {
+
+       it('returns a function to be called', function() {
+
+            var returnValue = tpl._downloadHandlerFor();
+
+            expect(typeof returnValue).toBe('function');
+        });
+    });
+
+    describe('_aodaacUrl', function() {
+
+        it('builds URL with correct query string', function() {
+
+            var params = {
+                productId: 89,
+                latitudeRangeStart: -90,
+                latitudeRangeEnd: 90,
+                longitudeRangeStart: -180,
+                longitudeRangeEnd: 180,
+                dateRangeStart: '1/1/1900',
+                dateRangeEnd: '31/12/2001',
+                timeOfDayRangeStart: '00:00',
+                timeOfDayRangeEnd: '23:59'
+            };
+
+            var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
+
+            expect(url).toBe('aodaac/createJob?' +
+                'outputFormat=format' +
+                '&dateRangeStart=1/1/1900' +
+                '&dateRangeEnd=31/12/2001' +
+                '&timeOfDayRangeStart=00:00' +
+                '&timeOfDayRangeEnd=23:59' +
+                '&latitudeRangeStart=-90' +
+                '&latitudeRangeEnd=90' +
+                '&longitudeRangeStart=-180' +
+                '&longitudeRangeEnd=180' +
+                '&productId=89' +
+                '&notificationEmailAddress=emailAddress'
+            );
+        });
+    });
+
+    describe('_validateEmailAddress', function() {
+
+        it('returns false for an empty address', function() {
+
+            var returnVal = tpl._validateEmailAddress('');
+
+            expect(returnVal).toBe(false);
+        });
+
+        it('returns false for an invalid address', function() {
+
+            var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
+
+            expect(returnVal).toBe(false);
+        });
+
+        it('returns true for a valid address', function() {
+
+            var returnVal = tpl._validateEmailAddress('user@domain.com');
+
+            expect(returnVal).toBe(true);
+        });
     });
 
     describe('template output', function() {

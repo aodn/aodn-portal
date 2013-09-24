@@ -83,7 +83,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         // Don't create button if no placeholder exists
         if (html.indexOf(elementId) >= 0) {
 
-            this._createDownloadButton.defer(1, this, [html, 'Download as...', elementId, collection]);
+            this._createDownloadButton.defer(1, this, [html, OpenLayers.i18n('downloadButtonLabel'), elementId, collection]);
         }
 
         return html;

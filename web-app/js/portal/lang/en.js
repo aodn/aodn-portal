@@ -38,7 +38,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filterLabel: 'Filter applied:',
     noFilterApplied: 'No data filter applied.',
     noData: 'No direct access to data available currently.',
-    downloadAs: 'Download as\u2026',
+    downloadButtonLabel: 'Download as\u2026',
     downloadAsCsv: 'Download as CSV',
     downloadAsGml3: 'Download as GML3',
     downloadAsShapefile: 'Download as Shapefile',
