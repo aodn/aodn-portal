@@ -103,6 +103,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
             spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
         });
 
         it('calls _getSingleFileEntry for each link', function() {
@@ -136,7 +137,8 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No attached files.</span>');
+            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilesMessage'));
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('secondary text markup');
             expect(html).toBe('entry markup');
         });
 
@@ -287,7 +289,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingMetadata'));
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('metadataSubheading'));
             });
 
             it('has correct text value from function', function() {
@@ -320,7 +322,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingFiles'));
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('filesSubheading'));
             });
 
             it('has correct text value from function', function() {

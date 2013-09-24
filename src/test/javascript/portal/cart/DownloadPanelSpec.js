@@ -112,7 +112,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             var content = downloadPanel._contentForEmptyView();
 
-            expect(content).toBe('<i>' + OpenLayers.i18n('noCollections') + '</i>');
+            expect(content).toBe('<i>' + OpenLayers.i18n('noCollectionsMessage') + '</i>');
         });
     });
 });

@@ -71,7 +71,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilterApplied'));
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilterMessage'));
         });
 
         it('returns empty string when no layer', function() {
@@ -117,7 +117,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noData') + '</span>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noDataMessage') + '</span>'); // Todo - DN: Spy on secondary text markup
         });
 
         afterEach(function() {
@@ -280,7 +280,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingData'));
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('dataSubheading'));
             });
 
             it('has correct text value from function', function() {

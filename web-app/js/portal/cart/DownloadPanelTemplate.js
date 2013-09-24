@@ -19,12 +19,12 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '  </div>',
             '  {[this._dataRowTemplate(values)]}',
             '  <div class="row metadata">',
-            '    <div class="subheading">' + OpenLayers.i18n('subheadingMetadata') + '</div>',
+            '    <div class="subheading">' + OpenLayers.i18n('metadataSubheading') + '</div>',
             '    {[this._getPointOfTruthLinkEntry(values)]}',
             '  </div>',
             '  <tpl if="downloadableLinks.length &gt; 0">',
             '  <div class="row files">',
-            '    <div class="subheading">' + OpenLayers.i18n('subheadingFiles') + '</div>',
+            '    <div class="subheading">' + OpenLayers.i18n('filesSubheading') + '</div>',
             '    {[this._getFileListEntries(values)]}',
             '  </div>',
             '  </tpl>',
@@ -38,7 +38,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         var href = record.pointOfTruthLink.href;
 
-        var html = this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLink'));
+        var html = this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
 
         return this._makeEntryMarkup(html);
     },
@@ -79,7 +79,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this._makeEntryMarkup(
-            this._makeSecondaryTextMarkup(OpenLayers.i18n('noAttachedFiles'))
+            this._makeSecondaryTextMarkup(OpenLayers.i18n('noFilesMessage'))
         );
     },
 

@@ -14,7 +14,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = [
             '<div class="row data">',
-            '  <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
+            '  <div class="subheading">' + OpenLayers.i18n('dataSubheading') + '</div>',
             '  {[this._getDataFilterEntry(values)]}',
             '  {[this._getDataDownloadEntry(values)]}',
             '</div>'
@@ -35,8 +35,16 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         if (wmsLayer) {
 
             var cqlText = wmsLayer.getCqlFilter();
+            var html;
 
-            var html = cqlText ? "<b>" + OpenLayers.i18n('filterLabel') + "</b> <code>" + cqlText + "</code>" : OpenLayers.i18n('noFilterApplied');
+            if (cqlText) {
+
+                html = String.format('<b>{0}</b> <code>{1}</code>', OpenLayers.i18n('filterLabel'), cqlText);
+            }
+            else {
+
+                html = OpenLayers.i18n('noFilterMessage');
+            }
 
             return this.downloadPanelTemplate._makeEntryMarkup(html);
         }
@@ -55,7 +63,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noData'));
+            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
@@ -91,9 +99,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _createMenuItems: function(collection) {
 
         return [
-            {text: OpenLayers.i18n('downloadAsCsv'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: OpenLayers.i18n('downloadAsGml3'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: OpenLayers.i18n('downloadAsShapefile'), handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
+            {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
+            {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
+            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
         ];
     },
 

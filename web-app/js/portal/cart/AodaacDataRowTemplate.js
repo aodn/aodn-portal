@@ -14,7 +14,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = [
             '<div class="row data">',
-            '  <div class="subheading">' + OpenLayers.i18n('subheadingData') + '</div>',
+            '  <div class="subheading">' + OpenLayers.i18n('dataSubheading') + '</div>',
             '  {[this._getDataFilterEntry(values)]}',
             '  {[this._getDataDownloadEntry(values)]}',
             '</div>'
@@ -53,7 +53,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
         else {
 
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noData'));
+            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
@@ -66,9 +66,9 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
 
         return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
-            this._parameterString('parameterArea', areaStart, areaEnd) +
-            this._parameterString('parameterDate', params.dateRangeStart, params.dateRangeEnd) +
-            this._parameterString('parameterTime', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
+            this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd) +
+            this._parameterString('parameterTimeLabel', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
     },
 
     _parameterString: function(labelKey, value1, value2) {

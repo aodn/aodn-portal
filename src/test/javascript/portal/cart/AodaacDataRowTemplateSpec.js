@@ -106,7 +106,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noData') + '</span>');
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noDataMessage') + '</span>'); // Todo - DN: Spy on secondary text markup
         });
 
         afterEach(function() {
@@ -146,9 +146,9 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         it('calls _parameterString with correct arguments', function() {
 
             expect(tpl._parameterString.callCount).toBe(3);
-            expect(tpl._parameterString.calls[0].args).toEqual(['parameterArea', '-90&nbsp;N,&nbsp;-180&nbsp;E', '90&nbsp;N,&nbsp;180&nbsp;E']);
-            expect(tpl._parameterString.calls[1].args).toEqual(['parameterDate', '1/1/1900', '31/12/2001']);
-            expect(tpl._parameterString.calls[2].args).toEqual(['parameterTime', '00:00', '23:59']);
+            expect(tpl._parameterString.calls[0].args).toEqual(['parameterAreaLabel', '-90&nbsp;N,&nbsp;-180&nbsp;E', '90&nbsp;N,&nbsp;180&nbsp;E']);
+            expect(tpl._parameterString.calls[1].args).toEqual(['parameterDateLabel', '1/1/1900', '31/12/2001']);
+            expect(tpl._parameterString.calls[2].args).toEqual(['parameterTimeLabel', '00:00', '23:59']);
         });
     });
 
@@ -373,7 +373,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingData'));
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('dataSubheading'));
             });
 
             it('has correct text value from function', function() {
