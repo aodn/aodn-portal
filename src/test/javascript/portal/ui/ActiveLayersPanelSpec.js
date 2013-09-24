@@ -15,7 +15,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
         it("triggers selectedLayerChanged event", function() {
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
-            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, selectedLayerChangedSpy);
 
             activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
             expect(selectedLayerChangedSpy).toHaveBeenCalled();
@@ -40,10 +40,10 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             activeLayersPanel.getActiveLayerNodes = function() {return []};
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
-            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, selectedLayerChangedSpy);
 
             // Publish the event
-            Ext.MsgBus.publish('layerRemoved');
+            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED);
 
             it("active node should be set to null", function() {
 

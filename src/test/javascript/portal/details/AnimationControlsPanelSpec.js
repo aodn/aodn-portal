@@ -106,13 +106,13 @@ describe("Portal.details.AnimationControlsPanel", function() {
             var temporalExtent;
 
             it('slider updated', function() {
-                Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, ncWmsLayer);
                 expect(animationControlsPanel.stepSlider.minValue).toBe(0);
                 expect(animationControlsPanel.stepSlider.maxValue).toBe(9);
             });
 
             it('selectedLayer updated', function() {
-                Ext.MsgBus.publish('selectedLayerChanged', ncWmsLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, ncWmsLayer);
                 expect(animationControlsPanel.selectedLayer).toBe(ncWmsLayer);
             });
         });
@@ -250,7 +250,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 Portal.details.AnimationControlsPanel._onSpeedChanged = origOnSpeedChanged;
                 afterEach(function() {
                     Ext.MsgBus.unsubscribe(
-                        'selectedLayerChanged',
+                        PORTAL_EVENTS.SELECTED_LAYER_CHANGED,
                         localAnimationControlsPanel._onBeforeSelectedLayerChanged,
                         localAnimationControlsPanel);
                 });

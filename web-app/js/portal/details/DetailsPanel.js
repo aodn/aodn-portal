@@ -22,7 +22,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', function (eventName, openlayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
     },

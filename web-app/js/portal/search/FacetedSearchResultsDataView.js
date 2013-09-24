@@ -9,7 +9,6 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
-
     initComponent:function () {
 
         var tpl = new Ext.XTemplate(
@@ -17,14 +16,24 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<div>',
             '   <div class="x-panel-header facetedSearchResultRow">',
             '       <h3 class="facetedSearchResultHeader">{title}</h3>',
-            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">{[this.getButton(values)]}</div>',
+            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">',
+            '           {[this.getButton(values)]}',
+            '       </div>',
             '   </div>',
             '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
-            '       <div class="x-panel x-box-item" style="height:118px;width:238px;border:1px solid #cccccc;" id="fsSearchMap{uuid}">{[this.getMiniMap(values)]}</div>',
+            '       <div class="x-panel x-box-item"',
+            '            style="height:118px;width:238px;border:1px solid #cccccc;"',
+            '            id="fsSearchMap{uuid}">',
+            '           {[this.getMiniMap(values)]}',
+            '       </div>',
             '       <div class="x-panel x-box-item facetedSearchResultTextBody" style="left:240px; ">',
             '           {[this.getParametersAsHtml(values)]}',
-            '           <p class="facetedSearchResultTextBody"><i>{[this.trimAbstract(values.abstract,30)]}</i>',
-            '           &nbsp;{[this.getMetadataLinksAsHtml(values)]}</p>',
+            '           <p class="facetedSearchResultTextBody">',
+            '               <i>',
+            '                   {[this.trimAbstract(values.abstract,30)]}',
+            '               </i>',
+            '               &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
+            '           </p>',
             '       </div>',
             '   </div>',
             '</div>',
@@ -32,12 +41,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             this,
             {
                 getButton: function(values) {
-                    this.createButton.defer(1, this,[values.uuid]);
+                    this.createButton.defer(1, this, [values.uuid]);
                     return "";
                 }
             }
         );
-
 
         var config = {
             store: this.store,
@@ -46,7 +54,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         Ext.apply(this, config);
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
-
     },
 
     getParametersAsHtml: function(values){
@@ -135,20 +142,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
     },
 
-    getMetadataLinksAsHtml: function(values) {
-        var ret = "";
-        var links = values.links;
-
-        for (var i = 0; i < links.length; i++) {
-            if (links[i].protocol == "WWW:LINK-1.0-http--metadata-URL") {
-                ret = '<a href="' + links[i].href + '" target="_blank" class="nowrap" title="' + links[i].title + '"> more </a>';
-            }
-        }
-        return ret;
+    getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {
+        return '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
+            + values.pointOfTruthLink.title + '"> more </a>';
     },
 
     getMiniMap: function(values) {
-
 
         function _baseLayer() {
             return new OpenLayers.Layer.WMS(
@@ -170,7 +169,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
             return zoomLevel;
         };
-
 
         var componentId = Ext.id();
 
@@ -197,8 +195,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         }, 10);
         return "";
-
-
     },
 
     isRecActive: function(uuid) {
@@ -229,7 +225,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
-        Ext.MsgBus.publish('viewgeonetworkrecord', record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
     }
 });
 

@@ -150,7 +150,7 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.getCount()).toBe(0);
             layerStore.addUsingOpenLayer(openLayer);
             expect(layerStore.getCount()).toBe(1);
-            expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith('selectedLayerChanged');
+            expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
         });
     });
 
@@ -196,7 +196,7 @@ describe("Portal.data.LayerStore", function() {
             it('layerRemoved event published', function() {
                 spyOn(Ext.MsgBus, 'publish');
                 layerStore.removeUsingOpenLayer(openLayer);
-                expect(Ext.MsgBus.publish).toHaveBeenCalledWith('layerRemoved', openLayer);
+                expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
             });
         });
 
@@ -224,7 +224,7 @@ describe("Portal.data.LayerStore", function() {
             spyOn(layerStore, 'removeAll').andCallThrough();
             spyOn(layerStore, 'selectDefaultBaseLayer');
 
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
 
             expect(layerStore.reset).toHaveBeenCalled();
             expect(layerStore.removeAll).toHaveBeenCalled();
@@ -309,7 +309,7 @@ describe("Portal.data.LayerStore", function() {
             spyOn(Ext.MsgBus, 'publish');
 
             layerStore.selectDefaultBaseLayer();
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith('baseLayerChanged', baseLayer);
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayer);
         });
 
         it('getDefaultBaseLayer', function() {

@@ -88,7 +88,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
    it('on reset', function() {
 
         spyOn(Portal.ui.FeatureInfoPopup.prototype, 'close');
-        Ext.MsgBus.publish('reset');
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
         expect(Portal.ui.FeatureInfoPopup.prototype.close).toHaveBeenCalled();
    });
 
