@@ -68,15 +68,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe('baseLayerChanged', function(subject, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe('reset', function () {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
         }, this);
 
