@@ -15,7 +15,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
-            '   <div class="x-panel-header facetedSearchResultRow">',
+            '   <div class="x-panel-header resultsRowBackground">',
             '       <h3 class="facetedSearchResultHeader">{title}</h3>',
             '       <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">{[this.getButton(values)]}</div>',
             '   </div>',

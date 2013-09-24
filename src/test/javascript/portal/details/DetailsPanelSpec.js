@@ -32,7 +32,7 @@ describe("Portal.details.DetailsPanel", function() {
     });
 
     it('initialisation', function() {
-        expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+        expect(detailsPanel.status).toBe(OpenLayers.i18n('noActiveLayersSelected'));
         expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
     });
 
@@ -55,7 +55,7 @@ describe("Portal.details.DetailsPanel", function() {
             });
 
             it('set title to layer name', function() {
-                expect(detailsPanel.title).toBe(openLayer.name);
+                expect(detailsPanel.status).toBe(openLayer.name);
             });
 
             it('show contents', function() {
@@ -64,10 +64,10 @@ describe("Portal.details.DetailsPanel", function() {
 
         describe('no selected layer', function() {
             it("set title to 'no selected layer'", function() {
-                detailsPanel.title = 'something';
-                expect(detailsPanel.title).toBe('something');
+                detailsPanel.status = 'something';
+                expect(detailsPanel.status).toBe('something');
                 Ext.MsgBus.publish('selectedLayerChanged');
-                expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+                expect(detailsPanel.status).toBe(OpenLayers.i18n('noActiveLayersSelected'));
             });
 
             it('hide contents', function() {

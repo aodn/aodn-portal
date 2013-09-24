@@ -44,6 +44,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             autoScroll: true,
             padding: 3,
             layout: 'auto',
+            title: OpenLayers.i18n('step1Header'),
             tbar: this._buildToolBar(),
             items: this.filters
         }, config);
@@ -75,15 +76,16 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
             border: false,
+            height: 25,
             frame: false,
-            items: [this._buildSpinner(), '->', this._buildNewSearchButton()]  
+            items: [this._buildSpinner(), '->', this._buildNewSearchButton()]
         });
     },
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
             html: OpenLayers.i18n('loadingSpinner', {'resource':'search terms'}),
-            hidden: true
+            hidden: false
         });
 
         return this.spinner;
@@ -102,7 +104,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setSpinnerText: function( newText ) {
-        this.spinner.update( '<span class="x-panel-header-text">' + newText + '</span>' );
+        this.spinner.update( newText);
         this.spinner.show();
     },
 

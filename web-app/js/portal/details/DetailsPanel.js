@@ -12,8 +12,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
         var config = Ext.apply({
-            id: 'detailsPanelItems',
-            title: OpenLayers.i18n('noActiveLayersSelected'),
+            title: OpenLayers.i18n('step2Header'),
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch'
@@ -31,6 +30,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         this.errorPanel = new Ext.Panel({
             cls: "errors",
+            margins: {top:10, right:5, bottom:10, left:10},
             hidden: true,
             html: OpenLayers.i18n('wmsLayerProblem')
         });
@@ -52,6 +52,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             plugins: new GeoExt.LayerOpacitySliderTip({
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
+        });
+
+        this.status = new Ext.Container({
+            html: OpenLayers.i18n('noActiveLayersSelected'),
+            cls: 'resultsRowBackground bold',
+            margins: {top:10, right:5, bottom:15, left:0},
+            autoHeight: true
         });
 
         this.opacitySliderContainer = new Ext.Panel({
@@ -102,6 +109,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
+            this.status,
             this.opacitySliderContainer,
             this.transectControl,
             this.errorPanel,
@@ -111,10 +119,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
         this.hideDetailsPanelContents();
-    },
-
-    getOpacitySlider: function () {
-        return this.opacitySlider;
     },
 
     _checkLayerAvailability: function(layer) {
@@ -143,7 +147,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     updateDetailsPanel: function (layer, forceOpen) {
 
         if (layer) {
-            this.setTitle(layer.name);
+            this.setStatus(layer.name);
 
 		    // show new layer unless user requested 'hideLayerOptions'
             this.errorPanel.hide();
@@ -178,9 +182,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.doLayout();
         }
         else {
-            this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
+            this.setStatus(OpenLayers.i18n('noActiveLayersSelected'));
             this.hideDetailsPanelContents();
         }
+    },
+
+    setStatus: function(status) {
+        this.status.update(status);
     },
 
     hideDetailsPanelContents: function () {
