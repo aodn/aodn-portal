@@ -86,6 +86,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         beforeEach(function() {
 
             spyOn(parentTemplate, '_makeEntryMarkup').andReturn('entry markup');
+            spyOn(parentTemplate, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
 
             html = tpl._getDataDownloadEntry(geoNetworkRecord);
         });
@@ -106,7 +107,8 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             tpl._getDataDownloadEntry(geoNetworkRecord);
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">' + OpenLayers.i18n('noDataMessage') + '</span>'); // Todo - DN: Spy on secondary text markup
+            expect(parentTemplate._makeSecondaryTextMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noDataMessage'));
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('secondary text markup');
         });
 
         afterEach(function() {
