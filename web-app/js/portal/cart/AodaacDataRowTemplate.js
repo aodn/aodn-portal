@@ -49,7 +49,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (aodaacParameters) {
 
-            html = '<div id="aodaac-download-button-' + values.uuid + '"></div>'; // Download button placeholder
+            html = String.format('<div id="aodaac-download-button-{0}"></div>', values.uuid); // Download button placeholder
         }
         else {
 
@@ -61,16 +61,19 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _aodaacParamatersMarkup: function(params) {
 
-        return "" + // Todo - DN: Dictionarise
-            "<b>Parameters:</b><br>" +
-            this._parameterString('Area', params.latitudeRangeStart + '&nbsp;N,&nbsp;' + params.longitudeRangeStart + '&nbsp;E', params.latitudeRangeEnd + '&nbsp;N,&nbsp;' + params.longitudeRangeEnd + '&nbsp;E') +
-            this._parameterString('Date range', params.dateRangeStart, params.dateRangeEnd) +
-            this._parameterString('Time-of-day range', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
+        var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
+        var areaStart = String.format(areaPattern, params.latitudeRangeStart, params.longitudeRangeStart);
+        var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
+
+        return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
+            this._parameterString('parameterArea', areaStart, areaEnd) +
+            this._parameterString('parameterDate', params.dateRangeStart, params.dateRangeEnd) +
+            this._parameterString('parameterTime', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
     },
 
-    _parameterString: function(label, value1, value2) {
+    _parameterString: function(labelKey, value1, value2) {
 
-        return String.format('{0}: <code>{1}</code> – <code>{2}</code><br>', label, value1, value2);
+        return String.format('{0}: <code>{1}</code> – <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
     _replacePlaceholdersWithControls: function(html, collection) {

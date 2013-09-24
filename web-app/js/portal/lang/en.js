@@ -42,10 +42,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsCsv: 'Download as CSV',
     downloadAsGml3: 'Download as GML3',
     downloadAsShapefile: 'Download as Shapefile',
-    parametersLabel: 'Parameters:',
-    parameterArea: 'Area',
-    parameterDate: 'Date range',
-    parameterTime: 'Time-of-day range',
+    parametersLabel: 'Parameters: 4',
+    parameterArea: 'Area 1',
+    parameterDate: 'Date range 2',
+    parameterTime: 'Time-of-day range 3',
     metadataLink: 'View metadata record',
 
     // Animation Panel

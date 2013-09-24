@@ -93,12 +93,12 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _makeEntryMarkup: function(text) {
 
-        return '<div class="entry">' + text + '</div>';
+        return String.format('<div class="entry">{0}</div>', text);
     },
 
     _makeSecondaryTextMarkup: function(text) {
 
-        return '<span class="secondary-text">' + text + '</span>';
+        return String.format('<span class="secondary-text">{0}</span>', text);
     },
 
     _makeExternalLinkMarkup: function(href, text) {
@@ -108,6 +108,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             text = href;
         }
 
-        return "<a href='" + href + "' target='_blank' class='external'>" + text + "</a>";
+        return String.format("<a href='{0}' target='_blank' class='external'>{1}</a>", href, text);
     }
 });
