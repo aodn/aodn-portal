@@ -1198,6 +1198,15 @@ div.allwhite {
     background: url(../images/zoom_to_layer2.png) center no-repeat transparent;
 }
 
+.layer-loading-button {
+    visibility: visible;
+    background: url('../images/spinner.gif') center no-repeat transparent;
+}
+
+.layer-loaded-button {
+    visibility: hidden;
+}
+
 #activeLayerTreePanel img.x-tree-node-icon {
     width: 1px;
 }

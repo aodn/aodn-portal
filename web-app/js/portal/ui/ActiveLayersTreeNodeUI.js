@@ -9,11 +9,13 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
+    buttons: null,
 
     constructor: function(config) {
 
         this.buttonsRendered = false;
         Portal.ui.ActiveLayersTreeNodeUI.superclass.constructor.call(this, config);
+        this.buttons = [];
     },
 
     render: function(bulkRender) {
@@ -26,8 +28,14 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         var cb = this.checkbox;
         var node = this;
 
+        that = this;
         if (!this.buttonsRendered) {
             Ext.each([
+                    {
+                        // This is the spinner button, indicating loading of
+                        // map. Styling and cls will be applied by calling
+                        // layerLoadingStart
+                    },
                     {
                         tooltip: 'Remove collection',
                         cls: 'remove-layer-button',
@@ -40,12 +48,17 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                     }
                 ],
                 function(item) {
-                    var button = Ext.DomHelper.insertBefore(cb, "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>");
-                    $(button).click(function() {
-                        item.clickHandler.call(node);
-                    })
+                    var button = Ext.DomHelper.insertBefore(cb,
+                        "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>");
+                    that.buttons.push(button);
+                    if (item.clickHandler) {
+                        $(button).click(function() {
+                            item.clickHandler.call(node);
+                        });
+                    }
                 }
             );
+            that.layerLoadingStart();
         }
         this.buttonsRendered = true;
     },
@@ -60,9 +73,13 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     layerLoadingStart: function() {
+        $(this.buttons[0]).addClass("layer-loading-button");
+        $(this.buttons[0]).removeClass("layer-loaded-button");
     },
 
     layerLoadingEnd: function() {
+        $(this.buttons[0]).removeClass("layer-loading-button");
+        $(this.buttons[0]).addClass("layer-loaded-button");
     },
 
     deferToDelegate: function(delegateFnName) {
