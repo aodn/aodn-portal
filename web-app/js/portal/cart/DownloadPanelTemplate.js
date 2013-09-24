@@ -39,7 +39,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         var href = record.pointOfTruthLink.href;
 
-        var html = this._makeExternalLinkMarkup(href, "View metadata record");
+        var html = this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLink'));
 
         return this._makeEntryMarkup(html);
     },
@@ -80,7 +80,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this._makeEntryMarkup(
-            this._makeSecondaryTextMarkup('No attached files.')
+            this._makeSecondaryTextMarkup(OpenLayers.i18n('noAttachedFiles'))
         );
     },
 

@@ -151,7 +151,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row data');
             });
 
             it('has correct number of children', function() {
@@ -162,7 +162,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingFiles'));
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('subheadingData'));
             });
 
             it('has correct text value from function', function() {

@@ -276,7 +276,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row metadata');
             });
 
             it('has correct number of children', function() {
@@ -309,7 +309,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row files');
             });
 
             it('has correct number of children', function() {

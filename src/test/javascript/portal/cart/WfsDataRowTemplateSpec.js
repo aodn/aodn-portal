@@ -129,7 +129,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row data');
             });
 
             it('has correct number of children', function() {

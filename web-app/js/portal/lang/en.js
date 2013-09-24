@@ -34,6 +34,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     subheadingData: 'Data',
     subheadingFiles: 'Attached files',
     noCollections: 'No collections to show',
+    noAttachedFiles: 'No attached files.',
     filterLabel: 'Filter applied:',
     noFilterApplied: 'No data filter applied.',
     noData: 'No direct access to data available currently.',
@@ -45,6 +46,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterArea: 'Area',
     parameterDate: 'Date range',
     parameterTime: 'Time-of-day range',
+    metadataLink: 'View metadata record',
 
     // Animation Panel
     stop: 'Stop',

@@ -55,6 +55,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     _contentForEmptyView: function() {
 
-        return '<i>' + OpenLayers.i18n('noCollections') + '</i>';
+        return String.format('<i>{0}</i>',OpenLayers.i18n('noCollections'));
     }
 });
