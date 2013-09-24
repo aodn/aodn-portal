@@ -36,9 +36,9 @@ describe("Portal.search.ViewRecordColumn", function() {
 
         it('fires viewrecord event', function() {
             var onViewRecord = jasmine.createSpy('onViewRecord');
-            Ext.MsgBus.subscribe('viewgeonetworkrecord', onViewRecord);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, onViewRecord);
             viewRecordColumn._viewButtonOnClick(record);
-            expect(onViewRecord).toHaveBeenCalledWith('viewgeonetworkrecord', record);
+            expect(onViewRecord).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
         });
     });
 

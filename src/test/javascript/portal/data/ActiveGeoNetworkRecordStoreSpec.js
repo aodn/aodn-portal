@@ -44,14 +44,14 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             describe('when adding/removing records', function() {
                 it('geonetwork added message is fired', function() {
                     activeRecordStore.add(myRecord);
-                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('activegeonetworkrecordadded', [myRecord]);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, [myRecord]);
                 });
 
                 it('geonetwork removed message is fired', function() {
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
-                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('activegeonetworkrecordremoved', myRecord);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, myRecord);
                 });
             });
         });
@@ -200,13 +200,13 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 it('published activegeonetworkrecordremoved', function() {
                     spyOn(Ext.MsgBus, 'publish');
                     activeRecordStore.removeAll();
-                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('activegeonetworkrecordremoved');
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
                 });
 
                 it('publishes reset', function() {
                     spyOn(Ext.MsgBus, 'publish');
                     activeRecordStore.removeAll();
-                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith('reset');
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.RESET);
                 });
             });
         });

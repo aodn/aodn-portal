@@ -41,24 +41,24 @@ describe("Portal.ui.AnimationWindow", function() {
 
     describe('message bus events', function() {
         it("hides on map reset", function() {
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(animationWindow.hide).toHaveBeenCalled();
         });
 
         it("shows when layer was animatable", function() {
             openLayer.isAnimatable = function() {return true};
-            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             expect(animationWindow.show).toHaveBeenCalled();
         });
 
         it("hides when layer was not animatable", function() {
             openLayer.isAnimatable = function() {return false};
-            Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             expect(animationWindow.hide).toHaveBeenCalled();
         });
 
         it("hides when no layer supplied", function() {
-            Ext.MsgBus.publish('selectedLayerChanged');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
             expect(animationWindow.hide).toHaveBeenCalled();
         });
     });

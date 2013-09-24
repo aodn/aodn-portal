@@ -30,7 +30,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'zoomToLayer');
 
             mapPanel.autoZoom = true;
-            Ext.MsgBus.publish('selectedLayerChanged');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
 
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
@@ -39,7 +39,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'onBaseLayerChanged');
 
             var baseLayerRecord = { layer: "asdf" };
-            Ext.MsgBus.publish('baseLayerChanged', baseLayerRecord);
+            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayerRecord);
 
             expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
         });
@@ -93,14 +93,14 @@ describe("Portal.ui.MapPanel", function() {
         it('should call reset()', function() {
 
             spyOn(mapPanel, 'reset');
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.reset).toHaveBeenCalled();
         });
 
         it('should call _closeFeatureInfoPopup()', function() {
 
             spyOn(mapPanel, '_closeFeatureInfoPopup');
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
     });
