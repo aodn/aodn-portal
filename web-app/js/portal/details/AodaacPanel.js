@@ -21,7 +21,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             id: 'aodaacPanel',
-            title: 'Subset data',
+            title: OpenLayers.i18n('aodaacPanelTitle'),
             items: items,
             bodyCls: 'aodaacTab'
         }, cfg );
