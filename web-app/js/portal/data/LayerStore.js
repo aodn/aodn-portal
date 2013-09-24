@@ -33,7 +33,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     addUsingLayerLink: function(layerDisplayName, layerLink, layerRecordCallback) {
 
         var serverUri = layerLink.server.uri;
-        console.log(layerLink);
 
         Ext.Ajax.request({
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
