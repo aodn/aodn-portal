@@ -87,7 +87,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         this.remove(this.getLayers(false).getRange());
         this.currentlyLoadingLayers.clear();
-        Ext.MsgBus.publish('selectedLayerChanged', null);
+        Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
 
@@ -95,7 +95,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         var defaultBaseLayer = this.getDefaultBaseLayer();
         var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer : null;
-        Ext.MsgBus.publish('baseLayerChanged', openLayer);
+        Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, openLayer);
     },
 
     getDefaultBaseLayer: function() {
@@ -120,7 +120,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this.remove(layerRecordToRemove);
         this.currentlyLoadingLayers.remove(openLayer);
 
-        Ext.MsgBus.publish('layerRemoved', openLayer);
+        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
@@ -200,7 +200,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             this.removeAll();
         }, this);
 
-        Ext.MsgBus.subscribe('reset', function(subject, openLayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
             this.reset();
         }, this);
     },
@@ -212,7 +212,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             isBaseLayer: true,
             queryable: false
         }, function () {
-            Ext.MsgBus.publish("baseLayersLoadedFromServer")
+            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER)
         });
     },
 

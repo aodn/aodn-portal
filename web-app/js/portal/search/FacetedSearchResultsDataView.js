@@ -229,7 +229,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
-        Ext.MsgBus.publish('viewgeonetworkrecord', record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
     }
 });
 

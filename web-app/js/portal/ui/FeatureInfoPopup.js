@@ -31,7 +31,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.on('maximize', this._onMaximizeRestore,this);
         this.on('restore', this._onMaximizeRestore,this);
 
-        Ext.MsgBus.subscribe('reset', function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.close();
         }, this);
     },
