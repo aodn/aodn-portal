@@ -18,14 +18,14 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         this.resultsStore = cfg.resultsStore;
         this.searcher = cfg.searcher;
 
-        this.searchResultsView = new Portal.search.FacetedSearchResultsPanel({
+        this.searchResultsPanel = new Portal.search.FacetedSearchResultsPanel({
             store: this.resultsStore
         });
 
         var config = Ext.apply({
             layout: 'fit',
-            activeItem: this.searchResultsView,
-            items: [this.searchResultsView]
+            activeItem: this.searchResultsPanel,
+            items: [this.searchResultsPanel]
         }, cfg);
 
         Portal.ui.search.SearchBodyPanel.superclass.constructor.call(this, config);
@@ -35,16 +35,16 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         this.searcher.on('searchstart', function() {
-            this.searchResultsView.showLoadMask();
+            this.searchResultsPanel.showLoadMask();
         }, this);
 
         Ext.each(['searchcomplete', 'summaryOnlySearchComplete', 'searcherror'], function(eventName) {
             this.searcher.on(eventName, function() {
-                this.searchResultsView.hideLoadMask();
+                this.searchResultsPanel.hideLoadMask();
             }, this);
         }, this);
 
-        this.searchResultsView.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
+        this.searchResultsPanel.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
     },
 
     _onResultsStoreLoad: function() {
@@ -58,7 +58,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsGridBbarBeforeChange: function (bbar, params) {
-        this.searchResultsView.showMask();
+        this.searchResultsPanel.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging
