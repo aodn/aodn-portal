@@ -1147,7 +1147,7 @@ div.allwhite {
     background-color: #fffacd;
 }
 
-.remove-layer-button, .zoom-to-layer-button, .layer-loading-button {
+.remove-layer-button, .zoom-to-layer-button, .layer-loading-button, .layer-loaded-button {
     width: 12px;
     height: 14px;
     vertical-align: bottom;
