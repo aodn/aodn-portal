@@ -270,7 +270,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             beforeEach(function() {
 
-                row = $(rootElement.children()[1]);
+                row = $(rootElement.children()[2]);
                 rowHeading = $(row.children()[0]);
             });
 

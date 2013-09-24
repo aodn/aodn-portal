@@ -28,7 +28,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '    {[this._getFileListEntries(values)]}',
             '  </div>',
             '  </tpl>',
-            '  <div class="clear"></div>', // Only for CSS styling
             '</div>'
         ];
 
