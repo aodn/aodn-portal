@@ -35,6 +35,8 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                         // This is the spinner button, indicating loading of
                         // map. Styling and cls will be applied by calling
                         // layerLoadingStart
+                        tooltip: '',
+                        cls: '',
                         name: 'spinner'
                     },
                     {
