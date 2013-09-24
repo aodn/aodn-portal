@@ -108,7 +108,14 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             spyOn(tpl, '_parameterString').andReturn('');
 
             params = {
-
+                latitudeRangeStart: -90,
+                latitudeRangeEnd: 90,
+                longitudeRangeStart: -180,
+                longitudeRangeEnd: 180,
+                dateRangeStart: '1/1/1900',
+                dateRangeEnd: '31/12/2001',
+                timeOfDayRangeStart: '00:00',
+                timeOfDayRangeEnd: '23:59'
             };
 
             markup = tpl._aodaacParamatersMarkup(params);
@@ -122,11 +129,13 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         it('calls _parameterString with correct arguments', function() {
 
             expect(tpl._parameterString.callCount).toBe(3);
-            expect('write moar tests').toBe('true');
+            expect(tpl._parameterString.calls[0].args).toEqual(['parameterArea', '-90&nbsp;N,&nbsp;-180&nbsp;E', '90&nbsp;N,&nbsp;180&nbsp;E']);
+            expect(tpl._parameterString.calls[1].args).toEqual(['parameterDate', '1/1/1900', '31/12/2001']);
+            expect(tpl._parameterString.calls[2].args).toEqual(['parameterTime', '00:00', '23:59']);
         });
     });
 
-    describe('_adoaacParameterMarkup', function() {
+    describe('_parameterString', function() {
 
         expect('write moar tests').toBe('true');
     });
