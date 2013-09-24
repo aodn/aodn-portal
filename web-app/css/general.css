@@ -1147,7 +1147,7 @@ div.allwhite {
     background-color: #fffacd;
 }
 
-.remove-layer-button, .zoom-to-layer-button {
+.remove-layer-button, .zoom-to-layer-button, .layer-loading-button {
     width: 12px;
     height: 14px;
     vertical-align: bottom;
@@ -1200,7 +1200,7 @@ div.allwhite {
 
 .layer-loading-button {
     visibility: visible;
-    background: url('../images/spinner.gif') center no-repeat transparent;
+    background: url('../images/spinner_12x12.gif') center no-repeat transparent;
 }
 
 .layer-loaded-button {
