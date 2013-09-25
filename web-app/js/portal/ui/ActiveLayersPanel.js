@@ -65,6 +65,14 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.getSelectionModel().on("beforeselect", this.activeLayersTreePanelBeforeSelectHandler, this);
         this.on('beforeremove', this.beforeActiveLayerRemoved, this);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_START, function(subject, openLayer) {
+            this._onLayerLoadingStart(openLayer);
+        }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, function(subject, openLayer) {
+            this._onLayerLoadingEnd(openLayer);
+        }, this);
+
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
 
             if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
@@ -171,8 +179,26 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     zoomToLayer: function() {
-        if (this.fireEvent('zoomtolayer', this.getSelectedLayer())) {
+        this.fireEvent('zoomtolayer', this.getSelectedLayer());
+    },
 
+    _onLayerLoadingStart: function(openLayer) {
+        if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
+            var layerEntry = this.findNodeByLayer(openLayer);
+            if (layerEntry && layerEntry.ui) {
+                // Delegate to layer
+                layerEntry.ui.layerLoadingStart();
+            }
+        }
+    },
+
+    _onLayerLoadingEnd: function(openLayer) {
+        if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
+            var layerEntry = this.findNodeByLayer(openLayer);
+            if (layerEntry && layerEntry.ui) {
+                // Delegate to layer
+                layerEntry.ui.layerLoadingEnd();
+            }
         }
     },
 

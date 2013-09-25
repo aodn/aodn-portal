@@ -56,4 +56,52 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             });
         });
     });
+
+    describe("layerLoading events", function() {
+
+        var mockedLayer;
+
+        mockLayers = (function() {
+            mockedLayer = { ui: {} };
+            mockedLayer.ui.layerLoadingStart = function() {};
+            mockedLayer.ui.layerLoadingEnd   = function() {};
+            return [ mockedLayer ];
+        });
+
+        beforeEach(function() {
+            // Return an array with at least one element...
+            spyOn(activeLayersPanel, 'getActiveLayerNodes').andReturn(mockLayers());
+
+            // Always returned the mocked layer
+            spyOn(activeLayersPanel, 'findNodeByLayer').andReturn(mockedLayer);
+        });
+
+        describe("layerLoadingStart", function() {
+            it("_onLayerLoadingStart called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingStart');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingStart).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationStart delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingStart');
+                activeLayersPanel._onLayerLoadingStart(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingStart).toHaveBeenCalled();
+            });
+        });
+
+        describe("layerLoadingEnd", function() {
+            it("_onLayerLoadingEnd called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingEnd');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingEnd).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationEnd delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingEnd');
+                activeLayersPanel._onLayerLoadingEnd(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingEnd).toHaveBeenCalled();
+            });
+        });
+    });
 });

@@ -115,17 +115,6 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    it('layersLoading', function() {
-
-        spyOn(mapPanel, '_updateLayerLoadingSpinner');
-
-        Ext.MsgBus.publish('layersLoading', 0);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
-
-        Ext.MsgBus.publish('layersLoading', 1);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
-    });
-
     describe('Adding layer from Geoserver Feature Info response', function() {
 
         var url = 'http://geoserver.imos.org.au/geoserver/wms';
@@ -157,18 +146,6 @@ describe("Portal.ui.MapPanel", function() {
 
         it('Checks that getPanelY() can be called', function() {
             expect(mapPanel.getPanelY).toBeDefined();
-        });
-    });
-
-    describe('tabchange event', function () {
-
-        it('calls _updateLayerLoadingSpinner', function() {
-
-            spyOn(mapPanel, '_updateLayerLoadingSpinner');
-
-            mapPanel.fireEvent("tabchange");
-
-            expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
         });
     });
 
