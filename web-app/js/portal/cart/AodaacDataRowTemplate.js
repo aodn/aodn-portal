@@ -17,6 +17,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             '  <div class="subheading">' + OpenLayers.i18n('dataSubheading') + '</div>',
             '  {[this._getDataFilterEntry(values)]}',
             '  {[this._getDataDownloadEntry(values)]}',
+            '  {[this._getNotificationBlurbEntry()]}',
             '</div>'
         ];
 
@@ -57,6 +58,11 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
+    },
+
+    _getNotificationBlurbEntry: function() {
+
+        return this.downloadPanelTemplate._makeEntryMarkup(OpenLayers.i18n('notificationBlurbMessage'));
     },
 
     _aodaacParamatersMarkup: function(params) {

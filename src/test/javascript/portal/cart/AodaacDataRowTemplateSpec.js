@@ -154,6 +154,28 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         });
     });
 
+    describe('_getNotificationBlurbEntry', function() {
+
+        var markup;
+
+        beforeEach(function() {
+
+            spyOn(parentTemplate, '_makeEntryMarkup').andReturn('markup entry');
+
+            markup = tpl._getNotificationBlurbEntry();
+        });
+
+        it('calls _makeEntryMarkup with correct value', function() {
+
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith(OpenLayers.i18n('notificationBlurbMessage'));
+        });
+
+        it('returns the result of _makeEntryMarkup', function() {
+
+            expect(markup).toBe('markup entry');
+        });
+    });
+
     describe('_parameterString', function() {
 
         beforeEach(function() {
@@ -353,6 +375,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             tpl._getDataFilterEntry = function() { return "data_filter" };
             tpl._getDataDownloadEntry = function() { return "data_download" };
+            tpl._getNotificationBlurbEntry = function() { return "notification_blurb" };
 
             var html = tpl.apply(geoNetworkRecord);
             row = $(html);
@@ -382,9 +405,10 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
                 var rowText = getText(row);
 
-                expect(rowText.length).toBe(2);
+                expect(rowText.length).toBe(3);
                 expect(rowText[0]).toBe('data_filter');
                 expect(rowText[1]).toBe('data_download');
+                expect(rowText[2]).toBe('notification_blurb');
             });
         });
     });

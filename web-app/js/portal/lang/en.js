@@ -47,6 +47,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterDateLabel: 'Date range',
     parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
+    notificationBlurbMessage: 'Subsetting gridded data can take a long time. You will be notified via email when your data is ready for download.',
 
     // Animation Panel
     stop: 'Stop',
@@ -184,10 +185,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // RightDetailsPanel.js
     noActiveLayersSelected:	"No collections selected",
-    
+
     //FilterPanel.js
     filterPanelTitle: 'Subset',
-    
+
     // ActiveLayersPanel.js
     collectionsTitle: "Collections",
     noCollectionSelectedHelp: "Please return and search for collections.",
