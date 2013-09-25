@@ -6,37 +6,61 @@
  */
 describe("Portal.details.DetailsPanel", function() {
 
+
+
     var detailsPanel;
 
     beforeEach(function() {
+
         detailsPanel = new Portal.details.DetailsPanel({ map: _mockMap() });
         spyOn(detailsPanel, 'hideDetailsPanelContents');
+
         detailsPanel.initComponent();
     });
 
-    it('checkLayerAvailability', function() {
+    describe('checkLayerAvailability', function() {
 
-        spyOn(Ext.Ajax, 'request');
+        beforeEach(function() {
 
-        detailsPanel._checkLayerAvailability({
-            grailsLayerId: 123,
-            params: {
-                QUERYABLE: true
-            },
-            getFeatureInfoFormat: function() { "someformat" },
-            isNcwms: function() { return false; }
+            spyOn(Ext.Ajax, 'request');
+
+            detailsPanel._checkLayerAvailability({
+                grailsLayerId: 123,
+                params: {
+                    QUERYABLE: true
+                },
+                getFeatureInfoFormat: function() { "someformat" },
+                isNcwms: function() { return false; }
+            });
         });
 
-        expect(Ext.Ajax.request).toHaveBeenCalled();
-        expect(Ext.Ajax.request.mostRecentCall.args[0].url).toBe('checkLayerAvailability/show/123');
+        it('calls Ajax.request', function() {
+
+            expect(Ext.Ajax.request).toHaveBeenCalled();
+            expect(Ext.Ajax.request.mostRecentCall.args[0].url).toBe('checkLayerAvailability/show/123');
+        });
     });
 
-    it('initialisation', function() {
-        expect(detailsPanel.status).toBe(OpenLayers.i18n('noActiveLayersSelected'));
-        expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
+    describe('initialisation', function() {
+
+        it('has correct status', function() {
+
+            expect(detailsPanel.statusPhil.html).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+        });
+
+        it('hides contents', function() {
+
+            expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
+        });
     });
 
     describe('selected layer changed', function() {
+
+        beforeEach(function() {
+
+            spyOn(detailsPanel, 'setStatusPhil').andCallFake(function(status) { alert(status); });
+        });
+
         describe('selected layer', function() {
             var openLayer;
 
@@ -54,24 +78,25 @@ describe("Portal.details.DetailsPanel", function() {
                 Ext.MsgBus.publish('selectedLayerChanged', openLayer);
             });
 
-            it('set title to layer name', function() {
-                expect(detailsPanel.status).toBe(openLayer.name);
-            });
-
-            it('show contents', function() {
+            it('set status to layer name', function() {
+                expect(detailsPanel.setStatusPhil).toHaveBeenCalledWith(openLayer.name);
             });
         });
 
         describe('no selected layer', function() {
-            it("set title to 'no selected layer'", function() {
-                detailsPanel.status = 'something';
-                expect(detailsPanel.status).toBe('something');
+
+            beforeEach(function() {
+
                 Ext.MsgBus.publish('selectedLayerChanged');
-                expect(detailsPanel.status).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+            });
+
+            it("set status to 'no selected layer'", function() {
+
+                expect(detailsPanel.setStatusPhil).toHaveBeenCalledWith(OpenLayers.i18n('noActiveLayersSelected'));
             });
 
             it('hide contents', function() {
-                Ext.MsgBus.publish('selectedLayerChanged');
+
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
         });
