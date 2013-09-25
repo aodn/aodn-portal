@@ -56,8 +56,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         this.statusPhil = new Ext.Container({
             html: OpenLayers.i18n('noActiveLayersSelected'),
-            cls: 'bold',
-            margins: {top:10, right:5, bottom:15, left:0},
+            cls: 'bold italic',
+            margins: {top:20, right:5, bottom:10, left:0},
             autoHeight: true
         });
 

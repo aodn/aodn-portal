@@ -159,6 +159,9 @@ hr {
 .bold {
     font-weight: bold;
 }
+.italic {
+    font-style: italic;
+}
 
 .homePanelWidget {
     margin-right: 10px;
@@ -465,9 +468,6 @@ a:hover.mainlinks {
     background-image: none ! important;
 }
 
-.bold {
-    font-weight: bold;
-}
 
 /* login register forgotten password */
 .auth table {
