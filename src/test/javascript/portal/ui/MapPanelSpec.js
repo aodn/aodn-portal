@@ -115,20 +115,6 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    it('layerLoadingStart', function() {
-
-        spyOn(mapPanel, '_onLayerLoadingStart');
-        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, "");
-        expect(mapPanel._onLayerLoadingStart).toHaveBeenCalledWith("");
-    });
-
-    it('layerLoadingEnd', function() {
-
-        spyOn(mapPanel, '_onLayerLoadingEnd');
-        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, "");
-        expect(mapPanel._onLayerLoadingEnd).toHaveBeenCalledWith("");
-    });
-
     describe('Adding layer from Geoserver Feature Info response', function() {
 
         var url = 'http://geoserver.imos.org.au/geoserver/wms';

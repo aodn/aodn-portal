@@ -84,7 +84,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     removeAll: function() {
 
         this.remove(this.getLayers(false).getRange());
-        this.currentlyLoadingLayers.clear();
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
@@ -116,7 +115,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
-        this.currentlyLoadingLayers.remove(openLayer);
 
         Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
