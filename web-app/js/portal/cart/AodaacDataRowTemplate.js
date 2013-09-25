@@ -89,20 +89,20 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         // Don't create button if no placeholder exists
         if (html.indexOf(elementId) >= 0) {
 
-            this._createDownloadButton.defer(1, this, [html, OpenLayers.i18n('downloadButtonLabel'), elementId, collection]);
+            this._createDownloadButton.defer(1, this, [html, elementId, collection]);
         }
 
         return html;
     },
 
-    _createDownloadButton: function(html, value, id, collection) {
+    _createDownloadButton: function(html, id, collection) {
 
         var downloadMenu = new Ext.menu.Menu({
             items: this._createMenuItems(collection)
         });
 
         new Ext.Button({
-            text: value,
+            text: OpenLayers.i18n('downloadButtonLabel'),
             icon: 'images/down.png',
             scope: this,
             menu: downloadMenu

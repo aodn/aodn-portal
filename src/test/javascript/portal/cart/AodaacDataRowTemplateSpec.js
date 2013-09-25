@@ -230,7 +230,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             expect(tpl._createDownloadButton.defer).toHaveBeenCalledWith(
                 1,
                 tpl,
-                [htmlMock, OpenLayers.i18n('downloadButtonLabel'), expectedEmlementId, collectionMock]
+                [htmlMock, expectedEmlementId, collectionMock]
             );
         });
     });
@@ -249,7 +249,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             spyOn(Ext, 'Button').andReturn(mockButton);
             mockButton.render = jasmine.createSpy('button render');
 
-            tpl._createDownloadButton('html', 'value', '12345', mockCollection);
+            tpl._createDownloadButton('html', '12345', mockCollection);
         });
 
         it('calls _createMenuItems', function() {
@@ -265,7 +265,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         it('creates a new Button', function() {
 
             expect(Ext.Button).toHaveBeenCalledWith({
-                text: 'value',
+                text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
                 scope: tpl,
                 menu: mockMenu
