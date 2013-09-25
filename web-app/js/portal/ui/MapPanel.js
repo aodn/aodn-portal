@@ -95,12 +95,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions.timeControl.configureForLayer(openLayer, 10);
     },
 
-    _onLayerLoadingStart: function(openLayer) {
-    },
-
-    _onLayerLoadingEnd: function(openLayer) {
-    },
-
     onSelectedLayerChanged: function (openLayer) {
 
         if (this.autoZoom === true) {

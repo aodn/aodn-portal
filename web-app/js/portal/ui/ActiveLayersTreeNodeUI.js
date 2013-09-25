@@ -32,12 +32,9 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         if (!this.buttonsRendered) {
             Ext.each([
                     {
-                        // This is the spinner button, indicating loading of
-                        // map. Styling and cls will be applied by calling
-                        // layerLoadingStart
                         tooltip: '',
                         cls: '',
-                        name: 'spinner'
+                        name: 'loadingSpinner'
                     },
                     {
                         tooltip: 'Remove collection',
@@ -79,13 +76,15 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     layerLoadingStart: function() {
-        $(this.buttons['spinner']).addClass("layer-loading-button");
-        $(this.buttons['spinner']).removeClass("layer-loaded-button");
+        $(this.buttons['loadingSpinner']).
+            removeClass("layer-loaded-button").
+            addClass   ("layer-loading-button");
     },
 
     layerLoadingEnd: function() {
-        $(this.buttons['spinner']).removeClass("layer-loading-button");
-        $(this.buttons['spinner']).addClass("layer-loaded-button");
+        $(this.buttons['loadingSpinner']).
+            removeClass("layer-loading-button").
+            addClass   ("layer-loaded-button");
     },
 
     deferToDelegate: function(delegateFnName) {
