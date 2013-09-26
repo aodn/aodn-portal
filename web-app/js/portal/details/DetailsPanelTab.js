@@ -45,9 +45,9 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
     update: function(layer) {
         //Update the other tab panels
-        this.stylePanel.update( layer, this._showTab, this._hideTab, this );
-        this.infoPanel.update( layer, this._showTab, this._hideTab, this );
-        this.aodaacPanel.update( layer, this._showTab, this._hideTab, this );
+        this.stylePanel.update(layer, this._showTab, this._hideTab, this);
+        this.infoPanel.update(layer, this._showTab, this._hideTab, this);
+        this.aodaacPanel.update(layer, this._showTab, this._hideTab, this);
 
         /**
          This seems like the neatest way to stop the table layout from keep appending
@@ -57,7 +57,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.remove(this.filterPanel);
         this.filterPanel = new Portal.filter.FilterPanel();
         this.insert(0, this.filterPanel);  // filter tab first when shown
-        this.filterPanel.update( layer, this._showTab, this._hideTab, this );
+        this.filterPanel.update(layer, this._showTab, this._hideTab, this);
 
         this.show();
     },
