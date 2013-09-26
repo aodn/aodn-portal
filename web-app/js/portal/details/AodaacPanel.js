@@ -49,6 +49,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
                     this._populateFormFields();
                     this._showAllControls();
+                    this.doLayout();
 
                     show.call(target, this);
                 }
@@ -91,7 +92,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
         newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
 
-        this.productInfoText.html = newText;
+        // Replace productInfoText content
+        this.remove(this.productInfoText);
+        delete this.productInfoText;
+        this.productInfoText = this._newHtmlElement(newText);
+        this.insert(1, this.productInfoText);
 
         // Populate temporal extent controls
         var timeRangeStart = productInfo.extents.dateTime.min;
@@ -112,27 +117,26 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _addProductInfo: function (items) {
 
-        var productInfoHeader = new Ext.Container({
-            autoEl: 'div',
-            html: "<b>Product info</b>"
-        });
+        var productInfoHeader = this._newHtmlElement("<b>Product info</b>");
 
         // Todo - DN: Add product picker in case of multiple products per Layer
 
-        this.productInfoText = new Ext.Container({
-            autoEl: 'div',
-            html: "<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>"
-        });
+        this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
 
         items.push(productInfoHeader, this.productInfoText, this._newSectionSpacer());
     },
 
+    _newHtmlElement: function(html) {
+
+        return new Ext.Container({
+            autoEl: 'div',
+            html: html
+        });
+    },
+
     _addSpatialControls: function(items) {
 
-        var spatialExtentText = new Ext.Container({
-            autoEl: 'div',
-            html: "<b>Spatial Extent</b>"
-        });
+        var spatialExtentText = this._newHtmlElement("<b>Spatial Extent</b>");
 
         var bboxControl = [
             {
@@ -239,10 +243,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _addTemporalControls: function(items) {
 
-        var temporalExtentText = new Ext.Container({
-            autoEl: 'div',
-            html: "<b>Temporal Extent</b>"
-        });
+        var temporalExtentText = this._newHtmlElement("<b>Temporal Extent</b>");
 
         var target = this;
 
