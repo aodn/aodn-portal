@@ -34,7 +34,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                     {
                         tooltip: '',
                         cls: '',
-                        name: 'loadingSpinner'
+                        name: 'loadingStatus'
                     },
                     {
                         tooltip: 'Remove collection',
@@ -76,15 +76,22 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     layerLoadingStart: function() {
-        $(this.buttons['loadingSpinner']).
+        $(this.buttons['loadingStatus']).
+            removeClass("layer-error-button").  
             removeClass("layer-loaded-button").
             addClass   ("layer-loading-button");
     },
 
-    layerLoadingEnd: function() {
-        $(this.buttons['loadingSpinner']).
-            removeClass("layer-loading-button").
-            addClass   ("layer-loaded-button");
+    layerLoadingEnd: function(loadedWithErrors) {
+        var statusButton =$(this.buttons['loadingStatus'])
+        
+        statusButton.removeClass("layer-loading-button")
+        
+        if (loadedWithErrors) {
+            statusButton.addClass ("layer-error-button");
+        } else {
+            statusButton.addClass ("layer-loaded-button");
+        }
     },
 
     deferToDelegate: function(delegateFnName) {

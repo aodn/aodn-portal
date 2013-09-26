@@ -197,7 +197,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
             var layerEntry = this.findNodeByLayer(openLayer);
             if (layerEntry && layerEntry.ui) {
                 // Delegate to layer
-                layerEntry.ui.layerLoadingEnd();
+                layerEntry.ui.layerLoadingEnd(openLayer.hasImgLoadErrors());
             }
         }
     },
