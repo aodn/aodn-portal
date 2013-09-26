@@ -18,7 +18,7 @@ class SplashController {
     def index = {
 
 	    if (_pageCanBeProxied('index')) {
-		    log.debug("Rendering configured index ${portalInstance.page('index')}")
+		    log.debug("Rendering configured index page ${portalInstance.page('index')}")
 		    _renderInclude('index')
 	    }
 	    else if (portalInstance.code()) {
@@ -35,7 +35,7 @@ class SplashController {
     // links
 	def links = {
 		if (_pageCanBeProxied('links')) {
-			log.debug("Rendering configured index ${portalInstance.page('links')}")
+			log.debug("Rendering configured links page ${portalInstance.page('links')}")
 			_renderInclude('links')
 		}
 		else if (portalInstance.code()) {
@@ -52,7 +52,7 @@ class SplashController {
 	// facebook twitter etc
 	def community = {
 		if (_pageCanBeProxied('community')) {
-			log.debug("Rendering configured splash index ${portalInstance.page('community')}")
+			log.debug("Rendering configured community page ${portalInstance.page('community')}")
 			_renderInclude('community')
 		}
 		else if (portalInstance.code()) {
