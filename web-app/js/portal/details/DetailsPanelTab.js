@@ -47,7 +47,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
         this._ensurePanelsRendered();
 
-        // Remove filter pane; and add afresh to avoid ExtJS layotu bug
+        // Remove filter pane; and add afresh to avoid ExtJS layout bug
         this.remove(this.filterPanel);
         this.filterPanel = new Portal.filter.FilterPanel();
         this.insert(0, this.filterPanel);
