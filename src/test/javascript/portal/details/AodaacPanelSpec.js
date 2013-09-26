@@ -102,6 +102,16 @@ describe('Portal.details.AodaacPanel', function() {
         });
     });
 
+    describe('_newHtmlElement', function() {
+
+        it('return an element with the html set', function() {
+
+            var element = aodaacPanel._newHtmlElement('the html');
+
+            expect(element.html).toBe('the html');
+        });
+    });
+
     function _decorateMap(panel) {
         var _panel = panel || aodaacPanel;
         _panel.map.getExtent = function() {
