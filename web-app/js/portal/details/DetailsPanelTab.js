@@ -67,7 +67,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items.get(i);
             if (item) {
-                if (Ext.get(this.getTabEl(item)) // TODO: tests fail without this test (but they shouldn't).
+                if (Ext.get(this.getTabEl(item)) // tests fail without this test (but they shouldn't).
                     && Ext.get(this.getTabEl(item)).isVisible())
                 {
                     this.setActiveTab(item);
