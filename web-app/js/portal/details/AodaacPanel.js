@@ -267,7 +267,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
                     // Whole day message
                     var wholeDayMessage = "";
-                    if ( timeRangeStart == "0:00" && timeRangeEnd == "23:59" ) wholeDayMessage = "<br />(Whole day)";
+                    if (timeRangeStart == "0:00" && timeRangeEnd == "23:59") wholeDayMessage = "<br />(Whole day)";
 
                     // Emphasise value being modified
                     if (thumb == startThumb) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
@@ -411,9 +411,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildAodaac: function() {
-        if (this.productsInfo) {
+
+        if (this.productsInfo && this.productsInfo[this.selectedProductInfoIndex]) {
             return {
-                productId: this.productsInfo[ this.selectedProductInfoIndex ].productId,
+                productId: this.productsInfo[this.selectedProductInfoIndex].productId,
                 dateRangeStart: this.dateRangeStartPicker.value,
                 dateRangeEnd: this.dateRangeEndPicker.value,
                 timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
