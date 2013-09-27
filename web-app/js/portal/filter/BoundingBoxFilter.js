@@ -18,7 +18,6 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 		this.add(this.bbox);
 		this.bbox.bboxHint.setVisible(false);
 
-		//this.mon(this.northBL, 'change', this.onCoordChange, this);
 		this.mon(this.bbox, 'bboxchange', this._onCoordChange, this);
 	},
 
@@ -55,10 +54,10 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 				this.CQL = "BBOX(" + this.filter.name + ", " + m[1] + ")";
 				var coords = m[1].split(",");
 				this.bbox.setBox({
-				   northBL: coords[3],
-				   westBL: coords[0],
-				   eastBL: coords[2],
-				   southBL: coords[1]
+					northBL: coords[3],
+					westBL: coords[0],
+					eastBL: coords[2],
+					southBL: coords[1]
 				});
 			}
 			else {
@@ -74,18 +73,24 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 		var bounds = this.layer.getExtent();
 
 		this.bbox.setBox({
-		   northBL: bounds.top,
-		   westBL: bounds.left,
-		   eastBL: bounds.right,
-		   southBL: bounds.bottom
+			northBL: bounds.top,
+			westBL: bounds.left,
+			eastBL: bounds.right,
+			southBL: bounds.bottom
 		});
 	},
 
 	_onCoordChange: function(bounds){
 
-		if((bounds.westBL != null) && (bounds.southBL != "") && (bounds.eastBL != "") && (bounds.northBL != "")){
-			this.CQL = "BBOX(" + this.filter.name + "," + bounds.westBL + "," + bounds.southBL + "," + bounds.eastBL + ","
-										+ bounds.northBL+ ")";
+		if ((bounds.westBL != "") && (bounds.southBL != "") && (bounds.eastBL != "") && (bounds.northBL != "")) {
+			this.CQL = String.format(
+				"BBOX({0},{1},{2},{3},{4})",
+				this.filter.name,
+				bounds.westBL,
+				bounds.southBL,
+				bounds.eastBL,
+				bounds.northBL
+			);
 			this._fireAddEvent();
 		}
 	}
