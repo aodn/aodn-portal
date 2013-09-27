@@ -174,7 +174,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         function _centerLonLat(map, bounds) {
         	var centerLonLat = bounds.getCenterLonLat();
         	if (map.getZoomForExtent(bounds) == 0) {
-        		// Whole of world views should include Australia
+        		// Whole of world views should include Australia, which is near longitude 90
         		centerLonLat.lon = 90;
         	}
         	return centerLonLat;
@@ -198,9 +198,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         setTimeout(function() {
             map.render("fsSearchMap" + values.uuid);
             if (metadataExtent.getBounds()) {
-            	var centerLatLon = _centerLonLat(map, metadataExtent.getBounds());
-            	var zoomLevel = _zoomLevel(map, metadataExtent.getBounds());
-            	map.setCenter(centerLatLon, zoomLevel);
+            	map.setCenter(
+            		    _centerLonLat(map, metadataExtent.getBounds()),
+            		    _zoomLevel(map, metadataExtent.getBounds())
+            		);
             }
             else {
                 map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
