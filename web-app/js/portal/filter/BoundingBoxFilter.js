@@ -13,7 +13,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 		Portal.filter.FilterPanel.superclass.initComponent.call(this);
 	},
 
-	_createField: function(){
+	_createField: function() {
 		this.bbox = new Portal.search.field.BoundingBox();
 		this.add(this.bbox);
 		this.bbox.bboxHint.setVisible(false);
@@ -22,34 +22,33 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 		this.mon(this.bbox, 'bboxchange', this._onCoordChange, this);
 	},
 
-	handleRemoveFilter: function(){
+	handleRemoveFilter: function() {
 		this.CQL = "";
 		this._setDefaultBounds();
 	},
 
-    setLayerAndFilter: function(layer, filter)
-    {
-        Portal.filter.BaseFilter.prototype.setLayerAndFilter.apply(this, arguments);
+	setLayerAndFilter: function(layer, filter) {
+		Portal.filter.BaseFilter.prototype.setLayerAndFilter.apply(this, arguments);
 
-        layer.map.events.register("move", this, function(e) {
+		layer.map.events.register("move", this, function(e) {
 
-        	if (this.items.length != 0 && layer.map) {
-	            var extent = layer.map.getExtent();
-	
-	            this.bbox.setBox({
-	                northBL:extent.top,
-	                westBL: extent.left,
-	                eastBL: extent.right,
-	                southBL: extent.bottom
-	            });
-        	}
-        });
-    },
+			if (this.items.length != 0 && layer.map) {
+				var extent = layer.map.getExtent();
 
-    _setExistingFilters: function(){
+				this.bbox.setBox({
+					northBL:extent.top,
+					westBL: extent.left,
+					eastBL: extent.right,
+					southBL: extent.bottom
+				});
+			}
+		});
+	},
+
+	_setExistingFilters: function() {
 		this.re = new RegExp("BBOX\\(" + this.filter.name + ",(.*)\\)");
 
-		if(this.layer.params.CQL_FILTER != undefined){
+		if (this.layer.params.CQL_FILTER != undefined) {
 			var m = this.re.exec(this.layer.params.CQL_FILTER);
 
 			if (m != null && m.length == 2) {
@@ -62,17 +61,17 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 				   southBL: coords[1]
 				});
 			}
-			else{
+			else {
 				this._setDefaultBounds();
 			}
 		}
-		else{
+		else {
 			this._setDefaultBounds();
 		}
 	},
 
 	_setDefaultBounds: function(){
-		bounds = this.layer.getExtent();
+		var bounds = this.layer.getExtent();
 
 		this.bbox.setBox({
 		   northBL: bounds.top,
@@ -89,7 +88,5 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 										+ bounds.northBL+ ")";
 			this._fireAddEvent();
 		}
-
-
 	}
 });
