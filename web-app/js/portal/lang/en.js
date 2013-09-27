@@ -206,6 +206,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateFromLabel: 'Date from:',
     dateToLabel: 'Date to:',
 
-    // FeatureInfo popup
-    noDataCollectionSelected: 'No data collection selected.'
+    // FeatureInfoPopup.js
+    noDataCollectionSelected: 'No data collection selected.',
+
+    // ActiveLayersTreeNodeUI.js
+    removeDataCollection: 'Remove data collection',
+    zoomToDataCollection: 'Zoom to data collection'
 });

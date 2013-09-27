@@ -134,7 +134,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }, this);
 
                 if(count == 0){
-                    this.setTitle("No collection selected.");
+                    this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
                     this.blankContainer.update("");
                 }
         }
