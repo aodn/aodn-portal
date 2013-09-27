@@ -89,8 +89,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var newText = "";
         newText += productInfo.name + "<br />";
-        newText += "Area covered: " + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
-        newText += "Time range: " + productInfo.extents.dateTime.min + maxTimeText + "<br />";
+        newText += OpenLayers.i18n('areaCoveredLabel') + productInfo.extents.lat.min + " N, " + productInfo.extents.lon.min + " E to " + productInfo.extents.lat.max + " N, " + productInfo.extents.lon.max + " E<br />";
+        newText += OpenLayers.i18n('timeRangeLabel') + productInfo.extents.dateTime.min + maxTimeText + "<br />";
 
         // Replace productInfoText content
         this.remove(this.productInfoText);
@@ -117,7 +117,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _addProductInfo: function (items) {
 
-        var productInfoHeader = this._newHtmlElement("<b>Product info</b>");
+        var productInfoHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('productInfoHeading') + "</b>");
 
         // Todo - DN: Add product picker in case of multiple products per Layer
 
@@ -136,7 +136,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _addSpatialControls: function(items) {
 
-        var spatialExtentText = this._newHtmlElement("<b>Spatial Extent</b>");
+        var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
 
         var bboxControl = [
             {
@@ -243,7 +243,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _addTemporalControls: function(items) {
 
-        var temporalExtentText = this._newHtmlElement("<b>Temporal Extent</b>");
+        var temporalExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('temporalExtentHeading') + "</b>");
 
         var target = this;
 
@@ -283,7 +283,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         var timeRangeSliderContainer = new Ext.Panel({
-            fieldLabel: "Time of day",
+            fieldLabel: OpenLayers.i18n('timeOfDayLabel'),
             height: 'auto',
             layout: 'column',
             items: [
@@ -309,7 +309,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateRangeStartPicker = {
             name: 'dateRangeStartPicker',
             ref: '../../dateRangeStartPicker',
-            fieldLabel: 'Date from:',
+            fieldLabel: OpenLayers.i18n('dateFromLabel'),
             labelSeparator: '',
             xtype: 'datefield',
             format: 'd/m/Y',
@@ -326,7 +326,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateRangeEndPicker = {
             name: 'dateRangeEndPicker',
             ref: '../../dateRangeEndPicker',
-            fieldLabel: 'Date to:',
+            fieldLabel: OpenLayers.i18n('dateToLabel'),
             labelSeparator: '',
             xtype: 'datefield',
             format: 'd/m/Y',

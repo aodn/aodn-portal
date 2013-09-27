@@ -16,7 +16,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 			title: 'Info',
 			layout: 'fit',
 			autoScroll: true,
-			html: "Loading ..."
+			html: OpenLayers.i18n('loadingMessage')
 		}, cfg);
 
 		Portal.details.InfoPanel.superclass.constructor.call(this, config);
@@ -42,7 +42,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 	},
 
 	_updateBody: function(layer) {
-		this.body.update("Loading...");
+		this.body.update(OpenLayers.i18n('loadingMessage'));
 		if (layer.getMetadataUrl()) {
 			Ext.Ajax.request({
 				url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(layer.getMetadataUrl()),
@@ -51,7 +51,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 					this.body.update(resp.responseText);
 				},
 				failure: function(resp) {
-					this.body.update("No information available at this time.");
+					this.body.update(OpenLayers.i18n('noMetadataMessage'));
 				}
 			});
 		}
