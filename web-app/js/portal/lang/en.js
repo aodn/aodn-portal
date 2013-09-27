@@ -43,7 +43,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     end: 'End',
     time: 'Animation time',
     speed: ' (x 1)',
-    warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
+    warn_label: "Only one data collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
     clearButton_tip: "Stops animation and remove all animated data collections from the map",
@@ -118,9 +118,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationCancelText: 'Cancel',
 
     //mainMapPanel
-    layerExistsTitle: 'Add collection',
-    layerExistsMsg: 'This collection has already been added to the map',
-    layerAddedTitle: 'Add collection',
+    layerExistsTitle: 'Add data collection',
+    layerExistsMsg: 'This data collection has already been added to the map',
+    layerAddedTitle: 'Add data collection',
     layerAddedMsg: "'${layerDesc}' has been added",
     layerActions: 'Actions',
 
@@ -166,8 +166,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
     // MapOptionsPanel
-    autozoom: 'Auto zoom to collection extent',
-    hideDetailsPanel: 'Hide collection details',
+    autozoom: 'Auto zoom to data collection extent',
+    hideDetailsPanel: 'Hide data collection details',
     clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
@@ -179,11 +179,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filterPanelTitle: 'Subset',
 
     // ActiveLayersPanel.js
-    collectionsTitle: "Data Collections",
+    dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
 
     //Options Panel
-    turnOnTransect: 'Turn on transect graphing for this collection:',
+    turnOnTransect: 'Turn on transect graphing for this data collection:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',
     transectTab: 'Transect',
@@ -204,5 +204,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     timeRangeLabel: 'Time range: ',
     timeOfDayLabel: 'Time of day',
     dateFromLabel: 'Date from:',
-    dateToLabel: 'Date to:'
+    dateToLabel: 'Date to:',
+
+    // FeatureInfo popup
+    noDataCollectionSelected: 'No data collection selected.'
 });

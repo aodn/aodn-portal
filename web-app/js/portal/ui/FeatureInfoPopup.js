@@ -110,7 +110,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var wmsLayers = this._collectUniqueLayers();
 
         if(wmsLayers.length == 0){
-            this.setTitle("No collection selected.");
+            this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
             this.blankContainer.update("");
         }
         else {
