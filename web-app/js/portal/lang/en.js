@@ -208,7 +208,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // FeatureInfoPopup.js
     noDataCollectionSelected: 'No data collection selected.',
-    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection",
+    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
     noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
 
     // ActiveLayersTreeNodeUI.js

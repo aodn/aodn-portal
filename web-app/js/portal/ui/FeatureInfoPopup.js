@@ -279,7 +279,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _updateStatus: function() {
         if (this.numGoodResults > 0) {
-            //this.setTitle("Feature information found for " + this.numGoodResults + " collections");
             this.setTitle(
                 OpenLayers.i18n(
                     'featureInformationFoundForDataCollection',
