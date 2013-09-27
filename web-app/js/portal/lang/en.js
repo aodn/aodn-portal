@@ -129,6 +129,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
 
+    // InfoPanel.js
+    loadingMessage: 'Loading ...',
+    noMetadataMessage: 'No information available at this time.',
+
     //snapshots
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
@@ -169,11 +173,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected:	"No collections selected",
-    
+    noActiveLayersSelected: "No collections selected",
+
     //FilterPanel.js
     filterPanelTitle: 'Subset',
-    
+
     // ActiveLayersPanel.js
     collectionsTitle: "Collections",
     noCollectionSelectedHelp: "Please return and search for collections.",
@@ -192,5 +196,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     aodaacPanelTitle: 'Subset',
     aodaacJobCreatedMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     aodaacJobCreateErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
-    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.'
+    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
+    productInfoHeading: 'Product Info',
+    spatialExtentHeading: 'Spatial Extent',
+    temporalExtentHeading: 'Temporal Extent',
+    areaCoveredLabel: 'Area covered: ',
+    timeRangeLabel: 'Time range: ',
+    timeOfDayLabel: 'Time of day',
+    dateFromLabel: 'Date from:',
+    dateToLabel: 'Date to:'
 });
