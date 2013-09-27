@@ -37,13 +37,13 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                         name: 'loadingStatus'
                     },
                     {
-                        tooltip: 'Remove collection',
+                        tooltip: OpenLayers.i18n('removeDataCollection'),
                         cls: 'remove-layer-button',
                         clickHandler: this.removeLayer,
                         name: 'remove'
                     },
                     {
-                        tooltip: 'Zoom to collection',
+                        tooltip: OpenLayers.i18n('zoomToDataCollection'),
                         cls: 'zoom-to-layer-button',
                         clickHandler: this.zoomToLayer,
                         name: 'zoom'

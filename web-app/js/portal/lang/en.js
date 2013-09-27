@@ -32,7 +32,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     okdownload: 'Download All',
     clearcart: "Clear Cart",
     downloadCartUndo: "Undo Last Remove",
-    emptyCartText: "No collections have been added.",
+    emptyCartText: "No data collections have been added.",
     unavailableDataLink: "Sorry this data is currently unavailable",
 
     // Animation Panel
@@ -43,18 +43,18 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     end: 'End',
     time: 'Animation time',
     speed: ' (x 1)',
-    warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
+    warn_label: "Only one data collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
-    clearButton_tip: "Stops animation and remove all animated collections from the map",
+    clearButton_tip: "Stops animation and remove all animated data collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
 
     // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will remove all collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all collections from the map and download pages",
+    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     // Search results
     descHeading: 'Description',
@@ -118,9 +118,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationCancelText: 'Cancel',
 
     //mainMapPanel
-    layerExistsTitle: 'Add collection',
-    layerExistsMsg: 'This collection has already been added to the map',
-    layerAddedTitle: 'Add collection',
+    layerExistsTitle: 'Add data collection',
+    layerExistsMsg: 'This data collection has already been added to the map',
+    layerAddedTitle: 'Add data collection',
     layerAddedMsg: "'${layerDesc}' has been added",
     layerActions: 'Actions',
 
@@ -166,24 +166,24 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
     // MapOptionsPanel
-    autozoom: 'Auto zoom to collection extent',
-    hideDetailsPanel: 'Hide collection details',
+    autozoom: 'Auto zoom to data collection extent',
+    hideDetailsPanel: 'Hide data collection details',
     clearAllButtonLabel: 'Clear all',
-    removeAllControlLabel: 'Remove all collections',
+    removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected: "No collections selected",
+    noActiveLayersSelected: "No data collections selected",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
 
     // ActiveLayersPanel.js
-    collectionsTitle: "Collections",
-    noCollectionSelectedHelp: "Please return and search for collections.",
+    dataCollectionsTitle: "Data Collections",
+    noCollectionSelectedHelp: "Please return and search for data collections.",
 
     //Options Panel
-    turnOnTransect: 'Turn on transect graphing for this collection:',
+    turnOnTransect: 'Turn on transect graphing for this data collection:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',
     transectTab: 'Transect',
@@ -204,5 +204,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     timeRangeLabel: 'Time range: ',
     timeOfDayLabel: 'Time of day',
     dateFromLabel: 'Date from:',
-    dateToLabel: 'Date to:'
+    dateToLabel: 'Date to:',
+
+    // FeatureInfoPopup.js
+    noDataCollectionSelected: 'No data collection selected.',
+    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection",
+    noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+
+    // ActiveLayersTreeNodeUI.js
+    removeDataCollection: 'Remove data collection',
+    zoomToDataCollection: 'Zoom to data collection'
 });
