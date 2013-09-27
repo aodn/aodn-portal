@@ -173,11 +173,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         };
 
         function _centerLonLat(map, bounds) {
-        	var centerLonLat = bounds.getCenterLonLat();
-        	if (map.getZoomForExtent(bounds) == 0) {
-         		centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
-        	}
-        	return centerLonLat;
+            var centerLonLat = bounds.getCenterLonLat();
+            if (map.getZoomForExtent(bounds) == 0) {
+                centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
+            }
+            return centerLonLat;
         };
   
         var componentId = Ext.id();
@@ -198,10 +198,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             map.render("fsSearchMap" + values.uuid);
          
             if (metadataExtent.getBounds()) {
-            	map.setCenter(
-            		    _centerLonLat(map, metadataExtent.getBounds()),
-            		    _zoomLevel(map, metadataExtent.getBounds())
-            		);
+                map.setCenter(
+                    _centerLonLat(map, metadataExtent.getBounds()),
+                    _zoomLevel(map, metadataExtent.getBounds())
+                );
             }
             else {
                 map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
