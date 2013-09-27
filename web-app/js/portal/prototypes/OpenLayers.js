@@ -189,6 +189,10 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
     return propagate;
 };
 
+OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function () {
+    return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
+};
+
 //overrides original openlayers method,
 // adds a check to not run the method if bounds are outside of vertical extent
 OpenLayers.Tile.Image.prototype.draw = function() {

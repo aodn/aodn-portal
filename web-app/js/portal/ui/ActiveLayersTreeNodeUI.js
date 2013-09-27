@@ -28,13 +28,13 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         var cb = this.checkbox;
         var node = this;
 
-        that = this;
+        var that = this;
         if (!this.buttonsRendered) {
             Ext.each([
                     {
                         tooltip: '',
                         cls: '',
-                        name: 'loadingSpinner'
+                        name: 'loadingStatus'
                     },
                     {
                         tooltip: 'Remove collection',
@@ -50,8 +50,10 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                     }
                 ],
                 function(item) {
-                    var button = Ext.DomHelper.insertBefore(cb,
-                        "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>");
+                    var button = Ext.DomHelper.insertBefore(
+                        cb,
+                        "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
+                    );
                     that.buttons[item.name] = button;
 
                     if (item.clickHandler) {
@@ -76,15 +78,28 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     layerLoadingStart: function() {
-        $(this.buttons['loadingSpinner']).
+        this.statusIndicator().
+            removeClass("layer-error-button").
             removeClass("layer-loaded-button").
             addClass   ("layer-loading-button");
     },
 
-    layerLoadingEnd: function() {
-        $(this.buttons['loadingSpinner']).
-            removeClass("layer-loading-button").
-            addClass   ("layer-loaded-button");
+    layerLoadingEnd: function(loadedWithErrors) {
+        var statusButton = this.statusIndicator();
+
+        statusButton.removeClass("layer-loading-button");
+
+        if (loadedWithErrors) {
+            statusButton.addClass("layer-error-button");
+        }
+        else {
+            statusButton.addClass("layer-loaded-button");
+        }
+    },
+
+    statusIndicator: function() {
+
+        return $(this.buttons['loadingStatus']);
     },
 
     deferToDelegate: function(delegateFnName) {

@@ -127,6 +127,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             openLayer.events.register('loadend', this, function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
+            openLayer.events.register('loaderror', this, function() {
+                alert('loaderror');
+            });
 
             var layerRecord = new GeoExt.data.LayerRecord({
                 layer: openLayer,

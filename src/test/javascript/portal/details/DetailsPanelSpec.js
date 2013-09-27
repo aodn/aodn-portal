@@ -14,23 +14,6 @@ describe("Portal.details.DetailsPanel", function() {
         detailsPanel.initComponent();
     });
 
-    it('checkLayerAvailability', function() {
-
-        spyOn(Ext.Ajax, 'request');
-
-        detailsPanel._checkLayerAvailability({
-            grailsLayerId: 123,
-            params: {
-                QUERYABLE: true
-            },
-            getFeatureInfoFormat: function() { "someformat" },
-            isNcwms: function() { return false; }
-        });
-
-        expect(Ext.Ajax.request).toHaveBeenCalled();
-        expect(Ext.Ajax.request.mostRecentCall.args[0].url).toBe('checkLayerAvailability/show/123');
-    });
-
     it('initialisation', function() {
         expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
         expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
