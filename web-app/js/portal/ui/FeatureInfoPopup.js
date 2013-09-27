@@ -110,7 +110,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var wmsLayers = this._collectUniqueLayers();
 
         if(wmsLayers.length == 0){
-            this.setTitle("No collection selected.");
+            this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
             this.blankContainer.update("");
         }
         else {
@@ -134,7 +134,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }, this);
 
                 if(count == 0){
-                    this.setTitle("No collection selected.");
+                    this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
                     this.blankContainer.update("");
                 }
         }
@@ -279,11 +279,19 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _updateStatus: function() {
         if (this.numGoodResults > 0) {
-            this.setTitle("Feature information found for " + this.numGoodResults + " collections");
+            //this.setTitle("Feature information found for " + this.numGoodResults + " collections");
+            this.setTitle(
+                OpenLayers.i18n(
+                    'featureInformationFoundForDataCollection',
+                    { 'dataCollectionNumber': this.numGoodResults }
+            ));
         }
         else if (this.numResultQueries == this.numResultsToLoad) {
-            var layerStr = (this.numResultsToLoad == 1) ? "collection" : "collections";
-            this.setTitle("No features found for " + this.numResultsToLoad + " queryable " + layerStr);
+            this.setTitle(
+                OpenLayers.i18n(
+                    'noFeatureInformationFoundForDataCollection',
+                    { 'dataCollectionNumber': this.numResultsToLoad }
+            ));
         }
     },
 

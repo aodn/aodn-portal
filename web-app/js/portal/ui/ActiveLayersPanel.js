@@ -213,7 +213,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     updateTitle: function() {
-        var title = OpenLayers.i18n('collectionsTitle');
+        var title = OpenLayers.i18n('dataCollectionsTitle');
         if (!this.root.hasChildNodes()) {
             title = this._getDefaultEmptyMapText();
         }
