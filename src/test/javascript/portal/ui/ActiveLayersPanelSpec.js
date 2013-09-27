@@ -65,6 +65,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             mockedLayer = { ui: {} };
             mockedLayer.ui.layerLoadingStart = function() {};
             mockedLayer.ui.layerLoadingEnd   = function() {};
+            mockedLayer.hasImgLoadErrors     = function() { return true; }
             return [ mockedLayer ];
         });
 
