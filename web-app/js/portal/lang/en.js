@@ -32,7 +32,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     okdownload: 'Download All',
     clearcart: "Clear Cart",
     downloadCartUndo: "Undo Last Remove",
-    emptyCartText: "No collections have been added.",
+    emptyCartText: "No data collections have been added.",
     unavailableDataLink: "Sorry this data is currently unavailable",
 
     // Animation Panel
@@ -46,15 +46,15 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
-    clearButton_tip: "Stops animation and remove all animated collections from the map",
+    clearButton_tip: "Stops animation and remove all animated data collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
 
     // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will remove all collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all collections from the map and download pages",
+    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     // Search results
     descHeading: 'Description',
@@ -169,18 +169,18 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     autozoom: 'Auto zoom to collection extent',
     hideDetailsPanel: 'Hide collection details',
     clearAllButtonLabel: 'Clear all',
-    removeAllControlLabel: 'Remove all collections',
+    removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected: "No collections selected",
+    noActiveLayersSelected: "No data collections selected",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
 
     // ActiveLayersPanel.js
-    collectionsTitle: "Collections",
-    noCollectionSelectedHelp: "Please return and search for collections.",
+    collectionsTitle: "Data Collections",
+    noCollectionSelectedHelp: "Please return and search for data collections.",
 
     //Options Panel
     turnOnTransect: 'Turn on transect graphing for this collection:',
