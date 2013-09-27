@@ -10,7 +10,8 @@ Ext.namespace('Portal.search');
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
-
+    	
+    	
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
@@ -148,7 +149,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getMiniMap: function(values) {
-
+    	var LONGITUDE_OF_AUSTRALIA = 90;
+    	
         function _baseLayer() {
             return new OpenLayers.Layer.WMS(
                 "IMOS Tile Cache Simple Baselayer",
@@ -170,8 +172,15 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             return zoomLevel;
         };
 
+        function _centerLonLat(map, bounds) {
+            var centerLonLat = bounds.getCenterLonLat();
+            if (map.getZoomForExtent(bounds) == 0) {
+                centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
+            }
+            return centerLonLat;
+        };
+  
         var componentId = Ext.id();
-
         var metadataExtent = values.bbox;
         var emptyString =  (metadataExtent.getBounds() == undefined) ? OpenLayers.i18n('unavailableExtent') : '';
 
@@ -187,8 +196,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         setTimeout(function() {
             map.render("fsSearchMap" + values.uuid);
+         
             if (metadataExtent.getBounds()) {
-                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), _zoomLevel(map, metadataExtent.getBounds()));
+                map.setCenter(
+                    _centerLonLat(map, metadataExtent.getBounds()),
+                    _zoomLevel(map, metadataExtent.getBounds())
+                );
             }
             else {
                 map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
@@ -197,6 +210,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
+   
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);
         return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record))
