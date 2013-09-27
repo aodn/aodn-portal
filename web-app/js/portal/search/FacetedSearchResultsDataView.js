@@ -170,6 +170,16 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             return zoomLevel;
         };
 
+        
+        function _centerLonLat(map, bounds) {
+        	var centerLonLat = bounds.getCenterLonLat();
+        	if (map.getZoomForExtent(bounds) == 0) {
+        		// Whole of world views should include Australia
+        		centerLonLat.lon = 90;
+        	}
+        	return centerLonLat;
+        };
+        
         var componentId = Ext.id();
 
         var metadataExtent = values.bbox;
@@ -188,7 +198,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         setTimeout(function() {
             map.render("fsSearchMap" + values.uuid);
             if (metadataExtent.getBounds()) {
-                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), _zoomLevel(map, metadataExtent.getBounds()));
+            	var centerLatLon = _centerLonLat(map, metadataExtent.getBounds());
+            	var zoomLevel = _zoomLevel(map, metadataExtent.getBounds());
+            	map.setCenter(centerLatLon, zoomLevel);
             }
             else {
                 map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
