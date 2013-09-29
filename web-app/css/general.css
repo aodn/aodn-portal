@@ -1147,7 +1147,7 @@ div.allwhite {
     background-color: #fffacd;
 }
 
-.remove-layer-button, .zoom-to-layer-button {
+.remove-layer-button, .zoom-to-layer-button, .layer-loading-button, .layer-loaded-button, .layer-error-button {
     width: 12px;
     height: 14px;
     vertical-align: bottom;
@@ -1196,6 +1196,20 @@ div.allwhite {
 
 .zoom-to-layer-button {
     background: url(../images/zoom_to_layer2.png) center no-repeat transparent;
+}
+
+.layer-loading-button {
+    visibility: visible;
+    background: url('../images/spinner_12x12.gif') center no-repeat transparent;
+}
+
+.layer-loaded-button {
+    visibility: hidden;
+}
+
+.layer-error-button {
+    visibility: visible;
+    background: url('../images/error.png') center no-repeat transparent;
 }
 
 #activeLayerTreePanel img.x-tree-node-icon {

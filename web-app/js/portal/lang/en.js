@@ -33,7 +33,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     metadataSubheading: 'Metadata',
     dataSubheading: 'Data',
     filesSubheading: 'Attached files',
-    noCollectionsMessage: 'No collections to show',
+    noCollectionsMessage: 'No data collections to show',
     noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
     noFilterMessage: 'No data filter applied.',
@@ -58,18 +58,18 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     end: 'End',
     time: 'Animation time',
     speed: ' (x 1)',
-    warn_label: "Only one collection can be animated at a time.  You must remove an existing animation to create a new animation.",
+    warn_label: "Only one data collection can be animated at a time.  You must remove an existing animation to create a new animation.",
     speedUp: "Doubles animation speed",
     slowDown: "Halves animation speed",
-    clearButton_tip: "Stops animation and remove all animated collections from the map",
+    clearButton_tip: "Stops animation and remove all animated data collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
 
     // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will remove all collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all collections from the map and download pages",
+    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     // Search results
     descHeading: 'Description',
@@ -84,7 +84,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // DetailsPanel.js
     opacity: "Opacity",
-    wmsLayerProblem: "There is a problem with the availability of this collection",
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -134,9 +133,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationCancelText: 'Cancel',
 
     //mainMapPanel
-    layerExistsTitle: 'Add collection',
-    layerExistsMsg: 'This collection has already been added to the map',
-    layerAddedTitle: 'Add collection',
+    layerExistsTitle: 'Add data collection',
+    layerExistsMsg: 'This data collection has already been added to the map',
+    layerAddedTitle: 'Add data collection',
     layerAddedMsg: "'${layerDesc}' has been added",
     layerActions: 'Actions',
 
@@ -144,6 +143,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // detailsPanel.js
     pickAStyle : ' ** Pick a style ** ',
+
+    // InfoPanel.js
+    loadingMessage: 'Loading ...',
+    noMetadataMessage: 'No information available at this time.',
 
     //snapshots
     saveMapButton: 'Save Map',
@@ -178,24 +181,24 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
     // MapOptionsPanel
-    autozoom: 'Auto zoom to collection extent',
-    hideDetailsPanel: 'Hide collection details',
+    autozoom: 'Auto zoom to data collection extent',
+    hideDetailsPanel: 'Hide data collection details',
     clearAllButtonLabel: 'Clear all',
-    removeAllControlLabel: 'Remove all collections',
+    removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
 
     // RightDetailsPanel.js
-    noActiveLayersSelected:	"No collections selected",
+    noActiveLayersSelected: "No data collections selected",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
 
     // ActiveLayersPanel.js
-    collectionsTitle: "Collections",
-    noCollectionSelectedHelp: "Please return and search for collections.",
+    dataCollectionsTitle: "Data Collections",
+    noCollectionSelectedHelp: "Please return and search for data collections.",
 
     //Options Panel
-    turnOnTransect: 'Turn on transect graphing for this collection:',
+    turnOnTransect: 'Turn on transect graphing for this data collection:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',
     transectTab: 'Transect',
@@ -208,5 +211,22 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     aodaacPanelTitle: 'Subset',
     aodaacJobCreatedMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     aodaacJobCreateErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
-    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.'
+    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
+    productInfoHeading: 'Product Info',
+    spatialExtentHeading: 'Spatial Extent',
+    temporalExtentHeading: 'Temporal Extent',
+    areaCoveredLabel: 'Area covered: ',
+    timeRangeLabel: 'Time range: ',
+    timeOfDayLabel: 'Time of day',
+    dateFromLabel: 'Date from:',
+    dateToLabel: 'Date to:',
+
+    // FeatureInfoPopup.js
+    noDataCollectionSelected: 'No data collection selected.',
+    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
+    noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+
+    // ActiveLayersTreeNodeUI.js
+    removeDataCollection: 'Remove data collection',
+    zoomToDataCollection: 'Zoom to data collection'
 });

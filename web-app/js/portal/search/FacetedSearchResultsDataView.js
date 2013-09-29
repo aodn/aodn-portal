@@ -11,6 +11,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
 
+
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
@@ -71,7 +72,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getParametersAsHtml(paramTpl, values.parameter)
+        html += this._getParametersAsHtml(paramTpl, values.parameter);
 
         return html;
     },
@@ -144,10 +145,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {
         return '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
-            + values.pointOfTruthLink.title + '"> more </a>';
+            + values.pointOfTruthLink.title + '">more</a>';
     },
 
     getMiniMap: function(values) {
+    	var LONGITUDE_OF_AUSTRALIA = 90;
 
         function _baseLayer() {
             return new OpenLayers.Layer.WMS(
@@ -155,7 +157,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
                 { layers: 'default_basemap_simple' }
             );
-        };
+        }
 
         function _zoomLevel(map, bounds) {
             var zoomLevel = map.getZoomForExtent(bounds);
@@ -168,10 +170,17 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 zoomLevel = 4;
             }
             return zoomLevel;
-        };
+        }
+
+        function _centerLonLat(map, bounds) {
+            var centerLonLat = bounds.getCenterLonLat();
+            if (map.getZoomForExtent(bounds) == 0) {
+                centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
+            }
+            return centerLonLat;
+        }
 
         var componentId = Ext.id();
-
         var metadataExtent = values.bbox;
         var emptyString =  (metadataExtent.getBounds() == undefined) ? OpenLayers.i18n('unavailableExtent') : '';
 
@@ -187,8 +196,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         setTimeout(function() {
             map.render("fsSearchMap" + values.uuid);
+
             if (metadataExtent.getBounds()) {
-                map.setCenter(metadataExtent.getBounds().getCenterLonLat(), _zoomLevel(map, metadataExtent.getBounds()));
+                map.setCenter(
+                    _centerLonLat(map, metadataExtent.getBounds()),
+                    _zoomLevel(map, metadataExtent.getBounds())
+                );
             }
             else {
                 map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
@@ -196,6 +209,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }, 10);
         return "";
     },
+
 
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);

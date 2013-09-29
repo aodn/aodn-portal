@@ -21,7 +21,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
 
         this._registerMessageListeners();
-        this._initCurrentlyLoadingLayers();
         this._initBaseLayers();
         this._initDefaultLayers();
     },
@@ -85,7 +84,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     removeAll: function() {
 
         this.remove(this.getLayers(false).getRange());
-        this.currentlyLoadingLayers.clear();
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
@@ -117,7 +115,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
-        this.currentlyLoadingLayers.remove(openLayer);
 
         Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
@@ -125,10 +122,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
             openLayer.events.register('loadstart', this, function() {
-                this.currentlyLoadingLayers.add(openLayer.name, openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
             openLayer.events.register('loadend', this, function() {
-                this.currentlyLoadingLayers.remove(openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
             var layerRecord = new GeoExt.data.LayerRecord({
@@ -175,23 +172,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             return false;
 
         return true;
-    },
-
-    _initCurrentlyLoadingLayers: function() {
-        this.currentlyLoadingLayers = new Ext.util.MixedCollection();
-        this.currentlyLoadingLayers.on('add', function(index, object) {
-            this._publishLayersLoadingMessage();
-        }, this);
-        this.currentlyLoadingLayers.on('clear', function() {
-            this._publishLayersLoadingMessage();
-        }, this);
-        this.currentlyLoadingLayers.on('remove', function(index, object) {
-            this._publishLayersLoadingMessage();
-        }, this);
-    },
-
-    getLayersLoadingCount: function() {
-        return this.currentlyLoadingLayers.getCount();
     },
 
     _registerMessageListeners: function() {
@@ -244,10 +224,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
             }
         });
-    },
-
-    _publishLayersLoadingMessage: function() {
-        Ext.MsgBus.publish('layersLoading', this.currentlyLoadingLayers.getCount());
     }
 });
 
