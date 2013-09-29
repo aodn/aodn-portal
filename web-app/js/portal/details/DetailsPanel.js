@@ -54,7 +54,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             })
         });
 
-        this.statusPhil = new Ext.Container({
+        this.status = new Ext.Container({
             html: OpenLayers.i18n('noActiveLayersSelected'),
             cls: 'bold italic',
             margins: {top:20, right:5, bottom:10, left:0},
@@ -109,7 +109,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
-            this.statusPhil,
+            this.status,
             this.opacitySliderContainer,
             this.transectControl,
             this.errorPanel,
@@ -149,7 +149,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         console.log('calling updateDetailsPanel');
 
         if (layer) {
-            this.setStatusPhil(layer.name);
+            this.setStatus(layer.name);
 
 		    // show new layer unless user requested 'hideLayerOptions'
             this.errorPanel.hide();
@@ -184,18 +184,17 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.doLayout();
         }
         else {
-            this.setStatusPhil(OpenLayers.i18n('noActiveLayersSelected'));
+            this.setStatus(OpenLayers.i18n('noActiveLayersSelected'));
             this.hideDetailsPanelContents();
         }
     },
 
-    setStatusPhil: function(status) {
+    setStatus: function(status) {
 
-        console.log('calling setStatus with: ' + status);
+        if (this.status.rendered) {
+            this.status.update(status);
+        }
 
-        console.log(this.statusPhil.update);
-
-        this.statusPhil.update(status);
     },
 
     hideDetailsPanelContents: function () {

@@ -45,7 +45,7 @@ describe("Portal.details.DetailsPanel", function() {
 
         it('has correct status', function() {
 
-            expect(detailsPanel.statusPhil.html).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveLayersSelected'));
         });
 
         it('hides contents', function() {
@@ -58,7 +58,7 @@ describe("Portal.details.DetailsPanel", function() {
 
         beforeEach(function() {
 
-            spyOn(detailsPanel, 'setStatusPhil').andCallFake(function(status) { alert(status); });
+            spyOn(detailsPanel, 'setStatus').andCallFake(function(status) { });
         });
 
         describe('selected layer', function() {
@@ -79,7 +79,7 @@ describe("Portal.details.DetailsPanel", function() {
             });
 
             it('set status to layer name', function() {
-                expect(detailsPanel.setStatusPhil).toHaveBeenCalledWith(openLayer.name);
+                expect(detailsPanel.setStatus).toHaveBeenCalledWith(openLayer.name);
             });
         });
 
@@ -92,7 +92,7 @@ describe("Portal.details.DetailsPanel", function() {
 
             it("set status to 'no selected layer'", function() {
 
-                expect(detailsPanel.setStatusPhil).toHaveBeenCalledWith(OpenLayers.i18n('noActiveLayersSelected'));
+                expect(detailsPanel.setStatus).toHaveBeenCalledWith(OpenLayers.i18n('noActiveLayersSelected'));
             });
 
             it('hide contents', function() {
