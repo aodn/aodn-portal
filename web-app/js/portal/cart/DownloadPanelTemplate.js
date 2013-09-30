@@ -107,6 +107,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             text = href;
         }
 
-        return String.format("<a href='{0}' target='_blank' class='external'>{1}</a>", href, text);
+        return String.format('<a href="{0}" target="_blank" class="external">{1}</a>', href, text);
     }
 });

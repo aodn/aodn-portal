@@ -205,14 +205,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/', 'text');
 
-            expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>text</a>");
+            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">text</a>');
         });
 
         it('uses href as text if text is undefined', function() {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/');
 
-            expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>http://host.com/</a>");
+            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">http://host.com/</a>');
         });
     });
 
