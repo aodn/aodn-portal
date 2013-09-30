@@ -27,7 +27,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             cls: "navigationButton forwardsButton",
             width: 100,
             text: OpenLayers.i18n('navigationButtonNext'),
-            hidden: false
+            hidden: true
         });
         this.nextButton.on('click', function() {
             this.mainPanel.layout.navigateToNextTab();
@@ -51,5 +51,9 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
         this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
         this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
+
+        // Smells, but since we might hide/show buttons and the object is
+        // already rendered, we will need the doLayout() call
+        this.doLayout();
     }
 });

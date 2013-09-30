@@ -9,7 +9,8 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     hasNextTab: function() {
-        return this.activeItem != this.container.items.last();
+        return this.activeItem != this.container.items.last() &&
+            this._hasActiveCollections();
     },
 
     hasPrevTab: function() {
@@ -64,5 +65,9 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
 
     _getNeighbouringItem: function(relativeIndex) {
         return this.container.items.get(this.getActiveItemIndex() + relativeIndex);
+    },
+
+    _hasActiveCollections: function() {
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().getTotalCount() >= 0;
     }
 });
