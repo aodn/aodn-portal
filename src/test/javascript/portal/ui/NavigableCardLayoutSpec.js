@@ -35,6 +35,24 @@ describe('Portal.ui.NavigableCardLayout', function() {
         });
     });
 
+    describe('hasNext', function() {
+        beforeEach(function() {
+            spyOn(layout, '_hasActiveCollections').andReturn(false);
+        });
+
+        it('when on search tab and no data collections selected', function() {
+            layout.setActiveItem(TAB_INDEX_SEARCH);
+            expect(layout.hasNextTab()).toBe(false);
+            expect(layout._hasActiveCollections).toHaveBeenCalled();
+        });
+
+        it('when on visualise tab and no data collections selected', function() {
+            layout.setActiveItem(TAB_INDEX_VISUALISE);
+            expect(layout.hasNextTab()).toBe(false);
+            expect(layout._hasActiveCollections).toHaveBeenCalled();
+        });
+    });
+
     describe('nagivateToNextTab', function() {
         it('should change from search to visualise', function() {
             spyOn(layout, 'setActiveTab');
