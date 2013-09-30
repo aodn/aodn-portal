@@ -16,6 +16,9 @@ describe('Portal.ui.NavigableCardLayout', function() {
     });
 
     describe('hasNext, hasPrev', function() {
+        beforeEach(function() {
+            spyOn(layout, '_hasActiveCollections').andReturn(true);
+        });
         it('when on search tab', function() {
             layout.setActiveItem(TAB_INDEX_SEARCH);
             expect(layout.hasNextTab()).toBe(true);
@@ -54,6 +57,10 @@ describe('Portal.ui.NavigableCardLayout', function() {
     });
 
     describe('nagivateToNextTab', function() {
+        beforeEach(function() {
+            spyOn(layout, '_hasActiveCollections').andReturn(true);
+        });
+
         it('should change from search to visualise', function() {
             spyOn(layout, 'setActiveTab');
             layout.setActiveItem(TAB_INDEX_SEARCH);

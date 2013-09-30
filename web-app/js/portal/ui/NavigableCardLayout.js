@@ -68,6 +68,6 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     },
 
     _hasActiveCollections: function() {
-        return Portal.data.ActiveGeoNetworkRecordStore.instance().getTotalCount() >= 0;
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().getTotalCount() > 0;
     }
 });
