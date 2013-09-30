@@ -28,7 +28,7 @@ describe("Portal.ui.MainToolbar", function() {
         describe('to first tab', function() {
             beforeEach(function() {
                 mainPanel.layout.hasPrevTab = function() { return false; }
-                mainPanel.layout.hasNextTab = function() { return true; }
+                mainPanel.layout.hasNextTab = function() { return false; }
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
@@ -37,7 +37,7 @@ describe("Portal.ui.MainToolbar", function() {
             });
 
             it('show next button', function() {
-                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(false);
             });
         });
 
