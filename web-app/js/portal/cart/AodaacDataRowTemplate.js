@@ -125,11 +125,16 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         ];
     },
 
-    _downloadHandlerFor: function(collection, format, emailAddress) {
+    _downloadHandlerFor: function(collection, format) {
+
+        var emailAddessElementId = '#aodaac-email-address-' + collection.uuid;
 
         return function() {
 
             // Todo - DN: We're not showing the DownloadConfirmationWindow currently
+
+            var emailAddressElement = $(emailAddessElementId);
+            var emailAddress = emailAddressElement.val();
 
             if (!this._validateEmailAddress(emailAddress)) {
 
