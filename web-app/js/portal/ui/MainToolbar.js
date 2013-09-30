@@ -49,11 +49,13 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _renderNavigationButtons: function(mainPanel) {
-        console.log(this.prevButton);
-        console.log("Layer was removed");
-
         this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
-        this.nextButton.setVisible(mainPanel.layout.hasNextTab());
+
+        // Next button will be visible only if data collections were loaded to
+        // the map
+        this.nextButton.setVisible(
+            mainPanel.layout.hasNextTab() &&
+            Portal.data.ActiveGeoNetworkRecordStore.instance().getNumberOfRecords() > 0);
 
         this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
         this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
