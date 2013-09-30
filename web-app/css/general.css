@@ -1099,7 +1099,7 @@ div.allwhite {
 }
 
 .term-selection-panel .x-panel-header {
-    background-color: #f8f8f8;
+    background-color: #dfdfdf;
     padding-bottom: 7px;
 }
 
@@ -1158,12 +1158,12 @@ div.allwhite {
 .facetedSearchResultRow {
     background: #eeeeee;
     background: rgb(239, 239, 239);
-    background: -moz-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -moz-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, #F8F7F7), color-stop(40%, #F9F9F9), color-stop(100%, #FBFBFB));
-    background: -webkit-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: -o-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: -ms-linear-gradient(top, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: linear-gradient(to bottom, #F8F7F7 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -webkit-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -o-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: -ms-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
+    background: linear-gradient(to bottom, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#FBFBFB', GradientType=0);
 
     border-left: 1px solid #CCCCCC;
