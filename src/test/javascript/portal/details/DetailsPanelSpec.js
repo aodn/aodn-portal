@@ -41,8 +41,6 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel.title).toBe(openLayer.name);
             });
 
-            it('show contents', function() {
-            });
         });
 
         describe('no selected layer', function() {
