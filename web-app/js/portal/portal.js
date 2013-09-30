@@ -85,9 +85,9 @@ Portal.app = {
         });
 
         if(startSnapshot){
-            Ext.MsgBus.subscribe("baseLayersLoadedFromServer", function() {
-                Ext.MsgBus.unsubscribe("baseLayersLoadedFromServer");
-                Ext.MsgBus.publish("loadSnapshot", startSnapshot);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
+                Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LOAD_SNAPSHOT, startSnapshot);
             },this);
         }
     },

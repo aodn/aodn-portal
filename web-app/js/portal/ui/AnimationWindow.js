@@ -43,14 +43,14 @@ Portal.ui.AnimationWindow = Ext.extend(Ext.Window, {
 
         Portal.ui.AnimationWindow.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe('reset', function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.hide();
         }, this);
 
         this._contract();
 
         this.toggleVisibilityButton.on('click', this._onToggleVisibilityClicked, this);
-        Ext.MsgBus.subscribe('selectedLayerChanged', this._onSelectedLayerChanged, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._onSelectedLayerChanged, this);
     },
 
     _onSelectedLayerChanged: function(eventName, openLayer) {

@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
 
-    constructor:function (cfg) {
+    constructor: function (cfg) {
 
         this.appConfig = Portal.app.config;
 
@@ -25,7 +25,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions,
-            layersLoading: 0,
             layers:  Portal.data.LayerStore.instance(),
             listeners: {
                 render: function() {
@@ -60,32 +59,26 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.on('tabchange', function () {
             this._closeFeatureInfoPopup();
-            //if layers get loaded when the mappanel isn't visible, the loadingspinner gets stuck,
-            this._updateLayerLoadingSpinner(this.layers.getLayersLoadingCount());
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', function (subject, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe('baseLayerChanged', function(subject, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe('reset', function () {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
         }, this);
 
         Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
-        }, this);
-
-        Ext.MsgBus.subscribe('layersLoading', function (subject, numLayersLoading) {
-            this._updateLayerLoadingSpinner(numLayersLoading);
         }, this);
     },
 
@@ -98,26 +91,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         return this.mapOptions.timeControl;
     },
 
-    _updateLayerLoadingSpinner:function (numLayersLoading) {
-        // When running tests, loadSpinner will not be available
-        // Or... just be safe!
-        if (!this.loadSpinner) { return; }
-
-        // Show spinner.
-        if (numLayersLoading > 0) {
-            this.loadSpinner.msg = this.buildLayerLoadingString(numLayersLoading);
-            this.loadSpinner.show();
-        }
-        else {
-            this.loadSpinner.hide();
-        }
-    },
-
     _onBeforeSelectedLayerChanged: function(openLayer) {
         this.mapOptions.timeControl.configureForLayer(openLayer, 10);
     },
 
-    onSelectedLayerChanged:function (openLayer) {
+    onSelectedLayerChanged: function (openLayer) {
 
         if (this.autoZoom === true) {
             this.zoomToLayer(openLayer);
@@ -134,22 +112,22 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.loadSpinner = new Portal.common.LoadMask(this.el);
     },
 
-    autoZoomCheckboxHandler:function (box, checked) {
+    autoZoomCheckboxHandler: function (box, checked) {
         Portal.app.config.autoZoom = checked;
         this.autoZoom = checked;
     },
 
-    reset:function () {
+    reset: function () {
         this._closeFeatureInfoPopup();
         this.zoomToInitialBbox();
     },
 
-    handleFeatureInfoClick:function (event) {
+    handleFeatureInfoClick: function (event) {
         this._closeFeatureInfoPopup();
         this._findFeatureInfo(event);
     },
 
-    _closeFeatureInfoPopup:function () {
+    _closeFeatureInfoPopup: function () {
         try {
             if (this.featureInfoPopup) {
                 this.featureInfoPopup.close();
@@ -170,7 +148,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    _findFeatureInfo:function (event) {
+    _findFeatureInfo: function (event) {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
             map: this.map,
             appConfig: this.appConfig,
@@ -179,7 +157,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.featureInfoPopup.findFeatures(event);
     },
 
-    initMap:function () {
+    initMap: function () {
 
         // The MapActionsControl (in the OpenLayers map tools) needs this.
         this.appConfig.mapPanel = this;
@@ -188,11 +166,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.map = this.mapOptions.newMap();
     },
 
-    getServer:function (item) {
+    getServer: function (item) {
         return item.server;
     },
 
-    zoomToLayer:function (openLayer) {
+    zoomToLayer: function (openLayer) {
         if (openLayer) {
 
             if (openLayer.zoomOverride) {
@@ -235,7 +213,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    zoomTo:function (bounds, closest) {
+    zoomTo: function (bounds, closest) {
         if ((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)) {
             this.map.setCenter(bounds.getCenterLonLat(), 3);
         }
@@ -244,23 +222,23 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    getLayerText:function (layerCount) {
+    getLayerText: function (layerCount) {
         return layerCount === 1 ? "Collection" : "Collections";
     },
 
-    getLayersLoadingText:function (layerCount) {
+    getLayersLoadingText: function (layerCount) {
         return layerCount === 0 ? "" : layerCount.toString();
     },
 
-    buildLayerLoadingString:function (layerCount) {
+    buildLayerLoadingString: function (layerCount) {
         return "Loading " + this.getLayersLoadingText(layerCount) + "  " + this.getLayerText(layerCount) + "\u2026";
     },
 
-    getPanelX:function () {
+    getPanelX: function () {
         return this.getPosition()[0];
     },
 
-    getPanelY:function () {
+    getPanelY: function () {
         return this.getPosition()[1];
     },
 

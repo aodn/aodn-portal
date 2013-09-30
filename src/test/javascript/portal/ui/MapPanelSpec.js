@@ -30,7 +30,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'zoomToLayer');
 
             mapPanel.autoZoom = true;
-            Ext.MsgBus.publish('selectedLayerChanged');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
 
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
@@ -39,7 +39,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'onBaseLayerChanged');
 
             var baseLayerRecord = { layer: "asdf" };
-            Ext.MsgBus.publish('baseLayerChanged', baseLayerRecord);
+            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayerRecord);
 
             expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
         });
@@ -93,14 +93,14 @@ describe("Portal.ui.MapPanel", function() {
         it('should call reset()', function() {
 
             spyOn(mapPanel, 'reset');
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.reset).toHaveBeenCalled();
         });
 
         it('should call _closeFeatureInfoPopup()', function() {
 
             spyOn(mapPanel, '_closeFeatureInfoPopup');
-            Ext.MsgBus.publish('reset');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
     });
@@ -113,17 +113,6 @@ describe("Portal.ui.MapPanel", function() {
             Ext.MsgBus.publish('removeAllLayers');
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
-    });
-
-    it('layersLoading', function() {
-
-        spyOn(mapPanel, '_updateLayerLoadingSpinner');
-
-        Ext.MsgBus.publish('layersLoading', 0);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(0);
-
-        Ext.MsgBus.publish('layersLoading', 1);
-        expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalledWith(1);
     });
 
     describe('Adding layer from Geoserver Feature Info response', function() {
@@ -157,18 +146,6 @@ describe("Portal.ui.MapPanel", function() {
 
         it('Checks that getPanelY() can be called', function() {
             expect(mapPanel.getPanelY).toBeDefined();
-        });
-    });
-
-    describe('tabchange event', function () {
-
-        it('calls _updateLayerLoadingSpinner', function() {
-
-            spyOn(mapPanel, '_updateLayerLoadingSpinner');
-
-            mapPanel.fireEvent("tabchange");
-
-            expect(mapPanel._updateLayerLoadingSpinner).toHaveBeenCalled();
         });
     });
 

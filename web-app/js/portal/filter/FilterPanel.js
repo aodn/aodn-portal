@@ -41,11 +41,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
-    setLayer: function(layer){
-        this.layer = layer;
-        this.update();
-    },
-
     createFilterPanel: function(layer, filter) {
 
         var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
@@ -92,7 +87,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     Ext.each(filters,
                         function(filter, index, all) {
                             this.createFilterPanel(layer, filter);
-                            aFilterIsEnabled = true
+                            aFilterIsEnabled = true;
                         },
                         this
                     );

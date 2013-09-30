@@ -15,7 +15,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
         it("triggers selectedLayerChanged event", function() {
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
-            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, selectedLayerChangedSpy);
 
             activeLayersPanel.activeLayersTreePanelSelectionChangeHandler({}, { layer: { isAnimatable: function() { return false}}});
             expect(selectedLayerChangedSpy).toHaveBeenCalled();
@@ -40,10 +40,10 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             activeLayersPanel.getActiveLayerNodes = function() {return []};
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
-            Ext.MsgBus.subscribe("selectedLayerChanged", selectedLayerChangedSpy);
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, selectedLayerChangedSpy);
 
             // Publish the event
-            Ext.MsgBus.publish('layerRemoved');
+            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED);
 
             it("active node should be set to null", function() {
 
@@ -53,6 +53,55 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             it("selectedLayerChanged event should be published", function() {
 
                 expect(selectedLayerChangedSpy).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe("layerLoading events", function() {
+
+        var mockedLayer;
+
+        mockLayers = (function() {
+            mockedLayer = { ui: {} };
+            mockedLayer.ui.layerLoadingStart = function() {};
+            mockedLayer.ui.layerLoadingEnd   = function() {};
+            mockedLayer.hasImgLoadErrors     = function() { return true; }
+            return [ mockedLayer ];
+        });
+
+        beforeEach(function() {
+            // Return an array with at least one element...
+            spyOn(activeLayersPanel, 'getActiveLayerNodes').andReturn(mockLayers());
+
+            // Always returned the mocked layer
+            spyOn(activeLayersPanel, 'findNodeByLayer').andReturn(mockedLayer);
+        });
+
+        describe("layerLoadingStart", function() {
+            it("_onLayerLoadingStart called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingStart');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingStart).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationStart delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingStart');
+                activeLayersPanel._onLayerLoadingStart(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingStart).toHaveBeenCalled();
+            });
+        });
+
+        describe("layerLoadingEnd", function() {
+            it("_onLayerLoadingEnd called", function() {
+                spyOn(activeLayersPanel, '_onLayerLoadingEnd');
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, "someLayer");
+                expect(activeLayersPanel._onLayerLoadingEnd).toHaveBeenCalledWith("someLayer");
+            });
+
+            it("_layerLoadingIndicationEnd delegated to tree node", function() {
+                spyOn(mockedLayer.ui, 'layerLoadingEnd');
+                activeLayersPanel._onLayerLoadingEnd(mockedLayer);
+                expect(mockedLayer.ui.layerLoadingEnd).toHaveBeenCalled();
             });
         });
     });

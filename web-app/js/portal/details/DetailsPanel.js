@@ -21,19 +21,12 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe('selectedLayerChanged', function (eventName, openlayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
     },
 
     initComponent: function () {
-
-        this.errorPanel = new Ext.Panel({
-            cls: "errors",
-            margins: {top:10, right:5, bottom:10, left:10},
-            hidden: true,
-            html: OpenLayers.i18n('wmsLayerProblem')
-        });
 
         this.detailsPanelTabs = new Portal.details.DetailsPanelTab({ map: this.map });
 
@@ -112,7 +105,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.status,
             this.opacitySliderContainer,
             this.transectControl,
-            this.errorPanel,
             this.detailsPanelTabs
         ];
 
@@ -121,41 +113,17 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         this.hideDetailsPanelContents();
     },
 
-    _checkLayerAvailability: function(layer) {
-
-        // check if there is a problem with this layer, with a bogusgetFetureInfo request
-        if (layer.grailsLayerId != undefined && layer.params.QUERYABLE) {
-
-            Ext.Ajax.request({
-                method: 'GET',
-                url: 'checkLayerAvailability/show/' + layer.grailsLayerId,
-                params: {
-                    format: layer.getFeatureInfoFormat(),
-                    proxy: layer.localProxy,
-                    isNcwms: layer.isNcwms() // need this in grails land
-                },
-                scope: this,
-                failure: function(resp) {
-                    this.hideDetailsPanelContents();
-                    this.errorPanel.show();
-                }
-            });
-        }
+    getOpacitySlider: function () {
+        return this.opacitySlider;
     },
 
     // must be called when the panel is fully expanded for the slider
     updateDetailsPanel: function (layer, forceOpen) {
 
-        console.log('calling updateDetailsPanel');
-
         if (layer) {
             this.setStatus(layer.name);
 
 		    // show new layer unless user requested 'hideLayerOptions'
-            this.errorPanel.hide();
-
-            this._checkLayerAvailability(layer);
-
             this.detailsPanelTabs.update(layer);
             this.transectControl.hide();
 

@@ -15,7 +15,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     afterEach(function() {
-        Ext.MsgBus.unsubscribe('viewgeonetworkrecord', mainPanel._onViewGeoNetworkRecord, mainPanel);
+        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, mainPanel._onViewGeoNetworkRecord, mainPanel);
     });
 
     describe('initialisation', function() {
@@ -66,7 +66,7 @@ describe("Portal.ui.MainPanel", function() {
 
         it('should set visualise to active item when geonetwork record is viewed', function() {
             spyOn(mainPanel.layout, 'setActiveItem');
-            Ext.MsgBus.publish('viewgeonetworkrecord');
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD);
             expect(mainPanel.layout.setActiveItem).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
 

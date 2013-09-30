@@ -25,12 +25,12 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {
             spyOn(resultsView, '_refreshView');
-            Ext.MsgBus.publish('activegeonetworkrecordadded');
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
             expect(resultsView._refreshView).toHaveBeenCalled();
         });
         it('refreshes view on record removed', function() {
             spyOn(resultsView, '_refreshView');
-            Ext.MsgBus.publish('activegeonetworkrecordremoved');
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
             expect(resultsView._refreshView).toHaveBeenCalled();
         });
     });

@@ -6,18 +6,17 @@
  */
 describe("Portal.details.DetailsPanel", function() {
 
-
-
     var detailsPanel;
 
     beforeEach(function() {
-
         detailsPanel = new Portal.details.DetailsPanel({ map: _mockMap() });
         spyOn(detailsPanel, 'hideDetailsPanelContents');
-
         detailsPanel.initComponent();
     });
 
+    it('initialisation', function() {
+        expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+        expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
     describe('checkLayerAvailability', function() {
 
         beforeEach(function() {
@@ -75,7 +74,7 @@ describe("Portal.details.DetailsPanel", function() {
                     type: 'some type'
                 };
 
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             });
 
             it('set status to layer name', function() {
@@ -84,6 +83,11 @@ describe("Portal.details.DetailsPanel", function() {
         });
 
         describe('no selected layer', function() {
+            it("set title to 'no selected layer'", function() {
+                detailsPanel.title = 'something';
+                expect(detailsPanel.title).toBe('something');
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
+                expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
 
             beforeEach(function() {
 
@@ -97,6 +101,7 @@ describe("Portal.details.DetailsPanel", function() {
 
             it('hide contents', function() {
 
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
         });
