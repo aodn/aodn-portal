@@ -42,10 +42,16 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
         Portal.ui.MainToolbar.superclass.constructor.call(this, config);
 
-        this.mainPanel.on('tabchange', this._onMainPanelTabChange, this);
+        this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
+            this._renderNavigationButtons(this.mainPanel);
+        }, this);
     },
 
-    _onMainPanelTabChange: function(mainPanel) {
+    _renderNavigationButtons: function(mainPanel) {
+        console.log(this.prevButton);
+        console.log("Layer was removed");
+
         this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
         this.nextButton.setVisible(mainPanel.layout.hasNextTab());
 
