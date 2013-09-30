@@ -50,7 +50,13 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (aodaacParameters) {
 
-            html = String.format('<div id="aodaac-download-button-{0}"></div>', values.uuid); // Download button placeholder
+            html  = '<input type="text" id="aodaac-email-address-{0}" value="{1}" class="floatLeft">';
+            html += '<div class="floatLeft">';
+            html += '<div id="aodaac-download-button-{0}"></div>'; // Download button placeholder
+            html += '</div>';
+            html += '<div class="clear"></div>';
+
+            html = String.format(html, values.uuid, OpenLayers.i18n('emailAddressPlaceholder'));
         }
         else {
 

@@ -98,7 +98,14 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         it('include placeholder when layer is present', function() {
 
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="aodaac-download-button-7"></div>');
+            var expectedArg = '' +
+                '<input type="text" id="aodaac-email-address-7" value="' + OpenLayers.i18n('emailAddressPlaceholder') + '" class="floatLeft">' +
+                '<div class="floatLeft">' +
+                '<div id="aodaac-download-button-7"></div>' +
+                '</div>' +
+                '<div class="clear"></div>';
+
+            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith(expectedArg);
         });
 
         it('include message when there is no layer', function() {
