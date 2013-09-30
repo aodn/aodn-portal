@@ -112,10 +112,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _createMenuItems: function(collection) {
 
         return [
-            {text: 'Download as NetCDF', handler: this._downloadHandlerFor(collection, 'nc'), scope: this},
-            {text: 'Download as HDF', handler: this._downloadHandlerFor(collection, 'hdf'), scope: this},
-            {text: 'Download as ASCII text', handler: this._downloadHandlerFor(collection, 'txt'), scope: this},
-            {text: 'Download as List of OpenDAP URLs', handler: this._downloadHandlerFor(collection, 'urls'), scope: this}
+            {text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._downloadHandlerFor(collection, 'nc'), scope: this},
+            {text: OpenLayers.i18n('downloadAsHdfLabel'), handler: this._downloadHandlerFor(collection, 'hdf'), scope: this},
+            {text: OpenLayers.i18n('downloadAsAsciiLabel'), handler: this._downloadHandlerFor(collection, 'txt'), scope: this},
+            {text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._downloadHandlerFor(collection, 'urls'), scope: this}
         ];
     },
 
