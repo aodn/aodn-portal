@@ -14,41 +14,14 @@ describe("Portal.details.DetailsPanel", function() {
         detailsPanel.initComponent();
     });
 
-    it('initialisation', function() {
-        expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
-        expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
-    describe('checkLayerAvailability', function() {
-
-        beforeEach(function() {
-
-            spyOn(Ext.Ajax, 'request');
-
-            detailsPanel._checkLayerAvailability({
-                grailsLayerId: 123,
-                params: {
-                    QUERYABLE: true
-                },
-                getFeatureInfoFormat: function() { "someformat" },
-                isNcwms: function() { return false; }
-            });
-        });
-
-        it('calls Ajax.request', function() {
-
-            expect(Ext.Ajax.request).toHaveBeenCalled();
-            expect(Ext.Ajax.request.mostRecentCall.args[0].url).toBe('checkLayerAvailability/show/123');
-        });
-    });
 
     describe('initialisation', function() {
 
         it('has correct status', function() {
-
             expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveLayersSelected'));
         });
 
         it('hides contents', function() {
-
             expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
         });
     });
@@ -56,7 +29,6 @@ describe("Portal.details.DetailsPanel", function() {
     describe('selected layer changed', function() {
 
         beforeEach(function() {
-
             spyOn(detailsPanel, 'setStatus').andCallFake(function(status) { });
         });
 
@@ -64,6 +36,7 @@ describe("Portal.details.DetailsPanel", function() {
             var openLayer;
 
             beforeEach(function() {
+
                 openLayer = new OpenLayers.Layer.WMS(
                     "the title",
                     "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
@@ -83,24 +56,23 @@ describe("Portal.details.DetailsPanel", function() {
         });
 
         describe('no selected layer', function() {
+
+            beforeEach(function() {
+                Ext.MsgBus.publish('selectedLayerChanged');
+            });
+
             it("set title to 'no selected layer'", function() {
                 detailsPanel.title = 'something';
                 expect(detailsPanel.title).toBe('something');
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-                expect(detailsPanel.title).toBe(OpenLayers.i18n('noActiveLayersSelected'));
-
-            beforeEach(function() {
-
-                Ext.MsgBus.publish('selectedLayerChanged');
+                expect(detailsPanel.title).toBe('something');
             });
 
             it("set status to 'no selected layer'", function() {
-
                 expect(detailsPanel.setStatus).toHaveBeenCalledWith(OpenLayers.i18n('noActiveLayersSelected'));
             });
 
             it('hide contents', function() {
-
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });

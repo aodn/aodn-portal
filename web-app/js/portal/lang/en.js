@@ -26,7 +26,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
     pickAStyle : ' ** Pick a style ** ',
-    noActiveLayersSelected:	"No collections selected",
+    noActiveLayersSelected:	"No data collections selected",
 
     //
     navigate: 'Select by Map Bounds',
@@ -132,10 +132,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerActions: 'Actions',
 
 
-
-    // detailsPanel.js
-    pickAStyle : ' ** Pick a style ** ',
-
     // InfoPanel.js
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
@@ -178,9 +174,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
-
-    // RightDetailsPanel.js
-    noActiveLayersSelected: "No data collections selected",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
