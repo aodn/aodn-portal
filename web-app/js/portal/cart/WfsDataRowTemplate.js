@@ -111,7 +111,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         return function() {
 
-            this.downloadPanelTemplate.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl); // Todo - DN: Tidy this up
+            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl);
         };
     },
 
