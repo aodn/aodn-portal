@@ -43,7 +43,6 @@ describe("Portal.ui.MapPanel", function() {
 
             expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
         });
-
     });
 
     describe('zoom to layer tests', function() {
@@ -102,6 +101,21 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, '_closeFeatureInfoPopup');
             Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
+        });
+    });
+
+    describe('geonetwork record added event', function() {
+        it('maximises map actions control on active geonetork record added event', function() {
+            spyOn(mapPanel, '_maximiseMapActionsControl');
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+            expect(mapPanel._maximiseMapActionsControl).toHaveBeenCalled();
+        });
+
+        it('calls map actions control maximise', function() {
+            mapPanel.mapOptions._initMapActionsControl(mapPanel);
+            spyOn(mapPanel.mapOptions.mapActionsControl, 'maximizeControl');
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+            expect(mapPanel.mapOptions.mapActionsControl.maximizeControl).toHaveBeenCalled();
         });
     });
 
