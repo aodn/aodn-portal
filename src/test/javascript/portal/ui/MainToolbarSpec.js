@@ -42,7 +42,7 @@ describe("Portal.ui.MainToolbar", function() {
             });
 
             it('show next button when data collections available', function() {
-                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getNumberOfRecords').andReturn(true);
+                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
                 mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
@@ -65,7 +65,7 @@ describe("Portal.ui.MainToolbar", function() {
             });
 
             it('shows next button when data collections available', function() {
-                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getNumberOfRecords').andReturn(true);
+                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
                 mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });

@@ -61,7 +61,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         // the map
         this.nextButton.setVisible(
             mainPanel.layout.hasNextTab() &&
-            Portal.data.ActiveGeoNetworkRecordStore.instance().getNumberOfRecords() > 0);
+            Portal.data.ActiveGeoNetworkRecordStore.instance().getCount() > 0);
 
         this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
         this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
