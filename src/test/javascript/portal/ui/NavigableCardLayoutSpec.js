@@ -36,6 +36,7 @@ describe('Portal.ui.NavigableCardLayout', function() {
     });
 
     describe('nagivateToNextTab', function() {
+
         it('should change from search to visualise', function() {
             spyOn(layout, 'setActiveTab');
             layout.setActiveItem(TAB_INDEX_SEARCH);
