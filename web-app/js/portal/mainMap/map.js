@@ -99,12 +99,11 @@ function imgSizer(){
             }, 'slow').width(new_height);
 
             $(this).hover(function(){
-                $(this).attr("title", "This image has been scaled down.");
-                //$(this).css("cursor","pointer");
+                $(this).attr("title", OpenLayers.i18n('imageScaledDown'));
             });
 
-        } //ends if statement
-    }); //ends each function
+        }
+    });
 }
 
 

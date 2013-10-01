@@ -76,8 +76,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
 
     onFailedLoad:function () {
         Ext.MessageBox.show({
-            title:'Saved Map',
-            msg:'The map you are attempting to view is not available.'
+            title: OpenLayers.i18n('savedMap'),
+            msg: OpenLayers.i18n('mapUnavailable')
         });
     },
 

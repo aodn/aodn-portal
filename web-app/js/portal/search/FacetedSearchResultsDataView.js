@@ -80,7 +80,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getOrganisationAsHtml: function(template, organisation) {
         if (organisation) {
             return template.apply({
-                "label": "Organisation",
+                "label": OpenLayers.i18n('organisation'),
                 "value": organisation
             });
         }
@@ -91,7 +91,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getPlatformAsHtml: function(template, platform) {
         if (platform) {
             return template.apply({
-                "label": "Platform",
+                "label": OpenLayers.i18n('platform'),
                 "value": platform
             });
         }
@@ -102,7 +102,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
         if (temporalExtent.begin && temporalExtent.end) {
             return template.apply({
-                "label": "Date Range",
+                "label": OpenLayers.i18n('dateRange'),
                 "value": moment(temporalExtent.begin).format("YYYY-MM-DD Z")
                          + " - " + moment(temporalExtent.end).format("YYYY-MM-DD Z")
             });
@@ -114,7 +114,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getParametersAsHtml: function(template, parameters) {
         if (parameters.size > 0) {
             return template.apply({
-                "label": "Parameters",
+                "label": OpenLayers.i18n('parameters'),
                 "value": parameters.join(" - ")
             });
         }
