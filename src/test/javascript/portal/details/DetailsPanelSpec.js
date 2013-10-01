@@ -14,7 +14,6 @@ describe("Portal.details.DetailsPanel", function() {
         detailsPanel.initComponent();
     });
 
-
     describe('initialisation', function() {
 
         it('has correct status', function() {
@@ -23,6 +22,10 @@ describe("Portal.details.DetailsPanel", function() {
 
         it('hides contents', function() {
             expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
+        });
+
+        it('initialises stateful', function() {
+            expect(detailsPanel.stateful).toBeTruthy();
         });
     });
 
