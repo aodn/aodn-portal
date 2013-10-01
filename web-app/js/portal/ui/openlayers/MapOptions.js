@@ -70,10 +70,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
     },
 
     afterRender: function(mapPanel) {
-
-        this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
-        mapPanel.map.addControl(this.mapActionsControl);
-        this.mapActionsControl.maximizeControl();
+        this._initMapActionsControl(mapPanel);
 
         this.clickControl.activate();
         this.navigation.events.on({
@@ -85,6 +82,12 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             },
             scope: this
         });
+    },
+
+    _initMapActionsControl: function(mapPanel) {
+        this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
+        mapPanel.map.addControl(this.mapActionsControl);
+        this.mapActionsControl.maximizeControl();
     },
 
     /**
