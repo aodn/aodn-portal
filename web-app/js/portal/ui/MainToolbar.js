@@ -42,7 +42,13 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
         Portal.ui.MainToolbar.superclass.constructor.call(this, config);
 
+        this._registerEvents();
+    },
+
+    _registerEvents: function() {
+        debugger;
         this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
+
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
             this._renderNavigationButtons(this.mainPanel);
         }, this);
