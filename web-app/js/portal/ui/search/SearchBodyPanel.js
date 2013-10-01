@@ -58,7 +58,6 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     _onResultsGridBbarBeforeChange: function (bbar, params) {
-        this.searchResultsPanel.showMask();
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging
