@@ -11,7 +11,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     initComponent: function(cfg) {
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('dataDownloadTools'),
+            title: OpenLayers.i18n('step3Header'),
             headerCfg: {
                 cls: 'x-panel-header p-header-space'
             },
