@@ -19,11 +19,11 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         var container = document.getElementById("navtoolbar");
 
         this.navigation = new OpenLayers.Control.Navigation({
-            title: 'Pan Control'
+            title: OpenLayers.i18n('panControl')
         });
 
         var zoom = new OpenLayers.Control.ZoomBox({
-            title: "Zoom and centre [shift + mouse drag]"
+            title: OpenLayers.i18n('zoomAndCentre')
         });
         var toolPanel = new OpenLayers.Control.Panel({
             defaultControl: this.navigation,

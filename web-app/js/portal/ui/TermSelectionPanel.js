@@ -20,9 +20,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
             cfg.separator = "|";
 
         var defaults = {
-            collapsible:true,
-            collapsed:true,
-            titleCollapse:true
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);

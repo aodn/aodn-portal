@@ -168,6 +168,3 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
 
 Ext.reg('portal.search.refinesearchpanel', Portal.search.RefineSearchPanel);
 
-
-
-

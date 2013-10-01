@@ -37,12 +37,35 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     polygonHelp: 'Click to add points. Double click to close polygon.',
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
-    //DownloadCartPanel.js
+    // DownloadCartPanel.js
     okdownload: 'Download All',
     clearcart: "Clear Cart",
     downloadCartUndo: "Undo Last Remove",
     emptyCartText: "No data collections have been added.",
     unavailableDataLink: "Sorry this data is currently unavailable",
+
+    // DownloadPanel.js
+    dataDownloadTools: 'Data Download Tools',
+
+    // map.js
+    imageScaledDown: 'This image has been scaled down.',
+
+    // DateSelectionPanel.js
+    min: 'Min',
+    max: 'Max',
+
+    // FacetedSearchResultsDataView.js
+    platform: 'Platform',
+    organisation: 'Organisation',
+    dateRange: 'Date Range',
+    parameters: 'Parameters',
+
+    // LayerGridPanel.js
+    dragLayersOrServers: 'Drag layers or Servers to the menu tree',
+
+    // MapOptions
+    panControl: 'Pan Control',
+    zoomAndCentre: 'Zoom and centre [shift + mouse drag]',
 
     // Animation Panel
     stop: 'Stop',
@@ -57,13 +80,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     slowDown: "Halves animation speed",
     clearButton_tip: "Stops animation and remove all animated data collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
+    selectTimePeriod: 'Select Time Period',
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
-
-    // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     // Search results
     descHeading: 'Description',
@@ -136,7 +156,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
 
-    //snapshots
+    // Snapshots
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
     saveSnapshotDialogTitle: 'Save Map',
@@ -150,6 +170,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareSnapshot: 'Share',
     shareMapDialogTitle: 'Share Map',
     shareSnapshotTip: 'Share a saved map',
+    savedMap: 'Saved Map',
+    mapUnavailable: 'The map you are attempting to view is not available.',
 
     // Faceted layer search
     searchTabTitle: 'Search',
@@ -174,6 +196,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
+    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
@@ -210,6 +234,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataCollectionSelected: 'No data collection selected.',
     featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
     noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+    searchingForFeatures: 'Searching for Features at your click point',
+    depth: 'Depth',
+    elevation: 'Elevation',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
