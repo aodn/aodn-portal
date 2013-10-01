@@ -156,6 +156,12 @@ hr {
 .small {
     font-size: 0.8em;
 }
+.bold {
+    font-weight: bold;
+}
+.italic {
+    font-style: italic;
+}
 
 .homePanelWidget {
     margin-right: 10px;
@@ -462,9 +468,6 @@ a:hover.mainlinks {
     background-image: none ! important;
 }
 
-.bold {
-    font-weight: bold;
-}
 
 /* login register forgotten password */
 .auth table {
@@ -506,7 +509,6 @@ a:hover.mainlinks {
 .errors, .message {
     font-size: 0.9em;
     line-height: 2;
-    margin: 2em 0;
     padding: 0.5em;
 }
 
@@ -1155,7 +1157,7 @@ div.allwhite {
     background-color: #ffff99
 }
 
-.facetedSearchResultRow {
+.resultsRowBackground {
     background: #eeeeee;
     background: rgb(239, 239, 239);
     background: -moz-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);

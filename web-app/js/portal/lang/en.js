@@ -7,10 +7,13 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    navigationButtonNext: "Next &#187;",
-    navigationButtonPrevious: "&#171; Previous",
-    navigationButtonSelect: "Select &#187;",
-    navigationButtonDownload: "Download &#187;",
+    navigationButtonNext: "Next >>",
+    navigationButtonPrevious: "<< Previous",
+    navigationButtonSelect: "Select >>",
+    navigationButtonDownload: "Download >>",
+
+    step1Header: 'Select a Data Collection',
+    step2Header: 'Create a Subset',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
@@ -18,6 +21,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
 
     unavailableExtent: "The data extent is unavailable",
+
+    // DetailsPanel.js
+    opacity: "Opacity",
+    wmsLayerProblem: "There is a problem with the availability of this collection",
+    pickAStyle : ' ** Pick a style ** ',
+    noActiveLayersSelected:	"No data collections selected",
 
     //
     navigate: 'Select by Map Bounds',
@@ -67,8 +76,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 
-    // DetailsPanel.js
-    opacity: "Opacity",
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -125,10 +132,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerActions: 'Actions',
 
 
-
-    // detailsPanel.js
-    pickAStyle : ' ** Pick a style ** ',
-
     // InfoPanel.js
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
@@ -171,9 +174,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
-
-    // RightDetailsPanel.js
-    noActiveLayersSelected: "No data collections selected",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',

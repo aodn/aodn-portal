@@ -29,15 +29,12 @@ var. 5 = #FFC073 = rgb(255,192,115)
 */
 
 html {
-
     background-color: white;
-    color: #030303;
     margin-top: 0 ! important;
-
 }
 
 body, html, td {
-    color: #333333;
+    color: #505C63;
 }
 
 #header {
