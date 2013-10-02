@@ -6,9 +6,8 @@
 
 --%>
 <div class="viewPortTab viewPortTabDisabled" id="viewPortTab${stepIndex}">
-  <a href="#" onClick="setViewPortTab(${tabIndex}); return false;">
+  <a href="#" >
     <h1>${stepIndex + 1}</h1>
-    <h2>Step ${stepIndex + 1}</h2>
-    <p>${description}</p>
+    <h3>${description}</h3>
   </a>
 </div>

@@ -230,8 +230,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     transectDataHeading: 'Data along the transect: ',
     dimensionValuesHeading: 'For dimension values: ',
 
-    downloadSearchTabTitle: 'Downloads',
-
     // AODAAC aggregator
     aodaacPanelTitle: 'Subset',
     aodaacJobCreatedMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',

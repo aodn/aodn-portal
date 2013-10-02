@@ -13,6 +13,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     constructor: function (cfg) {
         var config = Ext.apply({
             title: OpenLayers.i18n('step2Header'),
+            headerCfg: {
+                cls: 'steps'
+            },
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch'

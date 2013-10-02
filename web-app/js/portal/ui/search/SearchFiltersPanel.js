@@ -45,6 +45,9 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             padding: 3,
             layout: 'auto',
             title: OpenLayers.i18n('step1Header'),
+            headerCfg: {
+                cls: 'steps'
+            },
             tbar: this._buildToolBar(),
             items: this.filters
         }, config);
