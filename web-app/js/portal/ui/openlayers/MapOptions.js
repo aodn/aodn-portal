@@ -19,11 +19,11 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         var container = document.getElementById("navtoolbar");
 
         this.navigation = new OpenLayers.Control.Navigation({
-            title: 'Pan Control'
+            title: OpenLayers.i18n('panControl')
         });
 
         var zoom = new OpenLayers.Control.ZoomBox({
-            title: "Zoom and centre [shift + mouse drag]"
+            title: OpenLayers.i18n('zoomAndCentre')
         });
         var toolPanel = new OpenLayers.Control.Panel({
             defaultControl: this.navigation,
@@ -70,10 +70,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
     },
 
     afterRender: function(mapPanel) {
-
-        this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
-        mapPanel.map.addControl(this.mapActionsControl);
-        this.mapActionsControl.maximizeControl();
+        this._initMapActionsControl(mapPanel);
 
         this.clickControl.activate();
         this.navigation.events.on({
@@ -85,6 +82,12 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             },
             scope: this
         });
+    },
+
+    _initMapActionsControl: function(mapPanel) {
+        this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
+        mapPanel.map.addControl(this.mapActionsControl);
+        this.mapActionsControl.maximizeControl();
     },
 
     /**

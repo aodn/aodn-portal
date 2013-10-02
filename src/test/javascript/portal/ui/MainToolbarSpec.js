@@ -29,14 +29,21 @@ describe("Portal.ui.MainToolbar", function() {
             beforeEach(function() {
                 mainPanel.layout.hasPrevTab = function() { return false; }
                 mainPanel.layout.hasNextTab = function() { return true; }
-                mainPanel.fireEvent('tabchange', mainPanel);
             });
 
             it('hides prev button', function() {
+                mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.prevButton.setVisible).toHaveBeenCalledWith(false);
             });
 
             it('show next button', function() {
+                mainPanel.fireEvent('tabchange', mainPanel);
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(false);
+            });
+
+            it('show next button when data collections available', function() {
+                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
+                mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
         });
@@ -45,14 +52,21 @@ describe("Portal.ui.MainToolbar", function() {
             beforeEach(function() {
                 mainPanel.layout.hasPrevTab = function() { return true; }
                 mainPanel.layout.hasNextTab = function() { return true; }
-                mainPanel.fireEvent('tabchange', mainPanel);
             });
 
             it('shows prev button', function() {
+                mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.prevButton.setVisible).toHaveBeenCalledWith(true);
             });
 
             it('shows next button', function() {
+                mainPanel.fireEvent('tabchange', mainPanel);
+                expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(false);
+            });
+
+            it('shows next button when data collections available', function() {
+                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
+                mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
         });
@@ -91,6 +105,14 @@ describe("Portal.ui.MainToolbar", function() {
                 expect(mainPanel.layout.getPrevNavigationLabel).toHaveBeenCalled();
                 expect(mainToolbar.prevButton.setText).toHaveBeenCalledWith('ppp');
             });
+        });
+    });
+
+    describe('MsgBus events', function() {
+        it('should trigger render on layer removal', function() {
+            spyOn(mainToolbar, '_renderNavigationButtons').andCallFake(function() {});
+            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, null);
+            expect(mainToolbar._renderNavigationButtons).toHaveBeenCalled();
         });
     });
 

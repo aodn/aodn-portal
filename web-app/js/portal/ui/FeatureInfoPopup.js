@@ -15,7 +15,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numGoodResults = 0;
 
         var config = Ext.apply({
-            title: "Searching for Features at your click point",
+            title: OpenLayers.i18n('searchingForFeatures'),
             width: cfg.appConfig.popupWidth,
             height: 80, // set height later when there are results
             maximizable: true,
@@ -301,7 +301,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-                var str = (depth <= 0) ?  "Depth:" : "Elevation:";
+                var str = (depth <= 0) ? OpenLayers.i18n('depth') : OpenLayers.i18n('elevation');
+                str += ":"
                 this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
             }
             else {

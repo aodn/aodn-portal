@@ -27,7 +27,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             cls: "navigationButton forwardsButton",
             width: 100,
             text: OpenLayers.i18n('navigationButtonNext'),
-            hidden: false
+            hidden: true
         });
         this.nextButton.on('click', function() {
             this.mainPanel.layout.navigateToNextTab();
@@ -42,14 +42,31 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
         Portal.ui.MainToolbar.superclass.constructor.call(this, config);
 
-        this.mainPanel.on('tabchange', this._onMainPanelTabChange, this);
+        this._registerEvents();
     },
 
-    _onMainPanelTabChange: function(mainPanel) {
+    _registerEvents: function() {
+        this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
+            this._renderNavigationButtons(this.mainPanel);
+        }, this);
+    },
+
+    _renderNavigationButtons: function(mainPanel) {
         this.prevButton.setVisible(mainPanel.layout.hasPrevTab());
-        this.nextButton.setVisible(mainPanel.layout.hasNextTab());
+
+        // Next button will be visible only if data collections were loaded to
+        // the map
+        this.nextButton.setVisible(
+            mainPanel.layout.hasNextTab() &&
+            Portal.data.ActiveGeoNetworkRecordStore.instance().getCount() > 0);
 
         this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
         this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());
+
+        // Smells, but since we might hide/show buttons and the object is
+        // already rendered, we will need the doLayout() call
+        this.doLayout();
     }
 });

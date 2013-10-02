@@ -40,13 +40,13 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     search: function(summaryOnly) {
-        this.fireEvent('searchstart');
         var page = {from: 1, to: this.pageSize};
         this._search(page, summaryOnly);
     },
 
     _search: function(page, summaryOnly) {
 
+        this.fireEvent('searchstart');
         var requestUrl = this._getRequestUrl(page, summaryOnly);
 
         Ext.Ajax.request({

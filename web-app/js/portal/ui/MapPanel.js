@@ -73,6 +73,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onBaseLayerChanged(message);
         }, this);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() {
+            this._maximiseMapActionsControl();
+        }, this);
+
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
         }, this);
@@ -89,6 +93,12 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getTimeControl: function() {
         return this.mapOptions.timeControl;
+    },
+
+    _maximiseMapActionsControl: function() {
+        if (this.mapOptions.mapActionsControl) {
+            this.mapOptions.mapActionsControl.maximizeControl();
+        }
     },
 
     _onBeforeSelectedLayerChanged: function(openLayer) {

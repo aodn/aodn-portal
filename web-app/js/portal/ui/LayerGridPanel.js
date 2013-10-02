@@ -14,7 +14,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
 		
 		var store = new Portal.data.LayerDataPanelStore({url: cfg.url});
 		var config = Ext.apply({
-			title: 'Drag layers or Servers to the menu tree',
+			title: OpenLayers.i18n('dragLayersOrServers'),
 	    	height: 500,
 	    	width: 600,
 	    	stripeRows: true,

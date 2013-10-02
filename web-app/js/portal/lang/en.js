@@ -7,10 +7,13 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    navigationButtonNext: "Next &#187;",
-    navigationButtonPrevious: "&#171; Previous",
-    navigationButtonSelect: "Select &#187;",
-    navigationButtonDownload: "Download &#187;",
+    navigationButtonNext: "Next >>",
+    navigationButtonPrevious: "<< Previous",
+    navigationButtonSelect: "Select >>",
+    navigationButtonDownload: "Download >>",
+
+    step1Header: 'Select a Data Collection',
+    step2Header: 'Create a Subset',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
@@ -18,6 +21,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
 
     unavailableExtent: "The data extent is unavailable",
+
+    // DetailsPanel.js
+    opacity: "Opacity",
+    wmsLayerProblem: "There is a problem with the availability of this collection",
+    pickAStyle : ' ** Pick a style ** ',
+    noActiveLayersSelected:	"No data collections selected",
 
     //
     navigate: 'Select by Map Bounds',
@@ -54,6 +63,29 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     emailAddressPlaceholder: 'Email address',
     notificationBlurbMessage: 'Subsetting gridded data can take a long time. You will be notified via email when your data is ready for download.',
 
+    // DownloadPanel.js
+    dataDownloadTools: 'Data Download Tools',
+
+    // map.js
+    imageScaledDown: 'This image has been scaled down.',
+
+    // DateSelectionPanel.js
+    min: 'Min',
+    max: 'Max',
+
+    // FacetedSearchResultsDataView.js
+    platform: 'Platform',
+    organisation: 'Organisation',
+    dateRange: 'Date Range',
+    parameters: 'Parameters',
+
+    // LayerGridPanel.js
+    dragLayersOrServers: 'Drag layers or Servers to the menu tree',
+
+    // MapOptions
+    panControl: 'Pan Control',
+    zoomAndCentre: 'Zoom and centre [shift + mouse drag]',
+
     // Animation Panel
     stop: 'Stop',
     start: 'Start',
@@ -67,13 +99,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     slowDown: "Halves animation speed",
     clearButton_tip: "Stops animation and remove all animated data collections from the map",
     pauseButton_tip: "Pauses animation and can explore individual time step using the slider above",
+    selectTimePeriod: 'Select Time Period',
 
     // Map.js
     controlButton_4AnimationControlsPanel: 'Animation Options',
-
-    // MapOptionsPanel.js
-    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     // Search results
     descHeading: 'Description',
@@ -86,8 +115,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 
-    // DetailsPanel.js
-    opacity: "Opacity",
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -144,15 +171,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerActions: 'Actions',
 
 
-
-    // detailsPanel.js
-    pickAStyle : ' ** Pick a style ** ',
-
     // InfoPanel.js
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
 
-    //snapshots
+    // Snapshots
     saveMapButton: 'Save Map',
     saveMapButtonTip: 'Save the current state of the map',
     saveSnapshotDialogTitle: 'Save Map',
@@ -166,6 +189,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareSnapshot: 'Share',
     shareMapDialogTitle: 'Share Map',
     shareSnapshotTip: 'Share a saved map',
+    savedMap: 'Saved Map',
+    mapUnavailable: 'The map you are attempting to view is not available.',
 
     // Faceted layer search
     searchTabTitle: 'Search',
@@ -190,9 +215,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonLabel: 'Clear all',
     removeAllControlLabel: 'Remove all data collections',
     resetMapControlLabel: 'Reset map',
-
-    // RightDetailsPanel.js
-    noActiveLayersSelected: "No data collections selected",
+    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
+    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
     //FilterPanel.js
     filterPanelTitle: 'Subset',
@@ -230,6 +254,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataCollectionSelected: 'No data collection selected.',
     featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
     noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+    searchingForFeatures: 'Searching for Features at your click point',
+    depth: 'Depth',
+    elevation: 'Elevation',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',

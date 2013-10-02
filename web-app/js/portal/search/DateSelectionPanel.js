@@ -56,8 +56,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeFilters("extFrom");
         this.searcher.removeFilters("extTo");
 
-        var titleFrom = "Min";
-        var titleTo = "Max";
+        var titleFrom = OpenLayers.i18n('min');
+        var titleTo   = OpenLayers.i18n('max');
 
         if (range.fromDate !== "")
         {

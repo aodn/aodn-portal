@@ -69,7 +69,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.label = new Ext.form.Label({
-            html : "<h4>Select Time Period</h4>"
+            html : "<h4>" + OpenLayers.i18n('selectTimePeriod') + "</h4>"
         });
 
         this.stepSlider = new Portal.visualise.animations.AnimationStepSlider({

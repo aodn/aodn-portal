@@ -12,12 +12,12 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
         var config = Ext.apply({
-            id: 'detailsPanelItems',
-            title: OpenLayers.i18n('noActiveLayersSelected'),
+            title: OpenLayers.i18n('step2Header'),
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch'
-            }
+            },
+            stateful: true
         }, cfg);
 
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
@@ -46,6 +46,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             plugins: new GeoExt.LayerOpacitySliderTip({
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
+        });
+
+        this.status = new Ext.Container({
+            html: OpenLayers.i18n('noActiveLayersSelected'),
+            cls: 'bold italic',
+            margins: {top:20, right:5, bottom:10, left:0},
+            autoHeight: true
         });
 
         this.opacitySliderContainer = new Ext.Panel({
@@ -94,6 +101,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
+            this.status,
             this.opacitySliderContainer,
             this.transectControl,
             this.detailsPanelTabs
@@ -108,7 +116,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     updateDetailsPanel: function (layer, forceOpen) {
 
         if (layer) {
-            this.setTitle(layer.name);
+            this.setStatus(layer.name);
 
 		    // show new layer unless user requested 'hideLayerOptions'
             this.detailsPanelTabs.update(layer);
@@ -139,9 +147,17 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.doLayout();
         }
         else {
-            this.setTitle(OpenLayers.i18n('noActiveLayersSelected'));
+            this.setStatus(OpenLayers.i18n('noActiveLayersSelected'));
             this.hideDetailsPanelContents();
         }
+    },
+
+    setStatus: function(status) {
+
+        if (this.status.rendered) {
+            this.status.update(status);
+        }
+
     },
 
     hideDetailsPanelContents: function () {
