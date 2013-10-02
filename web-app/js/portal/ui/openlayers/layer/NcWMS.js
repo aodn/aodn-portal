@@ -287,18 +287,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                                             this.EVENT_TYPES);
         this.render();
         this.events = existingEvents;
-        
+
         return this.time;
     },
 
     render: function() {
         var dateTime = this.time;
-        
+
         this.eachTile(function(tile) {
             tile.toTime(dateTime);
         });
     },
-    
+
     // Returns true if left and right has the same date (not time),
     // false otherwise
     isSameDay: function(left, right) {
@@ -389,8 +389,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *          parameters.
      */
     getURL: function(bounds) {
-        // 2011-03-18T13:00:00Z
-        // 2012-10-28T08:00:00Z
 
         if (this.time) {
             return this.getURLAtTime(bounds, this.time);
@@ -400,8 +398,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getURLAtTime: function(bounds, dateTime) {
-        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
-            + dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        var baseUrl = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
+        var time = dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
+
+        return baseUrl + '&TIME=' + time;
     },
 
     toNearestTime: function(dateTime) {

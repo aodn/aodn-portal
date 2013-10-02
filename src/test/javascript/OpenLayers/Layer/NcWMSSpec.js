@@ -82,7 +82,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('time specified', function() {
             cachedLayer.toNearestTime(time);
-            expect(cachedLayer.getURL(bounds).split('&')).toContain('TIME=' + time.utc().format('YYYY-MM-DDTHH:mm:ss'));
+            expect(cachedLayer.getURL(bounds).split('&')).toContain('TIME=' + time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS'));
         });
 
         it('no time specified', function() {
@@ -92,7 +92,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('getURLAtTime', function() {
             var dateTime = moment('2000-02-02T01:01:01+00:00');
-            expect(cachedLayer.getURLAtTime(bounds, dateTime).split('&')).toContain('TIME=2000-02-02T01:01:01');
+            expect(cachedLayer.getURLAtTime(bounds, dateTime).split('&')).toContain('TIME=2000-02-02T01:01:01.000');
         });
     });
 
@@ -681,7 +681,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('render called on moveTo', function() {
             spyOn(cachedLayer, 'render');
             cachedLayer.moveTo(new OpenLayers.Bounds(1, 2, 3, 4), false, false);
-            
+
             waitsFor(function() {
                 return cachedLayer.render.wasCalled;
             }, "render has not been called", 1000);
