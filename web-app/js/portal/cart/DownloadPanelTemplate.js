@@ -79,7 +79,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this._makeEntryMarkup(
-            this._makeSecondaryTextMarkup(OpenLayers.i18n('noFilesMessage'))
+            this._makeSecondaryTextMarkup(OpenLayers.i18n('noFilesMessage'));
         );
     },
 
