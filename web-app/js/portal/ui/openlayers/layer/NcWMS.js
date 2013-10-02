@@ -270,7 +270,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // We do the following so that loadstart/loadend events aren't triggered (which would cause the
         // "Layer Loading..." popup to be continually displayed).
         var existingEvents = this.events;
-        this.events = new OpenLayers.Events(this, this.div, 
+        this.events = new OpenLayers.Events(this, this.div,
                                             this.EVENT_TYPES);
 
 
@@ -369,7 +369,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *
      * Returns:
      * {String} A string with the layer's url and parameters and also the
-     *          passed-in bounds and appropriate tile size specified as 
+     *          passed-in bounds and appropriate tile size specified as
      *          parameters.
      */
     getURL: function(bounds) {
@@ -384,8 +384,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getURLAtTime: function(bounds, dateTime) {
-        return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]) + '&TIME='
-            + dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        var baseUrl = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
+        var time = dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
+
+        return baseUrl + '&TIME=' + time;
     },
 
     toNearestTime: function(dateTime) {
