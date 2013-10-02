@@ -96,4 +96,22 @@ describe("Portal.ui.MainPanel", function() {
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
         });
     });
+
+    describe('step title', function() {
+
+        it('on search', function() {
+            expect(mainPanel.items.items[TAB_INDEX_SEARCH].items.items[0].title)
+                .toEqual(OpenLayers.i18n('step1Header'));
+        });
+
+        it('on visualize', function() {
+            expect(mainPanel.items.items[TAB_INDEX_VISUALISE].items.items[1].title)
+                .toEqual(OpenLayers.i18n('step2Header'));
+        });
+
+        it('on download', function() {
+            expect(mainPanel.items.items[TAB_INDEX_DOWNLOAD].title)
+                .toEqual(OpenLayers.i18n('step3Header'));
+        });
+    });
 });

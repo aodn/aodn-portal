@@ -14,6 +14,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     step1Header: 'Select a Data Collection',
     step2Header: 'Create a Subset',
+    step3Header: 'Data Download Tools',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
@@ -43,9 +44,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadCartUndo: "Undo Last Remove",
     emptyCartText: "No data collections have been added.",
     unavailableDataLink: "Sorry this data is currently unavailable",
-
-    // DownloadPanel.js
-    dataDownloadTools: 'Data Download Tools',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
