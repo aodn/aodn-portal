@@ -307,9 +307,10 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
     describe('_downloadHandlerFor', function() {
 
-       it('returns a function to be called', function() {
+        it('returns a function to be called', function() {
 
-            var returnValue = tpl._downloadHandlerFor();
+            var collection = { uuid: 5 };
+            var returnValue = tpl._downloadHandlerFor(collection);
 
             expect(typeof returnValue).toBe('function');
         });

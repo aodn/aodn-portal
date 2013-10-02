@@ -14,6 +14,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     step1Header: 'Select a Data Collection',
     step2Header: 'Create a Subset',
+    step3Header: 'Data Download Tools',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
@@ -38,7 +39,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
     // Download Step
-    stepHeadingDownload: 'Data Download Tools',
     metadataSubheading: 'Metadata',
     dataSubheading: 'Data',
     filesSubheading: 'Attached files',
