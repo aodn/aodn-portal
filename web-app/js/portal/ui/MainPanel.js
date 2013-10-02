@@ -43,7 +43,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             ],
             bbar: new Portal.ui.MainToolbar({
                 mainPanel: this
-            })
+            }),
+            bbarCfg: {
+                cls: 'mainToolBar'
+            }
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);

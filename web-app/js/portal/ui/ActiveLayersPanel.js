@@ -106,7 +106,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _getDefaultEmptyMapText: function() {
-        return OpenLayers.i18n('noActiveLayersSelected') + "<br/><i><small>" + OpenLayers.i18n('noCollectionSelectedHelp') + "</small></i>";
+        return OpenLayers.i18n('noActiveCollectionSelected') + "<br/><i><small>" + OpenLayers.i18n('noCollectionSelectedHelp') + "</small></i>";
     },
 
     activeLayersTreePanelSelectionChangeHandler: function(selectionModel, node) {

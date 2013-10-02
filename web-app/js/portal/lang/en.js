@@ -27,7 +27,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
     pickAStyle : ' ** Pick a style ** ',
-    noActiveLayersSelected:	"No data collections selected",
+    noActiveCollectionSelected:	"No data collections selected",
 
     //
     navigate: 'Select by Map Bounds',

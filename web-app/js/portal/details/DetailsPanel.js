@@ -52,8 +52,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.status = new Ext.Container({
-            html: OpenLayers.i18n('noActiveLayersSelected'),
-            cls: 'bold italic',
+            html: OpenLayers.i18n('noActiveCollectionSelected'),
+            cls: 'collectionTitle',
             margins: {top:20, right:5, bottom:10, left:0},
             autoHeight: true
         });
@@ -150,7 +150,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.doLayout();
         }
         else {
-            this.setStatus(OpenLayers.i18n('noActiveLayersSelected'));
+            this.setStatus(OpenLayers.i18n('noActiveCollectionSelected'));
             this.hideDetailsPanelContents();
         }
     },
