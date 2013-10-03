@@ -12,7 +12,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
         var config = Ext.apply({
-            title: OpenLayers.i18n('step2Header'),
+            title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
                 cls: 'steps'
             },

@@ -251,7 +251,7 @@ ul.x-tab-strip-top {
 }
 
 .viewPortTab {
-    background: url(../images/viewPortTabActiveUnselected.png) right 0 center no-repeat;
+    background: url(../images/viewPortTabUnselected.png) right 0 center no-repeat;
 }
 
 .viewPortTabActive {

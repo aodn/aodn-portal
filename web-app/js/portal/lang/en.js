@@ -12,9 +12,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationButtonSelect: "Select >>",
     navigationButtonDownload: "Download >>",
 
-    step1Header: 'Select a Data Collection',
-    step2Header: 'Create a Subset',
-    step3Header: 'Data Download Tools',
+    stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
+    step1Description: 'Select a Data Collection',
+    step2Description: 'Create a Subset',
+    step3Description: 'Download',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',

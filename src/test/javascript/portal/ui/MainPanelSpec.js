@@ -101,17 +101,17 @@ describe("Portal.ui.MainPanel", function() {
 
         it('on search', function() {
             expect(mainPanel.items.items[TAB_INDEX_SEARCH].items.items[0].title)
-                .toEqual(OpenLayers.i18n('step1Header'));
+                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 1, stepDescription: OpenLayers.i18n('step1Description') }));
         });
 
         it('on visualize', function() {
             expect(mainPanel.items.items[TAB_INDEX_VISUALISE].items.items[1].title)
-                .toEqual(OpenLayers.i18n('step2Header'));
+                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') }));
         });
 
         it('on download', function() {
             expect(mainPanel.items.items[TAB_INDEX_DOWNLOAD].title)
-                .toEqual(OpenLayers.i18n('step3Header'));
+                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description') }));
         });
     });
 });

@@ -29,13 +29,13 @@ describe("Portal.details.DetailsPanel", function() {
         });
     });
 
-    describe('selected layer changed', function() {
+    describe('selected collection changed', function() {
 
         beforeEach(function() {
             spyOn(detailsPanel, 'setStatus').andCallFake(function(status) { });
         });
 
-        describe('selected layer', function() {
+        describe('selected collection', function() {
             var openLayer;
 
             beforeEach(function() {
@@ -53,7 +53,7 @@ describe("Portal.details.DetailsPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             });
 
-            it('set status to layer name', function() {
+            it('set status to collection name', function() {
                 expect(detailsPanel.setStatus).toHaveBeenCalledWith(openLayer.name);
             });
         });
