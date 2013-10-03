@@ -28,19 +28,19 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
     },
     
     getSouthBL: function() {
-        return parseInt(this.southBL.value);
+        return parseFloat(this.southBL.value);
     },
 
     getNorthBL: function() {
-        return parseInt(this.northBL.value);
+        return parseFloat(this.northBL.value);
     },
 
     getEastBL: function() {
-        return parseInt(this.eastBL.value);
+        return parseFloat(this.eastBL.value);
     },
 
     getWestBL: function() {
-        return parseInt(this.westBL.value);
+        return parseFloat(this.westBL.value);
     },
 
     _buildBoundingBox: function(config) {
