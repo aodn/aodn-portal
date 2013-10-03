@@ -67,7 +67,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             items: [this.opacitySlider]
         });
 
-
         this.transectControl = new Portal.mainMap.TransectControl({
             ref: 'transectControl',
             height: 30,
@@ -98,7 +97,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
                     this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
                 }
-
             }
         });
 
@@ -112,10 +110,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
         this.hideDetailsPanelContents();
-    },
-
-    getOpacitySlider: function () {
-        return this.opacitySlider;
     },
 
     // must be called when the panel is fully expanded for the slider
