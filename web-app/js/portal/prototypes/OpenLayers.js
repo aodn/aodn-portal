@@ -84,7 +84,8 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
-    var wmsUrl = this.server.uri;
+    var layer = this.wfsLayer ? this.wfsLayer : this;
+    var wmsUrl = layer.server.uri;
     var wfsUrl = wmsUrl.replace('/wms', '/wfs');
 
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
