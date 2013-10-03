@@ -12,6 +12,7 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
     var testLayerLink;
 
     beforeEach(function() {
+        Portal.search.FacetedSearchResultsPanel.prototype._refreshView = function() {}
 
         var store = new Portal.data.GeoNetworkRecordStore();
         resultsView = new Portal.search.FacetedSearchResultsPanel({
