@@ -8,25 +8,23 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
-    constructor: function() {
+    constructor: function(downloadPanel) {
+
+        this.downloadPanel = downloadPanel;
 
         var templateLines = [
             '<div class="download-collection">',
             '  <div class="title-row">',
             '    {title}',
             '  </div>',
-            '  <div class="row">',
-            '    <div class="subheading">Metadata</div>',
+            '  {[this._dataRowTemplate(values)]}',
+            '  <div class="row metadata">',
+            '    <div class="subheading">' + OpenLayers.i18n('metadataSubheading') + '</div>',
             '    {[this._getPointOfTruthLinkEntry(values)]}',
             '  </div>',
-            '  <div class="row">',
-            '    <div class="subheading">Data</div>',
-            '    {[this._getDataFilterEntry(values)]}',
-            '    {[this._getDataDownloadEntry(values)]}',
-            '  </div>',
             '  <tpl if="downloadableLinks.length &gt; 0">',
-            '  <div class="row">',
-            '    <div class="subheading">Attached files</div>',
+            '  <div class="row files">',
+            '    <div class="subheading">' + OpenLayers.i18n('filesSubheading') + '</div>',
             '    {[this._getFileListEntries(values)]}',
             '  </div>',
             '  </tpl>',
@@ -40,42 +38,26 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         var href = record.pointOfTruthLink.href;
 
-        var html = this._makeExternalLinkMarkup(href, "View metadata record");
+        var html = this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
 
         return this._makeEntryMarkup(html);
     },
 
-    _getDataFilterEntry: function(values) {
+    _dataRowTemplate: function(values) {
 
-        var wmsLayer = values.wmsLayer;
+        var html = '';
 
-        if (wmsLayer) {
+        if (values.wmsLayer) {
 
-            var cqlText = wmsLayer.getDownloadFilter();
-
-            var html = cqlText ? "Filter applied: <code>" + cqlText + "</code>" : "No data filters applied.";
-
-            return this._makeEntryMarkup(html);
+            html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
         }
 
-        return "";
-    },
+        if (values.aodaac) {
 
-    _getDataDownloadEntry: function(values) {
-
-        var wmsLayer = values.wmsLayer;
-        var html;
-
-        if (wmsLayer) {
-
-            html = '<div id="download-button-' + values.uuid + '"></div>'; // Download button placeholder
-        }
-        else {
-
-            html = this._makeSecondaryTextMarkup('No direct access to data available currently.');
+            html += new Portal.cart.AodaacDataRowTemplate(this).applyWithControls(values);
         }
 
-        return this._makeEntryMarkup(html);
+        return html;
     },
 
     _getFileListEntries: function(values) {
@@ -97,7 +79,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return this._makeEntryMarkup(
-            this._makeSecondaryTextMarkup('No attached files.')
+            this._makeSecondaryTextMarkup(OpenLayers.i18n('noFilesMessage'))
         );
     },
 
@@ -110,12 +92,12 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _makeEntryMarkup: function(text) {
 
-        return '<div class="entry">' + text + '</div>';
+        return String.format('<div class="entry">{0}</div>', text);
     },
 
     _makeSecondaryTextMarkup: function(text) {
 
-        return '<span class="secondary-text">' + text + '</span>';
+        return String.format('<span class="secondary-text">{0}</span>', text);
     },
 
     _makeExternalLinkMarkup: function(href, text) {
@@ -125,6 +107,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             text = href;
         }
 
-        return "<a href='" + href + "' target='_blank' class='external'>" + text + "</a>";
+        return String.format('<a href="{0}" target="_blank" class="external">{1}</a>', href, text);
+    },
+
+    downloadWithConfirmation: function(downloadUrl) {
+
+        this.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl);
     }
 });

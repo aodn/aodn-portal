@@ -15,7 +15,6 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         tpl = new Portal.cart.DownloadPanelTemplate();
         geoNetworkRecord = {
             title: 'the title',
-            uuid: 4,
             pointOfTruthLink: {
                 href: 'point of truth url'
             },
@@ -30,12 +29,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                     name: 'imos:argo_floats',
                     title: 'the title too'
                 }
-            ],
-            wmsLayer: {
-                getDownloadFilter: function() {
-                    return "cql_filter"
-                }
-            }
+            ]
         };
     });
 
@@ -67,85 +61,39 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         });
     });
 
-    describe('_getDataFilterEntry', function() {
+    describe('_dataRowTemplate', function() {
+
+        var childTemplate;
 
         beforeEach(function() {
 
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
+            childTemplate = {
+                applyWithControls: jasmine.createSpy('applyWithControls')
+            };
+            spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
+            spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
         });
 
-        it('returns the entry markup', function() {
+        it('uses AodaacDataRowTemplate where applicable', function() {
 
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
+            geoNetworkRecord.wmsLayer = undefined;
+            geoNetworkRecord.aodaac = {};
 
-            expect(html).toBe('entry markup');
+            tpl._dataRowTemplate(geoNetworkRecord);
+
+            expect(Portal.cart.AodaacDataRowTemplate).toHaveBeenCalledWith(tpl);
+            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
         });
 
-        it('calls entry markup with filter description', function() {
+        it('uses WfsDataRowTemplate where applicable', function() {
 
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
+            geoNetworkRecord.wmsLayer = {};
+            geoNetworkRecord.aodaac = undefined;
 
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('Filter applied: <code>cql_filter</code>');
-        });
+            tpl._dataRowTemplate(geoNetworkRecord);
 
-        it('calls entry markup with no filter message', function() {
-
-            geoNetworkRecord.wmsLayer.getDownloadFilter = function() { return null };
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('No data filters applied.');
-        });
-
-        it('returns empty string when no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
-
-            var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-            expect(html).toBe('');
-            expect(tpl._makeEntryMarkup).not.toHaveBeenCalled();
-        });
-
-        afterEach(function() {
-
-            tpl._makeEntryMarkup.reset();
-        });
-    });
-
-    describe('_getDataDownloadEntry', function() {
-
-        var html;
-
-        beforeEach(function() {
-
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
-
-            html = tpl._getDataDownloadEntry(geoNetworkRecord);
-        });
-
-        it('returns the entry markup', function() {
-
-            expect(html).toBe('entry markup');
-        });
-
-        it('include placeholder when layer is present', function() {
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<div id="download-button-4"></div>');
-        });
-
-        it('include message when there is no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
-
-            tpl._getDataDownloadEntry(geoNetworkRecord);
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No direct access to data available currently.</span>');
-        });
-
-        afterEach(function() {
-
-            tpl._makeEntryMarkup.reset();
+            expect(Portal.cart.WfsDataRowTemplate).toHaveBeenCalledWith(tpl);
+            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
         });
     });
 
@@ -155,6 +103,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
             spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
+            spyOn(tpl, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
         });
 
         it('calls _getSingleFileEntry for each link', function() {
@@ -188,7 +137,8 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('<span class="secondary-text">No attached files.</span>');
+            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilesMessage'));
+            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('secondary text markup');
             expect(html).toBe('entry markup');
         });
 
@@ -255,14 +205,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/', 'text');
 
-            expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>text</a>");
+            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">text</a>');
         });
 
         it('uses href as text if text is undefined', function() {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/');
 
-            expect(html).toBe("<a href='http://host.com/' target='_blank' class='external'>http://host.com/</a>");
+            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">http://host.com/</a>');
         });
     });
 
@@ -273,8 +223,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         beforeEach(function() {
 
             tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-            tpl._getDataFilterEntry = function() { return "data_filter" };
-            tpl._getDataDownloadEntry = function() { return "data_download" };
+            tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
             tpl._getFileListEntries = function() { return "file_list" };
 
             var html = tpl.apply(geoNetworkRecord);
@@ -323,46 +272,13 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             beforeEach(function() {
 
-                row = $(rootElement.children()[1]);
-                rowHeading = $(row.children()[0]);
-            });
-
-            it('has the correct class', function() {
-
-                expect(row.attr('class')).toBe('row');
-            });
-
-            it('has correct number of children', function() {
-
-                expect(row.children().length).toBe(1);
-            });
-
-            it('has correct row heading', function() {
-
-                expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Metadata');
-            });
-
-            it('has correct text value from function', function() {
-
-                expect(getText(row)).toBe('point_of_truth');
-            });
-        });
-
-        describe('download row', function() {
-
-            var row;
-            var rowHeading;
-
-            beforeEach(function() {
-
                 row = $(rootElement.children()[2]);
                 rowHeading = $(row.children()[0]);
             });
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row metadata');
             });
 
             it('has correct number of children', function() {
@@ -373,16 +289,12 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Data');
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('metadataSubheading'));
             });
 
             it('has correct text value from function', function() {
 
-                var rowText = getText(row);
-
-                expect(rowText.length).toBe(2);
-                expect(rowText[0]).toBe('data_filter');
-                expect(rowText[1]).toBe('data_download');
+                expect(getText(row)).toBe('point_of_truth');
             });
         });
 
@@ -399,7 +311,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
             it('has the correct class', function() {
 
-                expect(row.attr('class')).toBe('row');
+                expect(row.attr('class')).toBe('row files');
             });
 
             it('has correct number of children', function() {
@@ -410,7 +322,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             it('has correct row heading', function() {
 
                 expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe('Attached files');
+                expect(rowHeading.text()).toBe(OpenLayers.i18n('filesSubheading'));
             });
 
             it('has correct text value from function', function() {
@@ -427,8 +339,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             beforeEach(function() {
 
                 tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-                tpl._getDataFilterEntry = function() { return "data_filter" };
-                tpl._getDataDownloadEntry = function() { return "data_download" };
+                tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
                 tpl._getFileListEntries = function() { return "file_list" };
 
                 geoNetworkRecord.downloadableLinks = [];
