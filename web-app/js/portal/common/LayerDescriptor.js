@@ -125,12 +125,12 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 openLayersZoomLevel: this.viewParams.openLayersZoomLevel
             }
         }
-        
+
         if (this.wfsLayer) {
-        	openLayer.wfsLayer = {
-        		name : this.wfsLayer.name,
-        		server : { uri : this.wfsLayer.server.uri }
-        	}
+            openLayer.wfsLayer = {
+                name : this.wfsLayer.name,
+                server : { uri : this.wfsLayer.server.uri }
+            }
         }
     },
 
