@@ -401,6 +401,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.westBL.setValue(bounds[0]);
         this.northBL.setValue(bounds[3]);
         this.eastBL.setValue(bounds[2]);
+
         this._updateGeoNetworkAodaac();
     },
 
@@ -419,10 +420,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 dateRangeEnd: this.dateRangeEndPicker.value,
                 timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
                 timeOfDayRangeEnd: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[1].value),
-                southBL: this.southBL.value,
-                westBL: this.westBL.value,
-                northBL: this.northBL.value,
-                eastBL: this.eastBL.value
+                latitudeRangeStart: this.southBL.value,
+                longitudeRangeStart: this.westBL.value,
+                latitudeRangeEnd: this.northBL.value,
+                longitudeRangeEnd: this.eastBL.value
             };
         }
         return {};

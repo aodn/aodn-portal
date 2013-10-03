@@ -1228,7 +1228,6 @@ div.allwhite {
 
 .download-collection {
     margin: 0.5em 0 1.5em 0;
-    background-color: #FAFAFA;
 }
 
 .download-collection .title-row {
@@ -1258,6 +1257,8 @@ div.allwhite {
 .download-collection .row code {
     background-color: #EEE;
     border-radius: 4px;
+    padding: 1px 3px;
+    line-height: 1.4em;
 }
 
 .download-collection .x-btn {
