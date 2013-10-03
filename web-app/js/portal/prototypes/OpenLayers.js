@@ -84,9 +84,7 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
-    var layer = this.wfsLayer ? this.wfsLayer : this;
-    var wmsUrl = layer.server.uri;
-    var wfsUrl = wmsUrl.replace('/wms', '/wfs');
+    var wfsUrl = this._getWfsServerUrl();
 
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
     wfsUrl += 'typeName=' + this.params.LAYERS;
@@ -99,6 +97,15 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
         wfsUrl += '&CQL_FILTER=' + this.getCqlFilter();
     }
+
+    return wfsUrl;
+};
+
+OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {
+
+    var layer = this.wfsLayer ? this.wfsLayer : this;
+    var wmsUrl = layer.server.uri;
+    var wfsUrl = wmsUrl.replace('/wms', '/wfs');
 
     return wfsUrl;
 };
