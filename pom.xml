@@ -397,11 +397,11 @@
 						<include>portal/search/field/CheckBox.js</include>
 						<include>portal/search/field/ValueCheckBox.js</include>
 						<include>portal/search/field/MapLayersCheckBox.js</include>
-                        <include>portal/common/MapPanel.js</include>
-                        <include>portal/search/CloneMapPanel.js</include><!-- needs to load before FacetMapPanel-->
-                        <include>portal/ui/openlayers/layer/NcWMS.js</include>
-                        <include>portal/data/ChildElementsField.js</include>
-                        <include>portal/data/GeoNetwork*.js</include>
+						<include>portal/common/MapPanel.js</include>
+						<include>portal/search/CloneMapPanel.js</include><!-- needs to load before FacetMapPanel-->
+						<include>portal/ui/openlayers/layer/NcWMS.js</include>
+						<include>portal/data/ChildElementsField.js</include>
+						<include>portal/data/GeoNetwork*.js</include>
 						<include>portal/ui/MapPanel.js</include>
 						<include>portal/ui/SearchPanel.js</include>
 						<include>portal/ui/VisualisePanel.js</include>
@@ -413,8 +413,8 @@
 						<exclude>portal/config/grid2treedrag.js</exclude>
 					</sourceExcludes>
                     <specIncludes>
-                        <include>spec_helper.js</include>
-                        <include>**/*.js</include>
+						<include>spec_helper.js</include>
+						<include>**/*.js</include>
                     </specIncludes>
 				</configuration>
 			</plugin>
@@ -463,5 +463,4 @@
 			<url>${development.deployment.repository.url}</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 </project>
