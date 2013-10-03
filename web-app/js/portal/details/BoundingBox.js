@@ -44,10 +44,10 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
     },
 
     _buildBoundingBox: function(config) {
-        this.northBL = this._buildCoord('northBL', config);
-        this.eastBL = this._buildCoord('eastBL', config);
-        this.southBL = this._buildCoord('southBL', config);
-        this.westBL = this._buildCoord('westBL', config);
+        this.northBL = this._buildCoord('northBL');
+        this.eastBL = this._buildCoord('eastBL');
+        this.southBL = this._buildCoord('southBL');
+        this.westBL = this._buildCoord('westBL');
         
         return [
            {
@@ -104,7 +104,7 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
         });
     },
     
-    _buildCoord: function(name, config) {
+    _buildCoord: function(name) {
         return new Ext.form.NumberField({
             name: name,
             decimalPrecision: 2,

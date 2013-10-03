@@ -79,7 +79,7 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 		if (m != null && m.length == 2) {
 			this.CQL = this.filter.name + " = " + m[1];
-			//this.checkbox.setValue(m[1] == "true");
+
 			if(m[1] === "true"){
 				this.trueButton.setValue(true);
 				this.falseButton.setValue(false);
