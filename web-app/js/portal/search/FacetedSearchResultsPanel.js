@@ -68,12 +68,9 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
     },
 
     _refreshView: function() {
-        if (this.dataView) {
-            this.dataView.refresh();
-            // todo set the scroll back to top
-            //this.dataView.setPosition({ x: 0, y: 0 });
-        }
-
+        this.dataView.refresh();
+        // todo set the scroll back to top
+        //this.dataView.setPosition({ x: 0, y: 0 });
     },
 
     afterRender: function () {
