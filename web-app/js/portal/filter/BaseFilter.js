@@ -57,6 +57,10 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
 	getFilterName: function(){
 		return this.filter.name;
 	},
+	
+	isDownloadOnly: function() {
+	    return this.filter.downloadOnly;
+	},
 
 	/**
 	   You must implement this method in subclass.

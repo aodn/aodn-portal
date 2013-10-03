@@ -70,13 +70,11 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
     _setExistingFilters: function(){
     	this.re = new RegExp(this.filter.name + " LIKE '%(.*)%'");
 
-		if(this.layer.params.CQL_FILTER != undefined){
-			var m = this.re.exec(this.layer.params.CQL_FILTER);
+		var m = this.re.exec(this.layer.getDownloadFilter());
 
-			if (m != null && m.length == 2) {
-				this.combo.setValue(m[1]);
-				this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
-			}
+		if (m != null && m.length == 2) {
+			this.combo.setValue(m[1]);
+			this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
 		}
     },
     

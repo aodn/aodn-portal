@@ -34,7 +34,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (wmsLayer) {
 
-            var cqlText = wmsLayer.getCqlFilter();
+            var cqlText = wmsLayer.getDownloadFilter();
             var html;
 
             if (cqlText) {

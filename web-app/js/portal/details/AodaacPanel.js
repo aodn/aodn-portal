@@ -138,103 +138,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
 
-        var bboxControl = [
-            {
-                xtype: 'spacer',
-                height: 5
-            },{
-                xtype: 'container',
-                layout: {
-                    type: 'hbox',
-                    pack:'center',
-                    align: 'middle'
-                },
-                width: 300,
-                items: [
-                    {
-                        xtype: 'label',
-                        text: OpenLayers.i18n('northBL'),
-                        width: 15
-                    },
-                    {
-                        xtype: 'numberfield',
-                        ref: '../../northBL',
-                        name: 'northBL',
-                        decimalPrecision: 2,
-                        width: 50,
-                        disabled: true
-                    }
-                ]
-            },{
-                xtype: 'container',
-                layout: {
-                    type: 'hbox',
-                    align: 'middle'
-                },
-                width: 300,
-                items: [
-                    {
-                        xtype: 'label',
-                        text: OpenLayers.i18n('westBL'),
-                        width: 15
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name: 'westBL',
-                        ref: '../../westBL',
-                        decimalPrecision: 2,
-                        width: 50,
-                        disabled: true
-                    },
-                    {
-                        xtype: 'label',
-                        text: ' ',
-                        flex: 1
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name: 'eastBL',
-                        ref: '../../eastBL',
-                        decimalPrecision: 2,
-                        width: 50,
-                        disabled: true
-                    },
-                    {
-                        xtype: 'label',
-                        text: OpenLayers.i18n('eastBL'),
-                        margins: '0 0 0 5',
-                        width: 15
-                    }
-                ]
-            },{
-                xtype: 'container',
-                layout: {
-                    type: 'hbox',
-                    pack: 'center',
-                    align: 'middle'
-                },
-                width: 300,
-                items: [
-                    {
-                        xtype: 'label',
-                        text: OpenLayers.i18n('southBL'),
-                        width: 15
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name: 'southBL',
-                        ref: '../../southBL',
-                        decimalPrecision: 2,
-                        width: 50,
-                        disabled: true
-                    }
-                ]
-            }
-        ];
-
+        this.bboxControl = new Portal.details.BoundingBox({
+            width: 300
+        });
+        
         // Group controls for hide/show
         this.spatialControls = new Ext.Container({
-            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, bboxControl, this._newSectionSpacer()],
+            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, this.bboxControl, this._newSectionSpacer()],
             hidden: true
         });
 
@@ -396,12 +306,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _setBounds: function() {
-        var bounds = this.map.getExtent().toArray();
-        this.southBL.setValue(bounds[1]);
-        this.westBL.setValue(bounds[0]);
-        this.northBL.setValue(bounds[3]);
-        this.eastBL.setValue(bounds[2]);
-
+        var bounds = this.map.getExtent();
+        this.bboxControl.setBounds(bounds);
         this._updateGeoNetworkAodaac();
     },
 
@@ -420,12 +326,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 dateRangeEnd: this.dateRangeEndPicker.value,
                 timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
                 timeOfDayRangeEnd: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[1].value),
-                latitudeRangeStart: this.southBL.value,
-                longitudeRangeStart: this.westBL.value,
-                latitudeRangeEnd: this.northBL.value,
-                longitudeRangeEnd: this.eastBL.value
+                latitudeRangeStart: this.bboxControl.getSouthBL(),
+                longitudeRangeStart: this.bboxControl.getWestBL(),
+                latitudeRangeEnd: this.bboxControl.getNorthBL(),
+                longitudeRangeEnd: this.bboxControl.getEastBL()
             };
         }
         return {};
-    }
+    }    
 });
