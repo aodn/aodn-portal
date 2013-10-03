@@ -94,9 +94,8 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
-    if (this.getCqlFilter()) {
-
-        wfsUrl += '&CQL_FILTER=' + this.getCqlFilter();
+    if (this.getDownloadFilter()) {
+        wfsUrl += '&CQL_FILTER=' + this.getDownloadFilter();
     }
 
     return wfsUrl;
@@ -148,9 +147,41 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter = function () {
+OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
+    if (this.params["CQL_FILTER"]) {
+        return this.params["CQL_FILTER"];
+    } else {
+        return "";
+    }
+};
+ 
+OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
+    if (cqlFilter == this.getCqlFilter()) {
+        return;
+    }
+    
+    if (cqlFilter) {
+        this.mergeNewParams({
+            CQL_FILTER: cqlFilter
+        });
+    } else {
+        delete this.params["CQL_FILTER"];
+        this.redraw();
+    }
+};
 
-    return this.params.CQL_FILTER;
+OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
+    var filters = [];
+    
+    if (this.params.CQL_FILTER) {
+        filters.push(this.params.CQL_FILTER);
+    }
+    
+    if (this.downloadOnlyFilters) {
+        filters.push(this.downloadOnlyFilters);
+    }
+    
+    return filters.join(' AND ');
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function () {

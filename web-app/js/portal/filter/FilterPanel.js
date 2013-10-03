@@ -29,7 +29,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         this.GET_FILTER = "layer/getFiltersAsJSON";
-        this.activeFilters = {};
 
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
@@ -93,6 +92,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     );
 
                     if (aFilterIsEnabled) {
+                        this._updateLayerFilters();
+                        
                         this.setVisible(true);
 
                         this.clearFiltersButton = new Ext.Button({
@@ -121,53 +122,46 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _updateFilter: function() {
-
-        var combinedCQL = "";
-
-        if (this._hasAnyActiveFilters()) {
-            for (var name in this.activeFilters) {
-                if (this.activeFilters[name].hasValue()) {
-                    combinedCQL += this.activeFilters[name].getCQL() + this.AND_QUERY;
-                }
-            }
-
-            if (combinedCQL.length > 0) {
-                combinedCQL = combinedCQL.substr(0, combinedCQL.length - this.AND_QUERY.length);
-
-                this.layer.mergeNewParams({
-                    CQL_FILTER: combinedCQL
-                });
-            }
-        }
-        else {
-            delete this.layer.params["CQL_FILTER"];
-            this.layer.redraw();
-        }
+    _updateLayerFilters: function() {
+        var commonFilters = this._getCqlFilter({downloadOnly: false});
+        
+        this.layer.setCqlFilter(commonFilters);
+        this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
     },
 
-    _hasAnyActiveFilters: function() {
-
-        return Object.keys(this.activeFilters).length > 0;
+    _getCqlFilter: function(options) {
+        var cqlValues = [];
+        
+        Ext.each(this._getActiveFilters(), function(filter) {
+            if (filter.isDownloadOnly() == options.downloadOnly) {
+                cqlValues.push(filter.getCQL());;
+            }
+        });
+        
+        return cqlValues.join(this.AND_QUERY);
     },
 
+    _getActiveFilters: function() {
+        var activeFilters = [];
+        
+        this.items.each(function(item) {
+            if (item.hasValue && item.hasValue()) {
+                activeFilters.push(item);
+            }
+        });
+        
+        return activeFilters;
+    },
+    
     _handleAddFilter: function(aFilter) {
-        this.activeFilters[aFilter.getFilterName()] = aFilter;
-        this._updateFilter();
+        this._updateLayerFilters();
     },
 
     _clearFilters: function() {
+        Ext.each(this._getActiveFilters(), function(filter){
+            filter.handleRemoveFilter();
+        });
 
-        var keys = Object.keys(this.activeFilters);
-
-        for (var i = 0; i < keys.length; i++) {
-
-            var key = keys[i];
-
-            this.activeFilters[key].handleRemoveFilter();
-            delete this.activeFilters[key];
-        }
-
-        this._updateFilter();
+        this._updateLayerFilters();
     }
 });

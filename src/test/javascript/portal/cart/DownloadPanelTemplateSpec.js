@@ -32,7 +32,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 }
             ],
             wmsLayer: {
-                getCqlFilter: function() {
+                getDownloadFilter: function() {
                     return "cql_filter"
                 }
             }
@@ -90,7 +90,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         it('calls entry markup with no filter message', function() {
 
-            geoNetworkRecord.wmsLayer.getCqlFilter = function() { return null };
+            geoNetworkRecord.wmsLayer.getDownloadFilter = function() { return null };
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 

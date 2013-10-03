@@ -121,41 +121,35 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
 	_setExistingFilters: function() {
 
-		if (this.layer.params.CQL_FILTER != undefined) {
+		var beforePattern = this.filter.name + " before (.*) *";
+		var afterPattern = this.filter.name + " after (.*) *";
 
-			var beforePattern = this.filter.name + " before (.*) *";
-			var afterPattern = this.filter.name + " after (.*) *";
+		betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
+		beforeRe = new RegExp(beforePattern);
+		afterRe = new RegExp(afterPattern);
 
-			betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
-			beforeRe = new RegExp(beforePattern);
-			afterRe = new RegExp(afterPattern);
+		var m = beforeRe.exec(this.layer.getDownloadFilter());
+		var m2 = afterRe.exec(this.layer.getDownloadFilter());
+		var between = betweenRe.exec(this.layer.getDownloadFilter());
 
-			if (this.layer.params.CQL_FILTER != undefined) {
+		if (between != null && between.length == 3) {
 
-				var m = beforeRe.exec(this.layer.params.CQL_FILTER);
-				var m2 = afterRe.exec(this.layer.params.CQL_FILTER);
-				var between = betweenRe.exec(this.layer.params.CQL_FILTER);
+			this.operators.setValue('between');
+			this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
+			this.toField.setVisible(true);
+			this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
+		}
+		else {
 
-				if (between != null && between.length == 3) {
+		    if (m != null && m.length == 2) {
 
-					this.operators.setValue('between');
-					this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
-					this.toField.setVisible(true);
-					this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
-				}
-				else {
+				this.operators.setValue('before');
+				this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+			}
+			else if (m2 != null && m2.length == 2) {
 
-				    if (m != null && m.length == 2) {
-
-						this.operators.setValue('before');
-						this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-					}
-					else if (m2 != null && m2.length == 2) {
-
-						this.operators.setValue('after');
-						this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-					}
-				}
+				this.operators.setValue('after');
+				this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
 			}
 		}
 	}

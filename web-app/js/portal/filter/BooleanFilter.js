@@ -73,25 +73,20 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 	},
 
 	_setExistingFilters: function(){
-		if(this.layer.params.CQL_FILTER != undefined){
+	    this.re = new RegExp(this.filter.name + " = (.*) ?");
 
-			this.re = new RegExp(this.filter.name + " = (.*) ?");
+		var m = this.re.exec(this.layer.getDownloadFilter());
 
-			if(this.layer.params.CQL_FILTER != undefined){
-				var m = this.re.exec(this.layer.params.CQL_FILTER);
-
-				if (m != null && m.length == 2) {
-					this.CQL = this.filter.name + " = " + m[1];
-					//this.checkbox.setValue(m[1] == "true");
-					if(m[1] === "true"){
-						this.trueButton.setValue(true);
-						this.falseButton.setValue(false);
-					}
-					else if(m[1] === "false"){
-						this.trueButton.setValue(false);
-						this.falseButton.setValue(true);
-					}
-				}
+		if (m != null && m.length == 2) {
+			this.CQL = this.filter.name + " = " + m[1];
+			//this.checkbox.setValue(m[1] == "true");
+			if(m[1] === "true"){
+				this.trueButton.setValue(true);
+				this.falseButton.setValue(false);
+			}
+			else if(m[1] === "false"){
+				this.trueButton.setValue(false);
+				this.falseButton.setValue(true);
 			}
 		}
 	}

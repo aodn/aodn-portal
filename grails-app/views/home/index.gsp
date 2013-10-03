@@ -88,7 +88,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/FreeText.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/DateRange.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/FacetedDateRange.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/BoundingBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/MultiSelectCombo.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/CheckBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/field/ValueCheckBox.js')}"></script>
@@ -113,6 +112,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"></script>
