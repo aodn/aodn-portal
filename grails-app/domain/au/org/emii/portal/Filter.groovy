@@ -58,6 +58,7 @@ class Filter implements Comparable {
 		filterData["layerId"] = layer.id
 		filterData["enabled"] = enabled
 		filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues.sort() : []
+		filterData["downloadOnly"] = downloadOnly
 
 		return filterData
 	}

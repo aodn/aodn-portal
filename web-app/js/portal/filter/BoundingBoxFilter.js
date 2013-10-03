@@ -10,88 +10,54 @@ Ext.namespace('Portal.filter');
 Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
 	initComponent: function() {
 		this.CQL = "";
-		Portal.filter.FilterPanel.superclass.initComponent.call(this);
+		Portal.filter.BoundingBoxFilter.superclass.initComponent.call(this);
 	},
 
 	_createField: function() {
-		this.bbox = new Portal.search.field.BoundingBox();
+		this.bbox = new Portal.details.BoundingBox();
 		this.add(this.bbox);
-		this.bbox.bboxHint.setVisible(false);
-
-		this.mon(this.bbox, 'bboxchange', this._onCoordChange, this);
 	},
 
+    isDownloadOnly: function() {
+        return true;
+    },
+
 	handleRemoveFilter: function() {
-		this.CQL = "";
-		this._setDefaultBounds();
+	    // Can't be removed
 	},
 
 	setLayerAndFilter: function(layer, filter) {
-		Portal.filter.BaseFilter.prototype.setLayerAndFilter.apply(this, arguments);
-
+	    Portal.filter.BoundingBoxFilter.superclass.setLayerAndFilter.apply(this, arguments);
+	    
+	    this._updateBounds();
+	    
 		layer.map.events.register("move", this, function(e) {
-
-			if (this.items.length != 0 && layer.map) {
-				var extent = layer.map.getExtent();
-
-				this.bbox.setBox({
-					northBL:extent.top,
-					westBL: extent.left,
-					eastBL: extent.right,
-					southBL: extent.bottom
-				});
-			}
+		    this._updateBounds();
 		});
 	},
 
 	_setExistingFilters: function() {
-		this.re = new RegExp("BBOX\\(" + this.filter.name + ",(.*)\\)");
-
-		if (this.layer.params.CQL_FILTER != undefined) {
-			var m = this.re.exec(this.layer.params.CQL_FILTER);
-
-			if (m != null && m.length == 2) {
-				this.CQL = "BBOX(" + this.filter.name + ", " + m[1] + ")";
-				var coords = m[1].split(",");
-				this.bbox.setBox({
-					northBL: coords[3],
-					westBL: coords[0],
-					eastBL: coords[2],
-					southBL: coords[1]
-				});
-			}
-			else {
-				this._setDefaultBounds();
-			}
-		}
-		else {
-			this._setDefaultBounds();
-		}
+	    // Never restored from an existing filter
 	},
 
-	_setDefaultBounds: function(){
-		var bounds = this.layer.getExtent();
-
-		this.bbox.setBox({
-			northBL: bounds.top,
-			westBL: bounds.left,
-			eastBL: bounds.right,
-			southBL: bounds.bottom
-		});
+	_updateBounds: function() {
+        if (this.items.length != 0 && this.layer.map) {
+            var extent = this.layer.map.getExtent();
+            this.bbox.setBounds(extent);
+            this._updateCql(extent);
+        }
 	},
 
-	_onCoordChange: function(bounds){
-
-		if ((bounds.westBL != "") && (bounds.southBL != "") && (bounds.eastBL != "") && (bounds.northBL != "")) {
-			this.CQL = String.format(
-				"BBOX({0},{1},{2},{3},{4})",
-				this.filter.name,
-				bounds.westBL,
-				bounds.southBL,
-				bounds.eastBL,
-				bounds.northBL
-			);
-			this._fireAddEvent();
-		}
+	_updateCql: function(bounds){
+		this.CQL = String.format(
+			"BBOX({0},{1},{2},{3},{4})",
+			this.filter.name,
+			bounds.left,
+			bounds.bottom,
+			bounds.right,
+			bounds.top
+		);
+		
+		this._fireAddEvent();
 	}
 });
