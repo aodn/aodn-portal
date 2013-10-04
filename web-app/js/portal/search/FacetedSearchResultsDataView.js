@@ -151,6 +151,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     getMiniMap: function(values) {
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
+
+        // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
+        // e.g. firefox (but not chrome).
+        return '';
     },
 
     isRecActive: function(uuid) {
