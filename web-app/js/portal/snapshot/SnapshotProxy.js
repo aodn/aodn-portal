@@ -81,8 +81,8 @@ Portal.snapshot.SnapshotProxy = function()
         try {
             errors = Ext.decode(response.responseText).errors;
         }
-        catch (exception){
-            //should I check content of this?
+        catch (exception) {
+            // Should I check content of this?
             errors = response.responseText;
         }
 
