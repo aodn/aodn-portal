@@ -19,6 +19,37 @@ describe("Portal.filter.FilterPanel", function() {
         });
     });
 
+    describe('_onGetFilterSuccess', function() {
+
+        var dummyResponse;
+
+        beforeEach(function() {
+
+            dummyResponse = {responseText: "[{}]"};
+
+            spyOn(filterPanel, 'createFilterPanel');
+            spyOn(filterPanel, '_updateLayerFilters');
+            spyOn(filterPanel.loadingMessage, 'hide');
+
+            filterPanel._onGetFilterSuccess(dummyResponse, {}, noOp, noOp, {});
+        });
+
+        it('creates a filter panel', function() {
+
+            expect(filterPanel.createFilterPanel).toHaveBeenCalled();
+        });
+
+        it('updates the layer filters', function() {
+
+            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+
+        it('hides loading message on success', function() {
+
+            expect(filterPanel.loadingMessage.hide).toHaveBeenCalled();
+        });
+    });
+
     describe('the clear all filters button', function() {
 
         it('calls the _clearFilters method', function() {
@@ -57,7 +88,7 @@ describe("Portal.filter.FilterPanel", function() {
     describe('_clearFilters method', function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
-        
+
         var _mockFilter = function(name) {
 
             return {
@@ -72,7 +103,7 @@ describe("Portal.filter.FilterPanel", function() {
                _mockFilter('data_centre'),
                _mockFilter('pi')
             ]);
-            
+
             spyOn(filterPanel, '_updateLayerFilters');
 
             filterPanel._clearFilters();

@@ -30,7 +30,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pickAStyle : ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
 
-    //
+    // Geographic Bounds
     navigate: 'Select by Map Bounds',
     navigateHelp: 'Drag the map. The map bounds is the selection area',
     box: 'Drag a Box',
@@ -63,6 +63,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Email address',
     notificationBlurbMessage: 'Subsetting gridded data can take a long time. You will be notified via email when your data is ready for download.',
+
+    // WFS Filters Panel
+    subsetParametersText: 'subset paramaters',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
