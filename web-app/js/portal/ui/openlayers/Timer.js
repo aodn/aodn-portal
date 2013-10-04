@@ -70,7 +70,7 @@ OpenLayers.Timer = OpenLayers.Class({
         if (this.tickDateTimes.length == 0) {
             return undefined;
         }
-        
+
         return this.tickDateTimes.length;
     },
 
@@ -94,7 +94,7 @@ OpenLayers.Timer = OpenLayers.Class({
         this.currTickIndex = tickIndex;
         this.onTick(this.currTickIndex);
     },
-    
+
     tickForward: function() {
         this.currTickIndex = (this.currTickIndex + 1) % this.getNumTicks();
         this.onTick(this.currTickIndex);
@@ -116,7 +116,7 @@ OpenLayers.Timer = OpenLayers.Class({
     getTickDateTimeMax: function() {
         return moment(this.tickDateTimes.last());
     },
-    
+
     on: function(eventName, observer, context) {
 
         if (!observer) {
@@ -162,7 +162,7 @@ OpenLayers.Timer = OpenLayers.Class({
             self.tickForward();
             self.intervalRef = window.setTimeout(callbackWrapper, self.tickInterval.asMilliseconds());
         };
-        
+
         this.intervalRef = window.setTimeout(callbackWrapper, this.tickInterval.asMilliseconds());
     },
 
@@ -180,7 +180,7 @@ OpenLayers.Timer = OpenLayers.Class({
         this._clearTimeout();
         this._setTimeout();
     },
-    
+
     doubleFrequency: function() {
         this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() / 2);
         this._resetTimeout();
@@ -190,6 +190,6 @@ OpenLayers.Timer = OpenLayers.Class({
         this.tickInterval = moment.duration(this.tickInterval.asMilliseconds() * 2);
         this._resetTimeout();
     },
-    
+
     CLASS_NAME: "OpenLayers.Timer"
 });

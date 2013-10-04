@@ -13,7 +13,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
   mapPanel: null,  // mapPanel containing map
   layout: 'hbox',
   hidden: true,
-  
+
   initComponent: function() {
     this.items = [{
       xtype: 'label',
@@ -25,28 +25,28 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
       scope: this,
       handler: this.toggleDraw
     }];
-    
+
     Portal.mainMap.TransectControl.superclass.initComponent.apply(this, arguments);
-    
+
     this.addEvents('transect');
   },
 
   setMapPanel: function(mapPanel) {
     if (this.mapPanel == mapPanel)
       return;
-    
+
     this.mapPanel = mapPanel;
-    
+
     // create layer and control for drawing transects
     this.drawingLayer = new OpenLayers.Layer.Vector( OpenLayers.i18n("drawing")); 
     this.drawingControl = new OpenLayers.Control.DrawFeature(this.drawingLayer, OpenLayers.Handler.Path, {title: OpenLayers.i18n('drawingTitle')});
-    
+
     this.mapPanel.map.addControl(this.drawingControl);
-    
+
     this.drawingLayer.events.register('featureadded', this, this.onAddFeature);
     this.drawingLayer.events.fallThrough = false;
   },
-  
+
   toggleDraw: function() {
     if (this.drawingControl.active) {
       this.drawingControl.deactivate();  
@@ -54,14 +54,13 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
       this.drawingControl.activate();
     }
   },
-  
+
   deactivateDrawingControl: function() {
-	  if (this.drawingControl != null) {
-		  this.drawingControl.deactivate();
-	  }
-	  
+      if (this.drawingControl != null) {
+          this.drawingControl.deactivate();
+      }
   },
-  
+
   onAddFeature: function(e) {
     var label = this.layer.name,
         layerName = this.layer.params['LAYERS'],
@@ -77,14 +76,14 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     var line = e.feature.geometry.toString();
     // we strip off the "LINESTRING(" and the trailing ")"
     line = line.substring(11, line.length - 1);
-    
+
     //HACK: Pass time parameter if specified for layer
     //TODO: replace this with loop on dimensions when this info is available from GetCapabilities statement 
     if (this.layer.params.TIME != undefined) {
       dimensionValues.TIME =  this.layer.params.TIME;
       dimensionParams = '&TIME=' + dimensionValues.TIME;
     }
-    
+
     // Load an image of the transect
     var transectUrl =   serverUrl +
         'REQUEST=GetTransect' +
@@ -100,7 +99,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     inf.label = label;
     inf.dimensionValues = this.format(dimensionValues);
     inf.layerName = layerName;
-    
+
     this.fireEvent('transect', inf);
 
     this.drawingControl.deactivate();
@@ -112,17 +111,17 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     //clickEventHandler.activate();
     //pan.activate();
   },
-  
+
   format: function(dimensionValues) {
     var result = '';
-    
+
     Ext.iterate(dimensionValues, function(key, value) {
       result += key + ': ' + value + '<BR>';
     });
-    
+
     return result;
   },
-  
+
   escapeProxy: function(serverUrl) {
     // the serverUrl may be a relative path to our proxy cache
     if (serverUrl.substring(0, 1) == "/") {

@@ -66,7 +66,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     hide: function() {
         try {
             Portal.cart.DownloadConfirmationWindow.superclass.hide.call(this);
-        } catch (e) {
+        }
+        catch (e) {
             /**
              * Explicitly ignoring exception
              *

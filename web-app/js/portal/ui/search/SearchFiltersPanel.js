@@ -93,7 +93,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         return this.spinner;
     },
-    
+
     _buildNewSearchButton: function() {
 
         this.newSearchButton = new Ext.Button({

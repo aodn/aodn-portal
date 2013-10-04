@@ -14,7 +14,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
 
   constructor: function(cfg) {
     var defaultZoom = this.getMapDefaultZoom(cfg.initialBbox);
-    
+
     var config = Ext.apply({
       extent: defaultZoom,
       stateful: false
@@ -32,13 +32,13 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
       this.savedExtentChange = extent;
     }
   },
-  
+
   zoomToInitialBbox: function() {
     this.setExtent(this.extent);
   },
-  
+
   /* Return an openlayers extent for the passed initialBbox string */
-  
+
   getMapDefaultZoom: function(initialBbox) {
     /* ---------------
        * left {Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
@@ -50,14 +50,14 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
       alert("ERROR: There is no bounding box is not set in the site configuration");
       return null;
     }
-    
+
     var bbox = initialBbox.split(",");
-    
+
     var minx = parseFloat(bbox[0]);
     var maxx = parseFloat(bbox[2]);
     var miny = parseFloat(bbox[1]);
     var maxy = parseFloat(bbox[3]);
-    
+
     if (!((minx >= -180 && minx <= 180)
       && (maxx > -180 && maxx <= 180)
       && (miny >= -90 && miny <= 90)
@@ -79,16 +79,16 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         );
       return null;
     }
-    
+
     return new OpenLayers.Bounds(minx, miny, maxx, maxy);
   },
-  
+
   /* Override GeoExt setInitialExtent - want a best fit zoom */
   /* and want to reflect any pre-render extent changes  */
 
   setInitialExtent: function() {
     var map = this.map;
-    
+
     if (this.savedExtentChange) {
         map.zoomToExtent(this.savedExtentChange, true);
     } else if(this.center || this.zoom != null) {
@@ -99,7 +99,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     } else {
         map.zoomToMaxExtent();
     }
-    
+
     this.initialExtentSet = true;
   }
 });

@@ -128,7 +128,7 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
 
 OpenLayers.Layer.WMS.prototype.proxy = function (proxy) {
     if (this.server.username && this.server.password && !this.localProxy) {
-    	var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
+        var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
         this.server.uri = proxy + this.server.uri + separator;
         this.url = this.server.uri;
         this.localProxy = proxy;
@@ -162,12 +162,12 @@ OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
         return "";
     }
 };
- 
+
 OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
     if (cqlFilter == this.getCqlFilter()) {
         return;
     }
-    
+
     if (cqlFilter) {
         this.mergeNewParams({
             CQL_FILTER: cqlFilter
@@ -180,15 +180,15 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
 
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     var filters = [];
-    
+
     if (this.params.CQL_FILTER) {
         filters.push(this.params.CQL_FILTER);
     }
-    
+
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);
     }
-    
+
     return filters.join(' AND ');
 };
 

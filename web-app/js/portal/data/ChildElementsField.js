@@ -12,12 +12,12 @@ Ext.namespace('Portal.data');
  * child elements as an array
  *  
  */
- 
+
 Portal.data.ChildElementsField = Ext.extend(Ext.data.Field, {
 
     convert: function(v, record) {
         var values = [];
-        
+
         Ext.each(Ext.DomQuery.jsSelect(this.name, record), function(element) {
             values.push(element.firstChild.nodeValue);
         });

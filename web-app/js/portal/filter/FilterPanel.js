@@ -93,7 +93,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
                     if (aFilterIsEnabled) {
                         this._updateLayerFilters();
-                        
+
                         this.setVisible(true);
 
                         this.clearFiltersButton = new Ext.Button({
@@ -124,35 +124,35 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
     _updateLayerFilters: function() {
         var commonFilters = this._getCqlFilter({downloadOnly: false});
-        
+
         this.layer.setCqlFilter(commonFilters);
         this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
     },
 
     _getCqlFilter: function(options) {
         var cqlValues = [];
-        
+
         Ext.each(this._getActiveFilters(), function(filter) {
             if (filter.isDownloadOnly() == options.downloadOnly) {
                 cqlValues.push(filter.getCQL());;
             }
         });
-        
+
         return cqlValues.join(this.AND_QUERY);
     },
 
     _getActiveFilters: function() {
         var activeFilters = [];
-        
+
         this.items.each(function(item) {
             if (item.hasValue && item.hasValue()) {
                 activeFilters.push(item);
             }
         });
-        
+
         return activeFilters;
     },
-    
+
     _handleAddFilter: function(aFilter) {
         this._updateLayerFilters();
     },

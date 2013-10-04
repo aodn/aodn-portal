@@ -12,21 +12,21 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
         var defaults = {
             width: 170
         }
-        
+
         var config = Ext.apply({}, cfg, defaults);
-        
+
         config.items = this._buildBoundingBox(config);
 
         Portal.details.BoundingBox.superclass.constructor.call(this, config);
     },
-    
+
     setBounds: function(bounds) {
         this.southBL.setValue(bounds.bottom);
         this.westBL.setValue(bounds.left);
         this.northBL.setValue(bounds.top);
         this.eastBL.setValue(bounds.right);
     },
-    
+
     getSouthBL: function() {
         return parseFloat(this.southBL.value);
     },
@@ -48,7 +48,7 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
         this.eastBL = this._buildCoord('eastBL');
         this.southBL = this._buildCoord('southBL');
         this.westBL = this._buildCoord('westBL');
-        
+
         return [
            {
                xtype: 'container',
@@ -96,14 +96,14 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
            }
        ];
     },
-    
+
     _buildLabel: function(i18nKey) {
         return new Ext.form.Label({
             text: OpenLayers.i18n(i18nKey),
             width: 15
         });
     },
-    
+
     _buildCoord: function(name) {
         return new Ext.form.NumberField({
             name: name,

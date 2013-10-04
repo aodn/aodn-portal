@@ -141,7 +141,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.bboxControl = new Portal.details.BoundingBox({
             width: 300
         });
-        
+
         // Group controls for hide/show
         this.spatialControls = new Ext.Container({
             items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, this.bboxControl, this._newSectionSpacer()],

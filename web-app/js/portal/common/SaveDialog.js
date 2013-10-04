@@ -9,10 +9,10 @@
 Ext.namespace('Portal.common');
 
 Portal.common.SaveDialog = Ext.extend(Ext.Window, {
-	
-	nameFieldLabel: null,
-	failedSaveErrMsg: OpenLayers.i18n('errorDialogTitle'),
-	
+
+    nameFieldLabel: null,
+    failedSaveErrMsg: OpenLayers.i18n('errorDialogTitle'),
+
   initComponent: function() {
     Ext.apply(this, {
       modal: true,
@@ -76,21 +76,21 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
   },
 
   onFailedSave: function(errors) {
-	  var messages = this._formatErrors(errors);
-	  Ext.Msg.alert(this.failedSaveErrMsg, messages);
+      var messages = this._formatErrors(errors);
+      Ext.Msg.alert(this.failedSaveErrMsg, messages);
   },
-  
+
   _formatErrors: function(errors) {
-	  var errorMessages = '';
+      var errorMessages = '';
 
-	  for (var i=0; i < errors.length; i++) {
-		  errorMessages += errors[i].message;
-		  if (i < errors.length-1) {
-			  errorMessages += '</br>';
-		  }
-	  }
+      for (var i=0; i < errors.length; i++) {
+          errorMessages += errors[i].message;
+          if (i < errors.length-1) {
+              errorMessages += '</br>';
+          }
+      }
 
-	  return errorMessages;
+      return errorMessages;
   }
 
 });
