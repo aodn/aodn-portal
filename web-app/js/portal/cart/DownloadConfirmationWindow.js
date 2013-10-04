@@ -13,54 +13,69 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         // Content
         var contentPanel = new Ext.Panel({
-            html:Portal.app.config.downloadCartConfirmationWindowContent,
-            width:450,
-            resizable:false
+            html: Portal.app.config.downloadCartConfirmationWindowContent,
+            width: 450,
+            resizable: false
         });
 
         // Controls
         var downloadButton = {
             text:OpenLayers.i18n('downloadConfirmationDownloadText'),
-            listeners:{
-                scope:this,
-                click:this.onAccept
+            listeners: {
+                scope: this,
+                click: this.onAccept
             }
         };
         var cancelButton = {
             text:OpenLayers.i18n('downloadConfirmationCancelText'),
-            listeners:{
-                scope:this,
-                click:this.onCancel
+            listeners: {
+                scope: this,
+                click: this.onCancel
             }
         };
 
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
-            modal:true,
-            padding:15,
-            layout:'fit',
-            items:{
-                autoHeight:true,
-                autoWidth:true,
-                padding:5,
-                xtype:'form',
-                items:[contentPanel],
-                buttons:[downloadButton, cancelButton],
-                keys:[
+            modal: true,
+            padding: 15,
+            layout: 'fit',
+            items: {
+                autoHeight: true,
+                autoWidth: true,
+                padding: 5,
+                xtype: 'form',
+                items: [contentPanel],
+                buttons: [downloadButton, cancelButton],
+                keys: [
                     {
-                        key:[Ext.EventObject.ESCAPE],
-                        handler:this.onCancel,
-                        scope:this
+                        key: [Ext.EventObject.ESCAPE],
+                        handler: this.onCancel,
+                        scope: this
                     }
                 ]
             },
-            listeners:{
-                show:this.onShow,
-                scope:this
+            listeners: {
+                show: this.onShow,
+                scope: this
             }
         });
 
         Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
+    },
+
+    hide: function() {
+        try {
+            Portal.cart.DownloadConfirmationWindow.superclass.hide.call(this);
+        } catch (e) {
+            /**
+             * Explicitly ignoring exception
+             *
+             * https://github.com/aodn/aodn-portal/issues/486
+             *
+             * Same bugfix as for #175:
+             * https://github.com/aodn/aodn-portal/issues/175
+             */
+        }
     },
 
     showIfNeeded: function(downloadUrl) {
