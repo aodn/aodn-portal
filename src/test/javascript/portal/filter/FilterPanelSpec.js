@@ -112,5 +112,4 @@ describe("Portal.filter.FilterPanel", function() {
             expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
-
 });

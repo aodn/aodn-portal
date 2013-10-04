@@ -12,7 +12,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         this.loadingMessage = new Ext.Container({
             autoEl: 'div',
-            html: OpenLayers.i18n('loadingSpinner',{resource: OpenLayers.i18n('subsetParametersText')}),
+            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
             colspan: 2
         });
 
