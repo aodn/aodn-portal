@@ -11,7 +11,7 @@ Ext.namespace('Portal.search');
 /**
  * @class Portal.search.RefineSearchPanel
  * @extends Ext.Panel
- * 
+ *
 A RefineSearchPanel is used to refine a search on the catalog using search result facets
 
  * @constructor
@@ -31,13 +31,13 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
    /* Example refinements data
    [
       {name: 'Parameter', values: [
-         {value: 'Sea surface temperature'}, 
+         {value: 'Sea surface temperature'},
          {value: 'Sea water pressure'}]},
       {name: 'Type', values: [
          {value: 'Profiling Float'},
          {value: 'Mooring'}]}
    ]
-    */   
+    */
    refinementsTpl: [
       '<tpl if="length &gt; 0">',
          '<div class="p-refinements">',
@@ -53,9 +53,9 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
                               '<p><a class="p-remove-value" href="">Remove</a>{value}</p>',
                            '</li>',
                      '</ul>',
-                  '</tpl>',  
+                  '</tpl>',
                '</div>',
-            '</tpl>' , 
+            '</tpl>',
          '</div>',
       '</tpl>'
    ],
@@ -66,7 +66,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
   /*  Example facets data in JSON format
   [
       {name: 'Parameter', topValues: [
-         {value: 'Sea surface temperature', count: 100}, 
+         {value: 'Sea surface temperature', count: 100},
          {value: 'Sea water pressure', count: 200}]},
       {name: 'Type', topValues: [
          {value: 'Profiling Float', count: 35},
@@ -84,10 +84,10 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
                      '<li>',
                         '<a class="p-facet-value" href="">{value} ({count})</a>',
                      '</li>',
-                  '</tpl>',  
+                  '</tpl>',
                '</ul>',
             '</div>',
-         '</tpl>' , 
+         '</tpl>',
       '</div>'
    ],
 
@@ -99,7 +99,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
 
       Portal.search.RefineSearchPanel.superclass.initComponent.call(this);
 
-      /** private: event[click] 
+      /** private: event[click]
        *  Fires when a field value is clicked
        */
 

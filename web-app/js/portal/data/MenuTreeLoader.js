@@ -82,7 +82,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
     },
 
     isLayerActive: function(layer) {
-        return !layer || layer.activeInLastScan; 
+        return !layer || layer.activeInLastScan;
     },
 
     isNotEmpty: function(collection) {

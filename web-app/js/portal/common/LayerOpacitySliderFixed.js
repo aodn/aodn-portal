@@ -17,7 +17,7 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
      *  :return:  ``Integer`` The opacity for the layer.
      *
      *  Returns the opacity value for the layer.
-     *  
+     *
      * No longer messes up when min and max are different.
      */
     getOpacityValue: function(layer) {
