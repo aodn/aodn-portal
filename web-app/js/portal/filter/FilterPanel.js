@@ -134,7 +134,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(this._getActiveFilters(), function(filter) {
             if (filter.isDownloadOnly() == options.downloadOnly) {
-                cqlValues.push(filter.getCQL());;
+                cqlValues.push(filter.getCQL());
             }
         });
 
