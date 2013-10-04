@@ -17,9 +17,11 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
         this.polygons.push(this._toGeoBox(geoBox))
     },
 
-    getLayer: function() {
-        var boundingBoxLayer = new OpenLayers.Layer.Vector("Metadata Polygons");
-        boundingBoxLayer.addFeatures(this._vectorFeatures());
+    getLayer: function(dstProjection) {
+        var boundingBoxLayer = new OpenLayers.Layer.Vector(
+            "Metadata Polygons"
+        );
+        boundingBoxLayer.addFeatures(this._vectorFeatures(dstProjection));
         return boundingBoxLayer;
     },
 
@@ -31,21 +33,26 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
         return this.bounds;
     },
 
-    _vectorFeatures: function() {
+    _vectorFeatures: function(dstProjection) {
         var features = [];
         Ext.each(this.polygons, function(geoBox, index, all) {
-            features.push(new OpenLayers.Feature.Vector(this._boundingBoxPolygon(geoBox)));
+            features.push(new OpenLayers.Feature.Vector(this._boundingBoxPolygon(geoBox, dstProjection)));
         }, this);
 
         return features;
     },
 
-    _boundingBoxPolygon: function(geoBox) {
-        return new OpenLayers.Geometry.Polygon(this._boundingBoxLinearRings(geoBox));
+    _boundingBoxPolygon: function(geoBox, dstProjection) {
+        return new OpenLayers.Geometry.Polygon(this._boundingBoxLinearRings(geoBox, dstProjection));
     },
 
-    _boundingBoxLinearRings: function(geoBox) {
-        return [new OpenLayers.Geometry.LinearRing(this._boundingBoxPoints(geoBox))];
+    _boundingBoxLinearRings: function(geoBox, dstProjection) {
+        var ring = new OpenLayers.Geometry.LinearRing(this._boundingBoxPoints(geoBox));
+
+        if (dstProjection) {
+            ring.transform(new OpenLayers.Projection("EPSG:4326"), dstProjection);
+        }
+        return [ring];
     },
 
     _boundingBoxPoints: function(geoBox) {
