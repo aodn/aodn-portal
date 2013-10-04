@@ -21,13 +21,13 @@ A RefineSearchPanel is used to refine a search on the catalog using search resul
 
 Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
    autoScroll: true,
-   
+
    parameters: {
 	   keywords: 'themekey',
 	   organizationNames: 'orgName',
 	   dataParameters: 'longParamName'
    },
-   
+
    /* Example refinements data
    [
       {name: 'Parameter', values: [
@@ -59,7 +59,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
          '</div>',
       '</tpl>'
    ],
-     
+
    removeSelector: '.p-remove-value',
    removeAllSelector: '.p-remove-all',
 
@@ -73,7 +73,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
          {value: 'Mooring', count: 50}]}
    ],
    */
-   
+
    tpl: [
       '<div class="p-facets">',
          '<tpl for=".">',
@@ -90,22 +90,22 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
          '</tpl>' , 
       '</div>'
    ],
-   
+
    valueSelector: '.p-facet-value',
 
    initComponent: function(){
       this.refinementsTpl = new Ext.XTemplate(this.refinementsTpl);
       this.tpl = new Ext.XTemplate(this.tpl);
-      
+
       Portal.search.RefineSearchPanel.superclass.initComponent.call(this);
-      
+
       /** private: event[click] 
        *  Fires when a field value is clicked
        */
-      
+
       this.addEvents('filterchange');
    },
-   
+
    afterRender: function(){
       Portal.search.RefineSearchPanel.superclass.afterRender.call(this);
 
@@ -123,11 +123,11 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
       }
       return searchFilters;
    },
-      
+
    onClick: function(e){
       e.preventDefault();
       var value = e.getTarget(this.valueSelector, this.el);
-      
+
       if (value) {
          var refinement = this.facetStore.getArray()[value.valueIndex];
          this.facetStore.filters.add(refinement.name, refinement.value);
@@ -141,16 +141,16 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
          this.facetStore.filters.remove(refinement.name, refinement.value);
          this.fireEvent("filterchange", this.addSearchFilters([]));
       }
-      
+
       var all = e.getTarget(this.removeAllSelector, this.el);
-      
+
       if (all) {
          this.facetStore.filters.clear();
          this.fireEvent("filterchange", this.addSearchFilters([]));
       }
 
    },
-   
+
    facetStoreLoad: function() {
       this.refinementsTpl.overwrite(this.body, this.facetStore.filters.getJson());
       var refinementElements = Ext.query(this.removeSelector, this.el.dom);
@@ -163,7 +163,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
          valueElements[i].valueIndex = i;
       }
    }
-   
+
 });
 
 Ext.reg('portal.search.refinesearchpanel', Portal.search.RefineSearchPanel);

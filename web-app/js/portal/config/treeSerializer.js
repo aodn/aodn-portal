@@ -82,7 +82,7 @@ else {
     if (this.attributes['leaf'].toString()  == "false" ) {
         result += ',"children":[]';
     }
-    
+
 }
 return result + "}";
 };

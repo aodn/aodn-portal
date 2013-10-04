@@ -36,7 +36,7 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
         }
         return value;
     },
-    
+
         /** private: method[changeLayerOpacity]
      *  :param slider: :class:`GeoExt.LayerOpacitySlider`
      *  :param value: ``Number`` The slider value

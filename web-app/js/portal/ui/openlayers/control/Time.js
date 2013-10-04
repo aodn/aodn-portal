@@ -14,7 +14,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     SPEED_LIMIT: 32,
 
     state: null,
-    
+
     /**
      * The timer generates 'tick' events given a date range and a frequency.
      */
@@ -33,7 +33,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         // if you can get the tests to pass without calling it.
         this.events.addEventType('speedchanged');
         this.events.addEventType('temporalextentchanged');
-        
+
         this.timer.on('tick', this.onTick, this);
     },
 
@@ -67,7 +67,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             this.relativeSpeed = this.relativeSpeed / 2;
             this.timer.halveFrequency();
             this.events.triggerEvent('speedchanged', this);
-            
+
             return true;
         }
 
@@ -81,11 +81,11 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     isAtFastestSpeed: function() {
         return this.relativeSpeed == 1 * this.SPEED_LIMIT;
     },
-    
+
     setStep: function(stepIndex) {
         this.timer.setCurrTickIndex(stepIndex);
     },
-    
+
     onTick: function(tickEvent) {
         this.map.toTime(tickEvent.dateTime);
     },
@@ -100,10 +100,10 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             // Ignore layers which don't have a temporal extent.
             return;
         }
-        
+
         var timerTickDateTimes;
         var layerExtentLength = layer.getTemporalExtent().length;
-        
+
         if (range instanceof Array) {
             timerTickDateTimes = this._getExtentForRange(layer, range);
         }
@@ -138,7 +138,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         var layerExtentLength = layer.getTemporalExtent().length;
         return layer.getTemporalExtent().slice(layerExtentLength - n, layerExtentLength);
     },
-    
+
     _getExtentForRange: function(layer, range) {
         var startDateTime = moment(range[0]);
         var endDateTime   = moment(range[1]);
@@ -158,7 +158,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             arrayOfDates, date,
             function(left, right) { return left.isSame(right); });
     },
-    
+
     getStep: function() {
         return this.timer.getCurrTickIndex();
     },
@@ -166,7 +166,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getDateTimeForStep: function(step) {
         return this.timer.getTickDateTime(step);
     },
-    
+
     getExtent: function() {
         if (this.timer) {
             return this.timer.tickDateTimes;
@@ -176,7 +176,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getExtentMin: function() {
         return this.timer.getTickDateTimeMin();
     },
-    
+
     getExtentMax: function() {
         return this.timer.getTickDateTimeMax();
     },
@@ -184,6 +184,6 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     getRelativeSpeed: function() {
         return this.relativeSpeed;
     },
-    
+
     CLASS_NAME: 'OpenLayers.Control.Time'
 });

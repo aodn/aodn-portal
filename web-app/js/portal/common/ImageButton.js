@@ -11,7 +11,7 @@ Ext.namespace('Portal.common');
 Portal.common.ImageButton = Ext.extend(Ext.Button, {
   initComponent: function() {
     Portal.common.ImageButton.superclass.initComponent.apply(this, arguments);
-    
+
     if(!this.template){
       if(!Portal.common.ImageButton.buttonTemplate){
         Portal.common.ImageButton.buttonTemplate = new Ext.Template(

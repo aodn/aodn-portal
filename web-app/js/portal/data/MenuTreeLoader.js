@@ -53,7 +53,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
             this.handleFailure(response);
         }
     },
-    
+
     parseItems: function (parent, items) {
     	Ext.each(items, function(item, index, all) {
     		var child = this.createNode(item);

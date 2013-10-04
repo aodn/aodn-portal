@@ -77,7 +77,7 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
 			this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
 		}
     },
-    
+
     _escapeSingleQuotes: function(text){
         return text.replace(/'/g, "''");
     }

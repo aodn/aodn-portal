@@ -79,7 +79,7 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
 	  var messages = this._formatErrors(errors);
 	  Ext.Msg.alert(this.failedSaveErrMsg, messages);
   },
-  
+
   _formatErrors: function(errors) {
 	  var errorMessages = '';
 

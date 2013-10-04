@@ -15,13 +15,13 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    maxCaptionLength: 99999999,
    autoHeight: true,
    mode: 'local',
-   
+
    filterOptions: {
      anyMatch: true,
      caseInsensitive: true,
      exactMatch: false
    },
-   
+
    minChars: 0,
    hideTrigger: false,
    valueField: 'value',
@@ -31,7 +31,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    maxCaptionLength: 40,
    extraItemCls: 'wrapping-wrapped-field',
    pinList: false,
-   
+
    initComponent: function(config) {
 	   this.store = new Portal.data.SuggestionStore({
 	   		url : this.url,
@@ -43,9 +43,9 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 	   }
 	   
    	this.valueDelimiter = Portal.search.field.MultiSelectCombo.VALUE_DELIMITER;
-   
+
       Portal.search.field.MultiSelectCombo.superclass.initComponent.call(this);
-      
+
       this.mon(this.store.proxy, {
          scope: this,
          beforeLoad: this.proxyBeforeLoad
@@ -57,7 +57,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       	  removeitem: this.onItemChange,
       	  clear: this.onItemChange,
       });
-      
+
       this.addEvents('contentchange');
       this.enableBubble('contentchange');
    },
@@ -71,11 +71,11 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    setBaseParams: function(baseParams) {
 	   this.store.baseParams = baseParams;
    },
-   
+
    getFilterValue: function () {
 	   return { value: this.getValue() };
    },
-   
+
    setFilterValue: function(v) {
 	   
 	   // setValue() has to be called *after* the store is loaded, hence the callback.
@@ -88,12 +88,12 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 		   scope: this
 	   });
    },
-   
+
    onItemChange: function() {
    	this.fireEvent('contentchange');
    },
-   
-  
+
+
    proxyBeforeLoad: function(proxy, params) {
   	
    	var protocolString = "";

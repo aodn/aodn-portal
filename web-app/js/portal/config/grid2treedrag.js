@@ -23,7 +23,7 @@
  * 
  * License details: http://www.gnu.org/licenses/lgpl.html
  */
- 
+
 Ext.ns('Example');
 
 
@@ -37,14 +37,14 @@ function initMenu(menu, _basePath) {
 
     // initialize QuickTips
     Ext.QuickTips.init();
-    
+
     if (menu) {
         setupgrid2treedrag(menu);
         tree.getRootNode().expand(true);
     }
     else {
         menu = new Object();  
-        
+
         var setUpName = function(){            
             Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new Menu tree:', function(status, text) {                           
                 if (text != "") {
@@ -59,7 +59,7 @@ function initMenu(menu, _basePath) {
             });
         }
         setUpName();  // fail               
-                  
+
     } 
 }
 
@@ -75,7 +75,7 @@ function showHideButtons() {
     }                         
     Ext.get('submitMenu').fadeIn();
 }
- 
+
 
 // for new and editing menu trees
 function setupgrid2treedrag(menu) {
@@ -89,7 +89,7 @@ function setupgrid2treedrag(menu) {
     if (Ext.get('message')) {
         Ext.get('message').show()
     }
-    
+
     // submitMenu is the button to create or edit a menu
     Ext.get('submitMenu').on('click', function() {
 
@@ -105,8 +105,8 @@ function setupgrid2treedrag(menu) {
             Ext.get('jsonString').dom.value = json; 
         }
     });
-    
-    
+
+
 
     tree = new Ext.tree.TreePanel({       
         // root with some static demo nodes
@@ -128,7 +128,7 @@ function setupgrid2treedrag(menu) {
         autoScroll:true,
         loader: new Ext.tree.TreeLoader({preloadChildren:true}),
         listeners:{
-            
+
             'contextmenu': function(node){
                 this.getSelectionModel().select(node);
                 treeMenu = rightClickMenu(node);
@@ -136,7 +136,7 @@ function setupgrid2treedrag(menu) {
                     treeMenu.show(node.ui.getAnchor());
                 }
             },
-            
+
             movenode: {
                 fn:function(e) {
                     showHideButtons();
@@ -147,8 +147,8 @@ function setupgrid2treedrag(menu) {
             // create nodes based on data from grid
             beforenodedrop:{
                 fn:function(e) {
-                    
-                    
+
+
                     // e.data.selections is the array of selected records
                     if(Ext.isArray(e.data.selections)) {
                         // reset cancel flag
@@ -161,7 +161,7 @@ function setupgrid2treedrag(menu) {
 
                             // get record from selectons
                             r = e.data.selections[i];
-                            
+
                             // reservered word here but it works!!!
                             if (r.json['class'] == "au.org.emii.portal.Server") {
                                 e.dropNode.push(this.loader.createNode({
@@ -180,15 +180,15 @@ function setupgrid2treedrag(menu) {
                                 grailsLayerId:r.get('id'), // identify grails layers by this variable
                                 qtip:r.get('layers') + " - " + r.get('server.shortAcron')
                             }));
-                            
+
                             }
                         };
-                    
+
                         showHideButtons();
-                        
+
                         // we want Ext to complete the drop, thus return true
                         return true;
-                        
+
                     }
                     // if we get here the drop is automatically cancelled by Ext
                 }
@@ -246,11 +246,11 @@ function rightClickMenu(node){
                             Ext.MessageBox.alert('Node not created','You must supply a name for a new branch');
                         }
                     });
-                       
+
                 } 
             }
         });
-        
+
         treeMenu.add({
             text:'Rename',
             node:node,
@@ -274,8 +274,8 @@ function rightClickMenu(node){
                 } 
             }
         });
-        
-        
+
+
     }
     if (node.id != "root") {
         treeMenu.add({
@@ -289,7 +289,7 @@ function rightClickMenu(node){
             }        
         })
     }
-    
+
     return treeMenu
-        
+
 }

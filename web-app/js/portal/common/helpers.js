@@ -30,7 +30,7 @@ function getAussieUnits(val,src_units) {
      var ret = [];
      var toReturn = [];
      var old = "";
-     
+
      if (src_units != undefined) {
          src_units = src_units.toLowerCase();
          src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
@@ -54,14 +54,14 @@ function getAussieUnits(val,src_units) {
             cel = val - 272.15;
             old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
             ret = [toNSigFigs(cel,4),c,old];
-            
+
            // console.log("kel");
           }
           // celcius
           else if (inArray(celNameArray,src_units)) {
              ret = [toNSigFigs(val,4),c,""];
              cel = "success";
-             
+
             //console.log("cel");
           }
           // metres
@@ -84,7 +84,7 @@ function getAussieUnits(val,src_units) {
      else {
          toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
      }
-     
+
      return toReturn;
 
 }
@@ -133,9 +133,9 @@ function formatGetFeatureInfo(response, options) {
 
 function setHTML_ncWMS(response,options) {
     var xmldoc = response.responseXML;  
-    
+
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 
-        
+
         var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
 
         if (lon) {  // We have a successful result
@@ -168,7 +168,7 @@ function setHTML_ncWMS(response,options) {
             if (!isNaN(startval) ) {  // may have no data at this point
 
                 if(time != null)   {
-                    
+
                     var human_time = new Date();
                     human_time.setISO8601(time);
                     if (endtime != null) {
@@ -177,11 +177,11 @@ function setHTML_ncWMS(response,options) {
                         endval = getAussieUnits(endval, options.params.units);
                     }
                 }
-                
+
                 var startval = getAussieUnits(startval, options.params.units);
-                
+
                 if(human_time != null)  {
-                    
+
                     if (endval == null) {
                         if(isSD)  {
                             vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
@@ -246,14 +246,14 @@ function setHTML_ncWMS(response,options) {
 
 
 function inArray (array,value) {
-    
+
     for (var i = 0; i < array.length; i++) {
-        
+
         if (array[i] === value) {
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -473,5 +473,5 @@ if (typeof console === "undefined" || typeof console.log === "undefined") {
  console.log = function(msg) {
       //alert(msg); 
  };
- 
+
 }

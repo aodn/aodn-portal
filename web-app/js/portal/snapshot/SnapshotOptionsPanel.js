@@ -84,9 +84,9 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 			})
 			]      
 		});
-    
+
 		Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
-    
+
 		this.mon(this.controller, 'snapshotAdded', this.onSnapshotAdded, this);
 		this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);
 
@@ -100,7 +100,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 		
 		
 	},
-  
+
 	onLoadSelectedSnapshot: function(button, event) {
 		var id = this.snapshotCombo.getValue();
 
@@ -118,7 +118,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 	onDeleteSelectedSnapshot: function(button, event)
 	{
 		var id = this.snapshotCombo.getValue();
-    
+
 		if (!id || id == '') return;
 
 		this.controller.deleteSnapshot(id, this.onSuccessfulDelete.createDelegate(this), this.onFailure.createDelegate(this,['Unexpected failure deleting snapshot'],true));
@@ -163,12 +163,11 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 	onSnapshotRemoved: function() {
 		this.snapshotCombo.store.load();
 	},
-  
+
 	onSnapshotsLoaded: function() {
 		this.setVisible(this.snapshotCombo.store.getCount() > 0);
-		
 	},
-  
+
 	onFailure: function(errors, message) {
 		Ext.Msg.alert(message, errors);
 	}

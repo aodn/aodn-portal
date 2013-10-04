@@ -162,12 +162,12 @@ OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
         return "";
     }
 };
- 
+
 OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
     if (cqlFilter == this.getCqlFilter()) {
         return;
     }
-    
+
     if (cqlFilter) {
         this.mergeNewParams({
             CQL_FILTER: cqlFilter
@@ -180,15 +180,15 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
 
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     var filters = [];
-    
+
     if (this.params.CQL_FILTER) {
         filters.push(this.params.CQL_FILTER);
     }
-    
+
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);
     }
-    
+
     return filters.join(' AND ');
 };
 
