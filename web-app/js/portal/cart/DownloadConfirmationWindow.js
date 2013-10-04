@@ -72,15 +72,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
              *
              * https://github.com/aodn/aodn-portal/issues/486
              *
-             * @tofojo's own words:
-             * This appears to have existed forever in IE, it basically comes down to Shadow.realign in Ext where the
-             * height value is determined as -1 which is invalid. At no point do we set the height to -1 so I assume that
-             * IE does this when the FeatureInfoPopup is hidden from view or something else crazy. I _hope_ that the popup
-             * is still destroyed effectively, it all seems to still work. I'm happy for someone else to find a better
-             * solution, I take no pride in this fix whatsoever.
-             *
-             * My interpretation (DF):
-             * IE8 IS SHIT KTHX BYE
+             * Same bugfix as for #175:
+             * https://github.com/aodn/aodn-portal/issues/175
              */
         }
     },
