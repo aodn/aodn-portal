@@ -43,7 +43,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             ],
             bbar: new Portal.ui.MainToolbar({
                 mainPanel: this
-            })
+            }),
+            bbarCfg: {
+                cls: 'mainToolBar'
+            }
         }, cfg);
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
@@ -69,11 +72,21 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     _highlightActiveTab: function() {
+
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
 
-        //TODO: componentise this
-        jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive');
-        jQuery('#viewPortTab' + tabIndex).removeClass('viewPortTabDisabled').addClass('viewPortTabActive');
+        // clean slate
+        jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive').removeClass('viewPortTabActiveLast');
+        // a collection was added
+        if (tabIndex > 0) {
+            jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
+        }
+        // all tabs up until the selected tab highlighted
+        for (var i=0;i<=tabIndex;i++) {
+            var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
+            jQuery('#viewPortTab' + i).removeClass('viewPortTabDisabled').addClass(newClasses);
+        }
+
     }
 });

@@ -44,7 +44,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             autoScroll: true,
             padding: 3,
             layout: 'auto',
-            title: OpenLayers.i18n('step1Header'),
+            title: OpenLayers.i18n('stepHeader', { stepNumber: 1, stepDescription: OpenLayers.i18n('step1Description')}),
+            headerCfg: {
+                cls: 'steps'
+            },
             tbar: this._buildToolBar(),
             items: this.filters
         }, config);

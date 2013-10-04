@@ -11,9 +11,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     initComponent: function(cfg) {
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('step3Header'),
+            title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
             headerCfg: {
-                cls: 'x-panel-header p-header-space'
+                cls: 'steps'
             },
             autoScroll: true
         }, cfg);

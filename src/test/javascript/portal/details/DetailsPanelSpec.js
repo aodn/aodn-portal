@@ -17,7 +17,7 @@ describe("Portal.details.DetailsPanel", function() {
     describe('initialisation', function() {
 
         it('has correct status', function() {
-            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveLayersSelected'));
+            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveCollectionSelected'));
         });
 
         it('hides contents', function() {
@@ -29,13 +29,13 @@ describe("Portal.details.DetailsPanel", function() {
         });
     });
 
-    describe('selected layer changed', function() {
+    describe('selected collection changed', function() {
 
         beforeEach(function() {
             spyOn(detailsPanel, 'setStatus').andCallFake(function(status) { });
         });
 
-        describe('selected layer', function() {
+        describe('selected collection', function() {
             var openLayer;
 
             beforeEach(function() {
@@ -53,7 +53,7 @@ describe("Portal.details.DetailsPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             });
 
-            it('set status to layer name', function() {
+            it('set status to collection name', function() {
                 expect(detailsPanel.setStatus).toHaveBeenCalledWith(openLayer.name);
             });
         });
@@ -72,7 +72,7 @@ describe("Portal.details.DetailsPanel", function() {
             });
 
             it("set status to 'no selected layer'", function() {
-                expect(detailsPanel.setStatus).toHaveBeenCalledWith(OpenLayers.i18n('noActiveLayersSelected'));
+                expect(detailsPanel.setStatus).toHaveBeenCalledWith(OpenLayers.i18n('noActiveCollectionSelected'));
             });
 
             it('hide contents', function() {

@@ -12,9 +12,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationButtonSelect: "Select >>",
     navigationButtonDownload: "Download >>",
 
-    step1Header: 'Select a Data Collection',
-    step2Header: 'Create a Subset',
-    step3Header: 'Data Download Tools',
+    stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
+    step1Description: 'Select a Data Collection',
+    step2Description: 'Create a Subset',
+    step3Description: 'Download',
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
@@ -27,7 +28,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
     pickAStyle : ' ** Pick a style ** ',
-    noActiveLayersSelected:	"No data collections selected",
+    noActiveCollectionSelected:	"No data collections selected",
 
     //
     navigate: 'Select by Map Bounds',
@@ -229,8 +230,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     transectTab: 'Transect',
     transectDataHeading: 'Data along the transect: ',
     dimensionValuesHeading: 'For dimension values: ',
-
-    downloadSearchTabTitle: 'Downloads',
 
     // AODAAC aggregator
     aodaacPanelTitle: 'Subset',

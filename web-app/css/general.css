@@ -325,6 +325,7 @@ Site navigation
 
 #viewPortLinks {
     background-color: #484848;
+    background: url(../images/viewPortLinks.png) repeat;
     position: relative;
     float: left;
     width: 100%;
@@ -342,12 +343,9 @@ Site navigation
 }
 
 .viewPortTab {
-    border-bottom-right-radius: 20px 60px;
-    border-right: 2px solid #6B6B6B;
-    border-top-right-radius: 20px 60px;
     display: block;
     float: left;
-    padding: 12px 20px 6px 80px;
+    padding: 8px 30px 6px 60px;
     width: 200px;
 
 }
@@ -360,50 +358,22 @@ Site navigation
 .viewPortTab h1 {
     line-height: 26px;
     float: left;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     margin-right: 10px;
     margin-left: 10px;
 }
 
-.viewPortTab h2 {
-    line-height: 12px;
+.viewPortTab h3 {
+    line-height: 26px;
 }
 
 .viewPortTabActive {
     background: black;
-    box-shadow: 5px 2px 5px rgba(50, 50, 50, 0.75);
-    border-right: 2px solid #2F2E2E;
-    border-bottom: 1px solid #2F2E2E;
-    border-top-right-radius: 20px 60px;
-}
-
-#744646
-
-.viewPortTabActive * {
-    /*color: white ! important;*/
-
-}
-
-.viewPortTabHover {
-
-    background: #696969;
-    background: -moz-linear-gradient(left, rgba(105, 105, 105, 0) 0%, rgba(105, 105, 105, 1) 14%, rgba(105, 105, 105, 1) 17%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(105, 105, 105, 0)), color-stop(14%, rgba(105, 105, 105, 1)), color-stop(17%, rgba(105, 105, 105, 1)));
-    background: -webkit-linear-gradient(left, rgba(105, 105, 105, 0) 0%, rgba(105, 105, 105, 1) 14%, rgba(105, 105, 105, 1) 17%);
-    background: -o-linear-gradient(left, rgba(105, 105, 105, 0) 0%, rgba(105, 105, 105, 1) 14%, rgba(105, 105, 105, 1) 17%);
-    background: -ms-linear-gradient(left, rgba(105, 105, 105, 0) 0%, rgba(105, 105, 105, 1) 14%, rgba(105, 105, 105, 1) 17%);
-    background: linear-gradient(to right, rgba(105, 105, 105, 0) 0%, rgba(105, 105, 105, 1) 14%, rgba(105, 105, 105, 1) 17%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00696969', endColorstr='#696969', GradientType=1);
-
-    border-right: 3px solid #2F2E2E;
-    border-bottom: 1px solid #000000;
 }
 
 .viewPortTabDisabled * {
-    color: #888888 ! important;
     cursor: default;
-
 }
 
 .x-btn.forwardsButton {
@@ -1101,7 +1071,7 @@ div.allwhite {
 }
 
 .term-selection-panel .x-panel-header {
-    background-color: #dfdfdf;
+    background-color: #f8f8f8;
     padding-bottom: 7px;
 }
 
@@ -1159,15 +1129,6 @@ div.allwhite {
 
 .resultsRowBackground {
     background: #eeeeee;
-    background: rgb(239, 239, 239);
-    background: -moz-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, #F8F7F7), color-stop(40%, #F9F9F9), color-stop(100%, #FBFBFB));
-    background: -webkit-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: -o-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: -ms-linear-gradient(top, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
-    background: linear-gradient(to bottom, #C9C9C9 2%, #F9F9F9 40%, #FBFBFB 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#FBFBFB', GradientType=0);
-
     border-left: 1px solid #CCCCCC;
     margin-top: 4px;
     padding: 3px 10px;
@@ -1188,7 +1149,7 @@ div.allwhite {
 }
 
 .navigationButton button:hover {
-    color: black;
+    color: gray;
 
 }
 
@@ -1311,3 +1272,7 @@ div.allwhite {
 
 }
 
+.collectionTitle {
+    font-weight: bold;
+    font-style: italic;
+}
