@@ -34,6 +34,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         }, this);
 
         var config = Ext.apply({
+            height: 35,
             items: [
                 this.prevButton,
                 this.nextButton
