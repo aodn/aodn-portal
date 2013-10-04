@@ -14,10 +14,10 @@ Portal.search.field.FreeText = Ext.extend(Ext.form.TextField, {
    fieldClass: "searchInput",
    name: 'any',
    getFilterValue: function () {
-	   return { value: this.getValue() };
+       return { value: this.getValue() };
    },
    setFilterValue: function(v) {
-	   this.setValue(v.value);
+       this.setValue(v.value);
    },
    getValue: function() {
      var enteredValue = Portal.search.field.FreeText.superclass.getValue.call(this);

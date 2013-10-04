@@ -6,10 +6,10 @@
  */
 OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
-	STATES : {
-		PLAYING : 'PLAYING',
-		STOPPED: 'STOPPED'
-	},
+    STATES : {
+        PLAYING : 'PLAYING',
+        STOPPED: 'STOPPED'
+    },
 
     SPEED_LIMIT: 32,
 

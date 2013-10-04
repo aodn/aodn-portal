@@ -33,16 +33,16 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
    pinList: false,
 
    initComponent: function(config) {
-	   this.store = new Portal.data.SuggestionStore({
-	   		url : this.url,
-	          autoLoad: true
-	      });
+       this.store = new Portal.data.SuggestionStore({
+               url : this.url,
+              autoLoad: true
+          });
 
-	   if (this.baseParams) {
-		   this.store.baseParams = this.baseParams;
-	   }
-	   
-   	this.valueDelimiter = Portal.search.field.MultiSelectCombo.VALUE_DELIMITER;
+       if (this.baseParams) {
+           this.store.baseParams = this.baseParams;
+       }
+
+       this.valueDelimiter = Portal.search.field.MultiSelectCombo.VALUE_DELIMITER;
 
       Portal.search.field.MultiSelectCombo.superclass.initComponent.call(this);
 
@@ -52,10 +52,10 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
       });
 
       this.on({
-      	  scope: this,
-      	  additem: this.onItemChange,
-      	  removeitem: this.onItemChange,
-      	  clear: this.onItemChange,
+            scope: this,
+            additem: this.onItemChange,
+            removeitem: this.onItemChange,
+            clear: this.onItemChange,
       });
 
       this.addEvents('contentchange');
@@ -64,43 +64,43 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 
    onProtocolChange: function(protocol)
    {
-	   this.setBaseParams({ 'protocol': protocol });
-	   this.store.load();
+       this.setBaseParams({ 'protocol': protocol });
+       this.store.load();
    },
 
    setBaseParams: function(baseParams) {
-	   this.store.baseParams = baseParams;
+       this.store.baseParams = baseParams;
    },
 
    getFilterValue: function () {
-	   return { value: this.getValue() };
+       return { value: this.getValue() };
    },
 
    setFilterValue: function(v) {
-	   
-	   // setValue() has to be called *after* the store is loaded, hence the callback.
-	   this.store.load({
-		   callback: function(records, options, success) {
-			   if (success) {
-				   this.setValue(v.value);
-			   }
-	   },
-		   scope: this
-	   });
+
+       // setValue() has to be called *after* the store is loaded, hence the callback.
+       this.store.load({
+           callback: function(records, options, success) {
+               if (success) {
+                   this.setValue(v.value);
+               }
+       },
+           scope: this
+       });
    },
 
    onItemChange: function() {
-   	this.fireEvent('contentchange');
+       this.fireEvent('contentchange');
    },
 
 
    proxyBeforeLoad: function(proxy, params) {
-  	
-   	var protocolString = "";
-   	if(params.protocol != null)
-   	{
-   		protocolString = "protocol=" + params.protocol;
-   	}  
+
+       var protocolString = "";
+       if(params.protocol != null)
+       {
+           protocolString = "protocol=" + params.protocol;
+       }  
       proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' +protocolString) + '&format=text/xml');
    }
 });

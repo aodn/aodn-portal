@@ -9,148 +9,148 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
-	constructor: function(cfg) {
+    constructor: function(cfg) {
 
-		var config = Ext.apply({
-		}, cfg );
+        var config = Ext.apply({
+        }, cfg );
 
-		this.TIME_UTIL = new Portal.utils.TimeUtil();
-		Portal.filter.TimeFilter.superclass.constructor.call(this, config);
-	},
+        this.TIME_UTIL = new Portal.utils.TimeUtil();
+        Portal.filter.TimeFilter.superclass.constructor.call(this, config);
+    },
 
-	initComponent: function() {
+    initComponent: function() {
 
-		this.CQL = "";
-		Portal.filter.TimeFilter.superclass.initComponent.call(this);
-	},
+        this.CQL = "";
+        Portal.filter.TimeFilter.superclass.initComponent.call(this);
+    },
 
-	_createField: function(){
+    _createField: function(){
 
-		this.operators = new Ext.form.ComboBox({
-			triggerAction: 'all',
-			mode: 'local',
-			width: 100,
-			editable: false,
+        this.operators = new Ext.form.ComboBox({
+            triggerAction: 'all',
+            mode: 'local',
+            width: 100,
+            editable: false,
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
-			fieldLabel: "Time",
-			store: new Ext.data.ArrayStore({
-			fields: [
-				'op'
-			],
-			data: [['before'], ['after'], ['between']]
-			}),
-			valueField: 'op',
-			displayField: 'op',
-			listeners:{
-				scope: this,
-				select: this._opSelect
-			}
-		});
+            fieldLabel: "Time",
+            store: new Ext.data.ArrayStore({
+            fields: [
+                'op'
+            ],
+            data: [['before'], ['after'], ['between']]
+            }),
+            valueField: 'op',
+            displayField: 'op',
+            listeners:{
+                scope: this,
+                select: this._opSelect
+            }
+        });
 
-		this.fromField = new Ext.form.DateField({
-			name: 'from',
-			format: "d/m/Y",
-			listeners: {
-				scope: this,
-				select: this._onSelect
-			}
-		});
+        this.fromField = new Ext.form.DateField({
+            name: 'from',
+            format: "d/m/Y",
+            listeners: {
+                scope: this,
+                select: this._onSelect
+            }
+        });
 
-		this.toField = new Ext.form.DateField({
-			name: 'to',
-			format: "d/m/Y",
-			hidden: true,
-			listeners: {
-				scope: this,
-				select: this._onSelect
-			}
-		});
+        this.toField = new Ext.form.DateField({
+            name: 'to',
+            format: "d/m/Y",
+            hidden: true,
+            listeners: {
+                scope: this,
+                select: this._onSelect
+            }
+        });
 
-		this.add(this.operators);
-		this.add(this.fromField);
-		this.add(this.toField);
+        this.add(this.operators);
+        this.add(this.fromField);
+        this.add(this.toField);
 
-		if(this.filter.possibleValues != undefined){
-			this._setMinMax(this.fromField, this.filter.possibleValues);
-			this._setMinMax(this.toField, this.filter.possibleValues);
-		}
-	},
+        if(this.filter.possibleValues != undefined){
+            this._setMinMax(this.fromField, this.filter.possibleValues);
+            this._setMinMax(this.toField, this.filter.possibleValues);
+        }
+    },
 
-	_setMinMax: function(dateField, vals) {
+    _setMinMax: function(dateField, vals) {
 
-		dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
+        dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
 
-		if (vals.length == 2) {
-			dateField.setMaxValue(this.TIME_UTIL._parseIso8601Date(vals[1]));
-		}
-	},
+        if (vals.length == 2) {
+            dateField.setMaxValue(this.TIME_UTIL._parseIso8601Date(vals[1]));
+        }
+    },
 
-	_opSelect: function(combo, row, index) {
+    _opSelect: function(combo, row, index) {
 
-		this.toField.setVisible(this.operators.getValue() != "" && this.operators.getValue() == 'between');
-	},
+        this.toField.setVisible(this.operators.getValue() != "" && this.operators.getValue() == 'between');
+    },
 
     _getDateString: function(combo) {
 
-      	return this.TIME_UTIL._toUtcIso8601DateString(combo.getValue());
+          return this.TIME_UTIL._toUtcIso8601DateString(combo.getValue());
     },
 
-	_onSelect: function(picker, date) {
+    _onSelect: function(picker, date) {
 
-		if (this.operators.getValue() != 'between') {
-			this.CQL = this.filter.name + " ";
-			this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
+        if (this.operators.getValue() != 'between') {
+            this.CQL = this.filter.name + " ";
+            this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
             this._fireAddEvent();
-		}
-		else {
+        }
+        else {
 
-			if (this.fromField.getValue() != "" && this.toField.getValue() != "") {
-				this.CQL = this.filter.name + " ";
-				this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
-				this._fireAddEvent();
-			}
-		}
-	},
+            if (this.fromField.getValue() != "" && this.toField.getValue() != "") {
+                this.CQL = this.filter.name + " ";
+                this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
+                this._fireAddEvent();
+            }
+        }
+    },
 
-	handleRemoveFilter: function(){
+    handleRemoveFilter: function(){
 
-		this.operators.clearValue();
-		this.toField.reset();
-		this.fromField.reset();
-	},
+        this.operators.clearValue();
+        this.toField.reset();
+        this.fromField.reset();
+    },
 
-	_setExistingFilters: function() {
+    _setExistingFilters: function() {
 
-		var beforePattern = this.filter.name + " before (.*) *";
-		var afterPattern = this.filter.name + " after (.*) *";
+        var beforePattern = this.filter.name + " before (.*) *";
+        var afterPattern = this.filter.name + " after (.*) *";
 
-		betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
-		beforeRe = new RegExp(beforePattern);
-		afterRe = new RegExp(afterPattern);
+        betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
+        beforeRe = new RegExp(beforePattern);
+        afterRe = new RegExp(afterPattern);
 
-		var m = beforeRe.exec(this.layer.getDownloadFilter());
-		var m2 = afterRe.exec(this.layer.getDownloadFilter());
-		var between = betweenRe.exec(this.layer.getDownloadFilter());
+        var m = beforeRe.exec(this.layer.getDownloadFilter());
+        var m2 = afterRe.exec(this.layer.getDownloadFilter());
+        var between = betweenRe.exec(this.layer.getDownloadFilter());
 
-		if (between != null && between.length == 3) {
+        if (between != null && between.length == 3) {
 
-			this.operators.setValue('between');
-			this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
-			this.toField.setVisible(true);
-			this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
-		}
-		else {
+            this.operators.setValue('between');
+            this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
+            this.toField.setVisible(true);
+            this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
+        }
+        else {
 
-		    if (m != null && m.length == 2) {
+            if (m != null && m.length == 2) {
 
-				this.operators.setValue('before');
-				this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-			}
-			else if (m2 != null && m2.length == 2) {
+                this.operators.setValue('before');
+                this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+            }
+            else if (m2 != null && m2.length == 2) {
 
-				this.operators.setValue('after');
-				this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-			}
-		}
-	}
+                this.operators.setValue('after');
+                this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+            }
+        }
+    }
 });

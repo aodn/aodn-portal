@@ -11,7 +11,7 @@ Ext.namespace('Portal.ui.openlayers');
 Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
     actionsPanel : null,
-	window: null,
+    window: null,
 
     /**
      * APIProperty: roundedCorner {Boolean} If true the Rico library is used for
@@ -150,7 +150,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
             mapScope : this.appConfig.mapPanel
         });
 
-		this.window = new Ext.Window({
+        this.window = new Ext.Window({
             id : 'mapActionsWindow',
             draggable : false,
             hidden : false,

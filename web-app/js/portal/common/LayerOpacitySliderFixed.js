@@ -12,7 +12,7 @@ Ext.namespace('Portal.common');
 
 Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
     //WARNING, inverse doesn't won't work with this class.
-	    /** private: method[getOpacityValue]
+        /** private: method[getOpacityValue]
      *  :param layer: ``OpenLayers.Layer`` or :class:`GeoExt.data.LayerRecord`
      *  :return:  ``Integer`` The opacity for the layer.
      *
@@ -26,7 +26,7 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
             value = parseInt(layer.opacity * 100);
             if(value < this.minValue)
             {
-            	value = this.minValue;
+                value = this.minValue;
             }
         } else {
             //this is for the initial dummy layer

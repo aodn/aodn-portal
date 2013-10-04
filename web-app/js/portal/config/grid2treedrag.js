@@ -65,7 +65,7 @@ function initMenu(menu, _basePath) {
 
 
 function showHideButtons() {
-	// hide the help if it exists                                        
+    // hide the help if it exists                                        
     var element = Ext.get('message');                                        
     if (element) {
         element.setVisibilityMode(Ext.Element.DISPLAY);
@@ -79,12 +79,12 @@ function showHideButtons() {
 
 // for new and editing menu trees
 function setupgrid2treedrag(menu) {
-	
+
     // only menu.title is guaranteed to be set
     var rootLabel = menu.title;
     var builder = new Portal.data.MenuItemToNodeBuilder();
     var children = builder.build(menu);
-	
+
     // any msg's from grails
     if (Ext.get('message')) {
         Ext.get('message').show()
@@ -196,24 +196,24 @@ function setupgrid2treedrag(menu) {
         }
     });
 
-	// create and show the window
-	var win = new Ext.Panel({
-	    defaultMargins: 10,
-	    border: false,
-	    padding: 25,      
-	    layout: {
-	        type: 'column',
-	        align: 'left'
-	    },
-	    pack: 'start',
-	    align: 'stretch',
-	    renderTo: 'menuConfigurator',
-	    items: [
-	        tree,  
-	        new Portal.ui.LayerDataPanel({ url: jsonLayers })
-	    ]
-	});
-	win.doLayout();
+    // create and show the window
+    var win = new Ext.Panel({
+        defaultMargins: 10,
+        border: false,
+        padding: 25,      
+        layout: {
+            type: 'column',
+            align: 'left'
+        },
+        pack: 'start',
+        align: 'stretch',
+        renderTo: 'menuConfigurator',
+        items: [
+            tree,  
+            new Portal.ui.LayerDataPanel({ url: jsonLayers })
+        ]
+    });
+    win.doLayout();
 };             
 
 function rightClickMenu(node){
@@ -257,18 +257,18 @@ function rightClickMenu(node){
             listeners:{
                 click: function(item){
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:', 
-                		function(status, text) {
+                        function(status, text) {
                         // dont allow the label to be empty   
-	                        if (text != "") {
-	                            node.setText(text);
-	                        }
-	                        else {                            
-	                            Ext.MessageBox.alert('Node not created', 'You must supply a name for a new node');
-	                        }
-	                    },
-	                    this,
-	                    false,
-	                    node.text
+                            if (text != "") {
+                                node.setText(text);
+                            }
+                            else {                            
+                                Ext.MessageBox.alert('Node not created', 'You must supply a name for a new node');
+                            }
+                        },
+                        this,
+                        false,
+                        node.text
                     );                    
                     showHideButtons();           
                 } 

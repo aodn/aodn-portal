@@ -10,8 +10,8 @@
 
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
-    	var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
-	return result;
+        var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    return result;
 }
 
 function ucwords( str ) {
@@ -91,11 +91,11 @@ function getAussieUnits(val,src_units) {
 
 
 function pad(numNumber, numLength){
-	var strString = '' + numNumber;
-	while(strString.length<numLength){
-		strString = '0' + strString;
-	}
-	return strString;
+    var strString = '' + numNumber;
+    while(strString.length<numLength){
+        strString = '0' + strString;
+    }
+    return strString;
 }
 
 
@@ -121,8 +121,8 @@ function formatGetFeatureInfo(response, options) {
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
     }
-	else if(options.params.expectedFormat == 'text/plain') {
-		// cant be assed to handle different line endings. its crap anyhow
+    else if(options.params.expectedFormat == 'text/plain') {
+        // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
     else{
@@ -329,7 +329,7 @@ function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
     // Optimize array length - we'll have at least splitDates.length items
     // or more (usually)
     var expandedDates = [];
-	expandedDates.length = splitDates.length;
+    expandedDates.length = splitDates.length;
 
     // Array insertion position
     var j = 0;

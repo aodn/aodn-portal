@@ -23,9 +23,9 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
    autoScroll: true,
 
    parameters: {
-	   keywords: 'themekey',
-	   organizationNames: 'orgName',
-	   dataParameters: 'longParamName'
+       keywords: 'themekey',
+       organizationNames: 'orgName',
+       dataParameters: 'longParamName'
    },
 
    /* Example refinements data
