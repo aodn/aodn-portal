@@ -33,6 +33,8 @@ ${buildInfo}
 <!-- common styles and JavaScript for the map page and Grails admin pages -->
 <g:render template="/common_includes"></g:render>
 
+<script src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
+
 <g:if env="development">
     <script src="${resource(dir: 'js', file: 'ext-3.3.1/adapter/ext/ext-base-debug.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js', file: 'ext-3.3.1/ext-all-debug.js')}" type="text/javascript"></script>
@@ -94,6 +96,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/CloneMapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/GeoFacetMapToolbar.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetMapPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsMiniMap.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/FacetedSearchResultsDataView.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/DateSelectionPanel.js')}"></script>

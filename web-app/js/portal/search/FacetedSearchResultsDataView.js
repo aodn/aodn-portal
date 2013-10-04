@@ -149,67 +149,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getMiniMap: function(values) {
-    	var LONGITUDE_OF_AUSTRALIA = 90;
+        var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
+        miniMap.addLayersAndRender();
 
-        function _baseLayer() {
-            return new OpenLayers.Layer.WMS(
-                "IMOS Tile Cache Simple Baselayer",
-                "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
-                { layers: 'default_basemap_simple' }
-            );
-        }
-
-        function _zoomLevel(map, bounds) {
-            var zoomLevel = map.getZoomForExtent(bounds);
-            if (zoomLevel == 0) {
-                // 0 is too large
-                zoomLevel = 1;
-            }
-            else if (zoomLevel > 4) {
-                // Anything over 4 doesn't show enough to get an idea of where things are
-                zoomLevel = 4;
-            }
-            return zoomLevel;
-        }
-
-        function _centerLonLat(map, bounds) {
-            var centerLonLat = bounds.getCenterLonLat();
-            if (map.getZoomForExtent(bounds) == 0) {
-                centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
-            }
-            return centerLonLat;
-        }
-
-        var componentId = Ext.id();
-        var metadataExtent = values.bbox;
-        var emptyString =  (metadataExtent.getBounds() == undefined) ? OpenLayers.i18n('unavailableExtent') : '';
-
-        var map = new OpenLayers.Map({
-            controls: [
-                new OpenLayers.Control.MousePosition({
-                    emptyString: emptyString
-                })
-            ]
-        });
-        map.addLayer(_baseLayer());
-        map.addLayer(metadataExtent.getLayer());
-
-        setTimeout(function() {
-            map.render("fsSearchMap" + values.uuid);
-
-            if (metadataExtent.getBounds()) {
-                map.setCenter(
-                    _centerLonLat(map, metadataExtent.getBounds()),
-                    _zoomLevel(map, metadataExtent.getBounds())
-                );
-            }
-            else {
-                map.zoomToExtent( new  OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
-            }
-        }, 10);
-        return "";
+        // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
+        // e.g. firefox (but not chrome).
+        return '';
     },
-
 
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);
