@@ -43,7 +43,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     _addBaseAndExtentLayers: function() {
         this.addLayers([
             this._getBaseLayer(),
-            this._getExtentLayer(),
+            this._getExtentLayer()
         ]);
     },
 
