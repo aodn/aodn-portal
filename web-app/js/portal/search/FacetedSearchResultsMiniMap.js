@@ -12,12 +12,11 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
 
     constructor: function(values) {
-        var emptyString =  (values.bbox.getBounds() == undefined) ? OpenLayers.i18n('unavailableExtent') : '';
 
         Ext.apply(this, {
             controls: [
                 new OpenLayers.Control.MousePosition({
-                    emptyString: emptyString
+                    emptyString: this._unavailableExtentMsgIfNoBounds(values.bbox)
                 })
             ],
             displayProjection: this.EPSG_4326_PROJECTION,
@@ -26,6 +25,10 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         });
 
         Portal.search.FacetedSearchResultsMiniMap.superclass.constructor.call(this);
+    },
+
+    _unavailableExtentMsgIfNoBounds: function(bbox) {
+        return bbox.getBounds() ? '' : OpenLayers.i18n('unavailableExtent');
     },
 
     addLayersAndRender: function() {
