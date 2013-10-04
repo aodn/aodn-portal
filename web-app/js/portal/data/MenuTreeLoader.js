@@ -49,7 +49,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
             //TODO: check childNodes
             this.runCallback(callback, this || node, [node]);
         }
-        catch(e) {
+        catch (e) {
             this.handleFailure(response);
         }
     },
@@ -82,7 +82,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
     },
 
     isLayerActive: function(layer) {
-        return !layer || layer.activeInLastScan; 
+        return !layer || layer.activeInLastScan;
     },
 
     isNotEmpty: function(collection) {
