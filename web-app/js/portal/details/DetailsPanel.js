@@ -121,7 +121,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         if (layer) {
             this.setStatus(layer.name);
 
-		    // show new layer unless user requested 'hideLayerOptions'
+            // show new layer unless user requested 'hideLayerOptions'
             this.detailsPanelTabs.update(layer);
             this.transectControl.hide();
 
@@ -177,5 +177,5 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         if (this.transectControl != null) {
             this.transectControl.deactivateDrawingControl();
         }
-	}
+    }
 });

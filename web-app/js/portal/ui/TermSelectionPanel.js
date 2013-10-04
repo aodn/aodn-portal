@@ -240,7 +240,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         var filter = this.selectionStore.getFilterValue();
 
         this.termStore.loadTopTerms(response, fieldGroup, filter);
-        
+
         this.setDisabled(this.selectionStore.getCount() == 0 && this.termStore.getCount() == 0);
         this.filterView.setVisible(this.hierarchical || this.selectionStore.getCount() == 0);
         this.doLayout();

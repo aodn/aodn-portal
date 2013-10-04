@@ -192,17 +192,17 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             }
             else if (openLayer.hasBoundingBox()) {
                 // build openlayer bounding box
-            	var bounds = null;
-            	if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
-            		// Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
-            		var defaultBbox = this.defaultDatelineZoomBbox.split(',');
-            		bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
-            	}
+                var bounds = null;
+                if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
+                    // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
+                    var defaultBbox = this.defaultDatelineZoomBbox.split(',');
+                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
+                }
                 else {
-            		bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
-            	}
+                    bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
+                }
 
-            	// ensure converted into this maps projection. convert metres into lat/lon etc
+                // ensure converted into this maps projection. convert metres into lat/lon etc
                 bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
 
                 // openlayers wants left, bottom, right, top

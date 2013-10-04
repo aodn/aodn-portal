@@ -97,7 +97,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     },
 
     _getCenterLonLat: function() {
-    	var LONGITUDE_OF_AUSTRALIA = 90;
+        var LONGITUDE_OF_AUSTRALIA = 90;
         var bounds = this.metadataExtent.getBounds();
         var centerLonLat = bounds.getCenterLonLat();
 

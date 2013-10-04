@@ -66,7 +66,7 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
 
 function imgSizer(){
     //Configuration Options
-    var max_width = Portal.app.config.popupWidth -70 ; 	//Sets the max width, in pixels, for every image
+    var max_width = Portal.app.config.popupWidth -70 ;     //Sets the max width, in pixels, for every image
     var selector = 'div > .featureinfocontent .feature img';
 
     //destroy_imagePopup(); // make sure there is no other

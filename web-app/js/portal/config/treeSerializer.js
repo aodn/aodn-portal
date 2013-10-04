@@ -47,8 +47,8 @@ c = true;
 
 // Add all user-added attributes unless rejected by the attributeFilter.
 for(var key in this.attributes) {
-	if ((key != 'id') && (!attributeFilter || attributeFilter(key, this.attributes[key]))) {
-		if (c) result += ',';
+    if ((key != 'id') && (!attributeFilter || attributeFilter(key, this.attributes[key]))) {
+        if (c) result += ',';
         if (attributeMapping && attributeMapping[key]) {
         thisKey = attributeMapping[key];
         } else {
@@ -82,7 +82,7 @@ else {
     if (this.attributes['leaf'].toString()  == "false" ) {
         result += ',"children":[]';
     }
-    
+
 }
 return result + "}";
 };

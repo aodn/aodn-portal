@@ -10,8 +10,8 @@
 
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
-    	var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
-	return result;
+        var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    return result;
 }
 
 function ucwords( str ) {
@@ -30,7 +30,7 @@ function getAussieUnits(val,src_units) {
      var ret = [];
      var toReturn = [];
      var old = "";
-     
+
      if (src_units != undefined) {
          src_units = src_units.toLowerCase();
          src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
@@ -54,14 +54,14 @@ function getAussieUnits(val,src_units) {
             cel = val - 272.15;
             old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
             ret = [toNSigFigs(cel,4),c,old];
-            
+
            // console.log("kel");
           }
           // celcius
           else if (inArray(celNameArray,src_units)) {
              ret = [toNSigFigs(val,4),c,""];
              cel = "success";
-             
+
             //console.log("cel");
           }
           // metres
@@ -84,18 +84,18 @@ function getAussieUnits(val,src_units) {
      else {
          toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
      }
-     
+
      return toReturn;
 
 }
 
 
 function pad(numNumber, numLength){
-	var strString = '' + numNumber;
-	while(strString.length<numLength){
-		strString = '0' + strString;
-	}
-	return strString;
+    var strString = '' + numNumber;
+    while(strString.length<numLength){
+        strString = '0' + strString;
+    }
+    return strString;
 }
 
 
@@ -121,8 +121,8 @@ function formatGetFeatureInfo(response, options) {
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
     }
-	else if(options.params.expectedFormat == 'text/plain') {
-		// cant be assed to handle different line endings. its crap anyhow
+    else if(options.params.expectedFormat == 'text/plain') {
+        // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
     else{
@@ -133,9 +133,9 @@ function formatGetFeatureInfo(response, options) {
 
 function setHTML_ncWMS(response,options) {
     var xmldoc = response.responseXML;  
-    
+
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 
-        
+
         var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
 
         if (lon) {  // We have a successful result
@@ -168,7 +168,7 @@ function setHTML_ncWMS(response,options) {
             if (!isNaN(startval) ) {  // may have no data at this point
 
                 if(time != null)   {
-                    
+
                     var human_time = new Date();
                     human_time.setISO8601(time);
                     if (endtime != null) {
@@ -177,11 +177,11 @@ function setHTML_ncWMS(response,options) {
                         endval = getAussieUnits(endval, options.params.units);
                     }
                 }
-                
+
                 var startval = getAussieUnits(startval, options.params.units);
-                
+
                 if(human_time != null)  {
-                    
+
                     if (endval == null) {
                         if(isSD)  {
                             vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
@@ -246,14 +246,14 @@ function setHTML_ncWMS(response,options) {
 
 
 function inArray (array,value) {
-    
+
     for (var i = 0; i < array.length; i++) {
-        
+
         if (array[i] === value) {
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -329,7 +329,7 @@ function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
     // Optimize array length - we'll have at least splitDates.length items
     // or more (usually)
     var expandedDates = [];
-	expandedDates.length = splitDates.length;
+    expandedDates.length = splitDates.length;
 
     // Array insertion position
     var j = 0;
@@ -473,5 +473,5 @@ if (typeof console === "undefined" || typeof console.log === "undefined") {
  console.log = function(msg) {
       //alert(msg); 
  };
- 
+
 }
