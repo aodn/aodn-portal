@@ -63,6 +63,28 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         Portal.cart.DownloadConfirmationWindow.superclass.initComponent.apply(this, arguments);
     },
 
+    hide: function() {
+        try {
+            Portal.cart.DownloadConfirmationWindow.superclass.hide.call(this);
+        } catch (e) {
+            /**
+             * Explicitly ignoring exception
+             *
+             * https://github.com/aodn/aodn-portal/issues/486
+             *
+             * @tofojo's own words:
+             * This appears to have existed forever in IE, it basically comes down to Shadow.realign in Ext where the
+             * height value is determined as -1 which is invalid. At no point do we set the height to -1 so I assume that
+             * IE does this when the FeatureInfoPopup is hidden from view or something else crazy. I _hope_ that the popup
+             * is still destroyed effectively, it all seems to still work. I'm happy for someone else to find a better
+             * solution, I take no pride in this fix whatsoever.
+             *
+             * My interpretation (DF):
+             * IE8 IS SHIT KTHX BYE
+             */
+        }
+    },
+
     showIfNeeded: function(downloadUrl) {
 
         this.downloadUrl = downloadUrl;
