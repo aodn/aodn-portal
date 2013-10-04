@@ -33,9 +33,9 @@ class LayerController {
     def list = {
 
         params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
-        if ( !params.offset ) params.offset = 0
-        if ( params.isActive == null ) params.isActive = true
-        if ( params.isRoot == null ) params.isRoot = ''
+        if (!params.offset) params.offset = 0
+        if (params.isActive == null) params.isActive = true
+        if (params.isRoot == null) params.isRoot = ''
 
         def criteria = Layer.createCriteria()
         def layers = criteria.list( _queryFromParams( params ), max: params.max, offset: params.offset )
@@ -48,7 +48,7 @@ class LayerController {
                 filters: filters
         ]
 
-        if ( request.xhr ) {
+        if (request.xhr) {
 
             // This is an ajax request
             render template: "listBody", model: model
@@ -59,50 +59,50 @@ class LayerController {
         }
     }
 
-    def _queryFromParams( params ) {
+    def _queryFromParams(params) {
 
         return {
 
             and {
-                if ( params.keyword ) {
+                if (params.keyword) {
 
                     or {
-                        ilike( "name", "%${params.keyword}%" )
-                        ilike( "title", "%${params.keyword}%" )
-                        ilike( "namespace", "%${params.keyword}%" )
+                        ilike("name", "%${params.keyword}%")
+                        ilike("title", "%${params.keyword}%")
+                        ilike("namespace", "%${params.keyword}%")
                     }
                 }
 
-                if ( params.serverId ) {
+                if (params.serverId) {
 
-                    eq( "server.id", params.long( "serverId" ) )
+                    eq("server.id", params.long("serverId"))
                 }
 
-                if ( params.isActive ) {
+                if (params.isActive) {
 
-                    eq( "activeInLastScan", params.isActive.toBoolean() )
+                    eq("activeInLastScan", params.isActive.toBoolean())
                 }
 
-                if ( params.isRoot ) {
+                if (params.isRoot) {
 
-                    if ( params.isRoot.toBoolean() ) {
+                    if (params.isRoot.toBoolean()) {
 
-                        isNull( "parent" )
+                        isNull("parent")
                     }
                     else {
 
-                        isNotNull( "parent" )
+                        isNotNull("parent")
                     }
                 }
             }
 
-            if ( params.sort ) {
-                order( params.sort, params.order )
+            if (params.sort) {
+                order(params.sort, params.order)
             }
             else {
-                order( "server", "asc" )
-                order( "name", "asc" )
-                order( "title", "asc" )
+                order("server", "asc")
+                order("name", "asc")
+                order("title", "asc")
             }
         }
     }
@@ -141,9 +141,9 @@ class LayerController {
 
     def showLayerByItsId = {
 
-        def layerInstance = Layer.get( params.layerId )
+        def layerInstance = Layer.get(params.layerId)
 
-        if ( layerInstance ) {
+        if (layerInstance) {
             _renderLayer(layerInstance)
         }
         else {
@@ -170,7 +170,8 @@ class LayerController {
         if (parts.length == 2) {
             namespace = parts[0]
             localName = parts[1]
-        } else {
+        }
+        else {
             namespace = null
             localName = params.name
         }
@@ -185,24 +186,26 @@ class LayerController {
                     // Note that different GetCapabilites versions may have different request endpoints.
                     // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
                     operations {
-                        eq( "name", "GetMap" )
-                        eq( "getUrl", params.serverUri)
+                        eq("name", "GetMap")
+                        eq("getUrl", params.serverUri)
                     }
                 }
             }
             if (namespace) {
-                eq( "namespace", namespace)
-            } else {
+                eq("namespace", namespace)
+            }
+            else {
                 isNull ("namespace")
             }
-            eq( "name", localName)
+            eq("name", localName)
             isNull("cql")      // don't include filtered layers!
             eq("activeInLastScan", true)
         }
 
         if (layerInstances) {
             _renderLayer(layerInstances[0])
-        } else {
+        }
+        else {
             render text: "Layer '${namespace}:${localName}' does not exist", status: 404
         }
     }
@@ -253,7 +256,7 @@ class LayerController {
 
             _updateViewParams(layerInstance, params)
 
-	        _updateWfsLayer(layerInstance, params)
+            _updateWfsLayer(layerInstance, params)
 
             layerInstance.properties = params
 
@@ -272,35 +275,35 @@ class LayerController {
         }
     }
 
-	def _updateViewParams(layer, params) {
+    def _updateViewParams(layer, params) {
 
-		layer.viewParams?.delete()
+        layer.viewParams?.delete()
 
-		def newVals = params.viewParams
-		def allValuePresent = newVals?.centreLat && newVals?.centreLon && newVals?.openLayersZoomLevel
+        def newVals = params.viewParams
+        def allValuePresent = newVals?.centreLat && newVals?.centreLon && newVals?.openLayersZoomLevel
 
-		if (allValuePresent) {
+        if (allValuePresent) {
 
-			layer.viewParams = new LayerViewParameters([layer: layer] + newVals)
-		}
-		else {
+            layer.viewParams = new LayerViewParameters([layer: layer] + newVals)
+        }
+        else {
 
-			layer.viewParams = null
-		}
+            layer.viewParams = null
+        }
 
-		params.remove('viewParams')
-	}
+        params.remove('viewParams')
+    }
 
-	def _updateWfsLayer(layer, params) {
+    def _updateWfsLayer(layer, params) {
 
-		if (params.wfsLayerId) {
-			layer.wfsLayer = Layer.get(params.wfsLayerId)
-		} else {
-			layer.wfsLayer = null
-		}
+        if (params.wfsLayerId) {
+            layer.wfsLayer = Layer.get(params.wfsLayerId)
+        } else {
+            layer.wfsLayer = null
+        }
 
-		params.remove('wfsLayer')
-	}
+        params.remove('wfsLayer')
+    }
 
     def delete = {
         def layerInstance = Layer.get(params.id)
@@ -342,7 +345,7 @@ class LayerController {
         }
 
         try {
-	        def startTime = new Date()
+            def startTime = new Date()
 
             // Check metadata
             def metadata = JSON.parse( params.metadata as String )
@@ -352,7 +355,7 @@ class LayerController {
             def capabilitiesData = params.capabilitiesData
             _validateCapabilitiesData capabilitiesData
 
-	        log.info "saveOrUpdate Layer. Finding server with uri: ${metadata.serverUri}"
+            log.info "saveOrUpdate Layer. Finding server with uri: ${metadata.serverUri}"
 
             // Get server w/ metdata
             def server = Server.findByUri( metadata.serverUri )
@@ -368,10 +371,10 @@ class LayerController {
             server.lastScanDate = new Date()
             server.save( failOnError: true )
 
-	        use(TimeCategory) {
+            use(TimeCategory) {
 
-		        log.debug "saveOrUpdate() on '$server' took ${new Date() - startTime}"
-	        }
+                log.debug "saveOrUpdate() on '$server' took ${new Date() - startTime}"
+            }
 
             render status: 200, text: "Complete (saved)"
 
@@ -446,25 +449,25 @@ class LayerController {
 
         def suppliedPassword = params.password
 
-        if ( !suppliedPassword ) throw new IllegalArgumentException( "Supplied value for password is invalid." )
+        if (!suppliedPassword) throw new IllegalArgumentException("Supplied value for password is invalid.")
 
         def configuredPassword = Config.activeInstance().wmsScannerCallbackPassword
 
-        if ( !configuredPassword ) throw new IllegalStateException( "WMS Scanner password not configured in Portal app." )
+        if (!configuredPassword) throw new IllegalStateException("WMS Scanner password not configured in Portal app.")
 
-        if ( configuredPassword != suppliedPassword ) throw new IllegalArgumentException( "Supplied password does not match configured password." )
+        if (configuredPassword != suppliedPassword) throw new IllegalArgumentException("Supplied password does not match configured password.")
     }
 
     void _validateMetadata(def metadata) {
 
-        if ( !metadata ) throw new IllegalArgumentException( "Metadata must be present" )
-        if ( !metadata.serverUri ) throw new IllegalArgumentException( "serverUri must be specified in the metadata" )
-        if ( !metadata.dataSource ) throw new IllegalArgumentException( "dataSource must be specified in the metadata" )
+        if (!metadata) throw new IllegalArgumentException("Metadata must be present")
+        if (!metadata.serverUri) throw new IllegalArgumentException("serverUri must be specified in the metadata")
+        if (!metadata.dataSource) throw new IllegalArgumentException("dataSource must be specified in the metadata")
     }
 
     void _validateCapabilitiesData(def capabilitiesData) {
 
-        if ( !capabilitiesData ) throw new IllegalArgumentException( "CapabilitiesData must be present" )
+        if (!capabilitiesData) throw new IllegalArgumentException("CapabilitiesData must be present")
     }
 
     def server = {
@@ -527,22 +530,22 @@ class LayerController {
 
     def _isServerCollectable(server1, server2) {
 
-	    return server2 && (!server1 || server1 != server2)
+        return server2 && (!server1 || server1 != server2)
     }
 
     def _toResponseMap(data, total) {
 
-	    return [data: data, total: total]
+        return [data: data, total: total]
     }
 
     def _convertLayersToListOfMaps(layers) {
 
-		return layers.collect { _getLayerDefaultData(it) }
+        return layers.collect { _getLayerDefaultData(it) }
     }
 
     def _findLayersAndServers(layerIds) {
 
-		def layers = []
+        def layers = []
         if (layerIds) {
             def criteria = Layer.createCriteria()
             layers = criteria.list {
@@ -553,8 +556,8 @@ class LayerController {
             }
         }
 
-		// Put Layers in the order they were requested
-		return layers.sort { layerIds.indexOf( it.id ) }
+        // Put Layers in the order they were requested
+        return layers.sort { layerIds.indexOf( it.id ) }
     }
 
     def _renderLayer(layerInstance) {
@@ -587,9 +590,9 @@ class LayerController {
                 if ("layers".equals(name)) {
                     layerData[name] = _convertLayersToListOfMaps(value)
                 }
-				else if ("wfsLayer".equals(name) && value) {
-					layerData[name] = _getLayerData(value, excludes)
-				}
+                else if ("wfsLayer".equals(name) && value) {
+                    layerData[name] = _getLayerData(value, excludes)
+                }
                 else if (!excludes.contains(name)) {
                     layerData[name] = value
                 }
@@ -598,7 +601,7 @@ class LayerController {
         return layerData
     }
 
-	def _getLayerDefaultData(layer) {
+    def _getLayerDefaultData(layer) {
         def excludes = [
                 "class",
                 "metaClass",
@@ -623,13 +626,13 @@ class LayerController {
     def getFiltersAsJSON = {
         def layerInstance = Layer.get( params.layerId )
 
-        if ( layerInstance ) {
+        if (layerInstance) {
 
-			def filters = layerInstance.filters?.sort()
+            def filters = layerInstance.filters?.sort()
 
             render filters
-	            .findAll{ it.enabled }
-	            .collect{ it.toLayerData() } as JSON
+                .findAll{ it.enabled }
+                .collect{ it.toLayerData() } as JSON
         }
         else {
             def queryString = request.queryString ? "?$request.queryString" : ""
