@@ -65,17 +65,17 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
       && minx < maxx
       && miny < maxy))
       {
-      alert("ERROR: wrong value in bbox ! \n\n" + 
-        minx + 
-        ":West = "+(minx >= -180 && minx <= 180)+"\n" + 
+      alert("ERROR: wrong value in bbox ! \n\n" +
+        minx +
+        ":West = "+(minx >= -180 && minx <= 180)+"\n" +
         miny +
-        ":South = "+(miny >= -90 && miny <= 90) +"\n" + 
-        maxx + 
-        ":East = "+ (maxx > -180 && maxx <= 180)+"\n" + 
-        maxy + 
+        ":South = "+(miny >= -90 && miny <= 90) +"\n" +
+        maxx +
+        ":East = "+ (maxx > -180 && maxx <= 180)+"\n" +
+        maxy +
         ":North = "+(maxy >= -90 && maxy <= 90) +
-        "\n West > East = " + (minx < maxx) + 
-        "\n South < North = " +(miny < maxy) 
+        "\n West > East = " + (minx < maxx) +
+        "\n South < North = " +(miny < maxy)
         );
       return null;
     }

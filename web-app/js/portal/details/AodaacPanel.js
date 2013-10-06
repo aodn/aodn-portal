@@ -333,5 +333,5 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             };
         }
         return {};
-    }    
+    }
 });

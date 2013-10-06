@@ -17,17 +17,17 @@
  * @version   $Id: grid2treedrag.js 152 2009-06-23 20:10:42Z jozo $
  *
  * @license grid2treedrag.js is licensed under the terms of the Open Source
- * LGPL 3.0 license. Commercial use is permitted to the extent that the 
+ * LGPL 3.0 license. Commercial use is permitted to the extent that the
  * code/component(s) do NOT become part of another Open Source or Commercially
  * licensed development library or toolkit without explicit permission.
- * 
+ *
  * License details: http://www.gnu.org/licenses/lgpl.html
  */
 
 Ext.ns('Example');
 
 
-var tree; 
+var tree;
 var jsonLayers;
 
 function initMenu(menu, _basePath) {
@@ -43,36 +43,36 @@ function initMenu(menu, _basePath) {
         tree.getRootNode().expand(true);
     }
     else {
-        menu = new Object();  
+        menu = new Object();
 
-        var setUpName = function(){            
-            Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new Menu tree:', function(status, text) {                           
+        var setUpName = function() {
+            Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new Menu tree:', function(status, text) {
                 if (text != "") {
                     menu.title = text;
-                    setupgrid2treedrag(menu); 
+                    setupgrid2treedrag(menu);
                 }
                 else {
                     if (status == "ok") {
                         setUpName(); //recurse until the label is set
                     }
-                }            
+                }
             });
         }
-        setUpName();  // fail               
+        setUpName();  // fail
 
-    } 
+    }
 }
 
 
 function showHideButtons() {
-    // hide the help if it exists                                        
-    var element = Ext.get('message');                                        
+    // hide the help if it exists
+    var element = Ext.get('message');
     if (element) {
         element.setVisibilityMode(Ext.Element.DISPLAY);
         element.fadeOut({
             duration: 1.5
         });
-    }                         
+    }
     Ext.get('submitMenu').fadeIn();
 }
 
@@ -97,28 +97,28 @@ function setupgrid2treedrag(menu) {
         var json = tree.toJsonString(null,
             function(key, val) {
                 return (key == 'leaf' || ((key == 'grailsLayerId' || key == 'grailsServerId') && val) || key == 'text' || key == 'id');
-            }, 
+            },
             {
                 description: 'name'
             });
         if (json != "") {
-            Ext.get('jsonString').dom.value = json; 
+            Ext.get('jsonString').dom.value = json;
         }
     });
 
 
 
-    tree = new Ext.tree.TreePanel({       
+    tree = new Ext.tree.TreePanel({
         // root with some static demo nodes
         root: {
-            text: rootLabel,  
+            text: rootLabel,
             id: 'root',
             children: children,
             expandable: true
         },
-        // enable DD        
+        // enable DD
         enableDD:true,
-        // set ddGroup - same as for grid       
+        // set ddGroup - same as for grid
         ddGroup:'layerGridPanel',
         id:'tree',
         width: 250,
@@ -168,9 +168,9 @@ function setupgrid2treedrag(menu) {
                                 text:r.get('name'),
                                 leaf:false,
                                 children: [],
-                                grailsServerId:r.get('id'), // identify grails Server by this variable   
-                                qtip:r.get('json.uri') 
-                            }));                            
+                                grailsServerId:r.get('id'), // identify grails Server by this variable
+                                qtip:r.get('json.uri')
+                            }));
                             }
                             else {
                             // create layer node
@@ -200,7 +200,7 @@ function setupgrid2treedrag(menu) {
     var win = new Ext.Panel({
         defaultMargins: 10,
         border: false,
-        padding: 25,      
+        padding: 25,
         layout: {
             type: 'column',
             align: 'left'
@@ -209,19 +209,19 @@ function setupgrid2treedrag(menu) {
         align: 'stretch',
         renderTo: 'menuConfigurator',
         items: [
-            tree,  
+            tree,
             new Portal.ui.LayerDataPanel({ url: jsonLayers })
         ]
     });
     win.doLayout();
-};             
+};
 
 function rightClickMenu(node){
     var treeMenu = new Ext.menu.Menu({
         plain: false,
-        shadow:'drop', 
+        shadow:'drop',
         showSeparator: false
-    });         
+    });
 
     if (!node.isLeaf()) {
         treeMenu.add({
@@ -229,14 +229,14 @@ function rightClickMenu(node){
             node:node,
             listeners:{
                 click: function(item){
-                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new branch:', function(status, text) {                           
+                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new branch:', function(status, text) {
                         if (text != "") {
                             node.appendChild({
                                 text: text,
                                 leaf: false,
                                 expanded: true,
                                 expandable: true,
-                                children: []                  
+                                children: []
 
                             });
                             node.expand();
@@ -247,7 +247,7 @@ function rightClickMenu(node){
                         }
                     });
 
-                } 
+                }
             }
         });
 
@@ -256,22 +256,22 @@ function rightClickMenu(node){
             node:node,
             listeners:{
                 click: function(item){
-                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:', 
+                    Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:',
                         function(status, text) {
-                        // dont allow the label to be empty   
+                        // dont allow the label to be empty
                             if (text != "") {
                                 node.setText(text);
                             }
-                            else {                            
+                            else {
                                 Ext.MessageBox.alert('Node not created', 'You must supply a name for a new node');
                             }
                         },
                         this,
                         false,
                         node.text
-                    );                    
-                    showHideButtons();           
-                } 
+                    );
+                    showHideButtons();
+                }
             }
         });
 
@@ -283,10 +283,10 @@ function rightClickMenu(node){
             node:node,
             listeners:{
                 click: function(){
-                    node.destroy();   
-                    showHideButtons();                    
+                    node.destroy();
+                    showHideButtons();
                 }
-            }        
+            }
         })
     }
 

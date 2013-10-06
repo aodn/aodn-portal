@@ -52,6 +52,6 @@ Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
     },
 
     isLayerActive: function(layer) {
-        return !layer || layer.activeInLastScan; 
+        return !layer || layer.activeInLastScan;
     }
 });

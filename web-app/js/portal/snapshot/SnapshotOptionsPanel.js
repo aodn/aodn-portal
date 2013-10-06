@@ -12,12 +12,12 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 
     defaultHeight: 20,
 
-    initComponent: function() { 
+    initComponent: function() {
         Ext.apply(this, {
 
-            layout: "hbox",        
+            layout: "hbox",
             hidden: true,
-            items: [ 
+            items: [
 
             new Ext.form.ComboBox({
 
@@ -50,9 +50,9 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                     beforequery: function(qe){
                         delete qe.combo.lastQuery;
                     },
-                    select: this.onLoadSelectedSnapshot                    
+                    select: this.onLoadSelectedSnapshot
                 }
-            }),    
+            }),
             new Ext.Spacer({
                 width: 7
             }),
@@ -61,7 +61,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                 disabled: true,
                 text: OpenLayers.i18n('deleteSnapshot'),
                 ref: 'btnDelete',
-                cls: "floatLeft buttonPad",   
+                cls: "floatLeft buttonPad",
                 tooltip: OpenLayers.i18n('deleteSnapshotTip'),
                 listeners:
                 {
@@ -82,7 +82,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                     click: this.onShareSelectedSnapshot
                 }
             })
-            ]      
+            ]
         });
 
         Portal.snapshot.SnapshotOptionsPanel.superclass.initComponent.apply(this, arguments);
@@ -93,7 +93,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         this.map.events.register('blur', this, function(obj){
             if (this.el != undefined) {
                 this.snapshotCombo.collapse();
-            }            
+            }
         });
 
 
@@ -157,7 +157,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                    this.snapshotCombo.setValue(operation.params.recordId, true );
                  this.snapshotCombo.fireEvent('select');
             }
-        });    
+        });
     },
 
     onSnapshotRemoved: function() {
