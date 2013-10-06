@@ -100,7 +100,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
        if(params.protocol != null)
        {
            protocolString = "protocol=" + params.protocol;
-       }  
+       }
       proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' +protocolString) + '&format=text/xml');
    }
 });

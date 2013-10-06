@@ -20,7 +20,7 @@ Portal.common.Controller = Ext.extend(Ext.util.Observable, {
         this._callFailureCallback(options.requestCallbacks, [errors]);
     },
 
-    // Private method used to call any success callback specified for a request usually after 
+    // Private method used to call any success callback specified for a request usually after
     // the controller has processed the request itself
 
     _callSuccessCallback: function(requestCallbacks, args) {
@@ -29,7 +29,7 @@ Portal.common.Controller = Ext.extend(Ext.util.Observable, {
         }
     },
 
-    // Private method used to call any failure callback specified for a request usually after 
+    // Private method used to call any failure callback specified for a request usually after
     // the controller has processed the request itself
 
     _callFailureCallback: function(requestCallbacks, args) {

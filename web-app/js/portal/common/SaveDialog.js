@@ -26,7 +26,7 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
           ref: '../nameField',
           name: 'name',
           fieldLabel: this.nameFieldLabel,
-          xtype: 'textfield'        
+          xtype: 'textfield'
         }],
         buttons: [{
           text: OpenLayers.i18n('btnSave'),
@@ -44,11 +44,11 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
           }
         }],
         keys: [{
-          key: [Ext.EventObject.ENTER], 
+          key: [Ext.EventObject.ENTER],
           handler: this.onSave,
           scope: this
         },{
-          key: [Ext.EventObject.ESCAPE], 
+          key: [Ext.EventObject.ESCAPE],
           handler: this.onCancel,
           scope: this
         }]
@@ -72,7 +72,7 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
   },
 
   onSuccessfulSave: function() {
-    this.close(); 
+    this.close();
   },
 
   onFailedSave: function(errors) {

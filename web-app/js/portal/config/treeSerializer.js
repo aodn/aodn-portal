@@ -59,7 +59,7 @@ for(var key in this.attributes) {
             result += '"' + thisKey + '":' + this.attributes[key] ;
         }
         else {
-            result += '"' + thisKey + '":"' + this.attributes[key] + '"';      
+            result += '"' + thisKey + '":"' + this.attributes[key] + '"';
         }
         c = true;
     }

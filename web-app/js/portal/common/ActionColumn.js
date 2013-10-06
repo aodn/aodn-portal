@@ -22,7 +22,7 @@ Portal.common.ActionColumn = Ext.extend(Ext.grid.ActionColumn, {
 
         Ext.grid.ActionColumn.superclass.constructor.call(me, cfg);
 
-//      Renderer closure iterates through items creating an <img> element for each and tagging with an identifying 
+//      Renderer closure iterates through items creating an <img> element for each and tagging with an identifying
 //      class name x-action-col-{n}
         me.renderer = function(v, meta) {
 //          Allow a configured renderer to create initial value (And set the other values in the "metadata" argument!)

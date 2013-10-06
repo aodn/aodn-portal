@@ -27,7 +27,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
             ],
             store: store,
             viewConfig: {
-                forceFit: true, 
+                forceFit: true,
                 groupTextTpl: 'text ',
                 getRowClass: function(record, index) {
                     if (record.json['class'] == "au.org.emii.portal.Server") {
@@ -40,7 +40,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
             },
             bbar: new Ext.PagingToolbar({
                 store: store,
-                displayInfo: true,   
+                displayInfo: true,
                 pageSize: 50
             })
         }, cfg);
@@ -62,11 +62,11 @@ Portal.ui.LayerSearchPanel = Ext.extend(Ext.FormPanel, {
     constructor: function(cfg) {
         this.filterHandler = cfg.filterHandler;
         var config = Ext.apply({
-            frame: true, 
-            border: false, 
+            frame: true,
+            border: false,
             buttonAlign: 'center',
-            url: jsonLayers, 
-            method: 'POST', 
+            url: jsonLayers,
+            method: 'POST',
             id: 'layerSearchPanel',
             bodyStyle: 'padding:1px;',
             width: 600,
@@ -82,11 +82,11 @@ Portal.ui.LayerSearchPanel = Ext.extend(Ext.FormPanel, {
                 },
                 {
                     xtype: 'button',
-                    text: 'Reset', 
+                    text: 'Reset',
                     width: 50,
                     ref: 'resetButton'
                 },
-                { 
+                {
                     xtype: 'button',
                     text: 'Filter',
                     width: 50,
@@ -96,8 +96,8 @@ Portal.ui.LayerSearchPanel = Ext.extend(Ext.FormPanel, {
             keys: [{
                 key: [Ext.EventObject.ENTER],
                 scope: this,
-                handler: function() { 
-                    this.filterButton.fireEvent('click'); 
+                handler: function() {
+                    this.filterButton.fireEvent('click');
                 }
             }]
         });

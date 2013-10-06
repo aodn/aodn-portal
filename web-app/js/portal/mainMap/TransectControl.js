@@ -9,7 +9,7 @@
 Ext.namespace('Portal.mainMap');
 
 Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
-  layer: null,  // layer to perform transect on 
+  layer: null,  // layer to perform transect on
   mapPanel: null,  // mapPanel containing map
   layout: 'hbox',
   hidden: true,
@@ -38,7 +38,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     this.mapPanel = mapPanel;
 
     // create layer and control for drawing transects
-    this.drawingLayer = new OpenLayers.Layer.Vector( OpenLayers.i18n("drawing")); 
+    this.drawingLayer = new OpenLayers.Layer.Vector( OpenLayers.i18n("drawing"));
     this.drawingControl = new OpenLayers.Control.DrawFeature(this.drawingLayer, OpenLayers.Handler.Path, {title: OpenLayers.i18n('drawingTitle')});
 
     this.mapPanel.map.addControl(this.drawingControl);
@@ -49,7 +49,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
 
   toggleDraw: function() {
     if (this.drawingControl.active) {
-      this.drawingControl.deactivate();  
+      this.drawingControl.deactivate();
     } else {
       this.drawingControl.activate();
     }
@@ -78,7 +78,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     line = line.substring(11, line.length - 1);
 
     //HACK: Pass time parameter if specified for layer
-    //TODO: replace this with loop on dimensions when this info is available from GetCapabilities statement 
+    //TODO: replace this with loop on dimensions when this info is available from GetCapabilities statement
     if (this.layer.params.TIME != undefined) {
       dimensionValues.TIME =  this.layer.params.TIME;
       dimensionParams = '&TIME=' + dimensionValues.TIME;

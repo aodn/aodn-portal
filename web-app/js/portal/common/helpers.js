@@ -35,7 +35,7 @@ function getAussieUnits(val,src_units) {
          src_units = src_units.toLowerCase();
          src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
          // arrays hold all possible names for a 'type'
-         // 
+         //
          // ALL ARRAY ENTRIES IN LOWER CASE
          var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
          var farNameArray = ["f","fahrenheit"];
@@ -116,7 +116,7 @@ function formatGetFeatureInfo(response, options) {
                     return html_content;
                 }
             }
-        }   
+        }
     }
     else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
@@ -132,9 +132,9 @@ function formatGetFeatureInfo(response, options) {
 
 
 function setHTML_ncWMS(response,options) {
-    var xmldoc = response.responseXML;  
+    var xmldoc = response.responseXML;
 
-    if (xmldoc.getElementsByTagName('longitude')[0] != undefined) { 
+    if (xmldoc.getElementsByTagName('longitude')[0] != undefined) {
 
         var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
 
@@ -173,7 +173,7 @@ function setHTML_ncWMS(response,options) {
                     human_time.setISO8601(time);
                     if (endtime != null) {
                         var human_endtime = new Date();
-                        human_endtime.setISO8601(endtime);                        
+                        human_endtime.setISO8601(endtime);
                         endval = getAussieUnits(endval, options.params.units);
                     }
                 }
@@ -264,7 +264,7 @@ function binSearch(sortedArray, value, compareFunction) {
     var max = sortedArray.length - 1;
     while (max >= min) {
         var mid = Math.floor((max + min) / 2);
-        if (compareFunction(value, sortedArray[mid])) { 
+        if (compareFunction(value, sortedArray[mid])) {
             return mid;
         } else if (sortedArray[mid].isAfter(value)) {
             max = mid - 1;
@@ -471,7 +471,7 @@ function _getISO8601Period(period) {
 if (typeof console === "undefined" || typeof console.log === "undefined") {
  console = {};
  console.log = function(msg) {
-      //alert(msg); 
+      //alert(msg);
  };
 
 }
