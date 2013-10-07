@@ -71,7 +71,8 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
     if (this.isNcwms()) {
         // ignoring any bad user config. we know what we want here
         return 'text/xml';
-    } else {
+    }
+    else {
         // Should usually be 'text/html'
         return this.server.infoFormat;
     }
@@ -114,7 +115,8 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
 
     if (this.overrideMetadataUrl) {
         result = this.overrideMetadataUrl;
-    } else if (this.metadataUrls && this.metadataUrls.length > 0) {
+    }
+    else if (this.metadataUrls && this.metadataUrls.length > 0) {
         for (var i = 0; i < this.metadataUrls.length; i++) {
             //TC211 is meant for MCP
             if (this.metadataUrls[i].type == "TC211") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
@@ -157,7 +159,8 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
 OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
-    } else {
+    }
+    else {
         return "";
     }
 };
@@ -171,7 +174,8 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
         this.mergeNewParams({
             CQL_FILTER: cqlFilter
         });
-    } else {
+    }
+    else {
         delete this.params["CQL_FILTER"];
         this.redraw();
     }
@@ -219,7 +223,8 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
         document.onselectstart = OpenLayers.Function.False;
 
         propagate = !this.stopDown;
-    } else {
+    }
+    else {
         this.started = false;
         this.start = null;
         this.last = null;

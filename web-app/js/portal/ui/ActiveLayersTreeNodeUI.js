@@ -91,7 +91,8 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
         if (loadedWithErrors) {
             statusButton.addClass("layer-error-button");
-        } else {
+        }
+        else {
             statusButton.addClass("layer-loaded-button");
         }
     },

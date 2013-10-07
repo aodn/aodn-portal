@@ -117,7 +117,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         if (layer.isNcwms()) {
             this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
-        } else {
+        }
+        else {
             this.ncwmsColourScalePanel.hide();
         }
 
@@ -178,7 +179,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (layer.cache === true) {
             url = layer.server.uri;
             useProxy = true;
-        } else {
+        }
+        else {
             url = layer.url;
         }
 
@@ -196,7 +198,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (colorBarOnly) {
             opts += "&LEGEND_OPTIONS=forceLabels:off";
             opts += "&COLORBARONLY=" + colorBarOnly;
-        } else {
+        }
+        else {
 
             opts += "&LEGEND_OPTIONS=forceLabels:on";
         }
@@ -211,11 +214,13 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (useProxy) {
             // FORMAT here is for the proxy, so that it knows its a binary image required
             url = proxyCachedURL + encodeURIComponent(url) + "&";
-        } else {
+        }
+        else {
             // see if this url already has some parameters on it
             if (url.contains("?")) {
                 url += "&";
-            } else {
+            }
+            else {
                 url += "?";
             }
         }
@@ -244,7 +249,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             if (parts.length > 1) {
 
                 return parts[1];
-            } else {
+            }
+            else {
 
                 return style;
             }

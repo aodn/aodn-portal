@@ -56,7 +56,8 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     _getNeighbouringNavigationLabel: function(relativeIndex, defaultLabel) {
         if (this._getNeighbouringItem(relativeIndex) && this._getNeighbouringItem(relativeIndex).navigationText) {
             return this._getNeighbouringItem(relativeIndex).navigationText;
-        } else {
+        }
+        else {
             return defaultLabel;
         }
     },

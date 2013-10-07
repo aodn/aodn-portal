@@ -36,7 +36,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
             if (cqlText) {
                 html = String.format('<b>{0}</b> <code>{1}</code>', OpenLayers.i18n('filterLabel'), cqlText);
-            } else {
+            }
+            else {
                 html = OpenLayers.i18n('noFilterMessage');
             }
 

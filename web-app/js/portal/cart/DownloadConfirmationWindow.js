@@ -83,7 +83,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         if (!this.hasBeenShown) {
             this.show();
-        } else {
+        }
+        else {
             this.onAccept();
         }
     },

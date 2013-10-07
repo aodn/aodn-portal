@@ -67,7 +67,8 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
         parent.appendChild(child);
         if (layers && layers.length > 0) {
             this.addChildren(child, layers);
-        } else {
+        }
+        else {
             child.leaf = true;
             child.attributes.grailsLayerId = id;
         }
@@ -120,7 +121,8 @@ Portal.data.ServerNodeLayerDescriptorStore.HandleServerLayerDescriptorStoreLoad 
         serverLayerDescriptorStore.callback = callback;
         serverLayerDescriptorStore.scope = scope;
         serverLayerDescriptorStore.load();
-    } else {
+    }
+    else {
         // Mimic the load by executing the callback
         if (Ext.isFunction(callback)) {
             callback.call(scope || serverLayerDescriptorStore);

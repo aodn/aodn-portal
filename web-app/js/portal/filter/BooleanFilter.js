@@ -58,7 +58,8 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
     _buttonChecked: function(button, checked){
         if(button === this.trueButton && checked){
             this.CQL = this.filter.name + " = true";
-        } else if(button === this.falseButton && checked){
+        }
+        else if(button === this.falseButton && checked){
             this.CQL = this.filter.name + " = false";
         }
 
@@ -82,7 +83,8 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
             if(m[1] === "true"){
                 this.trueButton.setValue(true);
                 this.falseButton.setValue(false);
-            } else if(m[1] === "false"){
+            }
+            else if(m[1] === "false"){
                 this.trueButton.setValue(false);
                 this.falseButton.setValue(true);
             }

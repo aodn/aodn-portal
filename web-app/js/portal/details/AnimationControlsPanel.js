@@ -254,13 +254,15 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _updateSpeedUpSlowDownButtons: function() {
         if (this.timeControl.isAtFastestSpeed()) {
             this.speedUpButton.disable();
-        } else {
+        }
+        else {
             this.speedUpButton.enable();
         }
 
         if (this.timeControl.isAtSlowestSpeed()) {
             this.slowDownButton.disable();
-        } else {
+        }
+        else {
             this.slowDownButton.enable();
         }
     },
@@ -272,7 +274,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _togglePlay : function() {
         if (this.isPlaying()) {
             this._stopPlaying();
-        } else {
+        }
+        else {
             this._startPlaying();
         }
     },

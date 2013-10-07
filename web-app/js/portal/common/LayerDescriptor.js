@@ -32,7 +32,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 new Portal.ui.openlayers.LayerOptions(this, optionOverrides),
                 this._getTimeDimension().extent
             );
-        } else {
+        }
+        else {
             openLayer = new OpenLayers.Layer.WMS(
                 this.title,
                 this._getServerUri(),
@@ -137,7 +138,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     _getParentId: function() {
         if (this._getParent()) {
             return this._getParent().id;
-        } else {
+        }
+        else {
             return undefined;
         }
     },
@@ -145,7 +147,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     _getParentName: function() {
         if (this._getParent()) {
             return this._getParent().name;
-        } else {
+        }
+        else {
             return undefined;
         }
     },
@@ -153,7 +156,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     _getAllStyles: function() {
         if (this.allStyles) {
             return this.allStyles;
-        } else {
+        }
+        else {
             return [];
         }
     }

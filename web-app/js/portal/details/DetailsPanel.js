@@ -148,7 +148,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
             // slider won't be rendered properly, for example).
             this.doLayout();
-        } else {
+        }
+        else {
             this.setStatus(OpenLayers.i18n('noActiveCollectionSelected'));
             this.hideDetailsPanelContents();
         }

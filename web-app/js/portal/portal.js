@@ -100,7 +100,8 @@ Portal.app = {
     ajaxAction:function (request) {
         if (request == 'show') {
             jQuery('.extAjaxLoading').show(100);
-        } else {
+        }
+        else {
             jQuery('.extAjaxLoading').hide('slow');
         }
     }
@@ -141,7 +142,8 @@ Ext.onReady(function () {
             if (field.errorIcon && field.errorIcon.dom) {
                 field.errorIcon.dom.qtip = '';
                 field.errorIcon.hide();
-            } else {
+            }
+            else {
                 // fix
 
                 if (field.el.dom) {

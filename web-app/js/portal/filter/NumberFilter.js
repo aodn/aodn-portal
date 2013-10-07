@@ -160,7 +160,8 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
 
                 this.operators.setValue(singleValOperator);
                 this.firstField.setValue(singleValValue);
-            } else if (betweenValue1 != null && betweenValue2 != null) {
+            }
+            else if (betweenValue1 != null && betweenValue2 != null) {
 
                 this.operators.setValue('BETWEEN');
                 this.firstField.setValue(betweenValue1);

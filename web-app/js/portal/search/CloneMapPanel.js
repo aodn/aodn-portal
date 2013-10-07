@@ -94,13 +94,17 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     applyLayerChange: function(target, source, property) {
         if (property == 'name') {
             target.setName(source.name);
-        } else if (property == 'order') {
+        }
+        else if (property == 'order') {
             this.applyMainMapLayerOrdering();
-        } else if (property == 'opacity') {
+        }
+        else if (property == 'opacity') {
             target.setOpacity(source.opacity);
-        } else if (property == 'params') {
+        }
+        else if (property == 'params') {
             target.mergeNewParams(source.params);
-        } else if (property == 'visibility') {
+        }
+        else if (property == 'visibility') {
             this.setLayerVisibility(target, source.getVisibility());
         }
     },
@@ -108,7 +112,8 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     setLayerVisibility: function(layer, visibility) {
         if (layer.isBaseLayer) {
             if (visibility) this.map.setBaseLayer(layer);
-        } else {
+        }
+        else {
             layer.setVisibility(visibility);
         }
     },

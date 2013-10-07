@@ -50,7 +50,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     this.doLayout();
 
                     show.call(target, this);
-                } else {
+                }
+                else {
 
                     hide.call(target, this);
                 }
@@ -76,7 +77,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         if (maxTimeText.trim() == "") {
             maxTimeText = ', ongoing'
-        } else {
+        }
+        else {
             maxTimeValue = maxTimeText;
             maxTimeText = " to " + maxTimeText;
         }

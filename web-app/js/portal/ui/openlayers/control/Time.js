@@ -106,7 +106,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
 
         if (range instanceof Array) {
             timerTickDateTimes = this._getExtentForRange(layer, range);
-        } else {
+        }
+        else {
             timerTickDateTimes = this._getLastNFromExtent(layer, range);
         }
 

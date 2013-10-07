@@ -31,7 +31,8 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
                 getRowClass: function(record, index) {
                     if (record.json['class'] == "au.org.emii.portal.Server") {
                         return 'serverRow';
-                    } else {
+                    }
+                    else {
                         return 'layerRow';
                     }
                 }

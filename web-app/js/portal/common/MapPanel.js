@@ -28,7 +28,8 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     setExtent: function(extent) {
         if (this.initialExtentSet) {
             this.map.zoomToExtent(extent, true);
-        } else {
+        }
+        else {
             this.savedExtentChange = extent;
         }
     },
@@ -90,12 +91,15 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
 
         if (this.savedExtentChange) {
             map.zoomToExtent(this.savedExtentChange, true);
-        } else if(this.center || this.zoom != null) {
+        }
+        else if(this.center || this.zoom != null) {
             // both do not have to be defined
             map.setCenter(this.center, this.zoom);
-        } else if(this.extent) {
+        }
+        else if(this.extent) {
             map.zoomToExtent(this.extent, true);
-        } else {
+        }
+        else {
             map.zoomToMaxExtent();
         }
 

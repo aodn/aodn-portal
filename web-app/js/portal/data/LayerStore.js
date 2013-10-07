@@ -139,7 +139,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
 
             return layerRecord;
-        } else {
+        }
+        else {
             Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
         }
     },
@@ -148,7 +149,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var path;
         if (openLayer.layerHierarchyPath) {
             path = openLayer.layerHierarchyPath;
-        } else {
+        }
+        else {
             path = openLayer.name;
         }
 

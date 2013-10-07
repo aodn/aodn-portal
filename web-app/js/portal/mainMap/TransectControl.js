@@ -52,7 +52,8 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
     toggleDraw: function() {
         if (this.drawingControl.active) {
             this.drawingControl.deactivate();
-        } else {
+        }
+        else {
             this.drawingControl.activate();
         }
     },
@@ -131,10 +132,12 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
                 if (serverUrl.substring(serverUrl.length - 1, serverUrl.length) == "?") {
                         // encode just trailing uqestion mark
                          return serverUrl.substring(0,serverUrl.length - 1) + "%3F";
-                } else {
+                }
+                else {
                     return serverUrl;
                 }
-        } else {
+        }
+        else {
                 return serverUrl +"?";
         }
     }

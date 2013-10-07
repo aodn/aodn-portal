@@ -89,7 +89,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                     }
                     this.oldSelected = null;
                 }
-            } else { // No Layers left on map
+            }
+            else { // No Layers left on map
                 this.setActiveNode(null);
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
             }
@@ -127,7 +128,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.getRootNode().eachChild(function(n) {
             if (n === node) {
                 n.setCls('x-tree-selected');
-            } else {
+            }
+            else {
                 n.setCls('');
                 n.unselect(true);
             }
@@ -157,7 +159,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         Ext.each(node.childNodes, function(child, index, all) {
             if (child.leaf) {
                 leafNodes.push(child);
-            } else {
+            }
+            else {
                 this.addLeafNodes(child, leafNodes);
             }
         }, this);

@@ -101,7 +101,8 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
             this.CQL = this.filter.name + " ";
             this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
             this._fireAddEvent();
-        } else {
+        }
+        else {
 
             if (this.fromField.getValue() != "" && this.toField.getValue() != "") {
                 this.CQL = this.filter.name + " ";
@@ -137,13 +138,15 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
             this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
             this.toField.setVisible(true);
             this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
-        } else {
+        }
+        else {
 
             if (m != null && m.length == 2) {
 
                 this.operators.setValue('before');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-            } else if (m2 != null && m2.length == 2) {
+            }
+            else if (m2 != null && m2.length == 2) {
 
                 this.operators.setValue('after');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));

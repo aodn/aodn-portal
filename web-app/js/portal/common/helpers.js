@@ -48,20 +48,23 @@ function getAussieUnits(val,src_units) {
             old = " (<b>"+toNSigFigs(val,4) +"</b> fahrenheit)";
             ret = [toNSigFigs(cel,4),c,old];
             //console.log("farren");
-        } else if (inArray(kelNameArray,src_units)) {
+        }
+        else if (inArray(kelNameArray,src_units)) {
             // kelvin
             cel = val - 272.15;
             old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
             ret = [toNSigFigs(cel,4),c,old];
 
         // console.log("kel");
-        } else if (inArray(celNameArray,src_units)) {
+        }
+        else if (inArray(celNameArray,src_units)) {
             // celcius
             ret = [toNSigFigs(val,4),c,""];
             cel = "success";
 
             //console.log("cel");
-        } else if (inArray(metresNameArray,src_units)) {
+        }
+        else if (inArray(metresNameArray,src_units)) {
             // metres
             ret = [toNSigFigs(val,2),"m",""];
             cel = "success";
@@ -73,10 +76,12 @@ function getAussieUnits(val,src_units) {
         if (cel == "") {
             cel = val;
             toReturn = [toNSigFigs(cel,4),src_units,""];
-        } else {
+        }
+        else {
             toReturn = ret;
         }
-    } else {
+    }
+    else {
          toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
     }
 
@@ -111,12 +116,15 @@ function formatGetFeatureInfo(response, options) {
                 }
             }
         }
-    } else if(options.params.expectedFormat == 'text/xml') {
+    }
+    else if(options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
-    } else if(options.params.expectedFormat == 'text/plain') {
+    }
+    else if(options.params.expectedFormat == 'text/plain') {
         // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
-    } else {
+    }
+    else {
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
 }
@@ -176,25 +184,30 @@ function setHTML_ncWMS(response,options) {
                     if (endval == null) {
                         if(isSD)  {
                             vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
-                        } else {
+                        }
+                        else {
                             vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                         }
-                    } else {
+                    }
+                    else {
                         if(isSD)
                         {
                             vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.params.units;
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.params.units;
                             vals += "<BR />";
-                        } else {
+                        }
+                        else {
                             vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
                             vals += "<BR />";
                         }
                     }
-                } else {
+                }
+                else {
                     if(isSD)  {
                         vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
-                    } else {
+                    }
+                    else {
                         vals = "<br /><b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                     }
                 }
@@ -208,7 +221,8 @@ function setHTML_ncWMS(response,options) {
                 if(xmldoc.getElementsByTagName('copyright')[0] != undefined) {
                     // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
                     html += "<p>" + xmldoc.getElementsByTagName('copyright')[0].childNodes[0].nodeValue + "</p>";
-                } else if (options.params.copyright != undefined) {
+                }
+                else if (options.params.copyright != undefined) {
                     // If copyright was returned in GetMetadata we need to decode the html
                     var decodedCopyright = $('<div/>').html(options.params.copyright).text();
                     html += "<p>" + decodedCopyright + "</p>";
@@ -216,10 +230,12 @@ function setHTML_ncWMS(response,options) {
 
                 html = html +"</div>";
             }
-        } else {
+        }
+        else {
             html = "Can't get feature info data for this collection";
         }
-    } else {
+    }
+    else {
         console.log("ERROR: getFeatureInfo xml response empty or should have longitude element. response following:");
         console.log(response.responseXML);
     }
@@ -249,9 +265,11 @@ function binSearch(sortedArray, value, compareFunction) {
         var mid = Math.floor((max + min) / 2);
         if (compareFunction(value, sortedArray[mid])) {
             return mid;
-        } else if (sortedArray[mid].isAfter(value)) {
+        }
+        else if (sortedArray[mid].isAfter(value)) {
             max = mid - 1;
-        } else {
+        }
+        else {
             min = mid + 1;
         }
     }
@@ -373,7 +391,8 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
                 expandedDates.push(endDate.clone());
             }
         }
-    } else {
+    }
+    else {
         console.log('Date not understood: ' + period);
     }
 

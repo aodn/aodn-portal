@@ -32,7 +32,8 @@ Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
                 item.children = item.childItems;
                 if (this.isLayerBlackListed(item.layer)) {
                     item.cls = 'layer_blacklisted';
-                } else if (!this.isLayerActive(item.layer)) {
+                }
+                else if (!this.isLayerActive(item.layer)) {
                     item.cls = 'layer_inactive';
                 }
 

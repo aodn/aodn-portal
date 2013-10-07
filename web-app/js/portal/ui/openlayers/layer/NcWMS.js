@@ -87,7 +87,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             setTimeout(function() {
                 self._processTemporalExtent();
             }, 0);
-        } else {
+        }
+        else {
             this._processTemporalExtent();
         }
     },
@@ -103,7 +104,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var arrayOfStringDates = [];
         if (this.rawTemporalExtent instanceof Array) {
             arrayOfStringDates = this.rawTemporalExtent;
-        } else {
+        }
+        else {
             arrayOfStringDates = this.rawTemporalExtent.split(",");
         }
 
@@ -140,7 +142,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
-                    } else {
+                    }
+                    else {
                         that._processTemporalExtentDone();
                         that._configureTimeControl();
                     }
@@ -238,13 +241,15 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         if (this.temporalExtentLengthToProcess != 0) {
             dateProcessProgress = this.temporalExtent.length / this.temporalExtentLengthToProcess;
-        } else {
+        }
+        else {
             dateProcessProgress = 0;
         }
 
         if (this._getTotalImages() != 0) {
             imageCacheProgress = this._getTotalImagesComplete() / this._getTotalImages();
-        } else {
+        }
+        else {
             imageCacheProgress = 0;
         }
 
@@ -410,7 +415,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // No extent restriction.
         if (!this.temporalExtent || this.temporalExtent.length == 0) {
             this.time = moment(dateTime);
-        } else {
+        }
+        else {
             // Find nearest in temporalExtent.
             var goalDateTime = moment(dateTime);
 
@@ -423,7 +429,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
                     closestDateTime = this.temporalExtent[i];
 
-                } else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
+                }
+                else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
                          == Math.abs(goalDateTime.diff(closestDateTime))) {
                     // Handle the case where two dates are equally close - take the earlier.
                     closestDateTime =

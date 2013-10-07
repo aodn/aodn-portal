@@ -116,10 +116,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             layer.animated = true;
             layer.chosenTimes = mapLayer.chosenTimes;
             layer.styles = mapLayer.params.STYLES;
-        } else if (mapLayer.grailsLayerId) {
+        }
+        else if (mapLayer.grailsLayerId) {
             // layers sourced from server
             layer.layer = mapLayer.grailsLayerId;
-        } else if (!layer.animated) {
+        }
+        else if (!layer.animated) {
             // layers added from search
             layer.name = mapLayer.params.LAYERS;
             layer.title = mapLayer.name;
@@ -176,7 +178,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 if (matchingLayers.length > 0)
                     this.map.setBaseLayer(matchingLayers[0]);
             }
-        } else {
+        }
+        else {
             if (snapshotLayer.layer) {
                 Portal.data.LayerStore.instance().addUsingServerId({
                     id: snapshotLayer.layer.id,
@@ -185,7 +188,8 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                     animated: snapshotLayer.animated,
                     chosenTimes: snapshotLayer.chosenTimes
                 });
-            } else {
+            }
+            else {
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
                 Portal.data.LayerStore.instance().addUsingOpenLayer(layerDescriptor.toOpenLayer(options, params));
             }

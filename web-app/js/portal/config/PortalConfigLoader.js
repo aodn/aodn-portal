@@ -68,9 +68,11 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
     waitForConfigsAndComplete: function() {
         if (this.bothConfigsLoaded()) {
             this.onSuccess();
-        } else if (this.eitherConfigFailed()) {
+        }
+        else if (this.eitherConfigFailed()) {
             this.onFailure();
-        } else {
+        }
+        else {
             // Keep waiting
             var loader = this; // Need to keep another reference to 'this' because 'this' changes scope in the anonymous function
             setTimeout(function(){ loader.waitForConfigsAndComplete(); }, 200 );

@@ -135,10 +135,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             if(Ext.isDefined(param)){
                 if(Ext.isArray(param)){
                     params[name].push(value);
-                } else {
+                }
+                else {
                     params[name] = [param, value];
                 }
-            } else {
+            }
+            else {
                 params[name] = value;
             }
         });

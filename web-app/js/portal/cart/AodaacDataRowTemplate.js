@@ -52,7 +52,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             html += '<div class="clear"></div>';
 
             html = String.format(html, values.uuid, OpenLayers.i18n('emailAddressPlaceholder'));
-        } else {
+        }
+        else {
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
         }
 

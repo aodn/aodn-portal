@@ -112,7 +112,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         if(wmsLayers.length == 0){
             this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
             this.blankContainer.update("");
-        } else {
+        }
+        else {
             var count = 0;
             Ext.each(wmsLayers, function(layer, index, all) {
                 if (layer.params.QUERYABLE == true && layer.getVisibility()) {
@@ -120,7 +121,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     if (layer.metadata.units == undefined && layer.isNcwms()) {
                         // populate unit information now
                         this._setMetadataFirst(layer);
-                    } else {
+                    }
+                    else {
                         this._requestFeatureInfo(layer);
                     }
 
@@ -212,7 +214,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     if (this._before(rootLayer, layer)) {
                         rootLayer.startTime = layer.startTime;
                     }
-                } else {
+                }
+                else {
                     uniqueLayers.push(layer);
                     rootLayers[layer.params.LAYERS] = layer;
                 }
@@ -237,7 +240,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var result = false;
         if (other.endTime && !layer.endTime) {
             result = true;
-        } else if (layer.endTime && other.endTime) {
+        }
+        else if (layer.endTime && other.endTime) {
             result = other.endTime.getTime() > layer.endTime.getTime();
         }
         return result;
@@ -247,7 +251,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var result = false;
         if (other.startTime && !layer.startTime) {
             result = true;
-        } else if (layer.startTime && other.startTime) {
+        }
+        else if (layer.startTime && other.startTime) {
             result = other.startTime.getTime() < layer.startTime.getTime();
         }
         return result;
@@ -278,7 +283,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     'featureInformationFoundForDataCollection',
                     { 'dataCollectionNumber': this.numGoodResults }
             ));
-        } else if (this.numResultQueries == this.numResultsToLoad) {
+        }
+        else if (this.numResultQueries == this.numResultsToLoad) {
             this.setTitle(
                 OpenLayers.i18n(
                     'noFeatureInformationFoundForDataCollection',
@@ -297,10 +303,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 var str = (depth <= 0) ? OpenLayers.i18n('depth') : OpenLayers.i18n('elevation');
                 str += ":"
                 this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
-            } else {
+            }
+            else {
                 this.popupHtml.update("");
             }
-        } else {
+        }
+        else {
             // clear out any placeholder 'loading' text
             this.popupHtml.update("");
         }
@@ -352,7 +360,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             if(this.maximisedPosition && this.maximisedPosition.x && this.maximisedPosition.y) {
                 this.setPosition(this.maximisedPosition.x, this.maximisedPosition.y);
             }
-        } else {
+        }
+        else {
             GeoExt.Popup.prototype.fitContainer.call(this);
         }
     }

@@ -188,14 +188,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                         openLayer.zoomOverride.centreLon,
                         openLayer.zoomOverride.centreLat),
                     openLayer.zoomOverride.openLayersZoomLevel);
-            } else if (openLayer.hasBoundingBox()) {
+            }
+            else if (openLayer.hasBoundingBox()) {
                 // build openlayer bounding box
                 var bounds = null;
                 if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
                     // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
                     var defaultBbox = this.defaultDatelineZoomBbox.split(',');
                     bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
-                } else {
+                }
+                else {
                     bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
                 }
 
@@ -210,7 +212,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
                 if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
                     this.zoomTo(bounds);
-                } else if (bounds) {
+                }
+                else if (bounds) {
                     // when layer has no bbox volume
                     this.map.setCenter(
                         bounds.getCenterLonLat(),3);
@@ -222,7 +225,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     zoomTo: function (bounds, closest) {
         if ((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)) {
             this.map.setCenter(bounds.getCenterLonLat(), 3);
-        } else {
+        }
+        else {
             this.map.zoomToExtent(bounds, closest);
         }
     },

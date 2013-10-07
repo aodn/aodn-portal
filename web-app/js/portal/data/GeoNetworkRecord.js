@@ -150,7 +150,8 @@ Portal.data.GeoNetworkRecord = function() {
                 var item = this.data[key];
                 if (key == 'wmsLayer') {
                     convertedData['wfsDownloadInfo'] = this.wfsDownloadInfoForLayer(item);
-                } else {
+                }
+                else {
                     convertedData[key] = item;
                 }
             },
@@ -168,7 +169,8 @@ Portal.data.GeoNetworkRecord = function() {
         if (wfsLayer) {
             layerName = wfsLayer.name;
             serverUri = wfsLayer.server.uri;
-        } else {
+        }
+        else {
             layerName = layer.params.LAYERS;
             serverUri = layer.server.uri;
         }
