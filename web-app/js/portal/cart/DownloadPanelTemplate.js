@@ -47,7 +47,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         var html = '';
 
-        if (values.wmsLayer) {
+        if (values.wmsLayer.wfsLayer) {
 
             html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
         }
