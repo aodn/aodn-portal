@@ -60,7 +60,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 
         this.addEvents('contentchange');
         this.enableBubble('contentchange');
-   },
+    },
 
     onProtocolChange: function(protocol)
     {

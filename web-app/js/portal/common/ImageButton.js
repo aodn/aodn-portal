@@ -9,7 +9,7 @@
 Ext.namespace('Portal.common');
 
 Portal.common.ImageButton = Ext.extend(Ext.Button, {
-  initComponent: function() {
+    initComponent: function() {
         Portal.common.ImageButton.superclass.initComponent.apply(this, arguments);
 
         if (!this.template) {
