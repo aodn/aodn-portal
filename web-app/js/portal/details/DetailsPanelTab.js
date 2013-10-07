@@ -27,7 +27,6 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
 
     initComponent: function() {
-
         this.filterPanel = new Portal.filter.FilterPanel();
         this.aodaacPanel = new Portal.details.AodaacPanel({ map: this.map });
         this.infoPanel = new Portal.details.InfoPanel();
@@ -44,9 +43,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
 
     update: function(layer) {
-
         this._ensurePanelsRendered();
-
         // Remove filter pane; and add afresh to avoid ExtJS layout bug
         this.remove(this.filterPanel);
         this.filterPanel = new Portal.filter.FilterPanel();
@@ -61,7 +58,6 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
 
     _ensurePanelsRendered: function() {
-
         var items = this.items.items;
         for (var i = items.length - 1; i >= 0; i--) {
 
