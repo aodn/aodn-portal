@@ -5,12 +5,9 @@
  *
  */
 
-
-
-
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
-        var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
     return result;
 }
 
@@ -21,74 +18,70 @@ function ucwords( str ) {
     } );
 }
 
-
-
 // if units label is known as fahrenheit or kelvin, convert val to celcius
 function getAussieUnits(val,src_units) {
-     var cel = "";
-     var c = "&#176;C";
-     var ret = [];
-     var toReturn = [];
-     var old = "";
+    var cel = "";
+    var c = "&#176;C";
+    var ret = [];
+    var toReturn = [];
+    var old = "";
 
-     if (src_units != undefined) {
-         src_units = src_units.toLowerCase();
-         src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
-         // arrays hold all possible names for a 'type'
-         //
-         // ALL ARRAY ENTRIES IN LOWER CASE
-         var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
-         var farNameArray = ["f","fahrenheit"];
-         var kelNameArray = ["k","kelvin","kel"];
-         var metresNameArray = ["m","metres","meters","metre"]
+    if (src_units != undefined) {
+        src_units = src_units.toLowerCase();
+        src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
+        // arrays hold all possible names for a 'type'
+        //
+        // ALL ARRAY ENTRIES IN LOWER CASE
+        var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
+        var farNameArray = ["f","fahrenheit"];
+        var kelNameArray = ["k","kelvin","kel"];
+        var metresNameArray = ["m","metres","meters","metre"];
 
-         // fahrenheit
-          if (inArray(farNameArray,src_units)) {
+        // fahrenheit
+        if (inArray(farNameArray,src_units)) {
             cel = (val - 32) / 1.8;
             old = " (<b>"+toNSigFigs(val,4) +"</b> fahrenheit)";
             ret = [toNSigFigs(cel,4),c,old];
             //console.log("farren");
-          }
-          // kelvin
-          else if (inArray(kelNameArray,src_units)) {
+        }
+        else if (inArray(kelNameArray,src_units)) {
+            // kelvin
             cel = val - 272.15;
             old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
             ret = [toNSigFigs(cel,4),c,old];
 
-           // console.log("kel");
-          }
-          // celcius
-          else if (inArray(celNameArray,src_units)) {
-             ret = [toNSigFigs(val,4),c,""];
-             cel = "success";
+        // console.log("kel");
+        }
+        else if (inArray(celNameArray,src_units)) {
+            // celcius
+            ret = [toNSigFigs(val,4),c,""];
+            cel = "success";
 
             //console.log("cel");
-          }
-          // metres
-          else if (inArray(metresNameArray,src_units)) {
-             ret = [toNSigFigs(val,2),"m",""];
-             cel = "success";
-          }
+        }
+        else if (inArray(metresNameArray,src_units)) {
+            // metres
+            ret = [toNSigFigs(val,2),"m",""];
+            cel = "success";
+        }
 
 
-          // if cel empty then the unit wasnt suitable
-          // or we cant even anticipate..
-          if (cel == "") {
-              cel = val;
-              toReturn = [toNSigFigs(cel,4),src_units,""];
-          }
-          else {
-              toReturn = ret;
-          }
-     }
-     else {
+        // if cel empty then the unit wasnt suitable
+        // or we cant even anticipate..
+        if (cel == "") {
+            cel = val;
+            toReturn = [toNSigFigs(cel,4),src_units,""];
+        }
+        else {
+            toReturn = ret;
+        }
+    }
+    else {
          toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
-     }
+    }
 
-     return toReturn;
-
+    return toReturn;
 }
-
 
 function pad(numNumber, numLength){
     var strString = '' + numNumber;
@@ -97,7 +90,6 @@ function pad(numNumber, numLength){
     }
     return strString;
 }
-
 
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
@@ -125,11 +117,10 @@ function formatGetFeatureInfo(response, options) {
         // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
-    else{
+    else {
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
 }
-
 
 function setHTML_ncWMS(response,options) {
     var xmldoc = response.responseXML;
@@ -197,8 +188,7 @@ function setHTML_ncWMS(response,options) {
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.params.units;
                             vals += "<BR />";
                         }
-                        else
-                        {
+                        else {
                             vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b> " + startval[0] +"</b> "+ startval[1] + startval[2];
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
                             vals += "<BR />";
@@ -223,7 +213,8 @@ function setHTML_ncWMS(response,options) {
                 if(xmldoc.getElementsByTagName('copyright')[0] != undefined) {
                     // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
                     html += "<p>" + xmldoc.getElementsByTagName('copyright')[0].childNodes[0].nodeValue + "</p>";
-                } else if (options.params.copyright != undefined) {
+                }
+                else if (options.params.copyright != undefined) {
                     // If copyright was returned in GetMetadata we need to decode the html
                     var decodedCopyright = $('<div/>').html(options.params.copyright).text();
                     html += "<p>" + decodedCopyright + "</p>";
@@ -243,7 +234,6 @@ function setHTML_ncWMS(response,options) {
 
     return html;
 }
-
 
 function inArray (array,value) {
 
@@ -266,15 +256,16 @@ function binSearch(sortedArray, value, compareFunction) {
         var mid = Math.floor((max + min) / 2);
         if (compareFunction(value, sortedArray[mid])) {
             return mid;
-        } else if (sortedArray[mid].isAfter(value)) {
+        }
+        else if (sortedArray[mid].isAfter(value)) {
             max = mid - 1;
-        } else {
+        }
+        else {
             min = mid + 1;
         }
     }
     return -1;
 }
-
 
 Date.prototype.setISO8601 = function (string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
@@ -311,7 +302,7 @@ Date.prototype.setISO8601 = function (string) {
     offset -= date.getTimezoneOffset();
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
-}
+};
 
 function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
@@ -354,10 +345,10 @@ function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
                 break;
         }
 
-   }
-   // Readjust array
-   expandedDates.length = j;
-   return expandedDates;
+    }
+    // Readjust array
+    expandedDates.length = j;
+    return expandedDates;
 }
 
 function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
@@ -400,11 +391,7 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
     return expandedDates;
 }
 
-
 function _getISO8601Period(period) {
-
-
-
     // rip off the 'P'
     var _period  = period.substring(1);
 
@@ -448,8 +435,6 @@ function _getISO8601Period(period) {
         moArray[6] =  timeParts.split("S")[0];
     }
 
-
-
     return {
         'seconds': Number(moArray[6]),
         'minutes': Number(moArray[5]),
@@ -459,19 +444,13 @@ function _getISO8601Period(period) {
         'months':  Number(moArray[1]),
         'years':   Number(moArray[0])
     }
-
-
-
 }
-
-
 
 // IE 8 throws errors with console not existing
 // Console will exist when using developer tools
 if (typeof console === "undefined" || typeof console.log === "undefined") {
- console = {};
- console.log = function(msg) {
-      //alert(msg);
- };
-
+    console = {};
+    console.log = function(msg) {
+        //alert(msg);
+    };
 }

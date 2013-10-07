@@ -9,7 +9,6 @@ Ext.namespace('Portal.cart');
 Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function(downloadPanelTemplate) {
-
         this.downloadPanelTemplate = downloadPanelTemplate;
 
         var templateLines = [
@@ -24,12 +23,10 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     applyWithControls: function(values) {
-
         return this._replacePlaceholdersWithControls(this.apply(values), values);
     },
 
     _getDataFilterEntry: function(values) {
-
         var wmsLayer = values.wmsLayer;
 
         if (wmsLayer) {
@@ -38,11 +35,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
             var html;
 
             if (cqlText) {
-
                 html = String.format('<b>{0}</b> <code>{1}</code>', OpenLayers.i18n('filterLabel'), cqlText);
             }
             else {
-
                 html = OpenLayers.i18n('noFilterMessage');
             }
 
@@ -53,7 +48,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataDownloadEntry: function(values) {
-
         var wmsLayer = values.wmsLayer;
         var html;
 
@@ -70,7 +64,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _replacePlaceholdersWithControls: function(html, collection) {
-
         var elementId = 'wfs-download-button-' + collection.uuid;
 
         // Don't create button if no placeholder exists
@@ -83,7 +76,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function(html, id, collection) {
-
         var downloadMenu = new Ext.menu.Menu({
             items: this._createMenuItems(collection)
         });
@@ -97,7 +89,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createMenuItems: function(collection) {
-
         return [
             {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
             {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
@@ -106,7 +97,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _downloadHandlerFor: function(collection, format) {
-
         var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
 
         return function() {
@@ -116,7 +106,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _wfsUrlForGeoNetworkRecord: function(record, format) {
-
         return record.wmsLayer.getFeatureRequestUrl(format);
     }
 });

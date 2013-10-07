@@ -28,25 +28,20 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     onBeforeShow: function() {
-
         this.generateContent();
     },
 
     generateContent: function() {
-
         var tpl = new Portal.cart.DownloadPanelTemplate(this);
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
         for (var i = this.store.data.items.length - 1; i >= 0; i--) {
-
             var item = this.store.data.items[i];
-
             html += tpl.apply(item.data);
         }
 
         if (!html) {
-
             html = this._contentForEmptyView();
         }
 
@@ -54,7 +49,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     _contentForEmptyView: function() {
-
         return String.format('<i>{0}</i>', OpenLayers.i18n('noCollectionsMessage'));
     }
 });

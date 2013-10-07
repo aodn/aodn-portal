@@ -116,10 +116,12 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
             layer.animated = true;
             layer.chosenTimes = mapLayer.chosenTimes;
             layer.styles = mapLayer.params.STYLES;
-        } else if (mapLayer.grailsLayerId) {
+        }
+        else if (mapLayer.grailsLayerId) {
             // layers sourced from server
             layer.layer = mapLayer.grailsLayerId;
-        } else if (!layer.animated) {
+        }
+        else if (!layer.animated) {
             // layers added from search
             layer.name = mapLayer.params.LAYERS;
             layer.title = mapLayer.name;

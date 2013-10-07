@@ -80,21 +80,17 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     showIfNeeded: function(downloadUrl) {
-
         this.downloadUrl = downloadUrl;
 
         if (!this.hasBeenShown) {
-
             this.show();
         }
         else {
-
             this.onAccept();
         }
     },
 
     onAccept: function() {
-
         this.hide();
 
         if (this.downloadUrl) {
@@ -105,12 +101,10 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     onCancel: function() {
-
         this.hide();
     },
 
     _openDownload: function(url) {
-
         window.open(url, '_blank');
     }
 });
