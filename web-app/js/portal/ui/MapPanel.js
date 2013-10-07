@@ -214,8 +214,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
                     this.zoomTo(bounds);
                 }
-                // when layer has no bbox volume
                 else if (bounds) {
+                    // when layer has no bbox volume
                     this.map.setCenter(
                         bounds.getCenterLonLat(),3);
                 }

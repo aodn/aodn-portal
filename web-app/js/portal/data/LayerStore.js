@@ -17,7 +17,6 @@ Ext.namespace('Portal.data');
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     constructor: function(cfg) {
-
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
 
         this._registerMessageListeners();
@@ -30,7 +29,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     addUsingLayerLink: function(layerDisplayName, layerLink, layerRecordCallback) {
-
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
@@ -56,7 +54,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     addUsingServerId: function(args) {
-
         Ext.Ajax.request({
 
             url: 'layer/showLayerByItsId?layerId=' + args.id,
@@ -77,19 +74,16 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     reset: function() {
-
         this.removeAll();
     },
 
     removeAll: function() {
-
         this.remove(this.getLayers(false).getRange());
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
 
     selectDefaultBaseLayer: function() {
-
         var defaultBaseLayer = this.getDefaultBaseLayer();
         var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer : null;
         Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, openLayer);
@@ -100,7 +94,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     getLayers: function(baseLayersOnly) {
-
         return this.queryBy(function(record, id) {
 
             if (record.getLayer().options === null) {
@@ -112,7 +105,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     removeUsingOpenLayer: function(openLayer) {
-
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
 
@@ -185,7 +177,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _initBaseLayers: function() {
-
         // TODO: shouldn't these be set properly in the server in the first place?
         this._initWithLayersFromServer('layer/configuredbaselayers', {
             isBaseLayer: true,
@@ -200,7 +191,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _initWithLayersFromServer: function(url, configOverrides, successCallback) {
-
         Ext.Ajax.request({
             url: url,
             scope: this,

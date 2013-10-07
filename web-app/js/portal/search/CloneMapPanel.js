@@ -27,7 +27,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     initMap: function(mapConfig) {
-
         var config = Ext.apply({
             controls: [
                 new OpenLayers.Control.Navigation(),
@@ -56,7 +55,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerAdded: function(e) {
-
         var miniMapClone = e.layer.clone();
 
         // delete attibutes that cause problems in minimap
@@ -73,7 +71,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerRemoved: function(e) {
-
         if (this.map.layers) {
 
             var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0]; // Should only be one match
@@ -85,7 +82,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerChanged: function(e) {
-
         var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0];
 
         // When adding baselayers some property change events come before the addlayer event
@@ -98,13 +94,17 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     applyLayerChange: function(target, source, property) {
         if (property == 'name') {
             target.setName(source.name);
-        } else if (property == 'order') {
+        }
+        else if (property == 'order') {
             this.applyMainMapLayerOrdering();
-        } else if (property == 'opacity') {
+        }
+        else if (property == 'opacity') {
             target.setOpacity(source.opacity);
-        } else if (property == 'params') {
+        }
+        else if (property == 'params') {
             target.mergeNewParams(source.params);
-        } else if (property == 'visibility') {
+        }
+        else if (property == 'visibility') {
             this.setLayerVisibility(target, source.getVisibility());
         }
     },
@@ -112,7 +112,8 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     setLayerVisibility: function(layer, visibility) {
         if (layer.isBaseLayer) {
             if (visibility) this.map.setBaseLayer(layer);
-        } else {
+        }
+        else {
             layer.setVisibility(visibility);
         }
     },

@@ -51,7 +51,8 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
 
         if (topTerms) {
             this.loadData(topTerms);
-        } else {
+        }
+        else {
             this.removeAll();
         }
 

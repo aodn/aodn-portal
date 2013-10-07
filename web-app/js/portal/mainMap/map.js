@@ -34,7 +34,6 @@ function getMapPanel() {
 }
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
-
     defaultHandlerOptions: {
         single: true,
         'double': false, // this isnt working
@@ -43,7 +42,6 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     },
 
     initialize: function(options) {
-
         this.handlerOptions = OpenLayers.Util.extend(
             options && options.handlerOptions || {},
             this.defaultHandlerOptions
@@ -131,7 +129,6 @@ function showChannel(css_id, facilityName) {
 }
 
 function dressUpMyLine(line){
-
     var x = line.split(",");
     var newString = "";
 

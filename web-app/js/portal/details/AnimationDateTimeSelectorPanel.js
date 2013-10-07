@@ -200,9 +200,11 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         timeCombo.getStore().loadData(data);
         if (exactDateFoundInCombo) {
             timeCombo.setValue(dateTime.valueOf());
-        } else if (useFirstIfNotFound) {
+        }
+        else if (useFirstIfNotFound) {
             timeCombo.setValue(datesOnDay[0].valueOf());
-        } else {
+        }
+        else {
             timeCombo.setValue(datesOnDay.last().valueOf());
         }
     },

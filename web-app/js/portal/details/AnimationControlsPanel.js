@@ -274,7 +274,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
     _togglePlay : function() {
         if (this.isPlaying()) {
             this._stopPlaying();
-        } else {
+        }
+        else {
             this._startPlaying();
         }
     },

@@ -8,7 +8,7 @@
 
 Ext.namespace('Portal.utils');
 
-Portal.utils.TimeUtil =  Ext.extend(Object, {
+Portal.utils.TimeUtil = Ext.extend(Object, {
     constructor:function(config){
         this.DATE_FORMAT = 'Y-m-d';
         this.TIME_FORMAT = 'H:i:s (P)';

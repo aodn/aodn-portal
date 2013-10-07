@@ -9,7 +9,6 @@ Ext.namespace('Portal.cart');
 Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function(downloadPanelTemplate) {
-
         this.downloadPanelTemplate = downloadPanelTemplate;
 
         var templateLines = [
@@ -25,12 +24,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     applyWithControls: function(values) {
-
         return this._replacePlaceholdersWithControls(this.apply(values), values);
     },
 
     _getDataFilterEntry: function(values) {
-
         var aodaacParameters = values.aodaac;
 
         if (aodaacParameters) {
@@ -44,12 +41,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataDownloadEntry: function(values) {
-
         var aodaacParameters = values.aodaac;
         var html;
 
         if (aodaacParameters) {
-
             html  = '<input type="text" id="aodaac-email-address-{0}" value="{1}" class="floatLeft">';
             html += '<div class="floatLeft">';
             html += '<div id="aodaac-download-button-{0}"></div>'; // Download button placeholder
@@ -59,7 +54,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             html = String.format(html, values.uuid, OpenLayers.i18n('emailAddressPlaceholder'));
         }
         else {
-
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
         }
 
@@ -67,12 +61,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getNotificationBlurbEntry: function() {
-
         return this.downloadPanelTemplate._makeEntryMarkup(OpenLayers.i18n('notificationBlurbMessage'));
     },
 
     _aodaacParamatersMarkup: function(params) {
-
         var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
         var areaStart = String.format(areaPattern, params.latitudeRangeStart, params.longitudeRangeStart);
         var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
@@ -84,12 +76,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _parameterString: function(labelKey, value1, value2) {
-
         return String.format('{0}: <code>{1}</code> – <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
     _replacePlaceholdersWithControls: function(html, collection) {
-
         var elementId = 'aodaac-download-button-' + collection.uuid;
 
         // Don't create button if no placeholder exists
@@ -102,7 +92,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function(html, id, collection) {
-
         var downloadMenu = new Ext.menu.Menu({
             items: this._createMenuItems(collection)
         });
@@ -116,7 +105,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createMenuItems: function(collection) {
-
         return [
             {text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._downloadHandlerFor(collection, 'nc'), scope: this},
             {text: OpenLayers.i18n('downloadAsHdfLabel'), handler: this._downloadHandlerFor(collection, 'hdf'), scope: this},
@@ -126,7 +114,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _downloadHandlerFor: function(collection, format) {
-
         var emailAddessElementId = '#aodaac-email-address-' + collection.uuid;
 
         return function() {
@@ -158,7 +145,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _aodaacUrl: function(params, format, emailAddress) {
-
         var args = "outputFormat=" + format;
         args += "&dateRangeStart=" + params.dateRangeStart;
         args += "&dateRangeEnd=" + params.dateRangeEnd;
@@ -175,7 +161,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _validateEmailAddress: function(address) {
-
         if (!address) {
             return false;
         }

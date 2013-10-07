@@ -120,7 +120,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Refine search panel revised
     refineSearch: 'Current Search',
 
-    //Search form
+    // Search form
     addCriteria: 'Limit search to',
     dateRange: 'Date range',
     boundingBox: 'Bounding Box',
@@ -164,7 +164,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationDownloadText: 'I understand, download',
     downloadConfirmationCancelText: 'Cancel',
 
-    //mainMapPanel
+    // mainMapPanel
     layerExistsTitle: 'Add data collection',
     layerExistsMsg: 'This data collection has already been added to the map',
     layerAddedTitle: 'Add data collection',
@@ -219,14 +219,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
     mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
-    //FilterPanel.js
+    // FilterPanel.js
     filterPanelTitle: 'Subset',
 
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
 
-    //Options Panel
+    // Options Panel
     turnOnTransect: 'Turn on transect graphing for this data collection:',
     drawing: 'Drawing',
     drawingTitle: 'Draw a transect line',

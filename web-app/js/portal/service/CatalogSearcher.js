@@ -28,7 +28,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             searchFilters: searchFilters
         }, cfg, defaults);
 
-        Ext.apply(this, config);  // Not done in Observable's constructor for some reason
+        // Not done in Observable's constructor for some reason
+        Ext.apply(this, config);
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
@@ -134,10 +135,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             if(Ext.isDefined(param)){
                 if(Ext.isArray(param)){
                     params[name].push(value);
-                }else{
+                }
+                else {
                     params[name] = [param, value];
                 }
-            }else{
+            }
+            else {
                 params[name] = value;
             }
         });

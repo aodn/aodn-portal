@@ -71,7 +71,8 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
     if (this.isNcwms()) {
         // ignoring any bad user config. we know what we want here
         return 'text/xml';
-    } else {
+    }
+    else {
         // Should usually be 'text/html'
         return this.server.infoFormat;
     }
@@ -158,7 +159,8 @@ OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
 OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
-    } else {
+    }
+    else {
         return "";
     }
 };
@@ -172,7 +174,8 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
         this.mergeNewParams({
             CQL_FILTER: cqlFilter
         });
-    } else {
+    }
+    else {
         delete this.params["CQL_FILTER"];
         this.redraw();
     }
@@ -220,7 +223,8 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
         document.onselectstart = OpenLayers.Function.False;
 
         propagate = !this.stopDown;
-    } else {
+    }
+    else {
         this.started = false;
         this.start = null;
         this.last = null;

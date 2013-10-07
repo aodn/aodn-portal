@@ -142,7 +142,8 @@ Ext.onReady(function () {
             if (field.errorIcon && field.errorIcon.dom) {
                 field.errorIcon.dom.qtip = '';
                 field.errorIcon.hide();
-            } else {
+            }
+            else {
                 // fix
 
                 if (field.el.dom) {

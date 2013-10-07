@@ -50,51 +50,53 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
         this.westBL = this._buildCoord('westBL');
 
         return [
-           {
-               xtype: 'container',
-               layout: {
-                   type: 'hbox',
-                   pack:'center',
-                   align: 'middle'
-               },
-               width: this.width,
-               items: [
-                   this._buildLabel('northBL'),
-                   this.northBL
-               ]
-           },{
-               xtype: 'container',
-               layout: {
-                   type: 'hbox',
-                   align: 'middle'
-               },
-               width: config.width,
-               items: [
-                   this._buildLabel('westBL'),
-                   this.westBL,
-                   {
-                       xtype: 'label',
-                       text: ' ',
-                       flex: 1
-                   },
-                   this.eastBL,
-                   {xtype: 'spacer', width: 5},
-                   this._buildLabel('eastBL')
-               ]
-           },{
-               xtype: 'container',
-               layout: {
-                   type: 'hbox',
-                   pack: 'center',
-                   align: 'middle'
-               },
-               width: config.width,
-               items: [
-                   this._buildLabel('southBL'),
-                   this.southBL
-               ]
-           }
-       ];
+            {
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    pack:'center',
+                    align: 'middle'
+                },
+                width: this.width,
+                items: [
+                    this._buildLabel('northBL'),
+                    this.northBL
+                ]
+            },
+            {
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    align: 'middle'
+                },
+                width: config.width,
+                items: [
+                    this._buildLabel('westBL'),
+                    this.westBL,
+                    {
+                        xtype: 'label',
+                        text: ' ',
+                        flex: 1
+                    },
+                    this.eastBL,
+                    {xtype: 'spacer', width: 5},
+                    this._buildLabel('eastBL')
+                ]
+            },
+            {
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    pack: 'center',
+                    align: 'middle'
+                },
+                width: config.width,
+                items: [
+                    this._buildLabel('southBL'),
+                    this.southBL
+                ]
+            }
+        ];
     },
 
     _buildLabel: function(i18nKey) {

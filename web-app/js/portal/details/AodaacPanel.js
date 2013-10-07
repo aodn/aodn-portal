@@ -11,7 +11,6 @@ Ext.namespace('Portal.details');
 Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
-
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
         var items = [];
@@ -36,7 +35,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     update: function(layer, show, hide, target) {
-
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
@@ -66,13 +64,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _showAllControls: function() {
-
         this.spatialControls.show();
         this.temporalControls.show();
     },
 
     _populateFormFields: function() {
-
         var productInfo = this.productsInfo[ this.selectedProductInfoIndex ];
 
         // Make 'Product info' text
@@ -116,10 +112,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addProductInfo: function (items) {
-
         var productInfoHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('productInfoHeading') + "</b>");
 
-        // Todo - DN: Add product picker in case of multiple products per Layer
+        // TODO - DN: Add product picker in case of multiple products per Layer
 
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
 
@@ -127,7 +122,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _newHtmlElement: function(html) {
-
         return new Ext.Container({
             autoEl: 'div',
             html: html
@@ -135,7 +129,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addSpatialControls: function(items) {
-
         var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
 
         this.bboxControl = new Portal.details.BoundingBox({
@@ -152,7 +145,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addTemporalControls: function(items) {
-
         var temporalExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('temporalExtentHeading') + "</b>");
 
         var target = this;
@@ -267,12 +259,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _newSectionSpacer: function() {
-
         return new Ext.Spacer({ height: 7 });
     },
 
     _convertTimeSliderValue: function(quarterHours) {
-
         // 'value' will be 0 - 96 (representing quarter-hours throughout the day)
 
         var fullHours = Math.floor(quarterHours / 4);
@@ -318,7 +308,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildAodaac: function() {
-
         if (this.productsInfo && this.productsInfo[this.selectedProductInfoIndex]) {
             return {
                 productId: this.productsInfo[this.selectedProductInfoIndex].productId,

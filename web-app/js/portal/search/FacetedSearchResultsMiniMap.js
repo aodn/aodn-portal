@@ -12,7 +12,6 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
 
     constructor: function(values) {
-
         Ext.apply(this, {
             controls: [
                 new OpenLayers.Control.MousePosition({

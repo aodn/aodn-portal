@@ -88,7 +88,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
                         result.push(rec.get('selection'));
                     });
                     return result.join(this.separator);
-                } else {
+                }
+                else {
                     return this.getCount() == 0 ? "" : this.getAt(0).get('selection');
                 }
             },
@@ -100,10 +101,12 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
                         data.push([value]);
                     });
                     this.loadData(data);
-                } else {
+                }
+                else {
                     if (filter == "") {
                         this.removeAll();
-                    } else {
+                    }
+                    else {
                         this.loadData([
                             [filter]
                         ]);
@@ -171,11 +174,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         selectedView.on('click', selectedView.onSelectionClick, selectedView);
         selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
-
-
-
-
-
 
         //Ext.apply(this, Ext.apply(this.initialConfig, config));
 
@@ -248,14 +246,15 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     _searchFail:function (response) {
         this.setVisible(false);
-//    this.filterView.setVisible(false);
+        //this.filterView.setVisible(false);
     },
 
     _getFieldGroup:function () {
         if (this.hierarchical) {
             var hierarchyLevel = this.selectionStore.getCount() + 1;
             return this.fieldName + this._getLevelSuffix(hierarchyLevel);
-        } else {
+        }
+        else {
             return this.fieldGroup;
         }
     },
@@ -264,7 +263,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         if (this.hierarchical) {
             var filterLevel = this.selectionStore.getCount();
             return this.fieldName + this._getLevelSuffix(filterLevel);
-        } else {
+        }
+        else {
             return this.fieldName;
         }
     },
@@ -273,7 +273,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         if (this.hierarchical) {
             var filterLevel = this.selectionStore.getCount() + 1;
             return this.fieldName + this._getLevelSuffix(filterLevel);
-        } else {
+        }
+        else {
             return this.fieldName;
         }
     },
@@ -319,7 +320,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         if (currentFilterValue.trim() == '') {
             this.removeSelectedSubTitle();
-        } else {
+        }
+        else {
             // Trim filter value for better fit
             var trimmedFilterValue = currentFilterValue;
 
