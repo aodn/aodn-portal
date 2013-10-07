@@ -46,8 +46,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
             node.endUpdate();
             //TODO: check childNodes
             this.runCallback(callback, this || node, [node]);
-        }
-        catch (e) {
+        } catch (e) {
             this.handleFailure(response);
         }
     },

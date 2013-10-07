@@ -142,8 +142,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             if (this.featureInfoPopup) {
                 this.featureInfoPopup.close();
             }
-        }
-        catch (e) {
+        } catch (e) {
             /**
              * Explicitly ignoring exception
              *
