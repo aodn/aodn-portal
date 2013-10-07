@@ -10,7 +10,6 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     padding: 5,
 
     constructor:function (cfg) {
-
         cfg = cfg || {};
 
         this.titleText = cfg.title;
