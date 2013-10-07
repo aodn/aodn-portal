@@ -132,8 +132,7 @@ Portal.mainMap.TransectControl = Ext.extend(Ext.Container, {
         } else {
           return serverUrl;
         }
-    }
-    else {
+    } else {
         return serverUrl +"?";
     }
   }

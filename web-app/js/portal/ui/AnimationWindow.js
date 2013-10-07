@@ -56,8 +56,7 @@ Portal.ui.AnimationWindow = Ext.extend(Ext.Window, {
     _onSelectedLayerChanged: function(eventName, openLayer) {
         if (openLayer && openLayer.isAnimatable()) {
             this.show();
-        }
-        else {
+        } else {
             this.hide();
         }
     },
@@ -65,8 +64,7 @@ Portal.ui.AnimationWindow = Ext.extend(Ext.Window, {
     _onToggleVisibilityClicked: function() {
         if (this._expanded) {
             this._contract();
-        }
-        else {
+        } else {
             this._expand();
         }
     },

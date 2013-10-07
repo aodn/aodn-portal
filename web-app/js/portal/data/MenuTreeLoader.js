@@ -22,8 +22,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
             if (node.attributes.grailsServerId) {
                 // This will now delegate handling to ServerNodeLayerDescriptorStore
                 return false;
-            }
-            else if((node.getDepth() > 0) && !node.attributes.grailsServerId && !node.attributes.grailsLayerId){
+            } else if((node.getDepth() > 0) && !node.attributes.grailsServerId && !node.attributes.grailsLayerId){
                 return false;
             }
             return true;
@@ -36,8 +35,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
         var items = [];
         if (this.isNotEmpty(root.menuItems)) {
             items = root.menuItems;
-        }
-        else if (this.isNotEmpty(root.childItems)) {
+        } else if (this.isNotEmpty(root.childItems)) {
             items = root.childItems;
         }
 
@@ -70,8 +68,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
 
         if (this.isLayerBlackListed(attr.layer)) {
             attr.cls = 'layer_blacklisted';
-        }
-        else if (!this.isLayerActive(attr.layer)) {
+        } else if (!this.isLayerActive(attr.layer)) {
             attr.cls = 'layer_inactive';
         }
         return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);

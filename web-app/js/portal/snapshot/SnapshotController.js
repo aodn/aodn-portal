@@ -176,8 +176,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                 if (matchingLayers.length > 0)
                     this.map.setBaseLayer(matchingLayers[0]);
             }
-        }
-        else {
+        } else {
             if (snapshotLayer.layer) {
                 Portal.data.LayerStore.instance().addUsingServerId({
                     id: snapshotLayer.layer.id,
@@ -186,8 +185,7 @@ Portal.snapshot.SnapshotController = Ext.extend(Portal.common.Controller, {
                     animated: snapshotLayer.animated,
                     chosenTimes: snapshotLayer.chosenTimes
                 });
-            }
-            else {
+            } else {
                 var layerDescriptor = new Portal.common.LayerDescriptor(this.getLayerDef(snapshotLayer));
                 Portal.data.LayerStore.instance().addUsingOpenLayer(layerDescriptor.toOpenLayer(options, params));
             }

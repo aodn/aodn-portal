@@ -62,8 +62,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             var range = layer.params.COLORSCALERANGE.split(',')
             this.colourScaleMin.setValue(range[0]);
             this.colourScaleMax.setValue(range[1]);
-        }
-        else {
+        } else {
             this.colourScaleMin.setValue(undefined);
             this.colourScaleMax.setValue(undefined);
         }
@@ -83,8 +82,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
                 // set the user selected range
                 this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
-            }
-            else {
+            } else {
                 alert("The Max Parameter Range value is less than the Min");
             }
         }

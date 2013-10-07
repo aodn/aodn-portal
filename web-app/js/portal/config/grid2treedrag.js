@@ -41,8 +41,7 @@ function initMenu(menu, _basePath) {
     if (menu) {
         setupgrid2treedrag(menu);
         tree.getRootNode().expand(true);
-    }
-    else {
+    } else {
         menu = new Object();
 
         var setUpName = function() {
@@ -50,8 +49,7 @@ function initMenu(menu, _basePath) {
                 if (text != "") {
                     menu.title = text;
                     setupgrid2treedrag(menu);
-                }
-                else {
+                } else {
                     if (status == "ok") {
                         setUpName(); //recurse until the label is set
                     }
@@ -59,7 +57,6 @@ function initMenu(menu, _basePath) {
             });
         }
         setUpName();  // fail
-
     }
 }
 
@@ -165,14 +162,13 @@ function setupgrid2treedrag(menu) {
                             // reservered word here but it works!!!
                             if (r.json['class'] == "au.org.emii.portal.Server") {
                                 e.dropNode.push(this.loader.createNode({
-                                text:r.get('name'),
-                                leaf:false,
-                                children: [],
-                                grailsServerId:r.get('id'), // identify grails Server by this variable
-                                qtip:r.get('json.uri')
-                            }));
-                            }
-                            else {
+                                    text:r.get('name'),
+                                    leaf:false,
+                                    children: [],
+                                    grailsServerId:r.get('id'), // identify grails Server by this variable
+                                    qtip:r.get('json.uri')
+                                }));
+                            } else {
                             // create layer node
                             e.dropNode.push(this.loader.createNode({
                                 text:r.get('title'),
@@ -241,8 +237,7 @@ function rightClickMenu(node){
                             });
                             node.expand();
                             showHideButtons();
-                        }
-                        else {
+                        } else {
                             Ext.MessageBox.alert('Node not created','You must supply a name for a new branch');
                         }
                     });
@@ -261,8 +256,7 @@ function rightClickMenu(node){
                         // dont allow the label to be empty
                             if (text != "") {
                                 node.setText(text);
-                            }
-                            else {
+                            } else {
                                 Ext.MessageBox.alert('Node not created', 'You must supply a name for a new node');
                             }
                         },

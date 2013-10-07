@@ -14,7 +14,6 @@ Ext.namespace('Portal.common');
 Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     constructor: function(cfg) {
-
         if (typeof cfg == "string") {
             cfg = Ext.util.JSON.decode(cfg);
         }
@@ -23,7 +22,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
-
         var openLayer;
 
         if (this._getTimeDimension()) {
@@ -34,8 +32,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 new Portal.ui.openlayers.LayerOptions(this, optionOverrides),
                 this._getTimeDimension().extent
             );
-        }
-        else {
+        } else {
             openLayer = new OpenLayers.Layer.WMS(
                 this.title,
                 this._getServerUri(),
@@ -83,7 +80,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _getServerUri: function() {
-
         var serverUri = this._getUri(this.server);
         if (this.cache == true) {
             serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);
@@ -139,32 +135,25 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _getParentId: function() {
-
         if (this._getParent()) {
             return this._getParent().id;
-        }
-        else {
+        } else {
             return undefined;
         }
     },
 
     _getParentName: function() {
-
         if (this._getParent()) {
             return this._getParent().name;
-        }
-        else {
+        } else {
             return undefined;
         }
     },
 
     _getAllStyles: function() {
-
         if (this.allStyles) {
-
             return this.allStyles;
-        }
-        else {
+        } else {
             return [];
         }
     }

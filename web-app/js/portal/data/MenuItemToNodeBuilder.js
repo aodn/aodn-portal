@@ -24,16 +24,18 @@ Portal.data.MenuItemToNodeBuilder = Ext.extend(Object, {
                 if (item.layer) {
                     item.grailsLayerId = item.layer.id;
                 }
+
                 if (item.server) {
                     item.grailsServerId = item.server.id;
                 }
+
                 item.children = item.childItems;
                 if (this.isLayerBlackListed(item.layer)) {
                     item.cls = 'layer_blacklisted';
-                }
-                else if (!this.isLayerActive(item.layer)) {
+                } else if (!this.isLayerActive(item.layer)) {
                     item.cls = 'layer_inactive';
                 }
+
                 if (this.isNotEmpty(item.childItems)) {
                     this.addDetail(item.childItems)
                 }
