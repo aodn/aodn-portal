@@ -10,7 +10,7 @@
 
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
-        var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
     return result;
 }
 
@@ -25,63 +25,62 @@ function ucwords( str ) {
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
 function getAussieUnits(val,src_units) {
-     var cel = "";
-     var c = "&#176;C";
-     var ret = [];
-     var toReturn = [];
-     var old = "";
+    var cel = "";
+    var c = "&#176;C";
+    var ret = [];
+    var toReturn = [];
+    var old = "";
 
-     if (src_units != undefined) {
-         src_units = src_units.toLowerCase();
-         src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
-         // arrays hold all possible names for a 'type'
-         //
-         // ALL ARRAY ENTRIES IN LOWER CASE
-         var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
-         var farNameArray = ["f","fahrenheit"];
-         var kelNameArray = ["k","kelvin","kel"];
-         var metresNameArray = ["m","metres","meters","metre"]
+    if (src_units != undefined) {
+        src_units = src_units.toLowerCase();
+        src_units = src_units.replace(/^\s+|\s+$/g, '');  // trim
+        // arrays hold all possible names for a 'type'
+        //
+        // ALL ARRAY ENTRIES IN LOWER CASE
+        var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
+        var farNameArray = ["f","fahrenheit"];
+        var kelNameArray = ["k","kelvin","kel"];
+        var metresNameArray = ["m","metres","meters","metre"]
 
-         // fahrenheit
-          if (inArray(farNameArray,src_units)) {
+        // fahrenheit
+        if (inArray(farNameArray,src_units)) {
             cel = (val - 32) / 1.8;
             old = " (<b>"+toNSigFigs(val,4) +"</b> fahrenheit)";
             ret = [toNSigFigs(cel,4),c,old];
             //console.log("farren");
-          } else if (inArray(kelNameArray,src_units)) {
+        } else if (inArray(kelNameArray,src_units)) {
             // kelvin
             cel = val - 272.15;
             old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
             ret = [toNSigFigs(cel,4),c,old];
 
-           // console.log("kel");
-          } else if (inArray(celNameArray,src_units)) {
-             // celcius
-             ret = [toNSigFigs(val,4),c,""];
-             cel = "success";
+        // console.log("kel");
+        } else if (inArray(celNameArray,src_units)) {
+            // celcius
+            ret = [toNSigFigs(val,4),c,""];
+            cel = "success";
 
             //console.log("cel");
-          } else if (inArray(metresNameArray,src_units)) {
-             // metres
-             ret = [toNSigFigs(val,2),"m",""];
-             cel = "success";
-          }
+        } else if (inArray(metresNameArray,src_units)) {
+            // metres
+            ret = [toNSigFigs(val,2),"m",""];
+            cel = "success";
+        }
 
 
-          // if cel empty then the unit wasnt suitable
-          // or we cant even anticipate..
-          if (cel == "") {
-              cel = val;
-              toReturn = [toNSigFigs(cel,4),src_units,""];
-          } else {
-              toReturn = ret;
-          }
-     } else {
+        // if cel empty then the unit wasnt suitable
+        // or we cant even anticipate..
+        if (cel == "") {
+            cel = val;
+            toReturn = [toNSigFigs(cel,4),src_units,""];
+        } else {
+            toReturn = ret;
+        }
+    } else {
          toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
-     }
+    }
 
-     return toReturn;
-
+    return toReturn;
 }
 
 
@@ -338,10 +337,10 @@ function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
                 break;
         }
 
-   }
-   // Readjust array
-   expandedDates.length = j;
-   return expandedDates;
+    }
+    // Readjust array
+    expandedDates.length = j;
+    return expandedDates;
 }
 
 function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
@@ -385,9 +384,6 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
 
 
 function _getISO8601Period(period) {
-
-
-
     // rip off the 'P'
     var _period  = period.substring(1);
 
@@ -447,14 +443,11 @@ function _getISO8601Period(period) {
 
 }
 
-
-
 // IE 8 throws errors with console not existing
 // Console will exist when using developer tools
 if (typeof console === "undefined" || typeof console.log === "undefined") {
- console = {};
- console.log = function(msg) {
-      //alert(msg);
- };
-
+    console = {};
+    console.log = function(msg) {
+        //alert(msg);
+    };
 }
