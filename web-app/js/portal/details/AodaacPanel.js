@@ -332,6 +332,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 longitudeRangeEnd: this.bboxControl.getEastBL()
             };
         }
-        return {};
+
+        return null;
     }
 });
