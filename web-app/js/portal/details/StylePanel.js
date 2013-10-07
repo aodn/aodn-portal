@@ -58,39 +58,39 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         fields = [
             {
-                name:'myId'
+                name: 'myId'
             },
             {
-                name:'displayText'
+                name: 'displayText'
             },
             {
-                name:'displayImage'
+                name: 'displayImage'
             }
         ];
 
         var valueStore = new Ext.data.ArrayStore({
-            autoDestroy:true,
-            itemId:'style',
-            name:'style',
-            fields:fields
+            autoDestroy: true,
+            itemId: 'style',
+            name: 'style',
+            fields: fields
         });
 
         var combo = new Ext.form.ComboBox({
-            id:'styleCombo',
-            width:200,
-            fieldLabel:'style',
-            triggerAction:'all',
-            editable:false,
-            lazyRender:true,
-            mode:'local',
-            store:valueStore,
-            emptyText:OpenLayers.i18n('pickAStyle'),
-            valueField:'myId',
-            displayField:'displayText',
-            tpl:tpl,
-            listeners:{
-                scope:this,
-                select:function (cbbox, record, index) {
+            id: 'styleCombo',
+            width: 200,
+            fieldLabel: 'style',
+            triggerAction: 'all',
+            editable: false,
+            lazyRender: true,
+            mode: 'local',
+            store: valueStore,
+            emptyText: OpenLayers.i18n('pickAStyle'),
+            valueField: 'myId',
+            displayField: 'displayText',
+            tpl: tpl,
+            listeners: {
+                scope: this,
+                select: function (cbbox, record, index) {
                     this.setChosenStyle(record);
                 }
             }
@@ -109,7 +109,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     update:function (layer, show, hide, target) {
-
         this.selectedLayer = layer;
 
         show.call(target, this);
@@ -136,7 +135,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     _styleData: function (layer) {
-
         var data = [];
         var allStyles = layer.allStyles;
 
@@ -160,7 +158,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     // full legend shown in layer option. The current legend
     refreshLegend: function (layer) {
-
         // get openlayers style as string
         var styleName = layer.params.STYLES;
         var palette = this._getPalette(layer, styleName);
@@ -240,7 +237,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     _getPalette: function(layer, style) {
-
         if (layer.isNcwms()) {
 
             // Use palette if title is in the form [type]/[palette]
