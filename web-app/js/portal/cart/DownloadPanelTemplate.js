@@ -35,7 +35,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getPointOfTruthLinkEntry: function(record) {
-
         var href = record.pointOfTruthLink.href;
 
         var html = this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
@@ -44,16 +43,13 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _dataRowTemplate: function(values) {
-
         var html = '';
 
         if (values.wmsLayer) {
-
             html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
         }
 
         if (values.aodaac) {
-
             html += new Portal.cart.AodaacDataRowTemplate(this).applyWithControls(values);
         }
 
@@ -61,7 +57,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getFileListEntries: function(values) {
-
         var links = values.downloadableLinks;
         var html = "";
 
@@ -74,7 +69,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         );
 
         if (html) {
-
             return html;
         }
 
@@ -84,26 +78,21 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getSingleFileEntry: function(link) {
-
         var html = this._makeExternalLinkMarkup(link.href, link.title);
 
         return this._makeEntryMarkup(html);
     },
 
     _makeEntryMarkup: function(text) {
-
         return String.format('<div class="entry">{0}</div>', text);
     },
 
     _makeSecondaryTextMarkup: function(text) {
-
         return String.format('<span class="secondary-text">{0}</span>', text);
     },
 
     _makeExternalLinkMarkup: function(href, text) {
-
         if (!text) {
-
             text = href;
         }
 
@@ -111,7 +100,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     downloadWithConfirmation: function(downloadUrl) {
-
         this.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl);
     }
 });
