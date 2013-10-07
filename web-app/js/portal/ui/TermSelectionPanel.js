@@ -172,11 +172,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         selectedView.on('click', selectedView.onSelectionClick, selectedView);
         selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
 
-
-
-
-
-
         //Ext.apply(this, Ext.apply(this.initialConfig, config));
 
         return selectedView;
@@ -248,7 +243,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     _searchFail:function (response) {
         this.setVisible(false);
-//    this.filterView.setVisible(false);
+        //this.filterView.setVisible(false);
     },
 
     _getFieldGroup:function () {
