@@ -135,7 +135,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     activeLayersTreePanelClickHandler: function(node, event) {
-
         this.setActiveNode(node);
     },
 
