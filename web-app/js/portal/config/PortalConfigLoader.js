@@ -54,7 +54,8 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
         try {
             this.portal.config = Ext.util.JSON.decode(txt);
             this.viewportConfigLoaded = true;
-        } catch (e) {
+        }
+        catch (e) {
             console.log('Unable to load app config. Invalid response: ' + txt);
             this.viewportConfigLoaded = false;
         }
