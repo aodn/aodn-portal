@@ -11,7 +11,6 @@ Ext.namespace('Portal.ui');
 Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
 
     constructor: function(cfg) {
-
         var store = new Portal.data.LayerDataPanelStore({url: cfg.url});
         var config = Ext.apply({
             title: OpenLayers.i18n('dragLayersOrServers'),
@@ -32,8 +31,7 @@ Portal.ui.LayerGridPanel = Ext.extend(Ext.grid.GridPanel, {
                 getRowClass: function(record, index) {
                     if (record.json['class'] == "au.org.emii.portal.Server") {
                         return 'serverRow';
-                    }
-                    else {
+                    } else {
                         return 'layerRow';
                     }
                 }

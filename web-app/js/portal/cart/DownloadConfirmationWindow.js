@@ -66,8 +66,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     hide: function() {
         try {
             Portal.cart.DownloadConfirmationWindow.superclass.hide.call(this);
-        }
-        catch (e) {
+        } catch (e) {
             /**
              * Explicitly ignoring exception
              *
@@ -80,21 +79,16 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     showIfNeeded: function(downloadUrl) {
-
         this.downloadUrl = downloadUrl;
 
         if (!this.hasBeenShown) {
-
             this.show();
-        }
-        else {
-
+        } else {
             this.onAccept();
         }
     },
 
     onAccept: function() {
-
         this.hide();
 
         if (this.downloadUrl) {
@@ -105,12 +99,10 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     onCancel: function() {
-
         this.hide();
     },
 
     _openDownload: function(url) {
-
         window.open(url, '_blank');
     }
 });

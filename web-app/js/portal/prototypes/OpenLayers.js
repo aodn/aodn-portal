@@ -114,8 +114,7 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
 
     if (this.overrideMetadataUrl) {
         result = this.overrideMetadataUrl;
-    }
-    else if (this.metadataUrls && this.metadataUrls.length > 0) {
+    } else if (this.metadataUrls && this.metadataUrls.length > 0) {
         for (var i = 0; i < this.metadataUrls.length; i++) {
             //TC211 is meant for MCP
             if (this.metadataUrls[i].type == "TC211") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"

@@ -13,7 +13,6 @@ Ext.namespace('Portal.utils.FormUtil');
  * javascript code (such as for the download cart).
  */
 Portal.utils.FormUtil.createAndSubmit = function(path, params, method) {
-
     method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.

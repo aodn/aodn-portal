@@ -27,12 +27,10 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
     },
 
     update: function(layer, show, hide, target) {
-
         if (this._showBody(layer)) {
             this._updateBody(layer);
             show.call(target, this);
-        }
-        else {
+        } else {
             hide.call(target, this);
         }
     },

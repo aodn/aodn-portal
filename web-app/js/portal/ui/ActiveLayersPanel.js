@@ -74,7 +74,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
-
             if (this.getActiveLayerNodes() && this.getActiveLayerNodes().length > 0) {
                 //Ext gets confused if we don't select first node first
                 // it seems to get visually selected, but not really selected, automatically
@@ -90,9 +89,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                     }
                     this.oldSelected = null;
                 }
-            }
-            else { // No Layers left on map
-
+            } else { // No Layers left on map
                 this.setActiveNode(null);
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
             }
@@ -130,8 +127,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.getRootNode().eachChild(function(n) {
             if (n === node) {
                 n.setCls('x-tree-selected');
-            }
-            else {
+            } else {
                 n.setCls('');
                 n.unselect(true);
             }
@@ -139,7 +135,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     activeLayersTreePanelClickHandler: function(node, event) {
-
         this.setActiveNode(node);
     },
 
@@ -162,8 +157,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         Ext.each(node.childNodes, function(child, index, all) {
             if (child.leaf) {
                 leafNodes.push(child);
-            }
-            else {
+            } else {
                 this.addLeafNodes(child, leafNodes);
             }
         }, this);

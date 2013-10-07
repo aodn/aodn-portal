@@ -58,39 +58,39 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         fields = [
             {
-                name:'myId'
+                name: 'myId'
             },
             {
-                name:'displayText'
+                name: 'displayText'
             },
             {
-                name:'displayImage'
+                name: 'displayImage'
             }
         ];
 
         var valueStore = new Ext.data.ArrayStore({
-            autoDestroy:true,
-            itemId:'style',
-            name:'style',
-            fields:fields
+            autoDestroy: true,
+            itemId: 'style',
+            name: 'style',
+            fields: fields
         });
 
         var combo = new Ext.form.ComboBox({
-            id:'styleCombo',
-            width:200,
-            fieldLabel:'style',
-            triggerAction:'all',
-            editable:false,
-            lazyRender:true,
-            mode:'local',
-            store:valueStore,
-            emptyText:OpenLayers.i18n('pickAStyle'),
-            valueField:'myId',
-            displayField:'displayText',
-            tpl:tpl,
-            listeners:{
-                scope:this,
-                select:function (cbbox, record, index) {
+            id: 'styleCombo',
+            width: 200,
+            fieldLabel: 'style',
+            triggerAction: 'all',
+            editable: false,
+            lazyRender: true,
+            mode: 'local',
+            store: valueStore,
+            emptyText: OpenLayers.i18n('pickAStyle'),
+            valueField: 'myId',
+            displayField: 'displayText',
+            tpl: tpl,
+            listeners: {
+                scope: this,
+                select: function (cbbox, record, index) {
                     this.setChosenStyle(record);
                 }
             }
@@ -109,7 +109,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     update:function (layer, show, hide, target) {
-
         this.selectedLayer = layer;
 
         show.call(target, this);
@@ -118,8 +117,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         if (layer.isNcwms()) {
             this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
-        }
-        else {
+        } else {
             this.ncwmsColourScalePanel.hide();
         }
 
@@ -137,7 +135,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     _styleData: function (layer) {
-
         var data = [];
         var allStyles = layer.allStyles;
 
@@ -161,7 +158,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     // full legend shown in layer option. The current legend
     refreshLegend: function (layer) {
-
         // get openlayers style as string
         var styleName = layer.params.STYLES;
         var palette = this._getPalette(layer, styleName);
@@ -182,8 +178,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (layer.cache === true) {
             url = layer.server.uri;
             useProxy = true;
-        }
-        else {
+        } else {
             url = layer.url;
         }
 
@@ -201,8 +196,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (colorBarOnly) {
             opts += "&LEGEND_OPTIONS=forceLabels:off";
             opts += "&COLORBARONLY=" + colorBarOnly;
-        }
-        else {
+        } else {
 
             opts += "&LEGEND_OPTIONS=forceLabels:on";
         }
@@ -217,13 +211,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         if (useProxy) {
             // FORMAT here is for the proxy, so that it knows its a binary image required
             url = proxyCachedURL + encodeURIComponent(url) + "&";
-        }
-        else {
+        } else {
             // see if this url already has some parameters on it
             if (url.contains("?")) {
                 url += "&";
-            }
-            else {
+            } else {
                 url += "?";
             }
         }
@@ -245,7 +237,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     _getPalette: function(layer, style) {
-
         if (layer.isNcwms()) {
 
             // Use palette if title is in the form [type]/[palette]
@@ -253,8 +244,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             if (parts.length > 1) {
 
                 return parts[1];
-            }
-            else {
+            } else {
 
                 return style;
             }

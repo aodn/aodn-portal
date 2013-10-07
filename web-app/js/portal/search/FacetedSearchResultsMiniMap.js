@@ -12,7 +12,6 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
 
     constructor: function(values) {
-
         Ext.apply(this, {
             controls: [
                 new OpenLayers.Control.MousePosition({
@@ -59,8 +58,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
                         this.EPSG_4326_PROJECTION,
                         this.GOOGLE_MAPS_PROJECTION))
             );
-        }
-        else {
+        } else {
             this.zoomToExtent(
                 new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox).transform(
                     this.EPSG_4326_PROJECTION,
@@ -88,8 +86,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         if (zoomLevel == 0) {
             // 0 is too large
             zoomLevel = 1;
-        }
-        else if (zoomLevel > 4) {
+        } else if (zoomLevel > 4) {
             // Anything over 4 doesn't show enough to get an idea of where things are
             zoomLevel = 4;
         }

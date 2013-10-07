@@ -100,8 +100,7 @@ Portal.app = {
     ajaxAction:function (request) {
         if (request == 'show') {
             jQuery('.extAjaxLoading').show(100);
-        }
-        else {
+        } else {
             jQuery('.extAjaxLoading').hide('slow');
         }
     }
