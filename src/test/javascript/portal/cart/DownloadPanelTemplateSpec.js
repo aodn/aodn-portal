@@ -76,7 +76,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         it('uses AodaacDataRowTemplate where applicable', function() {
 
-            geoNetworkRecord.wmsLayer = {wfsLayer: undefined};
+            geoNetworkRecord.wmsLayer = { wfsLayer: undefined };
             geoNetworkRecord.aodaac = {};
 
             tpl._dataRowTemplate(geoNetworkRecord);
@@ -87,7 +87,7 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         it('uses WfsDataRowTemplate where applicable', function() {
 
-            geoNetworkRecord.wmsLayer = {wfsLayer: {}};
+            geoNetworkRecord.wmsLayer = { wfsLayer: {} };
             geoNetworkRecord.aodaac = undefined;
 
             tpl._dataRowTemplate(geoNetworkRecord);
