@@ -82,7 +82,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     layerId: layer.grailsLayerId
                 },
                 scope: this,
-                failure: function(resp){ this._onGetFilterFailure(resp, hide, target) },
+                failure: function(){ this._hide(hide, target) },
                 success: function(resp, opts){ this._onGetFilterSuccess(resp, layer, show, hide, target)}
             });
         }
@@ -105,37 +105,38 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         );
 
         if (aFilterIsEnabled) {
-
-            this.loadingMessage.hide();
-
-            this._updateLayerFilters();
-
-            this.setVisible(true);
-
-            this.clearFiltersButton = new Ext.Button({
-                cls: "x-btn-text-icon",
-                icon: "images/go-back-icon.png",
-                text: 'Clear Filters',
-                listeners: {
-                    scope: this,
-                    click: this._clearFilters
-                }
-            });
-
-            this.add(this.clearFiltersButton);
-
-            this.doLayout();
-            show.call(target, this);
+            this._updateAndShow(show, target);
         }
         else {
-            hide.call(target, this);
+            this._hide(hide, target);
         }
     },
 
-    _onGetFilterFailure: function(resp, hide, target) {
+    _updateAndShow: function(showFunction, showFunctionTarget) {
 
-        this.setVisible(false);
-        hide.call(target, this);
+        this.clearFiltersButton = new Ext.Button({
+            cls: "x-btn-text-icon",
+            icon: "images/go-back-icon.png",
+            text: 'Clear Filters',
+            listeners: {
+                scope: this,
+                click: this._clearFilters
+            }
+        });
+
+        this.loadingMessage.hide();
+
+        this._updateLayerFilters();
+
+        this.add(this.clearFiltersButton);
+        this.doLayout();
+
+        showFunction.call(showFunctionTarget, this);
+    },
+
+    _hide: function(hideFunction, hideFunctionTarget) {
+
+        hideFunction.call(hideFunctionTarget, this);
     },
 
     _updateLayerFilters: function() {

@@ -22,16 +22,17 @@ describe("Portal.filter.FilterPanel", function() {
     describe('_onGetFilterSuccess', function() {
 
         var dummyResponse;
+        var fnTarget = {};
+        var showFunction = function() {};
 
         beforeEach(function() {
 
             dummyResponse = {responseText: "[{}]"};
 
             spyOn(filterPanel, 'createFilterPanel');
-            spyOn(filterPanel, '_updateLayerFilters');
-            spyOn(filterPanel.loadingMessage, 'hide');
+            spyOn(filterPanel, '_updateAndShow');
 
-            filterPanel._onGetFilterSuccess(dummyResponse, {}, noOp, noOp, {});
+            filterPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
         });
 
         it('creates a filter panel', function() {
@@ -39,14 +40,9 @@ describe("Portal.filter.FilterPanel", function() {
             expect(filterPanel.createFilterPanel).toHaveBeenCalled();
         });
 
-        it('updates the layer filters', function() {
+        it('calls _updateAndShow', function() {
 
-            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
-        });
-
-        it('hides loading message on success', function() {
-
-            expect(filterPanel.loadingMessage.hide).toHaveBeenCalled();
+            expect(filterPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
         });
     });
 
@@ -109,6 +105,25 @@ describe("Portal.filter.FilterPanel", function() {
             filterPanel._clearFilters();
 
             expect(removeFilterSpy.callCount).toBe(3);
+            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+    });
+
+    describe('_updateAndShow', function() {
+
+        beforeEach(function() {
+
+            spyOn(filterPanel.loadingMessage, 'hide');
+            spyOn(filterPanel, '_updateLayerFilter');
+        });
+
+        it('hides the laoding message', function() {
+
+            expect(filterPanel.loadingMessage.hide).toHaveBeenCalled();
+        });
+
+        it('calls _updateLayerFilter', function() {
+
             expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
