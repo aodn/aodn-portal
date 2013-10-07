@@ -114,7 +114,9 @@ describe("Portal.filter.FilterPanel", function() {
         beforeEach(function() {
 
             spyOn(filterPanel.loadingMessage, 'hide');
-            spyOn(filterPanel, '_updateLayerFilter');
+            spyOn(filterPanel, '_updateLayerFilters');
+
+            filterPanel._updateAndShow(noOp, {});
         });
 
         it('hides the laoding message', function() {
