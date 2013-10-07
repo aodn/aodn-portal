@@ -5,9 +5,6 @@
  *
  */
 
-
-
-
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
     var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
@@ -20,8 +17,6 @@ function ucwords( str ) {
         return $1.toUpperCase ( );
     } );
 }
-
-
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
 function getAussieUnits(val,src_units) {
@@ -40,7 +35,7 @@ function getAussieUnits(val,src_units) {
         var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
         var farNameArray = ["f","fahrenheit"];
         var kelNameArray = ["k","kelvin","kel"];
-        var metresNameArray = ["m","metres","meters","metre"]
+        var metresNameArray = ["m","metres","meters","metre"];
 
         // fahrenheit
         if (inArray(farNameArray,src_units)) {
@@ -88,7 +83,6 @@ function getAussieUnits(val,src_units) {
     return toReturn;
 }
 
-
 function pad(numNumber, numLength){
     var strString = '' + numNumber;
     while(strString.length<numLength){
@@ -96,7 +90,6 @@ function pad(numNumber, numLength){
     }
     return strString;
 }
-
 
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
@@ -128,7 +121,6 @@ function formatGetFeatureInfo(response, options) {
         console.log("ERROR: as yet unhandled response type for getFeatureInfo");
     }
 }
-
 
 function setHTML_ncWMS(response,options) {
     var xmldoc = response.responseXML;
@@ -243,7 +235,6 @@ function setHTML_ncWMS(response,options) {
     return html;
 }
 
-
 function inArray (array,value) {
 
     for (var i = 0; i < array.length; i++) {
@@ -275,7 +266,6 @@ function binSearch(sortedArray, value, compareFunction) {
     }
     return -1;
 }
-
 
 Date.prototype.setISO8601 = function (string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
@@ -312,7 +302,7 @@ Date.prototype.setISO8601 = function (string) {
     offset -= date.getTimezoneOffset();
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
-}
+};
 
 function expandExtendedISO8601Dates(splitDates, startIndex, endIndex) {
 
@@ -401,7 +391,6 @@ function _expand3sectionExtendedISO8601Date(extendedISO8601Date) {
     return expandedDates;
 }
 
-
 function _getISO8601Period(period) {
     // rip off the 'P'
     var _period  = period.substring(1);
@@ -446,8 +435,6 @@ function _getISO8601Period(period) {
         moArray[6] =  timeParts.split("S")[0];
     }
 
-
-
     return {
         'seconds': Number(moArray[6]),
         'minutes': Number(moArray[5]),
@@ -457,9 +444,6 @@ function _getISO8601Period(period) {
         'months':  Number(moArray[1]),
         'years':   Number(moArray[0])
     }
-
-
-
 }
 
 // IE 8 throws errors with console not existing
