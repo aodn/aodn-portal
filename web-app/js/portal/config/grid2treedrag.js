@@ -26,7 +26,6 @@
 
 Ext.ns('Example');
 
-
 var tree;
 var jsonLayers;
 
@@ -57,11 +56,10 @@ function initMenu(menu, _basePath) {
                     }
                 }
             });
-        }
+        };
         setUpName();  // fail
     }
 }
-
 
 function showHideButtons() {
     // hide the help if it exists
@@ -74,7 +72,6 @@ function showHideButtons() {
     }
     Ext.get('submitMenu').fadeIn();
 }
-
 
 // for new and editing menu trees
 function setupgrid2treedrag(menu) {
@@ -104,8 +101,6 @@ function setupgrid2treedrag(menu) {
             Ext.get('jsonString').dom.value = json;
         }
     });
-
-
 
     tree = new Ext.tree.TreePanel({
         // root with some static demo nodes
@@ -142,11 +137,9 @@ function setupgrid2treedrag(menu) {
                 }
             },
 
-
             // create nodes based on data from grid
             beforenodedrop:{
                 fn:function(e) {
-
 
                     // e.data.selections is the array of selected records
                     if(Ext.isArray(e.data.selections)) {
@@ -181,13 +174,12 @@ function setupgrid2treedrag(menu) {
                             }));
 
                             }
-                        };
+                        }
 
                         showHideButtons();
 
                         // we want Ext to complete the drop, thus return true
                         return true;
-
                     }
                     // if we get here the drop is automatically cancelled by Ext
                 }
@@ -213,7 +205,7 @@ function setupgrid2treedrag(menu) {
         ]
     });
     win.doLayout();
-};
+}
 
 function rightClickMenu(node){
     var treeMenu = new Ext.menu.Menu({
@@ -236,7 +228,6 @@ function rightClickMenu(node){
                                 expanded: true,
                                 expandable: true,
                                 children: []
-
                             });
                             node.expand();
                             showHideButtons();
@@ -245,7 +236,6 @@ function rightClickMenu(node){
                             Ext.MessageBox.alert('Node not created','You must supply a name for a new branch');
                         }
                     });
-
                 }
             }
         });
@@ -273,8 +263,6 @@ function rightClickMenu(node){
                 }
             }
         });
-
-
     }
     if (node.id != "root") {
         treeMenu.add({
@@ -290,5 +278,4 @@ function rightClickMenu(node){
     }
 
     return treeMenu
-
 }

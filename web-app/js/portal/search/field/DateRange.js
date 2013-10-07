@@ -19,16 +19,16 @@ Portal.search.field.DateRange = Ext.extend(Ext.Container, {
             labelWidth: 75,
             margins: { top: 0, right: 15, bottom:0, left: 0 },
             items: [
-            {
-                fieldLabel: 'Date from',
-                labelSeparator: '',
-                name: 'extFrom',
-                xtype: 'datefield',
-                ref: '../fromDate',
-                format: 'd/m/Y',
-                anchor: '100%',
-                maxValue: new Date()
-            }
+                {
+                    fieldLabel: 'Date from',
+                    labelSeparator: '',
+                    name: 'extFrom',
+                    xtype: 'datefield',
+                    ref: '../fromDate',
+                    format: 'd/m/Y',
+                    anchor: '100%',
+                    maxValue: new Date()
+                }
             ]
         },
         {
