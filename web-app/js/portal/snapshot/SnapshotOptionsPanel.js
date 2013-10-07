@@ -95,10 +95,6 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                 this.snapshotCombo.collapse();
             }
         });
-
-
-
-
     },
 
     onLoadSelectedSnapshot: function(button, event) {
@@ -135,27 +131,28 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         {
             curLoc = curLoc.split("?")[0];
         }
-        var url = curLoc + 'snapshot/loadMap/' +  id;
+        var url = curLoc + 'snapshot/loadMap/' + id;
 
         Ext.MessageBox.show({
             title:OpenLayers.i18n('shareMapDialogTitle'),
-            msg: 'You can share a map by using this URL: ' + '<a href="' + url  + '" target="_blank">' + url + '</a>'
+            msg: 'You can share a map by using this URL: ' + '<a href="' + url + '" target="_blank">' + url + '</a>'
         });
 
     },
+
     onSuccessfulDelete: function() {
         this.snapshotCombo.clearValue();
     },
 
     onSnapshotAdded: function(snapshot) {
         this.snapshotCombo.store.load({
-            scope   : this,
+            scope: this,
             params: {
                 recordId: snapshot.id
             },
             callback: function(records, operation, success) {
-                   this.snapshotCombo.setValue(operation.params.recordId, true );
-                 this.snapshotCombo.fireEvent('select');
+                    this.snapshotCombo.setValue(operation.params.recordId, true );
+                    this.snapshotCombo.fireEvent('select');
             }
         });
     },
