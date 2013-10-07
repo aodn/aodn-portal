@@ -10,8 +10,6 @@ Ext.namespace('Portal.search');
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
-
-
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
@@ -58,7 +56,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getParametersAsHtml: function(values){
-
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
             '   <span>- {value}</span>',

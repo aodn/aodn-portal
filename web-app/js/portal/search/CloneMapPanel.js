@@ -27,7 +27,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     initMap: function(mapConfig) {
-
         var config = Ext.apply({
             controls: [
                 new OpenLayers.Control.Navigation(),
@@ -56,7 +55,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerAdded: function(e) {
-
         var miniMapClone = e.layer.clone();
 
         // delete attibutes that cause problems in minimap
@@ -73,7 +71,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerRemoved: function(e) {
-
         if (this.map.layers) {
 
             var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0]; // Should only be one match
@@ -85,7 +82,6 @@ Portal.search.CloneMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     mainMapLayerChanged: function(e) {
-
         var miniMapClone = this.map.getLayersBy('sourceLayer', e.layer)[0];
 
         // When adding baselayers some property change events come before the addlayer event
