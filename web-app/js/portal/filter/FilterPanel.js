@@ -9,6 +9,13 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg){
+
+        this.loadingMessage = new Ext.Container({
+            autoEl: 'div',
+            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
+            colspan: 2
+        });
+
         var config = Ext.apply({
             id: 'filterPanel',
             title: OpenLayers.i18n('filterPanelTitle'),
@@ -21,11 +28,12 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     cellspacing: '10px',
                     style: {
                         width: '100%',
-                        font: '11 px'
+                        font: '11px'
                     }
                 }
             },
-            autoDestroy: true
+            autoDestroy: true,
+            items: [this.loadingMessage]
         }, cfg);
 
         this.GET_FILTER = "layer/getFiltersAsJSON";
@@ -74,52 +82,61 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     layerId: layer.grailsLayerId
                 },
                 scope: this,
-                failure: function(resp){
-                    this.setVisible(false);
-                    hide.call(target, this);
-                },
-                success: function(resp, opts){
-
-                    var filters = Ext.util.JSON.decode(resp.responseText);
-                    var aFilterIsEnabled = false;
-
-                    Ext.each(filters,
-                        function(filter, index, all) {
-                            this.createFilterPanel(layer, filter);
-                            aFilterIsEnabled = true;
-                        },
-                        this
-                    );
-
-                    if (aFilterIsEnabled) {
-                        this._updateLayerFilters();
-
-                        this.setVisible(true);
-
-                        this.clearFiltersButton = new Ext.Button({
-                            cls: "x-btn-text-icon",
-                            icon: "images/go-back-icon.png",
-                            text: 'Clear Filters',
-                            listeners: {
-                                scope: this,
-                                click: this._clearFilters
-                            }
-                        });
-
-                        this.add(this.clearFiltersButton);
-
-                        this.doLayout();
-                        show.call(target, this);
-                    }
-                    else {
-                        hide.call(target, this);
-                    }
-                }
+                failure: function(){ this._hide(hide, target) },
+                success: function(resp, opts){ this._onGetFilterSuccess(resp, layer, show, hide, target)}
             });
         }
         else {
             //probably some other layer added in through getfeatureinfo, or user added WMS
         }
+    },
+
+    _onGetFilterSuccess: function(resp, layer, show, hide, target) {
+
+        var filters = Ext.util.JSON.decode(resp.responseText);
+        var aFilterIsEnabled = false;
+
+        Ext.each(filters,
+            function(filter, index, all) {
+                this.createFilterPanel(layer, filter);
+                aFilterIsEnabled = true;
+            },
+            this
+        );
+
+        if (aFilterIsEnabled) {
+            this._updateAndShow(show, target);
+        }
+        else {
+            this._hide(hide, target);
+        }
+    },
+
+    _updateAndShow: function(showFunction, showFunctionTarget) {
+
+        this.clearFiltersButton = new Ext.Button({
+            cls: "x-btn-text-icon",
+            icon: "images/go-back-icon.png",
+            text: 'Clear Filters',
+            listeners: {
+                scope: this,
+                click: this._clearFilters
+            }
+        });
+
+        this.loadingMessage.hide();
+
+        this._updateLayerFilters();
+
+        this.add(this.clearFiltersButton);
+        this.doLayout();
+
+        showFunction.call(showFunctionTarget, this);
+    },
+
+    _hide: function(hideFunction, hideFunctionTarget) {
+
+        hideFunction.call(hideFunctionTarget, this);
     },
 
     _updateLayerFilters: function() {
@@ -134,7 +151,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(this._getActiveFilters(), function(filter) {
             if (filter.isDownloadOnly() == options.downloadOnly) {
-                cqlValues.push(filter.getCQL());;
+                cqlValues.push(filter.getCQL());
             }
         });
 

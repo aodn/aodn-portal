@@ -19,6 +19,33 @@ describe("Portal.filter.FilterPanel", function() {
         });
     });
 
+    describe('_onGetFilterSuccess', function() {
+
+        var dummyResponse;
+        var fnTarget = {};
+        var showFunction = function() {};
+
+        beforeEach(function() {
+
+            dummyResponse = {responseText: "[{}]"};
+
+            spyOn(filterPanel, 'createFilterPanel');
+            spyOn(filterPanel, '_updateAndShow');
+
+            filterPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
+        });
+
+        it('creates a filter panel', function() {
+
+            expect(filterPanel.createFilterPanel).toHaveBeenCalled();
+        });
+
+        it('calls _updateAndShow', function() {
+
+            expect(filterPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
+        });
+    });
+
     describe('the clear all filters button', function() {
 
         it('calls the _clearFilters method', function() {
@@ -57,7 +84,7 @@ describe("Portal.filter.FilterPanel", function() {
     describe('_clearFilters method', function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
-        
+
         var _mockFilter = function(name) {
 
             return {
@@ -72,7 +99,7 @@ describe("Portal.filter.FilterPanel", function() {
                _mockFilter('data_centre'),
                _mockFilter('pi')
             ]);
-            
+
             spyOn(filterPanel, '_updateLayerFilters');
 
             filterPanel._clearFilters();
@@ -82,4 +109,24 @@ describe("Portal.filter.FilterPanel", function() {
         });
     });
 
+    describe('_updateAndShow', function() {
+
+        beforeEach(function() {
+
+            spyOn(filterPanel.loadingMessage, 'hide');
+            spyOn(filterPanel, '_updateLayerFilters');
+
+            filterPanel._updateAndShow(noOp, {});
+        });
+
+        it('hides the laoding message', function() {
+
+            expect(filterPanel.loadingMessage.hide).toHaveBeenCalled();
+        });
+
+        it('calls _updateLayerFilter', function() {
+
+            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+    });
 });
