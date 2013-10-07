@@ -54,11 +54,11 @@ for(var key in this.attributes) {
         } else {
         thisKey = key;
         }
+
         // if true of false dont quote them
         if (this.attributes[key].toString() == "true" || this.attributes[key].toString()  == "false" ) {
             result += '"' + thisKey + '":' + this.attributes[key] ;
-        }
-        else {
+        } else {
             result += '"' + thisKey + '":"' + this.attributes[key] + '"';
         }
         c = true;
@@ -68,16 +68,15 @@ for(var key in this.attributes) {
 // Add child nodes if any
 var children = this.childNodes;
 var clen = children.length;
-if(clen != 0){
+if(clen != 0) {
     if (c) result += ',';
         result += '"children":['
-    for(var i = 0; i < clen; i++){
+    for(var i = 0; i < clen; i++) {
         if (i > 0) result += ',';
         result += children[i].toJsonString(nodeFilter, attributeFilter, attributeMapping);
-        }
+    }
     result += ']';
-}
-else {
+} else {
     // if this is not a leaf give it empty children
     if (this.attributes['leaf'].toString()  == "false" ) {
         result += ',"children":[]';
@@ -138,7 +137,7 @@ var children = this.childNodes;
 var clen = children.length;
 if(clen == 0){
 result += '/>';
-}else{
+} else {
 result += '>';
 for(var i = 0; i < clen; i++){
 result += children[i].toXmlString(nodeFilter, attributeFilter, attributeMapping);

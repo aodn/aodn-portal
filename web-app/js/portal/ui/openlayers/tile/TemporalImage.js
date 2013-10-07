@@ -61,8 +61,7 @@ OpenLayers.Tile.TemporalImage = OpenLayers.Class(OpenLayers.Tile.Image, {
 
             if (this._imageIsLoaded(cachedImg)) {
                 onloadCallback.call(context);
-            }
-            else {
+            } else {
                 $(cachedImg).load(function() {
                     onloadCallback.call(context);
                 });

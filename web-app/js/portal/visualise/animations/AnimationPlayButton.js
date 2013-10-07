@@ -10,8 +10,7 @@ Portal.visualise.animations.AnimationPlayButton = Ext.extend(Ext.Button, {
         if (state.isPlaying()) {
             this.setIconClass('pauseButton');
             this.setTooltip(OpenLayers.i18n('pause'));
-        }
-        else {
+        } else {
             this.setIconClass('playButton');
             this.setTooltip(OpenLayers.i18n('play'));
         }

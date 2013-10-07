@@ -21,8 +21,7 @@ $(document).ready( function() {
         $("#loginbutton").click(function(){
             $("#loginpopup").show();
         });
-    }
-    else {
+    } else {
 
         // Firefox, Chromium et al.
         // slideToggle() tests existing state, and combines well with mouseleave()

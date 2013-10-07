@@ -410,8 +410,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // No extent restriction.
         if (!this.temporalExtent || this.temporalExtent.length == 0) {
             this.time = moment(dateTime);
-        }
-        else {
+        } else {
             // Find nearest in temporalExtent.
             var goalDateTime = moment(dateTime);
 
@@ -423,10 +422,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                              < Math.abs(goalDateTime.diff(closestDateTime)))) {
 
                     closestDateTime = this.temporalExtent[i];
-                }
-                // Handle the case where two dates are equally close - take the earlier.
-                else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
+
+                } else if (Math.abs(this.temporalExtent[i].diff(goalDateTime))
                          == Math.abs(goalDateTime.diff(closestDateTime))) {
+                    // Handle the case where two dates are equally close - take the earlier.
                     closestDateTime =
                         this.temporalExtent[i].isBefore(closestDateTime) ? this.temporalExtent[i] : closestDateTime;
                 }

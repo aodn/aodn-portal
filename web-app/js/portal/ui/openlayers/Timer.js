@@ -45,8 +45,7 @@ OpenLayers.Timer = OpenLayers.Class({
 
                 i++;
             }
-        }
-        else if (options && options.tickDateTimes) {
+        } else if (options && options.tickDateTimes) {
             this.setTickDateTimes(options.tickDateTimes);
         }
 
@@ -121,8 +120,7 @@ OpenLayers.Timer = OpenLayers.Class({
 
         if (!observer) {
             this.observers[eventName] = undefined;
-        }
-        else {
+        } else {
             this.observers[eventName] = {
                 callback: observer,
                 context: context
@@ -136,8 +134,7 @@ OpenLayers.Timer = OpenLayers.Class({
             var context;
             if (this.observers['tick'].context) {
                 context = this.observers['tick'].context;
-            }
-            else {
+            } else {
                 context = this;
             }
             context.callback = this.observers['tick'].callback;

@@ -85,8 +85,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                 failure: function(){ this._hide(hide, target) },
                 success: function(resp, opts){ this._onGetFilterSuccess(resp, layer, show, hide, target)}
             });
-        }
-        else {
+        } else {
             //probably some other layer added in through getfeatureinfo, or user added WMS
         }
     },

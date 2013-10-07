@@ -123,8 +123,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     updateForState: function(state) {
         if (state.isPlaying()) {
             this.disable();
-        }
-        else if (state.isPaused()) {
+        } else if (state.isPaused()) {
             this.enable();
         }
     },
@@ -229,8 +228,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
             var v = missingDays[i];
             if (typeof(v) == 'string') {
                 missingDateStrings.push(missingDays[i]);
-            }
-            else if (missingDays[i].format) {
+            } else if (missingDays[i].format) {
                 missingDateStrings.push(missingDays[i].format('YYYY-MM-DD'));
             }
         }
