@@ -45,12 +45,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     _dataRowTemplate: function(values) {
         var html = '';
 
-        if (values.wmsLayer) {
-            html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
-        }
-
         if (values.aodaac) {
             html += new Portal.cart.AodaacDataRowTemplate(this).applyWithControls(values);
+        }
+        else if (values.wmsLayer) {
+            html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
         }
 
         return html;
