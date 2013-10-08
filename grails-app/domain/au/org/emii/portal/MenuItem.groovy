@@ -21,21 +21,21 @@ class MenuItem implements Comparable<MenuItem> {
     SortedSet childItems
     Layer layer
     Server server
-    
+
     // This is only here for the purpose the migration and should be removed
     // afterwards
     Long parentId
-    
+
     static constraints = {
         layer(nullable: true)
         server(nullable: true)
         parentPosition(nullable: true)
         menu(nullable: true)
     }
-    
+
     static belongsTo = [parent: MenuItem, menu: Menu]
     static hasMany = [childItems: MenuItem]
-    
+
     static mapping = {
         childItems cascade: 'all-delete-orphan'
         parentId updateable: false
@@ -44,11 +44,11 @@ class MenuItem implements Comparable<MenuItem> {
         server fetch: 'join'
         childItems fetch: 'join'
     }
-    
+
     MenuItem() {
         childItems = [] as SortedSet
     }
-    
+
     int compareTo(MenuItem other) {
         return new CompareToBuilder()
             .append(menuPosition, other.menuPosition)
@@ -56,7 +56,7 @@ class MenuItem implements Comparable<MenuItem> {
             .append(id, other.id)
             .toComparison();
     }
-    
+
     boolean equals(Object o) {
         if (is(o)) {
             return true
@@ -64,22 +64,22 @@ class MenuItem implements Comparable<MenuItem> {
         if (!(o instanceof MenuItem)) {
             return false
         }
-        
+
         MenuItem rhs = (MenuItem)o
         return new EqualsBuilder()
             .append(id, rhs.id)
             .isEquals()
     }
-    
+
     @Override
     String toString() {
         return text
     }
-    
+
     def parseJson(json, menuPosition) {
         parseJson(json, menuPosition, null)
     }
-    
+
     def parseJson(json, menuPosition, parentPosition) {
         def itemsJsonArray = JSON.use("deep") {
             JSON.parse(json)
@@ -94,7 +94,7 @@ class MenuItem implements Comparable<MenuItem> {
         leaf = itemsJsonArray.leaf?.toBoolean()
         this.menuPosition = menuPosition
         this.parentPosition = parentPosition
-        
+
         if (itemsJsonArray.children) {
             _parseChildren(itemsJsonArray.children.toString())
         }
@@ -102,7 +102,7 @@ class MenuItem implements Comparable<MenuItem> {
             _parseChildren(itemsJsonArray.json.toString())
         }
     }
-    
+
     def getBaseLayers() {
         def baseLayers = []
         if (layer.isBaseLayer) {
@@ -118,9 +118,9 @@ class MenuItem implements Comparable<MenuItem> {
         def itemsJsonArray = JSON.use("deep") {
             JSON.parse(json)
         }
-        
+
         def tmpItems = [] as Set
-        
+
         itemsJsonArray.eachWithIndex { item, index ->
             def menuItem = _findItem(item.id)
             menuItem.parseJson(item.toString(), menuPosition, index)
@@ -131,7 +131,7 @@ class MenuItem implements Comparable<MenuItem> {
         }
         _purge(tmpItems)
     }
-    
+
     def _findItem(id) {
         def item
         if (id && !getChildItems().isEmpty()) {
@@ -139,7 +139,7 @@ class MenuItem implements Comparable<MenuItem> {
         }
         return item ?: new MenuItem()
     }
-    
+
     def _purge(keepers) {
         def discards = [] as Set
         getChildItems().each { item ->

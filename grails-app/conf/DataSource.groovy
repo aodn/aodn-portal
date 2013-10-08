@@ -7,7 +7,7 @@
 
 dataSource {
     pooled = true
-            
+
     //configure DBCP to test connections before using them and evict old connections (as per http://sacharya.com/grails-dbcp-stale-connections/)
     properties {
         minEvictableIdleTimeMillis=1800000
@@ -23,7 +23,7 @@ hibernate {
 
 // environment specific settings
 environments {
-    
+
     development {
         dataSource {
             //dbCreate = "update"
@@ -33,7 +33,7 @@ environments {
             password = "postgres"
         }
     }
-    
+
     test {
         dataSource {
             dbCreate = "create-drop"

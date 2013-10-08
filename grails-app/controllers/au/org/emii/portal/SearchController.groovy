@@ -18,27 +18,27 @@ class SearchController {
         redirect(action: "list", params: params)
     }
 
-    def list = 
+    def list =
     {
         def searchList
-        
-        if (params.owner?.id) 
+
+        if (params.owner?.id)
         {
             def owner = User.get(params.owner.id)
             searchList = Search.findAllByOwner(owner)
         }
-        else 
+        else
         {
             searchList = Search.list(params)
-        }        
+        }
 
         render searchList as JSON
     }
 
-    def save = 
+    def save =
     {
         def searchInstance = Search.fromJson(request.JSON)
-        
+
         if (searchInstance.save(flush: true)) {
             render searchInstance as JSON
         }
@@ -48,14 +48,14 @@ class SearchController {
     }
 
     def show = {
-        
+
         def searchInstance = Search.get(params.id)
-        if (!searchInstance) 
+        if (!searchInstance)
         {
             render text: "${message(code: 'default.not.found.message', args: [message(code: 'search.label', default: 'Search'), params.id])}" as JSON, status: 400
             redirect(action: "list")
         }
-        else 
+        else
         {
             JSON.use("deep")
             {

@@ -19,14 +19,14 @@ databaseChangeLog = {
                      sql.eachRow("select id from snapshot where owner_id = $ownerName.owner_id and name = $ownerName.name") { row ->
                          if (instance > 1) {
                              sql.executeUpdate("update snapshot set name = name||' ('||$instance||')' where id = $row.id")
-                         } 
+                         }
                          instance++
                      }
                  }
              }
         }
     }
-    
+
     changeSet(author: "craigj (generated)", id: "1339720918714-12") {
         addUniqueConstraint(columnNames: "owner_id, name", constraintName: "snapshot_owner_id_key", deferrable: "false", disabled: "false", initiallyDeferred: "false", tableName: "snapshot")
     }

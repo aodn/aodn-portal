@@ -73,7 +73,7 @@ databaseChangeLog = {
     changeSet(author: "jburgess (generated)", id: "1334552333873-18") {
         addForeignKeyConstraint(baseColumnNames: "search_id", baseTableName: "search_filter", baseTableSchemaName: "public", constraintName: "fk40b835efb870473a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "search", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
     }
-    
+
     changeSet(author: "jburgess (generated)", id: "1334552333873-19", failOnError: true) {
         insert(tableName: "user_role_permissions") {
             column(name: "user_role_id", valueComputed: "(select id from user_role where name = 'SelfRegisteredUser')")

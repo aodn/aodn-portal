@@ -9,36 +9,36 @@
 package au.org.emii.portal
 
 /**
- * A snapshot represents the state of a saved map (i.e. the zoom and extent, as well as 
+ * A snapshot represents the state of a saved map (i.e. the zoom and extent, as well as
  * all of the selected layers).
- * 
+ *
  * @author jburgess
  */
-class Snapshot 
+class Snapshot
 {
     static belongsTo = [owner: User]
-    
+
     // Ordering is important.
     List layers
     static hasMany = [layers: SnapshotLayer]
-    
+
     String name
     String description
-    
+
     //Bounding box
     Float minX
     Float minY
     Float maxX
     Float maxY
-    
+
     static mapping =
     {
         description type:'text'
         sort "name"
         layers cascade: 'all-delete-orphan'
     }
-    
-    static constraints = 
+
+    static constraints =
     {
         name(unique: ['owner'])
         description(nullable:true)

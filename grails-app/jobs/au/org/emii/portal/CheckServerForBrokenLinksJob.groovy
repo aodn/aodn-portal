@@ -94,7 +94,7 @@ class CheckServerForBrokenLinksJob {
                     file.append "${ln}${ln}=================== Layer : ${it.Name.text()} ===================${ln}"
                     _extractLinks(getFeatureInfoUrlString)
 
-                    // In case there are nested layers                    
+                    // In case there are nested layers
                     def nestedNodeList = it.getAt('Layer')
                     file.append "${ln}${ln}Number of nested layers : ${nestedNodeList.size()}${ln}"
                     if (nestedNodeList.size() > 0) {
@@ -146,15 +146,15 @@ class CheckServerForBrokenLinksJob {
         if (link.toLowerCase().contains("mailto:")) {
             return true
         }
-        
+
         if (link.equals("#")) {
             return true
         }
-        
+
         if (link.contains("http://geoserver.emii.org.au/argo/Argo_trajectory_")) {
             return true
         }
-        
+
         return false
     }
 

@@ -9,7 +9,7 @@
 package au.org.emii.portal
 
 class Operation {
-    
+
     String name
     String formats
     String getUrl
@@ -21,7 +21,7 @@ class Operation {
         getUrl()
         postUrl( nullable:  true )
     }
-    
+
     static mapping = {
         formats type:'text'
     }

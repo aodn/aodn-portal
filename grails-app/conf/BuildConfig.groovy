@@ -39,9 +39,9 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
-    
+
     // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
-    pom true    
+    pom true
     plugins {
         test ":build-test-data:1.1.2"
     }
@@ -53,7 +53,7 @@ coverage {
 }
 
 grails.war.resources = { stagingDir ->
-    
+
     delete(file:"${stagingDir}/WEB-INF/lib/catalina-6.0.32.jar")
     delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-2.5.jar")
     delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-6.0.32.jar")

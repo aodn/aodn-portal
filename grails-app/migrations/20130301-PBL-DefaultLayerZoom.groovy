@@ -25,10 +25,10 @@ databaseChangeLog = {
                     value: false
                     )
         }
-        
+
         sql("update config set enable_default_dateline_zoom = false;")
-        
+
         addNotNullConstraint(tableName: "config", columnName: "enable_default_dateline_zoom")
-        
+
     }
 }
