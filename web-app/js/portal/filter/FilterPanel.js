@@ -117,7 +117,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         this.clearFiltersButton = new Ext.Button({
             cls: "x-btn-text-icon",
             icon: "images/go-back-icon.png",
-            text: 'Clear Filters',
+            text: OpenLayers.i18n('clearFilterButtonLabel'),
             listeners: {
                 scope: this,
                 click: this._clearFilters
