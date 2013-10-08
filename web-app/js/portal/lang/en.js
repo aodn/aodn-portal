@@ -221,6 +221,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // FilterPanel.js
     filterPanelTitle: 'Subset',
+    clearFilterButtonLabel: 'Clear subset',
 
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
