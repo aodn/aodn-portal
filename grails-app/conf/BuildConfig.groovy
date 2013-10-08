@@ -16,8 +16,8 @@ grails.project.dependency.resolution = {
     inherits("global") {
         // uncomment to disable ehcache
         // excludes 'ehcache'
-		excludes "xml-apis"
-		excludes("catalina")
+        excludes "xml-apis"
+        excludes("catalina")
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -39,12 +39,12 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
-	
-	// Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
-	pom true	
-	plugins {
-		test ":build-test-data:1.1.2"
-	}
+    
+    // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
+    pom true    
+    plugins {
+        test ":build-test-data:1.1.2"
+    }
 }
 
 coverage {
@@ -54,9 +54,9 @@ coverage {
 
 grails.war.resources = { stagingDir ->
     
-	delete(file:"${stagingDir}/WEB-INF/lib/catalina-6.0.32.jar")
-	delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-2.5.jar")
-	delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-6.0.32.jar")
+    delete(file:"${stagingDir}/WEB-INF/lib/catalina-6.0.32.jar")
+    delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-2.5.jar")
+    delete(file:"${stagingDir}/WEB-INF/lib/servlet-api-6.0.32.jar")
 
     // The jars are being inserted by the hudson/tomcat build process, and
     // are causing errors on startup for the app on tomcat6.

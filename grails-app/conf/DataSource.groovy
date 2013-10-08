@@ -7,13 +7,13 @@
 
 dataSource {
     pooled = true
-			
+            
     //configure DBCP to test connections before using them and evict old connections (as per http://sacharya.com/grails-dbcp-stale-connections/)
     properties {
-		minEvictableIdleTimeMillis=1800000
-		timeBetweenEvictionRunsMillis=1800000
-		numTestsPerEvictionRun=3
-	}
+        minEvictableIdleTimeMillis=1800000
+        timeBetweenEvictionRunsMillis=1800000
+        numTestsPerEvictionRun=3
+    }
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -23,17 +23,17 @@ hibernate {
 
 // environment specific settings
 environments {
-	
-	development {
-		dataSource {
+    
+    development {
+        dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
-		    url = "jdbc:postgresql://localhost:5432/aodn_portal"
+            url = "jdbc:postgresql://localhost:5432/aodn_portal"
             username = "postgres"
             password = "postgres"
-		}
-	}
-	
+        }
+    }
+    
     test {
         dataSource {
             dbCreate = "create-drop"
@@ -41,9 +41,9 @@ environments {
         }
     }
 
-	production {
-		dataSource {
-			jndiName = "java:comp/env/jdbc/aodnportal"
-		}
-	}
+    production {
+        dataSource {
+            jndiName = "java:comp/env/jdbc/aodnportal"
+        }
+    }
 }

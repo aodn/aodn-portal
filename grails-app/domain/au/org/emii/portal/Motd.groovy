@@ -15,7 +15,7 @@ class Motd {
     
     static mapping = {
         sort "motdTitle"
-	motd type:'text'
+    motd type:'text'
     }
      
 

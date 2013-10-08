@@ -20,16 +20,16 @@ class SnapshotController
         redirect(action: "list", params: params)
     }
 
-    def list = 	{
-		def snapshotList
+    def list =     {
+        def snapshotList
 
-		if (params.owner?.id) {
+        if (params.owner?.id) {
             def owner = User.get(params.owner.id)
             snapshotList = Snapshot.findAllByOwner(owner)
-		}
-		else {
+        }
+        else {
             snapshotList = Snapshot.list(params)
-		}
+        }
 
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [snapshotInstanceList: snapshotList, snapshotInstanceTotal: Snapshot.count()]
@@ -39,13 +39,13 @@ class SnapshotController
 
         def snapshotList
 
-	    if (params.owner?.id) {
+        if (params.owner?.id) {
             def owner = User.get(params.owner.id)
             snapshotList = Snapshot.findAllByOwner(owner)
-		}
-		else {
+        }
+        else {
             snapshotList = Snapshot.list(params)
-		}
+        }
 
         def result = [ success: true, data: snapshotList, count: snapshotList.count() ]
         render text: result as JSON, contentType:"application/json"
@@ -98,26 +98,26 @@ class SnapshotController
 
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
 
-			if (params.type == 'JSON') {
+            if (params.type == 'JSON') {
 
-				render text: flash.message, status: 404
-			}
-			else {
+                render text: flash.message, status: 404
+            }
+            else {
 
-				redirect(action: "list")
-			}
+                redirect(action: "list")
+            }
         }
         else {
 
-			if (params.type == 'JSON') {
+            if (params.type == 'JSON') {
                 //TODO: only need down to snapshot layers level
                 JSON.use(JsonMarshallingRegistrar.SNAPSHOT_LAYERS_MARSHALLING_CONFIG) {
                     render(snapshotInstance as JSON)
                 }
-			}
-			else {
-				[snapshotInstance: snapshotInstance]
-			}
+            }
+            else {
+                [snapshotInstance: snapshotInstance]
+            }
         }
     }
 
@@ -166,39 +166,39 @@ class SnapshotController
                 snapshotInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
 
-				if (params.type == 'JSON') {
+                if (params.type == 'JSON') {
 
-					render text: flash.message, status: 200
-				}
-				else {
+                    render text: flash.message, status: 200
+                }
+                else {
 
-					redirect(action: "list")
-				}
+                    redirect(action: "list")
+                }
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
 
-	            if (params.type == 'JSON') {
+                if (params.type == 'JSON') {
 
-					render text: flash.message, status: 500
-				}
-				else {
+                    render text: flash.message, status: 500
+                }
+                else {
 
-					redirect(action: "show", id: params.id)
-				}
+                    redirect(action: "show", id: params.id)
+                }
             }
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'snapshot.label', default: 'Snapshot'), params.id])}"
 
-	        if (params.type == 'JSON') {
+            if (params.type == 'JSON') {
 
-				render text: flash.message, status: 404
-			}
-			else {
+                render text: flash.message, status: 404
+            }
+            else {
 
-				redirect(action: "list")
-			}
+                redirect(action: "list")
+            }
         }
     }
 

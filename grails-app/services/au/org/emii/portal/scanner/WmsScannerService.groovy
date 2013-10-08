@@ -22,12 +22,12 @@ class WmsScannerService extends ScannerService {
 
     def getScannerBaseUrl() {
 
-		return grailsApplication.config.wmsScanner.url
+        return grailsApplication.config.wmsScanner.url
     }
 
     def saveOrUpdateCallbackUrl() {
 
-		return "${portalBaseURL()}layer/saveOrUpdate"
+        return "${portalBaseURL()}layer/saveOrUpdate"
     }
 
     def callDelete(scanJobId) {

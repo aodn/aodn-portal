@@ -11,7 +11,7 @@ package au.org.emii.portal
 class ProxyController {
 
     def grailsApplication
-	def hostVerifier
+    def hostVerifier
 
     // proxies HTML by default or XML and Images if specified
     def index = {
@@ -26,8 +26,8 @@ class ProxyController {
     def _index(downloadGif) {
 
         if (allowedHost(params.url)) {
-	        def proxiedRequest = new ProxiedRequest(request, response, params)
-			proxiedRequest.proxy(downloadGif)
+            def proxiedRequest = new ProxiedRequest(request, response, params)
+            proxiedRequest.proxy(downloadGif)
         }
         else {
             log.info "Proxy: The url ${params.url} was not allowed"
@@ -36,10 +36,10 @@ class ProxyController {
     }
 
     Boolean allowedHost (url) {
-	    if (url) {
-		    return hostVerifier.allowedHost(request, url.toURL())
-	    }
-	    return false
+        if (url) {
+            return hostVerifier.allowedHost(request, url.toURL())
+        }
+        return false
     }
 
     // this action is intended to always be cached by squid

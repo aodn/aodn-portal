@@ -23,27 +23,27 @@
         </div>
 
         <div class="body">
-			<g:each in="${maps?.entrySet()}" var="server">
-				<h2>${server.key}</h2>
+            <g:each in="${maps?.entrySet()}" var="server">
+                <h2>${server.key}</h2>
 
-				<script type="text/javascript">
+                <script type="text/javascript">
 
-					function goToPage(requestParams){
-						window.location.href="${createLink(controller:'layer' ,action:'editFilters' ,params:[id:""])}" + "/" + requestParams;
-					}
+                    function goToPage(requestParams){
+                        window.location.href="${createLink(controller:'layer' ,action:'editFilters' ,params:[id:""])}" + "/" + requestParams;
+                    }
 
-				</script>
+                </script>
 
 
 
-				<ul>
-					<g:select name="owners"
-						  from="${server?.value.sort {it.name}}"
-						  optionKey="id"
-						  onchange="goToPage(this.value)"/>
-				</ul>
+                <ul>
+                    <g:select name="owners"
+                          from="${server?.value.sort {it.name}}"
+                          optionKey="id"
+                          onchange="goToPage(this.value)"/>
+                </ul>
 
-			</g:each>
-		</div>
+            </g:each>
+        </div>
     </body>
 </html>

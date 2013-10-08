@@ -195,28 +195,28 @@
                             </tr>
 
                             <tr class="prop">
-								<td valign="top" class="name">
-									<label for="filters"><g:message code="layer.filters.label" default="Layer Filters" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'filters', 'errors')}">
-									<ul>
-									<g:each in="${layerInstance?.filters?.sort(){it.label}}" var="filter">
+                                <td valign="top" class="name">
+                                    <label for="filters"><g:message code="layer.filters.label" default="Layer Filters" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'filters', 'errors')}">
+                                    <ul>
+                                    <g:each in="${layerInstance?.filters?.sort(){it.label}}" var="filter">
                                         <g:if test="${filter.enabled}">
                                             <li><b><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></b></li>
                                         </g:if>
                                         <g:else>
                                             <li><i><g:link controller="filter" action="edit" id="${filter.id}">${filter}</g:link></i></li>
                                         </g:else>
-									 </g:each>
-									 </ul>
-								</td>
-							</tr>
+                                     </g:each>
+                                     </ul>
+                                </td>
+                            </tr>
 
-							 <tr class="prop">
-								<td valign="top" class="name">
-									<g:link controller="filter" action="create" params="[layerId: layerInstance.id]">Create Filter</g:link>
-								</td>
-							</tr>
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <g:link controller="filter" action="create" params="[layerId: layerInstance.id]">Create Filter</g:link>
+                                </td>
+                            </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -228,18 +228,18 @@
                             </tr>
 
                             <tr class="prop">
-								<td valign="top" class="name">
-									<g:message code="layer.overrideMetadataUrl.label" default="Override Metadata URL" />
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'overrideMetadataUrl', 'errors')}">
-									<g:textField name="overrideMetadataUrl" value="${layerInstance?.overrideMetadataUrl}" />
-								</td>
+                                <td valign="top" class="name">
+                                    <g:message code="layer.overrideMetadataUrl.label" default="Override Metadata URL" />
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'overrideMetadataUrl', 'errors')}">
+                                    <g:textField name="overrideMetadataUrl" value="${layerInstance?.overrideMetadataUrl}" />
+                                </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-									<g:message code="layer.overrideMetadataUrl.label" default="Metadata URLs" />
-								</td>
+                                    <g:message code="layer.overrideMetadataUrl.label" default="Metadata URLs" />
+                                </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'metadataUrls', 'errors')}">
                                     <g:each in="${layerInstance?.metadataUrls}">
                                         ${it}<br />
@@ -248,11 +248,11 @@
                             </tr>
 
                             <tr class="prop">
-								<td valign="top" class="name">
-									<label for="layerHierarchyPath"><g:message code="layer.layerHierarchyPath.label" default="Layer Hierarchy Path" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layerHierarchyPath', 'errors')}">
-									${layerInstance?.layerHierarchyPath}
-								</td>
-							</tr>
+                                <td valign="top" class="name">
+                                    <label for="layerHierarchyPath"><g:message code="layer.layerHierarchyPath.label" default="Layer Hierarchy Path" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'layerHierarchyPath', 'errors')}">
+                                    ${layerInstance?.layerHierarchyPath}
+                                </td>
+                            </tr>
 

@@ -40,7 +40,7 @@ class User {
     @Override
     public String toString() {
 
-		def rolePart = roles ? "[Roles: ${roles.join(", ")}]" : "[No Roles]"
+        def rolePart = roles ? "[Roles: ${roles.join(", ")}]" : "[No Roles]"
 
         return "$fullName $rolePart ($openIdUrl)"
     }

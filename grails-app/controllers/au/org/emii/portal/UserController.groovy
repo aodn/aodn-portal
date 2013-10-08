@@ -100,8 +100,8 @@ class UserController {
         }
     }
 
-	def current = {
-		def result = User.current()
-		render result as JSON
-	}
+    def current = {
+        def result = User.current()
+        render result as JSON
+    }
 }

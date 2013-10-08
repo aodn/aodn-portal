@@ -215,9 +215,9 @@ class SecurityFilters {
             before = {
                 def server = checkWmsScannerService.getServerFromJob(params.scanJobId)
 
-	            if (server && _isServerOwner(server)) {
-		            request.accessAllowed = true
-	            }
+                if (server && _isServerOwner(server)) {
+                    request.accessAllowed = true
+                }
             }
         }
 
