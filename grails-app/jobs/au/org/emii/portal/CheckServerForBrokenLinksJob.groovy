@@ -63,9 +63,11 @@ class CheckServerForBrokenLinksJob {
 		def getCapabilitiesUrl
 		if (url.contains("?namespace")) {
 			getCapabilitiesUrl = url + '&version=1.1.1&request=getcapabilities'
-		} else {
+		}
+        else {
 			getCapabilitiesUrl = url + '?version=1.1.1&request=getcapabilities'
 		}
+
 		file.append "Request : ${getCapabilitiesUrl}${ln}"
 		def xml
 		try {
@@ -195,9 +197,11 @@ class CheckServerForBrokenLinksJob {
 		String getFeatureInfoUrlString
 		if (url.contains("?namespace")) {
 			getFeatureInfoUrlString = url + '&version=1.1.1&request=getfeatureinfo&layers=' + layerNode.Name.text()
-		} else {
+		}
+        else {
 			getFeatureInfoUrlString = url + '?version=1.1.1&request=getfeatureinfo&layers=' + layerNode.Name.text()
 		}
+
 		getFeatureInfoUrlString += '&styles=' + layerNode.Style.Name.text()
 		getFeatureInfoUrlString += '&SRS=' + layerNode.SRS.text()
 		getFeatureInfoUrlString += '&bbox=' + layerNode.BoundingBox.'@minx'.text()

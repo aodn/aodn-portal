@@ -63,7 +63,8 @@ class SnapshotController
         if (request.contentType ==~ "application/json.*") {
             snapshotInstance = new Snapshot()
             bindJSONSnapshotData(snapshotInstance, request.JSON)
-        } else {
+        }
+        else {
             snapshotInstance = new Snapshot(params)
         }
 
