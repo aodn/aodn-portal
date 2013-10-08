@@ -141,8 +141,8 @@ class LayerService {
 
                 layerToUpdate.layerHierarchyPath = uniquePath
 
-				// Need to explicitly save, since saves no longer cascade to children (since fix for #1761).
-				layerToUpdate.save(failOnError: true)
+                // Need to explicitly save, since saves no longer cascade to children (since fix for #1761).
+                layerToUpdate.save(failOnError: true)
 
                 return layerToUpdate
             })
@@ -152,7 +152,7 @@ class LayerService {
         }
         catch ( Throwable t ) { // Want to catch both Errors and Exceptions
 
-			throw new RuntimeException( "Failure in updateWithNewData() on Server: '$server'", t )
+            throw new RuntimeException( "Failure in updateWithNewData() on Server: '$server'", t )
         }
     }
 

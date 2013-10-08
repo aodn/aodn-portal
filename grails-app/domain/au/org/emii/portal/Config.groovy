@@ -121,11 +121,11 @@ class Config {
         return Config.list()[0]
     }
 
-	static def recacheDefaultMenu() {
+    static def recacheDefaultMenu() {
 
-		def configInstance = Config.activeInstance()
-		if (configInstance && configInstance.defaultMenu) {
-			MenuJsonCache.instance().recache(configInstance.defaultMenu)
-		}
-	}
+        def configInstance = Config.activeInstance()
+        if (configInstance && configInstance.defaultMenu) {
+            MenuJsonCache.instance().recache(configInstance.defaultMenu)
+        }
+    }
 }

@@ -41,9 +41,9 @@
     <span class="menuButton"><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></span>
     <span class="menuButton"><a class="portal_button" href="${createLink(uri: '/')}"><g:message code="default.portal.label"/></a></span>
     <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>            
-	<g:form action="save" AUTOCOMPLETE="off">
-    	<input id="jsonString" name="json" autocomplete="off" type="hidden" />
-    	<span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
+    <g:form action="save" AUTOCOMPLETE="off">
+        <input id="jsonString" name="json" autocomplete="off" type="hidden" />
+        <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
     </g:form>
   </div>
 

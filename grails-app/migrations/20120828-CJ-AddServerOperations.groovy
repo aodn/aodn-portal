@@ -8,31 +8,31 @@
 
 databaseChangeLog = {
 
-	changeSet(author: "craigj (generated)", id: "1346082646462-1") {
-		createTable(tableName: "operation") {
-			column(name: "id", type: "int8") {
-				constraints(nullable: "false", primaryKey: "true", primaryKeyName: "operation_pkey")
-			}
+    changeSet(author: "craigj (generated)", id: "1346082646462-1") {
+        createTable(tableName: "operation") {
+            column(name: "id", type: "int8") {
+                constraints(nullable: "false", primaryKey: "true", primaryKeyName: "operation_pkey")
+            }
 
-			column(name: "version", type: "int8") {
-				constraints(nullable: "false")
-			}
+            column(name: "version", type: "int8") {
+                constraints(nullable: "false")
+            }
 
-			column(name: "formats", type: "TEXT") {
-				constraints(nullable: "false")
-			}
+            column(name: "formats", type: "TEXT") {
+                constraints(nullable: "false")
+            }
 
-			column(name: "get_url", type: "VARCHAR(255)") {
-				constraints(nullable: "false")
-			}
+            column(name: "get_url", type: "VARCHAR(255)") {
+                constraints(nullable: "false")
+            }
 
-			column(name: "name", type: "VARCHAR(255)") {
-				constraints(nullable: "false")
-			}
+            column(name: "name", type: "VARCHAR(255)") {
+                constraints(nullable: "false")
+            }
 
-			column(name: "post_url", type: "VARCHAR(255)")
-		}
-	}
+            column(name: "post_url", type: "VARCHAR(255)")
+        }
+    }
 
     changeSet(author: "craigj (generated)", id: "1346097586450-1") {
         createTable(tableName: "server_operation") {

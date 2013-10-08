@@ -10,12 +10,12 @@ package au.org.emii.portal
 
 class MenuRecacheJob {
 
-	def timeout = 30 * 60 * 1000 // milliseconds
+    def timeout = 30 * 60 * 1000 // milliseconds
 
-	def execute() {
+    def execute() {
 
-		log.debug "MenuRecacheJob.execute()"
+        log.debug "MenuRecacheJob.execute()"
 
-		Config.recacheDefaultMenu()
-	}
+        Config.recacheDefaultMenu()
+    }
 }

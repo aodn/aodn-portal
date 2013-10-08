@@ -298,7 +298,8 @@ class LayerController {
 
         if (params.wfsLayerId) {
             layer.wfsLayer = Layer.get(params.wfsLayerId)
-        } else {
+        }
+        else {
             layer.wfsLayer = null
         }
 

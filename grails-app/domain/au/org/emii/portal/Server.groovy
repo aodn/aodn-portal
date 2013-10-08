@@ -23,7 +23,7 @@ class Server {
     Boolean allowDiscoveries // hide from menus
     Integer opacity // layer opacity
     String imageFormat
-	String infoFormat
+    String infoFormat
     String comments
     String username
     String password
@@ -105,7 +105,7 @@ class Server {
         return "${shortAcron}"
     }
 
-	def beforeDelete() {
+    def beforeDelete() {
         MenuItem.withNewSession{
             def menuItemServers = MenuItem.findAllByServer(this)
             menuItemServers*.delete()
@@ -123,82 +123,82 @@ class Server {
         Config.activeInstance().defaultLayers
     }
 
-	def beforeValidate() {
+    def beforeValidate() {
 
-		// Save without whitespace to help avoid non-uniqueness
-		uri = uri?.trim()
+        // Save without whitespace to help avoid non-uniqueness
+        uri = uri?.trim()
 
-		// Save without trailing question mark to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='?') {
+        // Save without trailing question mark to help avoid non-uniqueness
+        if(uri.getAt(uri.size()-1)=='?') {
 
-			uri = uri.substring(0, uri.size()-1)
-		}
+            uri = uri.substring(0, uri.size()-1)
+        }
 
-		// Save without trailing slash to help avoid non-uniqueness
-		if(uri.getAt(uri.size()-1)=='/') {
+        // Save without trailing slash to help avoid non-uniqueness
+        if(uri.getAt(uri.size()-1)=='/') {
 
-			uri = uri.substring(0, uri.size()-1)
-		}
-	}
+            uri = uri.substring(0, uri.size()-1)
+        }
+    }
 
-	def isCredentialled() {
-		return username && password
-	}
+    def isCredentialled() {
+        return username && password
+    }
 
-	def getEncodedCredentials() {
-		return new String(Base64.encodeBase64("$username:$password".getBytes()))
-	}
+    def getEncodedCredentials() {
+        return new String(Base64.encodeBase64("$username:$password".getBytes()))
+    }
 
-	def recache(cache) {
+    def recache(cache) {
 
-		def startTime = new Date()
+        def startTime = new Date()
 
-		def result = cache.get(this)
-		if (result) {
-			cache.add(this, toServerLayerJson())
-		}
+        def result = cache.get(this)
+        if (result) {
+            cache.add(this, toServerLayerJson())
+        }
 
-		use(TimeCategory) {
-			log.debug "recache() on '$this' took ${new Date() - startTime}"
-		}
-	}
+        use(TimeCategory) {
+            log.debug "recache() on '$this' took ${new Date() - startTime}"
+        }
+    }
 
-	def toServerLayerJson() {
+    def toServerLayerJson() {
 
-		def criteria = Layer.createCriteria()
-		def layerDescriptors = criteria.list() {
-			isNull 'parent'
-			eq 'blacklisted', false
-			eq 'activeInLastScan', true
-			eq 'server.id', id
-			join 'server'
-		}
+        def criteria = Layer.createCriteria()
+        def layerDescriptors = criteria.list() {
+            isNull 'parent'
+            eq 'blacklisted', false
+            eq 'activeInLastScan', true
+            eq 'server.id', id
+            join 'server'
+        }
 
-		def layersToReturn = layerDescriptors
-		// If just one grouping layer, bypass it
-		if ( layerDescriptors.size() == 1 &&
-			layerDescriptors[0].layers.size() > 0 )
-		{
-			layersToReturn = layerDescriptors[0].layers
-		}
+        def layersToReturn = layerDescriptors
+        // If just one grouping layer, bypass it
+        if ( layerDescriptors.size() == 1 &&
+            layerDescriptors[0].layers.size() > 0 )
+        {
+            layersToReturn = layerDescriptors[0].layers
+        }
 
-		layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
-		def layersJsonObject = [layerDescriptors: layersToReturn]
-		// Evict from the Hibernate session as modifying the layers causes a Hibernate update call
-		layerDescriptors*.discard()
+        layersToReturn = _removeBlacklistedAndInactiveLayers(layersToReturn)
+        def layersJsonObject = [layerDescriptors: layersToReturn]
+        // Evict from the Hibernate session as modifying the layers causes a Hibernate update call
+        layerDescriptors*.discard()
 
-		return (layersJsonObject as JSON).toString()
-	}
+        return (layersJsonObject as JSON).toString()
+    }
 
-	def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
-		return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
-	}
+    def _removeBlacklistedAndInactiveLayers(layerDescriptors) {
+        return LayerPresenter.filter(layerDescriptors, { !it.blacklisted && it.activeInLastScan })
+    }
 
-	def addAuthentication(connection) {
-		if (isCredentialled()) {
-			connection.setRequestProperty("Authorization", "Basic ${getEncodedCredentials()}")
-		}
-	}
+    def addAuthentication(connection) {
+        if (isCredentialled()) {
+            connection.setRequestProperty("Authorization", "Basic ${getEncodedCredentials()}")
+        }
+    }
 
     def updateOperations( newOperations ) {
 

@@ -28,18 +28,18 @@
             <div class="message">${flash.message}</div>
             </g:if>
 
-			<g:form action="checkForBrokenLinks">  
-				<g:select name="server" from="${au.org.emii.portal.Server.list()}"
-												optionKey="id"
-												optionValue="name"
-												noSelection="noSelection="['':'Please Select...']" />
-				
-		       	<g:actionSubmit value="Check" action="checkForBrokenLinks"/>
-		       <br/><br/>
-		    <dt>Email to receive report : </dt>
-	       	<dd><g:textField name="userEmailAddress" value="${userEmailAddress}"/></dd>
-	       	</g:form>
-	       	<br/>
+            <g:form action="checkForBrokenLinks">  
+                <g:select name="server" from="${au.org.emii.portal.Server.list()}"
+                                                optionKey="id"
+                                                optionValue="name"
+                                                noSelection="noSelection="['':'Please Select...']" />
+                
+                   <g:actionSubmit value="Check" action="checkForBrokenLinks"/>
+               <br/><br/>
+            <dt>Email to receive report : </dt>
+               <dd><g:textField name="userEmailAddress" value="${userEmailAddress}"/></dd>
+               </g:form>
+               <br/>
 
         </div>
     </body>

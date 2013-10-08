@@ -63,17 +63,17 @@
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
 
                                  <g:select name="type" from="${FilterType?.values()}" optionKey="key" />
-								</td>
+                                </td>
                             </tr>
 
                              <tr class="prop">
-								<td valign="top" class="name">
-									<label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'possibleValues', 'errors')}">
-									<g:textArea name="possibleValues" value="${filterInstance?.possibleValues}" />
-								</td>
-							 </tr>
+                                <td valign="top" class="name">
+                                    <label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'possibleValues', 'errors')}">
+                                    <g:textArea name="possibleValues" value="${filterInstance?.possibleValues}" />
+                                </td>
+                             </tr>
 
                              <g:hiddenField name="layerId" value="${layerInstance?.id}" />
 

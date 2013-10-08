@@ -36,9 +36,9 @@ class MenuController {
 
     def save = {
         def menuInstance = new Menu()
-		menuInstance.parseJson(params.json)
-		menuInstance.edited()
-		menuInstance.active = true
+        menuInstance.parseJson(params.json)
+        menuInstance.edited()
+        menuInstance.active = true
 
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
@@ -57,7 +57,7 @@ class MenuController {
         }
         else {
             def menuInstanceJson = JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
-				new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
+                new au.org.emii.portal.display.MenuPresenter(menuInstance) as JSON
             } // can easily create javascript object from this
             [menuInstance: menuInstance, menuInstanceJson: menuInstanceJson]
         }
@@ -77,12 +77,12 @@ class MenuController {
                     return
                 }
             }
-			menuInstance.parseJson(params.json)
-			menuInstance.edited()
+            menuInstance.parseJson(params.json)
+            menuInstance.edited()
             if (!menuInstance.hasErrors() && menuInstance.save(flush: true, failOnError: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance.id])}"
                 redirect(action: "list", id: menuInstance.id)
-				_recache(menuInstance)
+                _recache(menuInstance)
             }
             else {
                 render(view: "edit", model: [menuInstance: menuInstance])
@@ -175,7 +175,7 @@ class MenuController {
         return params
     }
 
-	def _recache(menu) {
-		MenuJsonCache.instance().recache(menu)
-	}
+    def _recache(menu) {
+        MenuJsonCache.instance().recache(menu)
+    }
 }

@@ -21,12 +21,12 @@ class WfsScannerService extends ScannerService {
 
     def getScannerBaseUrl(){
 
-		return grailsApplication.config.wfsScanner.url
+        return grailsApplication.config.wfsScanner.url
     }
 
     def saveOrUpdateCallbackUrl() {
 
-		return "${portalBaseURL()}filter/updateFilter"
+        return "${portalBaseURL()}filter/updateFilter"
     }
 
     def callDelete(scanJobId){
@@ -51,14 +51,14 @@ class WfsScannerService extends ScannerService {
             throw new IllegalStateException("Cannot find Server with id: $serverId.")
         }
 
-	    if (!wfsScannerCallbackPassword) {
+        if (!wfsScannerCallbackPassword) {
 
-		    throw new IllegalArgumentException("No WFS Scanner callback password set in config.")
-	    }
+            throw new IllegalArgumentException("No WFS Scanner callback password set in config.")
+        }
 
         if (server.type.startsWith("GEO")){
 
-			def version = server.type[-5..-1] // Todo - DN: Put this somewhere more central (and re-useable)
+            def version = server.type[-5..-1] // Todo - DN: Put this somewhere more central (and re-useable)
 
             def address = "${scanJobUrl()}register?serverUrl=${server.uri}&callbackUrl=${saveOrUpdateCallbackUrl()}&password=${wfsScannerCallbackPassword}&scanFrequency=${server.scanFrequency}&wfsVersion=$version"
 

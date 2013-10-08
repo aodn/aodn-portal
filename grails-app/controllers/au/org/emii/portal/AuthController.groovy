@@ -28,7 +28,7 @@ class AuthController {
 
     def register = {
 
-		_authenticateWithOpenId(params, true)
+        _authenticateWithOpenId(params, true)
     }
 
     def login = {
@@ -248,7 +248,7 @@ class AuthController {
         }
     }
 
-	def _authenticateWithOpenId(params, register) {
+    def _authenticateWithOpenId(params, register) {
 
         def openIdProviderUrl = params.openIdProvider
 
@@ -259,8 +259,8 @@ class AuthController {
         def portalUrl = grailsApplication.config.grails.serverURL
 
         try {
-		    // Perform discovery on our OpenID provider
-		    def discoveries = consumerManager.discover(openIdProviderUrl) // User-supplied String
+            // Perform discovery on our OpenID provider
+            def discoveries = consumerManager.discover(openIdProviderUrl) // User-supplied String
 
             // Attempt to associate with the OpenID provider
             // and retrieve one service endpoint for authentication
@@ -296,7 +296,7 @@ class AuthController {
 
             redirect controller: "home"
         }
-	}
+    }
 
     def beforeInterceptor = {
 

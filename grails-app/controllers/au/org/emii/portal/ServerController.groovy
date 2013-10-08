@@ -12,43 +12,43 @@ import grails.converters.deep.JSON
 
 class ServerController {
 
-	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	def checkLinksService
+    def checkLinksService
     def wmsScannerService
     def wfsScannerService
 
-	def index = {
-		redirect(action: "list", params: params)
-	}
+    def index = {
+        redirect(action: "list", params: params)
+    }
 
-	def refreshList = {
+    def refreshList = {
 
-		flash.message = ""
+        flash.message = ""
 
-		redirect actionName: 'list'
-	}
+        redirect actionName: 'list'
+    }
 
-	def list = {
-		params.max = Math.min(params.max ? params.int('max') : 20, 100)
+    def list = {
+        params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
-		[
-			serverInstanceList: Server.list(params),
-			serverInstanceTotal: Server.count(),
-			jobProperties: scannerStatus,
-			wmsScannerUrl: wmsScannerService.scannerBaseUrl,
-			wfsScannerUrl: wfsScannerService.scannerBaseUrl
-		]
-	}
+        [
+            serverInstanceList: Server.list(params),
+            serverInstanceTotal: Server.count(),
+            jobProperties: scannerStatus,
+            wmsScannerUrl: wmsScannerService.scannerBaseUrl,
+            wfsScannerUrl: wfsScannerService.scannerBaseUrl
+        ]
+    }
 
     def listAllowDiscoveriesAsJson = {
         def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
         render layerInstanceList as JSON
     }
 
-	def create = {
-		def serverInstance = new Server()
-		serverInstance.properties = params
+    def create = {
+        def serverInstance = new Server()
+        serverInstance.properties = params
 
         def allOwners = User.withCriteria{
             roles{
@@ -56,106 +56,106 @@ class ServerController {
             }
         }
 
-		return [serverInstance: serverInstance, allOwners: allOwners]
-	}
+        return [serverInstance: serverInstance, allOwners: allOwners]
+    }
 
-	def save = {
-		def serverInstance = new Server(params)
+    def save = {
+        def serverInstance = new Server(params)
 
-		if (serverInstance.save(flush: true)) {
-			flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
-			redirect(action: "list", id: serverInstance.id)
-		}
-		else {
-			render(view: "create", model: [serverInstance: serverInstance])
-		}
-	}
+        if (serverInstance.save(flush: true)) {
+            flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
+            redirect(action: "list", id: serverInstance.id)
+        }
+        else {
+            render(view: "create", model: [serverInstance: serverInstance])
+        }
+    }
 
-	def edit = {
-		def serverInstance = Server.get(params.id)
-		if (!serverInstance) {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-			redirect(action: "list")
-		}
-		else {
-			def serverOwnerRole = UserRole.findByName(UserRole.SERVEROWNER)
-			def allOwners = serverOwnerRole.users
+    def edit = {
+        def serverInstance = Server.get(params.id)
+        if (!serverInstance) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            def serverOwnerRole = UserRole.findByName(UserRole.SERVEROWNER)
+            def allOwners = serverOwnerRole.users
 
-			return [serverInstance: serverInstance, allOwners: allOwners]
-		}
-	}
+            return [serverInstance: serverInstance, allOwners: allOwners]
+        }
+    }
 
-	def update = {
-		def serverInstance = Server.get(params.id)
-		if (serverInstance) {
-			if (params.version) {
-				def version = params.version.toLong()
-				if (serverInstance.version > version) {
+    def update = {
+        def serverInstance = Server.get(params.id)
+        if (serverInstance) {
+            if (params.version) {
+                def version = params.version.toLong()
+                if (serverInstance.version > version) {
 
-					serverInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
-						message(code: 'server.label', default: 'Server')]
-					as Object[], "Another user has updated this Server while you were editing")
-					render(view: "edit", model: [serverInstance: serverInstance])
-					return
-				}
-			}
-			serverInstance.properties = params
+                    serverInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+                        message(code: 'server.label', default: 'Server')]
+                    as Object[], "Another user has updated this Server while you were editing")
+                    render(view: "edit", model: [serverInstance: serverInstance])
+                    return
+                }
+            }
+            serverInstance.properties = params
 
-			if (!serverInstance.hasErrors() && serverInstance.save(flush: true)) {
-				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
-				redirect(action: "list", id: serverInstance.id)
-			}
-			else {
-				render(view: "edit", model: [serverInstance: serverInstance])
-			}
-		}
-		else {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-			redirect(action: "list")
-		}
-	}
+            if (!serverInstance.hasErrors() && serverInstance.save(flush: true)) {
+                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
+                redirect(action: "list", id: serverInstance.id)
+            }
+            else {
+                render(view: "edit", model: [serverInstance: serverInstance])
+            }
+        }
+        else {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
+            redirect(action: "list")
+        }
+    }
 
-	def delete = {
-		def serverInstance = Server.get(params.id)
-		if (serverInstance) {
-			try {
-				serverInstance.delete()
+    def delete = {
+        def serverInstance = Server.get(params.id)
+        if (serverInstance) {
+            try {
+                serverInstance.delete()
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-				redirect(action: "list")
-			}
-			catch (org.springframework.dao.DataIntegrityViolationException e) {
-				flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-				redirect(action: "edit", id: params.id)
-			}
-		}
-		else {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
-			redirect(action: "list")
-		}
-	}
+                redirect(action: "list")
+            }
+            catch (org.springframework.dao.DataIntegrityViolationException e) {
+                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
+                redirect(action: "edit", id: params.id)
+            }
+        }
+        else {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
+            redirect(action: "list")
+        }
+    }
 
-	def showServerByItsId = {
+    def showServerByItsId = {
 
-		def serverInstance = null
-		// unencode layerId as per 'listAllLayers' to get just the id
-		if (params.serverId != null) {
-			def serverIdArr = params.serverId.split("_")
-			serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
-		}
+        def serverInstance = null
+        // unencode layerId as per 'listAllLayers' to get just the id
+        if (params.serverId != null) {
+            def serverIdArr = params.serverId.split("_")
+            serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
+        }
 
-		if (serverInstance) {
-			render serverInstance as JSON
-		}
-		else {
-			render  ""
-		}
-	}
+        if (serverInstance) {
+            render serverInstance as JSON
+        }
+        else {
+            render  ""
+        }
+    }
 
-	def checkForBrokenLinks = {
-		log.debug "Preparing to scan server with id=${params.server} and user email: ${params.userEmailAddress}"
-		def result = checkLinksService.check(params.server, params.userEmailAddress)
-		render result
-	}
+    def checkForBrokenLinks = {
+        log.debug "Preparing to scan server with id=${params.server} and user email: ${params.userEmailAddress}"
+        def result = checkLinksService.check(params.server, params.userEmailAddress)
+        render result
+    }
 
     def listByOwner = {
 
@@ -222,12 +222,12 @@ class ServerController {
             catch(Exception e){
                 log.debug(e.message)
 
-				if (flash.message) {
-					flash.message += "<hr>"
-				}
-				else {
-					flash.message = ""
-				}
+                if (flash.message) {
+                    flash.message += "<hr>"
+                }
+                else {
+                    flash.message = ""
+                }
 
                 flash.message += "Cannot contact scanner ${scannerService.scannerBaseUrl} for a list of current jobs.  Please make sure server is contactable."
                 scannersContactable[index]  = false

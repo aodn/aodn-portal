@@ -30,8 +30,8 @@ class ConfigController {
     def viewport = {
 
         def configInstance = Config.activeInstance()
-		// Clean ^M characters
-		configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
+        // Clean ^M characters
+        configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
 
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()
@@ -39,7 +39,7 @@ class ConfigController {
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)
 
-		instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
+        instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
 
         //the MOTD is skipped somehow when converting the object to JSON.
         def tmpMOTD = JSON.use('deep') {
@@ -152,8 +152,8 @@ class ConfigController {
                 flash.message = 'Config updated'
             }
 
-			render(view: "edit", model: [configInstance: configInstance])
-  		}
+            render(view: "edit", model: [configInstance: configInstance])
+          }
         else {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
             redirect(action: "list")
@@ -200,25 +200,25 @@ class ConfigController {
     }
 
     def _getDisplayableMenu(menu) {
-		def ids = _getServerIdsWithAvailableLayers()
+        def ids = _getServerIdsWithAvailableLayers()
 
-		for (def iterator = menu.menuItems.iterator(); iterator.hasNext();) {
-			def item = iterator.next()
-			if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
-				iterator.remove()
-			}
-		}
-		return menu
-	}
+        for (def iterator = menu.menuItems.iterator(); iterator.hasNext();) {
+            def item = iterator.next()
+            if ((item.layer && !_isLayerViewable(item.layer)) || (item.server && !ids.contains(item.server.id))) {
+                iterator.remove()
+            }
+        }
+        return menu
+    }
 
-	def _isLayerViewable(layer) {
-		return layer.activeInLastScan && !layer.blacklisted
-	}
+    def _isLayerViewable(layer) {
+        return layer.activeInLastScan && !layer.blacklisted
+    }
 
-	def _getServerIdsWithAvailableLayers() {
-		// We don't explicitly map layers to servers so dropping to JDBC
-		def template = new JdbcTemplate(dataSource)
-		def query =
+    def _getServerIdsWithAvailableLayers() {
+        // We don't explicitly map layers to servers so dropping to JDBC
+        def template = new JdbcTemplate(dataSource)
+        def query =
 """\
 select server.id
 from server
@@ -227,10 +227,10 @@ where not layer.blacklisted and layer.active_in_last_scan
 group by server.id\
 """
 
-		def ids = []
-		template.queryForList(query).each { row ->
-			ids << row.id
-		}
-		return ids
-	}
+        def ids = []
+        template.queryForList(query).each { row ->
+            ids << row.id
+        }
+        return ids
+    }
 }

@@ -20,7 +20,7 @@ class AodaacAggregatorService {
 
     def grailsApplication
     def messageSource
-	def portalInstance
+    def portalInstance
 
     static final def StartJobCommand = "startBackgroundAggregator.cgi.sh"
     static final def UpdateJobCommand = "reportProgress.cgi.sh"
@@ -45,10 +45,10 @@ class AodaacAggregatorService {
 
     // Service methods
 
-	def getProductDataJavascriptAddress() {
+    def getProductDataJavascriptAddress() {
 
-		return "${_aggregatorBaseAddress()}aodaac-${_aggregatorEnvironment()}/js/productData.js"
-	}
+        return "${_aggregatorBaseAddress()}aodaac-${_aggregatorEnvironment()}/js/productData.js"
+    }
 
     def getProductInfo( productIds ) {
 
@@ -177,17 +177,17 @@ class AodaacAggregatorService {
             job.latestStatus = new AodaacJobStatus( updatedStatus )
             job.save failOnError: true
 
-			if ( job.latestStatus.jobEnded ) {
+            if ( job.latestStatus.jobEnded ) {
 
                 _retrieveResults job
                 _verifyResultFileExists job
                 _sendNotificationEmail job
             }
-			else if ( _jobIsTakingTooLong( job ) ) {
+            else if ( _jobIsTakingTooLong( job ) ) {
 
-				_markJobAsExpired job
-				_sendNotificationEmail job
-			}
+                _markJobAsExpired job
+                _sendNotificationEmail job
+            }
         }
         catch( Exception e ) {
 
@@ -237,109 +237,109 @@ class AodaacAggregatorService {
         }
     }
 
-	def checkIncompleteJobs(){
-		def jobList = AodaacJob.findAll("from AodaacJob as job where job.expired = false and (job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false)")
+    def checkIncompleteJobs(){
+        def jobList = AodaacJob.findAll("from AodaacJob as job where job.expired = false and (job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false)")
 
-		log.debug "number of jobs: " + jobList.size()
+        log.debug "number of jobs: " + jobList.size()
 
-		jobList.each{
-			log.debug it
-			updateJob it
-		}
-	}
+        jobList.each{
+            log.debug it
+            updateJob it
+        }
+    }
 
     // Supporting logic
 
-	void _retrieveResults( job ) {
+    void _retrieveResults( job ) {
 
-		log.debug "Retrieving results for $job"
+        log.debug "Retrieving results for $job"
 
-		// Generate url
-		def apiCall = _aggregatorCommandAddress( GetDataCommand, [job.jobId] )
+        // Generate url
+        def apiCall = _aggregatorCommandAddress( GetDataCommand, [job.jobId] )
 
-		// Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
-		log.debug "apiCall: ${ apiCall }"
+        // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
+        log.debug "apiCall: ${ apiCall }"
 
-		// Make the call
-		def response = apiCall.toURL().text
+        // Make the call
+        def response = apiCall.toURL().text
 
-		log.debug "response: $response"
+        log.debug "response: $response"
 
-		job.result = new AodaacJobResult( dataUrl: response?.trim() )
-		job.save failOnError: true
-	}
+        job.result = new AodaacJobResult( dataUrl: response?.trim() )
+        job.save failOnError: true
+    }
 
-	void _verifyResultFileExists( job ) {
+    void _verifyResultFileExists( job ) {
 
-		log.debug "Verifying results file exists for $job"
+        log.debug "Verifying results file exists for $job"
 
-		// Reset data file exists
-		job.dataFileExists = false
+        // Reset data file exists
+        job.dataFileExists = false
 
-		try {
-			def url = job.result.dataUrl.toURL()
+        try {
+            def url = job.result.dataUrl.toURL()
 
-			log.debug "url: ${ url }"
+            log.debug "url: ${ url }"
 
-			def conn = url.openConnection()
-			conn.requestMethod = "HEAD"
-			conn.connect()
+            def conn = url.openConnection()
+            conn.requestMethod = "HEAD"
+            conn.connect()
 
-			log.debug "conn.responseCode: ${ conn.responseCode }"
+            log.debug "conn.responseCode: ${ conn.responseCode }"
 
-			if ( conn.responseCode in HttpStatusCodeSuccessRange ) {
+            if ( conn.responseCode in HttpStatusCodeSuccessRange ) {
 
-				job.dataFileExists = true
-			}
+                job.dataFileExists = true
+            }
 
-			// Record date this check occurred
-			job.mostRecentDataFileExistCheck = new Date()
-			job.save failOnError: true
-		}
-		catch( Exception e ) {
+            // Record date this check occurred
+            job.mostRecentDataFileExistCheck = new Date()
+            job.save failOnError: true
+        }
+        catch( Exception e ) {
 
-			log.info "Could not check existence of result file for job '$job'", e
-		}
-	}
+            log.info "Could not check existence of result file for job '$job'", e
+        }
+    }
 
-	void _sendNotificationEmail( job ) {
+    void _sendNotificationEmail( job ) {
 
-		log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
+        log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
-		if ( !(job.latestStatus.jobEnded || job.expired) ) {
+        if ( !(job.latestStatus.jobEnded || job.expired) ) {
 
-			log.debug "Will not send notification email for job which has not ended or expired."
-			return
-		}
+            log.debug "Will not send notification email for job which has not ended or expired."
+            return
+        }
 
-		if ( !job.notificationEmailAddress ) {
+        if ( !job.notificationEmailAddress ) {
 
-			log.warn "No notification email address, not sending email"
-			return
-		}
+            log.warn "No notification email address, not sending email"
+            return
+        }
 
-		try {
-			// Message replacement args
-			def args = _getEmailBodyReplacements( job )
+        try {
+            // Message replacement args
+            def args = _getEmailBodyReplacements( job )
 
-			def emailBodyCode = _getEmailBodyMessageCode( job )
-			def emailBody = messageSource.getMessage( emailBodyCode, args.toArray(), Locale.getDefault() )
+            def emailBodyCode = _getEmailBodyMessageCode( job )
+            def emailBody = messageSource.getMessage( emailBodyCode, args.toArray(), Locale.getDefault() )
 
-			def emailSubjectCode = "${portalInstance.code()}.aodaacJob.notification.email.subject"
-			def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
+            def emailSubjectCode = "${portalInstance.code()}.aodaacJob.notification.email.subject"
+            def emailSubject = messageSource.getMessage( emailSubjectCode, [job.jobId].toArray(), Locale.getDefault() )
 
-			sendMail {
-				to( [job.notificationEmailAddress] )
-				subject( emailSubject )
-				body( emailBody )
-				from( grailsApplication.config.portal.systemEmail.fromAddress )
-			}
-		}
-		catch (Exception e) {
+            sendMail {
+                to( [job.notificationEmailAddress] )
+                subject( emailSubject )
+                body( emailBody )
+                from( grailsApplication.config.portal.systemEmail.fromAddress )
+            }
+        }
+        catch (Exception e) {
 
-			log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
-		}
-	}
+            log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
+        }
+    }
 
     def _aggregatorCommandAddress( command, args ) {
 
@@ -362,162 +362,162 @@ class AodaacAggregatorService {
         return grailsApplication.config.aodaacAggregator.environment
     }
 
-	def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
+    def _productsInfoForIds( productIds, allProductDataJson, allProductExtentJson ) {
 
-		if ( !productIds ) {
+        if ( !productIds ) {
 
-			log.debug "No productIds passed, using all from allProductdataJson"
+            log.debug "No productIds passed, using all from allProductdataJson"
 
-			productIds = allProductDataJson.collect( { it.id } )
-		}
+            productIds = allProductDataJson.collect( { it.id } )
+        }
 
-		log.debug "productIds: ${ productIds }"
+        log.debug "productIds: ${ productIds }"
 
-		def productsInfo = []
+        def productsInfo = []
 
-		productIds.each {
-			productId ->
+        productIds.each {
+            productId ->
 
-			// Create new JSON object with desired structure
-			def productInfo = [
-				extents: [
-					lat: [:],
-					lon: [:],
-					dateTime: [:]
-				]
-			]
+            // Create new JSON object with desired structure
+            def productInfo = [
+                extents: [
+                    lat: [:],
+                    lon: [:],
+                    dateTime: [:]
+                ]
+            ]
 
-			// Copy data to new structure
-			def matchingIds = { it.id == productId?.toString() } // it.id will be a String
-			def productDataJson = allProductDataJson.find( matchingIds )
-			def productExtentJson = allProductExtentJson.find( matchingIds )
+            // Copy data to new structure
+            def matchingIds = { it.id == productId?.toString() } // it.id will be a String
+            def productDataJson = allProductDataJson.find( matchingIds )
+            def productExtentJson = allProductExtentJson.find( matchingIds )
 
-			log.debug "JSON for productId: '$productId'"
-			log.debug "  productDataJson: $productDataJson"
-			log.debug "  productExtentJson: $productExtentJson"
+            log.debug "JSON for productId: '$productId'"
+            log.debug "  productDataJson: $productDataJson"
+            log.debug "  productExtentJson: $productExtentJson"
 
-			try {
-				// Name, etc.
-				productInfo.name = productDataJson.name
-				productInfo.productId = productDataJson.id
+            try {
+                // Name, etc.
+                productInfo.name = productDataJson.name
+                productInfo.productId = productDataJson.id
 
-				// Latitude
-				productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
-				productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
+                // Latitude
+                productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
+                productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
 
-				// longitude
-				productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
-				productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
+                // longitude
+                productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
+                productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
 
-				// Time (sanitise and parse)
-				def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
-				def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
+                // Time (sanitise and parse)
+                def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
+                def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
 
-				startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
+                startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
 
-				log.debug "  startTimeString: ${ startTimeString }"
+                log.debug "  startTimeString: ${ startTimeString }"
 
-				def startTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, startTimeString )
-				def endTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, endTimeString )
+                def startTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, startTimeString )
+                def endTimeDate = Date.parse( AggregatorProductInfoDateOutputFormat, endTimeString )
 
-				productInfo.extents.dateTime.min = startTimeDate.format( JavascriptUIDateOutputFormat )
-				productInfo.extents.dateTime.max = endTimeDate.format( JavascriptUIDateOutputFormat )
+                productInfo.extents.dateTime.min = startTimeDate.format( JavascriptUIDateOutputFormat )
+                productInfo.extents.dateTime.max = endTimeDate.format( JavascriptUIDateOutputFormat )
 
-				productsInfo << productInfo
-			}
-			catch (Exception e) {
+                productsInfo << productInfo
+            }
+            catch (Exception e) {
 
-				log.info "Problem reading info from JSON (possible invalid values in JSON)", e
-				log.info "productDataJson: $productDataJson"
-				log.info "productExtentJson: $productExtentJson"
-			}
-		}
+                log.info "Problem reading info from JSON (possible invalid values in JSON)", e
+                log.info "productDataJson: $productDataJson"
+                log.info "productExtentJson: $productExtentJson"
+            }
+        }
 
-		return productsInfo
-	}
+        return productsInfo
+    }
 
-	def _jobIsTakingTooLong( job ) {
+    def _jobIsTakingTooLong( job ) {
 
-		def jobHasMadeProgress = job.latestStatus.urlsComplete > 0
+        def jobHasMadeProgress = job.latestStatus.urlsComplete > 0
 
-		def duration
+        def duration
 
-		use( groovy.time.TimeCategory ) {
-			duration = new Date() - job.dateCreated
-		}
+        use( groovy.time.TimeCategory ) {
+            duration = new Date() - job.dateCreated
+        }
 
-		def hours = duration.hours + (duration.days * 24)
-		def jobTooOld = hours >= grailsApplication.config.aodaacAggregator.idleJobTimeout
+        def hours = duration.hours + (duration.days * 24)
+        def jobTooOld = hours >= grailsApplication.config.aodaacAggregator.idleJobTimeout
 
-		def isTakingTooLong = jobTooOld && !jobHasMadeProgress
+        def isTakingTooLong = jobTooOld && !jobHasMadeProgress
 
-		log.debug "duration: ${ duration }"
-		log.debug "isTakingTooLong == (jobTooOld && !isMakingProgress) == ($jobTooOld && !$jobHasMadeProgress) == $isTakingTooLong"
+        log.debug "duration: ${ duration }"
+        log.debug "isTakingTooLong == (jobTooOld && !isMakingProgress) == ($jobTooOld && !$jobHasMadeProgress) == $isTakingTooLong"
 
-		return isTakingTooLong
-	}
+        return isTakingTooLong
+    }
 
-	def _markJobAsExpired( job ) {
+    def _markJobAsExpired( job ) {
 
-		job.expired = true
-		job.save flush: true
-	}
+        job.expired = true
+        job.save flush: true
+    }
 
-	def _getEmailBodyReplacements( job ) {
+    def _getEmailBodyReplacements( job ) {
 
-		def replacements = []
+        def replacements = []
 
-		// If successful
-		if ( job.dataFileExists ) {
+        // If successful
+        if ( job.dataFileExists ) {
 
-			// Success message
-			replacements << job.result.dataUrl
-		}
-		else {
+            // Success message
+            replacements << job.result.dataUrl
+        }
+        else {
 
-			// Record params
-			def p = job.jobParams
-			def paramsString = """\
-				ProductId: ${ p.productId }
-				Output format: ${ p.outputFormat }
-				Date range start: ${ p.dateRangeStart }
-				Date range end: ${ p.dateRangeEnd }
-				Time of day start: ${ p.timeOfDayRangeStart }
-				Time of day end: ${ p.timeOfDayRangeEnd }
-				Lat range start: ${ p.latitudeRangeStart }
-				Lat range end: ${ p.latitudeRangeEnd }
-				Long range start: ${ p.longitudeRangeStart }
-				Long range end: ${ p.longitudeRangeEnd }""".stripIndent()
+            // Record params
+            def p = job.jobParams
+            def paramsString = """\
+                ProductId: ${ p.productId }
+                Output format: ${ p.outputFormat }
+                Date range start: ${ p.dateRangeStart }
+                Date range end: ${ p.dateRangeEnd }
+                Time of day start: ${ p.timeOfDayRangeStart }
+                Time of day end: ${ p.timeOfDayRangeEnd }
+                Lat range start: ${ p.latitudeRangeStart }
+                Lat range end: ${ p.latitudeRangeEnd }
+                Long range start: ${ p.longitudeRangeStart }
+                Long range end: ${ p.longitudeRangeEnd }""".stripIndent()
 
 
-			// If expired
-			if ( job.expired ) {
+            // If expired
+            if ( job.expired ) {
 
-				replacements << job.dateCreated.dateTimeString
-				replacements << paramsString
-			}
-			else {
+                replacements << job.dateCreated.dateTimeString
+                replacements << paramsString
+            }
+            else {
 
-				// Job failed
-				def errorMessage = job.latestStatus.theErrors
+                // Job failed
+                def errorMessage = job.latestStatus.theErrors
 
-				if (errorMessage) {
-					errorMessage = _prettifyErrorMessage(errorMessage)
-				}
-				else {
-					errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
-				}
+                if (errorMessage) {
+                    errorMessage = _prettifyErrorMessage(errorMessage)
+                }
+                else {
+                    errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
+                }
 
-				replacements << errorMessage
-				replacements << paramsString
-			}
-		}
+                replacements << errorMessage
+                replacements << paramsString
+            }
+        }
 
-		// Add footer
-		replacements << _getEmailFooter()
+        // Add footer
+        replacements << _getEmailFooter()
 
-		return replacements
-	}
+        return replacements
+    }
 
     def _prettifyErrorMessage(errorMessage) {
 
@@ -532,32 +532,32 @@ class AodaacAggregatorService {
         return prettificationEntry.value(errorMessage)
     }
 
-	def _getEmailBodyMessageCode( job ) {
+    def _getEmailBodyMessageCode( job ) {
 
-		def codePart
+        def codePart
 
-		if ( job.dataFileExists ) {
+        if ( job.dataFileExists ) {
 
-			codePart = 'success'
-		}
-		else if ( job.expired ) {
+            codePart = 'success'
+        }
+        else if ( job.expired ) {
 
-			codePart = 'expired'
-		}
-		else {
+            codePart = 'expired'
+        }
+        else {
 
-			codePart = 'failed'
-		}
+            codePart = 'failed'
+        }
 
-		return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
-	}
+        return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
+    }
 
-	def _getEmailFooter() {
+    def _getEmailFooter() {
 
-		return messageSource.getMessage(
-			portalInstance.code() + '.emailFooter', // Instance-specific message code
-			[].toArray(), // No replacements
-			Locale.getDefault()
-		)
-	}
+        return messageSource.getMessage(
+            portalInstance.code() + '.emailFooter', // Instance-specific message code
+            [].toArray(), // No replacements
+            Locale.getDefault()
+        )
+    }
 }

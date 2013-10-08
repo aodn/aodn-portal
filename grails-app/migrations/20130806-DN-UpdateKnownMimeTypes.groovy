@@ -1,8 +1,8 @@
 databaseChangeLog = {
 
-	changeSet(author: "dnahodil", id: "1375760091000-1") {
+    changeSet(author: "dnahodil", id: "1375760091000-1") {
 
-		def newValue = """\
+        def newValue = """\
 {
 	"application/msword":"doc",
 	"application/netcdf":"nc",
@@ -24,6 +24,6 @@ databaseChangeLog = {
 	"text/xml":"xml"
 }"""
 
-		sql "UPDATE config SET download_cart_mime_type_to_extension_mapping = '$newValue'"
-	}
+        sql "UPDATE config SET download_cart_mime_type_to_extension_mapping = '$newValue'"
+    }
 }

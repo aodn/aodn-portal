@@ -5,103 +5,103 @@ import org.apache.log4j.Logger
 
 class SystemTestController {
 
-	def controls = {
+    def controls = {
 
-		[log4jConfigSummary: _log4jConfigSummary()]
-	}
+        [log4jConfigSummary: _log4jConfigSummary()]
+    }
 
-	def throwException = {
+    def throwException = {
 
-		throw new Exception(messageText)
-	}
+        throw new Exception(messageText)
+    }
 
-	def writeTraceMessage = {
+    def writeTraceMessage = {
 
-		log.trace messageText
-		render messageText
-	}
+        log.trace messageText
+        render messageText
+    }
 
-	def writeDebugMessage = {
+    def writeDebugMessage = {
 
-		log.debug messageText
-		render messageText
-	}
+        log.debug messageText
+        render messageText
+    }
 
-	def writeInfoMessage = {
+    def writeInfoMessage = {
 
-		log.info messageText
-		render messageText
-	}
+        log.info messageText
+        render messageText
+    }
 
-	def writeWarnMessage = {
+    def writeWarnMessage = {
 
-		log.warn messageText
-		render messageText
-	}
+        log.warn messageText
+        render messageText
+    }
 
-	def writeErrorMessage = {
+    def writeErrorMessage = {
 
-		log.error messageText
-		render messageText
-	}
+        log.error messageText
+        render messageText
+    }
 
-	def writeFatalMessage = {
+    def writeFatalMessage = {
 
-		log.fatal messageText
-		render messageText
-	}
+        log.fatal messageText
+        render messageText
+    }
 
-	def sendEmail = {
+    def sendEmail = {
 
-		sendMail {
-			to User.current().emailAddress
-			subject "Test email from ${grailsApplication.config.grails.serverURL}"
-			body messageText
-			from grailsApplication.config.portal.systemEmail.fromAddress
-		}
+        sendMail {
+            to User.current().emailAddress
+            subject "Test email from ${grailsApplication.config.grails.serverURL}"
+            body messageText
+            from grailsApplication.config.portal.systemEmail.fromAddress
+        }
 
-		render messageText
-	}
+        render messageText
+    }
 
-	def getMessageText() {
+    def getMessageText() {
 
-		return "(${new Date()}) System test initiated by: ${User.current()}"
-	}
+        return "(${new Date()}) System test initiated by: ${User.current()}"
+    }
 
-	def _log4jConfigSummary() {
+    def _log4jConfigSummary() {
 
-		// Reference: https://github.com/burtbeckwith/grails-app-info/blob/master/grails-app/services/grails/plugins/appinfo/Log4jInfoService.groovy
+        // Reference: https://github.com/burtbeckwith/grails-app-info/blob/master/grails-app/services/grails/plugins/appinfo/Log4jInfoService.groovy
 
-		def allAppenders = [] as Set
-		def root = Logger.rootLogger
+        def allAppenders = [] as Set
+        def root = Logger.rootLogger
 
-		if (root.allAppenders) {
+        if (root.allAppenders) {
 
-			allAppenders.addAll root.allAppenders.toList()
-		}
+            allAppenders.addAll root.allAppenders.toList()
+        }
 
-		for (logger in LogManager.currentLoggers) {
-			if (logger.allAppenders) {
-				allAppenders.addAll logger.allAppenders.toList()
-			}
-		}
+        for (logger in LogManager.currentLoggers) {
+            if (logger.allAppenders) {
+                allAppenders.addAll logger.allAppenders.toList()
+            }
+        }
 
-		def s = ""
+        def s = ""
 
-		allAppenders.each{
-			appender ->
+        allAppenders.each{
+            appender ->
 
-			s += "<h4>${appender.name}</h4>"
+            s += "<h4>${appender.name}</h4>"
 
-			s += "<ul>"
+            s += "<ul>"
 
-			appender.properties.each {
-				s += "<li>$it</li>"
-			}
+            appender.properties.each {
+                s += "<li>$it</li>"
+            }
 
-			s += "</ul><br />"
-		}
+            s += "</ul><br />"
+        }
 
-		return s
-	}
+        return s
+    }
 }

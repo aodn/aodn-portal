@@ -37,12 +37,12 @@ class Layer {
     String layerHierarchyPath
     String overrideMetadataUrl
 
-	/**
-	 * This was previously a belongsTo relationship - but in fact, root layers do not have a parent.
-	 * The result was that it was not possible to create a valid layer hierarchy in code, since it's
-	 * not possible to have a null parent with GORM.
-	 */
-	Layer parent
+    /**
+     * This was previously a belongsTo relationship - but in fact, root layers do not have a parent.
+     * The result was that it was not possible to create a valid layer hierarchy in code, since it's
+     * not possible to have a null parent with GORM.
+     */
+    Layer parent
     Layer wfsLayer
 
      /* <tns:name>Argo Oxygen Floats</tns:name>
@@ -74,8 +74,8 @@ class Layer {
     static hasOne = [viewParams: LayerViewParameters]
 
     static constraints = {
-		parent(nullable: true)
-		name( nullable: true, size:1..225 )
+        parent(nullable: true)
+        name( nullable: true, size:1..225 )
         namespace( nullable: true )
         title( nullable: true )
         blacklisted()
@@ -103,7 +103,7 @@ class Layer {
         wfsLayer(nullable: true)
     }
 
-	static transients = ['layers']
+    static transients = ['layers']
 
     Layer() {
 
@@ -123,7 +123,7 @@ class Layer {
         available = true
     }
 
-	boolean equals(other){
+    boolean equals(other){
         if(is(other)){
             return true
         }
@@ -137,10 +137,10 @@ class Layer {
 
     String toString() {
 
-		def n = name ?: "<no name>"
-		def t = title ?: "<no title>"
+        def n = name ?: "<no name>"
+        def t = title ?: "<no title>"
 
-		return "${server?.shortAcron} - $n - $t"
+        return "${server?.shortAcron} - $n - $t"
     }
 
     String getOverrideMetadataUrl(){
@@ -182,23 +182,23 @@ class Layer {
         }
     }
 
-	void deleteSnapshotLayers() {
+    void deleteSnapshotLayers() {
 
-		Layer.withNewSession {
-			SnapshotLayer.findAllByLayer(this).each {
-				it.snapshot.removeFromLayers(it)
-				it.delete()
-			}
-		}
-	}
+        Layer.withNewSession {
+            SnapshotLayer.findAllByLayer(this).each {
+                it.snapshot.removeFromLayers(it)
+                it.delete()
+            }
+        }
+    }
 
-	void deleteChildLayers() {
+    void deleteChildLayers() {
 
-		Layer.withNewSession {
-			// Cascade delete child layers.
-			layers.each {
-				it.delete()
-			}
+        Layer.withNewSession {
+            // Cascade delete child layers.
+            layers.each {
+                it.delete()
+            }
         }
     }
 
@@ -206,39 +206,39 @@ class Layer {
         //find all layers related to this server
         deleteDefaultLayersInConfig()
         deleteLayerMenuItems()
-		deleteSnapshotLayers()
-		deleteChildLayers()
+        deleteSnapshotLayers()
+        deleteChildLayers()
     }
 
-	/**
-	 * Mimic belongsTo relationship.
-	 */
-	List<Layer> getLayers()	{
+    /**
+     * Mimic belongsTo relationship.
+     */
+    List<Layer> getLayers()    {
 
-		if(this.id)
-		{
-			return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
-		}
-		else
-		{
-			return []
-		}
-	}
+        if(this.id)
+        {
+            return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
+        }
+        else
+        {
+            return []
+        }
+    }
 
-	void addToLayers(Layer child) {
-		child.parent = this
-	}
+    void addToLayers(Layer child) {
+        child.parent = this
+    }
 
-	void removeFromLayers(Layer child) {
-		child.parent = null
-	}
+    void removeFromLayers(Layer child) {
+        child.parent = null
+    }
 
 
     def getAllStyles() {
 
         def currentLayer = this
         def styles = []
-		while ( currentLayer ) {
+        while ( currentLayer ) {
 
             styles.addAll currentLayer.styles
 

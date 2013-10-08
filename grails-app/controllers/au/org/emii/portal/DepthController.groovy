@@ -9,11 +9,11 @@
 package au.org.emii.portal
 
 class DepthController {
-    
+
     def grailsApplication
-    
+
     def index = {
-        
+
         if ( !params.lat || !params.lon ) {
 
             render "Incorrect parameters supplied"

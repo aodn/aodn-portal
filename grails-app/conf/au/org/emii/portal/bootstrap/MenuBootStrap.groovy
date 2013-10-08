@@ -13,13 +13,13 @@ import au.org.emii.portal.config.JsonMarshallingRegistrar
 
 class MenuBootStrap {
 
-	def init = { servletContext ->
+    def init = { servletContext ->
 
-		JsonMarshallingRegistrar.registerJsonMarshallers()
+        JsonMarshallingRegistrar.registerJsonMarshallers()
 
-		def configInstance = au.org.emii.portal.Config.activeInstance()
-		if (configInstance && configInstance.defaultMenu) {
-			configInstance.defaultMenu.cache(MenuJsonCache.instance())
-		}
-	}
+        def configInstance = au.org.emii.portal.Config.activeInstance()
+        if (configInstance && configInstance.defaultMenu) {
+            configInstance.defaultMenu.cache(MenuJsonCache.instance())
+        }
+    }
 }

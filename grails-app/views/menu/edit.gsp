@@ -10,28 +10,28 @@
 <%@ page import="au.org.emii.portal.Menu" %>
 <!doctype html>
 <html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
+    <head>
+        <meta name="layout" content="main">
+        <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
                 
-    	<script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
-    	<script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
-    	<script src="${resource(dir:'js',file:'portal/data/LayerDataPanelStore.js')}"  type="text/javascript"></script>
-    	<script src="${resource(dir:'js',file:'portal/ui/LayerGridPanel.js')}"  type="text/javascript"></script>
-    	<script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
-    	<script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
-    	<script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
+        <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'portal/data/LayerDataPanelStore.js')}"  type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'portal/ui/LayerGridPanel.js')}"  type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'portal/config/treeSerializer.js')}"  type="text/javascript"></script>
+        <script src="${resource(dir:'js',file:'portal/data/MenuItemToNodeBuilder.js')}"  type="text/javascript"></script>
 
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
-    	<script>
+        <title><g:message code="default.edit.label" args="[entityName]" /></title>
+        <script>
         Ext.onReady(function() {
             initMenu(${menuInstanceJson}, '${resource(dir:'/')}'); // grid2treedrag
         });
-     	</script>
-	</head>
-	<body>
-		<a href="#edit-menu" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
+         </script>
+    </head>
+    <body>
+        <a href="#edit-menu" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+        <div class="nav" role="navigation">
                     <div id="logo"></div>
                     <ul>
                         <li><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></li>
@@ -47,7 +47,7 @@
                   </ul>
           
             
-	    </div>
+        </div>
         
         <div class="content"> 
           <g:hasErrors bean="${menuInstance}">
@@ -64,5 +64,5 @@
             <div id="menuConfigurator" style="height:100%"></div>
             
         </div>
-	</body>
+    </body>
 </html>

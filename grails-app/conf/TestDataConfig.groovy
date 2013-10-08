@@ -7,7 +7,7 @@
  */
 
 testDataConfig {
-	enabled = false
+    enabled = false
 }
 
 environments {

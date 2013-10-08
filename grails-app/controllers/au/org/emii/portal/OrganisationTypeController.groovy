@@ -66,7 +66,7 @@ class OrganisationTypeController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (organisationTypeInstance.version > version) {
-                    
+
                     organisationTypeInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'organisationType.label', default: 'OrganisationType')] as Object[], "Another user has updated this OrganisationType while you were editing")
                     render(view: "edit", model: [organisationTypeInstance: organisationTypeInstance])
                     return
