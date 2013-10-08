@@ -13,6 +13,8 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
             resultsStore: new Portal.data.GeoNetworkRecordStore(),
             searcher: new Portal.service.CatalogSearcher()
         });
+
+        spyOn(searchBodyPanel.searchResultsPanel, '_resetScrollPositionToTop');
     });
 
     describe('initialisation', function() {
