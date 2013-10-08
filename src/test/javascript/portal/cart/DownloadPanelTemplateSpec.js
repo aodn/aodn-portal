@@ -70,14 +70,15 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             childTemplate = {
                 applyWithControls: jasmine.createSpy('applyWithControls')
             };
+
+            geoNetworkRecord.wmsLayer = {};
+            geoNetworkRecord.aodaac = {};
+
             spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
             spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
         });
 
         it('uses AodaacDataRowTemplate where applicable', function() {
-
-            geoNetworkRecord.wmsLayer = { wfsLayer: undefined };
-            geoNetworkRecord.aodaac = {};
 
             tpl._dataRowTemplate(geoNetworkRecord);
 
@@ -85,10 +86,16 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
         });
 
+        it('does not use WfsDataRowTemplate when it is an AODAAC data collection', function() {
+
+            tpl._dataRowTemplate(geoNetworkRecord);
+
+            expect(Portal.cart.WfsDataRowTemplate).not.toHaveBeenCalled();
+        });
+
         it('uses WfsDataRowTemplate where applicable', function() {
 
-            geoNetworkRecord.wmsLayer = { wfsLayer: {} };
-            geoNetworkRecord.aodaac = undefined;
+            geoNetworkRecord.aodaac = null;
 
             tpl._dataRowTemplate(geoNetworkRecord);
 
