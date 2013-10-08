@@ -8,7 +8,6 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
-    GOOGLE_MAPS_PROJECTION: new OpenLayers.Projection("EPSG:900913"),
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
 
     constructor: function(values) {
@@ -18,7 +17,6 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
                     emptyString: this._unavailableExtentMsgIfNoBounds(values.bbox)
                 })
             ],
-            displayProjection: this.EPSG_4326_PROJECTION,
             metadataExtent: values.bbox,
             uuid: values.uuid
         });
@@ -51,35 +49,26 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
         if (this.metadataExtent.getBounds()) {
             this.setCenter(
-                this._getCenterLonLat().transform(
-                    this.EPSG_4326_PROJECTION, this.GOOGLE_MAPS_PROJECTION),
-                this._calculateZoomLevel(
-                    this.metadataExtent.getBounds().transform(
-                        this.EPSG_4326_PROJECTION,
-                        this.GOOGLE_MAPS_PROJECTION))
+                this._getCenterLonLat(),
+                this._calculateZoomLevel(this.metadataExtent.getBounds())
             );
         }
         else {
-            this.zoomToExtent(
-                new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox).transform(
-                    this.EPSG_4326_PROJECTION,
-                    this.GOOGLE_MAPS_PROJECTION
-                )
-            );
+            this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
         }
     },
 
     _getBaseLayer: function() {
-        return new OpenLayers.Layer.Google(
-            "Google Satellite Base Layer",
-            {
-                type: google.maps.MapTypeId.SATELLITE
-            }
+        return new OpenLayers.Layer.WMS(
+            "IMOS Tile Cache Simple Baselayer",
+            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
+            { layers: 'default_basemap_simple' },
+            { wrapDateLine: true }
         );
     },
 
     _getExtentLayer: function() {
-        return this.metadataExtent.getLayer(this.GOOGLE_MAPS_PROJECTION)
+        return this.metadataExtent.getLayer();
     },
 
     _calculateZoomLevel: function(bounds) {
