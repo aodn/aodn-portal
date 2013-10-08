@@ -55,7 +55,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    getParametersAsHtml: function(values){
+    getParametersAsHtml: function(values) {
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
             '   <span>- {value}</span>',
@@ -162,7 +162,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getRecordFromUuid: function(uuid) {
         var record;
         this.store.each(function(rec) {
-            if(rec.data.uuid == uuid)   {
+            if (rec.data.uuid == uuid) {
                 record = rec;
             }
         });
