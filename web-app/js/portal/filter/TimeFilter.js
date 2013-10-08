@@ -107,6 +107,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.operators.clearValue();
         this.toField.reset();
         this.fromField.reset();
+        this.CQL = "";
     },
 
     _setExistingFilters: function() {
