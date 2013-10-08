@@ -109,7 +109,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getParametersAsHtml: function(template, parameters) {
-        if (parameters.size > 0) {
+        if (parameters.length > 0) {
             return template.apply({
                 "label": OpenLayers.i18n('parameters'),
                 "value": parameters.join(" - ")
