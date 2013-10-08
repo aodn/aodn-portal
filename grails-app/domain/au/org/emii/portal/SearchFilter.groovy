@@ -10,37 +10,37 @@ package au.org.emii.portal
 
 class SearchFilter
 {
-	static belongsTo = [search: Search]
+    static belongsTo = [search: Search]
 
-	String type
-	Map value
+    String type
+    Map value
 
-	static SearchFilter fromJson(json) throws IllegalArgumentException
-	{
-		if (!json.type)
-		{
-			throw new IllegalArgumentException("Filter type must be specified.")
-		}
+    static SearchFilter fromJson(json) throws IllegalArgumentException
+    {
+        if (!json.type)
+        {
+            throw new IllegalArgumentException("Filter type must be specified.")
+        }
 
-		if (!json.value)
-		{
-			throw new IllegalArgumentException("Filter value must be specified.")
-		}
+        if (!json.value)
+        {
+            throw new IllegalArgumentException("Filter value must be specified.")
+        }
 
-		SearchFilter filter = new SearchFilter(type: json.type)
-		filter.value = [:]
-		json.value.each
-		{
-			k, v ->
+        SearchFilter filter = new SearchFilter(type: json.type)
+        filter.value = [:]
+        json.value.each
+        {
+            k, v ->
 
-			filter.value.put(k, String.valueOf(v))
-		}
+            filter.value.put(k, String.valueOf(v))
+        }
 
-		return filter
-	}
+        return filter
+    }
 
-	@Override
-	public String toString() {
-		return "type: ${type}, value: ${value}"
-	}
+    @Override
+    public String toString() {
+        return "type: ${type}, value: ${value}"
+    }
 }

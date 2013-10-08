@@ -19,7 +19,7 @@ abstract class ScannerService {
 
     def portalBaseURL(){
 
-		return ensureTrailingSlash(grailsApplication.config.grails.serverURL)
+        return ensureTrailingSlash(grailsApplication.config.grails.serverURL)
     }
 
     abstract def saveOrUpdateCallbackUrl()
@@ -39,12 +39,12 @@ abstract class ScannerService {
 
     def scannerURL(){
 
-		ensureTrailingSlash(scannerBaseUrl)
+        ensureTrailingSlash(scannerBaseUrl)
     }
 
     def scanJobUrl() {
 
-		return "${scannerURL()}scanJob/"
+        return "${scannerURL()}scanJob/"
     }
 
     def executeCommand( conn ) {
@@ -61,7 +61,7 @@ abstract class ScannerService {
 
     def callService(address){
 
-		def url = address.toURL()
+        def url = address.toURL()
         def conn = url.openConnection()
         conn.connect()
 

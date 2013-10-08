@@ -17,10 +17,10 @@ class WfsScannerController {
     def callRegister = {
         try {
             flash.message = wfsScannerService.callRegister(
-				params.serverId,
-				params.layerName,
-				Config.activeInstance().wfsScannerCallbackPassword
-			)
+                params.serverId,
+                params.layerName,
+                Config.activeInstance().wfsScannerCallbackPassword
+            )
         }
         catch (Exception e) {
 

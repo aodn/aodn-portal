@@ -13,7 +13,7 @@ import org.slf4j.MDC
 
 class LoggingFilters {
 
-	def grailsApplication
+    def grailsApplication
 
     def filters = {
 
@@ -21,7 +21,7 @@ class LoggingFilters {
 
             before = {
 
-	            // Client data
+                // Client data
                 MDC.put 'clientAddress', clientAddress( request )
                 MDC.put 'userAgent', userAgent( request )
 

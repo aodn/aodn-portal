@@ -70,24 +70,24 @@ help.url = "http://portalhelp.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
-	url = "http://aodaac.emii.org.au/"
-	environment = "prod"
-	idleJobTimeout = 1 // In hours
-	errorLookup = [
-		/.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
+    url = "http://aodaac.emii.org.au/"
+    environment = "prod"
+    idleJobTimeout = 1 // In hours
+    errorLookup = [
+        /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
 
-			errorMessage ->
+            errorMessage ->
 
-			def numBytes = (errorMessage =~ /[0-9]+/)
-			assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
-			def actualBytes = Long.valueOf(numBytes[0])
-			def limitBytes = Long.valueOf(numBytes[1])
+            def numBytes = (errorMessage =~ /[0-9]+/)
+            assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
+            def actualBytes = Long.valueOf(numBytes[0])
+            def limitBytes = Long.valueOf(numBytes[1])
 
-			def amountOver = Math.round(actualBytes/limitBytes)
+            def amountOver = Math.round(actualBytes/limitBytes)
 
-			return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
-		}
-	]
+            return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
+        }
+    ]
 }
 
 // Depth service
@@ -113,12 +113,12 @@ openId {
 environments {
 
     development {
-		grails.resources.debug = true
+        grails.resources.debug = true
 
         // URLs
-		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
-		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
+        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+        spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
+        wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
 
         grails {
@@ -144,10 +144,10 @@ environments {
 
     production {
 
-	    // URLs
-	    grails.serverURL = "http://myaodn.example.com"
-	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
-	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
+        // URLs
+        grails.serverURL = "http://myaodn.example.com"
+        spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+        wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
 
         grails {
@@ -163,30 +163,30 @@ environments {
 def defaultInstanceName = "AODN"
 
 portal {
-	header {
-		logo = "${defaultInstanceName}_logo.png"
-		externalLinks = [
-		    [
-				linkText: "eMII",
-				tooltipText: "e-Marine Information Infrastructure",
-				href: "http://www.emii.org.au"
-			],
-		    [
-				linkText: "AODN",
-				tooltipText: "Australian Ocean Data Network",
-				href: "http://imos.org.au/aodn.html"
-			],
-		    [
-				linkText: "Help",
-				tooltipText: "Portal help files",
-				href: help.url
-			]
-		]
-	}
-	// Change authentication emails for IMOS
-	systemEmail {
-		fromAddress = "info@example.com"
-	}
+    header {
+        logo = "${defaultInstanceName}_logo.png"
+        externalLinks = [
+            [
+                linkText: "eMII",
+                tooltipText: "e-Marine Information Infrastructure",
+                href: "http://www.emii.org.au"
+            ],
+            [
+                linkText: "AODN",
+                tooltipText: "Australian Ocean Data Network",
+                href: "http://imos.org.au/aodn.html"
+            ],
+            [
+                linkText: "Help",
+                tooltipText: "Portal help files",
+                href: help.url
+            ]
+        ]
+    }
+    // Change authentication emails for IMOS
+    systemEmail {
+        fromAddress = "info@example.com"
+    }
 }
 
 /**
@@ -210,20 +210,20 @@ if(!grails.config.locations || !(grails.config.locations instanceof List)) {
 }
 
 try {
-	configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
-	grails.config.locations << "file:${configurationPath}"
+    configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
+    grails.config.locations << "file:${configurationPath}"
 
-	println "Loading external config from '$configurationPath'..."
+    println "Loading external config from '$configurationPath'..."
 
-	def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
-	System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
+    def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
+    System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
 }
 catch (e) {
 
-	println "Not loading external config"
+    println "Not loading external config"
 
-	portal.instance.name = defaultInstanceName
-	System.setProperty "INSTANCE_NAME", portal.instance.name
+    portal.instance.name = defaultInstanceName
+    System.setProperty "INSTANCE_NAME", portal.instance.name
 }
 
 // log4j configuration
@@ -264,13 +264,13 @@ log4j = {
 
     debug   'grails.app.job',
             //'grails.app.service',
-		'grails.app.tagLib',
+        'grails.app.tagLib',
             'grails.app.domain',
             'grails.app.realms'
             //'au.org.emii.portal'
             //'au.org.emii.portal.display'
-		    //'org.hibernate.SQL',
-		    //'org.hibernate.type',
-		    //'liquibase',
-		    //'grails'
+            //'org.hibernate.SQL',
+            //'org.hibernate.type',
+            //'liquibase',
+            //'grails'
 }

@@ -80,8 +80,8 @@
                                 </td>
 
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
-								 	<g:select name="type" from="${FilterType?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
-								</td>
+                                     <g:select name="type" from="${FilterType?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
+                                </td>
                             </tr>
 
                             <tr class="prop">
@@ -89,7 +89,7 @@
                                   <label for="possibleValues"><g:message code="filter.possibleValues.label" default="Values" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'possibleValues', 'errors')}">
-                                	<g:textArea name="possibleValues" value="${concatValues}" />
+                                    <g:textArea name="possibleValues" value="${concatValues}" />
                                 </td>
                             </tr>
                         </tbody>

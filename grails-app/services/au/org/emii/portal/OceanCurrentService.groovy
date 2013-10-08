@@ -13,12 +13,12 @@ import org.apache.commons.io.IOUtils
 class OceanCurrentService {
 
     def grailsApplication
-	def portalInstance
+    def portalInstance
 
     def getRandomDetails() {
 
         def acron = ""
-        def imageURL = "images/OceanCurrent4AODN.png"	// fall back to the local stored image
+        def imageURL = "images/OceanCurrent4AODN.png"    // fall back to the local stored image
         def speil = ""
         def parentPage = ""
         def baseURL = "http://oceancurrent.imos.org.au/"
@@ -73,7 +73,7 @@ class OceanCurrentService {
         }
         catch (Exception e) {
             log.info "Unable to load latest OceanCurrent data from '$fileAddress'"
-	        log.debug "Caught:", e // Only print stack trace if logger set to 'debug' level
+            log.debug "Caught:", e // Only print stack trace if logger set to 'debug' level
         }
 
         return [speil: speil, acron: acron, imageURL: imageURL, baseURL: baseURL, parentPage: parentPage]

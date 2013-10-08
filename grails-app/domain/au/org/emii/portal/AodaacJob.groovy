@@ -16,7 +16,7 @@ class AodaacJob {
 
     String jobId
     String notificationEmailAddress
-	Boolean expired = false // For jobs that run too long
+    Boolean expired = false // For jobs that run too long
 
     AodaacJobParams jobParams
     AodaacJobStatus latestStatus

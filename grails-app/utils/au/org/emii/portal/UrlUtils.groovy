@@ -10,26 +10,26 @@ package au.org.emii.portal
 
 final class UrlUtils {
 
-	static String ensureTrailingSlash(url) {
+    static String ensureTrailingSlash(url) {
 
-		url.endsWith("/") ? url : "$url/"
-	}
+        url.endsWith("/") ? url : "$url/"
+    }
 
-	static String urlWithQueryString(url, queryString) {
+    static String urlWithQueryString(url, queryString) {
 
-		def symbol = url.contains("?") ? "&" : "?"
+        def symbol = url.contains("?") ? "&" : "?"
 
-		return url + symbol + queryString
-	}
+        return url + symbol + queryString
+    }
 
-	static String urlWithQueryString(url, Map queryStringValues) {
+    static String urlWithQueryString(url, Map queryStringValues) {
 
-		def queryString = queryStringValues.collect{
-			k, v ->
+        def queryString = queryStringValues.collect{
+            k, v ->
 
-			k + "=" + URLEncoder.encode(v.toString(), "UTF-8")
-		}.join("&")
+            k + "=" + URLEncoder.encode(v.toString(), "UTF-8")
+        }.join("&")
 
-		return urlWithQueryString(url, queryString)
-	}
+        return urlWithQueryString(url, queryString)
+    }
 }

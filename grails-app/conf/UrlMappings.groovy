@@ -8,24 +8,24 @@
 
 class UrlMappings {
 
-	static mappings = {
-		"/$controller/$action?/$id?"{
-			constraints {
-				// apply constraints here
-			}
-		}
+    static mappings = {
+        "/$controller/$action?/$id?"{
+            constraints {
+                // apply constraints here
+            }
+        }
 
-		"/"{  controller="home"  }
+        "/"{  controller="home"  }
         "/admin"{  controller="config"  }
         "/administration"{  controller="config"  }
 
-		"500"(view:'/error')
+        "500"(view:'/error')
 
         //This uses SystemController to allow individual controllers to
         //add in their own handlers.  In the controller, add the closure "beforeInterceptor" to
         //to handle error, instead of writing try/catch blocks.  See AuthController.groovy.
         "404"(controller:'system', action:'/error')
-		
-		"/robots.txt" (view: "/robots")
-	}
+
+        "/robots.txt" (view: "/robots")
+    }
 }

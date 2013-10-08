@@ -12,7 +12,7 @@ class AodaacProductLinkController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	def aodaacAggregatorService
+    def aodaacAggregatorService
 
     def index = {
         redirect(action: "list", params: params)
@@ -47,23 +47,23 @@ class AodaacProductLinkController {
         }
     }
 
-	def clone = {
-		def aodaacProductLinkInstance = AodaacProductLink.get(params.id)
+    def clone = {
+        def aodaacProductLinkInstance = AodaacProductLink.get(params.id)
 
-		if (!aodaacProductLinkInstance) {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink'), params.id])}"
-			redirect(action: "list")
-		}
-		else {
-			def clonedInstance = new AodaacProductLink(
-				productId: aodaacProductLinkInstance.productId,
-				server: aodaacProductLinkInstance.server,
-				layerName: aodaacProductLinkInstance.layerName
-			)
+        if (!aodaacProductLinkInstance) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            def clonedInstance = new AodaacProductLink(
+                productId: aodaacProductLinkInstance.productId,
+                server: aodaacProductLinkInstance.server,
+                layerName: aodaacProductLinkInstance.layerName
+            )
 
-			render view: 'create', model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: clonedInstance]
-		}
-	}
+            render view: 'create', model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: clonedInstance]
+        }
+    }
 
     def edit = {
         def aodaacProductLinkInstance = AodaacProductLink.get(params.id)

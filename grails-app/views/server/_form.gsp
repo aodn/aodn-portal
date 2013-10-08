@@ -80,8 +80,8 @@
                                     <g:select name="imageFormat" from="${serverInstance.constraints.imageFormat.inList}" value="${serverInstance?.imageFormat}" valueMessagePrefix="server.imageFormat"  />
                                 </td>
                             </tr>
-							
-							<tr class="prop">
+                            
+                            <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="infoFormat"><g:message code="server.infoFormat.label" default="getFeatureInfo request Format" /></label>
                                 </td>
@@ -109,35 +109,35 @@
                             </tr>
 
                             <tr class="prop">
-								<td valign="top" class="name">
-									<label for="username"><g:message code="server.username.label" default="Username for protected server" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'username', 'errors')}">
-									<g:textField name="username" value="${serverInstance?.username}" />
-								</td>
-							</tr>
+                                <td valign="top" class="name">
+                                    <label for="username"><g:message code="server.username.label" default="Username for protected server" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'username', 'errors')}">
+                                    <g:textField name="username" value="${serverInstance?.username}" />
+                                </td>
+                            </tr>
 
-							<tr class="prop">
-								<td valign="top" class="name">
-									<label for="password"><g:message code="server.password.label" default="Password for protected server" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'password', 'errors')}">
-									<g:textField name="password" value="${serverInstance?.password}" />
-								</td>
-							</tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="password"><g:message code="server.password.label" default="Password for protected server" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'password', 'errors')}">
+                                    <g:textField name="password" value="${serverInstance?.password}" />
+                                </td>
+                            </tr>
 
-							<tr class="prop">
-								<td valign="top" class="name">
-									<label for="owners"><g:message code="server.password.label" default="Set server owner" /></label>
-								</td>
-								<td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'owners', 'errors')}">
-									<g:select name="owners"
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="owners"><g:message code="server.password.label" default="Set server owner" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'owners', 'errors')}">
+                                    <g:select name="owners"
                                               from="${allOwners}"
                                               value="${serverInstance?.owners}"
                                               optionKey="id"
                                               multiple="true" />
-								</td>
-							</tr>
+                                </td>
+                            </tr>
 
 
                         

@@ -16,7 +16,7 @@ class UserTagLib {
 
     def loggedInUser = { attrs, body ->
 
-		def user = _currentUser()
+        def user = _currentUser()
         if ( !user ) return
 
         def prop = user[attrs.property]
@@ -26,7 +26,7 @@ class UserTagLib {
 
     def loggedInUserInRole = { attrs, body ->
 
-		def user = _currentUser()
+        def user = _currentUser()
         if ( !user ) return
 
         def targetRoles = UserRole.findAll("from UserRole as b where b.name in (:roleNames)", [roleNames:attrs.roles?.split(",")])
@@ -34,7 +34,7 @@ class UserTagLib {
         def found = false
         targetRoles?.each(){
 
-			found = found || (user.roles.contains(it))
+            found = found || (user.roles.contains(it))
         }
 
         if (found) {
@@ -42,16 +42,16 @@ class UserTagLib {
         }
     }
 
-	def _currentUser() {
+    def _currentUser() {
 
-		def principal = SecurityUtils.subject?.principal
+        def principal = SecurityUtils.subject?.principal
 
-		if ( !principal ) return // No-one logged-in
+        if ( !principal ) return // No-one logged-in
 
-		def user = User.get( principal )
+        def user = User.get( principal )
 
-		log.debug "Found user: $user"
+        log.debug "Found user: $user"
 
-		return user
-	}
+        return user
+    }
 }

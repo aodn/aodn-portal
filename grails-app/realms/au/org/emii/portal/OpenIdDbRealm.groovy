@@ -23,7 +23,7 @@ class OpenIdDbRealm {
 
         log.info "Attempting to authenticate ${authToken.userId}..."
         def userId = authToken.userId
-        
+
         // Null username is invalid
         if ( !userId ) throw new AccountException( "Cannot authenticate User will null userId." )
 

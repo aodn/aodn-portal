@@ -14,7 +14,7 @@ class Style {
     String abstractText // 'abstract' is a reserved word
 
     static mapping = {
-		abstractText type: 'text'
+        abstractText type: 'text'
     }
 
     static constraints = {
