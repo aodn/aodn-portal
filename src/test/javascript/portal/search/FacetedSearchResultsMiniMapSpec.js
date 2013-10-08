@@ -24,10 +24,6 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             expect(miniMap.controls[0]).toBeInstanceOf(OpenLayers.Control.MousePosition);
         });
 
-        it('configures display projection', function() {
-            expect(miniMap.displayProjection).toBe(miniMap.EPSG_4326_PROJECTION);
-        });
-
         it('configures metadata extent', function() {
             expect(miniMap.metadataExtent).toBe(bbox);
         });
