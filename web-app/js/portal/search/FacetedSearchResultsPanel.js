@@ -96,6 +96,10 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onStoreLoad: function() {
+        // We want to reset scroll position to top on load, in case we were
+        // previously not at the top.
+        // Ref: https://github.com/aodn/aodn-portal/issues/464
+        this._resetScrollPositionToTop();
 
         this.pagingBar.onLoad(
             this.store,
@@ -107,6 +111,10 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
                 }
             }
         );
+    },
+
+    _resetScrollPositionToTop: function() {
+        this.body.dom.scrollTop = 0;
     }
 });
 

@@ -7,32 +7,52 @@
 
 describe("Portal.search.FacetedSearchResultsPanel", function() {
 
-    var resultsView;
+    var resultsPanel;
+    var store;
     var testTarget;
     var testLayerLink;
 
     beforeEach(function() {
         Portal.search.FacetedSearchResultsPanel.prototype._refreshView = function() {}
 
-        var store = new Portal.data.GeoNetworkRecordStore();
-        resultsView = new Portal.search.FacetedSearchResultsPanel({
+        store = new Portal.data.GeoNetworkRecordStore();
+        resultsPanel = new Portal.search.FacetedSearchResultsPanel({
             store: store
         });
 
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
-
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {
-            spyOn(resultsView, '_refreshView');
+            spyOn(resultsPanel, '_refreshView');
             Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
-            expect(resultsView._refreshView).toHaveBeenCalled();
+            expect(resultsPanel._refreshView).toHaveBeenCalled();
         });
+
         it('refreshes view on record removed', function() {
-            spyOn(resultsView, '_refreshView');
+            spyOn(resultsPanel, '_refreshView');
             Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
-            expect(resultsView._refreshView).toHaveBeenCalled();
+            expect(resultsPanel._refreshView).toHaveBeenCalled();
+        });
+    });
+
+    describe('scroll position', function() {
+        it('calls resetScrollPositionToTop on store load', function() {
+            spyOn(resultsPanel, '_resetScrollPositionToTop');
+            store.fireEvent('load');
+            expect(resultsPanel._resetScrollPositionToTop).toHaveBeenCalled();
+        });
+
+        it('sets scroll position to 0', function() {
+            resultsPanel.body = {
+                dom: {
+                    scrollTop: 123
+                }
+            };
+
+            store.fireEvent('load');
+            expect(resultsPanel.body.dom.scrollTop).toBe(0);
         });
     });
 });
