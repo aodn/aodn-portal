@@ -96,6 +96,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
     },
 
     _onStoreLoad: function() {
+        this._resetScrollPositionToTop();
 
         this.pagingBar.onLoad(
             this.store,
@@ -107,6 +108,10 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
                 }
             }
         );
+    },
+
+    _resetScrollPositionToTop: function() {
+        this.body.dom.scrollTop = 0;
     }
 });
 
