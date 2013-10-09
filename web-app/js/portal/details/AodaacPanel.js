@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -23,7 +22,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('aodaacPanelTitle'),
             items: items,
             bodyCls: 'aodaacTab'
-        }, cfg );
+        }, cfg);
 
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
@@ -111,7 +110,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setBounds();
     },
 
-    _addProductInfo: function (items) {
+    _addProductInfo: function(items) {
         var productInfoHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('productInfoHeading') + "</b>");
 
         // TODO - DN: Add product picker in case of multiple products per Layer
@@ -156,7 +155,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             maxValue: 96, // (24 hours worth of 15 minute increments)
             values: [0, 96],
             plugins: new Ext.slider.Tip({
-                getText: function(thumb){
+                getText: function(thumb) {
 
                     // Get controls
                     var slider = thumb.slider;
