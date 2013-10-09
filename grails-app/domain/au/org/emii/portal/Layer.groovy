@@ -123,8 +123,8 @@ class Layer {
         available = true
     }
 
-    boolean equals(other){
-        if (is(other)){
+    boolean equals(other) {
+        if (is(other)) {
             return true
         }
         if (!(other instanceof Layer)) {
@@ -143,8 +143,8 @@ class Layer {
         return "${server?.shortAcron} - $n - $t"
     }
 
-    String getOverrideMetadataUrl(){
-        if ((this.overrideMetadataUrl == null) && (this.getParent() != null)){
+    String getOverrideMetadataUrl() {
+        if ((this.overrideMetadataUrl == null) && (this.getParent() != null)) {
             return this.getParent().getOverrideMetadataUrl();
         }
         return this.overrideMetadataUrl;
@@ -166,7 +166,7 @@ class Layer {
         }
     }
 
-    void deleteDefaultLayersInConfig(){
+    void deleteDefaultLayersInConfig() {
         Config.withNewSession{
             def configInstance = Config.activeInstance()
 
@@ -175,7 +175,7 @@ class Layer {
         }
     }
 
-    void deleteLayerMenuItems(){
+    void deleteLayerMenuItems() {
         MenuItem.withNewSession{
             def dels = MenuItem.findAllByLayer(this)
             dels*.delete()
@@ -202,7 +202,7 @@ class Layer {
         }
     }
 
-    void beforeDelete(){
+    void beforeDelete() {
         //find all layers related to this server
         deleteDefaultLayersInConfig()
         deleteLayerMenuItems()

@@ -63,7 +63,7 @@ class FilterController {
     def update = {
         def filterInstance = Filter.get(params.id)
 
-        if (filterInstance){
+        if (filterInstance) {
 
             if (params.version) {
                 def version = params.version.toLong()

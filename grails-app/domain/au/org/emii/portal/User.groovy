@@ -45,7 +45,7 @@ class User {
         return "$fullName $rolePart ($openIdUrl)"
     }
 
-    void beforeDelete(){
+    void beforeDelete() {
         Snapshot.withNewSession{
             def snapshots = Snapshot.findAllByOwner(this)
             snapshots*.delete()

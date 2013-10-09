@@ -32,7 +32,7 @@ class UserTagLib {
         def targetRoles = UserRole.findAll("from UserRole as b where b.name in (:roleNames)", [roleNames:attrs.roles?.split(",")])
 
         def found = false
-        targetRoles?.each(){
+        targetRoles?.each() {
 
             found = found || (user.roles.contains(it))
         }

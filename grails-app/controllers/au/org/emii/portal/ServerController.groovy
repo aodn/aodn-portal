@@ -168,18 +168,18 @@ class ServerController {
             }
 
             def maps = [:]
-            serverList.each(){
+            serverList.each() {
                 def layerList = Layer.findAllByServer(it)
                 maps[it] = layerList
             }
 
-            if (serverList){
+            if (serverList) {
                 render(view: "listByOwner", model: [maps: maps])
             }
         }
     }
 
-    def getScannerStatus(){
+    def getScannerStatus() {
 
         //list of discoverable, with a list of w[m,f]s jobs
         def serverMap = [:]
@@ -191,27 +191,27 @@ class ServerController {
         [wmsScannerService, wfsScannerService].eachWithIndex {
             scannerService, index ->
 
-            try{
+            try {
                 def jobList = scannerService.status
-                discoverables.each(){ discoverable ->
+                discoverables.each() { discoverable ->
 
-                    if (serverMap[discoverable] == null){
+                    if (serverMap[discoverable] == null) {
                         serverMap.put(discoverable, [null, null])
                     }
 
-                    jobList.each(){ job ->
+                    jobList.each() { job ->
 
                         def checkURL
 
                         //TODO: Change WFS scanner to use the same variable name for uri...
-                        if (index == 0){
+                        if (index == 0) {
                             checkURL = job.uri
                         }
                         else{
                             checkURL = job.serverUrl
                         }
 
-                        if (discoverable.uri == checkURL){
+                        if (discoverable.uri == checkURL) {
                             serverMap[discoverable][index] = job
                         }
                     }
@@ -219,7 +219,7 @@ class ServerController {
 
                 scannersContactable[index] = true
             }
-            catch(Exception e){
+            catch(Exception e) {
                 log.debug(e.message)
 
                 if (flash.message) {
