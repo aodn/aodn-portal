@@ -43,7 +43,7 @@ class CheckWmsScannerService {
         def requestedJob = null
         for(job in scanJobList)
         {
-            if(jobId.toInteger() == job.id.toInteger()) {
+            if (jobId.toInteger() == job.id.toInteger()) {
                 requestedJob = job
                 break
             }

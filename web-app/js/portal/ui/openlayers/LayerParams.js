@@ -54,7 +54,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
     _getWmsVersionString: function(server) {
         // list needs to match Server.groovy
         var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
-        for(var i = 0; i < versionList.length; i++){
+        for(var i = 0; i < versionList.length; i++) {
             if (server.type.indexOf(versionList[i]) != -1) {
                 return versionList[i];
             }

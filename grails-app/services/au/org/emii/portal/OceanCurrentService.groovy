@@ -61,7 +61,7 @@ class OceanCurrentService {
 
                 def num = 0
                 data.each {
-                    if(num == lineCount) {
+                    if (num == lineCount) {
                         imageURL = baseURL + it
                         acron = it.minus("/latest.gif")
                         speil = "Latest graph for " + acron

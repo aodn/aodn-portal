@@ -97,7 +97,7 @@ class AuthController {
         def configuredOpenIdProvider = grailsApplication.config.openId.providers.find { it.providerHref == openIdProvider }
 
         // Sometimes not available if custom selected provider
-        if(configuredOpenIdProvider && configuredOpenIdProvider.supportsProviderLogout) {
+        if (configuredOpenIdProvider && configuredOpenIdProvider.supportsProviderLogout) {
 
             // If we support logout protocol...
             log.debug "Logout protocol supported - using custom logout for $openIdProvider"
@@ -183,11 +183,11 @@ class AuthController {
         _loadOpenIDSchemaAttributeValues(ext, userInstance)
         _loadAxSchemaAttributeValues(ext, userInstance)
 
-        if( !userInstance.fullName)  {
+        if ( !userInstance.fullName)  {
 
             userInstance.fullName = "Unk."
         }
-        if( !userInstance.emailAddress) {
+        if ( !userInstance.emailAddress) {
 
             userInstance.emailAddress = "Unk."
         }
@@ -215,13 +215,13 @@ class AuthController {
     def _loadOpenIDSchemaAttributeValues(ext, userInstance) {
 
         // ext1 is the hardwired key for username.
-        if(ext.getAttributeValue('ext1'))
+        if (ext.getAttributeValue('ext1'))
         {
             // devid.emii
             userInstance.fullName =  ext.getAttributeValue('ext1')
         }
         // Extract email
-        if(ext.getAttributeValue('ext0'))
+        if (ext.getAttributeValue('ext0'))
         {
             userInstance.emailAddress = ext.getAttributeValue('ext0')
         }
@@ -231,18 +231,18 @@ class AuthController {
 
         // depending on how the OpenID provider responded, try to extract the username and email
 
-        if(ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname"))
+        if (ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname"))
         {
             // Google
             userInstance.fullName = ext.getAttributeValue("firstname") + ' ' + ext.getAttributeValue("lastname")
         }
-        else if(ext.getAttributeValue("nickname"))
+        else if (ext.getAttributeValue("nickname"))
         {
             // Yahoo
             userInstance.fullName = ext.getAttributeValue("nickname")
         }
 
-        if(ext.getAttributeValue('email'))
+        if (ext.getAttributeValue('email'))
         {
             userInstance.emailAddress = ext.getAttributeValue('email')
         }

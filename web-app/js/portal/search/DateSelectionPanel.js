@@ -70,7 +70,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             titleTo = range.toDate.format("d/m/Y");
         }
 
-        if(range.fromDate !== "" || range.toDate !== "")
+        if (range.fromDate !== "" || range.toDate !== "")
         {
             var newSub = titleFrom + " - " + titleTo;
             this.setSelectedSubTitle(newSub);

@@ -16,12 +16,12 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
         Portal.filter.BooleanFilter.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg){
+    initComponent: function(cfg) {
         this.CQL = "";
         Portal.filter.BooleanFilter.superclass.initComponent.call(this);
     },
 
-    _createField:function(){
+    _createField:function() {
 
         this.trueButton = new Ext.form.Radio({
             name: this.filter.name,
@@ -55,24 +55,24 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
          //this.add(this.checkbox);
     },
 
-    _buttonChecked: function(button, checked){
-        if(button === this.trueButton && checked){
+    _buttonChecked: function(button, checked) {
+        if (button === this.trueButton && checked) {
             this.CQL = this.filter.name + " = true";
         }
-        else if(button === this.falseButton && checked){
+        else if (button === this.falseButton && checked) {
             this.CQL = this.filter.name + " = false";
         }
 
         this._fireAddEvent();
     },
 
-    handleRemoveFilter: function(){
+    handleRemoveFilter: function() {
         this.CQL = "";
         this.trueButton.setValue(false);
         this.falseButton.setValue(false);
     },
 
-    _setExistingFilters: function(){
+    _setExistingFilters: function() {
         this.re = new RegExp(this.filter.name + " = (.*) ?");
 
         var m = this.re.exec(this.layer.getDownloadFilter());
@@ -80,11 +80,11 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
         if (m != null && m.length == 2) {
             this.CQL = this.filter.name + " = " + m[1];
 
-            if(m[1] === "true"){
+            if (m[1] === "true") {
                 this.trueButton.setValue(true);
                 this.falseButton.setValue(false);
             }
-            else if(m[1] === "false"){
+            else if (m[1] === "false") {
                 this.trueButton.setValue(false);
                 this.falseButton.setValue(true);
             }

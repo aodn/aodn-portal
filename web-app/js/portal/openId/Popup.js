@@ -8,7 +8,7 @@
 
 $(document).ready( function() {
     // hide the popup if user mouses out of area
-    $("#loginpopup").mouseleave(function(){
+    $("#loginpopup").mouseleave(function() {
         $("#loginpopup").hide();
     });
 
@@ -16,14 +16,14 @@ $(document).ready( function() {
         // For IE8 and IE9, toggle() and slideToggle() rail to raise popup in jquery 1.4.1.
         // (Note that testing shows they do work with with jquery-1.10.1.js)
         // Instead use show()
-        $("#loginbutton").click(function(){
+        $("#loginbutton").click(function() {
             $("#loginpopup").show();
         });
     }
     else {
         // Firefox, Chromium et al.
         // slideToggle() tests existing state, and combines well with mouseleave()
-        $("#loginbutton").click(function(){
+        $("#loginbutton").click(function() {
             $("#loginpopup").slideToggle();
         });
     }

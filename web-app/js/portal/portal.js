@@ -84,7 +84,7 @@ Portal.app = {
             startSnapshot: startSnapshot
         });
 
-        if(startSnapshot){
+        if (startSnapshot) {
             Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
                 Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
                 Ext.MsgBus.publish(PORTAL_EVENTS.LOAD_SNAPSHOT, startSnapshot);

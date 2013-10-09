@@ -48,7 +48,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
         }
     },
 
-    _updateCql: function(bounds){
+    _updateCql: function(bounds) {
         this.CQL = String.format(
             "BBOX({0},{1},{2},{3},{4})",
             this.filter.name,

@@ -93,7 +93,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
 
     valueSelector: '.p-facet-value',
 
-    initComponent: function(){
+    initComponent: function() {
         this.refinementsTpl = new Ext.XTemplate(this.refinementsTpl);
         this.tpl = new Ext.XTemplate(this.tpl);
 
@@ -106,7 +106,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
         this.addEvents('filterchange');
     },
 
-    afterRender: function(){
+    afterRender: function() {
         Portal.search.RefineSearchPanel.superclass.afterRender.call(this);
 
         this.mon(this.el, 'click', this.onClick, this);
@@ -124,7 +124,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
         return searchFilters;
     },
 
-    onClick: function(e){
+    onClick: function(e) {
         e.preventDefault();
         var value = e.getTarget(this.valueSelector, this.el);
 
@@ -154,12 +154,12 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
     facetStoreLoad: function() {
         this.refinementsTpl.overwrite(this.body, this.facetStore.filters.getJson());
         var refinementElements = Ext.query(this.removeSelector, this.el.dom);
-        for (var i = 0; i < refinementElements.length; i++){
+        for (var i = 0; i < refinementElements.length; i++) {
             refinementElements[i].refinementIndex = i;
         }
         this.tpl.append(this.body, this.facetStore.getFacets());
         var valueElements = Ext.query(this.valueSelector, this.el.dom);
-        for (var i = 0; i < valueElements.length; i++){
+        for (var i = 0; i < valueElements.length; i++) {
             valueElements[i].valueIndex = i;
         }
     }

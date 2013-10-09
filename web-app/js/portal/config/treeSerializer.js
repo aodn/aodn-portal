@@ -20,7 +20,7 @@
 * returns true or false to include or exclude the attribute.
 * @return {String}
 */
-Ext.tree.TreePanel.prototype.toJsonString = function(nodeFilter, attributeFilter, attributeMapping){
+Ext.tree.TreePanel.prototype.toJsonString = function(nodeFilter, attributeFilter, attributeMapping) {
 return this.getRootNode().toJsonString(nodeFilter, attributeFilter, attributeMapping);
 };
 
@@ -32,7 +32,7 @@ return this.getRootNode().toJsonString(nodeFilter, attributeFilter, attributeMap
 * returns true or false to include or exclude the attribute.
 * @return {String}
 */
-Ext.tree.TreeNode.prototype.toJsonString = function(nodeFilter, attributeFilter, attributeMapping){
+Ext.tree.TreeNode.prototype.toJsonString = function(nodeFilter, attributeFilter, attributeMapping) {
 // Exclude nodes based on caller-supplied filtering function
 if (nodeFilter && (nodeFilter(this) == false)) {
 return '';
@@ -70,7 +70,7 @@ for(var key in this.attributes) {
 // Add child nodes if any
 var children = this.childNodes;
 var clen = children.length;
-if(clen != 0) {
+if (clen != 0) {
     if (c) result += ',';
         result += '"children":['
     for(var i = 0; i < clen; i++) {
@@ -97,7 +97,7 @@ return result + "}";
 * returns true or false to include or exclude the attribute.
 * @return {String}
 */
-Ext.tree.TreePanel.prototype.toXmlString = function(nodeFilter, attributeFilter, attributeMapping){
+Ext.tree.TreePanel.prototype.toXmlString = function(nodeFilter, attributeFilter, attributeMapping) {
 return '\u003C?xml version="1.0"?>\u003Ctree>' +
 this.getRootNode().toXmlString(nodeFilter, attributeFilter, attributeMapping) +
 '\u003C/tree>';
@@ -111,7 +111,7 @@ this.getRootNode().toXmlString(nodeFilter, attributeFilter, attributeMapping) +
 * returns true or false to include or exclude the attribute.
 * @return {String}
 */
-Ext.tree.TreeNode.prototype.toXmlString = function(nodeFilter, attributeFilter, attributeMapping){
+Ext.tree.TreeNode.prototype.toXmlString = function(nodeFilter, attributeFilter, attributeMapping) {
 // Exclude nodes based on caller-supplied filtering function
 if (nodeFilter && (nodeFilter(this) == false)) {
 return '';
@@ -139,12 +139,12 @@ result += ' ' + thisKey + '="' + this.attributes[key] + '"';
 // Add child nodes if any
 var children = this.childNodes;
 var clen = children.length;
-if(clen == 0){
+if (clen == 0) {
 result += '/>';
 }
 else {
 result += '>';
-for(var i = 0; i < clen; i++){
+for(var i = 0; i < clen; i++) {
 result += children[i].toXmlString(nodeFilter, attributeFilter, attributeMapping);
 }
 result += '\u003C/node>';

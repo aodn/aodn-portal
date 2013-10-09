@@ -209,7 +209,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                     this
                 );
 
-                if(successCallback)
+                if (successCallback)
                     successCallback();
 
             }

@@ -63,7 +63,7 @@ class WmsScannerController {
         if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
             def serverList = [];
             def userInstance = User.current();
-            if (userInstance){
+            if (userInstance) {
                 serverList = Server.withCriteria{
                     owners{
                         eq('id', userInstance.id)

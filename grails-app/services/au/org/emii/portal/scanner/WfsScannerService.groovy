@@ -15,11 +15,11 @@ class WfsScannerService extends ScannerService {
     static transactional = true
     static lazyInit = false
 
-    public WfsScannerService(){
+    public WfsScannerService() {
         super()
     }
 
-    def getScannerBaseUrl(){
+    def getScannerBaseUrl() {
 
         return grailsApplication.config.wfsScanner.url
     }
@@ -29,7 +29,7 @@ class WfsScannerService extends ScannerService {
         return "${portalBaseURL()}filter/updateFilter"
     }
 
-    def callDelete(scanJobId){
+    def callDelete(scanJobId) {
 
         if (!scanJobId) {
             return "No job specified"
@@ -42,7 +42,7 @@ class WfsScannerService extends ScannerService {
         return "Job deleted."
     }
 
-    def callRegister(serverId, layerName, wfsScannerCallbackPassword){
+    def callRegister(serverId, layerName, wfsScannerCallbackPassword) {
 
         Server server = Server.get(serverId)
 
@@ -56,7 +56,7 @@ class WfsScannerService extends ScannerService {
             throw new IllegalArgumentException("No WFS Scanner callback password set in config.")
         }
 
-        if (server.type.startsWith("GEO")){
+        if (server.type.startsWith("GEO")) {
 
             def version = server.type[-5..-1] // Todo - DN: Put this somewhere more central (and re-useable)
 

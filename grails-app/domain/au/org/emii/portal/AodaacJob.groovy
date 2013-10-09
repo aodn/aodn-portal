@@ -39,7 +39,7 @@ class AodaacJob {
         dataFileExists nullable: true
     }
 
-    AodaacJob(){ /* For Hibernate */ }
+    AodaacJob() { /* For Hibernate */ }
 
     AodaacJob( jobId, jobParams, notificationEmailAddress ) {
 

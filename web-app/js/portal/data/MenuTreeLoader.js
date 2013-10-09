@@ -23,7 +23,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
                 // This will now delegate handling to ServerNodeLayerDescriptorStore
                 return false;
             }
-            else if((node.getDepth() > 0) && !node.attributes.grailsServerId && !node.attributes.grailsLayerId){
+            else if ((node.getDepth() > 0) && !node.attributes.grailsServerId && !node.attributes.grailsLayerId) {
                 return false;
             }
             return true;

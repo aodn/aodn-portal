@@ -217,7 +217,7 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
         // propagates to other elements, i.e. the comboboxes).
 //        OpenLayers.Event.stop(evt);
 
-        if(!this.oldOnselectstart) {
+        if (!this.oldOnselectstart) {
             this.oldOnselectstart = (document.onselectstart) ? document.onselectstart : OpenLayers.Function.True;
         }
         document.onselectstart = OpenLayers.Function.False;

@@ -123,10 +123,10 @@ function setupgrid2treedrag(menu) {
         loader: new Ext.tree.TreeLoader({preloadChildren:true}),
         listeners:{
 
-            'contextmenu': function(node){
+            'contextmenu': function(node) {
                 this.getSelectionModel().select(node);
                 treeMenu = rightClickMenu(node);
-                if(treeMenu!=null) {
+                if (treeMenu!=null) {
                     treeMenu.show(node.ui.getAnchor());
                 }
             },
@@ -142,7 +142,7 @@ function setupgrid2treedrag(menu) {
                 fn:function(e) {
 
                     // e.data.selections is the array of selected records
-                    if(Ext.isArray(e.data.selections)) {
+                    if (Ext.isArray(e.data.selections)) {
                         // reset cancel flag
                         e.cancel = false;
 
@@ -207,7 +207,7 @@ function setupgrid2treedrag(menu) {
     win.doLayout();
 }
 
-function rightClickMenu(node){
+function rightClickMenu(node) {
     var treeMenu = new Ext.menu.Menu({
         plain: false,
         shadow:'drop',
@@ -219,7 +219,7 @@ function rightClickMenu(node){
             text:'Add Menu Branch',
             node:node,
             listeners:{
-                click: function(item){
+                click: function(item) {
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new branch:', function(status, text) {
                         if (text != "") {
                             node.appendChild({
@@ -244,7 +244,7 @@ function rightClickMenu(node){
             text:'Rename',
             node:node,
             listeners:{
-                click: function(item){
+                click: function(item) {
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:',
                         function(status, text) {
                         // dont allow the label to be empty
@@ -269,7 +269,7 @@ function rightClickMenu(node){
             text:'Remove',
             node:node,
             listeners:{
-                click: function(){
+                click: function() {
                     node.destroy();
                     showHideButtons();
                 }

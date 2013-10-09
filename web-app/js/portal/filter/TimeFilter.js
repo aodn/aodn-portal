@@ -66,7 +66,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.add(this.fromField);
         this.add(this.toField);
 
-        if(this.filter.possibleValues != undefined){
+        if (this.filter.possibleValues != undefined) {
             this._setMinMax(this.fromField, this.filter.possibleValues);
             this._setMinMax(this.toField, this.filter.possibleValues);
         }
@@ -103,7 +103,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         }
     },
 
-    handleRemoveFilter: function(){
+    handleRemoveFilter: function() {
         this.operators.clearValue();
         this.toField.reset();
         this.fromField.reset();

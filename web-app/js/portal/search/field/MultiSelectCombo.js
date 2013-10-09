@@ -96,7 +96,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 
     proxyBeforeLoad: function(proxy, params) {
         var protocolString = "";
-        if(params.protocol != null)
+        if (params.protocol != null)
         {
             protocolString = "protocol=" + params.protocol;
         }

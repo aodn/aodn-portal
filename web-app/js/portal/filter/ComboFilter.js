@@ -53,7 +53,7 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.combo.getStore().loadData(data);
     },
 
-    _createCQL: function(combo, record, index){
+    _createCQL: function(combo, record, index) {
         this.CQL = String.format("{0} LIKE '{1}'",
             this.filter.name,
             this._escapeSingleQuotes(record.data.text));
