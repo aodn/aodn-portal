@@ -13,8 +13,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             id: 'stylePanel',
             title: 'Styles',
-            style: { margin:5 },
-            autoHeight: 250
+            autoScroll: true,
+            style: { margin:5 }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -35,8 +35,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.ncwmsColourScalePanel,
             {
                 xtype: 'panel',
-                //layout: 'hbox',
-                autoScroll: true,
                 align: 'stretch',
                 items: [
                     {
@@ -52,7 +50,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     makeCombo:function () {
-        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>';
+        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
         fields = [

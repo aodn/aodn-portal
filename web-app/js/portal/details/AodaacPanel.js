@@ -21,7 +21,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             id: 'aodaacPanel',
             title: OpenLayers.i18n('aodaacPanelTitle'),
             items: items,
-            bodyCls: 'aodaacTab'
+            bodyCls: 'aodaacTab',
+            autoScroll: true
         }, cfg);
 
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
