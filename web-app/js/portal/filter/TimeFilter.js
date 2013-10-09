@@ -122,9 +122,9 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         return this._all(requiredFields);
     },
 
-    _all: function(ary) {
+    _all: function(array) {
         var ret = true;
-        Ext.each(ary, function(item, index, allItems) {
+        Ext.each(array, function(item, index, allItems) {
             if (!item) {
                 ret = false;
             }
