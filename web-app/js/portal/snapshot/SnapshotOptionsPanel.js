@@ -47,7 +47,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
                 }),
                 listeners: {
                     scope: this,
-                    beforequery: function(qe){
+                    beforequery: function(qe) {
                         delete qe.combo.lastQuery;
                     },
                     select: this.onLoadSelectedSnapshot
@@ -90,7 +90,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         this.mon(this.controller, 'snapshotAdded', this.onSnapshotAdded, this);
         this.mon(this.controller, 'snapshotRemoved', this.onSnapshotRemoved, this);
 
-        this.map.events.register('blur', this, function(obj){
+        this.map.events.register('blur', this, function(obj) {
             if (this.el != undefined) {
                 this.snapshotCombo.collapse();
             }
@@ -120,7 +120,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
         this.controller.deleteSnapshot(id, this.onSuccessfulDelete.createDelegate(this), this.onFailure.createDelegate(this,['Unexpected failure deleting snapshot'],true));
     },
 
-    onShareSelectedSnapshot: function(button, event){
+    onShareSelectedSnapshot: function(button, event) {
         var id = this.snapshotCombo.getValue();
 
         if (!id || id == '') return;

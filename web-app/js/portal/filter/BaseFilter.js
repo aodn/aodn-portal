@@ -16,7 +16,7 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
             listeners: {
-                beforeremove: function(panel, component){
+                beforeremove: function(panel, component) {
                     this.removeAll(true);
                 }
             }
@@ -29,7 +29,7 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
          Portal.filter.BaseFilter.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg){
+    initComponent: function(cfg) {
         this.addEvents('addFilter');
         Portal.filter.BaseFilter.superclass.initComponent.call(this);
     },
@@ -40,21 +40,21 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
        This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
        Note that the "x" button is created in the filterPanel. See also handleRemoveFilter.
     **/
-    _createField:function(){
+    _createField:function() {
     },
 
-    setLayerAndFilter: function(layer, filter){
+    setLayerAndFilter: function(layer, filter) {
         this.filter = filter;
         this.layer = layer;
         this._createField();
         this._setExistingFilters();
     },
 
-    getCQL: function(){
+    getCQL: function() {
         return this.CQL;
     },
 
-    getFilterName: function(){
+    getFilterName: function() {
         return this.filter.name;
     },
 
@@ -68,18 +68,18 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
        This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
        In this method, implement actions like clearing a textfield, reset values.
     **/
-    handleRemoveFilter: function(){
+    handleRemoveFilter: function() {
     },
 
-    hasValue: function(){
+    hasValue: function() {
         return this.CQL != "";
     },
 
-    _fireAddEvent: function(){
+    _fireAddEvent: function() {
         this.fireEvent('addFilter', this);
     },
 
-    _setExistingFilters: function(){
+    _setExistingFilters: function() {
     }
 });
 

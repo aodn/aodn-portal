@@ -11,7 +11,7 @@ Ext.namespace('Portal.common');
 Portal.common.LoadMask = Ext.extend(Ext.LoadMask, {
 
 
-    showAtTop: function(){
+    showAtTop: function() {
 
         this.show();
 

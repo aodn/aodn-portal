@@ -109,7 +109,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var resized = false;
         var wmsLayers = this._collectUniqueLayers();
 
-        if (wmsLayers.length == 0){
+        if (wmsLayers.length == 0) {
             this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
             this.blankContainer.update("");
         }
@@ -133,7 +133,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 }
             }, this);
 
-                if (count == 0){
+                if (count == 0) {
                     this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
                     this.blankContainer.update("");
                 }
@@ -199,7 +199,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var allLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
         allLayers.concat(this.map.getLayersByClass("OpenLayers.Layer.Image"));
         Ext.each(allLayers, function(layer, index, all) {
-            if (!layer.isBaseLayer){
+            if (!layer.isBaseLayer) {
                 if (layer.isAnimated) {
                     var rootLayer = rootLayers[layer.params.LAYERS];
                     this._setLayerTimes(layer);
@@ -333,7 +333,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             },
             listeners: {
                 // find any script loaded as text and run it when this tab is opened
-                activate: function(){
+                activate: function() {
                     var code = $('#' + this.getId( ) + ' script').text();
                     var codefunc = new Function(code);
                     codefunc();

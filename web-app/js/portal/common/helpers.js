@@ -83,9 +83,9 @@ function getAussieUnits(val,src_units) {
     return toReturn;
 }
 
-function pad(numNumber, numLength){
+function pad(numNumber, numLength) {
     var strString = '' + numNumber;
-    while(strString.length<numLength){
+    while(strString.length<numLength) {
         strString = '0' + strString;
     }
     return strString;
@@ -140,7 +140,7 @@ function setHTML_ncWMS(response,options) {
             var timeList = xmldoc.getElementsByTagName('time').length;
             var time = null;
 
-            if (timeList > 0){
+            if (timeList > 0) {
                 time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
             }
 

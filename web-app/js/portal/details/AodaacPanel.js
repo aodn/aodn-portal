@@ -156,7 +156,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             maxValue: 96, // (24 hours worth of 15 minute increments)
             values: [0, 96],
             plugins: new Ext.slider.Tip({
-                getText: function(thumb){
+                getText: function(thumb) {
 
                     // Get controls
                     var slider = thumb.slider;

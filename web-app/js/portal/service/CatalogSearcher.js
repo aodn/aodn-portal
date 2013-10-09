@@ -127,13 +127,13 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         Ext.apply(params, page);
 
         //--- Add current search filters
-        this.searchFilters.each(function(rec){
+        this.searchFilters.each(function(rec) {
             name = rec.get('name');
             param = params[name];
             value = rec.get('value');
 
-            if (Ext.isDefined(param)){
-                if (Ext.isArray(param)){
+            if (Ext.isDefined(param)) {
+                if (Ext.isArray(param)) {
                     params[name].push(value);
                 }
                 else {
