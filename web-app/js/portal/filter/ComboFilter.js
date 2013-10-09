@@ -54,21 +54,9 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _createCQL: function(combo, record, index){
-        /*
-         * Please note you *must* escape the % in the query string, so the
-         * following can be valid:
-         * this.CQL = this.filter.name + " LIKE '%25" + this._escapeSingleQuotes(record.data.text) + "%25'";
-         * Or nicer:
-         * this.CQL = this.filter.name + " LIKE '" + this._escapeSingleQuotes("%" + record.data.text + "%") + "'";
-         *
-         * Avoid the following, as the % will be appended to the first
-         * character:
-         * this.CQL = this.filter.name + " LIKE '%" + this._escapeSingleQuotes(record.data.text) + "%'";
-         *         
-         * DF: Best IMO is to go with the exact value, wildcards are a sign of
-         * weakness :)
-         */
-        this.CQL = this.filter.name + " LIKE '" + this._escapeSingleQuotes(record.data.text) + "'";
+        this.CQL = String.format("{0} LIKE '{1}'",
+            this.filter.name,
+            this._escapeSingleQuotes(record.data.text));
     },
 
     _onSelected: function(combo, record, index){
