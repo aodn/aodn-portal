@@ -22,7 +22,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
         Portal.details.InfoPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg){
+    initComponent: function(cfg) {
         Portal.details.InfoPanel.superclass.initComponent.call(this);
     },
 

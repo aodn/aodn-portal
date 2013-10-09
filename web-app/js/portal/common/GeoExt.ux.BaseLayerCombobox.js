@@ -132,7 +132,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
                 onAddLayer: function(evt) {
 
                     // Only interested in adding base layers.
-                    if(!this._adding && evt.layer.isBaseLayer) {
+                    if (!this._adding && evt.layer.isBaseLayer) {
                         var layer = evt.layer;
                         this._adding = true;
                         this.loadData([layer], true);

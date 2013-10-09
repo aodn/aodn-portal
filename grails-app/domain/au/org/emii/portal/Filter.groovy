@@ -23,7 +23,7 @@ class Filter implements Comparable {
         sort "name"
     }
 
-    public Filter(){
+    public Filter() {
         possibleValues = []
         downloadOnly = false   //default
     }
@@ -35,8 +35,8 @@ class Filter implements Comparable {
         label(blank: false)
         downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
-            if(obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date){
-                if(val.size() > 0)
+            if (obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date) {
+                if (val.size() > 0)
                     return true
             }
             else
@@ -45,7 +45,7 @@ class Filter implements Comparable {
         })
     }
 
-    def beforeDelete(){
+    def beforeDelete() {
         layer.filters.remove(this);
     }
 
@@ -68,7 +68,7 @@ class Filter implements Comparable {
         type == FilterType.String || type == FilterType.Date
     }
 
-    boolean equals(other){
+    boolean equals(other) {
         return other.id == this.id && other.name.equals(this.name)
     }
 

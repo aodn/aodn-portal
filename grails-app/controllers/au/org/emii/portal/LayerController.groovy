@@ -414,11 +414,11 @@ class LayerController {
 
                     html += "<ul>\n"
                     onlineResourcesList.each {
-                        if(!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")){
+                        if (!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")) {
                             def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
                             def linkExternal = ""
-                            if(linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
+                            if (linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
                             // Overcome the case where the URL is valid but has no description
                             if (!linkText) {
                                 linkText = "<i>Unnamed Resource</i>"

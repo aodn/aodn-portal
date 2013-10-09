@@ -237,7 +237,7 @@ class AodaacAggregatorService {
         }
     }
 
-    def checkIncompleteJobs(){
+    def checkIncompleteJobs() {
         def jobList = AodaacJob.findAll("from AodaacJob as job where job.expired = false and (job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false)")
 
         log.debug "number of jobs: " + jobList.size()

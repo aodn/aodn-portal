@@ -52,7 +52,7 @@ class ConfigController {
         // add current user details
         def userInstance = User.current();
 
-        if(userInstance) {
+        if (userInstance) {
 
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }

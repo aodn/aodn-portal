@@ -15,7 +15,7 @@ import javax.naming.InitialContext
 //                             "file:${userHome}/.grails/${appName}-config.properties",
 //                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
-// if(System.properties["${appName}.config.location"]) {
+// if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
@@ -205,7 +205,7 @@ portal {
  *
  * NOTE: app.name and version is ignored in external application.properties
  */
-if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+if (!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
 

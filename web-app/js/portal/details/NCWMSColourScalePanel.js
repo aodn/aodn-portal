@@ -12,7 +12,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     layout: 'form',
     id: 'ncWMSColourScalePanel',
 
-    initComponent: function(){
+    initComponent: function() {
         this.colourScaleHeader = new Ext.form.Label({
             html: "<h5>Set Parameter Range</h5>"
         });
@@ -26,7 +26,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             grow: true,
             listeners: {
                 scope: this,
-                keydown: function(textfield, event){
+                keydown: function(textfield, event) {
                     this.updateScale(textfield, event);
                 }
             }
@@ -40,7 +40,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             grow: true,
             listeners: {
                 scope: this,
-                keydown: function(textfield, event){
+                keydown: function(textfield, event) {
                     this.updateScale(textfield, event);
                 }
             }
@@ -71,9 +71,9 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.show();
     },
 
-    updateScale: function(textfield, event){
+    updateScale: function(textfield, event) {
         //return key
-        if(event.getKey() == 13){
+        if (event.getKey() == 13) {
             if ( parseFloat(this.colourScaleMax.getValue()) > parseFloat(this.colourScaleMin.getValue())) {
 
                 this.selectedLayer.mergeNewParams({

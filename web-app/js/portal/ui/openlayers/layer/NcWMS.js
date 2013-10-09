@@ -498,7 +498,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getNumTiles: function() {
-        if(!this.grid || !this.grid[0]) { return 0; }
+        if (!this.grid || !this.grid[0]) { return 0; }
         return this.grid.length * this.grid[0].length;
     },
 

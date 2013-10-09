@@ -79,18 +79,18 @@ class Server {
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
             def valid = false
-            if(it?.size() == 0)
+            if (it?.size() == 0)
                 return true
 
-            it?.roles?.each(){ r ->
-                r.each(){  rr->
-                    if(rr.id == ownerRole.id) {
+            it?.roles?.each() { r ->
+                r.each() {  rr->
+                    if (rr.id == ownerRole.id) {
                         valid = true
                     }
                 }
             }
 
-            if(!valid){
+            if (!valid) {
                 return ['invalid.serverowner']
             }
             return valid
@@ -129,13 +129,13 @@ class Server {
         uri = uri?.trim()
 
         // Save without trailing question mark to help avoid non-uniqueness
-        if(uri.getAt(uri.size()-1)=='?') {
+        if (uri.getAt(uri.size()-1)=='?') {
 
             uri = uri.substring(0, uri.size()-1)
         }
 
         // Save without trailing slash to help avoid non-uniqueness
-        if(uri.getAt(uri.size()-1)=='/') {
+        if (uri.getAt(uri.size()-1)=='/') {
 
             uri = uri.substring(0, uri.size()-1)
         }

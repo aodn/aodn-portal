@@ -8,7 +8,7 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
-    constructor: function(cfg){
+    constructor: function(cfg) {
 
         this.loadingMessage = new Ext.Container({
             autoEl: 'div',
@@ -41,7 +41,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg){
+    initComponent: function(cfg) {
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
@@ -71,7 +71,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         this.add(label);
     },
 
-    update: function(layer, show, hide, target){
+    update: function(layer, show, hide, target) {
         this.layer = layer;
 
         if (layer.grailsLayerId) {
@@ -82,8 +82,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
                     layerId: layer.grailsLayerId
                 },
                 scope: this,
-                failure: function(){ this._hide(hide, target) },
-                success: function(resp, opts){ this._onGetFilterSuccess(resp, layer, show, hide, target)}
+                failure: function() { this._hide(hide, target) },
+                success: function(resp, opts) { this._onGetFilterSuccess(resp, layer, show, hide, target)}
             });
         }
         else {
@@ -175,7 +175,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _clearFilters: function() {
-        Ext.each(this._getActiveFilters(), function(filter){
+        Ext.each(this._getActiveFilters(), function(filter) {
             filter.handleRemoveFilter();
         });
 

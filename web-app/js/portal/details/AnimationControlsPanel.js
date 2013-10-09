@@ -128,7 +128,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 click: function() {
-                    this.selectedLayer.downloadAsGif({
+                    this.selectedLayer.downloadAsGif ({
                         spatialExtent: this.map.getExtent(),
                         temporalExtent: {
                             min: this.timeControl.getExtentMin(),

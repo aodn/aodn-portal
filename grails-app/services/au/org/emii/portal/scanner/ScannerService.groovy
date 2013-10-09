@@ -17,7 +17,7 @@ abstract class ScannerService {
 
     def grailsApplication
 
-    def portalBaseURL(){
+    def portalBaseURL() {
 
         return ensureTrailingSlash(grailsApplication.config.grails.serverURL)
     }
@@ -37,7 +37,7 @@ abstract class ScannerService {
 
     abstract def getScannerBaseUrl()
 
-    def scannerURL(){
+    def scannerURL() {
 
         ensureTrailingSlash(scannerBaseUrl)
     }
@@ -59,7 +59,7 @@ abstract class ScannerService {
         return response
     }
 
-    def callService(address){
+    def callService(address) {
 
         def url = address.toURL()
         def conn = url.openConnection()

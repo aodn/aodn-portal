@@ -34,7 +34,7 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
      *  Add 'loaded' event
      *
      */
-    constructor: function(config){
+    constructor: function(config) {
         Portal.search.data.FacetStore.superclass.constructor.call(this, config);
 
         this.filters = new Portal.search.data.RefinementList();
@@ -125,7 +125,7 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
      *    * ``this`` : Portal.search.data.FacetStore
      *    * ``Object`` : Summary data formatted as a JSON object
      */
-    onLoad: function(){
+    onLoad: function() {
         this.fireEvent('load', this, this.getFacets());
     }
 

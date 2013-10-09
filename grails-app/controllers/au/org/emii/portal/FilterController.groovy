@@ -53,7 +53,7 @@ class FilterController {
         else {
             def concatValues = filterInstance?.possibleValues.inject('') { str, item -> str + ',' + item }
 
-            if(concatValues.length() > 0)
+            if (concatValues.length() > 0)
                 concatValues = concatValues.substring(1)
 
             return [filterInstance: filterInstance, filterTypes: FilterType.values(), concatValues: concatValues]
@@ -63,7 +63,7 @@ class FilterController {
     def update = {
         def filterInstance = Filter.get(params.id)
 
-        if(filterInstance){
+        if (filterInstance) {
 
             if (params.version) {
                 def version = params.version.toLong()
