@@ -10,22 +10,18 @@ Ext.namespace('Portal.filter');
 Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
     constructor: function(cfg) {
-
-        var config = Ext.apply({
-        }, cfg );
+        var config = Ext.apply({}, cfg );
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
         Portal.filter.TimeFilter.superclass.constructor.call(this, config);
     },
 
     initComponent: function() {
-
         this.CQL = "";
         Portal.filter.TimeFilter.superclass.initComponent.call(this);
     },
 
-    _createField: function(){
-
+    _createField: function() {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
@@ -77,7 +73,6 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _setMinMax: function(dateField, vals) {
-
         dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
 
         if (vals.length == 2) {
@@ -86,24 +81,20 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _opSelect: function(combo, row, index) {
-
         this.toField.setVisible(this.operators.getValue() != "" && this.operators.getValue() == 'between');
     },
 
     _getDateString: function(combo) {
-
           return this.TIME_UTIL._toUtcIso8601DateString(combo.getValue());
     },
 
     _onSelect: function(picker, date) {
-
         if (this.operators.getValue() != 'between') {
             this.CQL = this.filter.name + " ";
             this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
             this._fireAddEvent();
         }
         else {
-
             if (this.fromField.getValue() != "" && this.toField.getValue() != "") {
                 this.CQL = this.filter.name + " ";
                 this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
@@ -113,14 +104,13 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     handleRemoveFilter: function(){
-
         this.operators.clearValue();
         this.toField.reset();
         this.fromField.reset();
+        this.CQL = "";
     },
 
     _setExistingFilters: function() {
-
         var beforePattern = this.filter.name + " before (.*) *";
         var afterPattern = this.filter.name + " after (.*) *";
 
@@ -133,21 +123,17 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         var between = betweenRe.exec(this.layer.getDownloadFilter());
 
         if (between != null && between.length == 3) {
-
             this.operators.setValue('between');
             this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
             this.toField.setVisible(true);
             this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
         }
         else {
-
             if (m != null && m.length == 2) {
-
                 this.operators.setValue('before');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
             }
             else if (m2 != null && m2.length == 2) {
-
                 this.operators.setValue('after');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
             }
