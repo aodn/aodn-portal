@@ -124,10 +124,10 @@ class Layer {
     }
 
     boolean equals(other){
-        if(is(other)){
+        if (is(other)){
             return true
         }
-        if(!(other instanceof Layer)) {
+        if (!(other instanceof Layer)) {
             return false
         }
         return new EqualsBuilder()
@@ -144,7 +144,7 @@ class Layer {
     }
 
     String getOverrideMetadataUrl(){
-        if((this.overrideMetadataUrl == null) && (this.getParent() != null)){
+        if ((this.overrideMetadataUrl == null) && (this.getParent() != null)){
             return this.getParent().getOverrideMetadataUrl();
         }
         return this.overrideMetadataUrl;
@@ -215,7 +215,7 @@ class Layer {
      */
     List<Layer> getLayers()    {
 
-        if(this.id)
+        if (this.id)
         {
             return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
         }

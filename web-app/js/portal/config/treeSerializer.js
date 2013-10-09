@@ -70,7 +70,7 @@ for(var key in this.attributes) {
 // Add child nodes if any
 var children = this.childNodes;
 var clen = children.length;
-if(clen != 0) {
+if (clen != 0) {
     if (c) result += ',';
         result += '"children":['
     for(var i = 0; i < clen; i++) {
@@ -139,7 +139,7 @@ result += ' ' + thisKey + '="' + this.attributes[key] + '"';
 // Add child nodes if any
 var children = this.childNodes;
 var clen = children.length;
-if(clen == 0){
+if (clen == 0){
 result += '/>';
 }
 else {

@@ -24,7 +24,7 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
         var value;
         if (layer && layer.opacity !== null) {
             value = parseInt(layer.opacity * 100);
-            if(value < this.minValue)
+            if (value < this.minValue)
             {
                 value = this.minValue;
             }

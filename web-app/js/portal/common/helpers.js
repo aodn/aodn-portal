@@ -94,7 +94,7 @@ function pad(numNumber, numLength){
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
 
-    if(options.params.expectedFormat == 'text/html') {
+    if (options.params.expectedFormat == 'text/html') {
 
         // strip out all unwanted HTML
         if ( response.responseText.match(/<\/body>/m)) {
@@ -110,10 +110,10 @@ function formatGetFeatureInfo(response, options) {
             }
         }
     }
-    else if(options.params.expectedFormat == 'text/xml') {
+    else if (options.params.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response,options);
     }
-    else if(options.params.expectedFormat == 'text/plain') {
+    else if (options.params.expectedFormat == 'text/plain') {
         // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
@@ -140,13 +140,13 @@ function setHTML_ncWMS(response,options) {
             var timeList = xmldoc.getElementsByTagName('time').length;
             var time = null;
 
-            if(timeList > 0){
+            if (timeList > 0){
                 time = xmldoc.getElementsByTagName('time')[0].firstChild.nodeValue;
             }
 
             if (x.length > 1) {
                 var endval = parseFloat(xmldoc.getElementsByTagName('value')[x.length -1].childNodes[0].nodeValue);
-                if(time != null)
+                if (time != null)
                     var endtime = xmldoc.getElementsByTagName('time')[x.length -1].firstChild.nodeValue;
             }
             var origEndVal = endval;
@@ -158,7 +158,7 @@ function setHTML_ncWMS(response,options) {
 
             if (!isNaN(startval) ) {  // may have no data at this point
 
-                if(time != null)   {
+                if (time != null)   {
 
                     var human_time = new Date();
                     human_time.setISO8601(time);
@@ -171,10 +171,10 @@ function setHTML_ncWMS(response,options) {
 
                 var startval = getAussieUnits(startval, options.params.units);
 
-                if(human_time != null)  {
+                if (human_time != null)  {
 
                     if (endval == null) {
-                        if(isSD)  {
+                        if (isSD)  {
                             vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
                         }
                         else {
@@ -182,7 +182,7 @@ function setHTML_ncWMS(response,options) {
                         }
                     }
                     else {
-                        if(isSD)
+                        if (isSD)
                         {
                             vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.params.units;
                             vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.params.units;
@@ -196,7 +196,7 @@ function setHTML_ncWMS(response,options) {
                     }
                 }
                 else {
-                    if(isSD)  {
+                    if (isSD)  {
                         vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
                     }
                     else {
@@ -210,7 +210,7 @@ function setHTML_ncWMS(response,options) {
                 html =  "<div class=\"feature\">";
                 html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
 
-                if(xmldoc.getElementsByTagName('copyright')[0] != undefined) {
+                if (xmldoc.getElementsByTagName('copyright')[0] != undefined) {
                     // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
                     html += "<p>" + xmldoc.getElementsByTagName('copyright')[0].childNodes[0].nodeValue + "</p>";
                 }

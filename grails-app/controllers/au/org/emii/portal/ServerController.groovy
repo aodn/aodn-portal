@@ -160,7 +160,7 @@ class ServerController {
     def listByOwner = {
 
         def userInstance = User.current()
-        if(userInstance) {
+        if (userInstance) {
             def serverList = Server.withCriteria{
                 owners{
                     eq('id', userInstance.id)
@@ -173,7 +173,7 @@ class ServerController {
                 maps[it] = layerList
             }
 
-            if(serverList){
+            if (serverList){
                 render(view: "listByOwner", model: [maps: maps])
             }
         }
@@ -204,14 +204,14 @@ class ServerController {
                         def checkURL
 
                         //TODO: Change WFS scanner to use the same variable name for uri...
-                        if(index == 0){
+                        if (index == 0){
                             checkURL = job.uri
                         }
                         else{
                             checkURL = job.serverUrl
                         }
 
-                        if(discoverable.uri == checkURL){
+                        if (discoverable.uri == checkURL){
                             serverMap[discoverable][index] = job
                         }
                     }

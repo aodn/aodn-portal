@@ -35,8 +35,8 @@ class Filter implements Comparable {
         label(blank: false)
         downloadOnly(nullable: false)
         possibleValues(validator:{ val, obj ->
-            if(obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date){
-                if(val.size() > 0)
+            if (obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date){
+                if (val.size() > 0)
                     return true
             }
             else

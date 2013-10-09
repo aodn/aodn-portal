@@ -126,7 +126,7 @@ function setupgrid2treedrag(menu) {
             'contextmenu': function(node){
                 this.getSelectionModel().select(node);
                 treeMenu = rightClickMenu(node);
-                if(treeMenu!=null) {
+                if (treeMenu!=null) {
                     treeMenu.show(node.ui.getAnchor());
                 }
             },
@@ -142,7 +142,7 @@ function setupgrid2treedrag(menu) {
                 fn:function(e) {
 
                     // e.data.selections is the array of selected records
-                    if(Ext.isArray(e.data.selections)) {
+                    if (Ext.isArray(e.data.selections)) {
                         // reset cancel flag
                         e.cancel = false;
 

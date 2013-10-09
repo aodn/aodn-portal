@@ -73,7 +73,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     updateScale: function(textfield, event){
         //return key
-        if(event.getKey() == 13){
+        if (event.getKey() == 13){
             if ( parseFloat(this.colourScaleMax.getValue()) > parseFloat(this.colourScaleMin.getValue())) {
 
                 this.selectedLayer.mergeNewParams({

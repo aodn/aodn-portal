@@ -127,7 +127,7 @@ Portal.snapshot.SnapshotOptionsPanel = Ext.extend(Ext.Panel, {
 
         var curLoc = document.URL;
 
-        if(curLoc.split("?").length == 2)
+        if (curLoc.split("?").length == 2)
         {
             curLoc = curLoc.split("?")[0];
         }
