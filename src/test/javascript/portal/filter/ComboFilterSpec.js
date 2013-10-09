@@ -38,7 +38,7 @@ describe("Portal.filter.ComboFilter", function() {
         
         var result = comboFilter._createCQL(comboFilter, testData);
         
-        expect(comboFilter.CQL).toEqual("vessel_name LIKE '%L''Astrolabe%'");
+        expect(comboFilter.CQL).toEqual("vessel_name LIKE 'L''Astrolabe'");
     });
     
 });
