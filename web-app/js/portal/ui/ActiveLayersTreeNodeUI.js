@@ -69,14 +69,16 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         );
 
         if (this._isLayerLoading()) {
-            that.layerLoadingStart();
+            this.layerLoadingStart();
         } else {
-            that.layerLoadingEnd()
+            this.layerLoadingEnd();
         }
     },
 
     _isLayerLoading: function() {
-        return false;
+        // DF: This is set in LayerStore.js, as this object cannot hold a state
+        // we will save the state on the layer.
+        return (this.node.layer.loading);
     },
 
     removeLayer: function() {
