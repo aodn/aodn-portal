@@ -317,6 +317,29 @@ describe("Portal.data.LayerStore", function() {
         });
     });
 
+    describe('loading attribute', function() {
+
+        var layer;
+
+        beforeEach(function() {
+            layer = createOpenLayer("somelayer");
+            layer.options.isBaseLayer = false;
+            baseLayerRecord = layerStore.addUsingOpenLayer(layer);
+        });
+
+        it('sets loading=true on loadstart', function() {
+            spyOn(Ext.MsgBus, 'publish');
+            layer.events.triggerEvent("loadstart");
+            expect(layer.loading).toEqual(true);
+        });
+
+        it('sets loading=false on loadend', function() {
+            spyOn(Ext.MsgBus, 'publish');
+            layer.events.triggerEvent("loadend");
+            expect(layer.loading).toEqual(false);
+        });
+    });
+
     describe('layer store as singleton', function() {
 
         it('accessor function', function() {
