@@ -22,6 +22,14 @@ describe("Portal.search.FacetMapPanel", function() {
         it('geofacet map toolbar', function() {
             expect(facetMapPanel.map.controls[1]).toBeInstanceOf(Portal.search.GeoFacetMapToolbar);
         });
+
+        it('activates the geo facet map toolbar default control', function() {
+            spyOn(Portal.search.GeoFacetMapToolbar.prototype, 'activateDefaultControl');
+            var panel = new Portal.search.FacetMapPanel({
+                initialBbox: '1, 2, 3, 4'
+            });
+            expect(Portal.search.GeoFacetMapToolbar.prototype.activateDefaultControl).toHaveBeenCalled();
+        });
     });
 
     describe('getBoundingPolygonAsWKT', function() {

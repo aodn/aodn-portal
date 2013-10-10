@@ -21,11 +21,12 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
             this.fireEvent('polygonadded', this.getCurrentFeature());
         });
 
+        this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar(this.polygonVector);
         var config = Ext.apply({
             mapConfig: {
                 controls: [
                     new OpenLayers.Control.ZoomPanel(),
-                    new Portal.search.GeoFacetMapToolbar(this.polygonVector)
+                    this.geoFacetMapToolbar
                 ],
                 resolutions: this.RESOLUTIONS
             }
@@ -44,6 +45,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
         this.map.addLayer(this.polygonVector);
         // Otherwise we end up off the west coast of Africa
         this.zoomToInitialBbox();
+        this.geoFacetMapToolbar.activateDefaultControl();
     },
 
     getCurrentFeature: function () {
