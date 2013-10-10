@@ -255,6 +255,7 @@ ul.x-tab-strip-top {
 }
 
 .viewPortTabActive {
+    background-color: #f4a62b; /* IE8 */
     background: url(../images/viewPortTabActive.png) right 0 center no-repeat #f4a62b;
     border: none;
     text-shadow: 1px 2px 6px #AD5D5D;
