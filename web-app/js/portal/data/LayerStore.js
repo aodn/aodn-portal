@@ -113,10 +113,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
+            openLayer.loading = true;
+
             openLayer.events.register('loadstart', this, function() {
+                openLayer.loading = true;
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
             openLayer.events.register('loadend', this, function() {
+                openLayer.loading = false;
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
