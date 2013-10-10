@@ -325,16 +325,16 @@ describe("Portal.data.LayerStore", function() {
             layer = createOpenLayer("somelayer");
             layer.options.isBaseLayer = false;
             baseLayerRecord = layerStore.addUsingOpenLayer(layer);
+
+            spyOn(Ext.MsgBus, 'publish');
         });
 
         it('sets loading=true on loadstart', function() {
-            spyOn(Ext.MsgBus, 'publish');
             layer.events.triggerEvent("loadstart");
             expect(layer.loading).toEqual(true);
         });
 
         it('sets loading=false on loadend', function() {
-            spyOn(Ext.MsgBus, 'publish');
             layer.events.triggerEvent("loadend");
             expect(layer.loading).toEqual(false);
         });
