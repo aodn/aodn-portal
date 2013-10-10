@@ -8,6 +8,11 @@
 
 Ext.namespace('Portal.ui');
 
+/*
+ * This class will be destroyed and recreated every time it has to be rendered
+ * In other words - this class cannot really hold a state
+ */
+
 Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     buttons: null,
 
@@ -27,45 +32,54 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     addButtons: function() {
         var cb = this.checkbox;
         var node = this;
-
         var that = this;
-        if (!this.buttonsRendered) {
-            Ext.each([
-                    {
-                        tooltip: '',
-                        cls: '',
-                        name: 'loadingStatus'
-                    },
-                    {
-                        tooltip: OpenLayers.i18n('removeDataCollection'),
-                        cls: 'remove-layer-button',
-                        clickHandler: this.removeLayer,
-                        name: 'remove'
-                    },
-                    {
-                        tooltip: OpenLayers.i18n('zoomToDataCollection'),
-                        cls: 'zoom-to-layer-button',
-                        clickHandler: this.zoomToLayer,
-                        name: 'zoom'
-                    }
-                ],
-                function(item) {
-                    var button = Ext.DomHelper.insertBefore(
-                        cb,
-                        "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
-                    );
-                    that.buttons[item.name] = button;
 
-                    if (item.clickHandler) {
-                        $(button).click(function() {
-                            item.clickHandler.call(node);
-                        });
-                    }
+        Ext.each([
+                {
+                    tooltip: '',
+                    cls: '',
+                    name: 'loadingStatus'
+                },
+                {
+                    tooltip: OpenLayers.i18n('removeDataCollection'),
+                    cls: 'remove-layer-button',
+                    clickHandler: this.removeLayer,
+                    name: 'remove'
+                },
+                {
+                    tooltip: OpenLayers.i18n('zoomToDataCollection'),
+                    cls: 'zoom-to-layer-button',
+                    clickHandler: this.zoomToLayer,
+                    name: 'zoom'
                 }
-            );
-            that.layerLoadingStart();
+            ],
+            function(item) {
+                var button = Ext.DomHelper.insertBefore(
+                    cb,
+                    "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
+                );
+                that.buttons[item.name] = button;
+
+                if (item.clickHandler) {
+                    $(button).click(function() {
+                        item.clickHandler.call(node);
+                    });
+                }
+            }
+        );
+
+        if (this._isLayerLoading()) {
+            this.layerLoadingStart();
         }
-        this.buttonsRendered = true;
+        else {
+            this.layerLoadingEnd();
+        }
+    },
+
+    _isLayerLoading: function() {
+        // DF: This is set in LayerStore.js, as this object cannot hold a state
+        // we will save the state on the layer.
+        return this.node.layer.loading;
     },
 
     removeLayer: function() {
@@ -73,7 +87,6 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     zoomToLayer: function() {
-
         this.deferToDelegate("zoomToLayer");
     },
 
@@ -98,7 +111,6 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     statusIndicator: function() {
-
         return $(this.buttons['loadingStatus']);
     },
 
