@@ -9,13 +9,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
-    constructor:function (cfg) {
+    constructor: function (cfg) {
         var config = Ext.apply({
-            id:'stylePanel',
-            title:'Styles',
-            style:{ margin:5 },
-            autoHeight:250,
-            autoScroll:true
+            id: 'stylePanel',
+            title: 'Styles',
+            autoScroll: true,
+            style: { margin:5 }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -23,9 +22,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     initComponent:function (cfg) {
         this.legendImage = new GeoExt.LegendImage({
-            id:'legendImage',
-            imgCls:'legendImage',
-            flex:1
+            id: 'legendImage',
+            imgCls: 'legendImage',
+            flex: 1
         });
 
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
@@ -35,15 +34,13 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo,
             this.ncwmsColourScalePanel,
             {
-                xtype:'panel',
-                //layout: 'hbox',
-                autoScroll:true,
-                align:'stretch',
-                items:[
+                xtype: 'panel',
+                align: 'stretch',
+                items: [
                     {
-                        xtype:'panel',
-                        margin:10,
-                        items:[this.legendImage]
+                        xtype: 'panel',
+                        margin: 10,
+                        items: [this.legendImage]
                     }
                 ]
             }
@@ -53,19 +50,13 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     makeCombo:function () {
-        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img  src="{displayImage}" /></div></tpl>';
+        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
         fields = [
-            {
-                name: 'myId'
-            },
-            {
-                name: 'displayText'
-            },
-            {
-                name: 'displayImage'
-            }
+            { name: 'myId' },
+            { name: 'displayText' },
+            { name: 'displayImage' }
         ];
 
         var valueStore = new Ext.data.ArrayStore({
@@ -75,7 +66,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             fields: fields
         });
 
-        var combo = new Ext.form.ComboBox({
+        return new Ext.form.ComboBox({
             id: 'styleCombo',
             width: 200,
             fieldLabel: 'style',
@@ -95,13 +86,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                 }
             }
         });
-
-        return combo;
     },
 
     setChosenStyle:function (record) {
         this.selectedLayer.mergeNewParams({
-            styles:record.get('myId')
+            styles: record.get('myId')
         });
         // Params should already have been changed, but legend doesn't update if we don't do this...
         this.selectedLayer.params.STYLES = record.get('myId');

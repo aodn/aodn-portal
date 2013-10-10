@@ -22,8 +22,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             id: 'aodaacPanel',
             title: OpenLayers.i18n('aodaacPanelTitle'),
             items: items,
-            bodyCls: 'aodaacTab'
-        }, cfg );
+            bodyCls: 'aodaacTab',
+            autoScroll: true
+        }, cfg);
 
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
@@ -111,7 +112,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setBounds();
     },
 
-    _addProductInfo: function (items) {
+    _addProductInfo: function(items) {
         var productInfoHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('productInfoHeading') + "</b>");
 
         // TODO - DN: Add product picker in case of multiple products per Layer
