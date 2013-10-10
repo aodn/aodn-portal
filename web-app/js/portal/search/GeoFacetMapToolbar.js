@@ -24,16 +24,21 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
 
         OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
 
+        this.polygonDrawControl = new OpenLayers.Control.DrawFeature(
+            layer,
+            OpenLayers.Handler.Polygon,
+            {
+                'displayClass': 'olControlDrawFeaturePolygon'
+            }
+        );
         this.addControls([
             new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.DrawFeature(
-                layer,
-                OpenLayers.Handler.Polygon,
-                {
-                    'displayClass': 'olControlDrawFeaturePolygon'
-                }
-            )
+            this.polygonDrawControl
         ]);
+    },
+
+    activateDefaultControl: function() {
+        this.polygonDrawControl.activate();
     },
 
     CLASS_NAME: "Portal.search.GeoFacetMapToolbar"
