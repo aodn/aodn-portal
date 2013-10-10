@@ -27,17 +27,17 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
             mode: 'local',
             width: 100,
             editable: false,
-            emptyText : OpenLayers.i18n("pleasePickCondensed"),
+            emptyText: OpenLayers.i18n("pleasePickCondensed"),
             fieldLabel: "Time",
             store: new Ext.data.ArrayStore({
-            fields: [
-                'op'
-            ],
-            data: [['before'], ['after'], ['between']]
+                fields: [
+                    'op'
+                ],
+                data: [['before'], ['after'], ['between']]
             }),
             valueField: 'op',
             displayField: 'op',
-            listeners:{
+            listeners: {
                 scope: this,
                 select: this._opSelect
             }
@@ -48,7 +48,8 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
             format: "d/m/Y",
             listeners: {
                 scope: this,
-                select: this._onSelect
+                select: this._onSelect,
+                change: this._onSelect
             }
         });
 
@@ -58,7 +59,8 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
             hidden: true,
             listeners: {
                 scope: this,
-                select: this._onSelect
+                select: this._onSelect,
+                change: this._onSelect
             }
         });
 
@@ -81,7 +83,12 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _opSelect: function(combo, row, index) {
-        this.toField.setVisible(this.operators.getValue() != "" && this.operators.getValue() == 'between');
+        this.toField.setVisible(this._isSelectedOpSetToBetween());
+        this._applyTimeFilter();
+    },
+
+    _isSelectedOpSetToBetween: function() {
+        return this.operators.getValue() != "" && this.operators.getValue() == 'between';
     },
 
     _getDateString: function(combo) {
@@ -89,18 +96,41 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _onSelect: function(picker, date) {
-        if (this.operators.getValue() != 'between') {
+        this._applyTimeFilter();
+    },
+
+    _applyTimeFilter: function() {
+        if (this._requiredFieldsSet()) {
             this.CQL = this.filter.name + " ";
-            this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
-            this._fireAddEvent();
-        }
-        else {
-            if (this.fromField.getValue() != "" && this.toField.getValue() != "") {
-                this.CQL = this.filter.name + " ";
+
+            if (this._isSelectedOpSetToBetween()) {
                 this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
                 this._fireAddEvent();
             }
+            else {
+                this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
+                this._fireAddEvent();
+            }
         }
+    },
+
+    _requiredFieldsSet: function() {
+        var requiredFields = [this.operators.getValue(), this.fromField.getValue()];
+        if (this.operators.getValue() == 'between') {
+            requiredFields.push(this.toField.getValue());
+        }
+        return this._all(requiredFields);
+    },
+
+    _all: function(array) {
+        var ret = true;
+        Ext.each(array, function(item, index, allItems) {
+            if (!item) {
+                ret = false;
+            }
+        }, this);
+
+        return ret;
     },
 
     handleRemoveFilter: function() {
