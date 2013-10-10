@@ -139,9 +139,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
                 longitudeRangeStart: -180,
                 longitudeRangeEnd: 180,
                 dateRangeStart: '1/1/1900',
-                dateRangeEnd: '31/12/2001',
-                timeOfDayRangeStart: '00:00',
-                timeOfDayRangeEnd: '23:59'
+                dateRangeEnd: '31/12/2001'
             };
 
             markup = tpl._aodaacParamatersMarkup(params);
@@ -154,10 +152,9 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         it('calls _parameterString with correct arguments', function() {
 
-            expect(tpl._parameterString.callCount).toBe(3);
+            expect(tpl._parameterString.callCount).toBe(2);
             expect(tpl._parameterString.calls[0].args).toEqual(['parameterAreaLabel', '-90&nbsp;N,&nbsp;-180&nbsp;E', '90&nbsp;N,&nbsp;180&nbsp;E']);
             expect(tpl._parameterString.calls[1].args).toEqual(['parameterDateLabel', '1/1/1900', '31/12/2001']);
-            expect(tpl._parameterString.calls[2].args).toEqual(['parameterTimeLabel', '00:00', '23:59']);
         });
     });
 
@@ -327,9 +324,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
                 longitudeRangeStart: -180,
                 longitudeRangeEnd: 180,
                 dateRangeStart: '1/1/1900',
-                dateRangeEnd: '31/12/2001',
-                timeOfDayRangeStart: '00:00',
-                timeOfDayRangeEnd: '23:59'
+                dateRangeEnd: '31/12/2001'
             };
 
             var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
@@ -338,8 +333,8 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
                 'outputFormat=format' +
                 '&dateRangeStart=1/1/1900' +
                 '&dateRangeEnd=31/12/2001' +
-                '&timeOfDayRangeStart=00:00' +
-                '&timeOfDayRangeEnd=23:59' +
+                '&timeOfDayRangeStart=0000' +
+                '&timeOfDayRangeEnd=2400' +
                 '&latitudeRangeStart=-90' +
                 '&latitudeRangeEnd=90' +
                 '&longitudeRangeStart=-180' +

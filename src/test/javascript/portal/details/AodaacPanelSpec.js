@@ -48,7 +48,7 @@ describe('Portal.details.AodaacPanel', function() {
 
     describe('input controls', function() {
 
-        beforeEach(function () {
+        beforeEach(function() {
             _decorateMap();
             _applyCommonSpies();
             aodaacPanel.geoNetworkRecord = geoNetworkRecord;
@@ -83,11 +83,6 @@ describe('Portal.details.AodaacPanel', function() {
 
         it('updates the aodaac object when the end date changes via edit', function() {
             aodaacPanel.dateRangeEndPicker.fireEvent('change');
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
-        });
-
-        it('updates the aodaac object when the time range changes', function() {
-            aodaacPanel.timeRangeSlider.fireEvent('changecomplete');
             expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
         });
 

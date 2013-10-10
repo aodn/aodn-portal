@@ -71,8 +71,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
             this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
-            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd) +
-            this._parameterString('parameterTimeLabel', params.timeOfDayRangeStart, params.timeOfDayRangeEnd);
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
     },
 
     _parameterString: function(labelKey, value1, value2) {
@@ -148,8 +147,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         var args = "outputFormat=" + format;
         args += "&dateRangeStart=" + params.dateRangeStart;
         args += "&dateRangeEnd=" + params.dateRangeEnd;
-        args += "&timeOfDayRangeStart=" + params.timeOfDayRangeStart;
-        args += "&timeOfDayRangeEnd=" + params.timeOfDayRangeEnd;
+        args += "&timeOfDayRangeStart=0000";
+        args += "&timeOfDayRangeEnd=2400";
         args += "&latitudeRangeStart=" + params.latitudeRangeStart;
         args += "&latitudeRangeEnd=" + params.latitudeRangeEnd;
         args += "&longitudeRangeStart=" + params.longitudeRangeStart;
