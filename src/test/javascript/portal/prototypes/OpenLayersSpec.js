@@ -75,13 +75,13 @@ describe("OpenLayers.Layer.WMS", function() {
     describe("getCqlFilter", function() {
         it("Returns filter if defined", function() {
             openLayer.params = {CQL_FILTER: "test='filter'"};
-            
+
             expect (openLayer.getCqlFilter()).toEqual("test='filter'");
         });
 
         it("Returns empty string if cql filter not defined", function() {
             openLayer.params = {};
-            
+
             expect (openLayer.getCqlFilter()).toEqual('');
         });
     });
@@ -89,11 +89,11 @@ describe("OpenLayers.Layer.WMS", function() {
     describe("setCqlFilter", function() {
         it("calls mergeParams for a new filter", function() {
             spyOn(openLayer, "mergeNewParams");
-            
+
             openLayer.params = {CQL_FILTER: "test='filter'"};
 
             openLayer.setCqlFilter("attribute='anotherfilter'");
-            
+
             expect(openLayer.mergeNewParams).toHaveBeenCalledWith({
                 CQL_FILTER : "attribute='anotherfilter'"
             });
@@ -101,11 +101,11 @@ describe("OpenLayers.Layer.WMS", function() {
 
         it("does nothing if new filter equals old filter", function() {
             spyOn(openLayer, "mergeNewParams");
-            
+
             openLayer.params = {CQL_FILTER: "test='filter'"};
 
             openLayer.setCqlFilter("test='filter'");
-            
+
             expect(openLayer.mergeNewParams).not.toHaveBeenCalled();
         });
 
@@ -113,9 +113,9 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, "redraw");
 
             openLayer.params = {CQL_FILTER: "test='filter'"};
-            
+
             openLayer.setCqlFilter("");
-            
+
             expect(openLayer.redraw).toHaveBeenCalled();
         });
     });
@@ -124,9 +124,9 @@ describe("OpenLayers.Layer.WMS", function() {
         it("joins cql filters with download filters", function() {
             openLayer.params = {CQL_FILTER: "test='filter'"};
             openLayer.downloadOnlyFilters = "depth>=10";
-            
+
             var downloadFilter = openLayer.getDownloadFilter();
-            
+
             expect(downloadFilter).toBe("test='filter' AND depth>=10");
         });
     });
@@ -145,6 +145,23 @@ describe("OpenLayers.Layer.WMS", function() {
             openLayer.wfsLayer = {server: {uri: 'wfs_server_uri/wms'}};
 
             expect(openLayer._getWfsServerUrl()).toBe('wfs_server_uri/wfs');
+        });
+    });
+
+    describe('_getWfsLayerTypeName', function() {
+
+        it('uses params.LAYERS if no WFS layer present', function() {
+
+            openLayer.params = { LAYERS: 'argo' };
+
+            expect(openLayer._getWfsLayerTypeName()).toBe('argo');
+        });
+
+        it('uses wfsLayer if present', function() {
+
+            openLayer.wfsLayer = { name: 'argo_wfs' };
+
+            expect(openLayer._getWfsLayerTypeName()).toBe('argo_wfs');
         });
     });
 
@@ -171,11 +188,10 @@ describe("OpenLayers.Layer.WMS", function() {
         it('does not use the CQL filter if it is missing', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-
-            openLayer.params.LAYERS = 'argo';
+            spyOn(openLayer, '_getWfsLayerTypeName').andReturn("type_name");
 
             var composedUrl = 'wfs_url?' +
-                'typeName=argo' +
+                'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=txt' +
                 '&REQUEST=GetFeature' +
@@ -189,12 +205,12 @@ describe("OpenLayers.Layer.WMS", function() {
         it('uses the CQL filter if it is present', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
+            spyOn(openLayer, '_getWfsLayerTypeName').andReturn("type_name");
 
             openLayer.params.CQL_FILTER = 'cql';
-            openLayer.params.LAYERS = 'argo';
 
             var composedUrl = 'wfs_url?' +
-                'typeName=argo' +
+                'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=csv' +
                 '&REQUEST=GetFeature' +
