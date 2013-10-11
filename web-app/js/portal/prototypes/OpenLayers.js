@@ -86,9 +86,10 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
     var wfsUrl = this._getWfsServerUrl();
+    var typeName = this._getWfsLayerTypeName();
 
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
-    wfsUrl += 'typeName=' + this.params.LAYERS;
+    wfsUrl += 'typeName=' + typeName;
     wfsUrl += '&SERVICE=WFS';
     wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
@@ -108,6 +109,16 @@ OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {
     var wfsUrl = wmsUrl.replace('/wms', '/wfs');
 
     return wfsUrl;
+};
+
+OpenLayers.Layer.WMS.prototype._getWfsLayerTypeName = function() {
+
+    if (this.wfsLayer) {
+        return this.wfsLayer.name;
+    }
+    else {
+        return this.params.LAYERS;
+    }
 };
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
