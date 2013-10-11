@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -148,62 +147,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _addTemporalControls: function(items) {
         var temporalExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('temporalExtentHeading') + "</b>");
 
-        var target = this;
-
-        this.timeRangeSlider = new Ext.slider.MultiSlider({
-            id: 'timeExtentSlider',
-            width: 190,
-            minValue: 0,
-            maxValue: 96, // (24 hours worth of 15 minute increments)
-            values: [0, 96],
-            plugins: new Ext.slider.Tip({
-                getText: function(thumb) {
-
-                    // Get controls
-                    var slider = thumb.slider;
-                    var startThumb = slider.thumbs[0];
-                    var endThumb = slider.thumbs[1];
-
-                    // Format value for reading
-                    var timeRangeStart = target._hoursFromThumb(startThumb);
-                    var timeRangeEnd = target._hoursFromThumb(endThumb);
-
-                    // Whole day message
-                    var wholeDayMessage = "";
-                    if (timeRangeStart == "0:00" && timeRangeEnd == "23:59") wholeDayMessage = "<br />(Whole day)";
-
-                    // Emphasise value being modified
-                    if (thumb == startThumb) timeRangeStart = "<span style=\"font-size: 1.4em;\">" + timeRangeStart + "</span>";
-                    if (thumb == endThumb) timeRangeEnd = "<span style=\"font-size: 1.4em;\">" + timeRangeEnd + "</span>";
-
-                    return String.format('{0}&nbsp;-&nbsp;{1}{2}', timeRangeStart, timeRangeEnd, wholeDayMessage);
-                }
-            }),
-            listeners: {
-                scope: this,
-                changecomplete: this._updateGeoNetworkAodaac
-            }
-        });
-
-        var timeRangeSliderContainer = new Ext.Panel({
-            fieldLabel: OpenLayers.i18n('timeOfDayLabel'),
-            height: 'auto',
-            layout: 'column',
-            items: [
-                {
-                    xtype: 'label',
-                    text: "0:00",
-                    style: "padding:0px; margin-top: 16px; margin-right: -32px;"
-                },
-                this.timeRangeSlider,
-                {
-                    xtype: 'label',
-                    text: "23:59",
-                    style: "padding: 0px; margin-top: 16px; margin-left: -28px;"
-                }
-            ]
-        });
-
         // Calculate dates for max/min
         var today = new Date();
         var yesterday = new Date();
@@ -247,7 +190,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             xtype: 'container',
             layout: 'form',
             width: 300,
-            items: [ dateRangeStartPicker, dateRangeEndPicker, this._newSectionSpacer(), timeRangeSliderContainer]
+            items: [dateRangeStartPicker, dateRangeEndPicker]
         };
 
         // Group controls for hide/show
@@ -261,39 +204,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _newSectionSpacer: function() {
         return new Ext.Spacer({ height: 7 });
-    },
-
-    _convertTimeSliderValue: function(quarterHours) {
-        // 'value' will be 0 - 96 (representing quarter-hours throughout the day)
-
-        var fullHours = Math.floor(quarterHours / 4);
-        var partHours = quarterHours % 4;
-
-        var minutePart = ["00", "15", "30", "45"][partHours];
-        var hourPart = fullHours;
-
-        // Add leading zeros
-        if (fullHours == 0) hourPart = '00';
-        else if (fullHours < 10) hourPart = '0' + hourPart;
-
-        return hourPart + '' + minutePart;
-    },
-
-    _hoursFromThumb: function(thumb) {
-
-        var value = thumb.value;
-
-        var fullHours = Math.floor(value / 4);
-        var partHours = value % 4;
-
-        var quarterHours = ["00", "15", "30", "45"];
-
-        var returnValue = String.format("{0}:{1}", fullHours, quarterHours[partHours]);
-
-        // Tweak not to show 24:00
-        if (returnValue == "24:00") returnValue = "23:59";
-
-        return returnValue;
     },
 
     _setBounds: function() {
@@ -314,8 +224,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 productId: this.productsInfo[this.selectedProductInfoIndex].productId,
                 dateRangeStart: this.dateRangeStartPicker.value,
                 dateRangeEnd: this.dateRangeEndPicker.value,
-                timeOfDayRangeStart: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[0].value),
-                timeOfDayRangeEnd: this._convertTimeSliderValue(this.timeRangeSlider.thumbs[1].value),
                 latitudeRangeStart: this.bboxControl.getSouthBL(),
                 longitudeRangeStart: this.bboxControl.getWestBL(),
                 latitudeRangeEnd: this.bboxControl.getNorthBL(),
