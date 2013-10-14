@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,20 +31,20 @@ class LayerController {
 
     def list = {
 
-        params.max = Math.min( params.max ? params.int( "max" ) : 50, 250 )
+        params.max = Math.min(params.max ? params.int("max") : 50, 250)
         if (!params.offset) params.offset = 0
         if (params.isActive == null) params.isActive = true
         if (params.isRoot == null) params.isRoot = ''
 
         def criteria = Layer.createCriteria()
-        def layers = criteria.list( _queryFromParams( params ), max: params.max, offset: params.offset )
+        def layers = criteria.list(_queryFromParams(params), max: params.max, offset: params.offset)
         def filters = [keyword: params.keyword, serverId: params.serverId, isActive: params.isActive, isRoot: params.isRoot]
 
         def model = [
-                layerInstanceList: layers,
-                layersShownCount: layers.size(),
-                filteredLayersCount: layers.totalCount,
-                filters: filters
+            layerInstanceList: layers,
+            layersShownCount: layers.size(),
+            filteredLayersCount: layers.totalCount,
+            filters: filters
         ]
 
         if (request.xhr) {
@@ -181,7 +180,7 @@ class LayerController {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
-                    like("uri", params.serverUri+"%")
+                    like("uri", params.serverUri + "%")
                     // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)
                     // Note that different GetCapabilites versions may have different request endpoints.
                     // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
@@ -195,7 +194,7 @@ class LayerController {
                 eq("namespace", namespace)
             }
             else {
-                isNull ("namespace")
+                isNull("namespace")
             }
             eq("name", localName)
             isNull("cql")      // don't include filtered layers!
@@ -315,7 +314,7 @@ class LayerController {
                 redirect(action: "list")
                 au.org.emii.portal.Config.recacheDefaultMenu()
             }
-            catch (org.springframework.dao.DataIntegrityViolationException e) {
+            catch(org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "edit", id: params.id)
             }
@@ -349,7 +348,7 @@ class LayerController {
             def startTime = new Date()
 
             // Check metadata
-            def metadata = JSON.parse( params.metadata as String )
+            def metadata = JSON.parse(params.metadata as String)
             _validateMetadata metadata
 
             // Check capabilities data
@@ -359,18 +358,18 @@ class LayerController {
             log.info "saveOrUpdate Layer. Finding server with uri: ${metadata.serverUri}"
 
             // Get server w/ metdata
-            def server = Server.findByUri( metadata.serverUri )
+            def server = Server.findByUri(metadata.serverUri)
 
-            if ( !server ) throw new IllegalStateException( "Unable to find server for uri: ${metadata.serverUri}" )
+            if (!server) throw new IllegalStateException("Unable to find server for uri: ${metadata.serverUri}")
 
-            def serverCapabilities = JSON.parse( capabilitiesData as String )
+            def serverCapabilities = JSON.parse(capabilitiesData as String)
 
             layerService.updateWithNewData serverCapabilities.rootLayer, server, metadata.dataSource
 
             server.updateOperations serverCapabilities.operations
 
             server.lastScanDate = new Date()
-            server.save( failOnError: true )
+            server.save(failOnError: true)
 
             use(TimeCategory) {
 
@@ -381,7 +380,7 @@ class LayerController {
 
             _recache(server)
         }
-        catch (Exception e) {
+        catch(Exception e) {
 
             log.info "Error processing layer/saveOrUpdate request", e
 
@@ -441,7 +440,7 @@ class LayerController {
             }
         }
 
-        if ( !responseText ) responseText = "<BR>This layer has no link to a metadata record"
+        if (!responseText) responseText = "<BR>This layer has no link to a metadata record"
 
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
     }
@@ -513,7 +512,7 @@ class LayerController {
     def _collectLayersAndServers(layers) {
         def items = []
         def server
-        layers.each { layer ->
+        layers.each {layer ->
             server = _collectServer(server, layer.server, items)
             items.add(layer)
         }
@@ -558,21 +557,21 @@ class LayerController {
         }
 
         // Put Layers in the order they were requested
-        return layers.sort { layerIds.indexOf( it.id ) }
+        return layers.sort { layerIds.indexOf(it.id) }
     }
 
     def _renderLayer(layerInstance) {
         def excludes = [
-                "class",
-                "metaClass",
-                "hasMany",
-                "handler",
-                "belongsTo",
-                "layers",
-                "parent",
-                "hibernateLazyInitializer",
-                "styles",
-                "filters"
+            "class",
+            "metaClass",
+            "hasMany",
+            "handler",
+            "belongsTo",
+            "layers",
+            "parent",
+            "hibernateLazyInitializer",
+            "styles",
+            "filters"
         ]
 
         def data = _getLayerData(layerInstance, excludes)
@@ -604,16 +603,16 @@ class LayerController {
 
     def _getLayerDefaultData(layer) {
         def excludes = [
-                "class",
-                "metaClass",
-                "dimensions",
-                "metadataUrls",
-                "hasMany",
-                "handler",
-                "belongsTo",
-                "layers",
-                "parent",
-                "hibernateLazyInitializer"
+            "class",
+            "metaClass",
+            "dimensions",
+            "metadataUrls",
+            "hasMany",
+            "handler",
+            "belongsTo",
+            "layers",
+            "parent",
+            "hibernateLazyInitializer"
         ]
 
         return _getLayerData(layer, excludes)
@@ -625,7 +624,7 @@ class LayerController {
     }
 
     def getFiltersAsJSON = {
-        def layerInstance = Layer.get( params.layerId )
+        def layerInstance = Layer.get(params.layerId)
 
         if (layerInstance) {
 
