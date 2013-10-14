@@ -65,23 +65,20 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         }
 
         controller.aodaacAggregatorService = [
-                getProductInfo: {
-                    ids ->
+            getProductInfo: {
+                ids ->
 
-                    assertEquals( [5, 6], ids )
+                assertEquals( [5, 6], ids )
 
-                    return [theResult: "yo"]
-                }
+                return [theResult: "yo"]
+            },
+            productIdsForLayer: { layer ->
+
+                assertEquals testLayer, layer
+
+                return [5, 6]
+            }
         ]
-
-        AodaacProductLink.metaClass.static.findAllByLayerNameIlikeAndServer = {
-            name, server ->
-
-            assertEquals "layerName", name
-            assertEquals "layerServer", server
-
-            return [[productId: 5], [productId: 5], [productId: 6]]
-        }
 
         // Set up the call
         mockParams.layerId = "2"
