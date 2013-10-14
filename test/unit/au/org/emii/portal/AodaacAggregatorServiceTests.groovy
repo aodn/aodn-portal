@@ -179,6 +179,27 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals productInfoId2, result
     }
 
+    void testProductIdsForLayer() {
+
+        def testLayer = [
+            name: "layerName",
+            server: "theServer"
+        ]
+
+        AodaacProductLink.metaClass.static.findAllByLayerNameIlikeAndServer = {
+            name, server ->
+
+                assertEquals "layerName", name
+                assertEquals "theServer", server
+
+                return [[productId: 5], [productId: 5], [productId: 6]]
+        }
+
+        def productIds = aodaacAggregatorService.productIdsForLayer(testLayer)
+
+        assertEquals([5, 6], productIds)
+    }
+
     void testCreateJob() {
 
         // General test job exists

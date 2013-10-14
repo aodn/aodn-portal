@@ -78,6 +78,13 @@ class AodaacAggregatorService {
         return _productsInfoForIds(productIds, allProductDataJson, allProductExtentJson)
     }
 
+    def productIdsForLayer(layer) {
+
+        def productLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer(layer.name, layer.server)
+
+        return productLinks.collect{ it.productId }.unique()
+    }
+
     def createJob(notificationEmailAddress, params) {
 
         log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
