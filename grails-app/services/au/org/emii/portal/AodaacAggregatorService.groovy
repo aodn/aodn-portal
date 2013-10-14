@@ -60,10 +60,10 @@ class AodaacAggregatorService {
         def productDataJavascript = productDataJavascriptAddress.toURL().text
 
         // Split into relevant parts
-        productDataJavascript = productDataJavascript.split(ProductDataDelimeter)[ ProductDataIdx ] // Ignore dataset info
+        productDataJavascript = productDataJavascript.split(ProductDataDelimeter)[ProductDataIdx] // Ignore dataset info
         def parts = productDataJavascript.split(ProductExtentDelimeter)
-        def productDataPart = parts[ ProductDataPartIdx ]
-        def productExtentPart = parts[ ProductExtentPartIdx ]
+        def productDataPart = parts[ProductDataPartIdx]
+        def productExtentPart = parts[ProductExtentPartIdx]
 
         log.debug "productDataPart: ${ productDataPart }"
         log.debug "productExtentPart: ${ productExtentPart }"
@@ -127,7 +127,7 @@ class AodaacAggregatorService {
 
             return job
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException("Unable to create new job (response: '$responseText')", e)
@@ -189,7 +189,7 @@ class AodaacAggregatorService {
                 _sendNotificationEmail job
             }
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException("Unable to update job '$job'", e)
@@ -214,7 +214,7 @@ class AodaacAggregatorService {
 
             updateJob job
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Call to '$apiCall' failed", e
             throw new AodaacException("Unable to cancel job '$job'", e)
@@ -231,7 +231,7 @@ class AodaacAggregatorService {
 
             job.delete()
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             throw new AodaacException("Unable to delete job '$job'", e)
         }
@@ -296,7 +296,7 @@ class AodaacAggregatorService {
             job.mostRecentDataFileExistCheck = new Date()
             job.save failOnError: true
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Could not check existence of result file for job '$job'", e
         }
@@ -335,7 +335,7 @@ class AodaacAggregatorService {
                 from(grailsApplication.config.portal.systemEmail.fromAddress)
             }
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
         }
@@ -402,16 +402,16 @@ class AodaacAggregatorService {
                     productInfo.productId = productDataJson.id
 
                     // Latitude
-                    productInfo.extents.lat.min = productExtentJson.extents.lat[ MinValue ]
-                    productInfo.extents.lat.max = productExtentJson.extents.lat[ MaxValue ]
+                    productInfo.extents.lat.min = productExtentJson.extents.lat[MinValue]
+                    productInfo.extents.lat.max = productExtentJson.extents.lat[MaxValue]
 
                     // longitude
-                    productInfo.extents.lon.min = productExtentJson.extents.lon[ MinValue ]
-                    productInfo.extents.lon.max = productExtentJson.extents.lon[ MaxValue ]
+                    productInfo.extents.lon.min = productExtentJson.extents.lon[MinValue]
+                    productInfo.extents.lon.max = productExtentJson.extents.lon[MaxValue]
 
                     // Time (sanitise and parse)
-                    def startTimeString = productExtentJson.extents.dateTime[ MinValue ]
-                    def endTimeString = productExtentJson.extents.dateTime[ MaxValue ]
+                    def startTimeString = productExtentJson.extents.dateTime[MinValue]
+                    def endTimeString = productExtentJson.extents.dateTime[MaxValue]
 
                     startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
 
@@ -425,7 +425,7 @@ class AodaacAggregatorService {
 
                     productsInfo << productInfo
                 }
-                catch(Exception e) {
+                catch (Exception e) {
 
                     log.info "Problem reading info from JSON (possible invalid values in JSON)", e
                     log.info "productDataJson: $productDataJson"

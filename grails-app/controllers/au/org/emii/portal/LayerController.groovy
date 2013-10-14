@@ -314,7 +314,7 @@ class LayerController {
                 redirect(action: "list")
                 au.org.emii.portal.Config.recacheDefaultMenu()
             }
-            catch(org.springframework.dao.DataIntegrityViolationException e) {
+            catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
                 redirect(action: "edit", id: params.id)
             }
@@ -334,7 +334,7 @@ class LayerController {
         try {
             _validateCredentialsAndAuthenticate params
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Problem validating credentials", e
 
@@ -380,7 +380,7 @@ class LayerController {
 
             _recache(server)
         }
-        catch(Exception e) {
+        catch (Exception e) {
 
             log.info "Error processing layer/saveOrUpdate request", e
 
@@ -430,11 +430,11 @@ class LayerController {
                     responseText = html
                 }
             }
-            catch(SAXException) {
+            catch (SAXException) {
 
                 responseText = "<BR>The metadata record is not available at this time."
             }
-            catch(FileNotFoundException) {
+            catch (FileNotFoundException) {
 
                 responseText = "<BR>The metadata record is not available at this time."
             }

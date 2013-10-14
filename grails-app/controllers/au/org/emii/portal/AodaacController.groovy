@@ -127,7 +127,7 @@ class AodaacController {
                 log.info("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
             }
         }
-        catch(e) {
+        catch (e) {
             log.error("Error fetching product links for layer id $layerId: ", e)
         }
         return productIds
