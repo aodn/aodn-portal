@@ -22,26 +22,26 @@ class AodaacAggregatorService {
     def messageSource
     def portalInstance
 
-    static final def StartJobCommand = "startBackgroundAggregator.cgi.sh"
-    static final def UpdateJobCommand = "reportProgress.cgi.sh"
-    static final def CancelJobCommand = "cancelJob.cgi.sh"
-    static final def GetDataCommand = "getJobDataUrl.cgi.sh"
-    static final def HttpStatusCodeSuccessRange = 200..299
+    static final def COMMAND_START_JOB = "startBackgroundAggregator.cgi.sh"
+    static final def COMMAND_UPDATE_JOB = "reportProgress.cgi.sh"
+    static final def COMMAND_CANCEL_JOB = "cancelJob.cgi.sh"
+    static final def COMMAND_GET_DATA = "getJobDataUrl.cgi.sh"
+    static final def HTTP_SUCCESS_CODES = 200..299
 
     // Date formats
-    static final def AggregatorDateRangeInputFormat = "yyyyMMdd"
-    static final def AggregatorProductInfoDateOutputFormat = "dd/MM/yyyy hh:mm:ss"
-    static final def JavascriptUIDateOutputFormat = "dd/MM/yyyy"
-    static final def AggregatorStartDateAddedMessage = " to"
+    static final def AGGREGATOR_DATE_INPUT_FORMAT = "yyyyMMdd"
+    static final def AGGREGATOR_DATE_OUTPUT_FORMAT = "dd/MM/yyyy hh:mm:ss"
+    static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "dd/MM/yyyy"
+    static final def AGGREGATOR_START_DATE_ADDED_MESSAGE = " to"
 
     // ProductDataJS
-    static final def ProductDataPartIdx = 0
-    static final def ProductExtentPartIdx = 1
-    static final def ProductDataIdx = 1
-    static final def MinValue = 0
-    static final def MaxValue = 1
-    static final def ProductDataDelimeter = "var productData = "
-    static final def ProductExtentDelimeter = "productExtents="
+    static final def PRODUCT_DATA_PART_INDEX = 0
+    static final def PRODUCT_EXTENT_PART_INDEX = 1
+    static final def PRODUCT_DATA_INDEX = 1
+    static final def MIN_VALUE_INDEX = 0
+    static final def MAX_VALUE_INDEX = 1
+    static final def PRODUCT_DATA_BOUNDARY = "var productData = "
+    static final def PRODUCT_EXTENT_BOUNDARY = "productExtents="
 
     // Service methods
 
@@ -60,10 +60,10 @@ class AodaacAggregatorService {
         def productDataJavascript = productDataJavascriptAddress.toURL().text
 
         // Split into relevant parts
-        productDataJavascript = productDataJavascript.split(ProductDataDelimeter)[ProductDataIdx] // Ignore dataset info
-        def parts = productDataJavascript.split(ProductExtentDelimeter)
-        def productDataPart = parts[ProductDataPartIdx]
-        def productExtentPart = parts[ProductExtentPartIdx]
+        productDataJavascript = productDataJavascript.split(PRODUCT_DATA_BOUNDARY)[PRODUCT_DATA_INDEX] // Ignore dataset info
+        def parts = productDataJavascript.split(PRODUCT_EXTENT_BOUNDARY)
+        def productDataPart = parts[PRODUCT_DATA_PART_INDEX]
+        def productExtentPart = parts[PRODUCT_EXTENT_PART_INDEX]
 
         log.debug "productDataPart: ${ productDataPart }"
         log.debug "productExtentPart: ${ productExtentPart }"
@@ -84,8 +84,8 @@ class AodaacAggregatorService {
 
         def apiCallArgs = []
 
-        def fromJavascriptFotmatter = new SimpleDateFormat(JavascriptUIDateOutputFormat) // 01/02/2012  -> Date Object
-        def toJavascriptFormatter = new SimpleDateFormat(AggregatorDateRangeInputFormat) // Date Object -> 20120201
+        def fromJavascriptFotmatter = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
+        def toJavascriptFormatter = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
         def dateRangeStart = fromJavascriptFotmatter.parse(params.dateRangeStart)
         def dateRangeEnd = fromJavascriptFotmatter.parse(params.dateRangeEnd)
 
@@ -103,7 +103,7 @@ class AodaacAggregatorService {
         }
 
         // Generate url
-        def apiCall = _aggregatorCommandAddress(StartJobCommand, apiCallArgs)
+        def apiCall = _aggregatorCommandAddress(COMMAND_START_JOB, apiCallArgs)
 
         // Include server/environment
         params.environment = _aggregatorEnvironment()
@@ -149,7 +149,7 @@ class AodaacAggregatorService {
         }
 
         // Generate url
-        def apiCall = _aggregatorCommandAddress(UpdateJobCommand, [job.jobId])
+        def apiCall = _aggregatorCommandAddress(COMMAND_UPDATE_JOB, [job.jobId])
 
         try {
             // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,progress.cgi.sh,20110309T162224_3818
@@ -203,7 +203,7 @@ class AodaacAggregatorService {
         log.debug "Cancelling job $job"
 
         // Generate url
-        def apiCall = _aggregatorCommandAddress(CancelJobCommand, [job.jobId])
+        def apiCall = _aggregatorCommandAddress(COMMAND_CANCEL_JOB, [job.jobId])
 
         try {
             // Example URL: Todo - DN: Include example cancel URL
@@ -255,7 +255,7 @@ class AodaacAggregatorService {
         log.debug "Retrieving results for $job"
 
         // Generate url
-        def apiCall = _aggregatorCommandAddress(GetDataCommand, [job.jobId])
+        def apiCall = _aggregatorCommandAddress(COMMAND_GET_DATA, [job.jobId])
 
         // Example URL: http://vm-115-33.ersa.edu.au/cgi-bin/IMOS.cgi?test,getJobDataUrl.cgi.sh,20110309T162224_3818
         log.debug "apiCall: ${ apiCall }"
@@ -287,7 +287,7 @@ class AodaacAggregatorService {
 
             log.debug "conn.responseCode: ${ conn.responseCode }"
 
-            if (conn.responseCode in HttpStatusCodeSuccessRange) {
+            if (conn.responseCode in HTTP_SUCCESS_CODES) {
 
                 job.dataFileExists = true
             }
@@ -402,26 +402,26 @@ class AodaacAggregatorService {
                     productInfo.productId = productDataJson.id
 
                     // Latitude
-                    productInfo.extents.lat.min = productExtentJson.extents.lat[MinValue]
-                    productInfo.extents.lat.max = productExtentJson.extents.lat[MaxValue]
+                    productInfo.extents.lat.min = productExtentJson.extents.lat[MIN_VALUE_INDEX]
+                    productInfo.extents.lat.max = productExtentJson.extents.lat[MAX_VALUE_INDEX]
 
                     // longitude
-                    productInfo.extents.lon.min = productExtentJson.extents.lon[MinValue]
-                    productInfo.extents.lon.max = productExtentJson.extents.lon[MaxValue]
+                    productInfo.extents.lon.min = productExtentJson.extents.lon[MIN_VALUE_INDEX]
+                    productInfo.extents.lon.max = productExtentJson.extents.lon[MAX_VALUE_INDEX]
 
                     // Time (sanitise and parse)
-                    def startTimeString = productExtentJson.extents.dateTime[MinValue]
-                    def endTimeString = productExtentJson.extents.dateTime[MaxValue]
+                    def startTimeString = productExtentJson.extents.dateTime[MIN_VALUE_INDEX]
+                    def endTimeString = productExtentJson.extents.dateTime[MAX_VALUE_INDEX]
 
-                    startTimeString -= AggregatorStartDateAddedMessage // Remove message added to start time by aggregator
+                    startTimeString -= AGGREGATOR_START_DATE_ADDED_MESSAGE // Remove message added to start time by aggregator
 
                     log.debug "  startTimeString: ${ startTimeString }"
 
-                    def startTimeDate = Date.parse(AggregatorProductInfoDateOutputFormat, startTimeString)
-                    def endTimeDate = Date.parse(AggregatorProductInfoDateOutputFormat, endTimeString)
+                    def startTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, startTimeString)
+                    def endTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, endTimeString)
 
-                    productInfo.extents.dateTime.min = startTimeDate.format(JavascriptUIDateOutputFormat)
-                    productInfo.extents.dateTime.max = endTimeDate.format(JavascriptUIDateOutputFormat)
+                    productInfo.extents.dateTime.min = startTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
+                    productInfo.extents.dateTime.max = endTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
 
                     productsInfo << productInfo
                 }
