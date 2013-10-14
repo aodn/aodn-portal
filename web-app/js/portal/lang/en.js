@@ -65,7 +65,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     notificationBlurbMessage: 'Subsetting gridded data can take a long time. You will be notified via email when your data is ready for download.',
 
     // WFS Filters Panel
-    subsetParametersText: 'subset paramaters',
+    subsetParametersText: 'subset parameters',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
