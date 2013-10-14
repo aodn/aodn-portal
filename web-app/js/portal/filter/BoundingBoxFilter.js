@@ -8,10 +8,6 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
-    initComponent: function() {
-        this.CQL = "";
-        Portal.filter.BoundingBoxFilter.superclass.initComponent.call(this);
-    },
 
     _createField: function() {
         this.bbox = new Portal.details.BoundingBox();
@@ -44,18 +40,18 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
         if (this.items.length != 0 && this.layer.map) {
             var extent = this.layer.map.getExtent();
             this.bbox.setBounds(extent);
-            this._updateCql(extent);
+            this._createCQL();
         }
     },
 
-    _updateCql: function(bounds) {
+    _createCQL: function() {
         this.CQL = String.format(
             "BBOX({0},{1},{2},{3},{4})",
             this.filter.name,
-            bounds.left,
-            bounds.bottom,
-            bounds.right,
-            bounds.top
+            this.bbox.getWestBL(),
+            this.bbox.getSouthBL(),
+            this.bbox.getEastBL(),
+            this.bbox.getNorthBL()
         );
 
         this._fireAddEvent();

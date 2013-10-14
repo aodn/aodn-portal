@@ -17,10 +17,6 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
         Portal.filter.ComboFilter.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg) {
-        Portal.filter.ComboFilter.superclass.initComponent.call(this);
-    },
-
     _createField: function() {
         this.combo = new Ext.form.ComboBox({
             triggerAction: 'all',
@@ -53,14 +49,14 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.combo.getStore().loadData(data);
     },
 
-    _createCQL: function(combo, record, index) {
+    _createCQL: function() {
         this.CQL = String.format("{0} LIKE '{1}'",
             this.filter.name,
-            this._escapeSingleQuotes(record.data.text));
+            this._escapeSingleQuotes(this.combo.getValue()));
     },
 
     _onSelected: function(combo, record, index) {
-        this._createCQL(combo, record, index);
+        this._createCQL();
         this._fireAddEvent();
     },
 
@@ -70,13 +66,13 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.name + " LIKE '%(.*)%'");
+        this.re = new RegExp(this.filter.name + " LIKE '(.*?)'");
 
         var m = this.re.exec(this.layer.getDownloadFilter());
 
         if (m != null && m.length == 2) {
             this.combo.setValue(m[1]);
-            this.CQL = this.filter.name + " LIKE '%" + m[1] + "%'";
+            this._createCQL();
         }
     },
 

@@ -15,12 +15,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.BaseFilter.superclass.constructor.call(this, config);
-    },
-
-    initComponent: function() {
-
-        Portal.filter.BaseFilter.superclass.initComponent.call(this);
+        Portal.filter.NumberFilter.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -80,7 +75,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         // Idea: show max/min values from this.filter.possibleValues
     },
 
-    _createCQL: function(combo, record, index) {
+    _createCQL: function() {
 
         this.CQL = this.filter.name + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
@@ -102,7 +97,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         if (this.firstField.validate() && this.secondField.validate()) {
 
-            this._createCQL(combo, record, index);
+            this._createCQL();
             this._fireAddEvent();
         }
     },
@@ -121,7 +116,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         // Only change map if first value has a value
         if (shouldUpdate) {
 
-            this._createCQL(combo, record, index);
+            this._createCQL();
             this._fireAddEvent();
         }
     },
@@ -160,6 +155,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
 
                 this.operators.setValue(singleValOperator);
                 this.firstField.setValue(singleValValue);
+                this._createCQL();
             }
             else if (betweenValue1 != null && betweenValue2 != null) {
 
@@ -167,6 +163,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
                 this.firstField.setValue(betweenValue1);
                 this.secondField.setValue(betweenValue2);
                 this.secondField.setVisible(true);
+                this._createCQL();
             }
         }
     }

@@ -16,11 +16,6 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         Portal.filter.TimeFilter.superclass.constructor.call(this, config);
     },
 
-    initComponent: function() {
-        this.CQL = "";
-        Portal.filter.TimeFilter.superclass.initComponent.call(this);
-    },
-
     _createField: function() {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
@@ -101,16 +96,19 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
     _applyTimeFilter: function() {
         if (this._requiredFieldsSet()) {
-            this.CQL = this.filter.name + " ";
+            this._createCQL();
+            this._fireAddEvent();
+        }
+    },
+    
+    _createCQL: function() {
+        this.CQL = this.filter.name + " ";
 
-            if (this._isSelectedOpSetToBetween()) {
-                this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
-                this._fireAddEvent();
-            }
-            else {
-                this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
-                this._fireAddEvent();
-            }
+        if (this._isSelectedOpSetToBetween()) {
+            this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
+        }
+        else {
+            this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
         }
     },
 
@@ -141,10 +139,10 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _setExistingFilters: function() {
-        var beforePattern = this.filter.name + " before (.*) *";
-        var afterPattern = this.filter.name + " after (.*) *";
+        var beforePattern = this.filter.name + " before (.*?)( |$)";
+        var afterPattern = this.filter.name + " after (.*?)( |$)";
 
-        betweenRe = new RegExp(afterPattern + " AND " + beforePattern);
+        betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
         beforeRe = new RegExp(beforePattern);
         afterRe = new RegExp(afterPattern);
 
@@ -152,20 +150,23 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
         var m2 = afterRe.exec(this.layer.getDownloadFilter());
         var between = betweenRe.exec(this.layer.getDownloadFilter());
 
-        if (between != null && between.length == 3) {
+        if (between != null && between.length == 5) {
             this.operators.setValue('between');
             this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
             this.toField.setVisible(true);
-            this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[2]));
+            this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[3]));
+            this._createCQL();
         }
         else {
-            if (m != null && m.length == 2) {
+            if (m != null && m.length == 3) {
                 this.operators.setValue('before');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+                this._createCQL();
             }
-            else if (m2 != null && m2.length == 2) {
+            else if (m2 != null && m2.length == 3) {
                 this.operators.setValue('after');
-                this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
+                this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m2[1]));
+                this._createCQL();
             }
         }
     }
