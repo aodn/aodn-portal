@@ -200,6 +200,35 @@ describe("Portal.filter.TimeFilter", function() {
         });
     });
 
+    describe('_setExistingFilters', function() {
+        it('sets from and to fields from cql parameter', function() {
+            timeFilter.filter = { name: 'test' };
+            
+            timeFilter.layer = {};
+            timeFilter.layer.getDownloadFilter = function() {
+                return "test after 2013-10-07T13:00:00Z AND test before 2013-10-08T13:00:00Z";
+            };
+            
+            var MockField = function() {
+                this.setValue = jasmine.createSpy();
+                this.setVisible = jasmine.createSpy();
+            };
+            
+            timeFilter.operators = new MockField();
+            timeFilter.fromField = new MockField();
+            timeFilter.toField = new MockField();
+            timeFilter._createCQL = jasmine.createSpy();
+            
+            timeFilter._setExistingFilters();
+            
+            expect(timeFilter.operators.setValue).toHaveBeenCalledWith("between");
+            expect(timeFilter.fromField.setValue).toHaveBeenCalledWith(new Date("Tue Oct 08 2013 00:00:00 GMT+1100 (EST)"));
+            expect(timeFilter.toField.setValue).toHaveBeenCalledWith(new Date("Wed Oct 09 2013 00:00:00 GMT+1100 (EST)"));
+            expect(timeFilter.toField.setVisible).toHaveBeenCalledWith(true);
+            expect(timeFilter._createCQL).toHaveBeenCalled();
+        });
+    });
+    
     function _mockFilterFields(timeFilter) {
         Ext.each(['operators', 'fromField', 'toField'], function (property, index, all) {
             this[property] = {
