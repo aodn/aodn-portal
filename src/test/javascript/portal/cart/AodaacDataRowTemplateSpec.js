@@ -44,7 +44,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_aodaacParamatersMarkup').andReturn('parameter_markup');
+            spyOn(tpl, '_aodaacParametersMarkup').andReturn('parameter_markup');
             spyOn(parentTemplate, '_makeEntryMarkup').andReturn('entry markup');
         });
 
@@ -59,7 +59,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
-            expect(tpl._aodaacParamatersMarkup).toHaveBeenCalledWith(geoNetworkRecord.aodaac);
+            expect(tpl._aodaacParametersMarkup).toHaveBeenCalledWith(geoNetworkRecord.aodaac);
             expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('parameter_markup');
         });
 
@@ -142,7 +142,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
                 dateRangeEnd: '31/12/2001'
             };
 
-            markup = tpl._aodaacParamatersMarkup(params);
+            markup = tpl._aodaacParametersMarkup(params);
         });
 
         it('returns parameter list markup', function() {

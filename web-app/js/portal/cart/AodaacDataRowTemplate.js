@@ -32,7 +32,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         if (aodaacParameters) {
 
-            var html = this._aodaacParamatersMarkup(aodaacParameters);
+            var html = this._aodaacParametersMarkup(aodaacParameters);
 
             return this.downloadPanelTemplate._makeEntryMarkup(html);
         }
@@ -64,7 +64,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         return this.downloadPanelTemplate._makeEntryMarkup(OpenLayers.i18n('notificationBlurbMessage'));
     },
 
-    _aodaacParamatersMarkup: function(params) {
+    _aodaacParametersMarkup: function(params) {
         var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
         var areaStart = String.format(areaPattern, params.latitudeRangeStart, params.longitudeRangeStart);
         var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
