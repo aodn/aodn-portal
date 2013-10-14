@@ -512,7 +512,7 @@ class LayerController {
     def _collectLayersAndServers(layers) {
         def items = []
         def server
-        layers.each {layer ->
+        layers.each { layer ->
             server = _collectServer(server, layer.server, items)
             items.add(layer)
         }
