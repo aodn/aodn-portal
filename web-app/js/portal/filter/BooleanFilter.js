@@ -9,18 +9,6 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
-    constructor: function(cfg) {
-        var config = Ext.apply({
-        }, cfg );
-
-        Portal.filter.BooleanFilter.superclass.constructor.call(this, config);
-    },
-
-    initComponent: function(cfg) {
-        this.CQL = "";
-        Portal.filter.BooleanFilter.superclass.initComponent.call(this);
-    },
-
     _createField:function() {
 
         this.trueButton = new Ext.form.Radio({
@@ -56,16 +44,19 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _buttonChecked: function(button, checked) {
-        if (button === this.trueButton && checked) {
-            this.CQL = this.filter.name + " = true";
-        }
-        else if (button === this.falseButton && checked) {
-            this.CQL = this.filter.name + " = false";
-        }
-
+        this._createCQL();
         this._fireAddEvent();
     },
 
+    _createCQL: function() {
+        if (this.trueButton.getValue()) {
+            this.CQL = this.filter.name + " = true";
+        }
+        else if (this.falseButton.getValue()) {
+            this.CQL = this.filter.name + " = false";
+        }
+    },
+    
     handleRemoveFilter: function() {
         this.CQL = "";
         this.trueButton.setValue(false);
@@ -73,20 +64,20 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.name + " = (.*) ?");
+        this.re = new RegExp(this.filter.name + " = (.*?)( |$)");
 
         var m = this.re.exec(this.layer.getDownloadFilter());
 
-        if (m != null && m.length == 2) {
-            this.CQL = this.filter.name + " = " + m[1];
-
+        if (m != null && m.length == 3) {
             if (m[1] === "true") {
                 this.trueButton.setValue(true);
                 this.falseButton.setValue(false);
+                this._createCQL();
             }
             else if (m[1] === "false") {
                 this.trueButton.setValue(false);
                 this.falseButton.setValue(true);
+                this._createCQL();
             }
         }
     }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,29 +17,29 @@ class AodaacController {
 
         def productIds = []
 
-        if ( params.productIds ) {
+        if (params.productIds) {
 
-            productIds = params.productIds.tokenize( "," )
+            productIds = params.productIds.tokenize(",")
         }
-        else if ( params.layerId ) {
+        else if (params.layerId) {
 
             log.debug "ProductIds being retrieved with params.layerId: '$params.layerId'"
             productIds = _getLayerProductIds(params.layerId)
         }
 
-        if ( productIds ) {
+        if (productIds) {
 
-            render aodaacAggregatorService.getProductInfo( productIds ) as JSON
+            render aodaacAggregatorService.getProductInfo(productIds) as JSON
         }
         else {
 
-            render ([] as JSON)
+            render([] as JSON)
         }
     }
 
     def createJob = {
 
-        def job = aodaacAggregatorService.createJob( params.notificationEmailAddress, params )
+        def job = aodaacAggregatorService.createJob(params.notificationEmailAddress, params)
 
         _addToList job
 
@@ -49,7 +48,7 @@ class AodaacController {
 
     def updateJob = {
 
-        def job = _byId( params.id )
+        def job = _byId(params.id)
 
         aodaacAggregatorService.updateJob job
 
@@ -58,7 +57,7 @@ class AodaacController {
 
     def cancelJob = {
 
-        def job = _byId( params.id )
+        def job = _byId(params.id)
 
         aodaacAggregatorService.cancelJob job
 
@@ -69,7 +68,7 @@ class AodaacController {
 
     def deleteJob = {
 
-        def job = _byId( params.id )
+        def job = _byId(params.id)
 
         // Store jobId to notify the User
         def jobId = job.jobId
@@ -85,29 +84,31 @@ class AodaacController {
 
         def jobIds = _getJobIdList()
 
-        def jobs = jobIds.size() ? AodaacJob.getAll( jobIds ) : []
+        def jobs = jobIds.size() ? AodaacJob.getAll(jobIds) : []
 
         render jobs as JSON
     }
 
-    def _byId( jobId ) {
+    def _byId(jobId) {
 
-        return AodaacJob.findByJobId( jobId )
+        return AodaacJob.findByJobId(jobId)
     }
 
     def _getJobIdList() {
 
-        if ( !session.aodaacJobIdList ) { session.aodaacJobIdList = [] }
+        if (!session.aodaacJobIdList) {
+            session.aodaacJobIdList = []
+        }
 
         return session.aodaacJobIdList
     }
 
-    void _addToList( item ) {
+    void _addToList(item) {
 
         _getJobIdList().add item.jobId
     }
 
-    void _removeFromList( item ) {
+    void _removeFromList(item) {
 
         _getJobIdList().remove item.jobId as Object
     }
@@ -116,9 +117,9 @@ class AodaacController {
         def productIds = []
         try {
             if (layerId.isNumber()) {
-                def layer = Layer.get( layerId.toLong() )
+                def layer = Layer.get(layerId.toLong())
 
-                def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer( layer.name, layer.server )
+                def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer(layer.name, layer.server)
 
                 productIds = aodaacProductLinks.collect{ it.productId }.unique()
             }
