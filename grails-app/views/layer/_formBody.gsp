@@ -263,9 +263,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
 
-                                    <g:textField name="wfsLayerToString" value="${layerInstance?.wfsLayer}" disabled="true" style="width:500px" />
-                                    <g:hiddenField name="wfsLayerId" value="${layerInstance?.wfsLayer?.id}" />
-                                    %{--<g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>--}%
+                                    <g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
                                 </td>
                             </tr>
 
