@@ -142,15 +142,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         String.metaClass = null
     }
 
-    void testGetProductInfo_NoIds() {
-
-        def result
-
-        result = aodaacAggregatorService.getProductInfo([])
-
-        assertEquals productInfoAll, result
-    }
-
     void testGetProductInfo_OneId() {
 
         def result

@@ -27,14 +27,7 @@ class AodaacController {
             productIds = _getLayerProductIds(params.layerId)
         }
 
-        if (productIds) {
-
-            render aodaacAggregatorService.getProductInfo(productIds) as JSON
-        }
-        else {
-
-            render([] as JSON)
-        }
+        render aodaacAggregatorService.getProductInfo(productIds) as JSON
     }
 
     def createJob = {

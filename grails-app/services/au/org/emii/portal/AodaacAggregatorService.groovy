@@ -371,73 +371,65 @@ class AodaacAggregatorService {
 
     def _productsInfoForIds(productIds, allProductDataJson, allProductExtentJson) {
 
-        if (!productIds) {
-
-            log.debug "No productIds passed, using all from allProductdataJson"
-
-            productIds = allProductDataJson.collect({ it.id })
-        }
-
-        log.debug "productIds: ${ productIds }"
+        log.debug "productIds: $productIds"
 
         def productsInfo = []
 
-        productIds.each {
-            productId ->
+        productIds.each { productId ->
 
-                // Create new JSON object with desired structure
-                def productInfo = [
-                    extents: [
-                        lat: [:],
-                        lon: [:],
-                        dateTime: [:]
-                    ]
+            // Create new JSON object with desired structure
+            def productInfo = [
+                extents: [
+                    lat: [:],
+                    lon: [:],
+                    dateTime: [:]
                 ]
+            ]
 
-                // Copy data to new structure
-                def matchingIds = { it.id == productId?.toString() } // it.id will be a String
-                def productDataJson = allProductDataJson.find(matchingIds)
-                def productExtentJson = allProductExtentJson.find(matchingIds)
+            // Copy data to new structure
+            def matchingIds = { it.id == productId?.toString() } // it.id will be a String
+            def productDataJson = allProductDataJson.find(matchingIds)
+            def productExtentJson = allProductExtentJson.find(matchingIds)
 
-                log.debug "JSON for productId: '$productId'"
-                log.debug "  productDataJson: $productDataJson"
-                log.debug "  productExtentJson: $productExtentJson"
+            log.debug "JSON for productId: '$productId'"
+            log.debug "  productDataJson: $productDataJson"
+            log.debug "  productExtentJson: $productExtentJson"
 
-                try {
-                    // Name, etc.
-                    productInfo.name = productDataJson.name
-                    productInfo.productId = productDataJson.id
+            try {
+                // Name, etc.
+                productInfo.name = productDataJson.name
+                productInfo.productId = productDataJson.id
 
-                    // Latitude
-                    productInfo.extents.lat.min = productExtentJson.extents.lat[MIN_VALUE_INDEX]
-                    productInfo.extents.lat.max = productExtentJson.extents.lat[MAX_VALUE_INDEX]
+                // Latitude
+                productInfo.extents.lat.min = productExtentJson.extents.lat[MIN_VALUE_INDEX]
+                productInfo.extents.lat.max = productExtentJson.extents.lat[MAX_VALUE_INDEX]
 
-                    // longitude
-                    productInfo.extents.lon.min = productExtentJson.extents.lon[MIN_VALUE_INDEX]
-                    productInfo.extents.lon.max = productExtentJson.extents.lon[MAX_VALUE_INDEX]
+                // longitude
+                productInfo.extents.lon.min = productExtentJson.extents.lon[MIN_VALUE_INDEX]
+                productInfo.extents.lon.max = productExtentJson.extents.lon[MAX_VALUE_INDEX]
 
-                    // Time (sanitise and parse)
-                    def startTimeString = productExtentJson.extents.dateTime[MIN_VALUE_INDEX]
-                    def endTimeString = productExtentJson.extents.dateTime[MAX_VALUE_INDEX]
+                // Time (sanitise and parse)
+                def startTimeString = productExtentJson.extents.dateTime[MIN_VALUE_INDEX]
+                def endTimeString = productExtentJson.extents.dateTime[MAX_VALUE_INDEX]
 
-                    startTimeString -= AGGREGATOR_START_DATE_ADDED_MESSAGE // Remove message added to start time by aggregator
+                startTimeString -= AGGREGATOR_START_DATE_ADDED_MESSAGE // Remove message added to start time by aggregator
 
-                    log.debug "  startTimeString: ${ startTimeString }"
+                log.debug "  startTimeString: $startTimeString"
 
-                    def startTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, startTimeString)
-                    def endTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, endTimeString)
+                def startTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, startTimeString)
+                def endTimeDate = Date.parse(AGGREGATOR_DATE_OUTPUT_FORMAT, endTimeString)
 
-                    productInfo.extents.dateTime.min = startTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
-                    productInfo.extents.dateTime.max = endTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
+                productInfo.extents.dateTime.min = startTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
+                productInfo.extents.dateTime.max = endTimeDate.format(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT)
 
-                    productsInfo << productInfo
-                }
-                catch (Exception e) {
+                productsInfo << productInfo
+            }
+            catch (Exception e) {
 
-                    log.info "Problem reading info from JSON (possible invalid values in JSON)", e
-                    log.info "productDataJson: $productDataJson"
-                    log.info "productExtentJson: $productExtentJson"
-                }
+                log.info "Problem reading info from JSON (possible invalid values in JSON)", e
+                log.info "productDataJson: $productDataJson"
+                log.info "productExtentJson: $productExtentJson"
+            }
         }
 
         return productsInfo

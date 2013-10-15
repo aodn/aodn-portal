@@ -87,6 +87,15 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
     void testProductInfo_PassingNoParam() {
 
+        controller.aodaacAggregatorService = [
+            getProductInfo: { ids ->
+
+                assertEquals([], ids)
+
+                return []
+            }
+        ]
+
         controller.productInfo()
 
         assertEquals "[]", mockResponse.contentAsString
