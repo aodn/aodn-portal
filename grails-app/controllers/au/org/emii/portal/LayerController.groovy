@@ -22,6 +22,7 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def aodaacAggregatorService
     def layerService
     def dataSource
 
@@ -230,13 +231,18 @@ class LayerController {
     }
 
     def edit = {
+
         def layerInstance = Layer.get(params.id)
+
+        def productIds = aodaacAggregatorService.productIdsForLayer(layerInstance)
+        def productInfo = aodaacAggregatorService.getProductInfo(productIds)
+
         if (!layerInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
             redirect(action: "list")
         }
         else {
-            return [layerInstance: layerInstance]
+            return [layerInstance: layerInstance, linkedAodaacProducts: productInfo]
         }
     }
 
