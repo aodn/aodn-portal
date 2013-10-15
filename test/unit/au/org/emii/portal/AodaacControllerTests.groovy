@@ -32,13 +32,12 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         mockDomain AodaacProductLink
 
         controller.aodaacAggregatorService = [
-                getProductInfo: {
-                    ids ->
+            getProductInfo: { ids ->
 
-                    assertEquals( ["1", "2"], ids )
+                assertEquals(["1", "2"], ids)
 
-                    return [theResult: "yo"]
-                }
+                return [theResult: "yo"]
+            }
         ]
 
         // Set up the call
@@ -56,8 +55,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
         def testLayer = [layerId: 2, name: "layerName", server: "layerServer"]
 
-        Layer.metaClass.static.get = {
-            id ->
+        Layer.metaClass.static.get = { id ->
 
             assertEquals 2, id
 
@@ -65,10 +63,9 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         }
 
         controller.aodaacAggregatorService = [
-            getProductInfo: {
-                ids ->
+            getProductInfo: { ids ->
 
-                assertEquals( [5, 6], ids )
+                assertEquals([5, 6], ids)
 
                 return [theResult: "yo"]
             },
@@ -105,23 +102,22 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         mockParams.notificationEmailAddress = "email"
 
         controller.aodaacAggregatorService = [
-                createJob: {
-                    email, params ->
+            createJob: { email, params ->
 
-                    createJobCalledTimes++
-                    assertEquals "email", email
-                    assertEquals mockParams, params
+                createJobCalledTimes++
+                assertEquals "email", email
+                assertEquals mockParams, params
 
-                    return jobCreated
-                }
+                return jobCreated
+            }
         ]
 
-        assertEquals( [], controller._getJobIdList() )
+        assertEquals([], controller._getJobIdList())
 
         controller.createJob()
 
         assertEquals 1, createJobCalledTimes
-        assertEquals( [1], controller._getJobIdList() )
+        assertEquals([1], controller._getJobIdList())
         assertEquals "Job created (ID: 1)", mockResponse.contentAsString
     }
 
@@ -135,8 +131,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
         mockParams.id = jobId
 
-        AodaacJob.metaClass.static.findByJobId = {
-            id ->
+        AodaacJob.metaClass.static.findByJobId = { id ->
 
             findByJobIdCalledTimes++
             assertEquals jobId, id
@@ -144,12 +139,11 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         }
 
         controller.aodaacAggregatorService = [
-                updateJob: {
-                    job ->
+            updateJob: { job ->
 
-                    updateJobCalledTimes++
-                    assertEquals job, jobOfInterest
-                }
+                updateJobCalledTimes++
+                assertEquals job, jobOfInterest
+            }
         ]
 
         controller.updateJob()
@@ -169,8 +163,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
         mockParams.id = jobId
 
-        AodaacJob.metaClass.static.findByJobId = {
-            id ->
+        AodaacJob.metaClass.static.findByJobId = { id ->
 
             findByJobIdCalledTimes++
             assertEquals jobId, id
@@ -178,17 +171,16 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         }
 
         controller.aodaacAggregatorService = [
-                cancelJob: {
-                    job ->
+            cancelJob: { job ->
 
-                    cancelJobCalledTimes++
-                    assertEquals job, jobOfInterest
-                }
+                cancelJobCalledTimes++
+                assertEquals job, jobOfInterest
+            }
         ]
 
         // Test jobListIds before removal
         controller._addToList jobOfInterest
-        assertEquals( [jobId], controller._getJobIdList() )
+        assertEquals([jobId], controller._getJobIdList())
 
         controller.cancelJob()
 
@@ -196,7 +188,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         assertEquals 1, findByJobIdCalledTimes
         assertEquals "Job cancelled (ID: $jobId)", mockResponse.contentAsString
 
-        assertEquals( [], controller._getJobIdList() )
+        assertEquals([], controller._getJobIdList())
     }
 
     void testDeleteJob() {
@@ -209,8 +201,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
         mockParams.id = jobId
 
-        AodaacJob.metaClass.static.findByJobId = {
-            id ->
+        AodaacJob.metaClass.static.findByJobId = { id ->
 
             findByJobIdCalledTimes++
             assertEquals jobId, id
@@ -218,17 +209,16 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         }
 
         controller.aodaacAggregatorService = [
-                deleteJob: {
-                    job ->
+            deleteJob: { job ->
 
-                    deleteJobCalledTimes++
-                    assertEquals job, jobOfInterest
-                }
+                deleteJobCalledTimes++
+                assertEquals job, jobOfInterest
+            }
         ]
 
         // Test jobListIds before removal
         controller._addToList jobOfInterest
-        assertEquals( [jobId], controller._getJobIdList() )
+        assertEquals([jobId], controller._getJobIdList())
 
         controller.deleteJob()
 
@@ -236,7 +226,7 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         assertEquals 1, findByJobIdCalledTimes
         assertEquals "Job deleted (ID: $jobId)", mockResponse.contentAsString
 
-        assertEquals( [], controller._getJobIdList() )
+        assertEquals([], controller._getJobIdList())
     }
 
     void testUserJobInfo_HasJobsInList() {
@@ -249,11 +239,10 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         controller._addToList testJob1
         controller._addToList testJob2
 
-        AodaacJob.metaClass.static.getAll = {
-            List ids ->
+        AodaacJob.metaClass.static.getAll = { List ids ->
 
             getAllCalledTimes++
-            assertEquals( [2, 4], ids )
+            assertEquals([2, 4], ids)
             return [testJob1, testJob2]
         }
 
@@ -265,19 +254,17 @@ class AodaacControllerTests extends ControllerUnitTestCase {
 
     void testUserJobInfo_NoJobsInList() {
 
-        AodaacJob.metaClass.static.getAll = {
-            List ids ->
+        AodaacJob.metaClass.static.getAll = { List ids ->
 
             fail "Should not be called"
         }
 
-	    controller.aodaacAggregatorService = [
-		    updateJob: {
-			    job ->
+        controller.aodaacAggregatorService = [
+            updateJob: { job ->
 
-			    fail "Should not be called"
-		    }
-	    ]
+                fail "Should not be called"
+            }
+        ]
 
         controller.userJobInfo()
 
