@@ -172,23 +172,27 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     // This function is run asynchronously
     _precacheTiles: function() {
-        this.events.triggerEvent('precacheprogress', {
-            layer: this,
-            progress: 0.5
-        });
 
-        this.precachedTimes = this._getTimesToCache();
-        var self = this;
-
-        this.eachTile(function(tile) {
-            tile.clearCache();
-        });
-
-        // TODO: Can potentially open a gazillion requests for simul-caching
-        for (var i = 0; i < this.precachedTimes.length; i++) {
-            this.eachTile(function(tile) {
-                tile.precache(self.precachedTimes[i], self._imageLoaded, self);
+        // check the layer hasn't been deleted/destroyed meanwhile
+        if (this.events) {
+            this.events.triggerEvent('precacheprogress', {
+                layer: this,
+                progress: 0.5
             });
+
+            this.precachedTimes = this._getTimesToCache();
+            var self = this;
+
+            this.eachTile(function(tile) {
+                tile.clearCache();
+            });
+
+            // TODO: Can potentially open a gazillion requests for simul-caching
+            for (var i = 0; i < this.precachedTimes.length; i++) {
+                this.eachTile(function(tile) {
+                    tile.precache(self.precachedTimes[i], self._imageLoaded, self);
+                });
+            }
         }
     },
 
