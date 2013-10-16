@@ -30,10 +30,6 @@ describe("Portal.ui.openlayers.MapOptions", function() {
             expect(map.CLASS_NAME).toBe('OpenLayers.TemporalMap');
         });
 
-        it('time control added to map', function() {
-            expect(map.getControlsByClass("OpenLayers.Control.Time")[0]).toBeTruthy();
-        });
-
         it('Should return map with bounds set as 90 and -90 for latitude', function() {
 
             expect(map.restrictedExtent).not.toBe(null);

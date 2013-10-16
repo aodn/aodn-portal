@@ -54,4 +54,8 @@ describe("Portal.common.helpers", function() {
         var expectedResult = JSON.stringify({"seconds":24,"minutes":36,"hours":23,"days":5,"weeks":null,"months":null,"years":null});
         expect(JSON.stringify(res)).toBe(expectedResult);
     });
+    it('between function', function() {
+        var res =  between(5, 0, 7);
+        expect(true).toBe(res);
+    });
 });

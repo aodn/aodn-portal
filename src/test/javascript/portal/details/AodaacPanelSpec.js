@@ -4,6 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 describe('Portal.details.AodaacPanel', function() {
 
     var map;
@@ -13,17 +14,40 @@ describe('Portal.details.AodaacPanel', function() {
         updateAodaac: noOp
     };
     var layer = {
-        parentGeoNetworkRecord: geoNetworkRecord
+        parentGeoNetworkRecord: geoNetworkRecord,
+        temporalExtent: [moment("2001-01-01T22:44:00.000Z")],
+        temporalExtentLengthToProcess: 1,
+        missingDays: [],
+        productsInfo: [1,2,3]
     };
+
 
     beforeEach(function() {
         map = mockMap();
         spyOn(map.events, 'register');
+
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
+        aodaacPanel._setBounds =  function() {};
+        aodaacPanel._populateFormFields = function() {};
+        layer.getMissingDays =  function() { return []};
+        layer.getDatesOnDay =  function() { return []};
+        layer.getExtent =  function() { return []};
+        layer.isNcwms = function() {return true};
+        layer.events = { on: noOp };
+        layer.processTemporalExtent = noOp;
     });
 
     describe('initialisation', function() {
         it('registers a handler for the map move event', function() {
+
+            spyOn(Ext.Ajax, 'request').andCallFake(
+                function(params) {
+                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
+                }
+            );
+
+
+            aodaacPanel.update(layer, noOp, noOp, {});
             expect(map.events.register).toHaveBeenCalledWith('move', aodaacPanel, aodaacPanel._setBounds);
         });
     });
@@ -49,9 +73,7 @@ describe('Portal.details.AodaacPanel', function() {
     describe('input controls', function() {
 
         beforeEach(function() {
-            _decorateMap();
             _applyCommonSpies();
-            aodaacPanel.geoNetworkRecord = geoNetworkRecord;
         });
 
         it('updates the aodaac object when the layer changes', function() {
@@ -61,29 +83,33 @@ describe('Portal.details.AodaacPanel', function() {
                 }
             );
 
-            delete aodaacPanel.geoNetworkRecord;
             aodaacPanel.update(layer, noOp, noOp, {});
             expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+            delete aodaacPanel.geoNetworkRecord;
         });
 
-        it('updates the aodaac object when the start date changes via the picker', function() {
-            aodaacPanel.dateRangeStartPicker.fireEvent('select');
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+        it('updates the date when the start date changes via the picker', function() {
+            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel.startDateTimePicker.fireEvent('select');
+            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
 
-        it('updates the aodaac object when the start date changes via edit', function() {
-            aodaacPanel.dateRangeStartPicker.fireEvent('change');
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+        it('updates the date when the start date changes via edit', function() {
+            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel.startDateTimePicker.fireEvent('change');
+            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
 
-        it('updates the aodaac object when the end date changes via the picker', function() {
-            aodaacPanel.dateRangeEndPicker.fireEvent('select');
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+        it('updates the date when the end date changes via the picker', function() {
+            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel.endDateTimePicker.fireEvent('select');
+            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
 
-        it('updates the aodaac object when the end date changes via edit', function() {
-            aodaacPanel.dateRangeEndPicker.fireEvent('change');
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+        it('updates the date when the end date changes via edit', function() {
+            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel.endDateTimePicker.fireEvent('change');
+            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
 
         it('updates the aodaac object when the map moves', function() {
@@ -91,9 +117,17 @@ describe('Portal.details.AodaacPanel', function() {
             _decorateMap(_aodaacPanel);
             _aodaacPanel.geoNetworkRecord = geoNetworkRecord;
             _applyCommonSpies(_aodaacPanel);
+            _aodaacPanel._populateFormFields = function() {};
 
+            spyOn(Ext.Ajax, 'request').andCallFake(
+                function(params) {
+                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
+                }
+            );
+
+            _aodaacPanel.update(layer, noOp, noOp, {});
             _aodaacPanel.map.events.triggerEvent('move', {});
-            expect(_aodaacPanel._buildAodaac).toHaveBeenCalled();
+            expect(_aodaacPanel._setBounds).toHaveBeenCalled();
         });
     });
 
@@ -134,5 +168,8 @@ describe('Portal.details.AodaacPanel', function() {
         var _panel = panel || aodaacPanel;
         spyOn(_panel, '_showAllControls');
         spyOn(_panel, '_buildAodaac');
+        spyOn(_panel, '_onDateSelected');
+        spyOn(_panel, '_setBounds');
     }
 });
+

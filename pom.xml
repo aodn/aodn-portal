@@ -386,6 +386,7 @@
 						<include>Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js</include>
 						<include>Geonetwork/lib/GeoNetwork/Util.js</include>
 						<include>Geonetwork/lib/GeoNetwork/lang/en.js</include>
+                        <include>Geonetwork/lib/GeoNetwork/map/Ext.ux/form/DateTime.js</include>
 						<include>Geonetwork/lib/GeoNetwork/Catalogue.js</include>
 						<include>Geonetwork/lib/GeoNetwork/util/SearchTools.js</include>
 						<include>Geonetwork/lib/GeoNetwork/data/MetadataResultsStore.js</include>

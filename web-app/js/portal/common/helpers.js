@@ -248,13 +248,13 @@ function inArray (array,value) {
 }
 
 // Performs a binary search on a sorted array using
-// compareFunction to compare two elements for equality
+// compareFunction to compare two moment.js dates for equality
 function binSearch(sortedArray, value, compareFunction) {
     var min = 0;
     var max = sortedArray.length - 1;
     while (max >= min) {
         var mid = Math.floor((max + min) / 2);
-        if (compareFunction(value, sortedArray[mid])) {
+        if (compareFunction(sortedArray[mid], value)) {
             return mid;
         }
         else if (sortedArray[mid].isAfter(value)) {
@@ -265,6 +265,10 @@ function binSearch(sortedArray, value, compareFunction) {
         }
     }
     return -1;
+}
+
+function between(x, min, max) {
+    return x >= min && x <= max;
 }
 
 Date.prototype.setISO8601 = function (string) {

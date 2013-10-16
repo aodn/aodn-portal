@@ -28,7 +28,9 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
     initComponent: function() {
         this.filterPanel = new Portal.filter.FilterPanel();
-        this.aodaacPanel = new Portal.details.AodaacPanel({ map: this.map });
+        this.aodaacPanel = new Portal.details.AodaacPanel({
+            map: this.map
+        });
         this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
 

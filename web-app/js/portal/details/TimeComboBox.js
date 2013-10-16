@@ -8,6 +8,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.TimeComboBox = Ext.extend(Ext.form.ComboBox, {
     constructor: function(cfg) {
+
         var config = Ext.apply({
             store: new Ext.data.JsonStore({
                 autoLoad : false,
