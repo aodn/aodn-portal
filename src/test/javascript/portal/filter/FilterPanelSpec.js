@@ -31,7 +31,7 @@ describe("Portal.filter.FilterPanel", function() {
 
             spyOn(filterPanel, 'createFilterPanel');
             spyOn(filterPanel, '_updateAndShow');
-            spyOn(filterPanel, 'isLayerActive').andReturn(true);
+            spyOn(filterPanel, '_isLayerActive').andReturn(true);
 
             filterPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
         });
@@ -64,7 +64,7 @@ describe("Portal.filter.FilterPanel", function() {
             spyOn(filterPanel, 'createFilterPanel');
             spyOn(filterPanel, '_clearFilters');
             spyOn(filterPanel, '_updateLayerFilters');
-            spyOn(filterPanel, 'isLayerActive').andReturn(true);
+            spyOn(filterPanel, '_isLayerActive').andReturn(true);
 
             filterPanel.update(
                 {

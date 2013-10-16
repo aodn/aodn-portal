@@ -48,7 +48,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
-    isLayerActive: function(layer) {
+    _isLayerActive: function(layer) {
         return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
     },
 
@@ -100,7 +100,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         var filters = Ext.util.JSON.decode(resp.responseText);
         var aFilterIsEnabled = false;
 
-        if  (this.isLayerActive(layer)) {
+        if  (this._isLayerActive(layer)) {
 
             Ext.each(filters,
                 function(filter, index, all) {
@@ -149,7 +149,7 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _updateLayerFilters: function() {
         var commonFilters = this._getCqlFilter({downloadOnly: false});
 
-        if  (this.isLayerActive(this.layer)) {
+        if  (this._isLayerActive(this.layer)) {
             this.layer.setCqlFilter(commonFilters);
             this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
         }

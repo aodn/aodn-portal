@@ -57,7 +57,15 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // Initialize missingDays
         this.missingDays = [];
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propogateDelete, this);
+
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [nameWithStatus, url, params, options, extent]);
+    },
+
+    _propogateDelete: function(label,thelayer) {
+        if (thelayer == this) {
+            delete this;
+        }
     },
 
     moveTo: function(bounds, zoomChanged, dragging) {
@@ -90,10 +98,15 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
         else {
             this._processTemporalExtent();
+
         }
     },
 
     _processTemporalExtent: function() {
+
+        if (this._destroyed()) {
+            return;
+        }
         if (this.temporalExtent) {
             // Already processed
             this._processTemporalExtentDone();
@@ -154,14 +167,17 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _configureTimeControl: function() {
-        // Need to reconfigure layer as we processed times
-        // TODO: Configure for last 10 frames, a bit
-        // ugly and hardcoded
-        var timeControl  = this._getTimeControl();
-        var framesToLoad =
-            Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
 
-        timeControl.configureForLayer(this, framesToLoad);
+        if (!this._destroyed()) {
+            // Need to reconfigure layer as we processed times
+            // TODO: Configure for last 10 frames, a bit
+            // ugly and hardcoded
+            var timeControl  = this._getTimeControl();
+            var framesToLoad =
+                Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
+
+            timeControl.configureForLayer(this, framesToLoad);
+        }
     },
 
     _processTemporalExtentDone: function() {
@@ -173,8 +189,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     // This function is run asynchronously
     _precacheTiles: function() {
 
-        // check the layer hasn't been deleted/destroyed meanwhile
-        if (this.events) {
+        if (!this._destroyed()) {
+
             this.events.triggerEvent('precacheprogress', {
                 layer: this,
                 progress: 0.5
@@ -196,19 +212,27 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
+    _destroyed: function() {
+        return !this.events;
+    },
+
     _precacheDone: function() {
         if (this.state !== this.STATES.CACHED) {
-            this.events.triggerEvent('precacheend', this);
+            if (!this._destroyed()) {
+                this.events.triggerEvent('precacheend', this);
+            }
             this.state = this.STATES.CACHED;
         }
     },
 
     _progressFeedback: function() {
-        var progress = this._calculateProgress();
-        this.events.triggerEvent('precacheprogress', {
-            layer: this,
-            progress: progress
-        });
+        if (!this._destroyed()) {
+            var progress = this._calculateProgress();
+            this.events.triggerEvent('precacheprogress', {
+                layer: this,
+                progress: progress
+            });
+        }
     },
 
     _getTimesToCache: function() {
@@ -222,7 +246,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getTimeControl: function() {
-        return this.map.getControlsByClass('OpenLayers.Control.Time')[0];
+        if (!this._destroyed()) {
+            return this.map.getControlsByClass('OpenLayers.Control.Time')[0];
+        }
     },
 
     _getTotalImages: function() {
