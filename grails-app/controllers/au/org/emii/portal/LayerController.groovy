@@ -573,7 +573,6 @@ class LayerController {
             "hasMany",
             "handler",
             "belongsTo",
-            "layers",
             "parent",
             "hibernateLazyInitializer",
             "styles",
@@ -597,23 +596,20 @@ class LayerController {
             if (readMethod != null) {
                 Object value = readMethod.invoke(layer, (Object[]) null)
 
-                if ("layers".equals(name)) {
-                    layerData[name] = _convertLayersToListOfMaps(value)
-                }
-                else if ("wfsLayer".equals(name) && value) {
-
-                    if (layer == value) {
-                        layerData[name] = layerData // If 'wfsLayer' is the same layer then just reference the same map
+                if (!excludes.contains(name)) {
+                    if ("layers".equals(name)) {
+                        layerData[name] = _convertLayersToListOfMaps(value)
+                    }
+                    else if ("wfsLayer".equals(name) && value) {
+                        layerData[name] = _getLayerData(value, excludes + "wfsLayer")
                     }
                     else {
-                        layerData[name] = _getLayerData(value, excludes)
+                        layerData[name] = value
                     }
-                }
-                else if (!excludes.contains(name)) {
-                    layerData[name] = value
                 }
             }
         }
+
         return layerData
     }
 
