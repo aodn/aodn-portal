@@ -1243,8 +1243,13 @@ div.allwhite {
     display: none;
 }
 
+#toplinks .highlight {
+    color: #222222;
+    text-shadow: none;
+}
+
 .highlight:hover {
-    background-color: #ffff99
+    background-color: #ffff99;
 }
 
 .WAMiniLogo {
