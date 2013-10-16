@@ -587,17 +587,27 @@ class LayerController {
     def _getLayerData(layer, excludes) {
 
         def layerData = [:]
+
         PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
         for (PropertyDescriptor property : properties) {
+
             String name = property.getName()
             Method readMethod = property.getReadMethod()
+
             if (readMethod != null) {
                 Object value = readMethod.invoke(layer, (Object[]) null)
+
                 if ("layers".equals(name)) {
                     layerData[name] = _convertLayersToListOfMaps(value)
                 }
                 else if ("wfsLayer".equals(name) && value) {
-                    layerData[name] = _getLayerData(value, excludes)
+
+                    if (layer == value) {
+                        layerData[name] = layerData // If 'wfsLayer' is the same layer then just reference the same map
+                    }
+                    else {
+                        layerData[name] = _getLayerData(value, excludes)
+                    }
                 }
                 else if (!excludes.contains(name)) {
                     layerData[name] = value
