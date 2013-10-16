@@ -48,6 +48,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterPanel.superclass.initComponent.call(this);
     },
 
+    _isLayerActive: function(layer) {
+        return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
+    },
+
     createFilterPanel: function(layer, filter) {
 
         var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
@@ -96,13 +100,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         var filters = Ext.util.JSON.decode(resp.responseText);
         var aFilterIsEnabled = false;
 
-        Ext.each(filters,
-            function(filter, index, all) {
-                this.createFilterPanel(layer, filter);
-                aFilterIsEnabled = true;
-            },
-            this
-        );
+        if  (this._isLayerActive(layer)) {
+
+            Ext.each(filters,
+                function(filter, index, all) {
+                        this.createFilterPanel(layer, filter);
+                        aFilterIsEnabled = true;
+                },
+                this
+            );
+        }
 
         if (aFilterIsEnabled) {
             this._updateAndShow(show, target);
@@ -142,8 +149,10 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _updateLayerFilters: function() {
         var commonFilters = this._getCqlFilter({downloadOnly: false});
 
-        this.layer.setCqlFilter(commonFilters);
-        this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
+        if  (this._isLayerActive(this.layer)) {
+            this.layer.setCqlFilter(commonFilters);
+            this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
+        }
     },
 
     _getCqlFilter: function(options) {
