@@ -48,17 +48,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataDownloadEntry: function(values) {
-        var wmsLayer = values.wmsLayer;
-        var html;
 
-        if (wmsLayer) {
-
-            html = String.format('<div id="wfs-download-button-{0}"></div>', values.uuid); // Download button placeholder
-        }
-        else {
-
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
-        }
+        var html = String.format('<div id="wfs-download-button-{0}"></div>', values.uuid); // Download button placeholder
 
         return this.downloadPanelTemplate._makeEntryMarkup(html);
     },
@@ -66,11 +57,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _replacePlaceholdersWithControls: function(html, collection) {
         var elementId = 'wfs-download-button-' + collection.uuid;
 
-        // Don't create button if no placeholder exists
-        if (html.indexOf(elementId) >= 0) {
-
-            this._createDownloadButton.defer(1, this, [html, elementId, collection]);
-        }
+        this._createDownloadButton.defer(1, this, [html, elementId, collection]);
 
         return html;
     },

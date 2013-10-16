@@ -133,11 +133,9 @@ describe("OpenLayers.Layer.WMS", function() {
 
     describe('_getWfsServerUrl', function() {
 
-        it('does not use wfsLayer if it is not present', function() {
+        it('returns null if wfsLayer not present', function() {
 
-            openLayer.server = {uri: 'wms_server_uri/wms'};
-
-            expect(openLayer._getWfsServerUrl()).toBe('wms_server_uri/wfs');
+            expect(openLayer._getWfsServerUrl()).toBeNull();
         });
 
         it('uses wfsLayer if present', function() {
@@ -148,20 +146,18 @@ describe("OpenLayers.Layer.WMS", function() {
         });
     });
 
-    describe('_getWfsLayerTypeName', function() {
+    describe('_getWfsLayerName', function() {
 
-        it('uses params.LAYERS if no WFS layer present', function() {
+        it('returns null if wfsLayer not present', function() {
 
-            openLayer.params = { LAYERS: 'argo' };
-
-            expect(openLayer._getWfsLayerTypeName()).toBe('argo');
+            expect(openLayer._getWfsLayerName()).toBeNull();
         });
 
         it('uses wfsLayer if present', function() {
 
             openLayer.wfsLayer = { name: 'argo_wfs' };
 
-            expect(openLayer._getWfsLayerTypeName()).toBe('argo_wfs');
+            expect(openLayer._getWfsLayerName()).toBe('argo_wfs');
         });
     });
 
@@ -188,7 +184,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('does not use the CQL filter if it is missing', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            spyOn(openLayer, '_getWfsLayerTypeName').andReturn("type_name");
+            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
 
             var composedUrl = 'wfs_url?' +
                 'typeName=type_name' +
@@ -205,7 +201,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('uses the CQL filter if it is present', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            spyOn(openLayer, '_getWfsLayerTypeName').andReturn("type_name");
+            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
 
             openLayer.params.CQL_FILTER = 'cql';
 
