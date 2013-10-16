@@ -18,6 +18,8 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
         Portal.details.AnimationControlsPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, this._onBeforeSelectedLayerChanged, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._deleteSelectedLayer, this);
+
 
         if (config.mapPanel) {
             this.timeControl = config.mapPanel.getTimeControl();
@@ -206,6 +208,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
                 scope: this
             });
         }
+    },
+
+    _deleteSelectedLayer: function() {
+        this.selectedLayer = null;
     },
 
     isPlaying: function() {
