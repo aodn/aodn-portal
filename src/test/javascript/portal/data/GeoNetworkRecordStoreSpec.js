@@ -13,6 +13,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 <dataset> \
   <summary count='1' /> \
   <metadata> \
+    <popularity>206</popularity> \
     <source>987654321</source> \
     <link>|Point of truth URL of this metadata record|http://imosmest/metadata?uuid=1a69252d|WWW:LINK-1.0-http--metadata-URL|text/html</link> \
     <link>imos:radar_stations|ACORN Radar Stations|http://geoserver.imos.org.au/geoserver/wms|OGC:WMS-1.1.1-http-get-map|application/vnd.ogc.wms_xml</link> \
