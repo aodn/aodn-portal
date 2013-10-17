@@ -107,13 +107,8 @@ ${_layerAndServerString(l1)}\
 """
 
         layerController.configuredbaselayers()
-        def testResult = mockResponse.contentAsString
 
-        println _layerAndServerString(l2)
-        println testResult
-        assertTrue testResult.contains(_layerAndServerString(l2))
-        assertTrue testResult.contains(_layerAndServerString(l4))
-        assertTrue testResult.contains(_layerAndServerString(l1))
+        assertEquals expectedOutput, mockResponse.contentAsString
     }
 
     def _layerAndServerString = {

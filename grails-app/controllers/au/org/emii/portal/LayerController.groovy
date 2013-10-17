@@ -622,7 +622,6 @@ class LayerController {
             "hasMany",
             "handler",
             "belongsTo",
-            "layers",
             "parent",
             "hibernateLazyInitializer"
         ]
