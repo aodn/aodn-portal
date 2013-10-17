@@ -86,10 +86,10 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
     var wfsUrl = this._getWfsServerUrl();
-    var typeName = this._getWfsLayerTypeName();
+    var wfsLayerName = this._getWfsLayerName();
 
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
-    wfsUrl += 'typeName=' + typeName;
+    wfsUrl += 'typeName=' + wfsLayerName;
     wfsUrl += '&SERVICE=WFS';
     wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
@@ -104,21 +104,24 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
 
 OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {
 
-    var layer = this.wfsLayer ? this.wfsLayer : this;
+    if (!this.wfsLayer) {
+        return null;
+    }
+
+    var layer = this.wfsLayer;
     var wmsUrl = layer.server.uri;
     var wfsUrl = wmsUrl.replace('/wms', '/wfs');
 
     return wfsUrl;
 };
 
-OpenLayers.Layer.WMS.prototype._getWfsLayerTypeName = function() {
+OpenLayers.Layer.WMS.prototype._getWfsLayerName = function() {
 
-    if (this.wfsLayer) {
-        return this.wfsLayer.name;
+    if (!this.wfsLayer) {
+        return null;
     }
-    else {
-        return this.params.LAYERS;
-    }
+
+    return this.wfsLayer.name;
 };
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {

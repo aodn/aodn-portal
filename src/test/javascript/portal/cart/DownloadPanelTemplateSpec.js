@@ -71,36 +71,46 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 applyWithControls: jasmine.createSpy('applyWithControls')
             };
 
-            geoNetworkRecord.wmsLayer = {};
-            geoNetworkRecord.aodaac = {};
+            geoNetworkRecord.aodaac = null;
+            geoNetworkRecord.wmsLayer = { /* No wfsLayer */ };
 
             spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
             spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
+            spyOn(Portal.cart, 'NoDataRowTemplate').andReturn(childTemplate);
         });
 
         it('uses AodaacDataRowTemplate where applicable', function() {
+
+            geoNetworkRecord.aodaac = {};
 
             tpl._dataRowTemplate(geoNetworkRecord);
 
             expect(Portal.cart.AodaacDataRowTemplate).toHaveBeenCalledWith(tpl);
             expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
-        });
-
-        it('does not use WfsDataRowTemplate when it is an AODAAC data collection', function() {
-
-            tpl._dataRowTemplate(geoNetworkRecord);
-
             expect(Portal.cart.WfsDataRowTemplate).not.toHaveBeenCalled();
+            expect(Portal.cart.NoDataRowTemplate).not.toHaveBeenCalled();
         });
 
         it('uses WfsDataRowTemplate where applicable', function() {
 
-            geoNetworkRecord.aodaac = null;
+            geoNetworkRecord.wmsLayer.wfsLayer = {};
 
             tpl._dataRowTemplate(geoNetworkRecord);
 
             expect(Portal.cart.WfsDataRowTemplate).toHaveBeenCalledWith(tpl);
             expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
+            expect(Portal.cart.AodaacDataRowTemplate).not.toHaveBeenCalled();
+            expect(Portal.cart.NoDataRowTemplate).not.toHaveBeenCalled();
+        });
+
+        it('uses NoDataRowTemplate where applicable', function() {
+
+            tpl._dataRowTemplate(geoNetworkRecord);
+
+            expect(Portal.cart.NoDataRowTemplate).toHaveBeenCalledWith(tpl);
+            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
+            expect(Portal.cart.AodaacDataRowTemplate).not.toHaveBeenCalled();
+            expect(Portal.cart.WfsDataRowTemplate).not.toHaveBeenCalled();
         });
     });
 

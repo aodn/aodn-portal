@@ -22,6 +22,7 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def aodaacAggregatorService
     def layerService
     def dataSource
 
@@ -230,13 +231,18 @@ class LayerController {
     }
 
     def edit = {
+
         def layerInstance = Layer.get(params.id)
+
+        def productIds = aodaacAggregatorService.productIdsForLayer(layerInstance)
+        def productInfo = aodaacAggregatorService.getProductInfo(productIds)
+
         if (!layerInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
             redirect(action: "list")
         }
         else {
-            return [layerInstance: layerInstance]
+            return [layerInstance: layerInstance, linkedAodaacProducts: productInfo]
         }
     }
 
@@ -567,7 +573,6 @@ class LayerController {
             "hasMany",
             "handler",
             "belongsTo",
-            "layers",
             "parent",
             "hibernateLazyInitializer",
             "styles",
@@ -581,23 +586,30 @@ class LayerController {
     def _getLayerData(layer, excludes) {
 
         def layerData = [:]
+
         PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(layer.getClass())
         for (PropertyDescriptor property : properties) {
+
             String name = property.getName()
             Method readMethod = property.getReadMethod()
+
             if (readMethod != null) {
                 Object value = readMethod.invoke(layer, (Object[]) null)
-                if ("layers".equals(name)) {
-                    layerData[name] = _convertLayersToListOfMaps(value)
-                }
-                else if ("wfsLayer".equals(name) && value) {
-                    layerData[name] = _getLayerData(value, excludes)
-                }
-                else if (!excludes.contains(name)) {
-                    layerData[name] = value
+
+                if (!excludes.contains(name)) {
+                    if ("layers".equals(name)) {
+                        layerData[name] = _convertLayersToListOfMaps(value)
+                    }
+                    else if ("wfsLayer".equals(name) && value) {
+                        layerData[name] = _getLayerData(value, excludes + "wfsLayer")
+                    }
+                    else {
+                        layerData[name] = value
+                    }
                 }
             }
         }
+
         return layerData
     }
 
@@ -610,7 +622,6 @@ class LayerController {
             "hasMany",
             "handler",
             "belongsTo",
-            "layers",
             "parent",
             "hibernateLazyInitializer"
         ]

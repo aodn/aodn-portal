@@ -213,17 +213,10 @@
                             </tr>
 
                              <tr class="prop">
-                                <td valign="top" class="name">
+                                 <td valign="top" class="name">
+                                 </td>
+                                <td valign="top" class="value">
                                     <g:link controller="filter" action="create" params="[layerId: layerInstance.id]">Create Filter</g:link>
-                                </td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="wfsLayerId"><g:message code="layer.wfsLayer.label" default="WFS Layer" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
-                                    <g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" onselect="getCombo(this)" value="${layerInstance?.wfsLayer?.id}"/>
                                 </td>
                             </tr>
 
@@ -256,3 +249,41 @@
                                 </td>
                             </tr>
 
+                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
+
+                            <tr class="prop">
+                                <th valign="top" class="name" colspan="2">
+                                    Data Download
+                                </th>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label><g:message code="layer.wfsLayer.label" default="WFS Download Layer" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
+
+                                    <g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    AODAAC&nbsp;Linked&nbsp;Products
+                                </td>
+                                <td valign="top">
+                                    <g:if test="${linkedAodaacProducts.size()}">
+                                        <ul>
+                                            <g:each in="${linkedAodaacProducts}" var="linkedProduct">
+                                                <li>${linkedProduct.name}</li>
+                                            </g:each>
+                                        </ul>
+                                    </g:if>
+                                    <g:else>
+                                        <i>No linked AODAAC products</i>
+                                    </g:else>
+
+                                </td>
+                            </tr>
+
+                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>

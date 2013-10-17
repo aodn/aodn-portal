@@ -8,7 +8,6 @@
 
 describe('Portal.cart.AodaacDataRowTemplate', function() {
 
-    var html;
     var parentTemplate;
     var tpl;
     var geoNetworkRecord;

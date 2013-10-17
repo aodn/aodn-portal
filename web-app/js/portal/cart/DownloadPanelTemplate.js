@@ -48,8 +48,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         if (values.aodaac) {
             html += new Portal.cart.AodaacDataRowTemplate(this).applyWithControls(values);
         }
-        else if (values.wmsLayer) {
+        else if (values.wmsLayer.wfsLayer) {
             html += new Portal.cart.WfsDataRowTemplate(this).applyWithControls(values);
+        }
+        else {
+            html += new Portal.cart.NoDataRowTemplate(this).applyWithControls(values);
         }
 
         return html;

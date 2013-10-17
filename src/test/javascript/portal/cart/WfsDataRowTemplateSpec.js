@@ -8,7 +8,6 @@
 
 describe('Portal.cart.WfsDataRowTemplate', function() {
 
-    var html;
     var parentTemplate;
     var tpl;
     var geoNetworkRecord;
@@ -111,27 +110,11 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('<div id="wfs-download-button-9"></div>');
         });
-
-        it('include message when there is no layer', function() {
-
-            geoNetworkRecord.wmsLayer = null;
-
-            tpl._getDataDownloadEntry(geoNetworkRecord);
-
-            expect(parentTemplate._makeSecondaryTextMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noDataMessage'));
-            expect(parentTemplate._makeEntryMarkup).toHaveBeenCalledWith('secondary text markup');
-        });
-
-        afterEach(function() {
-
-            parentTemplate._makeEntryMarkup.reset();
-        });
     });
 
     describe('_replacePlaceholdersWithControls', function() {
 
         var collectionMock;
-        var htmlMock;
         var expectedEmlementId;
 
         beforeEach(function() {
@@ -142,18 +125,9 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             expectedEmlementId = 'wfs-download-button-12345';
 
-            htmlMock = {
-                indexOf: jasmine.createSpy('html indexOf').andReturn(1)
-            };
-
             spyOn(tpl._createDownloadButton, 'defer');
 
-            tpl._replacePlaceholdersWithControls(htmlMock, collectionMock);
-        });
-
-        it('calls indexOf with correct id', function() {
-
-            expect(htmlMock.indexOf).toHaveBeenCalledWith(expectedEmlementId);
+            tpl._replacePlaceholdersWithControls('the_html', collectionMock);
         });
 
         it('calls _createDownloadButton.defer', function() {
@@ -161,7 +135,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             expect(tpl._createDownloadButton.defer).toHaveBeenCalledWith(
                 1,
                 tpl,
-                [htmlMock, expectedEmlementId, collectionMock]
+                ['the_html', expectedEmlementId, collectionMock]
             );
         });
     });

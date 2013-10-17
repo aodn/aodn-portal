@@ -27,14 +27,7 @@ class AodaacController {
             productIds = _getLayerProductIds(params.layerId)
         }
 
-        if (productIds) {
-
-            render aodaacAggregatorService.getProductInfo(productIds) as JSON
-        }
-        else {
-
-            render([] as JSON)
-        }
+        render aodaacAggregatorService.getProductInfo(productIds) as JSON
     }
 
     def createJob = {
@@ -115,13 +108,12 @@ class AodaacController {
 
     def _getLayerProductIds(layerId) {
         def productIds = []
+
         try {
             if (layerId.isNumber()) {
                 def layer = Layer.get(layerId.toLong())
 
-                def aodaacProductLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer(layer.name, layer.server)
-
-                productIds = aodaacProductLinks.collect{ it.productId }.unique()
+                productIds = aodaacAggregatorService.productIdsForLayer(layer)
             }
             else {
                 log.info("Attempt to fetch AODAAC product ids with value '$layerId' which is NaN")
@@ -130,6 +122,7 @@ class AodaacController {
         catch (e) {
             log.error("Error fetching product links for layer id $layerId: ", e)
         }
+
         return productIds
     }
 }
