@@ -23,6 +23,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             stateful: true
         }, cfg);
 
+        this.mapPanel = cfg.mapPanel;
+
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
@@ -86,17 +88,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                         items: [
                             {
                                 //TODO: use template
-                                html: "<img src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading') + "', '" + inf.line + "');\" />"
+                                html: "<img width=\"300\" src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading') + "', '" + inf.line + "');\" />"
                             }
                         ]
                     });
-
-                    if (this.ownerCt.width < 430) {
-                        this.ownerCt.setWidth(430);
-                        if (this.ownerCt.ownerCt) {
-                            this.ownerCt.ownerCt.doLayout();
-                        }
-                    }
 
                     this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
                 }
@@ -134,7 +129,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             //turn on transect control if server is NCWMS and layer is not animated.
             if (   layer.server.type.search("NCWMS") > -1
                 && !layer.isAnimated)  {
-                this.transectControl.setMapPanel(getMapPanel());
+                this.transectControl.setMapPanel(this.mapPanel);
                 this.transectControl.layer = layer;
                 this.transectControl.show();
                 this.transectControl.ownerCt.doLayout();

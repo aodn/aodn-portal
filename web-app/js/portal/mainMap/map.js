@@ -29,10 +29,6 @@
 var proxyURL = "proxy?url=";
 var proxyCachedURL = "proxy/cache?URL=";
 
-function getMapPanel() {
-    return Ext.getCmp('mainMapPanel');
-}
-
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions: {
         single: true,
