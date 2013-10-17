@@ -60,10 +60,22 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         Portal.ui.search.SearchPanel.superclass.initComponent.apply(this);
 
         this.searcher.on('searchcomplete', function(response, page) {
-            this.resultsStore.startRecord = page.from - 1;
-            this.resultsStore.loadData(response);
+            this._loadResults(response,page);
         }, this);
 
         this.searcher.search();
+    },
+
+    _loadResults: function(response, page) {
+
+        this.resultsStore.startRecord = page.from - 1;
+        this.resultsStore.suspendEvents();
+
+        this.resultsStore.loadData(response);
+        this.resultsStore.sort('popularity', 'DESC');
+
+        this.resultsStore.resumeEvents();
+        this.resultsStore.fireEvent('datachanged', this);
     }
+
 });

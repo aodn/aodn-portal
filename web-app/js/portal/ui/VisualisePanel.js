@@ -23,7 +23,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             width: 360,
             minWidth: 320,
             maxWidth: 500,
-            map: this.mapPanel.map
+            map: this.mapPanel.map,
+            mapPanel: this.mapPanel
         });
 
         var config = Ext.apply({
