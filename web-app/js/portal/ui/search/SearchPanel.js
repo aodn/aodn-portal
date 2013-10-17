@@ -66,7 +66,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.searcher.search();
     },
 
-    _loadResults: function(response,page) {
+    _loadResults: function(response, page) {
 
         this.resultsStore.startRecord = page.from - 1;
         this.resultsStore.suspendEvents();

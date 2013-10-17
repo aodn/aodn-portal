@@ -46,8 +46,8 @@ Portal.data.GeoNetworkRecord = function() {
     var popularity = {
         name: 'popularity',
         convert: function(v, record) {
-            var pop = Ext.DomQuery.jsSelect('popularity', record);
-            return parseInt(pop[0].childNodes[0].nodeValue);
+            var popularity = Ext.DomQuery.jsSelect('popularity', record);
+            return parseInt(popularity[0].childNodes[0].nodeValue);
         }
     };
 
