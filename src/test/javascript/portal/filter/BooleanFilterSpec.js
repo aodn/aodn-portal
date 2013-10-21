@@ -19,8 +19,7 @@ describe("Portal.filter.BooleanFilter", function() {
             this.setValue = jasmine.createSpy();
         }
 
-        booleanFilter.trueButton = new MockButton(); 
-        booleanFilter.falseButton = new MockButton();
+        booleanFilter.checkbox = new MockButton();
         
         booleanFilter.layer = {};
         booleanFilter.layer.getDownloadFilter = function() { return ""; };
@@ -31,40 +30,27 @@ describe("Portal.filter.BooleanFilter", function() {
     });
 
     it('_createCQL should set CQL to filter for true values if true radio button selected', function() {
-        booleanFilter.trueButton.getValue = function() { return true; };
+        booleanFilter.checkbox.getValue = function() { return true; };
         
         booleanFilter._createCQL();
         
         expect(booleanFilter.CQL).toEqual("test = true");
     });
     
-    it('_createCQL should set CQL to filter for false values if false radio button selected', function() {
-        booleanFilter.falseButton.getValue = function() { return true; };
+    it('_createCQL should set empty CQL for false values if checkbox not selected', function() {
+        booleanFilter.checkbox.getValue = function() { return false; };
         
-        booleanFilter._createCQL();
-        
-        expect(booleanFilter.CQL).toEqual("test = false");
-    });
-    
-    it('_createCQL should set CQL to "" if no buttons selected', function() {
         booleanFilter._createCQL();
         
         expect(booleanFilter.CQL).toEqual("");
     });
+
+
     
-    it('_setExistingFilters should check true button if CQL filter matches true values', function() {
-        booleanFilter.layer.getDownloadFilter = function() { return "test = true"; };
-        
+    it('_setExistingFilters should not set checked for empty CQL filter', function() {
         booleanFilter._setExistingFilters();
         
-        expect(booleanFilter.trueButton.setValue).toHaveBeenCalled();
-    });
-    
-    it('_setExistingFilters should not check true or false buttons for empty CQL filter', function() {
-        booleanFilter._setExistingFilters();
-        
-        expect(booleanFilter.trueButton.setValue).not.toHaveBeenCalled();
-        expect(booleanFilter.falseButton.setValue).not.toHaveBeenCalled();
+        expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
     });
     
 });
