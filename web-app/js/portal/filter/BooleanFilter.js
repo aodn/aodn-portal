@@ -8,8 +8,7 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
-    _createField: function(){
-
+    _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.name,
             value: true,
