@@ -156,7 +156,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     _findIndexOfDate: function(arrayOfDates, date) {
         return binSearch(
             arrayOfDates, date,
-            function(left, right) { return left.isSame(right); });
+            function(left, right) { return left.isAfter(right); });
     },
 
     getStep: function() {

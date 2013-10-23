@@ -248,16 +248,18 @@ function inArray (array,value) {
 }
 
 // Performs a binary search on a sorted array using
-// compareFunction to compare two elements for equality
-function binSearch(sortedArray, value, compareFunction) {
+// isGreaterFunction should return true if lhs is greater than rhs
+function binSearch(sortedArray, value, isGreaterFunction) {
     var min = 0;
     var max = sortedArray.length - 1;
     while (max >= min) {
         var mid = Math.floor((max + min) / 2);
-        if (compareFunction(value, sortedArray[mid])) {
+        // If it's not greater and not smaller - it's equal!
+        if (!isGreaterFunction(value, sortedArray[mid]) &&
+            !isGreaterFunction(sortedArray[mid], value)) {
             return mid;
         }
-        else if (sortedArray[mid].isAfter(value)) {
+        else if (isGreaterFunction(sortedArray[mid], value)) {
             max = mid - 1;
         }
         else {
