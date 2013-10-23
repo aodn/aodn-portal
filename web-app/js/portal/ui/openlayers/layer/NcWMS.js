@@ -358,7 +358,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 var rightDateOnly = right.clone().startOf('day');
                 return leftDateOnly.isAfter(rightDateOnly);
             });
-        console.log(indexOfSameDate);
 
         // No dates found - return
         if (indexOfSameDate == -1) { return []; }
