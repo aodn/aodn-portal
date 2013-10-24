@@ -337,7 +337,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     // Returns true if left and right has the same date (not time),
     // false otherwise
     isSameDay: function(left, right) {
-        var leftDateOnly  = left .clone().startOf('day');
+        var leftDateOnly = left.clone().startOf('day');
         var rightDateOnly = right.clone().startOf('day');
         return leftDateOnly.isSame(rightDateOnly);
     },
@@ -354,7 +354,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var indexOfSameDate = binSearch(
             this.temporalExtent, dateTime,
             function(left, right) {
-                var leftDateOnly  = left .clone().startOf('day');
+                var leftDateOnly = left.clone().startOf('day');
                 var rightDateOnly = right.clone().startOf('day');
                 return leftDateOnly.isAfter(rightDateOnly);
             });
