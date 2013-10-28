@@ -102,8 +102,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             menu: downloadMenu
         }).render(html, id);
 
-        this._emailTextfieldElement(collection.uuid).on('click', function() {
-            this.set({ value: '' });
+        this._emailTextFieldElement(collection.uuid).on('click', function() {
+            if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                this.set({ value: '' });
+            }
         });
     },
 
@@ -173,7 +175,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         return re.test(address);
     },
 
-    _emailTextfieldElement: function(uuid) {
+    _emailTextFieldElement: function(uuid) {
         return Ext.get(Ext.query("#aodaac-email-address-" + uuid)[0]);
     }
 });
