@@ -244,13 +244,16 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         var mockMenuItems = {};
         var mockButton = {};
         var mockCollection = {};
+        var mockElement = {};
 
         beforeEach(function() {
 
             spyOn(tpl, '_createMenuItems').andReturn(mockMenuItems);
             spyOn(Ext.menu, 'Menu').andReturn(mockMenu);
             spyOn(Ext, 'Button').andReturn(mockButton);
+            spyOn(tpl, '_emailTextfieldElement').andReturn(mockElement);
             mockButton.render = jasmine.createSpy('button render');
+            mockElement.on = jasmine.createSpy();
 
             tpl._createDownloadButton('html', '12345', mockCollection);
         });
@@ -278,6 +281,14 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         it('calls render on the button', function() {
 
             expect(mockButton.render).toHaveBeenCalledWith('html', '12345');
+        });
+
+        it('calls _emailTextfieldElement', function() {
+            expect(tpl._emailTextfieldElement).toHaveBeenCalled();
+        });
+
+        it('calls _emailTextfieldElement to attach events to', function() {
+            expect(mockElement.on).toHaveBeenCalled();
         });
     });
 
