@@ -78,7 +78,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _createMenuItems: function(collection) {
         return [
             {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
+//            {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
             {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
         ];
     },
