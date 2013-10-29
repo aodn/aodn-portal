@@ -255,8 +255,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchingTitle: 'Searching for Features at your click point',
     infoFoundTitle: "Feature information found for ${dataCollectionNumber} data collection(s)",
     noInfoFoundTitle: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
-    depthLabel: 'Depth',
-    elevationLabel: 'Elevation',
+    depthLabel: 'Depth:',
+    elevationLabel: 'Elevation:',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
