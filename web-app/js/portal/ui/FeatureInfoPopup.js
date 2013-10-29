@@ -60,13 +60,13 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _addElements: function() {
 
-        var depthInfoPanel = new Ext.Container({
+        this.depthInfoPanel = new Ext.Container({
             html: OpenLayers.i18n('loadingMessage'),
             cls: 'popupHtml',
             ref: 'popupHtml'
         });
 
-        this.add(depthInfoPanel);
+        this.add(this.depthInfoPanel);
 
         // Add tab panel (empty for now)
         this.add(new Ext.TabPanel({
@@ -111,7 +111,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         if (wmsLayers.length == 0) {
             this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
-            this.blankContainer.update("");
+            this.depthInfoPanel.update("");
         }
         else {
             var count = 0;
@@ -133,10 +133,10 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 }
             }, this);
 
-                if (count == 0) {
-                    this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
-                    this.blankContainer.update("");
-                }
+            if (count == 0) {
+                this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
+                this.depthInfoPanel.update("");
+            }
         }
     },
 
