@@ -251,12 +251,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateToLabel: 'Date to:',
 
     // FeatureInfoPopup.js
-    noDataCollectionSelected: 'No data collection selected.',
-    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
-    noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
-    searchingForFeatures: 'Searching for Features at your click point',
-    depth: 'Depth',
-    elevation: 'Elevation',
+    noDataCollectionTitle: 'No data collection selected.',
+    searchingTitle: 'Searching for Features at your click point',
+    infoFoundTitle: "Feature information found for ${dataCollectionNumber} data collection(s)",
+    noInfoFoundTitle: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+    depthLabel: 'Depth',
+    elevationLabel: 'Elevation',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
