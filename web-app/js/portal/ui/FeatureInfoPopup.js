@@ -59,14 +59,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _addElements: function() {
-        // Add container for html (empty for now)
-        this.blankContainer = new Ext.Container({
-            html: "Loading ...",
+
+        var depthInfoPanel = new Ext.Container({
+            html: OpenLayers.i18n('loadingMessage'),
             cls: 'popupHtml',
             ref: 'popupHtml'
         });
 
-        this.add(this.blankContainer);
+        this.add(depthInfoPanel);
 
         // Add tab panel (empty for now)
         this.add(new Ext.TabPanel({
