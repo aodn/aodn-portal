@@ -251,10 +251,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateToLabel: 'Date to:',
 
     // FeatureInfoPopup.js
-    noDataCollectionTitle: 'No data collection selected.',
-    searchingTitle: 'Searching for Features at your click point',
-    infoFoundTitle: "Feature information found for ${dataCollectionNumber} data collection(s)",
-    noInfoFoundTitle: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
+    noDataCollectionTitle: 'No data collection selected',
+    searchingTitle: 'Searching for more information at this point...',
+    infoFoundTitle: "Detailed information for ${dataCollectionNumber} data collection(s) at this point",
+    noInfoFoundTitle: "No more information found at this point",
     depthLabel: 'Depth:',
     elevationLabel: 'Elevation:',
 
