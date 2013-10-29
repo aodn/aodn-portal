@@ -101,6 +101,12 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             scope: this,
             menu: downloadMenu
         }).render(html, id);
+
+        this._emailTextFieldElement(collection.uuid).on('click', function() {
+            if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                this.set({ value: '' });
+            }
+        });
     },
 
     _createMenuItems: function(collection) {
@@ -167,5 +173,9 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(address);
+    },
+
+    _emailTextFieldElement: function(uuid) {
+        return Ext.get(Ext.query("#aodaac-email-address-" + uuid)[0]);
     }
 });
