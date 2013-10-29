@@ -15,7 +15,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numGoodResults = 0;
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('searchingForFeatures'),
+            title: OpenLayers.i18n('searchingTitle'),
             width: cfg.appConfig.popupWidth,
             height: 80, // set height later when there are results
             maximizable: true,
@@ -110,7 +110,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         var wmsLayers = this._collectUniqueLayers();
 
         if (wmsLayers.length == 0) {
-            this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
+            this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
             this.blankContainer.update("");
         }
         else {
@@ -134,7 +134,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             }, this);
 
                 if (count == 0) {
-                    this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
+                    this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
                     this.blankContainer.update("");
                 }
         }
@@ -280,14 +280,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         if (this.numGoodResults > 0) {
             this.setTitle(
                 OpenLayers.i18n(
-                    'featureInformationFoundForDataCollection',
+                    'infoFoundTitle',
                     { 'dataCollectionNumber': this.numGoodResults }
             ));
         }
         else if (this.numResultQueries == this.numResultsToLoad) {
             this.setTitle(
                 OpenLayers.i18n(
-                    'noFeatureInformationFoundForDataCollection',
+                    'noInfoFoundTitle',
                     { 'dataCollectionNumber': this.numResultsToLoad }
             ));
         }
@@ -300,7 +300,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-                var str = (depth <= 0) ? OpenLayers.i18n('depth') : OpenLayers.i18n('elevation');
+                var str = (depth <= 0) ? OpenLayers.i18n('depthLabel') : OpenLayers.i18n('elevationLabel');
                 str += ":"
                 this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
             }
