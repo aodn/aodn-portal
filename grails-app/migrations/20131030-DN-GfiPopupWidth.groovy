@@ -4,7 +4,7 @@ databaseChangeLog = {
 
         sql "UPDATE config SET popup_width=490;"
         update(tableName: "config") {
-            column(name: "popup_width", value: "490")
+            column(name: "popup_width", value: "550")
         }
     }
 }
