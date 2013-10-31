@@ -139,7 +139,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         // TODO: Configure for last 10 frames, a bit
                         // ugly and hardcoded
                         var timeControl = that._getTimeControl();
-                        timeControl.configureForLayer(that, 10);
+                        timeControl.configureForLayer(that, 1);
                         that._processTemporalExtentDone();
                     }
                 })();
