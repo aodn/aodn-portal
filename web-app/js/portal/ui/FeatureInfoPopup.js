@@ -106,37 +106,31 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _handleLayers: function() {
-        var resized = false;
         var wmsLayers = this._collectUniqueLayers();
 
-        if (wmsLayers.length == 0) {
+        var queryableVisibleLayersCount = 0;
+
+        Ext.each(wmsLayers, function(layer, index, all) {
+            if (layer.params.QUERYABLE == true && layer.getVisibility()) {
+
+                queryableVisibleLayersCount++;
+
+                if (layer.metadata.units == undefined && layer.isNcwms()) {
+                    // populate unit information now
+                    this._setMetadataFirst(layer);
+                }
+                else {
+                    this._requestFeatureInfo(layer);
+                }
+            }
+        }, this);
+
+        if (queryableVisibleLayersCount > 0) {
+            this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
+        }
+        else if (queryableVisibleLayersCount == 0) {
             this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
             this.depthInfoPanel.update("");
-        }
-        else {
-            var count = 0;
-            Ext.each(wmsLayers, function(layer, index, all) {
-                if (layer.params.QUERYABLE == true && layer.getVisibility()) {
-                    count++;
-                    if (layer.metadata.units == undefined && layer.isNcwms()) {
-                        // populate unit information now
-                        this._setMetadataFirst(layer);
-                    }
-                    else {
-                        this._requestFeatureInfo(layer);
-                    }
-
-                    if (!resized) {
-                        this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
-                        resized = true;
-                    }
-                }
-            }, this);
-
-            if (count == 0) {
-                this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
-                this.depthInfoPanel.update("");
-            }
         }
     },
 
