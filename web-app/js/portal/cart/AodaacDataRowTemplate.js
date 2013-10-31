@@ -51,7 +51,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             html += '</div>';
             html += '<div class="clear"></div>';
 
-            html = String.format(html, values.uuid, OpenLayers.i18n('emailAddressPlaceholder'));
+            html = String.format(html, values.uuid, this._getEmailAddress());
         }
         else {
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
@@ -107,6 +107,11 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
                 this.set({ value: '' });
             }
         });
+
+        that = this;
+        this._emailTextFieldElement(collection.uuid).on('change', function() {
+            that._saveEmailAddress(collection.uuid);
+        });
     },
 
     _createMenuItems: function(collection) {
@@ -129,7 +134,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             var emailAddress = emailAddressElement.val();
 
             if (!this._validateEmailAddress(emailAddress)) {
-
                 Ext.Msg.alert(OpenLayers.i18n('aodaacEmailProblemDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
                 return;
             }
@@ -177,5 +181,17 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _emailTextFieldElement: function(uuid) {
         return Ext.get(Ext.query("#aodaac-email-address-" + uuid)[0]);
+    },
+
+    _saveEmailAddress: function(uuid) {
+        sessionStorage.emailAddress = this._emailTextFieldElement(uuid).getValue();
+    },
+
+    _getEmailAddress: function(uuid) {
+        var emailAddress = OpenLayers.i18n('emailAddressPlaceholder');
+        if (sessionStorage.emailAddress)
+          emailAddress = sessionStorage.emailAddress;
+
+        return emailAddress;
     }
 });
