@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,7 +14,7 @@ class ProxyController {
 
     // proxies HTML by default or XML and Images if specified
     def index = {
-        if ( params.url ) {
+        if (params.url) {
             _index(false)
         }
         else {
@@ -35,7 +34,7 @@ class ProxyController {
         }
     }
 
-    Boolean allowedHost (url) {
+    Boolean allowedHost(url) {
         if (url) {
             return hostVerifier.allowedHost(request, url.toURL())
         }
@@ -47,39 +46,39 @@ class ProxyController {
     def cache = {
 
         // ACCEPTS UPPER URL PARAM ONLY
-        if ( allowedHost(params?.URL) ) {
+        if (allowedHost(params?.URL)) {
 
-            def url =  params.URL.replaceAll(/\?$/, "")
+            def url = params.URL.replaceAll(/\?$/, "")
 
             params.remove('URL')
             params.remove('action')
             params.remove('controller')
             // ALL OTHER PARAMS ARE APPENDED AS PARAMS TO THE URL (and passed to the index action)
-            def p = params.collect { k,v -> "$k=$v" }.join('&')
+            def p = params.collect{ k, v -> "$k=$v" }.join('&')
             if (p.size() > 0) {
                 url += "?" + p
             }
 
             // assume that the request FORMAT (from openlayers) will be the return format
-            redirect( action:'', params: [url: url, format: params.FORMAT ])
+            redirect(action: '', params: [url: url, format: params.FORMAT])
         }
         else {
-            render( text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500 )
+            render(text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500)
         }
     }
 
     def wmsOnly = {
 
-        if ( params.url ) {
+        if (params.url) {
 
             try {
                 def resp = params.url.toURL()
                 def xml = new XmlSlurper().parseText(resp.text)
                 // get all valid namespaces eg  xmlns:a="http://a.example.com" xmlns:b="http://b.example.com"
-                def namespaceList = xml.'**'.collect { it.namespaceURI() }.unique()
+                def namespaceList = xml.'**'.collect{ it.namespaceURI() }.unique()
 
                 def isWMS = false
-                def validNSpaceURL = ['http://www.opengis.net/wms','http://www.opengis.net/ogc']
+                def validNSpaceURL = ['http://www.opengis.net/wms', 'http://www.opengis.net/ogc']
                 namespaceList.each {
                     if (validNSpaceURL.contains(it)) {
                         isWMS = true
@@ -102,14 +101,12 @@ class ProxyController {
                     // We dont tell the user the problem or how we valiate a genuine WMS XML doc
                     render text: params.url, status: 500
                 }
-
             }
             catch (Exception e) {
                 log.debug "User added WMS Server error: $e"
 
                 render text: params.url, status: 500
             }
-
         }
     }
 
