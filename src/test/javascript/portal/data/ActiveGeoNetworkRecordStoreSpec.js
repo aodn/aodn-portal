@@ -326,6 +326,13 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 activeRecordStore.removeAll();
                 expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBeFalsy();
             });
+
+            it('attributes removed on record re-add', function() {
+                activeRecordStore.addRecordAttribute(uuid, "key", "value");
+                activeRecordStore.removeAll();
+                activeRecordStore.add(record);
+                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBeFalsy();
+            });
         });
     });
 });
