@@ -62,6 +62,12 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         });
     },
 
+    _recordExists: function(uuid) {
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().findBy(function(record) {
+            return record.get('uuid') == uuid;
+        }) != -1;
+    },
+
     removeAll: function(store) {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
         Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
@@ -76,6 +82,21 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         });
 
         return Ext.util.JSON.encode(items);
+    },
+
+    addRecordAttribute: function(uuid, key, value) {
+        if (this._recordExists(uuid)) {
+            if (!this.uuid) this.uuid = {};
+            this.uuid.key = value;
+        }
+    },
+
+    getRecordAttribute: function(uuid, key, value) {
+        console.log(this.uuid);
+        if (this._recordExists(uuid) && this.uuid) {
+            return this.uuid.key;
+        }
+        return null;
     }
 });
 

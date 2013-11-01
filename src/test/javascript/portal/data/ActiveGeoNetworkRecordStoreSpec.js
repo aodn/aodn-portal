@@ -300,5 +300,32 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 expect(activeRecordStore.isRecordActive(record)).toBeFalsy();
             });
         });
+
+        describe('record attributes', function() {
+            var record;
+            var uuid = "29841123988481203";
+
+            beforeEach(function() {
+                record = new Portal.data.GeoNetworkRecord({
+                    uuid: uuid
+                });
+                activeRecordStore.add(record);
+            });
+
+            it('get record by uuid', function() {
+                expect(activeRecordStore._recordExists(uuid)).toBeTruthy();
+            });
+
+            it('add record attribute', function() {
+                activeRecordStore.addRecordAttribute(uuid, "key", "value");
+                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBe("value");
+            });
+
+            it('attributes removed on record removal', function() {
+                activeRecordStore.addRecordAttribute(uuid, "key", "value");
+                activeRecordStore.removeAll();
+                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBeFalsy();
+            });
+        });
     });
 });
