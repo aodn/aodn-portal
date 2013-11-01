@@ -22,6 +22,10 @@ class ProxyController {
         }
     }
 
+    def downloadGif = {
+        _index(true)
+    }
+
     def _index(downloadGif) {
 
         if (allowedHost(params.url)) {
@@ -108,9 +112,5 @@ class ProxyController {
                 render text: params.url, status: 500
             }
         }
-    }
-
-    def downloadGif = {
-        _index(true)
     }
 }
