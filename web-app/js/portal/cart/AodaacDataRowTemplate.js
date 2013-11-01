@@ -7,6 +7,7 @@
 Ext.namespace('Portal.cart');
 
 Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
+    AODAAC_EMAIL_ADDRESS_ATTRIBUTE: "aodaac-email-address",
 
     constructor: function(downloadPanelTemplate) {
         this.downloadPanelTemplate = downloadPanelTemplate;
@@ -51,7 +52,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             html += '</div>';
             html += '<div class="clear"></div>';
 
-            html = String.format(html, values.uuid, this._getEmailAddress());
+            html = String.format(html, values.uuid, this._getEmailAddress(values.uuid));
         }
         else {
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
@@ -183,13 +184,21 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _saveEmailAddress: function(uuid) {
-        sessionStorage.emailAddress = this._emailTextFieldElement(uuid).getValue();
+        Portal.data.ActiveGeoNetworkRecordStore.instance().
+            addRecordAttribute(
+                uuid, this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
+                this._emailTextFieldElement(uuid).getValue()
+            );
     },
 
     _getEmailAddress: function(uuid) {
-        var emailAddress = OpenLayers.i18n('emailAddressPlaceholder');
-        if (sessionStorage.emailAddress) {
-          emailAddress = sessionStorage.emailAddress;
+        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
+            getRecordAttribute(
+                uuid, this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
+            );
+
+        if (!emailAddress) {
+            emailAddress = OpenLayers.i18n('emailAddressPlaceholder');
         }
 
         return emailAddress;

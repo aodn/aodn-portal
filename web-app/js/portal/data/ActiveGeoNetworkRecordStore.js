@@ -92,7 +92,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     getRecordAttribute: function(uuid, key, value) {
-        console.log(this.uuid);
         if (this._recordExists(uuid) && this.uuid) {
             return this.uuid.key;
         }
