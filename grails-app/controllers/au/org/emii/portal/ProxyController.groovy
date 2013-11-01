@@ -23,15 +23,16 @@ class ProxyController {
 
     def downloadGif = {
 
-        def index = params.url.indexOf("LAYERS=")
+        def layersField = "LAYERS="
+        def fieldIndex = params.url.indexOf(layersField)
 
-        if (index > -1) {
-            def layers = params.url.substring(index + 7);
+        if (fieldIndex > -1) {
+            def layerName = params.url.substring(fieldIndex + layersField.length());
             def timeStr = params.TIME
                 .replaceAll("[-:]", "")
                 .replaceAll("/", "_")
 
-            params.downloadFilename = "${layers}_${timeStr}.gif"
+            params.downloadFilename = "${layerName}_${timeStr}.gif"
         }
 
         _index()
