@@ -7,19 +7,11 @@
 
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
-    var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
-    return result;
-}
-
-function ucwords( str ) {
-    // Uppercase the first character of every word in a string
-    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) {
-        return $1.toUpperCase ( );
-    } );
+    return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
 }
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
-function getAussieUnits(val,src_units) {
+function getAussieUnits(val, src_units) {
     var cel = "";
     var c = "&#176;C";
     var ret = [];
@@ -111,7 +103,7 @@ function formatGetFeatureInfo(response, options) {
         }
     }
     else if (options.params.expectedFormat == 'text/xml') {
-        return setHTML_ncWMS(response,options);
+        return setHTML_ncWMS(response, options);
     }
     else if (options.params.expectedFormat == 'text/plain') {
         // cant be assed to handle different line endings. its crap anyhow
@@ -122,7 +114,7 @@ function formatGetFeatureInfo(response, options) {
     }
 }
 
-function setHTML_ncWMS(response,options) {
+function setHTML_ncWMS(response, options) {
     var xmldoc = response.responseXML;
 
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) {
@@ -235,7 +227,7 @@ function setHTML_ncWMS(response,options) {
     return html;
 }
 
-function inArray (array,value) {
+function inArray(array, value) {
 
     for (var i = 0; i < array.length; i++) {
 
