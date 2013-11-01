@@ -50,10 +50,13 @@ class ProxiedRequest {
 
                 if (index > -1) {
                     def layers = params.url.substring(index + 7);
-                    def timeStr = params.TIME.replaceAll("[-:]", "")
-                    timeStr.replace("/", "_")
-                    response.setHeader("Content-disposition", "attachment; filename=" +
-                        layers + "_" + timeStr + ".gif");
+                    def timeStr = params.TIME
+                        .replaceAll("[-:]", "")
+                        .replaceAll("/", "_")
+
+                    def filename = "${layers}_${timeStr}.gif"
+
+                    response.setHeader("Content-disposition", "attachment; filename=$filename");
                 }
             }
 
