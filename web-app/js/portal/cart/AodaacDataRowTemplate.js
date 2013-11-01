@@ -186,7 +186,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _saveEmailAddress: function(uuid) {
         Portal.data.ActiveGeoNetworkRecordStore.instance().
             addRecordAttribute(
-                uuid, this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
                 this._emailTextFieldElement(uuid).getValue()
             );
     },
@@ -194,13 +195,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _getEmailAddress: function(uuid) {
         var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
             getRecordAttribute(
-                uuid, this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
             );
 
-        if (!emailAddress) {
-            emailAddress = OpenLayers.i18n('emailAddressPlaceholder');
-        }
-
-        return emailAddress;
+        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
     }
 });
