@@ -12,7 +12,6 @@ class ProxyController {
     def grailsApplication
     def hostVerifier
 
-    // proxies HTML by default or XML and Images if specified
     def index = {
         if (params.url) {
             _index()
@@ -61,7 +60,7 @@ class ProxyController {
     // expects Open layers requests
     def cache = {
 
-        // ACCEPTS UPPER URL PARAM ONLY
+        // Accepts uppercase URL param only
         if (allowedHost(params?.URL)) {
 
             def url = params.URL.replaceAll(/\?$/, "")
@@ -69,7 +68,7 @@ class ProxyController {
             params.remove('URL')
             params.remove('action')
             params.remove('controller')
-            // ALL OTHER PARAMS ARE APPENDED AS PARAMS TO THE URL (and passed to the index action)
+            // All other params are maintained in the URL (and passed to the index action)
             def p = params.collect{ k, v -> "$k=$v" }.join('&')
             if (p.size() > 0) {
                 url += "?" + p
