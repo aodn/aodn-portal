@@ -424,6 +424,20 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.time;
     },
 
+    /* Overrides */
+    getFeatureInfoRequestString: function(clickPoint, overrideParams) {
+        var timeControl = this._getTimeControl();
+
+        overrideParams.TIME =
+            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            + "/" +
+            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        overrideParams.FORMAT = "text/xml";
+        overrideParams.INFO_FORMAT = overrideParams.FORMAT;
+        return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
+    },
+
     /**
      * Tile related functions
      */
