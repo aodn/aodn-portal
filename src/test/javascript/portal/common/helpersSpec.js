@@ -7,6 +7,16 @@
 
 describe("Portal.common.helpers", function() {
 
+    describe('sanistiseForFilename', function() {
+
+        it('swaps out invalid filname characters (and spaces)', function() {
+
+            var original  = 'imos:argo harvest\\/';
+            var sanitised = 'imos#argo_harvest__';
+
+            expect(sanitiseForFilename(original)).toBe(sanitised);
+        });
+    });
 
     it('expandExtendedISO8601Dates Correct compressed Request', function() {
 

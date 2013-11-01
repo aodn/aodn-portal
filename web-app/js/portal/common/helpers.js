@@ -10,6 +10,14 @@ function toNSigFigs(num, dec) {
     return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
 }
 
+function sanitiseForFilename(str) {
+
+    return str.replace(":", "#")
+        .replace("/", "_")
+        .replace("\\", "_")
+        .replace(" ", "_");
+}
+
 // if units label is known as fahrenheit or kelvin, convert val to celcius
 function getAussieUnits(val, src_units) {
     var cel = "";
