@@ -102,8 +102,7 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
         }
         
         var timerTickDateTimes;
-        var layerExtentLength = layer.getTemporalExtent().length;
-        
+
         if (range instanceof Array) {
             timerTickDateTimes = this._getExtentForRange(layer, range);
         }
@@ -117,12 +116,12 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             'temporalextentchanged',
             {
                 layer: {
-                    min: moment(layer.getTemporalExtentMin()),
-                    max: moment(layer.getTemporalExtentMax())
+                    min: layer.getTemporalExtentMin(),
+                    max: layer.getTemporalExtentMax()
                 },
                 timer: {
-                    min: moment(this.getExtentMin()),
-                    max: moment(this.getExtentMax())
+                    min: this.getExtentMin(),
+                    max: this.getExtentMax()
                 }
             }
         );
@@ -140,8 +139,8 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
     },
     
     _getExtentForRange: function(layer, range) {
-        var startDateTime = moment(range[0]);
-        var endDateTime   = moment(range[1]);
+        var startDateTime = range[0];
+        var endDateTime   = range[1];
 
         var startIndex = this._findIndexOfDate(layer.getTemporalExtent(), startDateTime);
         var endIndex   = this._findIndexOfDate(layer.getTemporalExtent(), endDateTime);

@@ -16,18 +16,18 @@ describe("OpenLayers.Timer", function() {
                 endDateTime: '2013-03-16T12:34:56'
             });
 
-            expect(timer.getStartDateTime()).toBeSame(moment('2013-03-06T12:34:56'));
-            expect(timer.getEndDateTime()).toBeSame(moment('2013-03-16T12:34:56'));
+            expect(timer.getStartDateTime()).toBeSame(moment.utc('2013-03-06T12:34:56'));
+            expect(timer.getEndDateTime()).toBeSame(moment.utc('2013-03-16T12:34:56'));
         });
 
         it("construct with moments", function() {
             timer = new OpenLayers.Timer({
-                startDateTime: moment('2013-03-06T12:34:56'),
+                startDateTime: moment.utc('2013-03-06T12:34:56'),
                 endDateTime: '2013-03-16T12:34:56'
             });
-            
-            expect(timer.getStartDateTime()).toBeSame(moment('2013-03-06T12:34:56'));
-            expect(timer.getEndDateTime()).toBeSame(moment('2013-03-16T12:34:56'));
+
+            expect(timer.getStartDateTime()).toBeSame(moment.utc('2013-03-06T12:34:56'));
+            expect(timer.getEndDateTime()).toBeSame(moment.utc('2013-03-16T12:34:56'));
         });
 
         it('construct with arbitrary date/time array', function() {
@@ -46,12 +46,12 @@ describe("OpenLayers.Timer", function() {
 
         it('construct with no date/time restrictions', function() {
             timer = new OpenLayers.Timer();
-            
+
             expect(timer.getStartDateTime()).toBeUndefined();
             expect(timer.getEndDateTime()).toBeUndefined();
             expect(timer.getNumTicks()).toBeUndefined();
         });
-        
+
         it("default ticks", function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:34:56',
@@ -86,7 +86,7 @@ describe("OpenLayers.Timer", function() {
                 endDateTime: '2013-04-07T02:12:43',
                 tickInterval: 123
             });
-            
+
             expect(timer.tickInterval.asMilliseconds()).toBe(123);
         });
 
@@ -125,7 +125,7 @@ describe("OpenLayers.Timer", function() {
             expect(timer.getCurrTickIndex()).toBe(numTicks - 1);
             timer.tickForward();
             expect(timer.getCurrTickIndex()).toBe(0);
-            
+
         });
 
         // prev tick
@@ -134,7 +134,7 @@ describe("OpenLayers.Timer", function() {
             expect(timer.getCurrTickIndex()).toBe(1);
             timer.tickBackward();
             expect(timer.getCurrTickIndex()).toBe(0);
-            
+
         });
 
         it("tick backward wraps", function() {
@@ -148,7 +148,7 @@ describe("OpenLayers.Timer", function() {
     describe("tick date/time generation", function() {
         // choosing 5 makes it a bit easier to do the calcs.
         var numTicks = 5;
-        
+
         beforeEach(function() {
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:00:00',
@@ -158,19 +158,19 @@ describe("OpenLayers.Timer", function() {
         });
 
         it("first date/time", function() {
-            expect(timer.getTickDateTime(0)).toBeSame(moment('2013-03-06T12:00:00'));
+            expect(timer.getTickDateTime(0)).toBeSame(moment.utc('2013-03-06T12:00:00'));
         });
-        
+
         it("end date/time", function() {
-            expect(timer.getTickDateTime(numTicks - 1)).toBeSame(moment('2013-03-06T13:00:00'));
+            expect(timer.getTickDateTime(numTicks - 1)).toBeSame(moment.utc('2013-03-06T13:00:00'));
         });
 
         it("all tick date/times", function() {
-            expect(timer.getTickDateTime(0)).toBeSame(moment('2013-03-06T12:00:00'));
-            expect(timer.getTickDateTime(1)).toBeSame(moment('2013-03-06T12:15:00'));
-            expect(timer.getTickDateTime(2)).toBeSame(moment('2013-03-06T12:30:00'));
-            expect(timer.getTickDateTime(3)).toBeSame(moment('2013-03-06T12:45:00'));
-            expect(timer.getTickDateTime(4)).toBeSame(moment('2013-03-06T13:00:00'));
+            expect(timer.getTickDateTime(0)).toBeSame(moment.utc('2013-03-06T12:00:00'));
+            expect(timer.getTickDateTime(1)).toBeSame(moment.utc('2013-03-06T12:15:00'));
+            expect(timer.getTickDateTime(2)).toBeSame(moment.utc('2013-03-06T12:30:00'));
+            expect(timer.getTickDateTime(3)).toBeSame(moment.utc('2013-03-06T12:45:00'));
+            expect(timer.getTickDateTime(4)).toBeSame(moment.utc('2013-03-06T13:00:00'));
         });
     });
 
@@ -178,7 +178,7 @@ describe("OpenLayers.Timer", function() {
         var firstTickDateTime;
         var lastTickDateTime;
         var tickDateTimes;
-        
+
         beforeEach(function() {
             firstTickDateTime = moment('2013-03-06T12:00:00');
             lastTickDateTime = moment('2013-03-06T13:00:00');
@@ -188,7 +188,7 @@ describe("OpenLayers.Timer", function() {
                 moment('2013-03-06T12:30:00'),
                 lastTickDateTime
             ];
-            
+
             timer.setTickDateTimes(tickDateTimes);
         });
 
@@ -200,7 +200,7 @@ describe("OpenLayers.Timer", function() {
             it('getTickDateTimeMin value', function() {
                 expect(timer.getTickDateTimeMin()).toBeSame(firstTickDateTime);
             });
-            
+
             it('getTickDateTimeMin is copy', function() {
                 expect(timer.getTickDateTimeMin()).not.toBe(firstTickDateTime);
             });
@@ -208,13 +208,13 @@ describe("OpenLayers.Timer", function() {
             it('getTickDateTimeMax value', function() {
                 expect(timer.getTickDateTimeMax()).toBeSame(lastTickDateTime);
             });
-            
+
             it('getTickDateTimeMax is copy', function() {
                 expect(timer.getTickDateTimeMax()).not.toBe(lastTickDateTime);
             });
         });
     });
-    
+
     describe("timer observer", function() {
 
         beforeEach(function() {
@@ -235,7 +235,7 @@ describe("OpenLayers.Timer", function() {
 
             expect(actualContext).toBe(expectedContext);
         });
-        
+
         it("on tick forward", function() {
 
             var tickObserverCalled = false;
@@ -287,14 +287,14 @@ describe("OpenLayers.Timer", function() {
         beforeEach(function() {
             jasmine.Clock.useMock();
             jasmine.Clock.reset();
-            
+
             this.addMatchers({
                 toHaveBeenCalledWithSame: function(expected) {
                     return (this.actual.argsForCall[this.actual.callCount - 1][0].index == expected.index)
                         && this.actual.argsForCall[this.actual.callCount - 1][0].dateTime.isSame(expected.dateTime);
                 }
             });
-            
+
             // Use a local timer, otherwise this test and the next interfere with each other.
             timer = new OpenLayers.Timer({
                 startDateTime: '2013-03-06T12:00:00',
@@ -321,18 +321,18 @@ describe("OpenLayers.Timer", function() {
             timer.start();
             expect(onTickCallback).toHaveBeenCalledWith({
                 index: 0,
-                dateTime: moment(expectedDateTimes[0])
+                dateTime: moment.utc(expectedDateTimes[0])
             });
-            
+
             jasmine.Clock.tick(499);
             // 499ms elapsed
             expect(onTickCallback.callCount).toEqual(1);
-            
+
             jasmine.Clock.tick(1);
             // 500ms elapsed
             expect(onTickCallback).toHaveBeenCalledWithSame({
                 index: 1,
-                dateTime: moment(expectedDateTimes[1])
+                dateTime: moment.utc(expectedDateTimes[1])
             });
             expect(onTickCallback.callCount).toEqual(2);
 
@@ -344,7 +344,7 @@ describe("OpenLayers.Timer", function() {
             // 1000ms elapsed
             expect(onTickCallback).toHaveBeenCalledWithSame({
                 index: 0,
-                dateTime: moment(expectedDateTimes[0])
+                dateTime: moment.utc(expectedDateTimes[0])
             });
             expect(onTickCallback.callCount).toEqual(3);
         });
@@ -373,7 +373,7 @@ describe("OpenLayers.Timer", function() {
             jasmine.Clock.tick(250);
             expect(callbackTime).toBe(0);
             expect(onTickCallback.callCount).toBe(1);
-            
+
             // 500ms
             jasmine.Clock.tick(250);
             expect(callbackTime).toBe(500);
@@ -402,7 +402,7 @@ describe("OpenLayers.Timer", function() {
             expect(callbackTime).toBe(1000);
             expect(onTickCallback.callCount).toBe(4);
         });
-        
+
         it('halveFrequency causes interval to double', function() {
             var origIntervalMs = timer.tickInterval.asMilliseconds();
             timer.halveFrequency();
@@ -414,7 +414,7 @@ describe("OpenLayers.Timer", function() {
             timer.start();
             expect(callbackTime).toBe(0);
             expect(onTickCallback.callCount).toBe(1);
-            
+
             // 500ms
             jasmine.Clock.tick(500);
             expect(callbackTime).toBe(500);
@@ -427,7 +427,7 @@ describe("OpenLayers.Timer", function() {
             jasmine.Clock.tick(500);
             expect(callbackTime).toBe(500);
             expect(onTickCallback.callCount).toBe(2);
-            
+
             // 1499ms
             jasmine.Clock.tick(499);
             expect(callbackTime).toBe(500);

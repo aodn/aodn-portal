@@ -30,9 +30,9 @@ OpenLayers.Timer = OpenLayers.Class({
         this.tickDateTimes = [];
 
         if (options && options.startDateTime && options.endDateTime) {
-            var startDateTime = moment(options.startDateTime);
-            var endDateTime = moment(options.endDateTime);
-            var currDateTime = moment(startDateTime);
+            var startDateTime = moment.utc(options.startDateTime);
+            var endDateTime = moment.utc(options.endDateTime);
+            var currDateTime = moment.utc(startDateTime);
             var numTicks = options.numTicks ? options.numTicks : 10;
 
             var i = 0;
@@ -40,7 +40,7 @@ OpenLayers.Timer = OpenLayers.Class({
             var interval =  this._getTickDateTimeInterval(startDateTime, endDateTime, numTicks);
 
             while (!currDateTime.isAfter(endDateTime)) {
-                this.tickDateTimes[i] = moment(currDateTime);
+                this.tickDateTimes[i] = moment.utc(currDateTime);
                 currDateTime.add(interval);
 
                 i++;
@@ -110,11 +110,11 @@ OpenLayers.Timer = OpenLayers.Class({
     },
 
     getTickDateTimeMin: function() {
-        return moment(this.tickDateTimes[0]);
+        return moment.utc(this.tickDateTimes[0]);
     },
 
     getTickDateTimeMax: function() {
-        return moment(this.tickDateTimes.last());
+        return moment.utc(this.tickDateTimes.last());
     },
     
     on: function(eventName, observer, context) {

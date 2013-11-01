@@ -18,13 +18,13 @@ describe("OpenLayers.TemporalMap", function() {
             var nonNcWmsLayer = new OpenLayers.Layer.WMS();
 
             map.addLayers([ncWmsLayer, nonNcWmsLayer]);
-            
+
             var theDateTime = moment('2013-05-27T12:45:56');
-            
+
             spyOn(ncWmsLayer, 'toTime');
             map.toTime(theDateTime);
-            
-            expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime) 
+
+            expect(ncWmsLayer.toTime).toHaveBeenCalledWith(theDateTime)
         });
 
         it('timechanged event when toTime is called', function() {

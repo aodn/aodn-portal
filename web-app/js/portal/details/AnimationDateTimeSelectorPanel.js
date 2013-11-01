@@ -108,7 +108,7 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     _onStartDateSelected: function(startDatePicker, jsDate) {
-        this._updateStartTimeCombo(moment(jsDate));
+        this._updateStartTimeCombo(moment(jsDate.getTime()));
     },
 
     _onTimeSelected: function(combo, record, index) {
@@ -116,22 +116,24 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     _onDateTimeSelectionChange: function() {
-        var startTime = moment(this.startTimeCombo.getValue());
-        var endTime   = moment(this.endTimeCombo.getValue());
+        var startTime = moment.utc(this.startTimeCombo.getValue());
+        var endTime   = moment.utc(this.endTimeCombo.getValue());
 
         // Handle the case when endTime is not after startTime
         if (!endTime.isAfter(startTime)) {
             // TODO: pop up box for user?
             endTime = startTime.clone();
         }
+
         this.timeControl.configureForLayer(
             this.parentAnimationControl.selectedLayer,
-                [ startTime, endTime ]);
+            [startTime, endTime]
+        );
         this.parentAnimationControl.selectedLayer._precache();
     },
 
     _onEndDateSelected: function(endDatePicker, jsDate) {
-        this._updateEndTimeCombo(moment(jsDate));
+        this._updateEndTimeCombo(moment.utc(jsDate.getTime()));
     },
 
     _onTemporalExtentChanged: function(evt) {
@@ -163,12 +165,12 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     _updateTimeCombo: function(timeCombo, dateTime, useFirstIfNotFound) {
         var datesOnDay = this.parentAnimationControl.selectedLayer.getDatesOnDay(dateTime);
 
-        exactDateFoundInCombo = false;
+        var exactDateFoundInCombo = false;
         var data = [];
         for (var i = 0; i < datesOnDay.length; i++) {
             data.push({
-                timeValue: datesOnDay[i].valueOf(),
-                displayTime: datesOnDay[i].format(this.TIME_FORMAT)
+                timeValue: datesOnDay[i].toDate().getTime(),
+                displayTime: datesOnDay[i].utc().format(this.TIME_FORMAT)
             });
             if (datesOnDay[i].isSame(dateTime)) {
                 exactDateFoundInCombo = true;
@@ -177,11 +179,11 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
         timeCombo.getStore().loadData(data);
         if (exactDateFoundInCombo) {
-            timeCombo.setValue(dateTime.valueOf());
+            timeCombo.setValue(dateTime.toDate().getTime());
         } else if (useFirstIfNotFound) {
-            timeCombo.setValue(datesOnDay[0].valueOf());
+            timeCombo.setValue(datesOnDay[0].toDate().getTime());
         } else {
-            timeCombo.setValue(datesOnDay.last().valueOf());
+            timeCombo.setValue(datesOnDay.last().toDate().getTime());
         }
     },
 

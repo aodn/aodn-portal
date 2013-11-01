@@ -10,14 +10,14 @@ describe("OpenLayers.Tile.TemporalImage", function() {
 
     beforeEach(function() {
         OpenLayers.Tile.TemporalImage.prototype.imgCache = {};
-        
+
         tile = new OpenLayers.Tile.TemporalImage(
             this,
             new OpenLayers.Pixel(1, 1),
             new OpenLayers.Bounds(1, 2, 3, 4),
             null,
             new OpenLayers.Size(10, 10));
-        
+
         tile.layer = {
             getURL: function() { return 'http://host/image.png' },
             getURLAtTime: function() { return 'http://host/image.png' }
@@ -36,14 +36,14 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             expect(tile.imgCache).not.toBe(differentTile.imgCache);
         });
     });
-    
+
     describe('caching', function() {
         var dateTime;
-        
+
         beforeEach(function() {
             dateTime = moment('2012-06-07T23:12:56+07:00');
         });
-        
+
         it('is not cached', function() {
             expect(tile._isCached(dateTime)).toBeFalsy();
         });
@@ -62,18 +62,18 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         it('clearCache', function() {
             var imgCache = {};
             tile.imgCache = imgCache;
-            
+
             tile.clearCache();
             expect(tile.imgCache).not.toBe(imgCache);
         });
-        
+
         describe('get cached', function() {
             it('not in cache', function() {
                 expect(tile._isCached(dateTime)).toBeFalsy();
                 expect(tile._getCached(dateTime)).toBeTruthy();
                 expect(tile._isCached(dateTime)).toBeTruthy();
             });
-            
+
             it('in cache', function() {
                 tile.imgCache[tile._getKey(dateTime)] = true;
                 expect(tile._isCached(dateTime)).toBeTruthy();
@@ -81,7 +81,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
                 expect(tile._isCached(dateTime)).toBeTruthy();
             });
         });
-        
+
         it('key', function() {
             var dateTime = moment('2012-06-07T23:12:56+07:00');
             expect(tile._getKey(dateTime)).toBe('x=1,y=1-1339085576000');
@@ -103,17 +103,17 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         var imgDiv;
         var dateTime;
         var cachedImg;
-        
+
         beforeEach(function() {
             imgDiv = document.createElement('img');
             imgDiv.className = 'olTile';
             tile.imgDiv = imgDiv;
-            
+
             dateTime = moment('2013-06-09T06:07:08');
 
             cachedImg = tile._getCached(dateTime);
         });
-        
+
         it('src', function() {
             expect(cachedImg.src).toBe('http://host/image.png');
         });
@@ -121,7 +121,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         it('class', function() {
             expect(cachedImg.className).toBe('olTile');
         });
-        
+
         it('style', function() {
             expect(cachedImg.style.hidden).toBeFalsy();
         });
@@ -136,7 +136,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
         var img0 = document.createElement('img');;
         var img1 = document.createElement('img');;
         var img2 = document.createElement('img');;
-        
+
         beforeEach(function() {
             tile._getCached = function(dateTime) {
                 var retImg;
@@ -157,7 +157,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
 
             tile.parentDiv = document.createElement('div');
         });
-        
+
         it('image to time', function() {
             tile._imageToTime(dateTime0);
             expect(tile.parentDiv.childNodes.length).toBe(1);
@@ -181,7 +181,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             };
             spyOn(tile, 'show');
         });
-        
+
         it('parent div is initialised first time', function() {
             expect(tile.parentDiv).toBe(null);
             tile.toTime(moment('2013-01-01'));
@@ -221,7 +221,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
             expect(tile.imgCache[tile._getKey(dateTime)]).toBeFalsy();
             tile.precache(dateTime, function() {}, this);
             expect(tile.imgCache[tile._getKey(dateTime)]).toBeTruthy();
-            
+
         });
 
         describe('onload', function() {
@@ -231,7 +231,7 @@ describe("OpenLayers.Tile.TemporalImage", function() {
                     return { complete: true };
                 };
                 var dateTime = moment('2010-03-03T03:03:03');
-                
+
                 tile.precache(dateTime, onloadSpy, this);
                 expect(onloadSpy).toHaveBeenCalled();
             });
@@ -241,21 +241,21 @@ describe("OpenLayers.Tile.TemporalImage", function() {
 
                 var cachedImg;
                 tile._getCached = function(dateTime, onloadCallback) {
-                    var img = document.createElement('img');  
+                    var img = document.createElement('img');
                     img.src = 'someurl';
                     img.onload = onloadSpy;
 
                     cachedImg = img;
-                    
+
                     return img;
                 };
-                
+
                 tile.precache(moment('2010-03-03T03:03:03'), onloadSpy, this);
                 expect(onloadSpy).not.toHaveBeenCalled();
 
                 $(cachedImg).trigger('onload');
                 expect(onloadSpy).toHaveBeenCalled();
-                
+
             });
         });
     });
