@@ -108,10 +108,9 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             }
         });
 
-        that = this;
         this._emailTextFieldElement(collection.uuid).on('change', function() {
-            that._saveEmailAddress(collection.uuid);
-        });
+            this._saveEmailAddress(collection.uuid);
+        }, this);
     },
 
     _createMenuItems: function(collection) {
@@ -189,8 +188,9 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _getEmailAddress: function(uuid) {
         var emailAddress = OpenLayers.i18n('emailAddressPlaceholder');
-        if (sessionStorage.emailAddress)
+        if (sessionStorage.emailAddress) {
           emailAddress = sessionStorage.emailAddress;
+        }
 
         return emailAddress;
     }
