@@ -79,8 +79,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-    showIfNeeded: function(downloadUrl) {
+    showIfNeeded: function(downloadUrl, downloadFilename) {
         this.downloadUrl = downloadUrl;
+        this.downloadFilename = downloadFilename;
 
         if (!this.hasBeenShown) {
             this.show();
@@ -93,15 +94,31 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     onAccept: function() {
         this.hide();
 
-        if (this.downloadUrl) {
+        var portalDownloadUrl = this._portalDownloadUrl();
+
+        if (portalDownloadUrl) {
 
             this.hasBeenShown = true;
-            this._openDownload(this.downloadUrl);
+            this._openDownload(portalDownloadUrl);
         }
     },
 
     onCancel: function() {
         this.hide();
+    },
+
+    _portalDownloadUrl: function() {
+
+        if (this.downloadUrl && this.downloadFilename) {
+
+            var filename = encodeURIComponent(sanitiseForFilename(this.downloadFilename));
+
+            return "/proxy" +
+                "?url=" + encodeURIComponent(this.downloadUrl) +
+                "&downloadFilename=" + filename;
+        }
+
+        return null;
     },
 
     _openDownload: function(url) {
