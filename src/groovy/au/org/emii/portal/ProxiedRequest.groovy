@@ -25,7 +25,7 @@ class ProxiedRequest {
         this.params = params
     }
 
-    def proxy(downloadGif) {
+    def proxy() {
 
         def targetUrl = _getUrl(params)
         def conn = targetUrl.openConnection()
@@ -45,19 +45,9 @@ class ProxiedRequest {
             render(text: "", contentType: (params.format ?: params.FORMAT))
         }
         else {
-            if (downloadGif) {
-                def index = params.url.indexOf("LAYERS=")
-
-                if (index > -1) {
-                    def layers = params.url.substring(index + 7);
-                    def timeStr = params.TIME
-                        .replaceAll("[-:]", "")
-                        .replaceAll("/", "_")
-
-                    def filename = "${layers}_${timeStr}.gif"
-
-                    response.setHeader("Content-disposition", "attachment; filename=$filename");
-                }
+            // Force download if filename provided
+            if (params.downloadFilename) {
+                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}");
             }
 
             try {

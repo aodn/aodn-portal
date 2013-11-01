@@ -15,7 +15,7 @@ class ProxyController {
     // proxies HTML by default or XML and Images if specified
     def index = {
         if (params.url) {
-            _index(false)
+            _index()
         }
         else {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
@@ -23,14 +23,26 @@ class ProxyController {
     }
 
     def downloadGif = {
-        _index(true)
+
+        def index = params.url.indexOf("LAYERS=")
+
+        if (index > -1) {
+            def layers = params.url.substring(index + 7);
+            def timeStr = params.TIME
+                .replaceAll("[-:]", "")
+                .replaceAll("/", "_")
+
+            params.downloadFilename = "${layers}_${timeStr}.gif"
+        }
+
+        _index()
     }
 
-    def _index(downloadGif) {
+    def _index() {
 
         if (allowedHost(params.url)) {
             def proxiedRequest = new ProxiedRequest(request, response, params)
-            proxiedRequest.proxy(downloadGif)
+            proxiedRequest.proxy()
         }
         else {
             log.info "Proxy: The url ${params.url} was not allowed"
