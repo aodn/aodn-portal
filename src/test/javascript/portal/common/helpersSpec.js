@@ -11,10 +11,14 @@ describe("Portal.common.helpers", function() {
 
         it('swaps out invalid filname characters (and spaces)', function() {
 
-            var original  = 'imos:argo harvest\\/';
-            var sanitised = 'imos#argo_harvest__';
+            var source = 'imos:argo harvest\\/';
+            var sourceSanitised = 'imos#argo_harvest__';
 
-            expect(sanitiseForFilename(original)).toBe(sanitised);
+            // Duplicate the source before sanitising to ensure global replace (as opposed to first occurrance)
+            var sanitiserInput = source + source;
+            var expectedOutput = sourceSanitised + sourceSanitised;
+
+            expect(sanitiseForFilename(sanitiserInput)).toBe(expectedOutput);
         });
     });
 
