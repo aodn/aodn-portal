@@ -56,7 +56,7 @@
                             <div>
                                 <g:form controller="auth">
                                     <g:textField onfocus="clearOnce(this)" name="openIdProvider" value="Other OpenID provider..."/>
-                                    <g:actionSubmit value="&raquo" action="login"/>
+                                    <g:actionSubmit value="&raquo;" action="login"/>
                                 </g:form>
                             </div>
                         </li>
