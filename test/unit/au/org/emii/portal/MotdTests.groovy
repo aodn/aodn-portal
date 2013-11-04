@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,7 +7,7 @@
 
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class MotdTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -20,7 +19,7 @@ class MotdTests extends GrailsUnitTestCase {
     }
 
     void testToString() {
-		def testMotd = new Motd(motdTitle : "title")
-		assertEquals "title", testMotd.toString()
+        def testMotd = new Motd(motdTitle: "title")
+        assertEquals "title", testMotd.toString()
     }
 }

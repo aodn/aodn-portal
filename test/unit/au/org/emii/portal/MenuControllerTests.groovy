@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,19 +13,19 @@ class MenuControllerTests extends ControllerUnitTestCase {
 
     protected void setUp() {
 
-	    super.setUp()
+        super.setUp()
     }
 
     protected void tearDown() {
 
-	    super.tearDown()
+        super.tearDown()
     }
 
     void testSetActiveFail() {
-		this.controller.params.id = 10
-		def mockMenu = new Menu(id : 10, title : "title_text", active : true, editDate : null)
-		mockDomain(Menu, [mockMenu])
-		this.controller.setActive()
-		assertTrue this.controller.response.contentAsString.equals("ERROR: Problem saving the new state!")
+        this.controller.params.id = 10
+        def mockMenu = new Menu(id: 10, title: "title_text", active: true, editDate: null)
+        mockDomain(Menu, [mockMenu])
+        this.controller.setActive()
+        assertTrue this.controller.response.contentAsString.equals("ERROR: Problem saving the new state!")
     }
 }
