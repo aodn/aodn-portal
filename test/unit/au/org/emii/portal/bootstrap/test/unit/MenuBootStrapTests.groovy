@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,12 +14,12 @@ import grails.test.GrailsUnitTestCase
 
 class MenuBootStrapTests extends GrailsUnitTestCase {
 
-	void testNothing() {
-		// Need to use a ConfigSlurper to read the DataSource.groovy file and access the connection details
-		// to inject a dataSource into menus to get this working, that or make it an integration test, until then
-		// I have commented the class out
-	}
-    
+    void testNothing() {
+        // Need to use a ConfigSlurper to read the DataSource.groovy file and access the connection details
+        // to inject a dataSource into menus to get this working, that or make it an integration test, until then
+        // I have commented the class out
+    }
+
 //	protected void setUp() {
 //        super.setUp()
 //		Menu.metaClass.getServerIdsWithAvailableLayers = { [] }
@@ -82,6 +81,6 @@ class MenuBootStrapTests extends GrailsUnitTestCase {
 //
 //		return items
 //	}
-	
-	
+
+
 }
