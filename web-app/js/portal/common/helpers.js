@@ -14,7 +14,7 @@ function sanitiseForFilename(str) {
 
     return str
         .replace(/:/g, "#")
-        .replace(/[:/\\ ]/g, "_");
+        .replace(/[/\\ ]/g, "_");
 }
 
 // if units label is known as fahrenheit or kelvin, convert val to celcius
