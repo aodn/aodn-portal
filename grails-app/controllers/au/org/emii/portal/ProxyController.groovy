@@ -27,7 +27,7 @@ class ProxyController {
         def fieldIndex = params.url.indexOf(layersField)
 
         if (fieldIndex > -1) {
-            def layerName = params.url.substring(fieldIndex + layersField.length());
+            def layerName = params.url.substring(fieldIndex + layersField.length())
             def timeStr = params.TIME
                 .replaceAll("[-:]", "")
                 .replaceAll("/", "_")
