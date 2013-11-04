@@ -8,6 +8,8 @@ Ext.namespace('Portal.data');
 
 Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecordStore, {
 
+    recordAttributes: {},
+
     constructor: function() {
 
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
@@ -46,6 +48,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onRemove: function(store, record) {
+        this._removeRecordAttributes(record);
         this._removeFromLayerStore(record);
         Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, record);
     },
@@ -58,8 +61,22 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     _onClear: function(store, records) {
         Ext.each(records, function(record) {
+            store._removeRecordAttributes(record);
             store._removeFromLayerStore(record);
         });
+    },
+
+    _recordExists: function(uuid) {
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().findBy(function(record) {
+            return record.get('uuid') == uuid;
+        }) != -1;
+    },
+
+    _removeRecordAttributes: function(record) {
+        var uuid = record.get('uuid');
+        if (this.recordAttributes.uuid) {
+            delete this.recordAttributes.uuid;
+        }
     },
 
     removeAll: function(store) {
@@ -76,6 +93,20 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         });
 
         return Ext.util.JSON.encode(items);
+    },
+
+    addRecordAttribute: function(uuid, key, value) {
+        if (this._recordExists(uuid)) {
+            if (!this.recordAttributes.uuid) this.recordAttributes.uuid = {};
+            this.recordAttributes.uuid.key = value;
+        }
+    },
+
+    getRecordAttribute: function(uuid, key, value) {
+        if (this._recordExists(uuid) && this.recordAttributes.uuid) {
+            return this.recordAttributes.uuid.key;
+        }
+        return null;
     }
 });
 
