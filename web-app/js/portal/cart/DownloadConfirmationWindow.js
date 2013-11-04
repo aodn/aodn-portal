@@ -112,10 +112,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         if (this.downloadUrl && this.downloadFilename) {
 
             var filename = encodeURIComponent(sanitiseForFilename(this.downloadFilename));
+            var url = encodeURIComponent(this.downloadUrl);
 
-            return "/proxy" +
-                "?url=" + encodeURIComponent(this.downloadUrl) +
-                "&downloadFilename=" + filename;
+            return String.format('proxy?url={0}&downloadFilename={1}', url, filename);
         }
 
         return null;
