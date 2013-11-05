@@ -50,11 +50,14 @@ class ProxyController {
         }
     }
 
-    Boolean allowedHost(url) {
-        if (url) {
-            return hostVerifier.allowedHost(request, url.toURL())
+    def allowedHost(url) {
+
+        try {
+            return url && hostVerifier.allowedHost(request, url.toURL())
         }
-        return false
+        catch (Exception e) {
+            return false
+        }
     }
 
     // this action is intended to always be cached by squid
