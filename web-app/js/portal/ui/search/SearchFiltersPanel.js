@@ -26,6 +26,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
+        this._buildTermFilter('platformFilter', {
+            title: OpenLayers.i18n('platformFilter'),
+            hierarchical: false,
+            fieldGroup: 'platformNames',
+            fieldName: 'platform',
+            searcher: config.searcher
+        });
+
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,

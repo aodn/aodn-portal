@@ -292,7 +292,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     _onFilterRemoved: function () {
-
         var filter = this.selectionStore.getFilterValue();
         this._onFilterValueChanged();
         this.searcher.removeFilters(this.fieldName);
