@@ -199,6 +199,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     locationFilter: 'Location',
     methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
+    platformFilter: 'Platform',
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date',
     geoFilter: "Geographic Boundary",
