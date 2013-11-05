@@ -47,6 +47,7 @@ class ProxiedRequest {
         else {
             // Force download if filename provided
             if (params.downloadFilename) {
+                log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
                 response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}");
             }
 
