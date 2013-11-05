@@ -103,7 +103,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildNewSearchButton: function() {
-
         this.newSearchButton = new Ext.Button({
             text: OpenLayers.i18n('facetedSearchNewSearchButton'),
             hidden: true
@@ -124,7 +123,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _onNewSearchClicked: function() {
-
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
         Ext.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();
