@@ -30,12 +30,7 @@ class ProxiedRequest {
         def targetUrl = _getUrl(params)
         def conn = targetUrl.openConnection()
 
-        if (params.format) {
-            response.contentType = params.format
-        }
-        else if (request.contentType) {
-            response.contentType = request.contentType
-        }
+        response.contentType = params.format ?: request.contentType
 
         def outputStream = response.outputStream
 
