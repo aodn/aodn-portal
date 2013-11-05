@@ -46,7 +46,7 @@ class ProxyController {
         }
         else {
             log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host '${params.url.toURL().host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
+            render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
         }
     }
 
