@@ -79,7 +79,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         return [
             {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
             {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this}
+            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this},
+            {text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this}
         ];
     },
 
@@ -89,6 +90,17 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
         var extensionToUse = fileExtension ? fileExtension : format;
         var downloadFilename = collection.title + "." + extensionToUse;
+
+        return function() {
+
+            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl, downloadFilename);
+        };
+    },
+
+    _urlListDownloadHandler: function(collection) {
+
+        var downloadUrl = "http://localhost:8080/aodn-portal/proxy/uniqueList?url=http%3A%2F%2Flocalhost:8080/aodn-portal/splash/links";
+        var downloadFilename = collection.title + "_URLs.txt";
 
         return function() {
 

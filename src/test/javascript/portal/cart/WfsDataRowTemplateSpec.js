@@ -188,8 +188,11 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         it('returns array of menu items', function() {
 
             spyOn(tpl, '_downloadHandlerFor');
+            spyOn(tpl, '_urlListDownloadHandler');
 
-            var items = tpl._createMenuItems({});
+            var theCollection = {};
+            var items = tpl._createMenuItems(theCollection);
+            var numSpecialItems = 1; // List of URLs
 
             expect(items.length).not.toBe(0);
 
@@ -199,7 +202,8 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                 expect(typeof item.text === 'string').toBeTruthy();
             });
 
-            expect(tpl._downloadHandlerFor.callCount).toBe(items.length);
+            expect(tpl._downloadHandlerFor.callCount).toBe(items.length - numSpecialItems);
+            expect(tpl._urlListDownloadHandler).toHaveBeenCalledWith(theCollection);
         });
     });
 
@@ -220,6 +224,16 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         it('returns a function to be called', function() {
 
             var returnValue = tpl._downloadHandlerFor('collection');
+
+            expect(typeof returnValue).toBe('function');
+        });
+    });
+
+    describe('_urlListDownloadHandler', function() {
+
+        it('returns a function to be called', function() {
+
+            var returnValue = tpl._urlListDownloadHandler('collection');
 
             expect(typeof returnValue).toBe('function');
         });
