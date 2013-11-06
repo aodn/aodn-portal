@@ -11,6 +11,8 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import static au.org.emii.portal.UrlUtils.urlWithQueryString
+
 class ProxiedRequest {
 
     static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
@@ -79,15 +81,7 @@ class ProxiedRequest {
             key != "_dc"
         }
 
-        def queryStr = ""
-
-        query.each {
-            key, value ->
-
-            queryStr += "&$key=$value"
-        }
-
-        return (params.url + queryStr).toURL()
+        return urlWithQueryString(params.url, query).toURL()
     }
 
     def _addAuthentication(connection, url) {
