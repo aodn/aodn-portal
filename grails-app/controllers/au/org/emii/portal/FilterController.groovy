@@ -61,6 +61,8 @@ class FilterController {
     }
 
     def update = {
+        log.debug "Updating Filter with params: ${params}"
+
         def filterInstance = Filter.get(params.id)
 
         if (filterInstance) {
