@@ -18,6 +18,10 @@ class ProxiedRequest {
     def request
     def response
     def params
+    def straightThrough = { inputStream, outputStream ->
+        log.debug "Straight-through stream processor"
+        outputStream << inputStream
+    }
 
     ProxiedRequest(request, response, params) {
         this.request = request
@@ -25,7 +29,9 @@ class ProxiedRequest {
         this.params = params
     }
 
-    def proxy() {
+    def proxy(streamProcessor = null) {
+
+        def processStream = streamProcessor ?: straightThrough
 
         def targetUrl = _getUrl(params)
         def conn = targetUrl.openConnection()
@@ -47,7 +53,7 @@ class ProxiedRequest {
             }
 
             try {
-                outputStream << conn.inputStream
+                processStream conn.inputStream, outputStream
                 outputStream.flush()
             }
             catch (Exception e) {

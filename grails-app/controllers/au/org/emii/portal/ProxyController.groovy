@@ -13,40 +13,63 @@ class ProxyController {
     def hostVerifier
 
     def index = {
-        if (params.url) {
-            _index()
-        }
-        else {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
+
+        _performProxying()
     }
 
     def downloadGif = {
 
-        def layersField = "LAYERS="
-        def fieldIndex = params.url.indexOf(layersField)
+        def beforeAction = { ->
 
-        if (fieldIndex > -1) {
-            def layerName = params.url.substring(fieldIndex + layersField.length())
-            def timeStr = params.TIME
-                .replaceAll("[-:]", "")
-                .replaceAll("/", "_")
+            def layersField = "LAYERS="
+            def fieldIndex = params.url.indexOf(layersField)
 
-            params.downloadFilename = "${layerName}_${timeStr}.gif"
+            if (fieldIndex > -1) {
+                def layerName = params.url.substring(fieldIndex + layersField.length())
+                def timeStr = params.TIME
+                    .replaceAll("[-:]", "")
+                    .replaceAll("/", "_")
+
+                params.downloadFilename = "${layerName}_${timeStr}.gif"
+            }
         }
 
-        _index()
+        _performProxying(beforeAction)
     }
 
-    def _index() {
+    def uniqueList = {
 
-        if (allowedHost(params.url)) {
-            def proxiedRequest = new ProxiedRequest(request, response, params)
-            proxiedRequest.proxy()
+        def streamProcessor = { inputStream, outputStream ->
+
+            def writer = new OutputStreamWriter(outputStream as OutputStream)
+            def includedUrls = [] as HashSet
+            def makeUnique = { includedUrls.add it.trim() }
+
+            inputStream.filterLine writer, makeUnique
         }
-        else {
+
+        _performProxying(null, streamProcessor)
+    }
+
+    def _performProxying(beforeAction = null, streamProcessor = null) {
+
+        if (!params.url) {
+            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
+        }
+        else if (!allowedHost(params.url)) {
             log.info "Proxy: The url ${params.url} was not allowed"
             render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
+        }
+        else {
+
+            if (beforeAction) {
+                log.debug "Calling beforeAction"
+                beforeAction()
+            }
+
+            // Make request
+            def proxiedRequest = new ProxiedRequest(request, response, params)
+            proxiedRequest.proxy(streamProcessor)
         }
     }
 
@@ -63,7 +86,7 @@ class ProxyController {
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
-
+        // Todo - DN: Re-use _performProxying ?
         // Accepts uppercase URL param only
         if (allowedHost(params?.URL)) {
 
