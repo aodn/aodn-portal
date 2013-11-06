@@ -73,40 +73,22 @@ class ProxyController {
         }
     }
 
-    def allowedHost(url) {
-
-        try {
-            return url && hostVerifier.allowedHost(request, url.toURL())
-        }
-        catch (Exception e) {
-            return false
-        }
-    }
-
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
-        // Todo - DN: Re-use _performProxying ?
-        // Accepts uppercase URL param only
-        if (allowedHost(params?.URL)) {
 
-            def url = params.URL.replaceAll(/\?$/, "")
-
-            params.remove('URL')
-            params.remove('action')
-            params.remove('controller')
-            // All other params are maintained in the URL (and passed to the index action)
-            def p = params.collect{ k, v -> "$k=$v" }.join('&')
-            if (p.size() > 0) {
-                url += "?" + p
-            }
-
-            // assume that the request FORMAT (from openlayers) will be the return format
-            redirect(action: '', params: [url: url, format: params.FORMAT])
+        def makeLowercase = { uppercaseName ->
+            params[uppercaseName.toLowerCase()] = params[uppercaseName]
+            params.remove uppercaseName
         }
-        else {
-            render(text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500)
+
+        def beforeFilter = { ->
+            // Expects uppercase URL and FORMAT params
+            makeLowercase 'URL'
+            makeLowercase 'FORMAT'
         }
+
+        _performProxying(beforeFilter)
     }
 
     def wmsOnly = {
