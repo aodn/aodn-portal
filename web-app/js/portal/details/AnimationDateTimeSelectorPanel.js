@@ -9,7 +9,7 @@ Ext.namespace('Portal.details');
 Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
 
     DATE_FORMAT: 'Y-m-d',
-    TIME_FORMAT: 'HH:mm:ss (Z)',
+    TIME_FORMAT: 'HH:mm:ss UTC',
 
     constructor: function(cfg) {
         var config = Ext.apply({

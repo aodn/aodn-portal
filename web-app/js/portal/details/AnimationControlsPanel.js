@@ -113,7 +113,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 
 		this.stepLabel = new Ext.form.Label({
 					flex : 1,
-					width : 115,
+					width : 130,
 					style : 'padding-top: 5; padding-bottom: 5'
 				});
 
@@ -347,7 +347,7 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 	},
 
     _setStepLabelTextToDateTime: function(dateTime) {
-        this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss'));
+        this._setStepLabelText(dateTime.format('YYYY-MM-DD HH:mm:ss UTC'));
     },
     
 	_setStepLabelText : function(text) {

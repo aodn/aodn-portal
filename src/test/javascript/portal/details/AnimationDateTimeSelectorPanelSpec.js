@@ -102,7 +102,6 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
             dateTimePanel._onTemporalExtentChanged(extentEvent);
             expect(dateTimePanel.startDatePicker.minValue).toBeSameAsUtc('2008-01-01T12:34:56');
             expect(dateTimePanel.startDatePicker.maxValue).toBeSameAsUtc('2010-01-01T12:34:56');
-            console.log(dateTimePanel.startDatePicker.getValue());
             expect(dateTimePanel.startDatePicker.getValue()).toBeSame('2009-01-01');
         });
         
@@ -153,7 +152,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     
                     var addData = dateTimePanel.startTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
-                    expect(addData[0].displayTime).toBe('18:00:00 (+00:00)');
+                    expect(addData[0].displayTime).toBe('18:00:00 UTC');
                     expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.startTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
@@ -197,7 +196,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     
                     var addData = dateTimePanel.endTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
-                    expect(addData[0].displayTime).toBe('18:00:00 (+00:00)');
+                    expect(addData[0].displayTime).toBe('18:00:00 UTC');
                     expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.endTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
