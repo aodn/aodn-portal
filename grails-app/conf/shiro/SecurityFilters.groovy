@@ -227,7 +227,6 @@ class SecurityFilters {
                 if (permission) {
                     request.accessAllowed = true
                 }
-
             }
         }
 
