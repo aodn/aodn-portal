@@ -41,6 +41,8 @@ class ProxyController {
 
         def streamProcessor = { inputStream, outputStream ->
 
+            log.debug "Unique list streamProcessor"
+
             def writer = new OutputStreamWriter(outputStream as OutputStream)
             def includedUrls = [] as HashSet
             def makeUnique = { includedUrls.add it.trim() }
