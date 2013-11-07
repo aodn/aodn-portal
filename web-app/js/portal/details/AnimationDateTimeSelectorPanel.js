@@ -139,11 +139,11 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
     _onTemporalExtentChanged: function(evt) {
         this.startDatePicker.setMinValue(evt.layer.min.toDate());
         this.startDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.startDatePicker.setValue(evt.timer.min.toDate());
+        this.startDatePicker.setValue(this.getLocalDateFromLocalUtc(evt.timer.min.toDate()));
 
         this.endDatePicker.setMinValue(evt.layer.min.toDate());
         this.endDatePicker.setMaxValue(evt.layer.max.toDate());
-        this.endDatePicker.setValue(evt.timer.max.toDate());
+        this.endDatePicker.setValue(this.getLocalDateFromLocalUtc(evt.timer.max.toDate()));
 
         // On the first time we get temporalextentchanged, we'll have to
         // also select the right value in the time combos
@@ -216,5 +216,17 @@ Portal.details.AnimationDateTimeSelectorPanel = Ext.extend(Ext.Panel, {
         }
         this.startDatePicker.setDisabledDates(missingDateStrings);
         this.endDatePicker.setDisabledDates(missingDateStrings);
+    },
+
+    getLocalDateFromLocalUtc: function(localDate) {
+        return new Date(
+            localDate.getUTCFullYear(),
+            localDate.getUTCMonth(),
+            localDate.getUTCDate(),
+            localDate.getUTCHours(),
+            localDate.getUTCMinutes(),
+            localDate.getUTCSeconds(),
+            localDate.getUTCMilliseconds()
+        );
     }
 });
