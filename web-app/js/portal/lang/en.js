@@ -7,10 +7,10 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    navigationButtonNext: "Next &#187;",
-    navigationButtonPrevious: "&#171; Previous",
-    navigationButtonSelect: "Select &#187;",
-    navigationButtonDownload: "Download &#187;",
+    navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
+    navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
+    navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
+    navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
 
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
