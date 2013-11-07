@@ -76,7 +76,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createMenuItems: function(collection) {
+
+        console.log(collection);
+
         return [
+            // Todo - DN: if (collection.wmsLayer.urlDownloadFieldName)
             {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
             {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
             {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this},
@@ -99,7 +103,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _urlListDownloadHandler: function(collection) {
 
-        var downloadUrl = "http://localhost:8080/aodn-portal/proxy/uniqueList?url=http%3A%2F%2Flocalhost:8080/aodn-portal/splash/links";
+        // "http://localhost:8080/aodn-portal/proxy/uniqueList?url=http%3A%2F%2Flocalhost:8080/aodn-portal/splash/links"
+        var downloadUrl = String.format("http://localhost:8080/aodn-portal/splash/links", collection.wmsLayer.urlDownloadFieldName);
         var downloadFilename = collection.title + "_URLs.txt";
 
         return function() {
