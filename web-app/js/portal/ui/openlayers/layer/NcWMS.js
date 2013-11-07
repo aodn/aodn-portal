@@ -107,9 +107,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this._progressFeedback();
 
         var that = this;
+        var extentParser = new Portal.animation.TemporalExtentParser();
         (function () {
             var chunkStart;
             function processDates() {
+
                 var chunkStart = 0;
                 (function () {
                     var chunkEnd = chunkStart + chunkSize;
@@ -120,8 +122,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     // Concat array in place
                     that.temporalExtent.push.apply(
                         that.temporalExtent,
-                        expandExtendedISO8601Dates(
-                            arrayOfStringDates,chunkStart, chunkEnd)
+                        extentParser.expandExtendedISO8601Dates(
+                            arrayOfStringDates, chunkStart, chunkEnd)
                     );
                     // Process missing days
                     that._generateMissingDays(chunkStart, chunkEnd);
@@ -136,10 +138,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         setTimeout(arguments.callee, 0);
                     } else {
                         // Need to reconfigure layer as we processed times
-                        // TODO: Configure for last 10 frames, a bit
-                        // ugly and hardcoded
                         var timeControl = that._getTimeControl();
-                        timeControl.configureForLayer(that, 10);
+                        timeControl.configureForLayer(that, 1);
                         that._processTemporalExtentDone();
                     }
                 })();
@@ -184,10 +184,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _progressFeedback: function() {
-        var progress = this._calculateProgress();
         this.events.triggerEvent('precacheprogress', {
             layer: this,
-            progress: progress
+            progress: this._calculateProgress()
         });
     },
 
@@ -257,11 +256,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getTemporalExtentMin: function() {
-        return moment(this.temporalExtent[0]);
+        return moment.utc(this.temporalExtent[0]);
     },
 
     getTemporalExtentMax: function() {
-        return moment(this.temporalExtent.last());
+        return moment.utc(this.temporalExtent.last());
     },
 
     toTime: function(dateTime) {
@@ -337,7 +336,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             // temporalExtent[i-1]
             if (i > 0) {
                 var previousExistingDay = this.temporalExtent[i-1].clone().startOf('day');
-                var currentExistingDay  = this.temporalExtent[i]  .clone().startOf('day');
+                var currentExistingDay  = this.temporalExtent[i].clone().startOf('day');
 
                 // Fill in all the days in this gap (if there's any), a day after
                 // the previous existing date, until a day before the current
@@ -384,9 +383,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getURLAtTime: function(bounds, dateTime) {
-
         var baseUrl = OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
-        var time = dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
+        var time = dateTime.clone().format('YYYY-MM-DDTHH:mm:ss.SSS');
 
         return baseUrl + '&TIME=' + time;
     },
@@ -395,11 +393,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         // No extent restriction.
         if (!this.temporalExtent || this.temporalExtent.length == 0) {
-            this.time = moment(dateTime);
+            this.time = moment.utc(dateTime);
         }
         else {
             // Find nearest in temporalExtent.
-            var goalDateTime = moment(dateTime);
+            var goalDateTime = moment.utc(dateTime);
 
             var closestDateTime;
 
@@ -422,6 +420,20 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         return this.time;
+    },
+
+    /* Overrides */
+    getFeatureInfoRequestString: function(clickPoint, overrideParams) {
+        var timeControl = this._getTimeControl();
+
+        overrideParams.TIME =
+            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            + "/" +
+            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+
+        overrideParams.FORMAT = "text/xml";
+        overrideParams.INFO_FORMAT = overrideParams.FORMAT;
+        return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
     },
 
     /**
@@ -482,7 +494,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         url = this._appendParam(url, 'FORMAT', 'image/gif');
         url = this._appendParam(url, 'WIDTH', this.DEFAULT_GIF_HEIGHT);
 
-        url = url.replace('FORMAT=image%2Fpng&', '')
+        url = url.replace('FORMAT=image%2Fpng&', '');
 
         return 'proxy/downloadGif?url=' + url;
     },
@@ -497,5 +509,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.eachTile(function(tile) {
             tile.setOpacity(opacity);
         });
+    },
+
+    getFeatureInfoFormat: function () {
+        return 'text/xml';
     }
 });

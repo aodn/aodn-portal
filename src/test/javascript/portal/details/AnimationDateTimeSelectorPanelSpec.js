@@ -27,12 +27,12 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         
         extentEvent = {
             layer: {
-                min: moment('2008-01-01T12:34:56'),
-                max: moment('2010-01-01T12:34:56')
+                min: moment.utc('2008-01-01T12:34:56'),
+                max: moment.utc('2010-01-01T12:34:56')
             },
             timer: {
-                min: moment('2009-01-01T12:34:56'),
-                max: moment('2010-01-01T12:34:56')
+                min: moment.utc('2009-01-01T12:34:56'),
+                max: moment.utc('2010-01-01T12:34:56')
             }
         };
     });
@@ -100,16 +100,16 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
         it('start date picker', function() {
             spyOn(dateTimePanel, '_updateTimeCombo');
             dateTimePanel._onTemporalExtentChanged(extentEvent);
-            expect(dateTimePanel.startDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
-            expect(dateTimePanel.startDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
+            expect(dateTimePanel.startDatePicker.minValue).toBeSameAsUtc('2008-01-01T12:34:56');
+            expect(dateTimePanel.startDatePicker.maxValue).toBeSameAsUtc('2010-01-01T12:34:56');
             expect(dateTimePanel.startDatePicker.getValue()).toBeSame('2009-01-01');
-        });                
+        });
         
         it('end date picker', function() {
             spyOn(dateTimePanel, '_updateTimeCombo');
             dateTimePanel._onTemporalExtentChanged(extentEvent);
-            expect(dateTimePanel.endDatePicker.minValue).toBeSame('2008-01-01T12:34:56');
-            expect(dateTimePanel.endDatePicker.maxValue).toBeSame('2010-01-01T12:34:56');
+            expect(dateTimePanel.endDatePicker.minValue).toBeSameAsUtc('2008-01-01T12:34:56');
+            expect(dateTimePanel.endDatePicker.maxValue).toBeSameAsUtc('2010-01-01T12:34:56');
             expect(dateTimePanel.endDatePicker.getValue()).toBeSame('2010-01-01');
         });
 
@@ -120,7 +120,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     spyOn(dateTimePanel, '_updateEndTimeCombo');
 
                     dateTimePanel._onTemporalExtentChanged(extentEvent);
-                    expect(dateTimePanel._updateStartTimeCombo.calls[0].args[0]).toBeSame('2009-01-01T12:34:56');
+                    expect(dateTimePanel._updateStartTimeCombo.calls[0].args[0]).toBeSameAsUtc('2009-01-01T12:34:56');
                 });
 
                 it('start time picker updated', function() {
@@ -152,7 +152,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     
                     var addData = dateTimePanel.startTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
-                    expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
+                    expect(addData[0].displayTime).toBe('18:00:00 UTC');
                     expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.startTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });
@@ -164,7 +164,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     spyOn(dateTimePanel, '_updateEndTimeCombo');
 
                     dateTimePanel._onTemporalExtentChanged(extentEvent);
-                    expect(dateTimePanel._updateEndTimeCombo.calls[0].args[0]).toBeSame('2010-01-01T12:34:56');
+                    expect(dateTimePanel._updateEndTimeCombo.calls[0].args[0]).toBeSameAsUtc('2010-01-01T12:34:56');
                 });
 
                 it('end time picker updated', function() {
@@ -196,7 +196,7 @@ describe("Portal.details.AnimationDateTimeSelectorPanel", function() {
                     
                     var addData = dateTimePanel.endTimeCombo.store.loadData.calls[0].args[0];
                     expect(addData[0].timeValue).toBe(moment('2001-01-01T05:00').valueOf());
-                    expect(addData[0].displayTime).toBe('05:00:00 (+11:00)');
+                    expect(addData[0].displayTime).toBe('18:00:00 UTC');
                     expect(addData[1].timeValue).toBe(moment('2001-01-01T15:00').valueOf());
                     expect(dateTimePanel.endTimeCombo.getValue()).toBeSame('2001-01-01T05:00');
                 });

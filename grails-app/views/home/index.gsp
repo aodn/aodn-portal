@@ -108,6 +108,8 @@ ${buildInfo}
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/data/SuggestionStore.js')}"
         type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'portal/animation/TemporalExtentParser.js')}"
+        type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/data/CatalogResult.js')}"
         type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'portal/search/data/CatalogResultsStore.js')}"

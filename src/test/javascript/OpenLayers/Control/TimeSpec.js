@@ -13,7 +13,7 @@ describe("OpenLayers.Control.Time", function() {
         '2001-01-02T00:00',
         '2001-01-03T00:00',
         '2001-01-04T00:00',
-        '2001-01-05T00:00',
+        '2001-01-05T00:00'
     ];
     
     var ncwmsLayer;
@@ -49,10 +49,10 @@ describe("OpenLayers.Control.Time", function() {
             spyOn(timeControl.map, 'toTime');
             timeControl.onTick({
                 index: 1,
-                dateTime: moment('2000-12-12T01:01:01Z')
+                dateTime: moment.utc('2000-12-12T01:01:01Z')
             });
 
-            expect(map.toTime).toHaveBeenCalledWith(moment('2000-12-12T01:01:01Z'));
+            expect(map.toTime).toHaveBeenCalledWith(moment.utc('2000-12-12T01:01:01Z'));
         });
     });
 
@@ -65,17 +65,17 @@ describe("OpenLayers.Control.Time", function() {
                 endDateTime: '2013-03-16T12:34:56'
             });
         });
-        
+
         it('initialisation', function() {
             expect(timeControl.timer).not.toBeNull();
             expect(timeControl.timer.observers['tick']).toBeTruthy();
             expect(timeControl.timer.observers['tick'].context).toBe(timeControl);
-            expect(timeControl.timer.observers['tick'].callback).toBe(timeControl.onTick);            
+            expect(timeControl.timer.observers['tick'].callback).toBe(timeControl.onTick);
         });
 
         it('start/end date/time specified', function() {
-            expect(timeControl.timer.getStartDateTime()).toBeSame('2013-03-06T12:34:56');
-            expect(timeControl.timer.getEndDateTime()).toBeSame('2013-03-16T12:34:56');
+            expect(timeControl.timer.getStartDateTime()).toBeSameAsUtc('2013-03-06T12:34:56');
+            expect(timeControl.timer.getEndDateTime()).toBeSameAsUtc('2013-03-16T12:34:56');
         });
 
         it('getStep', function() {
@@ -83,8 +83,8 @@ describe("OpenLayers.Control.Time", function() {
         });
 
         it('getDateTimeForStep', function() {
-            expect(timeControl.getDateTimeForStep(0)).toBeSame('2013-03-06T12:34:56');
-            expect(timeControl.getDateTimeForStep(9)).toBeSame('2013-03-16T12:34:56');
+            expect(timeControl.getDateTimeForStep(0)).toBeSameAsUtc('2013-03-06T12:34:56');
+            expect(timeControl.getDateTimeForStep(9)).toBeSameAsUtc('2013-03-16T12:34:56');
             expect(timeControl.getDateTimeForStep(10)).toBe(undefined);
         });
     });
@@ -126,11 +126,11 @@ describe("OpenLayers.Control.Time", function() {
                 timeControl.play();
                 expect(timeControl.timer.start.callCount).toEqual(1);
                 expect(timeControl.timer.stop.callCount).toEqual(0);
-                
+
                 timeControl.stop();
                 expect(timeControl.timer.start.callCount).toEqual(1);
                 expect(timeControl.timer.stop.callCount).toEqual(1);
-                
+
                 timeControl.play();
                 expect(timeControl.timer.start.callCount).toEqual(2);
                 expect(timeControl.timer.stop.callCount).toEqual(1);
@@ -143,7 +143,7 @@ describe("OpenLayers.Control.Time", function() {
         it('initial relative speed', function() {
             expect(timeControl.getRelativeSpeed()).toBe(1);
         });
-        
+
         it('speed up causes timer double frequency to be called', function() {
             spyOn(timeControl.timer, 'doubleFrequency');
             timeControl.speedUp();
@@ -159,15 +159,15 @@ describe("OpenLayers.Control.Time", function() {
 
         it('speed up limit of 32x', function() {
             timeControl.relativeSpeed = 16;
-            
+
             expect(timeControl.speedUp()).toBeTruthy();
             expect(timeControl.getRelativeSpeed()).toBe(32);
             expect(timeControl.isAtFastestSpeed()).toBeTruthy();
-            
+
             expect(timeControl.speedUp()).toBeFalsy();
             expect(timeControl.getRelativeSpeed()).toBe(32);
         });
-        
+
         it('slow down causes timer halve frequency to be called', function() {
             spyOn(timeControl.timer, 'halveFrequency');
             timeControl.slowDown();
@@ -177,15 +177,15 @@ describe("OpenLayers.Control.Time", function() {
         it('slow down limit of 1/32x', function() {
             timeControl.relativeSpeed = 1/16;
             expect(timeControl.isAtSlowestSpeed()).toBeFalsy();
-            
+
             expect(timeControl.slowDown()).toBeTruthy();
             expect(timeControl.getRelativeSpeed()).toBe(1/32);
             expect(timeControl.isAtSlowestSpeed()).toBeTruthy();
-            
+
             expect(timeControl.slowDown()).toBeFalsy();
             expect(timeControl.getRelativeSpeed()).toBe(1/32);
         });
-        
+
         it('slow down causes relative speed to half', function() {
             timeControl.slowDown();
             expect(timeControl.getRelativeSpeed()).toBe(0.5);
@@ -193,47 +193,37 @@ describe("OpenLayers.Control.Time", function() {
             expect(timeControl.getRelativeSpeed()).toBe(0.25);
         });
     });
-    
+
     describe('configure with layer', function() {
         it('bin search date', function() {
-            var extentTest = [
-                moment('2000-01-01T00:00'),
-                moment('2001-01-01T00:00'),
-                moment('2002-01-01T00:00'),
-                moment('2003-01-01T00:00'),
-                moment('2004-01-01T00:00'),
-                moment('2005-01-01T00:00'),
-                moment('2006-01-01T00:00'),
-                moment('2007-01-01T00:00'),
-                moment('2008-01-01T00:00'),
-                moment('2009-01-01T00:00'),
-                moment('2010-01-01T00:00'),
-                moment('2011-01-01T00:00'),
-                moment('2012-01-01T00:00')
-            ];
+
+            var extentTest = [moment.utc('2000-01-01T00:00')];
+            for (var i = 0; i <= 11; i++) {
+                extentTest.push(extentTest[extentTest.length - 1].clone().add('years', 1));
+            }
 
             var index = 0;
-            index = timeControl._findIndexOfDate(extentTest, moment("2000-01-01T00:00"));
+            index = timeControl._findIndexOfDate(extentTest, moment.utc("2000-01-01T00:00"));
             expect(index).toBe(0);
 
-            index = timeControl._findIndexOfDate(extentTest, moment("2006-01-01T00:00"));
+            index = timeControl._findIndexOfDate(extentTest, moment.utc("2006-01-01T00:00"));
             expect(index).toBe(6);
 
             // does not exist
-            index = timeControl._findIndexOfDate(extentTest, moment("2000-01-02T00:00"));
+            index = timeControl._findIndexOfDate(extentTest, moment.utc("2000-01-02T00:00"));
             expect(index).toBe(-1);
         });
 
-        it('timer extent is \'n\' most recent date/times from layer', function() {
+        it("timer extent is 'n' most recent date/times from layer", function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.timer.getNumTicks()).toBe(3);
-            expect(timeControl.timer.getStartDateTime()).toBeSame('2001-01-03T00:00');
-            expect(timeControl.timer.getEndDateTime()).toBeSame('2001-01-05T00:00');
+            expect(timeControl.timer.getStartDateTime()).toBeSameAsUtc('2001-01-03T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSameAsUtc('2001-01-05T00:00');
 
             timeControl.configureForLayer(ncwmsLayer, 2);
             expect(timeControl.timer.getNumTicks()).toBe(2);
-            expect(timeControl.timer.getStartDateTime()).toBeSame('2001-01-04T00:00');
-            expect(timeControl.timer.getEndDateTime()).toBeSame('2001-01-05T00:00');
+            expect(timeControl.timer.getStartDateTime()).toBeSameAsUtc('2001-01-04T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSameAsUtc('2001-01-05T00:00');
         });
 
         it('dummy tickEvent sent', function() {
@@ -241,13 +231,13 @@ describe("OpenLayers.Control.Time", function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.onTick).toHaveBeenCalledWith({
                 index: 0,
-                dateTime: moment('2001-01-03T00:00')
+                dateTime: moment.utc('2001-01-03T00:00')
             });
         });
 
         it('returns animated extent', function() {
             timeControl.configureForLayer(ncwmsLayer, 2);
-            expect(timeControl.getExtent()).toBeSame([
+            expect(timeControl.getExtent()).toBeSameAsUtc([
                 '2001-01-04T00:00',
                 '2001-01-05T00:00'
             ]);
@@ -255,15 +245,15 @@ describe("OpenLayers.Control.Time", function() {
 
         it('start/end date/times specified', function() {
             timeControl.configureForLayer(ncwmsLayer, [
-                '2001-01-01T00:00',
-                '2001-01-03T00:00'
+                moment.utc('2001-01-01T00:00'),
+                moment.utc('2001-01-03T00:00')
             ]);
-            expect(timeControl.getExtent()).toBeSame([
+            expect(timeControl.getExtent()).toBeSameAsUtc([
                 '2001-01-01T00:00',
                 '2001-01-02T00:00',
                 '2001-01-03T00:00'
             ]);
-                                          
+
         });
 
         it('do nothing if layer without extent is given', function() {
@@ -278,7 +268,7 @@ describe("OpenLayers.Control.Time", function() {
     describe('events', function() {
         describe('speedchanged', function() {
             var speedchangedSpy;
-            
+
             beforeEach(function() {
                 speedchangedSpy = jasmine.createSpy('speedChanged');
                 timeControl.events.on({
@@ -286,12 +276,12 @@ describe("OpenLayers.Control.Time", function() {
                     scope: this
                 });
             });
-            
+
             it('speedchanged fired on speedUp', function() {
                 timeControl.speedUp();
                 expect(speedchangedSpy).toHaveBeenCalled();
             });
-            
+
             it('speedchanged fired on slowDown', function() {
                 timeControl.slowDown();
                 expect(speedchangedSpy).toHaveBeenCalled();
@@ -306,7 +296,7 @@ describe("OpenLayers.Control.Time", function() {
                     'temporalextentchanged': temporalextentchangedSpy,
                     scope: this
                 });
-                
+
                 timeControl.configureForLayer(ncwmsLayer, 3);
                 expect(temporalextentchangedSpy).toHaveBeenCalled();
                 expect(temporalextentchangedSpy.calls[0].args[0].layer.min).toBeSame(ncwmsLayer.getTemporalExtentMin());

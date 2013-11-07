@@ -154,7 +154,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
             spyOn(animationControlsPanel, '_setStepLabelText');
             map.toTime(moment('2012-03-04T05:06:07'));
 
-            expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith('2012-03-04 05:06:07');
+            expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith('2012-03-04 05:06:07 UTC');
         });
     });
 
@@ -351,7 +351,7 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 };
                 animationControlsPanel._onSelectedLayerPrecacheEnd();
                 expect(animationControlsPanel._setStepLabelText).toHaveBeenCalledWith(
-                    dateTime.format('YYYY-MM-DD HH:mm:ss'))
+                    dateTime.format('YYYY-MM-DD HH:mm:ss UTC'))
             });
         });
     });
