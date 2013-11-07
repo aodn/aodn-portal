@@ -42,7 +42,6 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-
     var popularity = {
         name: 'popularity',
         convert: function(v, record) {
