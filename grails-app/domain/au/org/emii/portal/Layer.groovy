@@ -26,6 +26,7 @@ class Layer {
     Boolean queryable
     Boolean isBaseLayer
     Boolean available   //used by CheckLayerAvailabilityService
+    String urlDownloadFieldName
 
     // Extra info
     String dataSource
@@ -91,6 +92,7 @@ class Layer {
         overrideMetadataUrl(nullable: true)
         queryable()
         viewParams(nullable: true)
+        urlDownloadFieldName(nullable: true)
 
         isBaseLayer()
 

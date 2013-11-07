@@ -70,4 +70,6 @@ databaseChangeLog = {
     include file: 'imos-changelog.groovy'
     include file: 'wa-changelog.groovy'
     include file: 'soos-changelog.groovy'
+
+	include file: '20131107-DN-AddUrlDownloadField.groovy'
 }
