@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -45,20 +44,20 @@ class Layer {
     Layer parent
     Layer wfsLayer
 
-     /* <tns:name>Argo Oxygen Floats</tns:name>
-        <tns:disabled>false</tns:disabled>
-        <tns:description>Oxygen enabled Argo Floats in the Australian region</tns:description>
-        <tns:uriIdRef>web-maps-0</tns:uriIdRef>
-        <tns:type>WMS-LAYER-1.1.1</tns:type>
-        <tns:cache>false</tns:cache>
-        <tns:cql>oxygen_sensor eq true</tns:cql>
-        <tns:style>argo_oxygen</tns:style>
-        <tns:opacity>1.0</tns:opacity>
-        <tns:layers>argo_float</tns:layers>
-        <tns:imageFormat>image/png</tns:imageFormat>
-        <tns:queryable>true</tns:queryable>
+    /* <tns:name>Argo Oxygen Floats</tns:name>
+       <tns:disabled>false</tns:disabled>
+       <tns:description>Oxygen enabled Argo Floats in the Australian region</tns:description>
+       <tns:uriIdRef>web-maps-0</tns:uriIdRef>
+       <tns:type>WMS-LAYER-1.1.1</tns:type>
+       <tns:cache>false</tns:cache>
+       <tns:cql>oxygen_sensor eq true</tns:cql>
+       <tns:style>argo_oxygen</tns:style>
+       <tns:opacity>1.0</tns:opacity>
+       <tns:layers>argo_float</tns:layers>
+       <tns:imageFormat>image/png</tns:imageFormat>
+       <tns:queryable>true</tns:queryable>
+    */
 
-     */
     static mapping = {
         // Sorting
         sort "server"
@@ -75,29 +74,29 @@ class Layer {
 
     static constraints = {
         parent(nullable: true)
-        name( nullable: true, size:1..225 )
-        namespace( nullable: true )
-        title( nullable: true )
+        name(nullable: true, size: 1..225)
+        namespace(nullable: true)
+        title(nullable: true)
         blacklisted()
-        abstractTrimmed(size:0..455, nullable:true)
+        abstractTrimmed(size: 0..455, nullable: true)
         server()
         cache()
-        cql(nullable:true)
-        styles(nullable:true)
-        bboxMinX(nullable:true)
-        bboxMinY(nullable:true)
-        bboxMaxX(nullable:true)
-        bboxMaxY(nullable:true)
+        cql(nullable: true)
+        styles(nullable: true)
+        bboxMinX(nullable: true)
+        bboxMinY(nullable: true)
+        bboxMaxX(nullable: true)
+        bboxMaxY(nullable: true)
         projection(nullable: true)
-        overrideMetadataUrl(nullable:  true)
+        overrideMetadataUrl(nullable: true)
         queryable()
         viewParams(nullable: true)
 
         isBaseLayer()
 
-        dataSource(blank:false)
+        dataSource(blank: false)
         activeInLastScan()
-        lastUpdated(nullable:true)
+        lastUpdated(nullable: true)
         layerHierarchyPath(nullable: true)
         available(nullable: false)
         wfsLayer(nullable: true)
@@ -152,17 +151,17 @@ class Layer {
 
     void printTree(int depth = 0) {
 
-        if ( depth == 0 ) {
+        if (depth == 0) {
             log.info ""
             log.info "-- Layer Tree --"
         }
 
-        def spaces = ( "   " * depth )
+        def spaces = ("   " * depth)
         log.info "$spaces$name [$id] (parent: '$parent' [${parent?.id}]; layers: '${layers.size()}'; active: '$activeInLastScan';)"
 
         layers.each{
 
-            it.printTree (depth + 1)
+            it.printTree(depth + 1)
         }
     }
 
@@ -213,14 +212,12 @@ class Layer {
     /**
      * Mimic belongsTo relationship.
      */
-    List<Layer> getLayers()    {
+    List<Layer> getLayers() {
 
-        if (this.id)
-        {
+        if (this.id) {
             return Layer.findAllByParent(this, [sort: 'title', order: 'asc', cache: true])
         }
-        else
-        {
+        else {
             return []
         }
     }
@@ -238,7 +235,7 @@ class Layer {
 
         def currentLayer = this
         def styles = []
-        while ( currentLayer ) {
+        while (currentLayer) {
 
             styles.addAll currentLayer.styles
 
