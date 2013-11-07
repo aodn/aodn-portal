@@ -165,7 +165,7 @@ environments {
     }
 }
 
-def defaultInstanceName = "AODN"
+def defaultInstanceName = "IMOS"
 
 portal {
 	header {
