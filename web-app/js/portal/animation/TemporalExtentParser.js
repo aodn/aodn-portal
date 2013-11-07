@@ -1,6 +1,6 @@
 Ext.namespace('Portal.animation');
 
-Portal.animation.TemporalExtent = Ext.extend(Object, {
+Portal.animation.TemporalExtentParser = Ext.extend(Object, {
 
     constructor: function(cfg) {
         Ext.apply(this, cfg);

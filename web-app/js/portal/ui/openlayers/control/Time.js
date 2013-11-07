@@ -116,12 +116,12 @@ OpenLayers.Control.Time = OpenLayers.Class(OpenLayers.Control, {
             'temporalextentchanged',
             {
                 layer: {
-                    min: layer.getTemporalExtentMin(),
-                    max: layer.getTemporalExtentMax()
+                    min: layer.getTemporalExtentMin().clone(),
+                    max: layer.getTemporalExtentMax().clone()
                 },
                 timer: {
-                    min: this.getExtentMin(),
-                    max: this.getExtentMax()
+                    min: this.getExtentMin().clone(),
+                    max: this.getExtentMax().clone()
                 }
             }
         );

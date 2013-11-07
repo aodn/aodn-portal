@@ -196,21 +196,11 @@ describe("OpenLayers.Control.Time", function() {
 
     describe('configure with layer', function() {
         it('bin search date', function() {
-            var extentTest = [
-                moment.utc('2000-01-01T00:00'),
-                moment.utc('2001-01-01T00:00'),
-                moment.utc('2002-01-01T00:00'),
-                moment.utc('2003-01-01T00:00'),
-                moment.utc('2004-01-01T00:00'),
-                moment.utc('2005-01-01T00:00'),
-                moment.utc('2006-01-01T00:00'),
-                moment.utc('2007-01-01T00:00'),
-                moment.utc('2008-01-01T00:00'),
-                moment.utc('2009-01-01T00:00'),
-                moment.utc('2010-01-01T00:00'),
-                moment.utc('2011-01-01T00:00'),
-                moment.utc('2012-01-01T00:00')
-            ];
+
+            var extentTest = [moment.utc('2000-01-01T00:00')];
+            for (var i = 0; i <= 11; i++) {
+                extentTest.push(extentTest[extentTest.length - 1].clone().add('years', 1));
+            }
 
             var index = 0;
             index = timeControl._findIndexOfDate(extentTest, moment.utc("2000-01-01T00:00"));
@@ -227,13 +217,13 @@ describe("OpenLayers.Control.Time", function() {
         it("timer extent is 'n' most recent date/times from layer", function() {
             timeControl.configureForLayer(ncwmsLayer, 3);
             expect(timeControl.timer.getNumTicks()).toBe(3);
-            expect(timeControl.timer.getStartDateTime()).toBeSame(moment.utc('2001-01-03T00:00'));
-            expect(timeControl.timer.getEndDateTime()).toBeSame(moment.utc('2001-01-05T00:00'));
+            expect(timeControl.timer.getStartDateTime()).toBeSameAsUtc('2001-01-03T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSameAsUtc('2001-01-05T00:00');
 
             timeControl.configureForLayer(ncwmsLayer, 2);
             expect(timeControl.timer.getNumTicks()).toBe(2);
-            expect(timeControl.timer.getStartDateTime()).toBeSame(moment.utc('2001-01-04T00:00'));
-            expect(timeControl.timer.getEndDateTime()).toBeSame(moment.utc('2001-01-05T00:00'));
+            expect(timeControl.timer.getStartDateTime()).toBeSameAsUtc('2001-01-04T00:00');
+            expect(timeControl.timer.getEndDateTime()).toBeSameAsUtc('2001-01-05T00:00');
         });
 
         it('dummy tickEvent sent', function() {
@@ -247,9 +237,9 @@ describe("OpenLayers.Control.Time", function() {
 
         it('returns animated extent', function() {
             timeControl.configureForLayer(ncwmsLayer, 2);
-            expect(timeControl.getExtent()).toBeSame([
-                moment.utc('2001-01-04T00:00'),
-                moment.utc('2001-01-05T00:00')
+            expect(timeControl.getExtent()).toBeSameAsUtc([
+                '2001-01-04T00:00',
+                '2001-01-05T00:00'
             ]);
         });
 

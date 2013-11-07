@@ -107,7 +107,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this._progressFeedback();
 
         var that = this;
-        var extentParser = new Portal.animation.TemporalExtent();
+        var extentParser = new Portal.animation.TemporalExtentParser();
         (function () {
             var chunkStart;
             function processDates() {
@@ -138,8 +138,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         setTimeout(arguments.callee, 0);
                     } else {
                         // Need to reconfigure layer as we processed times
-                        // TODO: Configure for last 10 frames, a bit
-                        // ugly and hardcoded
                         var timeControl = that._getTimeControl();
                         timeControl.configureForLayer(that, 1);
                         that._processTemporalExtentDone();
@@ -511,5 +509,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.eachTile(function(tile) {
             tile.setOpacity(opacity);
         });
+    },
+
+    getFeatureInfoFormat: function () {
+        return 'text/xml';
     }
 });

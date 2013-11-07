@@ -69,14 +69,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoin
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
-    if (this.isNcwms()) {
-        // ignoring any bad user config. we know what we want here
-        return 'text/xml';
-    }
-    else {
-        // Should usually be 'text/html'
-        return this.server.infoFormat;
-    }
+    return this.server.infoFormat;
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
