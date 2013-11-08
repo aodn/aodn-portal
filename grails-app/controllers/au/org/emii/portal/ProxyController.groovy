@@ -53,7 +53,26 @@ class ProxyController {
         _performProxying(null, streamProcessor)
     }
 
-    def _performProxying(beforeAction = null, streamProcessor = null) {
+    // this action is intended to always be cached by squid
+    // expects Open layers requests
+    def cache = {
+
+        def makeLowercase = { uppercaseName ->
+            params[uppercaseName.toLowerCase()] = params[uppercaseName]
+            params.remove uppercaseName
+        }
+
+        def beforeFilter = { ->
+            // Expects uppercase URL and FORMAT params
+            makeLowercase 'URL'
+            makeLowercase 'FORMAT'
+        }
+
+        _performProxying(beforeFilter)
+    }
+
+    def _performProxying = {
+        beforeAction = null, streamProcessor = null ->
 
         if (!params.url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
@@ -73,24 +92,6 @@ class ProxyController {
             def proxiedRequest = new ProxiedRequest(request, response, params)
             proxiedRequest.proxy(streamProcessor)
         }
-    }
-
-    // this action is intended to always be cached by squid
-    // expects Open layers requests
-    def cache = {
-
-        def makeLowercase = { uppercaseName ->
-            params[uppercaseName.toLowerCase()] = params[uppercaseName]
-            params.remove uppercaseName
-        }
-
-        def beforeFilter = { ->
-            // Expects uppercase URL and FORMAT params
-            makeLowercase 'URL'
-            makeLowercase 'FORMAT'
-        }
-
-        _performProxying(beforeFilter)
     }
 
     def wmsOnly = {
