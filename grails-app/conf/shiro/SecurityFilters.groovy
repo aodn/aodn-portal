@@ -46,135 +46,73 @@ class SecurityFilters {
 
         aodaacAccess(controller: "aodaac", action: "productInfo|createJob|updateJob|cancelJob|deleteJob|userJobInfo") {
             before = {
-
-                logRequest("aodaacAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         homeAccess(controller: "home", action: "index|config") {
             before = {
-
-                logRequest("homeAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         splashAccess(controller: "splash", action: "index|links|community") {
             before = {
-
-                logRequest("splashAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         configAccess(controller: "config", action: "viewport") {
             before = {
-
-                logRequest("configAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         depthAccess(controller: "depth", action: "index") {
             before = {
-
-                logRequest("depthAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         checkLayerAvailabilityAccess(controller: "checkLayerAvailability", action: "show") {
             before = {
-                logRequest("checkLayerAvailabilityAccess", controllerName, actionName)
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
             before = {
-
-                logRequest("serverAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers|getFiltersAsJSON") {
             before = {
-
-                logRequest("layerAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         menuAccess(controller: "menu", action: "json") {
             before = {
-
-                logRequest("menuAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif") {
             before = {
-
-                logRequest("proxyAccess", controllerName, actionName)
-
-                // Allow all access
-                request.accessAllowed = true
-            }
-        }
-
-        downloadCartAccess(controller: "downloadCart", action: "download") {
-            before = {
-
-                logRequest("downloadCartAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
-
-                logRequest("authAccess", controllerName, actionName)
-
-                // Allow all access
-                request.accessAllowed = true
-            }
-        }
-
-        snapshotAccess(controller: "snapshot", action: "show|loadMap") {
-            before = {
-
-                logRequest("snapshot", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }
 
         editFiltersAccess(controller: "layer", action: "editFilters") {
             before = {
-                def layer = Layer.get(params.id);
+                def layer = Layer.get(params.id)
                 def permission = _hasLayerFilterPermission(layer)
 
                 if (permission) {
@@ -224,10 +162,10 @@ class SecurityFilters {
         wmsScannerRegisterAccess(controller: "wmsScanner", action: "callRegister") {
             before = {
                 def permission = _isServerOwner(Server.get(params.serverId))
+
                 if (permission) {
                     request.accessAllowed = true
                 }
-
             }
         }
 
@@ -235,8 +173,6 @@ class SecurityFilters {
             before = {
                 // Check if request has been allowed by another filter
                 if (request.accessAllowed) return true
-
-                logRequest("all", controllerName, actionName)
 
                 // Ignore direct views (e.g. the default main index page).
                 if (!controllerName) return true
@@ -252,17 +188,11 @@ class SecurityFilters {
     }
 
     def _hasLayerFilterPermission(layer) {
-        def server = layer.server;
 
+        def server = layer.server
         def userInstance = User.current()
-        if (userInstance && server.owners.contains(userInstance)) {
-            // Allow all access
-            return true
-        }
-        else {
-            // Disallow all access
-            return false
-        }
+
+        return userInstance && server.owners.contains(userInstance)
     }
 
     def _isServerOwner(server) {
@@ -283,10 +213,5 @@ class SecurityFilters {
             return true
         }
         return false
-    }
-
-    private void logRequest(String filterName, String controllerName, String actionName) {
-
-        log.debug "Request matches ${filterName} filter. Request: controllerName = '${controllerName}', actionName = '${actionName}'."
     }
 }
