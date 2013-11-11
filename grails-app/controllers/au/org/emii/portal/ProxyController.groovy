@@ -153,7 +153,9 @@ class ProxyController {
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
-                throw new RuntimeException("Results contained no column with header '$fieldName'")
+                outputWriter.print "Results contained no column with header '$fieldName'"
+                outputWriter.flush()
+                return
             }
 
             def currentRow = csvReader.readNext()
