@@ -19,6 +19,7 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
             var filters = [
                 'parameterFilter',
                 'organisationFilter',
+                'platformFilter',
                 'dateFilter',
                 'geoFilter'
             ]
