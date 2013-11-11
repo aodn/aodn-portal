@@ -79,9 +79,11 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-    showIfNeeded: function(downloadUrl, downloadFilename) {
+    showIfNeeded: function(downloadUrl, downloadFilename, otherQueryStringArgs) {
+
         this.downloadUrl = downloadUrl;
         this.downloadFilename = downloadFilename;
+        this.otherQueryStringArgs = otherQueryStringArgs;
 
         if (!this.hasBeenShown) {
             this.show();
@@ -113,11 +115,31 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
             var filename = encodeURIComponent(sanitiseForFilename(this.downloadFilename));
             var url = encodeURIComponent(this.downloadUrl);
+            var additionalQueryString = this._additionalQueryStringFrom(this.otherQueryStringArgs);
 
-            return String.format('proxy?url={0}&downloadFilename={1}', url, filename);
+            return String.format('proxy?url={0}&downloadFilename={1}{2}', url, filename, additionalQueryString);
         }
 
         return null;
+    },
+
+    _additionalQueryStringFrom: function(args) {
+
+        var queryString = '';
+
+        if (args) {
+
+            Ext.each(
+                Object.keys(args),
+                function(key) {
+                    var value = encodeURIComponent(args[key]);
+
+                    queryString += String.format('&{0}={1}', key, value);
+                }
+            );
+        }
+
+        return queryString;
     },
 
     _openDownload: function(url) {
