@@ -7,79 +7,88 @@
 
 package au.org.emii.portal
 
+import au.com.bytecode.opencsv.CSVReader
+
 class ProxyController {
 
     def grailsApplication
     def hostVerifier
 
     def index = {
-        if (params.url) {
-            _index()
-        }
-        else {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
+
+        _performProxying()
     }
 
     def downloadGif = {
 
-        def layersField = "LAYERS="
-        def fieldIndex = params.url.indexOf(layersField)
+        def beforeAction = { ->
 
-        if (fieldIndex > -1) {
-            def layerName = params.url.substring(fieldIndex + layersField.length())
-            def timeStr = params.TIME
-                .replaceAll("[-:]", "")
-                .replaceAll("/", "_")
+            def layersField = "LAYERS="
+            def fieldIndex = params.url.indexOf(layersField)
 
-            params.downloadFilename = "${layerName}_${timeStr}.gif"
+            if (fieldIndex > -1) {
+                def layerName = params.url.substring(fieldIndex + layersField.length())
+                def timeStr = params.TIME
+                    .replaceAll("[-:]", "")
+                    .replaceAll("/", "_")
+
+                params.downloadFilename = "${layerName}_${timeStr}.gif"
+            }
         }
 
-        _index()
+        _performProxying(beforeAction)
     }
 
-    def _index() {
+    def uniqueList = {
 
-        if (allowedHost(params.url)) {
-            def proxiedRequest = new ProxiedRequest(request, response, params)
-            proxiedRequest.proxy()
-        }
-        else {
-            log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host '${params.url.toURL().host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-    }
+        def fieldName = params.fieldName
 
-    Boolean allowedHost(url) {
-        if (url) {
-            return hostVerifier.allowedHost(request, url.toURL())
+        if (!fieldName) {
+            render text: "Field name required to parse CSV result", status: 400
+            return
         }
-        return false
+
+        _performProxying(null, uniqueListStreamProcessor(fieldName))
     }
 
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
 
-        // Accepts uppercase URL param only
-        if (allowedHost(params?.URL)) {
+        def makeLowercase = { uppercaseName ->
+            params[uppercaseName.toLowerCase()] = params[uppercaseName]
+            params.remove uppercaseName
+        }
 
-            def url = params.URL.replaceAll(/\?$/, "")
+        def beforeFilter = { ->
+            // Expects uppercase URL and FORMAT params
+            makeLowercase 'URL'
+            makeLowercase 'FORMAT'
+        }
 
-            params.remove('URL')
-            params.remove('action')
-            params.remove('controller')
-            // All other params are maintained in the URL (and passed to the index action)
-            def p = params.collect{ k, v -> "$k=$v" }.join('&')
-            if (p.size() > 0) {
-                url += "?" + p
-            }
+        _performProxying(beforeFilter)
+    }
 
-            // assume that the request FORMAT (from openlayers) will be the return format
-            redirect(action: '', params: [url: url, format: params.FORMAT])
+    def _performProxying = {
+        beforeAction = null, streamProcessor = null ->
+
+        if (!params.url) {
+            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
+        }
+        else if (!_isAllowedHost(params.url)) {
+            log.info "Proxy: The url ${params.url} was not allowed"
+            render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
         }
         else {
-            render(text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500)
+
+            if (beforeAction) {
+                log.debug "Calling beforeAction"
+                beforeAction()
+            }
+
+            // Make request
+            def proxiedRequest = new ProxiedRequest(request, response, params)
+            proxiedRequest.proxy(streamProcessor)
         }
     }
 
@@ -123,6 +132,60 @@ class ProxyController {
 
                 render text: params.url, status: 500
             }
+        }
+    }
+
+    def uniqueListStreamProcessor(fieldName) {
+
+        return { inputStream, outputStream ->
+
+            log.debug "Unique list streamProcessor"
+
+            def includedUrls = [] as HashSet
+
+            def outputWriter = new OutputStreamWriter(outputStream)
+            def csvReader = new CSVReader(new InputStreamReader(inputStream))
+            def firstRow = csvReader.readNext() as List
+
+            def fieldIndex = firstRow.findIndexOf { it == fieldName }
+
+            log.debug "fieldName: '$fieldName'; fieldIndex: $fieldIndex (it's a problem if this is null or -1)"
+
+            if (fieldIndex == -1) {
+                log.error "Could not find index of '$fieldName' in $firstRow"
+                outputWriter.print "Results contained no column with header '$fieldName'"
+                outputWriter.flush()
+                return
+            }
+
+            def currentRow = csvReader.readNext()
+            while (currentRow) {
+
+                log.debug "Processing row $currentRow"
+
+                if (fieldIndex < currentRow.length) {
+
+                    def rowValue = currentRow[fieldIndex].trim()
+
+                    if (rowValue && includedUrls.add(rowValue)) {
+                        outputWriter.print "$rowValue\n"
+                    }
+                }
+
+                currentRow = csvReader.readNext()
+            }
+
+            outputWriter.flush()
+        }
+    }
+
+    def _isAllowedHost(url) {
+
+        try {
+            return url && hostVerifier.allowedHost(request, url.toURL())
+        }
+        catch (Exception e) {
+            return false
         }
     }
 }

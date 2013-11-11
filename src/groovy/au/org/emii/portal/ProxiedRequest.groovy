@@ -11,6 +11,8 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import static au.org.emii.portal.UrlUtils.urlWithQueryString
+
 class ProxiedRequest {
 
     static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
@@ -18,6 +20,10 @@ class ProxiedRequest {
     def request
     def response
     def params
+    def straightThrough = { inputStream, outputStream ->
+        log.debug "Straight-through stream processor"
+        outputStream << inputStream
+    }
 
     ProxiedRequest(request, response, params) {
         this.request = request
@@ -25,17 +31,14 @@ class ProxiedRequest {
         this.params = params
     }
 
-    def proxy() {
+    def proxy(streamProcessor = null) {
+
+        def processStream = streamProcessor ?: straightThrough
 
         def targetUrl = _getUrl(params)
         def conn = targetUrl.openConnection()
 
-        if (params.format) {
-            response.contentType = params.format
-        }
-        else if (request.contentType) {
-            response.contentType = request.contentType
-        }
+        response.contentType = params.format ?: request.contentType
 
         def outputStream = response.outputStream
 
@@ -47,11 +50,12 @@ class ProxiedRequest {
         else {
             // Force download if filename provided
             if (params.downloadFilename) {
-                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}");
+                log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
+                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}")
             }
 
             try {
-                outputStream << conn.inputStream
+                processStream conn.inputStream, outputStream
                 outputStream.flush()
             }
             catch (Exception e) {
@@ -71,20 +75,13 @@ class ProxiedRequest {
             key, value ->
 
             key != "controller" &&
+            key != "action" &&
             key != "url" &&
             key != "format" &&
             key != "_dc"
         }
 
-        def queryStr = ""
-
-        query.each {
-            key, value ->
-
-            queryStr += "&$key=$value"
-        }
-
-        return (params.url + queryStr).toURL()
+        return urlWithQueryString(params.url, query).toURL()
     }
 
     def _addAuthentication(connection, url) {

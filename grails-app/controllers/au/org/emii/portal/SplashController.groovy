@@ -80,7 +80,7 @@ class SplashController {
     def _proxy(url) {
         params.url = url
         def proxiedRequest = new ProxiedRequest(request, response, params)
-        proxiedRequest.proxy(false)
+        proxiedRequest.proxy()
     }
 
     def _portalBuildInfo() {
