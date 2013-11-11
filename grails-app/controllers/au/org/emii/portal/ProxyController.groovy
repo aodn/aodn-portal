@@ -39,14 +39,18 @@ class ProxyController {
         _performProxying(beforeAction)
     }
 
-    def uniqueList = {
+    def urlList = {
 
-        def fieldName = params.fieldName
+        def layerId = params.layerId
 
-        if (!fieldName) {
-            render text: "Field name required to parse CSV result", status: 400
+        if (!layerId) {
+            render text: "No layerId provided", status: 400
             return
         }
+
+        def layer = Layer.get(layerId)
+        def fieldName = layer.urlDownloadFieldName
+        def prefix = "test"
 
         _performProxying(null, uniqueListStreamProcessor(fieldName))
     }
@@ -155,7 +159,7 @@ class ProxyController {
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
-                outputWriter.print "Results contained no column with header '$fieldName'"
+                outputWriter.print "Results contained no column with header '$fieldName'. Column headers were: $firstRow"
                 outputWriter.flush()
                 return
             }

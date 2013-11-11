@@ -132,7 +132,7 @@ class SecurityFilters {
             }
         }
 
-        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif|uniqueList") {
+        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif|urlList") {
             before = {
 
                 logRequest("proxyAccess", controllerName, actionName)

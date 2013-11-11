@@ -109,8 +109,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         var downloadUrl = String.format("http://localhost:8080/aodn-portal/splash/links");
         var downloadFilename = collection.title + "_URLs.txt";
         var additionalArgs = {
-            action: 'uniqueList',
-            fieldName: collection.wmsLayer.urlDownloadFieldName
+            action: 'urlList',
+            layerId: collection.wmsLayer.grailsLayerId
         };
 
         return function() {
