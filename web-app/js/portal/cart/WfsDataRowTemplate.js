@@ -77,15 +77,17 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _createMenuItems: function(collection) {
 
-        console.log(collection);
+        var menuItems = [];
 
-        return [
-            // Todo - DN: if (collection.wmsLayer.urlDownloadFieldName)
-            {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this},
-            {text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this}
-        ];
+        menuItems.push({text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this});
+        menuItems.push({text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this});
+        menuItems.push({text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this});
+
+        if (collection.wmsLayer && collection.wmsLayer.urlDownloadFieldName) {
+            menuItems.push({text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
+        }
+
+        return menuItems;
     },
 
     _downloadHandlerFor: function(collection, format, fileExtension) {
@@ -104,12 +106,16 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _urlListDownloadHandler: function(collection) {
 
         // "http://localhost:8080/aodn-portal/proxy/uniqueList?url=http%3A%2F%2Flocalhost:8080/aodn-portal/splash/links"
-        var downloadUrl = String.format("http://localhost:8080/aodn-portal/splash/links", collection.wmsLayer.urlDownloadFieldName);
+        var downloadUrl = String.format("http://localhost:8080/aodn-portal/splash/links");
         var downloadFilename = collection.title + "_URLs.txt";
+        var additionalArgs = {
+            action: 'uniqueList',
+            fieldName: collection.wmsLayer.urlDownloadFieldName
+        };
 
         return function() {
 
-            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl, downloadFilename);
+            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl, downloadFilename, additionalArgs);
         };
     },
 

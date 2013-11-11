@@ -192,6 +192,26 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             var theCollection = {};
             var items = tpl._createMenuItems(theCollection);
+
+            expect(items.length).not.toBe(0);
+
+            Ext.each(items, function(item){
+
+                expect(item.text).toBeDefined();
+                expect(typeof item.text === 'string').toBeTruthy();
+            });
+
+            expect(tpl._downloadHandlerFor.callCount).toBe(items.length);
+            expect(tpl._urlListDownloadHandler).not.toHaveBeenCalled();
+        });
+
+        it('returns array of menu items with one more when a downloadUrlFieldName is specified on the layer', function() {
+
+            spyOn(tpl, '_downloadHandlerFor');
+            spyOn(tpl, '_urlListDownloadHandler');
+
+            var theCollection = { wmsLayer: { urlDownloadFieldName: 'the field' } };
+            var items = tpl._createMenuItems(theCollection);
             var numSpecialItems = 1; // List of URLs
 
             expect(items.length).not.toBe(0);
