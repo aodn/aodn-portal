@@ -72,6 +72,8 @@ class ProxyController {
     def _performProxying = {
         beforeAction = null, streamProcessor = null ->
 
+        log.debug "params: $params"
+
         if (!params.url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
         }
