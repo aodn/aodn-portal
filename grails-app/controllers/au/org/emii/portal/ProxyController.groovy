@@ -7,6 +7,8 @@
 
 package au.org.emii.portal
 
+import au.com.bytecode.opencsv.CSVReader
+
 class ProxyController {
 
     def grailsApplication
@@ -39,18 +41,14 @@ class ProxyController {
 
     def uniqueList = {
 
-        def streamProcessor = { inputStream, outputStream ->
+        def fieldName = params.fieldName
 
-            log.debug "Unique list streamProcessor"
-
-            def writer = new OutputStreamWriter(outputStream as OutputStream)
-            def includedUrls = [] as HashSet
-            def makeUnique = { includedUrls.add it.trim() }
-
-            inputStream.filterLine writer, makeUnique
+        if (!fieldName) {
+            render text: "Field name required to parse CSV result", status: 400
+            return
         }
 
-        _performProxying(null, streamProcessor)
+        _performProxying(null, uniqueListStreamProcessor(fieldName))
     }
 
     // this action is intended to always be cached by squid
@@ -134,6 +132,48 @@ class ProxyController {
 
                 render text: params.url, status: 500
             }
+        }
+    }
+
+    def uniqueListStreamProcessor(fieldName) {
+
+        return { inputStream, outputStream ->
+
+            log.debug "Unique list streamProcessor"
+
+            def includedUrls = [] as HashSet
+
+            def outputWriter = new OutputStreamWriter(outputStream)
+            def csvReader = new CSVReader(new InputStreamReader(inputStream))
+            def firstRow = csvReader.readNext() as List
+
+            def fieldIndex = firstRow.findIndexOf { it == fieldName }
+
+            log.debug "fieldName: '$fieldName'; fieldIndex: $fieldIndex (it's a problem if this is null or -1)"
+
+            if (fieldIndex == -1) {
+                log.error "Could not find index of '$fieldName' in $firstRow"
+                throw new RuntimeException("Results contained no column with header '$fieldName'")
+            }
+
+            def currentRow = csvReader.readNext()
+            while (currentRow) {
+
+                log.debug "Processing row $currentRow"
+
+                if (fieldIndex < currentRow.length) {
+
+                    def rowValue = currentRow[fieldIndex].trim()
+
+                    if (rowValue && includedUrls.add(rowValue)) {
+                        outputWriter.print "$rowValue\n"
+                    }
+                }
+
+                currentRow = csvReader.readNext()
+            }
+
+            outputWriter.flush()
         }
     }
 
