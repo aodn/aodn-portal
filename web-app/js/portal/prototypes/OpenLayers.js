@@ -250,12 +250,26 @@ OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function () {
     return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
 };
 
-// In IE8, the layer onload event was not being triggered as it was in other browsers when 
-// there is an error loading an image.  This is due to the img element error handlers 
-// not being executed in FIFO order in IE8.
-// Override the initImgDiv method ensuring the onload event is triggered after the 
+// See git issue 595. In IE8, the layer onload event was not being triggered as
+// it was in other browsers when there is an error loading a tile image.  This 
+// is due to the img element error handlers (onImageLoadError and onerror)
+// being executed in random order in IE8 rather than the FIFO order expected by
+// OpenLayers (see the first paragraph of the Remarks section in documentation 
+// of attachEvent at
+// http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx 
+// and comments in the onerror handler below re expectation by OpenLayers that the
+// onImageLoadError has already been run before the onerror handler)
+//
+// Override the initImgDiv method ensuring the onerror handler is run after the 
 // onImageLoadError has been processed as is required for the correct operation 
 // of these handlers.
+//
+// The code below is copied directly from the OpenLayers implementation of
+// OpenLayers.Tile.Image.prototype.initImgDiv replacing the final statement 
+// with one which ensures the onerror handler is called after the onImageLoadError
+// in IE8
+//
+// Modified code has been marked with a comment below
     
 OpenLayers.Tile.Image.prototype.initImgDiv = function() {
     var offset = this.layer.imageOffset; 
@@ -344,6 +358,11 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
         }
     };
 
+    // ===================================================================
+    // The following code has been modified from the OpenLayers version 
+    // of this method
+    //====================================================================
+    
     // In IE8 guarantee onerror runs after onImageLoadError by running it 
     // in a timer
 
