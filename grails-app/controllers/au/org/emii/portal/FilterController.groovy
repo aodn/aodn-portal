@@ -75,7 +75,6 @@ class FilterController {
             }
 
             filterInstance.properties = params
-            println params
             filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
 
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {
