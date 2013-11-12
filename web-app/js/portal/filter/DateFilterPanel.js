@@ -7,13 +7,13 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.DateFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({}, cfg );
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
-        Portal.filter.DateFilter.superclass.constructor.call(this, config);
+        Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -79,7 +79,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.BaseFilter, {
 
     _opSelect: function(combo, row, index) {
         this.toField.setVisible(this._isSelectedOpSetToBetween());
-        this._applyDateFilter();
+        this._applyDateFilterPanel();
     },
 
     _isSelectedOpSetToBetween: function() {
@@ -91,25 +91,31 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _onSelect: function(picker, date) {
-        this._applyDateFilter();
+        this._applyDateFilterPanel();
     },
 
-    _applyDateFilter: function() {
+    _applyDateFilterPanel: function() {
         if (this._requiredFieldsSet()) {
-            this._createCQL();
             this._fireAddEvent();
         }
     },
 
-    _createCQL: function() {
-        this.CQL = this.filter.name + " ";
+    getCQL: function() {
+
+        if (!this.fromField.getValue()) {
+            return '';
+        }
+
+        var cql = this.filter.name + " ";
 
         if (this._isSelectedOpSetToBetween()) {
-            this.CQL += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
+            cql += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
         }
         else {
-            this.CQL += this.operators.getValue() + " " + this._getDateString(this.fromField);
+            cql += this.operators.getValue() + " " + this._getDateString(this.fromField);
         }
+
+        return cql;
     },
 
     _requiredFieldsSet: function() {
@@ -155,18 +161,15 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.BaseFilter, {
             this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
             this.toField.setVisible(true);
             this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[3]));
-            this._createCQL();
         }
         else {
             if (m != null && m.length == 3) {
                 this.operators.setValue('before');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-                this._createCQL();
             }
             else if (m2 != null && m2.length == 3) {
                 this.operators.setValue('after');
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m2[1]));
-                this._createCQL();
             }
         }
     }
