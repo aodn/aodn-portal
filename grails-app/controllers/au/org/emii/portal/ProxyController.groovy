@@ -53,6 +53,8 @@ class ProxyController {
         def substitutionPrefix = "/mnt/imos-t4/"
         def urlBase = "urlBase/"
 
+        // Todo - DN: Modify URL to append required fieldName
+
         _performProxying(null, urlListStreamProcessor(fieldName, substitutionPrefix, urlBase))
     }
 
