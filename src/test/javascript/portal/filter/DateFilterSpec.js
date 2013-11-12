@@ -4,12 +4,12 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.TimeFilter", function() {
+describe("Portal.filter.DateFilter", function() {
 
     var timeFilter;
 
     beforeEach(function() {
-        timeFilter = new Portal.filter.TimeFilter({});
+        timeFilter = new Portal.filter.DateFilter({});
     });
 
     describe('handleRemoveFilter', function() {
@@ -138,7 +138,7 @@ describe("Portal.filter.TimeFilter", function() {
             });
 
             it('does not fire add event when all fields are not set', function() {
-                timeFilter._applyTimeFilter();
+                timeFilter._applyDateFilter();
                 expect(timeFilter._fireAddEvent).not.toHaveBeenCalled();
                 expect(timeFilter.CQL).toBeFalsy();
             });
@@ -151,7 +151,7 @@ describe("Portal.filter.TimeFilter", function() {
                 it('does not fire add event for operator after when from field is not set', function() {
                     spyOn(timeFilter.operators, 'getValue').andReturn('after');
 
-                    timeFilter._applyTimeFilter();
+                    timeFilter._applyDateFilter();
                     expect(timeFilter._fireAddEvent).not.toHaveBeenCalled();
                     expect(timeFilter.CQL).toBeFalsy();
                 });
@@ -159,7 +159,7 @@ describe("Portal.filter.TimeFilter", function() {
                 it('does not fire add event for operator before when from field is not set', function() {
                     spyOn(timeFilter.operators, 'getValue').andReturn('before');
 
-                    timeFilter._applyTimeFilter();
+                    timeFilter._applyDateFilter();
                     expect(timeFilter._fireAddEvent).not.toHaveBeenCalled();
                     expect(timeFilter.CQL).toBeFalsy();
                 });
@@ -167,7 +167,7 @@ describe("Portal.filter.TimeFilter", function() {
                 it('does not fire add event for operator between when from field is not set', function() {
                     spyOn(timeFilter.operators, 'getValue').andReturn('between');
 
-                    timeFilter._applyTimeFilter();
+                    timeFilter._applyDateFilter();
                     expect(timeFilter._fireAddEvent).not.toHaveBeenCalled();
                     expect(timeFilter.CQL).toBeFalsy();
                 });
@@ -176,9 +176,9 @@ describe("Portal.filter.TimeFilter", function() {
                     spyOn(timeFilter.operators, 'getValue').andReturn('between');
                     spyOn(timeFilter.fromField, 'getValue').andReturn(new Date());
                     spyOn(timeFilter, '_getDateString').andReturn(new Date());
-                    timeFilter.filter = { name: 'mockedTimeFilter' };
+                    timeFilter.filter = { name: 'mockedDateFilter' };
 
-                    timeFilter._applyTimeFilter();
+                    timeFilter._applyDateFilter();
                     expect(timeFilter._fireAddEvent).toHaveBeenCalled();
                     expect(timeFilter.CQL).toBeTruthy();
                     expect(timeFilter.CQL.indexOf('after')).toBeGreaterThan(0);
@@ -191,7 +191,7 @@ describe("Portal.filter.TimeFilter", function() {
                     spyOn(timeFilter.operators, 'getValue').andReturn('between');
                     spyOn(timeFilter.fromField, 'getValue').andReturn('2012-10-09');
 
-                    timeFilter._applyTimeFilter();
+                    timeFilter._applyDateFilter();
                     expect(timeFilter._fireAddEvent).not.toHaveBeenCalled();
                     expect(timeFilter.CQL).toBeFalsy();
                 });
@@ -203,24 +203,24 @@ describe("Portal.filter.TimeFilter", function() {
     describe('_setExistingFilters', function() {
         it('sets from and to fields from cql parameter', function() {
             timeFilter.filter = { name: 'test' };
-            
+
             timeFilter.layer = {};
             timeFilter.layer.getDownloadFilter = function() {
                 return "test after 2013-10-07T13:00:00Z AND test before 2013-10-08T13:00:00Z";
             };
-            
+
             var MockField = function() {
                 this.setValue = jasmine.createSpy();
                 this.setVisible = jasmine.createSpy();
             };
-            
+
             timeFilter.operators = new MockField();
             timeFilter.fromField = new MockField();
             timeFilter.toField = new MockField();
             timeFilter._createCQL = jasmine.createSpy();
-            
+
             timeFilter._setExistingFilters();
-            
+
             expect(timeFilter.operators.setValue).toHaveBeenCalledWith("between");
             expect(timeFilter.fromField.setValue).toHaveBeenCalledWith(new Date("Tue Oct 08 2013 00:00:00 GMT+1100 (EST)"));
             expect(timeFilter.toField.setValue).toHaveBeenCalledWith(new Date("Wed Oct 09 2013 00:00:00 GMT+1100 (EST)"));
@@ -228,7 +228,7 @@ describe("Portal.filter.TimeFilter", function() {
             expect(timeFilter._createCQL).toHaveBeenCalled();
         });
     });
-    
+
     function _mockFilterFields(timeFilter) {
         Ext.each(['operators', 'fromField', 'toField'], function (property, index, all) {
             this[property] = {

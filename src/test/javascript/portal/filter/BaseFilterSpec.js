@@ -37,11 +37,11 @@ describe("Portal.filter.BaseFilter", function() {
             expect(constructorSpy).toHaveBeenCalled();
         });
 
-        it("Should create TimeFilter", function() {
+        it("Should create DateFilter", function() {
 
             filter.type = "Date";
 
-            var constructorSpy = spyOn(Portal.filter, 'TimeFilter');
+            var constructorSpy = spyOn(Portal.filter, 'DateFilter');
 
             newFilterPanelFor(filter);
 
@@ -85,25 +85,25 @@ describe("Portal.filter.BaseFilter", function() {
     describe("isDownloadOnly()", function() {
         var buildFilter = function(filterConfig) {
             var baseFilter = new Portal.filter.BaseFilter();
-            
+
             baseFilter.setLayerAndFilter(null, filterConfig);
-            
+
             return baseFilter;
         }
-        
+
         it("Should return true when the filter is for downloads only", function() {
             var baseFilter = buildFilter({
                 downloadOnly: true
             });
-            
+
             expect(baseFilter.isDownloadOnly()).toBe(true);
         });
-        
+
         it("Should return false when the filter is not only for downloads", function() {
             var baseFilter = buildFilter({
                 downloadOnly: false
             });
-            
+
             expect(baseFilter.isDownloadOnly()).toBe(false);
         });
     });

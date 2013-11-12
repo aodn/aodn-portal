@@ -7,13 +7,13 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.DateFilter = Ext.extend(Portal.filter.BaseFilter, {
 
     constructor: function(cfg) {
         var config = Ext.apply({}, cfg );
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
-        Portal.filter.TimeFilter.superclass.constructor.call(this, config);
+        Portal.filter.DateFilter.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -79,7 +79,7 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
 
     _opSelect: function(combo, row, index) {
         this.toField.setVisible(this._isSelectedOpSetToBetween());
-        this._applyTimeFilter();
+        this._applyDateFilter();
     },
 
     _isSelectedOpSetToBetween: function() {
@@ -91,16 +91,16 @@ Portal.filter.TimeFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _onSelect: function(picker, date) {
-        this._applyTimeFilter();
+        this._applyDateFilter();
     },
 
-    _applyTimeFilter: function() {
+    _applyDateFilter: function() {
         if (this._requiredFieldsSet()) {
             this._createCQL();
             this._fireAddEvent();
         }
     },
-    
+
     _createCQL: function() {
         this.CQL = this.filter.name + " ";
 

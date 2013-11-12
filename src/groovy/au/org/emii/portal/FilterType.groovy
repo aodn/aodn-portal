@@ -23,7 +23,6 @@ public enum FilterType {
     static def stringTypeMapping = [
         "string": FilterType.String,
         "date": FilterType.Date,
-        "datetime": FilterType.Date,
         "double": FilterType.Number,
         "float": FilterType.Number,
         "integer": FilterType.Number,
