@@ -105,8 +105,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _urlListDownloadHandler: function(collection) {
 
-        // "http://localhost:8080/aodn-portal/proxy/uniqueList?url=http%3A%2F%2Flocalhost:8080/aodn-portal/splash/links"
-        var downloadUrl = String.format("http://localhost:8080/aodn-portal/splash/links");
+        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, 'csv');
         var downloadFilename = collection.title + "_URLs.txt";
         var additionalArgs = {
             action: 'urlList',

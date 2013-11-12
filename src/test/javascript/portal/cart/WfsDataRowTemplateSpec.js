@@ -18,6 +18,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             uuid: 9,
+            grailsLayerId: 42,
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
@@ -251,9 +252,21 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
     describe('_urlListDownloadHandler', function() {
 
+        beforeEach(function() {
+
+            spyOn(tpl, '_wfsUrlForGeoNetworkRecord');
+        });
+
+        it('calls _wfsUrlForGeoNetworkRecord', function() {
+
+            tpl._urlListDownloadHandler(geoNetworkRecord);
+
+            expect(tpl._wfsUrlForGeoNetworkRecord).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
+        });
+
         it('returns a function to be called', function() {
 
-            var returnValue = tpl._urlListDownloadHandler({ wmsLayer: {} });
+            var returnValue = tpl._urlListDownloadHandler(geoNetworkRecord);
 
             expect(typeof returnValue).toBe('function');
         });
