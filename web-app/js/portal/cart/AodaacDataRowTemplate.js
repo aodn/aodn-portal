@@ -7,6 +7,7 @@
 Ext.namespace('Portal.cart');
 
 Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
+    AODAAC_EMAIL_ADDRESS_ATTRIBUTE: "aodaac-email-address",
 
     constructor: function(downloadPanelTemplate) {
         this.downloadPanelTemplate = downloadPanelTemplate;
@@ -51,7 +52,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             html += '</div>';
             html += '<div class="clear"></div>';
 
-            html = String.format(html, values.uuid, OpenLayers.i18n('emailAddressPlaceholder'));
+            html = String.format(html, values.uuid, this._getEmailAddress(values.uuid));
         }
         else {
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
@@ -101,6 +102,16 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             scope: this,
             menu: downloadMenu
         }).render(html, id);
+
+        this._emailTextFieldElement(collection.uuid).on('click', function() {
+            if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                this.set({ value: '' });
+            }
+        });
+
+        this._emailTextFieldElement(collection.uuid).on('change', function() {
+            this._saveEmailAddress(collection.uuid);
+        }, this);
     },
 
     _createMenuItems: function(collection) {
@@ -123,7 +134,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
             var emailAddress = emailAddressElement.val();
 
             if (!this._validateEmailAddress(emailAddress)) {
-
                 Ext.Msg.alert(OpenLayers.i18n('aodaacEmailProblemDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
                 return;
             }
@@ -167,5 +177,28 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(address);
+    },
+
+    _emailTextFieldElement: function(uuid) {
+        return Ext.get(Ext.query("#aodaac-email-address-" + uuid)[0]);
+    },
+
+    _saveEmailAddress: function(uuid) {
+        Portal.data.ActiveGeoNetworkRecordStore.instance().
+            addRecordAttribute(
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
+                this._emailTextFieldElement(uuid).getValue()
+            );
+    },
+
+    _getEmailAddress: function(uuid) {
+        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
+            getRecordAttribute(
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
+            );
+
+        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
     }
 });

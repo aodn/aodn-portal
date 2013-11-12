@@ -5,11 +5,11 @@ import grails.test.ControllerUnitTestCase
 class WfsScannerControllerTests extends ControllerUnitTestCase {
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
 
-    def server1 = new Server( id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true )
-    def server2 = new Server( id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false )
-    def server3 = new Server( id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true, username: "u n", password: "p/w/d" )
+    def server1 = new Server(id: 1, name: "Server 1", uri: "svr1uri", allowDiscoveries: true)
+    def server2 = new Server(id: 2, name: "Server 2", uri: "svr2uri", type: "WMS-1.1.1", scanFrequency: 45, allowDiscoveries: false)
+    def server3 = new Server(id: 3, name: "Server 3", uri: "svr3uri", type: "NCWMS-1.3.0", scanFrequency: 120, allowDiscoveries: true, username: "u n", password: "p/w/d")
 
-    def validConfig = new Config( wmsScannerCallbackPassword: "pwd" )
+    def validConfig = new Config(wmsScannerCallbackPassword: "pwd")
     def invalidConfig = new Config()
 
     def expectedScannerBaseUrl = "scannerBaseUrl/"
@@ -26,9 +26,9 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
 
     protected void tearDown() {
 
-		super.tearDown()
+        super.tearDown()
 
-		String.metaClass = null
+        String.metaClass = null
     }
 
     void testControls_NoProblems_ScanJobListReturned() {
@@ -39,10 +39,10 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
             serverTypes, allowDiscoveries, sort ->
 
-            assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
-            assertEquals "Sort map should match", "[sort:name]", sort.toString()
+                assertEquals "Server type list should match", "[WMS-1.1.1, WMS-1.3.0, NCWMS-1.1.1, NCWMS-1.3.0, GEO-1.1.1, GEO-1.3.0]", serverTypes.toString()
+                assertEquals "Sort map should match", "[sort:name]", sort.toString()
 
-            return [] // Test with empty server list
+                return [] // Test with empty server list
         }
 
         def expectedQueryString = """\
@@ -58,36 +58,35 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
         assertEquals "Servers to list should match", [], returnParams.serversToList                 */
     }
 
-    void setUpToUrlForResponse( expectedUrl, responseText ) {
+    void setUpToUrlForResponse(expectedUrl, responseText) {
 
         String.metaClass.toURL = {
 
             assertEquals "String toURL() is being called on should match expected Url", expectedUrl, delegate
 
-            return [ openConnection: {
-                return [ connect: {},
-                        content: [ text: responseText ],
-                        responseCode: 200
+            return [openConnection: {
+                return [connect: {},
+                    content: [text: responseText],
+                    responseCode: 200
                 ]
-            } ]
+            }]
         }
     }
 
-    void setUpToUrlForException( expectedUrl, errorText ) {
+    void setUpToUrlForException(expectedUrl, errorText) {
 
         String.metaClass.toURL = {
 
             assertEquals "String toURL() is being called on should match expected Url", expectedUrl, delegate
 
-            def errorStream = errorText ? new ByteArrayInputStream( errorText.getBytes() ) : null
+            def errorStream = errorText ? new ByteArrayInputStream(errorText.getBytes()) : null
 
-            return [ openConnection: {
-                return [ connect: {  throw new Exception( "Test Exception" ) },
-                        errorStream: errorStream,
-                        responseCode: 500
+            return [openConnection: {
+                return [connect: { throw new Exception("Test Exception") },
+                    errorStream: errorStream,
+                    responseCode: 500
                 ]
-            }
-            ]
+            }]
         }
     }
 }

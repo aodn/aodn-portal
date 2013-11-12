@@ -219,7 +219,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('returns a function to be called', function() {
 
-            var returnValue = tpl._downloadHandlerFor();
+            var returnValue = tpl._downloadHandlerFor('collection');
 
             expect(typeof returnValue).toBe('function');
         });

@@ -25,6 +25,7 @@ Portal.search.RefineSearchPanel = Ext.extend(Ext.Panel, {
     parameters: {
         keywords: 'themekey',
         organizationNames: 'orgName',
+        platformNames: 'platform',
         dataParameters: 'longParamName'
     },
 

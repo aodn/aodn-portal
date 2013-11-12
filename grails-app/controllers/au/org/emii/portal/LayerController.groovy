@@ -446,7 +446,7 @@ class LayerController {
             }
         }
 
-        if (!responseText) responseText = "<BR>This layer has no link to a metadata record"
+        if (!responseText) responseText = "<BR>This data collection has no link to a metadata record"
 
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
     }

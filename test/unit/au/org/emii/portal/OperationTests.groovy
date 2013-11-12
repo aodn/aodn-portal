@@ -8,7 +8,7 @@
 
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class OperationTests extends GrailsUnitTestCase {
 
@@ -24,22 +24,21 @@ class OperationTests extends GrailsUnitTestCase {
 
     void testValidOperation() {
         Operation operation = new Operation(name: "opName", formats: "opFormats", getUrl: "opGetUrl")
-        
+
         operation.save()
-        
+
         assertFalse(operation.hasErrors())
     }
-    
+
     void testNotNullableConstraints() {
         Operation operation = new Operation()
-        
+
         operation.save()
-        
+
         assertTrue(operation.hasErrors())
-        
+
         assertEquals("nullable", operation.errors.getFieldError("name").getCode())
         assertEquals("nullable", operation.errors.getFieldError("formats").getCode())
         assertEquals("nullable", operation.errors.getFieldError("getUrl").getCode())
     }
-
 }

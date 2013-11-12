@@ -199,6 +199,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     locationFilter: 'Location',
     methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
+    platformFilter: 'Platform',
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date',
     geoFilter: "Geographic Boundary",
@@ -251,12 +252,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateToLabel: 'Date to:',
 
     // FeatureInfoPopup.js
-    noDataCollectionSelected: 'No data collection selected.',
-    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
-    noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
-    searchingForFeatures: 'Searching for Features at your click point',
-    depth: 'Depth',
-    elevation: 'Elevation',
+    noDataCollectionTitle: 'No data collection selected',
+    searchingTitle: 'Searching for more information at this point...',
+    infoFoundTitle: "Detailed information for ${dataCollectionNumber} data collection(s) at this point",
+    noInfoFoundTitle: "No more information found at this point",
+    depthLabel: 'Depth:',
+    elevationLabel: 'Elevation:',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',

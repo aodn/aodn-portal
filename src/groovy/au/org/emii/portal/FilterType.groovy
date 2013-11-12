@@ -26,8 +26,8 @@ public enum FilterType {
         "double": FilterType.Number,
         "float": FilterType.Number,
         "integer": FilterType.Number,
-	    "int": FilterType.Number,
-	    "long": FilterType.Number,
+        "int": FilterType.Number,
+        "long": FilterType.Number,
         "boolean": FilterType.Boolean,
         "pointpropertytype": FilterType.BoundingBox
     ]

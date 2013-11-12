@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,18 +8,17 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
-    _createField:function() {
-
+    _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
-             name: this.filter.name,
-             value: true,
-             listeners: {
-                 scope: this,
-                 check: this._buttonChecked
-             }
-         });
+            name: this.filter.name,
+            value: true,
+            listeners: {
+                scope: this,
+                check: this._buttonChecked
+            }
+        });
 
-         this.add(this.checkbox);
+        this.add(this.checkbox);
     },
 
     _buttonChecked: function(button, checked) {
@@ -36,7 +34,7 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
             this.CQL = "";
         }
     },
-    
+
     handleRemoveFilter: function() {
         this.CQL = "";
         this.checkBox.setValue(false);
@@ -47,11 +45,10 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         var m = this.re.exec(this.layer.getDownloadFilter());
 
-        if (m != null && m.length == 3) {
-            if (m[1] === "true") {
-                this.checkbox.setValue(true);
-                this._createCQL();
-            }
+        if (m && m[1] && m[1] === "true") {
+            this.checkbox.setValue(true);
+            this._createCQL();
         }
     }
+
 });

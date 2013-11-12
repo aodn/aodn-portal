@@ -337,9 +337,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     // Returns true if left and right has the same date (not time),
     // false otherwise
     isSameDay: function(left, right) {
-        return left.year() == right.year()
-            && left.month() == right.month()
-            && left.date() == right.date();
+        var leftDateOnly = left.clone().startOf('day');
+        var rightDateOnly = right.clone().startOf('day');
+        return leftDateOnly.isSame(rightDateOnly);
     },
 
     // TODO: transform temporalExtent to a 2 dimensional array, indexed by date
@@ -353,7 +353,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // the first or last
         var indexOfSameDate = binSearch(
             this.temporalExtent, dateTime,
-            this.isSameDay);
+            function(left, right) {
+                var leftDateOnly = left.clone().startOf('day');
+                var rightDateOnly = right.clone().startOf('day');
+                return leftDateOnly.isAfter(rightDateOnly);
+            });
 
         // No dates found - return
         if (indexOfSameDate == -1) { return []; }

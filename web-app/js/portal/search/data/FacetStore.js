@@ -27,6 +27,7 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
     include: [
         'keywords',
         'organizationNames',
+        'platformNames',
         'dataParameters'
     ],
 

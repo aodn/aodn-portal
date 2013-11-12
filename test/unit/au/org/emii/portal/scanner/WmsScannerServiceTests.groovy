@@ -1,7 +1,7 @@
 package au.org.emii.portal.scanner
 
-import grails.test.*
 import au.org.emii.portal.Server
+import grails.test.GrailsUnitTestCase
 
 class WmsScannerServiceTests extends GrailsUnitTestCase {
     def wmsScannerService
@@ -12,15 +12,15 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
 
         //grailsApplication.config.wmsScanner.url
         wmsScannerService.grailsApplication = [
-                config: [
-                        wmsScanner: [
-                                url: "http://blah.au"
-                        ]
+            config: [
+                wmsScanner: [
+                    url: "http://blah.au"
                 ]
+            ]
         ]
     }
 
-    void testDeleteJob(){
+    void testDeleteJob() {
         def count = 0
 
         wmsScannerService.metaClass.saveOrUpdateCallbackUrl = {
@@ -36,14 +36,14 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
         assertEquals count, 1
     }
 
-    void testRegister(){
+    void testRegister() {
         def server = [
-                id: 1,
-                scanFrequency: 120,
-                password: "somePassword",
-                uri: "http://geoserver.blah.com",
-                type: "GEO-1.1.1"
-        ]  as Server
+            id: 1,
+            scanFrequency: 120,
+            password: "somePassword",
+            uri: "http://geoserver.blah.com",
+            type: "GEO-1.1.1"
+        ] as Server
 
         mockDomain(Server, [server])
 
@@ -75,16 +75,16 @@ class WmsScannerServiceTests extends GrailsUnitTestCase {
     }
 
 
-    void testUpdate(){
+    void testUpdate() {
 
         def server = [
-                id: 1,
-                scanFrequency: 120,
-                password: "somePassword",
-                uri: "http://geoserver.blah.com",
-                type: "GEO-1.1.1",
-                username: "hello",
-        ]  as Server
+            id: 1,
+            scanFrequency: 120,
+            password: "somePassword",
+            uri: "http://geoserver.blah.com",
+            type: "GEO-1.1.1",
+            username: "hello",
+        ] as Server
 
         mockDomain(Server, [server])
 

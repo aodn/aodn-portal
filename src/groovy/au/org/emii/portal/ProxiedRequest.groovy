@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,98 +13,88 @@ import org.slf4j.LoggerFactory
 
 class ProxiedRequest {
 
-	static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
+    static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
 
-	def request
-	def response
-	def params
+    def request
+    def response
+    def params
 
-	ProxiedRequest(request, response, params) {
-		this.request = request
-		this.response = response
-		this.params = params
-	}
+    ProxiedRequest(request, response, params) {
+        this.request = request
+        this.response = response
+        this.params = params
+    }
 
-	def proxy(downloadGif) {
+    def proxy() {
 
-		def targetUrl = _getUrl(params)
-		def conn = targetUrl.openConnection()
+        def targetUrl = _getUrl(params)
+        def conn = targetUrl.openConnection()
 
-		if (params.format) {
-			response.contentType = params.format
-		}
-		else if(request.contentType)
-		{
-			response.contentType = request.contentType
-		}
+        if (params.format) {
+            response.contentType = params.format
+        }
+        else if (request.contentType) {
+            response.contentType = request.contentType
+        }
 
+        def outputStream = response.outputStream
 
-		def outputStream = response.outputStream
+        _addAuthentication(conn, targetUrl)
 
-		_addAuthentication(conn, targetUrl)
+        if (request.method == 'HEAD') {
+            render(text: "", contentType: (params.format ?: params.FORMAT))
+        }
+        else {
+            // Force download if filename provided
+            if (params.downloadFilename) {
+                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}");
+            }
 
-		if (request.method == 'HEAD') {
-			render(text: "", contentType: (params.format ?: params.FORMAT))
-		}
-		else {
-			if(downloadGif){
-				def index = params.url.indexOf("LAYERS=")
+            try {
+                outputStream << conn.inputStream
+                outputStream.flush()
+            }
+            catch (Exception e) {
 
-				if(index > -1){
-					def layers = params.url.substring(index + 7);
-					def timeStr = params.TIME.replaceAll("[-:]", "")
-					timeStr.replace("/", "_")
-					response.setHeader("Content-disposition", "attachment; filename=" +
-						layers + "_" + timeStr + ".gif");
-				}
-			}
+                log.info "Unable to pass-through response from $targetUrl", e
+            }
+            finally {
 
-			try {
-				outputStream << conn.inputStream
-				outputStream.flush()
-			}
-			catch (Exception e) {
+                IOUtils.closeQuietly(outputStream)
+            }
+        }
+    }
 
-				log.info "Unable to pass-through response from $targetUrl", e
-			}
-			finally {
+    def _getUrl(params) {
 
-				IOUtils.closeQuietly( outputStream )
-			}
-		}
-	}
+        def query = params.findAll {
+            key, value ->
 
-	def _getUrl(params) {
-
-		def query = params.findAll {
-			key, value ->
-
-			key != "controller" &&
+            key != "controller" &&
             key != "url" &&
             key != "format" &&
             key != "_dc"
-		}
+        }
 
-		def queryStr = ""
+        def queryStr = ""
 
-		query.each {
-			key, value ->
+        query.each {
+            key, value ->
 
-			queryStr += "&$key=$value"
-		}
+            queryStr += "&$key=$value"
+        }
 
-		return (params.url + queryStr).toURL()
-	}
+        return (params.url + queryStr).toURL()
+    }
 
-	def _addAuthentication(connection, url) {
-		def server = _getServer(url)
-		if (server) {
-			server.addAuthentication(connection)
-		}
-	}
+    def _addAuthentication(connection, url) {
+        def server = _getServer(url)
+        if (server) {
+            server.addAuthentication(connection)
+        }
+    }
 
-	def _getServer(url) {
-		return Server.findByUriLike("%${url.getHost()}%")
-	}
-
+    def _getServer(url) {
+        return Server.findByUriLike("%${url.getHost()}%")
+    }
 }

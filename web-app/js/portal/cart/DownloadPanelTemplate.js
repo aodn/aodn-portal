@@ -101,7 +101,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         return String.format('<a href="{0}" target="_blank" class="external">{1}</a>', href, text);
     },
 
-    downloadWithConfirmation: function(downloadUrl) {
-        this.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl);
+    downloadWithConfirmation: function(downloadUrl, downloadFilename) {
+        this.downloadPanel.confirmationWindow.showIfNeeded(downloadUrl, downloadFilename);
     }
 });

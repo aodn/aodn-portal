@@ -60,6 +60,7 @@ class FilterController {
     }
 
     def update = {
+
         def filterInstance = Filter.get(params.id)
 
         if (filterInstance) {
@@ -131,13 +132,13 @@ class FilterController {
             }
             else {
 
-                log.debug "No layer found"
+                log.info "No layer found with params: $params"
 
                 render "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
             }
         }
         else {
-
+            log.info "Credentials incorrect"
             render text: "Credentials incorrect", status: 500
         }
     }
@@ -168,6 +169,8 @@ class FilterController {
     def _findLayerWith(serverHost, fullLayerName) {
 
         def (namespace, layerName) = _deconstructLayerName(fullLayerName)
+
+        log.debug "Finding Layer matching namespace: '$namespace' and layerName: '$layerName'"
 
         def matchingLayers = Layer.createCriteria().list {
             eq("name", layerName)
