@@ -50,9 +50,10 @@ class ProxyController {
 
         def layer = Layer.get(layerId)
         def fieldName = layer.urlDownloadFieldName
+        def substitutionPrefix = "/mnt/imos-t4/"
         def urlBase = "urlBase/"
 
-        _performProxying(null, urlListStreamProcessor(fieldName, urlBase))
+        _performProxying(null, urlListStreamProcessor(fieldName, substitutionPrefix, urlBase))
     }
 
     // this action is intended to always be cached by squid
@@ -141,7 +142,7 @@ class ProxyController {
         }
     }
 
-    def urlListStreamProcessor(fieldName, urlBase) {
+    def urlListStreamProcessor(fieldName, substitutionPrefix, urlBase) {
 
         return { inputStream, outputStream ->
 
@@ -172,9 +173,10 @@ class ProxyController {
                 if (fieldIndex < currentRow.length) {
 
                     def rowValue = currentRow[fieldIndex].trim()
+                    rowValue = rowValue.replace(substitutionPrefix, urlBase)
 
                     if (rowValue && includedUrls.add(rowValue)) {
-                        outputWriter.print "$urlBase$rowValue\n"
+                        outputWriter.print "$rowValue\n"
                     }
                 }
 
