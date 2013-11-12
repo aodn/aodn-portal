@@ -91,13 +91,14 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
 
         if (this._isLayerActive(layer)) {
 
-            Ext.each(filters,
-                     function(filter, index, all) {
-                         this._createFilterPanel(layer, filter);
-                         aFilterIsEnabled = true;
-                     },
-                     this
-                    );
+            Ext.each(
+                filters,
+                function(filter, index, all) {
+                    this._createFilterPanel(layer, filter);
+                    aFilterIsEnabled = true;
+                },
+                this
+            );
         }
 
         if (aFilterIsEnabled) {
