@@ -50,12 +50,12 @@ class ProxyController {
 
         def layer = Layer.get(layerId)
         def fieldName = layer.urlDownloadFieldName
-        def substitutionPrefix = "/mnt/imos-t4/"
-        def urlBase = "urlBase/"
+        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
+        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
         // Todo - DN: Modify URL to append required fieldName
 
-        _performProxying(null, urlListStreamProcessor(fieldName, substitutionPrefix, urlBase))
+        _performProxying(null, urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase))
     }
 
     // this action is intended to always be cached by squid
@@ -144,7 +144,7 @@ class ProxyController {
         }
     }
 
-    def urlListStreamProcessor(fieldName, substitutionPrefix, urlBase) {
+    def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
 
         return { inputStream, outputStream ->
 
@@ -175,7 +175,7 @@ class ProxyController {
                 if (fieldIndex < currentRow.length) {
 
                     def rowValue = currentRow[fieldIndex].trim()
-                    rowValue = rowValue.replace(substitutionPrefix, urlBase)
+                    rowValue = rowValue.replace(prefixToRemove, newUrlBase)
 
                     if (rowValue && includedUrls.add(rowValue)) {
                         outputWriter.print "$rowValue\n"

@@ -20,7 +20,7 @@ class ProxyControllerTests extends ControllerUnitTestCase {
 
     void testUrlList() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/")
+        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
         mockDomain Server, [server]
         def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
         mockDomain Layer, [layer]
@@ -57,10 +57,10 @@ class ProxyControllerTests extends ControllerUnitTestCase {
         """
 
         def expectedOutput = """\
-urlBase/IMOS/Q9900542.nc\n\
-urlBase/IMOS/Q9900543.nc\n\
-urlBase/IMOS/Q9900540.nc\n\
-urlBase/IMOS/Q9900541.nc\n\
+http://data.imos.org.au/IMOS/Q9900542.nc\n\
+http://data.imos.org.au/IMOS/Q9900543.nc\n\
+http://data.imos.org.au/IMOS/Q9900540.nc\n\
+http://data.imos.org.au/IMOS/Q9900541.nc\n\
 """
 
         def inputStream = new ByteArrayInputStream(input.bytes)
