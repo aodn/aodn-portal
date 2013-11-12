@@ -18,7 +18,12 @@ class ProxyControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testUniqueList() {
+    void testUrlList() {
+
+        def server = new Server(name: 'My Server', uri: "http://www.google.com/")
+        mockDomain Server, [server]
+        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "device_wmo_ref", server: server, dataSource: "test data")
+        mockDomain Layer, [layer]
 
         def performProxyingCalled = false
 
@@ -32,8 +37,8 @@ class ProxyControllerTests extends ControllerUnitTestCase {
             checkUniqueListStreamProcessor streamProcessor
         }
 
-        mockParams.fieldName = "device_wmo_ref"
-        controller.uniqueList()
+        mockParams.layerId = 1
+        controller.urlList()
 
         assertTrue performProxyingCalled
     }
