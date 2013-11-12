@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -43,38 +42,38 @@ class Server {
     }
 
     static constraints = {
-        uri(unique:true, url:true)
-        shortAcron(unique:true,size:0..16)
+        uri(unique: true, url: true)
+        shortAcron(unique: true, size: 0..16)
         // dont change only add.
         // getFeatureInfo request code will need to be written to use new versions
         // Openlayers should handle getMap
-        type(inList:[//"WMS-1.0.0",  // to old
-                       //"WMS-1.0.7", // to weird
-                       //"WMS-1.1.0", // mmm
-                       "WMS-1.1.1",
-                       "WMS-1.3.0",
-                       "NCWMS-1.1.1",
-                       "GEO-1.1.1",
-                       "GEO-1.3.0",
-                       //"NCWMS-1.3.0", // dont support until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
-                       "THREDDS",
-                       "GEORSS",
-                       "KML",
-                       "RAMADDA",
-                       "AUTO"
+        type(inList: [//"WMS-1.0.0",  // to old
+            //"WMS-1.0.7", // to weird
+            //"WMS-1.1.0", // mmm
+            "WMS-1.1.1",
+            "WMS-1.3.0",
+            "NCWMS-1.1.1",
+            "GEO-1.1.1",
+            "GEO-1.3.0",
+            //"NCWMS-1.3.0", // dont support until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
+            "THREDDS",
+            "GEORSS",
+            "KML",
+            "RAMADDA",
+            "AUTO"
         ])
-        lastScanDate( nullable:true )
+        lastScanDate(nullable: true)
         scanFrequency()
-        name(unique:true)
+        name(unique: true)
         disable()
         allowDiscoveries()
         opacity()
-        imageFormat( inList:['image/png','image/gif'] )
-        infoFormat( inList:['text/html','text/plain','image/png'] )
-        comments(nullable:true)
-        username(nullable:true)
-        password(nullable:true)
-        owners(nullable:  true, validator: {
+        imageFormat(inList: ['image/png', 'image/gif'])
+        infoFormat(inList: ['text/html', 'text/plain', 'image/png'])
+        comments(nullable: true)
+        username(nullable: true)
+        password(nullable: true)
+        owners(nullable: true, validator: {
             //This is totally not a great way to do things
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
@@ -83,7 +82,7 @@ class Server {
                 return true
 
             it?.roles?.each() { r ->
-                r.each() {  rr->
+                r.each() { rr ->
                     if (rr.id == ownerRole.id) {
                         valid = true
                     }
@@ -106,7 +105,7 @@ class Server {
     }
 
     def beforeDelete() {
-        MenuItem.withNewSession{
+        MenuItem.withNewSession {
             def menuItemServers = MenuItem.findAllByServer(this)
             menuItemServers*.delete()
         }
@@ -129,15 +128,15 @@ class Server {
         uri = uri?.trim()
 
         // Save without trailing question mark to help avoid non-uniqueness
-        if (uri.getAt(uri.size()-1)=='?') {
+        if (uri.getAt(uri.size() - 1) == '?') {
 
-            uri = uri.substring(0, uri.size()-1)
+            uri = uri.substring(0, uri.size() - 1)
         }
 
         // Save without trailing slash to help avoid non-uniqueness
-        if (uri.getAt(uri.size()-1)=='/') {
+        if (uri.getAt(uri.size() - 1) == '/') {
 
-            uri = uri.substring(0, uri.size()-1)
+            uri = uri.substring(0, uri.size() - 1)
         }
     }
 
@@ -176,9 +175,9 @@ class Server {
 
         def layersToReturn = layerDescriptors
         // If just one grouping layer, bypass it
-        if ( layerDescriptors.size() == 1 &&
-            layerDescriptors[0].layers.size() > 0 )
-        {
+        if (layerDescriptors.size() == 1 &&
+            layerDescriptors[0].layers.size() > 0) {
+
             layersToReturn = layerDescriptors[0].layers
         }
 
@@ -200,7 +199,7 @@ class Server {
         }
     }
 
-    def updateOperations( newOperations ) {
+    def updateOperations(newOperations) {
 
         operations.clear()
 
