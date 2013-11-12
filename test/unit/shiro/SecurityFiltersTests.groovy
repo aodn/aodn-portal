@@ -8,31 +8,30 @@
 
 package shiro
 
+import au.org.emii.portal.Filter
+import au.org.emii.portal.Layer
+import au.org.emii.portal.Server
+import au.org.emii.portal.User
 import grails.test.FiltersUnitTestCase
 import grails.test.MockUtils
-import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
-import au.org.emii.portal.User
-import au.org.emii.portal.Server
-import au.org.emii.portal.Layer
+import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.util.ThreadContext
-import org.apache.shiro.SecurityUtils
-import au.org.emii.portal.Filter
-import au.org.emii.portal.UserRole
+import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
 
 class SecurityFiltersTests extends FiltersUnitTestCase {
 
     protected void setUp() {
-        
+
         super.setUp()
-        
+
         MockUtils.mockLogging SecurityFilters, true
     }
 
     protected void tearDown() {
-        
+
         super.tearDown()
-        
+
         FilterConfig.metaClass = null
     }
 
@@ -42,14 +41,14 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
 
         checkFilter "homeAccess"
     }
-    
+
     void testSplashControllerFilter() {
-        
+
         checkFilter "splashAccess"
     }
-    
+
     void testConfigControllerFilter() {
-        
+
         checkFilter "configAccess"
     }
 
@@ -59,13 +58,13 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     }
 
     void testServerControllerFilter() {
-        
+
         checkFilter "serverAccess"
     }
-    
+
     void testLayerControllerFilter() {
-        
-        checkFilter "layerAccess" 
+
+        checkFilter "layerAccess"
     }
 
     void testMenuControllerFilter() {
@@ -74,13 +73,8 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     }
 
     void testProxyControllerFilter() {
-        
+
         checkFilter "proxyAccess"
-    }
-    
-    void testDownloadCartControllerFilter() {
-        
-        checkFilter "downloadCartAccess"
     }
 
     void testEditFiltersAccess() {
@@ -200,18 +194,18 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     void checkFilter(String filterName) {
         checkFilter filterName, null
     }
-    
+
     void checkFilter(String filterName, def params) {
-        
+
         setControllerName "ControllerNameInTest"
         setActionName "ActionNameInTest"
-        
+
         FilterConfig filter = initFilter( filterName )
         assertNotNull filterName + " filter should exist", filter
         assertExistsBefore filterName
-        
+
         assertEquals "accessAllowed should be null to start with", null, filter.request.accessAllowed
-        
+
         // Run filter
         if (params) {
             filter.params.putAll(params)
