@@ -50,9 +50,9 @@ class ProxyController {
 
         def layer = Layer.get(layerId)
         def fieldName = layer.urlDownloadFieldName
-        def prefix = "test"
+        def urlBase = "urlBase/"
 
-        _performProxying(null, uniqueListStreamProcessor(fieldName))
+        _performProxying(null, urlListStreamProcessor(fieldName, urlBase))
     }
 
     // this action is intended to always be cached by squid
@@ -141,7 +141,7 @@ class ProxyController {
         }
     }
 
-    def uniqueListStreamProcessor(fieldName) {
+    def urlListStreamProcessor(fieldName, urlBase) {
 
         return { inputStream, outputStream ->
 
@@ -174,7 +174,7 @@ class ProxyController {
                     def rowValue = currentRow[fieldIndex].trim()
 
                     if (rowValue && includedUrls.add(rowValue)) {
-                        outputWriter.print "$rowValue\n"
+                        outputWriter.print "$urlBase$rowValue\n"
                     }
                 }
 

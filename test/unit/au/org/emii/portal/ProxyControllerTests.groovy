@@ -22,7 +22,7 @@ class ProxyControllerTests extends ControllerUnitTestCase {
 
         def server = new Server(name: 'My Server', uri: "http://www.google.com/")
         mockDomain Server, [server]
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "device_wmo_ref", server: server, dataSource: "test data")
+        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
         mockDomain Layer, [layer]
 
         def performProxyingCalled = false
@@ -34,7 +34,7 @@ class ProxyControllerTests extends ControllerUnitTestCase {
             assertNull beforeAction
             assertNotNull streamProcessor
 
-            checkUniqueListStreamProcessor streamProcessor
+            checkUrlListStreamProcessor streamProcessor
         }
 
         mockParams.layerId = 1
@@ -43,20 +43,25 @@ class ProxyControllerTests extends ControllerUnitTestCase {
         assertTrue performProxyingCalled
     }
 
-    def checkUniqueListStreamProcessor = { streamProcessor ->
+    def checkUrlListStreamProcessor = { streamProcessor ->
 
         def input = """\
-            FID,profile_id,device_wmo_ref
-            aatams_sattag_nrt_wfs.331443,21772,Q9900542
-            aatams_sattag_nrt_wfs.331445,21772,Q9900543
-            aatams_sattag_nrt_wfs.331441,21772,Q9900540
-            aatams_sattag_nrt_wfs.331442,21772,Q9900541
-            aatams_sattag_nrt_wfs.331443,21772,Q9900542
-            aatams_sattag_nrt_wfs.331445,21772,Q9900543
+            FID,profile_id,relativeFilePath
+            aatams_sattag_nrt_wfs.331443,21772,IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,21772,IMOS/Q9900543.nc
+            aatams_sattag_nrt_wfs.331441,21772,IMOS/Q9900540.nc
+            aatams_sattag_nrt_wfs.331442,21772,IMOS/Q9900541.nc
+            aatams_sattag_nrt_wfs.331443,21772,IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,21772,IMOS/Q9900543.nc
 
         """
 
-        def expectedOutput = "Q9900542\nQ9900543\nQ9900540\nQ9900541\n"
+        def expectedOutput = """\
+urlBase/IMOS/Q9900542.nc\n\
+urlBase/IMOS/Q9900543.nc\n\
+urlBase/IMOS/Q9900540.nc\n\
+urlBase/IMOS/Q9900541.nc\n\
+"""
 
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
