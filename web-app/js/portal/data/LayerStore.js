@@ -105,11 +105,18 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     removeUsingOpenLayer: function(openLayer) {
-
-        var layerRecordToRemove = this.getByLayer(openLayer);
-        this.remove(layerRecordToRemove);
-        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
-        openLayer.destroy();
+        // Careful with using 'this' in this function as we'll be using
+        // setTimeout to call this function again
+        if (openLayer.loading) {
+            // Call ourself again async if we were loading
+            setTimeout(arguments.callee, 500, openLayer);
+        }
+        else {
+            var layerRecordToRemove = Portal.data.LayerStore.instance().getByLayer(openLayer);
+            Portal.data.LayerStore.instance().remove(layerRecordToRemove);
+            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
+            openLayer.destroy();
+        }
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
