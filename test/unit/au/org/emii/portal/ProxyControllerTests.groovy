@@ -27,20 +27,32 @@ class ProxyControllerTests extends ControllerUnitTestCase {
 
         def performProxyingCalled = false
 
-        controller._performProxying = { beforeAction, streamProcessor ->
+        controller._performProxying = { paramProcessor, streamProcessor ->
 
             performProxyingCalled = true
 
-            assertNull beforeAction
-            assertNotNull streamProcessor
+            assertNotNull paramProcessor
+            checkParamProcessor paramProcessor
 
+            assertNotNull streamProcessor
             checkUrlListStreamProcessor streamProcessor
         }
 
         mockParams.layerId = 1
+        mockParams.url = "the_url?a=b"
+
         controller.urlList()
 
         assertTrue performProxyingCalled
+    }
+
+    def checkParamProcessor = { paramsProcessor ->
+
+        def params = [url: "the_url?a=b"]
+
+        params = paramsProcessor(params)
+
+        assertEquals "the_url?a=b&PROPERTYNAME=relativeFilePath", params.url
     }
 
     def checkUrlListStreamProcessor = { streamProcessor ->

@@ -21,7 +21,7 @@ class ProxyController {
 
     def downloadGif = {
 
-        def beforeAction = { ->
+        def injectGifFilename = { params ->
 
             def layersField = "LAYERS="
             def fieldIndex = params.url.indexOf(layersField)
@@ -34,9 +34,11 @@ class ProxyController {
 
                 params.downloadFilename = "${layerName}_${timeStr}.gif"
             }
+
+            return params
         }
 
-        _performProxying(beforeAction)
+        _performProxying(injectGifFilename)
     }
 
     def urlList = {
@@ -53,31 +55,38 @@ class ProxyController {
         def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
         def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
-        // Todo - DN: Modify URL to append required fieldName
+        def requestSingleField = { params ->
 
-        _performProxying(null, urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase))
+            params.url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
+
+            return params
+        }
+
+        _performProxying(requestSingleField, urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase))
     }
 
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
 
-        def makeLowercase = { uppercaseName ->
+        def makeLowercase = { params, uppercaseName ->
             params[uppercaseName.toLowerCase()] = params[uppercaseName]
             params.remove uppercaseName
         }
 
-        def beforeFilter = { ->
+        def changeCaseOfParams = { params ->
             // Expects uppercase URL and FORMAT params
-            makeLowercase 'URL'
-            makeLowercase 'FORMAT'
+            makeLowercase params, 'URL'
+            makeLowercase params, 'FORMAT'
+
+            return params
         }
 
-        _performProxying(beforeFilter)
+        _performProxying(changeCaseOfParams)
     }
 
     def _performProxying = {
-        beforeAction = null, streamProcessor = null ->
+        paramProcessor = null, streamProcessor = null ->
 
         log.debug "params: $params"
 
@@ -90,13 +99,10 @@ class ProxyController {
         }
         else {
 
-            if (beforeAction) {
-                log.debug "Calling beforeAction"
-                beforeAction()
-            }
+            def processedParams = paramProcessor ? paramProcessor(params) : params
 
             // Make request
-            def proxiedRequest = new ProxiedRequest(request, response, params)
+            def proxiedRequest = new ProxiedRequest(request, response, processedParams)
             proxiedRequest.proxy(streamProcessor)
         }
     }
