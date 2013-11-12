@@ -372,7 +372,8 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
         OpenLayers.Event.observe(this.imgDiv, "error", function() {
             onerror.defer(1, that)
         });
-    } else {
+    }
+    else {
         OpenLayers.Event.observe(this.imgDiv, "error",
                                      OpenLayers.Function.bind(onerror, this));
     }
