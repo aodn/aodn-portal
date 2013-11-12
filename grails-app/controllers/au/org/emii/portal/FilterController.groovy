@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -75,6 +74,7 @@ class FilterController {
             }
 
             filterInstance.properties = params
+            println params
             filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
 
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {

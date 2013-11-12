@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -40,7 +39,16 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="name"><g:message code="filter.name.label" default="Name" /></label>
+                                    <label for="label"><g:message code="filter.label.label" default="Filter Label" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
+                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="filter.name.label" default="Name WFS/WMS" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'name', 'errors')}">
                                     <g:textField name="name" value="${filterInstance?.name}" />
@@ -49,10 +57,19 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="label"><g:message code="filter.label.label" default="Label text" /></label>
+                                    <label for="wms_start_date_name"><g:message code="filter.wms_start_date_name.label" default="Name (WMS Start date)" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wms_start_date_name', 'errors')}">
+                                    <g:textField name="wms_start_date_name" value="${filterInstance?.wms_start_date_name}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="wms_end_date_name"><g:message code="filter.wms_end_date_name.label" default="Name (WMS End Date)" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wms_end_date_name', 'errors')}">
+                                    <g:textField name="wms_end_date_name" value="${filterInstance?.wms_end_date_name}" />
                                 </td>
                             </tr>
 

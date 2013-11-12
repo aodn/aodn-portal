@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -13,6 +12,8 @@ class Filter implements Comparable {
     String label //This is the human readable name
     FilterType type  //String, time, etc, etc.
     String name  //note that this is the CQL name
+    String wms_start_date_name
+    String wms_end_date_name
     static belongsTo = [layer: Layer]
     static hasMany = [possibleValues: String]
     List<String> possibleValues
@@ -55,6 +56,8 @@ class Filter implements Comparable {
         filterData["label"] = label
         filterData["type"] = type.toString()
         filterData["name"] = name
+        filterData["wms_start_date_name"] = wms_start_date_name
+        filterData["wms_end_date_name"] = wms_end_date_name
         filterData["layerId"] = layer.id
         filterData["enabled"] = enabled
         filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues.sort() : []
