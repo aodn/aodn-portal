@@ -72,4 +72,6 @@ databaseChangeLog = {
     include file: 'soos-changelog.groovy'
 
 	include file: '20131107-DN-AddUrlDownloadField.groovy'
+
+	include file: '20131112-DN-AddUrlDownloadReplacementFields.groovy'
 }

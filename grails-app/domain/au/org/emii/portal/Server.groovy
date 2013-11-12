@@ -27,6 +27,9 @@ class Server {
     String username
     String password
 
+    String urlListDownloadPrefixToRemove
+    String urlListDownloadPrefixToSubstitue
+
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
 
@@ -73,6 +76,8 @@ class Server {
         comments(nullable: true)
         username(nullable: true)
         password(nullable: true)
+        urlListDownloadPrefixToRemove(nullable: true)
+        urlListDownloadPrefixToSubstitue(nullable: true)
         owners(nullable: true, validator: {
             //This is totally not a great way to do things
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)

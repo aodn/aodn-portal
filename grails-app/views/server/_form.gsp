@@ -137,3 +137,29 @@
                   multiple="true" />
     </td>
 </tr>
+
+<tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
+
+<tr class="prop">
+    <th valign="top" class="name" colspan="2">
+        URL List Download
+    </th>
+</tr>
+
+<tr class="prop">
+    <td valign="top" class="name">
+        <label for="urlListDownloadPrefixToRemove"><g:message code="layer.urlListDownloadPrefixToRemove.label" default="URL list download prefix to remove" /></label>
+    </td>
+    <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'urlListDownloadPrefixToRemove', 'errors')}">
+        <g:textField name="urlListDownloadPrefixToRemove" value="${serverInstance?.urlListDownloadPrefixToRemove}" />
+    </td>
+</tr>
+
+<tr class="prop">
+    <td valign="top" class="name">
+        <label for="urlListDownloadPrefixToSubstitue"><g:message code="layer.urlListDownloadPrefixToSubstitue.label" default="URL list download prefix to substitute in" /></label>
+    </td>
+    <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'urlListDownloadPrefixToSubstitue', 'errors')}">
+        <g:textField name="urlListDownloadPrefixToSubstitue" value="${serverInstance?.urlListDownloadPrefixToSubstitue}" />
+    </td>
+</tr>
