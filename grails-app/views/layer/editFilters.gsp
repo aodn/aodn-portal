@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -73,19 +72,19 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wms_start_date_name"><g:message code="filter.wms_start_date_name.label" default="Name (WMS Start date)" /></label>
+                                    <label for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wms_start_date_name', 'errors')}">
-                                    <g:textField name="wms_start_date_name" value="${filterInstance?.wms_start_date_name}" />
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsStartDateName', 'errors')}">
+                                    <g:textField name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wms_end_date_name"><g:message code="filter.wms_end_date_name.label" default="Name (WMS End Date)" /></label>
+                                    <label for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wms_end_date_name', 'errors')}">
-                                    <g:textField name="wms_end_date_name" value="${filterInstance?.wms_end_date_name}" />
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsEndDateName', 'errors')}">
+                                    <g:textField name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
                                 </td>
                             </tr>
 

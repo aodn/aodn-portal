@@ -34,8 +34,8 @@
                             <g:sortableColumn property="id" title="${message(code: 'filter.id.label', default: 'Id')}" />
                             <g:sortableColumn property="label" title="${message(code: 'filter.label.label', default: 'Filter Label')}" />
                             <g:sortableColumn property="name" title="${message(code: 'filter.name.label', default: 'Name WFS/WMS')}" />
-                            <g:sortableColumn property="wms_start_date_name" title="${message(code: 'filter.wms_start_date_name.label', default: 'Name (WMS start Date)')}" />
-                            <g:sortableColumn property="wms_end_date_name" title="${message(code: 'filter.wms_end_date_name.label', default: 'Name (WMS end Date)')}" />
+                            <g:sortableColumn property="wmsStartDateName" title="${message(code: 'filter.wmsStartDateName.label', default: 'Name (WMS start Date)')}" />
+                            <g:sortableColumn property="wmsEndDateName" title="${message(code: 'filter.wmsEndDateName.label', default: 'Name (WMS end Date)')}" />
                             <g:sortableColumn property="type" title="${message(code: 'filter.type.label', default: 'Type')}" />
                         
                         </tr>
@@ -48,8 +48,8 @@
 
                             <td>${fieldValue(bean: filterInstance, field: "label")}</td>
                             <td>${fieldValue(bean: filterInstance, field: "name")}</td>
-                            <td>${fieldValue(bean: filterInstance, field: "wms_start_date_name")}</td>
-                            <td>${fieldValue(bean: filterInstance, field: "wms_end_date_name")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "wmsStartDateName")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "wmsEndDateName")}</td>
                             <td>${fieldValue(bean: filterInstance, field: "type")}</td>
                         
                         </tr>

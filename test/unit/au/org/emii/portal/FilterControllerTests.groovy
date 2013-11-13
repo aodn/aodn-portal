@@ -30,8 +30,8 @@ class FilterControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", wms_start_date_name: "start_date", wms_end_date_name: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
-        def filter2 = new Filter(name: "sensorType", wms_start_date_name: "start_date", wms_end_date_name: "end_date", type: FilterType.String, label: "Sensor Type", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
+        def filter1 = new Filter(name: "vesselName", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
+        def filter2 = new Filter(name: "sensorType", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Sensor Type", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
 
         layer1.filters = [filter1, filter2]
 

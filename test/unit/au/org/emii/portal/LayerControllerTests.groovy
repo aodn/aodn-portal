@@ -135,10 +135,10 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", wms_start_date_name: "start_date", wms_end_date_name: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true, downloadOnly: false)
-        def filter2 = new Filter(name: "voyage dates", wms_start_date_name: "start_date", wms_end_date_name: "end_date",  type: FilterType.Date, label: "Voyage Dates", possibleValues: ["date1", "date2"], layer: layer1, enabled: true, downloadOnly: true)
-        def filter3 = new Filter(name: "disabled filter", wms_start_date_name: "start_date", wms_end_date_name: "end_date",  type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: false, downloadOnly: false)
-        def filter4 = new Filter(name: "numberFilter", wms_start_date_name: "start_date", wms_end_date_name: "end_date",  type: FilterType.Number, label: "numberFilter", possibleValues: ["1", "2"], layer: layer1, enabled: true, downloadOnly: false)
+        def filter1 = new Filter(name: "vesselName", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true, downloadOnly: false)
+        def filter2 = new Filter(name: "voyage dates", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.Date, label: "Voyage Dates", possibleValues: ["date1", "date2"], layer: layer1, enabled: true, downloadOnly: true)
+        def filter3 = new Filter(name: "disabled filter", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: false, downloadOnly: false)
+        def filter4 = new Filter(name: "numberFilter", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.Number, label: "numberFilter", possibleValues: ["1", "2"], layer: layer1, enabled: true, downloadOnly: false)
 
         layer1.filters = [filter1, filter2, filter3, filter4]
 
@@ -153,9 +153,9 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def response = this.controller.response.contentAsString
 
         def expected = """[\
-{"label":"numberFilter","type":"Number","name":"numberFilter","wms_start_date_name":"start_date","wms_end_date_name":"end_date","layerId":3,"enabled":true,"possibleValues":[],"downloadOnly":false},\
-{"label":"Vessel Name","type":"String","name":"vesselName","wms_start_date_name":"start_date","wms_end_date_name":"end_date","layerId":3,"enabled":true,"possibleValues":["ship1","ship2","ship3"],"downloadOnly":false},\
-{"label":"Voyage Dates","type":"Date","name":"voyage dates","wms_start_date_name":"start_date","wms_end_date_name":"end_date","layerId":3,"enabled":true,"possibleValues":["date1","date2"],"downloadOnly":true}\
+{"label":"numberFilter","type":"Number","name":"numberFilter","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":[],"downloadOnly":false},\
+{"label":"Vessel Name","type":"String","name":"vesselName","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":["ship1","ship2","ship3"],"downloadOnly":false},\
+{"label":"Voyage Dates","type":"Date","name":"voyage dates","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":["date1","date2"],"downloadOnly":true}\
 ]"""
 
         assertEquals expected, response // Validates encoding, ordering and only including 'enabled' filters
