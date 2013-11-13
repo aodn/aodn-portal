@@ -7,4 +7,6 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.DateRangeFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+
+//    {"label":"Test DateRange","type":"DateRange","name":"time","wms_start_date_name":"ghj","wms_end_date_name":"ghjk","layerId":3681268,"enabled":true,"possibleValues":[],"downloadOnly":false}
 });
