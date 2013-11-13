@@ -91,7 +91,7 @@ Portal.filter.BaseFilter.newFilterPanelFor = function(filter) {
         newFilterPanel = new Portal.filter.ComboFilter();
     }
     else if (filter.type == "Date") {
-        newFilterPanel = new Portal.filter.TimeFilter();
+        newFilterPanel = new Portal.filter.DateFilter();
     }
     else if (filter.type === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilter();

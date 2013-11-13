@@ -52,18 +52,6 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
     },
 
-    createFilterPanel: function(layer, filter) {
-
-        var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
-
-        if (newFilterPanel) {
-            newFilterPanel.setLayerAndFilter(layer, filter);
-            this.relayEvents(newFilterPanel, ['addFilter']);
-            this._addLabel(filter);
-            this.add(newFilterPanel);
-        }
-    },
-
     _addLabel: function(filter) {
 
         var labelText = filter.label.split('_').join(' ').toTitleCase();
@@ -98,14 +86,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _onGetFilterSuccess: function(resp, layer, show, hide, target) {
 
         var filters = Ext.util.JSON.decode(resp.responseText);
+
         var aFilterIsEnabled = false;
 
-        if  (this._isLayerActive(layer)) {
+        if (this._isLayerActive(layer)) {
 
-            Ext.each(filters,
+            Ext.each(
+                filters,
                 function(filter, index, all) {
-                        this.createFilterPanel(layer, filter);
-                        aFilterIsEnabled = true;
+                    this._createFilterPanel(layer, filter);
+                    aFilterIsEnabled = true;
                 },
                 this
             );
@@ -116,6 +106,18 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
         else {
             this._hide(hide, target);
+        }
+    },
+
+    _createFilterPanel: function(layer, filter) {
+
+        var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
+
+        if (newFilterPanel) {
+            newFilterPanel.setLayerAndFilter(layer, filter);
+            this.relayEvents(newFilterPanel, ['addFilter']);
+            this._addLabel(filter);
+            this.add(newFilterPanel);
         }
     },
 

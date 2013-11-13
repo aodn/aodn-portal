@@ -121,7 +121,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilter.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilter.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/TimeFilter.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/DateFilter.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BoundingBoxFilter.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BooleanFilter.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/NumberFilter.js')}"></script>
