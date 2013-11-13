@@ -47,6 +47,14 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._setExistingFilters();
     },
 
+    getVisualisationCQL: function() {
+        return this.getCQL();
+    },
+
+    getDownloadCQL: function() {
+        return this.getCQL();
+    },
+
     getCQL: function() {
         throw "subclasses must override this function";
     },

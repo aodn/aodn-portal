@@ -6,16 +6,16 @@
  */
 describe("Portal.filter.FilterGroupPanel", function() {
 
-    var filterPanel;
+    var filterGroupPanel;
 
     beforeEach(function() {
 
-        filterPanel = new Portal.filter.FilterGroupPanel({});
+        filterGroupPanel = new Portal.filter.FilterGroupPanel({});
     });
 
     describe('responds to expected methods', function() {
         it('has a _clearFilters method', function() {
-            expect(filterPanel._clearFilters).toBeDefined();
+            expect(filterGroupPanel._clearFilters).toBeDefined();
         });
     });
 
@@ -29,21 +29,21 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             dummyResponse = {responseText: "[{}]"};
 
-            spyOn(filterPanel, '_createFilterPanel');
-            spyOn(filterPanel, '_updateAndShow');
-            spyOn(filterPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_createFilterPanel');
+            spyOn(filterGroupPanel, '_updateAndShow');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
+            filterGroupPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
         });
 
         it('creates a filter panel', function() {
 
-            expect(filterPanel._createFilterPanel).toHaveBeenCalled();
+            expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {
 
-            expect(filterPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
+            expect(filterGroupPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
         });
     });
 
@@ -61,12 +61,12 @@ describe("Portal.filter.FilterGroupPanel", function() {
             var show = jasmine.createSpy('showCallBack');
             var hide = jasmine.createSpy('hideCallBack');
 
-            spyOn(filterPanel, '_createFilterPanel');
-            spyOn(filterPanel, '_clearFilters');
-            spyOn(filterPanel, '_updateLayerFilters');
-            spyOn(filterPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_createFilterPanel');
+            spyOn(filterGroupPanel, '_clearFilters');
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterPanel.update(
+            filterGroupPanel.update(
                 {
                     grailsLayerId: 1499409
                 },
@@ -75,11 +75,11 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 target
             );
 
-            expect(filterPanel._createFilterPanel).toHaveBeenCalled();
+            expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
             expect(show).toHaveBeenCalled();
-            filterPanel.clearFiltersButton.fireEvent('click');
-            expect(filterPanel._clearFilters).toHaveBeenCalled();
-            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+            filterGroupPanel.clearFiltersButton.fireEvent('click');
+            expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
+            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
 
@@ -96,18 +96,18 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('clears all filters', function() {
 
-            spyOn(filterPanel, '_getActiveFilters').andReturn([
+            spyOn(filterGroupPanel, '_getActiveFilters').andReturn([
                _mockFilter('oxygen_sensor'),
                _mockFilter('data_centre'),
                _mockFilter('pi')
             ]);
 
-            spyOn(filterPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, '_updateLayerFilters');
 
-            filterPanel._clearFilters();
+            filterGroupPanel._clearFilters();
 
             expect(removeFilterSpy.callCount).toBe(3);
-            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
 
@@ -115,20 +115,66 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         beforeEach(function() {
 
-            spyOn(filterPanel.loadingMessage, 'hide');
-            spyOn(filterPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel.loadingMessage, 'hide');
+            spyOn(filterGroupPanel, '_updateLayerFilters');
 
-            filterPanel._updateAndShow(noOp, {});
+            filterGroupPanel._updateAndShow(noOp, {});
         });
 
         it('hides the laoding message', function() {
 
-            expect(filterPanel.loadingMessage.hide).toHaveBeenCalled();
+            expect(filterGroupPanel.loadingMessage.hide).toHaveBeenCalled();
         });
 
         it('calls _updateLayerFilter', function() {
 
-            expect(filterPanel._updateLayerFilters).toHaveBeenCalled();
+            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+    });
+
+    describe('visualise/download cql', function() {
+        describe('_getCqlFilter', function() {
+            it('calls getVisualisationCQL when options.downloadOnly is false', function() {
+
+                var layer = {
+                    getDownloadFilter: function() {}
+                };
+
+                var filterDescriptor = {
+                    name: 'test',
+                    label: 'some label',
+                    type: 'Boolean',
+                    downloadOnly: false
+                }
+
+                var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
+                spyOn(filterPanel, 'getVisualisationCQL');
+                spyOn(filterPanel, 'hasValue').andReturn(true);
+
+                filterGroupPanel._getCqlFilter({ downloadOnly: false});
+                expect(filterPanel.getVisualisationCQL).toHaveBeenCalled();
+            });
+
+            it('calls getDownloadCQL when options.downloadOnly is true', function() {
+
+                var layer = {
+                    getDownloadFilter: function() {}
+                };
+
+                var filterDescriptor = {
+                    name: 'test',
+                    label: 'some label',
+                    type: 'Boolean',
+                    downloadOnly: true
+                }
+
+                var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
+                spyOn(filterPanel, 'getDownloadCQL');
+                spyOn(filterPanel, 'hasValue').andReturn(true);
+
+                filterGroupPanel._getCqlFilter({ downloadOnly: true});
+                expect(filterPanel.getDownloadCQL).toHaveBeenCalled();
+            });
         });
     });
 });

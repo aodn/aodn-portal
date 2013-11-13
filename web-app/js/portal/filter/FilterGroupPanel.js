@@ -122,6 +122,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             this._addLabel(filter);
             this.add(newFilterPanel);
             this.filters.push(newFilterPanel);
+
+            return newFilterPanel;
         }
     },
 
@@ -165,8 +167,18 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         var cqlValues = [];
 
         Ext.each(this._getActiveFilters(), function(filter) {
+
             if (filter.isDownloadOnly() == options.downloadOnly) {
-                cqlValues.push(filter.getCQL());
+
+                var cql;
+                if (options.downloadOnly) {
+                    cql = filter.getDownloadCQL();
+                }
+                else {
+                    cql = filter.getVisualisationCQL();
+                }
+
+                cqlValues.push(cql);
             }
         });
 
