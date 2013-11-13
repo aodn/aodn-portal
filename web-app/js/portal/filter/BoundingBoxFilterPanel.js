@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _createField: function() {
         this.bbox = new Portal.details.BoundingBox();
@@ -23,7 +23,7 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     setLayerAndFilter: function(layer, filter) {
-        Portal.filter.BoundingBoxFilter.superclass.setLayerAndFilter.apply(this, arguments);
+        Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
 
         this._updateBounds();
 
@@ -40,12 +40,13 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
         if (this.items.length != 0 && this.layer.map) {
             var extent = this.layer.map.getExtent();
             this.bbox.setBounds(extent);
-            this._createCQL();
+
+            this._fireAddEvent();
         }
     },
 
-    _createCQL: function() {
-        this.CQL = String.format(
+    getCQL: function() {
+        return String.format(
             "BBOX({0},{1},{2},{3},{4})",
             this.filter.name,
             this.bbox.getWestBL(),
@@ -53,7 +54,5 @@ Portal.filter.BoundingBoxFilter = Ext.extend(Portal.filter.BaseFilter, {
             this.bbox.getEastBL(),
             this.bbox.getNorthBL()
         );
-
-        this._fireAddEvent();
     }
 });

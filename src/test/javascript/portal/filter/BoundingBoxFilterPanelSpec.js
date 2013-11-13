@@ -6,16 +6,17 @@
  *
  */
 
-describe("Portal.filter.BoundingBoxFilter", function() {
+describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     describe("isDownloadOnly()", function() {
 
         it("Should return true", function() {
-            var boundingBoxFilter = new Portal.filter.BoundingBoxFilter();
-            
+
+            spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
+
+            var boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({});
+
             expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
         });
-        
     });
-
 });

@@ -7,14 +7,14 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.ComboFilter.superclass.constructor.call(this, config);
+        Portal.filter.ComboFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -49,19 +49,23 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
         this.combo.getStore().loadData(data);
     },
 
-    _createCQL: function() {
-        this.CQL = String.format("{0} LIKE '{1}'",
-            this.filter.name,
-            this._escapeSingleQuotes(this.combo.getValue()));
+    getCQL: function() {
+        if (this.combo.getValue()) {
+            return String.format(
+                "{0} LIKE '{1}'",
+                this.filter.name,
+                this._escapeSingleQuotes(this.combo.getValue())
+            );
+        }
+
+        return '';
     },
 
     _onSelected: function(combo, record, index) {
-        this._createCQL();
         this._fireAddEvent();
     },
 
     handleRemoveFilter: function() {
-        this.CQL = "";
         this.combo.clearValue();
     },
 
@@ -72,7 +76,6 @@ Portal.filter.ComboFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         if (m != null && m.length == 2) {
             this.combo.setValue(m[1]);
-            this._createCQL();
         }
     },
 

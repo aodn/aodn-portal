@@ -4,13 +4,13 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.FilterPanel", function() {
+describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterPanel;
 
     beforeEach(function() {
 
-        filterPanel = new Portal.filter.FilterPanel({});
+        filterPanel = new Portal.filter.FilterGroupPanel({});
     });
 
     describe('responds to expected methods', function() {

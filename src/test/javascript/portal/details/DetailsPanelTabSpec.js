@@ -23,7 +23,7 @@ describe("Portal.details.DetailsPanelTab", function() {
 
         beforeEach(function() {
 
-            spyOn(Portal.filter, 'FilterPanel');
+            spyOn(Portal.filter, 'FilterGroupPanel');
             spyOn(Portal.details, 'AodaacPanel');
             spyOn(Portal.details, 'InfoPanel');
             spyOn(Portal.details, 'StylePanel');
