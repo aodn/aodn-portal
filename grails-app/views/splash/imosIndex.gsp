@@ -55,11 +55,11 @@ You can obtain full information about IMOS via the <a class="external" title="IM
 
 
     <div class="spacer clear footer">
-        <div class="spacer floatLeft homePanelWidget"  style="width:100px">
-            <img class="minispacer" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>
+        <div class="spacer floatLeft homePanelWidget imagesCenter"  style="width:120px">
+            <img class="minispacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked110.png" alt="DIISTRE logo"/>
             <img class="minispacer" src="images/Utas_vert.png" alt="UTAS logo"/>
         </div>
-        <div class="spacer floatLeft homePanelWidget"  style="width:420px">
+        <div class="spacer floatLeft homePanelWidget"  style="width:400px">
             ${ cfg.footerContent }
         </div>
     </div>
