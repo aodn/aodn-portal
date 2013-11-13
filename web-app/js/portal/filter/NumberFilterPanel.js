@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
@@ -15,7 +15,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.NumberFilter.superclass.constructor.call(this, config);
+        Portal.filter.NumberFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -75,14 +75,20 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         // Idea: show max/min values from this.filter.possibleValues
     },
 
-    _createCQL: function() {
+    getCQL: function() {
 
-        this.CQL = this.filter.name + " " + this.operators.getValue() + " " + this.firstField.getValue();
+        if (this.firstField.getValue()) {
+            var cql = this.filter.name + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
-        if (this._operatorIsBetween()) {
+            if (this._operatorIsBetween()) {
 
-            this.CQL += " AND " + this.secondField.getValue();
+                cql += " AND " + this.secondField.getValue();
+            }
+
+            return cql;
         }
+
+        return '';
     },
 
     _onSpecialKeyPressed: function(field, e) {
@@ -97,7 +103,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         if (this.firstField.validate() && this.secondField.validate()) {
 
-            this._createCQL();
             this._fireAddEvent();
         }
     },
@@ -116,7 +121,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
         // Only change map if first value has a value
         if (shouldUpdate) {
 
-            this._createCQL();
             this._fireAddEvent();
         }
     },
@@ -127,8 +131,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     handleRemoveFilter: function() {
-
-        this.CQL = "";
         this.operators.clearValue();
         this.firstField.reset();
         this.secondField.reset();
@@ -155,7 +157,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
 
                 this.operators.setValue(singleValOperator);
                 this.firstField.setValue(singleValValue);
-                this._createCQL();
             }
             else if (betweenValue1 != null && betweenValue2 != null) {
 
@@ -163,7 +164,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.BaseFilter, {
                 this.firstField.setValue(betweenValue1);
                 this.secondField.setValue(betweenValue2);
                 this.secondField.setVisible(true);
-                this._createCQL();
             }
         }
     }

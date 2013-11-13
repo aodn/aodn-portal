@@ -11,7 +11,7 @@ Ext.namespace('Portal.filter');
 /**
    This is the base type of all filters for geoserver layers.
 **/
-Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
+Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         var config = Ext.apply({
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
@@ -22,23 +22,20 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-         this.CQL = "";
-         this.filter = undefined;
-         this.layer = undefined;
-
-         Portal.filter.BaseFilter.superclass.constructor.call(this, config);
+        Portal.filter.BaseFilterPanel.superclass.constructor.call(this, config);
+        this.setLayerAndFilter(cfg.layer, cfg.filter);
     },
 
     initComponent: function(cfg) {
         this.addEvents('addFilter');
-        Portal.filter.BaseFilter.superclass.initComponent.call(this);
+        Portal.filter.BaseFilterPanel.superclass.initComponent.call(this);
     },
 
     /**
        You must implement this method in subclass.
 
        This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
-       Note that the "x" button is created in the filterPanel. See also handleRemoveFilter.
+       Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
     **/
     _createField:function() {
     },
@@ -50,9 +47,9 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
         this._setExistingFilters();
     },
 
-    getCQL: function() {
-        return this.CQL;
-    },
+    // getCQL: function() {
+    //     throw "subclasses must override this function";
+    // },
 
     getFilterName: function() {
         return this.filter.name;
@@ -72,7 +69,7 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
     },
 
     hasValue: function() {
-        return this.CQL != "";
+        return this.getCQL() != "";
     },
 
     _fireAddEvent: function() {
@@ -83,24 +80,27 @@ Portal.filter.BaseFilter = Ext.extend(Ext.Panel, {
     }
 });
 
-Portal.filter.BaseFilter.newFilterPanelFor = function(filter) {
+Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
 
-    if (filter.type === "String") {
-        newFilterPanel = new Portal.filter.ComboFilter();
+    if (cfg.filter.type === "String") {
+        newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
     }
-    else if (filter.type == "Date") {
-        newFilterPanel = new Portal.filter.DateFilter();
+    else if (cfg.filter.type == "Date") {
+        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (filter.type === "Boolean") {
-        newFilterPanel = new Portal.filter.BooleanFilter();
+    else if (cfg.filter.type == "DateRange") {
+        newFilterPanel = new Portal.filter.DateRangeFilterPanel(cfg);
     }
-    else if (filter.type === "BoundingBox") {
-        newFilterPanel = new Portal.filter.BoundingBoxFilter();
+    else if (cfg.filter.type === "Boolean") {
+        newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
-    else if (filter.type === "Number") {
-        newFilterPanel = new Portal.filter.NumberFilter();
+    else if (cfg.filter.type === "BoundingBox") {
+        newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
+    }
+    else if (cfg.filter.type === "Number") {
+        newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
     }
     else {
         //Filter hasn't been defined
