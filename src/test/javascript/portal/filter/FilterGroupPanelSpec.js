@@ -134,45 +134,41 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('visualise/download cql', function() {
         describe('_getCqlFilter', function() {
-            it('calls getVisualisationCQL when options.downloadOnly is false', function() {
 
-                var layer = {
+            var layer;
+            var filterDescriptor;
+
+            beforeEach(function() {
+                layer = {
                     getDownloadFilter: function() {}
                 };
 
-                var filterDescriptor = {
+                filterDescriptor = {
                     name: 'test',
                     label: 'some label',
-                    type: 'Boolean',
-                    downloadOnly: false
+                    type: 'Boolean'
                 }
+            });
 
+            it('calls getVisualisationCQL when options.downloadOnly is false', function() {
+                filterDescriptor.downloadOnly = false;
                 var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
                 spyOn(filterPanel, 'getVisualisationCQL');
                 spyOn(filterPanel, 'hasValue').andReturn(true);
 
                 filterGroupPanel._getCqlFilter({ downloadOnly: false});
+
                 expect(filterPanel.getVisualisationCQL).toHaveBeenCalled();
             });
 
             it('calls getDownloadCQL when options.downloadOnly is true', function() {
-
-                var layer = {
-                    getDownloadFilter: function() {}
-                };
-
-                var filterDescriptor = {
-                    name: 'test',
-                    label: 'some label',
-                    type: 'Boolean',
-                    downloadOnly: true
-                }
-
+                filterDescriptor.downloadOnly = true;
                 var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
                 spyOn(filterPanel, 'getDownloadCQL');
                 spyOn(filterPanel, 'hasValue').andReturn(true);
 
                 filterGroupPanel._getCqlFilter({ downloadOnly: true});
+
                 expect(filterPanel.getDownloadCQL).toHaveBeenCalled();
             });
         });
