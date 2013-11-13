@@ -81,10 +81,10 @@
 
 
         <div class="spacer clear footer">
-           <div class="spacer floatLeft homePanelWidget"  style="width:100px">
-               <img class="logoSpacer" width="70" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>
+           <div class="spacer floatLeft homePanelWidget"  style="width:110px">
+               <img class="logoSpacer" width="70" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked110.png" alt="DIISTRE logo"/>
            </div>
-           <div class="spacer floatLeft homePanelWidget"  style="width:420px">
+           <div class="spacer floatLeft homePanelWidget"  style="width:410px">
                ${ cfg.footerContent }
            </div>
         </div>

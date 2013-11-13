@@ -60,10 +60,10 @@ Primary datasets are contributed by Commonwealth Government agencies, State Gove
 
     <div class="clear"></div>
     <div class="spacer clear footer">
-        <div class="spacer floatLeft homePanelWidget"  style="width:100px">
-            <img class="minispacer" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>
+        <div class="spacer floatLeft homePanelWidget"  style="width:110px">
+            <img class="minispacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked110.png" alt="DIISTRE logo"/>
         </div>
-        <div class="spacer floatLeft homePanelWidget"  style="width:370px">
+        <div class="spacer floatLeft homePanelWidget"  style="width:360px">
             ${ cfg.footerContent }
         </div>
     </div>
