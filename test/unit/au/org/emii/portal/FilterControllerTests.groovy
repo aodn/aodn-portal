@@ -104,11 +104,11 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testLayerData = [:]
         def updateFilterCallCount = 0
         def filterThatSaves = [
-                hasErrors: { false },
-                save: { true }
+            hasErrors: { false },
+            save: { true }
         ]
         def filterThatDoesntSave = [
-                hasErrors: { true }
+            hasErrors: { true }
         ]
 
         controller.metaClass._updateFilterWithData = {
@@ -135,8 +135,8 @@ class FilterControllerTests extends ControllerUnitTestCase {
         }
 
         def results = controller._updateFiltersForLayer(
-                testLayer,
-                ['name1': testLayerData, 'name2': testLayerData]
+            testLayer,
+            ['name1': testLayerData, 'name2': testLayerData]
         )
 
         assertEquals 2, updateFilterCallCount
@@ -150,22 +150,22 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testLayer = [:] as Layer
         def testFilterName = "someCoolFilterName"
         def testFilter = [
-                name: testFilterName,
-                possibleValues: []
+            name: testFilterName,
+            possibleValues: []
         ]
         def testPossibleValues = ["abcd", "defg"]
         def testFilterData = [
-                name: "newFilterName",
-                type: "int",
-                possibleValues: testPossibleValues
+            name: "newFilterName",
+            type: "int",
+            possibleValues: testPossibleValues
         ]
 
         Filter.metaClass.static.findByLayerAndName = {
             layer, name ->
 
-                assertEquals testLayer, layer
-                assertEquals testFilterName, name
-                testFilter
+            assertEquals testLayer, layer
+            assertEquals testFilterName, name
+            testFilter
         }
 
         // No possible values to start with
@@ -185,22 +185,22 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testName = "filterName"
         def testPossibleValues = ["1", "2"]
         def testFilterData = [
-                name: "newFilterName",
-                type: "int",
-                possibleValues: testPossibleValues
+            name: "newFilterName",
+            type: "int",
+            possibleValues: testPossibleValues
         ]
         FilterType.metaClass.static.typeFromString = {
             String s ->
 
-                assertEquals testFilterData.type, s
-                return FilterType.Number
+            assertEquals testFilterData.type, s
+            return FilterType.Number
         }
         Filter.metaClass.static.findByLayerAndName = {
             layer, name ->
 
-                assertEquals testLayer, layer
-                assertEquals testName, name
-                return null
+            assertEquals testLayer, layer
+            assertEquals testName, name
+            return null
         }
 
         def filter = controller._updateFilterWithData(testLayer, testName, testFilterData)
@@ -229,12 +229,12 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testLayer = [:] as Layer
 
         mockParams.filterData = """
-			{
-				"serverHost": "SERVER_URL",
-				"layerName": "LAYER_NAME",
-				"filters": "FILTERS"
-			}
-		"""
+            {
+                "serverHost": "SERVER_URL",
+                "layerName": "LAYER_NAME",
+                "filters": "FILTERS"
+            }
+        """
         controller.metaClass._validateCredential = { true }
         controller.metaClass._findLayerWith = {
             a, b ->
@@ -261,11 +261,11 @@ class FilterControllerTests extends ControllerUnitTestCase {
     void testUpdateFilter_LayerDoesntExists() {
 
         mockParams.filterData = """
-			{
-				"serverHost": "SERVER_URL",
-				"layerName": "LAYER_NAME"
-			}
-		"""
+            {
+                "serverHost": "SERVER_URL",
+                "layerName": "LAYER_NAME"
+            }
+        """
         controller.metaClass._validateCredential = { true }
         controller.metaClass._findLayerWith = { a, b -> null }
 
