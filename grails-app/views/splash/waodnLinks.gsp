@@ -22,7 +22,7 @@
 <a href="http://www.ecu.edu.au/schools/natural-sciences/research-activity/centre-for-marine-ecosystem-research/" class="external wrap" target="_blank">ECU Centre for Fisheries and Aquatic Ecosystem Research</a><br/>
 <a href="http://www.murdoch.edu.au/Research-capabilities/Centre-for-Fish-Fisheries-and-Aquatic-Ecosystem-Research/" class="external wrap" target="_blank">Murdoch Centre for Fisheries and Aquatic Ecosystem Research</a><br/>
 
-<a href="http://ncris.innovation.gov.au" class="external wrap" title="National Collaborative Research Infrastructure Strategy" target="_blank">National Collaborative Research Infrastructure Strategy (NCRIS)</a><br>
+<a href="http://www.innovation.gov.au/Science/ResearchInfrastructure/Pages/NCRIS.aspx" class="external wrap" title="National Collaborative Research Infrastructure Strategy" target="_blank">National Collaborative Research Infrastructure Strategy (NCRIS)</a><br>
 <a href="http://www.innovation.gov.au/Science/ResearchInfrastructure/Pages/SuperScience.aspx" class="external wrap" title="Super Science Initiative" target="_blank">Super Science Initiative</a><br>
 <a href="http://www.aodc.gov.au" class="external wrap" title="Australian Ocean Data Centre Joint Facility" target="_blank">Australian Ocean Data Centre Joint Facility (AODCJF)</a><br>
 <a href="http://www.ands.org.au" class="external wrap" title="Australian National Data Service" target="_blank">Australian National Data Service (ANDS)</a><br>
