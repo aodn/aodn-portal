@@ -1,17 +1,24 @@
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 
-class ProxyControllerTests extends ControllerUnitTestCase {
+class DownloadControllerTests extends ControllerUnitTestCase {
 
     def controller
 
     protected void setUp() {
         super.setUp()
 
-        mockLogging ProxyController
+        mockLogging DownloadController
 
-        controller = new ProxyController()
+        controller = new DownloadController()
     }
 
     protected void tearDown() {
@@ -21,8 +28,9 @@ class ProxyControllerTests extends ControllerUnitTestCase {
     void testUrlList() {
 
         def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        mockDomain Server, [server]
         def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+
+        mockDomain Server, [server]
         mockDomain Layer, [layer]
 
         def performProxyingCalled = false

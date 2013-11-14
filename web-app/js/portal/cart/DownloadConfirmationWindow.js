@@ -117,7 +117,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
             var url = encodeURIComponent(this.downloadUrl);
             var additionalQueryString = this._additionalQueryStringFrom(this.downloadControllerArgs);
 
-            return String.format('proxy?url={0}&downloadFilename={1}{2}', url, filename, additionalQueryString);
+            return String.format('download?url={0}&downloadFilename={1}{2}', url, filename, additionalQueryString);
         }
 
         return null;

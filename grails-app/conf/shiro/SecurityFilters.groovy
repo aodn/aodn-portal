@@ -132,7 +132,7 @@ class SecurityFilters {
             }
         }
 
-        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif|urlList") {
+        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif") {
             before = {
 
                 logRequest("proxyAccess", controllerName, actionName)
@@ -142,12 +142,8 @@ class SecurityFilters {
             }
         }
 
-        downloadCartAccess(controller: "downloadCart", action: "download") {
+        downloadAccess(controller: "download", action: "index|urlList") {
             before = {
-
-                logRequest("downloadCartAccess", controllerName, actionName)
-
-                // Allow all access
                 request.accessAllowed = true
             }
         }

@@ -112,7 +112,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
             spyOn(window, 'sanitiseForFilename').andReturn("file name");
 
-            var expectedProxyUrl = "proxy?url=the%20download%20url&downloadFilename=file%20name";
+            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name";
             confirmationWindow.downloadUrl = downloadUrl;
             confirmationWindow.downloadFilename = "file name";
 
@@ -124,7 +124,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
             spyOn(window, 'sanitiseForFilename').andReturn("file name");
 
-            var expectedProxyUrl = "proxy?url=the%20download%20url&downloadFilename=file%20name&fieldName=the%20field";
+            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name&fieldName=the%20field";
             confirmationWindow.downloadUrl = downloadUrl;
             confirmationWindow.downloadFilename = "file name";
             confirmationWindow.downloadControllerArgs = { fieldName: 'the field' };
