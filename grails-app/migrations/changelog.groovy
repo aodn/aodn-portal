@@ -63,6 +63,7 @@ databaseChangeLog = {
     include file: '20130806-DN-UpdateKnownMimeTypes.groovy'
     include file: '20130911-PB-SetHeightForAllPortalsVer3.groovy'
     include file: '20131030-DN-GfiPopupWidth.groovy'
+    include file: '20131111-PB-extra-filter-parameters.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 

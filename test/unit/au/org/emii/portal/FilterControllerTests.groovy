@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -31,8 +30,8 @@ class FilterControllerTests extends ControllerUnitTestCase {
         layer1.id = 3
         layer1.server = server1
 
-        def filter1 = new Filter(name: "vesselName", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
-        def filter2 = new Filter(name: "sensorType", type: FilterType.String, label: "Sensor Type", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
+        def filter1 = new Filter(name: "vesselName", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
+        def filter2 = new Filter(name: "sensorType", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Sensor Type", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1)
 
         layer1.filters = [filter1, filter2]
 
@@ -105,11 +104,11 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testLayerData = [:]
         def updateFilterCallCount = 0
         def filterThatSaves = [
-			hasErrors: { false },
-			save: { true }
+            hasErrors: { false },
+            save: { true }
         ]
         def filterThatDoesntSave = [
-			hasErrors: { true }
+            hasErrors: { true }
         ]
 
         controller.metaClass._updateFilterWithData = {
@@ -164,9 +163,9 @@ class FilterControllerTests extends ControllerUnitTestCase {
         Filter.metaClass.static.findByLayerAndName = {
             layer, name ->
 
-                assertEquals testLayer, layer
-                assertEquals testFilterName, name
-                testFilter
+            assertEquals testLayer, layer
+            assertEquals testFilterName, name
+            testFilter
         }
 
         // No possible values to start with
@@ -193,15 +192,15 @@ class FilterControllerTests extends ControllerUnitTestCase {
         FilterType.metaClass.static.typeFromString = {
             String s ->
 
-                assertEquals testFilterData.type, s
-                return FilterType.Number
+            assertEquals testFilterData.type, s
+            return FilterType.Number
         }
         Filter.metaClass.static.findByLayerAndName = {
             layer, name ->
 
-                assertEquals testLayer, layer
-                assertEquals testName, name
-                return null
+            assertEquals testLayer, layer
+            assertEquals testName, name
+            return null
         }
 
         def filter = controller._updateFilterWithData(testLayer, testName, testFilterData)
@@ -230,12 +229,12 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testLayer = [:] as Layer
 
         mockParams.filterData = """
-			{
-				"serverHost": "SERVER_URL",
-				"layerName": "LAYER_NAME",
-				"filters": "FILTERS"
-			}
-		"""
+            {
+                "serverHost": "SERVER_URL",
+                "layerName": "LAYER_NAME",
+                "filters": "FILTERS"
+            }
+        """
         controller.metaClass._validateCredential = { true }
         controller.metaClass._findLayerWith = {
             a, b ->
@@ -262,11 +261,11 @@ class FilterControllerTests extends ControllerUnitTestCase {
     void testUpdateFilter_LayerDoesntExists() {
 
         mockParams.filterData = """
-			{
-				"serverHost": "SERVER_URL",
-				"layerName": "LAYER_NAME"
-			}
-		"""
+            {
+                "serverHost": "SERVER_URL",
+                "layerName": "LAYER_NAME"
+            }
+        """
         controller.metaClass._validateCredential = { true }
         controller.metaClass._findLayerWith = { a, b -> null }
 
