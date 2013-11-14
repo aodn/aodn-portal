@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,7 +7,16 @@
 
 package shiro
 
-
+import au.org.emii.portal.Filter
+import au.org.emii.portal.Layer
+import au.org.emii.portal.Server
+import au.org.emii.portal.User
+import grails.test.FiltersUnitTestCase
+import grails.test.MockUtils
+import org.apache.shiro.SecurityUtils
+import org.apache.shiro.subject.Subject
+import org.apache.shiro.util.ThreadContext
+import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
 
 class SecurityFiltersTests extends FiltersUnitTestCase {
 
@@ -74,87 +82,85 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
     }
 
     void testEditFiltersAccess() {
-        def user = new User(openIdUrl : "aaaaaaaa@afaaa.com", emailAddress : "aaaaaaaa@afaaa.com",
-                fullName : "aaaaaaaa@afaaa.com")
+        def user = new User(openIdUrl: "aaaaaaaa@afaaa.com", emailAddress: "aaaaaaaa@afaaa.com", fullName: "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
+        def server = new Server(uri: "http://uri1.com", shortAcron: "A1", name: "name1", owners: [user])
         mockDomain(Server, [server])
 
-        def layer = new Layer(name : "layer1", abstractTrimmed : "description", server: server);
+        def layer = new Layer(name: "layer1", abstractTrimmed: "description", server: server);
         mockDomain(Layer, [layer])
 
-        def filter = new Filter(name:"la",layer:layer,label:"lala")
+        def filter = new Filter(name: "la", layer: layer, label: "lala")
         mockDomain(Filter, [filter])
 
-        def subject = [ getPrincipal: { user.id },
-                isAuthenticated: { true }
+        def subject = [getPrincipal: { user.id },
+            isAuthenticated: { true }
         ] as Subject
 
-        ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY,
-                [ getSubject: { subject } ] as SecurityManager )
+        ThreadContext.put(ThreadContext.SECURITY_MANAGER_KEY, [getSubject: { subject }] as SecurityManager)
 
         SecurityUtils.metaClass.static.getSubject = { subject }
 
-        checkFilter "editFiltersAccess", [id:layer.id]
+        checkFilter "editFiltersAccess", [id: layer.id]
     }
 
     void testFilterSaveAccess() {
-        def user = new User(openIdUrl : "aaaaaaaa@afaaa.com", emailAddress : "aaaaaaaa@afaaa.com",
-                fullName : "aaaaaaaa@afaaa.com")
+        def user = new User(openIdUrl: "aaaaaaaa@afaaa.com", emailAddress: "aaaaaaaa@afaaa.com",
+            fullName: "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
+        def server = new Server(uri: "http://uri1.com", shortAcron: "A1", name: "name1", owners: [user])
         mockDomain(Server, [server])
 
-        def layer = new Layer(name : "layer1", abstractTrimmed : "description", server: server);
+        def layer = new Layer(name: "layer1", abstractTrimmed: "description", server: server);
         mockDomain(Layer, [layer])
 
-        def filter = new Filter(name:"la",layer:layer,label:"lala")
+        def filter = new Filter(name: "la", layer: layer, label: "lala")
         mockDomain(Filter, [filter])
 
-        def subject = [ getPrincipal: { user.id },
-                isAuthenticated: { true }
+        def subject = [getPrincipal: { user.id },
+            isAuthenticated: { true }
         ] as Subject
 
-        ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY,
-                [ getSubject: { subject } ] as SecurityManager )
+        ThreadContext.put(ThreadContext.SECURITY_MANAGER_KEY,
+            [getSubject: { subject }] as SecurityManager)
 
         SecurityUtils.metaClass.static.getSubject = { subject }
 
-        checkFilter "filterSaveAccess", [layerId:layer.id]
+        checkFilter "filterSaveAccess", [layerId: layer.id]
     }
 
     void testFilterAccess() {
-        def user = new User(openIdUrl : "aaaaaaaa@afaaa.com", emailAddress : "aaaaaaaa@afaaa.com",
-                fullName : "aaaaaaaa@afaaa.com")
+        def user = new User(openIdUrl: "aaaaaaaa@afaaa.com", emailAddress: "aaaaaaaa@afaaa.com",
+            fullName: "aaaaaaaa@afaaa.com")
         mockDomain(User, [user])
 
-        def server = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1", owners: [user])
+        def server = new Server(uri: "http://uri1.com", shortAcron: "A1", name: "name1", owners: [user])
         mockDomain(Server, [server])
 
-        def layer = new Layer(name : "layer1", abstractTrimmed : "description", server: server);
+        def layer = new Layer(name: "layer1", abstractTrimmed: "description", server: server);
         mockDomain(Layer, [layer])
 
 
-        def filter = new Filter(name:"la",layer:layer,label:"lala")
+        def filter = new Filter(name: "la", layer: layer, label: "lala")
         mockDomain(Filter, [filter])
 
-        def subject = [ getPrincipal: { user.id },
-                isAuthenticated: { true }
+        def subject = [getPrincipal: { user.id },
+            isAuthenticated: { true }
         ] as Subject
 
-        ThreadContext.put( ThreadContext.SECURITY_MANAGER_KEY,
-                [ getSubject: { subject } ] as SecurityManager )
+        ThreadContext.put(ThreadContext.SECURITY_MANAGER_KEY,
+            [getSubject: { subject }] as SecurityManager)
 
         SecurityUtils.metaClass.static.getSubject = { subject }
 
-        checkFilter "filterAccess", [id:filter.id]
+        checkFilter "filterAccess", [id: filter.id]
     }
 
     void testAllFilter() {
 
-        FilterConfig filter = initFilter( "all" )
+        FilterConfig filter = initFilter("all")
         setActionName "ActionNameInTest"
         FilterConfig.metaClass.accessControl = { args -> return false }
 
@@ -196,7 +202,7 @@ class SecurityFiltersTests extends FiltersUnitTestCase {
         setControllerName "ControllerNameInTest"
         setActionName "ActionNameInTest"
 
-        FilterConfig filter = initFilter( filterName )
+        FilterConfig filter = initFilter(filterName)
         assertNotNull filterName + " filter should exist", filter
         assertExistsBefore filterName
 
