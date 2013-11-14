@@ -206,9 +206,8 @@ class LayerController {
             _renderLayer(layerInstances[0])
         }
         else {
-			response.status = 404
+            response.status = 404
             render text: "Layer '${namespace}:${localName}' does not exist"  
-			
         }
     }
 
