@@ -59,49 +59,57 @@ class HostVerifierTests extends GrailsUnitTestCase {
         Config.metaClass = null
     }
 
+    void testAddressIsNull() {
+        assertFalse(verifier.allowedHost(request, null))
+    }
+
+    void testAddressIsEmptyString() {
+        assertFalse(verifier.allowedHost(request, ''))
+    }
+
     void testHostNotAllowed() {
-        assertFalse(verifier.allowedHost(request, 'http://www.google.com'.toURL()))
+        assertFalse(verifier.allowedHost(request, 'http://www.google.com'))
     }
 
     void testHostAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://geoserver.emii.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://geoserver.emii.org.au'))
     }
 
     void testAnotherHostAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://geoserver.imos.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://geoserver.imos.org.au'))
     }
 
     void testHostInHeaderAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://localhost'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://localhost'))
     }
 
     void testHostInConfigAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "spatialsearch", "url"], 'http://spatialsearchtest.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://spatialsearchtest.emii.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://spatialsearchtest.emii.org.au'))
     }
 
     void testExternalIndexAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "portal", "instance", "splash", "index"], 'http://aodnsplash.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://aodnsplash.emii.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://aodnsplash.emii.org.au'))
     }
 
     void testExternalLinksAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "portal", "instance", "splash", "links"], 'http://aodnlinks.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://aodnlinks.emii.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://aodnlinks.emii.org.au'))
     }
 
     void testExternalCommunityAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "portal", "instance", "splash", "community"], 'http://aodncommunity.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://aodncommunity.emii.org.au'.toURL()))
+        assertTrue(verifier.allowedHost(request, 'http://aodncommunity.emii.org.au'))
     }
 
     void testCatalogServersAllowed() {
 
-        def url = "http://www.geoserver2.imos.org.au/wms?param1=this&param2=that"
-        def server = verifier.extractServer(url.toURL())
+        def url = "http://www.geoserver2.imos.org.au/wms?param1=this&param2=that".toURL()
+        def server = verifier.extractServer(url)
         assert server.equals("http://www.geoserver2.imos.org.au/wms")
 
-        assertTrue(verifier._checkCatalog(url.toURL()))
+        assertTrue(verifier._checkCatalog(url))
     }
 
     def void _mockServer() {

@@ -71,7 +71,7 @@ class ProxyController {
         if (!params.url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
         }
-        else if (!_isAllowedHost(params.url)) {
+        else if (!hostVerifier.allowedHost(request, params.url)) {
             log.info "Proxy: The url ${params.url} was not allowed"
             render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
         }
@@ -127,16 +127,6 @@ class ProxyController {
 
                 render text: params.url, status: 500
             }
-        }
-    }
-
-    def _isAllowedHost(url) {
-
-        try {
-            return url && hostVerifier.allowedHost(request, url.toURL())
-        }
-        catch (Exception e) {
-            return false
         }
     }
 }
