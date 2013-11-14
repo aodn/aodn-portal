@@ -86,6 +86,14 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return this.operators.getValue() != "" && this.operators.getValue() == 'between';
     },
 
+    _isSelectedOpSetToAfter: function() {
+        return this.operators.getValue() != "" && this.operators.getValue() == 'after';
+    },
+
+    _isSelectedOpSetToBefore: function() {
+        return this.operators.getValue() != "" && this.operators.getValue() == 'before';
+    },
+
     _getDateString: function(combo) {
           return this.TIME_UTIL._toUtcIso8601DateString(combo.getValue());
     },
@@ -101,18 +109,26 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     getCQL: function() {
+        return this._getCQLUsingColumnNames(this.filter.name, this.filter.name);
+    },
+
+    _getCQLUsingColumnNames: function(afterColumnName, beforeColumnName) {
 
         if (!this.fromField.getValue()) {
             return '';
         }
 
-        var cql = this.filter.name + " ";
+        var cql = '';
 
         if (this._isSelectedOpSetToBetween()) {
-            cql += "after " + this._getDateString(this.fromField) + " AND " + this.filter.name + " before " + this._getDateString(this.toField);
+            cql +=   afterColumnName + " after " + this._getDateString(this.fromField)
+                   + " AND " + beforeColumnName + " before " + this._getDateString(this.toField);
         }
-        else {
-            cql += this.operators.getValue() + " " + this._getDateString(this.fromField);
+        else if (this._isSelectedOpSetToAfter()) {
+            cql += afterColumnName + " after " + this._getDateString(this.fromField);
+        }
+        else if (this._isSelectedOpSetToBefore()) {
+            cql += beforeColumnName + " before " + this._getDateString(this.fromField);
         }
 
         return cql;
