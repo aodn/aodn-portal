@@ -35,7 +35,7 @@ class Filter implements Comparable {
 
             if (obj.type == FilterType.DateRange) {
                 if (val.size() == 0) {
-                    return ['invalid.wmsStartDateName']
+                    return ['invalid.wmsDateName']
                 }
             }
         })
@@ -43,7 +43,7 @@ class Filter implements Comparable {
 
             if (obj.type == FilterType.DateRange) {
                 if (val.size() == 0) {
-                    return ['invalid.wmsStartDateName']
+                    return ['invalid.wmsDateName']
                 }
             }
         })
