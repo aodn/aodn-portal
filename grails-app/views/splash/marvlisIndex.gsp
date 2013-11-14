@@ -63,7 +63,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     <div class="spacer clear footer">
       <div class="spacer floatLeft homePanelWidget"  style="width:100px">
-        <img class="logoSpacer" width="70" src="images/DIISRTE-stacked-2012.png" alt="DIISTRE logo"/>
+        <img class="logoSpacer" width="70" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked110.png" alt="DIISTRE logo"/>
       </div>
       <div class="spacer floatLeft homePanelWidget"  style="width:420px">
         ${ cfg.footerContent }

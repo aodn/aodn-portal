@@ -8,16 +8,7 @@
 
 package shiro
 
-import au.org.emii.portal.Filter
-import au.org.emii.portal.Layer
-import au.org.emii.portal.Server
-import au.org.emii.portal.User
-import grails.test.FiltersUnitTestCase
-import grails.test.MockUtils
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
-import org.apache.shiro.util.ThreadContext
-import org.codehaus.groovy.grails.plugins.web.filters.FilterConfig
+
 
 class SecurityFiltersTests extends FiltersUnitTestCase {
 

@@ -63,6 +63,7 @@ databaseChangeLog = {
     include file: '20130806-DN-UpdateKnownMimeTypes.groovy'
     include file: '20130911-PB-SetHeightForAllPortalsVer3.groovy'
     include file: '20131030-DN-GfiPopupWidth.groovy'
+    include file: '20131111-PB-extra-filter-parameters.groovy'
     include file: '20131107-DN-AddUrlDownloadField.groovy'
     include file: '20131112-DN-AddUrlDownloadReplacementFields.groovy'
 

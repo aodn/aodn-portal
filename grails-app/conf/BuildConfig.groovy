@@ -43,6 +43,7 @@ grails.project.dependency.resolution = {
     // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
     pom true
     plugins {
+        runtime ":database-migration:1.0"
         test ":build-test-data:1.1.2"
     }
 }

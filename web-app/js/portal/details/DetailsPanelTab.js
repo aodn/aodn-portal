@@ -27,13 +27,13 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     },
 
     initComponent: function() {
-        this.filterPanel = new Portal.filter.FilterPanel();
+        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
         this.aodaacPanel = new Portal.details.AodaacPanel({ map: this.map });
         this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
 
         this.items = [
-            this.filterPanel,
+            this.filterGroupPanel,
             this.aodaacPanel,
             this.infoPanel,
             this.stylePanel
@@ -45,11 +45,11 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     update: function(layer) {
         this._ensurePanelsRendered();
         // Remove filter pane; and add afresh to avoid ExtJS layout bug
-        this.remove(this.filterPanel);
-        this.filterPanel = new Portal.filter.FilterPanel();
-        this.insert(0, this.filterPanel);
+        this.remove(this.filterGroupPanel);
+        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
+        this.insert(0, this.filterGroupPanel);
 
-        this.filterPanel.update(layer, this._showTab, this._hideTab, this);
+        this.filterGroupPanel.update(layer, this._showTab, this._hideTab, this);
         this.aodaacPanel.update(layer, this._showTab, this._hideTab, this);
         this.infoPanel.update(layer, this._showTab, this._hideTab, this);
         this.stylePanel.update(layer, this._showTab, this._hideTab, this);

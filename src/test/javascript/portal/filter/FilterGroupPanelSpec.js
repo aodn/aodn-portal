@@ -4,13 +4,13 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.FilterPanel", function() {
+describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterPanel;
 
     beforeEach(function() {
 
-        filterPanel = new Portal.filter.FilterPanel({});
+        filterPanel = new Portal.filter.FilterGroupPanel({});
     });
 
     describe('responds to expected methods', function() {
@@ -29,7 +29,7 @@ describe("Portal.filter.FilterPanel", function() {
 
             dummyResponse = {responseText: "[{}]"};
 
-            spyOn(filterPanel, 'createFilterPanel');
+            spyOn(filterPanel, '_createFilterPanel');
             spyOn(filterPanel, '_updateAndShow');
             spyOn(filterPanel, '_isLayerActive').andReturn(true);
 
@@ -38,7 +38,7 @@ describe("Portal.filter.FilterPanel", function() {
 
         it('creates a filter panel', function() {
 
-            expect(filterPanel.createFilterPanel).toHaveBeenCalled();
+            expect(filterPanel._createFilterPanel).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {
@@ -61,7 +61,7 @@ describe("Portal.filter.FilterPanel", function() {
             var show = jasmine.createSpy('showCallBack');
             var hide = jasmine.createSpy('hideCallBack');
 
-            spyOn(filterPanel, 'createFilterPanel');
+            spyOn(filterPanel, '_createFilterPanel');
             spyOn(filterPanel, '_clearFilters');
             spyOn(filterPanel, '_updateLayerFilters');
             spyOn(filterPanel, '_isLayerActive').andReturn(true);
@@ -75,7 +75,7 @@ describe("Portal.filter.FilterPanel", function() {
                 target
             );
 
-            expect(filterPanel.createFilterPanel).toHaveBeenCalled();
+            expect(filterPanel._createFilterPanel).toHaveBeenCalled();
             expect(show).toHaveBeenCalled();
             filterPanel.clearFiltersButton.fireEvent('click');
             expect(filterPanel._clearFilters).toHaveBeenCalled();

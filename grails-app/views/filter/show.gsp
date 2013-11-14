@@ -38,6 +38,13 @@
                             <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "id")}</td>
                             
                         </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="filter.label.label" default="Filter Label" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "label")}</td>
+
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="filter.name.label" default="Name" /></td>
@@ -60,12 +67,7 @@
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="filter.label.label" default="Label" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "label")}</td>
-                            
-                        </tr>
+
                     
                     </tbody>
                 </table>

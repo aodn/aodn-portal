@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
+Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.loadingMessage = new Ext.Container({
@@ -17,8 +17,8 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            id: 'filterPanel',
-            title: OpenLayers.i18n('filterPanelTitle'),
+            id: 'filterGroupPanel',
+            title: OpenLayers.i18n('filterGroupPanelTitle'),
             layout: 'table',
             autoScroll: true,
             layoutConfig: {
@@ -37,31 +37,20 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         this.GET_FILTER = "layer/getFiltersAsJSON";
+        this.filters = [];
 
-        Portal.filter.FilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function(cfg) {
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
-        Portal.filter.FilterPanel.superclass.initComponent.call(this);
+        Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
     },
 
     _isLayerActive: function(layer) {
         return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
-    },
-
-    createFilterPanel: function(layer, filter) {
-
-        var newFilterPanel = Portal.filter.BaseFilter.newFilterPanelFor(filter);
-
-        if (newFilterPanel) {
-            newFilterPanel.setLayerAndFilter(layer, filter);
-            this.relayEvents(newFilterPanel, ['addFilter']);
-            this._addLabel(filter);
-            this.add(newFilterPanel);
-        }
     },
 
     _addLabel: function(filter) {
@@ -98,14 +87,16 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _onGetFilterSuccess: function(resp, layer, show, hide, target) {
 
         var filters = Ext.util.JSON.decode(resp.responseText);
+
         var aFilterIsEnabled = false;
 
-        if  (this._isLayerActive(layer)) {
+        if (this._isLayerActive(layer)) {
 
-            Ext.each(filters,
-                function(filter, index, all) {
-                        this.createFilterPanel(layer, filter);
-                        aFilterIsEnabled = true;
+            Ext.each(
+                filters,
+                function(filterConfig, index, all) {
+                    this._createFilterPanel(layer, filterConfig);
+                    aFilterIsEnabled = true;
                 },
                 this
             );
@@ -116,6 +107,21 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
         }
         else {
             this._hide(hide, target);
+        }
+    },
+
+    _createFilterPanel: function(layer, filter) {
+
+        var newFilterPanel = Portal.filter.BaseFilterPanel.newFilterPanelFor({
+            filter: filter,
+            layer: layer
+        });
+
+        if (newFilterPanel) {
+            this.relayEvents(newFilterPanel, ['addFilter']);
+            this._addLabel(filter);
+            this.add(newFilterPanel);
+            this.filters.push(newFilterPanel);
         }
     },
 
@@ -170,9 +176,9 @@ Portal.filter.FilterPanel = Ext.extend(Ext.Panel, {
     _getActiveFilters: function() {
         var activeFilters = [];
 
-        this.items.each(function(item) {
-            if (item.hasValue && item.hasValue()) {
-                activeFilters.push(item);
+        Ext.each(this.filters, function(filter) {
+            if (filter.hasValue()) {
+                activeFilters.push(filter);
             }
         });
 

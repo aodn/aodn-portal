@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -33,12 +32,11 @@
                         <tr>
                         
                             <g:sortableColumn property="id" title="${message(code: 'filter.id.label', default: 'Id')}" />
-                        
-                            <g:sortableColumn property="name" title="${message(code: 'filter.name.label', default: 'Name')}" />
-                        
+                            <g:sortableColumn property="label" title="${message(code: 'filter.label.label', default: 'Filter Label')}" />
+                            <g:sortableColumn property="name" title="${message(code: 'filter.name.label', default: 'Name WFS/WMS')}" />
+                            <g:sortableColumn property="wmsStartDateName" title="${message(code: 'filter.wmsStartDateName.label', default: 'Name (WMS start Date)')}" />
+                            <g:sortableColumn property="wmsEndDateName" title="${message(code: 'filter.wmsEndDateName.label', default: 'Name (WMS end Date)')}" />
                             <g:sortableColumn property="type" title="${message(code: 'filter.type.label', default: 'Type')}" />
-                        
-                            <g:sortableColumn property="label" title="${message(code: 'filter.label.label', default: 'Label')}" />
                         
                         </tr>
                     </thead>
@@ -47,12 +45,12 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="edit" id="${filterInstance.id}">${fieldValue(bean: filterInstance, field: "id")}</g:link></td>
-                        
-                            <td>${fieldValue(bean: filterInstance, field: "name")}</td>
-                        
-                            <td>${fieldValue(bean: filterInstance, field: "type")}</td>
-                        
+
                             <td>${fieldValue(bean: filterInstance, field: "label")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "name")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "wmsStartDateName")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "wmsEndDateName")}</td>
+                            <td>${fieldValue(bean: filterInstance, field: "type")}</td>
                         
                         </tr>
                     </g:each>

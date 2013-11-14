@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
+Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.name,
@@ -22,21 +22,19 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
     },
 
     _buttonChecked: function(button, checked) {
-        this._createCQL();
         this._fireAddEvent();
     },
 
-    _createCQL: function() {
+    getCQL: function() {
         if (this.checkbox.getValue()) {
-            this.CQL = this.filter.name + " = true";
+            return this.filter.name + " = true";
         }
         else {
-            this.CQL = "";
+            return "";
         }
     },
 
     handleRemoveFilter: function() {
-        this.CQL = "";
         this.checkBox.setValue(false);
     },
 
@@ -47,8 +45,6 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.BaseFilter, {
 
         if (m && m[1] && m[1] === "true") {
             this.checkbox.setValue(true);
-            this._createCQL();
         }
     }
-
 });
