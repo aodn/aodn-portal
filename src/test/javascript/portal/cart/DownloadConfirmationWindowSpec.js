@@ -127,7 +127,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             var expectedProxyUrl = "proxy?url=the%20download%20url&downloadFilename=file%20name&fieldName=the%20field";
             confirmationWindow.downloadUrl = downloadUrl;
             confirmationWindow.downloadFilename = "file name";
-            confirmationWindow.otherQueryStringArgs = { fieldName: 'the field' };
+            confirmationWindow.downloadControllerArgs = { fieldName: 'the field' };
 
             expect(confirmationWindow._portalDownloadUrl()).toBe(expectedProxyUrl);
             expect(sanitiseForFilename).toHaveBeenCalledWith("file name");
