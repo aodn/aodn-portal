@@ -44,28 +44,23 @@ class ProxiedRequest {
 
         _addAuthentication(conn, targetUrl)
 
-        if (request.method == 'HEAD') {
-            render(text: "", contentType: (params.format ?: params.FORMAT))
+        // Force download if filename provided
+        if (params.downloadFilename) {
+            log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
+            response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}")
         }
-        else {
-            // Force download if filename provided
-            if (params.downloadFilename) {
-                log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
-                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}")
-            }
 
-            try {
-                processStream conn.inputStream, outputStream
-                outputStream.flush()
-            }
-            catch (Exception e) {
+        try {
+            processStream conn.inputStream, outputStream
+            outputStream.flush()
+        }
+        catch (Exception e) {
 
-                log.info "Unable to pass-through response from $targetUrl", e
-            }
-            finally {
+            log.info "Unable to pass-through response from $targetUrl", e
+        }
+        finally {
 
-                IOUtils.closeQuietly(outputStream)
-            }
+            IOUtils.closeQuietly(outputStream)
         }
     }
 
