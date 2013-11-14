@@ -21,6 +21,8 @@ class ProxyController {
 
     def downloadGif = {
 
+        // Todo - DN: building this filename should be done in Javascript. Then we wouldn't need this separate action.
+
         def injectGifFilename = { params ->
 
             def layersField = "LAYERS="
@@ -69,6 +71,9 @@ class ProxyController {
     // expects Open layers requests
     def cache = {
 
+        // Todo - DN: We're just changing query string values from uppercase to lowercase. I reckon this could be done in javascript.
+        // Todo - DN: What else is special about it?
+
         def makeLowercase = { params, uppercaseName ->
             params[uppercaseName.toLowerCase()] = params[uppercaseName]
             params.remove uppercaseName
@@ -108,6 +113,8 @@ class ProxyController {
     }
 
     def wmsOnly = {
+
+        // Todo - DN: Can this be tidied or refactored at all?
 
         if (params.url) {
 
