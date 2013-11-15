@@ -79,16 +79,20 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         return [
             {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
             {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip'), scope: this}
+            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this}
         ];
     },
 
-    _downloadHandlerFor: function(collection, format) {
+    _downloadHandlerFor: function(collection, format, fileExtension) {
+
         var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+
+        var extensionToUse = fileExtension ? fileExtension : format;
+        var downloadFilename = collection.title + "." + extensionToUse;
 
         return function() {
 
-            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl);
+            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl, downloadFilename);
         };
     },
 

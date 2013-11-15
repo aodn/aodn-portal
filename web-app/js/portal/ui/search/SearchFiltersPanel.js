@@ -26,6 +26,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher
         });
 
+        this._buildTermFilter('platformFilter', {
+            title: OpenLayers.i18n('platformFilter'),
+            hierarchical: false,
+            fieldGroup: 'platformNames',
+            fieldName: 'platform',
+            searcher: config.searcher
+        });
+
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
@@ -95,7 +103,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildNewSearchButton: function() {
-
         this.newSearchButton = new Ext.Button({
             text: OpenLayers.i18n('facetedSearchNewSearchButton'),
             hidden: true
@@ -116,7 +123,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _onNewSearchClicked: function() {
-
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
         Ext.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();

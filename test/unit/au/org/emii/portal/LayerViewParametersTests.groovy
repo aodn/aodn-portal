@@ -1,11 +1,11 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.GrailsUnitTestCase
 
 class LayerViewParametersTests extends GrailsUnitTestCase {
 
     def lvp
-    
+
     protected void setUp() {
         super.setUp()
 
@@ -36,17 +36,17 @@ class LayerViewParametersTests extends GrailsUnitTestCase {
         assertInvalid("openLayersZoomLevel", [null, -1])
         assertValid("openLayersZoomLevel", [0, 1, 20])
     }
-    
+
     void assertInvalid(property, values) {
 
         assertValid(property, values, false)
     }
-    
+
     void assertValid(property, values, shouldBeValid = true) {
 
         values.each {
             value ->
-                
+
                 try {
                     lvp[property] = value
                     lvp.save(failOnError: true)

@@ -21,38 +21,38 @@ class ServerTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-	void testToIdString() {
-		def testServer = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1")
-		assertEquals testServer.toIdString(), "A1"
-	}
+    void testToIdString() {
+        def testServer = new Server(uri: "http://uri1.com", shortAcron: "A1", name: "name1")
+        assertEquals testServer.toIdString(), "A1"
+    }
 
-	void testToString() {
-		def testServer = new Server(uri : "http://uri1.com", shortAcron : "A1", name : "name1")
-		assertEquals testServer.toString(), "A1"
-	}
+    void testToString() {
+        def testServer = new Server(uri: "http://uri1.com", shortAcron: "A1", name: "name1")
+        assertEquals testServer.toString(), "A1"
+    }
 
-	void testIsCredentialled() {
-		def server = new Server()
+    void testIsCredentialled() {
+        def server = new Server()
 
-		assertFalse server.isCredentialled()
+        assertFalse server.isCredentialled()
 
-		server.username = "fred"
-		assertFalse server.isCredentialled()
+        server.username = "fred"
+        assertFalse server.isCredentialled()
 
-		server.password = "flintstone"
-		assertTrue server.isCredentialled()
+        server.password = "flintstone"
+        assertTrue server.isCredentialled()
 
-		server.username = null
-		assertFalse server.isCredentialled()
-	}
+        server.username = null
+        assertFalse server.isCredentialled()
+    }
 
-	void testCredentialEncoding() {
-		def server = new Server()
-		server.username = "fred"
-		server.password = "flintstone"
+    void testCredentialEncoding() {
+        def server = new Server()
+        server.username = "fred"
+        server.password = "flintstone"
 
-		assertTrue server.getEncodedCredentials() instanceof String
-		assertFalse "${server.username}:${server.password}".equals(server.getEncodedCredentials())
-		assertEquals new String(Base64.encodeBase64("fred:flintstone".getBytes())), server.getEncodedCredentials()
-	}
+        assertTrue server.getEncodedCredentials() instanceof String
+        assertFalse "${server.username}:${server.password}".equals(server.getEncodedCredentials())
+        assertEquals new String(Base64.encodeBase64("fred:flintstone".getBytes())), server.getEncodedCredentials()
+    }
 }

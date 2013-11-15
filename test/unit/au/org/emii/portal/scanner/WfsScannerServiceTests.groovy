@@ -22,13 +22,13 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
         wfsScannerService = new WfsScannerService()
 
         //grailsApplication.config.wfsScanner.url
-	    wfsScannerService.grailsApplication = [
-		    config: [
-			    wfsScanner: [
-				    url: "http://blah.au"
-			    ]
-		    ]
-	    ]
+        wfsScannerService.grailsApplication = [
+            config: [
+                wfsScanner: [
+                    url: "http://blah.au"
+                ]
+            ]
+        ]
     }
 
     void testDeleteJob() {
@@ -45,12 +45,12 @@ class WfsScannerServiceTests extends GrailsUnitTestCase {
 
     void testRegister() {
         def server = [
-                id: 1,
-                scanFrequency: 120,
-                password: "somePassword",
-                uri: "http://geoserver.blah.com",
-                type: "GEO-1.1.1"
-        ]  as Server
+            id: 1,
+            scanFrequency: 120,
+            password: "somePassword",
+            uri: "http://geoserver.blah.com",
+            type: "GEO-1.1.1"
+        ] as Server
 
         mockDomain(Server, [server])
 

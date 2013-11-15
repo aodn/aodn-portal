@@ -15,7 +15,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numGoodResults = 0;
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('searchingForFeatures'),
+            title: OpenLayers.i18n('searchingTitle'),
             width: cfg.appConfig.popupWidth,
             height: 80, // set height later when there are results
             maximizable: true,
@@ -59,14 +59,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _addElements: function() {
-        // Add container for html (empty for now)
-        this.blankContainer = new Ext.Container({
-            html: "Loading ...",
+
+        this.depthInfoPanel = new Ext.Container({
+            html: OpenLayers.i18n('loadingMessage'),
             cls: 'popupHtml',
             ref: 'popupHtml'
         });
 
-        this.add(this.blankContainer);
+        this.add(this.depthInfoPanel);
 
         // Add tab panel (empty for now)
         this.add(new Ext.TabPanel({
@@ -106,37 +106,31 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _handleLayers: function() {
-        var resized = false;
         var wmsLayers = this._collectUniqueLayers();
 
-        if (wmsLayers.length == 0) {
-            this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
-            this.blankContainer.update("");
+        var queryableVisibleLayersCount = 0;
+
+        Ext.each(wmsLayers, function(layer, index, all) {
+            if (layer.params.QUERYABLE == true && layer.getVisibility()) {
+
+                queryableVisibleLayersCount++;
+
+                if (layer.metadata.units == undefined && layer.isNcwms()) {
+                    // populate unit information now
+                    this._setMetadataFirst(layer);
+                }
+                else {
+                    this._requestFeatureInfo(layer);
+                }
+            }
+        }, this);
+
+        if (queryableVisibleLayersCount > 0) {
+            this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
         }
-        else {
-            var count = 0;
-            Ext.each(wmsLayers, function(layer, index, all) {
-                if (layer.params.QUERYABLE == true && layer.getVisibility()) {
-                    count++;
-                    if (layer.metadata.units == undefined && layer.isNcwms()) {
-                        // populate unit information now
-                        this._setMetadataFirst(layer);
-                    }
-                    else {
-                        this._requestFeatureInfo(layer);
-                    }
-
-                    if (!resized) {
-                        this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
-                        resized = true;
-                    }
-                }
-            }, this);
-
-                if (count == 0) {
-                    this.setTitle(OpenLayers.i18n('noDataCollectionSelected'));
-                    this.blankContainer.update("");
-                }
+        else if (queryableVisibleLayersCount == 0) {
+            this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
+            this.depthInfoPanel.update("");
         }
     },
 
@@ -280,14 +274,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         if (this.numGoodResults > 0) {
             this.setTitle(
                 OpenLayers.i18n(
-                    'featureInformationFoundForDataCollection',
+                    'infoFoundTitle',
                     { 'dataCollectionNumber': this.numGoodResults }
             ));
         }
         else if (this.numResultQueries == this.numResultsToLoad) {
             this.setTitle(
                 OpenLayers.i18n(
-                    'noFeatureInformationFoundForDataCollection',
+                    'noInfoFoundTitle',
                     { 'dataCollectionNumber': this.numResultsToLoad }
             ));
         }
@@ -300,9 +294,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-                var str = (depth <= 0) ? OpenLayers.i18n('depth') : OpenLayers.i18n('elevation');
-                str += ":"
-                this.popupHtml.update(this.locationString + " " + this._boldify(str) + " " + Math.abs(depth) + "m");
+                var label = OpenLayers.i18n(depth <= 0 ? 'depthLabel' : 'elevationLabel');
+
+                this.popupHtml.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
             }
             else {
                 this.popupHtml.update("");

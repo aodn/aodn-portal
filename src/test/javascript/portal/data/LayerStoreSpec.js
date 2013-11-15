@@ -185,6 +185,7 @@ describe("Portal.data.LayerStore", function() {
             beforeEach(function() {
                 openLayer = createOpenLayer();
                 layerStore.addUsingOpenLayer(openLayer);
+                openLayer.loading = false;
             });
 
             it('one less layer in store', function() {

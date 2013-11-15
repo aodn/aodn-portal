@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -19,7 +18,7 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
 
         assertEquals 500, controller.renderArgs.status
         assertEquals "id not supplied or not an integer. id: 'null'", mockResponse.contentAsString
-	}
+    }
 
     void testShow_NonIntegerLayerId() {
 
@@ -33,7 +32,7 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
     void testShow_LayerIsAlive() {
 
         controller.params.id = "1"
-        controller.checkLayerAvailabilityService = [ isLayerAlive: { true } ]
+        controller.checkLayerAvailabilityService = [isLayerAlive: { true }]
         controller.show()
 
         assertEquals 200, controller.renderArgs.status
@@ -43,7 +42,7 @@ class CheckLayerAvailabilityControllerTests extends ControllerUnitTestCase {
     void testShow_LayerNotAlive() {
 
         controller.params.id = "2"
-        controller.checkLayerAvailabilityService = [ isLayerAlive: { false } ]
+        controller.checkLayerAvailabilityService = [isLayerAlive: { false }]
         controller.show()
 
         assertEquals 500, controller.renderArgs.status

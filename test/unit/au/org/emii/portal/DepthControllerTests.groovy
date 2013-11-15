@@ -26,30 +26,30 @@ class DepthControllerTests extends ControllerUnitTestCase {
 
         assertEquals "Incorrect parameters supplied", this.controller.response.contentAsString
     }
-	
-	void testIndexServiceUnavailable() {
+
+    void testIndexServiceUnavailable() {
 
         controller.params.lat = 10
-		controller.params.lon = 20
+        controller.params.lon = 20
 
-		controller._generateServiceUrl = { -> null }
+        controller._generateServiceUrl = { -> null }
 
         controller.index()
 
         assertEquals "This service is unavailable", this.controller.response.contentAsString
-	}
-	
-	void testIndex() {
+    }
+
+    void testIndex() {
 
         controller.params.lat = 10
-		controller.params.lon = 20
+        controller.params.lon = 20
 
         controller._generateServiceUrl = { -> [text: "depth service text"] }
 
-		controller.index()
+        controller.index()
 
         assertEquals "depth service text", this.controller.response.contentAsString
-	}
+    }
 
     void testGenerateServiceUrl() {
 

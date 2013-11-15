@@ -7,19 +7,19 @@
 
 package au.org.emii.portal
 
-import grails.test.*
-import org.apache.shiro.subject.*
+import grails.test.TagLibUnitTestCase
 import org.apache.shiro.SecurityUtils
+import org.apache.shiro.subject.Subject
 
 class UserTagLibTests extends TagLibUnitTestCase {
 
     // Subjects
     def authdSubjectPrincipal = 1
     def authdSubject = [getPrincipal: { authdSubjectPrincipal },
-            isAuthenticated: { true },
-            hasRole: { true },
-            toString: { return "authdSubject" },
-            logout: { authdSubjectPrincipal = null }
+        isAuthenticated: { true },
+        hasRole: { true },
+        toString: { return "authdSubject" },
+        logout: { authdSubjectPrincipal = null }
     ] as Subject
 
     // Users

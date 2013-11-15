@@ -14,23 +14,23 @@ import static au.org.emii.portal.FilterType.typeFromString
 
 class FilterTypeTests extends GrailsUnitTestCase {
 
-	protected void setUp() {
+    protected void setUp() {
 
-		super.setUp()
-	}
+        super.setUp()
+    }
 
-	protected void tearDown() {
+    protected void tearDown() {
 
-		super.tearDown()
-	}
+        super.tearDown()
+    }
 
-	void testTypeFromString() {
+    void testTypeFromString() {
 
-		FilterType.stringTypeMapping = [ "monkey": FilterType.Number ]
+        FilterType.stringTypeMapping = ["monkey": FilterType.Number]
 
-		assertEquals FilterType.BoundingBox, typeFromString( "geoMEtryMonkey" )
-		assertEquals FilterType.BoundingBox, typeFromString( "multilineMonkey" )
-		assertEquals FilterType.Number, typeFromString( "MONKEY" )
-		assertEquals null, typeFromString( "orangutan" )
-	}
+        assertEquals FilterType.BoundingBox, typeFromString("geoMEtryMonkey")
+        assertEquals FilterType.BoundingBox, typeFromString("multilineMonkey")
+        assertEquals FilterType.Number, typeFromString("MONKEY")
+        assertEquals null, typeFromString("orangutan")
+    }
 }

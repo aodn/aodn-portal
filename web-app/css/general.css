@@ -1121,8 +1121,8 @@ div.allwhite {
 
 .remove-layer-button, .zoom-to-layer-button, .layer-loading-button, .layer-loaded-button, .layer-error-button {
     width: 12px;
-    height: 14px;
-    vertical-align: bottom;
+    height: 19px;
+    vertical-align: top;
     margin: 1px;
     background-color: #ffff99
 }

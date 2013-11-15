@@ -189,6 +189,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     locationFilter: 'Location',
     methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
+    platformFilter: 'Platform',
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date',
     geoFilter: "Geographic Boundary",
@@ -209,8 +210,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
     mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
-    // FilterPanel.js
-    filterPanelTitle: 'Subset',
+    // FilterGroupPanel.js
+    filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
 
     // ActiveLayersPanel.js
@@ -241,12 +242,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     badDateEntered: "Bad date (${date}) entered. Please change the date, or use the date picker.",
 
     // FeatureInfoPopup.js
-    noDataCollectionSelected: 'No data collection selected.',
-    featureInformationFoundForDataCollection: "Feature information found for ${dataCollectionNumber} data collection(s)",
-    noFeatureInformationFoundForDataCollection: "No feature information found for ${dataCollectionNumber} queryable data collection(s)",
-    searchingForFeatures: 'Searching for Features at your click point',
-    depth: 'Depth',
-    elevation: 'Elevation',
+    noDataCollectionTitle: 'No data collection selected',
+    searchingTitle: 'Searching for more information at this point...',
+    infoFoundTitle: "Detailed information for ${dataCollectionNumber} data collection(s) at this point",
+    noInfoFoundTitle: "No more information found at this point",
+    depthLabel: 'Depth:',
+    elevationLabel: 'Elevation:',
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',

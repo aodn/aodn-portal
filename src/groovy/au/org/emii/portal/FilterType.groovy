@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,7 +17,7 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterType {
-    String, Date, Number, Double, Boolean, BoundingBox
+    String, Date, DateRange, Number, Double, Boolean, BoundingBox
 
     static def stringTypeMapping = [
         "string": FilterType.String,
@@ -27,8 +26,8 @@ public enum FilterType {
         "double": FilterType.Number,
         "float": FilterType.Number,
         "integer": FilterType.Number,
-	    "int": FilterType.Number,
-	    "long": FilterType.Number,
+        "int": FilterType.Number,
+        "long": FilterType.Number,
         "boolean": FilterType.Boolean,
         "pointpropertytype": FilterType.BoundingBox
     ]

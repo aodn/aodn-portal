@@ -16,6 +16,9 @@ describe("Portal.ui.MainToolbar", function() {
         });
 
         mockLayoutForMainPanel(mainPanel);
+
+        // Start with a fresh new ActiveGeoNetworkRecordStore
+        delete Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE;
     });
 
     describe('on main panel tab change', function() {
