@@ -133,12 +133,7 @@ describe("OpenLayers.Layer.WMS", function() {
 
     describe('_getWfsServerUrl', function() {
 
-        it('returns null if wfsLayer not present', function() {
-
-            expect(openLayer._getWfsServerUrl()).toBeNull();
-        });
-
-        it('uses wfsLayer if present', function() {
+        it('returns wfs server uri', function() {
 
             openLayer.wfsLayer = {server: {uri: 'wfs_server_uri/wms'}};
 
@@ -148,12 +143,7 @@ describe("OpenLayers.Layer.WMS", function() {
 
     describe('_getWfsLayerName', function() {
 
-        it('returns null if wfsLayer not present', function() {
-
-            expect(openLayer._getWfsLayerName()).toBeNull();
-        });
-
-        it('uses wfsLayer if present', function() {
+        it('returns wfsLayer name', function() {
 
             openLayer.wfsLayer = { name: 'argo_wfs' };
 
@@ -166,6 +156,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('does not add a ? if not required', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url?a=b");
+            spyOn(openLayer, '_getWfsLayerName');
 
             var metadataUrl = openLayer.getFeatureRequestUrl();
 
@@ -175,6 +166,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('adds a ? if required', function() {
 
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
+            spyOn(openLayer, '_getWfsLayerName');
 
             var metadataUrl = openLayer.getFeatureRequestUrl();
 
