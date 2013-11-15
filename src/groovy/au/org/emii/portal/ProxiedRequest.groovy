@@ -20,6 +20,7 @@ class ProxiedRequest {
     def request
     def response
     def params
+
     def straightThrough = { inputStream, outputStream ->
         log.debug "Straight-through stream processor"
         outputStream << inputStream
@@ -32,6 +33,8 @@ class ProxiedRequest {
     }
 
     def proxy(streamProcessor = null) {
+
+        log.debug "params: $params"
 
         def processStream = streamProcessor ?: straightThrough
 
