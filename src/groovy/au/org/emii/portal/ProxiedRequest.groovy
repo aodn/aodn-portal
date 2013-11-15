@@ -28,6 +28,8 @@ class ProxiedRequest {
     def proxy() {
 
         def targetUrl = _getUrl(params)
+        log.debug "Opening connection to target URL: ${targetUrl}"
+
         def conn = targetUrl.openConnection()
 
         if (params.format) {
