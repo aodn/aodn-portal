@@ -316,26 +316,26 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('BBOX=1,2,3,4');
             });
 
-            it('temporal extent in local timezone', function() {
-                var temporalExtent = {
-                    min: moment('2000-01-01T11:00'),
-                    max: moment('2000-01-05T11:00')
-                };
-                // Note that _getGifUrl will use utc timezone, hence we gonna
-                // get the request shifted to UTC, in other words, -11 hours
-                expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
-                    'TIME=2000-01-01T00:00:00/2000-01-05T00:00:00');
-            });
-
             it('temporal extent in utc', function() {
-                var temporalExtent = {
-                    min: moment('2000-01-01T11:00Z'),
-                    max: moment('2000-01-05T11:00Z')
-                };
+
+                cachedLayer.temporalExtent = null;
+                cachedLayer.rawTemporalExtent = [
+                    '2000-01-01T00:00:00',
+                    '2000-01-02T00:00:00',
+                    '2000-01-03T00:00:00',
+                    '2000-01-04T00:00:00',
+                    '2000-01-05T00:00:00'
+                ];
+                cachedLayer.processTemporalExtent();
+
+                waitsFor(function() {
+                    return cachedLayer.temporalExtent;
+                }, "Temporal extent not processed", 1000);
+
                 // Note that _getGifUrl will use utc timezone, hence we gonna
                 // get the request shifted to UTC, in other words, -11 hours
-                expect(cachedLayer._getGifUrl({ temporalExtent: temporalExtent })).toContain(
-                    'TIME=2000-01-01T11:00:00/2000-01-05T11:00:00');
+                expect(cachedLayer._getGifUrl({ temporalExtent: cachedLayer.temporalExtent })).toContain(
+                    'TIME=2000-01-01T00:00:00/2000-01-05T00:00:00');
             });
 
             it('format', function() {

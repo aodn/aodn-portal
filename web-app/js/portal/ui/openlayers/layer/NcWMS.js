@@ -200,8 +200,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
             if (params.temporalExtent) {
                 var format = 'YYYY-MM-DDTHH:mm:ss';
-                url = this._appendParam(url, 'TIME', params.temporalExtent.min.clone().utc().format(format) + '/' +
-                                        params.temporalExtent.max.clone().utc().format(format));
+                url = this._appendParam(url, 'TIME', params.temporalExtent.min().clone().utc().format(format) + '/' +
+                                        params.temporalExtent.max().clone().utc().format(format));
             }
         }
 
