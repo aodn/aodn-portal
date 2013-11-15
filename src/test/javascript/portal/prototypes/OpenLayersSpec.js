@@ -217,5 +217,24 @@ describe("OpenLayers.Layer.WMS", function() {
 
             expect(metadataUrl).toBe(composedUrl);
         });
+
+        it('url encodes the CQL filter if it is present', function() {
+            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
+            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
+
+            openLayer.params.CQL_FILTER = 'cql %:/';
+
+            var composedUrl = 'wfs_url?' +
+                'typeName=type_name' +
+                '&SERVICE=WFS' +
+                '&outputFormat=csv' +
+                '&REQUEST=GetFeature' +
+                '&VERSION=1.0.0' +
+                '&CQL_FILTER=cql%20%25%3A%2F';
+
+            var metadataUrl = openLayer.getFeatureRequestUrl('csv');
+
+            expect(metadataUrl).toBe(composedUrl);
+        });
     });
 });
