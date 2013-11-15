@@ -14,8 +14,8 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
             filterPanel = new Portal.filter.DateRangeFilterPanel({
                 filter: {
                     name: 'wfs_column',
-                    wms_start_date_name: 'wms_start_column',
-                    wms_end_date_name: 'wms_end_column',
+                    wmsStartDateName: 'wms_start_column',
+                    wmsEndDateName: 'wms_end_column',
                 },
                 layer: {
                     getDownloadFilter: function() {

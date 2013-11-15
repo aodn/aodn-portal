@@ -8,6 +8,6 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.DateRangeFilterPanel = Ext.extend(Portal.filter.DateFilterPanel, {
     getVisualisationCQL: function() {
-        return this._getCQLUsingColumnNames(this.filter.wms_start_date_name, this.filter.wms_end_date_name);
+        return this._getCQLUsingColumnNames(this.filter.wmsStartDateName, this.filter.wmsEndDateName);
     }
 });
