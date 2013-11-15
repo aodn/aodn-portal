@@ -248,17 +248,18 @@ function inArray(array, value) {
 
 // Performs a binary search on a sorted array using
 // isGreaterFunction should return true if lhs is greater than rhs
-function binSearch(sortedArray, value, isGreaterFunction) {
+function binSearch(sortedArray, value, isGreaterFunction, scope) {
+    var _scope = scope ? scope : this;
     var min = 0;
     var max = sortedArray.length - 1;
     while (max >= min) {
         var mid = Math.floor((max + min) / 2);
         // If it's not greater and not smaller - it's equal!
-        if (!isGreaterFunction(value, sortedArray[mid]) &&
-            !isGreaterFunction(sortedArray[mid], value)) {
+        if (!isGreaterFunction.call(_scope, value, sortedArray[mid]) &&
+            !isGreaterFunction.call(_scope, sortedArray[mid], value)) {
             return mid;
         }
-        else if (isGreaterFunction(sortedArray[mid], value)) {
+        else if (isGreaterFunction.call(_scope, sortedArray[mid], value)) {
             max = mid - 1;
         }
         else {

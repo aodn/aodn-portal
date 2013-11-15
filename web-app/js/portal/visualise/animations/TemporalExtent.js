@@ -46,7 +46,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         }
 
         var indexOfDay = this._findFirstIndexOfDay(
-            this._zeroIfNegative(binSearch(this.extent, current, this._isSameDay)),
+            this._zeroIfNegative(binSearch(this.extent, current, this._startOfDayIsAfter, this)),
             current
         );
 
@@ -64,7 +64,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         }
 
         var indexOfDay = this._findFirstIndexOfDay(
-            this._zeroIfNegative(binSearch(this.extent, current, this._isSameDay)),
+            this._zeroIfNegative(binSearch(this.extent, current, this._startOfDayIsAfter, this)),
             current
         );
 
@@ -87,7 +87,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         var _extentStart = moment.utc(extentStart);
         // Will give us an occurrence of the date given, not necessarily
         // the first or last
-        var indexOfSameDate = binSearch(this.extent, _extentStart, this._isSameDay);
+        var indexOfSameDate = binSearch(this.extent, _extentStart, this._startOfDayIsAfter, this);
 
         // No dates found - return
         if (indexOfSameDate < 0) {
@@ -110,8 +110,8 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
         // Will give us an occurrence of the date given, not necessarily
         // the first or last
-        var indexOfStartDate = this._zeroIfNegative(binSearch(this.extent, _extentStart, this._isSameDay));
-        var indexOfEndDate = this._whenNegative(binSearch(this.extent, _extentEnd, this._isSameDay), this.length() - 1);
+        var indexOfStartDate = this._zeroIfNegative(binSearch(this.extent, _extentStart, this._startOfDayIsAfter, this));
+        var indexOfEndDate = this._whenNegative(binSearch(this.extent, _extentEnd, this._startOfDayIsAfter, this), this.length() - 1);
 
         return this._getSubExtent(
             this._findIndexOrNearestAfter(_extentStart, indexOfStartDate),
@@ -279,9 +279,15 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     _isSameDay: function(left, right) {
-        return left.year() == right.year()
-            && left.month() == right.month()
-            && left.date() == right.date();
+        return this._startOfDay(left).isSame(this._startOfDay(right));
+    },
+
+    _startOfDayIsAfter: function(left, right) {
+        return this._startOfDay(left).isAfter(this._startOfDay(right));
+    },
+
+    _startOfDay: function(momentDate) {
+        return momentDate.clone().startOf('day');
     },
 
     // TODO write tests for this
