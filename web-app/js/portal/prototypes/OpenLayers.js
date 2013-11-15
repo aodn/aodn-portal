@@ -83,20 +83,38 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) 
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
+OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function (outputFormat) {
 
-    var wfsUrl = this._getWfsServerUrl();
-    var wfsLayerName = this._getWfsLayerName();
+    return this._buildGetFeatureRequestUrl(
+        this.server.uri,
+        this.params.LAYERS,
+        outputFormat,
+        this.getDownloadFilter()
+    );
+};
 
+OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function (outputFormat) {
+
+    return this._buildGetFeatureRequestUrl(
+        this._getWfsServerUrl(),
+        this._getWfsLayerName(),
+        outputFormat,
+        this.getDownloadFilter()
+    );
+};
+
+OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function (baseUrl, layerName, outputFormat, downloadFilter) {
+
+    var wfsUrl = baseUrl;
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
-    wfsUrl += 'typeName=' + wfsLayerName;
+    wfsUrl += 'typeName=' + layerName;
     wfsUrl += '&SERVICE=WFS';
     wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
-    if (this.getDownloadFilter()) {
-        wfsUrl += '&CQL_FILTER=' + this.getDownloadFilter();
+    if (downloadFilter) {
+        wfsUrl += '&CQL_FILTER=' + encodeURIComponent(downloadFilter);
     }
 
     return wfsUrl;

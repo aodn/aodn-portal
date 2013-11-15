@@ -92,7 +92,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _downloadHandlerFor: function(collection, format, fileExtension) {
 
-        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+        var downloadUrl = this._wfsUrlForGeoNetworkRecordWfsLayer(collection, format);
 
         var extensionToUse = fileExtension ? fileExtension : format;
         var downloadFilename = collection.title + "." + extensionToUse;
@@ -105,7 +105,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _urlListDownloadHandler: function(collection) {
 
-        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, 'csv');
+        var downloadUrl = this._wfsUrlForGeoNetworkRecordWmsLayer(collection, 'csv');
         var downloadFilename = collection.title + "_URLs.txt";
         var additionalArgs = {
             action: 'urlList',
@@ -118,7 +118,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         };
     },
 
-    _wfsUrlForGeoNetworkRecord: function(record, format) {
-        return record.wmsLayer.getFeatureRequestUrl(format);
+    _wfsUrlForGeoNetworkRecordWmsLayer: function(record, format) {
+        return record.wmsLayer.getWmsLayerFeatureRequestUrl(format);
+    },
+
+    _wfsUrlForGeoNetworkRecordWfsLayer: function(record, format) {
+        return record.wmsLayer.getWfsLayerFeatureRequestUrl(format);
     }
 });

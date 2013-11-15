@@ -232,14 +232,14 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_wfsUrlForGeoNetworkRecord');
+            spyOn(tpl, '_wfsUrlForGeoNetworkRecordWfsLayer');
         });
 
-        it('calls _wfsUrlForGeoNetworkRecord', function() {
+        it('calls _wfsUrlForGeoNetworkRecordWfsLayer', function() {
 
             tpl._downloadHandlerFor('collection', 'format');
 
-            expect(tpl._wfsUrlForGeoNetworkRecord).toHaveBeenCalledWith('collection', 'format');
+            expect(tpl._wfsUrlForGeoNetworkRecordWfsLayer).toHaveBeenCalledWith('collection', 'format');
         });
 
         it('returns a function to be called', function() {
@@ -254,14 +254,14 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_wfsUrlForGeoNetworkRecord');
+            spyOn(tpl, '_wfsUrlForGeoNetworkRecordWmsLayer');
         });
 
-        it('calls _wfsUrlForGeoNetworkRecord', function() {
+        it('calls _wfsUrlForGeoNetworkRecordWmsLayer', function() {
 
             tpl._urlListDownloadHandler(geoNetworkRecord);
 
-            expect(tpl._wfsUrlForGeoNetworkRecord).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
+            expect(tpl._wfsUrlForGeoNetworkRecordWmsLayer).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
         });
 
         it('returns a function to be called', function() {
