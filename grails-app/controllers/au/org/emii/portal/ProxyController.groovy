@@ -7,15 +7,12 @@
 
 package au.org.emii.portal
 
-class ProxyController {
+class ProxyController extends RequestProxyingController {
 
     def grailsApplication
     def hostVerifier
 
-    def index = {
-
-        _performProxying()
-    }
+    // Index action inherited from RequestProxyingController
 
     def downloadGif = {
 
@@ -62,25 +59,6 @@ class ProxyController {
         }
 
         _performProxying(changeCaseOfParams)
-    }
-
-    def _performProxying = { paramProcessor = null ->
-
-        if (!params.url) {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-        else if (!hostVerifier.allowedHost(request, params.url)) {
-            log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-        else {
-
-            def processedParams = paramProcessor ? paramProcessor(params) : params
-
-            // Make request
-            def proxiedRequest = new ProxiedRequest(request, response, processedParams)
-            proxiedRequest.proxy()
-        }
     }
 
     def wmsOnly = {

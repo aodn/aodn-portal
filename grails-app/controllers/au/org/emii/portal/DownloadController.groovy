@@ -9,15 +9,12 @@ package au.org.emii.portal
 
 import au.com.bytecode.opencsv.CSVReader
 
-class DownloadController {
+class DownloadController extends RequestProxyingController {
 
     def grailsApplication
     def hostVerifier
 
-    def index = {
-
-        _performProxying()
-    }
+    // Index action inherited from RequestProxyingController
 
     def urlList = {
 
@@ -41,25 +38,6 @@ class DownloadController {
         }
 
         _performProxying(requestSingleField, urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase))
-    }
-
-    def _performProxying = { paramProcessor = null, streamProcessor = null ->
-
-        if (!params.url) {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 400
-        }
-        else if (!hostVerifier.allowedHost(request, params.url)) {
-            log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-        else {
-
-            def processedParams = paramProcessor ? paramProcessor(params) : params
-
-            // Make request
-            def proxiedRequest = new ProxiedRequest(request, response, processedParams)
-            proxiedRequest.proxy(streamProcessor)
-        }
     }
 
     def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
