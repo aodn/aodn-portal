@@ -48,6 +48,10 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     getVisualisationCQL: function() {
+        if (this.isDownloadOnly()) {
+            return '';
+        }
+
         return this.getCQL();
     },
 

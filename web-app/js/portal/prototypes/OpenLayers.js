@@ -96,7 +96,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function (outputFormat) {
     wfsUrl += '&VERSION=1.0.0';
 
     if (this.getDownloadFilter()) {
-        wfsUrl += '&CQL_FILTER=' + this.getDownloadFilter();
+        wfsUrl += '&CQL_FILTER=' + encodeURIComponent(this.getDownloadFilter());
     }
 
     return wfsUrl;
@@ -197,10 +197,6 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
 
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     var filters = [];
-
-    if (this.params.CQL_FILTER) {
-        filters.push(this.params.CQL_FILTER);
-    }
 
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);

@@ -155,12 +155,30 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateLayerFilters: function() {
-        var commonFilters = this._getCqlFilter({downloadOnly: false});
-
         if  (this._isLayerActive(this.layer)) {
-            this.layer.setCqlFilter(commonFilters);
-            this.layer.downloadOnlyFilters = this._getCqlFilter({downloadOnly: true});
+            this.layer.setCqlFilter(this._getVisualisationCQLFilter());
+            this.layer.downloadOnlyFilters = this._getDownloadCQLFilter();
         }
+    },
+
+    _getVisualisationCQLFilter: function() {
+        var cql = [];
+
+        Ext.each(this._getActiveFilters(), function(filter) {
+            cql.push(filter.getVisualisationCQL());
+        });
+
+        return cql.join(this.AND_QUERY);
+    },
+
+    _getDownloadCQLFilter: function() {
+        var cql = [];
+
+        Ext.each(this._getActiveFilters(), function(filter) {
+            cql.push(filter.getDownloadCQL());
+        });
+
+        return cql.join(this.AND_QUERY);
     },
 
     _getCqlFilter: function(options) {
