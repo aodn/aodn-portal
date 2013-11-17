@@ -84,7 +84,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         menuItems.push({text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this});
 
         if (collection.wmsLayer && collection.wmsLayer.urlDownloadFieldName) {
-            menuItems.push({text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
+            menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
         }
 
         return menuItems;
