@@ -112,7 +112,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return this._getCQLUsingColumnNames(this.filter.name, this.filter.name);
     },
 
-    _getCQLUsingColumnNames: function(afterColumnName, beforeColumnName) {
+    _getCQLUsingColumnNames: function(startDateRangeColumnName, endDateRangeColumnName) {
 
         if (!this.fromField.getValue()) {
             return '';
@@ -123,16 +123,16 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this._isSelectedOpSetToBetween()) {
             cql += String.format(
                 "{0} after {1} AND {2} before {3}",
-                beforeColumnName,
+                endDateRangeColumnName,
                 this._getDateString(this.fromField),
-                afterColumnName,
+                startDateRangeColumnName,
                 this._getDateString(this.toField));
         }
         else if (this._isSelectedOpSetToAfter()) {
-            cql += String.format("{0} after {1}", beforeColumnName, this._getDateString(this.fromField));
+            cql += String.format("{0} after {1}", endDateRangeColumnName, this._getDateString(this.fromField));
         }
         else if (this._isSelectedOpSetToBefore()) {
-            cql += String.format("{0} before {1}", afterColumnName, this._getDateString(this.fromField));
+            cql += String.format("{0} before {1}", startDateRangeColumnName, this._getDateString(this.fromField));
         }
 
         return cql;
