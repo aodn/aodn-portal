@@ -123,16 +123,16 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this._isSelectedOpSetToBetween()) {
             cql += String.format(
                 "{0} after {1} AND {2} before {3}",
-                afterColumnName,
-                this._getDateString(this.fromField),
                 beforeColumnName,
+                this._getDateString(this.fromField),
+                afterColumnName,
                 this._getDateString(this.toField));
         }
         else if (this._isSelectedOpSetToAfter()) {
-            cql += String.format("{0} after {1}", afterColumnName, this._getDateString(this.fromField));
+            cql += String.format("{0} after {1}", beforeColumnName, this._getDateString(this.fromField));
         }
         else if (this._isSelectedOpSetToBefore()) {
-            cql += String.format("{0} before {1}", beforeColumnName, this._getDateString(this.fromField));
+            cql += String.format("{0} before {1}", afterColumnName, this._getDateString(this.fromField));
         }
 
         return cql;

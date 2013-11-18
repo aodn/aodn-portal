@@ -9,8 +9,17 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
     describe('CQL', function() {
         var filterPanel;
         var operator;
+        var fromField;
+        var toField;
 
         beforeEach(function() {
+            fromField = {
+                getValue: function() {
+                    return dateAsString;
+                }
+            };
+            toField = {};
+
             filterPanel = new Portal.filter.DateRangeFilterPanel({
                 filter: {
                     name: 'wfs_column',
@@ -22,41 +31,43 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                     }
                 }
             });
+            filterPanel.fromField = fromField;
+            filterPanel.toField = toField;
 
             var dateAsString = '2013';
 
-            spyOn(filterPanel, '_getDateString').andReturn(dateAsString);
+            spyOn(filterPanel, '_getDateString').andCallFake(function(combo) {
+                if (combo == fromField) {
+                    return '2000';
+                }
+                else {
+                    return '2013';
+                }
+            });
 
             filterPanel.operators = {
                 getValue: function() {
                     return operator;
                 }
             };
-
-            filterPanel.fromField = {
-                getValue: function() {
-                    return dateAsString;
-                }
-            };
-
         });
 
         it('after', function() {
             operator = 'after';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column after 2013', 'wfs_column after 2013');
+            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column after 2000', 'wfs_column after 2000');
         });
 
         it('before', function() {
             operator = 'before';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column before 2013', 'wfs_column before 2013');
+            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column before 2000', 'wfs_column before 2000');
         });
 
         it('between', function() {
             operator = 'between';
             expectAllCQLFunctionsToEqual(
                 filterPanel,
-                'wms_start_column after 2013 AND wms_end_column before 2013',
-                'wfs_column after 2013 AND wfs_column before 2013'
+                'wms_end_column after 2000 AND wms_start_column before 2013',
+                'wfs_column after 2000 AND wfs_column before 2013'
             );
         });
 
