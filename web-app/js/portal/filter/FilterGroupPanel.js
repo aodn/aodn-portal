@@ -165,7 +165,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         var cql = [];
 
         Ext.each(this._getActiveFilters(), function(filter) {
-            cql.push(filter.getVisualisationCQL());
+            var filterCQL = filter.getVisualisationCQL();
+            if (filterCQL) {
+                cql.push(filter.getVisualisationCQL());
+            }
         });
 
         return cql.join(this.AND_QUERY);
