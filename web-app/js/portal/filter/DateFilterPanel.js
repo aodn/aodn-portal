@@ -83,15 +83,15 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _isSelectedOpSetToBetween: function() {
-        return this.operators.getValue() != "" && this.operators.getValue() == 'between';
+        return this.operators.getValue() == 'between';
     },
 
     _isSelectedOpSetToAfter: function() {
-        return this.operators.getValue() != "" && this.operators.getValue() == 'after';
+        return this.operators.getValue() == 'after';
     },
 
     _isSelectedOpSetToBefore: function() {
-        return this.operators.getValue() != "" && this.operators.getValue() == 'before';
+        return this.operators.getValue() == 'before';
     },
 
     _getDateString: function(combo) {
