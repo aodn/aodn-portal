@@ -28,11 +28,15 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
             spyOn(filterPanel, '_getDateString').andReturn(dateAsString);
 
             filterPanel.operators = {
-                getValue: function() { return operator; }
+                getValue: function() {
+                    return operator;
+                }
             };
 
             filterPanel.fromField = {
-                getValue: function() { return dateAsString; }
+                getValue: function() {
+                    return dateAsString;
+                }
             };
 
         });
