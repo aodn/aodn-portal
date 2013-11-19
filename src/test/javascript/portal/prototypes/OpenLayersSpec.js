@@ -158,7 +158,8 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
             openLayer.server = { uri: "uri" };
-            openLayer.params = { LAYERS: 'name', CQL_FILTER: 'cql' };
+            openLayer.params = { LAYERS: 'name' };
+            openLayer. downloadOnlyFilters = 'cql';
 
             openLayer.getWmsLayerFeatureRequestUrl('csv');
 
@@ -174,7 +175,7 @@ describe("OpenLayers.Layer.WMS", function() {
 
             openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
             openLayer.wfsLayer.name = 'wfs_name';
-            openLayer.params = { CQL_FILTER: 'cql' };
+            openLayer.downloadOnlyFilters = 'cql';
 
             openLayer.getWfsLayerFeatureRequestUrl('csv');
 
