@@ -75,11 +75,13 @@ describe("OpenLayers.Layer.WMS", function() {
     describe("getCqlFilter", function() {
         it("Returns filter if defined", function() {
             openLayer.params = {CQL_FILTER: "test='filter'"};
+
             expect (openLayer.getCqlFilter()).toEqual("test='filter'");
         });
 
         it("Returns empty string if cql filter not defined", function() {
             openLayer.params = {};
+
             expect (openLayer.getCqlFilter()).toEqual('');
         });
     });
@@ -89,6 +91,7 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, "mergeNewParams");
 
             openLayer.params = {CQL_FILTER: "test='filter'"};
+
             openLayer.setCqlFilter("attribute='anotherfilter'");
 
             expect(openLayer.mergeNewParams).toHaveBeenCalledWith({
@@ -100,6 +103,7 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, "mergeNewParams");
 
             openLayer.params = {CQL_FILTER: "test='filter'"};
+
             openLayer.setCqlFilter("test='filter'");
 
             expect(openLayer.mergeNewParams).not.toHaveBeenCalled();
@@ -109,6 +113,7 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, "redraw");
 
             openLayer.params = {CQL_FILTER: "test='filter'"};
+
             openLayer.setCqlFilter("");
 
             expect(openLayer.redraw).toHaveBeenCalled();
@@ -127,86 +132,90 @@ describe("OpenLayers.Layer.WMS", function() {
     });
 
     describe('_getWfsServerUrl', function() {
-        it('returns null if wfsLayer not present', function() {
-            expect(openLayer._getWfsServerUrl()).toBeNull();
-        });
 
-        it('uses wfsLayer if present', function() {
+        it('returns wfs server uri', function() {
+
             openLayer.wfsLayer = {server: {uri: 'wfs_server_uri/wms'}};
+
             expect(openLayer._getWfsServerUrl()).toBe('wfs_server_uri/wfs');
         });
     });
 
     describe('_getWfsLayerName', function() {
 
-        it('returns null if wfsLayer not present', function() {
-            expect(openLayer._getWfsLayerName()).toBeNull();
-        });
+        it('returns wfsLayer name', function() {
 
-        it('uses wfsLayer if present', function() {
             openLayer.wfsLayer = { name: 'argo_wfs' };
+
             expect(openLayer._getWfsLayerName()).toBe('argo_wfs');
         });
     });
 
-    describe('getFeatureRequestUrl', function() {
+    describe('getWmsLayerFeatureRequestUrl', function() {
+
+        it('calls _buildGetFeatureRequestUrl correctly', function () {
+
+            spyOn(openLayer, '_buildGetFeatureRequestUrl');
+
+            openLayer.server = { uri: "uri" };
+            openLayer.params = { LAYERS: 'name' };
+            openLayer. downloadOnlyFilters = 'cql';
+
+            openLayer.getWmsLayerFeatureRequestUrl('csv');
+
+            expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('uri', 'name', 'csv', 'cql');
+        });
+    });
+
+    describe('getWfsLayerFeatureRequestUrl', function() {
+
+        it('calls _buildGetFeatureRequestUrl correctly', function () {
+
+            spyOn(openLayer, '_buildGetFeatureRequestUrl');
+
+            openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
+            openLayer.wfsLayer.name = 'wfs_name';
+            openLayer.downloadOnlyFilters = 'cql';
+
+            openLayer.getWfsLayerFeatureRequestUrl('csv');
+
+            expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'wfs_name', 'csv', 'cql');
+        });
+    });
+
+    describe('_buildGetFeatureRequestUrl', function() {
 
         it('does not add a ? if not required', function() {
 
-            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url?a=b");
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url?a=b");
 
-            var metadataUrl = openLayer.getFeatureRequestUrl();
-
-            expect(metadataUrl.startsWith('wfs_url?a=b&')).toBe(true);
+            expect(getFeatureUrl.startsWith('wfs_url?a=b&')).toBe(true);
         });
 
         it('adds a ? if required', function() {
-            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            var metadataUrl = openLayer.getFeatureRequestUrl();
-            expect(metadataUrl.startsWith('wfs_url?')).toBe(true);
+
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url");
+
+            expect(getFeatureUrl.startsWith('wfs_url?')).toBe(true);
         });
 
         it('does not use the CQL filter if it is missing', function() {
-            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
 
-            var composedUrl = 'wfs_url?' +
+            var expectedUrl = 'wfs_url?' +
                 'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=txt' +
                 '&REQUEST=GetFeature' +
                 '&VERSION=1.0.0';
 
-            var metadataUrl = openLayer.getFeatureRequestUrl('txt');
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
 
-            expect(metadataUrl).toBe(composedUrl);
+            expect(getFeatureUrl).toBe(expectedUrl);
         });
 
         it('uses the CQL filter if it is present', function() {
-            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
 
-            openLayer.downloadOnlyFilters = 'cql';
-
-            var composedUrl = 'wfs_url?' +
-                'typeName=type_name' +
-                '&SERVICE=WFS' +
-                '&outputFormat=csv' +
-                '&REQUEST=GetFeature' +
-                '&VERSION=1.0.0' +
-                '&CQL_FILTER=cql';
-
-            var metadataUrl = openLayer.getFeatureRequestUrl('csv');
-
-            expect(metadataUrl).toBe(composedUrl);
-        });
-
-        it('url encodes the CQL filter if it is present', function() {
-            spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
-            spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
-            spyOn(openLayer, 'getDownloadFilter').andReturn('cql %:/');
-
-            var composedUrl = 'wfs_url?' +
+            var expectedUrl = 'wfs_url?' +
                 'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=csv' +
@@ -214,9 +223,9 @@ describe("OpenLayers.Layer.WMS", function() {
                 '&VERSION=1.0.0' +
                 '&CQL_FILTER=cql%20%25%3A%2F';
 
-            var metadataUrl = openLayer.getFeatureRequestUrl('csv');
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');
 
-            expect(metadataUrl).toBe(composedUrl);
+            expect(getFeatureUrl).toBe(expectedUrl);
         });
     });
 });

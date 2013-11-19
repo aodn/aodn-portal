@@ -76,16 +76,23 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createMenuItems: function(collection) {
-        return [
-            {text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this},
-            {text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this},
-            {text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this}
-        ];
+
+        var menuItems = [];
+
+        menuItems.push({text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadHandlerFor(collection, 'csv'), scope: this});
+        menuItems.push({text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadHandlerFor(collection, 'gml3'), scope: this});
+        menuItems.push({text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadHandlerFor(collection, 'shape-zip', 'zip'), scope: this});
+
+        if (collection.wmsLayer && collection.wmsLayer.urlDownloadFieldName) {
+            menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
+        }
+
+        return menuItems;
     },
 
     _downloadHandlerFor: function(collection, format, fileExtension) {
 
-        var downloadUrl = this._wfsUrlForGeoNetworkRecord(collection, format);
+        var downloadUrl = this._wfsUrlForGeoNetworkRecordWfsLayer(collection, format);
 
         var extensionToUse = fileExtension ? fileExtension : format;
         var downloadFilename = collection.title + "." + extensionToUse;
@@ -96,7 +103,26 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         };
     },
 
-    _wfsUrlForGeoNetworkRecord: function(record, format) {
-        return record.wmsLayer.getFeatureRequestUrl(format);
+    _urlListDownloadHandler: function(collection) {
+
+        var downloadUrl = this._wfsUrlForGeoNetworkRecordWmsLayer(collection, 'csv');
+        var downloadFilename = collection.title + "_URLs.txt";
+        var additionalArgs = {
+            action: 'urlList',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return function() {
+
+            this.downloadPanelTemplate.downloadWithConfirmation(downloadUrl, downloadFilename, additionalArgs);
+        };
+    },
+
+    _wfsUrlForGeoNetworkRecordWmsLayer: function(record, format) {
+        return record.wmsLayer.getWmsLayerFeatureRequestUrl(format);
+    },
+
+    _wfsUrlForGeoNetworkRecordWfsLayer: function(record, format) {
+        return record.wmsLayer.getWfsLayerFeatureRequestUrl(format);
     }
 });

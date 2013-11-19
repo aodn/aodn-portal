@@ -112,12 +112,49 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
             spyOn(window, 'sanitiseForFilename').andReturn("file name");
 
-            var expectedProxyUrl = "proxy?url=the%20download%20url&downloadFilename=file%20name";
+            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name";
             confirmationWindow.downloadUrl = downloadUrl;
             confirmationWindow.downloadFilename = "file name";
 
             expect(confirmationWindow._portalDownloadUrl()).toBe(expectedProxyUrl);
             expect(sanitiseForFilename).toHaveBeenCalledWith("file name");
+        });
+
+        it('returns URL-endcoded proxy URL with extra query string arguments', function() {
+
+            spyOn(window, 'sanitiseForFilename').andReturn("file name");
+
+            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name&fieldName=the%20field";
+            confirmationWindow.downloadUrl = downloadUrl;
+            confirmationWindow.downloadFilename = "file name";
+            confirmationWindow.downloadControllerArgs = { fieldName: 'the field' };
+
+            expect(confirmationWindow._portalDownloadUrl()).toBe(expectedProxyUrl);
+            expect(sanitiseForFilename).toHaveBeenCalledWith("file name");
+        });
+    });
+
+    describe('_additionalQueryStringFrom', function() {
+
+        it('returns empty string if args is null', function() {
+
+            var returnValue = confirmationWindow._additionalQueryStringFrom(null);
+
+            expect(returnValue).toBe('');
+        });
+
+        it('returns empty string if no items in args', function() {
+
+            var returnValue = confirmationWindow._additionalQueryStringFrom({});
+
+            expect(returnValue).toBe('');
+        });
+
+        it("returns additional query string (no '?' required) or elements in args (URL encoded)", function() {
+
+            var returnValue = confirmationWindow._additionalQueryStringFrom({ fieldName: 'bob', otherThing: 'this too' });
+
+            expect(returnValue).toBe('&fieldName=bob&otherThing=this%20too');
         });
     });
 });

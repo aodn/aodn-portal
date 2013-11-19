@@ -269,6 +269,15 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="urlDownloadFieldName"><g:message code="layer.urlDownloadFieldName.label" default="URL list download field (column) name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'urlDownloadFieldName', 'errors')}">
+                                    <g:textField name="urlDownloadFieldName" value="${layerInstance?.urlDownloadFieldName}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     AODAAC&nbsp;Linked&nbsp;Products
                                 </td>
                                 <td valign="top">

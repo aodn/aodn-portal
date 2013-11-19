@@ -18,6 +18,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             uuid: 9,
+            grailsLayerId: 42,
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
@@ -188,8 +189,10 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         it('returns array of menu items', function() {
 
             spyOn(tpl, '_downloadHandlerFor');
+            spyOn(tpl, '_urlListDownloadHandler');
 
-            var items = tpl._createMenuItems({});
+            var theCollection = {};
+            var items = tpl._createMenuItems(theCollection);
 
             expect(items.length).not.toBe(0);
 
@@ -200,6 +203,28 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             });
 
             expect(tpl._downloadHandlerFor.callCount).toBe(items.length);
+            expect(tpl._urlListDownloadHandler).not.toHaveBeenCalled();
+        });
+
+        it('returns array of menu items with one more when a downloadUrlFieldName is specified on the layer', function() {
+
+            spyOn(tpl, '_downloadHandlerFor');
+            spyOn(tpl, '_urlListDownloadHandler');
+
+            var theCollection = { wmsLayer: { urlDownloadFieldName: 'the field' } };
+            var items = tpl._createMenuItems(theCollection);
+            var numSpecialItems = 1; // List of URLs
+
+            expect(items.length).not.toBe(0);
+
+            Ext.each(items, function(item){
+
+                expect(item.text).toBeDefined();
+                expect(typeof item.text === 'string').toBeTruthy();
+            });
+
+            expect(tpl._downloadHandlerFor.callCount).toBe(items.length - numSpecialItems);
+            expect(tpl._urlListDownloadHandler).toHaveBeenCalledWith(theCollection);
         });
     });
 
@@ -207,19 +232,41 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_wfsUrlForGeoNetworkRecord');
+            spyOn(tpl, '_wfsUrlForGeoNetworkRecordWfsLayer');
         });
 
-        it('calls _wfsUrlForGeoNetworkRecord', function() {
+        it('calls _wfsUrlForGeoNetworkRecordWfsLayer', function() {
 
             tpl._downloadHandlerFor('collection', 'format');
 
-            expect(tpl._wfsUrlForGeoNetworkRecord).toHaveBeenCalledWith('collection', 'format');
+            expect(tpl._wfsUrlForGeoNetworkRecordWfsLayer).toHaveBeenCalledWith('collection', 'format');
         });
 
         it('returns a function to be called', function() {
 
             var returnValue = tpl._downloadHandlerFor('collection');
+
+            expect(typeof returnValue).toBe('function');
+        });
+    });
+
+    describe('_urlListDownloadHandler', function() {
+
+        beforeEach(function() {
+
+            spyOn(tpl, '_wfsUrlForGeoNetworkRecordWmsLayer');
+        });
+
+        it('calls _wfsUrlForGeoNetworkRecordWmsLayer', function() {
+
+            tpl._urlListDownloadHandler(geoNetworkRecord);
+
+            expect(tpl._wfsUrlForGeoNetworkRecordWmsLayer).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
+        });
+
+        it('returns a function to be called', function() {
+
+            var returnValue = tpl._urlListDownloadHandler(geoNetworkRecord);
 
             expect(typeof returnValue).toBe('function');
         });
