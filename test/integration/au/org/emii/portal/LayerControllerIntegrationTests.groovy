@@ -57,7 +57,37 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
             server.delete()
         }
     }
+        
 
+    void testLayerAsJsonWithNamespace() {
+
+        // Create
+        Server server = Server.build(uri: "http://someserver.com/path/wms?namespace=imos", owners: [])
+        server.save()
+
+        Layer activeLayer = Layer.build(parent: null, server: server, namespace: "imos", name: "layername", cql: null, activeInLastScan: true)
+        activeLayer.save()
+
+        try {
+
+            layerController.params.serverUri = "http://someserver.com/path/imos/wms"
+            layerController.params.name = "imos:layername"
+            layerController.findLayerAsJson()
+
+            assertEquals(200, layerController.response.status)
+            def scum = layerController.response.status
+            def scum2 = scum
+        }
+        catch (Exception e) {
+
+            fail("Unexpected failure: " + e.message)
+        }
+        finally {
+
+            server.delete()
+        }
+    }
+	
     void testServer() {
 
         try {
