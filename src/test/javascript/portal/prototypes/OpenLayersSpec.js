@@ -186,35 +186,35 @@ describe("OpenLayers.Layer.WMS", function() {
 
         it('does not add a ? if not required', function() {
 
-            var metadataUrl = openLayer._buildGetFeatureRequestUrl("wfs_url?a=b");
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url?a=b");
 
-            expect(metadataUrl.startsWith('wfs_url?a=b&')).toBe(true);
+            expect(getFeatureUrl.startsWith('wfs_url?a=b&')).toBe(true);
         });
 
         it('adds a ? if required', function() {
 
-            var metadataUrl = openLayer._buildGetFeatureRequestUrl("wfs_url");
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url");
 
-            expect(metadataUrl.startsWith('wfs_url?')).toBe(true);
+            expect(getFeatureUrl.startsWith('wfs_url?')).toBe(true);
         });
 
         it('does not use the CQL filter if it is missing', function() {
 
-            var composedUrl = 'wfs_url?' +
+            var expectedUrl = 'wfs_url?' +
                 'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=txt' +
                 '&REQUEST=GetFeature' +
                 '&VERSION=1.0.0';
 
-            var metadataUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
 
-            expect(metadataUrl).toBe(composedUrl);
+            expect(getFeatureUrl).toBe(expectedUrl);
         });
 
         it('uses the CQL filter if it is present', function() {
 
-            var composedUrl = 'wfs_url?' +
+            var expectedUrl = 'wfs_url?' +
                 'typeName=type_name' +
                 '&SERVICE=WFS' +
                 '&outputFormat=csv' +
@@ -222,9 +222,9 @@ describe("OpenLayers.Layer.WMS", function() {
                 '&VERSION=1.0.0' +
                 '&CQL_FILTER=cql%20%25%3A%2F';
 
-            var metadataUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');
+            var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');
 
-            expect(metadataUrl).toBe(composedUrl);
+            expect(getFeatureUrl).toBe(expectedUrl);
         });
     });
 });
