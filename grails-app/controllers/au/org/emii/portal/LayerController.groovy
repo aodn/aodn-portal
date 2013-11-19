@@ -181,7 +181,7 @@ class LayerController {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
-                    like("uri", (params.serverUri).replaceFirst(namespace+"/wms", "wms") + "%")
+                    like("uri", (params.serverUri).replaceFirst(namespace + "/wms", "wms") + "%")
                     // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)
                     // Note that different GetCapabilites versions may have different request endpoints.
                     // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
