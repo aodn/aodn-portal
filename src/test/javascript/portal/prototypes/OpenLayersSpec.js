@@ -221,8 +221,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('url encodes the CQL filter if it is present', function() {
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
             spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
-
-            openLayer.params.CQL_FILTER = 'cql %:/';
+            spyOn(openLayer, 'getDownloadFilter').andReturn('cql %:/');
 
             var composedUrl = 'wfs_url?' +
                 'typeName=type_name' +
