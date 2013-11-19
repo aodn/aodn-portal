@@ -116,13 +116,13 @@ describe("OpenLayers.Layer.WMS", function() {
     });
 
     describe("getDownloadFilter", function() {
-        it("joins cql filters with download filters", function() {
+        it("does not join cql filters with download filters", function() {
             openLayer.params = {CQL_FILTER: "test='filter'"};
             openLayer.downloadOnlyFilters = "depth>=10";
 
             var downloadFilter = openLayer.getDownloadFilter();
 
-            expect(downloadFilter).toBe("test='filter' AND depth>=10");
+            expect(downloadFilter).toBe("depth>=10");
         });
     });
 
@@ -186,7 +186,7 @@ describe("OpenLayers.Layer.WMS", function() {
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
             spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
 
-            openLayer.params.CQL_FILTER = 'cql';
+            openLayer.downloadOnlyFilters = 'cql';
 
             var composedUrl = 'wfs_url?' +
                 'typeName=type_name' +
@@ -204,8 +204,7 @@ describe("OpenLayers.Layer.WMS", function() {
         it('url encodes the CQL filter if it is present', function() {
             spyOn(openLayer, '_getWfsServerUrl').andReturn("wfs_url");
             spyOn(openLayer, '_getWfsLayerName').andReturn("type_name");
-
-            openLayer.params.CQL_FILTER = 'cql %:/';
+            spyOn(openLayer, 'getDownloadFilter').andReturn('cql %:/');
 
             var composedUrl = 'wfs_url?' +
                 'typeName=type_name' +

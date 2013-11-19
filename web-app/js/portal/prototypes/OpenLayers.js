@@ -198,10 +198,6 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     var filters = [];
 
-    if (this.params.CQL_FILTER) {
-        filters.push(this.params.CQL_FILTER);
-    }
-
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);
     }
@@ -251,30 +247,30 @@ OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function () {
 };
 
 // See git issue 595. In IE8, the layer onload event was not being triggered as
-// it was in other browsers when there is an error loading a tile image.  This 
+// it was in other browsers when there is an error loading a tile image.  This
 // is due to the img element error handlers (onImageLoadError and onerror)
 // being executed in random order in IE8 rather than the FIFO order expected by
-// OpenLayers (see the first paragraph of the Remarks section in documentation 
+// OpenLayers (see the first paragraph of the Remarks section in documentation
 // of attachEvent at
-// http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx 
+// http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx
 // and comments in the onerror handler below re expectation by OpenLayers that the
 // onImageLoadError has already been run before the onerror handler)
 //
-// Override the initImgDiv method ensuring the onerror handler is run after the 
-// onImageLoadError has been processed as is required for the correct operation 
+// Override the initImgDiv method ensuring the onerror handler is run after the
+// onImageLoadError has been processed as is required for the correct operation
 // of these handlers.
 //
 // The code below is copied directly from the OpenLayers implementation of
-// OpenLayers.Tile.Image.prototype.initImgDiv replacing the final statement 
+// OpenLayers.Tile.Image.prototype.initImgDiv replacing the final statement
 // with one which ensures the onerror handler is called after the onImageLoadError
 // in IE8
 //
 // Modified code has been marked with a comment below
-    
+
 OpenLayers.Tile.Image.prototype.initImgDiv = function() {
-    var offset = this.layer.imageOffset; 
-    var size = this.layer.getImageSize(this.bounds); 
-     
+    var offset = this.layer.imageOffset;
+    var size = this.layer.getImageSize(this.bounds);
+
     if (this.layerAlphaHack) {
         this.imgDiv = OpenLayers.Util.createAlphaImageDiv(null,
                                                        offset,
@@ -295,7 +291,7 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
                                                   null,
                                                   true);
     }
-        
+
     this.imgDiv.className = 'olTileImage';
 
     /* checkImgURL used to be used to called as a work around, but it
@@ -307,42 +303,42 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
         OpenLayers.Function.bind(this.checkImgURL, this) );
     */
     this.frame.style.zIndex = this.isBackBuffer ? 0 : 1;
-    this.frame.appendChild(this.imgDiv); 
-    this.layer.div.appendChild(this.frame); 
+    this.frame.appendChild(this.imgDiv);
+    this.layer.div.appendChild(this.frame);
 
     if(this.layer.opacity != null) {
-            
+
         OpenLayers.Util.modifyDOMElement(this.imgDiv, null, null, null,
-                                         null, null, null, 
+                                         null, null, null,
                                          this.layer.opacity);
     }
 
     // we need this reference to check back the viewRequestID
     this.imgDiv.map = this.layer.map;
 
-    //bind a listener to the onload of the image div so that we 
+    //bind a listener to the onload of the image div so that we
     // can register when a tile has finished loading.
     var onload = function() {
-            
-        //normally isLoading should always be true here but there are some 
+
+        //normally isLoading should always be true here but there are some
         // right funky conditions where loading and then reloading a tile
-        // with the same url *really*fast*. this check prevents sending 
+        // with the same url *really*fast*. this check prevents sending
         // a 'loadend' if the msg has already been sent
         //
-        if (this.isLoading) { 
-            this.isLoading = false; 
-            this.events.triggerEvent("loadend"); 
+        if (this.isLoading) {
+            this.isLoading = false;
+            this.events.triggerEvent("loadend");
         }
     };
-        
-    if (this.layerAlphaHack) { 
-        OpenLayers.Event.observe(this.imgDiv.childNodes[0], 'load', 
-                                 OpenLayers.Function.bind(onload, this));    
-    } else { 
-        OpenLayers.Event.observe(this.imgDiv, 'load', 
-                             OpenLayers.Function.bind(onload, this)); 
-    } 
-        
+
+    if (this.layerAlphaHack) {
+        OpenLayers.Event.observe(this.imgDiv.childNodes[0], 'load',
+                                 OpenLayers.Function.bind(onload, this));
+    } else {
+        OpenLayers.Event.observe(this.imgDiv, 'load',
+                             OpenLayers.Function.bind(onload, this));
+    }
+
 
     // Bind a listener to the onerror of the image div so that we
     // can registere when a tile has finished loading with errors.
@@ -359,11 +355,11 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
     };
 
     // ===================================================================
-    // The following code has been modified from the OpenLayers version 
+    // The following code has been modified from the OpenLayers version
     // of this method
     //====================================================================
-    
-    // In IE8 guarantee onerror runs after onImageLoadError by running it 
+
+    // In IE8 guarantee onerror runs after onImageLoadError by running it
     // in a timer
 
     if (Ext.isIE8) {
