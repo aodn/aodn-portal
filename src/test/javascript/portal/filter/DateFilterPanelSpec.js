@@ -135,7 +135,7 @@ describe("Portal.filter.DateFilterPanel", function() {
         };
     });
 
-    describe('apply time filter', function() {
+    describe('apply date filter', function() {
         describe('require fields', function() {
 
             beforeEach(function () {
@@ -201,6 +201,57 @@ describe("Portal.filter.DateFilterPanel", function() {
                     expect(dateFilter._fireAddEvent).not.toHaveBeenCalled();
                 });
             });
+        });
+
+        describe('CQL', function() {
+            var filterPanel;
+            var operator;
+
+            beforeEach(function() {
+                filterPanel = new Portal.filter.DateFilterPanel({
+                    filter: {
+                        name: 'some_column'
+                    },
+                    layer: {
+                        getDownloadFilter: function() {
+                        }
+                    }
+                });
+
+                var dateAsString = '2013';
+
+                spyOn(filterPanel, '_getDateString').andReturn(dateAsString);
+
+                filterPanel.operators = {
+                    getValue: function() { return operator; }
+                };
+
+                filterPanel.fromField = {
+                    getValue: function() { return dateAsString; }
+                };
+
+            });
+
+            it('after', function() {
+                operator = 'after';
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column after 2013');
+            });
+
+            it('before', function() {
+                operator = 'before';
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column before 2013');
+            });
+
+            it('between', function() {
+                operator = 'between';
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column after 2013 AND some_column before 2013');
+            });
+
+            var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
+                expect(filterPanel.getCQL()).toEqual(expectedCQL);
+                expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
+                expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
+            };
         });
     });
 

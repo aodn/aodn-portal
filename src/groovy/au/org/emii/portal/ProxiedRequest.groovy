@@ -39,6 +39,8 @@ class ProxiedRequest {
         def processStream = streamProcessor ?: straightThrough
 
         def targetUrl = _getUrl(params)
+        log.debug "Opening connection to target URL: ${targetUrl}"
+
         def conn = targetUrl.openConnection()
 
         response.contentType = params.format ?: request.contentType

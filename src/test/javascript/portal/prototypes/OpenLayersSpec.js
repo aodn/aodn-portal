@@ -121,13 +121,13 @@ describe("OpenLayers.Layer.WMS", function() {
     });
 
     describe("getDownloadFilter", function() {
-        it("joins cql filters with download filters", function() {
+        it("does not join cql filters with download filters", function() {
             openLayer.params = {CQL_FILTER: "test='filter'"};
             openLayer.downloadOnlyFilters = "depth>=10";
 
             var downloadFilter = openLayer.getDownloadFilter();
 
-            expect(downloadFilter).toBe("test='filter' AND depth>=10");
+            expect(downloadFilter).toBe("depth>=10");
         });
     });
 

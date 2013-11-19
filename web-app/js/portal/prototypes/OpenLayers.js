@@ -208,10 +208,6 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     var filters = [];
 
-    if (this.params.CQL_FILTER) {
-        filters.push(this.params.CQL_FILTER);
-    }
-
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);
     }
