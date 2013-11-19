@@ -14,6 +14,10 @@ Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
         var config = {
             record : 'metadata',
             totalProperty: 'summary/@count',
+            sortInfo: {
+                field: 'popularity',
+                direction: 'DESC'
+            },
             fields: Portal.data.GeoNetworkRecord
         };
 
