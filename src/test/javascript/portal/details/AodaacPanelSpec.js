@@ -74,6 +74,7 @@ describe('Portal.details.AodaacPanel', function() {
 
         beforeEach(function() {
             _applyCommonSpies();
+            spyOn(aodaacPanel, '_attachTemporalEvents');
         });
 
         it('updates the aodaac object when the layer changes', function() {

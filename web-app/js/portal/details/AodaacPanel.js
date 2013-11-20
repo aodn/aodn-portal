@@ -16,7 +16,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg){
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
-        this.currentDatetime = null;
 
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -38,9 +37,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         if (this.selectedLayer.isNcwms()) {
 
-            this._attachTemporalEvents();
-            this.selectedLayer.processTemporalExtent();
-
             Ext.Ajax.request({
                 url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
                 scope: this,
@@ -55,6 +51,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                         var items = [];
                         this._addProductInfo(items);
                         this._addTemporalControls(items);
+                        this.selectedLayer.processTemporalExtent();
                         this._addSpatialControls(items);
                         this.add(items);
                         this._populateFormFields();
@@ -138,17 +135,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             width: 40
         });
 
-        var datePickerConfiguration = {
-            dateFormat: this.DATE_FORMAT,
-            timeFormat: this.TIME_FORMAT,
-            listeners: {
-                scope: this,
-                select: this._onDateSelected,
-                change: this._onDateSelected
-            }
-        };
-
-        this.startDateTimePicker = new Portal.form.UtcExtentDateTime(datePickerConfiguration);
+        this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
 
         var dateStartRow = new Ext.Panel({
             xtype: 'panel',
@@ -160,7 +147,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             ]
         });
 
-        this.endDateTimePicker = new Portal.form.UtcExtentDateTime(datePickerConfiguration);
+        this.endDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
 
         var dateEndRow = new Ext.Panel({
             xtype: 'panel',
@@ -217,7 +204,33 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
+        this._attachTemporalEvents();
+
         items.push(this.temporalControls);
+    },
+
+    _defaultDateTimePickerConfiguration: function() {
+        return {
+            dateFormat: this.DATE_FORMAT,
+            timeFormat: this.TIME_FORMAT,
+            listeners: {
+                scope: this,
+                select: this._onDateSelected,
+                change: this._onDateSelected
+            },
+            timeConfig: {
+                store: new Ext.data.JsonStore({
+                    autoLoad: false,
+                    autoDestroy: true,
+                    fields: ['timeValue', 'displayTime']
+                }),
+                mode: 'local',
+                triggerAction: "all",
+                editable: false,
+                valueField: 'timeValue',
+                displayField: 'displayTime'
+            }
+        };
     },
 
     _newDateTimeLabel: function(html){
@@ -257,9 +270,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _onDateSelected: function(datePicker, jsDate) {
-        var selectedDateMoment = moment.utc([jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate()]);
+        var selectedDateMoment = moment(jsDate);
         datePicker.setValue(selectedDateMoment);
-
         var selectedTimeMoment = moment.utc(datePicker.getValue());
         this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
@@ -275,7 +287,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel(time);
     },
 
-    _updateGeoNetworkAodaac: function(){
+    _updateGeoNetworkAodaac: function() {
         if (this.geoNetworkRecord) {
             this.geoNetworkRecord.updateAodaac(this._buildAodaac());
         }

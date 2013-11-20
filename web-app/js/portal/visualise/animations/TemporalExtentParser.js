@@ -2,10 +2,6 @@ Ext.namespace('Portal.visualise.animations');
 
 Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 
-    constructor: function(cfg) {
-        Ext.apply(this, cfg);
-    },
-
     expandExtendedISO8601Dates: function(splitDates, startIndex, endIndex) {
         /*
          Expand setISO8601 repeating intervals from array

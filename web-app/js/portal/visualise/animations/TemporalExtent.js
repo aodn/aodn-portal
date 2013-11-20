@@ -35,6 +35,10 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return this.extent.length;
     },
 
+    get: function(i) {
+        return this.extent[i];
+    },
+
     next: function(dateTime) {
         var current = moment.utc(dateTime);
 
@@ -45,12 +49,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             return this.min();
         }
 
-        var indexOfDay = this._findFirstIndexOfDay(
-            this._zeroIfNegative(binSearch(this.extent, current, this._startOfDayIsAfter, this)),
-            current
-        );
-
-        return this.extent[this._findFirstIndexAfter(current, indexOfDay)].clone();
+        return this.extent[this._findFirstIndexAfter(current, this._indexOfDay(current))].clone();
     },
 
     previous: function(dateTime) {
@@ -63,12 +62,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             return this.max();
         }
 
-        var indexOfDay = this._findFirstIndexOfDay(
-            this._zeroIfNegative(binSearch(this.extent, current, this._startOfDayIsAfter, this)),
-            current
-        );
-
-        return this.extent[this._findFirstIndexBefore(current, indexOfDay)].clone();
+        return this.extent[this._findFirstIndexBefore(current, this._indexOfDay(current))].clone();
     },
 
     getMissingDays: function() {
@@ -87,7 +81,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         var _extentStart = moment.utc(extentStart);
         // Will give us an occurrence of the date given, not necessarily
         // the first or last
-        var indexOfSameDate = binSearch(this.extent, _extentStart, this._startOfDayIsAfter, this);
+        var indexOfSameDate = this._anyIndexOfSameDate(_extentStart);
 
         // No dates found - return
         if (indexOfSameDate < 0) {
@@ -110,8 +104,8 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
         // Will give us an occurrence of the date given, not necessarily
         // the first or last
-        var indexOfStartDate = this._zeroIfNegative(binSearch(this.extent, _extentStart, this._startOfDayIsAfter, this));
-        var indexOfEndDate = this._whenNegative(binSearch(this.extent, _extentEnd, this._startOfDayIsAfter, this), this.length() - 1);
+        var indexOfStartDate = this._zeroIfNegative(this._anyIndexOfSameDate(_extentStart));
+        var indexOfEndDate = this._whenNegative(this._anyIndexOfSameDate(_extentStart), this.length() - 1);
 
         return this._getSubExtent(
             this._findIndexOrNearestAfter(_extentStart, indexOfStartDate),
@@ -143,6 +137,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         var that = this;
         var extentParser = new Portal.visualise.animations.TemporalExtentParser();
         (function () {
+            var missingDaysStart = 0;
             function _parseChunk() {
                 var chunkStart = 0;
                 (function () {
@@ -154,9 +149,10 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                         that.extent,
                         extentParser.expandExtendedISO8601Dates(_extent, chunkStart, chunkEnd)
                     );
-
-                    that._generateMissingDays(chunkStart, chunkEnd);
                     chunkStart = chunkEnd;
+
+                    that._generateMissingDays(missingDaysStart);
+                    missingDaysStart = that.length() - 1;
 
                     if (_extent.length > chunkStart) {
                         setTimeout(arguments.callee, 0);
@@ -309,12 +305,24 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                 // the previous existing date, until a day before the current
                 // existing date
                 for (var nonExistingDay = previousExistingDay.clone().add('days', 1);
-                     nonExistingDay.isBefore(currentExistingDay);
-                     nonExistingDay = nonExistingDay.add('days', 1)) {
-                    this.missingDays.push(nonExistingDay.clone());
+                    nonExistingDay.isBefore(currentExistingDay);
+                    nonExistingDay = nonExistingDay.add('days', 1))
+                {
+                    this.missingDays.push(nonExistingDay.toDate().clone());
                 }
             }
         }
+    },
+
+    _anyIndexOfSameDate: function(searchDate) {
+        return binSearch(this.extent, searchDate, this._startOfDayIsAfter, this);
+    },
+
+    _indexOfDay: function(searchDate) {
+        return this._findFirstIndexOfDay(
+            this._zeroIfNegative(this._anyIndexOfSameDate(searchDate)),
+            searchDate
+        );
     },
 
     _zeroIfNegative: function(value) {

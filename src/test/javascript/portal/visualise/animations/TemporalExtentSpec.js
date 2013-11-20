@@ -342,4 +342,20 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
             });
         });
     });
+
+    describe('missing days', function() {
+        describe('when parsing an extent', function() {
+            it('makes a call to generate missing days', function() {
+                spyOn(temporalExtent, '_generateMissingDays');
+                temporalExtent.parse('2013-01-01T00:00:00.000Z/2013-01-31T23:00:00.000Z/PT1H,2013-03-01T00:00:00.000Z');
+                expect(temporalExtent._generateMissingDays).toHaveBeenCalled();
+            });
+
+            it('correctly generates missing days', function() {
+                temporalExtent.parse('2013-01-01T00:00:00.000Z/2013-01-31T23:00:00.000Z/PT1H,2013-03-01T00:00:00.000Z');
+                expect(temporalExtent.getMissingDays().length).toEqual(28);
+                expect(temporalExtent.getMissingDays()[0] instanceof Date).toBeTruthy();
+            });
+        });
+    });
 });
