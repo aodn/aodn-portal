@@ -15,9 +15,10 @@ class UrlMappings {
             }
         }
 
-        "/"{  controller="home"  }
-        "/admin"{  controller="config"  }
-        "/administration"{  controller="config"  }
+        "/" { controller="landing" }
+
+        "/admin"{ controller="config"  }
+        "/administration"{ controller="config"  }
 
         "500"(view:'/error')
 
