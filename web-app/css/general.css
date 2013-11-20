@@ -5,7 +5,7 @@
  *
  */
 
-body, html, td {
+body, html, td, p {
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
 }
@@ -43,9 +43,7 @@ h6 {
     margin: 2px 0;
 }
 
-p, td {
-    font-family: helvetica, arial, sans-serif;
-}
+
 
 body {
     min-width: 1020px;
@@ -104,7 +102,7 @@ input.readonlyInput {
 }
 
 .faceted-search-results {
-    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.05) inset;
+    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.1) inset;
     border-radius: 6px;
 }
 
@@ -377,7 +375,7 @@ Site navigation
 }
 
 .x-btn.forwardsButton {
-    border-radius: 0px 12px 12px 0px;
+    border-radius: 2px 12px 12px 2px;
 }
 
 .x-btn.backwardsButton {
