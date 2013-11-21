@@ -167,7 +167,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"></script>
