@@ -20,14 +20,14 @@ public enum FilterType {
     String, Date, DateRange, Number, Double, Boolean, BoundingBox
 
     static def stringTypeMapping = [
-        "string": FilterType.String,
-        "date": FilterType.Date,
+        "string":  FilterType.String,
+        "date":    FilterType.Date,
         "datetime": FilterType.Date,
-        "double": FilterType.Number,
-        "float": FilterType.Number,
+        "double":  FilterType.Number,
+        "float":   FilterType.Number,
         "integer": FilterType.Number,
-        "int": FilterType.Number,
-        "long": FilterType.Number,
+        "int":     FilterType.Number,
+        "long":    FilterType.Number,
         "boolean": FilterType.Boolean,
         "pointpropertytype": FilterType.BoundingBox
     ]
@@ -36,14 +36,14 @@ public enum FilterType {
 
         s = s.toLowerCase()
 
-        if (s.startsWith("geometry"))
+        if (s.startsWith("geometry") || s.startsWith("multiline") || s.startsWith("surface")) {
             return BoundingBox
-        else if(s.startsWith("multiline"))
-            return BoundingBox
-        else if(s.startsWith("surface"))
-            return BoundingBox
+        }
+
         return stringTypeMapping[s]
     }
 
-    String getKey() { name() }
+    String getKey() {
+        name()
+    }
 }
