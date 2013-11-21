@@ -10,6 +10,12 @@ package au.org.emii.portal
 import grails.test.GrailsUnitTestCase
 
 class FilterTests extends GrailsUnitTestCase {
+
+    def dateRangeFilter = [type: FilterType.DateRange]
+    def stringFilter = [type: FilterType.String]
+    def filterRequiringPossibleValues = [type: [expectsPossibleValues: true]]
+    def filterNotRequiringPossibleValues = [type: [expectsPossibleValues: false]]
+
     protected void setUp() {
         super.setUp()
     }
@@ -56,5 +62,35 @@ class FilterTests extends GrailsUnitTestCase {
         expected["downloadOnly"] = false
 
         assertEquals expected.toString(), filter1.toLayerData().toString()
+    }
+
+    void testDateRangeFieldValidatorWithValidDateRange() {
+
+        assertNull Filter.dateRangeFieldValidator("field_name", dateRangeFilter)
+    }
+
+    void testDateRangeFieldValidatorWithInvalidDateRange() {
+
+        assertEquals 'invalid.wmsDateName', Filter.dateRangeFieldValidator("", dateRangeFilter).first()
+    }
+
+    void testDateRangeFieldValidatorWithNonDateRange() {
+
+        assertNull Filter.dateRangeFieldValidator("", stringFilter)
+    }
+
+    void testPossibleValuesFieldValidatorExpectingPossibleValues() {
+
+        assertNull Filter.possibleValuesFieldValidator("value 1, value 2", filterRequiringPossibleValues)
+    }
+
+    void testPossibleValuesFieldValidatorExpectingPossibleValuesGetsNone() {
+
+        assertEquals 'invalid.possibleValues', Filter.possibleValuesFieldValidator("", filterRequiringPossibleValues).first()
+    }
+
+    void testPossibleValuesFieldValidatorNotExpectingPossibleValues() {
+
+        assertNull Filter.possibleValuesFieldValidator(null, filterNotRequiringPossibleValues)
     }
 }

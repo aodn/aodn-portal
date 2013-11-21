@@ -20,7 +20,8 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             catalogUrl: Portal.app.config.catalogUrl,
             spatialSearchUrl: appConfigStore.getById('spatialsearch.url').data.value,
             defaultParams: {
-                protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or ')
+                protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
+                sortBy: 'popularity'
             }
         });
 
@@ -68,13 +69,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
     _loadResults: function(response, page) {
         this.resultsStore.startRecord = page.from - 1;
-        this.resultsStore.suspendEvents();
-
         this.resultsStore.loadData(response);
-        this.resultsStore.sort('popularity', 'DESC');
-
-        this.resultsStore.resumeEvents();
-        this.resultsStore.fireEvent('datachanged', this);
     }
 
 });
