@@ -21,7 +21,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     it('filter name should be undefined', function() {
         boundingBoxFilter.filter = {
-            name: 'abc'
+            name: 'this name should be ignored'
         };
 
         expect(boundingBoxFilter.getFilterName()).toEqual(undefined);
