@@ -24,56 +24,48 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             autoScroll: true
         }, cfg);
 
+        console.log("NARP");
+
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function(){
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
+
+        this._addProductInfo();
+        this._addTemporalControls();
+        this._addSpatialControls();
+
+        this.map.events.register("move", this, this._setBounds);
     },
 
     update: function(layer, show, hide, target){
-
         this.selectedLayer = layer;
+        Ext.Ajax.request({
+            url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
+            scope: this,
+            success: function(resp){
 
-        if (this.selectedLayer.isNcwms()) {
+                this.geoNetworkRecord = layer.parentGeoNetworkRecord;
+                this._updateGeoNetworkAodaac();
+                this.productsInfo = JSON.parse(resp.responseText);
+                this.selectedProductsInfo = this.productsInfo[ this.selectedProductInfoIndex ];
 
-            Ext.Ajax.request({
-                url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
-                scope: this,
-                success: function(resp){
-
-                    this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                    this._updateGeoNetworkAodaac();
-                    this.productsInfo = JSON.parse(resp.responseText);
-                    this.selectedProductsInfo = this.productsInfo[ this.selectedProductInfoIndex ];
-
-                    if (this.productsInfo.length > 0) {
-                        var items = [];
-                        this._addProductInfo(items);
-                        this._addTemporalControls(items);
-                        this.selectedLayer.processTemporalExtent();
-                        this._addSpatialControls(items);
-                        this.add(items);
-                        this._populateFormFields();
-                        this._showAllControls();
-                        this.doLayout();
-
-                        this.map.events.register("move", this, this._setBounds);
-
-                        show.call(target, this);
-                    }
-                    else {
-                        hide.call(target, this);
-                    }
-                },
-                failure: function(){
+                if (this.productsInfo.length > 0) {
+                    this.selectedLayer.processTemporalExtent();
+                    this._attachTemporalEvents();
+                    this._populateFormFields();
+                    this._showAllControls();
+                    show.call(target, this);
+                }
+                else {
                     hide.call(target, this);
                 }
-            });
-        }
-        else {
-            // TODO hide the tab dudes
-        }
+            },
+            failure: function(){
+                hide.call(target, this);
+            }
+        });
     },
 
     _showAllControls: function(){
@@ -86,41 +78,50 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.remove(this.productInfoText);
         delete this.productInfoText;
 
+        this._updateSpatialControls();
+
         // Populate spatial extent controls this will also update the aodaac object in the record store
         // so please keep it last so all values are set
         this._setBounds();
     },
 
-    _addProductInfo: function(items){
+    _addProductInfo: function(){
 
         // TODO - DN: Add product picker in case of multiple products per Layer
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
-        items.push(this.productInfoText, this._newSectionSpacer());
+        this.add([this.productInfoText, this._newSectionSpacer()]);
     },
 
 
-    _addSpatialControls: function(items){
-        var extents = this.productsInfo[ this.selectedProductInfoIndex ].extents;
+    _addSpatialControls: function() {
+        this.bboxControl = new Portal.details.BoundingBox({
+            width: 150
+        });
+        // Group controls for hide/show
+        this.spatialControls = new Ext.Container({
+            items: [this._newSectionSpacer(), this._newSectionSpacer(), this._newHtmlElement(""), this.bboxControl, this._newHtmlElement(""), this._newSectionSpacer()],
+            hidden: true
+        });
+
+        this.add(this.spatialControls);
+    },
+
+    _updateSpatialControls: function() {
+        var extents = this.productsInfo[this.selectedProductInfoIndex].extents;
         var spatialExtentHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
         var spatialExtentPossible = this._newHtmlElement("<small><i><b>" + OpenLayers.i18n('areaCoveredLabel') + "</b>: " +
             extents.lat.max + "<b>N</b>, " +
             extents.lon.min + "<b>W</b>, " +
             extents.lat.min + "<b>S</b>, " +
             extents.lon.max + "<b>E</b></i></small><br />");
-        this.bboxControl = new Portal.details.BoundingBox({
-            width: 150
-        });
 
-        // Group controls for hide/show
-        this.spatialControls = new Ext.Container({
-            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentHeader, this.bboxControl, spatialExtentPossible, this._newSectionSpacer()],
-            hidden: true
-        });
-
-        items.push(this.spatialControls);
+        this.spatialControls.remove(this.spatialControls.items.get(2).id);
+        this.spatialControls.insert(2, spatialExtentHeader);
+        this.spatialControls.remove(this.spatialControls.items.get(4).id);
+        this.spatialControls.insert(4, spatialExtentPossible);
     },
 
-    _addTemporalControls: function(items) {
+    _addTemporalControls: function() {
         var temporalExtentHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('temporalExtentHeading') + "</b>");
 
         this.timeRangeLabel = this._newHtmlElement("<i>" + OpenLayers.i18n("loadingMessage") + "</i>");
@@ -204,9 +205,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        this._attachTemporalEvents();
-
-        items.push(this.temporalControls);
+        this.add(this.temporalControls);
     },
 
     _defaultDateTimePickerConfiguration: function() {
@@ -249,6 +248,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _setBounds: function(){
+        console.log("CALLED");
+        console.trace();
         var bounds = this.map.getExtent();
         this.bboxControl.setBounds(bounds);
         this._updateGeoNetworkAodaac();
