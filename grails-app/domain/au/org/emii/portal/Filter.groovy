@@ -31,35 +31,13 @@ class Filter implements Comparable {
 
     static constraints = {
         name(blank: false)
-        wmsStartDateName(validator:{ val, obj ->
-
-            if (obj.type == FilterType.DateRange) {
-                if (val.size() == 0) {
-                    return ['invalid.wmsDateName']
-                }
-            }
-        })
-        wmsEndDateName(validator:{ val, obj ->
-
-            if (obj.type == FilterType.DateRange) {
-                if (val.size() == 0) {
-                    return ['invalid.wmsDateName']
-                }
-            }
-        })
+        wmsStartDateName(validator: dateRangeFieldValidator)
+        wmsEndDateName(validator: dateRangeFieldValidator)
         type()
         layer(nullable: false)
         label(blank: false)
         downloadOnly(nullable: false)
-        possibleValues(validator:{ val, obj ->
-            if (obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date && obj.type != FilterType.DateRange) {
-                if (val.size() > 0)
-                    return true
-            }
-            else
-                return true
-            return ['invalid.possibleValues']
-        })
+        possibleValues(validator: possibleValuesFieldValidator)
     }
 
     def beforeDelete() {
@@ -101,5 +79,29 @@ class Filter implements Comparable {
     int compareTo(other) {
 
         label.toLowerCase() <=> other.label.toLowerCase()
+    }
+
+    static def dateRangeFieldValidator = { val, obj ->
+
+        if (obj.type == FilterType.DateRange) {
+            if (val.size() == 0) {
+                return ['invalid.wmsDateName']
+            }
+        }
+    }
+
+    static def possibleValuesFieldValidator = { val, obj ->
+
+        if (obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date && obj.type != FilterType.DateRange) {
+
+            if (val.size() > 0) {
+                return true
+            }
+
+            return ['invalid.possibleValues']
+        }
+        else {
+            return true
+        }
     }
 }
