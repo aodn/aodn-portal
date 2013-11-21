@@ -13,13 +13,7 @@ describe('Portal.details.AodaacPanel', function() {
         id: "45678",
         updateAodaac: noOp
     };
-    var layer = {
-        parentGeoNetworkRecord: geoNetworkRecord,
-        temporalExtent: [moment("2001-01-01T22:44:00.000Z")],
-        temporalExtentLengthToProcess: 1,
-        missingDays: [],
-        productsInfo: [1,2,3]
-    };
+    var layer = _mockLayer();
 
 
     beforeEach(function() {
@@ -160,6 +154,19 @@ describe('Portal.details.AodaacPanel', function() {
         spyOn(_panel, '_buildAodaac');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
+    }
+
+    function _mockLayer() {
+        var extent = [];
+        for (var i = 0; i < 24; i++) {
+            extent.push(moment("2001-01-01T01:00:00.000Z").add('h', i));
+        }
+        return {
+            parentGeoNetworkRecord: geoNetworkRecord,
+            temporalExtent: extent,
+            missingDays: [],
+            productsInfo: [1,2,3]
+        };
     }
 });
 

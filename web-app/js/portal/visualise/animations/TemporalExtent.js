@@ -286,7 +286,6 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return momentDate.clone().startOf('day');
     },
 
-    // TODO write tests for this
     _generateMissingDays: function(startIndex, endIndex) {
         var _startIndex = startIndex || 0;
         var _endIndex = endIndex || this.extent.length;

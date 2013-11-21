@@ -161,7 +161,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         this.previousFrameButton = new Ext.Button({
-            iconCls : 'rewindButton',
+            iconCls : 'previousButton',
             cls : "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
             listeners : {
@@ -174,7 +174,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         this.nextFrameButton = new Ext.Button({
-            iconCls : 'ffButton',
+            iconCls : 'nextButton',
             cls : "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
             listeners : {

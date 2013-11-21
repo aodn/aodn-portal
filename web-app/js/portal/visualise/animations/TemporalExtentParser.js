@@ -81,7 +81,6 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
         return expandedDates;
     },
 
-
     _getISO8601Period: function(period) {
         //var durationKeys = ["seconds", "minutes", "hours", "days", "weeks", "months", "years"];
         var durationKeys = ["years", "months", "weeks", "days", "hours", "minutes", "seconds"];

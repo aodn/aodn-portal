@@ -153,7 +153,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     /* Overrides */
     getFeatureInfoRequestString: function(clickPoint, overrideParams) {
-        overrideParams.TIME = this._getTimeParameter(this.time); //this.time.clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+        overrideParams.TIME = this._getTimeParameter(this.time);
         overrideParams.FORMAT = "text/xml";
         overrideParams.INFO_FORMAT = overrideParams.FORMAT;
         return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
@@ -174,43 +174,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     isAnimatable: function() {
         return true;
-    },
-
-    // @deprecated
-    downloadAsGif: function(params) {
-        var gifUrl = this._getGifUrl(params);
-
-        window.open(
-            gifUrl,
-            '_blank',
-            'width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes');
-    },
-
-    _getGifUrl: function(params) {
-        var url = this.getFullRequestString();
-
-        if (params) {
-            if (params.spatialExtent) {
-                url = this._appendParam(url, 'BBOX', params.spatialExtent.toBBOX());
-                url = this._appendParam(
-                    url,
-                    'HEIGHT',
-                    Math.floor(this.DEFAULT_GIF_HEIGHT * params.spatialExtent.getHeight() / params.spatialExtent.getWidth()));
-            }
-
-            if (params.temporalExtent) {
-                var format = 'YYYY-MM-DDTHH:mm:ss';
-                url = this._appendParam(url, 'TIME', params.temporalExtent.min().clone().utc().format(format) + '/' +
-                                        params.temporalExtent.max().clone().utc().format(format));
-            }
-        }
-
-        url = this._appendParam(url, 'FORMAT', 'image/gif');
-        url = this._appendParam(url, 'WIDTH', this.DEFAULT_GIF_HEIGHT);
-
-        url = url.replace('FORMAT=image%2Fpng&', '');
-
-        return 'proxy/downloadGif?url=' + url;
     },
 
     _appendParam: function(base, name, value) {

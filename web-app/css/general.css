@@ -283,11 +283,11 @@ hr {
 }
 
 /* animation buttons */
-.ffButton {
+.nextButton {
     background: url("../images/animation/fastForward.png") no-repeat left top transparent;
 }
 
-.rewindButton {
+.previousButton {
     background: url("../images/animation/rewind.png") no-repeat left top transparent;
 }
 
@@ -1149,7 +1149,6 @@ div.allwhite {
 }
 
 .navigationButton div {
-
     vertical-align: middle;
 }
 

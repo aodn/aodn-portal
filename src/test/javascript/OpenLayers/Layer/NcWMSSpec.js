@@ -235,10 +235,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     describe('getExtent min/max', function() {
-
-        var minExtent = moment.utc('2001-02-01T00:00');
-        var maxExtent = moment.utc('2001-02-05T00:00');
-
         beforeEach(function() {
             var extent = [
                 '2001-02-01T00:00',
@@ -268,90 +264,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('getTemporalExtentMax value', function() {
             expect(cachedLayer.getTemporalExtentMax()).toBeSame(moment.utc('2001-02-05T00:00'));
-        });
-    });
-
-    describe('download as gif', function() {
-        beforeEach(function() {
-            spyOn(window, 'open');
-        });
-
-        it('_getGifUrl called', function() {
-            var params = {};
-            spyOn(cachedLayer, '_getGifUrl');
-            cachedLayer.downloadAsGif(params);
-            expect(cachedLayer._getGifUrl).toHaveBeenCalledWith(params);
-        });
-
-        it('window.open called', function() {
-            cachedLayer._getGifUrl = function() {
-                return 'http://theurl';
-            };
-
-            cachedLayer.downloadAsGif();
-            expect(window.open).toHaveBeenCalledWith(
-                'http://theurl',
-                '_blank',
-                'width=200,height=200,menubar=no,location=no,resizable=no,scrollbars=no,status=yes');
-
-        });
-
-        describe('_getGifUrl', function() {
-            beforeEach(function() {
-                cachedLayer.getFullRequestString = function() {
-                    return 'http://somehost/somepath?FORMAT=image%2Fpng';
-                }
-            });
-
-            it('path', function() {
-                expect(cachedLayer._getGifUrl()).toStartWith('proxy/downloadGif?');
-            });
-
-            it('url param', function() {
-                expect(cachedLayer._getGifUrl()).toContain('url=http://somehost/somepath');
-            });
-
-            it('spatial extent', function() {
-                var spatialExtent = new OpenLayers.Bounds(1, 2, 3, 4);
-                expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('BBOX=1,2,3,4');
-            });
-
-            it('temporal extent in utc', function() {
-
-                cachedLayer.temporalExtent = null;
-                cachedLayer.rawTemporalExtent = [
-                    '2000-01-01T00:00:00',
-                    '2000-01-02T00:00:00',
-                    '2000-01-03T00:00:00',
-                    '2000-01-04T00:00:00',
-                    '2000-01-05T00:00:00'
-                ];
-                cachedLayer.processTemporalExtent();
-
-                waitsFor(function() {
-                    return cachedLayer.temporalExtent;
-                }, "Temporal extent not processed", 1000);
-
-                // Note that _getGifUrl will use utc timezone, hence we gonna
-                // get the request shifted to UTC, in other words, -11 hours
-                expect(cachedLayer._getGifUrl({ temporalExtent: cachedLayer.temporalExtent })).toContain(
-                    'TIME=2000-01-01T00:00:00/2000-01-05T00:00:00');
-            });
-
-            it('format', function() {
-                expect(cachedLayer._getGifUrl()).toContain('FORMAT=image/gif');
-                expect(cachedLayer._getGifUrl()).not.toContain('FORMAT=image/png');
-            });
-
-            it('width', function() {
-                expect(cachedLayer._getGifUrl()).toContain('WIDTH=512');
-            });
-
-            it('height', function() {
-                var spatialExtent = new OpenLayers.Bounds(1, 2, 3.99, 4);
-                expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).toContain('HEIGHT=342');
-                expect(cachedLayer._getGifUrl({ spatialExtent: spatialExtent })).not.toContain('HEIGHT=342.');
-            });
         });
     });
 });
