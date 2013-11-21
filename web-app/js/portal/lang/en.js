@@ -244,7 +244,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     aodaacEmailProblemDialogTitle: 'Invalid email address',
     aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
     productInfoHeading: 'Product Info',
-    spatialExtentHeading: 'Spatial Extent',
+    spatialExtentHeading: 'Extent',
     temporalExtentHeading: 'Temporal Extent',
     areaCoveredLabel: 'Area covered: ',
     timeRangeLabel: 'Time range: ',
