@@ -14,10 +14,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var items = [];
         this._addProductInfo(items);
+
+        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         items.push(this._newSectionSpacer());
         items.push(this._newSectionSpacer());
         items.push(this._newSectionSpacer());
-        this._addSpatialControls(items);
+        this._addBoundingBoxPanel(items);
         items.push(this._newSectionSpacer());
         this._addTemporalControls(items);
         items.push(this._newSectionSpacer());
@@ -69,7 +71,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _showAllControls: function() {
-        this.spatialControls.show();
         this.temporalControls.show();
     },
 
@@ -133,20 +134,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _addSpatialControls: function(items) {
-        var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
-
+    _addBoundingBoxPanel: function(items) {
         this.bboxControl = new Portal.details.BoundingBoxPanel({
             width: 300
         });
 
-        // Group controls for hide/show
-        this.spatialControls = new Ext.Container({
-            items: [spatialExtentText, this.bboxControl],
-            hidden: true
-        });
-
-        items.push(this.spatialControls);
+        items.push(this.bboxControl);
     },
 
     _addTemporalControls: function(items) {

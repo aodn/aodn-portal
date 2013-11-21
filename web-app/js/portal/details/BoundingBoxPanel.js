@@ -9,13 +9,21 @@ Ext.namespace('Portal.details');
 
 Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
+
         var defaults = {
             width: 170
         }
 
-        var config = Ext.apply({}, cfg, defaults);
+        cfg = Ext.apply({}, cfg, defaults);
 
-        config.items = this._buildBoundingBox(config);
+        var config = Ext.apply({
+            items: [
+                {
+                    html: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading'))
+                },
+                this._buildBoundingBox(cfg)
+            ]
+        }, cfg);
 
         Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
     },
