@@ -14,7 +14,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     ROW_HEIGHT: 30,
 
-    constructor: function(cfg){
+    constructor: function(cfg) {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
 
         var config = Ext.apply({
@@ -29,7 +29,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(){
+    initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
         this._addProductInfo();
@@ -39,7 +39,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.map.events.register("move", this, this._setBounds);
     },
 
-    update: function(layer, show, hide, target){
+    update: function(layer, show, hide, target) {
         this.selectedLayer = layer;
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
@@ -49,7 +49,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
                 this._updateGeoNetworkAodaac();
                 this.productsInfo = JSON.parse(resp.responseText);
-                this.selectedProductsInfo = this.productsInfo[ this.selectedProductInfoIndex ];
+                this.selectedProductsInfo = this.productsInfo[this.selectedProductInfoIndex];
 
                 if (this.productsInfo.length > 0) {
                     this.selectedLayer.processTemporalExtent();
@@ -68,12 +68,12 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _showAllControls: function(){
+    _showAllControls: function() {
         this.spatialControls.show();
         this.temporalControls.show();
     },
 
-    _populateFormFields: function(){
+    _populateFormFields: function() {
         // Remove productInfoText spinner
         this.remove(this.productInfoText);
         delete this.productInfoText;
@@ -85,8 +85,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setBounds();
     },
 
-    _addProductInfo: function(){
-
+    _addProductInfo: function() {
         // TODO - DN: Add product picker in case of multiple products per Layer
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
         this.add([this.productInfoText, this._newSectionSpacer()]);
@@ -232,18 +231,18 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         };
     },
 
-    _newDateTimeLabel: function(html){
+    _newDateTimeLabel: function(html) {
         return String.format("<small><i><b>{0}</b>: {1}<br/></i></small>", OpenLayers.i18n('currentDateTimeLabel'), html);
     },
 
-    _newHtmlElement: function(html){
+    _newHtmlElement: function(html) {
         return new Ext.Container({
             autoEl: 'div',
             html: html
         });
     },
 
-    _newSectionSpacer: function(){
+    _newSectionSpacer: function() {
         return new Ext.Spacer({ height: 7 });
     },
 
@@ -255,7 +254,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateGeoNetworkAodaac();
     },
 
-    _buildAodaac: function(){
+    _buildAodaac: function() {
         if (this.productsInfo && this.selectedProductsInfo) {
             return {
                 productId: this.selectedProductsInfo.productId,
@@ -278,7 +277,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._layerToTime(selectedTimeMoment);
     },
 
-    _previousTimeSlice: function(){
+    _previousTimeSlice: function() {
         var time = this.selectedLayer.previousTimeSlice();
         this._updateTimeRangeLabel(time);
     },
