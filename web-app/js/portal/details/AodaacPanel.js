@@ -131,7 +131,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _addSpatialControls: function(items) {
         var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
 
-        this.bboxControl = new Portal.details.BoundingBox({
+        this.bboxControl = new Portal.details.BoundingBoxPanel({
             width: 300
         });
 

@@ -10,7 +10,7 @@ Ext.namespace('Portal.filter');
 Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _createField: function() {
-        this.bbox = new Portal.details.BoundingBox();
+        this.bbox = new Portal.details.BoundingBoxPanel();
         this.add(this.bbox);
     },
 

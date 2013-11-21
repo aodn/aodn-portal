@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.BoundingBox = Ext.extend(Ext.Container, {
+Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         var defaults = {
             width: 170
@@ -17,7 +17,7 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
 
         config.items = this._buildBoundingBox(config);
 
-        Portal.details.BoundingBox.superclass.constructor.call(this, config);
+        Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
     },
 
     setBounds: function(bounds) {
