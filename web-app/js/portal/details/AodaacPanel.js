@@ -14,8 +14,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var items = [];
         this._addProductInfo(items);
+        items.push(this._newSectionSpacer());
+        items.push(this._newSectionSpacer());
+        items.push(this._newSectionSpacer());
         this._addSpatialControls(items);
+        items.push(this._newSectionSpacer());
         this._addTemporalControls(items);
+        items.push(this._newSectionSpacer());
 
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -118,7 +123,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
 
-        items.push(productInfoHeader, this.productInfoText, this._newSectionSpacer());
+        items.push(productInfoHeader, this.productInfoText);
     },
 
     _newHtmlElement: function(html) {
@@ -137,7 +142,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.spatialControls = new Ext.Container({
-            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, this.bboxControl, this._newSectionSpacer()],
+            items: [spatialExtentText, this.bboxControl],
             hidden: true
         });
 
@@ -195,7 +200,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [temporalExtentText, datePickers, this._newSectionSpacer()],
+            items: [temporalExtentText, datePickers],
             hidden: true
         });
 
