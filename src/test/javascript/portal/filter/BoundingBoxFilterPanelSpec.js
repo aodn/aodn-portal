@@ -8,15 +8,26 @@
 
 describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
-    describe("isDownloadOnly()", function() {
+    var boundingBoxFilter;
 
-        it("Should return true", function() {
+    beforeEach(function() {
+        spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
+        boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({});
+    });
 
-            spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
+    it('colspan should be 2', function() {
+        expect(boundingBoxFilter.colspan).toBe(2);
+    });
 
-            var boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({});
+    it('filter name should be undefined', function() {
+        boundingBoxFilter.filter = {
+            name: 'abc'
+        };
 
-            expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
-        });
+        expect(boundingBoxFilter.getFilterName()).toEqual(undefined);
+    });
+
+    it("isDownloadOnly() should return true", function() {
+        expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
     });
 });

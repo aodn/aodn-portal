@@ -11,7 +11,7 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         var defaults = {
-            width: 170
+            width: 300
         }
 
         cfg = Ext.apply({}, cfg, defaults);

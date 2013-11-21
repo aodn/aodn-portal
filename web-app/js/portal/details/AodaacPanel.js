@@ -135,9 +135,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addBoundingBoxPanel: function(items) {
-        this.bboxControl = new Portal.details.BoundingBoxPanel({
-            width: 300
-        });
+        this.bboxControl = new Portal.details.BoundingBoxPanel();
 
         items.push(this.bboxControl);
     },
