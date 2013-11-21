@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -17,18 +16,18 @@ class LoggingFilters {
 
     def filters = {
 
-        addLoggingInfo(controller:'*', action:'*') {
+        addLoggingInfo(controller: '*', action: '*') {
 
             before = {
 
                 // Client data
-                MDC.put 'clientAddress', clientAddress( request )
-                MDC.put 'userAgent', userAgent( request )
+                MDC.put 'clientAddress', clientAddress(request)
+                MDC.put 'userAgent', userAgent(request)
 
                 // User data
                 def principal = SecurityUtils?.subject?.principal
-                MDC.put 'userInfoForFile', userInfoForFile( principal )
-                MDC.put 'userInfoForEmail', userInfoForEmail( principal )
+                MDC.put 'userInfoForFile', userInfoForFile(principal)
+                MDC.put 'userInfoForEmail', userInfoForEmail(principal)
             }
 
             afterView = {
@@ -41,22 +40,22 @@ class LoggingFilters {
         }
     }
 
-    String clientAddress( request ) {
+    String clientAddress(request) {
 
-        return request.remoteAddr ?: request.getHeader( "X-Forwarded-For" ) ?: request.getHeader( "Client-IP" )
+        return request.remoteAddr ?: request.getHeader("X-Forwarded-For") ?: request.getHeader("Client-IP")
     }
 
-    String userAgent( request ) {
+    String userAgent(request) {
 
-        return request.getHeader( "User-Agent" ) ?: ""
+        return request.getHeader("User-Agent") ?: ""
     }
 
-    String userInfoForFile( principal ) {
+    String userInfoForFile(principal) {
 
         return "(User: ${ principal ?: "anon." }) "
     }
 
-    String userInfoForEmail( principal ) {
+    String userInfoForEmail(principal) {
 
         return "User: ${ principal ?: "Not logged-in" }\n"
     }
