@@ -181,7 +181,7 @@ class LayerController {
             server {
                 or {
                     // Supplied uri matches server uri used by the WMS Scanner to retrieve the GetCapabilities document
-                    like("uri", params.serverUri + "%")
+                    like("uri", (params.serverUri).replaceFirst(namespace + "/wms", "wms") + "%")
                     // Supplied uri matches published GetMap endpoint (link used by GeoNetwork WMS harvester)
                     // Note that different GetCapabilites versions may have different request endpoints.
                     // So, make sure GeoNetwork and the WMS Scanner harvest the same GetCapabilities version!)
@@ -206,7 +206,8 @@ class LayerController {
             _renderLayer(layerInstances[0])
         }
         else {
-            render text: "Layer '${namespace}:${localName}' does not exist", status: 404
+            response.status = 404
+            render text: "Layer '${namespace}:${localName}' does not exist"  
         }
     }
 

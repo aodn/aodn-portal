@@ -7,8 +7,6 @@
 
 --%>
 
-
-
 <%@ page import="au.org.emii.portal.Server" %>
 <html>
     <head>
@@ -19,7 +17,7 @@
     </head>
     <body>
         <div class="nav">
-          <div id="logo"></div>
+            <div id="logo"></div>
             <span class="menuButton"><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></span>
             <span class="menuButton"><a class="portal_button" href="${createLink(uri: '/')}"><g:message code="default.portal.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>

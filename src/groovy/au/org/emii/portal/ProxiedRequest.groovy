@@ -11,6 +11,8 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import static au.org.emii.portal.UrlUtils.urlWithQueryString
+
 class ProxiedRequest {
 
     static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
@@ -19,49 +21,51 @@ class ProxiedRequest {
     def response
     def params
 
+    def straightThrough = { inputStream, outputStream ->
+        log.debug "Straight-through stream processor"
+        outputStream << inputStream
+    }
+
     ProxiedRequest(request, response, params) {
         this.request = request
         this.response = response
         this.params = params
     }
 
-    def proxy() {
+    def proxy(streamProcessor = null) {
+
+        log.debug "params: $params"
+
+        def processStream = streamProcessor ?: straightThrough
 
         def targetUrl = _getUrl(params)
+        log.debug "Opening connection to target URL: ${targetUrl}"
+
         def conn = targetUrl.openConnection()
 
-        if (params.format) {
-            response.contentType = params.format
-        }
-        else if (request.contentType) {
-            response.contentType = request.contentType
-        }
+        response.contentType = params.format ?: request.contentType
 
         def outputStream = response.outputStream
 
         _addAuthentication(conn, targetUrl)
 
-        if (request.method == 'HEAD') {
-            render(text: "", contentType: (params.format ?: params.FORMAT))
+        // Force download if filename provided
+        if (params.downloadFilename) {
+            log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
+            response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}")
         }
-        else {
-            // Force download if filename provided
-            if (params.downloadFilename) {
-                response.setHeader("Content-disposition", "attachment; filename=${params.downloadFilename}");
-            }
 
-            try {
-                outputStream << conn.inputStream
-                outputStream.flush()
-            }
-            catch (Exception e) {
+        try {
+            processStream conn.inputStream, outputStream
+            outputStream.flush()
+        }
+        catch (Exception e) {
 
-                log.info "Unable to pass-through response from $targetUrl", e
-            }
-            finally {
+            log.info "Unable to pass-through response from $targetUrl", e
+        }
+        finally {
 
-                IOUtils.closeQuietly(outputStream)
-            }
+            IOUtils.closeQuietly(outputStream)
         }
     }
 
@@ -71,20 +75,13 @@ class ProxiedRequest {
             key, value ->
 
             key != "controller" &&
+            key != "action" &&
             key != "url" &&
             key != "format" &&
             key != "_dc"
         }
 
-        def queryStr = ""
-
-        query.each {
-            key, value ->
-
-            queryStr += "&$key=$value"
-        }
-
-        return (params.url + queryStr).toURL()
+        return urlWithQueryString(params.url, query).toURL()
     }
 
     def _addAuthentication(connection, url) {

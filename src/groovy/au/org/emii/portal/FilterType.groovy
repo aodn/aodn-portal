@@ -40,6 +40,8 @@ public enum FilterType {
             return BoundingBox
         else if(s.startsWith("multiline"))
             return BoundingBox
+        else if(s.startsWith("surface"))
+            return BoundingBox
         return stringTypeMapping[s]
     }
 

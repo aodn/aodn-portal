@@ -30,6 +30,7 @@ class FilterTypeTests extends GrailsUnitTestCase {
 
         assertEquals FilterType.BoundingBox, typeFromString("geoMEtryMonkey")
         assertEquals FilterType.BoundingBox, typeFromString("multilineMonkey")
+        assertEquals FilterType.BoundingBox, typeFromString("surfaceMonkey")
         assertEquals FilterType.Number, typeFromString("MONKEY")
         assertEquals null, typeFromString("orangutan")
     }

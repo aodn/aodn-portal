@@ -7,83 +7,63 @@
 
 package au.org.emii.portal
 
-class ProxyController {
+class ProxyController extends RequestProxyingController {
 
     def grailsApplication
     def hostVerifier
 
-    def index = {
-        if (params.url) {
-            _index()
-        }
-        else {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-    }
+    // Index action inherited from RequestProxyingController
 
     def downloadGif = {
 
-        def layersField = "LAYERS="
-        def fieldIndex = params.url.indexOf(layersField)
+        // Todo - DN: building this filename should be done in Javascript. Then we wouldn't need this separate action.
 
-        if (fieldIndex > -1) {
-            def layerName = params.url.substring(fieldIndex + layersField.length())
-            def timeStr = params.TIME
-                .replaceAll("[-:]", "")
-                .replaceAll("/", "_")
+        def injectGifFilename = { params ->
 
-            params.downloadFilename = "${layerName}_${timeStr}.gif"
+            def layersField = "LAYERS="
+            def fieldIndex = params.url.indexOf(layersField)
+
+            if (fieldIndex > -1) {
+                def layerName = params.url.substring(fieldIndex + layersField.length())
+                def timeStr = params.TIME
+                    .replaceAll("[-:]", "")
+                    .replaceAll("/", "_")
+
+                params.downloadFilename = "${layerName}_${timeStr}.gif"
+            }
+
+            return params
         }
 
-        _index()
-    }
-
-    def _index() {
-
-        if (allowedHost(params.url)) {
-            def proxiedRequest = new ProxiedRequest(request, response, params)
-            proxiedRequest.proxy()
-        }
-        else {
-            log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host '${params.url.toURL().host}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-    }
-
-    Boolean allowedHost(url) {
-        if (url) {
-            return hostVerifier.allowedHost(request, url.toURL())
-        }
-        return false
+        _performProxying(injectGifFilename)
     }
 
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
 
-        // Accepts uppercase URL param only
-        if (allowedHost(params?.URL)) {
+        // Todo - DN: We're just changing query string values from uppercase to lowercase. I reckon this could be done in javascript.
+        // Todo - DN: What else is special about it?
 
-            def url = params.URL.replaceAll(/\?$/, "")
-
-            params.remove('URL')
-            params.remove('action')
-            params.remove('controller')
-            // All other params are maintained in the URL (and passed to the index action)
-            def p = params.collect{ k, v -> "$k=$v" }.join('&')
-            if (p.size() > 0) {
-                url += "?" + p
-            }
-
-            // assume that the request FORMAT (from openlayers) will be the return format
-            redirect(action: '', params: [url: url, format: params.FORMAT])
+        def makeLowercase = { params, uppercaseName ->
+            params[uppercaseName.toLowerCase()] = params[uppercaseName]
+            params.remove uppercaseName
         }
-        else {
-            render(text: "No valid allowable URL supplied", contentType: "text/html", encoding: "UTF-8", status: 500)
+
+        def changeCaseOfParams = { params ->
+            // Expects uppercase URL and FORMAT params
+            makeLowercase params, 'URL'
+            makeLowercase params, 'FORMAT'
+
+            return params
         }
+
+        _performProxying(changeCaseOfParams)
     }
 
     def wmsOnly = {
+
+        // Todo - DN: Can this be tidied or refactored at all?
 
         if (params.url) {
 

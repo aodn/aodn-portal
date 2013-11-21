@@ -55,6 +55,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsNetCdfLabel: 'Download as NetCDF',
     downloadAsHdfLabel: 'Download as HDF',
     downloadAsAsciiLabel: 'Download as ASCII text',
+    downloadAsUrlsLabel: 'Download as a list of URLs',
     downloadAsOpenDapUrlsLabel: 'Download as a list of OpenDAP URLs',
     parametersLabel: 'Parameters:',
     parameterAreaLabel: 'Area',

@@ -104,6 +104,12 @@ class SecurityFilters {
             }
         }
 
+        downloadAccess(controller: "download", action: "index|urlList") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
                 request.accessAllowed = true
