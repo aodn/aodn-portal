@@ -12,8 +12,9 @@ import grails.test.GrailsUnitTestCase
 class FilterTests extends GrailsUnitTestCase {
 
     def dateRangeFilter = [type: FilterType.DateRange]
-    def booleanFilter = [type: FilterType.Boolean]
     def stringFilter = [type: FilterType.String]
+    def filterRequiringPossibleValues = [type: [expectsPossibleValues: true]]
+    def filterNotRequiringPossibleValues = [type: [expectsPossibleValues: false]]
 
     protected void setUp() {
         super.setUp()
@@ -78,18 +79,18 @@ class FilterTests extends GrailsUnitTestCase {
         assertNull Filter.dateRangeFieldValidator("", stringFilter)
     }
 
-    void testPossibleValuesFieldValidatorWithStringFilter() {
+    void testPossibleValuesFieldValidatorExpectingPossibleValues() {
 
-        assertTrue Filter.possibleValuesFieldValidator("value 1, value 2", stringFilter)
+        assertNull Filter.possibleValuesFieldValidator("value 1, value 2", filterRequiringPossibleValues)
     }
 
-    void testPossibleValuesFieldValidatorWithStringFilterNoPossibleValues() {
+    void testPossibleValuesFieldValidatorExpectingPossibleValuesGetsNone() {
 
-        assertEquals 'invalid.possibleValues', Filter.possibleValuesFieldValidator("", stringFilter).first()
+        assertEquals 'invalid.possibleValues', Filter.possibleValuesFieldValidator("", filterRequiringPossibleValues).first()
     }
 
-    void testPossibleValuesFieldValidatorWithBooleanFilter() {
+    void testPossibleValuesFieldValidatorNotExpectingPossibleValues() {
 
-        assertTrue Filter.possibleValuesFieldValidator(null, booleanFilter)
+        assertNull Filter.possibleValuesFieldValidator(null, filterNotRequiringPossibleValues)
     }
 }

@@ -17,7 +17,15 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterType {
-    String, Date, DateRange, Number, Double, Boolean, BoundingBox
+    String(),
+    Date(false),
+    DateRange(false),
+    Number(),
+    Double(),
+    Boolean(false),
+    BoundingBox(false)
+
+    def expectsPossibleValues
 
     static def stringTypeMapping = [
         "string":  FilterType.String,
@@ -31,6 +39,10 @@ public enum FilterType {
         "boolean": FilterType.Boolean,
         "pointpropertytype": FilterType.BoundingBox
     ]
+
+    FilterType(expectsPossibleValues = true) {
+        this.expectsPossibleValues = expectsPossibleValues
+    }
 
     static FilterType typeFromString(String s) {
 

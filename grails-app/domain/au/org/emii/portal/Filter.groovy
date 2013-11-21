@@ -84,6 +84,7 @@ class Filter implements Comparable {
     static def dateRangeFieldValidator = { val, obj ->
 
         if (obj.type == FilterType.DateRange) {
+
             if (val.size() == 0) {
                 return ['invalid.wmsDateName']
             }
@@ -92,16 +93,11 @@ class Filter implements Comparable {
 
     static def possibleValuesFieldValidator = { val, obj ->
 
-        if (obj.type != FilterType.Boolean && obj.type != FilterType.BoundingBox && obj.type != FilterType.Date && obj.type != FilterType.DateRange) {
+        if (obj.type.expectsPossibleValues) {
 
-            if (val.size() > 0) {
-                return true
+            if (val.size() == 0) {
+                return ['invalid.possibleValues']
             }
-
-            return ['invalid.possibleValues']
-        }
-        else {
-            return true
         }
     }
 }
