@@ -27,7 +27,6 @@ class LoggingFilters {
                 // User data
                 def principal = SecurityUtils?.subject?.principal
                 MDC.put 'userInfoForFile', userInfoForFile(principal)
-                MDC.put 'userInfoForEmail', userInfoForEmail(principal)
             }
 
             afterView = {
@@ -35,7 +34,6 @@ class LoggingFilters {
                 MDC.remove 'clientAddress'
                 MDC.remove 'userAgent'
                 MDC.remove 'userInfoForFile'
-                MDC.remove 'userInfoForEmail'
             }
         }
     }
@@ -53,10 +51,5 @@ class LoggingFilters {
     String userInfoForFile(principal) {
 
         return "(User: ${ principal ?: "anon." }) "
-    }
-
-    String userInfoForEmail(principal) {
-
-        return "User: ${ principal ?: "Not logged-in" }\n"
     }
 }
