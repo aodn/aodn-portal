@@ -31,8 +31,8 @@ class Filter implements Comparable {
 
     static constraints = {
         name(blank: false)
-        wmsStartDateName(validator: dateRangeFieldValidator)
-        wmsEndDateName(validator: dateRangeFieldValidator)
+        wmsStartDateName(nullable: true, validator: dateRangeFieldValidator)
+        wmsEndDateName(nullable: true, validator: dateRangeFieldValidator)
         type()
         layer(nullable: false)
         label(blank: false)
