@@ -209,8 +209,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             success: function(resp, opts) {
 
                 var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptorsAsText,
-
+                Ext.each(
+                    layerDescriptorsAsText,
                     function(layerDescriptorAsText, index, all) {
 
                         var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
@@ -221,9 +221,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                     this
                 );
 
-                if (successCallback)
+                if (successCallback) {
                     successCallback();
-
+                }
             }
         });
     }
