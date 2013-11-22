@@ -14,8 +14,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var items = [];
         this._addProductInfo(items);
-        this._addSpatialControls(items);
+
+        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
+        items.push(this._newSectionSpacer());
+        items.push(this._newSectionSpacer());
+        items.push(this._newSectionSpacer());
+        this._addBoundingBoxPanel(items);
+        items.push(this._newSectionSpacer());
         this._addTemporalControls(items);
+        items.push(this._newSectionSpacer());
 
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -64,7 +71,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _showAllControls: function() {
-        this.spatialControls.show();
         this.temporalControls.show();
     },
 
@@ -118,7 +124,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
 
-        items.push(productInfoHeader, this.productInfoText, this._newSectionSpacer());
+        items.push(productInfoHeader, this.productInfoText);
     },
 
     _newHtmlElement: function(html) {
@@ -128,20 +134,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _addSpatialControls: function(items) {
-        var spatialExtentText = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
+    _addBoundingBoxPanel: function(items) {
+        this.bboxControl = new Portal.details.BoundingBoxPanel();
 
-        this.bboxControl = new Portal.details.BoundingBoxPanel({
-            width: 300
-        });
-
-        // Group controls for hide/show
-        this.spatialControls = new Ext.Container({
-            items: [this._newSectionSpacer(), this._newSectionSpacer(), spatialExtentText, this.bboxControl, this._newSectionSpacer()],
-            hidden: true
-        });
-
-        items.push(this.spatialControls);
+        items.push(this.bboxControl);
     },
 
     _addTemporalControls: function(items) {
@@ -195,7 +191,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [temporalExtentText, datePickers, this._newSectionSpacer()],
+            items: [temporalExtentText, datePickers],
             hidden: true
         });
 

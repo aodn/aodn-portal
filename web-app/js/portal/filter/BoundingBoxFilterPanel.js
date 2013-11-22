@@ -9,6 +9,14 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
+    constructor: function(cfg) {
+        var config = Ext.apply({
+            colspan: 2
+        }, cfg);
+
+        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
+    },
+
     _createField: function() {
         this.bbox = new Portal.details.BoundingBoxPanel();
         this.add(this.bbox);
@@ -20,6 +28,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     handleRemoveFilter: function() {
         // Can't be removed
+    },
+
+    getFilterName: function() {
+        return undefined;
     },
 
     setLayerAndFilter: function(layer, filter) {
