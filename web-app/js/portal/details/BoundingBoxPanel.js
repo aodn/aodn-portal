@@ -36,22 +36,22 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
     },
 
     getSouthBL: function() {
-        return this._getBL(this.southBL);
+        return this._getBoundingLine(this.southBL);
     },
 
     getNorthBL: function() {
-        return this._getBL(this.northBL);
+        return this._getBoundingLine(this.northBL);
     },
 
     getEastBL: function() {
-        return this._getBL(this.eastBL);
+        return this._getBoundingLine(this.eastBL);
     },
 
     getWestBL: function() {
-        return this._getBL(this.westBL);
+        return this._getBoundingLine(this.westBL);
     },
 
-    _getBL: function(field) {
+    _getBoundingLine: function(field) {
         return parseFloat(field.value);
     },
 
