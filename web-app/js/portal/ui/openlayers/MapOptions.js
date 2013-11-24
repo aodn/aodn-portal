@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -10,7 +9,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
-    constructor: function(cfg, mapPanel) {
+    constructor: function (cfg, mapPanel) {
         var config = Ext.apply({}, cfg);
         Portal.ui.openlayers.MapOptions.superclass.constructor.call(this, config);
 
@@ -29,12 +28,12 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             defaultControl: this.navigation,
             div: container
         });
-        toolPanel.addControls( [ zoom, this.navigation ] );
+        toolPanel.addControls([ zoom, this.navigation ]);
 
         // Control to get feature info or pop up
         this.clickControl = new Portal.ui.openlayers.ClickControl({
             fallThrough: true,
-            onClick: function(event) {
+            onClick: function (event) {
 
                 mapPanel.handleFeatureInfoClick(event);
             }
@@ -50,8 +49,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             new OpenLayers.Control.OverviewMap({
                 autoPan: true,
                 minRectSize: 30,
-                mapOptions:{
-                    resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125]
+                mapOptions: {
+                    resolutions: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625, 0.000171661376953125]
                 }
             }),
             toolPanel,
@@ -62,29 +61,29 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.theme = null;
         this.displayProjection = new OpenLayers.Projection("EPSG:4326");
         this.prettyStateKeys = true; // for pretty permalinks,
-        this.resolutions = [  0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625,  0.000171661376953125];
+        this.resolutions = [0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625, 0.000171661376953125];
 
         // This is included here, as it is essentially just another control for the map, although
         // not an actual OpenLayers.Control.
         this.mapPanel = mapPanel;
     },
 
-    afterRender: function(mapPanel) {
+    afterRender: function (mapPanel) {
         this._initMapActionsControl(mapPanel);
 
         this.clickControl.activate();
         this.navigation.events.on({
-            "activate": function() {
+            "activate": function () {
                 this.clickControl.activate();
             },
-            "deactivate": function() {
+            "deactivate": function () {
                 this.clickControl.deactivate();
             },
             scope: this
         });
     },
 
-    _initMapActionsControl: function(mapPanel) {
+    _initMapActionsControl: function (mapPanel) {
         this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
         mapPanel.map.addControl(this.mapActionsControl);
         this.mapActionsControl.maximizeControl();
@@ -93,7 +92,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
     /**
      * Create a new map, from using the options specified by 'this'.
      */
-    newMap: function() {
+    newMap: function () {
         this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
         return new OpenLayers.TemporalMap(this);
     }
