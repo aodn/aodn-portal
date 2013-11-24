@@ -6,12 +6,12 @@
  *
  */
 
-describe("Portal.details.BoundingBox", function() {
+describe("Portal.details.BoundingBoxPanel", function() {
     
     var bbox;
     
     beforeEach(function() {
-        bbox = new Portal.details.BoundingBox();
+        bbox = new Portal.details.BoundingBoxPanel();
 
         bbox.setBounds({bottom: -17, top: -19, left: -51, right: -13});
     });

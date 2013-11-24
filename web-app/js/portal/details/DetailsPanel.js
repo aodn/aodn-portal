@@ -72,37 +72,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             },
             items: [this.opacitySlider]
         });
-
-        this.transectControl = new Portal.mainMap.TransectControl({
-            ref: 'transectControl',
-            height: 30,
-            listeners: {
-                scope: this,
-
-                transect: function (inf) {
-                    var newTab = this.detailsPanelTabs.add({
-                        xtype: 'panel',
-                        title: OpenLayers.i18n('transectTab'),
-                        closable: true,
-                        layout: 'form',
-                        autoScroll: true,
-                        items: [
-                            {
-                                //TODO: use template
-                                html: "<img width=\"300\" src=\"" + inf.transectUrl + "\" onclick=\"Ext.Msg.alert('" + OpenLayers.i18n('transectDataHeading') + "', '" + inf.line + "');\" />"
-                            }
-                        ]
-                    });
-
-                    this.detailsPanelTabs.setActiveTab(this.detailsPanelTabs.items.indexOf(newTab));
-                }
-            }
-        });
-
+        
         this.items = [
             this.status,
             this.opacitySliderContainer,
-            this.transectControl,
             this.detailsPanelTabs
         ];
 
@@ -119,23 +92,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
             // show new layer unless user requested 'hideLayerOptions'
             this.detailsPanelTabs.update(layer);
-            this.transectControl.hide();
-
-            // remove any transect tabs for previous layer
-            var transectTabs = this.detailsPanelTabs.find('title', OpenLayers.i18n('transectTab'));
-            for (var i=0;i<transectTabs.length;i++) {
-                this.detailsPanelTabs.remove(transectTabs[i]);
-            }
-
-            //turn on transect control if server is NCWMS and layer is not animated.
-            if (   layer.server.type.search("NCWMS") > -1
-                && !layer.isAnimated)  {
-                this.transectControl.setMapPanel(this.mapPanel);
-                this.transectControl.layer = layer;
-                this.transectControl.show();
-                this.transectControl.ownerCt.doLayout();
-            }
-
             this.opacitySliderContainer.doLayout();
             this.opacitySliderContainer.show();
             //weird stuff happens if you set layer before showing the container, see Bug #1582
@@ -165,13 +121,5 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
         this.opacitySliderContainer.setVisible(false);
         this.detailsPanelTabs.setVisible(false);
-        this.deactivateDrawingControl();
-        this.transectControl.hide();
     },
-
-    deactivateDrawingControl: function () {
-        if (this.transectControl != null) {
-            this.transectControl.deactivateDrawingControl();
-        }
-    }
 });

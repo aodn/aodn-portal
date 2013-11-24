@@ -30,9 +30,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
+        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         this._addProductInfo();
+        this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
+        this._addBoundingBoxPanel();
+        this.add(this._newSectionSpacer());
         this._addTemporalControls();
-        this._addSpatialControls();
+        this.add(this._newSectionSpacer());
 
         this.map.events.register("move", this, this._setBounds);
     },
@@ -67,7 +73,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _showAllControls: function() {
-        this.spatialControls.show();
         this.temporalControls.show();
     },
 
@@ -86,36 +91,19 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _addProductInfo: function() {
         // TODO - DN: Add product picker in case of multiple products per Layer
         this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
-        this.add([this.productInfoText, this._newSectionSpacer()]);
+        this.add(this.productInfoText);
     },
 
-
-    _addSpatialControls: function() {
-        this.bboxControl = new Portal.details.BoundingBox({
-            width: 150
+    _newHtmlElement: function(html) {
+        return new Ext.Container({
+            autoEl: 'div',
+            html: html
         });
-        // Group controls for hide/show
-        this.spatialControls = new Ext.Container({
-            items: [this._newSectionSpacer(), this._newSectionSpacer(), this._newHtmlElement(""), this.bboxControl, this._newHtmlElement(""), this._newSectionSpacer()],
-            hidden: true
-        });
-
-        this.add(this.spatialControls);
     },
 
-    _updateSpatialControls: function() {
-        var extents = this.productsInfo[this.selectedProductInfoIndex].extents;
-        var spatialExtentHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('spatialExtentHeading') + "</b>");
-        var spatialExtentPossible = this._newHtmlElement("<small><i><b>" + OpenLayers.i18n('areaCoveredLabel') + "</b>: " +
-            extents.lat.max + "<b>N</b>, " +
-            extents.lon.min + "<b>W</b>, " +
-            extents.lat.min + "<b>S</b>, " +
-            extents.lon.max + "<b>E</b></i></small><br />");
-
-        this.spatialControls.remove(this.spatialControls.items.get(2).id);
-        this.spatialControls.insert(2, spatialExtentHeader);
-        this.spatialControls.remove(this.spatialControls.items.get(4).id);
-        this.spatialControls.insert(4, spatialExtentPossible);
+    _addBoundingBoxPanel: function(items) {
+        this.bboxControl = new Portal.details.BoundingBoxPanel();
+        this.add(this.bboxControl);
     },
 
     _addTemporalControls: function() {

@@ -119,7 +119,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         if (newFilterPanel) {
             this.relayEvents(newFilterPanel, ['addFilter']);
-            this._addLabel(filter);
+            if (newFilterPanel.getFilterName()) {
+                this._addLabel(filter);
+            }
             this.add(newFilterPanel);
             this.filters.push(newFilterPanel);
 

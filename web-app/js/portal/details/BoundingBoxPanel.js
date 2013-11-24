@@ -7,17 +7,25 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.BoundingBox = Ext.extend(Ext.Container, {
+Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
+
         var defaults = {
-            width: 170
+            width: 300
         }
 
-        var config = Ext.apply({}, cfg, defaults);
+        cfg = Ext.apply({}, cfg, defaults);
 
-        config.items = this._buildBoundingBox(config);
+        var config = Ext.apply({
+            items: [
+                {
+                    html: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading'))
+                },
+                this._buildBoundingBox(cfg)
+            ]
+        }, cfg);
 
-        Portal.details.BoundingBox.superclass.constructor.call(this, config);
+        Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
     },
 
     setBounds: function(bounds) {
@@ -28,19 +36,23 @@ Portal.details.BoundingBox = Ext.extend(Ext.Container, {
     },
 
     getSouthBL: function() {
-        return parseFloat(this.southBL.value);
+        return this._getBoundingLine(this.southBL);
     },
 
     getNorthBL: function() {
-        return parseFloat(this.northBL.value);
+        return this._getBoundingLine(this.northBL);
     },
 
     getEastBL: function() {
-        return parseFloat(this.eastBL.value);
+        return this._getBoundingLine(this.eastBL);
     },
 
     getWestBL: function() {
-        return parseFloat(this.westBL.value);
+        return this._getBoundingLine(this.westBL);
+    },
+
+    _getBoundingLine: function(field) {
+        return parseFloat(field.value);
     },
 
     _buildBoundingBox: function(config) {

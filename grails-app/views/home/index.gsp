@@ -116,7 +116,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBox.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBoxPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilterPanel.js')}"></script>
@@ -163,7 +163,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ActiveGeoNetworkRecordStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/EmptyDropZonePlaceholder.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/map.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/mainMap/TransectControl.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"></script>
