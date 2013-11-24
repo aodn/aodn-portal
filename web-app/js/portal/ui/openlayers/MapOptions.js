@@ -21,14 +21,11 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             title: OpenLayers.i18n('panControl')
         });
 
-        var zoom = new OpenLayers.Control.ZoomBox({
-            title: OpenLayers.i18n('zoomAndCentre')
-        });
         var toolPanel = new OpenLayers.Control.Panel({
             defaultControl: this.navigation,
             div: container
         });
-        toolPanel.addControls([ zoom, this.navigation ]);
+        toolPanel.addControls([this.navigation]);
 
         // Control to get feature info or pop up
         this.clickControl = new Portal.ui.openlayers.ClickControl({
