@@ -2,10 +2,6 @@ Ext.namespace('Portal.form');
 
 Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
-    constructor: function(config) {
-        Portal.form.UtcExtentDateTime.superclass.constructor.call(this, config);
-    },
-
     initComponent: function() {
         Portal.form.UtcExtentDateTime.superclass.initComponent.call(this);
         this._preventStoreChangesBeingIgnored();

@@ -147,7 +147,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                     }
                     that.extent.push.apply(
                         that.extent,
-                        extentParser.expandExtendedISO8601Dates(_extent, chunkStart, chunkEnd)
+                        extentParser.expandExtendedDates(_extent, chunkStart, chunkEnd)
                     );
                     chunkStart = chunkEnd;
 

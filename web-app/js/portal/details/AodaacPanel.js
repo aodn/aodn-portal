@@ -24,8 +24,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             autoScroll: true
         }, cfg);
 
-        console.log("NARP");
-
         Portal.details.AodaacPanel.superclass.constructor.call(this, config);
     },
 
@@ -247,8 +245,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _setBounds: function(){
-        console.log("CALLED");
-        console.trace();
         var bounds = this.map.getExtent();
         this.bboxControl.setBounds(bounds);
         this._updateGeoNetworkAodaac();

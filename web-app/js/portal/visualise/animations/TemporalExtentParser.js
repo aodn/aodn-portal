@@ -2,7 +2,7 @@ Ext.namespace('Portal.visualise.animations');
 
 Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 
-    expandExtendedISO8601Dates: function(splitDates, startIndex, endIndex) {
+    expandExtendedDates: function(splitDates, startIndex, endIndex) {
         /*
          Expand setISO8601 repeating intervals from array
          EG: [ "2001-01-10T22:36:00.000Z/2001-01-12T21:48:00.000Z/PT23H36M", "2002-01-10T22:36:00.000Z/2003-01-12T21:48:00.000Z/PT23H36M" ]
@@ -36,12 +36,12 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 
     _expandValidDateString: function(dateString) {
         if (this._isPeriod(dateString)) {
-            return this._expand3sectionExtendedISO8601Date(dateString);
+            return this._expandExtendedDate(dateString);
         }
         return moment.utc(dateString);
     },
 
-    _expand3sectionExtendedISO8601Date: function(extendedDate) {
+    _expandExtendedDate: function(extendedDate) {
 
         /* expecting the 3 part format as seen from ncWMS
          start / endate / interval
@@ -56,7 +56,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
         // 'P' indicates that the duration that follows is specified by the number of years, months, days, hours, minutes, and seconds
         if (period.indexOf("P") == 0) {
 
-            var duration = moment.duration(this._getISO8601Period(period));
+            var duration = moment.duration(this._getPeriod(period));
             var nextDate = moment.utc(dateParts[0]);
             var endDate = moment.utc(dateParts[1]);
 
@@ -81,8 +81,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
         return expandedDates;
     },
 
-    _getISO8601Period: function(period) {
-        //var durationKeys = ["seconds", "minutes", "hours", "days", "weeks", "months", "years"];
+    _getPeriod: function(period) {
         var durationKeys = ["years", "months", "weeks", "days", "hours", "minutes", "seconds"];
         var duration = this._initDuration(durationKeys);
 

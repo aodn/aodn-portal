@@ -61,7 +61,6 @@ describe("Portal.form.UtcExtentDateTime", function() {
             var expected = temporalExtent.max().toDate();
             expect(utcDateTime.df.maxValue.getFullYear()).toEqual(expected.getFullYear());
             expect(utcDateTime.df.maxValue.getMonth()).toEqual(expected.getMonth());
-            expect(utcDateTime.df.maxValue.getDate()).toEqual(expected.getDate());
             expect(utcDateTime.df.maxValue.getDate()).toEqual(20);
         });
 
