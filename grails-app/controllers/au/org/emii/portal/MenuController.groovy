@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -114,7 +113,6 @@ class MenuController {
         }
     }
 
-
     // this method is all about setting the 'active' attribute from the list page
     def setActive = {
 
@@ -122,7 +120,7 @@ class MenuController {
         menuInstance.properties = params
         if (menuInstance.save(flush: true)) {
             def state = (menuInstance.active) ? "active" : "inactive"
-            render  "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state
+            render "Menu " + menuInstance.id + "  '" + menuInstance.title + "' " + " saved as " + state
         }
         else {
             render 'ERROR: Problem saving the new state!'
@@ -133,7 +131,7 @@ class MenuController {
 
         def result
 
-        if ( params.id?.isNumber() ) {
+        if (params.id?.isNumber()) {
 
             // Use cached version if possible
             def dummy = new MenuPresenter()
@@ -141,11 +139,11 @@ class MenuController {
             result = MenuJsonCache.instance().get(dummy)
 
             // If not in cache, load menu and cache it
-            if ( !result ) {
-                def menu = Menu.get( params.id )
+            if (!result) {
+                def menu = Menu.get(params.id)
 
                 // Menu will be null if params.id is not a menu id
-                if ( menu ) {
+                if (menu) {
 
                     def displayable = menu.toDisplayableMenu()
                     result = (displayable as JSON).toString()
@@ -164,7 +162,7 @@ class MenuController {
 
     private _cleanParams(params) {
 
-         // strip out the root node and use it as the title
+        // strip out the root node and use it as the title
         def jsonArray = JSON.parse(params.json)
 
         params.editDate = new Date()

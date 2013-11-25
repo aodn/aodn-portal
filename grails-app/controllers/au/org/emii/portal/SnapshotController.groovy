@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -12,15 +11,14 @@ import au.org.emii.portal.config.JsonMarshallingRegistrar
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 
-class SnapshotController
-{
+class SnapshotController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
         redirect(action: "list", params: params)
     }
 
-    def list =     {
+    def list = {
         def snapshotList
 
         if (params.owner?.id) {
@@ -47,8 +45,8 @@ class SnapshotController
             snapshotList = Snapshot.list(params)
         }
 
-        def result = [ success: true, data: snapshotList, count: snapshotList.count() ]
-        render text: result as JSON, contentType:"application/json"
+        def result = [success: true, data: snapshotList, count: snapshotList.count()]
+        render text: result as JSON, contentType: "application/json"
     }
 
     def create = {
@@ -208,7 +206,7 @@ class SnapshotController
     }
 
     private void bindJSONSnapshotData(Snapshot snapshotInstance, JSONObject jsonSnapshotInstance) {
-        bindData(snapshotInstance, jsonSnapshotInstance, [exclude: ['owner','layers']])
+        bindData(snapshotInstance, jsonSnapshotInstance, [exclude: ['owner', 'layers']])
         snapshotInstance.owner = User.get(jsonSnapshotInstance?.owner)
 
         jsonSnapshotInstance.layers.each {

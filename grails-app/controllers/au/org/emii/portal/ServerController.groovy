@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -50,8 +49,8 @@ class ServerController {
         def serverInstance = new Server()
         serverInstance.properties = params
 
-        def allOwners = User.withCriteria{
-            roles{
+        def allOwners = User.withCriteria {
+            roles {
                 eq('name', UserRole.SERVEROWNER)
             }
         }
@@ -140,14 +139,14 @@ class ServerController {
         // unencode layerId as per 'listAllLayers' to get just the id
         if (params.serverId != null) {
             def serverIdArr = params.serverId.split("_")
-            serverInstance = Server.get( serverIdArr[ serverIdArr.size() - 1 ])
+            serverInstance = Server.get(serverIdArr[serverIdArr.size() - 1])
         }
 
         if (serverInstance) {
             render serverInstance as JSON
         }
         else {
-            render  ""
+            render ""
         }
     }
 
@@ -161,8 +160,8 @@ class ServerController {
 
         def userInstance = User.current()
         if (userInstance) {
-            def serverList = Server.withCriteria{
-                owners{
+            def serverList = Server.withCriteria {
+                owners {
                     eq('id', userInstance.id)
                 }
             }
@@ -207,7 +206,7 @@ class ServerController {
                         if (index == 0) {
                             checkURL = job.uri
                         }
-                        else{
+                        else {
                             checkURL = job.serverUrl
                         }
 
@@ -219,7 +218,7 @@ class ServerController {
 
                 scannersContactable[index] = true
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 log.debug(e.message)
 
                 if (flash.message) {
@@ -230,7 +229,7 @@ class ServerController {
                 }
 
                 flash.message += "Cannot contact scanner ${scannerService.scannerBaseUrl} for a list of current jobs.  Please make sure server is contactable."
-                scannersContactable[index]  = false
+                scannersContactable[index] = false
             }
         }
 

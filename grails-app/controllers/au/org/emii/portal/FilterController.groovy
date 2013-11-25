@@ -21,7 +21,7 @@ class FilterController {
     }
 
     def create = {
-        def layerInstance = Layer.get( params.layerId )
+        def layerInstance = Layer.get(params.layerId)
         return [layerInstance: layerInstance]
     }
 
@@ -52,8 +52,9 @@ class FilterController {
         else {
             def concatValues = filterInstance?.possibleValues.inject('') { str, item -> str + ',' + item }
 
-            if (concatValues.length() > 0)
+            if (concatValues.length() > 0) {
                 concatValues = concatValues.substring(1)
+            }
 
             return [filterInstance: filterInstance, filterTypes: FilterType.values(), concatValues: concatValues]
         }
@@ -79,7 +80,7 @@ class FilterController {
 
             if (!filterInstance.hasErrors() && filterInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'filter.label', default: 'Filter'), filterInstance.id])}"
-                redirect(controller:  "layer", action: "editFilters", id: filterInstance.layer.id)
+                redirect(controller: "layer", action: "editFilters", id: filterInstance.layer.id)
             }
             else {
                 render(view: "edit", model: [filterInstance: filterInstance])
@@ -151,7 +152,7 @@ class FilterController {
 
     def _trimFilterPossibleValues(filter) {
 
-        filter.possibleValues.collect{
+        filter.possibleValues.collect {
 
             if (it.length() > 255) {
 
@@ -174,7 +175,9 @@ class FilterController {
         def matchingLayers = Layer.createCriteria().list {
             eq("name", layerName)
             eq("activeInLastScan", true)
-            if (namespace) eq("namespace", namespace)
+            if (namespace) {
+                eq("namespace", namespace)
+            }
 
             server {
                 like("uri", "%$serverHost%")

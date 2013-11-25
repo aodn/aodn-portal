@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -7,7 +6,6 @@
  */
 
 package au.org.emii.portal
-
 
 //From Stackoverflow:
 //http://stackoverflow.com/questions/1766917/is-it-possible-to-catch-handle-exceptions-thrown-from-a-grails-controller-aop
@@ -22,6 +20,6 @@ class SystemController {
             }
             // Otherwise exceptionHandler did not want to handle it
         }
-        render(view:"/error")
+        render(view: "/error")
     }
 }

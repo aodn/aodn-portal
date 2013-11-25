@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,7 +31,7 @@ class MotdController {
 
         if (motdInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
-            redirect(action: "list" )
+            redirect(action: "list")
         }
         else {
             render(view: "create", model: [motdInstance: motdInstance])
@@ -65,7 +64,7 @@ class MotdController {
             motdInstance.properties = params
             if (!motdInstance.hasErrors() && motdInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'motd.label', default: 'Motd'), motdInstance.id])}"
-                redirect(action: "list" )
+                redirect(action: "list")
             }
             else {
                 render(view: "edit", model: [motdInstance: motdInstance])
@@ -87,7 +86,7 @@ class MotdController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deletedFromConfig.message', args: [message(code: 'motd.label', default: 'Motd'), params.id])}"
-                redirect(action: "list" )
+                redirect(action: "list")
             }
         }
         else {

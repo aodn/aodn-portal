@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,7 +13,7 @@ class DepthController {
 
     def index = {
 
-        if ( !params.lat || !params.lon ) {
+        if (!params.lat || !params.lon) {
 
             render "Incorrect parameters supplied"
         }
@@ -22,7 +21,7 @@ class DepthController {
 
             def serviceUrl = _generateServiceUrl()
 
-            if ( serviceUrl ) {
+            if (serviceUrl) {
 
                 def response = serviceUrl.text // Call service
 
@@ -38,7 +37,9 @@ class DepthController {
 
         def serviceAddress = grailsApplication.config.depthService.url
 
-        if ( !serviceAddress ) return null
+        if (!serviceAddress) {
+            return null
+        }
 
         return "${serviceAddress}.xml?lat=${params.lat}&lon=${params.lon}".toURL()
     }

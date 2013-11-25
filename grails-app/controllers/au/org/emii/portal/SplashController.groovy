@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -24,7 +23,7 @@ class SplashController {
         else if (portalInstance.code()) {
             log.debug("Rendering index ${portalInstance.code()}")
             def oceanCurrentObj = oceanCurrentService.getRandomDetails()
-            render(view: "${portalInstance.code()}Index", model:[ oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance(), portalBuildInfo: _portalBuildInfo() ])
+            render(view: "${portalInstance.code()}Index", model: [oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance(), portalBuildInfo: _portalBuildInfo()])
         }
         else {
             log.debug("Rendering empty index")
@@ -41,7 +40,7 @@ class SplashController {
         else if (portalInstance.code()) {
             log.debug("Rendering links ${portalInstance.code()}")
             def oceanCurrentObj = oceanCurrentService.getRandomDetails()
-            render(view: "${portalInstance.code()}Links", model:[ oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance() ])
+            render(view: "${portalInstance.code()}Links", model: [oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance()])
         }
         else {
             log.debug("Rendering empty links")
@@ -86,6 +85,6 @@ class SplashController {
     def _portalBuildInfo() {
 
         def md = grailsApplication.metadata
-        return "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date'?:'<i>not recorded</i>'}"
+        return "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date' ?: '<i>not recorded</i>'}"
     }
 }

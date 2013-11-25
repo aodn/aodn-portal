@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -26,10 +25,10 @@ class Menu {
 
     static constraints = {
         title(
-            nullable:false,
+            nullable: false,
             blank: false,
             maxSize: 40,
-            unique:true
+            unique: true
         )
 
         menuItems cascade: 'all-delete-orphan'

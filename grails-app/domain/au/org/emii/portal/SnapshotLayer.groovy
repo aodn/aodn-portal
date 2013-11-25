@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -48,8 +47,8 @@ class SnapshotLayer {
         isBaseLayer()
         hidden()
         animated()
-        chosenTimes(nullable:true)
-        opacity(nullable:true)
+        chosenTimes(nullable: true)
+        opacity(nullable: true)
         styles()
         cql(nullable: true)
         ncwmsParamMin(nullable: true)

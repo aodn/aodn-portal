@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,29 +7,25 @@
 
 package au.org.emii.portal
 
-class SearchFilter
-{
+class SearchFilter {
     static belongsTo = [search: Search]
 
     String type
     Map value
 
-    static SearchFilter fromJson(json) throws IllegalArgumentException
-    {
-        if (!json.type)
-        {
+    static SearchFilter fromJson(json) throws IllegalArgumentException {
+
+        if (!json.type) {
             throw new IllegalArgumentException("Filter type must be specified.")
         }
 
-        if (!json.value)
-        {
+        if (!json.value) {
             throw new IllegalArgumentException("Filter value must be specified.")
         }
 
         SearchFilter filter = new SearchFilter(type: json.type)
         filter.value = [:]
-        json.value.each
-        {
+        json.value.each {
             k, v ->
 
             filter.value.put(k, String.valueOf(v))

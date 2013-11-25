@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -17,7 +16,7 @@ class User {
     String fullName
 
     // Relationships
-    static hasMany = [ roles: UserRole, permissions: String ]
+    static hasMany = [roles: UserRole, permissions: String]
 
     static constraints = {
 
@@ -46,12 +45,12 @@ class User {
     }
 
     void beforeDelete() {
-        Snapshot.withNewSession{
+        Snapshot.withNewSession {
             def snapshots = Snapshot.findAllByOwner(this)
             snapshots*.delete()
         }
 
-        Search.withNewSession{
+        Search.withNewSession {
             def savedSearches = Search.findAllByOwner(this)
             savedSearches*.delete()
         }
@@ -63,8 +62,7 @@ class User {
         if (principal) {
             def userInstance = User.get(principal)
 
-            if (!userInstance)
-            {
+            if (!userInstance) {
                 log.error("No user found with id: " + principal)
             }
             return userInstance
