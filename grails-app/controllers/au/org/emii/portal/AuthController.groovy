@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -51,7 +50,7 @@ class AuthController {
         def discovered = session.getAttribute("discovered")
 
         // extract the receiving URL from the HTTP request
-        def receivingURL = grailsApplication.config.grails.serverURL + ( request.forwardURI - request.contextPath )
+        def receivingURL = grailsApplication.config.grails.serverURL + (request.forwardURI - request.contextPath)
 
         if (request.queryString) {
 
@@ -61,9 +60,11 @@ class AuthController {
         log.debug "receivingURL: $receivingURL"
 
         // verify the response
-        def verification = consumerManager.verify(receivingURL as String,
-                                                  openidResp,
-                                                  discovered as DiscoveryInformation)
+        def verification = consumerManager.verify(
+            receivingURL as String,
+            openidResp,
+            discovered as DiscoveryInformation
+        )
 
         // examine the verification result and extract the verified identifier
         def verified = verification.getVerifiedId()
@@ -83,7 +84,7 @@ class AuthController {
 
             log.info "OpenID authentication failed. verification.statusMsg: ${verification.statusMsg}; params: $params"
 
-            flash.openIdMessage = (params["openid.mode"] == "cancel" ) ? "Log in cancelled." : "Could not log in (${verification.statusMsg})"
+            flash.openIdMessage = (params["openid.mode"] == "cancel") ? "Log in cancelled." : "Could not log in (${verification.statusMsg})"
         }
         redirect controller: "home"
     }
@@ -114,7 +115,7 @@ class AuthController {
         redirect controller: "home"
     }
 
-    def _logUserIn(userInstance)  {
+    def _logUserIn(userInstance) {
 
         def authToken = new OpenIdAuthenticationToken(userInstance.id, userInstance.openIdUrl) // Todo - DN: Remember me option
 
@@ -148,8 +149,7 @@ class AuthController {
 
         log.debug "authResponse: ${ authResponse }"
 
-        if (authResponse.hasExtension(AxMessage.OPENID_NS_AX))
-        {
+        if (authResponse.hasExtension(AxMessage.OPENID_NS_AX)) {
             // Validate response
             authResponse.validate()
 
@@ -183,11 +183,12 @@ class AuthController {
         _loadOpenIDSchemaAttributeValues(ext, userInstance)
         _loadAxSchemaAttributeValues(ext, userInstance)
 
-        if ( !userInstance.fullName)  {
+        if (!userInstance.fullName) {
 
             userInstance.fullName = "Unk."
         }
-        if ( !userInstance.emailAddress) {
+
+        if (!userInstance.emailAddress) {
 
             userInstance.emailAddress = "Unk."
         }
@@ -207,22 +208,20 @@ class AuthController {
         fetch.addAttribute "lastname", "http://axschema.org/namePerson/last", true
 
         // Yahoo responds to these fields but doesn't respect the request keys...
-        fetch.addAttribute "a", 'http://axschema.org/contact/email' , true             // email
-        fetch.addAttribute "b", 'http://axschema.org/namePerson/friendly' , true      // nickname
-        fetch.addAttribute "c", 'http://axschema.org/namePerson' , true               // fullname
+        fetch.addAttribute "a", 'http://axschema.org/contact/email', true            // email
+        fetch.addAttribute "b", 'http://axschema.org/namePerson/friendly', true      // nickname
+        fetch.addAttribute "c", 'http://axschema.org/namePerson', true               // fullname
     }
 
     def _loadOpenIDSchemaAttributeValues(ext, userInstance) {
 
         // ext1 is the hardwired key for username.
-        if (ext.getAttributeValue('ext1'))
-        {
+        if (ext.getAttributeValue('ext1')) {
             // devid.emii
-            userInstance.fullName =  ext.getAttributeValue('ext1')
+            userInstance.fullName = ext.getAttributeValue('ext1')
         }
         // Extract email
-        if (ext.getAttributeValue('ext0'))
-        {
+        if (ext.getAttributeValue('ext0')) {
             userInstance.emailAddress = ext.getAttributeValue('ext0')
         }
     }
@@ -231,19 +230,16 @@ class AuthController {
 
         // depending on how the OpenID provider responded, try to extract the username and email
 
-        if (ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname"))
-        {
+        if (ext.getAttributeValue("firstname") && ext.getAttributeValue("lastname")) {
             // Google
             userInstance.fullName = ext.getAttributeValue("firstname") + ' ' + ext.getAttributeValue("lastname")
         }
-        else if (ext.getAttributeValue("nickname"))
-        {
+        else if (ext.getAttributeValue("nickname")) {
             // Yahoo
             userInstance.fullName = ext.getAttributeValue("nickname")
         }
 
-        if (ext.getAttributeValue('email'))
-        {
+        if (ext.getAttributeValue('email')) {
             userInstance.emailAddress = ext.getAttributeValue('email')
         }
     }
@@ -288,9 +284,8 @@ class AuthController {
             }
 
             redirect url: url
-       }
-       catch(e)
-        {
+        }
+        catch (e) {
             // common scenario is if the user supplied an invalid url
             flash.openIdMessage = "OpenId authentication failed for url: $openIdProviderUrl"
 

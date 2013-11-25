@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,7 +17,7 @@ class HomeController {
     def index = { // This is the main portal entry
 
         // Intercept OpenID verification calls
-        if ( params["openid.return_to"] ) {
+        if (params["openid.return_to"]) {
 
             forward controller: "auth", action: "verifyResponse"
         }
@@ -35,7 +34,7 @@ class HomeController {
         // deep in the bowels of an area we don't care about, so until that is
         // somehow resolved we need to add options we want to use manually :(
         //render grailsApplication.config as JSON
-        render(contentType:"text/json") {
+        render(contentType: "text/json") {
             /*
              * We're aiming for something like the following
              *
@@ -47,7 +46,7 @@ class HomeController {
              */
 
             grailsConfig = [
-                [ name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url ]
+                [name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url]
                 // To add another config add a column after the entry above and follow the same map format
             ]
         }
@@ -58,7 +57,7 @@ class HomeController {
         def cfg = grailsApplication.config
         def md = grailsApplication.metadata
 
-        if ( Environment.current == Environment.PRODUCTION ) {
+        if (Environment.current == Environment.PRODUCTION) {
 
             return "<!-- ${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${ md.'app.build.date' ?: "not recorded" } -->"
         }
