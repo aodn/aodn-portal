@@ -1,4 +1,3 @@
-.idea
 *.iml
 target
 stacktrace.log
@@ -15,3 +14,7 @@ target-eclipse
 plugins
 \#*\#
 .\#*
+
+# Include code style settings for IntelliJ IDEA projects
+.idea/*
+!.idea/codeStyleSettings.xml
