@@ -54,8 +54,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 this._updateGeoNetworkAodaac();
                 this.productsInfo = JSON.parse(resp.responseText);
                 this.selectedProductsInfo = this.productsInfo[this.selectedProductInfoIndex];
-
                 if (this.productsInfo.length > 0) {
+                    this._clearDateTimeFields();
                     this.selectedLayer.processTemporalExtent();
                     this._attachTemporalEvents();
                     this._populateFormFields();
@@ -81,8 +81,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.remove(this.productInfoText);
         delete this.productInfoText;
 
-        this._updateSpatialControls();
-
         // Populate spatial extent controls this will also update the aodaac object in the record store
         // so please keep it last so all values are set
         this._setBounds();
@@ -94,22 +92,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.add(this.productInfoText);
     },
 
-    _newHtmlElement: function(html) {
-        return new Ext.Container({
-            autoEl: 'div',
-            html: html
-        });
-    },
-
-    _addBoundingBoxPanel: function(items) {
+    _addBoundingBoxPanel: function() {
         this.bboxControl = new Portal.details.BoundingBoxPanel();
         this.add(this.bboxControl);
     },
 
     _addTemporalControls: function() {
-        var temporalExtentHeader = this._newHtmlElement("<b>" + OpenLayers.i18n('temporalExtentHeading') + "</b>");
+        var temporalExtentHeader = this._newHtmlElement(String.format("<b>{0}</b>", OpenLayers.i18n('temporalExtentHeading')));
 
-        this.timeRangeLabel = this._newHtmlElement("<i>" + OpenLayers.i18n("loadingMessage") + "</i>");
+        this._updateTimeRangeLabel(null, true);
 
         var dateStartLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateStartLabel'),
@@ -197,6 +188,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return {
             dateFormat: this.DATE_FORMAT,
             timeFormat: this.TIME_FORMAT,
+            disabled: true,
             listeners: {
                 scope: this,
                 select: this._onDateSelected,
@@ -286,17 +278,30 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _layerTemporalExtentLoaded: function() {
         var extent = this.selectedLayer.getTemporalExtent();
-        this.startDateTimePicker.setExtent(extent);
-        this.startDateTimePicker.setValue(extent.min());
-        this.endDateTimePicker.setExtent(extent);
-        this.endDateTimePicker.setValue(extent.max(), true);
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, extent.min(), false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel(extent.max());
     },
 
-    _updateTimeRangeLabel: function(momentDate) {
-        if (momentDate) {
-            this.timeRangeLabel.update(this._newDateTimeLabel(momentDate.format('YYYY-MM-DD HH:mm:ss:SSS UTC')));
+    _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
+        picker.enable();
+        picker.setExtent(extent);
+        picker.setValue(value, toMaxValue);
+    },
+
+    _updateTimeRangeLabel: function(momentDate, loading) {
+        if (!this.timeRangeLabel) {
+            this.timeRangeLabel = this._newHtmlElement(String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage")));
+        }
+
+        if (this.timeRangeLabel.isVisible()) {
+            if (momentDate) {
+                this.timeRangeLabel.update(this._newDateTimeLabel(momentDate.format('YYYY-MM-DD HH:mm:ss:SSS UTC')));
+            }
+            else if (loading) {
+                this.timeRangeLabel.update(String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage")));
+            }
         }
     },
 
@@ -310,6 +315,17 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _formatDateForAodaac: function(date) {
         return moment.utc(date).format('DD/MM/YYYY');
-    }
+    },
 
+    _clearDateTimeFields: function() {
+        this._resetAndDisableDateTimePicker(this.startDateTimePicker);
+        this._resetAndDisableDateTimePicker(this.endDateTimePicker);
+        this.buttonsPanel.hide();
+        this._updateTimeRangeLabel(null, true);
+    },
+
+    _resetAndDisableDateTimePicker: function(picker) {
+        picker.reset();
+        picker.disable();
+    }
 });

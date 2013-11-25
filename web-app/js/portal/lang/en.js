@@ -229,11 +229,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     spatialExtentHeading: 'Extent',
     temporalExtentHeading: 'Temporal Extent',
     areaCoveredLabel: 'Area covered: ',
+    currentDateTimeLabel: 'Displaying',
     timeRangeLabel: 'Time range: ',
-    timeOfDayLabel: 'Time of day',
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
-    badDateEntered: "Bad date (${date}) entered. Please change the date, or use the date picker.",
 
     // FeatureInfoPopup.js
     noDataCollectionTitle: 'No data collection selected',

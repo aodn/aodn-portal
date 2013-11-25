@@ -27,6 +27,11 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this._setTimeValues(momentDate.utc(), this.extent, toMaxTime);
     },
 
+    reset: function() {
+        this.df.reset();
+        this.tf.reset();
+    },
+
     _setTimeValues: function(date, extent, toMaxTime) {
         var dayExtent = extent.subExtentForDate(date);
         this._extentToStore(dayExtent);

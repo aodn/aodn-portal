@@ -99,4 +99,18 @@ describe("Portal.form.UtcExtentDateTime", function() {
         });
     });
 
+    describe('reset', function() {
+        it('it calls the date field reset', function() {
+            spyOn(utcDateTime.df, 'reset');
+            utcDateTime.reset();
+            expect(utcDateTime.df.reset).toHaveBeenCalled();
+        });
+
+        it('it calls the time field reset', function() {
+            spyOn(utcDateTime.tf, 'reset');
+            utcDateTime.reset();
+            expect(utcDateTime.tf.reset).toHaveBeenCalled();
+        });
+    });
+
 });
