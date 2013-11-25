@@ -66,10 +66,15 @@ class FilterTests extends GrailsUnitTestCase {
 
     void testDateRangeFieldValidatorWithValidDateRange() {
 
-        assertNull Filter.dateRangeFieldValidator("field_name", dateRangeFilter)
+        assertTrue Filter.dateRangeFieldValidator("field_name", dateRangeFilter)
     }
 
-    void testDateRangeFieldValidatorWithInvalidDateRange() {
+    void testDateRangeFieldValidatorWithNullDateRangeFieldName() {
+
+        assertEquals 'invalid.wmsDateName', Filter.dateRangeFieldValidator(null, dateRangeFilter).first()
+    }
+
+    void testDateRangeFieldValidatorWithInvalidDateRangeFieldName() {
 
         assertEquals 'invalid.wmsDateName', Filter.dateRangeFieldValidator("", dateRangeFilter).first()
     }
