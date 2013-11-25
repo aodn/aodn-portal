@@ -38,7 +38,7 @@
                 <a href="#" id="loginbutton">Login</a>
 
             <%-- the popup --%>
-                <div id="loginPopup" style="display:none">
+                <div id="loginPopup" style="display: none">
                     <ol>
                     <%-- Generate the customisable list of providers and icons --%>
                         <g:each in="${grailsApplication.config.openId.providers}" var="link">
