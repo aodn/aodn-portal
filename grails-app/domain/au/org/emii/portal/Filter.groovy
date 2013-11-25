@@ -85,9 +85,11 @@ class Filter implements Comparable {
 
         if (obj.type == FilterType.DateRange) {
 
-            if (val.size() == 0) {
-                return ['invalid.wmsDateName']
+            if (val?.size()) {
+                return true
             }
+
+            return ['invalid.wmsDateName']
         }
     }
 
