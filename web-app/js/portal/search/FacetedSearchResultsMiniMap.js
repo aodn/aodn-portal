@@ -12,11 +12,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     constructor: function(values) {
         Ext.apply(this, {
-            controls: [
-                new OpenLayers.Control.MousePosition({
-                    emptyString: this._unavailableExtentMsgIfNoBounds(values.bbox)
-                })
-            ],
+            controls: [],
             metadataExtent: values.bbox,
             uuid: values.uuid
         });
