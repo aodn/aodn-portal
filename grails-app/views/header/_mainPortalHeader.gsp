@@ -38,31 +38,32 @@
                 <a href="#" id="loginbutton">Login</a>
 
             <%-- the popup --%>
-                <div id="loginpopup" style="padding: 6px; display: none; border: solid 1px silver; background-color: #ffffff; position: absolute; border-radius: 10px;"><ol>
+                <div id="loginPopup" style="display:none">
+                    <ol>
+                    <%-- Generate the customisable list of providers and icons --%>
+                        <g:each in="${grailsApplication.config.openId.providers}" var="link">
+                            <li style="margin: 5px">
+                                <g:link controller="auth" action="login" params='[openIdProvider: "${link.providerHref}"]' style='display: block;' class="highlight">
+                                    <img width="32px" height="32px" src="${link.iconHref}" style="vertical-align: middle" alt="provider icon">
+                                    ${link.name}
+                                </g:link>
+                            </li>
+                        </g:each>
 
-                <%-- Generate the customisable list of providers and icons --%>
-                    <g:each in="${grailsApplication.config.openId.providers}" var="link">
-                        <li style="margin: 5px">
-                            <g:link controller="auth" action="login" params='[openIdProvider: "${link.providerHref}"]' style='display: block;' class="highlight">
-                                <img width="32px" height="32px" src="${link.iconHref}" style="vertical-align: middle" alt="provider icon">
-                                ${link.name}
-                            </g:link>
-                        </li>
-                    </g:each>
+                    <%-- Text input option to enable user to supply their own provider --%>
+                        <g:if test="${grailsApplication.config.openId.enableUserSuppliedProvider}">
+                            <li style="border-top: solid #888 1px; padding-top: 3px">
+                                <div>
+                                    <g:form controller="auth">
+                                        <g:textField onfocus="clearOnce(this)" name="openIdProvider" value="Other OpenID provider..."/>
+                                        <g:actionSubmit value="&raquo;" action="login"/>
+                                    </g:form>
+                                </div>
+                            </li>
+                        </g:if>
 
-                <%-- Text input option to enable user to supply their own provider --%>
-                    <g:if test="${grailsApplication.config.openId.enableUserSuppliedProvider}">
-                        <li style="border-top: solid #888 1px; padding-top: 3px">
-                            <div>
-                                <g:form controller="auth">
-                                    <g:textField onfocus="clearOnce(this)" name="openIdProvider" value="Other OpenID provider..."/>
-                                    <g:actionSubmit value="&raquo;" action="login"/>
-                                </g:form>
-                            </div>
-                        </li>
-                    </g:if>
-
-                </ol></div>
+                    </ol>
+                </div>
             </g:if>
 
         <%-- If there's a single provider then just create a simple link --%>

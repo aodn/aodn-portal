@@ -212,6 +212,14 @@ hr {
     top: 12px;
 }
 
+#loginPopup {
+    padding: 6px;
+    border: solid 1px silver;
+    background-color: #ffffff;
+    position: absolute;
+    border-radius: 10px;
+}
+
 .searchField {
     padding: 3px 5px 3px 5px;
 }
