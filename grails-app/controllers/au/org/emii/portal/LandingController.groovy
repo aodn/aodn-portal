@@ -9,13 +9,20 @@ class LandingController {
 
     def index = {
 
-        if (Environment.current == Environment.DEVELOPMENT) {
-
-            def oceanCurrentObj = oceanCurrentService.getRandomDetails()
-            [configInstance: Config.activeInstance(), oceanCurrent: oceanCurrentObj, cfg: Config.activeInstance(), portalBuildInfo: _portalBuildInfo()]
-        } else {
+        if (Environment.current == Environment.PRODUCTION || params.devEnvironment) {
+            [
+                oceanCurrent: oceanCurrentService.getRandomDetails(),
+                cfg: Config.activeInstance(),
+                portalBuildInfo: _portalBuildInfo()
+            ]
+        }
+        else {
             redirect(controller: "home")
         }
+    }
+
+    def dev = {
+        redirect (action: 'index', params: [devEnvironment: true])
     }
 
     def _portalBuildInfo() {

@@ -3,5 +3,5 @@
 
 <div class="minispacer"  >
   To view the latest state of Australian oceans and coastal seas,
-  go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
+  go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}" target="_blank"><nobr>Ocean Current</nobr></a> page.
 </div>

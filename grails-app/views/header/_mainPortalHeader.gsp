@@ -7,7 +7,7 @@
 --%>
 
 
-<div id="header" style="height:${configInstance?.headerHeight}px">
+<div id="header">
 
     <img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" alt="logo" id="logo"/>
 

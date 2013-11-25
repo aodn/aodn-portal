@@ -50,7 +50,7 @@ class SecurityFilters {
             }
         }
 
-        landingAccess(controller: "landing", action: "index") {
+        landingAccess(controller: "landing", action: "index|dev") {
             before = {
                 request.accessAllowed = true
             }
