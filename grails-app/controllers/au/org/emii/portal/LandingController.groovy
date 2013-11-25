@@ -1,7 +1,5 @@
 package au.org.emii.portal
 
-import grails.util.Environment
-
 class LandingController {
 
     def oceanCurrentService
@@ -9,20 +7,11 @@ class LandingController {
 
     def index = {
 
-        if (Environment.current == Environment.PRODUCTION || params.devEnvironment) {
-            [
-                oceanCurrent: oceanCurrentService.getRandomDetails(),
-                cfg: Config.activeInstance(),
-                portalBuildInfo: _portalBuildInfo()
-            ]
-        }
-        else {
-            redirect(controller: "home")
-        }
-    }
-
-    def dev = {
-        redirect (action: 'index', params: [devEnvironment: true])
+        [
+            oceanCurrent: oceanCurrentService.getRandomDetails(),
+            cfg: Config.activeInstance(),
+            portalBuildInfo: _portalBuildInfo()
+        ]
     }
 
     def _portalBuildInfo() {
