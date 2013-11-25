@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -47,7 +46,7 @@ class ConfigController {
         }
         instanceAsGenericObj['motd'] = JSON.parse(tmpMOTD.toString())
         instanceAsGenericObj['enableMOTD'] = configInstance.enableMOTD
-        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] =  JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
+        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] = JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
 
         // add current user details
         def userInstance = User.current();
@@ -64,9 +63,9 @@ class ConfigController {
         // only one instance allowed
         def configInstance;
         if (Config.list().size() > 0) {
-           configInstance = Config.activeInstance()
-           flash.message = "ERROR: New Config cannot be created. There can only be one instance of the configuration"
-           redirect(action: "edit")
+            configInstance = Config.activeInstance()
+            flash.message = "ERROR: New Config cannot be created. There can only be one instance of the configuration"
+            redirect(action: "edit")
         }
         else {
             configInstance = new Config()
@@ -97,7 +96,7 @@ class ConfigController {
                 render(view: "create", model: [configInstance: configInstance])
             }
         }
-        else{
+        else {
             redirect(action: "list")
         }
     }
@@ -153,7 +152,7 @@ class ConfigController {
             }
 
             render(view: "edit", model: [configInstance: configInstance])
-          }
+        }
         else {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
             redirect(action: "list")
@@ -218,8 +217,7 @@ class ConfigController {
     def _getServerIdsWithAvailableLayers() {
         // We don't explicitly map layers to servers so dropping to JDBC
         def template = new JdbcTemplate(dataSource)
-        def query =
-"""\
+        def query = """\
 select server.id
 from server
 join layer on layer.server_id = server.id

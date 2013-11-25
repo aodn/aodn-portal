@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,7 +14,7 @@ class MetadataUrl {
 
     OnlineResource onlineResource
 
-    static embedded = [ "onlineResource" ]
+    static embedded = ["onlineResource"]
 
     static constraints = {}
 

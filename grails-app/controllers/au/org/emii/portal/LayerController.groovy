@@ -33,9 +33,18 @@ class LayerController {
     def list = {
 
         params.max = Math.min(params.max ? params.int("max") : 50, 250)
-        if (!params.offset) params.offset = 0
-        if (params.isActive == null) params.isActive = true
-        if (params.isRoot == null) params.isRoot = ''
+
+        if (!params.offset) {
+            params.offset = 0
+        }
+
+        if (params.isActive == null) {
+            params.isActive = true
+        }
+
+        if (params.isRoot == null) {
+            params.isRoot = ''
+        }
 
         def criteria = Layer.createCriteria()
         def layers = criteria.list(_queryFromParams(params), max: params.max, offset: params.offset)
@@ -207,7 +216,7 @@ class LayerController {
         }
         else {
             response.status = 404
-            render text: "Layer '${namespace}:${localName}' does not exist"  
+            render text: "Layer '${namespace}:${localName}' does not exist"
         }
     }
 
@@ -367,7 +376,9 @@ class LayerController {
             // Get server w/ metdata
             def server = Server.findByUri(metadata.serverUri)
 
-            if (!server) throw new IllegalStateException("Unable to find server for uri: ${metadata.serverUri}")
+            if (!server) {
+                throw new IllegalStateException("Unable to find server for uri: ${metadata.serverUri}")
+            }
 
             def serverCapabilities = JSON.parse(capabilitiesData as String)
 
@@ -424,7 +435,9 @@ class LayerController {
                             def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
                             def linkExternal = ""
-                            if (linkUrl && linkUrl[0] != "/") { linkExternal = "class=\"external\"" }
+                            if (linkUrl && linkUrl[0] != "/") {
+                                linkExternal = "class=\"external\""
+                            }
                             // Overcome the case where the URL is valid but has no description
                             if (!linkText) {
                                 linkText = "<i>Unnamed Resource</i>"
@@ -447,7 +460,9 @@ class LayerController {
             }
         }
 
-        if (!responseText) responseText = "<BR>This data collection has no link to a metadata record"
+        if (!responseText) {
+            responseText = "<br>This data collection has no link to a metadata record"
+        }
 
         render text: responseText, contentType: "text/html", encoding: "UTF-8"
     }
@@ -456,25 +471,41 @@ class LayerController {
 
         def suppliedPassword = params.password
 
-        if (!suppliedPassword) throw new IllegalArgumentException("Supplied value for password is invalid.")
+        if (!suppliedPassword) {
+            throw new IllegalArgumentException("Supplied value for password is invalid.")
+        }
 
         def configuredPassword = Config.activeInstance().wmsScannerCallbackPassword
 
-        if (!configuredPassword) throw new IllegalStateException("WMS Scanner password not configured in Portal app.")
+        if (!configuredPassword) {
+            throw new IllegalStateException("WMS Scanner password not configured in Portal app.")
+        }
 
-        if (configuredPassword != suppliedPassword) throw new IllegalArgumentException("Supplied password does not match configured password.")
+        if (configuredPassword != suppliedPassword) {
+            throw new IllegalArgumentException("Supplied password does not match configured password.")
+        }
     }
 
     void _validateMetadata(def metadata) {
 
-        if (!metadata) throw new IllegalArgumentException("Metadata must be present")
-        if (!metadata.serverUri) throw new IllegalArgumentException("serverUri must be specified in the metadata")
-        if (!metadata.dataSource) throw new IllegalArgumentException("dataSource must be specified in the metadata")
+        if (!metadata) {
+            throw new IllegalArgumentException("Metadata must be present")
+        }
+
+        if (!metadata.serverUri) {
+            throw new IllegalArgumentException("serverUri must be specified in the metadata")
+        }
+
+        if (!metadata.dataSource) {
+            throw new IllegalArgumentException("dataSource must be specified in the metadata")
+        }
     }
 
     void _validateCapabilitiesData(def capabilitiesData) {
 
-        if (!capabilitiesData) throw new IllegalArgumentException("CapabilitiesData must be present")
+        if (!capabilitiesData) {
+            throw new IllegalArgumentException("CapabilitiesData must be present")
+        }
     }
 
     def server = {
@@ -643,8 +674,8 @@ class LayerController {
             def filters = layerInstance.filters?.sort()
 
             render filters
-                .findAll{ it.enabled }
-                .collect{ it.toLayerData() } as JSON
+                .findAll { it.enabled }
+                .collect { it.toLayerData() } as JSON
         }
         else {
             def queryString = request.queryString ? "?$request.queryString" : ""

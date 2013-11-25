@@ -86,7 +86,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // MapOptions
     panControl: 'Pan Control',
-    zoomAndCentre: 'Zoom and centre [shift + mouse drag]',
 
     // Animation Panel
     stop: 'Stop',

@@ -5,7 +5,7 @@
  *
  */
 
-body, html, td {
+body, html, td, p {
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
 }
@@ -41,10 +41,6 @@ h6 {
     display: inline;
     font-size: 11px;
     margin: 2px 0;
-}
-
-p, td {
-    font-family: helvetica, arial, sans-serif;
 }
 
 body {
@@ -104,7 +100,7 @@ input.readonlyInput {
 }
 
 .faceted-search-results {
-    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.05) inset;
+    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.1) inset;
     border-radius: 6px;
 }
 
@@ -124,6 +120,10 @@ a:hover {
     color: black;
 }
 
+a.noUnderline {
+    text-decoration: none;
+}
+
 a img {
     border: none;
 }
@@ -133,10 +133,13 @@ hr {
     height: 1px;
     margin-top: 10px;
     margin-bottom: 15px;
-    background-image: -webkit-linear-gradient(left, rgba(200, 200, 200, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-    background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(200, 200, 200, 0), rgba(200, 200, 200, 0.75));
-    background-image: -ms-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(46%, rgba(0, 0, 0, 0.65)), color-stop(100%, rgba(0, 0, 0, 0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#66000000', endColorstr='#00000000', GradientType=1); /* IE6-9 */
 }
 
 .floatLeft {
@@ -385,7 +388,7 @@ Site navigation
 }
 
 .x-btn.forwardsButton {
-    border-radius: 0px 12px 12px 0px;
+    border-radius: 2px 12px 12px 2px;
 }
 
 .x-btn.backwardsButton {

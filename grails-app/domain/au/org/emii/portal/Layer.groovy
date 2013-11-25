@@ -161,14 +161,14 @@ class Layer {
         def spaces = ("   " * depth)
         log.info "$spaces$name [$id] (parent: '$parent' [${parent?.id}]; layers: '${layers.size()}'; active: '$activeInLastScan';)"
 
-        layers.each{
+        layers.each {
 
             it.printTree(depth + 1)
         }
     }
 
     void deleteDefaultLayersInConfig() {
-        Config.withNewSession{
+        Config.withNewSession {
             def configInstance = Config.activeInstance()
 
             configInstance.defaultLayers.remove(this)
@@ -177,7 +177,7 @@ class Layer {
     }
 
     void deleteLayerMenuItems() {
-        MenuItem.withNewSession{
+        MenuItem.withNewSession {
             def dels = MenuItem.findAllByLayer(this)
             dels*.delete()
         }

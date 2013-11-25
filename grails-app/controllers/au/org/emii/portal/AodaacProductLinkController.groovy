@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,7 +31,7 @@ class AodaacProductLinkController {
     def save = {
 
         // Trim whitespace to avoid potential bugs
-        if ( params ) {
+        if (params) {
 
             params.layerName = params.layerName?.trim()
         }

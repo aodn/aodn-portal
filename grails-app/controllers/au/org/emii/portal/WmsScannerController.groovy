@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,30 +14,34 @@ class WmsScannerController {
     def grailsApplication
     def wmsScannerService
 
-    def serverTypesToShow = [ "WMS-1.1.1",
-                              "WMS-1.3.0",
-                              "NCWMS-1.1.1",
-                              "NCWMS-1.3.0",
-                              "GEO-1.1.1",
-                              "GEO-1.3.0"]
+    def serverTypesToShow = [
+        "WMS-1.1.1",
+        "WMS-1.3.0",
+        "NCWMS-1.1.1",
+        "NCWMS-1.3.0",
+        "GEO-1.1.1",
+        "GEO-1.3.0"
+    ]
 
-    def statusText = [ (0): "Enabled",
-                      (-1): "Enabled<br />(errors&nbsp;occurred)",
-                      (-2): "Stopped<br />(too&nbsp;many&nbsp;errors)" ]
+    def statusText = [
+         (0): "Enabled",
+        (-1): "Enabled<br />(errors&nbsp;occurred)",
+        (-2): "Stopped<br />(too&nbsp;many&nbsp;errors)"
+    ]
 
     def controls = {
         def conf = Config.activeInstance()
         def wmsScannerBaseUrl = wmsScannerService.scannerURL()
 
         // Check if WMS Scanner settings are valid
-        if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
+        if (!wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword) {
 
             flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
 
-            return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
+            return [configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: []]
         }
 
-        def callbackUrl = URLEncoder.encode( wmsScannerService.saveOrUpdateCallbackUrl() )
+        def callbackUrl = URLEncoder.encode(wmsScannerService.saveOrUpdateCallbackUrl())
         def scanJobList
 
         def url
@@ -49,7 +52,7 @@ class WmsScannerController {
             conn = url.openConnection()
             conn.connect()
 
-            scanJobList = JSON.parse( conn.content.text ) // Makes the call
+            scanJobList = JSON.parse(conn.content.text) // Makes the call
         }
         catch (Exception e) {
 
@@ -57,15 +60,15 @@ class WmsScannerController {
             scanJobList = [] // Empty list
         }
 
-        def serversToList = Server.findAllByTypeInListAndAllowDiscoveries( serverTypesToShow, true, [ sort: "name" ])
+        def serversToList = Server.findAllByTypeInListAndAllowDiscoveries(serverTypesToShow, true, [sort: "name"])
 
         def currentUser = SecurityUtils.getSubject()
         if (!currentUser.isPermitted("wmsScanner:callUpdate")) {
             def serverList = [];
             def userInstance = User.current();
             if (userInstance) {
-                serverList = Server.withCriteria{
-                    owners{
+                serverList = Server.withCriteria {
+                    owners {
                         eq('id', userInstance.id)
                     }
                 }
@@ -90,12 +93,13 @@ class WmsScannerController {
             serversToList = allowedServers
         }
 
-        return [ configInstance: conf,
-                 wmsScannerBaseUrl: grailsApplication.config.wmsScanner.url,
-                 scanJobList: scanJobList,
-                 statusText: statusText,
-                 serversToList: serversToList
-               ]
+        return [
+            configInstance: conf,
+            wmsScannerBaseUrl: grailsApplication.config.wmsScanner.url,
+            scanJobList: scanJobList,
+            statusText: statusText,
+            serversToList: serversToList
+        ]
     }
 
     def callRegister = {
@@ -152,17 +156,17 @@ class WmsScannerController {
 
         def msg = ""
 
-        if ( connection?.errorStream ) {
+        if (connection?.errorStream) {
 
-            Reader reader = new BufferedReader( new InputStreamReader( connection.errorStream ) )
+            Reader reader = new BufferedReader(new InputStreamReader(connection.errorStream))
             def currentLine
 
-            while ( ( currentLine = reader.readLine() ) != null ) {
+            while ((currentLine = reader.readLine()) != null) {
 
                 msg += "<br /><b>$currentLine</b>"
             }
 
-            if ( msg.toLowerCase().contains( "<html" ) ) {
+            if (msg.toLowerCase().contains("<html")) {
 
                 msg = "<br /><i>HTML response (HTTP code: ${connection.responseCode})</i>"
             }
@@ -172,7 +176,7 @@ class WmsScannerController {
 
         msg = "$e$msg"
 
-        if ( flash.message?.trim() ) {
+        if (flash.message?.trim()) {
 
             flash.message += "<hr>$msg"
         }
@@ -181,11 +185,11 @@ class WmsScannerController {
         }
     }
 
-    def executeCommand( conn ) {
+    def executeCommand(conn) {
 
         def response = conn.content.text // Executes command
 
-        if ( response.toLowerCase().contains( "<html" ) ) {
+        if (response.toLowerCase().contains("<html")) {
 
             response = "HTML response (Code: ${ conn.responseCode })"
         }

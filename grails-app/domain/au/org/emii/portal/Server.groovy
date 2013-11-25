@@ -83,8 +83,9 @@ class Server {
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
             def valid = false
-            if (it?.size() == 0)
+            if (it?.size() == 0) {
                 return true
+            }
 
             it?.roles?.each() { r ->
                 r.each() { rr ->

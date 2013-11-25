@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -30,11 +29,11 @@ class UserController {
 
     def save = {
 
-        def userInstance = new User( params )
+        def userInstance = new User(params)
 
-        if ( userInstance.save( flush: true ) ) {
+        if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
-            redirect(action: "list" )
+            redirect(action: "list")
         }
         else {
             render(view: "create", model: [userInstance: userInstance])
@@ -69,7 +68,7 @@ class UserController {
             userInstance.properties = params
             if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
-                redirect(action: "list" )
+                redirect(action: "list")
             }
             else {
                 render(view: "edit", model: [userInstance: userInstance])
@@ -91,7 +90,7 @@ class UserController {
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
-                redirect(action: "list" )
+                redirect(action: "list")
             }
         }
         else {

@@ -88,7 +88,7 @@ class SystemTestController {
 
         def s = ""
 
-        allAppenders.each{
+        allAppenders.each {
             appender ->
 
             s += "<h4>${appender.name}</h4>"

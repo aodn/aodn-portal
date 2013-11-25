@@ -50,6 +50,12 @@ class SecurityFilters {
             }
         }
 
+        landingAccess(controller: "landing", action: "index") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         homeAccess(controller: "home", action: "index|config") {
             before = {
                 request.accessAllowed = true
