@@ -4,141 +4,274 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 /*
-IMOS colours
+IMOS Logo colours
+
+Pantone 5405 C   63 96  117     #3F6075
+Pantone 2915 C   96 175 221     #60AFDD
+
+#52BDEC
+
+Mono split complement colours of #60AFDD
+#89C8EE
+#A4D2EE
+#1F6690
+#5F8Ca6
+Complemetery
+#FFBA66 orangeish
+#FFD29F mango
+#BF915D
 
 
 */
 
-body, html {
-    color: #030303;
+html {
+    background-color: white;
+    margin-top: 0 ! important;
+}
+
+body, html, td {
+    color: #4D5B63;
+}
+
+h2 {
+    margin-bottom: 14px;
+}
+
+#landing {
+    width: 780px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#landingBigButton {
+    background: #ffba66; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(60%, #ffba66), color-stop(100%, #ffd29f)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #ffba66 60%, #ffd29f 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffba66', endColorstr='#ffd29f', GradientType=0); /* IE6-9 */
+
+    margin-top: 2px;
+    display: inline-block;
+    color: #212121;
+    cursor: pointer;
+    font-weight: bold;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid #BF915D;
+    padding: 10px 25px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 3px 3px 4px #cccccc;
+    font-size: 16px;
+
+}
+
+#landingMain {
+    font-size: 16px;
+    padding: 30px 0;
+    margin-bottom: 90px;
+}
+
+.buildInfo {
+    color: #999999;
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+.landingLeft {
+    float: left;
+    width: 33%;
+}
+
+.landingRight {
+    float: right;
+    width: 66%;
+}
+
+.x-panel-header {
+    font-family: arial, verdana, sans-serif;
+}
+
+.x-btn, .x-btn button {
+    font: 11px arial, verdana, sans-serif;
+}
+
+h1, h2, h3, h4,
+.x-panel-header,
+.x-window-header-text,
+#rightHomePanel h3,
+cart-title,
+.search-filter-panel .term-selection-panel-header-selected {
+    color: #4D5B63;
 }
 
 #header {
     width: 100%;
-    background-color: #5A97b1;
+    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
+
+    background: #3b3e41; /* Old browsers */
+    background: -moz-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #3b3e41), color-stop(23%, #565a5e), color-stop(49%, #5a5e62), color-stop(100%, #3b3e41), color-stop(100%, #0f0f0f)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* IE10+ */
+    background: linear-gradient(to right, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3b3e41', endColorstr='#0f0f0f', GradientType=1); /* IE6-9 */
+}
+
+#logo {
+    margin: 3px 25px;
 }
 
 #headerTitle {
+    color: #60AFdd;
+    font-size: 24px;
+    margin-left: 170px;
+    padding: 34px 5px 10px 20px;
+}
+
+#toplinks {
+    color: #a4d2ee;
+    float: right;
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+
+#toplinks a {
+    color: #a4d2ee;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0px 2px 0px 3px;
+    text-decoration: none;
+}
+
+#toplinks a:hover {
     color: white;
-    text-shadow: 1px 2px 9px #1B7399;
-    padding: 30px 20px 0 20px;
-    margin-left: 250px;
+    text-shadow: none;
 }
 
 .mainlinks {
-    color: white;
-    border-left: 1px solid #99CCFF;
-    font-size: 13px;
-    font-weight: bold;
+    border-left: 1px solid #9DAAB1;
+}
+
+.viewPortTab * {
+    color: #BF915D;
+}
+
+#viewPortLinks {
+    border: none;
+    background-color: #484848;
+    background-image: none;
+
+    background: #484848; /* Old browsers */
+    background: -moz-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #484848), color-stop(51%, #484848), color-stop(100%, #3a3a3a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* IE10+ */
+    background: linear-gradient(to right, #484848 0%, #484848 51%, #3a3a3a 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#484848', endColorstr='#3a3a3a', GradientType=1); /* IE6-9 */
+
+}
+
+p {
+    margin-bottom: 10px;
 }
 
 h1 {
-    color: #1b7399;
-    font-size: 24px;
-    font-weight: normal;
-}
-
-h2 {
-    color: #1b7399;
-    font-size: 16px;
-    font-weight: normal;
-}
-
-h3 {
-    color: #1b7399;
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 h4 {
-    color: #1b7399;
     font-size: 12px;
+    margin: 4px 0;
 }
 
 h5 {
-    color: #1b7399;
-    font-size: 11px;
+    color: #6A6A6A;
 }
 
 h6 {
     color: #6A6A6A;
-    display: inline;
-    font-size: 11px;
-    margin: 2px 0;
 }
 
-.footer {
-    font-size: 11px;
+hr {
+    border: 0;
+    height: 1px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+
+}
+
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
+
+}
+
+#mapActionsWindow.x-window {
+    background-color: #fafafa;
+}
+
+#mainHomePanel h1 {
+    margin: 10px 0 20px 0;
+}
+
+#rightHomePanel {
+    background-color: white;
+}
+
+.footer p {
+    font-size: 10px;
+}
+
+.footerText p {
+    margin-bottom: 15px !important;
+}
+
+.footerText p:first-child {
+    margin-left: 210px;
 }
 
 .footer .x-box-inner {
     overflow: visible;
 }
 
-.x-form-item-label, .x-tab-strip span.x-tab-strip-text {
-    color: #1b7399;
-}
-
-.x-toolbar {
-    border: none;
-    background-color: #fAFAFA;
+.footer a:hover {
+    text-decoration: underline;
 }
 
 .x-panel-header,
 .x-window-header-text,
 #rightHomePanel h3 {
     font-size: 14px;
-    font-weight: normal;
-    color: #1b7399;
-}
-
-#toplinks {
-    color: white;
-}
-
-#toplinks a {
-    color: white;
-    font-size: 13px;
     font-weight: bold;
-    margin: 0 3px;
-    text-decoration: none;
 }
 
-#toplinks a:hover {
-    color: black;
-}
-
-#loginpopup a {
-    color: #1b7399;
+.x-toolbar {
+    padding-top: 10px;
+    border: none;
+    background: none;
 }
 
 a.userlink {
     font-size: inherit ! important;
     text-decoration: underline ! important;
     margin-right: 15px ! important;
-}
-
-ul.x-tab-strip li {
-    background-color: #EFEFEF;
-    padding: 2px 1px;
-    border-radius: 3px;
-}
-
-.olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
-    background-color: #4D7282 !important;
-}
-
-.olControlOverviewMapElement {
-    background-color: #4D7282 ! important;
-    border-radius: 6px 0 0 0;
-    opacity: 0.85;
-    -ms-filter: "alpha(opacity=85)"; /* IE8 */
-    filter: alpha(opacity=85); /* IE6/IE7 */
-}
-
-.semiTransparent {
-    background-color: #4D7282 !important;
 }
 
 .x-tab-strip span.x-tab-strip-text, .x-btn-text {
@@ -149,18 +282,68 @@ ul.x-tab-strip-top {
     border: none;
 }
 
+.x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
+    background-color: #D7D7D7;
+}
+
+.semiTransparent {
+    background-color: #596169 !important;
+    opacity: 0.6;
+}
+
+.faceted-search-clear-all .x-hyperlink {
+    padding: 1px 3px;
+}
+
 .x-btn {
     padding: 0px 6px;
 }
 
 .x-btn,
 .faceted-search-clear-all div.x-hyperlink {
-    background-color: #E6E9EB;
-    border-radius: 3px;
+    background-color: #D9D9D9;
+    border-radius: 6px;
     margin-right: 3px;
 }
 
-.animationSubPanel .x-btn {
+.navigationButton.x-btn {
+    background-color: #FFBA66;
+}
+
+.navigationButton .x-btn-text {
+    color: #212121;
+    font-weight: bold;
+}
+
+.x-btn-selected {
+    background: #8e8e8e ! important;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+}
+
+#viewPortLinks {
+    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
+}
+
+.viewPortTab {
+    background: url(../images/viewPortTabUnselected.png) right 0 center no-repeat;
+}
+
+.viewPortTabActive *,
+.viewPortTabActiveLast * {
+    color: #212121 ! important;
+}
+
+.viewPortTabActive {
+    background-color: #FFBA66; /* IE8 */
+    background: url(../images/IMOS/viewPortTabActive.png) right 0 center no-repeat #FFBA66;
+    border: none;
+}
+
+.viewPortTabActiveLast {
+    background: url(../images/IMOS/viewPortTabActiveLast.png) right 0 center no-repeat;
+}
+
+.animationSubPanel .x-btn, .animationSubPanel.x-btn {
     background-color: inherit;
 }
 
@@ -168,3 +351,19 @@ ul.x-tab-strip-top {
     background: none;
 }
 
+.steps .stepTitle {
+    color: black;
+    font-weight: bold;
+}
+
+.steps .x-panel-header-text {
+    font-size: 20px;
+}
+
+.collectionTitle {
+    color: #B4B4B4
+}
+
+#mapActions {
+    background: none repeat scroll 0 0 rgba(62, 93, 118, 0.22);
+}
