@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -67,28 +66,28 @@ class Config {
     String wmsScannerCallbackPassword
     String wfsScannerCallbackPassword
 
-    static hasMany = [defaultLayers:Layer]
+    static hasMany = [defaultLayers: Layer]
 
     static transients = [
         "baselayerList" // baselayerMenu can be expanded to baselayers
     ]
     static mapping = {
-        footerContent type:'text'
+        footerContent type: 'text'
         downloadCartConfirmationWindowContent type: "text"
     }
 
     static constraints = {
-        name(size:5..255,nullable:true)
-        proxy(nullable:true)
-        proxyPort(nullable:true)
-        initialBbox(size:10..50)
+        name(size: 5..255, nullable: true)
+        proxy(nullable: true)
+        proxyPort(nullable: true)
+        initialBbox(size: 10..50)
         autoZoom()
-        enableMOTD(nullable:true)
-        motd(nullable:true)
-        motdStart(nullable:true)
-        motdEnd(nullable:true)
-        footerContent(nullable:true,maxSize: 4000)
-        footerContentWidth(nullable:true,range: 150..1000)
+        enableMOTD(nullable: true)
+        motd(nullable: true)
+        motdStart(nullable: true)
+        motdEnd(nullable: true)
+        footerContent(nullable: true, maxSize: 4000)
+        footerContentWidth(nullable: true, range: 150..1000)
         catalogUrl(url: true)
         searchUsingBboxByDefault()
         baselayerMenu(nullable: true)
@@ -101,7 +100,7 @@ class Config {
         popupWidth()
         popupHeight()
         westWidth()
-        defaultLayers(nullable:true)
+        defaultLayers(nullable: true)
         downloadCartFilename(blank: false)
         downloadCartMaxNumFiles(min: 1)
         downloadCartMaxFileSize(min: 1)
@@ -111,10 +110,10 @@ class Config {
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
-        wmsScannerCallbackPassword( nullable: true )
-        wfsScannerCallbackPassword( nullable: true )
-        enableDefaultDatelineZoom(nullable:true)
-        defaultDatelineZoomBbox(size:10..50)
+        wmsScannerCallbackPassword(nullable: true)
+        wfsScannerCallbackPassword(nullable: true)
+        enableDefaultDatelineZoom(nullable: true)
+        defaultDatelineZoomBbox(size: 10..50)
     }
 
     static Config activeInstance() {

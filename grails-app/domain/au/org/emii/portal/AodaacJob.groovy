@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -41,7 +40,7 @@ class AodaacJob {
 
     AodaacJob() { /* For Hibernate */ }
 
-    AodaacJob( jobId, jobParams, notificationEmailAddress ) {
+    AodaacJob(jobId, jobParams, notificationEmailAddress) {
 
         dateCreated = new Date()
 
@@ -51,13 +50,13 @@ class AodaacJob {
         this.jobParams = new AodaacJobParams()
 
         // Bind jobParams
-        def args = [ this.jobParams, jobParams, [ exclude: [ 'dateRangeStart','dateRangeEnd' ] ] ] as Object[]
+        def args = [this.jobParams, jobParams, [exclude: ['dateRangeStart', 'dateRangeEnd']]] as Object[]
 
         BindDynamicMethod bind = new BindDynamicMethod()
         bind.invoke this.jobParams, 'bind', args
 
-        this.jobParams.dateRangeStart = Date.parse( 'dd/MM/yyyy', jobParams.dateRangeStart ) // Would prefer to use parseToStringDate but couldn't get it to work :'(
-        this.jobParams.dateRangeEnd = Date.parse( 'dd/MM/yyyy', jobParams.dateRangeEnd )
+        this.jobParams.dateRangeStart = Date.parse('dd/MM/yyyy', jobParams.dateRangeStart) // Would prefer to use parseToStringDate but couldn't get it to work :'(
+        this.jobParams.dateRangeEnd = Date.parse('dd/MM/yyyy', jobParams.dateRangeEnd)
     }
 
     @Override
@@ -72,7 +71,7 @@ class AodaacJob {
         def hasErrors = latestStatus?.hasErrors ? " -- errors occurred: ${latestStatus.theErrors}" : ""
 
         // Include percentage processed (if started but not complete)
-        if ( processingStatus == AodaacJobProcessingStatus.Started ) {
+        if (processingStatus == AodaacJobProcessingStatus.Started) {
 
             return "Started ($percentComplete% complete$hasErrors)"
         }
@@ -80,9 +79,9 @@ class AodaacJob {
         def resultFileMsg = ""
 
         // Use result of presence of result file
-        if ( processingStatus == AodaacJobProcessingStatus.Complete ) {
+        if (processingStatus == AodaacJobProcessingStatus.Complete) {
 
-            if ( mostRecentDataFileExistCheck ) {
+            if (mostRecentDataFileExistCheck) {
 
                 resultFileMsg = dataFileExists ? "" : " -- Data file is missing"
             }
@@ -97,20 +96,28 @@ class AodaacJob {
 
     def getProcessingStatus() {
 
-        if ( !latestStatus ) return AodaacJobProcessingStatus.Unknown
+        if (!latestStatus) {
+            return AodaacJobProcessingStatus.Unknown
+        }
 
-        if ( latestStatus.jobEnded ) return AodaacJobProcessingStatus.Complete
+        if (latestStatus.jobEnded) {
+            return AodaacJobProcessingStatus.Complete
+        }
 
-        if ( !latestStatus.started ) return AodaacJobProcessingStatus.Initialising
+        if (!latestStatus.started) {
+            return AodaacJobProcessingStatus.Initialising
+        }
 
         return AodaacJobProcessingStatus.Started
     }
 
     def getPercentComplete() {
 
-        if ( !latestStatus?.urlsComplete ) return 0
+        if (!latestStatus?.urlsComplete) {
+            return 0
+        }
 
-        return (int)( latestStatus.urlsComplete / latestStatus.urlCount ) * 100
+        return (int) (latestStatus.urlsComplete / latestStatus.urlCount) * 100
     }
 }
 

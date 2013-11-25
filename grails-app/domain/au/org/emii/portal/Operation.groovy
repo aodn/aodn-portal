@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -19,11 +18,11 @@ class Operation {
         name()
         formats()
         getUrl()
-        postUrl( nullable:  true )
+        postUrl(nullable: true)
     }
 
     static mapping = {
-        formats type:'text'
+        formats type: 'text'
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,8 +13,7 @@ package au.org.emii.portal
  *
  * @author jburgess
  */
-class Snapshot
-{
+class Snapshot {
     static belongsTo = [owner: User]
 
     // Ordering is important.
@@ -31,23 +29,20 @@ class Snapshot
     Float maxX
     Float maxY
 
-    static mapping =
-    {
-        description type:'text'
+    static mapping = {
+        description type: 'text'
         sort "name"
         layers cascade: 'all-delete-orphan'
     }
 
-    static constraints =
-    {
+    static constraints = {
         name(unique: ['owner'])
-        description(nullable:true)
-        maxX(validator: {val, obj -> obj.minX < val})
-        maxY(validator: {val, obj -> obj.minY < val})
+        description(nullable: true)
+        maxX(validator: { val, obj -> obj.minX < val })
+        maxY(validator: { val, obj -> obj.minY < val })
     }
 
-    String toString()
-    {
+    String toString() {
         name
     }
 }

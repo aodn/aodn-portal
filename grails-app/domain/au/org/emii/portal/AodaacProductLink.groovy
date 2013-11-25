@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,11 +13,11 @@ class AodaacProductLink {
     String layerName
     Integer productId
 
-    static belongsTo = [ server: Server ]
+    static belongsTo = [server: Server]
 
     static constraints = {
         layerName blank: false
-        productId unique:  ['server', 'layerName']
+        productId unique: ['server', 'layerName']
     }
 
     @Override

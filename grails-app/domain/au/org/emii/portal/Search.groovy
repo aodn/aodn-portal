@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -12,8 +11,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject;
 
 import grails.converters.JSON
 
-class Search
-{
+class Search {
     static belongsTo = [owner: User]
 
     List<SearchFilter> filters
@@ -31,21 +29,17 @@ class Search
         return "${name} ${filters})"
     }
 
-    static Search fromJson(JSONObject json) throws IllegalArgumentException
-    {
-        if (!json.owner || !json.owner?.id)
-        {
+    static Search fromJson(JSONObject json) throws IllegalArgumentException {
+        if (!json.owner || !json.owner?.id) {
             throw new IllegalArgumentException("Owner ID must be specified.")
         }
 
-        if (!json.name)
-        {
+        if (!json.name) {
             throw new IllegalArgumentException("Name must be specified.")
         }
 
         def owner = User.get(json.owner.id)
-        if (!owner)
-        {
+        if (!owner) {
             throw new IllegalArgumentException("Invalid owner ID (${json.owner.id}).")
         }
 
@@ -53,16 +47,14 @@ class Search
         search.owner = owner
         search.name = json.name
 
-        json.filters.each(
-        {
+        json.filters.each {
             search.addToFilters(SearchFilter.fromJson(it))
-        })
+        }
 
         return search
     }
 
-    static Search parseJson(String jsonString) throws IllegalArgumentException
-    {
+    static Search parseJson(String jsonString) throws IllegalArgumentException {
         return fromJson(new JSONObject(jsonString))
     }
 }
