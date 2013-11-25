@@ -1,3 +1,4 @@
+import grails.util.Environment
 
 /*
  * Copyright 2012 IMOS
@@ -15,7 +16,9 @@ class UrlMappings {
             }
         }
 
-        "/" { controller="landing" }
+        "/" {
+            controller = (Environment.current == Environment.PRODUCTION) ? "landing" : "home"
+        }
 
         "/admin"{ controller="config"  }
         "/administration"{ controller="config"  }
