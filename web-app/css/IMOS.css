@@ -255,11 +255,8 @@ input, select, textarea {
     text-decoration: underline;
 }
 
-.x-panel-header,
-.x-window-header-text,
-#rightHomePanel h3 {
-    font-size: 14px;
-    font-weight: bold;
+#loginPopup a {
+    color: #1b7399;
 }
 
 .x-toolbar {
