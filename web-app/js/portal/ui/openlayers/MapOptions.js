@@ -36,8 +36,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             }
         });
 
-        this.timeControl = new OpenLayers.Control.Time();
-
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
@@ -51,8 +49,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
                 }
             }),
             toolPanel,
-            this.clickControl,
-            this.timeControl
+            this.clickControl
         ];
 
         this.theme = null;

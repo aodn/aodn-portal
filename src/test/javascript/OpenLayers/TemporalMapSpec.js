@@ -14,7 +14,13 @@ describe("OpenLayers.TemporalMap", function() {
 
     describe('toTime', function() {
         it('toTime called on layers ncWMS layers but not others', function() {
-            var ncWmsLayer = new OpenLayers.Layer.NcWMS();
+            var ncWmsLayer = new OpenLayers.Layer.NcWMS(
+                null,
+                null,
+                {},
+                null,
+                { extent: undefined }
+            );
             var nonNcWmsLayer = new OpenLayers.Layer.WMS();
 
             map.addLayers([ncWmsLayer, nonNcWmsLayer]);

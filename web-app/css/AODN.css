@@ -127,10 +127,12 @@ h4 {
 }
 
 h5 {
-    color: #6A6A6A;
+    font-size: 10px;
+    line-height: 20px;
 }
 
 h6 {
+    font-size: 10px;
     color: #6A6A6A;
 }
 

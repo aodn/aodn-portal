@@ -60,9 +60,9 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     _getBaseLayer: function() {
         return new OpenLayers.Layer.WMS(
-            "IMOS Tile Cache Simple Baselayer",
+            "baselayer",
             "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
-            { layers: 'default_basemap_simple' },
+            { layers: 'HiRes_aus-group' },
             { wrapDateLine: true }
         );
     },

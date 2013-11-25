@@ -294,28 +294,28 @@ hr {
 }
 
 /* animation buttons */
-.ffButton {
-    background: url("../images/animation/fastForward-white.png") no-repeat left top transparent;
+.nextButton {
+    background: url("../images/animation/fastForward.png") no-repeat left top transparent;
 }
 
-.rewindButton {
-    background: url("../images/animation/rewind-white.png") no-repeat left top transparent;
+.previousButton {
+    background: url("../images/animation/rewind.png") no-repeat left top transparent;
 }
 
 .pauseButton {
-    background: url("../images/animation/pause-white.png") no-repeat left top transparent;
+    background: url("../images/animation/pause.png") no-repeat left top transparent;
 }
 
 .playButton {
-    background: url("../images/animation/play-white.png") no-repeat left top transparent;
+    background: url("../images/animation/play.png") no-repeat left top transparent;
 }
 
 .stopButton {
-    background: url("../images/animation/stop-white.png") no-repeat left top transparent;
+    background: url("../images/animation/stop.png") no-repeat left top transparent;
 }
 
 .downloadButton {
-    background: url("../images/animation/download-white.png") no-repeat left top transparent;
+    background: url("../images/animation/download.png") no-repeat left top transparent;
 }
 
 .spacer {
@@ -1155,9 +1155,12 @@ div.allwhite {
     margin: 5px;
 }
 
+.navigationButton div {
+    vertical-align: middle;
+}
+
 .navigationButton button:hover {
     color: gray;
-
 }
 
 .remove-layer-button {

@@ -59,6 +59,7 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/map/ExtentMap.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'Geonetwork/lib/GeoNetwork/map/Ext.ux/form/DateTime.js')}" type="text/javascript"></script>
 
 <script src="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js', file: 'ext-ux/Hyperlink/Hyperlink.js')}" type="text/javascript"></script>
@@ -117,8 +118,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBoxPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationDateTimeSelectorPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AnimationControlsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/DateFilterPanel.js')}"></script>
@@ -127,6 +126,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BooleanFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/NumberFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/FilterGroupPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/form/UtcExtentDateTime.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/StylePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanel.js')}"></script>
@@ -139,11 +139,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapActionsControl.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapOptions.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/Timer.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/Time.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/tile/TemporalImage.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/AnimationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"></script>
@@ -175,10 +171,8 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/AodaacDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/WfsDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/NoDataRowTemplate.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationState.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationPlayButton.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationSpeedButton.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/AnimationStepSlider.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtent.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtentParser.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>
 <g:else>
