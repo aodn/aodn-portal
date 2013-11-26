@@ -138,7 +138,7 @@ describe("Portal.ui.MapPanel", function() {
         var options = 'float_id = 3189';
 
         beforeEach(function() {
-            spyOn(Portal.data.LayerStore.instance(), 'addUsingDescriptor').andCallThrough();
+            spyOn(Portal.data.LayerStore.visualiseInstance(), 'addUsingDescriptor').andCallThrough();
         });
 
         it('addingLayersFromGetFeatureInfo', function() {
@@ -149,7 +149,7 @@ describe("Portal.ui.MapPanel", function() {
 
         it('LayerStore called directly', function() {
             setExtWmsLayer(url, label, type, layer, '', options, '');
-            expect(Portal.data.LayerStore.instance().addUsingDescriptor).toHaveBeenCalled();
+            expect(Portal.data.LayerStore.visualiseInstance().addUsingDescriptor).toHaveBeenCalled();
         });
     });
 

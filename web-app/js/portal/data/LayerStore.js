@@ -112,8 +112,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             setTimeout(arguments.callee, 500, openLayer);
         }
         else {
-            var layerRecordToRemove = Portal.data.LayerStore.instance().getByLayer(openLayer);
-            Portal.data.LayerStore.instance().remove(layerRecordToRemove);
+            var layerRecordToRemove = Portal.data.LayerStore.visualiseInstance().getByLayer(openLayer);
+            Portal.data.LayerStore.visualiseInstance().remove(layerRecordToRemove);
             Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
             openLayer.destroy();
         }
@@ -209,8 +209,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             success: function(resp, opts) {
 
                 var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(layerDescriptorsAsText,
-
+                Ext.each(
+                    layerDescriptorsAsText,
                     function(layerDescriptorAsText, index, all) {
 
                         var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
@@ -221,21 +221,21 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                     this
                 );
 
-                if (successCallback)
+                if (successCallback) {
                     successCallback();
-
+                }
             }
         });
     }
 });
 
-Portal.data.LayerStore.THE_INSTANCE;
+Portal.data.LayerStore.VISUALISE_INSTANCE;
 
-Portal.data.LayerStore.instance = function() {
+Portal.data.LayerStore.visualiseInstance = function() {
 
-    if (!Portal.data.LayerStore.THE_INSTANCE) {
-        Portal.data.LayerStore.THE_INSTANCE = new Portal.data.LayerStore();
+    if (!Portal.data.LayerStore.VISUALISE_INSTANCE) {
+        Portal.data.LayerStore.VISUALISE_INSTANCE = new Portal.data.LayerStore();
     }
 
-    return Portal.data.LayerStore.THE_INSTANCE;
+    return Portal.data.LayerStore.VISUALISE_INSTANCE;
 };
