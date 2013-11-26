@@ -31,10 +31,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
 
-        // Without this, the mini-map does not load properly because it ends up without
-        // any base layers.
-        this.layers.bind(this.map);
-
         this.addEvents('tabchange', 'mouseover');
 
         this.on('afterlayout', function () {

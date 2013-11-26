@@ -11,6 +11,8 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 
     constructor: function(cfg) {
 
+        var self = this;
+
         var config = Ext.apply({
             title: this._getDefaultEmptyMapText(),
             id: 'activeLayerTreePanel',
@@ -24,9 +26,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                 expanded: true,
                 loader: new GeoExt.tree.LayerLoader({
                     store: cfg.layerStore,
-                    filter: function(record) {
-                        return !record.getLayer().isBaseLayer;
-                    },
+                    filter: self._filter,
                     createNode: function(attr) {
 
                         attr.uiProvider = Portal.ui.ActiveLayersTreeNodeUI;
@@ -101,6 +101,10 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         if (newNode != null) {
             Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, newNode.layer);
         }
+    },
+
+    _filter: function(record) {
+        return !record.getLayer().isBaseLayer && record.getLayer().displayInLayerSwitcher;
     },
 
     _getDefaultEmptyMapText: function() {

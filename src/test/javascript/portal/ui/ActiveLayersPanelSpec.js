@@ -105,4 +105,26 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             });
         });
     });
+
+    describe('layers to display', function() {
+
+        it("displays only non-base, displayInLayerSwitcher layers", function() {
+            expect(activeLayersPanel._filter(constructLayerRecord(true, true))).toBeFalsy();
+            expect(activeLayersPanel._filter(constructLayerRecord(true, false))).toBeFalsy();
+            expect(activeLayersPanel._filter(constructLayerRecord(false, false))).toBeFalsy();
+
+            expect(activeLayersPanel._filter(constructLayerRecord(false, true))).toBeTruthy();
+        });
+
+        var constructLayerRecord = function(isBaseLayer, displayInLayerSwitcher) {
+            return {
+                getLayer: function() {
+                    return {
+                        isBaseLayer: isBaseLayer,
+                        displayInLayerSwitcher: displayInLayerSwitcher
+                    }
+                }
+            }
+        }
+    });
 });
