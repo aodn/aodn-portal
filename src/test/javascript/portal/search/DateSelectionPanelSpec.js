@@ -70,10 +70,10 @@ describe("Portal.search.DateSelectionPanel", function()
     	it("clears the date ranges and puts the title back to normal", function() {
     		var dateFilter = buildMockSelectionPanel();
     		
+    		spyOn(dateFilter, "removeSelectedSubTitle");
+    		
     		dateFilter.clearDateRange();
-    		
-    		expect(dateFilter.clearDateRange).toHaveBeenCalled();
-    		
+
     		expect(dateFilter.removeSelectedSubTitle).toHaveBeenCalled();
     	});
     });
