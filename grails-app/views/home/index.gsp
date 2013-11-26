@@ -127,6 +127,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/NumberFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/FilterGroupPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/form/UtcExtentDateTime.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/form/PolygonTypeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/StylePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanel.js')}"></script>
@@ -173,6 +174,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/NoDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtent.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtentParser.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/PolygonTypePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>
 <g:else>

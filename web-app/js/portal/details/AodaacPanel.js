@@ -16,7 +16,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
-
         var config = Ext.apply({
             id: 'aodaacPanel',
             title: OpenLayers.i18n('aodaacPanelTitle'),
@@ -34,6 +33,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._addProductInfo();
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
+        this.add(new Portal.visualise.PolygonTypePanel());
         this.add(this._newSectionSpacer());
         this._addBoundingBoxPanel();
         this.add(this._newSectionSpacer());

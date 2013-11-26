@@ -243,5 +243,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
-    zoomToDataCollection: 'Zoom to data collection'
+    zoomToDataCollection: 'Zoom to data collection',
+
+    // PolygonTypePanel
+    polygonTypePanelHeader: "Map Polygon Drawing Style"
 });
