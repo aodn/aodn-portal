@@ -60,6 +60,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     this._attachTemporalEvents();
                     this._populateFormFields();
                     this._showAllControls();
+                    this.doLayout();
                     show.call(target, this);
                 }
                 else {
