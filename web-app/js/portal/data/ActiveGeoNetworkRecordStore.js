@@ -29,7 +29,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
-                Portal.data.LayerStore.mainInstance().addUsingLayerLink(
+                Portal.data.LayerStore.visualiseInstance().addUsingLayerLink(
                     geoNetworkRecord.data.title,
                     geoNetworkRecord.getFirstWmsLink(),
                     function(layerRecord) {
@@ -55,7 +55,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     _removeFromLayerStore: function(record) {
         if (record.layerRecord) {
-            Portal.data.LayerStore.mainInstance().removeUsingOpenLayer(record.layerRecord.get('layer'));
+            Portal.data.LayerStore.visualiseInstance().removeUsingOpenLayer(record.layerRecord.get('layer'));
         }
     },
 

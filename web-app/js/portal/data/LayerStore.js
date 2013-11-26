@@ -112,8 +112,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             setTimeout(arguments.callee, 500, openLayer);
         }
         else {
-            var layerRecordToRemove = Portal.data.LayerStore.mainInstance().getByLayer(openLayer);
-            Portal.data.LayerStore.mainInstance().remove(layerRecordToRemove);
+            var layerRecordToRemove = Portal.data.LayerStore.visualiseInstance().getByLayer(openLayer);
+            Portal.data.LayerStore.visualiseInstance().remove(layerRecordToRemove);
             Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
             openLayer.destroy();
         }
@@ -229,13 +229,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     }
 });
 
-Portal.data.LayerStore.MAIN_INSTANCE;
+Portal.data.LayerStore.VISUALISE_INSTANCE;
 
-Portal.data.LayerStore.mainInstance = function() {
+Portal.data.LayerStore.visualiseInstance = function() {
 
-    if (!Portal.data.LayerStore.MAIN_INSTANCE) {
-        Portal.data.LayerStore.MAIN_INSTANCE = new Portal.data.LayerStore();
+    if (!Portal.data.LayerStore.VISUALISE_INSTANCE) {
+        Portal.data.LayerStore.VISUALISE_INSTANCE = new Portal.data.LayerStore();
     }
 
-    return Portal.data.LayerStore.MAIN_INSTANCE;
+    return Portal.data.LayerStore.VISUALISE_INSTANCE;
 };
