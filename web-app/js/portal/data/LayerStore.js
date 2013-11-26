@@ -228,14 +228,3 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     }
 });
-
-Portal.data.LayerStore.VISUALISE_INSTANCE;
-
-Portal.data.LayerStore.visualiseInstance = function() {
-
-    if (!Portal.data.LayerStore.VISUALISE_INSTANCE) {
-        Portal.data.LayerStore.VISUALISE_INSTANCE = new Portal.data.LayerStore();
-    }
-
-    return Portal.data.LayerStore.VISUALISE_INSTANCE;
-};

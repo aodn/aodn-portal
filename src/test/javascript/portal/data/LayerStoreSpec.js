@@ -30,12 +30,8 @@ describe("Portal.data.LayerStore", function() {
     };
 
     beforeEach(function() {
-        layerStore = Portal.data.LayerStore.visualiseInstance();
+        layerStore = new Portal.data.LayerStore();
         expect(layerStore.getCount()).toBe(0);
-    });
-
-    afterEach(function() {
-        Portal.data.LayerStore.VISUALISE_INSTANCE = undefined;
     });
 
     var createOpenLayer = function(title, url) {
@@ -338,19 +334,6 @@ describe("Portal.data.LayerStore", function() {
         it('sets loading=false on loadend', function() {
             layer.events.triggerEvent("loadend");
             expect(layer.loading).toEqual(false);
-        });
-    });
-
-    describe('layer store as singleton', function() {
-
-        it('accessor function', function() {
-            expect(Portal.data.LayerStore.visualiseInstance()).toBeTruthy();
-        });
-
-        it('singleton', function() {
-            var firstCall = Portal.data.LayerStore.visualiseInstance();
-            var secondCall = Portal.data.LayerStore.visualiseInstance();
-            expect(firstCall).toBe(secondCall);
         });
     });
 });
