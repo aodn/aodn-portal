@@ -7,19 +7,19 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
+Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     RESOLUTIONS: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625],
 
     constructor: function (cfg) {
-        this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
-        this.polygonVector.events.register("sketchstarted", this, function () {
-            this.clearGeometry();
-        });
 
-        this.polygonVector.events.register("sketchcomplete", this, function () {
-            this.fireEvent('polygonadded', this.getCurrentFeature());
-        });
+        this._configurePolygonVector();
+
+        var layerStore = new Portal.data.LayerStore();
+        layerStore.add(new GeoExt.data.LayerRecord({
+            layer: this.polygonVector,
+            title: this.polygonVector.name
+        }));
 
         this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar(this.polygonVector);
         var config = Ext.apply({
@@ -29,23 +29,43 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.search.CloneMapPanel, {
                     this.geoFacetMapToolbar
                 ],
                 resolutions: this.RESOLUTIONS
-            }
+            },
+            layers: layerStore
         }, cfg);
 
         Portal.search.FacetMapPanel.superclass.constructor.call(this, config);
 
+        this._initMap(config.mapConfig);
 
         this.map.events.register("mouseover", this, function () {
             //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
             this.map.updateSize();
         });
 
-        this.addEvents('polygonadded');
-
-        this.map.addLayer(this.polygonVector);
         // Otherwise we end up off the west coast of Africa
         this.zoomToInitialBbox();
         this.geoFacetMapToolbar.activateDefaultControl();
+    },
+
+    _configurePolygonVector: function() {
+        this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
+        this.polygonVector.events.register("sketchstarted", this, function () {
+            this.clearGeometry();
+        });
+
+        this.polygonVector.events.register("sketchcomplete", this, function () {
+            this.fireEvent('polygonadded', this.getCurrentFeature());
+        });
+        this.addEvents('polygonadded');
+    },
+
+    _initMap: function(mapConfig) {
+        var config = Ext.apply({
+            restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
+            displayProjection: new OpenLayers.Projection("EPSG:4326"),
+        }, mapConfig);
+
+        this.map = new OpenLayers.Map(config);
     },
 
     getCurrentFeature: function () {
