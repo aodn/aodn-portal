@@ -96,6 +96,15 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     clearDateRange: function() {
         this.dateRange.clearValues();
         this.removeSelectedSubTitle();
+        
+        if (this.searcher.hasFilters())
+        {
+        	this.searcher.removeFilters("extFrom");
+            this.searcher.removeFilters("extTo");
+            this.dateRange.clearValues();
+            this.removeSelectedSubTitle();
+        	this.searcher.search();
+        }
     },
 
     removeAnyFilters: function() {
