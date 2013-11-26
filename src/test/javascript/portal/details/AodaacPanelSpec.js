@@ -61,6 +61,20 @@ describe('Portal.details.AodaacPanel', function() {
         });
     });
 
+    describe('layout rendering', function() {
+        it('calls doLayout when a collection is added or selected', function() {
+            spyOn(Ext.Ajax, 'request').andCallFake(
+                function(params) {
+                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
+                }
+            );
+
+            spyOn(aodaacPanel, 'doLayout');
+            aodaacPanel.update(layer, noOp, noOp, {});
+            expect(aodaacPanel.doLayout).toHaveBeenCalled();
+        });
+    });
+
     describe('input controls', function() {
 
         beforeEach(function() {
