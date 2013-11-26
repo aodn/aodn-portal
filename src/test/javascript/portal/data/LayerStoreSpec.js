@@ -30,12 +30,12 @@ describe("Portal.data.LayerStore", function() {
     };
 
     beforeEach(function() {
-        layerStore = Portal.data.LayerStore.instance();
+        layerStore = Portal.data.LayerStore.mainInstance();
         expect(layerStore.getCount()).toBe(0);
     });
 
     afterEach(function() {
-        Portal.data.LayerStore.THE_INSTANCE = undefined;
+        Portal.data.LayerStore.MAIN_INSTANCE = undefined;
     });
 
     var createOpenLayer = function(title, url) {
@@ -344,12 +344,12 @@ describe("Portal.data.LayerStore", function() {
     describe('layer store as singleton', function() {
 
         it('accessor function', function() {
-            expect(Portal.data.LayerStore.instance()).toBeTruthy();
+            expect(Portal.data.LayerStore.mainInstance()).toBeTruthy();
         });
 
         it('singleton', function() {
-            var firstCall = Portal.data.LayerStore.instance();
-            var secondCall = Portal.data.LayerStore.instance();
+            var firstCall = Portal.data.LayerStore.mainInstance();
+            var secondCall = Portal.data.LayerStore.mainInstance();
             expect(firstCall).toBe(secondCall);
         });
     });

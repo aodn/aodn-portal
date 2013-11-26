@@ -33,7 +33,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             map : mockMap
         });
 
-        spyOn(Portal.data.LayerStore.instance(), 'addUsingServerId');
+        spyOn(Portal.data.LayerStore.mainInstance(), 'addUsingServerId');
     });
 
     it("creates snapshptController with a snapshot Proxy on instantiation", function() {
@@ -110,7 +110,7 @@ describe("Portal.snapshot.SnapshotController", function() {
         expect(snapshotController.fireEvent).toHaveBeenCalled();
         expect(snapshotController.fireEvent.mostRecentCall.args[0]).toEqual('snapshotLoaded');
         expect(mockMap.zoomToExtent).toHaveBeenCalled();
-        expect(Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].id).toEqual(301);
+        expect(Portal.data.LayerStore.mainInstance().addUsingServerId.mostRecentCall.args[0].id).toEqual(301);
     });
 
     // test for ncwms opacity problem
@@ -134,13 +134,13 @@ describe("Portal.snapshot.SnapshotController", function() {
         };
 
         snapshotController.onSuccessfulLoad(snapshotInstance);
-        var options = Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].layerOptions;
+        var options = Portal.data.LayerStore.mainInstance().addUsingServerId.mostRecentCall.args[0].layerOptions;
         expect(options.opacity).toBeUndefined();
     });
 
     describe('addSnapshotLayer', function() {
         beforeEach(function() {
-            spyOn(Portal.data.LayerStore.instance(), 'addUsingOpenLayer');
+            spyOn(Portal.data.LayerStore.mainInstance(), 'addUsingOpenLayer');
         });
 
         // test for missing style problem
@@ -153,7 +153,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             };
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            var params = Portal.data.LayerStore.instance().addUsingServerId.mostRecentCall.args[0].layerParams;
+            var params = Portal.data.LayerStore.mainInstance().addUsingServerId.mostRecentCall.args[0].layerParams;
             expect(params.styles).toEqual("greyscale");
         });
 
@@ -162,7 +162,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             }
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            var params = Portal.data.LayerStore.instance().addUsingOpenLayer.mostRecentCall.args[0].params;
+            var params = Portal.data.LayerStore.mainInstance().addUsingOpenLayer.mostRecentCall.args[0].params;
             expect(params.COLORSCALERANGE).toBeUndefined();
         });
 
@@ -173,7 +173,7 @@ describe("Portal.snapshot.SnapshotController", function() {
             }
 
             snapshotController.addSnapshotLayer(snapshotLayer);
-            var params = Portal.data.LayerStore.instance().addUsingOpenLayer.mostRecentCall.args[0].params;
+            var params = Portal.data.LayerStore.mainInstance().addUsingOpenLayer.mostRecentCall.args[0].params;
             expect(params.COLORSCALERANGE).toEqual('2.3,10.12');
         });
     });

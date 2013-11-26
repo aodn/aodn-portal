@@ -82,16 +82,16 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('layer added to LayerStore with geonetwork name', function() {
-                    spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
+                    spyOn(Portal.data.LayerStore.mainInstance(), 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
 
                     // Expect data collection in layer store to have the
                     // geonetwork layer (data collection) name
-                    expect(Portal.data.LayerStore.instance().addUsingLayerLink).toHaveBeenCalled();
-                    expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
+                    expect(Portal.data.LayerStore.mainInstance().addUsingLayerLink).toHaveBeenCalled();
+                    expect(Portal.data.LayerStore.mainInstance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
                         myRecord.data.title);
-                    expect(Portal.data.LayerStore.instance().addUsingLayerLink.mostRecentCall.args[1]).toEqual(
+                    expect(Portal.data.LayerStore.mainInstance().addUsingLayerLink.mostRecentCall.args[1]).toEqual(
                         myRecord.getFirstWmsLink());
                 });
 
@@ -104,7 +104,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                             title: layer.name
                         });
 
-                        spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink').andCallFake(
+                        spyOn(Portal.data.LayerStore.mainInstance(), 'addUsingLayerLink').andCallFake(
                             function(layerDisplayName, layerLink, layerRecordCallback) {
                                 layerRecordCallback(layerRecord);
                             });
@@ -130,12 +130,12 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         layer: layer,
                         title: layer.name
                     });
-                    spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
+                    spyOn(Portal.data.LayerStore.mainInstance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
 
-                    expect(Portal.data.LayerStore.instance().removeUsingOpenLayer).toHaveBeenCalledWith(layer);
+                    expect(Portal.data.LayerStore.mainInstance().removeUsingOpenLayer).toHaveBeenCalledWith(layer);
                 });
             });
 
@@ -145,20 +145,20 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('should not call addUsingLayerLink when record without layer is added', function() {
-                    spyOn(Portal.data.LayerStore.instance(), 'addUsingLayerLink');
+                    spyOn(Portal.data.LayerStore.mainInstance(), 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
 
-                    expect(Portal.data.LayerStore.instance().addUsingLayerLink).not.toHaveBeenCalled();
+                    expect(Portal.data.LayerStore.mainInstance().addUsingLayerLink).not.toHaveBeenCalled();
                 });
 
                 it('should not call removeUsingOpenLayer when record without layer is removed', function() {
-                    spyOn(Portal.data.LayerStore.instance(), 'removeUsingOpenLayer');
+                    spyOn(Portal.data.LayerStore.mainInstance(), 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
 
-                    expect(Portal.data.LayerStore.instance().removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
+                    expect(Portal.data.LayerStore.mainInstance().removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
                 });
             });
 
