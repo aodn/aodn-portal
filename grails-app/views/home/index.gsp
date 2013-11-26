@@ -104,11 +104,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/search/MetadataExtent.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ServerNodeLayerDescriptorStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/MenuItemToNodeBuilder.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotProxy.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotController.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SaveSnapshotDialog.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotSaveButton.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/snapshot/SnapshotOptionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersTreeNodeUI.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/ActiveLayersPanel.js')}"></script>

@@ -24,8 +24,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             autoZoom: this.appConfig.autoZoom,
             enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
-            hideLayerOptions: this.appConfig.hideLayerOptions,
-            layers:  Portal.data.LayerStore.visualiseInstance()
+            hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -238,37 +237,3 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this._closeFeatureInfoPopup();
     }
 });
-
-function setExtWmsLayer(url, label, type, layer, sld, options, style) {
-    var cql;
-    var _label = label;
-
-    // options are comma delimited to include a unique label from a single value such as a dropdown box
-    if (options.length > 1) {
-        var opts = options.split(",");
-        cql = opts[0];
-
-        if (opts.length > 1) {
-            _label += " " + opts[1];
-        }
-
-        if (_label.length <= 0) {
-            cql = '';
-        }
-    }
-
-    Portal.data.LayerStore.visualiseInstance().addUsingDescriptor(new Portal.common.LayerDescriptor({
-        server:{
-            uri:url,
-            type:type,
-            opacity:100,
-            infoFormat:"text/html"
-        },
-        queryable:true,
-        // style in .ftl's but should be styles
-        defaultStyle:style,
-        name:layer,
-        title:_label,
-        cql:cql
-    }));
-}

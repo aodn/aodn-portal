@@ -11,15 +11,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
-        this.snapshotController = new Portal.snapshot.SnapshotController({
-            map: cfg.map,
-            mapScope: cfg.mapScope
-        });
-
-        this.snapshotController.on('snapshotLoaded', function () {
-            this.fireRemoveAllLayers();
-        }, this);
-
         this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
             map: cfg.map,
             editable: false,
@@ -38,11 +29,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
             box.fireEvent(event, box, checked);
         }, this);
-
-        this.snapshotOptionsPanel = new Portal.snapshot.SnapshotOptionsPanel({
-            controller: this.snapshotController,
-            map: cfg.map
-        });
 
         this.initButtonPanel();
 
@@ -65,7 +51,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                 new Ext.Spacer({height: 5}),
                 this.buttonPanel,
                 new Ext.Spacer({height: 2}),
-                this.snapshotOptionsPanel,
                 this.baseLayerCombo
             ]
         }, cfg);
