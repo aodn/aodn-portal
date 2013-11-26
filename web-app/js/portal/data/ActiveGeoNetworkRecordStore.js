@@ -124,3 +124,40 @@ Portal.data.ActiveGeoNetworkRecordStore.instance = function() {
 
     return Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE;
 };
+
+/**
+ * Global function which is called from Geoserver/FTL popups.
+ */
+function setExtWmsLayer(url, label, type, layer, sld, options, style) {
+    var cql;
+    var _label = label;
+
+    // options are comma delimited to include a unique label from a single value such as a dropdown box
+    if (options.length > 1) {
+        var opts = options.split(",");
+        cql = opts[0];
+
+        if (opts.length > 1) {
+            _label += " " + opts[1];
+        }
+
+        if (_label.length <= 0) {
+            cql = '';
+        }
+    }
+
+    Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore.addUsingDescriptor(new Portal.common.LayerDescriptor({
+        server:{
+            uri:url,
+            type:type,
+            opacity:100,
+            infoFormat:"text/html"
+        },
+        queryable:true,
+        // style in .ftl's but should be styles
+        defaultStyle:style,
+        name:layer,
+        title:_label,
+        cql:cql
+    }));
+}

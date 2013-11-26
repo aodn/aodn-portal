@@ -344,4 +344,30 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             });
         });
     });
+
+    describe('Adding layer from Geoserver Feature Info response', function() {
+
+        var url = 'http://geoserver.imos.org.au/geoserver/wms';
+        var label = 'Argo Track 5901184';
+        var type = '1.1.1';
+        var layer = 'float_cycle_vw';
+        var options = 'float_id = 3189';
+        var layerStore;
+
+        beforeEach(function() {
+            layerStore = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
+            spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
+        });
+
+        it('addingLayersFromGetFeatureInfo', function() {
+            var oldCount = layerStore.getCount();
+            setExtWmsLayer(url, label, type, layer, '', options, '');
+            expect(layerStore.getCount()).toBe(oldCount + 1);
+        });
+
+        it('LayerStore called directly', function() {
+            setExtWmsLayer(url, label, type, layer, '', options, '');
+            expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
+        });
+    });
 });
