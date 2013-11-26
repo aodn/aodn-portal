@@ -20,10 +20,6 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
     });
 
     describe('initialisation', function() {
-        it('configures mouse position control', function() {
-            expect(miniMap.controls[0]).toBeInstanceOf(OpenLayers.Control.MousePosition);
-        });
-
         it('configures metadata extent', function() {
             expect(miniMap.metadataExtent).toBe(bbox);
         });

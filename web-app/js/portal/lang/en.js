@@ -21,9 +21,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickCondensed: '**pick**',
     loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
 
-
-    unavailableExtent: "The data extent is unavailable",
-
     // DetailsPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
