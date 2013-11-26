@@ -120,7 +120,9 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             return {
                 getLayer: function() {
                     return {
-                        isBaseLayer: isBaseLayer,
+                        isOverlay: function() {
+                            return !isBaseLayer;
+                        },
                         displayInLayerSwitcher: displayInLayerSwitcher
                     }
                 }
