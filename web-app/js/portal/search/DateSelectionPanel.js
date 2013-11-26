@@ -32,9 +32,23 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cls:'search-filter-panel term-selection-panel',
             items:[
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
-                this.goButton = new Ext.Button({
-                    text: OpenLayers.i18n("goButton"),
-                    width: 65
+                //add a container to store the go button and the clear button. Display horizontally
+                new Ext.Container({
+                    layout: 'hbox',
+                    defaults: {
+                        style: {
+                            padding: '2px'
+                        }
+                    },
+                    items: [  this.goButton = new Ext.Button({
+                        text:OpenLayers.i18n("goButton"),
+                        width:65
+                        }),
+                        //add a new button to clear the selected date range
+                        this.clearButton = new Ext.Button({
+                            text:OpenLayers.i18n("clearButton"),
+                            width:65
+                        })]
                 })
             ]
         }, cfg, defaults);
@@ -42,7 +56,9 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
+        //add both the go button and the clear button
         this.mon(this.goButton, 'click', this.onGo, this);
+        this.mon(this.clearButton, 'click', this.clearDateRange, this);
     },
 
     initComponent:function () {
@@ -77,6 +93,12 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
             this.searcher.search();
         }
+    },
+    
+    //clear the currently selected date range. Clear the sub-titles on the facet appropriately if a search has already been performed
+    clearDateRange: function() {
+        this.dateRange.clearValues();
+        this.removeSelectedSubTitle();
     },
 
     removeAnyFilters: function() {

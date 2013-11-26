@@ -65,6 +65,19 @@ describe("Portal.search.DateSelectionPanel", function()
             expect(dateFilter.title.contains('<span class="term-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
         });
     });
+    
+    describe("clearDateRange", function() {
+    	it("clears the date ranges and puts the title back to normal", function() {
+    		var dateFilter = buildMockSelectionPanel();
+    		
+    		dateFilter.clearDateRange();
+    		
+    		expect(dateFilter.clearDateRange).toHaveBeenCalled();
+    		
+    		expect(dateFilter.removeSelectedSubTitle).toHaveBeenCalled();
+    	});
+    });
+    
 
     describe("onGo", function() {
         it("doesn't do catalog search if start and end are empty", function() {
