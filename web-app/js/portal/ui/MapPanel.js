@@ -25,7 +25,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions,
-            layers:  Portal.data.LayerStore.visualiseInstance()
+            // TODO  pass in layerStore.
+            layers: Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
@@ -257,7 +258,7 @@ function setExtWmsLayer(url, label, type, layer, sld, options, style) {
         }
     }
 
-    Portal.data.LayerStore.visualiseInstance().addUsingDescriptor(new Portal.common.LayerDescriptor({
+    Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore.addUsingDescriptor(new Portal.common.LayerDescriptor({
         server:{
             uri:url,
             type:type,
