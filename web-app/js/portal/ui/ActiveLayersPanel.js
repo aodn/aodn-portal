@@ -104,7 +104,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _filter: function(record) {
-        return !record.getLayer().isBaseLayer && record.getLayer().displayInLayerSwitcher;
+        return (record.getLayer().isOverlay()) && (record.getLayer().displayInLayerSwitcher);
     },
 
     _getDefaultEmptyMapText: function() {

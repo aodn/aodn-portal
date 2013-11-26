@@ -4,6 +4,9 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+OpenLayers.Layer.prototype.isOverlay = function() {
+    return !this.isBaseLayer;
+};
 
 OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
     if (this.wrapDateLine) {
