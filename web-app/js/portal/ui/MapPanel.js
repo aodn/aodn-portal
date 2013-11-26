@@ -24,9 +24,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             autoZoom: this.appConfig.autoZoom,
             enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
-            hideLayerOptions: this.appConfig.hideLayerOptions,
-            // TODO  pass in layerStore.
-            layers: Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
+            hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);

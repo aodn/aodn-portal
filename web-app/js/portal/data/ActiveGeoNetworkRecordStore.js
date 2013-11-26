@@ -10,11 +10,10 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     recordAttributes: {},
 
-    constructor: function() {
+    constructor: function(config) {
 
+        Ext.apply(this, config);
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
-
-        this.layerStore = new Portal.data.LayerStore();
 
         this.on('add', this._onAdd, this);
         this.on('remove', this._onRemove, this);

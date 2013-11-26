@@ -14,7 +14,10 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
         var activeRecordStore;
 
         beforeEach(function() {
-            Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE = undefined;
+            Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE =
+                new Portal.data.ActiveGeoNetworkRecordStore({
+                    layerStore: new Portal.data.LayerStore()
+                });
             activeRecordStore = Portal.data.ActiveGeoNetworkRecordStore.instance();
         });
 

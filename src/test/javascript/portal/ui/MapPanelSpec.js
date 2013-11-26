@@ -139,6 +139,7 @@ describe("Portal.ui.MapPanel", function() {
 
         beforeEach(function() {
             spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore, 'addUsingDescriptor').andCallThrough();
+            mapPanel.layers = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore;
         });
 
         it('addingLayersFromGetFeatureInfo', function() {
