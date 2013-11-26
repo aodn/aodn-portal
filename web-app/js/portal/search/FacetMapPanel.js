@@ -22,20 +22,14 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         }));
 
         this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar(this.polygonVector);
+
         var config = Ext.apply({
-            mapConfig: {
-                controls: [
-                    new OpenLayers.Control.ZoomPanel(),
-                    this.geoFacetMapToolbar
-                ],
-                resolutions: this.RESOLUTIONS
-            },
             layers: layerStore
         }, cfg);
 
         Portal.search.FacetMapPanel.superclass.constructor.call(this, config);
 
-        this._initMap(config.mapConfig);
+        this._initMap();
 
         this.map.events.register("mouseover", this, function () {
             //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
@@ -60,12 +54,14 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     _initMap: function(mapConfig) {
-        var config = Ext.apply({
-            restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90]),
-            displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        }, mapConfig);
-
-        this.map = new OpenLayers.Map(config);
+        this.map = new OpenLayers.Map({
+            controls: [
+                new OpenLayers.Control.ZoomPanel(),
+                this.geoFacetMapToolbar
+            ],
+            resolutions: this.RESOLUTIONS,
+            restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90])
+        });
     },
 
     getCurrentFeature: function () {
