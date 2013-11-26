@@ -65,6 +65,12 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 { isBaseLayer: false }
             );
 
+            describe("'visualise' layer store owned by ActiveGeoNetworkRecordStoreSpec", function() {
+                it('constructs LayerStore in constructor', function() {
+                    expect(activeRecordStore.layerStore).toBeInstanceOf(Portal.data.LayerStore);
+                });
+            });
+
             describe('record with layer', function() {
 
                 var myRecord;
@@ -82,16 +88,16 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('layer added to LayerStore with geonetwork name', function() {
-                    spyOn(Portal.data.LayerStore.visualiseInstance(), 'addUsingLayerLink');
+                    spyOn(activeRecordStore.layerStore, 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
 
                     // Expect data collection in layer store to have the
                     // geonetwork layer (data collection) name
-                    expect(Portal.data.LayerStore.visualiseInstance().addUsingLayerLink).toHaveBeenCalled();
-                    expect(Portal.data.LayerStore.visualiseInstance().addUsingLayerLink.mostRecentCall.args[0]).toEqual(
+                    expect(activeRecordStore.layerStore.addUsingLayerLink).toHaveBeenCalled();
+                    expect(activeRecordStore.layerStore.addUsingLayerLink.mostRecentCall.args[0]).toEqual(
                         myRecord.data.title);
-                    expect(Portal.data.LayerStore.visualiseInstance().addUsingLayerLink.mostRecentCall.args[1]).toEqual(
+                    expect(activeRecordStore.layerStore.addUsingLayerLink.mostRecentCall.args[1]).toEqual(
                         myRecord.getFirstWmsLink());
                 });
 
@@ -104,7 +110,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                             title: layer.name
                         });
 
-                        spyOn(Portal.data.LayerStore.visualiseInstance(), 'addUsingLayerLink').andCallFake(
+                        spyOn(activeRecordStore.layerStore, 'addUsingLayerLink').andCallFake(
                             function(layerDisplayName, layerLink, layerRecordCallback) {
                                 layerRecordCallback(layerRecord);
                             });
@@ -130,12 +136,12 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         layer: layer,
                         title: layer.name
                     });
-                    spyOn(Portal.data.LayerStore.visualiseInstance(), 'removeUsingOpenLayer');
+                    spyOn(activeRecordStore.layerStore, 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
 
-                    expect(Portal.data.LayerStore.visualiseInstance().removeUsingOpenLayer).toHaveBeenCalledWith(layer);
+                    expect(activeRecordStore.layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(layer);
                 });
             });
 
@@ -145,20 +151,20 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('should not call addUsingLayerLink when record without layer is added', function() {
-                    spyOn(Portal.data.LayerStore.visualiseInstance(), 'addUsingLayerLink');
+                    spyOn(activeRecordStore.layerStore, 'addUsingLayerLink');
 
                     activeRecordStore.add(myRecord);
 
-                    expect(Portal.data.LayerStore.visualiseInstance().addUsingLayerLink).not.toHaveBeenCalled();
+                    expect(activeRecordStore.layerStore.addUsingLayerLink).not.toHaveBeenCalled();
                 });
 
                 it('should not call removeUsingOpenLayer when record without layer is removed', function() {
-                    spyOn(Portal.data.LayerStore.visualiseInstance(), 'removeUsingOpenLayer');
+                    spyOn(activeRecordStore.layerStore, 'removeUsingOpenLayer');
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
 
-                    expect(Portal.data.LayerStore.visualiseInstance().removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
+                    expect(activeRecordStore.layerStore.removeUsingOpenLayer).not.toHaveBeenCalledWith(layer);
                 });
             });
 

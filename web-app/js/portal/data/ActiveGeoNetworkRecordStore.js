@@ -14,6 +14,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
 
+        this.layerStore = new Portal.data.LayerStore();
+
         this.on('add', this._onAdd, this);
         this.on('remove', this._onRemove, this);
         this.on('clear', this._onClear, this);
@@ -29,7 +31,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
-                Portal.data.LayerStore.visualiseInstance().addUsingLayerLink(
+                this.layerStore.addUsingLayerLink(
                     geoNetworkRecord.data.title,
                     geoNetworkRecord.getFirstWmsLink(),
                     function(layerRecord) {
@@ -42,7 +44,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
                     }
                 );
             }
-        });
+        }, this);
 
         Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, geoNetworkRecords);
     },
@@ -55,7 +57,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     _removeFromLayerStore: function(record) {
         if (record.layerRecord) {
-            Portal.data.LayerStore.visualiseInstance().removeUsingOpenLayer(record.layerRecord.get('layer'));
+            this.layerStore.removeUsingOpenLayer(record.layerRecord.get('layer'));
         }
     },
 
