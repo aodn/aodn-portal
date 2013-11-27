@@ -27,6 +27,8 @@ describe('Portal.visualise.PolygonTypePanel', function() {
 
     describe('getting values', function() {
         it('gets the underlying combobox value', function() {
+            console.log(polygonTypePanel.getValue());
+            console.log(polygonTypePanel.getValue().style);
             expect(['bounding box', 'polygon', 'none'].indexOf(polygonTypePanel.getValue())).toBeGreaterThan(-1);
         });
     });

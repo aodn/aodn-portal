@@ -9,21 +9,22 @@ Ext.namespace('Portal.form');
 
 Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
 
-    BOUNDING_BOX: "bounding box",
-    POLYGON: "polygon",
-    NONE: "none",
+    NONE: { style: "none", label: OpenLayers.i18n('polygonTypeNone') },
+    POLYGON: { style: "polygon", label: OpenLayers.i18n('polygonTypePolygon') },
+    BOUNDING_BOX: { style: "bounding box", label: OpenLayers.i18n('polygonTypeBoundingBox') },
+
     VALUE_CHANGED_EVENT: 'Portal.form.PolygonTypeComboBox.valuechanged',
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            store: new Ext.data.ArrayStore({
-                fields: ['style'],
-                data: [[this.BOUNDING_BOX], [this.POLYGON], [this.NONE]]
+            store: new Ext.data.JsonStore({
+                fields: ['style', 'label'],
+                data: [this.BOUNDING_BOX, this.POLYGON, this.NONE]
             }),
             width: 150,
-            value: this.BOUNDING_BOX,
+            value: this.BOUNDING_BOX.style,
             valueField: 'style',
-            displayField: 'style',
+            displayField: 'label',
             mode: 'local',
             triggerAction: "all",
             editable: false

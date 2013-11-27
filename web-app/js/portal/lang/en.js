@@ -246,5 +246,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     zoomToDataCollection: 'Zoom to data collection',
 
     // PolygonTypePanel
-    polygonTypePanelHeader: "Map Polygon Drawing Style"
+    polygonTypePanelHeader: "Map Polygon Drawing Style",
+
+    // PolygonTypeComboBox
+    polygonTypeNone: "none",
+    polygonTypePolygon: "polygon",
+    polygonTypeBoundingBox: "bounding box"
 });

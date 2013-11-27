@@ -15,15 +15,15 @@ describe('Portal.form.PolygonTypeCombo', function() {
 
     describe('items', function() {
         it('has a bounding box item', function() {
-            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.BOUNDING_BOX)).toBeGreaterThan(-1);
+            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.BOUNDING_BOX.style)).toBeGreaterThan(-1);
         });
 
         it('has a polygon item', function() {
-            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.POLYGON)).toBeGreaterThan(-1);
+            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.POLYGON.style)).toBeGreaterThan(-1);
         });
 
         it('has a none item', function() {
-            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.NONE)).toBeGreaterThan(-1);
+            expect(polygonTypeCombo.store.find('style', polygonTypeCombo.NONE.style)).toBeGreaterThan(-1);
         });
     });
 
