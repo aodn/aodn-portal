@@ -30,7 +30,7 @@
 <div id="landing">
     <div id="landingMain">
         <div class="landingLeft">
-            <a href="home" id="landingBigButton">Search for Ocean Data</a>
+            <a href="${resource(dir: 'home')}" id="landingBigButton" title="Search for Ocean Data">Search for Ocean Data</a>
         </div>
         <div class="landingRight">
             <h2>The Integrated Marine Observation System Ocean Portal</h2>
@@ -59,16 +59,16 @@
             <img class="logoSpacer" src="http://static.emii.org.au/images/logo/Utas_vert.png" alt="UTAS logo"/>
             <br/>
             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
-                <img class="logoSpacer" src="images/Twitter_logo_black.png" title="Follow us on twitter" alt="Follow us on twitter"/>
+                <img class="logoSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter"/>
             </a>
             <a class="noUnderline" href="http://www.facebook.com/AusOceanDataNet" target="_blank">
-                <img class="logoSpacer" src="images/FB-logo-gray.png" title="Find us on Facebook" alt="Find us on Facebook"/>
+                <img class="logoSpacer" src="${resource(dir: 'images', file: 'FB-logo-gray.png')}" title="Find us on Facebook" alt="Find us on Facebook"/>
             </a>
         </div>
 
         <div class="landingRight">
             <p>IMOS data is made freely available under the <a title="Conditions of Use" href="http://imos.org.au/fileadmin/user_upload/shared/IMOS%20General/documents/internal/IMOS_Policy_documents/Policy-Acknowledgement_of_use_of_IMOS_data_11Jun09.pdf">Conditions of Use</a>. <br/>Both IMOS data and this site are licensed under a <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><span>Creative Commons Attribution 2.5 Australia License</span>
-            </a> <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><img src="images/by.png">
+            </a> <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><img src="${resource(dir: 'images', file: 'by.png')}" />
             </a></p>
 
             <p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make enquiries via <a href="mailto:info@emii.org.au">info@emii.org.au</a> to be directed to the data custodian.<br/>IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative. It is led by the University of Tasmania on behalf of the Australian marine climate science community.
