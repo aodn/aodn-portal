@@ -30,7 +30,7 @@
 <div id="landing">
     <div id="landingMain">
         <div class="landingLeft">
-            <a href="home" id="landingBigButton">Search for Ocean Data</a>
+            <a href="${resource(dir: 'home')}" id="landingBigButton" title="Search for Ocean Data">Search for Ocean Data</a>
         </div>
         <div class="landingRight">
             <h2>The Integrated Marine Observation System Ocean Portal</h2>
@@ -59,10 +59,10 @@
             <img class="logoSpacer" src="http://static.emii.org.au/images/logo/Utas_vert.png" alt="UTAS logo"/>
             <br/>
             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
-                <img class="logoSpacer" src="images/Twitter_logo_black.png" title="Follow us on twitter" alt="Follow us on twitter"/>
+                <img class="logoSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter"/>
             </a>
             <a class="noUnderline" href="http://www.facebook.com/AusOceanDataNet" target="_blank">
-                <img class="logoSpacer" src="images/FB-logo-gray.png" title="Find us on Facebook" alt="Find us on Facebook"/>
+                <img class="logoSpacer" src="${resource(dir: 'images', file: 'FB-logo-gray.png')}" title="Find us on Facebook" alt="Find us on Facebook"/>
             </a>
         </div>
 
