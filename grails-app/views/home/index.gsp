@@ -110,6 +110,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/geo/GeoUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBoxPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
