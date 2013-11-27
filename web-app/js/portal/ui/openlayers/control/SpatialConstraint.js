@@ -28,18 +28,17 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.events.addEventType('spatialconstraintcleared');
 
         this.layer.events.on({
-            "sketchstarted": function () {
+            "sketchstarted": function() {
                 self.events.triggerEvent('spatialconstraintcleared');
-            }
-        });
-        this.layer.events.on({
-            "sketchcomplete": function () {
-                self.events.triggerEvent('spatialconstraintadded');
+            },
+            "sketchcomplete": function(feature) {
+                self.events.triggerEvent('spatialconstraintadded', feature.geometry);
             }
         });
 
         if (options.initialConstraint) {
             this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
+            self.events.triggerEvent('spatialconstraintadded');
         }
     },
 

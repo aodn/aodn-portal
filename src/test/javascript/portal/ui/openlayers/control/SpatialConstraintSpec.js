@@ -47,9 +47,11 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 'spatialconstraintadded': eventSpy
             });
 
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete');
+            var geometry = constructGeometry();
+            var feature = new OpenLayers.Feature.Vector(geometry);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', feature);
 
-            expect(eventSpy).toHaveBeenCalled();
+            expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
         it("fires 'spatialconstraintcleared' on layer sketchstarted", function() {
@@ -97,5 +99,5 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     var constructGeometry = function() {
         return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
-    }
+    };
 });
