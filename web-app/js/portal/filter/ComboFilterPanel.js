@@ -25,7 +25,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             editable: false,
             store: new Ext.data.ArrayStore({
                 fields: [
-                    'text'
+                    'text',
                 ],
                 data: []
             }),
@@ -40,11 +40,14 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.combo);
 
         var data = [];
-
-        for (var i = 0; i < this.filter.possibleValues.length; i++) {
-            data.push([this.filter.possibleValues[i]]);
+        var dataLength = this.filter.possibleValues.length + 1;
+        var clearFilter = ['All'];
+        data.push(clearFilter);
+        
+        for (var i = 1; i < dataLength; i++) {
+        	data.push([this.filter.possibleValues[i-1]]);
         }
-
+        
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
     },
@@ -62,7 +65,11 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelected: function(combo, record, index) {
-        this._fireAddEvent();
+    	if(this.combo.getValue() == 'All') {
+    		// If clear filters is selected, clear the value from the combo box before firing event
+    		this.combo.clearValue();
+    	}
+    	this._fireAddEvent();
     },
 
     handleRemoveFilter: function() {
