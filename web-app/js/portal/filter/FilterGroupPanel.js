@@ -17,7 +17,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            id: 'filterGroupPanel',
             title: OpenLayers.i18n('filterGroupPanelTitle'),
             layout: 'table',
             autoScroll: true,
@@ -42,11 +41,12 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg) {
+    initComponent: function() {
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
+        this.add(new Portal.visualise.PolygonTypePanel({ colspan: 2 }));
     },
 
     _isLayerActive: function(layer) {
