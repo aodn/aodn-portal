@@ -208,6 +208,7 @@ describe("Portal.ui.MapPanel", function() {
 
                 expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
                 expect(map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+                expect(map.spatialConstraintControl.displayClass).toBe('none');
                 expect(map.controls).toContain(map.spatialConstraintControl);
                 expect(map.navigationControl.deactivate).toHaveBeenCalled();
             });
@@ -217,6 +218,7 @@ describe("Portal.ui.MapPanel", function() {
 
                 expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
                 expect(map.spatialConstraintControl.handler.sides).toBe(4);
+                expect(map.spatialConstraintControl.displayClass).toBe('none');
                 expect(map.controls).toContain(mapPanel.map.spatialConstraintControl);
                 expect(map.navigationControl.deactivate).toHaveBeenCalled();
             });

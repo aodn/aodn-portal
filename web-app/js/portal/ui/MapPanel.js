@@ -253,17 +253,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.map.navigationControl.activate();
         }
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
-            this.map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-                initialConstraint: Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox),
-                handler: OpenLayers.Handler.Polygon
-            });
-            this.map.addControl(this.map.spatialConstraintControl);
+            this._addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
         }
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style) {
-            this.map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-                initialConstraint: Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox)
-            });
-            this.map.addControl(this.map.spatialConstraintControl);
+            this._addSpatialConstraintControlToMap();
         }
+    },
+
+    _addSpatialConstraintControlToMap: function(handler) {
+        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this.map, handler);
     }
 });
