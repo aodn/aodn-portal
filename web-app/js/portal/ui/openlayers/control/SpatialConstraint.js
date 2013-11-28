@@ -19,7 +19,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             }
         );
 
-        var handler = options.handler || OpenLayers.Handler.Box;
+        var handler = options.handler || OpenLayers.Handler.RegularPolygon;
+        options.handlerOptions =
+            options.handlerOptions || {
+                sides: 4,
+                irregular: true
+            };
 
         OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [layer, handler, options]);
 

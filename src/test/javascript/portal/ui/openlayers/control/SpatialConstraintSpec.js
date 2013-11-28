@@ -13,9 +13,16 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     });
 
     describe('constructor', function() {
-        it('defaults', function() {
-            expect(spatialConstraint).toBeInstanceOf(OpenLayers.Control.DrawFeature);
-            expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.Box);
+        describe('defaults', function() {
+            it('is of type DrawFeature', function() {
+                expect(spatialConstraint).toBeInstanceOf(OpenLayers.Control.DrawFeature);
+            });
+
+            it('configures handler', function() {
+                expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+                expect(spatialConstraint.handlerOptions.sides).toBe(4);
+                expect(spatialConstraint.handlerOptions.irregular).toBe(true);
+           });
         });
 
         it('override handler', function() {
