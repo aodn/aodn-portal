@@ -40,6 +40,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.combo);
 
         var data = [];
+        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
+        data.push(clearFilter);
 
         for (var i = 0; i < this.filter.possibleValues.length; i++) {
             data.push([this.filter.possibleValues[i]]);
@@ -62,6 +64,9 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelected: function(combo, record, index) {
+        if(this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
+            this.combo.clearValue();
+        }
         this._fireAddEvent();
     },
 
