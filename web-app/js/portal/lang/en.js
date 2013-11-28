@@ -215,7 +215,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearFilterButtonLabel: 'Clear subset',
 
     //ComboFilterPanel.js
-    clearFilter: 'All',
+    clearFilterOption: 'All',
 
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
