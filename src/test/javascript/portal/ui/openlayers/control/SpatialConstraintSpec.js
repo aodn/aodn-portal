@@ -13,9 +13,16 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     });
 
     describe('constructor', function() {
-        it('defaults', function() {
-            expect(spatialConstraint).toBeInstanceOf(OpenLayers.Control.DrawFeature);
-            expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.Box);
+        describe('defaults', function() {
+            it('is of type DrawFeature', function() {
+                expect(spatialConstraint).toBeInstanceOf(OpenLayers.Control.DrawFeature);
+            });
+
+            it('configures handler', function() {
+                expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+                expect(spatialConstraint.handlerOptions.sides).toBe(4);
+                expect(spatialConstraint.handlerOptions.irregular).toBe(true);
+           });
         });
 
         it('override handler', function() {
@@ -49,7 +56,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', feature);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
 
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
@@ -64,6 +71,12 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             expect(eventSpy).toHaveBeenCalled();
         });
+
+        it('clears existing constraint on layer sketchstarted', function() {
+            spyOn(spatialConstraint, 'clear');
+            spatialConstraint.layer.events.triggerEvent('sketchstarted');
+            expect(spatialConstraint.clear).toHaveBeenCalled();
+        });
     });
 
     describe('map', function() {
@@ -72,6 +85,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             map.addControl(spatialConstraint);
 
             expect(map.layers).toContain(spatialConstraint.layer);
+        });
+    });
+
+    describe('clear', function() {
+        it('destroys existing feature', function() {
+            spyOn(spatialConstraint.layer, 'destroyFeatures');
+            spatialConstraint.clear();
+            expect(spatialConstraint.layer.destroyFeatures).toHaveBeenCalled();
         });
     });
 

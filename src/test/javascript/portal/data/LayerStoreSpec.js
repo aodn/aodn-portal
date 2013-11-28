@@ -278,16 +278,18 @@ describe("Portal.data.LayerStore", function() {
             var l3 = createOpenLayer("base");
             l3.options.isBaseLayer = true;
             layerStore.addUsingOpenLayer(l3);
+
+            // Vector layer
+            var vectorLayer = new OpenLayers.Layer.Vector();
+            layerStore.addUsingOpenLayer(vectorLayer);
         });
 
         it('get base layers', function() {
-
-            expect(layerStore.getLayers(true).getCount()).toBe(1);
+            expect(layerStore.getBaseLayers().getCount()).toBe(1);
         });
 
-        it('get non base layers', function() {
-
-            expect(layerStore.getLayers(false).getCount()).toBe(2);
+        it('get overlay layers', function() {
+            expect(layerStore.getOverlayLayers().getCount()).toBe(2);
         });
     });
 
