@@ -243,12 +243,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     _setSpatialConstraintStyle: function(polygonStyle) {
 
+        this.map.navigationControl.deactivate();
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.removeFromMap();
         }
 
         if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
             this.map.spatialConstraintControl = undefined;
+            this.map.navigationControl.activate();
         }
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
             this.map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({

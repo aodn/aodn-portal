@@ -15,17 +15,14 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
         Ext.QuickTips.init();
 
-        var container = document.getElementById("navtoolbar");
-
-        this.navigation = new OpenLayers.Control.Navigation({
-            title: OpenLayers.i18n('panControl')
+        this.navigationControl = new OpenLayers.Control.Navigation({
+            title: OpenLayers.i18n('panControl'),
+            active: false
         });
 
         var toolPanel = new OpenLayers.Control.Panel({
-            defaultControl: this.navigation,
-            div: container
         });
-        toolPanel.addControls([this.navigation]);
+        toolPanel.addControls([this.navigationControl]);
 
         // Control to get feature info or pop up
         this.clickControl = new Portal.ui.openlayers.ClickControl({
@@ -65,8 +62,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
     afterRender: function (mapPanel) {
         this._initMapActionsControl(mapPanel);
 
-        this.clickControl.activate();
-        this.navigation.events.on({
+        this.navigationControl.events.on({
             "activate": function () {
                 this.clickControl.activate();
             },

@@ -37,4 +37,10 @@ describe("Portal.ui.openlayers.MapOptions", function() {
             expect(map.restrictedExtent.bottom).toBe(-90);
         });
     });
+
+    describe('navigation control', function() {
+        it('is initially deactivated', function() {
+            expect(mapOptions.navigationControl.active).toBe(false);
+        });
+    });
 });
