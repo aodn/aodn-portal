@@ -26,11 +26,45 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             imgCls: 'legendImage',
             flex: 1
         });
+        
+        //create an opacity slider
+        //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
+        this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
+            id: "opacitySlider",
+            layer: new OpenLayers.Layer("Dummy Layer"),
+            keyIncrement: 10,
+            increment: 5,
+            minValue: 20, // minimum visibility for the current layer is 20%
+            maxValue: 100,
+            aggressive: true,
+            width: 175,
+            isFormField: true,
+            inverse: false,
+            fieldLabel: "Opacity",
+            plugins: new GeoExt.LayerOpacitySliderTip({
+                template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
+            })
+        });
+        
+        //create a container for the opacity slider, and add the opacity slider object to the container
+        this.opacitySliderContainer = new Ext.Panel({
+            layout: 'form',
+            height: 26,
+            margins: {
+                top: 5,
+                right: 5,
+                bottom: 0,
+                left: 5
+            },
+            items: [this.opacitySlider]
+        });
 
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
         this.styleCombo = this.makeCombo();
 
+        //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
+            this.opacitySliderContainer,
             this.styleCombo,
             this.ncwmsColourScalePanel,
             {
@@ -101,6 +135,16 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
 
         show.call(target, this);
+        
+        this.opacitySliderContainer.hide();
+        this.opacitySliderContainer.doLayout();
+        this.opacitySliderContainer.show();
+        //according to bug #1582, must set the layer for the opacity slider after the container has been shown
+        this.opacitySlider.setLayer(layer);
+
+        // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
+        // slider won't be rendered properly, for example).
+        this.doLayout();
 
         this.styleCombo.hide();
 
