@@ -13,15 +13,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function (cfg) {
 
-        this._configurePolygonVector();
-
         var layerStore = new Portal.data.LayerStore();
-        layerStore.add(new GeoExt.data.LayerRecord({
-            layer: this.polygonVector,
-            title: this.polygonVector.name
-        }));
-
-        this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar(this.polygonVector);
 
         var config = Ext.apply({
             layers: layerStore
@@ -29,6 +21,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Portal.search.FacetMapPanel.superclass.constructor.call(this, config);
 
+        this._initGeoFacetMapToolbar();
         this._initMap();
 
         this.map.events.register("mouseover", this, function () {
@@ -41,15 +34,17 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         this.geoFacetMapToolbar.activateDefaultControl();
     },
 
-    _configurePolygonVector: function() {
-        this.polygonVector = new OpenLayers.Layer.Vector("GeoFilter Vector");
-        this.polygonVector.events.register("sketchstarted", this, function () {
-            this.clearGeometry();
-        });
+    _initGeoFacetMapToolbar: function() {
+        this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar();
 
-        this.polygonVector.events.register("sketchcomplete", this, function () {
-            this.fireEvent('polygonadded', this.getCurrentFeature());
-        });
+        this.geoFacetMapToolbar.events.register(
+            'spatialconstraintadded',
+            this,
+            function(geometry) {
+                this.fireEvent('polygonadded', geometry);
+            }
+        );
+
         this.addEvents('polygonadded');
     },
 
@@ -64,35 +59,16 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         });
     },
 
-    getCurrentFeature: function () {
-        if (this.polygonVector.features.length > 0) {
-            return this.polygonVector.features[0];
-        }
-    },
-
-    getCurrentGeometry: function() {
-        if (this.getCurrentFeature()) {
-            return this.getCurrentFeature().geometry;
-        }
-    },
-
     hasCurrentFeature: function() {
-        return this.getCurrentFeature();
-    },
-
-    hasCurrentGeometry: function() {
-        return this.getCurrentGeometry();
+        return this.geoFacetMapToolbar.spatialConstraintControl.hasConstraint();
     },
 
     clearGeometry: function() {
-        this.polygonVector.destroyFeatures();
+        this.geoFacetMapToolbar.spatialConstraintControl.layer.destroyFeatures();
     },
 
     getBoundingPolygonAsWKT: function() {
-        if (this.getCurrentFeature()) {
-            var wktFormatter = new OpenLayers.Format.WKT();
-            return wktFormatter.write(this.getCurrentFeature());
-        }
+        return this.geoFacetMapToolbar.spatialConstraintControl.getConstraintAsWKT();
     }
 });
 
