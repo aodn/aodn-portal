@@ -35,7 +35,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.visualisePanel = new Portal.ui.VisualisePanel({
             mapPanel: this.mapPanel
         });
-        this.downloadPanel = new Portal.cart.DownloadPanel({
+        this.downloadPanelWrapper = new Portal.cart.DownloadPanelWrapper({
             navigationText: OpenLayers.i18n('navigationButtonDownload')
         });
 
@@ -53,7 +53,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             items: [
                 this.searchPanel,
                 this.visualisePanel,
-                this.downloadPanel
+                this.downloadPanelWrapper
             ],
             bbar: new Portal.ui.MainToolbar({
                 mainPanel: this

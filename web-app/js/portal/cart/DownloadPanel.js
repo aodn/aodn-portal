@@ -15,7 +15,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             headerCfg: {
                 cls: 'steps'
             },
-            autoScroll: true
+            autoScroll: true,
+            boxMinWidth: 800,
+            width: 1024
         }, cfg);
 
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
@@ -24,11 +26,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
 
-        this.on('beforeshow', function() { this.onBeforeShow() }, this);
-    },
-
-    onBeforeShow: function() {
-        this.generateContent();
     },
 
     generateContent: function() {
@@ -38,6 +35,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         // Reverse the order of items, last item added will be displayed first
         for (var i = this.store.data.items.length - 1; i >= 0; i--) {
             var item = this.store.data.items[i];
+            console.log(item.data);
             html += tpl.apply(item.data);
         }
 
@@ -51,4 +49,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     _contentForEmptyView: function() {
         return String.format('<i>{0}</i>', OpenLayers.i18n('noCollectionsMessage'));
     }
+
+
 });
