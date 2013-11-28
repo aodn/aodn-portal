@@ -64,7 +64,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     clearGeometry: function() {
-        this.geoFacetMapToolbar.spatialConstraintControl.layer.destroyFeatures();
+        this.geoFacetMapToolbar.spatialConstraintControl.clear();
     },
 
     getBoundingPolygonAsWKT: function() {

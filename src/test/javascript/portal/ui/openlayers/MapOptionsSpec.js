@@ -50,9 +50,6 @@ describe("Portal.ui.openlayers.MapOptions", function() {
             });
 
             it('has initial bbox equal to config', function() {
-                console.log(mapOptions.spatialConstraintControl.initialConstraint.toString(),
-                            Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox).toString());
-
                 expect(mapOptions.spatialConstraintControl.initialConstraint.toString()).toEqual(
                     Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox).toString());
             });

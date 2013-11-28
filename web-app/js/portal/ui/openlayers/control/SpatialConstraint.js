@@ -30,6 +30,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.layer.events.on({
             "sketchstarted": function() {
                 self.events.triggerEvent('spatialconstraintcleared');
+                self.clear();
             },
             "sketchcomplete": function(feature) {
                 self.events.triggerEvent('spatialconstraintadded', feature.geometry);
@@ -45,6 +46,10 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     setMap: function(map) {
         map.addLayer(this.layer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
+    },
+
+    clear: function() {
+        this.layer.destroyFeatures();
     },
 
     hasConstraint: function() {
