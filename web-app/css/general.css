@@ -1163,6 +1163,13 @@ div.allwhite {
     color: gray;
 }
 
+.navigationButton .doubleArrow {
+    display: inline-block;
+    font: 13px/15px Impact;
+    height: 16px;
+    vertical-align: middle;
+}
+
 .remove-layer-button {
     background: url(../images/remove_layer2.png) center no-repeat transparent;
 }
