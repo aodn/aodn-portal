@@ -213,7 +213,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // FilterGroupPanel.js
     filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
-    
+
     //ComboFilterPanel.js
     clearFilter: 'All',
 
