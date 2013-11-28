@@ -81,7 +81,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             scope: this
         });
 
-        this.spatialConstraintControl.activate();
+        // this.spatialConstraintControl.activate();
     },
 
     _initMapActionsControl: function (mapPanel) {
