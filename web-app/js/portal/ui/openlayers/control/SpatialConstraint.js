@@ -23,24 +23,23 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [layer, handler, options]);
 
-        var self = this;
+        this._configureEventsAndHandlers();
+
+        if (options.initialConstraint) {
+            this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
+            this.events.triggerEvent('spatialconstraintadded');
+        }
+    },
+
+    _configureEventsAndHandlers: function() {
         this.events.addEventType('spatialconstraintadded');
         this.events.addEventType('spatialconstraintcleared');
 
         this.layer.events.on({
-            "sketchstarted": function() {
-                self.events.triggerEvent('spatialconstraintcleared');
-                self.clear();
-            },
-            "sketchcomplete": function(feature) {
-                self.events.triggerEvent('spatialconstraintadded', feature.geometry);
-            }
+            scope: this,
+            "sketchstarted": this._onSketchStarted,
+            "sketchcomplete": this._onSketchComplete
         });
-
-        if (options.initialConstraint) {
-            this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
-            self.events.triggerEvent('spatialconstraintadded');
-        }
     },
 
     setMap: function(map) {
@@ -71,5 +70,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     _getFeature: function() {
         return this.layer.features[0];
+    },
+
+    _onSketchStarted: function() {
+        this.events.triggerEvent('spatialconstraintcleared');
+        this.clear();
+    },
+
+    _onSketchComplete: function(feature) {
+        this.events.triggerEvent('spatialconstraintadded', feature.geometry);
     }
 });
