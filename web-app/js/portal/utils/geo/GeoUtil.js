@@ -49,4 +49,8 @@ Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {
     }
 
     return new OpenLayers.Bounds(minx, miny, maxx, maxy);
-}
+};
+
+Portal.utils.geo.bboxAsStringToGeometry = function(bboxAsString) {
+    return Portal.utils.geo.bboxAsStringToBounds(bboxAsString).toGeometry();
+};
