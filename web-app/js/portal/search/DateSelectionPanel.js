@@ -92,18 +92,17 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             this.searcher.search();
         }
     },
-    
+
     clearDateRange: function() {
         this.dateRange.clearValues();
         this.removeSelectedSubTitle();
-        
-        if (this.searcher.hasFilters())
-        {
-        	this.searcher.removeFilters("extFrom");
+
+        if (this.searcher.hasFilters()) {
+            this.searcher.removeFilters("extFrom");
             this.searcher.removeFilters("extTo");
             this.dateRange.clearValues();
             this.removeSelectedSubTitle();
-        	this.searcher.search();
+            this.searcher.search();
         }
     },
 
