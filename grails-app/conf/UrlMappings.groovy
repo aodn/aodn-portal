@@ -17,7 +17,7 @@ class UrlMappings {
         }
 
         "/" {
-            controller = (Environment.current == Environment.PRODUCTION) ? "landing" : "home"
+            controller = (Environment.current == Environment.DEVELOPMENT) ? "home" : "landing"
         }
 
         "/admin"{ controller="config"  }
