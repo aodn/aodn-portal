@@ -26,6 +26,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
                 irregular: true
             };
 
+        options.autoActivate = options.autoActivate || true;
+
         OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [layer, handler, options]);
 
         this._configureEventsAndHandlers();
@@ -50,6 +52,11 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     setMap: function(map) {
         map.addLayer(this.layer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
+    },
+
+    removeFromMap: function() {
+        this.map.removeLayer(this.layer);
+        this.map.removeControl(this);
     },
 
     clear: function() {

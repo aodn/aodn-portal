@@ -151,5 +151,65 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
+    describe('spatial constraint', function() {
+
+        describe('initialisation', function() {
+
+            beforeEach(function() {
+                mapPanel._setSpatialConstraintStyle('bounding box');
+            });
+
+            it('has spatial constraint control', function() {
+                expect(mapPanel.map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
+            });
+
+            it('is in map controls', function() {
+                expect(mapPanel.map.controls).toContain(mapPanel.map.spatialConstraintControl);
+            });
+
+            it('has initial bbox equal to config', function() {
+                expect(mapPanel.map.spatialConstraintControl.initialConstraint.toString()).toEqual(
+                    Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox).toString());
+            });
+        });
+
+        it('is updated on polygon drawing style update', function() {
+            spyOn(mapPanel, '_setSpatialConstraintStyle');
+            Ext.MsgBus.publish(
+                Portal.form.PolygonTypeComboBox.prototype.VALUE_CHANGED_EVENT,
+                { sender: this, value: Portal.form.PolygonTypeComboBox.prototype.POLYGON }
+            );
+            expect(mapPanel._setSpatialConstraintStyle).toHaveBeenCalledWith(
+                Portal.form.PolygonTypeComboBox.prototype.POLYGON);
+        });
+
+        describe('_setSpatialConstraintStyle', function() {
+            it('removes spatial constraint control when style is NONE', function() {
+                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.NONE.style);
+
+                expect(mapPanel.map.spatialConstraintControl).toBeUndefined();
+                Ext.each(mapPanel.map.controls, function(control) {
+                    expect(control).not.toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
+                });
+            });
+
+            it('set polygon spatial constraint control when style is POLYGON', function() {
+                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.POLYGON.style);
+
+                expect(mapPanel.map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
+                expect(mapPanel.map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+                expect(mapPanel.map.controls).toContain(mapPanel.map.spatialConstraintControl);
+            });
+
+            it('set polygon spatial constraint control when style is BOUNDING_BOX', function() {
+                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style);
+
+                expect(mapPanel.map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+                expect(mapPanel.map.spatialConstraintControl.handler.sides).toBe(4);
+                expect(mapPanel.map.controls).toContain(mapPanel.map.spatialConstraintControl);
+            });
+        });
+    });
+
     Ext.Ajax.request.isSpy = false;
 });

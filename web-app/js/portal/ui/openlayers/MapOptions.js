@@ -36,10 +36,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             }
         });
 
-        this.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-            initialConstraint: Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox)
-        });
-
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
@@ -53,8 +49,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
                 }
             }),
             toolPanel,
-            this.clickControl,
-            this.spatialConstraintControl
+            this.clickControl
         ];
 
         this.theme = null;
@@ -80,8 +75,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             },
             scope: this
         });
-
-        // this.spatialConstraintControl.activate();
     },
 
     _initMapActionsControl: function (mapPanel) {
