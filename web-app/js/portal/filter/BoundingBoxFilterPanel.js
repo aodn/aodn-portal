@@ -37,10 +37,12 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
 
-        this._updateBounds();
-
-        layer.map.events.register("move", this, function(e) {
-            this._updateBounds();
+        this._updateBounds(layer.map.spatialConstraintControl.getConstraint());
+        layer.map.spatialConstraintControl.events.on({
+            scope: this,
+            'spatialconstraintadded': function(geometry) {
+                this._updateBounds(geometry);
+            }
         });
     },
 
@@ -48,13 +50,9 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         // Never restored from an existing filter
     },
 
-    _updateBounds: function() {
-        if (this.items.length != 0 && this.layer.map) {
-            var extent = this.layer.map.getExtent();
-            this.bbox.setBounds(extent);
-
-            this._fireAddEvent();
-        }
+    _updateBounds: function(geometry) {
+        this.bbox.setBounds(geometry.getBounds());
+        this._fireAddEvent();
     },
 
     getCQL: function() {

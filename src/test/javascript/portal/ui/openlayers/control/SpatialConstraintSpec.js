@@ -56,7 +56,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', feature);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
 
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
