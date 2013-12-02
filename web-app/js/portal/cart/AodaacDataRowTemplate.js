@@ -21,7 +21,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         Portal.cart.AodaacDataRowTemplate.superclass.constructor.call(this, templateLines);
     },
 
-
     _getDataDownloadEntry: function(values) {
 
         var html;
@@ -33,14 +32,11 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
                 '  <div><small>{2}</small></div>' +
                 '  <div class="clear"></div>' +
                 '</div>';
-
-
             html = String.format(html, values.uuid, this.downloadPanelTemplate._getEmailAddress(values.uuid), this._getNotificationBlurbEntry());
         }
         else {
             html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
         }
-        console.log(html);
 
         return html;
     },

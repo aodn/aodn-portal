@@ -21,26 +21,6 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
         });
 
-        it('listens for beforeshow event', function() {
-
-            spyOn(downloadPanel, 'generateContent');
-
-            downloadPanel.fireEvent('beforeshow');
-
-            expect(downloadPanel.generateContent).toHaveBeenCalled();
-        });
-    });
-
-    describe('onBeforeShow()', function() {
-
-        it('calls refresh() on its view', function() {
-
-            spyOn(downloadPanel, 'generateContent');
-
-            downloadPanel.onBeforeShow();
-
-            expect(downloadPanel.generateContent).toHaveBeenCalled();
-        });
     });
 
     describe('generateContent', function() {

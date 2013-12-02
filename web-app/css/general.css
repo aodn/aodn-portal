@@ -314,9 +314,11 @@ hr {
     background: url("../images/animation/stop.png") no-repeat left top transparent;
 }
 
+.downloadButtonWrapper {
+    margin-top: 2px;
+}
 .downloadButton {
     background: url("../images/animation/download.png") no-repeat left top transparent;
-    margin-top: 2px;
 }
 
 .spacer {
@@ -1136,8 +1138,7 @@ div.allwhite {
 }
 
 .downloadPanelResultsWrapper {
-    margin-bottom: 20px;
-    clear: both;
+    margin-bottom: 15px;
 }
 
 .resultsHeaderBackground {

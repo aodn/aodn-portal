@@ -4,13 +4,13 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('Portal.cart.DownloadPanelTemplate', function() {
+describe('Portal.cart.DownloadPanelTemplate', function () {
 
     var html;
     var tpl;
     var geoNetworkRecord;
 
-    beforeEach(function() {
+    beforeEach(function () {
 
         tpl = new Portal.cart.DownloadPanelTemplate();
         geoNetworkRecord = {
@@ -33,11 +33,11 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         };
     });
 
-    describe('_getPointOfTruthLinkEntry', function() {
+    describe('_getPointOfTruthLinkEntry', function () {
 
         var html;
 
-        beforeEach(function() {
+        beforeEach(function () {
 
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
             spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
@@ -45,85 +45,22 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             html = tpl._getPointOfTruthLinkEntry(geoNetworkRecord);
         });
 
-        it('returns the entry markup', function() {
-
-            expect(html).toBe('entry markup');
+        it('returns the entry markup', function () {
+            expect(html).toBe('link markup');
         });
 
-        it('calls _makeEntryMarkup', function() {
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('link markup');
-        });
-
-        it('calls _makeExternalLinkMarkup', function() {
-
-            expect(tpl._makeExternalLinkMarkup).toHaveBeenCalledWith('point of truth url', 'View metadata record');
-        });
     });
 
-    describe('_dataRowTemplate', function() {
+    describe('_getFileListEntries', function () {
 
-        var childTemplate;
-
-        beforeEach(function() {
-
-            childTemplate = {
-                applyWithControls: jasmine.createSpy('applyWithControls')
-            };
-
-            geoNetworkRecord.aodaac = null;
-            geoNetworkRecord.wmsLayer = { /* No wfsLayer */ };
-
-            spyOn(Portal.cart, 'AodaacDataRowTemplate').andReturn(childTemplate);
-            spyOn(Portal.cart, 'WfsDataRowTemplate').andReturn(childTemplate);
-            spyOn(Portal.cart, 'NoDataRowTemplate').andReturn(childTemplate);
-        });
-
-        it('uses AodaacDataRowTemplate where applicable', function() {
-
-            geoNetworkRecord.aodaac = {};
-
-            tpl._dataRowTemplate(geoNetworkRecord);
-
-            expect(Portal.cart.AodaacDataRowTemplate).toHaveBeenCalledWith(tpl);
-            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
-            expect(Portal.cart.WfsDataRowTemplate).not.toHaveBeenCalled();
-            expect(Portal.cart.NoDataRowTemplate).not.toHaveBeenCalled();
-        });
-
-        it('uses WfsDataRowTemplate where applicable', function() {
-
-            geoNetworkRecord.wmsLayer.wfsLayer = {};
-
-            tpl._dataRowTemplate(geoNetworkRecord);
-
-            expect(Portal.cart.WfsDataRowTemplate).toHaveBeenCalledWith(tpl);
-            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
-            expect(Portal.cart.AodaacDataRowTemplate).not.toHaveBeenCalled();
-            expect(Portal.cart.NoDataRowTemplate).not.toHaveBeenCalled();
-        });
-
-        it('uses NoDataRowTemplate where applicable', function() {
-
-            tpl._dataRowTemplate(geoNetworkRecord);
-
-            expect(Portal.cart.NoDataRowTemplate).toHaveBeenCalledWith(tpl);
-            expect(childTemplate.applyWithControls).toHaveBeenCalledWith(geoNetworkRecord);
-            expect(Portal.cart.AodaacDataRowTemplate).not.toHaveBeenCalled();
-            expect(Portal.cart.WfsDataRowTemplate).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('_getFileListEntries', function() {
-
-        beforeEach(function() {
+        beforeEach(function () {
 
             spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
             spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
             spyOn(tpl, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
         });
 
-        it('calls _getSingleFileEntry for each link', function() {
+        it('calls _getSingleFileEntry for each link', function () {
 
             tpl._getFileListEntries(geoNetworkRecord);
 
@@ -132,14 +69,14 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             expect(tpl._getSingleFileEntry.argsForCall[1][0]).toBe(geoNetworkRecord.downloadableLinks[1]);
         });
 
-        it('returns markup for each link', function() {
+        it('returns markup for each link', function () {
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
             expect(html).toBe('[single file markup][single file markup]');
         });
 
-        it('does not call _singleFileEntry when no links', function() {
+        it('does not call _singleFileEntry when no links', function () {
 
             geoNetworkRecord.downloadableLinks = [];
 
@@ -148,29 +85,28 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             expect(tpl._getSingleFileEntry).not.toHaveBeenCalled();
         });
 
-        it('returns single entry markup when no links', function() {
+        it('returns single entry markup when no links', function () {
 
             geoNetworkRecord.downloadableLinks = [];
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
-            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalledWith(OpenLayers.i18n('noFilesMessage'));
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('secondary text markup');
-            expect(html).toBe('entry markup');
+            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalledWith('No attached files.');
+            expect(html).toBe('secondary text markup');
         });
 
-        afterEach(function() {
+        afterEach(function () {
 
             tpl._getSingleFileEntry.reset();
             tpl._makeEntryMarkup.reset();
         });
     });
 
-    describe('_getSingleFileEntry', function() {
+    describe('_getSingleFileEntry', function () {
 
         var html;
 
-        beforeEach(function() {
+        beforeEach(function () {
 
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
             spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
@@ -180,35 +116,20 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             html = tpl._getSingleFileEntry(link);
         });
 
-        it('returns the entry markup', function() {
+        it('returns the entry markup', function () {
 
-            expect(html).toBe('entry markup');
+            expect(html).toBe('link markup');
         });
 
-        it('calls _makeEntryMarkup', function() {
-
-            expect(tpl._makeEntryMarkup).toHaveBeenCalledWith('link markup');
-        });
-
-        it('calls _makeExternalLinkMarkup', function() {
+        it('calls _makeExternalLinkMarkup', function () {
 
             expect(tpl._makeExternalLinkMarkup).toHaveBeenCalledWith('http://host/some.html', 'the title one');
         });
     });
 
-    describe('_makeEntryMarkup', function() {
+    describe('_makeEntryMarkup', function () {
 
-        it('wraps the text in a div', function() {
-
-            var html = tpl._makeEntryMarkup('text');
-
-            expect(html).toBe('<div class="entry">text</div>');
-        });
-    });
-
-    describe('_makeEntryMarkup', function() {
-
-        it('wraps the text in a span', function() {
+        it('wraps the text in a span', function () {
 
             var html = tpl._makeSecondaryTextMarkup('text');
 
@@ -216,16 +137,16 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         });
     });
 
-    describe('_makeExternalLinkMarkup', function() {
+    describe('_makeExternalLinkMarkup', function () {
 
-        it('wraps the text in an anchor tag', function() {
+        it('wraps the text in an anchor tag', function () {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/', 'text');
 
             expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">text</a>');
         });
 
-        it('uses href as text if text is undefined', function() {
+        it('uses href as text if text is undefined', function () {
 
             var html = tpl._makeExternalLinkMarkup('http://host.com/');
 
@@ -233,48 +154,54 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
         });
     });
 
-    describe('template output', function() {
+    describe('template output', function () {
 
         var rootElement;
 
-        beforeEach(function() {
+        beforeEach(function () {
 
-            tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-            tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
-            tpl._getFileListEntries = function() { return "file_list" };
+            tpl._getPointOfTruthLinkEntry = function () {
+                return "point_of_truth"
+            };
+            tpl._dataRowTemplate = function () {
+                return "<div>data_row_template</div>"
+            };
+            tpl._getFileListEntries = function () {
+                return "file_list"
+            };
 
             var html = tpl.apply(geoNetworkRecord);
             rootElement = $(html);
         });
 
-        describe('root element', function() {
+        describe('root element', function () {
 
-            it('has correct class', function() {
+            it('has correct class', function () {
 
-                expect(rootElement.attr('class')).toBe('download-collection');
+                expect(rootElement.attr('class')).toBe('downloadPanelResultsWrapper');
             });
 
-            it('has correct number of children', function() {
+            it('has correct number of children', function () {
 
-                expect(rootElement.children().length).toBe(4);
+                expect(rootElement.children().length).toBe(2);
             });
         });
 
-        describe('title row', function() {
+        describe('title row', function () {
 
             var titleRow;
 
-            beforeEach(function() {
+            beforeEach(function () {
 
                 titleRow = $(rootElement.children()[0]);
             });
 
-            it('has the correct class', function() {
+            it('has the correct class', function () {
 
-                expect(titleRow.attr('class')).toBe('title-row');
+                expect(titleRow.attr('class')).toBe('x-panel-header resultsHeaderBackground');
             });
 
-            it('has the correct text value from function', function() {
+            it('has the correct text value from function', function () {
 
                 var trimmedText = $.trim(titleRow.text());
 
@@ -282,82 +209,22 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
             });
         });
 
-        describe('metadata row', function() {
-
-            var row;
-            var rowHeading;
-
-            beforeEach(function() {
-
-                row = $(rootElement.children()[2]);
-                rowHeading = $(row.children()[0]);
-            });
-
-            it('has the correct class', function() {
-
-                expect(row.attr('class')).toBe('row metadata');
-            });
-
-            it('has correct number of children', function() {
-
-                expect(row.children().length).toBe(1);
-            });
-
-            it('has correct row heading', function() {
-
-                expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('metadataSubheading'));
-            });
-
-            it('has correct text value from function', function() {
-
-                expect(getText(row)).toBe('point_of_truth');
-            });
-        });
-
-        describe('files row', function() {
-
-            var row;
-            var rowHeading;
-
-            beforeEach(function() {
-
-                row = $(rootElement.children()[3]);
-                rowHeading = $(row.children()[0]);
-            });
-
-            it('has the correct class', function() {
-
-                expect(row.attr('class')).toBe('row files');
-            });
-
-            it('has correct number of children', function() {
-
-                expect(row.children().length).toBe(1);
-            });
-
-            it('has correct row heading', function() {
-
-                expect(rowHeading.attr('class')).toBe('subheading');
-                expect(rowHeading.text()).toBe(OpenLayers.i18n('filesSubheading'));
-            });
-
-            it('has correct text value from function', function() {
-
-                expect(getText(row)).toBe('file_list');
-            });
-        });
-
-        describe('template output when no attached files', function() {
+        describe('template output when no attached files', function () {
 
             var rootElement;
             var html;
 
-            beforeEach(function() {
+            beforeEach(function () {
 
-                tpl._getPointOfTruthLinkEntry = function() { return "point_of_truth" };
-                tpl._dataRowTemplate = function() { return "<div>data_row_template</div>" };
-                tpl._getFileListEntries = function() { return "file_list" };
+                tpl._getPointOfTruthLinkEntry = function () {
+                    return "point_of_truth"
+                };
+                tpl._dataRowTemplate = function () {
+                    return "<div>data_row_template</div>"
+                };
+                tpl._getFileListEntries = function () {
+                    return "file_list"
+                };
 
                 geoNetworkRecord.downloadableLinks = [];
 
@@ -365,22 +232,289 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
                 rootElement = $(html);
             });
 
-            describe('root element', function() {
+            describe('root element', function () {
 
-                it('has correct number of children', function() {
+                it('has correct number of children', function () {
 
-                    expect(rootElement.children().length).toBe(3);
+                    expect(rootElement.children().length).toBe(2);
                 });
             });
 
-            describe('files row', function() {
+            describe('files row', function () {
 
-                it('should not be present when there are no links', function() {
+                it('should not be present when there are no links', function () {
 
                     expect(html.indexOf('file_list')).toBe(-1);
                 });
             });
         });
+
+        /* start new specs from aodaac and wfs template tests */
+
+        describe('_getDataFilterEntry', function () {
+
+            beforeEach(function () {
+                spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
+
+            });
+
+            it('returns the entry markup', function () {
+
+                var html = tpl._getDataFilterEntry(geoNetworkRecord);
+
+                expect(html).toBe('');
+            });
+
+            it('returns empty string when no aodaac parameters', function () {
+
+                geoNetworkRecord.aodaac = null;
+
+                var html = tpl._getDataFilterEntry(geoNetworkRecord);
+
+                expect(html).toBe('');
+                expect(tpl._makeEntryMarkup).not.toHaveBeenCalled();
+            });
+
+            afterEach(function () {
+
+                tpl._makeEntryMarkup.reset();
+            });
+        });
+
+        describe('_adoaacParameterMarkup', function () {
+
+            var markup;
+            var params;
+
+            beforeEach(function () {
+
+                spyOn(String, 'format');
+                params = {
+                    latitudeRangeStart: -90,
+                    latitudeRangeEnd: 90,
+                    longitudeRangeStart: -180,
+                    longitudeRangeEnd: 180,
+                    dateRangeStart: '1/1/1900',
+                    dateRangeEnd: '31/12/2001'
+                };
+
+                markup = tpl._aodaacParametersMarkup(params);
+            });
+
+            it('returns parameter list markup', function () {
+
+                expect(String.format).toHaveBeenCalledWith('{0}<b>S</b>,&nbsp;{1}<b>W</b>', 90, -180)
+                expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'Date range', '1/1/1900', '31/12/2001')
+            });
+
+        });
+
+        describe('_parameterString', function () {
+
+            beforeEach(function () {
+
+                spyOn(OpenLayers, 'i18n').andReturn('i18n value');
+                spyOn(String, 'format');
+
+                tpl._parameterString('the_key', 'val1', 'val2');
+            });
+
+            it('calls OpenLayers.i18n()', function () {
+
+                expect(OpenLayers.i18n).toHaveBeenCalledWith('the_key');
+            });
+
+            it('calls String.format()', function () {
+
+                expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'i18n value', 'val1', 'val2')
+            });
+        });
+
+        describe('_createDownloadButton', function () {
+
+            var mockMenu = {};
+            var mockMenuItems = {};
+            var mockButton = {};
+            var mockCollection = {};
+            var mockElement = {};
+            var renderElement = '';
+
+            beforeEach(function () {
+
+                spyOn(tpl, '_createMenuItems').andReturn(mockMenuItems);
+                spyOn(Ext.menu, 'Menu').andReturn(mockMenu);
+                spyOn(Ext, 'Button').andReturn(mockButton);
+                spyOn(tpl, '_emailTextFieldElement').andReturn(mockElement);
+                mockButton.render = jasmine.createSpy('button render');
+                mockElement.on = jasmine.createSpy();
+                renderElement = "html";
+
+                tpl._createDownloadButton(renderElement, mockCollection);
+            });
+
+            it('calls _createMenuItems', function () {
+
+                expect(tpl._createMenuItems).toHaveBeenCalledWith(mockCollection);
+            });
+
+            it('create a new Menu', function () {
+
+                expect(Ext.menu.Menu).toHaveBeenCalledWith({items: mockMenuItems})
+            });
+
+            it('calls _emailTextFieldElement', function () {
+                expect(tpl._emailTextFieldElement).toHaveBeenCalled();
+            });
+
+            it('calls _emailTextFieldElement to attach events to', function () {
+                expect(mockElement.on).toHaveBeenCalled();
+            });
+        });
+
+        describe('_downloadAodaacHandler', function () {
+
+            it('returns a function to be called', function () {
+
+                var collection = { uuid: 5, aodaac: true };
+                var returnValue = tpl._downloadAodaacHandler(collection);
+
+                expect(typeof returnValue).toBe('function');
+            });
+        });
+        describe('_downloadWfsHandler', function () {
+
+            it('returns a function to be called', function () {
+                var wmsLayer = {
+                    getDownloadFilter: function () {
+                        return "cql_filter"
+                    }
+                }
+                wmsLayer.getWfsLayerFeatureRequestUrl = function () { }
+
+                var collection = {
+                    uuid: 5,
+                    wmsLayer: wmsLayer
+                };
+                var returnValue = tpl._downloadWfsHandler(collection);
+
+                expect(typeof returnValue).toBe('function');
+            });
+        });
+
+        describe('_aodaacUrl', function () {
+
+            it('builds URL with correct query string', function () {
+
+                var params = {
+                    productId: 89,
+                    latitudeRangeStart: -90,
+                    latitudeRangeEnd: 90,
+                    longitudeRangeStart: -180,
+                    longitudeRangeEnd: 180,
+                    dateRangeStart: '1/1/1900',
+                    dateRangeEnd: '31/12/2001'
+                };
+
+                var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
+
+                expect(url).toBe('aodaac/createJob?' +
+                    'outputFormat=format' +
+                    '&dateRangeStart=1/1/1900' +
+                    '&dateRangeEnd=31/12/2001' +
+                    '&timeOfDayRangeStart=0000' +
+                    '&timeOfDayRangeEnd=2400' +
+                    '&latitudeRangeStart=-90' +
+                    '&latitudeRangeEnd=90' +
+                    '&longitudeRangeStart=-180' +
+                    '&longitudeRangeEnd=180' +
+                    '&productId=89' +
+                    '&notificationEmailAddress=emailAddress'
+                );
+            });
+        });
+
+        describe('_validateEmailAddress', function () {
+
+            it('returns false for an empty address', function () {
+
+                var returnVal = tpl._validateEmailAddress('');
+
+                expect(returnVal).toBe(false);
+            });
+
+            it('returns false for an invalid address', function () {
+
+                var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
+
+                expect(returnVal).toBe(false);
+            });
+
+            it('returns true for a valid address', function () {
+
+                var returnVal = tpl._validateEmailAddress('user@domain.com');
+
+                expect(returnVal).toBe(true);
+            });
+        });
+
+        describe('_createMenuItems', function () {
+
+            it('returns no menu items', function () {
+
+                var theCollection = {wmsLayer: geoNetworkRecord};
+                var items = tpl._createMenuItems(theCollection);
+
+                expect(items.length).toBe(0);
+
+            });
+
+            it('returns array of menu items with one more when a downloadUrlFieldName is specified on the layer', function () {
+                spyOn(tpl, '_downloadWfsHandler');
+                spyOn(tpl, '_urlListDownloadHandler');
+
+                var theCollection = { wmsLayer: { urlDownloadFieldName: 'the field', wfsLayer: {}} };
+                theCollection.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
+                tpl._urlListDownloadHandler = function () {}
+                var items = tpl._createMenuItems(theCollection);
+                var numSpecialItems = 1; // List of URLs
+
+                expect(items.length).not.toBe(0);
+
+                Ext.each(items, function (item) {
+
+                    expect(item.text).toBeDefined();
+                    expect(typeof item.text === 'string').toBeTruthy();
+                });
+
+                expect(tpl._downloadWfsHandler.callCount).toBe(items.length - numSpecialItems);
+            });
+        });
+
+
+        describe('_urlListDownloadHandler', function() {
+
+            beforeEach(function() {
+                spyOn(tpl, '_wfsUrlForGeoNetworkRecordWmsLayer');
+                geoNetworkRecord.wmsLayer = { urlDownloadFieldName: 'the field', wfsLayer: {} };
+                geoNetworkRecord.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
+                geoNetworkRecord.wmsLayer.getWmsLayerFeatureRequestUrl = function () {}
+            });
+
+            it('calls _wfsUrlForGeoNetworkRecordWmsLayer', function() {
+
+                tpl._urlListDownloadHandler(geoNetworkRecord);
+
+                expect(tpl._wfsUrlForGeoNetworkRecordWmsLayer).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
+            });
+
+            it('returns a function to be called', function() {
+
+                var returnValue = tpl._urlListDownloadHandler(geoNetworkRecord);
+
+                expect(typeof returnValue).toBe('function');
+            });
+        });
+
     });
 
     function getText(element) {
@@ -389,12 +523,16 @@ describe('Portal.cart.DownloadPanelTemplate', function() {
 
         var text = $(element)
             .contents()
-            .filter(function() {
+            .filter(function () {
                 return this.nodeType === Node.TEXT_NODE;
             }).text();
 
-        var elements = text.split(" ").filter(function(val) { return val.length });
+        var elements = text.split(" ").filter(function (val) {
+            return val.length
+        });
 
         return (elements.length == 1) ? elements[0] : elements;
     }
 });
+
+

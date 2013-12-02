@@ -11,10 +11,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     initComponent: function(cfg) {
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
-            headerCfg: {
-                cls: 'steps'
-            },
             autoScroll: true,
             boxMinWidth: 800,
             width: 1024
@@ -35,7 +31,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         // Reverse the order of items, last item added will be displayed first
         for (var i = this.store.data.items.length - 1; i >= 0; i--) {
             var item = this.store.data.items[i];
-            console.log(item.data);
             html += tpl.apply(item.data);
         }
 

@@ -15,6 +15,10 @@ Portal.cart.DownloadPanelWrapper = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
+            title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
+            headerCfg: {
+                cls: 'steps'
+            },
             items: this.downloadPanel
         }, cfg);
 

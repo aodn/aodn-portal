@@ -18,25 +18,27 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '<div class="downloadPanelResultsWrapper">',
             '  <div class="x-panel-header resultsHeaderBackground">',
             '    <h3 class="resultsRowHeader">{title}</h3>',
-            '    <div class="floatRight" id="download-button-{uuid}">{[this._downloadButton(values)]}</div>',
+            '    <div class="floatRight downloadButtonWrapper" id="download-button-{uuid}">{[this._downloadButton(values)]}</div>',
             '  </div>',
-            '  <div class="floatLeft">',
-            '    <div class="resultsTextBody metadata">',
-            '      {[this._getDataFilterEntry(values)]}',
-            '    </div>' +
-            '    <div class="resultsTextBody metadata">',
-            '      <h4>' + OpenLayers.i18n('metadataSubheading') + '</h4>',
-            '      {[this._getPointOfTruthLinkEntry(values)]}',
+            '  <div style="overflow:hidden;">' +
+            '     <div class="floatLeft" style="width:50%">',
+            '      <div class="resultsTextBody metadata">',
+            '        {[this._getDataFilterEntry(values)]}',
+            '      </div>' +
+            '      <div class="resultsTextBody metadata">',
+            '        <h4>' + OpenLayers.i18n('metadataSubheading') + '</h4>',
+            '        {[this._getPointOfTruthLinkEntry(values)]}',
+            '      </div>',
+            '      <tpl if="downloadableLinks.length &gt; 0">',
+            '     <div class="resultsTextBody files">',
+            '       <h4>' + OpenLayers.i18n('filesSubheading') + '</h4>',
+            '       {[this._getFileListEntries(values)]}',
+            '       </div>',
+            '     </tpl>',
             '    </div>',
-            '    <tpl if="downloadableLinks.length &gt; 0">',
-            '    <div class="resultsTextBody files">',
-            '      <h4>' + OpenLayers.i18n('filesSubheading') + '</h4>',
-            '      {[this._getFileListEntries(values)]}',
+            '    <div class="floatRight resultsTextBody" style="width:50%" >',
+            '      {[this._dataRowTemplate(values)]}',
             '    </div>',
-            '    </tpl>',
-            '  </div>',
-            '  <div class="floatRight resultsTextBody notes" >',
-            '    {[this._dataRowTemplate(values)]}',
             '  </div>',
             '</div>'
         ];
@@ -82,7 +84,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
     _getPointOfTruthLinkEntry: function(record) {
         var href = record.pointOfTruthLink.href;
-
         return this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
     },
 
@@ -91,18 +92,13 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
 
         if (values.aodaac) {
             html += new Portal.cart.AodaacDataRowTemplate(this)._getDataDownloadEntry(values);
-            console.log("getting aodacc stuff");
         }
         else if (values.wmsLayer.wfsLayer) {
             html += new Portal.cart.WfsDataRowTemplate(this)._getDataDownloadEntry(values);
-            console.log("getting wfs stuff");
         }
         else {
             html = OpenLayers.i18n('noDataMessage');
         }
-
-        console.log(html);
-
 
         return html;
     },
@@ -122,8 +118,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         var downloadMenu = new Ext.menu.Menu({
             items: menuItems
         });
-
-        console.log(collection);
 
         new Ext.Button({
             text: OpenLayers.i18n('downloadButtonLabel'),
@@ -159,7 +153,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             menuItems.push({text: OpenLayers.i18n('downloadAsAsciiLabel'), handler: this._downloadAodaacHandler(collection, 'txt'), scope: this});
             menuItems.push({text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._downloadAodaacHandler(collection, 'urls'), scope: this});
         }
-        else if (collection.wmsLayer.wfsLayer) {
+        else if (collection.wmsLayer && collection.wmsLayer.wfsLayer) {
             menuItems.push({text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadWfsHandler(collection, 'csv'), scope: this});
             menuItems.push({text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadWfsHandler(collection, 'gml3'), scope: this});
             menuItems.push({text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadWfsHandler(collection, 'shape-zip', 'zip'), scope: this});
@@ -251,15 +245,14 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
     _downloadWfsHandler: function(collection, format, fileExtension) {
 
         var downloadUrl = collection.wmsLayer.getWfsLayerFeatureRequestUrl(format);
-
         var extensionToUse = fileExtension ? fileExtension : format;
         var downloadFilename = collection.title + "." + extensionToUse;
 
         return function() {
-
             this.downloadWithConfirmation(downloadUrl, downloadFilename);
         };
     },
+
 
 
     _downloadAodaacHandler: function(collection, format) {
@@ -290,6 +283,28 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
                 }
             });
         };
+    },
+
+    _urlListDownloadHandler: function(collection) {
+
+        var downloadUrl = this._wfsUrlForGeoNetworkRecordWmsLayer(collection, 'csv');
+        var downloadFilename = collection.title + "_URLs.txt";
+        var additionalArgs = {
+            action: 'urlList',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return function() {
+            this.downloadWithConfirmation(downloadUrl, downloadFilename, additionalArgs);
+        };
+    },
+
+    _wfsUrlForGeoNetworkRecordWmsLayer: function(record, format) {
+        return record.wmsLayer.getWmsLayerFeatureRequestUrl(format);
+    },
+
+    _wfsUrlForGeoNetworkRecordWfsLayer: function(record, format) {
+        return record.wmsLayer.getWfsLayerFeatureRequestUrl(format);
     },
 
     _aodaacUrl: function(params, format, emailAddress) {

@@ -34,8 +34,8 @@ describe("Portal.ui.MainPanel", function() {
         });
 
         it('should init download panel', function() {
-            expect(mainPanel.downloadPanel).toBeInstanceOf(Portal.cart.DownloadPanel);
-            expect(mainPanel.downloadPanel.navigationText).toBe(OpenLayers.i18n('navigationButtonDownload'));
+            expect(mainPanel.downloadPanelWrapper).toBeInstanceOf(Portal.cart.DownloadPanelWrapper);
+            expect(mainPanel.downloadPanelWrapper.navigationText).toBe(OpenLayers.i18n('navigationButtonDownload'));
         });
 
         it('should init toolbar', function() {
