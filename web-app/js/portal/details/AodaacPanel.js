@@ -92,7 +92,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addBoundingBoxPanel: function() {
-        debugger;
         this.bboxControl = new Portal.details.BoundingBoxPanel({
             map: this.map
         });
