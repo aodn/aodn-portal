@@ -28,19 +28,6 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
             'displayClass': 'olControlDrawFeaturePolygon'
         });
 
-        var self = this;
-        this.events.addEventType('spatialconstraintadded');
-        this.events.addEventType('spatialconstraintcleared');
-
-        this.spatialConstraintControl.events.on({
-            'spatialconstraintadded': function() {
-                self.events.triggerEvent('spatialconstraintadded');
-            },
-            'spatialconstraintcleared': function() {
-                self.events.triggerEvent('spatialconstraintcleared');
-            }
-        });
-
         this.addControls([
             new OpenLayers.Control.Navigation(),
             this.spatialConstraintControl

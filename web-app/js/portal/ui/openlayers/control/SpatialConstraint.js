@@ -101,4 +101,18 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         'displayClass': 'none'
     });
     map.addControl(map.spatialConstraintControl);
+
+    map.spatialConstraintControl.events.on({
+        scope: map,
+        "spatialconstraintadded": function(geometry) {
+            this.events.triggerEvent('spatialconstraintadded', geometry);
+        },
+        "spatialconstraintcleared": function() {
+            this.events.triggerEvent('spatialconstraintcleared');
+        }
+    });
+
+    if (Portal.app.config.initialBbox) {
+        map.events.triggerEvent('spatialconstraintadded', map.spatialConstraintControl.getConstraint());
+    }
 };

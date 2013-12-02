@@ -17,7 +17,8 @@ describe('Portal.details.AodaacPanel', function() {
 
 
     beforeEach(function() {
-        map = mockMap();
+        map = new OpenLayers.Map();
+
         spyOn(map.events, 'register');
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
@@ -27,20 +28,6 @@ describe('Portal.details.AodaacPanel', function() {
         layer.isNcwms = function() {return true};
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
-    });
-
-    describe('initialisation', function() {
-        it('registers a handler for the map move event', function() {
-
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
-                }
-            );
-
-            var _aodaacPanel = new Portal.details.AodaacPanel({ map: map });
-            expect(map.events.register).toHaveBeenCalledWith('move', _aodaacPanel, _aodaacPanel._setBounds);
-        });
     });
 
     describe('GeoNetworkRecord', function() {
@@ -101,14 +88,6 @@ describe('Portal.details.AodaacPanel', function() {
             aodaacPanel._addTemporalControls(new Array());
             aodaacPanel.endDateTimePicker.fireEvent('change');
             expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
-        });
-
-        it('updates the aodaac object when the map moves', function() {
-            spyOn(Portal.details.AodaacPanel.prototype, '_setBounds');
-            var _aodaacPanel = new Portal.details.AodaacPanel({ map: _createMap() });
-            _decorateMap(_aodaacPanel);
-            _aodaacPanel.map.events.triggerEvent('move', {});
-            expect(_aodaacPanel._setBounds).toHaveBeenCalled();
         });
 
         it('clears the date and time pickers when the layer is updating', function() {
@@ -237,4 +216,3 @@ describe('Portal.details.AodaacPanel', function() {
         };
     }
 });
-

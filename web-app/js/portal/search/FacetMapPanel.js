@@ -37,7 +37,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
     _initGeoFacetMapToolbar: function() {
         this.geoFacetMapToolbar = new Portal.search.GeoFacetMapToolbar();
 
-        this.geoFacetMapToolbar.events.register(
+        this.map.events.register(
             'spatialconstraintadded',
             this,
             function(geometry) {

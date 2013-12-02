@@ -387,3 +387,6 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
                                      OpenLayers.Function.bind(onerror, this));
     }
 };
+
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');

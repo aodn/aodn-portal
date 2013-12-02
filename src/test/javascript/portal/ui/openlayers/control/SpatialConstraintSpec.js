@@ -80,20 +80,40 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     });
 
     describe('map', function() {
-        it('adds layer to map when control added', function() {
-            var map = new OpenLayers.Map();
-            map.addControl(spatialConstraint);
 
-            expect(map.layers).toContain(spatialConstraint.layer);
+        var map;
+
+        beforeEach(function() {
+            map = new OpenLayers.Map();
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+        });
+
+        it('adds layer to map when control added', function() {
+            expect(map.layers).toContain(map.spatialConstraintControl.layer);
         });
 
         it('removes layer from map when control removed', function() {
-            var map = new OpenLayers.Map();
-            map.addControl(spatialConstraint);
-            expect(map.layers).toContain(spatialConstraint.layer);
+            expect(map.layers).toContain(map.spatialConstraintControl.layer);
 
-            spatialConstraint.removeFromMap();
-            expect(map.layers).not.toContain(spatialConstraint.layer);
+            map.spatialConstraintControl.removeFromMap();
+            expect(map.layers).not.toContain(map.spatialConstraintControl.layer);
+        });
+
+        it('fires events from map', function() {
+            var addedSpy = jasmine.createSpy('added');
+            var clearedSpy = jasmine.createSpy('cleared');
+
+            map.events.on({
+                scope: this,
+                'spatialconstraintadded': addedSpy,
+                'spatialconstraintcleared': clearedSpy
+            });
+
+            map.spatialConstraintControl.events.triggerEvent('spatialconstraintadded');
+            map.spatialConstraintControl.events.triggerEvent('spatialconstraintcleared');
+
+            expect(addedSpy).toHaveBeenCalled();
+            expect(clearedSpy).toHaveBeenCalled();
         });
     });
 
@@ -126,8 +146,4 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.getConstraintAsWKT()).toBe('POLYGON((1 2,3 4,1 2))');
         });
     });
-
-    var constructGeometry = function() {
-        return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
-    };
 });

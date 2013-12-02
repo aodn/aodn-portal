@@ -7,18 +7,18 @@
  */
 
 describe("Portal.details.BoundingBoxPanel", function() {
-    
+
     var bbox;
-    
+
     beforeEach(function() {
         bbox = new Portal.details.BoundingBoxPanel();
 
         bbox.setBounds({bottom: -17, top: -19, left: -51, right: -13});
     });
-    
+
     it("setBounds should set bounds of bounding box", function() {
         bbox.setBounds({bottom: -25, top: -22, left: -55, right: -20});
-            
+
         expect(bbox.southBL.value).toBe('-25');
         expect(bbox.northBL.value).toBe('-22');
         expect(bbox.eastBL.value).toBe('-20');
@@ -41,4 +41,26 @@ describe("Portal.details.BoundingBoxPanel", function() {
         expect(bbox.getWestBL()).toBe(-51);
     });
 
+    describe('map', function() {
+        var map;
+
+        beforeEach(function() {
+            map = new OpenLayers.Map();
+        });
+
+        it("subscribes to 'spatialconstraintadded' event", function() {
+            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+
+            bbox = new Portal.details.BoundingBoxPanel({
+                map: map
+            });
+
+            spyOn(bbox, 'setBounds');
+
+            var geometry = constructGeometry();
+            map.events.triggerEvent('spatialconstraintadded', geometry);
+
+            expect(bbox.setBounds).toHaveBeenCalledWith(geometry.getBounds());
+        });
+    });
 });

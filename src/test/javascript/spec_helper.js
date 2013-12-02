@@ -86,3 +86,8 @@ var mockMap = function() {
 
 // An empty function to pass as a parameter
 var noOp = function() {};
+
+
+var constructGeometry = function() {
+    return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
+};
