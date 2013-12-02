@@ -126,8 +126,4 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.getConstraintAsWKT()).toBe('POLYGON((1 2,3 4,1 2))');
         });
     });
-
-    var constructGeometry = function() {
-        return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
-    };
 });

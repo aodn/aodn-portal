@@ -40,8 +40,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.add(this._newSectionSpacer());
         this._addTemporalControls();
         this.add(this._newSectionSpacer());
-
-        this.map.events.register("move", this, this._setBounds);
     },
 
     update: function(layer, show, hide, target) {
@@ -94,7 +92,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addBoundingBoxPanel: function() {
-        this.bboxControl = new Portal.details.BoundingBoxPanel();
+        debugger;
+        this.bboxControl = new Portal.details.BoundingBoxPanel({
+            map: this.map
+        });
         this.add(this.bboxControl);
     },
 
@@ -226,8 +227,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _setBounds: function(){
-        var bounds = this.map.getExtent();
-        this.bboxControl.setBounds(bounds);
         this._updateGeoNetworkAodaac();
     },
 

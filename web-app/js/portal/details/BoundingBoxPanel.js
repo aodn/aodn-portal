@@ -26,6 +26,17 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
+
+        if (config.map && config.map.spatialConstraintControl) {
+            this.setBounds(config.map.spatialConstraintControl.getConstraint().getBounds());
+
+            config.map.spatialConstraintControl.events.on({
+                scope: this,
+                'spatialconstraintadded': function(geometry) {
+                    this.setBounds(geometry.getBounds());
+                }
+            });
+        }
     },
 
     setBounds: function(bounds) {
