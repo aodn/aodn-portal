@@ -110,7 +110,7 @@ class OpenIdDbRealm {
             return true
         }
 
-        // If not, does he gain it through a role?
+        // If not, do they gain it through a role?
         //
         // Get the permissions from the roles that the user does have.
         def results = User.executeQuery("select distinct p from User as user join user.roles as role join role.permissions as p where user.id = '$principal'")
