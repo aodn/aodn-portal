@@ -69,6 +69,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
         }, this);
+
+        Ext.MsgBus.subscribe(
+            Portal.form.PolygonTypeComboBox.prototype.VALUE_CHANGED_EVENT,
+            function(type, event) {
+                this._setSpatialConstraintStyle(event.value)
+            },
+            this
+        );
     },
 
     _maximiseMapActionsControl: function() {
@@ -231,5 +239,28 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     beforeParentHide: function() {
 
         this._closeFeatureInfoPopup();
+    },
+
+    _setSpatialConstraintStyle: function(polygonStyle) {
+
+        this.map.navigationControl.deactivate();
+        if (this.map.spatialConstraintControl) {
+            this.map.spatialConstraintControl.removeFromMap();
+        }
+
+        if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
+            this.map.spatialConstraintControl = undefined;
+            this.map.navigationControl.activate();
+        }
+        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
+            this._addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
+        }
+        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style) {
+            this._addSpatialConstraintControlToMap();
+        }
+    },
+
+    _addSpatialConstraintControlToMap: function(handler) {
+        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this.map, handler);
     }
 });

@@ -38,21 +38,9 @@ describe("Portal.ui.openlayers.MapOptions", function() {
         });
     });
 
-    describe('controls', function() {
-        describe('spatial constraint', function() {
-
-            it('has spatial constraint control', function() {
-                expect(mapOptions.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
-            });
-
-            it('is in map controls', function() {
-                expect(map.controls).toContain(mapOptions.spatialConstraintControl);
-            });
-
-            it('has initial bbox equal to config', function() {
-                expect(mapOptions.spatialConstraintControl.initialConstraint.toString()).toEqual(
-                    Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox).toString());
-            });
+    describe('navigation control', function() {
+        it('is initially deactivated', function() {
+            expect(mapOptions.navigationControl.active).toBe(false);
         });
     });
 });

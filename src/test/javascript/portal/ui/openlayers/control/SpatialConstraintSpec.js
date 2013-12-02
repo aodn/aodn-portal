@@ -80,11 +80,20 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     });
 
     describe('map', function() {
-        it('adds vector layer to map', function() {
+        it('adds layer to map when control added', function() {
             var map = new OpenLayers.Map();
             map.addControl(spatialConstraint);
 
             expect(map.layers).toContain(spatialConstraint.layer);
+        });
+
+        it('removes layer from map when control removed', function() {
+            var map = new OpenLayers.Map();
+            map.addControl(spatialConstraint);
+            expect(map.layers).toContain(spatialConstraint.layer);
+
+            spatialConstraint.removeFromMap();
+            expect(map.layers).not.toContain(spatialConstraint.layer);
         });
     });
 

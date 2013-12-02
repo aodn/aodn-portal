@@ -26,6 +26,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
                 irregular: true
             };
 
+        options.autoActivate = options.autoActivate || true;
+
         OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [layer, handler, options]);
 
         this._configureEventsAndHandlers();
@@ -50,6 +52,11 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     setMap: function(map) {
         map.addLayer(this.layer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
+    },
+
+    removeFromMap: function() {
+        this.map.removeLayer(this.layer);
+        this.map.removeControl(this);
     },
 
     clear: function() {
@@ -86,3 +93,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.events.triggerEvent('spatialconstraintadded', event.feature.geometry);
     }
 });
+
+Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
+    map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
+        initialConstraint: Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox),
+        handler: handler,
+        'displayClass': 'none'
+    });
+    map.addControl(map.spatialConstraintControl);
+};
