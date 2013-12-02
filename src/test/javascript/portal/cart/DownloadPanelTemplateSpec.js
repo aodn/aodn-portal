@@ -389,7 +389,7 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
                         return "cql_filter"
                     }
                 }
-                wmsLayer.getWfsLayerFeatureRequestUrl = function () { }
+                wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
 
                 var collection = {
                     uuid: 5,

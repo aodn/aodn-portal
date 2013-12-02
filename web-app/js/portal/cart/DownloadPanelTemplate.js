@@ -21,7 +21,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="floatRight downloadButtonWrapper" id="download-button-{uuid}">{[this._downloadButton(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">' +
-            '     <div class="floatLeft" style="width:50%">',
+            '     <div class="floatLeft" >',
             '      <div class="resultsTextBody metadata">',
             '        {[this._getDataFilterEntry(values)]}',
             '      </div>' +
@@ -36,7 +36,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '       </div>',
             '     </tpl>',
             '    </div>',
-            '    <div class="floatRight resultsTextBody" style="width:50%" >',
+            '    <div class="floatRight resultsTextBody" style="width:220px" >',
             '      {[this._dataRowTemplate(values)]}',
             '    </div>',
             '  </div>',
@@ -157,10 +157,11 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             menuItems.push({text: OpenLayers.i18n('downloadAsCsvLabel'), handler: this._downloadWfsHandler(collection, 'csv'), scope: this});
             menuItems.push({text: OpenLayers.i18n('downloadAsGml3Label'), handler: this._downloadWfsHandler(collection, 'gml3'), scope: this});
             menuItems.push({text: OpenLayers.i18n('downloadAsShapefileLabel'), handler: this._downloadWfsHandler(collection, 'shape-zip', 'zip'), scope: this});
+            if (collection.wmsLayer.urlDownloadFieldName) {
+                menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
+            }
         }
-        if (collection.wmsLayer && collection.wmsLayer.urlDownloadFieldName) {
-            menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
-        }
+
 
         return menuItems;
     },
