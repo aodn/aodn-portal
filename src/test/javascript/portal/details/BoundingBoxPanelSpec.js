@@ -42,49 +42,25 @@ describe("Portal.details.BoundingBoxPanel", function() {
     });
 
     describe('map', function() {
-        describe('spatial constraint control', function() {
+        var map;
 
-            var map;
+        beforeEach(function() {
+            map = new OpenLayers.Map();
+        });
 
-            beforeEach(function() {
-                map = new OpenLayers.Map();
+        it("subscribes to 'spatialconstraintadded' event", function() {
+            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+
+            bbox = new Portal.details.BoundingBoxPanel({
+                map: map
             });
 
-            it('calls setBounds from constructor', function() {
-                var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-                var geometry = constructGeometry();
-                map.spatialConstraintControl.getConstraint = function() {
-                    return geometry;
-                };
+            spyOn(bbox, 'setBounds');
 
-                spyOn(Portal.details.BoundingBoxPanel.prototype, 'setBounds');
-                bbox = new Portal.details.BoundingBoxPanel({
-                    map: map
-                });
+            var geometry = constructGeometry();
+            map.events.triggerEvent('spatialconstraintadded', geometry);
 
-                expect(bbox.setBounds).toHaveBeenCalledWith(geometry.getBounds());
-            });
-
-            it("subscribes to 'spatialconstraintadded' event", function() {
-                var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-
-                bbox = new Portal.details.BoundingBoxPanel({
-                    map: map
-                });
-
-                spyOn(bbox, 'setBounds');
-
-                var geometry = constructGeometry();
-                map.spatialConstraintControl.events.triggerEvent('spatialconstraintadded', geometry);
-
-                expect(bbox.setBounds).toHaveBeenCalledWith(geometry.getBounds());
-            });
-
-            it('initialises ok when no spatialconstraint control on map', function() {
-                bbox = new Portal.details.BoundingBoxPanel({
-                    map: map
-                });
-            });
+            expect(bbox.setBounds).toHaveBeenCalledWith(geometry.getBounds());
         });
     });
 });

@@ -17,7 +17,8 @@ describe('Portal.details.AodaacPanel', function() {
 
 
     beforeEach(function() {
-        map = mockMap();
+        map = new OpenLayers.Map();
+
         spyOn(map.events, 'register');
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
