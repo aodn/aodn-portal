@@ -5,20 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.utils.geo')
+Ext.namespace('Portal.utils.geo');
 
 Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {
-
-    /* ---------------
-     * left {Number} The left bounds of the box.  Note that for width calculations, this is assumed to be less than the right value.
-     * bottom {Number} The bottom bounds of the box.  Note that for height calculations, this is assumed to be more than the top value.
-     * right  {Number} The right bounds.
-     * top  {Number} The top bounds.
-     */
-    if (!bboxAsString) {
-        alert("ERROR: There is no bounding box is not set in the site configuration");
-        return null;
-    }
 
     var bbox = bboxAsString.split(",");
 

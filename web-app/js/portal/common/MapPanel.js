@@ -40,6 +40,12 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
 
     /* Return an openlayers extent for the passed initialBbox string */
     getMapDefaultZoom: function(initialBbox) {
+
+        if (!initialBbox) {
+            alert("ERROR: There is no bounding box is not set in the site configuration");
+            return null;
+        }
+
         return Portal.utils.geo.bboxAsStringToBounds(initialBbox);
     },
 
