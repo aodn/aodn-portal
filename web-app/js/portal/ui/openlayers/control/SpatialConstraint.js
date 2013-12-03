@@ -55,6 +55,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     removeFromMap: function() {
+        this.deactivate();
         this.map.removeLayer(this.layer);
         this.map.removeControl(this);
     },
