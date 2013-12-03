@@ -51,8 +51,8 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     getCQL: function() {
 
-        var geometryExpression = this.geometry.isBbox() ? this._geometryExpressionForBbox()
-                                                        : this._geometryExpressionForPolygon();
+        var geometryExpression = this.geometry.isBox() ? this._geometryExpressionForBbox()
+                                                       : this._geometryExpressionForPolygon();
 
         return String.format(
             "BBOX({0},{1})",

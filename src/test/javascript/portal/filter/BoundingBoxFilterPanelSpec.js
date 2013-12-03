@@ -42,7 +42,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
         it('calls correct method for bbox geometry type', function () {
 
-            boundingBoxFilter.geometry = { isBbox: function() { return true } };
+            boundingBoxFilter.geometry = { isBox: function() { return true } };
             var cql = boundingBoxFilter.getCQL();
 
             expect(boundingBoxFilter._geometryExpressionForBbox).toHaveBeenCalled();
@@ -52,7 +52,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
         it('calls correct method for polygon geometry type', function () {
 
-            boundingBoxFilter.geometry = { isBbox: function() { return false } };
+            boundingBoxFilter.geometry = { isBox: function() { return false } };
             var cql = boundingBoxFilter.getCQL();
 
             expect(boundingBoxFilter._geometryExpressionForBbox).not.toHaveBeenCalled();
