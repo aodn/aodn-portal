@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
+Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         var defaults = {
@@ -25,7 +25,7 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
+        Portal.details.SpatialConstraintDisplayPanel.superclass.constructor.call(this, config);
 
         var self = this;
         if (config.map) {

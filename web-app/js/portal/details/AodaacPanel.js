@@ -36,7 +36,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.add(this._newSectionSpacer());
         this.add(new Portal.visualise.PolygonTypePanel());
         this.add(this._newSectionSpacer());
-        this._addBoundingBoxPanel();
+        this._addSpatialConstraintDisplayPanel();
         this.add(this._newSectionSpacer());
         this._addTemporalControls();
         this.add(this._newSectionSpacer());
@@ -91,11 +91,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.add(this.productInfoText);
     },
 
-    _addBoundingBoxPanel: function() {
-        this.bboxControl = new Portal.details.BoundingBoxPanel({
+    _addSpatialConstraintDisplayPanel: function() {
+        this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: this.map
         });
-        this.add(this.bboxControl);
+        this.add(this.spatialConstraintDisplayPanel);
     },
 
     _addTemporalControls: function() {
@@ -235,10 +235,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 productId: this.selectedProductsInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
                 dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
-                latitudeRangeStart: this.bboxControl.getSouthBL(),
-                longitudeRangeStart: this.bboxControl.getWestBL(),
-                latitudeRangeEnd: this.bboxControl.getNorthBL(),
-                longitudeRangeEnd: this.bboxControl.getEastBL()
+                latitudeRangeStart: this.spatialConstraintDisplayPanel.getSouthBL(),
+                longitudeRangeStart: this.spatialConstraintDisplayPanel.getWestBL(),
+                latitudeRangeEnd: this.spatialConstraintDisplayPanel.getNorthBL(),
+                longitudeRangeEnd: this.spatialConstraintDisplayPanel.getEastBL()
             };
         }
         return null;

@@ -18,10 +18,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     _createField: function() {
-        this.bbox = new Portal.details.BoundingBoxPanel({
+        this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: this.layer.map
         });
-        this.add(this.bbox);
+        this.add(this.spatialConstraintDisplayPanel);
     },
 
     isDownloadOnly: function() {
@@ -47,7 +47,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     _updateBounds: function(geometry) {
-        this.bbox.setBounds(geometry.getBounds());
+        this.spatialConstraintDisplayPanel.setBounds(geometry.getBounds());
         this._fireAddEvent();
     },
 
@@ -55,10 +55,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         return String.format(
             "BBOX({0},{1},{2},{3},{4})",
             this.filter.name,
-            this.bbox.getWestBL(),
-            this.bbox.getSouthBL(),
-            this.bbox.getEastBL(),
-            this.bbox.getNorthBL()
+            this.spatialConstraintDisplayPanel.getWestBL(),
+            this.spatialConstraintDisplayPanel.getSouthBL(),
+            this.spatialConstraintDisplayPanel.getEastBL(),
+            this.spatialConstraintDisplayPanel.getNorthBL()
         );
     }
 });
