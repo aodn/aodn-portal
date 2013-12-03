@@ -32,6 +32,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                     'display', 'value'
                 ],
                 data: [
+                    ['none', '0'],   
                     ['greater than', '>'],
                     ['greater than or equal to', '>='],
                     ['equal to', '='],
@@ -108,9 +109,9 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onOperationSelected: function(combo, record, index) {
-
         var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
+        var noneSelected = this._operatorIsNone();
         var hasFirstValue = !(this.firstField.getValue() == null || this.firstField.getValue() == "");
         var hasSecondValue = !(this.secondField.getValue() == null || this.secondField.getValue() == "");
 
@@ -120,14 +121,24 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         // Only change map if first value has a value
         if (shouldUpdate) {
-
-            this._fireAddEvent();
+            // clear the filter if "none" is selected
+            if (noneSelected) {
+        	    this.handleRemoveFilter();
+        	    this._fireAddEvent();
+        	}
+        	else {
+        	    this._fireAddEvent();
+        	}
         }
     },
 
     _operatorIsBetween: function() {
 
         return this.operators.getValue() == "BETWEEN";
+    },
+
+    _operatorIsNone: function() {
+        return this.operators.getValue() == "0";
     },
 
     handleRemoveFilter: function() {
