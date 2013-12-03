@@ -114,6 +114,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoxDisplayPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/PolygonDisplayPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SpatialConstraintDisplayPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SpatialSubsetControlsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilterPanel.js')}"></script>
@@ -172,7 +173,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/NoDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtent.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtentParser.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/PolygonTypePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/openId/Popup.js')}"></script>
 </g:if>
 <g:else>

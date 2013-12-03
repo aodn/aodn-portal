@@ -17,7 +17,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
-            title: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading')),
             activeItem: this.boxDisplayPanel,
             items: [
                 this.boxDisplayPanel,
