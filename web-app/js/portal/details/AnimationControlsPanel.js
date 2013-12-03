@@ -91,7 +91,10 @@ Portal.details.AnimationControlsPanel = Ext.extend(Ext.Panel, {
 					flex : 3,
 					listeners : {
 						scope : this,
-						drag : function(slider, ev) {
+						drag: function(slider, ev) {
+                            this.timeControl.setStep(slider.getValue());
+						},
+                        changecomplete: function(slider, newValue) {
                             this.timeControl.setStep(slider.getValue());
 						}
 					}
