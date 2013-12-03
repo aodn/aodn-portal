@@ -33,11 +33,19 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             this.mainPanel.layout.navigateToNextTab();
         }, this);
 
+
         var config = Ext.apply({
             height: 35,
             items: [
                 this.prevButton,
-                this.nextButton
+                this.nextButton,
+                '->',
+                {
+                    xtype: 'panel',
+                    html: OpenLayers.i18n('footerText'),
+                    unstyled: true,
+                    cls: 'footerText'
+                }
             ]
         }, cfg);
 
