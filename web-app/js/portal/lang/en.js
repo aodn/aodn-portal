@@ -211,9 +211,18 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
 
-    //ComboFilterPanel.js
+    // ComboFilterPanel.js
     clearFilterOption: 'All',
 
+    // DateFilterPanel.js
+    comboOptionNone: 'none',
+    comboOptionBefore: 'before',
+    comboOptionAfter: 'after',
+    comboOptionBetween: 'between',
+
+    // FacetedDateRange.js
+    minDate: '1/1/1200',
+    
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",

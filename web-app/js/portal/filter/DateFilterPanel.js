@@ -28,7 +28,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 fields: [
                     'op'
                 ],
-                data: [['before'], ['after'], ['between']]
+                data: [[OpenLayers.i18n("comboOptionNone")], [OpenLayers.i18n("comboOptionBefore")], [OpenLayers.i18n("comboOptionAfter")], [OpenLayers.i18n("comboOptionBetween")]]
             }),
             valueField: 'op',
             displayField: 'op',
@@ -41,6 +41,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.fromField = new Ext.form.DateField({
             name: 'from',
             format: "d/m/Y",
+            maxValue: new Date(),
             listeners: {
                 scope: this,
                 select: this._onSelect,
@@ -52,6 +53,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             name: 'to',
             format: "d/m/Y",
             hidden: true,
+            maxValue: new Date(),
             listeners: {
                 scope: this,
                 select: this._onSelect,
@@ -78,8 +80,18 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _opSelect: function(combo, row, index) {
-        this.toField.setVisible(this._isSelectedOpSetToBetween());
-        this._applyDateFilterPanel();
+        if (this._isSelectedOpSetToNone()) {
+            this.handleRemoveFilter();
+            this._fireAddEvent();
+        }
+        else {
+            this.toField.setVisible(this._isSelectedOpSetToBetween());
+            this._applyDateFilterPanel();
+        }
+    },
+
+    _isSelectedOpSetToNone: function() {
+        return this.operators.getValue() == 'none';
     },
 
     _isSelectedOpSetToBetween: function() {
@@ -99,6 +111,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelect: function(picker, date) {
+    	if (this._isSelectedOpSetToBetween) {
+    	    if (this.toField.isVisible()) {
+    	        this.toField.setMinValue(this.fromField.getValue());
+    	    }
+    	}
         this._applyDateFilterPanel();
     },
 
