@@ -12,7 +12,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
 
         this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
-            height: 70   // TODO: any way to make this auto-sized? (doesn't seem to work as expected)
+            height: 90
         });
 
         var config = Ext.apply({

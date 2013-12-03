@@ -80,12 +80,14 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
         it('uses the correct fields form the geometry', function () {
 
-            spyOn(Portal.utils.geo, 'geometryToWkt').andReturn('WKT');
+            boundingBoxFilter.geometry = {
+                toWkt: noOp
+            };
+            spyOn(boundingBoxFilter.geometry, 'toWkt').andReturn('WKT');
 
-            boundingBoxFilter.geometry = {};
 
             expect(boundingBoxFilter._geometryExpressionForPolygon()).toBe('WKT');
-            expect(Portal.utils.geo.geometryToWkt).toHaveBeenCalledWith(boundingBoxFilter.geometry);
+            expect(boundingBoxFilter.geometry.toWkt).toHaveBeenCalled();
         });
     });
 });
