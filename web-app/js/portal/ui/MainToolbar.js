@@ -42,9 +42,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
                 '->',
                 {
                     xtype: 'panel',
-                    html: OpenLayers.i18n('footerText'),
-                    unstyled: true,
-                    cls: 'footerText'
+                    html: OpenLayers.i18n('footerText')
                 }
             ]
         }, cfg);
