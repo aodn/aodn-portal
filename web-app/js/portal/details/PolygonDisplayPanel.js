@@ -6,23 +6,37 @@
  */
 Ext.namespace('Portal.details');
 
-Portal.details.PolygonDisplayPanel = Ext.extend(Ext.Panel, {
+Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {
 
     constructor: function(cfg) {
 
-        this.label = new Ext.form.Label();
+        this.verticesStore = new Ext.data.JsonStore({
+            fields: [
+                'y',
+                'x'
+            ]
+        });
 
         var config = Ext.apply({
-            layout: 'fit',
-            items: [
-                this.label
-            ]
+            disableSelection: true,
+            hideHeaders: true,
+            store: this.verticesStore,
+            colModel: new Ext.grid.ColumnModel({
+                columns: [
+                    'y',
+                    'x'
+                ]
+            }),
+            viewConfig: {
+                autoFill: true,
+                headersDisabled: true
+            }
         }, cfg);
 
         Portal.details.PolygonDisplayPanel.superclass.constructor.call(this, config);
     },
 
     setGeometry: function(geometry) {
-        this.label.setText(geometry.toWkt());
+        this.verticesStore.loadData(geometry.getVertices());
     }
 });
