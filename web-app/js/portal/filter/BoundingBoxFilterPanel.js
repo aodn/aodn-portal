@@ -53,7 +53,6 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     _updateWithGeometry: function(geometry) {
 
         this.geometry = geometry;
-        this.spatialConstraintDisplayPanel.setBounds(geometry.getBounds());
 
         this._fireAddEvent();
     },
