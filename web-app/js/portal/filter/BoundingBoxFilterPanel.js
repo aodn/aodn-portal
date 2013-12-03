@@ -63,24 +63,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     getCQL: function() {
 
-        var geometryExpression = this.geometry.isBox() ? this._geometryExpressionForBbox()
-                                                       : this._geometryExpressionForPolygon();
-
         return String.format(
-            "BBOX({0},{1})",
+            "INTERSECTS({0},{1})",
             this.filter.name,
-            geometryExpression
+            this.geometry.toWkt()
         );
-    },
-
-    _geometryExpressionForBbox: function() {
-
-        var geom = this.geometry;
-        return String.format("{0},{1},{2},{3}", geom.left, geom.bottom, geom.right, geom.top);
-    },
-
-    _geometryExpressionForPolygon: function() {
-
-        return this.geometry.toWkt();
     }
 });
