@@ -69,6 +69,6 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     _geometryExpressionForPolygon: function() {
 
-        return Portal.utils.geo.geometryToWkt(this.geometry);
+        return this.geometry.toWkt();
     }
 });
