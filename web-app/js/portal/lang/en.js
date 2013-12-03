@@ -37,9 +37,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
     // Download Step
-    metadataSubheading: 'Metadata',
-    dataSubheading: 'Data',
-    filesSubheading: 'Attached files',
     noCollectionsMessage: 'No data collections to show',
     noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
