@@ -12,6 +12,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
     navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
 
+    footerText: "<b>Disclaimer:</b> You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.",
+
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
     step2Description: 'Create a Subset',

@@ -37,7 +37,12 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             height: 35,
             items: [
                 this.prevButton,
-                this.nextButton
+                this.nextButton,
+                '->',
+                {
+                    xtype: 'panel',
+                    html: OpenLayers.i18n('footerText')
+                }
             ]
         }, cfg);
 
