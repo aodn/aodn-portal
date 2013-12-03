@@ -1,73 +1,48 @@
 /*
- * Copyright 2012 IMOS
+ * Copyright 2013 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-
 Ext.namespace('Portal.details');
 
-Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
+Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
-        this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
-            height: 70   // TODO: any way to make this auto-sized? (doesn't seem to work as expected)
-        });
-
         var config = Ext.apply({
-            layout: new Ext.layout.CardLayout(),
-            title: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading')),
-            activeItem: this.boxDisplayPanel,
             items: [
-                this.boxDisplayPanel,
-                this.polygonDisplayPanel
+                this._buildBoundingBox(cfg)
             ]
         }, cfg);
 
-        Portal.details.SpatialConstraintDisplayPanel.superclass.constructor.call(this, config);
-
-        var self = this;
-        if (config.map) {
-            config.map.events.addEventType('spatialconstraintadded');
-
-            config.map.events.on({
-                scope: config.map,
-                'spatialconstraintadded': function(geometry) {
-                    var card = geometry.isBox() ? self.boxDisplayPanel : self.polygonDisplayPanel;
-                    self._showCard(card, geometry);
-                }
-            });
-        }
+        Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
     },
 
-    _showCard: function(card, geometry) {
-
-        // Ext gets a bit upset trying to set active item on a yet-to-be rendered container.
-        if (this.rendered) {
-            this.layout.setActiveItem(card);
-            this.layout.activeItem.setGeometry(geometry);
-        }
-   },
+    setGeometry: function(geometry) {
+        this.setBounds(geometry.getBounds());
+    },
 
     setBounds: function(bounds) {
-        this.boxDisplayPanel.setBounds(bounds);
+        this.southBL.setValue(bounds.bottom);
+        this.westBL.setValue(bounds.left);
+        this.northBL.setValue(bounds.top);
+        this.eastBL.setValue(bounds.right);
     },
 
     getSouthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.southBL);
+        return this._getBoundingLine(this.southBL);
     },
 
     getNorthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.northBL);
+        return this._getBoundingLine(this.northBL);
     },
 
     getEastBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.eastBL);
+        return this._getBoundingLine(this.eastBL);
     },
 
     getWestBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.westBL);
+        return this._getBoundingLine(this.westBL);
     },
 
     _getBoundingLine: function(field) {
@@ -145,5 +120,4 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             disabled: true
         });
     }
-
 });

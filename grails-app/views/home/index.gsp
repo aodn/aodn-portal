@@ -111,6 +111,8 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoxDisplayPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/PolygonDisplayPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SpatialConstraintDisplayPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
