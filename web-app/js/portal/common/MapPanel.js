@@ -27,7 +27,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     /* Either makes changes to the rendered map or saves them until they can be made */
     setExtent: function(extent) {
         if (this.initialExtentSet) {
-            this.map.zoomToExtent(extent, true);
+            this.map.zoomToExtent(extent, false);
         }
         else {
             this.savedExtentChange = extent;
@@ -43,21 +43,20 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         return Portal.utils.geo.bboxAsStringToBounds(initialBbox);
     },
 
-  /* Override GeoExt setInitialExtent - want a best fit zoom */
-  /* and want to reflect any pre-render extent changes  */
+  /* Override GeoExt setInitialExtent - want to reflect any pre-render extent changes  */
 
     setInitialExtent: function() {
         var map = this.map;
 
         if (this.savedExtentChange) {
-            map.zoomToExtent(this.savedExtentChange, true);
+            map.zoomToExtent(this.savedExtentChange, false);
         }
         else if (this.center || this.zoom != null) {
             // both do not have to be defined
             map.setCenter(this.center, this.zoom);
         }
         else if (this.extent) {
-            map.zoomToExtent(this.extent, true);
+            map.zoomToExtent(this.extent, false);
         }
         else {
             map.zoomToMaxExtent();
