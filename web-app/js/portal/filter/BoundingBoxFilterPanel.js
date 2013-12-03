@@ -39,26 +39,36 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
 
-        this._updateBounds(layer.map.spatialConstraintControl.getConstraint());
+        this.geometry = layer.map.spatialConstraintControl.getConstraint();
+        this.spatialConstraintDisplayPanel.setBounds(this.geometry.getBounds());
+
+        this._fireAddEvent();
     },
 
     _setExistingFilters: function() {
         // Never restored from an existing filter
     },
 
-    _updateBounds: function(geometry) {
-        this.spatialConstraintDisplayPanel.setBounds(geometry.getBounds());
-        this._fireAddEvent();
+    getCQL: function() {
+
+        var geometryExpression = this.geometry.isBox() ? this._geometryExpressionForBbox()
+                                                       : this._geometryExpressionForPolygon();
+
+        return String.format(
+            "BBOX({0},{1})",
+            this.filter.name,
+            geometryExpression
+        );
     },
 
-    getCQL: function() {
-        return String.format(
-            "BBOX({0},{1},{2},{3},{4})",
-            this.filter.name,
-            this.spatialConstraintDisplayPanel.getWestBL(),
-            this.spatialConstraintDisplayPanel.getSouthBL(),
-            this.spatialConstraintDisplayPanel.getEastBL(),
-            this.spatialConstraintDisplayPanel.getNorthBL()
-        );
+    _geometryExpressionForBbox: function() {
+
+        var geom = this.geometry;
+        return String.format("{0},{1},{2},{3}", geom.left, geom.bottom, geom.right, geom.top);
+    },
+
+    _geometryExpressionForPolygon: function() {
+
+        return Portal.utils.geo.geometryToWkt(this.geometry);
     }
 });
