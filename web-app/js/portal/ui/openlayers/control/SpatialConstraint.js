@@ -74,9 +74,9 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     getConstraintAsWKT: function() {
-        if (this.hasConstraint()) {
-            var wktFormatter = new OpenLayers.Format.WKT();
-            return wktFormatter.write(this._getFeature());
+         if (this.hasConstraint()) {
+            var geometry = this._getFeature().geometry;
+            return Portal.utils.geo.geometryToWkt(geometry);
         }
     },
 
