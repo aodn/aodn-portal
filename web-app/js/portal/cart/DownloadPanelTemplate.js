@@ -62,7 +62,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
                 html = String.format('<b>{0}</b> <code>{1}</code>', OpenLayers.i18n('filterLabel'), cqlText);
             }
             else {
-                html = OpenLayers.i18n('noFilterMessage');
+                html = '<i>' + OpenLayers.i18n('noFilterMessage') + '</i>';
             }
         }
 
@@ -97,7 +97,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             html += new Portal.cart.WfsDataRowTemplate(this)._getDataDownloadEntry(values);
         }
         else {
-            html = OpenLayers.i18n('noDataMessage');
+            html = '<i>' + OpenLayers.i18n('noDataMessage') + '</i>';
         }
 
         return html;

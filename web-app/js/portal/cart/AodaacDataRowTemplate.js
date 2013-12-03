@@ -34,9 +34,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
                 '</div>';
             html = String.format(html, values.uuid, this.downloadPanelTemplate._getEmailAddress(values.uuid), this._getNotificationBlurbEntry());
         }
-        else {
-            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
-        }
 
         return html;
     },
