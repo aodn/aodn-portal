@@ -10,20 +10,18 @@ Ext.namespace('Portal.details');
 Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        var defaults = {
-            width: 300
-        }
-
-        cfg = Ext.apply({}, cfg, defaults);
-
         this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
+        this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
+            height: 70   // TODO: any way to make this auto-sized? (doesn't seem to work as expected)
+        });
 
         var config = Ext.apply({
-            layout: 'card',
+            layout: new Ext.layout.CardLayout(),
             title: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading')),
             activeItem: this.boxDisplayPanel,
             items: [
-                this.boxDisplayPanel
+                this.boxDisplayPanel,
+                this.polygonDisplayPanel
             ]
         }, cfg);
 
@@ -36,11 +34,21 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             config.map.events.on({
                 scope: config.map,
                 'spatialconstraintadded': function(geometry) {
-                    self.setBounds(geometry.getBounds());
+                    var card = geometry.isBox() ? self.boxDisplayPanel : self.polygonDisplayPanel;
+                    self._showCard(card, geometry);
                 }
             });
         }
     },
+
+    _showCard: function(card, geometry) {
+
+        // Ext gets a bit upset trying to set active item on a yet-to-be rendered container.
+        if (this.rendered) {
+            this.layout.setActiveItem(card);
+            this.layout.activeItem.setGeometry(geometry);
+        }
+   },
 
     setBounds: function(bounds) {
         this.boxDisplayPanel.setBounds(bounds);

@@ -390,7 +390,10 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
 
 OpenLayers.Geometry.prototype.isBox = function() {
     var boundsAsGeom = this.getBounds().toGeometry();
-    return this.toString() == boundsAsGeom.toString();
+
+    // TODO: revisit - as this algorithm doesn't work for a rotated rectangle, for example.
+    // But I *think* it should work for what's currently possible in the portal.
+    return Math.abs(this.getArea() - boundsAsGeom.getArea()) < 0.001;
 };
 
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');

@@ -18,6 +18,10 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
     },
 
+    setGeometry: function(geometry) {
+        this.setBounds(geometry.getBounds());
+    },
+
     setBounds: function(bounds) {
         this.southBL.setValue(bounds.bottom);
         this.westBL.setValue(bounds.left);
