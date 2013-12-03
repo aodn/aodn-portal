@@ -23,6 +23,6 @@ Portal.details.PolygonDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     setGeometry: function(geometry) {
-        this.label.setText(Portal.utils.geo.geometryToWkt(geometry));
+        this.label.setText(geometry.toWkt());
     }
 });
