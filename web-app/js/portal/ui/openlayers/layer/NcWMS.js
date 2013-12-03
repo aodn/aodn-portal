@@ -427,9 +427,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var timeControl = this._getTimeControl();
 
         overrideParams.TIME =
-            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss')
+            timeControl.getExtentMin().clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS')
             + "/" +
-            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss');
+            timeControl.getExtentMax().clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
 
         overrideParams.FORMAT = "text/xml";
         overrideParams.INFO_FORMAT = overrideParams.FORMAT;
