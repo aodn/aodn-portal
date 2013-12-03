@@ -6,39 +6,39 @@
  *
  */
 
-describe("Portal.details.BoundingBoxPanel", function() {
+describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
-    var bbox;
+    var displayPanel;
 
     beforeEach(function() {
-        bbox = new Portal.details.BoundingBoxPanel();
+        displayPanel = new Portal.details.SpatialConstraintDisplayPanel();
 
-        bbox.setBounds({bottom: -17, top: -19, left: -51, right: -13});
+        displayPanel.setBounds({bottom: -17, top: -19, left: -51, right: -13});
     });
 
     it("setBounds should set bounds of bounding box", function() {
-        bbox.setBounds({bottom: -25, top: -22, left: -55, right: -20});
+        displayPanel.setBounds({bottom: -25, top: -22, left: -55, right: -20});
 
-        expect(bbox.southBL.value).toBe('-25');
-        expect(bbox.northBL.value).toBe('-22');
-        expect(bbox.eastBL.value).toBe('-20');
-        expect(bbox.westBL.value).toBe('-55');
+        expect(displayPanel.southBL.value).toBe('-25');
+        expect(displayPanel.northBL.value).toBe('-22');
+        expect(displayPanel.eastBL.value).toBe('-20');
+        expect(displayPanel.westBL.value).toBe('-55');
     });
 
     it("getNorthBL should return north bounding latitude", function() {
-        expect(bbox.getNorthBL()).toBe(-19);
+        expect(displayPanel.getNorthBL()).toBe(-19);
     });
 
     it("getEastBL should return east bounding longitude", function() {
-        expect(bbox.getEastBL()).toBe(-13);
+        expect(displayPanel.getEastBL()).toBe(-13);
     });
 
     it("getSouthBL should return south bounding latitude", function() {
-        expect(bbox.getSouthBL()).toBe(-17);
+        expect(displayPanel.getSouthBL()).toBe(-17);
     });
 
     it("getWestBL should return west bounding longitude", function() {
-        expect(bbox.getWestBL()).toBe(-51);
+        expect(displayPanel.getWestBL()).toBe(-51);
     });
 
     describe('map', function() {
@@ -51,16 +51,16 @@ describe("Portal.details.BoundingBoxPanel", function() {
         it("subscribes to 'spatialconstraintadded' event", function() {
             var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
 
-            bbox = new Portal.details.BoundingBoxPanel({
+            displayPanel = new Portal.details.SpatialConstraintDisplayPanel({
                 map: map
             });
 
-            spyOn(bbox, 'setBounds');
+            spyOn(displayPanel, 'setBounds');
 
             var geometry = constructGeometry();
             map.events.triggerEvent('spatialconstraintadded', geometry);
 
-            expect(bbox.setBounds).toHaveBeenCalledWith(geometry.getBounds());
+            expect(displayPanel.setBounds).toHaveBeenCalledWith(geometry.getBounds());
         });
     });
 });
