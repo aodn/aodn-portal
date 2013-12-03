@@ -1,65 +1,44 @@
 /*
- * Copyright 2012 IMOS
+ * Copyright 2013 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-
 Ext.namespace('Portal.details');
 
-Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
+Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        var defaults = {
-            width: 300
-        }
-
-        cfg = Ext.apply({}, cfg, defaults);
-
-        this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
-
         var config = Ext.apply({
-            layout: 'card',
-            title: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading')),
-            activeItem: this.boxDisplayPanel,
             items: [
-                this.boxDisplayPanel
+                this._buildBoundingBox(cfg)
             ]
         }, cfg);
 
-        Portal.details.SpatialConstraintDisplayPanel.superclass.constructor.call(this, config);
-
-        var self = this;
-        if (config.map) {
-            config.map.events.addEventType('spatialconstraintadded');
-
-            config.map.events.on({
-                scope: config.map,
-                'spatialconstraintadded': function(geometry) {
-                    self.setBounds(geometry.getBounds());
-                }
-            });
-        }
+        Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
     },
 
     setBounds: function(bounds) {
-        this.boxDisplayPanel.setBounds(bounds);
+        this.southBL.setValue(bounds.bottom);
+        this.westBL.setValue(bounds.left);
+        this.northBL.setValue(bounds.top);
+        this.eastBL.setValue(bounds.right);
     },
 
     getSouthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.southBL);
+        return this._getBoundingLine(this.southBL);
     },
 
     getNorthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.northBL);
+        return this._getBoundingLine(this.northBL);
     },
 
     getEastBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.eastBL);
+        return this._getBoundingLine(this.eastBL);
     },
 
     getWestBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.westBL);
+        return this._getBoundingLine(this.westBL);
     },
 
     _getBoundingLine: function(field) {
@@ -137,5 +116,4 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             disabled: true
         });
     }
-
 });

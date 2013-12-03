@@ -388,5 +388,10 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
     }
 };
 
+OpenLayers.Geometry.prototype.isBox = function() {
+    var boundsAsGeom = this.getBounds().toGeometry();
+    return this.toString() == boundsAsGeom.toString();
+};
+
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');

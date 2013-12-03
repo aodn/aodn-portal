@@ -19,10 +19,10 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
     it("setBounds should set bounds of bounding box", function() {
         displayPanel.setBounds({bottom: -25, top: -22, left: -55, right: -20});
 
-        expect(displayPanel.southBL.value).toBe('-25');
-        expect(displayPanel.northBL.value).toBe('-22');
-        expect(displayPanel.eastBL.value).toBe('-20');
-        expect(displayPanel.westBL.value).toBe('-55');
+        expect(displayPanel.boxDisplayPanel.southBL.value).toBe('-25');
+        expect(displayPanel.boxDisplayPanel.northBL.value).toBe('-22');
+        expect(displayPanel.boxDisplayPanel.eastBL.value).toBe('-20');
+        expect(displayPanel.boxDisplayPanel.westBL.value).toBe('-55');
     });
 
     it("getNorthBL should return north bounding latitude", function() {
@@ -61,6 +61,16 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
             map.events.triggerEvent('spatialconstraintadded', geometry);
 
             expect(displayPanel.setBounds).toHaveBeenCalledWith(geometry.getBounds());
+        });
+    });
+
+    describe('box or polygon', function() {
+        it('initialises with card layout', function() {
+            expect(displayPanel.layout).toEqual('card');
+        });
+
+        it('initialises with box panel', function() {
+            expect(displayPanel.boxDisplayPanel).toBeInstanceOf(Portal.details.BoxDisplayPanel);
         });
     });
 });
