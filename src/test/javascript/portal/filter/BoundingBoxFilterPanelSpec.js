@@ -9,12 +9,15 @@
 describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     var boundingBoxFilter;
+    var map = new OpenLayers.Map();
 
     beforeEach(function() {
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
-        boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel(
-            { filter: { name: 'geom_filter' } }
-        );
+        spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
+        boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({
+            layer: { map: map },
+            filter: { name: 'geom_filter' }
+        });
     });
 
     it('colspan should be 2', function() {
@@ -31,6 +34,18 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     it("isDownloadOnly() should return true", function() {
         expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
+    });
+
+    describe('map', function() {
+
+        it("subscribes to 'spatialconstraintadded' event", function() {
+
+            var geometry = {};
+
+            map.events.triggerEvent('spatialconstraintadded', geometry);
+
+            expect(boundingBoxFilter._updateWithGeometry).toHaveBeenCalledWith(geometry);
+        });
     });
 
     describe('getCQL', function () {
@@ -80,12 +95,14 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
         it('uses the correct fields form the geometry', function () {
 
-            spyOn(Portal.utils.geo, 'geometryToWkt').andReturn('WKT');
+            boundingBoxFilter.geometry = {
+                toWkt: noOp
+            };
+            spyOn(boundingBoxFilter.geometry, 'toWkt').andReturn('WKT');
 
-            boundingBoxFilter.geometry = {};
 
             expect(boundingBoxFilter._geometryExpressionForPolygon()).toBe('WKT');
-            expect(Portal.utils.geo.geometryToWkt).toHaveBeenCalledWith(boundingBoxFilter.geometry);
+            expect(boundingBoxFilter.geometry.toWkt).toHaveBeenCalled();
         });
     });
 });

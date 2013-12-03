@@ -43,8 +43,3 @@ Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {
 Portal.utils.geo.bboxAsStringToGeometry = function(bboxAsString) {
     return Portal.utils.geo.bboxAsStringToBounds(bboxAsString).toGeometry();
 };
-
-Portal.utils.geo.geometryToWkt = function(geometry) {
-    var wktFormatter = new OpenLayers.Format.WKT();
-    return wktFormatter.write({ geometry: geometry });
-};

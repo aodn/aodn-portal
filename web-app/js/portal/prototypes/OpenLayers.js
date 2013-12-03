@@ -396,5 +396,10 @@ OpenLayers.Geometry.prototype.isBox = function() {
     return Math.abs(this.getArea() - boundsAsGeom.getArea()) < 0.001;
 };
 
+OpenLayers.Geometry.prototype.toWkt = function() {
+    var wktFormatter = new OpenLayers.Format.WKT();
+    return wktFormatter.write({ geometry: this });
+};
+
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');
