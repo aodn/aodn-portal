@@ -83,5 +83,5 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
         this.detailsPanelTabs.setVisible(false);
-    },
+    }
 });
