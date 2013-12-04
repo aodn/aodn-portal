@@ -62,10 +62,19 @@ describe("Portal.filter.DateFilterPanel", function() {
         });
 
         it('sets min value of toField', function() {
+            dateFilter.toField.isVisible = function() {
+                return true;
+            };
             dateFilter.handleRemoveFilter();
-            if (dateFilter.toField.isVisible()) {
-                expect(dateFilter.toField.setMinValue).toHaveBeenCalled();
-            }
+            expect(dateFilter.toField.setMinValue).toHaveBeenCalled();
+        });
+
+        it('does not set min value of toField', function() {
+            dateFilter.toField.isVisible = function() {
+                return false;
+            };
+            dateFilter.handleRemoveFilter();
+            expect(dateFilter.toField.setMinValue).not.toHaveBeenCalled();
         });
 
         it('resets fromField', function() {
