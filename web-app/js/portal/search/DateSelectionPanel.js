@@ -32,6 +32,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cls:'search-filter-panel term-selection-panel',
             items:[
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
+
                 // Add a container to store the go button and the clear button. Display horizontally
                 new Ext.Container({
                     layout: 'hbox',
@@ -51,7 +52,6 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                 })
             ]
         }, cfg, defaults);
-
 
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
