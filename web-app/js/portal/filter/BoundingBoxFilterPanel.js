@@ -26,10 +26,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     _createField: function() {
-        this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
+        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map
         });
-        this.add(this.spatialConstraintDisplayPanel);
+        this.add(this.spatialSubsetControlsPanel);
     },
 
     isDownloadOnly: function() {
@@ -46,14 +46,11 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
-
         this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
     },
 
     _updateWithGeometry: function(geometry) {
-
         this.geometry = geometry;
-
         this._fireAddEvent();
     },
 
