@@ -32,10 +32,17 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             this.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
-                    var card = geometry.isBox() ? this.boxDisplayPanel : this.polygonDisplayPanel;
-                    this._showCard(card, geometry);
+                    this._showCardForGeometry(geometry);
                 }
             });
+        }
+    },
+
+    _showCardForGeometry: function(geometry) {
+
+        if (geometry) {
+            var card = geometry.isBox() ? this.boxDisplayPanel : this.polygonDisplayPanel;
+            this._showCard(card, geometry);
         }
     },
 

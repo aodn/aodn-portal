@@ -243,6 +243,13 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     _setSpatialConstraintStyle: function(polygonStyle) {
 
+        // Avoid uneccessary removal/addition of the control.
+        if (this.polygonStyle == polygonStyle) {
+            return;
+        }
+
+        this.polygonStyle = polygonStyle;
+
         this.map.navigationControl.deactivate();
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.removeFromMap();
