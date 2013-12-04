@@ -19,8 +19,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch'
-            },
-            stateful: true
+            }
         }, cfg);
 
         this.mapPanel = cfg.mapPanel;
