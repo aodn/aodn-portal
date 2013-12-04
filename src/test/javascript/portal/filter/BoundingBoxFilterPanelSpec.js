@@ -50,59 +50,12 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     describe('getCQL', function () {
 
-        beforeEach(function () {
-            spyOn(boundingBoxFilter, '_geometryExpressionForBbox').andReturn('[bbox]');
-            spyOn(boundingBoxFilter, '_geometryExpressionForPolygon').andReturn('[poly]');
-        });
-
-        it('calls correct method for bbox geometry type', function () {
-
-            boundingBoxFilter.geometry = { isBox: function() { return true } };
-            var cql = boundingBoxFilter.getCQL();
-
-            expect(boundingBoxFilter._geometryExpressionForBbox).toHaveBeenCalled();
-            expect(boundingBoxFilter._geometryExpressionForPolygon).not.toHaveBeenCalled();
-            expect(cql).toBe('BBOX(geom_filter,[bbox])');
-        });
-
         it('calls correct method for polygon geometry type', function () {
 
-            boundingBoxFilter.geometry = { isBox: function() { return false } };
+            boundingBoxFilter.geometry = { toWkt: function() { return "[WKT]" } };
             var cql = boundingBoxFilter.getCQL();
 
-            expect(boundingBoxFilter._geometryExpressionForBbox).not.toHaveBeenCalled();
-            expect(boundingBoxFilter._geometryExpressionForPolygon).toHaveBeenCalled();
-            expect(cql).toBe('BBOX(geom_filter,[poly])');
-        });
-    });
-
-    describe('_geometryExpressionForBbox', function () {
-
-        it('uses the correct fields form the geometry', function () {
-
-            boundingBoxFilter.geometry = {
-                top: 'top',
-                bottom: 'bottom',
-                left: 'left',
-                right: 'right'
-            };
-
-            expect(boundingBoxFilter._geometryExpressionForBbox()).toBe('left,bottom,right,top');
-        });
-    });
-
-    describe('_geometryExpressionForPolygon', function () {
-
-        it('uses the correct fields form the geometry', function () {
-
-            boundingBoxFilter.geometry = {
-                toWkt: noOp
-            };
-            spyOn(boundingBoxFilter.geometry, 'toWkt').andReturn('WKT');
-
-
-            expect(boundingBoxFilter._geometryExpressionForPolygon()).toBe('WKT');
-            expect(boundingBoxFilter.geometry.toWkt).toHaveBeenCalled();
+            expect(cql).toBe('INTERSECTS(geom_filter,[WKT])');
         });
     });
 });
