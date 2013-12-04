@@ -19,7 +19,11 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     setGeometry: function(geometry) {
-        this.setBounds(geometry.getBounds());
+        // Defer this incase this is not rendered yet.
+        var self = this;
+        setTimeout(function() {
+            self.setBounds(geometry.getBounds());
+        }, 0);
     },
 
     setBounds: function(bounds) {
