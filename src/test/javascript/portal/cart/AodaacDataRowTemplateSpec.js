@@ -152,7 +152,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         it('calls _parameterString with correct arguments', function() {
 
             expect(tpl._parameterString.callCount).toBe(2);
-            expect(tpl._parameterString.calls[0].args).toEqual(['parameterAreaLabel', '-90&nbsp;N,&nbsp;-180&nbsp;E', '90&nbsp;N,&nbsp;180&nbsp;E']);
+            expect(tpl._parameterString.calls[0].args).toEqual(['parameterAreaLabel', '-90<b>N</b>,&nbsp;180<b>E</b>,', '90<b>S</b>,&nbsp;-180<b>W</b>']);
             expect(tpl._parameterString.calls[1].args).toEqual(['parameterDateLabel', '1/1/1900', '31/12/2001']);
         });
     });

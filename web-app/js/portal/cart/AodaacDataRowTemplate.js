@@ -67,8 +67,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _aodaacParametersMarkup: function(params) {
         var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
-        var areaStart = String.format(areaPattern, params.latitudeRangeStart, params.longitudeRangeStart);
-        var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
+        var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
+        var areaEnd   = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
 
         return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
             this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
