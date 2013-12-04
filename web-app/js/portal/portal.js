@@ -107,8 +107,8 @@ Portal.app = {
     }
 };
 
-//GeoExt stuff
-Ext.onReady(Portal.app.init, Portal.app);
+
+
 
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex) {

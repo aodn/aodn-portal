@@ -17,9 +17,12 @@ html {
 body, html {
     background: #ffffff;
     color: #333333;
-    font-size: 12px;
 	height: 100%;
 
+}
+body, html, td, p {
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
 }
 
 html.no-cssgradients {
@@ -55,9 +58,6 @@ a:hover, a:active {
     outline: none; /* prevents outline in webkit on active links but retains it for tab focus */
 }
 
-h1 {
-    font-size: 1.35em;
-}
 
 ul {
     padding: 0;
@@ -67,15 +67,26 @@ img {
     border: 0;
 }
 
+hr {
+    border: 0;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(46%, rgba(0, 0, 0, 0.65)), color-stop(100%, rgba(0, 0, 0, 0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 46%, rgba(0, 0, 0, 0) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#66000000', endColorstr='#00000000', GradientType=1); /* IE6-9 */
+}
+
 /* GENERAL */
 
 #grailsLogo {
     background-color: #abbf78;
 }
-#logo {
-    height: 50px;
-    background: url('../images/grails_logo.png') 0 0 no-repeat;
-}
+
 #grailsLogo a {
     display: inline-block;
     margin: 1em;
@@ -95,7 +106,6 @@ img {
 
 #controllerMenu {
     position: relative;
-    top: 20px;
     left: 15px;
     width: 170px;
     height: 100%;
@@ -110,15 +120,13 @@ img {
 
 .content , .body {
     position: absolute;
-    top: 130px;
     left: 200px;
 }
 .content  {
-    top: 70px;
 }
 
 .content h1 {
-    margin: 0.8em 1em 0.3em;
+    margin: 0.3em;
 }
 
 .scaffold-list h1 {
@@ -153,7 +161,8 @@ img {
 
 .nav {
     background-color: #efefef;
-    padding: 3em 0.75em 0.3em 0.75em;
+    padding: 20px;
+    margin-bottom: 20px;
     box-shadow: 0 0 3px 1px #aaaaaa;
     zoom: 1;
 }
