@@ -53,12 +53,12 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
         it("subscribes to 'spatialconstraintadded' event", function() {
             var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-            spyOn(displayPanel.layout.activeItem, 'setGeometry');
+            spyOn(displayPanel.polygonDisplayPanel, 'setGeometry');
             var geometry = constructGeometry();
 
             map.events.triggerEvent('spatialconstraintadded', geometry);
 
-            expect(displayPanel.layout.activeItem.setGeometry).toHaveBeenCalled();
+            expect(displayPanel.polygonDisplayPanel.setGeometry).toHaveBeenCalled();
         });
     });
 
