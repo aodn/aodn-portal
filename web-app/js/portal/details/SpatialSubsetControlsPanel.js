@@ -24,26 +24,6 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
         this._addSpatialConstraintDisplayPanel();
     },
 
-    setBounds: function(bounds) {
-        this.spatialConstraintDisplayPanel.setBounds(bounds);
-    },
-
-    getSouthBL: function() {
-        return this.spatialConstraintDisplayPanel.getSouthBL();
-    },
-
-    getNorthBL: function() {
-        return this.spatialConstraintDisplayPanel.getNorthBL();
-    },
-
-    getEastBL: function() {
-        return this.spatialConstraintDisplayPanel.getEastBL();
-    },
-
-    getWestBL: function() {
-        return this.spatialConstraintDisplayPanel.getWestBL();
-    },
-
     _addPolygonTypeCombo: function() {
         this.polygonTypeCombo = new Portal.form.PolygonTypeComboBox();
         this.add(this.polygonTypeCombo);

@@ -78,9 +78,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.remove(this.productInfoText);
         delete this.productInfoText;
 
-        // Populate spatial extent controls this will also update the aodaac object in the record store
-        // so please keep it last so all values are set
-        this._setBounds();
+        this._updateGeoNetworkAodaac();
     },
 
     _addProductInfo: function() {
@@ -90,6 +88,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addSpatialConstraintDisplayPanel: function() {
+        this.map.events.on({
+            scope: this,
+            'spatialconstraintadded': function(geometry) {
+                this._updateGeoNetworkAodaac(geometry);
+            },
+            'spatialconstraintcleared': function() {
+                this._updateGeoNetworkAodaac();
+            }
+        });
+
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
@@ -223,22 +231,27 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 7 });
     },
 
-    _setBounds: function(){
-        this._updateGeoNetworkAodaac();
-    },
-
-    _buildAodaac: function() {
+    _buildAodaac: function(geometry) {
         if (this.productsInfo && this.selectedProductsInfo) {
-            return {
+
+            var aodaacConfig = {
                 productId: this.selectedProductsInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
-                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
-                latitudeRangeStart: this.spatialSubsetControlsPanel.getSouthBL(),
-                longitudeRangeStart: this.spatialSubsetControlsPanel.getWestBL(),
-                latitudeRangeEnd: this.spatialSubsetControlsPanel.getNorthBL(),
-                longitudeRangeEnd: this.spatialSubsetControlsPanel.getEastBL()
+                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker)
             };
+
+            if (geometry) {
+                var bounds = geometry.getBounds();
+
+                aodaacConfig.latitudeRangeStart = bounds.bottom;
+                aodaacConfig.longitudeRangeStart = bounds.left;
+                aodaacConfig.latitudeRangeEnd = bounds.top;
+                aodaacConfig.longitudeRangeEnd = bounds.right;
+            }
+
+            return aodaacConfig;
         }
+
         return null;
     },
 
@@ -260,9 +273,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel(time);
     },
 
-    _updateGeoNetworkAodaac: function() {
+    _updateGeoNetworkAodaac: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaac());
+            this.geoNetworkRecord.updateAodaac(this._buildAodaac(geometry));
         }
     },
 

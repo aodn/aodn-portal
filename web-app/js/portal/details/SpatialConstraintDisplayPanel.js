@@ -56,29 +56,5 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         }
 
         card.setGeometry(geometry);
-   },
-
-    setBounds: function(bounds) {
-        this.boxDisplayPanel.setBounds(bounds);
-    },
-
-    getSouthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.southBL);
-    },
-
-    getNorthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.northBL);
-    },
-
-    getEastBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.eastBL);
-    },
-
-    getWestBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.westBL);
-    },
-
-    _getBoundingLine: function(field) {
-        return parseFloat(field.value);
     }
 });
