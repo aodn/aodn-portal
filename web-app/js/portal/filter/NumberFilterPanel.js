@@ -123,12 +123,12 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (shouldUpdate) {
             // clear the filter if "none" is selected
             if (noneSelected) {
-        	    this.handleRemoveFilter();
-        	    this._fireAddEvent();
-        	}
-        	else {
-        	    this._fireAddEvent();
-        	}
+                this.handleRemoveFilter();
+                this._fireAddEvent();
+            }
+            else {
+                this._fireAddEvent();
+            }
         }
     },
 

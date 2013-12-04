@@ -27,16 +27,15 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         ref:'../fromDate',
                         format:'d/m/Y',
                         anchor:'100%',
-                        minValue: OpenLayers.i18n("minDate"),
+                        minValue:new Date(0),
                         maxValue:new Date(),
-                        emptyText:'Min',
                         listeners: {
                             scope: this,
                             select: this.onSelect,
                             change: this.onSelect
                         }
                     }
-                ],
+                ]
             },
 
             {
@@ -53,8 +52,7 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         ref:'../toDate',
                         format:'d/m/Y',
                         anchor:'100%',
-                        emptyText:'Max',
-                        minValue: OpenLayers.i18n("minDate"),
+                        minValue:new Date(0),
                         maxValue:new Date(),
                         listeners: {
                             scope: this,
@@ -62,7 +60,7 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                             change: this.onSelect
                         }
                     }
-                ],
+                ]
             }
         ];
 
@@ -84,7 +82,7 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
     clearValues:function () {
         this.fromDate.reset();
         this.toDate.reset();
-        this.toDate.setMinValue(OpenLayers.i18n("minDate"));
+        this.toDate.setMinValue(new Date(0));
     },
 
     onSelect:function () {

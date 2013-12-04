@@ -36,6 +36,10 @@ describe("Portal.filter.DateFilterPanel", function() {
             dateFilter.toField = {};
             dateFilter.toField.reset = function() {};
             spyOn(dateFilter.toField, 'reset');
+            dateFilter.toField.isVisible = function() {};
+            spyOn(dateFilter.toField, 'isVisible');
+            dateFilter.toField.setMinValue = function() {};
+            spyOn(dateFilter.toField, 'setMinValue');
 
             dateFilter.fromField = {};
             dateFilter.fromField.reset = function() {};
@@ -50,6 +54,18 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('resets toField', function() {
             dateFilter.handleRemoveFilter();
             expect(dateFilter.toField.reset).toHaveBeenCalled();
+        });
+
+        it('checks if toField is visible', function() {
+            dateFilter.handleRemoveFilter();
+            expect(dateFilter.toField.isVisible).toHaveBeenCalled();
+        });
+
+        it('sets min value of toField', function() {
+            dateFilter.handleRemoveFilter();
+            if (dateFilter.toField.isVisible()) {
+                expect(dateFilter.toField.setMinValue).toHaveBeenCalled();
+            }
         });
 
         it('resets fromField', function() {

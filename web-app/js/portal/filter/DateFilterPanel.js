@@ -42,6 +42,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             name: 'from',
             format: "d/m/Y",
             maxValue: new Date(),
+            minValue: new Date(0),
             listeners: {
                 scope: this,
                 select: this._onSelect,
@@ -54,6 +55,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             format: "d/m/Y",
             hidden: true,
             maxValue: new Date(),
+            minValue: new Date(0),
             listeners: {
                 scope: this,
                 select: this._onSelect,
@@ -178,6 +180,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.operators.clearValue();
         this.toField.reset();
         this.fromField.reset();
+
+        if (this.toField.isVisible()) {
+            this.toField.setMinValue(new Date(0));
+        }
+
         this.CQL = "";
     },
 
