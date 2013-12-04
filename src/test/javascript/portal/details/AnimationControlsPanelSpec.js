@@ -220,6 +220,14 @@ describe("Portal.details.AnimationControlsPanel", function() {
                 animationControlsPanel.stepSlider.fireEvent('drag', animationControlsPanel.stepSlider);
                 expect(timeControl.setStep).toHaveBeenCalledWith(3);
             });
+
+            it('slider click updates time control', function() {
+                spyOn(timeControl, 'setStep');
+                animationControlsPanel.stepSlider.setValue(3);
+
+                animationControlsPanel.stepSlider.fireEvent('changecomplete', animationControlsPanel.stepSlider, 3);
+                expect(timeControl.setStep).toHaveBeenCalledWith(3);
+            });
         });
 
         describe('event listeners', function() {
