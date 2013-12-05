@@ -97,13 +97,16 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
-        if (temporalExtent.begin && temporalExtent.end) {
+        if (temporalExtent.begin && temporalExtent.end) { 
+            var startDate = moment(temporalExtent.begin, "YYYY-MM-DDtHH:mm:ss:SSSz");
+            var endDate = moment(temporalExtent.end, "YYYY-MM-DDtHH:mm:ss:SSSz");
+
             return template.apply({
                 "label": OpenLayers.i18n('dateRange'),
                 "value": String.format(
                     "{0} - {1}",
-                    moment(temporalExtent.begin).format("YYYY-MM-DD Z"),
-                    moment(temporalExtent.end).format("YYYY-MM-DD Z")
+                    startDate.format("YYYY-MM-DD Z"),
+                    endDate.format("YYYY-MM-DD Z")
                 )
             });
         }
