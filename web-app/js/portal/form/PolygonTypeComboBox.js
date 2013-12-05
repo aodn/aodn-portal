@@ -49,5 +49,4 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
             this.setValue(message.value);
         }
     }
-
 });
