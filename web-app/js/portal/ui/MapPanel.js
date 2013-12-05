@@ -158,6 +158,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
+
+        // this.map.getConstraint = function() {
+        //     if (this.spatialConstraintControl) {
+        //         return this.spatialConstraintControl.getConstraint();
+        //     }
+
+        //     return undefined;
+        // }
     },
 
     getServer: function (item) {

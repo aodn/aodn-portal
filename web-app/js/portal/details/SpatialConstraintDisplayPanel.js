@@ -35,6 +35,8 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
                     this._showCardForGeometry(geometry);
                 }
             });
+
+            this._showCardForGeometry(this.map.getConstraint());
         }
     },
 
