@@ -22,8 +22,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             header: false,
             initialBbox: this.appConfig.initialBbox,
             autoZoom: this.appConfig.autoZoom,
-            enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
+            enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
+            defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 
@@ -180,7 +180,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
                     // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
                     var defaultBbox = this.defaultDatelineZoomBbox.split(',');
-                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
+                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]), parseFloat(defaultBbox[0]), parseFloat(defaultBbox[3]), parseFloat(defaultBbox[2]));
                 }
                 else {
                     bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
@@ -200,8 +200,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 }
                 else if (bounds) {
                     // when layer has no bbox volume
-                    this.map.setCenter(
-                        bounds.getCenterLonLat(),3);
+                    this.map.setCenter(bounds.getCenterLonLat(), 3);
                 }
             }
         }
