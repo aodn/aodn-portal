@@ -167,10 +167,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         args += "&dateRangeEnd=" + params.dateRangeEnd;
         args += "&timeOfDayRangeStart=0000";
         args += "&timeOfDayRangeEnd=2400";
-        args += "&latitudeRangeStart=" + params.latitudeRangeStart || params.productLatitudeRangeStart;
-        args += "&latitudeRangeEnd=" + params.latitudeRangeEnd || params.productLatitudeRangeEnd;
-        args += "&longitudeRangeStart=" + params.longitudeRangeStart || params.productLongitudeRangeStart;
-        args += "&longitudeRangeEnd=" + params.longitudeRangeEnd || params.productLongitudeRangeEnd;
+        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
+        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
+        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
+        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
         args += "&productId=" + params.productId;
         args += "&notificationEmailAddress=" + emailAddress;
 

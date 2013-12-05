@@ -333,6 +333,43 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
                 latitudeRangeEnd: 90,
                 longitudeRangeStart: -180,
                 longitudeRangeEnd: 180,
+                productLatitudeRangeStart: 1,  // Shouldn't be used
+                productLatitudeRangeEnd: 2,    // Shouldn't be used
+                productLongitudeRangeStart: 3, // Shouldn't be used
+                productLongitudeRangeEnd: 4,   // Shouldn't be used
+                dateRangeStart: '1/1/1900',
+                dateRangeEnd: '31/12/2001'
+            };
+
+            var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
+
+            expect(url).toBe('aodaac/createJob?' +
+                'outputFormat=format' +
+                '&dateRangeStart=1/1/1900' +
+                '&dateRangeEnd=31/12/2001' +
+                '&timeOfDayRangeStart=0000' +
+                '&timeOfDayRangeEnd=2400' +
+                '&latitudeRangeStart=-90' +
+                '&latitudeRangeEnd=90' +
+                '&longitudeRangeStart=-180' +
+                '&longitudeRangeEnd=180' +
+                '&productId=89' +
+                '&notificationEmailAddress=emailAddress'
+            );
+        });
+
+        it('uses product defaults if no other bounds are set', function() {
+
+            var params = {
+                productId: 89,
+                latitudeRangeStart: null,
+                latitudeRangeEnd: null,
+                longitudeRangeStart: null,
+                longitudeRangeEnd: null,
+                productLatitudeRangeStart: -90,
+                productLatitudeRangeEnd: 90,
+                productLongitudeRangeStart: -180,
+                productLongitudeRangeEnd: 180,
                 dateRangeStart: '1/1/1900',
                 dateRangeEnd: '31/12/2001'
             };
