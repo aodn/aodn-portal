@@ -62,7 +62,7 @@ describe('Portal.details.AodaacPanel', function() {
             );
 
             aodaacPanel.update(layer, noOp, noOp, {});
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+            expect(aodaacPanel._buildAodaacParameters).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
         });
 
@@ -195,7 +195,7 @@ describe('Portal.details.AodaacPanel', function() {
     function _applyCommonSpies(panel) {
         var _panel = panel || aodaacPanel;
         spyOn(_panel, '_showAllControls');
-        spyOn(_panel, '_buildAodaac');
+        spyOn(_panel, '_buildAodaacParameters');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }

@@ -231,7 +231,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 7 });
     },
 
-    _buildAodaac: function(geometry) {
+    _buildAodaacParameters: function(geometry) {
         if (this.productsInfo && this.selectedProductInfo) {
 
             var productExtents = this.selectedProductInfo.extents;
@@ -281,7 +281,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _updateGeoNetworkAodaac: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaac(geometry));
+            this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
         }
     },
 
