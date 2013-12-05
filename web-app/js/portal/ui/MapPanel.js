@@ -244,7 +244,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
             this.map.spatialConstraintControl = undefined;
-            this.map.events.triggerEvent('spatialconstraintcleared');
             this.map.navigationControl.activate();
         }
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
