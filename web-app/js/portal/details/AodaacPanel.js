@@ -234,10 +234,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _buildAodaac: function(geometry) {
         if (this.productsInfo && this.selectedProductInfo) {
 
+            var productExtents = this.selectedProductInfo.extents;
+
             var aodaacConfig = {
                 productId: this.selectedProductInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
-                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker)
+                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
+                productLatitudeRangeStart: productExtents.lat.min,
+                productLongitudeRangeStart: productExtents.lon.min,
+                productLatitudeRangeEnd: productExtents.lat.max,
+                productLongitudeRangeEnd: productExtents.lon.max
             };
 
             if (geometry) {
