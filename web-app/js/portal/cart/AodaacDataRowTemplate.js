@@ -66,13 +66,21 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _aodaacParametersMarkup: function(params) {
-        var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
-        var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
-        var areaEnd   = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
 
-        return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
-            this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
-            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
+        var markup = "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>";
+
+        if (params.latitudeRangeStart && params.longitudeRangeEnd && params.latitudeRangeEnd && params.longitudeRangeStart) {
+
+            var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
+            var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
+            var areaEnd   = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
+
+            markup += this._parameterString('parameterAreaLabel', areaStart, areaEnd);
+        }
+
+        markup += this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
+
+        return markup;
     },
 
     _parameterString: function(labelKey, value1, value2) {
@@ -159,10 +167,10 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         args += "&dateRangeEnd=" + params.dateRangeEnd;
         args += "&timeOfDayRangeStart=0000";
         args += "&timeOfDayRangeEnd=2400";
-        args += "&latitudeRangeStart=" + params.latitudeRangeStart;
-        args += "&latitudeRangeEnd=" + params.latitudeRangeEnd;
-        args += "&longitudeRangeStart=" + params.longitudeRangeStart;
-        args += "&longitudeRangeEnd=" + params.longitudeRangeEnd;
+        args += "&latitudeRangeStart=" + params.latitudeRangeStart || params.productLatitudeRangeStart;
+        args += "&latitudeRangeEnd=" + params.latitudeRangeEnd || params.productLatitudeRangeEnd;
+        args += "&longitudeRangeStart=" + params.longitudeRangeStart || params.productLongitudeRangeStart;
+        args += "&longitudeRangeEnd=" + params.longitudeRangeEnd || params.productLongitudeRangeEnd;
         args += "&productId=" + params.productId;
         args += "&notificationEmailAddress=" + emailAddress;
 
