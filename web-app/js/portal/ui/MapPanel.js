@@ -215,18 +215,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    getLayerText: function (layerCount) {
-        return layerCount === 1 ? "Collection" : "Collections";
-    },
-
-    getLayersLoadingText: function (layerCount) {
-        return layerCount === 0 ? "" : layerCount.toString();
-    },
-
-    buildLayerLoadingString: function (layerCount) {
-        return "Loading " + this.getLayersLoadingText(layerCount) + "  " + this.getLayerText(layerCount) + "\u2026";
-    },
-
     getPanelX: function () {
         return this.getPosition()[0];
     },
