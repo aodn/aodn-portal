@@ -14,13 +14,15 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
             height: 90
         });
+        this.noneDisplayPanel = new Ext.Panel();
 
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
             activeItem: this.boxDisplayPanel,
             items: [
                 this.boxDisplayPanel,
-                this.polygonDisplayPanel
+                this.polygonDisplayPanel,
+                this.noneDisplayPanel
             ]
         }, cfg);
 
@@ -33,6 +35,13 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
                     this._showCardForGeometry(geometry);
+                }
+            });
+
+            this.map.events.on({
+                scope: this,
+                'spatialconstraintcleared': function() {
+                    this._showCard(this.noneDisplayPanel);
                 }
             });
 
@@ -57,6 +66,8 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             this.activeItem = card;
         }
 
-        card.setGeometry(geometry);
+        if (geometry) {
+            card.setGeometry(geometry);
+        }
     }
 });

@@ -37,7 +37,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         });
     });
 
-    describe('box or polygon', function() {
+    describe('box, polygon or none', function() {
         it('initialises with card layout', function() {
             expect(displayPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
@@ -66,6 +66,13 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
                 map.events.triggerEvent('spatialconstraintadded', geometry);
 
                 expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.polygonDisplayPanel, geometry);
+            });
+
+            it('shows none display panel when constraint is cleared', function() {
+                spyOn(displayPanel, '_showCard');
+                map.events.triggerEvent('spatialconstraintcleared');
+
+                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
             });
         });
 

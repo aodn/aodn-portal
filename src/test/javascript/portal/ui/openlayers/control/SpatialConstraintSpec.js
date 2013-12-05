@@ -61,17 +61,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
-        it("fires 'spatialconstraintcleared' on layer sketchstarted", function() {
-            var eventSpy = jasmine.createSpy('spatialconstraintcleared');
-            spatialConstraint.events.on({
-                'spatialconstraintcleared': eventSpy
-            });
-
-            spatialConstraint.layer.events.triggerEvent('sketchstarted');
-
-            expect(eventSpy).toHaveBeenCalled();
-        });
-
         it('clears existing constraint on layer sketchstarted', function() {
             spyOn(spatialConstraint, 'clear');
             spatialConstraint.layer.events.triggerEvent('sketchstarted');

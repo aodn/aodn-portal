@@ -85,7 +85,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _onSketchStarted: function() {
-        this.events.triggerEvent('spatialconstraintcleared');
         this.clear();
     },
 
