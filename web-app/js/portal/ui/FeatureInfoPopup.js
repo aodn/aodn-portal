@@ -168,7 +168,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 expectedFormat: layer.getFeatureInfoFormat(),
                 units: layer.metadata.units,
                 animation: layer.isAnimated,
-                copyright: layer.metadata.copyright
+                copyright: layer.metadata.copyright,
+                format: "text/xml"
             },
             success: function(resp, options) {
                 // Delegate HTML formatting of response to layer
@@ -195,7 +196,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     this._clickPoint(),
                     { BUFFER: this.appConfig.mapGetFeatureInfoBuffer }
                 )
-                + "&format=text/xml"
             );
     },
 
