@@ -61,8 +61,9 @@ beforeEach(function() {
             };
 
             var easySearchString = "&" + this.actual.replace(/\?/g, '&') + "&";
+            var searchValue = String.format("&{0}={1}&", key, encodeURIComponent(value));
 
-            return easySearchString.indexOf("&" + key + "=" + value + "&") >= 0;
+            return easySearchString.indexOf(searchValue) >= 0;
         }
     });
 });

@@ -29,5 +29,11 @@ describe('Custom matchers', function () {
             expect('some_url?a=b').toHaveParam('a', 'b');
             expect('http://www.google.com/?a=b').toHaveParam('a', 'b');
         });
+
+        it('tests for URL encoded value', function () {
+
+            expect('name=Steve%20Jobs').toHaveParam('name','Steve Jobs');
+            expect('name=Steve%20Jobs').not.toHaveParam('name','Steve%20Jobs');
+        });
     });
 });
