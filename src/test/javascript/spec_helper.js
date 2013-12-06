@@ -56,12 +56,14 @@ beforeEach(function() {
 
             var notText = this.isNot ? " not" : "";
 
+            var encodedValue = encodeURIComponent(value);
+
             this.message = function() {
-                return "Expected the query string" + notText + " to contain the key '" + key + "' with the value '" + value + "'. URL was: '" + this.actual + "'.";
+                return "Expected the query string" + notText + " to contain the key '" + key + "' with the (URL encoded) value '" + encodedValue + "'. URL was: '" + this.actual + "'.";
             };
 
             var easySearchString = "&" + this.actual.replace(/\?/g, '&') + "&";
-            var searchValue = String.format("&{0}={1}&", key, encodeURIComponent(value));
+            var searchValue = String.format("&{0}={1}&", key, encodedValue);
 
             return easySearchString.indexOf(searchValue) >= 0;
         }
