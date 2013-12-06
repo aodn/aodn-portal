@@ -52,7 +52,7 @@ beforeEach(function() {
             return this.actual.indexOf(expected) == 0;
         },
 
-        toHaveParam: function(key, value) {
+        toHaveParameterWithValue: function(key, value) {
 
             var notText = this.isNot ? " not" : "";
 

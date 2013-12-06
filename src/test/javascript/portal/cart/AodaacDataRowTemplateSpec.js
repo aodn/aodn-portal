@@ -344,17 +344,17 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
 
             expect(url).toStartWith('aodaac/createJob?');
-            expect(url).toHaveParam('outputFormat', 'format');
-            expect(url).toHaveParam('dateRangeStart', '1/1/1900');
-            expect(url).toHaveParam('dateRangeEnd', '31/12/2001');
-            expect(url).toHaveParam('timeOfDayRangeStart', '0000');
-            expect(url).toHaveParam('timeOfDayRangeEnd', '2400');
-            expect(url).toHaveParam('latitudeRangeStart', '-90');
-            expect(url).toHaveParam('latitudeRangeEnd', '90');
-            expect(url).toHaveParam('longitudeRangeStart', '-180');
-            expect(url).toHaveParam('longitudeRangeEnd', '180');
-            expect(url).toHaveParam('productId', '89');
-            expect(url).toHaveParam('notificationEmailAddress', 'emailAddress');
+            expect(url).toHaveParameterWithValue('outputFormat', 'format');
+            expect(url).toHaveParameterWithValue('dateRangeStart', '1/1/1900');
+            expect(url).toHaveParameterWithValue('dateRangeEnd', '31/12/2001');
+            expect(url).toHaveParameterWithValue('timeOfDayRangeStart', '0000');
+            expect(url).toHaveParameterWithValue('timeOfDayRangeEnd', '2400');
+            expect(url).toHaveParameterWithValue('latitudeRangeStart', '-90');
+            expect(url).toHaveParameterWithValue('latitudeRangeEnd', '90');
+            expect(url).toHaveParameterWithValue('longitudeRangeStart', '-180');
+            expect(url).toHaveParameterWithValue('longitudeRangeEnd', '180');
+            expect(url).toHaveParameterWithValue('productId', '89');
+            expect(url).toHaveParameterWithValue('notificationEmailAddress', 'emailAddress');
         });
 
         it('uses product defaults if no other bounds are set', function() {
@@ -376,17 +376,17 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
 
             expect(url).toStartWith('aodaac/createJob?');
-            expect(url).toHaveParam('outputFormat', 'format');
-            expect(url).toHaveParam('dateRangeStart', '1/1/1900');
-            expect(url).toHaveParam('dateRangeEnd', '31/12/2001');
-            expect(url).toHaveParam('timeOfDayRangeStart', '0000');
-            expect(url).toHaveParam('timeOfDayRangeEnd', '2400');
-            expect(url).toHaveParam('latitudeRangeStart', '-90');
-            expect(url).toHaveParam('latitudeRangeEnd', '90');
-            expect(url).toHaveParam('longitudeRangeStart', '-180');
-            expect(url).toHaveParam('longitudeRangeEnd', '180');
-            expect(url).toHaveParam('productId', '89');
-            expect(url).toHaveParam('notificationEmailAddress', 'emailAddress');
+            expect(url).toHaveParameterWithValue('outputFormat', 'format');
+            expect(url).toHaveParameterWithValue('dateRangeStart', '1/1/1900');
+            expect(url).toHaveParameterWithValue('dateRangeEnd', '31/12/2001');
+            expect(url).toHaveParameterWithValue('timeOfDayRangeStart', '0000');
+            expect(url).toHaveParameterWithValue('timeOfDayRangeEnd', '2400');
+            expect(url).toHaveParameterWithValue('latitudeRangeStart', '-90');
+            expect(url).toHaveParameterWithValue('latitudeRangeEnd', '90');
+            expect(url).toHaveParameterWithValue('longitudeRangeStart', '-180');
+            expect(url).toHaveParameterWithValue('longitudeRangeEnd', '180');
+            expect(url).toHaveParameterWithValue('productId', '89');
+            expect(url).toHaveParameterWithValue('notificationEmailAddress', 'emailAddress');
         });
     });
 
