@@ -66,7 +66,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterGroupPanel.update(
+            filterGroupPanel.handleLayer(
                 {
                     grailsLayerId: 1499409
                 },

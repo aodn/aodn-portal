@@ -63,7 +63,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.add(label);
     },
 
-    update: function(layer, show, hide, target) {
+    handleLayer: function(layer, show, hide, target) {
         this.layer = layer;
 
         if (layer.grailsLayerId) {

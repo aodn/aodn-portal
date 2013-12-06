@@ -26,7 +26,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
         Portal.details.InfoPanel.superclass.initComponent.call(this);
     },
 
-    update: function(layer, show, hide, target) {
+    handleLayer: function(layer, show, hide, target) {
         if (this._showBody(layer)) {
             this._updateBody(layer);
             show.call(target, this);

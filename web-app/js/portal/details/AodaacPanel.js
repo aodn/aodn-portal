@@ -40,7 +40,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.add(this._newSectionSpacer());
     },
 
-    update: function(layer, show, hide, target) {
+    handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,

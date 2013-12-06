@@ -131,7 +131,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.refreshLegend(this.selectedLayer);
     },
 
-    update:function (layer, show, hide, target) {
+    handleLayer:function (layer, show, hide, target) {
         this.selectedLayer = layer;
 
         show.call(target, this);

@@ -60,7 +60,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.setStatus(layer.name);
 
             // show new layer unless user requested 'hideLayerOptions'
-            this.detailsPanelTabs.update(layer);
+            this.detailsPanelTabs.handleLayer(layer);
             this.doLayout();
         }
         else {
