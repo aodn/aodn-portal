@@ -163,8 +163,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
     _aodaacUrl: function(params, format, emailAddress) {
         var args = "outputFormat=" + format;
-        args += "&dateRangeStart=" + params.dateRangeStart;
-        args += "&dateRangeEnd=" + params.dateRangeEnd;
+        args += "&dateRangeStart=" + encodeURIComponent(params.dateRangeStart);
+        args += "&dateRangeEnd=" + encodeURIComponent(params.dateRangeEnd);
         args += "&timeOfDayRangeStart=0000";
         args += "&timeOfDayRangeEnd=2400";
         args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
