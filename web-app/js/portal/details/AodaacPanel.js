@@ -267,6 +267,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var selectedTimeMoment = moment.utc(datePicker.getValue());
         this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _previousTimeSlice: function() {
@@ -298,6 +300,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel(extent.max());
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
@@ -326,7 +330,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _formatDatePickerValueForAodaac: function(datePicker) {
-        this._formatDateForAodaac(datePicker.getValue());
+        return this._formatDateForAodaac(datePicker.getValue());
     },
 
     _formatDateForAodaac: function(date) {
