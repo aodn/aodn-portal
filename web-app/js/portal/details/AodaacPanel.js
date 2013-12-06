@@ -30,7 +30,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
         // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
-        this._addProductInfo();
+        this._addLoadingInfo();
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());
@@ -74,17 +74,17 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _populateFormFields: function() {
-        // Remove productInfoText spinner
-        this.remove(this.productInfoText);
-        delete this.productInfoText;
+
+        this.remove(this.loadingInfo);
+        delete this.loadingInfo;
 
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
-    _addProductInfo: function() {
+    _addLoadingInfo: function() {
         // TODO - DN: Add product picker in case of multiple products per Layer
-        this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
-        this.add(this.productInfoText);
+        this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
+        this.add(this.loadingInfo);
     },
 
     _addSpatialConstraintDisplayPanel: function() {
@@ -267,6 +267,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var selectedTimeMoment = moment.utc(datePicker.getValue());
         this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _previousTimeSlice: function() {
@@ -298,6 +300,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel(extent.max());
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
@@ -326,7 +330,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _formatDatePickerValueForAodaac: function(datePicker) {
-        this._formatDateForAodaac(datePicker.getValue());
+        return this._formatDateForAodaac(datePicker.getValue());
     },
 
     _formatDateForAodaac: function(date) {
