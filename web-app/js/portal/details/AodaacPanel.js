@@ -50,7 +50,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
                 this._updateGeoNetworkAodaac(this.map.getConstraint());
                 this.productsInfo = JSON.parse(resp.responseText);
-                this.selectedProductsInfo = this.productsInfo[this.selectedProductInfoIndex];
+                this.selectedProductInfo = this.productsInfo[this.selectedProductInfoIndex];
                 if (this.productsInfo.length > 0) {
                     this._clearDateTimeFields();
                     this.selectedLayer.processTemporalExtent();
@@ -231,13 +231,19 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 7 });
     },
 
-    _buildAodaac: function(geometry) {
-        if (this.productsInfo && this.selectedProductsInfo) {
+    _buildAodaacParameters: function(geometry) {
+        if (this.productsInfo && this.selectedProductInfo) {
+
+            var productExtents = this.selectedProductInfo.extents;
 
             var aodaacConfig = {
-                productId: this.selectedProductsInfo.productId,
+                productId: this.selectedProductInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
-                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker)
+                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
+                productLatitudeRangeStart: productExtents.lat.min,
+                productLongitudeRangeStart: productExtents.lon.min,
+                productLatitudeRangeEnd: productExtents.lat.max,
+                productLongitudeRangeEnd: productExtents.lon.max
             };
 
             if (geometry) {
@@ -275,7 +281,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _updateGeoNetworkAodaac: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaac(geometry));
+            this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
         }
     },
 

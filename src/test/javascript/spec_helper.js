@@ -12,6 +12,7 @@ Ext.MessageBox.alert = function () {
 Ext.Ajax.request = function(options) {
 };
 
+// Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
 beforeEach(function() {
 
     setupTestConfigAndStubs();
@@ -49,6 +50,22 @@ beforeEach(function() {
 
         toStartWith: function(expected) {
             return this.actual.indexOf(expected) == 0;
+        },
+
+        toHaveParameterWithValue: function(key, value) {
+
+            var notText = this.isNot ? " not" : "";
+
+            var encodedValue = encodeURIComponent(value);
+
+            this.message = function() {
+                return "Expected the query string" + notText + " to contain the key '" + key + "' with the (URL encoded) value '" + encodedValue + "'. URL was: '" + this.actual + "'.";
+            };
+
+            var easySearchString = "&" + this.actual.replace(/\?/g, '&') + "&";
+            var searchValue = String.format("&{0}={1}&", key, encodedValue);
+
+            return easySearchString.indexOf(searchValue) >= 0;
         }
     });
 });
@@ -86,7 +103,6 @@ var mockMap = function() {
 
 // An empty function to pass as a parameter
 var noOp = function() {};
-
 
 var constructGeometry = function() {
     return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
