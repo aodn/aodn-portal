@@ -193,6 +193,11 @@ describe("Portal.ui.MapPanel", function() {
             });
 
             it('removes spatial constraint control when style is NONE', function() {
+                var spatialConstraintClearedSpy = jasmine.createSpy();
+                map.events.on({
+                    'spatialconstraintcleared': spatialConstraintClearedSpy
+                });
+
                 mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.NONE.style);
 
                 expect(map.spatialConstraintControl).toBeUndefined();
@@ -201,6 +206,7 @@ describe("Portal.ui.MapPanel", function() {
                 });
                 expect(map.navigationControl.deactivate).toHaveBeenCalled();
                 expect(map.navigationControl.activate).toHaveBeenCalled();
+                expect(spatialConstraintClearedSpy).toHaveBeenCalled();
             });
 
             it('set polygon spatial constraint control when style is POLYGON', function() {

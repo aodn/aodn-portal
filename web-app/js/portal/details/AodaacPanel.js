@@ -48,9 +48,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             success: function(resp){
 
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                this._updateGeoNetworkAodaac();
+                this._updateGeoNetworkAodaac(this.map.getConstraint());
                 this.productsInfo = JSON.parse(resp.responseText);
-                this.selectedProductsInfo = this.productsInfo[this.selectedProductInfoIndex];
+                this.selectedProductInfo = this.productsInfo[this.selectedProductInfoIndex];
                 if (this.productsInfo.length > 0) {
                     this._clearDateTimeFields();
                     this.selectedLayer.processTemporalExtent();
@@ -78,9 +78,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.remove(this.productInfoText);
         delete this.productInfoText;
 
-        // Populate spatial extent controls this will also update the aodaac object in the record store
-        // so please keep it last so all values are set
-        this._setBounds();
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _addProductInfo: function() {
@@ -90,6 +88,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addSpatialConstraintDisplayPanel: function() {
+        this.map.events.on({
+            scope: this,
+            'spatialconstraintadded': function(geometry) {
+                this._updateGeoNetworkAodaac(geometry);
+            },
+            'spatialconstraintcleared': function() {
+                this._updateGeoNetworkAodaac();
+            }
+        });
+
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
@@ -223,22 +231,33 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 7 });
     },
 
-    _setBounds: function(){
-        this._updateGeoNetworkAodaac();
-    },
+    _buildAodaacParameters: function(geometry) {
+        if (this.productsInfo && this.selectedProductInfo) {
 
-    _buildAodaac: function() {
-        if (this.productsInfo && this.selectedProductsInfo) {
-            return {
-                productId: this.selectedProductsInfo.productId,
+            var productExtents = this.selectedProductInfo.extents;
+
+            var aodaacConfig = {
+                productId: this.selectedProductInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
                 dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
-                latitudeRangeStart: this.spatialSubsetControlsPanel.getSouthBL(),
-                longitudeRangeStart: this.spatialSubsetControlsPanel.getWestBL(),
-                latitudeRangeEnd: this.spatialSubsetControlsPanel.getNorthBL(),
-                longitudeRangeEnd: this.spatialSubsetControlsPanel.getEastBL()
+                productLatitudeRangeStart: productExtents.lat.min,
+                productLongitudeRangeStart: productExtents.lon.min,
+                productLatitudeRangeEnd: productExtents.lat.max,
+                productLongitudeRangeEnd: productExtents.lon.max
             };
+
+            if (geometry) {
+                var bounds = geometry.getBounds();
+
+                aodaacConfig.latitudeRangeStart = bounds.bottom;
+                aodaacConfig.longitudeRangeStart = bounds.left;
+                aodaacConfig.latitudeRangeEnd = bounds.top;
+                aodaacConfig.longitudeRangeEnd = bounds.right;
+            }
+
+            return aodaacConfig;
         }
+
         return null;
     },
 
@@ -260,9 +279,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel(time);
     },
 
-    _updateGeoNetworkAodaac: function() {
+    _updateGeoNetworkAodaac: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaac());
+            this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
         }
     },
 

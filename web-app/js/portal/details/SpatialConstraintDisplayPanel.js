@@ -14,13 +14,15 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
             height: 90
         });
+        this.noneDisplayPanel = new Ext.Panel();
 
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
             activeItem: this.boxDisplayPanel,
             items: [
                 this.boxDisplayPanel,
-                this.polygonDisplayPanel
+                this.polygonDisplayPanel,
+                this.noneDisplayPanel
             ]
         }, cfg);
 
@@ -35,6 +37,15 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
                     this._showCardForGeometry(geometry);
                 }
             });
+
+            this.map.events.on({
+                scope: this,
+                'spatialconstraintcleared': function() {
+                    this._showCard(this.noneDisplayPanel);
+                }
+            });
+
+            this._showCardForGeometry(this.map.getConstraint());
         }
     },
 
@@ -55,30 +66,8 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             this.activeItem = card;
         }
 
-        card.setGeometry(geometry);
-   },
-
-    setBounds: function(bounds) {
-        this.boxDisplayPanel.setBounds(bounds);
-    },
-
-    getSouthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.southBL);
-    },
-
-    getNorthBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.northBL);
-    },
-
-    getEastBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.eastBL);
-    },
-
-    getWestBL: function() {
-        return this._getBoundingLine(this.boxDisplayPanel.westBL);
-    },
-
-    _getBoundingLine: function(field) {
-        return parseFloat(field.value);
+        if (geometry) {
+            card.setGeometry(geometry);
+        }
     }
 });
