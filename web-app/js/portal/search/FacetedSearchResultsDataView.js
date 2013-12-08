@@ -102,13 +102,21 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 "label": OpenLayers.i18n('dateRange'),
                 "value": String.format(
                     "{0} - {1}",
-                    moment(temporalExtent.begin).format("YYYY-MM-DD Z"),
-                    moment(temporalExtent.end).format("YYYY-MM-DD Z")
+                    this._formatTemporalExtentDateString(temporalExtent.begin),
+                    this._formatTemporalExtentDateString(temporalExtent.end)
                 )
             });
         }
 
         return "";
+    },
+
+    _formatTemporalExtentDateString: function(dateString) {
+        return this._parseTemporalExtentDateString(dateString).format("YYYY-MM-DD Z");
+    },
+    
+    _parseTemporalExtentDateString: function(dateString) {
+        return moment(dateString, "YYYY-MM-DDtHH:mm:ss:SSSz");
     },
 
     _getParametersAsHtml: function(template, parameters) {

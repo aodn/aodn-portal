@@ -19,50 +19,25 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         displayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: map
         });
-        displayPanel.setBounds({bottom: -17, top: -19, left: -51, right: -13});
         displayPanel.rendered = true;
         displayPanel.layout.activeItem = displayPanel.activeItem;
     });
 
-    it("setBounds should set bounds of bounding box", function() {
-        displayPanel.setBounds({bottom: -25, top: -22, left: -55, right: -20});
-
-        expect(displayPanel.boxDisplayPanel.southBL.value).toBe('-25');
-        expect(displayPanel.boxDisplayPanel.northBL.value).toBe('-22');
-        expect(displayPanel.boxDisplayPanel.eastBL.value).toBe('-20');
-        expect(displayPanel.boxDisplayPanel.westBL.value).toBe('-55');
-    });
-
-    it("getNorthBL should return north bounding latitude", function() {
-        expect(displayPanel.getNorthBL()).toBe(-19);
-    });
-
-    it("getEastBL should return east bounding longitude", function() {
-        expect(displayPanel.getEastBL()).toBe(-13);
-    });
-
-    it("getSouthBL should return south bounding latitude", function() {
-        expect(displayPanel.getSouthBL()).toBe(-17);
-    });
-
-    it("getWestBL should return west bounding longitude", function() {
-        expect(displayPanel.getWestBL()).toBe(-51);
-    });
 
     describe('map', function() {
 
         it("subscribes to 'spatialconstraintadded' event", function() {
             var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-            spyOn(displayPanel.layout.activeItem, 'setGeometry');
+            spyOn(displayPanel.polygonDisplayPanel, 'setGeometry');
             var geometry = constructGeometry();
 
             map.events.triggerEvent('spatialconstraintadded', geometry);
 
-            expect(displayPanel.layout.activeItem.setGeometry).toHaveBeenCalled();
+            expect(displayPanel.polygonDisplayPanel.setGeometry).toHaveBeenCalled();
         });
     });
 
-    describe('box or polygon', function() {
+    describe('box, polygon or none', function() {
         it('initialises with card layout', function() {
             expect(displayPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
@@ -91,6 +66,13 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
                 map.events.triggerEvent('spatialconstraintadded', geometry);
 
                 expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.polygonDisplayPanel, geometry);
+            });
+
+            it('shows none display panel when constraint is cleared', function() {
+                spyOn(displayPanel, '_showCard');
+                map.events.triggerEvent('spatialconstraintcleared');
+
+                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
             });
         });
 

@@ -46,7 +46,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
-        this.add(new Portal.visualise.PolygonTypePanel({ colspan: 2 }));
     },
 
     _isLayerActive: function(layer) {

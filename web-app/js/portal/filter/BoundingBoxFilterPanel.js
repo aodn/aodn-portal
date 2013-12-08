@@ -26,10 +26,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     _createField: function() {
-        this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
+        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map
         });
-        this.add(this.spatialConstraintDisplayPanel);
+        this.add(this.spatialSubsetControlsPanel);
     },
 
     isDownloadOnly: function() {
@@ -46,14 +46,11 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
-
         this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
     },
 
     _updateWithGeometry: function(geometry) {
-
         this.geometry = geometry;
-
         this._fireAddEvent();
     },
 
@@ -63,24 +60,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     getCQL: function() {
 
-        var geometryExpression = this.geometry.isBox() ? this._geometryExpressionForBbox()
-                                                       : this._geometryExpressionForPolygon();
-
         return String.format(
-            "BBOX({0},{1})",
+            "INTERSECTS({0},{1})",
             this.filter.name,
-            geometryExpression
+            this.geometry.toWkt()
         );
-    },
-
-    _geometryExpressionForBbox: function() {
-
-        var geom = this.geometry;
-        return String.format("{0},{1},{2},{3}", geom.left, geom.bottom, geom.right, geom.top);
-    },
-
-    _geometryExpressionForPolygon: function() {
-
-        return this.geometry.toWkt();
     }
 });

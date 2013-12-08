@@ -19,7 +19,11 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     setGeometry: function(geometry) {
-        this.setBounds(geometry.getBounds());
+        // Defer this incase this is not rendered yet.
+        var self = this;
+        setTimeout(function() {
+            self.setBounds(geometry.getBounds());
+        }, 0);
     },
 
     setBounds: function(bounds) {
@@ -27,26 +31,6 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         this.westBL.setValue(bounds.left);
         this.northBL.setValue(bounds.top);
         this.eastBL.setValue(bounds.right);
-    },
-
-    getSouthBL: function() {
-        return this._getBoundingLine(this.southBL);
-    },
-
-    getNorthBL: function() {
-        return this._getBoundingLine(this.northBL);
-    },
-
-    getEastBL: function() {
-        return this._getBoundingLine(this.eastBL);
-    },
-
-    getWestBL: function() {
-        return this._getBoundingLine(this.westBL);
-    },
-
-    _getBoundingLine: function(field) {
-        return parseFloat(field.value);
     },
 
     _buildBoundingBox: function(config) {

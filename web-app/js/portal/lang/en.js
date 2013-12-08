@@ -213,8 +213,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
 
-    //ComboFilterPanel.js
+    // ComboFilterPanel.js
     clearFilterOption: 'All',
+
+    // DateFilterPanel.js
+    comboOptionNone: 'none',
+    comboOptionBefore: 'before',
+    comboOptionAfter: 'after',
+    comboOptionBetween: 'between',
 
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
