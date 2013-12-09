@@ -79,7 +79,7 @@ class DownloadReport {
     def _timeTaken = {
 
         use(TimeCategory) {
-            return reportStart - _currentDate()
+            return _currentDate() - reportStart
         }
     }
 }

@@ -108,8 +108,8 @@ class DownloadReportTests extends GrailsUnitTestCase {
 
     void testTimeTaken() {
 
-        report._currentDate = { new Date(0) }
         report.reportStart = new Date(2000)
+        report._currentDate = { new Date(4000) }
 
         assertEquals "2.000 seconds", report._timeTaken().toString()
     }
