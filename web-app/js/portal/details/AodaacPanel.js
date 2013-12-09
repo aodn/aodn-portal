@@ -41,7 +41,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     update: function(layer, show, hide, target) {
+
         this.selectedLayer = layer;
+        this.selectedProductInfo = null;
+
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
@@ -74,11 +77,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _populateFormFields: function() {
-
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
-
-        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _addLoadingInfo: function() {
