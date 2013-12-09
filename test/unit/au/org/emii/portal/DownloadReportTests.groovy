@@ -79,11 +79,12 @@ class DownloadReportTests extends GrailsUnitTestCase {
 
         assertEquals 1, report.numberOfFilesTried
         assertEquals """\
+
             --[ #1 ]------------------------------------
             URL:                 url
             Filename in archive: filename
             Result:              went well
-            """.stripIndent(),
+            """,
             report.reportBody
     }
 

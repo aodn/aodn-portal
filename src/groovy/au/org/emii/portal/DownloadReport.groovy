@@ -46,11 +46,12 @@ class DownloadReport {
         numberOfFilesTried++
 
         reportBody += """\
+
             --[ #$numberOfFilesTried ]------------------------------------
             URL:                 $url
             Filename in archive: $filename
             Result:              $result
-            """.stripIndent()
+            """
     }
 
     def getText() {
@@ -59,15 +60,15 @@ class DownloadReport {
         def currentTime = DateFormat.getTimeInstance(DateFormat.SHORT, locale).format(_currentDate())
 
         return """\
-        ========================================================================
-        Download cart report ($currentDate $currentTime)
-        ========================================================================
-        $reportBody
-        ========================================================================
-        Size of all files: $sizeOfFilesAdded Bytes
-        Number of files included: $numberOfFilesAdded/$numberOfFilesTried
-        Time taken: ${_timeTaken()}
-        ========================================================================""".stripIndent()
+            ========================================================================
+            Download cart report ($currentDate $currentTime)
+            ========================================================================
+            $reportBody
+            ========================================================================
+            Size of all files: $sizeOfFilesAdded Bytes
+            Number of files included: $numberOfFilesAdded/$numberOfFilesTried
+            Time taken: ${_timeTaken()}
+            ========================================================================""".stripIndent()
     }
 
     def _currentDate = {
