@@ -40,17 +40,6 @@ describe("Portal.ui.TermSelectionPanel", function()
         expect(selectPanel.doLayout).toHaveBeenCalled();
     });
 
-    it('expands by default if parameter or platform filter', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
-        var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher,
-            collapsed: false
-        });
-
-        expect(selectPanel.collapsed).toEqual(false);
-    });
-
     it('disables empty panel', function() {
         var mockSearcher = new Portal.service.CatalogSearcher();
         mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
