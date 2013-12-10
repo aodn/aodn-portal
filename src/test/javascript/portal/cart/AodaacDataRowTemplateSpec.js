@@ -89,8 +89,8 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
             expect(url).toBe('aodaac/createJob?' +
                 'outputFormat=format' +
-                '&dateRangeStart=1/1/1900' +
-                '&dateRangeEnd=31/12/2001' +
+                '&dateRangeStart=1%2F1%2F1900' +
+                '&dateRangeEnd=31%2F12%2F2001' +
                 '&timeOfDayRangeStart=0000' +
                 '&timeOfDayRangeEnd=2400' +
                 '&latitudeRangeStart=-90' +
