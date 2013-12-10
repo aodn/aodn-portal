@@ -17,6 +17,7 @@
 
         <!--- common styles and JavaScript for the map page and Grails admin pages -->
        <g:render template="/js_includes"></g:render>
+       <g:render template="/theme_includes"></g:render>
 
         <title><g:layoutTitle default="Administration" /></title>
 
