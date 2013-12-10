@@ -1162,6 +1162,14 @@ div.allwhite {
     margin: 5px;
 }
 
+.downloadPanelResultsWrapper.dataFilterEntry {
+    width: 70%;
+}
+
+.downloadPanelResultsWrapper.resultsTextMsgs {
+    width: 220px;
+}
+
 .navigationButton div {
     vertical-align: middle;
 }

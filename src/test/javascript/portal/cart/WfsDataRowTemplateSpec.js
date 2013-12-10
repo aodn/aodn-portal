@@ -37,7 +37,6 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(parentTemplate, '_makeEntryMarkup').andReturn('entry markup');
             spyOn(parentTemplate, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
 
             html = tpl._getDataDownloadEntry(geoNetworkRecord);

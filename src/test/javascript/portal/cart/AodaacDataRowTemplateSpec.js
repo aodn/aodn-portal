@@ -28,7 +28,6 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(parentTemplate, '_makeEntryMarkup').andReturn('entry markup');
             spyOn(parentTemplate, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
 
             html = tpl._getDataDownloadEntry(geoNetworkRecord);
@@ -50,16 +49,84 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
         beforeEach(function() {
 
-            spyOn(parentTemplate, '_makeEntryMarkup').andReturn('markup entry');
 
             markup = tpl._getNotificationBlurbEntry();
         });
 
-        it('returns the result of _makeEntryMarkup', function() {
+        it('returns notificationBlurbMessage', function() {
 
             expect(markup).toBe( OpenLayers.i18n('notificationBlurbMessage') );
         });
     });
+
+    describe('_downloadAodaacHandler', function () {
+
+        it('returns a function to be called', function () {
+
+            var collection = { uuid: 5, aodaac: true };
+            var returnValue = tpl._downloadAodaacHandler(collection);
+
+            expect(typeof returnValue).toBe('function');
+        });
+    });
+
+
+    describe('_aodaacUrl', function () {
+
+        it('builds URL with correct query string', function () {
+
+            var params = {
+                productId: 89,
+                latitudeRangeStart: -90,
+                latitudeRangeEnd: 90,
+                longitudeRangeStart: -180,
+                longitudeRangeEnd: 180,
+                dateRangeStart: '1/1/1900',
+                dateRangeEnd: '31/12/2001'
+            };
+
+            var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
+
+            expect(url).toBe('aodaac/createJob?' +
+                'outputFormat=format' +
+                '&dateRangeStart=1/1/1900' +
+                '&dateRangeEnd=31/12/2001' +
+                '&timeOfDayRangeStart=0000' +
+                '&timeOfDayRangeEnd=2400' +
+                '&latitudeRangeStart=-90' +
+                '&latitudeRangeEnd=90' +
+                '&longitudeRangeStart=-180' +
+                '&longitudeRangeEnd=180' +
+                '&productId=89' +
+                '&notificationEmailAddress=emailAddress'
+            );
+        });
+    });
+
+    describe('_validateEmailAddress', function () {
+
+        it('returns false for an empty address', function () {
+
+            var returnVal = tpl._validateEmailAddress('');
+
+            expect(returnVal).toBe(false);
+        });
+
+        it('returns false for an invalid address', function () {
+
+            var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
+
+            expect(returnVal).toBe(false);
+        });
+
+        it('returns true for a valid address', function () {
+
+            var returnVal = tpl._validateEmailAddress('user@domain.com');
+
+            expect(returnVal).toBe(true);
+        });
+    });
+
 
 
     describe('template output', function() {

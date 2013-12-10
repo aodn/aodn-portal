@@ -40,7 +40,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
         beforeEach(function () {
 
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
 
             html = tpl._getPointOfTruthLinkEntry(geoNetworkRecord);
         });
@@ -56,7 +55,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
         beforeEach(function () {
 
             spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
             spyOn(tpl, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
         });
 
@@ -91,14 +89,13 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
 
             var html = tpl._getFileListEntries(geoNetworkRecord);
 
-            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalledWith('No attached files.');
+            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalled();
             expect(html).toBe('secondary text markup');
         });
 
         afterEach(function () {
 
             tpl._getSingleFileEntry.reset();
-            tpl._makeEntryMarkup.reset();
         });
     });
 
@@ -109,7 +106,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
         beforeEach(function () {
 
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
-            spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
 
             var link = geoNetworkRecord.downloadableLinks[0];
 
@@ -127,7 +123,7 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
         });
     });
 
-    describe('_makeEntryMarkup', function () {
+    describe('_makeSecondaryTextMarkup', function () {
 
         it('wraps the text in a span', function () {
 
@@ -253,10 +249,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
 
         describe('_getDataFilterEntry', function () {
 
-            beforeEach(function () {
-                spyOn(tpl, '_makeEntryMarkup').andReturn('entry markup');
-
-            });
 
             it('returns the entry markup', function () {
 
@@ -272,12 +264,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
                 var html = tpl._getDataFilterEntry(geoNetworkRecord);
 
                 expect(html).toBe('');
-                expect(tpl._makeEntryMarkup).not.toHaveBeenCalled();
-            });
-
-            afterEach(function () {
-
-                tpl._makeEntryMarkup.reset();
             });
         });
 
@@ -344,7 +330,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
                 spyOn(tpl, '_createMenuItems').andReturn(mockMenuItems);
                 spyOn(Ext.menu, 'Menu').andReturn(mockMenu);
                 spyOn(Ext, 'Button').andReturn(mockButton);
-                spyOn(tpl, '_emailTextFieldElement').andReturn(mockElement);
                 mockButton.render = jasmine.createSpy('button render');
                 mockElement.on = jasmine.createSpy();
                 renderElement = "html";
@@ -362,25 +347,9 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
                 expect(Ext.menu.Menu).toHaveBeenCalledWith({items: mockMenuItems})
             });
 
-            it('calls _emailTextFieldElement', function () {
-                expect(tpl._emailTextFieldElement).toHaveBeenCalled();
-            });
-
-            it('calls _emailTextFieldElement to attach events to', function () {
-                expect(mockElement.on).toHaveBeenCalled();
-            });
         });
 
-        describe('_downloadAodaacHandler', function () {
 
-            it('returns a function to be called', function () {
-
-                var collection = { uuid: 5, aodaac: true };
-                var returnValue = tpl._downloadAodaacHandler(collection);
-
-                expect(typeof returnValue).toBe('function');
-            });
-        });
         describe('_downloadWfsHandler', function () {
 
             it('returns a function to be called', function () {
@@ -398,62 +367,6 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
                 var returnValue = tpl._downloadWfsHandler(collection);
 
                 expect(typeof returnValue).toBe('function');
-            });
-        });
-
-        describe('_aodaacUrl', function () {
-
-            it('builds URL with correct query string', function () {
-
-                var params = {
-                    productId: 89,
-                    latitudeRangeStart: -90,
-                    latitudeRangeEnd: 90,
-                    longitudeRangeStart: -180,
-                    longitudeRangeEnd: 180,
-                    dateRangeStart: '1/1/1900',
-                    dateRangeEnd: '31/12/2001'
-                };
-
-                var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
-
-                expect(url).toBe('aodaac/createJob?' +
-                    'outputFormat=format' +
-                    '&dateRangeStart=1/1/1900' +
-                    '&dateRangeEnd=31/12/2001' +
-                    '&timeOfDayRangeStart=0000' +
-                    '&timeOfDayRangeEnd=2400' +
-                    '&latitudeRangeStart=-90' +
-                    '&latitudeRangeEnd=90' +
-                    '&longitudeRangeStart=-180' +
-                    '&longitudeRangeEnd=180' +
-                    '&productId=89' +
-                    '&notificationEmailAddress=emailAddress'
-                );
-            });
-        });
-
-        describe('_validateEmailAddress', function () {
-
-            it('returns false for an empty address', function () {
-
-                var returnVal = tpl._validateEmailAddress('');
-
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns false for an invalid address', function () {
-
-                var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
-
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns true for a valid address', function () {
-
-                var returnVal = tpl._validateEmailAddress('user@domain.com');
-
-                expect(returnVal).toBe(true);
             });
         });
 
@@ -494,17 +407,10 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
         describe('_urlListDownloadHandler', function() {
 
             beforeEach(function() {
-                spyOn(tpl, '_wfsUrlForGeoNetworkRecordWmsLayer');
                 geoNetworkRecord.wmsLayer = { urlDownloadFieldName: 'the field', wfsLayer: {} };
-                geoNetworkRecord.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
                 geoNetworkRecord.wmsLayer.getWmsLayerFeatureRequestUrl = function () {}
-            });
+                geoNetworkRecord.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
 
-            it('calls _wfsUrlForGeoNetworkRecordWmsLayer', function() {
-
-                tpl._urlListDownloadHandler(geoNetworkRecord);
-
-                expect(tpl._wfsUrlForGeoNetworkRecordWmsLayer).toHaveBeenCalledWith(geoNetworkRecord, 'csv');
             });
 
             it('returns a function to be called', function() {

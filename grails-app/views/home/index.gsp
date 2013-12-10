@@ -160,8 +160,8 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/GeoExt.ux.BaseLayerCombobox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerOpacitySliderFixed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelTemplate.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelBody.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelWrapper.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadConfirmationWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/AodaacDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/WfsDataRowTemplate.js')}"></script>
