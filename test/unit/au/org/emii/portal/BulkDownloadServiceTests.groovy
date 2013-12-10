@@ -163,39 +163,44 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
     void testWriteStreamToArchive() {
 
-        def baseUrl = "http://imos.org.au/"
         def file1 = "grails_logo.png"
         def file2 = "test.txt"
         def file3 = "non_existent.txt"
+        def file3InDownload = file3 + '.failed'
 
         def successfulEntries = 0
         def failedEntries = 0
         service.report = [
             addSuccessfulFileEntry: { url, filename, size -> successfulEntries++ },
-            addFailedFileEntry: { url, filename, size -> failedEntries++ }
+            addFailedFileEntry: { url, filename, result ->
+                failedEntries++
+                assertEquals file3, url
+                assertEquals file3InDownload, filename
+                assertTrue result.contains(url) // The result shoudl explain we can't get data form the URL
+            }
         ]
 
         // Have files load locally for testing rather than via URL
         String.metaClass.toURL = {
             def self = delegate
-            return [newInputStream: { // new buffered input stream from expected file
-                def filename = self - "http://imos.org.au/"
-                new BufferedInputStream(new FileInputStream("$resourcesDir/$filename"))
+            return [newInputStream: {
+               new FileInputStream("$resourcesDir/$self")
             }]
         }
 
         def responseStream = new ByteArrayOutputStream()
         service._createZipStream(responseStream)
 
-        service._writeStreamToArchive baseUrl + file1, file1
-        service._writeStreamToArchive baseUrl + file2, file2
-        service._writeStreamToArchive baseUrl + file3, file3
+        service._writeStreamToArchive file1, file1
+        service._writeStreamToArchive file2, file2
+        service._writeStreamToArchive file3, file3
 
         validateZipEntries(
             responseStream,
             [
-                [name: "grails_logo.png", size: 10172],
-                [name: "test.txt", size: 19]
+                [name: file1, size: 10172],
+                [name: file2, size: 19],
+                [name: file3InDownload, size: 0]
             ]
         )
 

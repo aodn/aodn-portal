@@ -118,7 +118,17 @@ class BulkDownloadService {
         }
         catch (Exception e) {
 
-            report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
+            log.info "Error adding file to download archive. URL: '$url'", e
+
+            if (!stream) {
+                def filenameInArchive = filenameToUse + '.failed'
+
+                zipStream.putNextEntry new ZipEntry(filenameInArchive)
+                report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
+            }
+            else {
+                report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
+            }
         }
         finally {
 
