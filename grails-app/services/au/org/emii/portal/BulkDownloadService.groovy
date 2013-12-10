@@ -98,29 +98,22 @@ class BulkDownloadService {
 
     def _writeStreamToArchive = { url, filenameToUse ->
 
-        def stream
+        def streamFromUrl
 
         try {
-            stream = url.toURL().newInputStream()
+            streamFromUrl = url.toURL().newInputStream()
 
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
-            def buffer = new byte[BUFFER_SIZE]
-            def bytesRead
-            def totalBytesRead = 0
+            def bytesCopied = _copyStreamData(streamFromUrl, zipStream)
 
-            while ((bytesRead = stream.read(buffer)) != -1) {
-                zipStream.write buffer, 0, bytesRead
-                totalBytesRead += bytesRead
-            }
-
-            report.addSuccessfulFileEntry url, filenameToUse, totalBytesRead
+            report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
         }
         catch (Exception e) {
 
             log.info "Error adding file to download archive. URL: '$url'", e
 
-            if (!stream) {
+            if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'
 
                 zipStream.putNextEntry new ZipEntry(filenameInArchive)
@@ -132,9 +125,23 @@ class BulkDownloadService {
         }
         finally {
 
-            stream?.close()
+            streamFromUrl?.close()
             zipStream.closeEntry()
         }
+    }
+
+    static def _copyStreamData = { inStream, outputStream ->
+
+        def buffer = new byte[BUFFER_SIZE]
+        def bytesRead
+        def totalBytesRead = 0
+
+        while ((bytesRead = inStream.read(buffer)) != -1) {
+            outputStream.write buffer, 0, bytesRead
+            totalBytesRead += bytesRead
+        }
+
+        return totalBytesRead
     }
 
     def _addDownloadReportToArchive = { ->
