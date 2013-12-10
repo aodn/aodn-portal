@@ -233,13 +233,13 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         // Iterate through entries
         def entry
-        while ((entry = zipInStream.getNextEntry()) != null) {
+        while ((entry = zipInStream.nextEntry) != null) {
 
             def checkStream = new ByteArrayOutputStream()
             BulkDownloadService._copyStreamData zipInStream, checkStream
 
             // File data
-            String filename = entry.getName()
+            String filename = entry.name
             byte[] bytes = checkStream.toByteArray()
 
             def expectedFile = expectedFiles.find { it.name == filename }
