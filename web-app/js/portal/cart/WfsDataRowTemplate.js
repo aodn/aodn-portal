@@ -8,8 +8,8 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
 
-    constructor: function(downloadPanelTemplate) {
-        this.downloadPanelTemplate = downloadPanelTemplate;
+    constructor: function(DownloadPanelBodyTemplate) {
+        //this.downloadPanelBodyTemplate = DownloadPanelBodyTemplate;
 
         var templateLines = [
             '<div class="x-panel-body x-box-layout-ct">',

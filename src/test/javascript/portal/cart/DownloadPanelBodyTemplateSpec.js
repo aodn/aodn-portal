@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('Portal.cart.DownloadPanelTemplate', function () {
+describe('Portal.cart.DownloadPanelBodyTemplate', function () {
 
     var html;
     var tpl;
@@ -12,7 +12,7 @@ describe('Portal.cart.DownloadPanelTemplate', function () {
 
     beforeEach(function () {
 
-        tpl = new Portal.cart.DownloadPanelTemplate();
+        tpl = new Portal.cart.DownloadPanelBodyTemplate();
         geoNetworkRecord = {
             title: 'the title',
             pointOfTruthLink: {

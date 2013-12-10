@@ -14,7 +14,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
     beforeEach(function() {
 
-        parentTemplate = new Portal.cart.DownloadPanelTemplate();
+        parentTemplate = new Portal.cart.DownloadPanelBodyTemplate();
         tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             uuid: 9,

@@ -13,7 +13,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
 
     beforeEach(function() {
 
-        parentTemplate = new Portal.cart.DownloadPanelTemplate();
+        parentTemplate = new Portal.cart.DownloadPanelBodyTemplate();
         tpl = new Portal.cart.AodaacDataRowTemplate(parentTemplate);
         geoNetworkRecord = {
             uuid: 7,

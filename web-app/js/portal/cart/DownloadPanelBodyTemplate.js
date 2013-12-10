@@ -6,9 +6,7 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
-
-
+Portal.cart.DownloadPanelBodyTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function (downloadPanel) {
 
@@ -44,7 +42,7 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             '</div>'
         ];
 
-        Portal.cart.DownloadPanelTemplate.superclass.constructor.call(this, templateLines);
+        Portal.cart.DownloadPanelBodyTemplate.superclass.constructor.call(this, templateLines);
     },
 
     _getDataFilterEntry: function (values) {
@@ -142,8 +140,6 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
         }
     },
 
-
-
     _createMenuItems: function (collection) {
 
         var menuItems = [];
@@ -228,8 +224,4 @@ Portal.cart.DownloadPanelTemplate = Ext.extend(Ext.XTemplate, {
             this.downloadWithConfirmation(downloadUrl, downloadFilename, additionalArgs);
         };
     }
-
-
-
-
 });

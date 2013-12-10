@@ -25,7 +25,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
     },
 
     generateContent: function() {
-        var tpl = new Portal.cart.DownloadPanelTemplate(this);
+        var tpl = new Portal.cart.DownloadPanelBodyTemplate(this);
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
