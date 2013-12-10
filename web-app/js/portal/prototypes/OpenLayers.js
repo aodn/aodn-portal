@@ -387,3 +387,27 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
                                      OpenLayers.Function.bind(onerror, this));
     }
 };
+
+OpenLayers.Geometry.prototype.isBox = function() {
+    var boundsAsGeom = this.getBounds().toGeometry();
+
+    // TODO: revisit - as this algorithm doesn't work for a rotated rectangle, for example.
+    // But I *think* it should work for what's currently possible in the portal.
+    return Math.abs(this.getArea() - boundsAsGeom.getArea()) < 0.001;
+};
+
+OpenLayers.Geometry.prototype.toWkt = function() {
+    var wktFormatter = new OpenLayers.Format.WKT();
+    return wktFormatter.write({ geometry: this });
+};
+
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');
+
+OpenLayers.Map.prototype.getConstraint = function() {
+    if (this.spatialConstraintControl) {
+        return this.spatialConstraintControl.getConstraint();
+    }
+
+    return undefined;
+};

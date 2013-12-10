@@ -1,31 +1,29 @@
 /*
- * Copyright 2012 IMOS
+ * Copyright 2013 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-
 Ext.namespace('Portal.details');
 
-Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
+Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
-
-        var defaults = {
-            width: 300
-        }
-
-        cfg = Ext.apply({}, cfg, defaults);
 
         var config = Ext.apply({
             items: [
-                {
-                    html: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading'))
-                },
                 this._buildBoundingBox(cfg)
             ]
         }, cfg);
 
-        Portal.details.BoundingBoxPanel.superclass.constructor.call(this, config);
+        Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
+    },
+
+    setGeometry: function(geometry) {
+        // Defer this incase this is not rendered yet.
+        var self = this;
+        setTimeout(function() {
+            self.setBounds(geometry.getBounds());
+        }, 0);
     },
 
     setBounds: function(bounds) {
@@ -33,26 +31,6 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
         this.westBL.setValue(bounds.left);
         this.northBL.setValue(bounds.top);
         this.eastBL.setValue(bounds.right);
-    },
-
-    getSouthBL: function() {
-        return this._getBoundingLine(this.southBL);
-    },
-
-    getNorthBL: function() {
-        return this._getBoundingLine(this.northBL);
-    },
-
-    getEastBL: function() {
-        return this._getBoundingLine(this.eastBL);
-    },
-
-    getWestBL: function() {
-        return this._getBoundingLine(this.westBL);
-    },
-
-    _getBoundingLine: function(field) {
-        return parseFloat(field.value);
     },
 
     _buildBoundingBox: function(config) {
@@ -126,5 +104,4 @@ Portal.details.BoundingBoxPanel = Ext.extend(Ext.Panel, {
             disabled: true
         });
     }
-
 });

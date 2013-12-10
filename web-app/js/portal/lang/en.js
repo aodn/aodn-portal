@@ -7,10 +7,12 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    navigationButtonNext: "Next >>",
-    navigationButtonPrevious: "<< Previous",
-    navigationButtonSelect: "Select >>",
-    navigationButtonDownload: "Download >>",
+    navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
+    navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
+    navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
+    navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
+
+    footerText: "<b>Disclaimer:</b> You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.",
 
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
@@ -208,6 +210,15 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
 
+    // ComboFilterPanel.js
+    clearFilterOption: 'All',
+
+    // DateFilterPanel.js
+    comboOptionNone: 'none',
+    comboOptionBefore: 'before',
+    comboOptionAfter: 'after',
+    comboOptionBetween: 'between',
+
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
@@ -237,5 +248,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
-    zoomToDataCollection: 'Zoom to data collection'
+    zoomToDataCollection: 'Zoom to data collection',
+
+    // PolygonTypePanel
+    polygonTypePanelHeader: "Map Polygon Drawing Style",
+
+    // PolygonTypeComboBox
+    polygonTypeNone: "none",
+    polygonTypePolygon: "polygon",
+    polygonTypeBoundingBox: "bounding box"
 });

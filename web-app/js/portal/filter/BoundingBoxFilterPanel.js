@@ -15,11 +15,21 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         }, cfg);
 
         Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
+
+        var map = config.layer.map;
+        map.events.on({
+            scope: this,
+            'spatialconstraintadded': function(geometry) {
+                this._updateWithGeometry(geometry);
+            }
+        });
     },
 
     _createField: function() {
-        this.bbox = new Portal.details.BoundingBoxPanel();
-        this.add(this.bbox);
+        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
+            map: this.layer.map
+        });
+        this.add(this.spatialSubsetControlsPanel);
     },
 
     isDownloadOnly: function() {
@@ -36,35 +46,24 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+        this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+    },
 
-        this._updateBounds();
-
-        layer.map.events.register("move", this, function(e) {
-            this._updateBounds();
-        });
+    _updateWithGeometry: function(geometry) {
+        this.geometry = geometry;
+        this._fireAddEvent();
     },
 
     _setExistingFilters: function() {
         // Never restored from an existing filter
     },
 
-    _updateBounds: function() {
-        if (this.items.length != 0 && this.layer.map) {
-            var extent = this.layer.map.getExtent();
-            this.bbox.setBounds(extent);
-
-            this._fireAddEvent();
-        }
-    },
-
     getCQL: function() {
+
         return String.format(
-            "BBOX({0},{1},{2},{3},{4})",
+            "INTERSECTS({0},{1})",
             this.filter.name,
-            this.bbox.getWestBL(),
-            this.bbox.getSouthBL(),
-            this.bbox.getEastBL(),
-            this.bbox.getNorthBL()
+            this.geometry.toWkt()
         );
     }
 });

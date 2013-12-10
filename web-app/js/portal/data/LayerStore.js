@@ -78,7 +78,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     removeAll: function() {
-        this.remove(this.getLayers(false).getRange());
+        this.remove(this.getOverlayLayers().getRange());
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
@@ -90,17 +90,25 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     getDefaultBaseLayer: function() {
-        return this.getLayers(true).first();
+        return this.getBaseLayers().first();
     },
 
-    getLayers: function(baseLayersOnly) {
+    getBaseLayers: function() {
+        return this._getLayers(function(record) {
+            return record.getLayer().options && record.getLayer().options.isBaseLayer;
+        })
+    },
+
+    getOverlayLayers: function() {
+        return this._getLayers(function(record) {
+            var layer = record.getLayer()
+            return layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector);
+        })
+    },
+
+    _getLayers: function(predicate) {
         return this.queryBy(function(record, id) {
-
-            if (record.getLayer().options === null) {
-                return false;
-            }
-
-            return (record.getLayer().options.isBaseLayer == true) == baseLayersOnly;
+            return predicate(record);
         });
     },
 

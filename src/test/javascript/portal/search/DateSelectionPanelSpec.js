@@ -66,6 +66,18 @@ describe("Portal.search.DateSelectionPanel", function()
         });
     });
 
+    describe("clearDateRange", function() {
+        it("clears the date ranges and puts the title back to normal", function() {
+            var dateFilter = buildMockSelectionPanel();
+
+            spyOn(dateFilter, "removeSelectedSubTitle");
+
+            dateFilter.clearDateRange();
+
+            expect(dateFilter.removeSelectedSubTitle).toHaveBeenCalled();
+        });
+    });
+
     describe("onGo", function() {
         it("doesn't do catalog search if start and end are empty", function() {
             var dateFilter = buildMockSelectionPanel();

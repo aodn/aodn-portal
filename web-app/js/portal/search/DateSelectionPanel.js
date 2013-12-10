@@ -32,17 +32,31 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cls:'search-filter-panel term-selection-panel',
             items:[
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
-                this.goButton = new Ext.Button({
-                    text: OpenLayers.i18n("goButton"),
-                    width: 65
+
+                // Add a container to store the go button and the clear button. Display horizontally
+                new Ext.Container({
+                    layout: 'hbox',
+                    defaults: {
+                        style: {
+                            padding: '2px'
+                        }
+                    },
+                    items: [ this.goButton = new Ext.Button({
+                        text:OpenLayers.i18n("goButton"),
+                        width:65
+                        }),
+                        this.clearButton = new Ext.Button({
+                            text:OpenLayers.i18n("clearButton"),
+                            width:65
+                        })]
                 })
             ]
         }, cfg, defaults);
 
-
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
         this.mon(this.goButton, 'click', this.onGo, this);
+        this.mon(this.clearButton, 'click', this.clearDateRange, this);
     },
 
     initComponent:function () {
@@ -75,6 +89,19 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             var newSub = titleFrom + " - " + titleTo;
             this.setSelectedSubTitle(newSub);
 
+            this.searcher.search();
+        }
+    },
+
+    clearDateRange: function() {
+        this.dateRange.clearValues();
+        this.removeSelectedSubTitle();
+
+        if (this.searcher.hasFilters()) {
+            this.searcher.removeFilters("extFrom");
+            this.searcher.removeFilters("extTo");
+            this.dateRange.clearValues();
+            this.removeSelectedSubTitle();
             this.searcher.search();
         }
     },

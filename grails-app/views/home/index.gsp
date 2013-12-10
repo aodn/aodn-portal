@@ -66,6 +66,7 @@ ${buildInfo}
 <script src="${resource(dir: 'js', file: 'ext-ux/util/MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/geo/GeoUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/portal.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"></script>
@@ -74,7 +75,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/OpenLayers.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/lang/en.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LayerDescriptor.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/spin.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/BrowserWindow.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/ActionColumn.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/common/LoadMask.js')}"></script>
@@ -110,7 +110,10 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/FormUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/TimeUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/moment.min.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoundingBoxPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/BoxDisplayPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/PolygonDisplayPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SpatialConstraintDisplayPanel.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SpatialSubsetControlsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/TimeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/BaseFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/ComboFilterPanel.js')}"></script>
@@ -121,6 +124,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/NumberFilterPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/filter/FilterGroupPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/form/UtcExtentDateTime.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/form/PolygonTypeComboBox.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/NCWMSColourScalePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/StylePanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanel.js')}"></script>
@@ -134,6 +138,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/MapOptions.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/TemporalMap.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/layer/NcWMS.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/control/SpatialConstraint.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/MapOptionsPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/VisualisePanel.js')}"></script>

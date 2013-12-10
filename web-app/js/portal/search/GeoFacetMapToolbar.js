@@ -13,10 +13,9 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
      * Create an geofacet toolbar for a given layer.
      *
      * Parameters:
-     * layer - {<OpenLayers.Layer.Vector>}
      * options - {Object}
      */
-    initialize: function(layer, options) {
+    initialize: function(options) {
 
         options = Ext.apply({
             displayClass: 'olControlEditingToolbar'
@@ -24,21 +23,19 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
 
         OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
 
-        this.polygonDrawControl = new OpenLayers.Control.DrawFeature(
-            layer,
-            OpenLayers.Handler.Polygon,
-            {
-                'displayClass': 'olControlDrawFeaturePolygon'
-            }
-        );
+        this.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
+            handler: OpenLayers.Handler.Polygon,
+            'displayClass': 'olControlDrawFeaturePolygon'
+        });
+
         this.addControls([
             new OpenLayers.Control.Navigation(),
-            this.polygonDrawControl
+            this.spatialConstraintControl
         ]);
     },
 
     activateDefaultControl: function() {
-        this.polygonDrawControl.activate();
+        this.spatialConstraintControl.activate();
     },
 
     CLASS_NAME: "Portal.search.GeoFacetMapToolbar"

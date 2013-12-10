@@ -7,35 +7,123 @@
 Ext.namespace('Portal.cart');
 
 Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
-
     AODAAC_EMAIL_ADDRESS_ATTRIBUTE: "aodaac-email-address",
 
-    constructor: function() {
+    constructor: function(downloadPanelTemplate) {
+        this.downloadPanelTemplate = downloadPanelTemplate;
 
         var templateLines = [
-            '<div class="x-panel-body x-box-layout-ct">',
+            '<div class="row data">',
+            '  <div class="subheading">' + OpenLayers.i18n('dataSubheading') + '</div>',
+            '  {[this._getDataFilterEntry(values)]}',
             '  {[this._getDataDownloadEntry(values)]}',
+            '  {[this._getNotificationBlurbEntry()]}',
             '</div>'
         ];
 
         Portal.cart.AodaacDataRowTemplate.superclass.constructor.call(this, templateLines);
     },
 
-    _getDataDownloadEntry: function(values) {
-
-        if (values.aodaac) {
-            html  = '<div class="delayedDownloadForm">' +
-                '  <input type="text" id="{3}-{0}" value="{1}">' +
-                '  <div><small>{2}</small></div>' +
-                '  <div class="clear"></div>' +
-                '</div>';
-            return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE);
-        }
-
+    applyWithControls: function(values) {
+        return this._replacePlaceholdersWithControls(this.apply(values), values);
     },
 
+    _getDataFilterEntry: function(values) {
+        var aodaacParameters = values.aodaac;
 
-    _downloadAodaacHandler: function(collection, format) {
+        if (aodaacParameters) {
+
+            var html = this._aodaacParametersMarkup(aodaacParameters);
+
+            return this.downloadPanelTemplate._makeEntryMarkup(html);
+        }
+
+        return "";
+    },
+
+    _getDataDownloadEntry: function(values) {
+        var aodaacParameters = values.aodaac;
+        var html;
+
+        if (aodaacParameters) {
+            html  = '<input type="text" id="aodaac-email-address-{0}" value="{1}" class="floatLeft">';
+            html += '<div class="floatLeft">';
+            html += '<div id="aodaac-download-button-{0}"></div>'; // Download button placeholder
+            html += '</div>';
+            html += '<div class="clear"></div>';
+
+            html = String.format(html, values.uuid, this._getEmailAddress(values.uuid));
+        }
+        else {
+            html = this.downloadPanelTemplate._makeSecondaryTextMarkup(OpenLayers.i18n('noDataMessage'));
+        }
+
+        return this.downloadPanelTemplate._makeEntryMarkup(html);
+    },
+
+    _getNotificationBlurbEntry: function() {
+        return this.downloadPanelTemplate._makeEntryMarkup(OpenLayers.i18n('notificationBlurbMessage'));
+    },
+
+    _aodaacParametersMarkup: function(params) {
+        var areaPattern = '{0}&nbsp;N,&nbsp;{1}&nbsp;E';
+        var areaStart = String.format(areaPattern, params.latitudeRangeStart, params.longitudeRangeStart);
+        var areaEnd = String.format(areaPattern, params.latitudeRangeEnd, params.longitudeRangeEnd);
+
+        return "<b>" + OpenLayers.i18n('parametersLabel') + "</b><br>" +
+            this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
+    },
+
+    _parameterString: function(labelKey, value1, value2) {
+        return String.format('{0}: <code>{1}</code> – <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2);
+    },
+
+    _replacePlaceholdersWithControls: function(html, collection) {
+        var elementId = 'aodaac-download-button-' + collection.uuid;
+
+        // Don't create button if no placeholder exists
+        if (html.indexOf(elementId) >= 0) {
+
+            this._createDownloadButton.defer(1, this, [html, elementId, collection]);
+        }
+
+        return html;
+    },
+
+    _createDownloadButton: function(html, id, collection) {
+        var downloadMenu = new Ext.menu.Menu({
+            items: this._createMenuItems(collection)
+        });
+
+        new Ext.Button({
+            text: OpenLayers.i18n('downloadButtonLabel'),
+            icon: 'images/down.png',
+            scope: this,
+            menu: downloadMenu
+        }).render(html, id);
+
+        this._emailTextFieldElement(collection.uuid).on('click', function() {
+            if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                this.set({ value: '' });
+            }
+        });
+
+        this._emailTextFieldElement(collection.uuid).on('change', function() {
+            this._saveEmailAddress(collection.uuid);
+        }, this);
+    },
+
+    _createMenuItems: function(collection) {
+        return [
+            {text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._downloadHandlerFor(collection, 'nc'), scope: this},
+            {text: OpenLayers.i18n('downloadAsHdfLabel'), handler: this._downloadHandlerFor(collection, 'hdf'), scope: this},
+            {text: OpenLayers.i18n('downloadAsAsciiLabel'), handler: this._downloadHandlerFor(collection, 'txt'), scope: this},
+            {text: OpenLayers.i18n('downloadAsOpenDapUrlsLabel'), handler: this._downloadHandlerFor(collection, 'urls'), scope: this}
+        ];
+    },
+
+    _downloadHandlerFor: function(collection, format) {
         var emailAddessElementId = '#aodaac-email-address-' + collection.uuid;
 
         return function() {
@@ -65,42 +153,23 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         };
     },
 
-    _saveEmailAddress: function (uuid) {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().
-            addRecordAttribute(
-                uuid,
-                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
-                this._emailTextFieldElement(uuid).getValue()
-            );
-    },
-
-    _aodaacUrl: function (params, format, emailAddress) {
+    _aodaacUrl: function(params, format, emailAddress) {
         var args = "outputFormat=" + format;
-        args += "&dateRangeStart=" + params.dateRangeStart;
-        args += "&dateRangeEnd=" + params.dateRangeEnd;
+        args += "&dateRangeStart=" + encodeURIComponent(params.dateRangeStart);
+        args += "&dateRangeEnd=" + encodeURIComponent(params.dateRangeEnd);
         args += "&timeOfDayRangeStart=0000";
         args += "&timeOfDayRangeEnd=2400";
-        args += "&latitudeRangeStart=" + params.latitudeRangeStart;
-        args += "&latitudeRangeEnd=" + params.latitudeRangeEnd;
-        args += "&longitudeRangeStart=" + params.longitudeRangeStart;
-        args += "&longitudeRangeEnd=" + params.longitudeRangeEnd;
+        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
+        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
+        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
+        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
         args += "&productId=" + params.productId;
         args += "&notificationEmailAddress=" + emailAddress;
 
         return 'aodaac/createJob?' + args;
     },
 
-    _getEmailAddress: function (uuid) {
-        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
-            getRecordAttribute(
-                uuid,
-                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
-            );
-
-        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
-    },
-
-    _validateEmailAddress: function (address) {
+    _validateEmailAddress: function(address) {
         if (!address) {
             return false;
         }
@@ -110,15 +179,26 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
         return re.test(address);
     },
 
-    _emailTextFieldElement: function (uuid) {
-        return Ext.get(Ext.query("#" + this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE + "-" + uuid)[0]);
+    _emailTextFieldElement: function(uuid) {
+        return Ext.get(Ext.query("#aodaac-email-address-" + uuid)[0]);
     },
 
-    _getNotificationBlurbEntry: function() {
-        return OpenLayers.i18n('notificationBlurbMessage');
+    _saveEmailAddress: function(uuid) {
+        Portal.data.ActiveGeoNetworkRecordStore.instance().
+            addRecordAttribute(
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE,
+                this._emailTextFieldElement(uuid).getValue()
+            );
+    },
+
+    _getEmailAddress: function(uuid) {
+        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
+            getRecordAttribute(
+                uuid,
+                this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE
+            );
+
+        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
     }
-
-
-
-
 });

@@ -17,30 +17,17 @@ describe('Portal.details.AodaacPanel', function() {
 
 
     beforeEach(function() {
-        map = mockMap();
+        map = new OpenLayers.Map();
+
         spyOn(map.events, 'register');
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
         aodaacPanel._setBounds =  function() {};
         aodaacPanel._populateFormFields = function() {};
-        layer.getMissingDays =  function() { return []};
-        layer.isNcwms = function() {return true};
+        layer.getMissingDays =  function() { return [] };
+        layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
-    });
-
-    describe('initialisation', function() {
-        it('registers a handler for the map move event', function() {
-
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
-                }
-            );
-
-            var _aodaacPanel = new Portal.details.AodaacPanel({ map: map });
-            expect(map.events.register).toHaveBeenCalledWith('move', _aodaacPanel, _aodaacPanel._setBounds);
-        });
     });
 
     describe('GeoNetworkRecord', function() {
@@ -75,7 +62,7 @@ describe('Portal.details.AodaacPanel', function() {
             );
 
             aodaacPanel.update(layer, noOp, noOp, {});
-            expect(aodaacPanel._buildAodaac).toHaveBeenCalled();
+            expect(aodaacPanel._buildAodaacParameters).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
         });
 
@@ -101,14 +88,6 @@ describe('Portal.details.AodaacPanel', function() {
             aodaacPanel._addTemporalControls(new Array());
             aodaacPanel.endDateTimePicker.fireEvent('change');
             expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
-        });
-
-        it('updates the aodaac object when the map moves', function() {
-            spyOn(Portal.details.AodaacPanel.prototype, '_setBounds');
-            var _aodaacPanel = new Portal.details.AodaacPanel({ map: _createMap() });
-            _decorateMap(_aodaacPanel);
-            _aodaacPanel.map.events.triggerEvent('move', {});
-            expect(_aodaacPanel._setBounds).toHaveBeenCalled();
         });
 
         it('clears the date and time pickers when the layer is updating', function() {
@@ -190,6 +169,59 @@ describe('Portal.details.AodaacPanel', function() {
         });
     });
 
+    describe('_buildAodaacParameters', function () {
+
+        var aodaacParameters;
+
+        beforeEach(function () {
+
+            spyOn(aodaacPanel, '_formatDatePickerValueForAodaac').andReturn('[date]');
+
+            aodaacPanel.productsInfo = [];
+            aodaacPanel.selectedProductInfo = {
+                productId: 42,
+                extents: {
+                    lat: { min: 1, max: 2 },
+                    lon: { min: 3, max: 4 }
+                }
+            };
+        });
+
+        it('includes some information regardless of geometry', function () {
+
+            aodaacParameters = aodaacPanel._buildAodaacParameters();
+
+            expect(aodaacParameters.productId).toBe(42);
+            expect(aodaacParameters.dateRangeStart).toBe('[date]');
+            expect(aodaacParameters.dateRangeEnd).toBe('[date]');
+            expect(aodaacParameters.productLatitudeRangeStart).toBe(1);
+            expect(aodaacParameters.productLongitudeRangeStart).toBe(3);
+            expect(aodaacParameters.productLatitudeRangeEnd).toBe(2);
+            expect(aodaacParameters.productLongitudeRangeEnd).toBe(4);
+        });
+
+        it('includes spatialBounds if a geometry is present', function () {
+
+            var geom = {
+                getBounds: function() {
+                    return {
+                        bottom: 10,
+                        top: 20,
+                        left: 30,
+                        right: 40
+                    }
+                }
+            };
+
+            aodaacParameters = aodaacPanel._buildAodaacParameters(geom);
+
+            expect(aodaacParameters.latitudeRangeStart).toBe(10);
+            expect(aodaacParameters.longitudeRangeStart).toBe(30);
+            expect(aodaacParameters.latitudeRangeEnd).toBe(20);
+            expect(aodaacParameters.longitudeRangeEnd).toBe(40);
+        });
+    });
+
     function _decorateMap(panel) {
         var _panel = panel || aodaacPanel;
         _panel.map.getExtent = function() {
@@ -216,7 +248,7 @@ describe('Portal.details.AodaacPanel', function() {
     function _applyCommonSpies(panel) {
         var _panel = panel || aodaacPanel;
         spyOn(_panel, '_showAllControls');
-        spyOn(_panel, '_buildAodaac');
+        spyOn(_panel, '_buildAodaacParameters');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }
@@ -237,4 +269,3 @@ describe('Portal.details.AodaacPanel', function() {
         };
     }
 });
-

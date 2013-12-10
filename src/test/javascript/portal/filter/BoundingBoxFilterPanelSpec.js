@@ -9,10 +9,15 @@
 describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     var boundingBoxFilter;
+    var map = new OpenLayers.Map();
 
     beforeEach(function() {
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
-        boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({});
+        spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
+        boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({
+            layer: { map: map },
+            filter: { name: 'geom_filter' }
+        });
     });
 
     it('colspan should be 2', function() {
@@ -29,5 +34,28 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     it("isDownloadOnly() should return true", function() {
         expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
+    });
+
+    describe('map', function() {
+
+        it("subscribes to 'spatialconstraintadded' event", function() {
+
+            var geometry = {};
+
+            map.events.triggerEvent('spatialconstraintadded', geometry);
+
+            expect(boundingBoxFilter._updateWithGeometry).toHaveBeenCalledWith(geometry);
+        });
+    });
+
+    describe('getCQL', function () {
+
+        it('calls correct method for polygon geometry type', function () {
+
+            boundingBoxFilter.geometry = { toWkt: function() { return "[WKT]" } };
+            var cql = boundingBoxFilter.getCQL();
+
+            expect(cql).toBe('INTERSECTS(geom_filter,[WKT])');
+        });
     });
 });

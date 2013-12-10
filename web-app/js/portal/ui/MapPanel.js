@@ -22,8 +22,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             header: false,
             initialBbox: this.appConfig.initialBbox,
             autoZoom: this.appConfig.autoZoom,
-            enableDefaultDatelineZoom:  this.appConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox:  this.appConfig.defaultDatelineZoomBbox,
+            enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
+            defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 
@@ -69,6 +69,14 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
         }, this);
+
+        Ext.MsgBus.subscribe(
+            Portal.form.PolygonTypeComboBox.prototype.VALUE_CHANGED_EVENT,
+            function(type, event) {
+                this._setSpatialConstraintStyle(event.value)
+            },
+            this
+        );
     },
 
     _maximiseMapActionsControl: function() {
@@ -172,7 +180,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
                     // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
                     var defaultBbox = this.defaultDatelineZoomBbox.split(',');
-                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]),parseFloat(defaultBbox[0]),parseFloat(defaultBbox[3]),parseFloat(defaultBbox[2]));
+                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]), parseFloat(defaultBbox[0]), parseFloat(defaultBbox[3]), parseFloat(defaultBbox[2]));
                 }
                 else {
                     bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
@@ -192,8 +200,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
                 }
                 else if (bounds) {
                     // when layer has no bbox volume
-                    this.map.setCenter(
-                        bounds.getCenterLonLat(),3);
+                    this.map.setCenter(bounds.getCenterLonLat(), 3);
                 }
             }
         }
@@ -208,18 +215,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    getLayerText: function (layerCount) {
-        return layerCount === 1 ? "Collection" : "Collections";
-    },
-
-    getLayersLoadingText: function (layerCount) {
-        return layerCount === 0 ? "" : layerCount.toString();
-    },
-
-    buildLayerLoadingString: function (layerCount) {
-        return "Loading " + this.getLayersLoadingText(layerCount) + "  " + this.getLayerText(layerCount) + "\u2026";
-    },
-
     getPanelX: function () {
         return this.getPosition()[0];
     },
@@ -231,5 +226,36 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     beforeParentHide: function() {
 
         this._closeFeatureInfoPopup();
+    },
+
+    _setSpatialConstraintStyle: function(polygonStyle) {
+
+        // Avoid uneccessary removal/addition of the control.
+        if (this.polygonStyle == polygonStyle) {
+            return;
+        }
+
+        this.polygonStyle = polygonStyle;
+
+        this.map.navigationControl.deactivate();
+        if (this.map.spatialConstraintControl) {
+            this.map.spatialConstraintControl.removeFromMap();
+        }
+
+        if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
+            this.map.spatialConstraintControl = undefined;
+            this.map.navigationControl.activate();
+            this.map.events.triggerEvent('spatialconstraintcleared');
+        }
+        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
+            this._addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
+        }
+        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style) {
+            this._addSpatialConstraintControlToMap();
+        }
+    },
+
+    _addSpatialConstraintControlToMap: function(handler) {
+        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this.map, handler);
     }
 });

@@ -246,6 +246,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      */
     mouseDown : function(evt) {
         this.isMouseDown = true;
+        this.ignoreEvent(evt);
     },
 
     /**
@@ -260,6 +261,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
     mouseUp : function(evt) {
         if (this.isMouseDown) {
             this.isMouseDown = false;
+            this.ignoreEvent(evt);
         }
     },
 

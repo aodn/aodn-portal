@@ -13,41 +13,52 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
     initComponent:function () {
         this.items = [
             {
-                xtype:'container',
-                layout:'form',
-                width:130,
-                labelWidth:25,
-                margins:{top:5, right:15, bottom:0, left:20},
-                items:[
+                xtype: 'container',
+                layout: 'form',
+                width: 130,
+                labelWidth: 25,
+                margins: {top:5, right:15, bottom:0, left:20},
+                items: [
                     {
-                        fieldLabel:'From',
-                        labelSeparator:'',
-                        name:'extFrom',
-                        xtype:'datefield',
-                        ref:'../fromDate',
-                        format:'d/m/Y',
-                        anchor:'100%',
-                        maxValue:new Date(),
-                        emptyText:'Min'
+                        fieldLabel: 'From',
+                        labelSeparator: '',
+                        name: 'extFrom',
+                        xtype: 'datefield',
+                        ref: '../fromDate',
+                        format: 'd/m/Y',
+                        anchor: '100%',
+                        minValue: new Date(0),
+                        maxValue: new Date(),
+                        listeners: {
+                            scope: this,
+                            select: this.onSelect,
+                            change: this.onSelect
+                        }
                     }
                 ]
             },
+
             {
-                xtype:'container',
-                layout:'form',
-                width:130,
-                labelWidth:25,
-                items:[
+                xtype: 'container',
+                layout: 'form',
+                width: 130,
+                labelWidth: 25,
+                items: [
                     {
-                        fieldLabel:'To',
-                        labelSeparator:'',
-                        name:'extTo',
-                        xtype:'datefield',
-                        ref:'../toDate',
-                        format:'d/m/Y',
-                        anchor:'100%',
-                        emptyText:'Max',
-                        maxValue:new Date()
+                        fieldLabel: 'To',
+                        labelSeparator: '',
+                        name: 'extTo',
+                        xtype: 'datefield',
+                        ref: '../toDate',
+                        format: 'd/m/Y',
+                        anchor: '100%',
+                        minValue: new Date(0),
+                        maxValue: new Date(),
+                        listeners: {
+                            scope: this,
+                            select: this.onSelect,
+                            change: this.onSelect
+                        }
                     }
                 ]
             }
@@ -71,6 +82,11 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
     clearValues:function () {
         this.fromDate.reset();
         this.toDate.reset();
+        this.toDate.setMinValue(new Date(0));
+    },
+
+    onSelect:function () {
+        this.toDate.setMinValue(this.fromDate.getValue());
     }
 });
 

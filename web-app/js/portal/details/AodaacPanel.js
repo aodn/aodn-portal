@@ -16,7 +16,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
-
         var config = Ext.apply({
             id: 'aodaacPanel',
             title: OpenLayers.i18n('aodaacPanelTitle'),
@@ -31,16 +30,14 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
         // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
-        this._addProductInfo();
+        this._addLoadingInfo();
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());
-        this._addBoundingBoxPanel();
+        this._addSpatialConstraintDisplayPanel();
         this.add(this._newSectionSpacer());
         this._addTemporalControls();
         this.add(this._newSectionSpacer());
-
-        this.map.events.register("move", this, this._setBounds);
     },
 
     update: function(layer, show, hide, target) {
@@ -51,9 +48,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             success: function(resp){
 
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                this._updateGeoNetworkAodaac();
+                this._updateGeoNetworkAodaac(this.map.getConstraint());
                 this.productsInfo = JSON.parse(resp.responseText);
-                this.selectedProductsInfo = this.productsInfo[this.selectedProductInfoIndex];
+                this.selectedProductInfo = this.productsInfo[this.selectedProductInfoIndex];
                 if (this.productsInfo.length > 0) {
                     this._clearDateTimeFields();
                     this.selectedLayer.processTemporalExtent();
@@ -77,24 +74,34 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _populateFormFields: function() {
-        // Remove productInfoText spinner
-        this.remove(this.productInfoText);
-        delete this.productInfoText;
 
-        // Populate spatial extent controls this will also update the aodaac object in the record store
-        // so please keep it last so all values are set
-        this._setBounds();
+        this.remove(this.loadingInfo);
+        delete this.loadingInfo;
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
-    _addProductInfo: function() {
+    _addLoadingInfo: function() {
         // TODO - DN: Add product picker in case of multiple products per Layer
-        this.productInfoText = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
-        this.add(this.productInfoText);
+        this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
+        this.add(this.loadingInfo);
     },
 
-    _addBoundingBoxPanel: function() {
-        this.bboxControl = new Portal.details.BoundingBoxPanel();
-        this.add(this.bboxControl);
+    _addSpatialConstraintDisplayPanel: function() {
+        this.map.events.on({
+            scope: this,
+            'spatialconstraintadded': function(geometry) {
+                this._updateGeoNetworkAodaac(geometry);
+            },
+            'spatialconstraintcleared': function() {
+                this._updateGeoNetworkAodaac();
+            }
+        });
+
+        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
+            map: this.map
+        });
+        this.add(this.spatialSubsetControlsPanel);
     },
 
     _addTemporalControls: function() {
@@ -224,24 +231,33 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 7 });
     },
 
-    _setBounds: function(){
-        var bounds = this.map.getExtent();
-        this.bboxControl.setBounds(bounds);
-        this._updateGeoNetworkAodaac();
-    },
+    _buildAodaacParameters: function(geometry) {
+        if (this.productsInfo && this.selectedProductInfo) {
 
-    _buildAodaac: function() {
-        if (this.productsInfo && this.selectedProductsInfo) {
-            return {
-                productId: this.selectedProductsInfo.productId,
+            var productExtents = this.selectedProductInfo.extents;
+
+            var aodaacConfig = {
+                productId: this.selectedProductInfo.productId,
                 dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
                 dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
-                latitudeRangeStart: this.bboxControl.getSouthBL(),
-                longitudeRangeStart: this.bboxControl.getWestBL(),
-                latitudeRangeEnd: this.bboxControl.getNorthBL(),
-                longitudeRangeEnd: this.bboxControl.getEastBL()
+                productLatitudeRangeStart: productExtents.lat.min,
+                productLongitudeRangeStart: productExtents.lon.min,
+                productLatitudeRangeEnd: productExtents.lat.max,
+                productLongitudeRangeEnd: productExtents.lon.max
             };
+
+            if (geometry) {
+                var bounds = geometry.getBounds();
+
+                aodaacConfig.latitudeRangeStart = bounds.bottom;
+                aodaacConfig.longitudeRangeStart = bounds.left;
+                aodaacConfig.latitudeRangeEnd = bounds.top;
+                aodaacConfig.longitudeRangeEnd = bounds.right;
+            }
+
+            return aodaacConfig;
         }
+
         return null;
     },
 
@@ -251,6 +267,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var selectedTimeMoment = moment.utc(datePicker.getValue());
         this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _previousTimeSlice: function() {
@@ -263,9 +281,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel(time);
     },
 
-    _updateGeoNetworkAodaac: function() {
+    _updateGeoNetworkAodaac: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaac());
+            this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
         }
     },
 
@@ -282,6 +300,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel(extent.max());
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
@@ -310,7 +330,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _formatDatePickerValueForAodaac: function(datePicker) {
-        this._formatDateForAodaac(datePicker.getValue());
+        return this._formatDateForAodaac(datePicker.getValue());
     },
 
     _formatDateForAodaac: function(date) {
