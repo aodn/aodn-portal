@@ -34,11 +34,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockDomain Layer, [layer]
 
         def testParamProcessor = new Object()
-        controller.metaClass.requestSingleFieldParamProcessor = { paramPropertyName, fieldName ->
-            assertEquals "url", paramPropertyName
+        controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
             assertEquals "relativeFilePath", fieldName
             return testParamProcessor
         }
+
         def testStreamProcessor = new Object()
         controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
             assertEquals "relativeFilePath", fieldName
@@ -46,6 +46,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "http://data.imos.org.au", newUrlBase
             return testStreamProcessor
         }
+
         def performProxyingCalledCount = 0
         controller._performProxying = { paramProcessor, streamProcessor ->
             performProxyingCalledCount++
@@ -55,7 +56,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         mockParams.layerId = 1
-        mockParams.url = "the_url?a=b"
 
         controller.urlListForLayer()
 
@@ -64,12 +64,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testRequestSingleFieldParamProcessor() {
 
-        def pp = controller.requestSingleFieldParamProcessor("someField", "relativeFilePath")
-        def params = [someField: "the_url?a=b"]
+        def pp = controller.requestSingleFieldParamProcessor("relativeFilePath")
+        def params = [url: "the_url?a=b"]
 
         params = pp(params)
 
-        assertEquals "the_url?a=b&PROPERTYNAME=relativeFilePath", params.someField
+        assertEquals "the_url?a=b&PROPERTYNAME=relativeFilePath", params.url
     }
 
     void testUrlListStreamProcessor() {

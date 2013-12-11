@@ -31,16 +31,16 @@ class DownloadController extends RequestProxyingController {
         def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
         _performProxying(
-            requestSingleFieldParamProcessor("url", fieldName),
+            requestSingleFieldParamProcessor(fieldName),
             urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
         )
     }
 
-    def requestSingleFieldParamProcessor(paramPropertyName, fieldName) {
+    def requestSingleFieldParamProcessor(fieldName) {
 
         return { params ->
 
-            params[paramPropertyName] = UrlUtils.urlWithQueryString(params[paramPropertyName], "PROPERTYNAME=$fieldName")
+            params.url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
             return params
         }
