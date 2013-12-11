@@ -8,10 +8,24 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+
+    constructor: function(cfg) {
+        var config = Ext.apply({
+            layout: 'menu',
+            layoutConfig: {
+                padding: '5',
+                align: 'centre'
+            },
+            autoDestroy: true
+        }, cfg);
+
+        Portal.filter.BooleanFilterPanel.superclass.constructor.call(this, config);
+    },
     _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.name,
             value: true,
+            boxLabel: String.format(OpenLayers.i18n('checkboxDescription'), this.filter.label.split('_').join(' ').toLowerCase()),
             listeners: {
                 scope: this,
                 check: this._buttonChecked

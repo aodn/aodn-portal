@@ -47,7 +47,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: this.width,
+                width: 135,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -59,7 +59,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: config.width,
+                width: 135,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -68,9 +68,13 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                         text: ' ',
                         flex: 1
                     },
+                    this._buildLabel('eastBL'),
                     this.eastBL,
-                    {xtype: 'spacer', width: 5},
-                    this._buildLabel('eastBL')
+                    {
+                        xtype: 'label',
+                        text: ' ',
+                        flex: 1
+                    }
                 ]
             },
             {
@@ -80,7 +84,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: config.width,
+                width: 135,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
