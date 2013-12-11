@@ -90,6 +90,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (this.temporalExtent) {
             // Already processed
             this._processTemporalExtentDone();
+            this.render();
             return;
         }
 
@@ -137,15 +138,26 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     if (that.temporalExtentLengthToProcess > chunkStart) {
                         setTimeout(arguments.callee, 0);
                     } else {
+                        that._processTemporalExtentDone();
                         // Need to reconfigure layer as we processed times
                         var timeControl = that._getTimeControl();
                         timeControl.configureForLayer(that, 1);
-                        that._processTemporalExtentDone();
                     }
                 })();
             }
             processDates();
         })();
+    },
+
+    _configureTimeControl: function() {
+        // Need to reconfigure layer as we processed times
+        // TODO: Configure for last 10 frames, a bit
+        // ugly and hardcoded
+        var timeControl  = this._getTimeControl();
+        var framesToLoad =
+            Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
+
+        timeControl.configureForLayer(this, framesToLoad);
     },
 
     _processTemporalExtentDone: function() {
@@ -271,15 +283,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var existingEvents = this.events;
         this.events = new OpenLayers.Events(this, this.div,
                                             this.EVENT_TYPES);
-
-
+        this.render();
+        this.events = existingEvents;
+        
+        return this.time;
+    },
+         
+    render: function() {
+        var dateTime = this.time;
+        
         this.eachTile(function(tile) {
             tile.toTime(dateTime);
         });
-
-        this.events = existingEvents;
-
-        return this.time;
     },
 
     // Returns true if left and right has the same date (not time),
