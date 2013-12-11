@@ -149,17 +149,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         })();
     },
 
-    _configureTimeControl: function() {
-        // Need to reconfigure layer as we processed times
-        // TODO: Configure for last 10 frames, a bit
-        // ugly and hardcoded
-        var timeControl  = this._getTimeControl();
-        var framesToLoad =
-            Math.min(this.getTemporalExtent().length, this.FRAMES_TO_LOAD_ON_INIT);
-
-        timeControl.configureForLayer(this, framesToLoad);
-    },
-
     _processTemporalExtentDone: function() {
         // Unset rawTemporalExtent, meaning that we're done
         this.rawTemporalExtent = null;
