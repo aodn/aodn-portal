@@ -45,7 +45,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
-            success: function(resp){
+            success: function(resp) {
 
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
                 this._updateGeoNetworkAodaac(this.map.getConstraint());
@@ -63,7 +63,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
                     hide.call(target, this);
                 }
             },
-            failure: function(){
+            failure: function () {
                 hide.call(target, this);
             }
         });
@@ -146,42 +146,42 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         this.previousFrameButton = new Ext.Button({
-            iconCls : 'previousButton',
-            cls : "",
+            iconCls: 'previousButton',
+            cls: "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
-            listeners : {
-                scope : this,
-                'click' : function() {
+            listeners: {
+                scope: this,
+                'click': function () {
                     this._previousTimeSlice();
                 }
             },
-            tooltip : OpenLayers.i18n('selectTimePeriod', {direction: "Previous"})
+            tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Previous"})
         });
 
         this.nextFrameButton = new Ext.Button({
-            iconCls : 'nextButton',
-            cls : "",
+            iconCls: 'nextButton',
+            cls: "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
-            listeners : {
-                scope : this,
-                'click' : function() {
+            listeners: {
+                scope: this,
+                'click': function () {
                     this._nextTimeSlice();
                 }
             },
-            tooltip : OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
+            tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
         });
 
         this.label = new Ext.form.Label({
             html: "<h5>" + OpenLayers.i18n('selectMapTimePeriod', {direction: ""}) + "</h5>",
-            margins: {top:0, right:10, bottom:0, left:10}
+            margins: {top: 0, right: 10, bottom: 0, left: 10}
         });
 
         this.buttonsPanel = new Ext.Panel({
-            layout : 'hbox',
+            layout: 'hbox',
             hidden: true,
-            plain : true,
-            items : [this.label, this.previousFrameButton, this.nextFrameButton],
-            height : 40
+            plain: true,
+            items: [this.label, this.previousFrameButton, this.nextFrameButton],
+            height: 40
         });
 
         // Group controls for hide/show
@@ -229,11 +229,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _newSectionSpacer: function() {
+    _newSectionSpacer: function () {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildAodaacParameters: function(geometry) {
+    _buildAodaacParameters: function (geometry) {
         if (this.productsInfo && this.selectedProductInfo) {
 
             var productExtents = this.selectedProductInfo.extents;
@@ -263,7 +263,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return null;
     },
 
-    _onDateSelected: function(datePicker, jsDate) {
+    _onDateSelected: function (datePicker, jsDate) {
         var selectedDateMoment = moment(jsDate);
         datePicker.setValue(selectedDateMoment);
         var selectedTimeMoment = moment.utc(datePicker.getValue());
@@ -273,30 +273,30 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
-    _previousTimeSlice: function() {
+    _previousTimeSlice: function () {
         var time = this.selectedLayer.previousTimeSlice();
         this._updateTimeRangeLabel(time);
     },
 
-    _nextTimeSlice: function() {
+    _nextTimeSlice: function () {
         var time = this.selectedLayer.nextTimeSlice();
         this._updateTimeRangeLabel(time);
     },
 
-    _updateGeoNetworkAodaac: function(geometry) {
+    _updateGeoNetworkAodaac: function (geometry) {
         if (this.geoNetworkRecord) {
             this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
         }
     },
 
-    _attachTemporalEvents: function() {
+    _attachTemporalEvents: function () {
         this.selectedLayer.events.on({
             'temporalextentloaded': this._layerTemporalExtentLoaded,
             scope: this
         });
     },
 
-    _layerTemporalExtentLoaded: function() {
+    _layerTemporalExtentLoaded: function () {
         var extent = this.selectedLayer.getTemporalExtent();
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, extent.min(), false);
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
@@ -306,13 +306,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
-    _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
+    _setDateTimePickerExtent: function (picker, extent, value, toMaxValue) {
         picker.enable();
         picker.setExtent(extent);
         picker.setValue(value, toMaxValue);
     },
 
-    _updateTimeRangeLabel: function(momentDate, loading) {
+    _updateTimeRangeLabel: function (momentDate, loading) {
         if (!this.timeRangeLabel) {
             this.timeRangeLabel = this._newHtmlElement(String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage")));
         }
@@ -327,26 +327,26 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _layerToTime: function(momentDate) {
+    _layerToTime: function (momentDate) {
         this.selectedLayer.toTime(momentDate);
     },
 
-    _formatDatePickerValueForAodaac: function(datePicker) {
+    _formatDatePickerValueForAodaac: function (datePicker) {
         return this._formatDateForAodaac(datePicker.getValue());
     },
 
-    _formatDateForAodaac: function(date) {
+    _formatDateForAodaac: function (date) {
         return moment.utc(date).format('DD/MM/YYYY');
     },
 
-    _clearDateTimeFields: function() {
+    _clearDateTimeFields: function () {
         this._resetAndDisableDateTimePicker(this.startDateTimePicker);
         this._resetAndDisableDateTimePicker(this.endDateTimePicker);
         this.buttonsPanel.hide();
         this._updateTimeRangeLabel(null, true);
     },
 
-    _resetAndDisableDateTimePicker: function(picker) {
+    _resetAndDisableDateTimePicker: function (picker) {
         picker.reset();
         picker.disable();
     }
