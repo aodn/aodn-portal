@@ -116,6 +116,12 @@ class SecurityFilters {
             }
         }
 
+        marvlAccess(controller: "marvl", action: "urlListForFeatureRequest") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
                 request.accessAllowed = true
