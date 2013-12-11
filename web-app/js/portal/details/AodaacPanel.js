@@ -12,7 +12,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     DATE_FORMAT: 'Y-m-d',
     TIME_FORMAT: 'H:i \\U\\TC',
 
-    ROW_HEIGHT: 30,
+    ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
@@ -111,12 +111,14 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         var dateStartLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateStartLabel'),
-            width: 40
+            width: 40,
+            flex: 2
         });
 
         var dateEndLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateEndLabel'),
-            width: 40
+            width: 40,
+            flex: 2
         });
 
         this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
@@ -124,7 +126,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateStartRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
-            width: '100%',
+            width: 255,
             height: this.ROW_HEIGHT,
             items: [
                 dateStartLabel, this.startDateTimePicker
@@ -136,7 +138,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateEndRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
-            width: '100%',
+            width: 255,
             height: this.ROW_HEIGHT,
             items: [
                 dateEndLabel, this.endDateTimePicker
@@ -184,8 +186,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [temporalExtentHeader, this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()],
-            hidden: true
+            items: [temporalExtentHeader, this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()]
         });
 
         this.add(this.temporalControls);
@@ -195,7 +196,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return {
             dateFormat: this.DATE_FORMAT,
             timeFormat: this.TIME_FORMAT,
-            disabled: true,
+            flex: 2,
+            //disabled: true,
             listeners: {
                 scope: this,
                 select: this._onDateSelected,
@@ -228,7 +230,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _newSectionSpacer: function() {
-        return new Ext.Spacer({ height: 7 });
+        return new Ext.Spacer({ height: 10 });
     },
 
     _buildAodaacParameters: function(geometry) {
