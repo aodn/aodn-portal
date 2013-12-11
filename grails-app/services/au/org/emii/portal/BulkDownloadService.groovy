@@ -17,21 +17,16 @@ class BulkDownloadService {
     static final int BUFFER_SIZE = 4096 // Bytes
     static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
 
-    def urlList
     def zipStream
     def report
     def usedFilenames = [:]
 
     void generateArchiveOfFiles(urlList, outputStream, locale) {
 
-        this.urlList = urlList
-
         report = new DownloadReport(locale)
 
-        _createZipStream(outputStream)
-
-        _writeFilesToStream()
-
+        _createZipStream outputStream
+        _writeFilesToStream urlList
         _closeStream()
     }
 
@@ -41,7 +36,7 @@ class BulkDownloadService {
         zipStream.level = ZipOutputStream.STORED
     }
 
-    def _writeFilesToStream = {
+    def _writeFilesToStream = { urlList ->
 
         urlList.each {
             _addFileEntry(it)

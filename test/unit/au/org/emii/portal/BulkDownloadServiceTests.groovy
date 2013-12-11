@@ -48,7 +48,8 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
             assertEquals testStream, outputStream
             createZipStreamCalledCount++
         }
-        service._writeFilesToStream = { ->
+        service._writeFilesToStream = { urlList ->
+            assertEquals testUrlList, urlList
             writeFilesToStreamCalledCount++
         }
         service._closeStream = { ->
@@ -82,7 +83,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         ]
         def remainingUrlsList = []
         remainingUrlsList.addAll urlList
-        service.urlList = urlList
 
         def addDownloadReportToArchviveCalledCount = 0
         def addFileEntryCalledCount = 0
@@ -97,7 +97,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         assertEquals 2, remainingUrlsList.size()
 
-        service._writeFilesToStream()
+        service._writeFilesToStream urlList
 
         assertEquals 2, addFileEntryCalledCount
         assertEquals 0, remainingUrlsList.size()
