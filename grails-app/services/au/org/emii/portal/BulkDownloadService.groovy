@@ -57,11 +57,39 @@ class BulkDownloadService {
 
     def _addFileEntry = { url ->
 
+        log.debug "Adding entry for file from URL: '$url'"
+
         def filenameToUse = _uniqueFilenameForUrl(url)
+        def streamFromUrl
 
-        log.debug "filenameToUse: $filenameToUse"
+        try {
+            streamFromUrl = url.toURL().newInputStream()
 
-        _writeStreamToArchive(url, filenameToUse)
+            zipStream.putNextEntry new ZipEntry(filenameToUse)
+
+            def bytesCopied = _copyStreamData(streamFromUrl, zipStream)
+
+            report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
+        }
+        catch (Exception e) {
+
+            log.info "Error adding file to download archive. URL: '$url'", e
+
+            if (!streamFromUrl) {
+                def filenameInArchive = filenameToUse + '.failed'
+
+                zipStream.putNextEntry new ZipEntry(filenameInArchive)
+                report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
+            }
+            else {
+                report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
+            }
+        }
+        finally {
+
+            streamFromUrl?.close()
+            zipStream.closeEntry()
+        }
     }
 
     def _uniqueFilenameForUrl = { url ->
@@ -94,40 +122,6 @@ class BulkDownloadService {
             matches[0][1], // Filename
             matches[0][2] ?: "" // Extension
         ]
-    }
-
-    def _writeStreamToArchive = { url, filenameToUse ->
-
-        def streamFromUrl
-
-        try {
-            streamFromUrl = url.toURL().newInputStream()
-
-            zipStream.putNextEntry new ZipEntry(filenameToUse)
-
-            def bytesCopied = _copyStreamData(streamFromUrl, zipStream)
-
-            report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
-        }
-        catch (Exception e) {
-
-            log.info "Error adding file to download archive. URL: '$url'", e
-
-            if (!streamFromUrl) {
-                def filenameInArchive = filenameToUse + '.failed'
-
-                zipStream.putNextEntry new ZipEntry(filenameInArchive)
-                report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
-            }
-            else {
-                report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
-            }
-        }
-        finally {
-
-            streamFromUrl?.close()
-            zipStream.closeEntry()
-        }
     }
 
     static def _copyStreamData = { inStream, outputStream ->

@@ -118,22 +118,53 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
     void testAddFileEntry() {
 
-        def testUrl = "http://imos.org.au/"
-        def testFilename = "data.txt"
+        service._uniqueFilenameForUrl = { it }
 
-        def writeStreamToArchiveCallCount = 0
-        service._writeStreamToArchive = { url, filenameToUse ->
+        def file1 = "grails_logo.png"
+        def file2 = "test.txt"
+        def file3 = "non_existent.txt"
+        def file3InDownload = file3 + '.failed'
 
-            assertEquals testUrl, url
-            assertEquals testFilename, filenameToUse
+        def successfulEntries = 0
+        def failedEntries = 0
+        service.report = [
+            addSuccessfulFileEntry: { url, filename, size -> successfulEntries++ },
+            addFailedFileEntry: { url, filename, result ->
+                failedEntries++
+                assertEquals file3, url
+                assertEquals file3InDownload, filename
+                assertTrue result.contains(url) // The result shoudl explain we can't get data form the URL
+            }
+        ]
 
-            writeStreamToArchiveCallCount++
+        // Have files load locally for testing rather than via URL
+        String.metaClass.toURL = {
+            def self = delegate
+            return [newInputStream: {
+                new FileInputStream("$resourcesDir/$self")
+            }]
         }
-        service._uniqueFilenameForUrl = { testFilename }
 
-        service._addFileEntry testUrl
+        def responseStream = new ByteArrayOutputStream()
+        service._createZipStream(responseStream)
+        service._addFileEntry file1
+        service._addFileEntry file2
+        service._addFileEntry file3
 
-        assertEquals 1, writeStreamToArchiveCallCount
+        validateZipEntries(
+            responseStream,
+            [
+                [name: file1, size: 10172],
+                [name: file2, size: 19],
+                [name: file3InDownload, size: 0]
+            ]
+        )
+
+        assertEquals 2, successfulEntries
+        assertEquals 1, failedEntries
+
+        responseStream.close()
+        service._closeStream()
     }
 
     void testUniqueFilenameForUrl() {
@@ -159,55 +190,6 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         assertEquals "b", filename
         assertEquals "", extension
-    }
-
-    void testWriteStreamToArchive() {
-
-        def file1 = "grails_logo.png"
-        def file2 = "test.txt"
-        def file3 = "non_existent.txt"
-        def file3InDownload = file3 + '.failed'
-
-        def successfulEntries = 0
-        def failedEntries = 0
-        service.report = [
-            addSuccessfulFileEntry: { url, filename, size -> successfulEntries++ },
-            addFailedFileEntry: { url, filename, result ->
-                failedEntries++
-                assertEquals file3, url
-                assertEquals file3InDownload, filename
-                assertTrue result.contains(url) // The result shoudl explain we can't get data form the URL
-            }
-        ]
-
-        // Have files load locally for testing rather than via URL
-        String.metaClass.toURL = {
-            def self = delegate
-            return [newInputStream: {
-               new FileInputStream("$resourcesDir/$self")
-            }]
-        }
-
-        def responseStream = new ByteArrayOutputStream()
-        service._createZipStream(responseStream)
-
-        service._writeStreamToArchive file1, file1
-        service._writeStreamToArchive file2, file2
-        service._writeStreamToArchive file3, file3
-
-        validateZipEntries(
-            responseStream,
-            [
-                [name: file1, size: 10172],
-                [name: file2, size: 19],
-                [name: file3InDownload, size: 0]
-            ]
-        )
-
-        service._closeStream()
-
-        assertEquals 2, successfulEntries
-        assertEquals 1, failedEntries
     }
 
     void testAddDownloadReportToArchive() {
