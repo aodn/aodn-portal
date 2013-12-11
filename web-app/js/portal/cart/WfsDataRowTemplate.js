@@ -108,7 +108,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Ext.XTemplate, {
         var downloadUrl = this._wfsUrlForGeoNetworkRecordWmsLayer(collection, 'csv');
         var downloadFilename = collection.title + "_URLs.txt";
         var additionalArgs = {
-            action: 'urlList',
+            action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
 

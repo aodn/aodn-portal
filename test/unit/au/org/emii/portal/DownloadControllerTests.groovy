@@ -25,7 +25,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testUrlList() {
+    void testUrlListForLayer() {
 
         def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
         def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
@@ -49,7 +49,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.layerId = 1
         mockParams.url = "the_url?a=b"
 
-        controller.urlList()
+        controller.urlListForLayer()
 
         assertTrue performProxyingCalled
     }

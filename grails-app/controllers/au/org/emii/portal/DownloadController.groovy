@@ -16,7 +16,7 @@ class DownloadController extends RequestProxyingController {
 
     // Index action inherited from RequestProxyingController
 
-    def urlList = {
+    def urlListForLayer = {
 
         def layerId = params.layerId
 
