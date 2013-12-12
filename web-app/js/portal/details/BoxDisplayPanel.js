@@ -9,13 +9,13 @@ Ext.namespace('Portal.details');
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        this.tableWidth = 130;
+        this.tableWidth = 135;
 
         var config = Ext.apply({
             items: [
                 this._buildBoundingBox(cfg)
             ],
-            padding: '0 0 0 25px'
+            padding: '0 0 0 20px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
@@ -107,7 +107,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         return new Ext.form.NumberField({
             name: name,
             decimalPrecision: 2,
-            width: 50,
+            width: 55,
             disabled: true,
             margins: {top:-2, right:0, bottom:0, left:0}
         });
