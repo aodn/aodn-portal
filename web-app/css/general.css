@@ -29,7 +29,7 @@ h3 {
 
 h4 {
     font-size: 12px;
-    margin: 4px 0;
+    margin: 4px 0 0 0;
 }
 
 h5 {
@@ -314,6 +314,9 @@ hr {
     background: url("../images/animation/stop.png") no-repeat left top transparent;
 }
 
+.downloadButtonWrapper {
+    margin-top: 2px;
+}
 .downloadButton {
     background: url("../images/animation/download.png") no-repeat left top transparent;
 }
@@ -1113,7 +1116,7 @@ div.allwhite {
     overflow: auto;
 }
 
-.facetedSearchResultTextBody .x-panel-header {
+.resultsTextBody .x-panel-header {
     font-size: 13px;
 }
 
@@ -1134,7 +1137,11 @@ div.allwhite {
     background-color: #ffff99
 }
 
-.resultsRowBackground {
+.downloadPanelResultsWrapper {
+    margin-bottom: 15px;
+}
+
+.resultsHeaderBackground {
     background: #eeeeee;
     border-left: 1px solid #CCCCCC;
     margin-top: 4px;
@@ -1146,13 +1153,21 @@ div.allwhite {
     margin-right: 10px;
 }
 
-.facetedSearchResultHeader {
+.resultsRowHeader {
     float: left;
     line-height: 25px;
 }
 
-.facetedSearchResultTextBody {
+.resultsTextBody {
     margin: 5px;
+}
+
+.downloadPanelResultsWrapper.dataFilterEntry {
+    width: 70%;
+}
+
+.downloadPanelResultsWrapper.resultsTextMsgs {
+    width: 220px;
 }
 
 .navigationButton div {
@@ -1203,56 +1218,8 @@ div.allwhite {
 .gx-popup .x-tab-panel-body {
     border: none;
 }
-
-.download-collection {
-    margin: 0.5em 0 1.5em 0;
-}
-
-.download-collection .title-row {
-    background-color: #C0C0C0;
-    padding: 0.4em;
-    font-size: 1.5em;
-}
-
-.download-collection .row {
-    margin: 0.6em 0.2em 0.2em 0.2em;
-    border: 1px solid #E0E0E0;
-    background-color: #FAFAFA;
-}
-
-.download-collection .subheading {
-    font-size: 1.2em;
-    font-weight: bold;
-    background-color: #E0E0E0;
-    padding: 0.3em;
-}
-
-.download-collection .entry {
-    margin-top: 0.1em;
-    padding: 0.4em;
-}
-
-.download-collection .row code {
-    background-color: #EEE;
-    border-radius: 4px;
-    padding: 1px 3px;
-    line-height: 1.4em;
-}
-
-.download-collection .x-btn {
-
-    border: 2px solid #E0E0E0;
-    background-color: #EEE;
-}
-
-.download-collection .x-btn-text {
-
-    color: black;
-}
-
-.download-collection .secondary-text {
-    font-style: italic;
-    color: #666;
+.delayedDownloadForm {
+    padding: 10px 10px 2px 10px;
 }
 
 /* Bug #9 - show blank tiles on image load error. */
