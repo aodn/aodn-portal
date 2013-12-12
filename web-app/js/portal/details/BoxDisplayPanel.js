@@ -9,10 +9,13 @@ Ext.namespace('Portal.details');
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
+        this.tableWidth = 130;
+
         var config = Ext.apply({
             items: [
                 this._buildBoundingBox(cfg)
-            ]
+            ],
+            padding: '0 0 0 25px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
@@ -38,7 +41,6 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         this.eastBL = this._buildCoord('eastBL');
         this.southBL = this._buildCoord('southBL');
         this.westBL = this._buildCoord('westBL');
-        var tableWidth = 130;
 
         return [
             {
@@ -48,7 +50,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: tableWidth,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -60,7 +62,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: tableWidth,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -85,7 +87,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: tableWidth,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
@@ -106,7 +108,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             name: name,
             decimalPrecision: 2,
             width: 50,
-            disabled: true
+            disabled: true,
+            margins: {top:-2, right:0, bottom:0, left:0}
         });
     }
 });
