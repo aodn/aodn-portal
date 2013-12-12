@@ -68,6 +68,7 @@ ${buildInfo}
 <g:if env="development">
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/geo/GeoUtil.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/portal.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ObjectFactory.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/PortalEvents.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/Array.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/prototypes/Object.js')}"></script>
@@ -153,7 +154,6 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/service/CatalogSearcher.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFiltersPanel.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchFilterPanelFactory.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/TopTermStore.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TermSelectionPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/data/ChildElementsField.js')}"></script>

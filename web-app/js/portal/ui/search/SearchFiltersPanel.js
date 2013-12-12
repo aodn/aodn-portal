@@ -159,7 +159,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         }
 
         if (this.filterFactory === undefined) {
-            this.filterFactory = new Portal.ui.search.SearchFilterPanelFactory();
+            this.filterFactory = new Portal.ObjectFactory();
         }
 
         var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
