@@ -38,6 +38,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         this.eastBL = this._buildCoord('eastBL');
         this.southBL = this._buildCoord('southBL');
         this.westBL = this._buildCoord('westBL');
+        var tableWidth = 130;
 
         return [
             {
@@ -47,7 +48,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: 135,
+                width: tableWidth,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -59,7 +60,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: 135,
+                width: tableWidth,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -84,7 +85,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: 135,
+                width: tableWidth,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
@@ -96,7 +97,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     _buildLabel: function(i18nKey) {
         return new Ext.form.Label({
             text: OpenLayers.i18n(i18nKey),
-            width: 15
+            width: 11
         });
     },
 

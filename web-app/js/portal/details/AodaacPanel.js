@@ -29,7 +29,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
-        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         this._addLoadingInfo();
         this.add(this._newSectionSpacer());
         this._addSpatialConstraintDisplayPanel();
