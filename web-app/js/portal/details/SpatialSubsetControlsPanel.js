@@ -11,7 +11,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            title: String.format("<b>{0}</b>", OpenLayers.i18n('spatialExtentHeading'))
+            width: 202,
         }, cfg);
 
         Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, config);
@@ -19,6 +19,8 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
         Portal.details.SpatialSubsetControlsPanel.superclass.initComponent.call(this);
+        this._addLabel(OpenLayers.i18n('spatialExtentHeading'));
+        this._addVerticalSpacer();
         this._addPolygonTypeCombo();
         this._addVerticalSpacer();
         this._addSpatialConstraintDisplayPanel();
@@ -31,12 +33,21 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     _addSpatialConstraintDisplayPanel: function() {
         this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
-            map: this.map
+            map: this.map,
+            width: this.width,
         });
         this.add(this.spatialConstraintDisplayPanel);
     },
 
     _addVerticalSpacer: function() {
-        this.add(new Ext.Spacer({ height: 7 }));
+        this.add(new Ext.Spacer({ height: 10 }));
+    },
+
+    _addLabel: function(labelText) {
+        var label = new Ext.form.Label({
+            html: "<h4>" + labelText + "</h4>",
+        });
+
+        this.add(label);
     }
 });

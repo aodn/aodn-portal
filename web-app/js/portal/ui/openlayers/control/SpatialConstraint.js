@@ -99,6 +99,7 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         handler: handler,
         'displayClass': 'none'
     });
+
     map.addControl(map.spatialConstraintControl);
 
     map.spatialConstraintControl.events.on({

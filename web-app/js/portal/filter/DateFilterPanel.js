@@ -10,7 +10,13 @@ Ext.namespace('Portal.filter');
 Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({}, cfg );
+        var config = Ext.apply({
+            layout: 'menu',
+            layoutConfig: {
+                padding: '5',
+                align: 'left'
+            }
+        }, cfg );
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
         Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
@@ -20,7 +26,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
-            width: 100,
+            width: 165,
             editable: false,
             emptyText: OpenLayers.i18n("pleasePickCondensed"),
             fieldLabel: "Time",
@@ -43,6 +49,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             format: "d/m/Y",
             maxValue: new Date(),
             minValue: new Date(0),
+            width: 165,
             listeners: {
                 scope: this,
                 select: this._onSelect,
@@ -56,6 +63,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             hidden: true,
             maxValue: new Date(),
             minValue: new Date(0),
+            width: 165,
             listeners: {
                 scope: this,
                 select: this._onSelect,

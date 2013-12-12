@@ -9,10 +9,13 @@ Ext.namespace('Portal.details');
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
+        this.tableWidth = 130;
+
         var config = Ext.apply({
             items: [
                 this._buildBoundingBox(cfg)
-            ]
+            ],
+            padding: '0 0 0 25px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
@@ -47,7 +50,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: this.width,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -59,7 +62,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: config.width,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -68,9 +71,13 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                         text: ' ',
                         flex: 1
                     },
+                    this._buildLabel('eastBL'),
                     this.eastBL,
-                    {xtype: 'spacer', width: 5},
-                    this._buildLabel('eastBL')
+                    {
+                        xtype: 'label',
+                        text: ' ',
+                        flex: 1
+                    }
                 ]
             },
             {
@@ -80,7 +87,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: config.width,
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
@@ -92,7 +99,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     _buildLabel: function(i18nKey) {
         return new Ext.form.Label({
             text: OpenLayers.i18n(i18nKey),
-            width: 15
+            width: 11
         });
     },
 
@@ -101,7 +108,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             name: name,
             decimalPrecision: 2,
             width: 50,
-            disabled: true
+            disabled: true,
+            margins: {top:-2, right:0, bottom:0, left:0}
         });
     }
 });
