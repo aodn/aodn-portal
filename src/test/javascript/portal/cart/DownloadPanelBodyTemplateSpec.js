@@ -29,8 +29,65 @@ describe('Portal.cart.DownloadPanelBodyTemplate', function () {
                     name: 'imos:argo_floats',
                     title: 'the title too'
                 }
-            ]
+            ],
+            wmsLayer: {
+                isNcwms: noOp
+            }
         };
+    });
+
+    describe('apply', function() {
+
+        beforeEach(function() {
+            spyOn(tpl, '_downloadButton');
+            spyOn(tpl, '_getDataFilterEntry');
+            spyOn(tpl, '_getPointOfTruthLinkEntry');
+            spyOn(tpl, '_getFileListEntries');
+            spyOn(tpl, '_dataSpecificMarkup');
+            tpl.apply(geoNetworkRecord);
+        });
+
+        it('creates a download button', function() {
+            expect(tpl._downloadButton).toHaveBeenCalled();
+        });
+
+        it('creates a data filter entry', function() {
+            expect(tpl._getDataFilterEntry).toHaveBeenCalled();
+        });
+
+        it('creates a point of truth link entry', function() {
+            expect(tpl._getPointOfTruthLinkEntry).toHaveBeenCalled();
+        });
+
+        it('creates a file list entry', function() {
+            expect(tpl._getFileListEntries).toHaveBeenCalled();
+        });
+
+        it('creates data specific markup', function() {
+            expect(tpl._dataSpecificMarkup).toHaveBeenCalled();
+        });
+    });
+
+    describe('get data filter entry', function() {
+
+        beforeEach(function() {
+            setupDataRowTemplatePrototypeSpies('getDataFilterEntry');
+        });
+
+        it('delegates to the no data row implementation', function() {
+            tpl._getDataFilterEntry(geoNetworkRecord);
+            expect(Portal.cart.NoDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
+        });
+
+        it('delegates to the aodaac data row implementation', function() {
+            tpl._getDataFilterEntry(getAodaacRecord());
+            expect(Portal.cart.AodaacDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
+        });
+
+        it('delegates to the wfs data row implementation', function() {
+            tpl._getDataFilterEntry(getWfsRecord());
+            expect(Portal.cart.WfsDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
+        });
     });
 
     describe('_getPointOfTruthLinkEntry', function () {
@@ -38,9 +95,7 @@ describe('Portal.cart.DownloadPanelBodyTemplate', function () {
         var html;
 
         beforeEach(function () {
-
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
-
             html = tpl._getPointOfTruthLinkEntry(geoNetworkRecord);
         });
 
@@ -50,394 +105,116 @@ describe('Portal.cart.DownloadPanelBodyTemplate', function () {
 
     });
 
-    describe('_getFileListEntries', function () {
-
-        beforeEach(function () {
-
-            spyOn(tpl, '_getSingleFileEntry').andReturn('[single file markup]');
-            spyOn(tpl, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
+    describe('data specific markup', function() {
+        beforeEach(function() {
+            setupDataRowTemplatePrototypeSpies('getDataSpecificMarkup');
         });
 
-        it('calls _getSingleFileEntry for each link', function () {
-
-            tpl._getFileListEntries(geoNetworkRecord);
-
-            expect(tpl._getSingleFileEntry.callCount).toBe(2);
-            expect(tpl._getSingleFileEntry.argsForCall[0][0]).toBe(geoNetworkRecord.downloadableLinks[0]);
-            expect(tpl._getSingleFileEntry.argsForCall[1][0]).toBe(geoNetworkRecord.downloadableLinks[1]);
+        it('delegates to the no data row implementation', function() {
+            tpl._dataSpecificMarkup(geoNetworkRecord);
+            expect(Portal.cart.NoDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
 
-        it('returns markup for each link', function () {
-
-            var html = tpl._getFileListEntries(geoNetworkRecord);
-
-            expect(html).toBe('[single file markup][single file markup]');
+        it('delegates to the aodaac data row implementation', function() {
+            tpl._dataSpecificMarkup(getAodaacRecord());
+            expect(Portal.cart.AodaacDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
 
-        it('does not call _singleFileEntry when no links', function () {
-
-            geoNetworkRecord.downloadableLinks = [];
-
-            tpl._getFileListEntries(geoNetworkRecord);
-
-            expect(tpl._getSingleFileEntry).not.toHaveBeenCalled();
-        });
-
-        it('returns single entry markup when no links', function () {
-
-            geoNetworkRecord.downloadableLinks = [];
-
-            var html = tpl._getFileListEntries(geoNetworkRecord);
-
-            expect(tpl._makeSecondaryTextMarkup).toHaveBeenCalled();
-            expect(html).toBe('secondary text markup');
-        });
-
-        afterEach(function () {
-
-            tpl._getSingleFileEntry.reset();
+        it('delegates to the wfs data row implementation', function() {
+            tpl._dataSpecificMarkup(getWfsRecord());
+            expect(Portal.cart.WfsDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
     });
 
-    describe('_getSingleFileEntry', function () {
-
-        var html;
-
-        beforeEach(function () {
-
-            spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
-
-            var link = geoNetworkRecord.downloadableLinks[0];
-
-            html = tpl._getSingleFileEntry(link);
+    describe('create download button', function() {
+        beforeEach(function() {
+            setupDataRowTemplatePrototypeSpies('createMenuItems');
+            setupDataRowTemplatePrototypeSpies('attachMenuEvents');
         });
 
-        it('returns the entry markup', function () {
-
-            expect(html).toBe('link markup');
+        it('delegates to the no data row implementation', function() {
+            tpl._createDownloadButton(null, geoNetworkRecord);
+            expect(Portal.cart.NoDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.NoDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
 
-        it('calls _makeExternalLinkMarkup', function () {
-
-            expect(tpl._makeExternalLinkMarkup).toHaveBeenCalledWith('http://host/some.html', 'the title one');
+        it('delegates to the aodaac data row implementation', function() {
+            tpl._createDownloadButton(null, getAodaacRecord());
+            expect(Portal.cart.AodaacDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.AodaacDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
-    });
 
-    describe('_makeSecondaryTextMarkup', function () {
-
-        it('wraps the text in a span', function () {
-
-            var html = tpl._makeSecondaryTextMarkup('text');
-
-            expect(html).toBe('<span class="secondary-text">text</span>');
+        it('delegates to the wfs data row implementation', function() {
+            tpl._createDownloadButton(null, getWfsRecord());
+            expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
     });
 
-    describe('_makeExternalLinkMarkup', function () {
+    describe('file list entries', function() {
+        var href = 'http://123.aodn.org.au';
+        var text = 'portal';
 
-        it('wraps the text in an anchor tag', function () {
+        describe('make external link markup', function() {
+            it('launches the link in a new window', function() {
+                expect(tpl._makeExternalLinkMarkup(href, text).indexOf('_blank')).toBeGreaterThan(-1);
+            });
 
-            var html = tpl._makeExternalLinkMarkup('http://host.com/', 'text');
+            it('displays the text when provided', function() {
+                expect(tpl._makeExternalLinkMarkup(href, text).indexOf(text)).toBeGreaterThan(-1);
+            });
 
-            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">text</a>');
+            it('displays the full link when text is not provided', function() {
+                expect(tpl._makeExternalLinkMarkup(href).match(/http:\/\/123\.aodn\.org\.au/g).length).toBe(2);
+            });
         });
 
-        it('uses href as text if text is undefined', function () {
-
-            var html = tpl._makeExternalLinkMarkup('http://host.com/');
-
-            expect(html).toBe('<a href="http://host.com/" target="_blank" class="external">http://host.com/</a>');
+        it('returns a no files message when there are no links', function() {
+            expect(tpl._getFileListEntries({}).indexOf(OpenLayers.i18n('noFilesMessage'))).toBeGreaterThan(-1);
         });
-    });
 
-    describe('template output', function () {
-
-        var rootElement;
-
-        beforeEach(function () {
-
-            tpl._getPointOfTruthLinkEntry = function () {
-                return "point_of_truth"
+        it('creates links', function() {
+            var values = {
+                downloadableLinks: [{ href: href, title: text }]
             };
-            tpl._dataRowTemplate = function () {
-                return "<div>data_row_template</div>"
-            };
-            tpl._getFileListEntries = function () {
-                return "file_list"
-            };
+            var html = tpl._getFileListEntries(values);
 
-            var html = tpl.apply(geoNetworkRecord);
-            rootElement = $(html);
+            expect(html.indexOf(href)).toBeGreaterThan(-1);
+            expect(html.indexOf(text)).toBeGreaterThan(-1);
         });
-
-        describe('root element', function () {
-
-            it('has correct class', function () {
-
-                expect(rootElement.attr('class')).toBe('downloadPanelResultsWrapper');
-            });
-
-            it('has correct number of children', function () {
-
-                expect(rootElement.children().length).toBe(2);
-            });
-        });
-
-        describe('title row', function () {
-
-            var titleRow;
-
-            beforeEach(function () {
-
-                titleRow = $(rootElement.children()[0]);
-            });
-
-            it('has the correct class', function () {
-
-                expect(titleRow.attr('class')).toBe('x-panel-header resultsHeaderBackground');
-            });
-
-            it('has the correct text value from function', function () {
-
-                var trimmedText = $.trim(titleRow.text());
-
-                expect(trimmedText).toBe('the title');
-            });
-        });
-
-        describe('template output when no attached files', function () {
-
-            var rootElement;
-            var html;
-
-            beforeEach(function () {
-
-                tpl._getPointOfTruthLinkEntry = function () {
-                    return "point_of_truth"
-                };
-                tpl._dataRowTemplate = function () {
-                    return "<div>data_row_template</div>"
-                };
-                tpl._getFileListEntries = function () {
-                    return "file_list"
-                };
-
-                geoNetworkRecord.downloadableLinks = [];
-
-                html = tpl.apply(geoNetworkRecord);
-                rootElement = $(html);
-            });
-
-            describe('root element', function () {
-
-                it('has correct number of children', function () {
-
-                    expect(rootElement.children().length).toBe(2);
-                });
-            });
-
-            describe('files row', function () {
-
-                it('should not be present when there are no links', function () {
-
-                    expect(html.indexOf('file_list')).toBe(-1);
-                });
-            });
-        });
-
-        /* start new specs from aodaac and wfs template tests */
-
-        describe('_getDataFilterEntry', function () {
-
-
-            it('returns the entry markup', function () {
-
-                var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-                expect(html).toBe('');
-            });
-
-            it('returns empty string when no aodaac parameters', function () {
-
-                geoNetworkRecord.aodaac = null;
-
-                var html = tpl._getDataFilterEntry(geoNetworkRecord);
-
-                expect(html).toBe('');
-            });
-        });
-
-        describe('_adoaacParameterMarkup', function () {
-
-            var markup;
-            var params;
-
-            beforeEach(function () {
-
-                spyOn(String, 'format');
-                params = {
-                    latitudeRangeStart: -90,
-                    latitudeRangeEnd: 90,
-                    longitudeRangeStart: -180,
-                    longitudeRangeEnd: 180,
-                    dateRangeStart: '1/1/1900',
-                    dateRangeEnd: '31/12/2001'
-                };
-
-                markup = tpl._aodaacParametersMarkup(params);
-            });
-
-            it('returns parameter list markup', function () {
-
-                expect(String.format).toHaveBeenCalledWith('{0}<b>S</b>,&nbsp;{1}<b>W</b>', 90, -180)
-                expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'Date range', '1/1/1900', '31/12/2001')
-            });
-
-        });
-
-        describe('_parameterString', function () {
-
-            beforeEach(function () {
-
-                spyOn(OpenLayers, 'i18n').andReturn('i18n value');
-                spyOn(String, 'format');
-
-                tpl._parameterString('the_key', 'val1', 'val2');
-            });
-
-            it('calls OpenLayers.i18n()', function () {
-
-                expect(OpenLayers.i18n).toHaveBeenCalledWith('the_key');
-            });
-
-            it('calls String.format()', function () {
-
-                expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'i18n value', 'val1', 'val2')
-            });
-        });
-
-        describe('_createDownloadButton', function () {
-
-            var mockMenu = {};
-            var mockMenuItems = {};
-            var mockButton = {};
-            var mockCollection = {};
-            var mockElement = {};
-            var renderElement = '';
-
-            beforeEach(function () {
-
-                spyOn(tpl, '_createMenuItems').andReturn(mockMenuItems);
-                spyOn(Ext.menu, 'Menu').andReturn(mockMenu);
-                spyOn(Ext, 'Button').andReturn(mockButton);
-                mockButton.render = jasmine.createSpy('button render');
-                mockElement.on = jasmine.createSpy();
-                renderElement = "html";
-
-                tpl._createDownloadButton(renderElement, mockCollection);
-            });
-
-            it('calls _createMenuItems', function () {
-
-                expect(tpl._createMenuItems).toHaveBeenCalledWith(mockCollection);
-            });
-
-            it('create a new Menu', function () {
-
-                expect(Ext.menu.Menu).toHaveBeenCalledWith({items: mockMenuItems})
-            });
-
-        });
-
-
-        describe('_downloadWfsHandler', function () {
-
-            it('returns a function to be called', function () {
-                var wmsLayer = {
-                    getDownloadFilter: function () {
-                        return "cql_filter"
-                    }
-                }
-                wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
-
-                var collection = {
-                    uuid: 5,
-                    wmsLayer: wmsLayer
-                };
-                var returnValue = tpl._downloadWfsHandler(collection);
-
-                expect(typeof returnValue).toBe('function');
-            });
-        });
-
-        describe('_createMenuItems', function () {
-
-            it('returns no menu items', function () {
-
-                var theCollection = {wmsLayer: geoNetworkRecord};
-                var items = tpl._createMenuItems(theCollection);
-
-                expect(items.length).toBe(0);
-
-            });
-
-            it('returns array of menu items with one more when a downloadUrlFieldName is specified on the layer', function () {
-                spyOn(tpl, '_downloadWfsHandler');
-                spyOn(tpl, '_urlListDownloadHandler');
-
-                var theCollection = { wmsLayer: { urlDownloadFieldName: 'the field', wfsLayer: {}} };
-                theCollection.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
-                tpl._urlListDownloadHandler = function () {}
-                var items = tpl._createMenuItems(theCollection);
-                var numSpecialItems = 1; // List of URLs
-
-                expect(items.length).not.toBe(0);
-
-                Ext.each(items, function (item) {
-
-                    expect(item.text).toBeDefined();
-                    expect(typeof item.text === 'string').toBeTruthy();
-                });
-
-                expect(tpl._downloadWfsHandler.callCount).toBe(items.length - numSpecialItems);
-            });
-        });
-
-
-        describe('_urlListDownloadHandler', function() {
-
-            beforeEach(function() {
-                geoNetworkRecord.wmsLayer = { urlDownloadFieldName: 'the field', wfsLayer: {} };
-                geoNetworkRecord.wmsLayer.getWmsLayerFeatureRequestUrl = function () {}
-                geoNetworkRecord.wmsLayer.getWfsLayerFeatureRequestUrl = function () {}
-
-            });
-
-            it('returns a function to be called', function() {
-
-                var returnValue = tpl._urlListDownloadHandler(geoNetworkRecord);
-
-                expect(typeof returnValue).toBe('function');
-            });
-        });
-
     });
 
-    function getText(element) {
+    describe('download confirmation', function() {
+        it('delegates to the download panel for confirmation', function() {
+            tpl.downloadPanel = {
+                confirmDownload: noOp
+            };
+            spyOn(tpl.downloadPanel, 'confirmDownload');
 
-        // Based on http://stackoverflow.com/questions/298750/how-do-i-select-text-nodes-with-jquery
+            tpl.downloadWithConfirmation('', '', {});
 
-        var text = $(element)
-            .contents()
-            .filter(function () {
-                return this.nodeType === Node.TEXT_NODE;
-            }).text();
-
-        var elements = text.split(" ").filter(function (val) {
-            return val.length
+            expect(tpl.downloadPanel.confirmDownload).toHaveBeenCalledWith('', '', {});
         });
+    });
 
-        return (elements.length == 1) ? elements[0] : elements;
+    function setupDataRowTemplatePrototypeSpies(method) {
+        spyOn(Portal.cart.AodaacDataRowTemplate.prototype, method);
+        spyOn(Portal.cart.WfsDataRowTemplate.prototype, method);
+        spyOn(Portal.cart.NoDataRowTemplate.prototype, method);
+    }
+
+    function getAodaacRecord() {
+        var aodaacRecord = geoNetworkRecord;
+        aodaacRecord.wmsLayer.isNcwms = function () { return true; };
+
+        return aodaacRecord;
+    }
+
+    function getWfsRecord() {
+        var wfsRecord = geoNetworkRecord;
+        wfsRecord.wmsLayer.wfsLayer = {};
+
+        return wfsRecord;
     }
 });
 

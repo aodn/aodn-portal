@@ -7,171 +7,229 @@
 
 describe('Portal.cart.AodaacDataRowTemplate', function() {
 
-    var parentTemplate;
     var tpl;
     var geoNetworkRecord;
 
     beforeEach(function() {
-
-        parentTemplate = new Portal.cart.DownloadPanelBodyTemplate();
-        tpl = new Portal.cart.AodaacDataRowTemplate(parentTemplate);
+        tpl = new Portal.cart.AodaacDataRowTemplate();
         geoNetworkRecord = {
             uuid: 7,
             aodaac: {}
         };
     });
 
-
-    describe('_getDataDownloadEntry', function() {
-
-        var html;
-
-        beforeEach(function() {
-
-            spyOn(parentTemplate, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
-
-            html = tpl._getDataDownloadEntry(geoNetworkRecord);
+    describe('getDataFilterEntry', function() {
+        it('returns an entry', function() {
+            expect(tpl.getDataFilterEntry(geoNetworkRecord).length).toBeGreaterThan(0);
         });
 
-        it('returns the entry markup', function() {
-
-            // having an issue with non printing chars
-            expect(html).toContain('<div class="delayedDownloadForm">');
+        it('indicates a northerly bound', function() {
+            geoNetworkRecord.aodaac.latitudeRangeStart = '-10';
+            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(entry.indexOf('N')).toBeGreaterThan(-1);
+            expect(entry.indexOf('-10')).toBeGreaterThan(-1);
+            expect(entry.indexOf('N')).toBeGreaterThan(entry.indexOf('-10'));
         });
 
+        it('indicates an easterly bound', function() {
+            geoNetworkRecord.aodaac.longitudeRangeEnd = '170';
+            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(entry.indexOf('E')).toBeGreaterThan(-1);
+            expect(entry.indexOf('170')).toBeGreaterThan(-1);
+            expect(entry.indexOf('E')).toBeGreaterThan(entry.indexOf('170'));
+        });
 
+        it('indicates a southerly bound', function() {
+            geoNetworkRecord.aodaac.latitudeRangeEnd = '-40';
+            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(entry.indexOf('S')).toBeGreaterThan(-1);
+            expect(entry.indexOf('-40')).toBeGreaterThan(-1);
+            expect(entry.indexOf('S')).toBeGreaterThan(entry.indexOf('-40'));
+        });
+
+        it('indicates an westerly bound', function() {
+            geoNetworkRecord.aodaac.longitudeRangeStart = '150';
+            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(entry.indexOf('W')).toBeGreaterThan(-1);
+            expect(entry.indexOf('150')).toBeGreaterThan(-1);
+            expect(entry.indexOf('W')).toBeGreaterThan(entry.indexOf('150'));
+        });
     });
 
+    describe('createMenuItems', function() {
+        var items;
 
-    describe('_getNotificationBlurbEntry', function() {
+        beforeEach(function() {
+            items = tpl.createMenuItems(geoNetworkRecord);
+        });
 
+        it('creates menu items', function() {
+            expect(items.length).toBeGreaterThan(0);
+        });
+
+        it('allows nc download', function() {
+            expect(itemsContains('downloadAsNetCdfLabel')).toBe(true);
+        });
+
+        it('allows hdf download', function() {
+            expect(itemsContains('downloadAsHdfLabel')).toBe(true);
+        });
+
+        it('allows ascii download', function() {
+            expect(itemsContains('downloadAsAsciiLabel')).toBe(true);
+        });
+
+        it('allows urls download', function() {
+            expect(itemsContains('downloadAsOpenDapUrlsLabel')).toBe(true);
+        });
+
+        function itemsContains(type) {
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].text == OpenLayers.i18n(type)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    });
+
+    describe('getDataSpecificMarkup', function() {
         var markup;
 
         beforeEach(function() {
-
-
-            markup = tpl._getNotificationBlurbEntry();
+            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
         });
 
-        it('returns notificationBlurbMessage', function() {
-
-            expect(markup).toBe( OpenLayers.i18n('notificationBlurbMessage') );
+        it('provides markup', function() {
+            expect(markup).not.toEqual('');
         });
-    });
 
-    describe('_downloadAodaacHandler', function () {
-
-        it('returns a function to be called', function () {
-
-            var collection = { uuid: 5, aodaac: true };
-            var returnValue = tpl._downloadAodaacHandler(collection);
-
-            expect(typeof returnValue).toBe('function');
+        it('contains the blurb', function() {
+            expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
         });
-    });
 
+        it('contains an input for an email address', function() {
+            expect(markup.indexOf(tpl.AODAAC_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
+        });
 
-    describe('_aodaacUrl', function () {
+        it('contains the email address place holder when there is no email address', function() {
+            expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
+        });
 
-        it('builds URL with correct query string', function () {
+        it('contains the user specified email address', function() {
+            spyOn(tpl, '_getEmailAddress').andReturn('aodaac@aodaac.org');
+            var _markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
 
-            var params = {
-                productId: 89,
-                latitudeRangeStart: -90,
-                latitudeRangeEnd: 90,
-                longitudeRangeStart: -180,
-                longitudeRangeEnd: 180,
-                dateRangeStart: '1/1/1900',
-                dateRangeEnd: '31/12/2001'
-            };
-
-            var url = tpl._aodaacUrl(params, 'format', 'emailAddress');
-
-            expect(url).toBe('aodaac/createJob?' +
-                'outputFormat=format' +
-                '&dateRangeStart=1%2F1%2F1900' +
-                '&dateRangeEnd=31%2F12%2F2001' +
-                '&timeOfDayRangeStart=0000' +
-                '&timeOfDayRangeEnd=2400' +
-                '&latitudeRangeStart=-90' +
-                '&latitudeRangeEnd=90' +
-                '&longitudeRangeStart=-180' +
-                '&longitudeRangeEnd=180' +
-                '&productId=89' +
-                '&notificationEmailAddress=emailAddress'
-            );
+            expect(tpl._getEmailAddress).toHaveBeenCalled();
+            expect(_markup.indexOf('aodaac@aodaac.org')).toBeGreaterThan(-1);
         });
     });
 
-    describe('_validateEmailAddress', function () {
-
-        it('returns false for an empty address', function () {
-
-            var returnVal = tpl._validateEmailAddress('');
-
-            expect(returnVal).toBe(false);
-        });
-
-        it('returns false for an invalid address', function () {
-
-            var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
-
-            expect(returnVal).toBe(false);
-        });
-
-        it('returns true for a valid address', function () {
-
-            var returnVal = tpl._validateEmailAddress('user@domain.com');
-
-            expect(returnVal).toBe(true);
+    describe('_downloadAodaacHandler', function() {
+        it('provides a function', function() {
+            expect(typeof(tpl._downloadAodaacHandler(geoNetworkRecord, 'nc'))).toEqual('function');
         });
     });
 
+    describe('_aodaacUrl', function() {
 
-
-    describe('template output', function() {
-
-        var row;
-        var rowHeading;
+        var url;
+        var params = {
+            dateRangeStart: new Date(0),
+            dateRangeEnd: new Date(),
+            latitudeRangeStart: -42,
+            latitudeRangeEnd: -20,
+            longitudeRangeStart: 160,
+            longitudeRangeEnd: 170,
+            productId: 1
+        };
 
         beforeEach(function() {
-
-            tpl._getDataFilterEntry = function() { return "data_filter" };
-            tpl._getDataDownloadEntry = function() { return "data_download" };
-            tpl._getNotificationBlurbEntry = function() { return "notification_blurb" };
-
-            var html = tpl.apply(geoNetworkRecord);
-            row = $(html);
-
-            rowHeading = $(row.children()[0]);
+            url = tpl._aodaacUrl(params, 'nc', 'aodaac@imos.org.au');
         });
 
-        describe('download row', function() {
+        it('includes the aodaac endpoint', function() {
+            expect(url.indexOf('aodaac/createJob?')).toEqual(0);
+        });
 
-            it('has the correct class', function() {
-                expect(row.attr('class')).toBe('x-panel-body x-box-layout-ct');
+        it('includes the output format', function() {
+            expect(url.indexOf('outputFormat=nc')).toBeGreaterThan(-1);
+        });
+
+        it('includes the product id', function() {
+            expect(url.indexOf('productId=1')).toBeGreaterThan(-1);
+        });
+
+        it('includes the date range start', function() {
+            expect(url.indexOf('dateRangeStart=' + encodeURIComponent(params.dateRangeStart))).toBeGreaterThan(-1);
+        });
+
+        it('includes the date range end', function() {
+            expect(url.indexOf('dateRangeEnd=' + encodeURIComponent(params.dateRangeEnd))).toBeGreaterThan(-1);
+        });
+
+        it('includes the latitude range start', function() {
+            expect(url.indexOf('latitudeRangeStart=-42')).toBeGreaterThan(-1);
+        });
+
+        it('includes the latitude range end', function() {
+            expect(url.indexOf('latitudeRangeEnd=-20')).toBeGreaterThan(-1);
+        });
+
+        it('includes the longitude range start', function() {
+            expect(url.indexOf('longitudeRangeStart=160')).toBeGreaterThan(-1);
+        });
+
+        it('includes the longitude range end', function() {
+            expect(url.indexOf('longitudeRangeEnd=170')).toBeGreaterThan(-1);
+        });
+    });
+
+    describe('email address', function() {
+
+        it('saves an email address', function() {
+            var emailInput = new Ext.form.TextField();
+            spyOn(tpl, '_emailTextFieldElement').andReturn(emailInput);
+            spyOn(tpl, '_saveEmailAddress').andReturn(emailInput);
+
+            tpl.attachMenuEvents(geoNetworkRecord);
+            emailInput.fireEvent('change');
+            expect(tpl._saveEmailAddress).toHaveBeenCalledWith(geoNetworkRecord.uuid);
+        });
+
+        describe('_validateEmailAddress', function () {
+
+            it('returns false for an empty address', function () {
+                var returnVal = tpl._validateEmailAddress('');
+                expect(returnVal).toBe(false);
             });
 
-            it('has correct text value from function', function() {
+            it('returns false for an invalid address', function () {
+                var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
+                expect(returnVal).toBe(false);
+            });
 
-                var rowText = getText(row);
-                expect(rowText.length).toBe(13);
+            it('returns true for a valid address', function () {
+                var returnVal = tpl._validateEmailAddress('user@domain.com');
+                expect(returnVal).toBe(true);
             });
         });
     });
 
-    function getText(element) {
+    describe('_parameterString', function () {
 
-        // Based on http://stackoverflow.com/questions/298750/how-do-i-select-text-nodes-with-jquery
+        beforeEach(function () {
+            spyOn(OpenLayers, 'i18n').andReturn('i18n value');
+            spyOn(String, 'format');
+            tpl._parameterString('the_key', 'val1', 'val2');
+        });
 
-        var text = $(element)
-            .contents()
-            .filter(function() {
-                return this.nodeType === Node.TEXT_NODE;
-            }).text();
+        it('calls OpenLayers.i18n()', function () {
+            expect(OpenLayers.i18n).toHaveBeenCalledWith('the_key');
+        });
 
-        var elements = text.split(" ").filter(function(val) { return val.length });
-
-        return (elements.length == 1) ? elements[0] : elements;
-    }
+        it('calls String.format()', function () {
+            expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'i18n value', 'val1', 'val2')
+        });
+    });
 });

@@ -41,9 +41,11 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         this.update(html);
     },
 
+    confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {
+        this.confirmationWindow.showIfNeeded(downloadUrl, downloadFilename, downloadControllerArgs);
+    },
+
     _contentForEmptyView: function() {
         return String.format('<i>{0}</i>', OpenLayers.i18n('noCollectionsMessage'));
     }
-
-
 });

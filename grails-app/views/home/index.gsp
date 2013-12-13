@@ -168,6 +168,7 @@ ${buildInfo}
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanelBody.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadPanel.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/DownloadConfirmationWindow.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/NoDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/AodaacDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/cart/WfsDataRowTemplate.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/visualise/animations/TemporalExtent.js')}"></script>

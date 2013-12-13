@@ -6,52 +6,74 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
+Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     AODAAC_EMAIL_ADDRESS_ATTRIBUTE: "aodaac-email-address",
 
-    constructor: function() {
+    getDataFilterEntry: function(values) {
+        var params = values.aodaac;
+        var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
+        var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
 
-        var templateLines = [
-            '<div class="x-panel-body x-box-layout-ct">',
-            '  {[this._getDataDownloadEntry(values)]}',
-            '</div>'
+        return this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
+    },
+
+    createMenuItems: function (collection) {
+        return [
+            this._createMenuItem('downloadAsNetCdfLabel', collection, 'nc'),
+            this._createMenuItem('downloadAsHdfLabel', collection, 'hdf'),
+            this._createMenuItem('downloadAsAsciiLabel', collection, 'txt'),
+            this._createMenuItem('downloadAsOpenDapUrlsLabel', collection, 'urls')
         ];
-
-        Portal.cart.AodaacDataRowTemplate.superclass.constructor.call(this, templateLines);
     },
 
-    _getDataDownloadEntry: function(values) {
+    getDataSpecificMarkup: function(values) {
+        var html  = '<div class="delayedDownloadForm">' +
+            '  <input type="text" id="{3}-{0}" value="{1}">' +
+            '  <div><small>{2}</small></div>' +
+            '  <div class="clear"></div>' +
+            '</div>';
+        return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE);
+    },
 
-        if (values.aodaac) {
-            html  = '<div class="delayedDownloadForm">' +
-                '  <input type="text" id="{3}-{0}" value="{1}">' +
-                '  <div><small>{2}</small></div>' +
-                '  <div class="clear"></div>' +
-                '</div>';
-            return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.AODAAC_EMAIL_ADDRESS_ATTRIBUTE);
+    attachMenuEvents: function(values) {
+        var emailElement = this._emailTextFieldElement(values.uuid);
+        if (emailElement) {
+            emailElement.on('click', function () {
+                if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                    this.set({ value: '' });
+                }
+            });
+            emailElement.on('change', function () {
+                this._saveEmailAddress(values.uuid);
+            }, this);
         }
-
     },
 
+    _createMenuItem: function(translationKey, collection, format) {
+        return {
+            text: OpenLayers.i18n(translationKey),
+            handler: this._downloadAodaacHandler(collection, format),
+            scope: this
+        }
+    },
+
+    _parameterString: function (labelKey, value1, value2) {
+        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2);
+    },
 
     _downloadAodaacHandler: function(collection, format) {
-        var emailAddessElementId = '#aodaac-email-address-' + collection.uuid;
-
         return function() {
+            var emailAddress = this._emailTextFieldElement(collection.uuid).getValue();
 
             // Todo - DN: We're not showing the DownloadConfirmationWindow currently
-
-            var emailAddressElement = $(emailAddessElementId);
-            var emailAddress = emailAddressElement.val();
-
             if (!this._validateEmailAddress(emailAddress)) {
                 Ext.Msg.alert(OpenLayers.i18n('aodaacEmailProblemDialogTitle'), OpenLayers.i18n('aodaacNoEmailAddressMsg'));
                 return;
             }
 
             var downloadUrl = this._aodaacUrl(collection.aodaac, format, emailAddress);
-
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,
@@ -66,6 +88,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _saveEmailAddress: function (uuid) {
+        console.log("saving value ", this._emailTextFieldElement(uuid).getValue());
         Portal.data.ActiveGeoNetworkRecordStore.instance().
             addRecordAttribute(
                 uuid,
@@ -117,8 +140,4 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Ext.XTemplate, {
     _getNotificationBlurbEntry: function() {
         return OpenLayers.i18n('notificationBlurbMessage');
     }
-
-
-
-
 });

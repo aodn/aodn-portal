@@ -8,14 +8,11 @@
 
 describe('Portal.cart.WfsDataRowTemplate', function() {
 
-    var parentTemplate;
     var tpl;
     var geoNetworkRecord;
 
     beforeEach(function() {
-
-        parentTemplate = new Portal.cart.DownloadPanelBodyTemplate();
-        tpl = new Portal.cart.WfsDataRowTemplate(parentTemplate);
+        tpl = new Portal.cart.WfsDataRowTemplate();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
@@ -28,44 +25,75 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         geoNetworkRecord.getWfsLayerFeatureRequestUrl = function() {}
     });
 
+    describe('getDataFilterEntry', function() {
+        it('returns text if there is a cql filter applied', function() {
+            var mockCql = 'CQL(intersects(0,0,0,0))';
+            tpl._cql = function() {
+                return mockCql;
+            }
 
-
-
-    describe('_getDataDownloadEntry', function() {
-
-        var html;
-
-        beforeEach(function() {
-
-            spyOn(parentTemplate, '_makeSecondaryTextMarkup').andReturn('secondary text markup');
-
-            html = tpl._getDataDownloadEntry(geoNetworkRecord);
+            var filterEntry = tpl.getDataFilterEntry({});
+            expect(filterEntry).not.toEqual('');
+            expect(filterEntry.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
+            expect(filterEntry.indexOf(mockCql)).toBeGreaterThan(-1);
         });
 
-        it('returns the entry markup', function() {
-
-            expect(html).toBe('<div id="wfs-download-button-9"></div>');
+        it('returns an empty string if there is no cql filter applied', function() {
+            tpl._cql = function() {
+                return ''
+            }
+            expect(tpl.getDataFilterEntry({})).toEqual('');
         });
-
     });
 
-    describe('template output', function() {
-
-        var row;
-        var rowHeading;
-
-        beforeEach(function() {
-
-            tpl._getDataFilterEntry = function() { return "data_filter" };
-            tpl._getDataDownloadEntry = function() { return "data_download" };
-
-            var html = tpl.apply(geoNetworkRecord);
-            row = $(html);
-
-            rowHeading = $(row.children()[0]);
+    describe('createMenuItems', function() {
+        it('creates menu items', function() {
+            var menuItems = tpl.createMenuItems({
+                wmsLayer: {
+                    getWfsLayerFeatureRequestUrl: noOp
+                }
+            });
+            expect(menuItems.length).toEqual(3);
         });
 
+        it('includes an item to download a list of urls', function() {
+            var menuItems = tpl.createMenuItems({
+                wmsLayer: {
+                    getWfsLayerFeatureRequestUrl: noOp,
+                    urlDownloadFieldName: true
+                }
+            });
+            expect(menuItems.length).toEqual(4);
+
+            var included = false;
+            for (var i = 0; i < menuItems.length; i++) {
+                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
+                    included = true;
+                    i = menuItems.length;
+                }
+            }
+
+            expect(included).toBe(true);
+        });
     });
 
+    describe('download handlers', function() {
+        it('_downloadWfsHandler calls downloadWithConfirmation', function() {
+            spyOn(tpl, 'downloadWithConfirmation');
+            spyOn(tpl, '_downloadUrl');
+            tpl._downloadWfsHandler({}, 'csv');
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
+        });
 
+        it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
+            spyOn(tpl, 'downloadWithConfirmation');
+            spyOn(tpl, '_downloadUrl');
+            tpl._urlListDownloadHandler({
+                wmsLayer: {
+                    grailsLayerId: 1
+                }
+            });
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
+        });
+    });
 });
