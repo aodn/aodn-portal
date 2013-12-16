@@ -187,7 +187,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         service._addFileEntry file2
         service._addFileEntry file3
 
-        validateZipEntries(
+        assertZipEntriesValid(
             responseStream,
             [
                 [name: file1, size: 10172],
@@ -237,7 +237,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         service._addDownloadReportToArchive()
 
-        validateZipEntries(
+        assertZipEntriesValid(
             responseStream,
             [[name: "download_report.txt", size: "the report".length()]]
         )
@@ -245,7 +245,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         service._closeStream()
     }
 
-    static void validateZipEntries(responseStream, expectedFiles) {
+    static void assertZipEntriesValid(responseStream, expectedFiles) {
 
         def zipInStream = new ZipInputStream(new ByteArrayInputStream(responseStream.toByteArray()))
 
