@@ -75,24 +75,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     afterRender: function () {
         Portal.search.FacetedSearchResultsPanel.superclass.afterRender.call(this);
-
-        this.loadMask = new Portal.common.LoadMask(this.el, {
-            msg: OpenLayers.i18n('maskText'),
-            setTopPixels: 50
-        });
-
-    },
-
-    showLoadMask: function () {
-        if (this.rendered) {
-            this.loadMask.showAtTop();
-        }
-    },
-
-    hideLoadMask: function () {
-        if (this.rendered) {
-            this.loadMask.hide();
-        }
     },
 
     _onStoreLoad: function() {

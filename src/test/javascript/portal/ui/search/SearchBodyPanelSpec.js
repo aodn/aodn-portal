@@ -45,31 +45,4 @@ describe("Portal.ui.search.SearchBodyPanel", function() {
             });
         });
     });
-
-    describe('searcher events', function() {
-        beforeEach(function() {
-            spyOn(searchBodyPanel.searchResultsPanel, 'showLoadMask');
-            spyOn(searchBodyPanel.searchResultsPanel, 'hideLoadMask');
-        });
-
-        it('calls searchResultsPanel showLoadMask on searchstart', function() {
-            searchBodyPanel.searcher.fireEvent('searchstart');
-            expect(searchBodyPanel.searchResultsPanel.showLoadMask).toHaveBeenCalled();
-        });
-
-        it('calls searchResultsPanel hideLoadMask on searchcomplete', function() {
-            searchBodyPanel.searcher.fireEvent('searchcomplete');
-            expect(searchBodyPanel.searchResultsPanel.hideLoadMask).toHaveBeenCalled();
-        });
-
-        it('calls searchResultsPanel hideLoadMask on summaryOnlySearchComplete', function() {
-            searchBodyPanel.searcher.fireEvent('summaryOnlySearchComplete');
-            expect(searchBodyPanel.searchResultsPanel.hideLoadMask).toHaveBeenCalled();
-        });
-
-        it('calls searchResultsPanel hideLoadMask on searcherror', function() {
-            searchBodyPanel.searcher.fireEvent('searcherror');
-            expect(searchBodyPanel.searchResultsPanel.hideLoadMask).toHaveBeenCalled();
-        });
-    });
 });
