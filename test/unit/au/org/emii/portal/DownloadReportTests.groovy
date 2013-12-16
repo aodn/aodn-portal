@@ -21,11 +21,6 @@ class DownloadReportTests extends GrailsUnitTestCase {
         report = new DownloadReport(testLocale)
     }
 
-    @Override
-    protected void tearDown() {
-        super.tearDown()
-    }
-
     void testAddSuccessfulFileEntry() {
 
         def testUrl = "URL"
