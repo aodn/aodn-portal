@@ -6,8 +6,8 @@
 
 --%>
 
-<link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-3.3.1/resources/css/ext-all-notheme.css')}"/>
-<link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-3.3.1/resources/css/xBaseTheme.css')}"/>
+<g:render template="/core_theme_includes"></g:render>
+ 
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'general.css')}"/>
 
 <g:if test="${grailsApplication.config.portal.instance?.css}">
@@ -16,7 +16,3 @@
 <g:elseif test="${grailsApplication.config.portal.instance?.name}">
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.instance.name + '.css')}"/>
 </g:elseif>
-
-<g:if test="${grailsApplication.config.portal.instance?.name}">
-    <link rel="shortcut icon" href="${resource(dir: 'images', file: grailsApplication.config.portal.instance.name + 'favicon.ico')}" type="image/x-icon"/>
-</g:if>
