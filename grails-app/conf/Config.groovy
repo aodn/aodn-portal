@@ -110,6 +110,8 @@ openId {
     // registerProvider = providers.first();     // disabled by default
 }
 
+facetedSearch.enabled = false
+
 // set per-environment serverURL stem for creating absolute links
 environments {
 
@@ -152,8 +154,6 @@ environments {
 	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
 	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
-
-        facetedSearch.enabled = false
 
         grails {
             mail {
