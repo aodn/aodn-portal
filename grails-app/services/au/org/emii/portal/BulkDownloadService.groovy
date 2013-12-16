@@ -26,9 +26,13 @@ class BulkDownloadService {
 
         report = new DownloadReport(locale)
 
-        _createZipStream outputStream
-        _writeFilesToStream urlList
-        _closeStream()
+        try {
+            _createZipStream outputStream
+            _writeFilesToStream urlList
+        }
+        finally {
+            _closeStream()
+        }
     }
 
     def _createZipStream = { outputStream ->

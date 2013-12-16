@@ -65,6 +65,42 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         assertEquals 1, closeStreamCalledCount
     }
 
+    void testGenerateArchiveOfFilesWithException() {
+
+        def testUrlList = new Object()
+        def testStream = new Object()
+        def testLocale = new Object()
+
+        def createZipStreamCalledCount = 0
+        def writeFilesToStreamCalledCount = 0
+        def closeStreamCalledCount = 0
+
+        service._createZipStream = { outputStream ->
+            assertEquals testStream, outputStream
+            createZipStreamCalledCount++
+            throw new Exception("For testing")
+        }
+        service._writeFilesToStream = { urlList ->
+            writeFilesToStreamCalledCount++
+        }
+        service._closeStream = { ->
+            closeStreamCalledCount++
+        }
+
+        try {
+            service.generateArchiveOfFiles testUrlList, testStream, testLocale
+            fail "Should have thrown Exception"
+        }
+        catch(Exception e) {
+        }
+
+        assertTrue service.report instanceof DownloadReport
+        assertEquals testLocale, service.report.locale
+        assertEquals 1, createZipStreamCalledCount
+        assertEquals 0, writeFilesToStreamCalledCount
+        assertEquals 1, closeStreamCalledCount
+    }
+
     void testCreateZipStream() {
 
         assertNull service.zipStream
