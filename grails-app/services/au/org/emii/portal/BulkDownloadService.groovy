@@ -16,7 +16,7 @@ class BulkDownloadService {
 
     static scope = "request"
 
-    static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
+    static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?" // http://aodn.org.au/world_map.gif -> ((world_map) (.gif))
 
     def zipStream
     def report
