@@ -7,6 +7,8 @@
 
 package au.org.emii.portal
 
+import org.apache.commons.io.IOUtils
+
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -14,7 +16,6 @@ class BulkDownloadService {
 
     static scope = "request"
 
-    static final int BUFFER_SIZE = 4096 // Bytes
     static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?"
 
     def zipStream
@@ -62,7 +63,7 @@ class BulkDownloadService {
 
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
-            def bytesCopied = _copyStreamData(streamFromUrl, zipStream)
+            def bytesCopied = IOUtils.copy(streamFromUrl, zipStream)
 
             report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
         }
@@ -117,20 +118,6 @@ class BulkDownloadService {
             matches[0][1], // Filename
             matches[0][2] ?: "" // Extension
         ]
-    }
-
-    static def _copyStreamData = { inStream, outputStream ->
-
-        def buffer = new byte[BUFFER_SIZE]
-        def bytesRead
-        def totalBytesRead = 0
-
-        while ((bytesRead = inStream.read(buffer)) != -1) {
-            outputStream.write buffer, 0, bytesRead
-            totalBytesRead += bytesRead
-        }
-
-        return totalBytesRead
     }
 
     def _addDownloadReportToArchive = { ->
