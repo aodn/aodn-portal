@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -25,19 +24,19 @@ println "Loading base Portal configuration..."
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
-grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
-                      xml: ['text/xml', 'application/xml'],
-                      text: 'text/plain',
-                      js: 'text/javascript',
-                      rss: 'application/rss+xml',
-                      atom: 'application/atom+xml',
-                      css: 'text/css',
-                      csv: 'text/csv',
-                      all: '*/*',
-                      json: ['application/json','text/json'],
-                      form: 'application/x-www-form-urlencoded',
-                      multipartForm: 'multipart/form-data'
-                    ]
+grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
+    xml: ['text/xml', 'application/xml'],
+    text: 'text/plain',
+    js: 'text/javascript',
+    rss: 'application/rss+xml',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    all: '*/*',
+    json: ['application/json', 'text/json'],
+    form: 'application/x-www-form-urlencoded',
+    multipartForm: 'multipart/form-data'
+]
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -71,24 +70,24 @@ help.url = "http://portalhelp.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
-	url = "http://aodaac.emii.org.au/"
-	environment = "prod"
-	idleJobTimeout = 1 // In hours
-	errorLookup = [
-		/.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
+    url = "http://aodaac.emii.org.au/"
+    environment = "prod"
+    idleJobTimeout = 1 // In hours
+    errorLookup = [
+        /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
 
-			errorMessage ->
+            errorMessage ->
 
-			def numBytes = (errorMessage =~ /[0-9]+/)
-			assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
-			def actualBytes = Long.valueOf(numBytes[0])
-			def limitBytes = Long.valueOf(numBytes[1])
+                def numBytes = (errorMessage =~ /[0-9]+/)
+                assert (numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
+                def actualBytes = Long.valueOf(numBytes[0])
+                def limitBytes = Long.valueOf(numBytes[1])
 
-			def amountOver = Math.round(actualBytes/limitBytes)
+                def amountOver = Math.round(actualBytes / limitBytes)
 
-			return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
-		}
-	]
+                return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
+        }
+    ]
 }
 
 // Depth service
@@ -98,8 +97,8 @@ depthService.url = "http://depthservice.aodn.org.au/depth"
 openId {
     // openID provider details to support login popup etc
     providers = [
-        [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
-        [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
+        [name: "Google", iconHref: "images/openid_icons/Google.png", supportsProviderLogout: false, providerHref: "https://www.google.com/accounts/o8/id"],
+        [name: "Yahoo", iconHref: "images/openid_icons/Yahoo.png", supportsProviderLogout: false, providerHref: "https://me.yahoo.com/"]
         // Add your own providers here ...
     ]
 
@@ -110,19 +109,19 @@ openId {
     // registerProvider = providers.first();     // disabled by default
 }
 
+facetedSearch.enabled = false
+
 // set per-environment serverURL stem for creating absolute links
 environments {
 
     development {
-		grails.resources.debug = true
+        grails.resources.debug = true
 
         // URLs
-		grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-	    spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
-		wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
+        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+        spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
+        wmsScanner.url = "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = "http://localhost:8200/wfsScanner"
-
-        facetedSearch.enabled = true
 
         grails {
             mail {
@@ -130,7 +129,7 @@ environments {
                 port = 25
 
                 username = "username"
-                props = ["mail.smtp.auth":"false"]
+                props = ["mail.smtp.auth": "false"]
             }
         }
     }
@@ -147,19 +146,17 @@ environments {
 
     production {
 
-	    // URLs
-	    grails.serverURL = "http://myaodn.example.com"
-	    spatialsearch.url = "http://search.aodn.org.au/search/search/index"
-	    wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
+        // URLs
+        grails.serverURL = "http://myaodn.example.com"
+        spatialsearch.url = "http://search.aodn.org.au/search/search/index"
+        wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
-
-        facetedSearch.enabled = false
 
         grails {
             mail {
                 host = "localhost"
                 port = 25
-                props = ["mail.smtp.auth":"false"]
+                props = ["mail.smtp.auth": "false"]
             }
         }
     }
@@ -168,30 +165,30 @@ environments {
 def defaultInstanceName = "AODN"
 
 portal {
-	header {
-		logo = "${defaultInstanceName}_logo.png"
-		externalLinks = [
-		    [
-				linkText: "eMII",
-				tooltipText: "e-Marine Information Infrastructure",
-				href: "http://www.emii.org.au"
-			],
-		    [
-				linkText: "AODN",
-				tooltipText: "Australian Ocean Data Network",
-				href: "http://imos.org.au/aodn.html"
-			],
-		    [
-				linkText: "Help",
-				tooltipText: "Portal help files",
-				href: help.url
-			]
-		]
-	}
-	// Change authentication emails for IMOS
-	systemEmail {
-		fromAddress = "info@example.com"
-	}
+    header {
+        logo = "${defaultInstanceName}_logo.png"
+        externalLinks = [
+            [
+                linkText: "eMII",
+                tooltipText: "e-Marine Information Infrastructure",
+                href: "http://www.emii.org.au"
+            ],
+            [
+                linkText: "AODN",
+                tooltipText: "Australian Ocean Data Network",
+                href: "http://imos.org.au/aodn.html"
+            ],
+            [
+                linkText: "Help",
+                tooltipText: "Portal help files",
+                href: help.url
+            ]
+        ]
+    }
+    // Change authentication emails for IMOS
+    systemEmail {
+        fromAddress = "info@example.com"
+    }
 }
 
 /**
@@ -210,72 +207,72 @@ portal {
  *
  * NOTE: app.name and version is ignored in external application.properties
  */
-if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+if (!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
 
 try {
-	configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
-	grails.config.locations << "file:${configurationPath}"
+    configurationPath = new InitialContext().lookup('java:comp/env/aodn.configuration')
+    grails.config.locations << "file:${configurationPath}"
 
-	println "Loading external config from '$configurationPath'..."
+    println "Loading external config from '$configurationPath'..."
 
-	def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
-	System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
+    def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
+    System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
 }
 catch (e) {
 
-	println "Not loading external config"
+    println "Not loading external config"
 
-	portal.instance.name = defaultInstanceName
-	System.setProperty "INSTANCE_NAME", portal.instance.name
+    portal.instance.name = defaultInstanceName
+    System.setProperty "INSTANCE_NAME", portal.instance.name
 }
 
 // log4j configuration
 log4j = {
     appenders {
 
-        console name:'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %30.30c %X{userInfoForFile}- %m%n")
+        console name: 'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %30.30c %X{userInfoForFile}- %m%n")
     }
 
     root {
         error 'stdout'
     }
 
-    error   'org.codehaus.groovy.grails.web.servlet',  //  controllers
-            'org.codehaus.groovy.grails.web.pages', //  GSP
-            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-            'org.codehaus.groovy.grails.web.mapping', // URL mapping
-            'org.codehaus.groovy.grails.commons', // core / classloading
-            'org.codehaus.groovy.grails.plugins', // plugins
-            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-            'org.springframework',
-            'org.hibernate',
-            'net.sf.ehcache.hibernate',
-            'org.grails.plugin.resource.ResourceMeta'
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+          'org.codehaus.groovy.grails.web.pages', //  GSP
+          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+          'org.codehaus.groovy.grails.web.mapping', // URL mapping
+          'org.codehaus.groovy.grails.commons', // core / classloading
+          'org.codehaus.groovy.grails.plugins', // plugins
+          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+          'org.springframework',
+          'org.hibernate',
+          'net.sf.ehcache.hibernate',
+          'org.grails.plugin.resource.ResourceMeta'
 
-    warn    'org.mortbay.log'
+    warn 'org.mortbay.log'
 
-    info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
-            'grails.app.filters.shiro.SecurityFilters',
-            'grails.app.controller.au.org.emii.portal.LayerController',
-            'grails.app.controller.au.org.emii.portal.AuthController',
-            'grails.app.service.au.org.emii.portal.LayerService',
-            'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
-            'au.org.emii.portal.display.MenuJsonCache',
-            'org.apache.shiro',
-            'grails.app.controller'
+    info 'grails.app.tagLib.au.org.emii.portal.UserTagLib',
+         'grails.app.filters.shiro.SecurityFilters',
+         'grails.app.controller.au.org.emii.portal.LayerController',
+         'grails.app.controller.au.org.emii.portal.AuthController',
+         'grails.app.service.au.org.emii.portal.LayerService',
+         'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
+         'au.org.emii.portal.display.MenuJsonCache',
+         'org.apache.shiro',
+         'grails.app.controller'
 
-    debug   'grails.app.job',
-            //'grails.app.service',
-		'grails.app.tagLib',
-            'grails.app.domain',
-            'grails.app.realms'
-            //'au.org.emii.portal'
-            //'au.org.emii.portal.display'
-		    //'org.hibernate.SQL',
-		    //'org.hibernate.type',
-		    //'liquibase',
-		    //'grails'
+    debug 'grails.app.job',
+          //'grails.app.service',
+          'grails.app.tagLib',
+          'grails.app.domain',
+          'grails.app.realms'
+          //'au.org.emii.portal'
+          //'au.org.emii.portal.display'
+          //'org.hibernate.SQL',
+          //'org.hibernate.type',
+          //'liquibase',
+          //'grails'
 }
