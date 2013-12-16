@@ -21,6 +21,9 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
             scope: this,
             'spatialconstraintadded': function(geometry) {
                 this._updateWithGeometry(geometry);
+            },
+            'spatialconstraintcleared': function() {
+                this._updateWithGeometry();
             }
         });
     },
@@ -59,6 +62,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     getCQL: function() {
+
+        if (!this.geometry) {
+            return '';
+        }
 
         return String.format(
             "INTERSECTS({0},{1})",
