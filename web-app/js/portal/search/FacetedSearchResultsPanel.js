@@ -73,10 +73,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         //this.dataView.setPosition({ x: 0, y: 0 });
     },
 
-    afterRender: function () {
-        Portal.search.FacetedSearchResultsPanel.superclass.afterRender.call(this);
-    },
-
     _onStoreLoad: function() {
         // We want to reset scroll position to top on load, in case we were
         // previously not at the top.
