@@ -18,13 +18,14 @@ class BulkDownloadService {
 
     static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?" // http://aodn.org.au/world_map.gif -> ((world_map) (.gif))
 
-    def zipStream
     def report
-    def usedFilenames = [:]
+    def uniqueFilenameGenerator
+    def zipStream
 
     void generateArchiveOfFiles(urlList, outputStream, locale) {
 
         report = new DownloadReport(locale)
+        uniqueFilenameGenerator  = new UniqueFilenameGenerator()
 
         try {
             _createZipStream outputStream
@@ -96,22 +97,7 @@ class BulkDownloadService {
 
         def (filename, extension) = _filenamePartsFromUrl(url)
 
-        log.debug "filename: $filename -- extension: $extension"
-
-        def currentCount = usedFilenames[filename]
-
-        // First usage of this filename
-        if (!currentCount) {
-            usedFilenames[filename] = 1
-
-            return filename + extension
-        }
-
-        // Subsequent usage of this filename
-        currentCount++
-        usedFilenames[filename] = currentCount
-
-        return "$filename($currentCount)$extension"
+        return uniqueFilenameGenerator.generateUniqueFilename(filename, extension)
     }
 
     def _filenamePartsFromUrl = { url ->

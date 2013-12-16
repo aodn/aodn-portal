@@ -205,14 +205,31 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
     void testUniqueFilenameForUrl() {
 
-        def baseUrl = "http://imos.org.au"
+        def testUrl = "URL"
+        def testFilename = "filename"
+        def testExtension = "extension"
+        def uniqueFilename = "unique"
 
-        assertEquals "file.txt",     service._uniqueFilenameForUrl("$baseUrl/file.txt")
-        assertEquals "file(2).txt",  service._uniqueFilenameForUrl("$baseUrl/file.txt")
-        assertEquals "file(3).html", service._uniqueFilenameForUrl("$baseUrl/file.html")
-        assertEquals "index.html",   service._uniqueFilenameForUrl("$baseUrl/index.html")
-        assertEquals "index(2).txt", service._uniqueFilenameForUrl("$baseUrl/index.txt")
-        assertEquals "index(3)",     service._uniqueFilenameForUrl("$baseUrl/index")
+        service._filenamePartsFromUrl = { url ->
+            assert testUrl, url
+            return [testFilename, testExtension]
+        }
+
+        def generateUniqueFilenameCalledCount = 0
+        service.uniqueFilenameGenerator = [
+            generateUniqueFilename: { filename, extension ->
+                assertEquals testFilename, filename
+                assertEquals testExtension, extension
+                generateUniqueFilenameCalledCount++
+                return uniqueFilename
+            }
+        ]
+
+        def filenameReturned
+        filenameReturned = service._uniqueFilenameForUrl(testUrl)
+
+        assertEquals uniqueFilename, filenameReturned
+        assertEquals 1, generateUniqueFilenameCalledCount
     }
 
     void testFilenamePartsFromUrl() {
