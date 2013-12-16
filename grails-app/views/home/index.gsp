@@ -33,7 +33,7 @@ ${buildInfo}
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'portal-search.css')}"/>
 
 <g:render template="/js_includes"></g:render>
-<g:render template="/theme_includes"></g:render>
+<g:render template="/public_theme_includes"></g:render>
 
 <script>
 
