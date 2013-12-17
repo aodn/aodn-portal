@@ -8,19 +8,16 @@
 
 describe("Portal.cart.DownloadPanelBody", function() {
 
-    var DownloadPanelBody;
+    var downloadPanelBody;
 
     beforeEach(function() {
-
-        DownloadPanelBody = new Portal.cart.DownloadPanelBody();
+        downloadPanelBody = new Portal.cart.DownloadPanelBody();
     });
 
     describe('initComponent()', function() {
-
         it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
-            expect(DownloadPanelBody.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
+            expect(downloadPanelBody.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
         });
-
     });
 
     describe('generateContent', function() {
@@ -37,28 +34,26 @@ describe("Portal.cart.DownloadPanelBody", function() {
                 apply: jasmine.createSpy('template apply').andCallFake(function(collection) { return collection.value })
             };
 
-            spyOn(Portal.cart, 'DownloadPanelBodyTemplate').andReturn(mockTemplate);
+            spyOn(Portal.cart, 'DownloadPanelItemTemplate').andReturn(mockTemplate);
 
-            DownloadPanelBody = new Portal.cart.DownloadPanelBody();
-            DownloadPanelBody.store.data.items = [
+            downloadPanelBody = new Portal.cart.DownloadPanelBody();
+            downloadPanelBody.store.data.items = [
                 {data: testCollection1},
                 {data: testCollection2},
                 {data: testCollection3},
                 {data: testCollection4}
             ];
 
-            spyOn(DownloadPanelBody, 'update');
+            spyOn(downloadPanelBody, 'update');
 
-            DownloadPanelBody.generateContent();
+            downloadPanelBody.generateContent();
         });
 
-        it('creates a DownloadPanelBodyTemplate', function() {
-
-            expect(Portal.cart.DownloadPanelBodyTemplate).toHaveBeenCalled();
+        it('creates a DownloadPanelItemTemplate', function() {
+            expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
         });
 
         it('reverse view order enforced', function() {
-
             // Order of items is reversed!!
             expect(mockTemplate.apply.callCount).toBe(4);
             expect(mockTemplate.apply.argsForCall[3][0]).toBe(testCollection1);
@@ -68,29 +63,24 @@ describe("Portal.cart.DownloadPanelBody", function() {
         });
 
         it('calls update', function() {
-
             // Order of items is reversed!!
-            expect(DownloadPanelBody.update).toHaveBeenCalledWith('[Content 4][Content 3][Content 2][Content 1]');
+            expect(downloadPanelBody.update).toHaveBeenCalledWith('[Content 4][Content 3][Content 2][Content 1]');
         });
 
         it('calls _contentForEmptyView when empty', function() {
+            spyOn(downloadPanelBody, '_contentForEmptyView').andReturn('empty cart content');
 
-            spyOn(DownloadPanelBody, '_contentForEmptyView').andReturn('empty cart content');
+            downloadPanelBody.store.data.items = [];
+            downloadPanelBody.generateContent();
 
-            DownloadPanelBody.store.data.items = [];
-
-            DownloadPanelBody.generateContent();
-
-            expect(DownloadPanelBody._contentForEmptyView).toHaveBeenCalled();
-            expect(DownloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
+            expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
+            expect(downloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
         });
     });
 
     describe('generateContent', function() {
-
         it('returns marked-up text', function() {
-
-            var content = DownloadPanelBody._contentForEmptyView();
+            var content = downloadPanelBody._contentForEmptyView();
 
             expect(content).toBe('<i>' + OpenLayers.i18n('noCollectionsMessage') + '</i>');
         });

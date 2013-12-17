@@ -6,7 +6,7 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.DownloadPanelBodyTemplate = Ext.extend(Ext.XTemplate, {
+Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function (downloadPanel) {
 
@@ -41,7 +41,7 @@ Portal.cart.DownloadPanelBodyTemplate = Ext.extend(Ext.XTemplate, {
             '</div>'
         ];
 
-        Portal.cart.DownloadPanelBodyTemplate.superclass.constructor.call(this, templateLines);
+        Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
 
     _getDataFilterEntry: function (values) {

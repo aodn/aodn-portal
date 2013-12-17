@@ -88,7 +88,6 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _saveEmailAddress: function (uuid) {
-        console.log("saving value ", this._emailTextFieldElement(uuid).getValue());
         Portal.data.ActiveGeoNetworkRecordStore.instance().
             addRecordAttribute(
                 uuid,

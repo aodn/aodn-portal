@@ -149,39 +149,39 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         });
 
         it('includes the aodaac endpoint', function() {
-            expect(url.indexOf('aodaac/createJob?')).toEqual(0);
+            expect(url.indexOf('aodaac/createJob?')).toBeGreaterThan(-1);
         });
 
         it('includes the output format', function() {
-            expect(url.indexOf('outputFormat=nc')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('outputFormat', 'nc');
         });
 
         it('includes the product id', function() {
-            expect(url.indexOf('productId=1')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('productId', '1');
         });
 
         it('includes the date range start', function() {
-            expect(url.indexOf('dateRangeStart=' + encodeURIComponent(params.dateRangeStart))).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('dateRangeStart', params.dateRangeStart);
         });
 
         it('includes the date range end', function() {
-            expect(url.indexOf('dateRangeEnd=' + encodeURIComponent(params.dateRangeEnd))).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('dateRangeEnd', params.dateRangeEnd);
         });
 
         it('includes the latitude range start', function() {
-            expect(url.indexOf('latitudeRangeStart=-42')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('latitudeRangeStart','-42');
         });
 
         it('includes the latitude range end', function() {
-            expect(url.indexOf('latitudeRangeEnd=-20')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('latitudeRangeEnd', '-20');
         });
 
         it('includes the longitude range start', function() {
-            expect(url.indexOf('longitudeRangeStart=160')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('longitudeRangeStart', '160');
         });
 
         it('includes the longitude range end', function() {
-            expect(url.indexOf('longitudeRangeEnd=170')).toBeGreaterThan(-1);
+            expect(url).toHaveParameterWithValue('longitudeRangeEnd', '170');
         });
     });
 
