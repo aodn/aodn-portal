@@ -30,9 +30,7 @@ describe('Portal.cart.DownloadPanelBodyTemplate', function () {
                     title: 'the title too'
                 }
             ],
-            wmsLayer: {
-                isNcwms: noOp
-            }
+            wmsLayer: {}
         };
     });
 
@@ -205,7 +203,7 @@ describe('Portal.cart.DownloadPanelBodyTemplate', function () {
 
     function getAodaacRecord() {
         var aodaacRecord = geoNetworkRecord;
-        aodaacRecord.wmsLayer.isNcwms = function () { return true; };
+        aodaacRecord.aodaac = {};
 
         return aodaacRecord;
     }

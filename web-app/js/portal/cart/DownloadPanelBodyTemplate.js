@@ -114,7 +114,7 @@ Portal.cart.DownloadPanelBodyTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmation: this.downloadWithConfirmation,
             downloadConfirmationScope: this
         };
-        if (values.wmsLayer.isNcwms()) {
+        if (values.aodaac) {
             return this._getAodaacDataRowTemplateInstance(config);
         }
         else if (values.wmsLayer.wfsLayer) {

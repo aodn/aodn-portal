@@ -23,7 +23,7 @@ describe('Portal.details.AodaacPanel', function() {
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
         aodaacPanel._setBounds =  function() {};
-        aodaacPanel._populateFormFields = function() {};
+        aodaacPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
@@ -40,7 +40,7 @@ describe('Portal.details.AodaacPanel', function() {
             );
 
             _applyCommonSpies();
-            spyOn(aodaacPanel, '_populateFormFields');
+            spyOn(aodaacPanel, '_removeLoadingInfo');
 
             aodaacPanel.update(layer, noOp, noOp, {});
             expect(aodaacPanel.geoNetworkRecord).toBeTruthy();
