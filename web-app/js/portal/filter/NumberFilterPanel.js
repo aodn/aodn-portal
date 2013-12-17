@@ -12,6 +12,11 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     constructor: function(cfg) {
 
         var config = Ext.apply({
+            layout: 'menu',
+            layoutConfig: {
+                padding: '5',
+                align: 'left'
+            },
             autoDestroy: true
         }, cfg);
 
@@ -24,7 +29,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             triggerAction: 'all',
             mode: 'local',
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
-            width: 170,
+            width: 165,
             editable: false,
             fieldLabel: "Value",
             store: new Ext.data.ArrayStore({
@@ -52,6 +57,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.firstField = new Ext.form.TextField({
             name: 'from',
+            width: 146,
             listeners: {
                 scope: this,
                 blur: this._updateFilter,
@@ -61,6 +67,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.secondField = new Ext.form.TextField({
             name: 'to',
+            width: 146,
             hidden: true,
             listeners: {
                 scope: this,

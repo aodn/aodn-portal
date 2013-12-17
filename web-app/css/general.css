@@ -1131,8 +1131,10 @@ div.allwhite {
     height: 19px;
     vertical-align: top;
     margin: 1px;
-    background-color: #ffff99
+    background-color: #ffff99;
+    border: 0;
 }
+
 
 .resultsRowBackground {
     background: #eeeeee;
@@ -1165,9 +1167,6 @@ div.allwhite {
 
 .navigationButton .doubleArrow {
     display: inline-block;
-    font: 13px/15px Impact;
-    height: 16px;
-    vertical-align: middle;
 }
 
 .remove-layer-button {
@@ -1194,6 +1193,9 @@ div.allwhite {
 
 #activeLayerTreePanel img.x-tree-node-icon {
     width: 0px;
+}
+#activeLayerTreePanel input.x-tree-node-cb {
+    vertical-align: middle;
 }
 
 .hidden {

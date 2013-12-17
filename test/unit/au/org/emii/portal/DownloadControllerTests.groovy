@@ -25,7 +25,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testUrlList() {
+    void testUrlListForLayer() {
 
         def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
         def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
@@ -33,37 +33,46 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockDomain Server, [server]
         mockDomain Layer, [layer]
 
-        def performProxyingCalled = false
+        def testParamProcessor = new Object()
+        controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
+            assertEquals "relativeFilePath", fieldName
+            return testParamProcessor
+        }
 
+        def testStreamProcessor = new Object()
+        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+            assertEquals "relativeFilePath", fieldName
+            assertEquals "/mnt/imos-t4", prefixToRemove
+            assertEquals "http://data.imos.org.au", newUrlBase
+            return testStreamProcessor
+        }
+
+        def performProxyingCalledCount = 0
         controller._performProxying = { paramProcessor, streamProcessor ->
+            performProxyingCalledCount++
 
-            performProxyingCalled = true
-
-            assertNotNull paramProcessor
-            checkParamProcessor paramProcessor
-
-            assertNotNull streamProcessor
-            checkUrlListStreamProcessor streamProcessor
+            assertEquals testParamProcessor, paramProcessor
+            assertEquals testStreamProcessor, streamProcessor
         }
 
         mockParams.layerId = 1
-        mockParams.url = "the_url?a=b"
 
-        controller.urlList()
+        controller.urlListForLayer()
 
-        assertTrue performProxyingCalled
+        assertEquals 1, performProxyingCalledCount
     }
 
-    def checkParamProcessor = { paramsProcessor ->
+    void testRequestSingleFieldParamProcessor() {
 
+        def pp = controller.requestSingleFieldParamProcessor("relativeFilePath")
         def params = [url: "the_url?a=b"]
 
-        params = paramsProcessor(params)
+        params = pp(params)
 
         assertEquals "the_url?a=b&PROPERTYNAME=relativeFilePath", params.url
     }
 
-    def checkUrlListStreamProcessor = { streamProcessor ->
+    void testUrlListStreamProcessor() {
 
         def input = """\
             FID,profile_id,relativeFilePath
@@ -86,7 +95,8 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        streamProcessor inputStream, outputStream
+        def sp = controller.urlListStreamProcessor("relativeFilePath", "/mnt/imos-t4", "http://data.imos.org.au")
+        sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
 

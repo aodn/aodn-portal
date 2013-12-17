@@ -103,7 +103,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     afterRender: function () {
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
-        this.loadSpinner = new Portal.common.LoadMask(this.el);
     },
 
     autoZoomCheckboxHandler: function (box, checked) {

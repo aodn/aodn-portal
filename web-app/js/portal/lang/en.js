@@ -222,6 +222,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     comboOptionAfter: 'after',
     comboOptionBetween: 'between',
 
+    // BooleanFilterPanel.js
+    checkboxDescription: 'Select only data with {0}(s)',
+
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
@@ -233,7 +236,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     aodaacEmailProblemDialogTitle: 'Invalid email address',
     aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
     productInfoHeading: 'Product Info',
-    spatialExtentHeading: 'Extent',
+    spatialExtentHeading: 'Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
     areaCoveredLabel: 'Area covered: ',
     currentDateTimeLabel: 'Displaying',

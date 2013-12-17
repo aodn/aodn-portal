@@ -22,7 +22,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             autoScroll: true,
             layoutConfig: {
                 // The total column count must be specified here
-                columns: 2,
+                columns: 1,
                 tableAttrs: {
                     cellspacing: '10px',
                     style: {
@@ -65,10 +65,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _addLabel: function(filter) {
 
         var labelText = filter.label.split('_').join(' ').toTitleCase();
-
         var label = new Ext.form.Label({
-            text: labelText + ": ",
-            style: 'font-size: 11px;'
+            html: "<h4>" + labelText + "</h4>",
         });
         this.add(label);
     },
@@ -102,7 +100,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             });
         }
         else {
-            //probably some other layer added in through getfeatureinfo, or user added WMS
+            // probably some other layer added in through getfeatureinfo, or user added WMS
         }
     },
 

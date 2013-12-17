@@ -16,7 +16,7 @@ class DownloadController extends RequestProxyingController {
 
     // Index action inherited from RequestProxyingController
 
-    def urlList = {
+    def urlListForLayer = {
 
         def layerId = params.layerId
 
@@ -30,14 +30,20 @@ class DownloadController extends RequestProxyingController {
         def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
         def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
-        def requestSingleField = { params ->
+        _performProxying(
+            requestSingleFieldParamProcessor(fieldName),
+            urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+        )
+    }
+
+    def requestSingleFieldParamProcessor(fieldName) {
+
+        return { params ->
 
             params.url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
             return params
         }
-
-        _performProxying(requestSingleField, urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase))
     }
 
     def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {

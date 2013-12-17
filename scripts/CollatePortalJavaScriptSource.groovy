@@ -35,7 +35,7 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
 def getPortalJsFiles(stagingDir) {
 
     def includes = []
-    new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "home", "index.gsp"])).eachLine { line ->
+    new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "_js_includes.gsp"])).eachLine { line ->
         // We want to match lines like file:'portal/prototypes/OpenLayers.js?'
         def matcher = line =~ /file:\s*'(portal\/.+)'/
         if (matcher.find()) {
