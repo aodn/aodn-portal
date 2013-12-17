@@ -74,7 +74,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         if (this.status.rendered) {
             this.status.update(status);
         }
-
     },
 
     hideDetailsPanelContents: function () {

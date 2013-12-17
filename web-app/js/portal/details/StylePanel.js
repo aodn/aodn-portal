@@ -81,6 +81,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         ];
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
+        
+        this.on('show', this._showHandler);
     },
 
     makeCombo:function () {
@@ -290,5 +292,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         return undefined;
+    },
+    
+    _showHandler: function() {
+        // need to synch the slider with its value when we know its
+        // width given that the render is being forced prior to display
+        this.opacitySlider.syncThumb();
     }
 });

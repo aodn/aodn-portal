@@ -184,9 +184,10 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     _buildToggleAll: function (termStore) {
         var toggleAll = new Ext.ux.Hyperlink({
-            text:OpenLayers.i18n('showAll')['false'],
-            showAll:false,
-            termStore:termStore,
+            text: OpenLayers.i18n('showAll')['false'],
+            showAll: false,
+            termStore: termStore,
+            hidden: true,
             setShowAll: function (showAll) {
                 this.showAll = showAll;
                 this.setText(OpenLayers.i18n('showAll')[showAll]);
