@@ -12,7 +12,8 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
 
         this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
-            height: 90
+            height: 90,
+            width: 200,
         });
         this.noneDisplayPanel = new Ext.Panel();
 
@@ -50,7 +51,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     _showCardForGeometry: function(geometry) {
-
         if (geometry) {
             var card = geometry.isBox() ? this.boxDisplayPanel : this.polygonDisplayPanel;
             this._showCard(card, geometry);

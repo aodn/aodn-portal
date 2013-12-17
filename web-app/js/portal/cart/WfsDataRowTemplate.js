@@ -47,7 +47,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     _urlListDownloadHandler: function (collection) {
         var additionalArgs = {
-            action: 'urlList',
+            action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);

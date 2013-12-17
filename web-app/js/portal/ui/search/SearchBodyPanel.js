@@ -35,16 +35,6 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             this._onResultsStoreLoad();
         }, this);
 
-        this.searcher.on('searchstart', function() {
-            this.searchResultsPanel.showLoadMask();
-        }, this);
-
-        Ext.each(['searchcomplete', 'summaryOnlySearchComplete', 'searcherror'], function(eventName) {
-            this.searcher.on(eventName, function() {
-                this.searchResultsPanel.hideLoadMask();
-            }, this);
-        }, this);
-
         this.searchResultsPanel.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
     },
 

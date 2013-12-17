@@ -20,8 +20,8 @@
  </script>
    <![endif]-->
 
-    <g:render template="/theme_includes"></g:render>
-
+    <g:render template="/js_includes"></g:render>
+    <g:render template="/public_theme_includes"></g:render>
 </head>
 
 <body>

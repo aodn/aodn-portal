@@ -21,7 +21,7 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
                 fields: ['style', 'label'],
                 data: [this.BOUNDING_BOX, this.POLYGON, this.NONE]
             }),
-            width: 150,
+            width: 165,
             value: this.BOUNDING_BOX.style,
             valueField: 'style',
             displayField: 'label',

@@ -110,7 +110,13 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "download", action: "index|urlList") {
+        downloadAccess(controller: "download", action: "index|urlListForLayer") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
+        marvlAccess(controller: "marvl", action: "urlListForFeatureRequest") {
             before = {
                 request.accessAllowed = true
             }

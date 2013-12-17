@@ -29,17 +29,16 @@ class FilterController {
 
         def filterInstance = new Filter(params)
         filterInstance.layer = Layer.get(params.layerId)
+        def layerInstance = Layer.get(params.layerId)
 
         // Split possible values on comma.
-        filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: [] // Todo: separate (possibly into a 'before' filter?
+        filterInstance.possibleValues = params.possibleValues?.tokenize(",") ?: []
 
         if (filterInstance.save()) {
-
             redirect(controller: "layer", action: "editFilters", id: filterInstance.layerId)
         }
         else {
-
-            redirect(action: 'edit', params: params)
+            render (view: 'create',  model: [filterInstance: filterInstance, layerInstance: layerInstance])
         }
     }
 

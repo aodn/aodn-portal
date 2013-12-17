@@ -29,19 +29,22 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
-        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         this._addLoadingInfo();
         this.add(this._newSectionSpacer());
-        this.add(this._newSectionSpacer());
-        this.add(this._newSectionSpacer());
         this._addSpatialConstraintDisplayPanel();
+        this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
+        this._addLabel(OpenLayers.i18n('temporalExtentHeading'));
         this.add(this._newSectionSpacer());
         this._addTemporalControls();
         this.add(this._newSectionSpacer());
     },
 
     update: function(layer, show, hide, target) {
+
         this.selectedLayer = layer;
+        this.selectedProductInfo = null;
+
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
@@ -74,11 +77,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _populateFormFields: function() {
-
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
-
-        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _addLoadingInfo: function() {
@@ -105,7 +105,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addTemporalControls: function() {
-        var temporalExtentHeader = this._newHtmlElement(String.format("<b>{0}</b>", OpenLayers.i18n('temporalExtentHeading')));
 
         this._updateTimeRangeLabel(null, true);
 
@@ -184,7 +183,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [temporalExtentHeader, this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()],
+            items: [this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()],
             hidden: true
         });
 
@@ -228,7 +227,15 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _newSectionSpacer: function() {
-        return new Ext.Spacer({ height: 7 });
+        return new Ext.Spacer({ height: 10 });
+    },
+
+    _addLabel: function(labelText) {
+        var label = new Ext.form.Label({
+            html: "<h4>" + labelText + "</h4>",
+        });
+
+        this.add(label);
     },
 
     _buildAodaacParameters: function(geometry) {

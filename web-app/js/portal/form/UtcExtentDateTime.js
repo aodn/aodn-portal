@@ -27,6 +27,13 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this._setTimeValues(momentDate.utc(), this.extent, toMaxTime);
     },
 
+    getValue: function() {
+        // create new instance of date using clone
+        // new Date(this.dateValue) used by superclass doesn't preserve milliseconds
+        // on firefox
+        return this.dateValue ? this.dateValue.clone() : '';
+    },
+    
     reset: function() {
         this.df.reset();
         this.tf.reset();

@@ -226,6 +226,14 @@ catch (e) {
     System.setProperty "INSTANCE_NAME", portal.instance.name
 }
 
+// MARVL project integration
+marvl {
+    urlList {
+        prefixToRemove = "/mnt/imos-t3/"
+        newUrlBase = "http://data.aodn.org.au/"
+    }
+}
+
 // log4j configuration
 log4j = {
     appenders {
