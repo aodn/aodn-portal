@@ -28,8 +28,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         this._addElements();
 
-        this.on('maximize', this._onMaximizeRestore,this);
-        this.on('restore', this._onMaximizeRestore,this);
+        this.on('maximize', this._onMaximizeRestore, this);
+        this.on('restore', this._onMaximizeRestore, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.close();
@@ -53,7 +53,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.popupTab.delegateUpdates();
     },
 
-    _onMaximizeRestore:function() {
+    _onMaximizeRestore: function() {
         this.popupTab.doLayout();
         this.popupTab.delegateUpdates();
     },
@@ -71,7 +71,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         // Add tab panel (empty for now)
         this.add(new Ext.TabPanel({
             ref: 'popupTab',
-            enableTabScroll : true,
+            enableTabScroll: true,
             deferredRender: true,
             hidden: true
         }));
@@ -99,7 +99,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             success: function(response, options) {
                 this._updatePopupDepthStatus(response);
             },
-            failure: function (response, options) {
+            failure: function(response, options) {
                 this._updatePopupDepthStatus(null);
             }
         });
@@ -152,7 +152,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         Ext.Ajax.request({
             scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
-            params: {
+            extraParams: {
                 layer: layer,
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
@@ -162,12 +162,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             success: function(resp, options) {
                 // Delegate HTML formatting of response to layer
                 this._addPopupTabContent(
-                    options.params.layer.formatFeatureInfoHtml(resp, options),
-                    options.params.name);
+                    options.extraParams.layer.formatFeatureInfoHtml(resp, options),
+                    options.extraParams.name
+                );
                 this._featureInfoRequestCompleted();
                 setTimeout(imgSizer, 0);
             },
-
             failure: this._featureInfoRequestCompleted
         });
     },
@@ -178,7 +178,15 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _getLayerFeatureInfoRequestString: function(layer) {
-        return proxyURL + encodeURIComponent(layer.getFeatureInfoRequestString(this._clickPoint(), { BUFFER: this.appConfig.mapGetFeatureInfoBuffer }));
+        var ret = proxyURL + encodeURIComponent(
+            layer.getFeatureInfoRequestString(this._clickPoint(),
+                {
+                    BUFFER: this.appConfig.mapGetFeatureInfoBuffer
+                })
+        );
+
+        ret = ret + "&FORMAT=" + layer.getFeatureInfoFormat();
+        return ret;
     },
 
     _clickPoint: function() {
@@ -276,14 +284,14 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 OpenLayers.i18n(
                     'infoFoundTitle',
                     { 'dataCollectionNumber': this.numGoodResults }
-            ));
+                ));
         }
         else if (this.numResultQueries == this.numResultsToLoad) {
             this.setTitle(
                 OpenLayers.i18n(
                     'noInfoFoundTitle',
                     { 'dataCollectionNumber': this.numResultsToLoad }
-            ));
+                ));
         }
     },
 
@@ -316,19 +324,19 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         // We'll need to set the active tab index later, if there's not one currently.
         var activeTab = this.popupTab.getActiveTab();
 
-        this.popupTab.add( {
+        this.popupTab.add({
             xtype: "box",
             title: title,
             padding: 30,
             autoHeight: true,
             cls: "featureinfocontent",
             autoEl: {
-                    html: content
+                html: content
             },
             listeners: {
                 // find any script loaded as text and run it when this tab is opened
                 activate: function() {
-                    var code = $('#' + this.getId( ) + ' script').text();
+                    var code = $('#' + this.getId() + ' script').text();
                     var codefunc = new Function(code);
                     codefunc();
                 }

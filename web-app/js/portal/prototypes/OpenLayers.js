@@ -66,19 +66,18 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoin
     }
 
     baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, overrideParams);
-
     return this.unproxy(this.getFullRequestString(baseFeatureInfoParams));
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
-    if (this.isNcwms()) {
-        // ignoring any bad user config. we know what we want here
+/*    if (this.isNcwms()) {
+        // we know what we want here
         return 'text/xml';
     }
-    else {
+    else {*/
         // Should usually be 'text/html'
         return this.server.infoFormat;
-    }
+    //}
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
