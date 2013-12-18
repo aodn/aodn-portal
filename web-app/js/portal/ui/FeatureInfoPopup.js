@@ -304,15 +304,15 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
                 var label = OpenLayers.i18n(depth <= 0 ? 'depthLabel' : 'elevationLabel');
 
-                this.popupHtml.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
+                this.depthInfoPanel.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
             }
             else {
-                this.popupHtml.update("");
+                this.depthInfoPanel.update("");
             }
         }
         else {
             // clear out any placeholder 'loading' text
-            this.popupHtml.update("");
+            this.depthInfoPanel.update("");
         }
     },
 
