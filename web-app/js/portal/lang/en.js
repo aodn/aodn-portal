@@ -39,9 +39,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
     // Download Step
-    metadataSubheading: 'Metadata',
-    dataSubheading: 'Data',
-    filesSubheading: 'Attached files',
     noCollectionsMessage: 'No data collections to show',
     noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
@@ -62,7 +59,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Email address',
-    notificationBlurbMessage: 'Subsetting gridded data can take a long time. You will be notified via email when your data is ready for download.',
+    notificationBlurbMessage: 'Subsetting gridded data can take a long time.<br>You will be notified via email when your data is ready for download.',
 
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',

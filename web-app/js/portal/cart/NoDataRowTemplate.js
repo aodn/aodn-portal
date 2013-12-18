@@ -8,30 +8,29 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.NoDataRowTemplate = Ext.extend(Ext.XTemplate, {
+Portal.cart.NoDataRowTemplate = Ext.extend(Object, {
 
-    constructor: function(downloadPanelTemplate) {
-        this.downloadPanelTemplate = downloadPanelTemplate;
-
-        var templateLines = [
-            '<div class="row data">',
-            '  <div class="subheading">' + OpenLayers.i18n('dataSubheading') + '</div>',
-            '  {[this._getNoDataMessageEntry()]}',
-            '</div>'
-        ];
-
-        Portal.cart.NoDataRowTemplate.superclass.constructor.call(this, templateLines);
+    constructor: function(config) {
+        Portal.cart.NoDataRowTemplate.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
-    applyWithControls: function(values) {
-        return this.apply(values);
+    getDataFilterEntry: function(values) {
+        return String.format('<i>{0}</i>', OpenLayers.i18n('noFilterMessage'));
     },
 
-    _getNoDataMessageEntry: function() {
-        return this.downloadPanelTemplate._makeEntryMarkup(
-            this.downloadPanelTemplate._makeSecondaryTextMarkup(
-                OpenLayers.i18n('noDataMessage')
-            )
-        );
+    createMenuItems: function (collection) {
+        return [];
+    },
+
+    getDataSpecificMarkup: function () {
+        return '';
+    },
+
+    attachMenuEvents: function(collection) {},
+
+    downloadWithConfirmation: function(downloadUrl, downloadFilename, downloadControllerArgs) {
+        return function () {
+            this.downloadConfirmation.call(this.downloadConfirmationScope, downloadUrl, downloadFilename, downloadControllerArgs);
+        };
     }
 });
