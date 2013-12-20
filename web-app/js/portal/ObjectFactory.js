@@ -1,6 +1,6 @@
-Ext.namespace('Portal.ui.search');
+Ext.namespace('Portal');
 
-Portal.ui.search.SearchFilterPanelFactory = Ext.extend(Object, {
+Portal.ObjectFactory = Ext.extend(Object, {
 
     getInstance: function(constructor) {
         // http://stackoverflow.com/questions/3362471/how-can-i-call-a-javascript-constructor-using-call-or-apply

@@ -61,7 +61,7 @@ class ProxiedRequest {
         }
         catch (Exception e) {
 
-            log.info "Unable to pass-through response from $targetUrl", e
+            log.warn "Unable to process response from $targetUrl", e
         }
         finally {
 

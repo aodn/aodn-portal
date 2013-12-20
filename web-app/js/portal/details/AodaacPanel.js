@@ -48,14 +48,14 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             success: function(resp){
 
                 this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                this._updateGeoNetworkAodaac(this.map.getConstraint());
                 this.productsInfo = JSON.parse(resp.responseText);
                 this.selectedProductInfo = this.productsInfo[this.selectedProductInfoIndex];
+                this._updateGeoNetworkAodaac(this.map.getConstraint());
                 if (this.productsInfo.length > 0) {
                     this._clearDateTimeFields();
                     this.selectedLayer.processTemporalExtent();
                     this._attachTemporalEvents();
-                    this._populateFormFields();
+                    this._removeLoadingInfo();
                     this._showAllControls();
                     show.call(target, this);
                 }
@@ -73,7 +73,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.temporalControls.show();
     },
 
-    _populateFormFields: function() {
+    _removeLoadingInfo: function() {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 

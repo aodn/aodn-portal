@@ -42,7 +42,6 @@ ${buildInfo}
 
 </script>
 
-
 </head>
 
 <body>
