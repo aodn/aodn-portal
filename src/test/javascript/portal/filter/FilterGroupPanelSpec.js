@@ -19,7 +19,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('_handleFiltersJson', function() {
+    describe('_showHideFilters', function() {
 
         var dummyResponse;
         var fnTarget = {};
@@ -34,7 +34,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterGroupPanel._handleFiltersJson(layer, showFunction, noOp, {});
+            filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
         });
 
         it('creates a filter panel', function() {

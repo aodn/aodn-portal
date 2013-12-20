@@ -41,7 +41,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function(cfg) {
+    initComponent: function() {
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
@@ -75,14 +75,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         this.layer = layer;
 
-        this._clearItems();
+        this.removeAll();
         this.doLayout();
         this.addLoadingMessage();
 
-        if(layer.filters) {
-            this._handleFiltersJson(layer, show, hide, target);
+        if (layer.filters) {
+            this._showHideFilters(layer, show, hide, target);
         }
-        else if(layer.grailsLayerId) {
+        else if (layer.grailsLayerId) {
 
             Ext.Ajax.request({
                 url: this.GET_FILTER,
@@ -91,11 +91,11 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
                 },
                 scope: this,
                 failure: function() {
-                    this._hide(hide, target)
+                    this._hide(hide, target);
                 },
                 success: function(resp, opts) {
                     layer.filters = Ext.util.JSON.decode(resp.responseText);
-                    this._handleFiltersJson(layer, show, hide, target);
+                    this._showHideFilters(layer, show, hide, target);
                 }
             });
         }
@@ -104,10 +104,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _handleFiltersJson: function(layer, show, hide, target) {
+    _showHideFilters: function(layer, show, hide, target) {
 
         var aFilterIsEnabled = false;
-        if(this._isLayerActive(layer)) {
+        if (this._isLayerActive(layer)) {
 
             Ext.each(
                 layer.filters,
@@ -119,7 +119,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             );
         }
 
-        if(aFilterIsEnabled) {
+        if (aFilterIsEnabled) {
             this._updateAndShow(show, target);
         }
         else {
@@ -134,7 +134,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             layer: layer
         });
 
-        if(newFilterPanel) {
+        if (newFilterPanel) {
             this.relayEvents(newFilterPanel, ['addFilter']);
             if(newFilterPanel.getFilterName()) {
                 this._addLabel(filter);
@@ -175,7 +175,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateLayerFilters: function() {
-        if(this._isLayerActive(this.layer)) {
+        if (this._isLayerActive(this.layer)) {
             this.layer.setCqlFilter(this._getVisualisationCQLFilter());
             this.layer.downloadOnlyFilters = this._getDownloadCQLFilter();
         }
@@ -209,10 +209,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(this._getActiveFilters(), function(filter) {
 
-            if(filter.isDownloadOnly() == options.downloadOnly) {
+            if (filter.isDownloadOnly() == options.downloadOnly) {
 
                 var cql;
-                if(options.downloadOnly) {
+                if (options.downloadOnly) {
                     cql = filter.getDownloadCQL();
                 }
                 else {
@@ -230,7 +230,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         var activeFilters = [];
 
         Ext.each(this.filters, function(filter) {
-            if(filter.hasValue()) {
+            if (filter.hasValue()) {
                 activeFilters.push(filter);
             }
         });
@@ -248,9 +248,5 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
 
         this._updateLayerFilters();
-    },
-
-    _clearItems: function() {
-        this.removeAll();
     }
 });
