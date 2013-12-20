@@ -23,10 +23,6 @@ describe("Portal.details.DetailsPanel", function() {
         it('hides contents', function() {
             expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
         });
-
-        it('initialises stateful', function() {
-            expect(detailsPanel.stateful).toBeTruthy();
-        });
     });
 
     describe('selected collection changed', function() {

@@ -12,7 +12,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     DATE_FORMAT: 'Y-m-d',
     TIME_FORMAT: 'H:i \\U\\TC',
 
-    ROW_HEIGHT: 30,
+    ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
@@ -29,22 +29,19 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
+        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         this._addLoadingInfo();
         this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
+        this.add(this._newSectionSpacer());
         this._addSpatialConstraintDisplayPanel();
-        this.add(this._newSectionSpacer());
-        this.add(this._newSectionSpacer());
-        this._addLabel(OpenLayers.i18n('temporalExtentHeading'));
         this.add(this._newSectionSpacer());
         this._addTemporalControls();
         this.add(this._newSectionSpacer());
     },
 
-    update: function(layer, show, hide, target) {
-
+    handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
-        this.selectedProductInfo = null;
-
         Ext.Ajax.request({
             url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
             scope: this,
@@ -79,6 +76,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _removeLoadingInfo: function() {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
+
+        this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _addLoadingInfo: function() {
@@ -105,17 +104,20 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _addTemporalControls: function() {
+        var temporalExtentHeader = this._newHtmlElement(String.format("<b>{0}</b>", OpenLayers.i18n('temporalExtentHeading')));
 
         this._updateTimeRangeLabel(null, true);
 
         var dateStartLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateStartLabel'),
-            width: 40
+            width: 40,
+            flex: 2
         });
 
         var dateEndLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateEndLabel'),
-            width: 40
+            width: 40,
+            flex: 2
         });
 
         this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
@@ -123,7 +125,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateStartRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
-            width: '100%',
+            width: 255,
             height: this.ROW_HEIGHT,
             items: [
                 dateStartLabel, this.startDateTimePicker
@@ -135,7 +137,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var dateEndRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
-            width: '100%',
+            width: 255,
             height: this.ROW_HEIGHT,
             items: [
                 dateEndLabel, this.endDateTimePicker
@@ -143,48 +145,47 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         });
 
         this.previousFrameButton = new Ext.Button({
-            iconCls : 'previousButton',
-            cls : "",
+            iconCls: 'previousButton',
+            cls: "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
-            listeners : {
-                scope : this,
-                'click' : function() {
+            listeners: {
+                scope: this,
+                'click': function () {
                     this._previousTimeSlice();
                 }
             },
-            tooltip : OpenLayers.i18n('selectTimePeriod', {direction: "Previous"})
+            tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Previous"})
         });
 
         this.nextFrameButton = new Ext.Button({
-            iconCls : 'nextButton',
-            cls : "",
+            iconCls: 'nextButton',
+            cls: "",
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
-            listeners : {
-                scope : this,
-                'click' : function() {
+            listeners: {
+                scope: this,
+                'click': function () {
                     this._nextTimeSlice();
                 }
             },
-            tooltip : OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
+            tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
         });
 
         this.label = new Ext.form.Label({
             html: "<h5>" + OpenLayers.i18n('selectMapTimePeriod', {direction: ""}) + "</h5>",
-            margins: {top:0, right:10, bottom:0, left:10}
+            margins: {top: 0, right: 10, bottom: 0, left: 10}
         });
 
         this.buttonsPanel = new Ext.Panel({
-            layout : 'hbox',
+            layout: 'hbox',
             hidden: true,
-            plain : true,
-            items : [this.label, this.previousFrameButton, this.nextFrameButton],
-            height : 40
+            plain: true,
+            items: [this.label, this.previousFrameButton, this.nextFrameButton],
+            height: 40
         });
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()],
-            hidden: true
+            items: [temporalExtentHeader, this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()]
         });
 
         this.add(this.temporalControls);
@@ -194,7 +195,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return {
             dateFormat: this.DATE_FORMAT,
             timeFormat: this.TIME_FORMAT,
-            disabled: true,
+            flex: 2,
             listeners: {
                 scope: this,
                 select: this._onDateSelected,

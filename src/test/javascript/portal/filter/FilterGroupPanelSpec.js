@@ -19,21 +19,22 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('_onGetFilterSuccess', function() {
+    describe('_showHideFilters', function() {
 
         var dummyResponse;
         var fnTarget = {};
         var showFunction = function() {};
+        var layer;
 
         beforeEach(function() {
-
-            dummyResponse = {responseText: "[{}]"};
+            layer = {};
+            layer.filters = "[{}]";
 
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterGroupPanel._onGetFilterSuccess(dummyResponse, {}, showFunction, noOp, {});
+            filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
         });
 
         it('creates a filter panel', function() {
@@ -66,7 +67,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterGroupPanel.update(
+            filterGroupPanel.handleLayer(
                 {
                     grailsLayerId: 1499409
                 },
@@ -97,9 +98,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
         it('clears all filters', function() {
 
             spyOn(filterGroupPanel, '_getActiveFilters').andReturn([
-               _mockFilter('oxygen_sensor'),
-               _mockFilter('data_centre'),
-               _mockFilter('pi')
+                _mockFilter('oxygen_sensor'),
+                _mockFilter('data_centre'),
+                _mockFilter('pi')
             ]);
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
@@ -140,7 +141,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             beforeEach(function() {
                 layer = {
-                    getDownloadFilter: function() {}
+                    getDownloadFilter: function() {
+                    }
                 };
 
                 filterDescriptor = {

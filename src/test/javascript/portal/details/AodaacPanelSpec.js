@@ -42,7 +42,7 @@ describe('Portal.details.AodaacPanel', function() {
             _applyCommonSpies();
             spyOn(aodaacPanel, '_removeLoadingInfo');
 
-            aodaacPanel.update(layer, noOp, noOp, {});
+            aodaacPanel.handleLayer(layer, noOp, noOp, {});
             expect(aodaacPanel.geoNetworkRecord).toBeTruthy();
             expect(aodaacPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
         });
@@ -61,7 +61,7 @@ describe('Portal.details.AodaacPanel', function() {
                 }
             );
 
-            aodaacPanel.update(layer, noOp, noOp, {});
+            aodaacPanel.handleLayer(layer, noOp, noOp, {});
             expect(aodaacPanel._buildAodaacParameters).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
         });
@@ -98,7 +98,7 @@ describe('Portal.details.AodaacPanel', function() {
                 }
             );
 
-            aodaacPanel.update(layer, noOp, noOp, {});
+            aodaacPanel.handleLayer(layer, noOp, noOp, {});
             expect(aodaacPanel._clearDateTimeFields).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
         });

@@ -42,17 +42,17 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
     },
 
-    update: function(layer) {
+    handleLayer: function(layer) {
         this._ensurePanelsRendered();
         // Remove filter pane; and add afresh to avoid ExtJS layout bug
         this.remove(this.filterGroupPanel);
         this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
         this.insert(0, this.filterGroupPanel);
 
-        this.filterGroupPanel.update(layer, this._showTab, this._hideTab, this);
-        this.aodaacPanel.update(layer, this._showTab, this._hideTab, this);
-        this.infoPanel.update(layer, this._showTab, this._hideTab, this);
-        this.stylePanel.update(layer, this._showTab, this._hideTab, this);
+        this.filterGroupPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+        this.aodaacPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+        this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+        this.stylePanel.handleLayer(layer, this._showTab, this._hideTab, this);
 
         this.show();
     },

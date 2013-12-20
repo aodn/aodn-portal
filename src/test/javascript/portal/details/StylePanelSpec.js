@@ -127,7 +127,7 @@ describe("Portal.details.StylePanel", function() {
             var func = function(){return true;};
             stylePanel.refreshLegend = function(ncwmsLayer){};
 
-            stylePanel.update(ncwmsLayer, func, func, null);
+            stylePanel.handleLayer(ncwmsLayer, func, func, null);
 
             expect(stylePanel.styleCombo.collapse).toHaveBeenCalled();
         });
