@@ -259,5 +259,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // PolygonTypeComboBox
     polygonTypeNone: "none",
     polygonTypePolygon: "polygon",
-    polygonTypeBoundingBox: "bounding box"
+    polygonTypeBoundingBox: "bounding box",
+
+    // WfsDataRowTemplate
+    fileSizeIconPath: '<img src="images/error.png">',
+    fileSizeGb: "GB",
+    fileSizeMb: "MB",
+    estimatedDlMessage: "The estimated download size is "
 });

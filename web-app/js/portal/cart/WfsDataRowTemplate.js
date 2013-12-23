@@ -24,9 +24,16 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
         if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
+            menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
         }
 
         return menuItems;
+    },
+
+    getDataSpecificMarkup: function(values) {
+        var html = '<div id="downloadEst' + values.uuid + '"></div>';
+        this._getDownloadEstimate(values.uuid);
+        return html;
     },
 
     _createMenuItem: function(translationKey, collection, format, extension) {
@@ -35,6 +42,54 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             handler: this._downloadWfsHandler(collection, (extension || format)),
             scope: this
         }
+    },
+
+    _getDownloadEstimate: function(uuid) {
+        Ext.Ajax.request({
+            url: 'download/estimateSize',
+            scope: this,
+            params: uuid,
+            success: this._createDownloadEstimate,
+            failure: this._onFailedDownloadEstimate
+        });
+    },
+
+    _createDownloadEstimate: function(result, uuid) {
+        var sizeEstimate = parseInt(result.responseText);
+        var elementId = 'downloadEst' + uuid.params;
+
+        this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
+    },
+
+    _addDownloadEstimate: function(sizeEstimate, elementId) {
+        var sizeDiv = Ext.get(elementId);
+        var html = '<div>{0} {1}{2} </font>{3}</div>' +
+        '  <div class="clear"></div>';
+        var fileMagnitude;
+        var fileSizeImage;
+
+        if (sizeEstimate >= 1024) {
+            fileMagnitude = OpenLayers.i18n("fileSizeGb");
+            fileSizeImage = '<img src="images/error.png">';
+            htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), (sizeEstimate/1000).toFixed(1), fileMagnitude, fileSizeImage);
+        }
+        else {
+            if (sizeEstimate >= 512) {
+                fileMagnitude = OpenLayers.i18n("fileSizeMb");
+                fileSizeImage = '<img src="images/error.png">';
+                htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), sizeEstimate, fileMagnitude, fileSizeImage);
+            }
+            else {
+                fileMagnitude = OpenLayers.i18n("fileSizeMb");
+                fileSizeImage="";
+                htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), sizeEstimate, fileMagnitude, fileSizeImage);
+            }
+        }
+        sizeDiv.insertHtml("afterBegin", htmlAddition);
+    },
+
+    _onFailedDownloadEstimate: function(result) {
+        return "";
     },
 
     _cql: function(wmsLayer) {
@@ -51,6 +106,10 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             layerId: collection.wmsLayer.grailsLayerId
         };
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+    },
+
+    _netCdfDownloadHandler: function (collection) {
+        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
     },
 
     _downloadUrl: function(layer, format) {

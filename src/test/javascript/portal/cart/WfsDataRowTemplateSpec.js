@@ -63,7 +63,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     urlDownloadFieldName: true
                 }
             });
-            expect(menuItems.length).toEqual(4);
+            expect(menuItems.length).toEqual(5);
 
             var included = false;
             for (var i = 0; i < menuItems.length; i++) {
