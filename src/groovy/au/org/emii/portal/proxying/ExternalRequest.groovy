@@ -16,7 +16,7 @@ import static au.org.emii.portal.UrlUtils.urlWithQueryString
 
 class ExternalRequest {
 
-    static final Logger log = LoggerFactory.getLogger(this.class)
+    static final Logger log = LoggerFactory.getLogger(this)
 
     def outputStream
     def params

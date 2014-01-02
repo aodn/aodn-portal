@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 
 class ProxiedRequest extends ExternalRequest {
 
-    static final Logger log = LoggerFactory.getLogger(ProxiedRequest.class)
+    static final Logger log = LoggerFactory.getLogger(this)
 
     def request
     def response
