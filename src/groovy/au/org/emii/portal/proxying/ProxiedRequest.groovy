@@ -29,7 +29,6 @@ class ProxiedRequest extends ExternalRequest {
         this.params = params
     }
 
-    @Override
     def proxy(Object streamProcessor) {
 
         log.debug "ProxiedRequest.proxy() params: $params"
@@ -42,7 +41,7 @@ class ProxiedRequest extends ExternalRequest {
             response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
         }
 
-        super.proxy(streamProcessor)
+        executeRequest(streamProcessor)
     }
 
     static def _getTargetUrl(params) {
