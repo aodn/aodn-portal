@@ -12,19 +12,17 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static au.org.emii.portal.UrlUtils.urlWithQueryString
-
 class ExternalRequest {
 
     static final Logger log = LoggerFactory.getLogger(this)
 
     def outputStream
-    def params
+    def targetUrl
 
-    ExternalRequest(outputStream, params) {
+    ExternalRequest(outputStream, url) {
 
         this.outputStream = outputStream
-        this.params = params
+        this.targetUrl = url
     }
 
     def straightThrough = { inputStream, outputStream ->
@@ -36,8 +34,7 @@ class ExternalRequest {
 
         def processStream = streamProcessor ?: straightThrough
 
-        def targetUrl = _getTargetUrl()
-        log.debug "Opening connection to target URL: ${targetUrl}"
+        log.debug "Opening connection to target URL: $targetUrl"
 
         def conn = targetUrl.openConnection()
         _addAuthentication(conn, targetUrl)
@@ -54,20 +51,6 @@ class ExternalRequest {
 
             IOUtils.closeQuietly(outputStream)
         }
-    }
-
-    def _getTargetUrl() {
-
-        def query = params.findAll { key, value ->
-
-            key != "controller" &&
-            key != "action" &&
-            key != "url" &&
-            key != "format" &&
-            key != "_dc"
-        }
-
-        return urlWithQueryString(params.url, query).toURL()
     }
 
     def _addAuthentication(connection, url) {
