@@ -30,7 +30,7 @@ class ExternalRequest {
         outputStream << inputStream
     }
 
-    def executeRequest(streamProcessor = null) {
+    def executeRequest = { streamProcessor = null ->
 
         def processStream = streamProcessor ?: straightThrough
 

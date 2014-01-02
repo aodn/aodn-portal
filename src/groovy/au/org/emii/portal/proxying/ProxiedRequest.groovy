@@ -29,19 +29,29 @@ class ProxiedRequest extends ExternalRequest {
         this.params = params
     }
 
-    def proxy(Object streamProcessor) {
+    def proxy(streamProcessor) {
 
         log.debug "ProxiedRequest.proxy() params: $params"
 
+        _determineResponseContentType()
+
+        _determineDownloadFilename()
+
+        executeRequest(streamProcessor)
+    }
+
+    def _determineResponseContentType = {
+
         response.contentType = params.format ?: request.contentType
+    }
+
+    def _determineDownloadFilename = {
 
         // Force download if filename provided
         if (params.downloadFilename) {
             log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
             response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
         }
-
-        executeRequest(streamProcessor)
     }
 
     static def _getTargetUrl(params) {
