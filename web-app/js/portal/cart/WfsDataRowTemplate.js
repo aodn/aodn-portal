@@ -31,9 +31,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     getDataSpecificMarkup: function(values) {
-        var html = '<div id="downloadEst' + values.uuid + '"></div>';
         this._getDownloadEstimate(values.uuid);
-        return html;
+        return '<div id="downloadEst' + values.uuid + '"></div>';
     },
 
     _createMenuItem: function(translationKey, collection, format, extension) {
@@ -49,8 +48,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             url: 'download/estimateSize',
             scope: this,
             params: uuid,
-            success: this._createDownloadEstimate,
-            failure: this._onFailedDownloadEstimate
+            success: this._createDownloadEstimate
         });
     },
 
@@ -63,33 +61,34 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     _addDownloadEstimate: function(sizeEstimate, elementId) {
         var sizeDiv = Ext.get(elementId);
-        var html = '<div>{0} {1}{2} </font>{3}</div>' +
-        '  <div class="clear"></div>';
+        var htmlAddition = this._generateEstHtmlString(sizeEstimate);
+        sizeDiv.insertHtml("afterBegin", htmlAddition);
+    },
+
+    _generateEstHtmlString: function(estimate) {
+        var html = '<div>{0} {1}{2} {3}</div>' + '<div class="clear"></div>';
+        var fileSizeEstimate;
         var fileMagnitude;
         var fileSizeImage;
 
-        if (sizeEstimate >= 1024) {
+        if (estimate >= 1024) {
+            fileSizeEstimate = (estimate/1024).toFixed(1);
             fileMagnitude = OpenLayers.i18n("fileSizeGb");
-            fileSizeImage = '<img src="images/error.png">';
-            htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), (sizeEstimate/1000).toFixed(1), fileMagnitude, fileSizeImage);
+            fileSizeImage = OpenLayers.i18n("fileSizeIconPath");
         }
         else {
-            if (sizeEstimate >= 512) {
+            fileSizeEstimate = estimate;
+
+            if (estimate >= 512) {
                 fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                fileSizeImage = '<img src="images/error.png">';
-                htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), sizeEstimate, fileMagnitude, fileSizeImage);
+                fileSizeImage = OpenLayers.i18n("fileSizeIconPath");
             }
             else {
                 fileMagnitude = OpenLayers.i18n("fileSizeMb");
                 fileSizeImage="";
-                htmlAddition = String.format(html, OpenLayers.i18n("estimatedDlMessage"), sizeEstimate, fileMagnitude, fileSizeImage);
             }
         }
-        sizeDiv.insertHtml("afterBegin", htmlAddition);
-    },
-
-    _onFailedDownloadEstimate: function(result) {
-        return "";
+        return String.format(html, OpenLayers.i18n("estimatedDlMessage"), fileSizeEstimate, fileMagnitude, fileSizeImage);
     },
 
     _cql: function(wmsLayer) {

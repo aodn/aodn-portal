@@ -262,7 +262,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     polygonTypeBoundingBox: "bounding box",
 
     // WfsDataRowTemplate
-    fileSizeIconPath: '<img src="images/error.png">',
+    fileSizeIconPath: '<img src="images/clock_red.png">',
     fileSizeGb: "GB",
     fileSizeMb: "MB",
     estimatedDlMessage: "The estimated download size is "
