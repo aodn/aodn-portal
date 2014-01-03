@@ -23,6 +23,9 @@
         <CssCodeStyleSettings>
           <option name="KEEP_SINGLE_LINE_BLOCKS" value="true" />
         </CssCodeStyleSettings>
+        <JSCodeStyleSettings>
+          <option name="SPACE_BEFORE_FUNCTION_LEFT_PARENTH" value="false" />
+        </JSCodeStyleSettings>
         <SqlCodeStyleSettings>
           <option name="KEYWORD_CASE" value="1" />
         </SqlCodeStyleSettings>
