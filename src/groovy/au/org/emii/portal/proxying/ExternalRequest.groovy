@@ -53,7 +53,7 @@ class ExternalRequest {
         }
     }
 
-    def _addAuthentication(connection, url) {
+    void _addAuthentication(connection, url) {
         def server = _getServer(url)
         if (server) {
             server.addAuthentication(connection)
