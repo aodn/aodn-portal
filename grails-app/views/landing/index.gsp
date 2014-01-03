@@ -22,6 +22,12 @@
 
     <g:render template="/js_includes"></g:render>
     <g:render template="/public_theme_includes"></g:render>
+    <script>
+
+        // Load portal, so we can display MOTD
+        Ext.onReady(Portal.app.init, Portal.app);
+
+    </script>
 </head>
 
 <body>
