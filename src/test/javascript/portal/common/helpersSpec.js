@@ -21,4 +21,39 @@ describe("Portal.common.helpers", function() {
             expect(sanitiseForFilename(sanitiserInput)).toBe(expectedOutput);
         });
     });
+
+    describe('landingPage', function() {
+        it('/aodn-portal', function() {
+            expect(isLandingPage("/aodn-portal")).toBe(true);
+        });
+
+        it('/aodn-portal/', function() {
+            expect(isLandingPage("/aodn-portal/")).toBe(true);
+        });
+
+        it('/aodn-portal///', function() {
+            expect(isLandingPage("/aodn-portal///")).toBe(true);
+        });
+
+        it('/cakes/', function() {
+            expect(isLandingPage("/aodn-portal/")).toBe(true);
+        });
+
+        it('/aodn-portal/cakes', function() {
+            expect(isLandingPage("/aodn-portal/cakes")).toBe(false);
+        });
+
+        it('/aodn-portal/cakes/are/awesome', function() {
+            expect(isLandingPage("/aodn-portal/cakes/are/awesome")).toBe(false);
+        });
+
+        it('/aodn-portal/cakes/are/awesome/', function() {
+            expect(isLandingPage("/aodn-portal/cakes/are/awesome/")).toBe(false);
+        });
+
+        it('/aodn-portal/cakes/are/awesome///', function() {
+            expect(isLandingPage("/aodn-portal/cakes/are/awesome/")).toBe(false);
+        });
+
+    });
 });
