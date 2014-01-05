@@ -10,10 +10,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     constructor: function(options) {
 
+        this.layerName = 'spatial constraint';
+
         options = options || {};
 
-        var layer = new OpenLayers.Layer.Vector(
-            'spatial constraint',
+        this.layer = new OpenLayers.Layer.Vector(
+            this.layerName,
             {
                 displayInLayerSwitcher: false
             }
@@ -28,7 +30,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         options.autoActivate = options.autoActivate || true;
 
-        OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [layer, handler, options]);
+        OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [this.layer, handler, options]);
 
         this._configureEventsAndHandlers();
 
@@ -56,6 +58,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     removeFromMap: function() {
         this.deactivate();
+        this._removeMapEvents();
         this.map.removeLayer(this.layer);
         this.map.removeControl(this);
     },
@@ -80,6 +83,19 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         }
     },
 
+    _removeMapEvents: function() {
+        this.map.events.un({
+            "addlayer": this._setLayerToTop
+        })
+    },
+
+    _setLayerToTop: function(thisObj) {
+        var vectors = thisObj.layer.map.getLayersByName(thisObj.layer.map.spatialConstraintControl.layerName);
+        for (var i = 0; i < vectors.length; i++){
+            thisObj.layer.map.setLayerIndex(vectors[i], thisObj.layer.map.layers.length-1);
+        }
+    },
+
     _getFeature: function() {
         return this.layer.features[0];
     },
@@ -101,6 +117,11 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
     });
 
     map.addControl(map.spatialConstraintControl);
+
+    map.events.on({
+        scope: this,
+        "addlayer": map.spatialConstraintControl._setLayerToTop
+    });
 
     map.spatialConstraintControl.events.on({
         scope: map,
