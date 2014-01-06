@@ -16,6 +16,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
             uuid: 7,
             aodaac: {}
         };
+        geoNetworkRecord.aodaac.latitudeRangeStart = '-10';
     });
 
     describe('getDataFilterEntry', function() {
@@ -24,7 +25,6 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         });
 
         it('indicates a northerly bound', function() {
-            geoNetworkRecord.aodaac.latitudeRangeStart = '-10';
             var entry = tpl.getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('N')).toBeGreaterThan(-1);
             expect(entry.indexOf('-10')).toBeGreaterThan(-1);
@@ -221,7 +221,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         beforeEach(function () {
             spyOn(OpenLayers, 'i18n').andReturn('i18n value');
             spyOn(String, 'format');
-            tpl._parameterString('the_key', 'val1', 'val2');
+            tpl._parameterString('the_key', 'val1', 'val2', "delimiter");
         });
 
         it('calls OpenLayers.i18n()', function () {
@@ -229,7 +229,7 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
         });
 
         it('calls String.format()', function () {
-            expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', 'i18n value', 'val1', 'val2')
+            expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', 'i18n value', 'val1', 'val2', "delimiter")
         });
     });
 });
