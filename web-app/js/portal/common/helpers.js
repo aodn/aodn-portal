@@ -92,8 +92,7 @@ function pad(numNumber, numLength) {
 
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
-
-    if (options.params.expectedFormat == 'text/html') {
+    if (options.extraParams.expectedFormat == 'text/html') {
 
         // strip out all unwanted HTML
         if ( response.responseText.match(/<\/body>/m)) {
@@ -109,10 +108,10 @@ function formatGetFeatureInfo(response, options) {
             }
         }
     }
-    else if (options.params.expectedFormat == 'text/xml') {
+    else if (options.extraParams.expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response, options);
     }
-    else if (options.params.expectedFormat == 'text/plain') {
+    else if (options.extraParams.expectedFormat == 'text/plain') {
         // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
@@ -153,7 +152,7 @@ function setHTML_ncWMS(response, options) {
             var html = "";
             var  extras = "";
 
-            var isSD = options.params.name.toLowerCase().indexOf("standard deviation") >= 0;
+            var isSD = options.extraParams.name.toLowerCase().indexOf("standard deviation") >= 0;
 
             if (!isNaN(startval) ) {  // may have no data at this point
 
@@ -164,17 +163,17 @@ function setHTML_ncWMS(response, options) {
                     if (endtime != null) {
                         var human_endtime = new Date();
                         human_endtime.setISO8601(endtime);
-                        endval = getAussieUnits(endval, options.params.units);
+                        endval = getAussieUnits(endval, options.extraParams.units);
                     }
                 }
 
-                var startval = getAussieUnits(startval, options.params.units);
+                var startval = getAussieUnits(startval, options.extraParams.units);
 
                 if (human_time != null)  {
 
                     if (endval == null) {
                         if (isSD)  {
-                            vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
+                            vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.extraParams.units;
                         }
                         else {
                             vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
@@ -183,8 +182,8 @@ function setHTML_ncWMS(response, options) {
                     else {
                         if (isSD)
                         {
-                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.params.units;
-                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.params.units;
+                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.extraParams.units;
+                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.extraParams.units;
                             vals += "<BR />";
                         }
                         else {
@@ -196,7 +195,7 @@ function setHTML_ncWMS(response, options) {
                 }
                 else {
                     if (isSD)  {
-                        vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.params.units;
+                        vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.extraParams.units;
                     }
                     else {
                         vals = "<br /><b> " + startval[0] +"</b> "+ startval[1] + startval[2];
@@ -213,9 +212,9 @@ function setHTML_ncWMS(response, options) {
                     // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
                     html += "<p>" + xmldoc.getElementsByTagName('copyright')[0].childNodes[0].nodeValue + "</p>";
                 }
-                else if (options.params.copyright != undefined) {
+                else if (options.extraParams.copyright != undefined) {
                     // If copyright was returned in GetMetadata we need to decode the html
-                    var decodedCopyright = $('<div/>').html(options.params.copyright).text();
+                    var decodedCopyright = $('<div/>').html(options.extraParams.copyright).text();
                     html += "<p>" + decodedCopyright + "</p>";
                 }
 

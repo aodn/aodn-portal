@@ -154,22 +154,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     /* Overrides */
     getFeatureInfoRequestString: function(clickPoint, overrideParams) {
         overrideParams.TIME = this._getTimeParameter(this.time);
-        overrideParams.FORMAT = "text/xml";
-        overrideParams.INFO_FORMAT = overrideParams.FORMAT;
+        overrideParams.INFO_FORMAT = this.getFeatureInfoFormat();
         return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
     },
 
     /* Overrides */
     getFeatureInfoFormat: function() {
-        // Setting this in getExtraFeatureInfo, but we need to override the
-        // default 'text/xml' one
-        // See below as it is being wrapped with a <div> and <img src=''>
-        return "";
+        return "text/xml";
     },
 
     /* Overrides */
     formatFeatureInfoHtml: function(resp, options) {
-        return "<div><img src='" + options.url + "'></div>";
+        return formatGetFeatureInfo(resp, options);
     },
 
     isAnimatable: function() {

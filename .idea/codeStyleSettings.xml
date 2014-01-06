@@ -14,7 +14,7 @@
             <option name="LABEL_INDENT_ABSOLUTE" value="false" />
             <option name="USE_RELATIVE_INDENTS" value="false" />
           </value>
-        </option>
+    </option>
         <option name="LINE_SEPARATOR" value="&#10;" />
         <option name="HTML_ATTRIBUTE_WRAP" value="0" />
         <option name="HTML_TEXT_WRAP" value="0" />
