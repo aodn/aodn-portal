@@ -89,10 +89,11 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         })
     },
 
-    _setLayerToTop: function(thisObj) {
-        var vectors = thisObj.layer.map.getLayersByName(thisObj.layer.map.spatialConstraintControl.layerName);
+    _setLayerToTop: function(thisSpatialConstraint) {
+        var map = thisSpatialConstraint.layer.map;
+        var vectors = map.getLayersByName(map.spatialConstraintControl.layerName);
         for (var i = 0; i < vectors.length; i++){
-            thisObj.layer.map.setLayerIndex(vectors[i], thisObj.layer.map.layers.length-1);
+            map.setLayerIndex(vectors[i], map.layers.length-1);
         }
     },
 

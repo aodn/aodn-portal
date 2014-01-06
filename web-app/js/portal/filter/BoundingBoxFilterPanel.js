@@ -49,7 +49,9 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
-        this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+        if (layer.map.spatialConstraintControl) {
+            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+        }
     },
 
     _updateWithGeometry: function(geometry) {
