@@ -1041,23 +1041,6 @@ JQUERY AUTO COMPLETE
     white-space: normal;
 }
 
-.p-centre-item {
-    margin: 0 auto;
-    text-align: left;
-}
-
-.p-centre {
-    text-align: center;
-}
-
-.p-search .x-grid3-row {
-    padding: 10px 0;
-}
-
-.p-header-space {
-    border-radius: 12px 12px 0 0;
-}
-
 div.allwhite {
     color: white;
     border-color: white;
