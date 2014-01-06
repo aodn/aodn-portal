@@ -74,14 +74,14 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         if (estimate >= 1024) {
             fileSizeEstimate = (estimate/1024).toFixed(1);
             fileMagnitude = OpenLayers.i18n("fileSizeGb");
-            fileSizeImage = OpenLayers.i18n("fileSizeIconPath");
+            fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
         }
         else {
             fileSizeEstimate = estimate;
 
             if (estimate >= 512) {
                 fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                fileSizeImage = OpenLayers.i18n("fileSizeIconPath");
+                fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
             }
             else {
                 fileMagnitude = OpenLayers.i18n("fileSizeMb");
