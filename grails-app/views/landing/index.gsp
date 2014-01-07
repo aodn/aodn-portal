@@ -23,6 +23,8 @@
     <g:render template="/js_includes"></g:render>
     <g:render template="/public_theme_includes"></g:render>
     <script>
+        // portal.js will probe for that to understand if we're on the landing page
+        window.landingPage = true;
 
         // Load portal, so we can display MOTD
         Ext.onReady(Portal.app.init, Portal.app);

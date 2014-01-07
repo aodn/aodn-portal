@@ -47,7 +47,7 @@ Portal.app = {
 
     afterConfigLoad: function() {
         // Display MOTD if required on landing page
-        if (isLandingPage(window.location.pathname) && this.portal.config.enableMOTD) {
+        if (window.landingPage && this.portal.config.enableMOTD) {
             Ext.Msg.show({
                 title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
                 msg: this.portal.config.motd.motd,

@@ -306,19 +306,6 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 };
 
-// Return true if we're on the landing page, false otherwise
-// Used to display the MOTD
-function isLandingPage(path) {
-    // Compact slashes and strip trailing slashes, if there're any
-    path = path
-        .replace(/\/+/g, "/")
-        .replace(/\/$/g, "");
-
-    // One slash in the path - it's the A LANDING PAGE!
-    return path.match(/\//g).length == 1;
-}
-
-
 // IE 8 throws errors with console not existing
 // Console will exist when using developer tools
 if (typeof console === "undefined" || typeof console.log === "undefined") {
