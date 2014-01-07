@@ -25,7 +25,7 @@ describe('Portal.cart.NoDataRowTemplate', function() {
 
     describe('getDataFilterEntry', function() {
         it('it returns text that contains a no filter message', function() {
-            expect(tpl.getDataFilterEntry({}).indexOf(OpenLayers.i18n('noFilterMessage'))).toBeGreaterThan(-1);
+            expect(tpl.getDataFilterEntry({}).indexOf(OpenLayers.i18n('noDataMessage'))).toBeGreaterThan(-1);
         });
     });
 

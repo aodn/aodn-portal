@@ -59,7 +59,10 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _downloadButton: function (collection) {
         var elementId = 'download-button-' + collection.uuid;
-        this._createDownloadButton.defer(1, this, [elementId, collection]);
+
+        if (collection.aodaac || collection.wmsLayer.wfsLayer) {
+            this._createDownloadButton.defer(1, this, [elementId, collection]);
+        }
         return '';
     },
 

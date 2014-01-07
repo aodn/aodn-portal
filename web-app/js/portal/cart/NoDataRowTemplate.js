@@ -15,7 +15,7 @@ Portal.cart.NoDataRowTemplate = Ext.extend(Object, {
     },
 
     getDataFilterEntry: function(values) {
-        return String.format('<i>{0}</i>', OpenLayers.i18n('noFilterMessage'));
+        return String.format('<i>{0}</i>', OpenLayers.i18n('noDataMessage'));
     },
 
     createMenuItems: function (collection) {
