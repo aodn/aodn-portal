@@ -70,6 +70,7 @@ input.readonlyInput {
     font-size: 10px;
 }
 
+
 .searchInput {
     display: block;
     height: 27px;
@@ -202,10 +203,19 @@ hr {
     margin: 3px 5px;
     float: left;
 }
+#header {
+    height: 100;
+}
 
 #headerTitle {
-    padding: 30px 20px 0 20px;
-    margin-left: 250px;
+    padding: 36px 0 0 0;
+}
+
+
+.landingContainer {
+    margin-left: 165;
+    width: 800px;
+    padding: 20px 20px 10px 200px;
 }
 
 #toplinks {
