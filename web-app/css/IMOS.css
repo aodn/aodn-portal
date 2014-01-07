@@ -112,6 +112,9 @@ cart-title,
 }
 
 #header {
+
+    z-index: 300;
+    height: 105;
     width: 100%;
     box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
 
@@ -126,14 +129,15 @@ cart-title,
 }
 
 #logo {
-    margin: 3px 25px;
+    margin: 5px 15px;
+    position: absolute;
 }
 
 #headerTitle {
     color: #60AFdd;
     font-size: 24px;
-    margin-left: 170px;
-    padding: 34px 5px 10px 20px;
+    margin-left: 190px;
+    padding: 55px 5px 35px 20px;
 }
 
 #toplinks {

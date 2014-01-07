@@ -9,7 +9,10 @@
 
 <div id="header">
 
-    <img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" alt="logo" id="logo"/>
+    <div id="logo">
+        <a href="landing"><img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" alt="logo" id="logo" width="150" />
+        </a>
+    </div>
 
     <h1 id="headerTitle">${configInstance?.name}</h1>
 
