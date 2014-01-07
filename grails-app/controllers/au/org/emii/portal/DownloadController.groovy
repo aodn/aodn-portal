@@ -38,7 +38,7 @@ class DownloadController extends RequestProxyingController {
         )
     }
 
-    def estimateSize = {
+    def estimateSizeForLayer = {
 
         def url = params.url
 
@@ -49,6 +49,7 @@ class DownloadController extends RequestProxyingController {
 
         def resultStream = new ByteArrayOutputStream()
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
+        println grailsApplication.config.marvl.urlList.prefixToRemove
 
         def request = new ExternalRequest(resultStream, url.toURL())
         request.executeRequest calculateSumStreamProcessor('relativeFilePath', sizeFieldName)
