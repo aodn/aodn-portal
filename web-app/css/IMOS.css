@@ -26,6 +26,11 @@ Complemetery
 
 */
 
+@font-face {
+    font-family: imosheader;
+    src: local(imosheader), url('../fonts/TerminalEvent.ttf') format('opentype');
+}
+
 html {
     background-color: white;
     margin-top: 0 ! important;
@@ -64,6 +69,10 @@ h2 {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     box-shadow: 3px 3px 4px #cccccc;
     font-size: 16px;
+}
+
+#logoContainer {
+    margin-top: 5px;
 }
 
 #landingMain {
@@ -121,12 +130,18 @@ cart-title,
 
 #logo {
     margin: 5px 15px;
-    position: absolute;
 }
 
-#headerTitle {
-    color: #60AFdd;
-    font-size: 24px;
+h1#headerTitle {
+    font-family: 'imosheader';
+    color: #FFFFFF;
+    text-shadow:2px 2px 8px #999;
+    font-size: 45px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+}
+.headerHeightOverlord {
+    height: 80px;
 }
 
 #toplinks {
@@ -138,7 +153,7 @@ cart-title,
 }
 
 #toplinks a {
-    color: #a4d2ee;
+    color: #FFFFFF;
     font-size: 13px;
     font-weight: bold;
     margin: 0px 2px 0px 3px;
