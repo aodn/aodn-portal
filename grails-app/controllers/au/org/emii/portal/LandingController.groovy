@@ -6,9 +6,6 @@ class LandingController {
     def portalInstance
 
     def index = {
-
-        println Config.activeInstance()
-
         [
             oceanCurrent: oceanCurrentService.getRandomDetails(),
             cfg: Config.activeInstance(),
