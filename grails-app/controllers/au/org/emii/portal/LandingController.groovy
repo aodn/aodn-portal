@@ -7,6 +7,8 @@ class LandingController {
 
     def index = {
 
+        println Config.activeInstance()
+
         [
             oceanCurrent: oceanCurrentService.getRandomDetails(),
             cfg: Config.activeInstance(),
