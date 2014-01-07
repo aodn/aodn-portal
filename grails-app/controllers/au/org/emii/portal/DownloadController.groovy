@@ -92,7 +92,6 @@ class DownloadController extends RequestProxyingController {
     }
 
     def estimateSize = {
-        def fileSize = 1100;
-        render fileSize;
+        render text: "", status: 500;
     }
 }
