@@ -13,8 +13,9 @@
         <a href="landing"><img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" alt="logo" id="logo" width="150" />
         </a>
     </div>
-
-    <h1 id="headerTitle">${configInstance?.name}</h1>
+    <div class="landingContainer">
+        <h1 id="headerTitle">${configInstance?.name}</h1>
+    </div>
 
     <g:if test="${showLinks}">
         <div id="viewPortLinks">
