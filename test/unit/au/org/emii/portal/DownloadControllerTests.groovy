@@ -23,11 +23,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testUrlListForLayer() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
-
-        mockDomain Server, [server]
-        mockDomain Layer, [layer]
+        _setUpExampleObjects()
 
         def testParamProcessor = new Object()
         controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
@@ -59,20 +55,30 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testEstimateSizeForLayerNoLayerId() {
-        fail "Write tests"
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
     }
 
     void testEstimateSizeForLayerInvalidHost() {
-        fail "Write tests"
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = "the_url"
+
+        controller.hostVerifier = [allowedHost: {r, u -> false}]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
     }
 
     void testEstimateSizeForLayer() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+        _setUpExampleObjects()
 
-        mockDomain Server, [server]
-        mockDomain Layer, [layer]
+        mockParams.layerId = 1
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
@@ -80,13 +86,16 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-
-        mockParams.layerId = 1
+        controller.hostVerifier = [allowedHost: {r, u -> true}]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
+            assertEquals testStreamProcessor, streamProcessor
+            resultStream << "the output"
+        }
 
         controller.estimateSizeForLayer()
 
-        assertEquals "asdf", mockResponse.contentAsString
-        fail "Write tests"
+        assertEquals "the output", mockResponse.contentAsString
     }
 
     void testRequestSingleFieldParamProcessor() {
@@ -167,6 +176,15 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
             input,
             expectedOutput
         )
+    }
+
+    void _setUpExampleObjects() {
+
+        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+
+        mockDomain Server, [server]
+        mockDomain Layer, [layer]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {

@@ -40,6 +40,14 @@ class DownloadController extends RequestProxyingController {
 
     def estimateSizeForLayer = {
 
+        def layerId = params.layerId
+
+        if (!layerId) {
+            render text: "No layerId provided", status: 400
+            return
+        }
+
+        def layer = Layer.get(layerId)
         def url = params.url
 
         if (!hostVerifier.allowedHost(request, url)) {
@@ -49,12 +57,17 @@ class DownloadController extends RequestProxyingController {
 
         def resultStream = new ByteArrayOutputStream()
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
-        println grailsApplication.config.marvl.urlList.prefixToRemove
+        def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
 
-        def request = new ExternalRequest(resultStream, url.toURL())
-        request.executeRequest calculateSumStreamProcessor('relativeFilePath', sizeFieldName)
+        _executeExternalRequest url, streamProcessor, resultStream
 
         render new String(resultStream.toByteArray(), 'UTF-8')
+    }
+
+    void _executeExternalRequest(url, streamProcessor, resultStream) {
+
+        def request = new ExternalRequest(resultStream, url.toURL())
+        request.executeRequest streamProcessor
     }
 
     def requestSingleFieldParamProcessor(fieldName) {
