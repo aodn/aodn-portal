@@ -21,10 +21,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller = new DownloadController()
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
     void testUrlListForLayer() {
 
         def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
@@ -62,6 +58,37 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals 1, performProxyingCalledCount
     }
 
+    void testEstimateSizeForLayerNoLayerId() {
+        fail "Write tests"
+    }
+
+    void testEstimateSizeForLayerInvalidHost() {
+        fail "Write tests"
+    }
+
+    void testEstimateSizeForLayer() {
+
+        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+
+        mockDomain Server, [server]
+        mockDomain Layer, [layer]
+
+        def testStreamProcessor = new Object()
+        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
+            assertEquals "relativeFilePath", filenameFieldName
+            assertEquals "size", sizeFieldName
+            return testStreamProcessor
+        }
+
+        mockParams.layerId = 1
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "asdf", mockResponse.contentAsString
+        fail "Write tests"
+    }
+
     void testRequestSingleFieldParamProcessor() {
 
         def pp = controller.requestSingleFieldParamProcessor("relativeFilePath")
@@ -97,6 +124,57 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         def sp = controller.urlListStreamProcessor("relativeFilePath", "/mnt/imos-t4", "http://data.imos.org.au")
         sp(inputStream, outputStream)
+
+        def output = outputStream.toString("UTF-8")
+
+        assertEquals expectedOutput, output
+    }
+
+    void testCalculateSumStreamProcessorNoProblems() {
+
+        def input = """\
+            FID,profile_id,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,21772,file_a,100
+            aatams_sattag_nrt_wfs.331445,21772,file_b,200
+            aatams_sattag_nrt_wfs.331441,21772,file_c,300
+            aatams_sattag_nrt_wfs.331446,21772,file_d,300
+            aatams_sattag_nrt_wfs.331447,21772,file_d,300
+            aatams_sattag_nrt_wfs.331442,21772,file_e,400
+        """
+
+        def expectedOutput = "1300"
+
+        assertCorrectProcessing(
+            controller.calculateSumStreamProcessor("relativeFilePath", "size"),
+            input,
+            expectedOutput
+        )
+    }
+
+    void testCalculateSumStreamProcessorWithProblems() {
+
+        def input = """\
+            FID,profile_id,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,21772,file_a,100
+            aatams_sattag_nrt_wfs.331445,21772,file_b,not a number
+
+        """
+
+        def expectedOutput = "-1"
+
+        assertCorrectProcessing(
+            controller.calculateSumStreamProcessor("relativeFilePath", "size"),
+            input,
+            expectedOutput
+        )
+    }
+
+    static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {
+
+        def inputStream = new ByteArrayInputStream(input.bytes)
+        def outputStream = new ByteArrayOutputStream()
+
+        streamProcessor(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
 
