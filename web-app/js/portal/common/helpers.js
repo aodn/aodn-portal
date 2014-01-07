@@ -305,8 +305,6 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 };
 
-
-
 // IE 8 throws errors with console not existing
 // Console will exist when using developer tools
 if (typeof console === "undefined" || typeof console.log === "undefined") {
