@@ -21,7 +21,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
         }
         return areaString +
-            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " - ");
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
     },
 
     createMenuItems: function (collection) {
@@ -65,6 +65,7 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _parameterString: function (labelKey, value1, value2, delim) {
+        delim = (delim == undefined) ? "" : delim;
         return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, delim);
     },
 
