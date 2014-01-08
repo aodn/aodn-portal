@@ -7,6 +7,8 @@
 
 package au.org.emii.portal
 
+import au.org.emii.portal.proxying.ProxiedRequest
+
 class SplashController {
 
     def oceanCurrentService

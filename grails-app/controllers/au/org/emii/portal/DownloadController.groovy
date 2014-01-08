@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import au.com.bytecode.opencsv.CSVReader
+import au.org.emii.portal.proxying.RequestProxyingController
 
 class DownloadController extends RequestProxyingController {
 

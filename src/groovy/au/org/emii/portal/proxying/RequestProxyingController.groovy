@@ -5,7 +5,7 @@
  *
  */
 
-package au.org.emii.portal
+package au.org.emii.portal.proxying
 
 abstract class RequestProxyingController {
 
