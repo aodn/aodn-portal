@@ -111,13 +111,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testUrlListStreamProcessor() {
 
         def input = """\
-            FID,profile_id,relativeFilePath
-            aatams_sattag_nrt_wfs.331443,21772,/mnt/imos-t4/IMOS/Q9900542.nc
-            aatams_sattag_nrt_wfs.331445,21772,/mnt/imos-t4/IMOS/Q9900543.nc
-            aatams_sattag_nrt_wfs.331441,21772,/mnt/imos-t4/IMOS/Q9900540.nc
-            aatams_sattag_nrt_wfs.331442,21772,/mnt/imos-t4/IMOS/Q9900541.nc
-            aatams_sattag_nrt_wfs.331443,21772,/mnt/imos-t4/IMOS/Q9900542.nc
-            aatams_sattag_nrt_wfs.331445,21772,/mnt/imos-t4/IMOS/Q9900543.nc
+            FID,relativeFilePath
+            aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
+            aatams_sattag_nrt_wfs.331441,/mnt/imos-t4/IMOS/Q9900540.nc
+            aatams_sattag_nrt_wfs.331442,/mnt/imos-t4/IMOS/Q9900541.nc
+            aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
 
         """
 
@@ -142,13 +142,13 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
     void testCalculateSumStreamProcessorNoProblems() {
 
         def input = """\
-            FID,profile_id,relativeFilePath,size
-            aatams_sattag_nrt_wfs.331443,21772,file_a,100
-            aatams_sattag_nrt_wfs.331445,21772,file_b,200
-            aatams_sattag_nrt_wfs.331441,21772,file_c,300
-            aatams_sattag_nrt_wfs.331446,21772,file_d,300
-            aatams_sattag_nrt_wfs.331447,21772,file_d,300
-            aatams_sattag_nrt_wfs.331442,21772,file_e,400
+            FID,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,file_a,100
+            aatams_sattag_nrt_wfs.331445,file_b,200
+            aatams_sattag_nrt_wfs.331441,file_c,300
+            aatams_sattag_nrt_wfs.331446,file_d,300
+            aatams_sattag_nrt_wfs.331447,file_d,300
+            aatams_sattag_nrt_wfs.331442,file_e,400
         """
 
         def expectedOutput = "1300"
@@ -163,9 +163,9 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
     void testCalculateSumStreamProcessorWithProblems() {
 
         def input = """\
-            FID,profile_id,relativeFilePath,size
-            aatams_sattag_nrt_wfs.331443,21772,file_a,100
-            aatams_sattag_nrt_wfs.331445,21772,file_b,not a number
+            FID,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,file_a,100
+            aatams_sattag_nrt_wfs.331445,file_b,not a number
 
         """
 
