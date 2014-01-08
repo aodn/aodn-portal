@@ -59,26 +59,26 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _downloadButton: function (collection) {
         var elementId = 'download-button-' + collection.uuid;
+        this._createDownloadButton.defer(1, this, [elementId, collection]);
 
-        if (collection.aodaac || collection.wmsLayer.wfsLayer) {
-            this._createDownloadButton.defer(1, this, [elementId, collection]);
-        }
         return '';
     },
 
     _createDownloadButton: function (id, collection) {
-        new Ext.Button({
-            text: OpenLayers.i18n('downloadButtonLabel'),
-            icon: 'images/down.png',
-            cls: 'navigationButton',
-            scope: this,
-            renderTo: id,
-            menu: new Ext.menu.Menu({
-                items: this._getRowTemplate(collection).createMenuItems(collection)
-            })
-        });
+        if (collection.aodaac || collection.wmsLayer.wfsLayer) {
+            new Ext.Button({
+                text: OpenLayers.i18n('downloadButtonLabel'),
+                icon: 'images/down.png',
+                cls: 'navigationButton',
+                scope: this,
+                renderTo: id,
+                menu: new Ext.menu.Menu({
+                    items: this._getRowTemplate(collection).createMenuItems(collection)
+                })
+            });
 
-        this._getRowTemplate(collection).attachMenuEvents(collection);
+            this._getRowTemplate(collection).attachMenuEvents(collection);
+        }
     },
 
     _getFileListEntries: function (values) {
