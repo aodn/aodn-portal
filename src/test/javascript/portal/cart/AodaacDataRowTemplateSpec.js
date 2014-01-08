@@ -20,8 +20,10 @@ describe('Portal.cart.AodaacDataRowTemplate', function() {
     });
 
     describe('getDataFilterEntry', function() {
-        it('returns an entry', function() {
-            expect(tpl.getDataFilterEntry(geoNetworkRecord).length).toBeGreaterThan(0);
+
+        it('still returns date range stuff without bbox stuff', function() {
+            geoNetworkRecord.aodaac.latitudeRangeStart = undefined;
+            expect(tpl.getDataFilterEntry(geoNetworkRecord).length).toBeGreaterThan(10);
         });
 
         it('indicates a northerly bound', function() {
