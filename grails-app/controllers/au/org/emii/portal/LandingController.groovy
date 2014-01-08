@@ -6,11 +6,14 @@ class LandingController {
     def portalInstance
 
     def index = {
-        [
-            oceanCurrent: oceanCurrentService.getRandomDetails(),
-            cfg: Config.activeInstance(),
-            portalBuildInfo: _portalBuildInfo()
-        ]
+
+        render(
+            view: portalInstance.name() + "index",
+            model:[oceanCurrent: oceanCurrentService.getRandomDetails(),
+                    cfg: Config.activeInstance(),
+                    portalBuildInfo: _portalBuildInfo()
+            ]
+        )
     }
 
     def _portalBuildInfo() {
