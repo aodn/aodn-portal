@@ -31,7 +31,6 @@ Complemetary
     /*src: local(imosheader), url('../fonts/ZacharyBinx.ttf') format('opentype');*/
     src: local(imosheader), url('../fonts/TerminalEvent.ttf') format('opentype');
 
-
 }
 
 html {
@@ -75,7 +74,8 @@ h2 {
 }
 
 #logoContainer {
-    margin-top: 5px;
+    margin-top: 10px;
+    margin-left: 5px;
 }
 
 #landingMain {
@@ -138,9 +138,9 @@ cart-title,
 h1#headerTitle {
     font-family: 'imosheader';
     color: #FFFFFF;
-    text-shadow:2px 2px 8px #333;
+    text-shadow:1px 1px 8px #333;
     font-size: 47px;
-    padding-top: 10px;
+    padding-top: 15px;
     padding-bottom: 6px;
 }
 .headerHeightOverlord {
