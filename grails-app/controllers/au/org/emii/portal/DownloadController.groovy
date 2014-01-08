@@ -91,4 +91,8 @@ class DownloadController extends RequestProxyingController {
             outputWriter.flush()
         }
     }
+
+    def estimateSize = {
+        render text: "", status: 500;
+    }
 }

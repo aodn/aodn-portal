@@ -1209,6 +1209,10 @@ div.allwhite {
     padding: 10px 10px 2px 10px;
 }
 
+.downloadEstimateLabel {
+	padding: 10px 10px 2px 10px;
+}
+
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError {
     display: none;

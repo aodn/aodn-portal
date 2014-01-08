@@ -110,7 +110,7 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "download", action: "index|urlListForLayer") {
+        downloadAccess(controller: "download", action: "index|urlListForLayer|estimateSize") {
             before = {
                 request.accessAllowed = true
             }
