@@ -80,6 +80,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             fileSizeImage = "";
         }
         else {
+            downloadMessage = OpenLayers.i18n("estimatedDlMessage");
+
             if (estimate >= 1024) {
                 downloadMessage = OpenLayers.i18n("estimatedDlMessage");
                 fileSizeEstimate = (estimate/1024).toFixed(1);

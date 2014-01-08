@@ -265,6 +265,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeIconMarkup: '<img src="images/clock_red.png">',
     fileSizeGb: "GB",
     fileSizeMb: "MB",
-    estimatedDlMessage: "The estimated download size is "
+    estimatedDlMessage: "The estimated download size is ",
     estimatedDlFailedMsg: "The estimated download size is unknown."
 });
