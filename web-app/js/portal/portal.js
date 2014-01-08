@@ -47,14 +47,16 @@ Portal.app = {
 
     afterConfigLoad: function() {
         // Display MOTD if required on landing page
-        if (window.landingPage && this.portal.config.enableMOTD) {
-            Ext.Msg.show({
-                title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
-                msg: this.portal.config.motd.motd,
-                buttons: Ext.Msg.OK,
-                cls: 'motd',
-                width: 600
-            });
+        if (window.landingPage) {
+            if (this.portal.config.enableMOTD) {
+                Ext.Msg.show({
+                    title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
+                    msg: this.portal.config.motd.motd,
+                    buttons: Ext.Msg.OK,
+                    cls: 'motd',
+                    width: 600
+                });
+            }
             return;
         }
 
