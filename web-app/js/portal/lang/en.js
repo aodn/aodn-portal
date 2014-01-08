@@ -266,4 +266,5 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeGb: "GB",
     fileSizeMb: "MB",
     estimatedDlMessage: "The estimated download size is "
+    estimatedDlFailedMsg: "The estimated download size is unknown."
 });

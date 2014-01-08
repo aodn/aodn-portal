@@ -67,28 +67,40 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     _generateEstHtmlString: function(estimate) {
         var html = '<div>{0} {1}{2} {3}</div>' + '<div class="clear"></div>';
+        var downloadMessage;
         var fileSizeEstimate;
         var fileMagnitude;
         var fileSizeImage;
 
-        if (estimate >= 1024) {
-            fileSizeEstimate = (estimate/1024).toFixed(1);
-            fileMagnitude = OpenLayers.i18n("fileSizeGb");
-            fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
+        // Error code received from the server-side
+        if (estimate == -1) {
+            downloadMessage = OpenLayers.i18n("estimatedDlFailedMsg");
+            fileSizeEstimate = "";
+            fileMagnitude = "";
+            fileSizeImage = "";
         }
         else {
-            fileSizeEstimate = estimate;
-
-            if (estimate >= 512) {
-                fileMagnitude = OpenLayers.i18n("fileSizeMb");
+            if (estimate >= 1024) {
+                downloadMessage = OpenLayers.i18n("estimatedDlMessage");
+                fileSizeEstimate = (estimate/1024).toFixed(1);
+                fileMagnitude = OpenLayers.i18n("fileSizeGb");
                 fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
             }
             else {
-                fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                fileSizeImage="";
+                fileSizeEstimate = estimate;
+
+                if (estimate >= 512) {
+                    fileMagnitude = OpenLayers.i18n("fileSizeMb");
+                    fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
+                }
+                else {
+                    fileMagnitude = OpenLayers.i18n("fileSizeMb");
+                    fileSizeImage="";
+                }
             }
         }
-        return String.format(html, OpenLayers.i18n("estimatedDlMessage"), fileSizeEstimate, fileMagnitude, fileSizeImage);
+
+        return String.format(html, downloadMessage, fileSizeEstimate, fileMagnitude, fileSizeImage);
     },
 
     _cql: function(wmsLayer) {
