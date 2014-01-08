@@ -81,7 +81,7 @@ h2 {
 #landingMain {
     font-size: 16px;
     padding: 30px 0;
-    margin-bottom: 90px;
+    margin-bottom: 70px;
 }
 
 .buildInfo {
@@ -292,6 +292,10 @@ ul.x-tab-strip-top {
 
 .faceted-search-clear-all .x-hyperlink {
     padding: 1px 3px;
+}
+
+.clear {
+    height: 10px;
 }
 
 .x-btn {
