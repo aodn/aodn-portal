@@ -91,9 +91,9 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     _setLayerToTop: function(thisSpatialConstraint) {
         var map = thisSpatialConstraint.layer.map;
-        var vectors = map.getLayersByName(map.spatialConstraintControl.layerName);
-        for (var i = 0; i < vectors.length; i++){
-            map.setLayerIndex(vectors[i], map.layers.length-1);
+        var vectorLayers = map.getLayersByName(map.spatialConstraintControl.layerName);
+        for (var i = 0; i < vectorLayers.length; i++){
+            map.setLayerIndex(vectorLayers[i], map.layers.length-1);
         }
     },
 
