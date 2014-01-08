@@ -11,12 +11,17 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     AODAAC_EMAIL_ADDRESS_ATTRIBUTE: "aodaac-email-address",
 
     getDataFilterEntry: function(values) {
-        var params = values.aodaac;
-        var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
-        var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
 
-        return this._parameterString('parameterAreaLabel', areaStart, areaEnd) +
-            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd);
+        var params = values.aodaac;
+        var areaString = "";
+
+        if (params.latitudeRangeStart) {
+            var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
+            var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
+            areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
+        }
+        return areaString +
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
     },
 
     createMenuItems: function (collection) {
@@ -59,8 +64,8 @@ Portal.cart.AodaacDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
     },
 
-    _parameterString: function (labelKey, value1, value2) {
-        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2);
+    _parameterString: function (labelKey, value1, value2, delim) {
+        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
     },
 
     _downloadAodaacHandler: function(collection, format) {
