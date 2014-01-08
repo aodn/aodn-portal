@@ -18,7 +18,7 @@ Mono split complement colours of #60AFDD
 #A4D2EE
 #1F6690
 #5F8Ca6
-Complemetery
+Complemetary
 #FFBA66 orangeish
 #FFD29F mango
 #BF915D
@@ -28,7 +28,10 @@ Complemetery
 
 @font-face {
     font-family: imosheader;
+    /*src: local(imosheader), url('../fonts/ZacharyBinx.ttf') format('opentype');*/
     src: local(imosheader), url('../fonts/TerminalEvent.ttf') format('opentype');
+
+
 }
 
 html {
@@ -135,8 +138,8 @@ cart-title,
 h1#headerTitle {
     font-family: 'imosheader';
     color: #FFFFFF;
-    text-shadow:2px 2px 8px #999;
-    font-size: 45px;
+    text-shadow:2px 2px 8px #333;
+    font-size: 47px;
     padding-top: 10px;
     padding-bottom: 6px;
 }
