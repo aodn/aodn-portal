@@ -196,5 +196,9 @@ databaseChangeLog = {
         include file: '20121206-PB-IMOSFooterChanges.groovy'
 
         include file: '20130604-DN-UpdateIMOSEmailAddress.groovy'
+
+        include file: '20140108-PB-IMOSHeaderChanges.groovy'
+
+
     }
 }
