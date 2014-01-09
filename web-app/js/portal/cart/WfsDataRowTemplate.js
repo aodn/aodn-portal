@@ -24,7 +24,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
         if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
-            menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
+            // menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
         }
 
         return menuItems;
@@ -122,6 +122,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _netCdfDownloadHandler: function (collection) {
+        // Todo: Needs additional args when server side is ready
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
     },
 
