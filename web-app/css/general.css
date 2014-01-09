@@ -198,14 +198,15 @@ hr {
     border-radius: 12px 12px 12px 12px;
 }
 
-#logo {
-    margin: 3px 5px;
+#logoContainer {
     float: left;
+    position: absolute;
 }
 
-#headerTitle {
-    padding: 30px 20px 0 20px;
-    margin-left: 250px;
+.landingContainer {
+    margin-left: 165;
+    width: 800px;
+    padding: 20px 20px 10px 200px;
 }
 
 #toplinks {
@@ -1249,7 +1250,6 @@ div.allwhite {
 
 .mainNavigationButton .x-btn-text {
     font-size: 12px;
-
 }
 
 .collectionTitle {

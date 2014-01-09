@@ -18,13 +18,17 @@ Mono split complement colours of #60AFDD
 #A4D2EE
 #1F6690
 #5F8Ca6
-Complemetery
+Complemetary
 #FFBA66 orangeish
 #FFD29F mango
 #BF915D
-
-
 */
+
+@font-face {
+    font-family: imosheader;
+    /*src: local(imosheader), url('../fonts/ZacharyBinx.ttf') format('opentype');*/
+    src: local(imosheader), url('../fonts/TerminalEvent.ttf') format('opentype');
+}
 
 html {
     background-color: white;
@@ -39,12 +43,6 @@ h2 {
     margin-bottom: 14px;
 }
 
-#landing {
-    width: 780px;
-    margin: 20px 0 0 190px;
-    padding: 20px;
-}
-
 #landingBigButton {
     background: #ffba66; /* Old browsers */
     background: -moz-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* FF3.6+ */
@@ -54,7 +52,6 @@ h2 {
     background: -ms-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* IE10+ */
     background: linear-gradient(to bottom, #ffba66 60%, #ffd29f 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffba66', endColorstr='#ffd29f', GradientType=0); /* IE6-9 */
-
     margin-top: 2px;
     display: inline-block;
     color: #212121;
@@ -69,13 +66,17 @@ h2 {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     box-shadow: 3px 3px 4px #cccccc;
     font-size: 16px;
+}
 
+#logoContainer {
+    margin-top: 10px;
+    margin-left: 5px;
 }
 
 #landingMain {
     font-size: 16px;
     padding: 30px 0;
-    margin-bottom: 90px;
+    margin-bottom: 70px;
 }
 
 .buildInfo {
@@ -112,9 +113,9 @@ cart-title,
 }
 
 #header {
+    z-index: 300;
     width: 100%;
     box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
-
     background: #3b3e41; /* Old browsers */
     background: -moz-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%, #3b3e41), color-stop(23%, #565a5e), color-stop(49%, #5a5e62), color-stop(100%, #3b3e41), color-stop(100%, #0f0f0f)); /* Chrome,Safari4+ */
@@ -126,14 +127,19 @@ cart-title,
 }
 
 #logo {
-    margin: 3px 25px;
+    margin: 5px 15px;
 }
 
-#headerTitle {
-    color: #60AFdd;
-    font-size: 24px;
-    margin-left: 170px;
-    padding: 34px 5px 10px 20px;
+h1#headerTitle {
+    font-family: 'imosheader';
+    color: #FFFFFF;
+    text-shadow:1px 1px 8px #333;
+    font-size: 47px;
+    padding-top: 15px;
+    padding-bottom: 6px;
+}
+.headerHeightOverlord {
+    height: 80px;
 }
 
 #toplinks {
@@ -145,7 +151,7 @@ cart-title,
 }
 
 #toplinks a {
-    color: #a4d2ee;
+    color: #FFFFFF;
     font-size: 13px;
     font-weight: bold;
     margin: 0px 2px 0px 3px;
@@ -169,7 +175,6 @@ cart-title,
     border: none;
     background-color: #484848;
     background-image: none;
-
     background: #484848; /* Old browsers */
     background: -moz-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%, #484848), color-stop(51%, #484848), color-stop(100%, #3a3a3a)); /* Chrome,Safari4+ */
@@ -178,7 +183,6 @@ cart-title,
     background: -ms-linear-gradient(left, #484848 0%, #484848 51%, #3a3a3a 100%); /* IE10+ */
     background: linear-gradient(to right, #484848 0%, #484848 51%, #3a3a3a 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#484848', endColorstr='#3a3a3a', GradientType=1); /* IE6-9 */
-
 }
 
 p {
@@ -189,7 +193,6 @@ h1 {
     font-size: 18px;
     font-weight: bold;
 }
-
 
 h5 {
     color: #6A6A6A;
@@ -204,7 +207,6 @@ hr {
     height: 1px;
     margin-top: 15px;
     margin-bottom: 25px;
-
 }
 
 input, select, textarea {
@@ -216,7 +218,6 @@ input, select, textarea {
     padding: 2px 4px;
     border-radius: 3px 3px 3px 3px;
     /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
-
 }
 
 #mapActionsWindow.x-window {
@@ -286,6 +287,10 @@ ul.x-tab-strip-top {
 
 .faceted-search-clear-all .x-hyperlink {
     padding: 1px 3px;
+}
+
+.clear {
+    height: 10px;
 }
 
 .x-btn {
