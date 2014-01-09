@@ -95,7 +95,7 @@ class Filter implements Comparable {
 
     static def possibleValuesFieldValidator = { val, obj ->
 
-        if (obj.type.expectsPossibleValues) {
+        if (obj.type.expectsPossibleValues) { // Todo: 'type' can be null at this point. Spotted on 123 Portal.
 
             if (val.size() == 0) {
                 return ['invalid.possibleValues']
