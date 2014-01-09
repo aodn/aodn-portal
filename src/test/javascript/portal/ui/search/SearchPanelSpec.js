@@ -20,9 +20,6 @@ describe("Portal.ui.search.SearchPanel", function() {
         it('initialises SearchFiltersPanel', function() {
             expect(searchPanel.filtersPanel).toBeInstanceOf(Portal.ui.search.SearchFiltersPanel);
             expect(searchPanel.filtersPanel.searcher).toBeTruthy();
-            expect(searchPanel.filtersPanel.region).toBe('west');
-            expect(searchPanel.filtersPanel.split).toBeTruthy();
-            expect(searchPanel.filtersPanel.width).toBe(340);
         });
 
         it('initialises results store', function() {
@@ -32,9 +29,6 @@ describe("Portal.ui.search.SearchPanel", function() {
 
         it('initialises SearchBodyPanel', function() {
             expect(searchPanel.bodyPanel).toBeInstanceOf(Portal.ui.search.SearchBodyPanel);
-            expect(searchPanel.bodyPanel.region).toBe('center');
-            expect(searchPanel.bodyPanel.unstyled).toBeTruthy();
-            expect(searchPanel.bodyPanel.unstyled).toBeTruthy();
         });
     });
 

@@ -47,10 +47,7 @@ describe('Portal.ui.VisualisePanel', function() {
     describe('initialisation', function() {
 
         it('intialises details panel', function() {
-            expect(visualisePanel.detailsPanel.width).toBe(360);
-            expect(visualisePanel.detailsPanel.minWidth).toBe(320);
-            expect(visualisePanel.detailsPanel.maxWidth).toBe(500);
-            expect(visualisePanel.detailsPanel.split).toBeTruthy();
+            expect(visualisePanel.detailsPanel.split).toBeFalsy();
         });
 
         describe('layout', function() {
