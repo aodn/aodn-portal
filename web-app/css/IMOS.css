@@ -22,15 +22,12 @@ Complemetary
 #FFBA66 orangeish
 #FFD29F mango
 #BF915D
-
-
 */
 
 @font-face {
     font-family: imosheader;
     /*src: local(imosheader), url('../fonts/ZacharyBinx.ttf') format('opentype');*/
     src: local(imosheader), url('../fonts/TerminalEvent.ttf') format('opentype');
-
 }
 
 html {
@@ -45,8 +42,6 @@ body, html, td {
 h2 {
     margin-bottom: 14px;
 }
-
-
 
 #landingBigButton {
     background: #ffba66; /* Old browsers */
