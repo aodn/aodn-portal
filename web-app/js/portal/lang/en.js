@@ -42,6 +42,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noCollectionsMessage: 'No data collections to show',
     noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
+    noFilterLabel: 'No filters applied.',
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'Download as CSV',
