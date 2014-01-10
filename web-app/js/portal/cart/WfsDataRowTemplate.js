@@ -110,7 +110,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _downloadWfsHandler: function(collection, format) {
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
+        return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
     },
 
     _urlListDownloadHandler: function(collection) {
@@ -118,15 +118,19 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
     },
 
     _netCdfDownloadHandler: function(collection) {
         // Todo: Needs additional args when server side is ready
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
+        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
     },
 
-    _downloadUrl: function(layer, format) {
+    _wfsDownloadUrl: function(layer, format) {
         return layer.getWfsLayerFeatureRequestUrl(format);
+    },
+
+    _wmsDownloadUrl: function(layer, format) {
+        return layer.getWmsLayerFeatureRequestUrl(format);
     }
 });

@@ -49,7 +49,8 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         it('creates menu items', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp
+                    getWfsLayerFeatureRequestUrl: noOp,
+                    getWmsLayerFeatureRequestUrl: noOp
                 }
             });
             expect(menuItems.length).toEqual(3);
@@ -59,6 +60,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
+                    getWmsLayerFeatureRequestUrl: noOp,
                     urlDownloadFieldName: true
                 }
             });
@@ -100,14 +102,14 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
     describe('download handlers', function() {
         it('_downloadWfsHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_downloadUrl');
+            spyOn(tpl, '_wfsDownloadUrl');
             tpl._downloadWfsHandler({}, 'csv');
             expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_downloadUrl');
+            spyOn(tpl, '_wmsDownloadUrl');
             tpl._urlListDownloadHandler({
                 wmsLayer: {
                     grailsLayerId: 1
@@ -141,6 +143,32 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             mockEstimate = 400;
             mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is  400MB </div><div class="clear"></div>');
+        });
+    });
+
+    describe('_wfsDownloadUrl', function() {
+
+        it('calls correct function on layer', function() {
+
+            var spy = jasmine.createSpy();
+            var testLayer = {getWfsLayerFeatureRequestUrl: spy};
+
+            tpl._wfsDownloadUrl(testLayer, 'csv');
+
+            expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
+        });
+    });
+
+    describe('_wmsDownloadUrl', function() {
+
+        it('calls correct function on layer', function() {
+
+            var spy = jasmine.createSpy();
+            var testLayer = {getWmsLayerFeatureRequestUrl: spy};
+
+            tpl._wmsDownloadUrl(testLayer, 'xml');
+
+            expect(testLayer.getWmsLayerFeatureRequestUrl).toHaveBeenCalledWith('xml');
         });
     });
 });
