@@ -15,7 +15,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return '';
     },
 
-    createMenuItems: function (collection) {
+    createMenuItems: function(collection) {
         var menuItems = [
             this._createMenuItem('downloadAsCsvLabel', collection, 'csv'),
             this._createMenuItem('downloadAsGml3Label', collection, 'gml3'),
@@ -84,7 +84,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
             if (estimate >= 1024) {
                 downloadMessage = OpenLayers.i18n("estimatedDlMessage");
-                fileSizeEstimate = (estimate/1024).toFixed(1);
+                fileSizeEstimate = (estimate / 1024).toFixed(1);
                 fileMagnitude = OpenLayers.i18n("fileSizeGb");
                 fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
             }
@@ -97,7 +97,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 }
                 else {
                     fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                    fileSizeImage="";
+                    fileSizeImage = "";
                 }
             }
         }
@@ -109,11 +109,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return wmsLayer.getDownloadFilter();
     },
 
-    _downloadWfsHandler: function (collection, format) {
+    _downloadWfsHandler: function(collection, format) {
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
     },
 
-    _urlListDownloadHandler: function (collection) {
+    _urlListDownloadHandler: function(collection) {
         var additionalArgs = {
             action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
@@ -121,7 +121,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
     },
 
-    _netCdfDownloadHandler: function (collection) {
+    _netCdfDownloadHandler: function(collection) {
         // Todo: Needs additional args when server side is ready
         return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
     },
