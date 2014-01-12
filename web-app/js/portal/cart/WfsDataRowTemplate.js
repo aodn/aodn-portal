@@ -9,10 +9,21 @@ Ext.namespace('Portal.cart');
 Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     getDataFilterEntry: function(values) {
+        var html;
+        var infoLabel;
+        var layerValues;
+
         if (this._cql(values.wmsLayer)) {
-            return String.format('<b>{0}</b> <code>{1}</code>', OpenLayers.i18n('filterLabel'), this._cql(values.wmsLayer));
+            html = '<b>{0}</b> <code>{1}</code>';
+            infoLabel = OpenLayers.i18n('filterLabel');
+            layerValues = this._cql(values.wmsLayer);
         }
-        return '';
+        else {
+            html = '<i>{0}</i> <code>{1}</code>';
+            infoLabel = OpenLayers.i18n('noFilterLabel');
+            layerValues = '';
+        }
+        return String.format(html, infoLabel, layerValues);
     },
 
     createMenuItems: function (collection) {

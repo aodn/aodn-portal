@@ -32,16 +32,16 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             };
 
             var filterEntry = tpl.getDataFilterEntry({});
-            expect(filterEntry).not.toEqual('');
+            expect(filterEntry).not.toEqual('<i>No filters applied.</i> <code></code>');
             expect(filterEntry.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
             expect(filterEntry.indexOf(mockCql)).toBeGreaterThan(-1);
         });
 
-        it('returns an empty string if there is no cql filter applied', function() {
+        it('returns an a no filter message if there is no cql filter applied', function() {
             tpl._cql = function() {
                 return ''
             };
-            expect(tpl.getDataFilterEntry({})).toEqual('');
+            expect(tpl.getDataFilterEntry({})).toEqual('<i>No filters applied.</i> <code></code>');
         });
     });
 
