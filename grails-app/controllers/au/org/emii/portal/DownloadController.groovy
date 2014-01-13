@@ -15,6 +15,7 @@ class DownloadController extends RequestProxyingController {
 
     def grailsApplication
     def hostVerifier
+    def bulkDownloadService
 
     // Index action inherited from RequestProxyingController
 
@@ -33,6 +34,36 @@ class DownloadController extends RequestProxyingController {
             requestSingleFieldParamProcessor(layer.urlDownloadFieldName),
             urlListStreamProcessor(layer)
         )
+    }
+
+    def downloadNetCdfFilesForLayer = {
+
+        def layerId = params.layerId
+
+        if (!layerId) {
+            render text: "No layerId provided", status: 400
+            return
+        }
+
+        def layer = Layer.get(layerId)
+        def urlFieldName = layer.urlDownloadFieldName
+        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName")
+
+        if (!hostVerifier.allowedHost(request, url)) {
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
+            return
+        }
+
+        def resultStream = new ByteArrayOutputStream()
+        def streamProcessor = urlListStreamProcessor(layer)
+
+        _executeExternalRequest url, streamProcessor, resultStream
+
+        def urls = new String(resultStream.toByteArray(), 'UTF-8')
+
+        println "urls: ${urls}"
+
+        bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
 
     def estimateSizeForLayer = {

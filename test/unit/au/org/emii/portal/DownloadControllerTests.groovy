@@ -23,6 +23,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller = new DownloadController()
     }
 
+    void testUrlListForLayerNoLayerId() {
+
+        controller.urlListForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
+    }
+
     void testUrlListForLayer() {
 
         _setUpExampleObjects()
@@ -54,6 +61,56 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals 1, performProxyingCalledCount
     }
 
+    void testDownloadNetCdfFilesForLayerNoLayerId() {
+
+        controller.downloadNetCdfFilesForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
+    }
+
+    void testDownloadNetCdfFilesForLayerInvalidHost() {
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = 'the_url'
+
+        controller.hostVerifier = [allowedHost: { r, u -> false }]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+    }
+
+    void testDownloadNetCdfFilesForLayer() {
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = 'http://www.example.com/'
+
+        def testUrlList = """\
+            url1
+            url2
+        """
+
+        def archiveGenerated = false
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
+        controller.metaClass.urlListStreamProcessor = { layer ->
+            assertEquals testLayer, layer
+            { inputStream, outputStream -> outputStream << testUrlList }
+        }
+        controller.bulkDownloadService = [
+            generateArchiveOfFiles: { urlList, outputStream, locale ->
+                assertEquals testUrlList, urlList
+                assertEquals mockResponse.outputStream, outputStream
+                archiveGenerated = true
+            }
+        ]
+
+        controller.downloadNetCdfFilesForLayer()
+
+        assertTrue archiveGenerated
+    }
+
     void testEstimateSizeForLayerNoLayerId() {
 
         controller.estimateSizeForLayer()
@@ -67,7 +124,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.layerId = 1
         mockParams.url = "the_url"
 
-        controller.hostVerifier = [allowedHost: {r, u -> false}]
+        controller.hostVerifier = [allowedHost: { r, u -> false }]
 
         controller.estimateSizeForLayer()
 
@@ -86,7 +143,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: {r, u -> true}]
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
         controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             assertEquals testStreamProcessor, streamProcessor
