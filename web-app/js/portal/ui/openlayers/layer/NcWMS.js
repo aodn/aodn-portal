@@ -188,5 +188,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (next) {
             return this.toTime(next);
         }
+    },
+
+    showAodaacControls: function() {
+        return true;
     }
 });

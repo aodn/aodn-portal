@@ -42,31 +42,19 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
-        Ext.Ajax.request({
-            url: 'aodaac/productInfo?layerId=' + layer.grailsLayerId,
-            scope: this,
-            success: function(resp){
-
-                this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-                this.productsInfo = JSON.parse(resp.responseText);
-                this.selectedProductInfo = this.productsInfo[this.selectedProductInfoIndex];
-                this._updateGeoNetworkAodaac(this.map.getConstraint());
-                if (this.productsInfo.length > 0) {
-                    this._clearDateTimeFields();
-                    this.selectedLayer.processTemporalExtent();
-                    this._attachTemporalEvents();
-                    this._removeLoadingInfo();
-                    this._showAllControls();
-                    show.call(target, this);
-                }
-                else {
-                    hide.call(target, this);
-                }
-            },
-            failure: function(){
-                hide.call(target, this);
-            }
-        });
+        if (layer.showAodaacControls && layer.showAodaacControls()) {
+            this.geoNetworkRecord = layer.parentGeoNetworkRecord;
+            this._updateGeoNetworkAodaac(this.map.getConstraint());
+            this._clearDateTimeFields();
+            this.selectedLayer.processTemporalExtent();
+            this._attachTemporalEvents();
+            this._removeLoadingInfo();
+            this._showAllControls();
+            show.call(target, this);
+        }
+        else {
+            hide.call(target, this);
+        }
     },
 
     _showAllControls: function() {
