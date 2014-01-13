@@ -35,7 +35,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
         if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
-            // menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
+            menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
         }
 
         return menuItems;

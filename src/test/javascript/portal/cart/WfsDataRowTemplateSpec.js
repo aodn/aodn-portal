@@ -55,28 +55,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             expect(menuItems.length).toEqual(3);
         });
 
-        it('includes an item to download a list of urls', function() {
-            var menuItems = tpl.createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true
-                }
-            });
-            expect(menuItems.length).toEqual(4);
-
-            var included = false;
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
-                    included = true;
-                    i = menuItems.length;
-                }
-            }
-
-            expect(included).toBe(true);
-        });
-
-        // todo - This test could probably be combined with the one above
-        /*it('includes an item to download a netCDF file', function() {
+        it('includes items for download url list and NetCDF download', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
@@ -85,16 +64,20 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             });
             expect(menuItems.length).toEqual(5);
 
-            var included = false;
+            var urlListIncluded = false;
+            var netCdfDownloadIncluded = false;
             for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsNetCdfLabel')) {
-                    included = true;
-                    i = menuItems.length;
+                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
+                    urlListIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsNetCdfLabel')) {
+                    netCdfDownloadIncluded = true;
                 }
             }
 
-            expect(included).toBe(true);
-        });*/
+            expect(urlListIncluded).toBe(true);
+            expect(netCdfDownloadIncluded).toBe(true);
+        });
     });
 
     describe('download handlers', function() {
