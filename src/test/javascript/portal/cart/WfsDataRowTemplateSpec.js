@@ -110,6 +110,29 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                 }
             );
         });
+
+        it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
+            spyOn(tpl, 'downloadWithConfirmation');
+            spyOn(tpl, '_downloadUrl').andReturn('download_url');
+
+            var testLayer = {grailsLayerId: 6};
+            var testCollection = {
+                wmsLayer: testLayer,
+                title: 'the_collection'
+            };
+
+            tpl._netCdfDownloadHandler(testCollection);
+
+            expect(tpl._downloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+                'download_url',
+                'the_collection_source_files.zip',
+                {
+                    action: 'downloadNetCdfFilesForLayer',
+                    layerId: 6
+                }
+            );
+        });
     });
 
     describe('download size estimate', function() {

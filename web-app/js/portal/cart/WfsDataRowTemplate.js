@@ -133,8 +133,12 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _netCdfDownloadHandler: function(collection) {
-        // Todo: Needs additional args when server side is ready
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
+        var additionalArgs = {
+            action: 'downloadNetCdfFilesForLayer',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
     },
 
     _downloadUrl: function(layer, format) {
