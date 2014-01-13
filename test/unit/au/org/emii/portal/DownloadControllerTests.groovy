@@ -12,6 +12,8 @@ import grails.test.ControllerUnitTestCase
 class DownloadControllerTests extends ControllerUnitTestCase {
 
     def controller
+    def testServer
+    def testLayer
 
     protected void setUp() {
         super.setUp()
@@ -32,10 +34,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
-            assertEquals "relativeFilePath", fieldName
-            assertEquals "/mnt/imos-t4", prefixToRemove
-            assertEquals "http://data.imos.org.au", newUrlBase
+        controller.metaClass.urlListStreamProcessor = { layer ->
+            assertEquals testLayer, layer
             return testStreamProcessor
         }
 
@@ -110,6 +110,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testUrlListStreamProcessor() {
 
+        _setUpExampleObjects()
+
         def input = """\
             FID,relativeFilePath
             aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
@@ -131,7 +133,7 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        def sp = controller.urlListStreamProcessor("relativeFilePath", "/mnt/imos-t4", "http://data.imos.org.au")
+        def sp = controller.urlListStreamProcessor(testLayer)
         sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
@@ -180,11 +182,11 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
     void _setUpExampleObjects() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+        testServer = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        testLayer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: testServer, dataSource: "test data")
 
-        mockDomain Server, [server]
-        mockDomain Layer, [layer]
+        mockDomain Server, [testServer]
+        mockDomain Layer, [testLayer]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {

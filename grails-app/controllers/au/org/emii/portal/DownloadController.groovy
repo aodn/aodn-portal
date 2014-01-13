@@ -28,13 +28,10 @@ class DownloadController extends RequestProxyingController {
         }
 
         def layer = Layer.get(layerId)
-        def fieldName = layer.urlDownloadFieldName
-        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
-        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
         _performProxying(
-            requestSingleFieldParamProcessor(fieldName),
-            urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+            requestSingleFieldParamProcessor(layer.urlDownloadFieldName),
+            urlListStreamProcessor(layer)
         )
     }
 
@@ -80,7 +77,11 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
+    def urlListStreamProcessor(layer) {
+
+        def fieldName = layer.urlDownloadFieldName
+        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
+        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
         return { inputStream, outputStream ->
 
