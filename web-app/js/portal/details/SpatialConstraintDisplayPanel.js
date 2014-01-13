@@ -69,5 +69,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         if (geometry) {
             card.setGeometry(geometry);
         }
+        this.doLayout();
     }
 });

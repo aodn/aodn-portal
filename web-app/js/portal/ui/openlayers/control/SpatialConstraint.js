@@ -112,7 +112,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-        initialConstraint: Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox),
         handler: handler,
         'displayClass': 'none'
     });
@@ -133,8 +132,4 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
             this.events.triggerEvent('spatialconstraintcleared');
         }
     });
-
-    if (Portal.app.config.initialBbox) {
-        map.events.triggerEvent('spatialconstraintadded', map.spatialConstraintControl.getConstraint());
-    }
 };
