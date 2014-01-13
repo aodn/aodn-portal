@@ -90,13 +90,25 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_downloadUrl');
-            tpl._urlListDownloadHandler({
-                wmsLayer: {
-                    grailsLayerId: 1
+            spyOn(tpl, '_downloadUrl').andReturn('download_url');
+
+            var testLayer = {grailsLayerId: 6};
+            var testCollection = {
+                wmsLayer: testLayer,
+                title: 'the_collection'
+            };
+
+            tpl._urlListDownloadHandler(testCollection);
+
+            expect(tpl._downloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+                'download_url',
+                'the_collection_URLs.txt',
+                {
+                    action: 'urlListForLayer',
+                    layerId: 6
                 }
-            });
-            expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
+            );
         });
     });
 
