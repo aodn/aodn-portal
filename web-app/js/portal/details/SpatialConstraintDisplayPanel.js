@@ -69,6 +69,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         if (geometry) {
             card.setGeometry(geometry);
         }
+        // doLayout call required here to correctly redraw the box display panel on initialisation
         this.doLayout();
     }
 });
