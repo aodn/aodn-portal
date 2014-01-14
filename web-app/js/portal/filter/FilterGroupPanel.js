@@ -17,7 +17,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('filterGroupPanelTitle'),
             layout: 'table',
             autoScroll: true,
             layoutConfig: {

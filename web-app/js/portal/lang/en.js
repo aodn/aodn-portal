@@ -206,6 +206,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
     mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
 
+    // SubsetPanel.js
+    subsetPanelTitle: 'Subset',
+
     // FilterGroupPanel.js
     filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
