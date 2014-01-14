@@ -130,6 +130,7 @@ class DownloadController extends RequestProxyingController {
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
+                _eachRemainingRow(csvReader) { currentRow -> currentRow.each{ log.error it } }
 
                 outputWriter.print "Results contained no column with header '$fieldName'. Column headers were: $firstRow"
                 outputWriter.flush()
@@ -169,6 +170,8 @@ class DownloadController extends RequestProxyingController {
 
             if (filenameFieldIndex == -1 || sizeFieldIndex == -1) {
                 log.error "Could not find index of '$filenameFieldName' or '$sizeFieldName' in $firstRow"
+                _eachRemainingRow(csvReader) { currentRow -> currentRow.each{ log.error it } }
+
                 outputStream << "Results contained no column with header '$filenameFieldName' or '$sizeFieldName'. Column headers were: $firstRow"
                 return
             }
