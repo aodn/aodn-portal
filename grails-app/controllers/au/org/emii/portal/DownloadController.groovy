@@ -130,16 +130,13 @@ class DownloadController extends RequestProxyingController {
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
+
                 outputWriter.print "Results contained no column with header '$fieldName'. Column headers were: $firstRow"
                 outputWriter.flush()
                 return
             }
 
-            def currentRow = csvReader.readNext()
-            while (currentRow) {
-
-                log.debug "Processing row $currentRow"
-
+            _eachRemainingRow(csvReader) { currentRow ->
                 if (fieldIndex < currentRow.length) {
 
                     def rowValue = currentRow[fieldIndex].trim()
@@ -149,8 +146,6 @@ class DownloadController extends RequestProxyingController {
                         outputWriter.print "$rowValue\n"
                     }
                 }
-
-                currentRow = csvReader.readNext()
             }
 
             outputWriter.flush()
@@ -184,10 +179,7 @@ class DownloadController extends RequestProxyingController {
             def filenamesProcessed = [] as Set
 
             try {
-                def currentRow = csvReader.readNext()
-                while (currentRow) {
-                    log.debug "Processing row $currentRow"
-
+                _eachRemainingRow(csvReader) { currentRow ->
                     if (higherFieldIndex < currentRow.length) {
 
                         def rowFilename = currentRow[filenameFieldIndex].trim()
@@ -202,8 +194,6 @@ class DownloadController extends RequestProxyingController {
                             }
                         }
                     }
-
-                    currentRow = csvReader.readNext()
                 }
             }
             catch (Exception e) {
@@ -213,6 +203,18 @@ class DownloadController extends RequestProxyingController {
             }
 
             outputStream << sum.toString()
+        }
+    }
+
+    def _eachRemainingRow(reader, process) {
+
+        def currentRow = reader.readNext()
+        while (currentRow) {
+            log.debug "Processing row $currentRow"
+
+            process(currentRow)
+
+            currentRow = reader.readNext()
         }
     }
 }
