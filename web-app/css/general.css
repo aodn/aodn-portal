@@ -199,16 +199,43 @@ hr {
     border-radius: 12px 12px 12px 12px;
 }
 
+.headerHeightOverlord {
+    height: 120px;
+}
+
 #logoContainer {
     float: left;
     position: absolute;
 }
 
 .landingContainer {
-    margin-left: 165;
-    width: 800px;
-    padding: 20px 20px 10px 200px;
+    width: 950px;
+    padding-top: 12px;
 }
+
+#landingLeft {
+    float: left;
+    width: 350;
+}
+
+#landingHeaderContainer {
+     margin-left: 330px;
+ }
+
+.bigtext {
+    font-size: 16px;
+}
+
+#landingCentre {
+    float: right;
+    width: 600;
+    padding: 30px 0;
+    margin-bottom: 70px;
+}
+
+
+
+
 
 #toplinks {
     float: right;
