@@ -15,8 +15,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hierarchical: false,
             fieldGroup: 'longParamNames',
             fieldName: 'longParamName',
-            searcher: config.searcher,
-            collapsed: false
+            searcher: config.searcher
         });
 
         this._buildTermFilter('organisationFilter', {
@@ -32,8 +31,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hierarchical: false,
             fieldGroup: 'platformNames',
             fieldName: 'platform',
-            searcher: config.searcher,
-            collapsed: false
+            searcher: config.searcher
         });
 
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
@@ -126,12 +124,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _onNewSearchClicked: function() {
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
+
         Ext.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();
         });
 
         this.searcher.search();
-
         this.fireEvent('filtersCleared');
     },
 
@@ -165,6 +163,11 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         }
 
         var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+
+        if (name == "parameterFilter" || name == "platformFilter") {
+            termFilter.collapsed = false;
+        }
+
         this.filters.push(termFilter);
         this[name] = termFilter;
         return termFilter;

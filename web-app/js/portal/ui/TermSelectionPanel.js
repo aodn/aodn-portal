@@ -331,7 +331,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     removeAnyFilters: function () {
         this.selectedView.clear();
-        this.collapse();
+
+        if (this.titleText == OpenLayers.i18n('platformFilter') || this.titleText == OpenLayers.i18n('parameterFilter')) {
+            this.expand();
+        }
+        else {
+            this.collapse();
+        }
     },
 
     setSelectedSubTitle: function (subtitle) {
