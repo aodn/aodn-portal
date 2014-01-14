@@ -112,6 +112,7 @@
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/AodaacPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/DetailsPanelTab.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/InfoPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/details/SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/ClickControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/openlayers/LayerParams.js')}"></script>
@@ -158,4 +159,3 @@
 <g:else>
     <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${jsVerNum}" type="text/javascript"></script>
 </g:else>
-
