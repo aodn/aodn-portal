@@ -452,11 +452,11 @@ class LayerController {
                 }
             }
             catch (SAXException e) {
-                log.warn("Error getting formatted metadata, params: ${params}", e);
+                log.warn("Error getting formatted metadata, params: ${params}", e)
                 responseText = "<BR>The metadata record is not available at this time."
             }
             catch (FileNotFoundException e) {
-                log.warn("Error getting formatted metadata, params: ${params}", e);
+                log.warn("Error getting formatted metadata, params: ${params}", e)
                 responseText = "<BR>The metadata record is not available at this time."
             }
         }
