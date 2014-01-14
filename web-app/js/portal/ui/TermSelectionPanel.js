@@ -27,6 +27,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg, defaults);
 
+        this.collapsedByDefault = this.collapsed;
+
         this.selectionStore = this._buildSelectionStore(this.hierarchical, this.separator);
         this.termStore = this._buildTermStore(this.separator);
 
@@ -331,7 +333,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     removeAnyFilters: function () {
         this.selectedView.clear();
-        this.collapse();
+
+        if (this.collapsedByDefault) {
+            this.collapse();
+        }
+        else {
+            this.expand();
+        }
     },
 
     setSelectedSubTitle: function (subtitle) {

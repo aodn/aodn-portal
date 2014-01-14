@@ -126,12 +126,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _onNewSearchClicked: function() {
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
+
         Ext.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();
         });
 
         this.searcher.search();
-
         this.fireEvent('filtersCleared');
     },
 
@@ -165,6 +165,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         }
 
         var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+
         this.filters.push(termFilter);
         this[name] = termFilter;
         return termFilter;
