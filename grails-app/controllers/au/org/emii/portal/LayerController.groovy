@@ -14,6 +14,7 @@ import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
 import org.springframework.beans.BeanUtils
 import org.springframework.web.util.HtmlUtils
+import org.xml.sax.SAXException
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
@@ -450,12 +451,12 @@ class LayerController {
                     responseText = html
                 }
             }
-            catch (SAXException) {
-
+            catch (SAXException e) {
+                log.warn("Error getting formatted metadata, params: ${params}", e)
                 responseText = "<BR>The metadata record is not available at this time."
             }
-            catch (FileNotFoundException) {
-
+            catch (FileNotFoundException e) {
+                log.warn("Error getting formatted metadata, params: ${params}", e)
                 responseText = "<BR>The metadata record is not available at this time."
             }
         }
