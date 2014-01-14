@@ -70,7 +70,6 @@ input.readonlyInput {
     font-size: 10px;
 }
 
-
 .searchInput {
     display: block;
     height: 27px;
@@ -219,8 +218,8 @@ hr {
 }
 
 #landingHeaderContainer {
-     margin-left: 330px;
- }
+    margin-left: 330px;
+}
 
 .bigtext {
     font-size: 16px;
@@ -232,10 +231,6 @@ hr {
     padding: 30px 0;
     margin-bottom: 70px;
 }
-
-
-
-
 
 #toplinks {
     float: right;
@@ -346,6 +341,7 @@ hr {
 .downloadButtonWrapper {
     margin-top: 2px;
 }
+
 .downloadButton {
     background: url("../images/animation/download.png") no-repeat left top transparent;
 }
@@ -390,7 +386,6 @@ Site navigation
     float: left;
     padding: 8px 30px 6px 60px;
     width: 200px;
-
 }
 
 .viewPortTab * {
@@ -453,7 +448,6 @@ Site navigation
     border: 6px solid #F4F4F4;
     font-size: 12px;
     background-image: none;
-
 }
 
 /* Our own style is applied to the message of the day dialog (see above). */
@@ -498,7 +492,6 @@ a:hover.mainlinks {
 }
 
 .authentication-form-floated {
-
     position: absolute;
     top: 150px;
     left: 210px;
@@ -656,7 +649,6 @@ table.featureInfo caption {
     opacity: 0.7;
     -ms-filter: "alpha(opacity=70)"; /* IE8 */
     filter: alpha(opacity=70); /* IE6/IE7 */
-
     /*color: white;*/
 }
 
@@ -727,7 +719,6 @@ table.featureInfo caption {
     background-color: #F4F4F4;
     padding: 4px;
     width: 97%;
-
 }
 
 .featureinfocontent {
@@ -1220,6 +1211,7 @@ div.allwhite {
 #activeLayerTreePanel img.x-tree-node-icon {
     width: 0px;
 }
+
 #activeLayerTreePanel input.x-tree-node-cb {
     vertical-align: middle;
 }
@@ -1231,6 +1223,7 @@ div.allwhite {
 .gx-popup .x-tab-panel-body {
     border: none;
 }
+
 .delayedDownloadForm {
     padding: 10px 10px 2px 10px;
 }
@@ -1250,7 +1243,6 @@ div.allwhite {
 }
 
 .WAMiniLogo {
-
     vertical-align: middle;
     margin-bottom: 6px;
 }
@@ -1271,7 +1263,6 @@ div.allwhite {
 
 .mainNavigationButton .x-btn-text {
     font-size: 12px;
-
 }
 
 .collectionTitle {

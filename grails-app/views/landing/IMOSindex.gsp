@@ -32,6 +32,7 @@
         <div id="landingLeft">
             <img class="roundedImages" src="images/IMOS/landing/leftLandingBling.jpg" />
         </div>
+
         <div id="landingCentre">
             <div class="landingSubLeft">
                 <a href="${resource(dir: 'home')}" id="landingBigButton" title="Search for Ocean Data">Search for Ocean Data</a>
@@ -39,15 +40,18 @@
 
             <div class="landingSubRight">
                 <h1>IMOS Ocean Portal</h1>
+
                 <div class="bigtext">"All IMOS data is freely and openly available for the benefit of Australian marine and climate science as a whole."</div>
             </div>
+
             <div class="clear"></div>
 
             <div>
                 <a href="${resource(dir: 'home')}" title="Search for Ocean Data">
-                    <img class="roundedImages" src="images/IMOS/landing/landingBling.png" width="600"/>
+                    <img class="roundedImages" src="images/IMOS/landing/landingBling.png" width="600" />
                 </a>
             </div>
+
             <div class="clear"></div>
 
             <div>

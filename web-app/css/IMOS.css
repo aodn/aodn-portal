@@ -22,8 +22,6 @@ Complemetary
 #FFBA66 orangeish
 #FFD29F mango
 #BF915D
-
-
 */
 
 @font-face {
@@ -31,9 +29,8 @@ Complemetary
     /*src: local(imosheader), url('../fonts/ZacharyBinx.ttf') format('opentype');*/
     src: url('../fonts/terminalevent.eot'); /* IE9 Compat Modes */
     src: url('../fonts/terminalevent.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('../fonts/terminalevent.woff') format('woff'), /* Modern Browsers */
-            url('../fonts/terminalevent.ttf')  format('truetype'); /* Safari, Android, iOS */
-
+        url('../fonts/terminalevent.woff') format('woff'), /* Modern Browsers */
+        url('../fonts/terminalevent.ttf') format('truetype'); /* Safari, Android, iOS */
 }
 
 html {
@@ -48,8 +45,6 @@ body, html, td {
 h2 {
     margin-bottom: 14px;
 }
-
-
 
 #landingBigButton {
     background: #ffba66; /* Old browsers */
@@ -82,10 +77,8 @@ h2 {
 }
 
 .landingContainer {
-   /* width: 600px;*/
+    /* width: 600px;*/
 }
-
-
 
 .buildInfo {
     color: #999999;
@@ -141,11 +134,10 @@ cart-title,
 #headerTitle {
     font-family: 'imosheader';
     color: #FFFFFF;
-    text-shadow:1px 1px 8px #333;
+    text-shadow: 1px 1px 8px #333;
     font-size: 55px;
     padding: 30px 0 6px 20px;
 }
-
 
 #toplinks {
     color: #a4d2ee;
