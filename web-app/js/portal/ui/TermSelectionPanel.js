@@ -27,6 +27,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg, defaults);
 
+        this.collapsedByDefault = this.collapsed;
+
         this.selectionStore = this._buildSelectionStore(this.hierarchical, this.separator);
         this.termStore = this._buildTermStore(this.separator);
 
@@ -332,11 +334,11 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
     removeAnyFilters: function () {
         this.selectedView.clear();
 
-        if (this.titleText == OpenLayers.i18n('platformFilter') || this.titleText == OpenLayers.i18n('parameterFilter')) {
-            this.expand();
+        if (this.collapsedByDefault) {
+            this.collapse();
         }
         else {
-            this.collapse();
+            this.expand();
         }
     },
 
