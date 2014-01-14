@@ -168,7 +168,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return formatGetFeatureInfo(resp, options);
     },
 
-    isAnimatable: function() {
+    isNcwms: function() {
         return true;
     },
 
