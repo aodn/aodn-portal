@@ -12,11 +12,16 @@ describe("Portal.details.SubsetPanel", function() {
     beforeEach(function() {
         map = new OpenLayers.Map();
         subsetPanel = new Portal.details.SubsetPanel({
-            map: map
+            map: map,
+            _extJsLayoutHack: noOp
         });
     });
 
     describe('initialisation', function() {
+
+        it('sets title', function() {
+            expect(subsetPanel.title).toEqual(OpenLayers.i18n('subsetPanelTitle'));
+        });
 
         it('has card layout', function() {
             expect(subsetPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
@@ -25,13 +30,15 @@ describe("Portal.details.SubsetPanel", function() {
         it('initialises filterGroupPanel', function() {
             expect(subsetPanel.filterGroupPanel).toBeInstanceOf(Portal.filter.FilterGroupPanel);
             expect(subsetPanel.items.itemAt(0)).toBe(subsetPanel.filterGroupPanel);
+            expect(subsetPanel.filterGroupPanel.title).toBeUndefined();
         });
 
         it('initialises aodaacPanel', function() {
             expect(subsetPanel.aodaacPanel).toBeInstanceOf(Portal.details.AodaacPanel);
             expect(subsetPanel.aodaacPanel.map).toBe(map);
             expect(subsetPanel.items.itemAt(1)).toBe(subsetPanel.aodaacPanel);
-        });
+            expect(subsetPanel.aodaacPanel.title).toBeUndefined();
+       });
     });
 
     describe('handleLayer', function() {

@@ -18,7 +18,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
         var config = Ext.apply({
             id: 'aodaacPanel',
-            title: OpenLayers.i18n('aodaacPanelTitle'),
             bodyCls: 'aodaacTab',
             autoScroll: true
         }, cfg);

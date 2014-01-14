@@ -17,6 +17,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
+            title: OpenLayers.i18n('subsetPanelTitle'),
             layout: new Ext.layout.CardLayout(),
             items: [
                 this.filterGroupPanel,
@@ -28,6 +29,9 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
     },
 
     handleLayer: function(layer, show, hide, target) {
+
+        this._extJsLayoutHack();
+
         if (layer.isNcwms()) {
             this.layout.setActiveItem(this.aodaacPanel.id);
         }
@@ -39,5 +43,13 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
         // - but for now, keeping same behaviour as before.
         this.aodaacPanel.handleLayer(layer, show, hide, target);
         this.filterGroupPanel.handleLayer(layer, show, hide, target);
+    },
+
+    _extJsLayoutHack: function() {
+        // TODO: hopefully can remove this? Haven't got a test for it.
+        // Remove filter pane; and add afresh to avoid ExtJS layout bug
+        this.remove(this.filterGroupPanel);
+        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
+        this.insert(0, this.filterGroupPanel);
     }
 });
