@@ -180,56 +180,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals expected, this.controller.response.contentAsString
     }
 
-    void testShowLayerByItsId() {
-        def server1 = new Server()
-        server1.id = 1
-
-        def layer2 = new Layer()
-        layer2.id = 4
-        layer2.name = "downloadfeaturetype"
-        layer2.server = server1
-
-        def layer1 = new Layer()
-        layer1.id = 5
-        layer1.name = "maplayer"
-        layer1.server = server1
-        layer1.wfsLayer = layer2
-
-        mockDomain(Server, [server1])
-        mockDomain(Layer, [layer1, layer2])
-
-        this.controller.params.layerId = 5
-        this.controller.showLayerByItsId()
-
-        def layerAsJson = JSON.parse(controller.response.contentAsString)
-
-        assertEquals 5, layerAsJson.id
-        assertEquals "maplayer", layerAsJson.name
-        assertEquals 4, layerAsJson.wfsLayer.id
-        assertEquals "downloadfeaturetype", layerAsJson.wfsLayer.name
-    }
-
-    void testShowLayerByItsIdWhenLayerReferencesItself() {
-        def server1 = new Server(id: 1)
-
-        def layer1 = new Layer(id: 5, name: 'layer', server: server1)
-        layer1.wfsLayer = layer1 // Set WFS layer as itself
-
-        mockDomain(Server, [server1])
-        mockDomain(Layer, [layer1])
-
-        this.controller.params.layerId = 5
-        this.controller.showLayerByItsId()
-
-        def layerAsJson = JSON.parse(controller.response.contentAsString)
-
-        assertEquals 5, layerAsJson.id
-        assertEquals "layer", layerAsJson.name
-        assertEquals 5, layerAsJson.wfsLayer.id
-        assertEquals "layer", layerAsJson.wfsLayer.name
-        assertNull layerAsJson.wfsLayer.wfsLayer
-    }
-
     void testUpdateNoViewParams() {
         _updateViewParamsSetup(null)
         def updatedLayer = Layer.get(controller.redirectArgs['id'])

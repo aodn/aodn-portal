@@ -15,7 +15,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
-        this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
         var config = Ext.apply({
             id: 'aodaacPanel',
             title: OpenLayers.i18n('aodaacPanelTitle'),
@@ -42,7 +41,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
-        if (layer.isNcwms()) {
+        if (layer.isNcwms() && layer.grailsLayerId) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
             this._updateGeoNetworkAodaac(this.map.getConstraint());
             this._clearDateTimeFields();

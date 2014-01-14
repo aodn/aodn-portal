@@ -66,7 +66,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         var labelText = filter.label.split('_').join(' ').toTitleCase();
         var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>",
+            html: "<h4>" + labelText + "</h4>"
         });
         this.add(label);
     },
@@ -100,7 +100,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             });
         }
         else {
-            // probably some other layer added in through getfeatureinfo, or user added WMS
+            this.hide();
         }
     },
 

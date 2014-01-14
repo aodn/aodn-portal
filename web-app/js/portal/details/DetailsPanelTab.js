@@ -47,9 +47,12 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         // Remove filter pane; and add afresh to avoid ExtJS layout bug
         this.remove(this.filterGroupPanel);
         this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
-        this.insert(0, this.filterGroupPanel);
-
         this.filterGroupPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+
+        if (this.grailsLayerId) {
+            this.insert(0, this.filterGroupPanel);
+        }
+
         this.aodaacPanel.handleLayer(layer, this._showTab, this._hideTab, this);
         this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
         this.stylePanel.handleLayer(layer, this._showTab, this._hideTab, this);
