@@ -18,7 +18,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.navigationControl = new OpenLayers.Control.Navigation({
             title: OpenLayers.i18n('panControl'),
             active: false,
-            type: 2
+            type: OpenLayers.Control.TYPE_TOGGLE
         });
 
         var toolPanel = new OpenLayers.Control.Panel({
