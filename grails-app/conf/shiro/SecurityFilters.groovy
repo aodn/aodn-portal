@@ -92,7 +92,7 @@ class SecurityFilters {
             }
         }
 
-        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers|getFiltersAsJSON") {
+        layerAccess(controller: "layer", action: "listBaseLayersAsJson|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers|getFiltersAsJSON") {
             before = {
                 request.accessAllowed = true
             }

@@ -148,22 +148,6 @@ class LayerController {
         render _toResponseMap(combinedList, layers.totalCount) as JSON
     }
 
-    def showLayerByItsId = {
-
-        def layerInstance = Layer.get(params.layerId)
-
-        if (layerInstance) {
-            _renderLayer(layerInstance)
-        }
-        else {
-
-            def queryString = request.queryString ? "?$request.queryString" : ""
-            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
-            log.info msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
-        }
-    }
-
     // Lookup a layer using the server uri and layer name
     // (used to find any portal layer corresponding to externally
     // entered layer details e.g. layers sourced from metadata records)

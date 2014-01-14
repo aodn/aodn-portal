@@ -26,6 +26,7 @@ describe('Portal.details.AodaacPanel', function() {
         aodaacPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
         layer.isNcwms = function() { return true };
+        layer.grailsLayerId = 234;
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
     });

@@ -53,25 +53,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this._addLayer(openLayer, layerRecordCallback);
     },
 
-    addUsingServerId: function(args) {
-        Ext.Ajax.request({
-
-            url: 'layer/showLayerByItsId?layerId=' + args.id,
-            layerOptions: args.layerOptions,
-            layerParams: args.layerParams,
-            animated: args.animated,
-            chosenTimes: args.chosenTimes,
-            scope: this,
-            success: function(resp, options) {
-                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
-                this.addUsingOpenLayer(layerDescriptor.toOpenLayer(options.layerOptions, options.layerParams));
-                // TODO: chosen times?
-            },
-            failure: function(resp) {
-                Ext.MessageBox.alert('Error', "Sorry I could not load the requested collection:\n" + resp.responseText);
-            }
-        });
-    },
 
     reset: function() {
         this.removeAll();
