@@ -168,7 +168,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return formatGetFeatureInfo(resp, options);
     },
 
-    isAnimatable: function() {
+    isNcwms: function() {
         return true;
     },
 
@@ -188,9 +188,5 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (next) {
             return this.toTime(next);
         }
-    },
-
-    showAodaacControls: function() {
-        return true;
     }
 });

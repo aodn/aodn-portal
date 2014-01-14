@@ -42,7 +42,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
-        if (layer.showAodaacControls && layer.showAodaacControls()) {
+        if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
             this._updateGeoNetworkAodaac(this.map.getConstraint());
             this._clearDateTimeFields();

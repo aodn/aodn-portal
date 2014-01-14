@@ -25,7 +25,7 @@ describe('Portal.details.AodaacPanel', function() {
         aodaacPanel._setBounds =  function() {};
         aodaacPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
-        layer.showAodaacControls = function() { return true };
+        layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
     });

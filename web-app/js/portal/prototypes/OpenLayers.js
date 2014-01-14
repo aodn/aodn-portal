@@ -178,7 +178,7 @@ OpenLayers.Layer.WMS.prototype._is130 = function () {
     return this.server.type.contains("1.3.0") && !this.isNcwms();
 };
 
-OpenLayers.Layer.WMS.prototype.isAnimatable = function () {
+OpenLayers.Layer.WMS.prototype.isNcwms = function () {
     return false;
 };
 
