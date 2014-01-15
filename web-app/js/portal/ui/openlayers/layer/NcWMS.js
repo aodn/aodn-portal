@@ -190,7 +190,22 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
+    getCqlForTemporalExtent: function() {
+        return "here_be_time";
+    },
+
     _buildGetFeatureRequestUrl: function (baseUrl, layerName, outputFormat, downloadFilter) {
-        return OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(this, [baseUrl, layerName, outputFormat, null]) + "&CQL_FILTER=INSERT_TIME_HERE";
+        // Call the WMS class and apply NO download filters (null)
+        wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
+            this,
+            [
+                baseUrl,
+                layerName,
+                outputFormat,
+                null
+            ]
+        );
+        cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
+        return wfsRequest + cqlFilter;
     }
 });
