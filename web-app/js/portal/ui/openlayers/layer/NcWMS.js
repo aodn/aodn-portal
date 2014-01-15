@@ -188,5 +188,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (next) {
             return this.toTime(next);
         }
+    },
+
+    _buildGetFeatureRequestUrl: function (baseUrl, layerName, outputFormat, downloadFilter) {
+        return OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(this, [baseUrl, layerName, outputFormat, null]) + "&CQL_FILTER=INSERT_TIME_HERE";
     }
 });
