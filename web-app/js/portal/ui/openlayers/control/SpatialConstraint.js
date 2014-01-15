@@ -65,6 +65,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     clear: function() {
         this.layer.destroyFeatures();
+        this.map.events.triggerEvent('spatialconstraintcleared');
     },
 
     hasConstraint: function() {
