@@ -15,11 +15,13 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             height: 90,
             width: 200,
         });
-        this.noneDisplayPanel = new Ext.Panel();
+        this.noneDisplayPanel = new Ext.Panel({
+            setGeometry: function() {}
+        });
 
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
-            activeItem: this.boxDisplayPanel,
+            activeItem: this.noneDisplayPanel,
             items: [
                 this.boxDisplayPanel,
                 this.polygonDisplayPanel,

@@ -42,6 +42,10 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
             expect(displayPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
+        it('initialises with "none" as active item', function() {
+            expect(displayPanel.activeItem).toBe(displayPanel.noneDisplayPanel);
+        });
+
         describe('spatial constraint added', function() {
 
             it('shows box display panel when constraint is box', function() {
