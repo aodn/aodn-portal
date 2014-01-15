@@ -130,10 +130,10 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             setupDataRowTemplatePrototypeSpies('attachMenuEvents');
         });
 
-        it('delegates to the no data row implementation', function() {
+        it('does not create the button when no data is available', function() {
             tpl._createDownloadButton(null, geoNetworkRecord);
-            expect(Portal.cart.NoDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
-            expect(Portal.cart.NoDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
+            expect(Portal.cart.NoDataRowTemplate.prototype.createMenuItems).not.toHaveBeenCalled();
+            expect(Portal.cart.NoDataRowTemplate.prototype.attachMenuEvents).not.toHaveBeenCalled();
         });
 
         it('delegates to the aodaac data row implementation', function() {

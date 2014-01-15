@@ -18,7 +18,7 @@ Ext.ns('Portal');
 
 Portal.app = {
 
-    ajaxComplete: function(){
+    ajaxComplete: function() {
         progressCount--;
         if (progressCount <= 0) {
             progressCount = 0;
@@ -26,13 +26,12 @@ Portal.app = {
         }
     },
 
-    init: function(){
-
+    init: function() {
         // Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;
 
         // Global Ajax events can be handled on every request!
-        Ext.Ajax.on('beforerequest', function(){
+        Ext.Ajax.on('beforerequest', function() {
             if (progressCount == 0) {
                 this.ajaxAction('show');
             }
@@ -46,18 +45,19 @@ Portal.app = {
         new Portal.config.PortalConfigLoader().load(this, this.afterConfigLoad, this.configLoadFailed);
     },
 
-    afterConfigLoad: function(){
-
-        // Display MOTD if required
-        if (this.portal.config.enableMOTD) {
-
-            Ext.Msg.show({
-                title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
-                msg: this.portal.config.motd.motd,
-                buttons: Ext.Msg.OK,
-                cls: 'motd',
-                width: 600
-            });
+    afterConfigLoad: function() {
+        // Display MOTD if required on landing page
+        if (window.landingPage) {
+            if (this.portal.config.enableMOTD) {
+                Ext.Msg.show({
+                    title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
+                    msg: this.portal.config.motd.motd,
+                    buttons: Ext.Msg.OK,
+                    cls: 'motd',
+                    width: 600
+                });
+            }
+            return;
         }
 
         // Load saved map (snapshot) if required
@@ -85,19 +85,18 @@ Portal.app = {
         });
 
         if (startSnapshot) {
-            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function(){
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
                 Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
                 Ext.MsgBus.publish(PORTAL_EVENTS.LOAD_SNAPSHOT, startSnapshot);
             }, this);
         }
     },
 
-    configLoadFailed: function(){
-
+    configLoadFailed: function() {
         Ext.MessageBox.alert('Error', 'There was a problem loading the Portal.<br>Refreshing the page may resolve the problem.');
     },
 
-    ajaxAction: function(request){
+    ajaxAction: function(request) {
         if (request == 'show') {
             jQuery('.extAjaxLoading').show(100);
         }
@@ -108,7 +107,7 @@ Portal.app = {
 };
 
 // sets the tab from the external links in the header
-function setViewPortTab(tabIndex){
+function setViewPortTab(tabIndex) {
     viewport.setActiveTab(tabIndex);
 }
 
@@ -117,10 +116,10 @@ function setViewPortTab(tabIndex){
 // Bug in Ext.form.MessageTargets in connection with using compositeFields
 //The problem is, that composite fields doesn't have the "dom" node and that is why the clear functions of Ext.form.MessageTargets.qtip
 //and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
-Ext.onReady(function(){
+Ext.onReady(function() {
 
     Ext.apply(Ext.form.MessageTargets.qtip, {
-        clear: function(field){
+        clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix
 
@@ -131,7 +130,7 @@ Ext.onReady(function(){
     });
 
     Ext.apply(Ext.form.MessageTargets.side, {
-        clear: function(field){
+        clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix
 

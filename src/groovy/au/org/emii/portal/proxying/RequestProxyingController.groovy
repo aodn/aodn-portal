@@ -5,7 +5,7 @@
  *
  */
 
-package au.org.emii.portal
+package au.org.emii.portal.proxying
 
 abstract class RequestProxyingController {
 
@@ -16,15 +16,16 @@ abstract class RequestProxyingController {
 
     def _performProxying = { paramProcessor = null, streamProcessor = null ->
 
-        if (!params.url) {
+        def url = params.url
+
+        if (!url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 400
         }
-        else if (!hostVerifier.allowedHost(request, params.url)) {
-            log.info "Proxy: The url ${params.url} was not allowed"
-            render text: "Host for address '${params.url}' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
+        else if (!hostVerifier.allowedHost(request, url)) {
+            log.info "Proxy: The url $url was not allowed"
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
         }
         else {
-
             def processedParams = paramProcessor ? paramProcessor(params) : params
 
             // Make request

@@ -42,7 +42,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noCollectionsMessage: 'No data collections to show',
     noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
-    noFilterMessage: 'No data filter applied.',
+    noFilterLabel: 'No filters applied.',
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'Download as CSV',
@@ -259,5 +259,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // PolygonTypeComboBox
     polygonTypeNone: "none",
     polygonTypePolygon: "polygon",
-    polygonTypeBoundingBox: "bounding box"
+    polygonTypeBoundingBox: "bounding box",
+
+    // WfsDataRowTemplate
+    fileSizeIconMarkup: '<img src="images/clock_red.png">',
+    fileSizeGb: "GB",
+    fileSizeMb: "MB",
+    estimatedDlMessage: "The estimated download size is ",
+    estimatedDlFailedMsg: "The estimated download size is unknown."
 });

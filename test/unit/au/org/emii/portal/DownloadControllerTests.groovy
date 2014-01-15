@@ -21,17 +21,9 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller = new DownloadController()
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
     void testUrlListForLayer() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
-
-        mockDomain Server, [server]
-        mockDomain Layer, [layer]
+        _setUpExampleObjects()
 
         def testParamProcessor = new Object()
         controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
@@ -62,6 +54,50 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals 1, performProxyingCalledCount
     }
 
+    void testEstimateSizeForLayerNoLayerId() {
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
+    }
+
+    void testEstimateSizeForLayerInvalidHost() {
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = "the_url"
+
+        controller.hostVerifier = [allowedHost: {r, u -> false}]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+    }
+
+    void testEstimateSizeForLayer() {
+
+        _setUpExampleObjects()
+
+        mockParams.layerId = 1
+
+        def testStreamProcessor = new Object()
+        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
+            assertEquals "relativeFilePath", filenameFieldName
+            assertEquals "size", sizeFieldName
+            return testStreamProcessor
+        }
+        controller.hostVerifier = [allowedHost: {r, u -> true}]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
+            assertEquals testStreamProcessor, streamProcessor
+            resultStream << "the output"
+        }
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "the output", mockResponse.contentAsString
+    }
+
     void testRequestSingleFieldParamProcessor() {
 
         def pp = controller.requestSingleFieldParamProcessor("relativeFilePath")
@@ -75,13 +111,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testUrlListStreamProcessor() {
 
         def input = """\
-            FID,profile_id,relativeFilePath
-            aatams_sattag_nrt_wfs.331443,21772,/mnt/imos-t4/IMOS/Q9900542.nc
-            aatams_sattag_nrt_wfs.331445,21772,/mnt/imos-t4/IMOS/Q9900543.nc
-            aatams_sattag_nrt_wfs.331441,21772,/mnt/imos-t4/IMOS/Q9900540.nc
-            aatams_sattag_nrt_wfs.331442,21772,/mnt/imos-t4/IMOS/Q9900541.nc
-            aatams_sattag_nrt_wfs.331443,21772,/mnt/imos-t4/IMOS/Q9900542.nc
-            aatams_sattag_nrt_wfs.331445,21772,/mnt/imos-t4/IMOS/Q9900543.nc
+            FID,relativeFilePath
+            aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
+            aatams_sattag_nrt_wfs.331441,/mnt/imos-t4/IMOS/Q9900540.nc
+            aatams_sattag_nrt_wfs.331442,/mnt/imos-t4/IMOS/Q9900541.nc
+            aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
+            aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
 
         """
 
@@ -97,6 +133,66 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         def sp = controller.urlListStreamProcessor("relativeFilePath", "/mnt/imos-t4", "http://data.imos.org.au")
         sp(inputStream, outputStream)
+
+        def output = outputStream.toString("UTF-8")
+
+        assertEquals expectedOutput, output
+    }
+
+    void testCalculateSumStreamProcessorNoProblems() {
+
+        def input = """\
+            FID,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,file_a,100
+            aatams_sattag_nrt_wfs.331445,file_b,200
+            aatams_sattag_nrt_wfs.331441,file_c,300
+            aatams_sattag_nrt_wfs.331446,file_d,300
+            aatams_sattag_nrt_wfs.331447,file_d,300
+            aatams_sattag_nrt_wfs.331442,file_e,400
+        """
+
+        def expectedOutput = "1300"
+
+        assertCorrectProcessing(
+            controller.calculateSumStreamProcessor("relativeFilePath", "size"),
+            input,
+            expectedOutput
+        )
+    }
+
+    void testCalculateSumStreamProcessorWithProblems() {
+
+        def input = """\
+            FID,relativeFilePath,size
+            aatams_sattag_nrt_wfs.331443,file_a,100
+            aatams_sattag_nrt_wfs.331445,file_b,not a number
+
+        """
+
+        def expectedOutput = "-1"
+
+        assertCorrectProcessing(
+            controller.calculateSumStreamProcessor("relativeFilePath", "size"),
+            input,
+            expectedOutput
+        )
+    }
+
+    void _setUpExampleObjects() {
+
+        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+
+        mockDomain Server, [server]
+        mockDomain Layer, [layer]
+    }
+
+    static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {
+
+        def inputStream = new ByteArrayInputStream(input.bytes)
+        def outputStream = new ByteArrayOutputStream()
+
+        streamProcessor(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
 

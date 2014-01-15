@@ -1146,10 +1146,13 @@ div.allwhite {
 }
 
 .resultsRowBackground {
-    background: #eeeeee;
+    background-color: #eeeeee;
     border-left: 1px solid #CCCCCC;
     margin-top: 4px;
     padding: 3px 10px;
+}
+.resultsHeaderBackground {
+    background-color: #f8f8f8;
 }
 
 .facetedSearchBtn {
@@ -1226,6 +1229,10 @@ div.allwhite {
 
 .delayedDownloadForm {
     padding: 10px 10px 2px 10px;
+}
+
+.downloadEstimateLabel {
+	padding: 10px 10px 2px 10px;
 }
 
 /* Bug #9 - show blank tiles on image load error. */

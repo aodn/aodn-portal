@@ -234,6 +234,9 @@ marvl {
     }
 }
 
+// WFS indexed file info
+indexedFile.fileSizeColumnName = "size"
+
 // log4j configuration
 log4j = {
     appenders {

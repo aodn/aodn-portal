@@ -9,9 +9,10 @@ class LandingController {
 
         render(
             view: portalInstance.name() + "index",
-            model:[oceanCurrent: oceanCurrentService.getRandomDetails(),
-                    cfg: Config.activeInstance(),
-                    portalBuildInfo: _portalBuildInfo()
+            model:[
+                oceanCurrent: oceanCurrentService.getRandomDetails(),
+                cfg: Config.activeInstance(),
+                portalBuildInfo: _portalBuildInfo()
             ]
         )
     }
