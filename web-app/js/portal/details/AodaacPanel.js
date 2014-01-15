@@ -42,8 +42,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
 
-        console.log(layer.isRetrievedFromDatabase());
-
         if (layer.isNcwms() && layer.isRetrievedFromDatabase()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
             this._updateGeoNetworkAodaac(this.map.getConstraint());
