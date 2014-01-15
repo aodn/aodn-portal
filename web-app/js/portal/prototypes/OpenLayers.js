@@ -8,7 +8,7 @@ OpenLayers.Layer.prototype.isOverlay = function() {
     return !this.isBaseLayer;
 };
 
-OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
+OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
     if (this.wrapDateLine) {
         // wrap around the date line, within the limits of rounding error
         var wrappingOptions = {
@@ -34,7 +34,7 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function (bounds) {
 };
 
 // Modifications to OpenLayers class prototypes
-OpenLayers.Layer.WMS.prototype.isNcwms = function () {
+OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     if (this.server) {
         return ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"].indexOf(this.server.type) >= 0;
     }
@@ -42,7 +42,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function () {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoint, overrideParams) {
+OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint, overrideParams) {
     var baseFeatureInfoParams = {
         REQUEST:"GetFeatureInfo",
         EXCEPTIONS:"application/vnd.ogc.se_xml",
@@ -69,23 +69,17 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoin
     return this.unproxy(this.getFullRequestString(baseFeatureInfoParams));
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function () {
-/*    if (this.isNcwms()) {
-        // we know what we want here
-        return 'text/xml';
-    }
-    else {*/
-        // Should usually be 'text/html'
-        return this.server.infoFormat;
-    //}
+OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
+    // Should usually be 'text/html'
+    return this.server.infoFormat;
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
-OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function (resp, options) {
+OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function (outputFormat) {
+OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFormat) {
 
     return this._buildGetFeatureRequestUrl(
         this.server.uri,
@@ -95,7 +89,7 @@ OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function (outputFo
     );
 };
 
-OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function (outputFormat) {
+OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(outputFormat) {
 
     return this._buildGetFeatureRequestUrl(
         this._getWfsServerUrl(),
@@ -105,7 +99,7 @@ OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function (outputFo
     );
 };
 
-OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function (baseUrl, layerName, outputFormat, downloadFilter) {
+OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, layerName, outputFormat, downloadFilter) {
 
     var wfsUrl = baseUrl;
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
@@ -136,7 +130,7 @@ OpenLayers.Layer.WMS.prototype._getWfsLayerName = function() {
     return this.wfsLayer.name;
 };
 
-OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
+OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
     var result = undefined;
 
     if (this.overrideMetadataUrl) {
@@ -153,7 +147,7 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function () {
     return result;
 };
 
-OpenLayers.Layer.WMS.prototype.proxy = function (proxy) {
+OpenLayers.Layer.WMS.prototype.proxy = function(proxy) {
     if (this.server.username && this.server.password && !this.localProxy) {
         var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
         this.server.uri = proxy + this.server.uri + separator;
@@ -162,11 +156,11 @@ OpenLayers.Layer.WMS.prototype.proxy = function (proxy) {
     }
 };
 
-OpenLayers.Layer.WMS.prototype.unproxy = function (url) {
+OpenLayers.Layer.WMS.prototype.unproxy = function(url) {
     return url.replace(this.localProxy, '');
 };
 
-OpenLayers.Layer.WMS.prototype._getBoundingBox = function () {
+OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
     var bounds = this._is130()
         ? new OpenLayers.Bounds.fromArray(this.getExtent().toArray(true))
         : this.getExtent();
@@ -174,15 +168,15 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function () {
     return bounds.toBBOX();
 };
 
-OpenLayers.Layer.WMS.prototype._is130 = function () {
+OpenLayers.Layer.WMS.prototype._is130 = function() {
     return this.server.type.contains("1.3.0") && !this.isNcwms();
 };
 
-OpenLayers.Layer.WMS.prototype.isNcwms = function () {
+OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
+OpenLayers.Layer.WMS.prototype.getCqlFilter= function() {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
     }
@@ -191,7 +185,7 @@ OpenLayers.Layer.WMS.prototype.getCqlFilter= function () {
     }
 };
 
-OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
+OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
     if (cqlFilter == this.getCqlFilter()) {
         return;
     }
@@ -207,7 +201,7 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function (cqlFilter) {
     }
 };
 
-OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
+OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
     var filters = [];
 
     if (this.downloadOnlyFilters) {
@@ -217,11 +211,11 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function () {
     return filters.join(' AND ');
 };
 
-OpenLayers.Layer.WMS.prototype.hasBoundingBox = function () {
+OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
     return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
 };
 
-OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
+OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
     var propagate = true;
     this.dragging = false;
     if (this.checkModifiers(evt) && OpenLayers.Event.isLeftClick(evt)) {
@@ -254,7 +248,7 @@ OpenLayers.Handler.Drag.prototype.mousedown = function (evt) {
     return propagate;
 };
 
-OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function () {
+OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function() {
     return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
 };
 
