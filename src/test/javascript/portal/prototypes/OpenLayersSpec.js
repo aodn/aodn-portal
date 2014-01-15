@@ -56,6 +56,19 @@ describe('OpenLayers', function() {
             });
         });
 
+        describe("isRetrievedFromDatabase", function() {
+            it("returns true when grailsLayerId is set", function() {
+                openLayer.grailsLayerId =  2134;
+                expect(openLayer.isRetrievedFromDatabase()).toBeTruthy();
+            });
+
+            it("returns false when grailsLayerId is not set", function() {
+                expect(openLayer.isRetrievedFromDatabase()).toBeFalsy();
+            });
+
+        });
+
+
         describe("proxy", function() {
             it("appends an ampersand to url when uri includes a question mark", function() {
                 openLayer.server= {username: "user", password: "pass", uri:"http://geoserver.uni.edu.au/geoserver/wms?namespace=org"};
