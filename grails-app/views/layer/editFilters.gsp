@@ -27,12 +27,9 @@
                     document.getElementById('possibleValues').style.visibility = 'visible';
                 }
             }
-
-            Ext.onReady(function() {
-
-            });
-
         </script>
+        <g:render template="wfsSelectFilterScript"></g:render>
+
     </head>
     <body>
         <div class="nav">
