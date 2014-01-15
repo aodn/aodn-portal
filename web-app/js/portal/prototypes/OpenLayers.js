@@ -42,6 +42,10 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function () {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.isRetrievedFromDatabase = function () {
+    return (this.grailsLayerId) ? true: false;
+};
+
 OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function (clickPoint, overrideParams) {
     var baseFeatureInfoParams = {
         REQUEST:"GetFeatureInfo",

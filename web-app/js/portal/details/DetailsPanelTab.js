@@ -49,7 +49,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
         this.filterGroupPanel.handleLayer(layer, this._showTab, this._hideTab, this);
 
-        if (this.grailsLayerId) {
+        if (layer.isRetrievedFromDatabase()) {
             this.insert(0, this.filterGroupPanel);
         }
 
