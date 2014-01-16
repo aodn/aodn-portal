@@ -44,8 +44,10 @@ class BulkDownloadService {
 
     def _writeFilesToStream = { urlList ->
 
-        urlList.each {
-            _addFileEntry(it)
+        urlList.eachWithIndex { url, index ->
+            log.debug "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
+
+            _addFileEntry(url)
         }
 
         _addDownloadReportToArchive()
@@ -58,8 +60,6 @@ class BulkDownloadService {
 
     def _addFileEntry = { url ->
 
-        log.debug "Adding entry for file from URL: '$url'"
-
         def filenameToUse = _uniqueFilenameForUrl(url)
         def streamFromUrl
 
@@ -69,6 +69,8 @@ class BulkDownloadService {
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
             def bytesCopied = IOUtils.copy(streamFromUrl, zipStream)
+
+            log.debug "Added $bytesCopied Bytes"
 
             report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
         }
