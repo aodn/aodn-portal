@@ -17,7 +17,8 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
         this.navigationControl = new OpenLayers.Control.Navigation({
             title: OpenLayers.i18n('panControl'),
-            active: false
+            active: false,
+            type: OpenLayers.Control.TYPE_TOGGLE
         });
 
         var toolPanel = new OpenLayers.Control.Panel({
@@ -28,7 +29,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.clickControl = new Portal.ui.openlayers.ClickControl({
             fallThrough: true,
             onClick: function (event) {
-
                 mapPanel.handleFeatureInfoClick(event);
             }
         });

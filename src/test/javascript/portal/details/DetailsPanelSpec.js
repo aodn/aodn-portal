@@ -9,6 +9,7 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
+        spyOn(Portal.details.SubsetPanel.prototype, 'handleLayer');
         detailsPanel = new Portal.details.DetailsPanel({ map: new OpenLayers.Map() });
         spyOn(detailsPanel, 'hideDetailsPanelContents');
         detailsPanel.initComponent();

@@ -87,7 +87,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var fileSizeImage;
 
         // Error code received from the server-side
-        if (estimate == -1) {
+        if (estimate == -1 || isNaN(estimate)) {
             downloadMessage = OpenLayers.i18n("estimatedDlFailedMsg");
             fileSizeEstimate = "";
             fileMagnitude = "";
@@ -124,7 +124,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _downloadWfsHandler: function(collection, format) {
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
+        return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
     },
 
     _urlListDownloadHandler: function(collection) {
@@ -132,7 +132,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
     },
 
     _netCdfDownloadHandler: function(collection) {
@@ -141,10 +141,14 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        return this.downloadWithConfirmation(this._downloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
+        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
     },
 
-    _downloadUrl: function(layer, format) {
+    _wfsDownloadUrl: function(layer, format) {
         return layer.getWfsLayerFeatureRequestUrl(format);
+    },
+
+    _wmsDownloadUrl: function(layer, format) {
+        return layer.getWmsLayerFeatureRequestUrl(format);
     }
 });

@@ -55,6 +55,16 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         });
     });
 
+    describe('handleRemoveFilter', function() {
+        it('clears the spatial constraint', function() {
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            spyOn(map.spatialConstraintControl, 'clear');
+
+            boundingBoxFilter.handleRemoveFilter();
+            expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
+        });
+    });
+
     describe('getCQL', function () {
 
         it('calls correct method for polygon geometry type', function () {

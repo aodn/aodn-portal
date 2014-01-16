@@ -33,12 +33,6 @@ describe('Portal.details.AodaacPanel', function() {
     describe('GeoNetworkRecord', function() {
 
         it('assigns a GeoNetworkRecord instance from a layer', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
-                }
-            );
-
             _applyCommonSpies();
             spyOn(aodaacPanel, '_removeLoadingInfo');
 
@@ -55,12 +49,6 @@ describe('Portal.details.AodaacPanel', function() {
         });
 
         it('updates the aodaac object when the layer changes', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
-                }
-            );
-
             aodaacPanel.handleLayer(layer, noOp, noOp, {});
             expect(aodaacPanel._buildAodaacParameters).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
@@ -92,12 +80,6 @@ describe('Portal.details.AodaacPanel', function() {
 
         it('clears the date and time pickers when the layer is updating', function() {
             spyOn(aodaacPanel, '_clearDateTimeFields');
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"extents":{"lat":{"min":-48.02,"max":-7.99},"lon":{"min":103.99,"max":165.02},"dateTime":{"min":"01/01/2001","max":"31/12/2012"}},"name":"GHRSST SST subskin","productId":"1"}]' });
-                }
-            );
-
             aodaacPanel.handleLayer(layer, noOp, noOp, {});
             expect(aodaacPanel._clearDateTimeFields).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;

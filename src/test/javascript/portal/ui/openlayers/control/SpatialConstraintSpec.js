@@ -104,13 +104,19 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(addedSpy).toHaveBeenCalled();
             expect(clearedSpy).toHaveBeenCalled();
         });
-    });
 
-    describe('clear', function() {
-        it('destroys existing feature', function() {
-            spyOn(spatialConstraint.layer, 'destroyFeatures');
-            spatialConstraint.clear();
-            expect(spatialConstraint.layer.destroyFeatures).toHaveBeenCalled();
+        describe('clear', function() {
+            it('destroys existing feature', function() {
+                spyOn(map.spatialConstraintControl.layer, 'destroyFeatures');
+                map.spatialConstraintControl.clear();
+                expect(map.spatialConstraintControl.layer.destroyFeatures).toHaveBeenCalled();
+            });
+
+            it('fires spatialconstraintcleared event', function() {
+                spyOn(map.events, 'triggerEvent');
+                map.spatialConstraintControl.clear();
+                expect(map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
+            });
         });
     });
 

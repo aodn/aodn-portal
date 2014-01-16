@@ -26,9 +26,12 @@ describe("Portal.ui.FeatureInfoPopup", function()
             {
                 queryable: true
             },
-            {isBaseLayer: false,server: server}
-
+            {
+                isBaseLayer: false,
+                server: server
+            }
         );
+        layer.isNcwms = function() { return true; }
 
         map.addLayer(layer);
         featureInfoPopup = new Portal.ui.FeatureInfoPopup({map: map, appConfig: {}});
@@ -111,8 +114,8 @@ describe("Portal.ui.FeatureInfoPopup", function()
 
         it("calls _setMetadataFirst when no metadata", function(){
 
-            featureInfoPopup._setMetadataFirst = function(){ return true };
-            featureInfoPopup._requestFeatureInfo = function(){ return true };
+            featureInfoPopup._setMetadataFirst = function() { return true };
+            featureInfoPopup._requestFeatureInfo = function() { return true };
 
             spyOn(featureInfoPopup, '_setMetadataFirst');
 

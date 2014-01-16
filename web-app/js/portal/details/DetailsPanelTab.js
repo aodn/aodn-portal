@@ -11,6 +11,10 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
     constructor: function (cfg) {
+        this.subsetPanel = new Portal.details.SubsetPanel({ map: cfg.map });
+        this.infoPanel = new Portal.details.InfoPanel();
+        this.stylePanel = new Portal.details.StylePanel();
+
         var config = Ext.apply({
             defaults: {
                 margin: 10
@@ -19,6 +23,11 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
             border: false,
             activeTab: 0,
             enableTabScroll: true,
+            items: [
+                this.subsetPanel,
+                this.infoPanel,
+                this.stylePanel
+            ],
             cls: 'floatingDetailsPanelContent',
             flex: 1
         }, cfg);
@@ -26,31 +35,10 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
     },
 
-    initComponent: function() {
-        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
-        this.aodaacPanel = new Portal.details.AodaacPanel({ map: this.map });
-        this.infoPanel = new Portal.details.InfoPanel();
-        this.stylePanel = new Portal.details.StylePanel();
-
-        this.items = [
-            this.filterGroupPanel,
-            this.aodaacPanel,
-            this.infoPanel,
-            this.stylePanel
-        ];
-
-        Portal.details.DetailsPanelTab.superclass.initComponent.call(this);
-    },
-
     handleLayer: function(layer) {
         this._ensurePanelsRendered();
-        // Remove filter pane; and add afresh to avoid ExtJS layout bug
-        this.remove(this.filterGroupPanel);
-        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
-        this.insert(0, this.filterGroupPanel);
 
-        this.filterGroupPanel.handleLayer(layer, this._showTab, this._hideTab, this);
-        this.aodaacPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+        this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
         this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
         this.stylePanel.handleLayer(layer, this._showTab, this._hideTab, this);
 

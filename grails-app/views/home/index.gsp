@@ -29,8 +29,6 @@ ${buildInfo}
 <!-- User extensions -->
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}"/>
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/Hyperlink/hyperlink.css')}"/>
-<!-- Portal classes-->
-<link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'portal-search.css')}"/>
 
 <g:render template="/js_includes"></g:render>
 <g:render template="/public_theme_includes"></g:render>

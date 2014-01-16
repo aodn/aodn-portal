@@ -155,21 +155,25 @@ describe("Portal.ui.MapPanel", function() {
 
         describe('initialisation', function() {
 
-            beforeEach(function() {
-                mapPanel._setSpatialConstraintStyle('bounding box');
-            });
-
             it('has spatial constraint control', function() {
+                mapPanel._setSpatialConstraintStyle('bounding box');
                 expect(mapPanel.map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
             });
 
             it('is in map controls', function() {
+                mapPanel._setSpatialConstraintStyle('bounding box');
                 expect(mapPanel.map.controls).toContain(mapPanel.map.spatialConstraintControl);
             });
 
-            it('has initial bbox equal to config', function() {
-                expect(mapPanel.map.spatialConstraintControl.initialConstraint.toString()).toEqual(
-                    Portal.utils.geo.bboxAsStringToGeometry(Portal.app.config.initialBbox).toString());
+            it('clears spatialConstraintControl on initialisation', function() {
+                var map = mapPanel.map;
+                var spatialConstraintClearedSpy = jasmine.createSpy();
+                map.events.on({
+                    'spatialconstraintcleared': spatialConstraintClearedSpy
+                });
+
+                mapPanel._setSpatialConstraintStyle('bounding box');
+                expect(spatialConstraintClearedSpy).toHaveBeenCalled();
             });
         });
 

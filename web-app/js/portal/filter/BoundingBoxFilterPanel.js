@@ -16,8 +16,8 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
         Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
 
-        var map = config.layer.map;
-        map.events.on({
+        this.map = config.layer.map;
+        this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {
                 this._updateWithGeometry(geometry);
@@ -40,7 +40,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     handleRemoveFilter: function() {
-        // Can't be removed
+        this.map.spatialConstraintControl.clear();
     },
 
     getFilterName: function() {

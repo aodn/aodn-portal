@@ -263,7 +263,9 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
 
-                                    <g:select name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
+                                    <g:render template="wfsSelectFilterScript"></g:render>
+                                    <input id="inputFilter" /> (type to filter)<br/>
+                                    <g:select  size="10" id="listofwfslayers" name="wfsLayerId" from="${Layer.list()}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
                                 </td>
                             </tr>
 

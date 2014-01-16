@@ -237,6 +237,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.polygonStyle = polygonStyle;
 
         this.map.navigationControl.deactivate();
+
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.removeFromMap();
         }
@@ -244,7 +245,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
             this.map.spatialConstraintControl = undefined;
             this.map.navigationControl.activate();
-            this.map.events.triggerEvent('spatialconstraintcleared');
         }
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
             this._addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
@@ -252,6 +252,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style) {
             this._addSpatialConstraintControlToMap();
         }
+        this.map.events.triggerEvent('spatialconstraintcleared');
     },
 
     _addSpatialConstraintControlToMap: function(handler) {

@@ -11,7 +11,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            width: 202,
+            width: 202
         }, cfg);
 
         Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, config);
@@ -34,7 +34,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
     _addSpatialConstraintDisplayPanel: function() {
         this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: this.map,
-            width: this.width,
+            width: this.width
         });
         this.add(this.spatialConstraintDisplayPanel);
     },
@@ -45,7 +45,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     _addLabel: function(labelText) {
         var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>",
+            html: "<h4>" + labelText + "</h4>"
         });
 
         this.add(label);
