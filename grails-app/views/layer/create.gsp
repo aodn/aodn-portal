@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -16,6 +15,7 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'layer.label', default: 'Layer')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+        <g:render template="wfsSelectFilterScript"></g:render>
     </head>
     <body>
         <div class="nav">
