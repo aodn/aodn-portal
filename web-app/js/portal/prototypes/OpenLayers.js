@@ -12,8 +12,8 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
     if (this.wrapDateLine) {
         // wrap around the date line, within the limits of rounding error
         var wrappingOptions = {
-            'rightTolerance':this.map.getResolution(),
-            'leftTolerance':this.map.getResolution()
+            'rightTolerance': this.map.getResolution(),
+            'leftTolerance': this.map.getResolution()
         };
         bounds = bounds.wrapDateLine(this.maxExtent, wrappingOptions);
     }
@@ -44,24 +44,24 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint, overrideParams) {
     var baseFeatureInfoParams = {
-        REQUEST:"GetFeatureInfo",
-        EXCEPTIONS:"application/vnd.ogc.se_xml",
-        BBOX:this._getBoundingBox(),
-        INFO_FORMAT:this.getFeatureInfoFormat(),
-        QUERY_LAYERS:this.params.LAYERS,
-        FEATURE_COUNT:this.isNcwms() ? 1 : 100,
-        SRS:'EPSG:4326',
-        CRS:'EPSG:4326',
-        WIDTH:this.map.size.w,
-        HEIGHT:this.map.size.h
+        REQUEST: "GetFeatureInfo",
+        EXCEPTIONS: "application/vnd.ogc.se_xml",
+        BBOX: this._getBoundingBox(),
+        INFO_FORMAT: this.getFeatureInfoFormat(),
+        QUERY_LAYERS: this.params.LAYERS,
+        FEATURE_COUNT: this.isNcwms() ? 1 : 100,
+        SRS: 'EPSG: 4326',
+        CRS: 'EPSG: 4326',
+        WIDTH: this.map.size.w,
+        HEIGHT: this.map.size.h
     };
 
     if (clickPoint) {
         baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, {
-            X:clickPoint.x,
-            Y:clickPoint.y,
-            I:clickPoint.x,
-            J:clickPoint.y
+            X: clickPoint.x,
+            Y: clickPoint.y,
+            I: clickPoint.x,
+            J: clickPoint.y
         });
     }
 
