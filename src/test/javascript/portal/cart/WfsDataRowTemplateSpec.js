@@ -92,7 +92,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_downloadUrl').andReturn('download_url');
+            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
 
             var testLayer = {grailsLayerId: 6};
             var testCollection = {
@@ -102,7 +102,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             tpl._urlListDownloadHandler(testCollection);
 
-            expect(tpl._downloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
             expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
                 'download_url',
                 'the_collection_URLs.txt',
@@ -115,7 +115,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_downloadUrl').andReturn('download_url');
+            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
 
             var testLayer = {grailsLayerId: 6};
             var testCollection = {
@@ -125,7 +125,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
             tpl._netCdfDownloadHandler(testCollection);
 
-            expect(tpl._downloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
             expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
                 'download_url',
                 'the_collection_source_files.zip',
