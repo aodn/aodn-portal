@@ -60,7 +60,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             scope: this,
             params: {
                 layerId: layer.grailsLayerId,
-                url: this._downloadUrl(layer, 'csv')
+                url: this._wmsDownloadUrl(layer, 'csv')
             },
             success: this._createDownloadEstimate
         });
