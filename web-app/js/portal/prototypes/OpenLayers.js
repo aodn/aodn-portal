@@ -47,6 +47,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
         REQUEST: "GetFeatureInfo",
         EXCEPTIONS: "application/vnd.ogc.se_xml",
         BBOX: this._getBoundingBox(),
+        FORMAT: this.getFeatureInfoFormat(),
         INFO_FORMAT: this.getFeatureInfoFormat(),
         QUERY_LAYERS: this.params.LAYERS,
         FEATURE_COUNT: this.isNcwms() ? 1 : 100,

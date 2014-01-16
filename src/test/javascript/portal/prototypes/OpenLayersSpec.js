@@ -230,6 +230,36 @@ describe('OpenLayers', function() {
                 expect(getFeatureUrl).toBe(expectedUrl);
             });
         });
+
+        describe('getFeatureInfoRequestString', function() {
+            describe('uses featureInfoFormat format', function() {
+                beforeEach(function() {
+                    openLayer.setMap(new OpenLayers.Map());
+                    openLayer._getBoundingBox = noOp;
+                    openLayer.server = {
+                        infoFormat: 'text/html'
+                    };
+                });
+
+                it('when format not already specified', function() {
+                    openLayer.mergeNewParams({
+                        format: undefined  // note that OpenLayers sets the default format to 'image/jpeg' in this case...
+                    });
+
+                    expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');
+                    expect(openLayer.getFeatureInfoRequestString()).not.toHaveParameterWithValue('FORMAT', 'image/jpeg');
+                });
+
+                it('when format already specified', function() {
+                    openLayer.mergeNewParams({
+                        format: 'image/png'
+                    });
+
+                    expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');
+                    expect(openLayer.getFeatureInfoRequestString()).not.toHaveParameterWithValue('FORMAT', 'image/png');
+                });
+            });
+        });
     });
 
     describe('Geometry', function() {
