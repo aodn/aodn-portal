@@ -191,12 +191,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getCqlForTemporalExtent: function() {
+        // TODO escape - encodeURIComponent
         return "here_be_time";
     },
 
     _buildGetFeatureRequestUrl: function (baseUrl, layerName, outputFormat, downloadFilter) {
         // Call the WMS class and apply NO download filters (null)
-        wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
+        var wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
             this,
             [
                 baseUrl,
