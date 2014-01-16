@@ -84,7 +84,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var fileSizeImage;
 
         // Error code received from the server-side
-        if (estimate == -1) {
+        if (estimate == -1 || isNaN(estimate)) {
             downloadMessage = OpenLayers.i18n("estimatedDlFailedMsg");
             fileSizeEstimate = "";
             fileMagnitude = "";

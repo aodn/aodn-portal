@@ -127,6 +127,18 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             expect(tpl._getDownloadEstimate).toHaveBeenCalled();
         });
 
+        it('_generateEstHtmlString formats correctly when returned value is -1', function() {
+            mockEstimate = -1;
+            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
+        });
+
+        it('_generateEstHtmlString formats correctly when returned value is NaN', function() {
+            mockEstimate = NaN;
+            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
+        });
+
         it('_generateEstHtmlString formats correctly when size is greater than 1024', function() {
             mockEstimate = 1100;
             mockHtml = tpl._generateEstHtmlString(mockEstimate);
