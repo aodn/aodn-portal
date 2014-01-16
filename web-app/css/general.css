@@ -198,15 +198,38 @@ hr {
     border-radius: 12px 12px 12px 12px;
 }
 
+.headerHeightOverlord {
+    height: 120px;
+}
+
 #logoContainer {
     float: left;
     position: absolute;
 }
 
 .landingContainer {
-    margin-left: 165;
-    width: 800px;
-    padding: 20px 20px 10px 200px;
+    width: 950px;
+    padding-top: 12px;
+}
+
+#landingLeft {
+    float: left;
+    width: 350;
+}
+
+#landingHeaderContainer {
+    margin-left: 330px;
+}
+
+.bigtext {
+    font-size: 16px;
+}
+
+#landingCentre {
+    float: right;
+    width: 600;
+    padding: 30px 0;
+    margin-bottom: 70px;
 }
 
 #toplinks {
@@ -318,6 +341,7 @@ hr {
 .downloadButtonWrapper {
     margin-top: 2px;
 }
+
 .downloadButton {
     background: url("../images/animation/download.png") no-repeat left top transparent;
 }
@@ -362,7 +386,6 @@ Site navigation
     float: left;
     padding: 8px 30px 6px 60px;
     width: 200px;
-
 }
 
 .viewPortTab * {
@@ -425,7 +448,6 @@ Site navigation
     border: 6px solid #F4F4F4;
     font-size: 12px;
     background-image: none;
-
 }
 
 /* Our own style is applied to the message of the day dialog (see above). */
@@ -470,7 +492,6 @@ a:hover.mainlinks {
 }
 
 .authentication-form-floated {
-
     position: absolute;
     top: 150px;
     left: 210px;
@@ -628,7 +649,6 @@ table.featureInfo caption {
     opacity: 0.7;
     -ms-filter: "alpha(opacity=70)"; /* IE8 */
     filter: alpha(opacity=70); /* IE6/IE7 */
-
     /*color: white;*/
 }
 
@@ -699,7 +719,6 @@ table.featureInfo caption {
     background-color: #F4F4F4;
     padding: 4px;
     width: 97%;
-
 }
 
 .featureinfocontent {
@@ -1195,6 +1214,7 @@ div.allwhite {
 #activeLayerTreePanel img.x-tree-node-icon {
     width: 0px;
 }
+
 #activeLayerTreePanel input.x-tree-node-cb {
     vertical-align: middle;
 }
@@ -1206,6 +1226,7 @@ div.allwhite {
 .gx-popup .x-tab-panel-body {
     border: none;
 }
+
 .delayedDownloadForm {
     padding: 10px 10px 2px 10px;
 }
@@ -1229,7 +1250,6 @@ div.allwhite {
 }
 
 .WAMiniLogo {
-
     vertical-align: middle;
     margin-bottom: 6px;
 }
