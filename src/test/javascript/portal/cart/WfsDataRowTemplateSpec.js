@@ -133,7 +133,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
         });
 
-        it('_generateEstHtmlString formats correctly when returned value is -1', function() {
+        it('_generateEstHtmlString formats correctly when returned value is NaN', function() {
             mockEstimate = NaN;
             mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
