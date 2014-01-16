@@ -151,7 +151,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numResultsToLoad++;
         Ext.Ajax.request({
             scope: this,
-            url: this._getLayerFeatureInfoRequestString(layer),
+            url: proxyURL + encodeURIComponent(this._getLayerFeatureInfoRequestString(layer)),
             extraParams: {
                 layer: layer,
                 name: layer.name,
@@ -178,15 +178,12 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _getLayerFeatureInfoRequestString: function(layer) {
-        var ret = proxyURL + encodeURIComponent(
-            layer.getFeatureInfoRequestString(this._clickPoint(),
-                {
-                    BUFFER: this.appConfig.mapGetFeatureInfoBuffer
-                })
+        return layer.getFeatureInfoRequestString(
+            this._clickPoint(),
+            {
+                BUFFER: this.appConfig.mapGetFeatureInfoBuffer
+            }
         );
-
-        ret = ret + "&FORMAT=" + layer.getFeatureInfoFormat();
-        return ret;
     },
 
     _clickPoint: function() {

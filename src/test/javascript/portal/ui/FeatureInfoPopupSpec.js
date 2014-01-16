@@ -141,4 +141,20 @@ describe("Portal.ui.FeatureInfoPopup", function()
         // satisfied that the it() above confirms correct behaviour
 
     });
+
+    describe('_getLayerFeatureInfoRequestString', function() {
+        it('sets clickPoint and BUFFER param', function() {
+            featureInfoPopup._clickPoint = function() { return {}; };
+            spyOn(layer, 'getFeatureInfoRequestString');
+
+            featureInfoPopup._getLayerFeatureInfoRequestString(layer);
+
+            expect(layer.getFeatureInfoRequestString).toHaveBeenCalledWith(
+                featureInfoPopup._clickPoint(),
+                {
+                    BUFFER: featureInfoPopup.appConfig.mapGetFeatureInfoBuffer
+                }
+            );
+        });
+    });
 });
