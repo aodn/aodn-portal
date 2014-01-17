@@ -16,6 +16,8 @@ abstract class RequestProxyingController {
 
     def _performProxying = { paramProcessor = null, streamProcessor = null ->
 
+        println("proxying url: ${params.url}")
+
         def url = params.url
 
         if (!url) {

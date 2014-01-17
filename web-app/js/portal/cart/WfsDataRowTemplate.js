@@ -143,6 +143,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _wfsDownloadUrl: function(layer, format) {
+        console.log(layer.getWfsLayerFeatureRequestUrl(format));
         return layer.getWfsLayerFeatureRequestUrl(format);
     },
 

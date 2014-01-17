@@ -50,7 +50,7 @@ class ProxiedRequest extends ExternalRequest {
         // Force download if filename provided
         if (params.downloadFilename) {
             log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
-            response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
+            response.setHeader "Content-disposition", "attachment; filename=acorn_urls.csv"
         }
     }
 
