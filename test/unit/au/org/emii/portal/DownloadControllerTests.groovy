@@ -87,20 +87,20 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.layerId = 1
         mockParams.url = 'http://www.example.com/'
 
-        def testUrlList = """\
-            url1
-            url2
-        """
-
         def archiveGenerated = false
         controller.hostVerifier = [allowedHost: { r, u -> true }]
         controller.metaClass.urlListStreamProcessor = { layer ->
             assertEquals testLayer, layer
-            { inputStream, outputStream -> outputStream << testUrlList }
+            { inputStream, outputStream ->
+                outputStream << """\
+                    url1
+                    url2
+                """
+            }
         }
         controller.bulkDownloadService = [
             generateArchiveOfFiles: { urlList, outputStream, locale ->
-                assertEquals testUrlList, urlList
+                assertEquals(["url1", "url2"], urlList)
                 assertEquals mockResponse.outputStream, outputStream
                 archiveGenerated = true
             }
