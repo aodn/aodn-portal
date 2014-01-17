@@ -82,9 +82,15 @@ class DownloadController extends RequestProxyingController {
 
         def resultStream = new ByteArrayOutputStream()
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
-        def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
 
-        _executeExternalRequest url, streamProcessor, resultStream
+        if (layer.urlDownloadFieldName) {
+
+            def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
+            _executeExternalRequest url, streamProcessor, resultStream
+        }
+        else {
+            resultStream << "-1"
+        }
 
         render new String(resultStream.toByteArray(), 'UTF-8')
     }
@@ -166,8 +172,7 @@ class DownloadController extends RequestProxyingController {
             log.debug "sizeFieldName: '$sizeFieldName'; sizeFieldIndex: $sizeFieldIndex (it's a problem if this is null or -1)"
 
             if (filenameFieldIndex == -1 || sizeFieldIndex == -1) {
-                log.error "Could not find index of '$filenameFieldName' or '$sizeFieldName' in $firstRow"
-                _eachRemainingRow(csvReader) { currentRow -> currentRow.each{ log.error it } }
+                log.error "Could not find index of '$filenameFieldName' or '$sizeFieldName' in $firstRow (this might be because the harvester is not yet collecting file size information, or because of GeoServer configuration)"
 
                 outputStream << "Results contained no column with header '$filenameFieldName' or '$sizeFieldName'. Column headers were: $firstRow"
                 return

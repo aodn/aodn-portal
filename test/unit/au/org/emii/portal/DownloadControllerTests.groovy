@@ -131,6 +131,27 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
     }
 
+    void testEstimateSizeForLayerNoUrlColumnSpecified() {
+
+        _setUpExampleObjects()
+
+        mockParams.layerId = 1
+        testLayer.urlDownloadFieldName = null
+
+        def testStreamProcessor = new Object()
+        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
+            assertEquals null, filenameFieldName
+            assertEquals "size", sizeFieldName
+            return testStreamProcessor
+        }
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "-1", mockResponse.contentAsString
+    }
+
     void testEstimateSizeForLayer() {
 
         _setUpExampleObjects()
