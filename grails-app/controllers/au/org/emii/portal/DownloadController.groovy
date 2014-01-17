@@ -60,9 +60,6 @@ class DownloadController extends RequestProxyingController {
         _executeExternalRequest url, streamProcessor, resultStream
 
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
-
-        println "urls: ${urls}"
-
         bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
 
