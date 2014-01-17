@@ -58,8 +58,9 @@ class DownloadController extends RequestProxyingController {
         def streamProcessor = urlListStreamProcessor(layer)
 
         _executeExternalRequest url, streamProcessor, resultStream
-
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
+
+        response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
         bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
 
@@ -172,7 +173,7 @@ class DownloadController extends RequestProxyingController {
             log.debug "sizeFieldName: '$sizeFieldName'; sizeFieldIndex: $sizeFieldIndex (it's a problem if this is null or -1)"
 
             if (filenameFieldIndex == -1 || sizeFieldIndex == -1) {
-                log.error "Could not find index of '$filenameFieldName' or '$sizeFieldName' in $firstRow (this might be because the harvester is not yet collecting file size information, or because of GeoServer configuration)"
+                log.info "Could not find index of '$filenameFieldName' or '$sizeFieldName' in $firstRow (this might be because the harvester is not yet collecting file size information, or because of GeoServer configuration)"
 
                 outputStream << "Results contained no column with header '$filenameFieldName' or '$sizeFieldName'. Column headers were: $firstRow"
                 return
