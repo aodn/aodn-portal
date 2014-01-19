@@ -218,7 +218,7 @@ hr {
 }
 
 #landingHeaderContainer {
-    margin-left: 330px;
+    margin-left: 340px;
 }
 
 .bigtext {
@@ -1068,23 +1068,18 @@ div.allwhite {
 
 /* Faceted search styles */
 .search-filter-panel .x-panel-header {
-    /*color: #8a2be2;*/
     height: 12px;
     font-size: 12px;
     padding: 5px 2px 5px 2px;
 }
 
 .term-selection-panel {
-    border: 1px solid #EEE;
     margin-bottom: 3px;
 }
 
-.term-selection-panel:hover {
-    border: 1px solid #CCC;
-}
-
 .term-selection-panel .x-panel-header {
-    background-color: #f8f8f8;
+    border-radius: 4px 4px 0 0;
+    background-color: #e8e8e8;
     padding-bottom: 7px;
 }
 
@@ -1152,7 +1147,7 @@ div.allwhite {
     padding: 3px 10px;
 }
 .resultsHeaderBackground {
-    background-color: #f8f8f8;
+    background-color: #d9d9d9;
 }
 
 .facetedSearchBtn {
