@@ -5122,8 +5122,8 @@ body.ext-ie6.x-body-masked .x-window select {
 }
 
 .x-list-body dt em {
-    display:block;
-    padding:3px 4px;
+    /*display:block;*/
+    padding:3px 6px;
     overflow:hidden;
     -moz-user-select: none;
     -khtml-user-select: none;
