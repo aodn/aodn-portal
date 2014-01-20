@@ -1146,8 +1146,13 @@ div.allwhite {
     margin-top: 4px;
     padding: 3px 10px;
 }
+
 .resultsHeaderBackground {
     background-color: #d9d9d9;
+}
+
+.resultsHeaderBackground:hover {
+    background-color: #eeeeee;
 }
 
 .facetedSearchBtn {
