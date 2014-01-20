@@ -69,7 +69,7 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         response.setHeader = { name, value ->
             setHeaderCallCount++
             assertEquals 'Content-disposition', name
-            assertEquals 'attachment; filename=the_filename.pdf', value
+            assertEquals "attachment; filename*=UTF-8''the_filename.pdf", value
         }
 
         proxiedRequest._determineDownloadFilename()
