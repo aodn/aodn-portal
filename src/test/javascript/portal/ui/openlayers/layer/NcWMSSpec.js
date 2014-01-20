@@ -18,7 +18,7 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
             };
 
             expect(ncwmsLayer.getCqlForTemporalExtent()).toEqual(
-                'time after 2000-01-01T01:01:01.000Z and time before 2001-01-01T01:01:01.000Z'
+                'time%20after%202000-01-01T01%3A01%3A01.000Z%20and%20time%20before%202001-01-01T01%3A01%3A01.000Z'
             );
         });
     });
