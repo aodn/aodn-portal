@@ -34,7 +34,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.filters = [];
 
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_UNKNOWN, this.addErrorMessage, this);
     },
 
     initComponent: function() {
@@ -69,15 +68,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     addErrorMessage: function() {
-
-        var thisPanel = this;
-        setTimeout(function() {
-            thisPanel.removeLoadingMessage();
-            thisPanel.errorMessage = thisPanel.createErrorMessageContainer();
-            thisPanel.add(thisPanel.errorMessage);
-            thisPanel.doLayout();
-        }, 400 ); // needs less time really but more time for user to comprehend the change from loading to error
-
+        this.removeLoadingMessage();
+        this.errorMessage = this.createErrorMessageContainer();
+        this.add(this.errorMessage);
+        this.doLayout();
     },
 
     _isLayerActive: function(layer) {
@@ -104,7 +98,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         if (layer.filters) {
             this._showHideFilters(layer, show, hide, target);
         }
-        else if (layer.grailsLayerId) {
+        else if (layer.isKnownToThePortal()) {
 
             Ext.Ajax.request({
                 url: this.GET_FILTER,
@@ -122,7 +116,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             });
         }
         else {
-            // probably some other layer added in through getfeatureinfo, or user added WMS
+            this.addErrorMessage();
         }
     },
 

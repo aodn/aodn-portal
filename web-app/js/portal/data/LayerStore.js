@@ -45,7 +45,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             },
             failure: function(resp) {
                 this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
-                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_UNKNOWN);
             }
         });
     },

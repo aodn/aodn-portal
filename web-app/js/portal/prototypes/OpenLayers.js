@@ -177,6 +177,10 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
+    return (this.grailsLayerId) ? true: false;
+};
+
 OpenLayers.Layer.WMS.prototype.getCqlFilter= function() {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
