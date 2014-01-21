@@ -41,9 +41,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
         else {
             menuItems = [
-                this._createMenuItem('downloadAsCsvLabel', collection, 'csv'),
-                this._createMenuItem('downloadAsGml3Label', collection, 'gml3'),
-                this._createMenuItem('downloadAsShapefileLabel', collection, 'shape-zip', 'zip')
+                this._createMenuItem('downloadAsCsvLabel', collection, 'csv')
             ];
 
             if (collection.wmsLayer.urlDownloadFieldName) {
