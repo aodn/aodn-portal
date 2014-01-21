@@ -28,10 +28,9 @@ environments {
         dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
-            // url = "jdbc:postgresql://localhost:5432/aodn_portal"
-            url = "jdbc:postgresql://10.11.12.13:5432/imos123_portal?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-            username = "imos123_portal"
-            password = "IPanUlVukYbiK"
+            url = "jdbc:postgresql://localhost:5432/aodn_portal"
+            username = "postgres"
+            password = "postgres"
         }
     }
 
