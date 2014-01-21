@@ -40,7 +40,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             );
         }
         else {
-            var menuItems = [
+            menuItems = [
                 this._createMenuItem('downloadAsCsvLabel', collection, 'csv'),
                 this._createMenuItem('downloadAsGml3Label', collection, 'gml3'),
                 this._createMenuItem('downloadAsShapefileLabel', collection, 'shape-zip', 'zip')
