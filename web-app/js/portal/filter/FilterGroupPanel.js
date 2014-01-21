@@ -10,11 +10,8 @@ Ext.namespace('Portal.filter');
 Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        this.loadingMessage = new Ext.Container({
-            autoEl: 'div',
-            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
-            colspan: 2
-        });
+        this.loadingMessage = this.createLoadingMessageContainer();
+        this.errorMessage = this.createErrorMessageContainer();
 
         var config = Ext.apply({
             layout: 'table',
@@ -25,8 +22,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
                 tableAttrs: {
                     cellspacing: '10px',
                     style: {
-                        width: '100%',
-                        font: '11px'
+                        width: '100%'
                     }
                 }
             },
@@ -38,6 +34,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.filters = [];
 
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_UNKOWN, this.addErrorMessage, this);
     },
 
     initComponent: function() {
@@ -47,14 +44,40 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
     },
 
-    addLoadingMessage: function() {
-
-        this.loadingMessage = new Ext.Container({
+    createLoadingMessageContainer: function() {
+        return new Ext.Container({
             autoEl: 'div',
-            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
-            colspan: 2
+            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')})
         });
+    },
+
+    createErrorMessageContainer: function() {
+        return new Ext.Container({
+            autoEl: 'div',
+            html: "<i>" + OpenLayers.i18n('subsetParametersErrorText') + "</i>"
+        })
+    },
+
+    addLoadingMessage: function() {
+        this.loadingMessage = new this.createLoadingMessageContainer();
         this.add(this.loadingMessage);
+    },
+
+    removeLoadingMessage: function() {
+        this.remove(this.loadingMessage);
+        delete this.loadingMessage;
+    },
+
+    addErrorMessage: function() {
+
+        var thisPanel = this;
+        setTimeout(function() {
+            thisPanel.removeLoadingMessage();
+            thisPanel.errorMessage = thisPanel.createErrorMessageContainer();
+            thisPanel.add(thisPanel.errorMessage);
+            thisPanel.doLayout();
+        }, 400 ); // needs less time really but more time for user to comprehend the change from loading to error
+
     },
 
     _isLayerActive: function(layer) {
@@ -65,7 +88,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         var labelText = filter.label.split('_').join(' ').toTitleCase();
         var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>",
+            html: "<h4>" + labelText + "</h4>"
         });
         this.add(label);
     },

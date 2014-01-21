@@ -30,8 +30,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     handleLayer: function(layer, show, hide, target) {
 
-        this._extJsLayoutHack();
-
+       this._extJsLayoutHack();
         if (layer.isNcwms()) {
             this.layout.setActiveItem(this.aodaacPanel.id);
         }

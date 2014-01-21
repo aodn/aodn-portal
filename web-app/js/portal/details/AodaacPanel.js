@@ -15,7 +15,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
-        this.selectedProductInfoIndex = 0; // include a drop-down menu to change this index to support multiple products per Layer
         var config = Ext.apply({
             id: 'aodaacPanel',
             bodyCls: 'aodaacTab',
@@ -28,7 +27,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.AodaacPanel.superclass.initComponent.call(this);
 
-        // TODO: I wonder if this spacing/layout could be done more neatly with CSS/padding etc?
         this._addLoadingInfo();
         this.add(this._newSectionSpacer());
         this.add(this._newSectionSpacer());

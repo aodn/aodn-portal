@@ -2,6 +2,7 @@ PORTAL_EVENTS = {
     BEFORE_SELECTED_LAYER_CHANGED:    "beforeSelectedLayerChanged",
     SELECTED_LAYER_CHANGED:           "selectedLayerChanged",
     BASE_LAYER_CHANGED:               "baseLayerChanged",
+    LAYER_UNKOWN:                    "layerRemoved",
     LAYER_REMOVED:                    "layerRemoved",
     LAYER_LOADING_START:              "layerLoadingStart",
     LAYER_LOADING_END:                "layerLoadingEnd",
