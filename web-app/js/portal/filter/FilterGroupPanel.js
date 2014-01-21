@@ -34,7 +34,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.filters = [];
 
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_UNKOWN, this.addErrorMessage, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_UNKNOWN, this.addErrorMessage, this);
     },
 
     initComponent: function() {
