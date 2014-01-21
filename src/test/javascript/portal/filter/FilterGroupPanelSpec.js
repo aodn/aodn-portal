@@ -50,6 +50,28 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('the clear all filters button', function() {
 
+        var layer;
+        var target;
+        var show;
+        var hide;
+
+        beforeEach(function() {
+            layer = {
+                grailsLayerId: 1499409
+            };
+            layer.isKnownToThePortal = function(){return true}
+            target = {};
+            show = jasmine.createSpy('showCallBack');
+            hide = jasmine.createSpy('hideCallBack');
+
+            spyOn(filterGroupPanel, '_createFilterPanel');
+            spyOn(filterGroupPanel, '_clearFilters');
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+        });
+
+
         it('calls the _clearFilters method', function() {
 
             spyOn(Ext.Ajax, 'request').andCallFake(
@@ -58,19 +80,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 }
             );
 
-            var target = {};
-            var show = jasmine.createSpy('showCallBack');
-            var hide = jasmine.createSpy('hideCallBack');
-
-            spyOn(filterGroupPanel, '_createFilterPanel');
-            spyOn(filterGroupPanel, '_clearFilters');
-            spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
-
             filterGroupPanel.handleLayer(
-                {
-                    grailsLayerId: 1499409
-                },
+                layer,
                 show,
                 hide,
                 target
@@ -81,6 +92,21 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel.clearFiltersButton.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+
+        it('calls the addErrorMessage function', function() {
+
+            layer.grailsLayerId = undefined;
+            layer.isKnownToThePortal = function(){return false}
+
+            filterGroupPanel.handleLayer(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
         });
     });
 
