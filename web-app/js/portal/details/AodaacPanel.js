@@ -227,7 +227,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildAodaacParameters: function(geometry) {
-
         // BODAAC hack.
         if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {
