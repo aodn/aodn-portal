@@ -53,7 +53,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     getWmsLayerFeatureRequestUrl: noOp
                 }
             });
-            expect(menuItems.length).toEqual(3);
+            expect(menuItems.length).toEqual(1);
         });
 
         it('includes items for download url list and NetCDF download', function() {
@@ -64,7 +64,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     urlDownloadFieldName: true
                 }
             });
-            expect(menuItems.length).toEqual(5);
+            expect(menuItems.length).toEqual(3);
 
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
