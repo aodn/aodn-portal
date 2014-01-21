@@ -50,7 +50,8 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp
+                    getWmsLayerFeatureRequestUrl: noOp,
+                    isNcwms: function() { return false; }
                 }
             });
             expect(menuItems.length).toEqual(3);
@@ -61,7 +62,8 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true
+                    urlDownloadFieldName: true,
+                    isNcwms: function() { return false; }
                 }
             });
             expect(menuItems.length).toEqual(5);
@@ -134,6 +136,19 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     layerId: 6
                 }
             );
+        });
+
+        it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
+            spyOn(tpl, '_wfsDownloadUrl');
+            tpl._urlListDownloadHandler(
+                {
+                    wmsLayer: {
+                        grailsLayerId: 1
+                    }
+                },
+                true
+            );
+            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
     });
 
