@@ -30,7 +30,10 @@ class DownloadController extends RequestProxyingController {
 
         def layer = Layer.get(layerId)
 
-        if (! prefixToRemove || ! newUrlBase) {
+        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
+        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
+
+        if (!prefixToRemove || !newUrlBase) {
             log.error('Cannot proceed with URL download, prefixToRemove or newUrlBase are not configured')
             render text: "Server is not configured for URL downloading, please contact server administrator", status: 404
             return
