@@ -188,5 +188,28 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (next) {
             return this.toTime(next);
         }
+    },
+
+    getCqlForTemporalExtent: function() {
+        return encodeURIComponent(String.format(
+            'time after {0} and time before {1}',
+            this.bodaacFilterParams.dateRangeStart.toISOString(),
+            this.bodaacFilterParams.dateRangeEnd.toISOString()
+        ));
+    },
+
+    _buildGetFeatureRequestUrl: function(baseUrl, layerName, outputFormat, downloadFilter) {
+        // Call the WMS class and apply NO download filters (null)
+        var wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
+            this,
+            [
+                baseUrl,
+                layerName,
+                outputFormat,
+                null
+            ]
+        );
+        cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
+        return wfsRequest + cqlFilter;
     }
 });
