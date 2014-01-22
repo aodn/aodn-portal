@@ -22,7 +22,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('_showHideFilters', function() {
 
-        var dummyResponse;
         var fnTarget = {};
         var showFunction = function() {};
         var layer;
@@ -60,8 +59,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer = {
                 grailsLayerId: 1499409
             };
-            layer.isKnownToThePortal = function(){return true}
-            filterGroupPanel._isLayerActive = function() {return true}
+            layer.isKnownToThePortal = function(){return true};
+            filterGroupPanel._isLayerActive = function() {return true};
             target = {};
             show = jasmine.createSpy('showCallBack');
             hide = jasmine.createSpy('hideCallBack');
@@ -99,7 +98,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
         it('calls the addErrorMessage function when layer is unknown', function() {
 
             layer.grailsLayerId = undefined;
-            layer.isKnownToThePortal = function(){return false}
+            layer.isKnownToThePortal = function(){return false};
 
             filterGroupPanel.handleLayer(
                 layer,
@@ -123,8 +122,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer = {
                 grailsLayerId: 1499409
             };
-            layer.isKnownToThePortal = function(){return true}
-            filterGroupPanel._isLayerActive = function() {return true}
+            layer.isKnownToThePortal = function(){return true};
+            filterGroupPanel._isLayerActive = function() {return true};
             target = {};
             show = jasmine.createSpy('showCallBack');
             hide = jasmine.createSpy('hideCallBack');
@@ -202,7 +201,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel._updateAndShow(noOp, {});
         });
 
-        it('hides the laoding message', function() {
+        it('hides the loading message', function() {
 
             expect(filterGroupPanel.loadingMessage.hide).toHaveBeenCalled();
         });
