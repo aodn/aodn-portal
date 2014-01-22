@@ -147,6 +147,12 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
             expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
+
+        it('delegates to the wfs data row implementation for URL list download', function() {
+            tpl._createDownloadButton(null, getUrlDownloadRecord());
+            expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
+        });
     });
 
     describe('file list entries', function() {
@@ -195,6 +201,50 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
     });
 
+    describe('_getRowTemplate', function() {
+
+        beforeEach(function() {
+            spyOn(tpl, '_getAodaacDataRowTemplateInstance');
+            spyOn(tpl, '_getWfsDataRowTemplateInstance');
+            spyOn(tpl, '_getNoDataRowTemplateInstance');
+        });
+
+        it('calls for AODAAC template', function() {
+            tpl._getRowTemplate({
+                aodaac: {} // AODAAC filter
+            });
+
+            expect(tpl._getAodaacDataRowTemplateInstance).toHaveBeenCalled();
+            expect(tpl._getWfsDataRowTemplateInstance).not.toHaveBeenCalled();
+            expect(tpl._getNoDataRowTemplateInstance).not.toHaveBeenCalled();
+        });
+
+        it('calls for WFS template', function() {
+            tpl._getRowTemplate({
+                wmsLayer: {wfsLayer: {}}
+            });
+
+            expect(tpl._getAodaacDataRowTemplateInstance).not.toHaveBeenCalled();
+            expect(tpl._getWfsDataRowTemplateInstance).toHaveBeenCalled();
+            expect(tpl._getNoDataRowTemplateInstance).not.toHaveBeenCalled();
+
+            tpl._getRowTemplate({
+                wmsLayer: {urlDownloadFieldName: 'url'}
+            });
+            expect(tpl._getWfsDataRowTemplateInstance.callCount).toBe(2);
+        });
+
+        it('calls for no data template', function() {
+            tpl._getRowTemplate({
+                wmsLayer: {} // Just the WMS layer
+            });
+
+            expect(tpl._getAodaacDataRowTemplateInstance).not.toHaveBeenCalled();
+            expect(tpl._getWfsDataRowTemplateInstance).not.toHaveBeenCalled();
+            expect(tpl._getNoDataRowTemplateInstance).toHaveBeenCalled();
+        });
+    });
+
     function setupDataRowTemplatePrototypeSpies(method) {
         spyOn(Portal.cart.AodaacDataRowTemplate.prototype, method);
         spyOn(Portal.cart.WfsDataRowTemplate.prototype, method);
@@ -202,16 +252,20 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     }
 
     function getAodaacRecord() {
-        var aodaacRecord = geoNetworkRecord;
-        aodaacRecord.aodaac = {};
+        geoNetworkRecord.aodaac = {};
 
-        return aodaacRecord;
+        return geoNetworkRecord;
     }
 
     function getWfsRecord() {
-        var wfsRecord = geoNetworkRecord;
-        wfsRecord.wmsLayer.wfsLayer = {};
+        geoNetworkRecord.wmsLayer.wfsLayer = {};
 
-        return wfsRecord;
+        return geoNetworkRecord;
+    }
+
+    function getUrlDownloadRecord() {
+        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'url';
+
+        return geoNetworkRecord;
     }
 });

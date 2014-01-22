@@ -46,27 +46,30 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
     });
 
     describe('createMenuItems', function() {
-        it('creates menu items', function() {
+
+        it('creates menu items if WFS layer is linked', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
+                    wfsLayer: {},
                     isNcwms: function() { return false; }
                 }
             });
+
             expect(menuItems.length).toEqual(1);
         });
 
-        it('includes items for download url list and NetCDF download', function() {
+        it('includes items for download url list and NetCDF download if urlDownloadFieldName exists', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
                     urlDownloadFieldName: true,
+                    wfsLayer: null,
                     isNcwms: function() { return false; }
                 }
             });
-            expect(menuItems.length).toEqual(3);
 
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
@@ -79,8 +82,23 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                 }
             }
 
+            expect(menuItems.length).toEqual(2); // URL List and NetCDF download
             expect(urlListIncluded).toBe(true);
             expect(netCdfDownloadIncluded).toBe(true);
+        });
+
+        it('includes all menu items when wfsLayer and urlDownloadFieldName exist', function() {
+            var menuItems = tpl.createMenuItems({
+                wmsLayer: {
+                    getWfsLayerFeatureRequestUrl: noOp,
+                    getWmsLayerFeatureRequestUrl: noOp,
+                    urlDownloadFieldName: true,
+                    wfsLayer: {},
+                    isNcwms: function() { return false; }
+                }
+            });
+
+            expect(menuItems.length).toEqual(3);
         });
     });
 

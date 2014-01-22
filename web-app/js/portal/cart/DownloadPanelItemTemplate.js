@@ -65,7 +65,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, collection) {
-        if (collection.aodaac || collection.wmsLayer.wfsLayer) {
+        if (collection.aodaac || collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
@@ -117,12 +117,14 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmation: this.downloadWithConfirmation,
             downloadConfirmationScope: this
         };
+
         if (values.aodaac) {
             return this._getAodaacDataRowTemplateInstance(config);
         }
-        else if (values.wmsLayer.wfsLayer) {
+        else if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
             return this._getWfsDataRowTemplateInstance(config);
         }
+
         return this._getNoDataRowTemplateInstance(config);
     },
 
