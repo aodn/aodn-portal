@@ -66,7 +66,7 @@ grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
 // Portal help site
-help.url = "http://portalhelp.aodn.org.au/"
+help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
