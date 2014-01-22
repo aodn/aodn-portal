@@ -117,7 +117,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _getDateString: function(combo) {
-          return this.TIME_UTIL._toUtcIso8601DateString(combo.getValue());
+          return combo.getValue().toDateString();
     },
 
     _onSelect: function(picker, date) {
