@@ -72,7 +72,6 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         }
     },
     
-    
     onGo: function() {
         var range = this.dateRange.getFilterValue();
 
@@ -115,7 +114,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     removeAnyFilters: function() {
-    	this.clearComponents();
+        this.clearComponents();
         this.collapse();
         this.goButton.disable();
     },
