@@ -33,7 +33,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                             scope: this,
                             select: this.onSelect,
                             change: this.onSelect
-                        }
+                        },
+                        bubbleEvents: ['select']
                     }
                 ]
             },
@@ -58,7 +59,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                             scope: this,
                             select: this.onSelect,
                             change: this.onSelect
-                        }
+                        },
+                        bubbleEvents: ['select']
                     }
                 ]
             }

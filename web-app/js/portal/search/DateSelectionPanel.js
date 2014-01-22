@@ -9,7 +9,7 @@ Ext.namespace('Portal.search');
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     padding: 5,
 
-    constructor:function (cfg) {
+    constructor: function (cfg) {
         cfg = cfg || {};
 
         this.titleText = cfg.title;
@@ -20,17 +20,17 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cfg.separator = "|";
 
         var defaults = {
-            collapsible:true,
-            collapsed:true,
-            titleCollapse:true
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);
 
         var config = Ext.apply({
-            layout:'form',
-            cls:'search-filter-panel term-selection-panel',
-            items:[
+            layout: 'form',
+            cls: 'search-filter-panel term-selection-panel',
+            items: [
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
 
                 // Add a container to store the go button and the clear button. Display horizontally
@@ -42,12 +42,13 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                         }
                     },
                     items: [ this.goButton = new Ext.Button({
-                        text:OpenLayers.i18n("goButton"),
-                        width:65
+                        text: OpenLayers.i18n("goButton"),
+                        width: 65,
+                        disabled: true
                         }),
                         this.clearButton = new Ext.Button({
-                            text:OpenLayers.i18n("clearButton"),
-                            width:65
+                            text: OpenLayers.i18n("clearButton"),
+                            width: 65
                         })]
                 })
             ]
@@ -57,12 +58,20 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.goButton, 'click', this.onGo, this);
         this.mon(this.clearButton, 'click', this.clearDateRange, this);
+        this.mon(this.dateRange, 'select', this.onSelect, this);  
     },
 
     initComponent:function () {
         Portal.search.DateSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
+    onSelect: function() {
+    	var range = this.dateRange.getFilterValue();
+        if (range.fromDate !== "" && range.toDate !== "") {
+            this.goButton.enable();
+        }
+    },
+    
     onGo: function() {
         var range = this.dateRange.getFilterValue();
 
@@ -96,22 +105,18 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     clearDateRange: function() {
         this.dateRange.clearValues();
         this.removeSelectedSubTitle();
+        this.goButton.disable();
 
         if (this.searcher.hasFilters()) {
-            this.searcher.removeFilters("extFrom");
-            this.searcher.removeFilters("extTo");
-            this.dateRange.clearValues();
-            this.removeSelectedSubTitle();
+            this.clearComponents();
             this.searcher.search();
         }
     },
 
     removeAnyFilters: function() {
-        this.searcher.removeFilters("extFrom");
-        this.searcher.removeFilters("extTo");
-        this.dateRange.clearValues();
-        this.removeSelectedSubTitle();
+        this.clearComponents();
         this.collapse();
+        this.goButton.disable();
     },
 
     setSelectedSubTitle: function(subtitle) {
@@ -123,5 +128,12 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     removeSelectedSubTitle: function() {
         var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
         this.setTitle(newTitle);
+    },
+    
+    clearComponents: function() {
+        this.searcher.removeFilters("extFrom");
+        this.searcher.removeFilters("extTo");
+        this.dateRange.clearValues();
+        this.removeSelectedSubTitle();
     }
 });
