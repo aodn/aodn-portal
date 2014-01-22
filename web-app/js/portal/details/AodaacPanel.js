@@ -43,8 +43,8 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
             this._updateGeoNetworkAodaac(this.map.getConstraint());
             this._clearDateTimeFields();
-            this.selectedLayer.processTemporalExtent();
-            this._attachTemporalEvents();
+            this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
+            this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
             this._removeLoadingInfo();
             this._showAllControls();
             show.call(target, this);
