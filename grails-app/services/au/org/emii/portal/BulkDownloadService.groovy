@@ -7,6 +7,7 @@
 
 package au.org.emii.portal
 
+import groovy.time.TimeCategory
 import org.apache.commons.io.IOUtils
 
 import java.util.zip.ZipEntry
@@ -24,8 +25,10 @@ class BulkDownloadService {
 
     void generateArchiveOfFiles(urlList, outputStream, locale) {
 
+        def processingStart = new Date()
+
         report = new DownloadReport(locale)
-        uniqueFilenameGenerator  = new UniqueFilenameGenerator()
+        uniqueFilenameGenerator = new UniqueFilenameGenerator()
 
         try {
             _createZipStream outputStream
@@ -33,6 +36,11 @@ class BulkDownloadService {
         }
         finally {
             _closeStream()
+
+            use(TimeCategory) {
+
+                log.info "Bulk download complete. ${urlList.size()} URLs; time taken: ${new Date() - processingStart}"
+            }
         }
     }
 
@@ -44,8 +52,10 @@ class BulkDownloadService {
 
     def _writeFilesToStream = { urlList ->
 
-        urlList.each {
-            _addFileEntry(it)
+        urlList.eachWithIndex { url, index ->
+            log.debug "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
+
+            _addFileEntry(url)
         }
 
         _addDownloadReportToArchive()
@@ -58,8 +68,6 @@ class BulkDownloadService {
 
     def _addFileEntry = { url ->
 
-        log.debug "Adding entry for file from URL: '$url'"
-
         def filenameToUse = _uniqueFilenameForUrl(url)
         def streamFromUrl
 
@@ -69,6 +77,8 @@ class BulkDownloadService {
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
             def bytesCopied = IOUtils.copy(streamFromUrl, zipStream)
+
+            log.debug "Added $bytesCopied Bytes"
 
             report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
         }

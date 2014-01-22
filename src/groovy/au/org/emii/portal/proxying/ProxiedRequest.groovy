@@ -50,7 +50,13 @@ class ProxiedRequest extends ExternalRequest {
         // Force download if filename provided
         if (params.downloadFilename) {
             log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
-            response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
+
+            // Make sure the filename is encoded, see:
+            // http://stackoverflow.com/questions/7967079/special-characters-in-content-disposition-filename
+            response.setHeader(
+                "Content-disposition",
+                "attachment; filename*=UTF-8''${URLEncoder.encode(params.downloadFilename, 'UTF-8')}"
+            )
         }
     }
 

@@ -27,22 +27,42 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     createMenuItems: function(collection) {
-        var menuItems = [
-            this._createMenuItem('downloadAsCsvLabel', collection, 'csv'),
-            this._createMenuItem('downloadAsGml3Label', collection, 'gml3'),
-            this._createMenuItem('downloadAsShapefileLabel', collection, 'shape-zip', 'zip')
-        ];
+        var menuItems = [];
 
-        if (collection.wmsLayer.urlDownloadFieldName) {
-            menuItems.push({text: OpenLayers.i18n('downloadAsUrlsLabel'), handler: this._urlListDownloadHandler(collection), scope: this});
-            // menuItems.push({text: OpenLayers.i18n('downloadAsNetCdfLabel'), handler: this._netCdfDownloadHandler(collection), scope: this});
+        // BODAAC hack.
+        if (collection.wmsLayer && collection.wmsLayer.isNcwms()) {
+            menuItems.push(
+                {
+                    text: OpenLayers.i18n('downloadAsUrlsLabel'),
+                    handler: this._urlListDownloadHandler(collection, true),
+                    scope: this
+                }
+            );
+        }
+        else {
+            menuItems = [
+                this._createMenuItem('downloadAsCsvLabel', collection, 'csv')
+            ];
+
+            if (collection.wmsLayer.urlDownloadFieldName) {
+                menuItems.push({
+                    text: OpenLayers.i18n('downloadAsUrlsLabel'),
+                    handler: this._urlListDownloadHandler(collection),
+                    scope: this
+                });
+                menuItems.push({
+                    text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+                    handler: this._netCdfDownloadHandler(collection),
+                    scope: this
+                });
+            }
         }
 
         return menuItems;
     },
 
     getDataSpecificMarkup: function(values) {
-        this._getDownloadEstimate(values.uuid);
+        this._getDownloadEstimate(values.wmsLayer);
         return '<div id="downloadEst' + values.uuid + '"></div>';
     },
 
@@ -54,11 +74,14 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
     },
 
-    _getDownloadEstimate: function(uuid) {
+    _getDownloadEstimate: function(layer) {
         Ext.Ajax.request({
-            url: 'download/estimateSize',
+            url: 'download/estimateSizeForLayer',
             scope: this,
-            params: uuid,
+            params: {
+                layerId: layer.grailsLayerId,
+                url: this._wmsDownloadUrl(layer, 'csv')
+            },
             success: this._createDownloadEstimate
         });
     },
@@ -124,17 +147,27 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
     },
 
-    _urlListDownloadHandler: function(collection) {
+    _urlListDownloadHandler: function(collection, downloadWfs) {
         var additionalArgs = {
             action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
-        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+
+        if (downloadWfs) {
+            return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+        }
+        else {
+            return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
+        }
     },
 
     _netCdfDownloadHandler: function(collection) {
-        // Todo: Needs additional args when server side is ready
-        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'zip'), String.format("{0}.zip", collection.title));
+        var additionalArgs = {
+            action: 'downloadNetCdfFilesForLayer',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
     },
 
     _wfsDownloadUrl: function(layer, format) {

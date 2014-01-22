@@ -50,53 +50,38 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp
+                    getWmsLayerFeatureRequestUrl: noOp,
+                    isNcwms: function() { return false; }
                 }
             });
-            expect(menuItems.length).toEqual(3);
+            expect(menuItems.length).toEqual(1);
         });
 
-        it('includes an item to download a list of urls', function() {
+        it('includes items for download url list and NetCDF download', function() {
             var menuItems = tpl.createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true
+                    urlDownloadFieldName: true,
+                    isNcwms: function() { return false; }
                 }
             });
-            expect(menuItems.length).toEqual(4);
+            expect(menuItems.length).toEqual(3);
 
-            var included = false;
+            var urlListIncluded = false;
+            var netCdfDownloadIncluded = false;
             for (var i = 0; i < menuItems.length; i++) {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
-                    included = true;
-                    i = menuItems.length;
+                    urlListIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsNetCdfLabel')) {
+                    netCdfDownloadIncluded = true;
                 }
             }
 
-            expect(included).toBe(true);
+            expect(urlListIncluded).toBe(true);
+            expect(netCdfDownloadIncluded).toBe(true);
         });
-
-        // todo - This test could probably be combined with the one above
-        /*it('includes an item to download a netCDF file', function() {
-            var menuItems = tpl.createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true
-                }
-            });
-            expect(menuItems.length).toEqual(5);
-
-            var included = false;
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsNetCdfLabel')) {
-                    included = true;
-                    i = menuItems.length;
-                }
-            }
-
-            expect(included).toBe(true);
-        });*/
     });
 
     describe('download handlers', function() {
@@ -109,13 +94,61 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_wmsDownloadUrl');
-            tpl._urlListDownloadHandler({
-                wmsLayer: {
-                    grailsLayerId: 1
+            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
+
+            var testLayer = {grailsLayerId: 6};
+            var testCollection = {
+                wmsLayer: testLayer,
+                title: 'the_collection'
+            };
+
+            tpl._urlListDownloadHandler(testCollection);
+
+            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+                'download_url',
+                'the_collection_URLs.txt',
+                {
+                    action: 'urlListForLayer',
+                    layerId: 6
                 }
-            });
-            expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
+            );
+        });
+
+        it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
+            spyOn(tpl, 'downloadWithConfirmation');
+            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
+
+            var testLayer = {grailsLayerId: 6};
+            var testCollection = {
+                wmsLayer: testLayer,
+                title: 'the_collection'
+            };
+
+            tpl._netCdfDownloadHandler(testCollection);
+
+            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+                'download_url',
+                'the_collection_source_files.zip',
+                {
+                    action: 'downloadNetCdfFilesForLayer',
+                    layerId: 6
+                }
+            );
+        });
+
+        it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
+            spyOn(tpl, '_wfsDownloadUrl');
+            tpl._urlListDownloadHandler(
+                {
+                    wmsLayer: {
+                        grailsLayerId: 1
+                    }
+                },
+                true
+            );
+            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
     });
 
@@ -129,31 +162,31 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
 
         it('_generateEstHtmlString formats correctly when returned value is -1', function() {
             mockEstimate = -1;
-            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when returned value is NaN', function() {
             mockEstimate = NaN;
-            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 1024', function() {
             mockEstimate = 1100;
-            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is  1.1GB <img src="images/clock_red.png"></div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 512 and less than 1024', function() {
             mockEstimate = 600;
-            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is  600MB <img src="images/clock_red.png"></div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is less than 512', function() {
             mockEstimate = 400;
-            mockHtml = tpl._generateEstHtmlString(mockEstimate);
+            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is  400MB </div><div class="clear"></div>');
         });
     });

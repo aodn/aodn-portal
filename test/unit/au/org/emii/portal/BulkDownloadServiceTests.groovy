@@ -36,7 +36,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
     void testGenerateArchiveOfFiles() {
 
-        def testUrlList = new Object()
+        def testUrlList = ['url1', 'url2']
         def testStream = new Object()
         def testLocale = new Object()
 

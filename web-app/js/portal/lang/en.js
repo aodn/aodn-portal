@@ -46,8 +46,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'Download as CSV',
-    downloadAsGml3Label: 'Download as GML3',
-    downloadAsShapefileLabel: 'Download as Shapefile',
     downloadAsNetCdfLabel: 'Download as NetCDF',
     downloadAsHdfLabel: 'Download as HDF',
     downloadAsAsciiLabel: 'Download as ASCII text',

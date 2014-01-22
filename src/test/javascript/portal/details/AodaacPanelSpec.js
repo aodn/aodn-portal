@@ -202,6 +202,24 @@ describe('Portal.details.AodaacPanel', function() {
             expect(aodaacParameters.latitudeRangeEnd).toBe(20);
             expect(aodaacParameters.longitudeRangeEnd).toBe(40);
         });
+
+        describe('BODAAC hack', function() {
+            it('updates bodaacFilterParams in selected layer', function() {
+                var startTime = moment('2000-01-01T01:01:01');
+                var endTime = moment('2001-01-01T01:01:01');
+
+                spyOn(aodaacPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
+                spyOn(aodaacPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
+
+                var selectedLayer = {};
+                aodaacPanel.selectedLayer = selectedLayer;
+
+                aodaacPanel._buildAodaacParameters();
+
+                expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
+                expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
+            });
+        });
     });
 
     function _decorateMap(panel) {

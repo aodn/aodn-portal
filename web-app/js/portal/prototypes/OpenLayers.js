@@ -182,6 +182,7 @@ OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
 };
 
 OpenLayers.Layer.WMS.prototype.getCqlFilter= function() {
+OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
     }

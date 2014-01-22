@@ -12,6 +12,8 @@ import grails.test.ControllerUnitTestCase
 class DownloadControllerTests extends ControllerUnitTestCase {
 
     def controller
+    def testServer
+    def testLayer
 
     protected void setUp() {
         super.setUp()
@@ -19,6 +21,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockLogging DownloadController
 
         controller = new DownloadController()
+    }
+
+    void testUrlListForLayerNoLayerId() {
+
+        controller.urlListForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
     }
 
     void testUrlListForLayer() {
@@ -32,10 +41,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
-            assertEquals "relativeFilePath", fieldName
-            assertEquals "/mnt/imos-t4", prefixToRemove
-            assertEquals "http://data.imos.org.au", newUrlBase
+        controller.metaClass.urlListStreamProcessor = { layer ->
+            assertEquals testLayer, layer
             return testStreamProcessor
         }
 
@@ -54,6 +61,56 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals 1, performProxyingCalledCount
     }
 
+    void testDownloadNetCdfFilesForLayerNoLayerId() {
+
+        controller.downloadNetCdfFilesForLayer()
+
+        assertEquals "No layerId provided", mockResponse.contentAsString
+    }
+
+    void testDownloadNetCdfFilesForLayerInvalidHost() {
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = 'the_url'
+
+        controller.hostVerifier = [allowedHost: { r, u -> false }]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+    }
+
+    void testDownloadNetCdfFilesForLayer() {
+
+        _setUpExampleObjects()
+        mockParams.layerId = 1
+        mockParams.url = 'http://www.example.com/'
+
+        def archiveGenerated = false
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
+        controller.metaClass.urlListStreamProcessor = { layer ->
+            assertEquals testLayer, layer
+            { inputStream, outputStream ->
+                outputStream << """\
+                    url1
+                    url2
+                """
+            }
+        }
+        controller.bulkDownloadService = [
+            generateArchiveOfFiles: { urlList, outputStream, locale ->
+                assertEquals(["url1", "url2"], urlList)
+                assertEquals mockResponse.outputStream, outputStream
+                archiveGenerated = true
+            }
+        ]
+
+        controller.downloadNetCdfFilesForLayer()
+
+        assertTrue archiveGenerated
+    }
+
     void testEstimateSizeForLayerNoLayerId() {
 
         controller.estimateSizeForLayer()
@@ -67,11 +124,32 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.layerId = 1
         mockParams.url = "the_url"
 
-        controller.hostVerifier = [allowedHost: {r, u -> false}]
+        controller.hostVerifier = [allowedHost: { r, u -> false }]
 
         controller.estimateSizeForLayer()
 
         assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+    }
+
+    void testEstimateSizeForLayerNoUrlColumnSpecified() {
+
+        _setUpExampleObjects()
+
+        mockParams.layerId = 1
+        testLayer.urlDownloadFieldName = null
+
+        def testStreamProcessor = new Object()
+        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
+            assertEquals null, filenameFieldName
+            assertEquals "size", sizeFieldName
+            return testStreamProcessor
+        }
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "-1", mockResponse.contentAsString
     }
 
     void testEstimateSizeForLayer() {
@@ -86,7 +164,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: {r, u -> true}]
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
         controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             assertEquals testStreamProcessor, streamProcessor
@@ -110,6 +188,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testUrlListStreamProcessor() {
 
+        _setUpExampleObjects()
+
         def input = """\
             FID,relativeFilePath
             aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
@@ -131,7 +211,7 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        def sp = controller.urlListStreamProcessor("relativeFilePath", "/mnt/imos-t4", "http://data.imos.org.au")
+        def sp = controller.urlListStreamProcessor(testLayer)
         sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
@@ -180,11 +260,11 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
     void _setUpExampleObjects() {
 
-        def server = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-        def layer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: server, dataSource: "test data")
+        testServer = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        testLayer = new Layer(id: 1, name: "The Layer", urlDownloadFieldName: "relativeFilePath", server: testServer, dataSource: "test data")
 
-        mockDomain Server, [server]
-        mockDomain Layer, [layer]
+        mockDomain Server, [testServer]
+        mockDomain Layer, [testLayer]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {
