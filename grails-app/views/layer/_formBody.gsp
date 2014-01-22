@@ -13,7 +13,7 @@
                                     <label for="title"><g:message code="layer.title.label" default="Title" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'title', 'errors')}">
-                                    <g:textField name="title" maxlength="25" value="${layerInstance?.title}" />
+                                    <g:textField name="title" size="60" value="${layerInstance?.title}" />
                                 </td>
                             </tr>
 
@@ -22,7 +22,7 @@
                                     <label for="name"><g:message code="layer.name.label" default="Name" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" maxlength="25" value="${layerInstance?.name}" />
+                                    <g:textField name="name" size="60" value="${layerInstance?.name}" />
                                 </td>
                             </tr>
 
