@@ -19,6 +19,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }, cfg );
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
+        // Divide time zone offset by 60 to get total hours
+        this.timeZoneCorrect = (new Date().getTimezoneOffset()) / -60;
         Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -117,7 +119,9 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _getDateString: function(combo) {
-          return combo.getValue().toDateString();
+        var newDate = combo.getValue();
+        newDate.setHours(this.timeZoneCorrect);
+        return this.TIME_UTIL._toUtcIso8601DateString(newDate);
     },
 
     _onSelect: function(picker, date) {
