@@ -50,10 +50,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    createErrorMessageContainer: function() {
+    createErrorMessageContainer: function(msg) {
         return new Ext.Container({
             autoEl: 'div',
-            html: "<i>" + OpenLayers.i18n('subsetParametersErrorText') + "</i>"
+            html: "<i>" + msg + "</i>"
         })
     },
 
@@ -67,9 +67,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         delete this.loadingMessage;
     },
 
-    addErrorMessage: function() {
+    addErrorMessage: function(msg) {
         this.removeLoadingMessage();
-        this.errorMessage = this.createErrorMessageContainer();
+        this.errorMessage = this.createErrorMessageContainer(msg);
         this.add(this.errorMessage);
         this.doLayout();
     },
@@ -96,7 +96,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.addLoadingMessage();
 
         if (layer.filters) {
-            this._showHideFilters(layer, show, hide, target);
+                this._showHideFilters(layer, show, hide, target);
         }
         else if (layer.isKnownToThePortal()) {
 
@@ -116,14 +116,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             });
         }
         else {
-            this.addErrorMessage();
+            this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
         }
     },
 
     _showHideFilters: function(layer, show, hide, target) {
 
         var aFilterIsEnabled = false;
-        if (this._isLayerActive(layer)) {
+        if (this._isLayerActive(layer) && (layer.filters.length > 0) ) {
 
             Ext.each(
                 layer.filters,
@@ -139,7 +139,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             this._updateAndShow(show, target);
         }
         else {
-            this._hide(hide, target);
+            this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
         }
     },
 

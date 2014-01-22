@@ -11,6 +11,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
     beforeEach(function() {
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({});
+
     });
 
     describe('responds to expected methods', function() {
@@ -60,6 +61,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 grailsLayerId: 1499409
             };
             layer.isKnownToThePortal = function(){return true}
+            filterGroupPanel._isLayerActive = function() {return true}
             target = {};
             show = jasmine.createSpy('showCallBack');
             hide = jasmine.createSpy('hideCallBack');
@@ -94,7 +96,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
 
-        it('calls the addErrorMessage function', function() {
+        it('calls the addErrorMessage function when layer is unknown', function() {
 
             layer.grailsLayerId = undefined;
             layer.isKnownToThePortal = function(){return false}
@@ -107,6 +109,58 @@ describe("Portal.filter.FilterGroupPanel", function() {
             );
 
             expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+        });
+    });
+
+    describe('the _showHideFilters function', function() {
+
+        var layer;
+        var target;
+        var show;
+        var hide;
+
+        beforeEach(function() {
+            layer = {
+                grailsLayerId: 1499409
+            };
+            layer.isKnownToThePortal = function(){return true}
+            filterGroupPanel._isLayerActive = function() {return true}
+            target = {};
+            show = jasmine.createSpy('showCallBack');
+            hide = jasmine.createSpy('hideCallBack');
+
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+        });
+
+
+        it('calls the addErrorMessage function when filters set but has no filters configured', function() {
+
+            layer.filters = [];
+
+            filterGroupPanel._showHideFilters(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+        });
+
+        it('addErrorMessage function not called when filters are configured', function() {
+
+            layer.filters = ["asda","asdasd"];
+
+            filterGroupPanel._showHideFilters(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
         });
     });
 
