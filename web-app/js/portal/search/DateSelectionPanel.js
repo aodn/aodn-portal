@@ -43,7 +43,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                     },
                     items: [ this.goButton = new Ext.Button({
                         text:OpenLayers.i18n("goButton"),
-                        width:65
+                        width:65,
+                        disabled:true
                         }),
                         this.clearButton = new Ext.Button({
                             text:OpenLayers.i18n("clearButton"),
@@ -55,14 +56,23 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.goButton, 'click', this.onGo, this);
+        this.mon(this.goButton, 'click', this.onGo, this);  
         this.mon(this.clearButton, 'click', this.clearDateRange, this);
+        this.mon(this.dateRange, 'select', this.onSelect, this);  
     },
 
     initComponent:function () {
         Portal.search.DateSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
+    onSelect: function() {
+    	var range = this.dateRange.getFilterValue();
+        if (range.fromDate !== "" && range.toDate !== "") {
+            this.goButton.enable();
+        }
+    },
+    
+    
     onGo: function() {
         var range = this.dateRange.getFilterValue();
 
@@ -96,22 +106,18 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     clearDateRange: function() {
         this.dateRange.clearValues();
         this.removeSelectedSubTitle();
+        this.goButton.disable();
 
         if (this.searcher.hasFilters()) {
-            this.searcher.removeFilters("extFrom");
-            this.searcher.removeFilters("extTo");
-            this.dateRange.clearValues();
-            this.removeSelectedSubTitle();
+        	this.clearComponents();
             this.searcher.search();
         }
     },
 
     removeAnyFilters: function() {
-        this.searcher.removeFilters("extFrom");
-        this.searcher.removeFilters("extTo");
-        this.dateRange.clearValues();
-        this.removeSelectedSubTitle();
+    	this.clearComponents();
         this.collapse();
+        this.goButton.disable();
     },
 
     setSelectedSubTitle: function(subtitle) {
@@ -123,5 +129,12 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     removeSelectedSubTitle: function() {
         var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
         this.setTitle(newTitle);
+    },
+    
+    clearComponents: function() {
+        this.searcher.removeFilters("extFrom");
+        this.searcher.removeFilters("extTo");
+        this.dateRange.clearValues();
+        this.removeSelectedSubTitle();
     }
 });
