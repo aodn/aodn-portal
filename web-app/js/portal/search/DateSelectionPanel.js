@@ -108,7 +108,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         this.goButton.disable();
 
         if (this.searcher.hasFilters()) {
-        	this.clearComponents();
+            this.clearComponents();
             this.searcher.search();
         }
     },
