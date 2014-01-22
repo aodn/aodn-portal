@@ -31,19 +31,19 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
         // BODAAC hack.
         if (collection.wmsLayer && collection.wmsLayer.isNcwms()) {
-            menuItems.push(
-                {
-                    text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                    handler: this._urlListDownloadHandler(collection, true),
-                    scope: this
-                }
-            );
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsUrlsLabel'),
+                handler: this._urlListDownloadHandler(collection, true),
+                scope: this
+            });
         }
         else {
             if (collection.wmsLayer.wfsLayer) {
-                menuItems = [
-                    this._createMenuItem('downloadAsCsvLabel', collection, 'csv')
-                ];
+                menuItems.push({
+                    text: OpenLayers.i18n('downloadAsCsvLabel'),
+                    handler: this._downloadWfsHandler(collection, 'csv'),
+                    scope: this
+                });
             }
 
             if (collection.wmsLayer.urlDownloadFieldName) {
@@ -66,14 +66,6 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     getDataSpecificMarkup: function(values) {
         this._getDownloadEstimate(values.wmsLayer);
         return '<div id="downloadEst' + values.uuid + '"></div>';
-    },
-
-    _createMenuItem: function(translationKey, collection, format, extension) {
-        return {
-            text: OpenLayers.i18n(translationKey),
-            handler: this._downloadWfsHandler(collection, (extension || format)),
-            scope: this
-        }
     },
 
     _getDownloadEstimate: function(layer) {
