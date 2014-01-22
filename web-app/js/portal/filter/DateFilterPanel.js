@@ -46,7 +46,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.fromField = new Ext.form.DateField({
             name: 'from',
-            format: "Y-m-d",
+            format: "d/m/Y",
             maxValue: new Date(),
             minValue: new Date(0),
             width: 165,
@@ -59,7 +59,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.toField = new Ext.form.DateField({
             name: 'to',
-            format: "Y-m-d",
+            format: "d/m/Y",
             hidden: true,
             maxValue: new Date(),
             minValue: new Date(0),
@@ -117,7 +117,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _getDateString: function(combo) {
-          return this.TIME_UTIL._toUtcDateString(combo.getValue());
+          return combo.getValue().toDateString();
     },
 
     _onSelect: function(picker, date) {
