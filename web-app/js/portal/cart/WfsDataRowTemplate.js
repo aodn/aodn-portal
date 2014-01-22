@@ -40,9 +40,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             );
         }
         else {
-            menuItems = [
-                this._createMenuItem('downloadAsCsvLabel', collection, 'csv')
-            ];
+            if (collection.wmsLayer.wfsLayer) {
+                menuItems = [
+                    this._createMenuItem('downloadAsCsvLabel', collection, 'csv')
+                ];
+            }
 
             if (collection.wmsLayer.urlDownloadFieldName) {
                 menuItems.push({

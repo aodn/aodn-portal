@@ -117,12 +117,14 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmation: this.downloadWithConfirmation,
             downloadConfirmationScope: this
         };
+
         if (values.aodaac) {
             return this._getAodaacDataRowTemplateInstance(config);
         }
-        else if (values.wmsLayer.wfsLayer) {
+        else if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
             return this._getWfsDataRowTemplateInstance(config);
         }
+
         return this._getNoDataRowTemplateInstance(config);
     },
 
