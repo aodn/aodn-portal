@@ -9,7 +9,7 @@ Ext.namespace('Portal.search');
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     padding: 5,
 
-    constructor:function (cfg) {
+    constructor: function (cfg) {
         cfg = cfg || {};
 
         this.titleText = cfg.title;
@@ -20,17 +20,17 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             cfg.separator = "|";
 
         var defaults = {
-            collapsible:true,
-            collapsed:true,
-            titleCollapse:true
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);
 
         var config = Ext.apply({
-            layout:'form',
-            cls:'search-filter-panel term-selection-panel',
-            items:[
+            layout: 'form',
+            cls: 'search-filter-panel term-selection-panel',
+            items: [
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
 
                 // Add a container to store the go button and the clear button. Display horizontally
@@ -42,13 +42,13 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                         }
                     },
                     items: [ this.goButton = new Ext.Button({
-                        text:OpenLayers.i18n("goButton"),
-                        width:65,
-                        disabled:true
+                        text: OpenLayers.i18n("goButton"),
+                        width: 65,
+                        disabled: true
                         }),
                         this.clearButton = new Ext.Button({
-                            text:OpenLayers.i18n("clearButton"),
-                            width:65
+                            text: OpenLayers.i18n("clearButton"),
+                            width: 65
                         })]
                 })
             ]
