@@ -61,6 +61,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
+    subsetParametersErrorText: 'Filtering of this layer is not possible at this time.',
+    subsetEmptyFiltersText: 'Filtering of this layer is not available at this time.',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
@@ -208,7 +210,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     subsetPanelTitle: 'Subset',
 
     // FilterGroupPanel.js
-    filterGroupPanelTitle: 'Subset',
     clearFilterButtonLabel: 'Clear subset',
 
     // ComboFilterPanel.js

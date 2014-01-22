@@ -50,9 +50,12 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
                     this.body.update(resp.responseText);
                 },
                 failure: function(resp) {
-                    this.body.update(OpenLayers.i18n('noMetadataMessage'));
+                    this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
                 }
             });
+        }
+        else {
+            this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
         }
     }
 });

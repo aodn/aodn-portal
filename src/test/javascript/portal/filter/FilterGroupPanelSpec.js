@@ -11,6 +11,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
     beforeEach(function() {
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({});
+
     });
 
     describe('responds to expected methods', function() {
@@ -21,7 +22,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('_showHideFilters', function() {
 
-        var dummyResponse;
         var fnTarget = {};
         var showFunction = function() {};
         var layer;
@@ -50,6 +50,29 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('the clear all filters button', function() {
 
+        var layer;
+        var target;
+        var show;
+        var hide;
+
+        beforeEach(function() {
+            layer = {
+                grailsLayerId: 1499409
+            };
+            layer.isKnownToThePortal = function(){return true};
+            filterGroupPanel._isLayerActive = function() {return true};
+            target = {};
+            show = jasmine.createSpy('showCallBack');
+            hide = jasmine.createSpy('hideCallBack');
+
+            spyOn(filterGroupPanel, '_createFilterPanel');
+            spyOn(filterGroupPanel, '_clearFilters');
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+        });
+
+
         it('calls the _clearFilters method', function() {
 
             spyOn(Ext.Ajax, 'request').andCallFake(
@@ -58,19 +81,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 }
             );
 
-            var target = {};
-            var show = jasmine.createSpy('showCallBack');
-            var hide = jasmine.createSpy('hideCallBack');
-
-            spyOn(filterGroupPanel, '_createFilterPanel');
-            spyOn(filterGroupPanel, '_clearFilters');
-            spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
-
             filterGroupPanel.handleLayer(
-                {
-                    grailsLayerId: 1499409
-                },
+                layer,
                 show,
                 hide,
                 target
@@ -81,6 +93,73 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel.clearFiltersButton.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+
+        it('calls the addErrorMessage function when layer is unknown', function() {
+
+            layer.grailsLayerId = undefined;
+            layer.isKnownToThePortal = function(){return false};
+
+            filterGroupPanel.handleLayer(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+        });
+    });
+
+    describe('the _showHideFilters function', function() {
+
+        var layer;
+        var target;
+        var show;
+        var hide;
+
+        beforeEach(function() {
+            layer = {
+                grailsLayerId: 1499409
+            };
+            layer.isKnownToThePortal = function(){return true};
+            filterGroupPanel._isLayerActive = function() {return true};
+            target = {};
+            show = jasmine.createSpy('showCallBack');
+            hide = jasmine.createSpy('hideCallBack');
+
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+        });
+
+
+        it('calls the addErrorMessage function when filters set but has no filters configured', function() {
+
+            layer.filters = [];
+
+            filterGroupPanel._showHideFilters(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+        });
+
+        it('addErrorMessage function not called when filters are configured', function() {
+
+            layer.filters = ["asda","asdasd"];
+
+            filterGroupPanel._showHideFilters(
+                layer,
+                show,
+                hide,
+                target
+            );
+
+            expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
         });
     });
 
@@ -122,7 +201,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel._updateAndShow(noOp, {});
         });
 
-        it('hides the laoding message', function() {
+        it('hides the loading message', function() {
 
             expect(filterGroupPanel.loadingMessage.hide).toHaveBeenCalled();
         });

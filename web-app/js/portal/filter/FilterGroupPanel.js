@@ -10,11 +10,8 @@ Ext.namespace('Portal.filter');
 Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
-        this.loadingMessage = new Ext.Container({
-            autoEl: 'div',
-            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
-            colspan: 2
-        });
+        this.loadingMessage = this.createLoadingMessageContainer();
+        this.errorMessage = this.createErrorMessageContainer();
 
         var config = Ext.apply({
             layout: 'table',
@@ -25,8 +22,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
                 tableAttrs: {
                     cellspacing: '10px',
                     style: {
-                        width: '100%',
-                        font: '11px'
+                        width: '100%'
                     }
                 }
             },
@@ -47,14 +43,35 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
     },
 
-    addLoadingMessage: function() {
-
-        this.loadingMessage = new Ext.Container({
+    createLoadingMessageContainer: function() {
+        return new Ext.Container({
             autoEl: 'div',
-            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')}),
-            colspan: 2
+            html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')})
         });
+    },
+
+    createErrorMessageContainer: function(msg) {
+        return new Ext.Container({
+            autoEl: 'div',
+            html: "<i>" + msg + "</i>"
+        })
+    },
+
+    addLoadingMessage: function() {
+        this.loadingMessage = new this.createLoadingMessageContainer();
         this.add(this.loadingMessage);
+    },
+
+    removeLoadingMessage: function() {
+        this.remove(this.loadingMessage);
+        delete this.loadingMessage;
+    },
+
+    addErrorMessage: function(msg) {
+        this.removeLoadingMessage();
+        this.errorMessage = this.createErrorMessageContainer(msg);
+        this.add(this.errorMessage);
+        this.doLayout();
     },
 
     _isLayerActive: function(layer) {
@@ -65,7 +82,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         var labelText = filter.label.split('_').join(' ').toTitleCase();
         var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>",
+            html: "<h4>" + labelText + "</h4>"
         });
         this.add(label);
     },
@@ -79,9 +96,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.addLoadingMessage();
 
         if (layer.filters) {
-            this._showHideFilters(layer, show, hide, target);
+                this._showHideFilters(layer, show, hide, target);
         }
-        else if (layer.grailsLayerId) {
+        else if (layer.isKnownToThePortal()) {
 
             Ext.Ajax.request({
                 url: this.GET_FILTER,
@@ -99,14 +116,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             });
         }
         else {
-            // probably some other layer added in through getfeatureinfo, or user added WMS
+            this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
         }
     },
 
     _showHideFilters: function(layer, show, hide, target) {
 
         var aFilterIsEnabled = false;
-        if (this._isLayerActive(layer)) {
+        if (this._isLayerActive(layer) && (layer.filters.length > 0) ) {
 
             Ext.each(
                 layer.filters,
@@ -122,7 +139,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             this._updateAndShow(show, target);
         }
         else {
-            this._hide(hide, target);
+            this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
         }
     },
 

@@ -173,6 +173,14 @@ OpenLayers.Layer.WMS.prototype._is130 = function() {
     return this.server.type.contains("1.3.0") && !this.isNcwms();
 };
 
+OpenLayers.Layer.WMS.prototype.isNcwms = function() {
+    return false;
+};
+
+OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
+    return (this.grailsLayerId) ? true: false;
+};
+
 OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
