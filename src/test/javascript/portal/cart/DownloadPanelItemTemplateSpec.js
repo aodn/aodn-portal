@@ -147,6 +147,12 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
             expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
+
+        it('delegates to the wfs data row implementation for URL list download', function() {
+            tpl._createDownloadButton(null, getUrlDownloadRecord());
+            expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
+        });
     });
 
     describe('file list entries', function() {
@@ -246,16 +252,20 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     }
 
     function getAodaacRecord() {
-        var aodaacRecord = geoNetworkRecord;
-        aodaacRecord.aodaac = {};
+        geoNetworkRecord.aodaac = {};
 
-        return aodaacRecord;
+        return geoNetworkRecord;
     }
 
     function getWfsRecord() {
-        var wfsRecord = geoNetworkRecord;
-        wfsRecord.wmsLayer.wfsLayer = {};
+        geoNetworkRecord.wmsLayer.wfsLayer = {};
 
-        return wfsRecord;
+        return geoNetworkRecord;
+    }
+
+    function getUrlDownloadRecord() {
+        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'url';
+
+        return geoNetworkRecord;
     }
 });

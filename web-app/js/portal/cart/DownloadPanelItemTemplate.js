@@ -65,7 +65,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, collection) {
-        if (collection.aodaac || collection.wmsLayer.wfsLayer) {
+        if (collection.aodaac || collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
