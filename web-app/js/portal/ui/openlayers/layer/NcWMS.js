@@ -59,7 +59,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     processTemporalExtent: function() {
-
         if (this._destroyed()) {
             return;
         }
@@ -73,7 +72,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
         this.temporalExtent.on('extentparsed', this._processTemporalExtentDone, this);
         this.temporalExtent.parse(this.rawTemporalExtent);
-
     },
 
     _processTemporalExtentDone: function() {
