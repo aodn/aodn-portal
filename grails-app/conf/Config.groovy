@@ -246,7 +246,7 @@ log4j = {
     }
 
     root {
-        error 'stdout'
+        info 'stdout'
     }
 
     error   'org.codehaus.groovy.grails.web.servlet',  //  controllers
