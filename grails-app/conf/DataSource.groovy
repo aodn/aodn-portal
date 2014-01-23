@@ -22,7 +22,7 @@ hibernate {
 }
 
 // environment specific settings
-def ENV = System.getenv()
+def env = System.getenv()
 
 environments {
 
@@ -30,9 +30,9 @@ environments {
         dataSource {
             //dbCreate = "update"
             driverClassName = "org.postgresql.Driver"
-            url = ENV['DATA_SOURCE_URL'] ? ENV['DATA_SOURCE_URL'] : "jdbc:postgresql://localhost:5432/aodn_portal"
-            username = ENV['DATA_SOURCE_USERNAME'] ? ENV['DATA_SOURCE_USERNAME'] : "postgres"
-            password = ENV['DATA_SOURCE_PASSWORD'] ? ENV['DATA_SOURCE_PASSWORD'] : "postgres"
+            url = env['DATA_SOURCE_URL'] ? env['DATA_SOURCE_URL'] : "jdbc:postgresql://localhost:5432/aodn_portal"
+            username = env['DATA_SOURCE_USERNAME'] ? env['DATA_SOURCE_USERNAME'] : "postgres"
+            password = env['DATA_SOURCE_PASSWORD'] ? env['DATA_SOURCE_PASSWORD'] : "postgres"
         }
     }
 
