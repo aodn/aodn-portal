@@ -99,7 +99,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
                 map.setLayerIndex(vectorLayers[i], map.layers.length-1);
             }
         }
-
     },
 
     _getFeature: function() {
@@ -116,7 +115,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 });
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
-
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         handler: handler,
         'displayClass': 'none'
