@@ -65,6 +65,23 @@ your configuration externally via an environment context variable named ```aodn.
 example [AODN config here](https://github.com/aodn/aodn-portal-config) and modify as required. The example should be
 descriptive enough to get you up and running however you can always shoot questions at us via our contact email.
 
+### Overriding config when developing
+
+Certain config items can be overridden by setting environment variables appropriately when running in development mode, e.g.:
+
+```
+$ WFS_SCANNER_URL="http://10.11.12.13/wfsscanner" grails run-app
+```
+
+The full list of overridable configuration items is:
+
+* DATA_SOURCE_URL
+* DATA_SOURCE_USERNAME
+* DATA_SOURCE_PASSWORD
+* WMS_SCANNER_URL
+* WFS_SCANNER_URL
+
+
 ### Collaborating Applications
 
 Portal has a few collaborating applications that you may also want to deploy
