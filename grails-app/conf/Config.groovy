@@ -276,7 +276,7 @@ log4j = {
 
     debug   'grails.app.job',
             //'grails.app.service',
-        'grails.app.tagLib',
+            'grails.app.tagLib',
             'grails.app.domain',
             'grails.app.realms'
             //'au.org.emii.portal'
