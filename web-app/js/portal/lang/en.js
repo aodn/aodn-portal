@@ -187,7 +187,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
     parameterFilter: 'Measured parameter',
-    dateFilter: 'Date',
+    dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
     freeTextFilter: 'Free Text',
     freeTextSearch: 'Go',
