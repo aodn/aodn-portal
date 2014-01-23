@@ -92,10 +92,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     _setLayerToTop: function(thisSpatialConstraint) {
         var map = thisSpatialConstraint.layer.map;
-        var vectorLayers = map.getLayersByName(map.spatialConstraintControl.layerName);
-        for (var i = 0; i < vectorLayers.length; i++){
-            map.setLayerIndex(vectorLayers[i], map.layers.length-1);
+
+        if (map.spatialConstraintControl) {
+            var vectorLayers = map.getLayersByName(map.spatialConstraintControl.layerName);
+            for (var i = 0; i < vectorLayers.length; i++){
+                map.setLayerIndex(vectorLayers[i], map.layers.length-1);
+            }
         }
+
     },
 
     _getFeature: function() {
@@ -112,6 +116,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 });
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
+
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         handler: handler,
         'displayClass': 'none'
