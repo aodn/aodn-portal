@@ -161,7 +161,7 @@ describe('OpenLayers', function() {
 
                 openLayer.server = { uri: "uri" };
                 openLayer.params = { LAYERS: 'name' };
-                openLayer. downloadOnlyFilters = 'cql';
+                openLayer.wmsDownloadOnlyFilters = 'cql';
 
                 openLayer.getWmsLayerFeatureRequestUrl('csv');
 

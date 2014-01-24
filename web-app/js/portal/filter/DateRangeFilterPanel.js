@@ -9,5 +9,9 @@ Ext.namespace('Portal.filter');
 Portal.filter.DateRangeFilterPanel = Ext.extend(Portal.filter.DateFilterPanel, {
     getVisualisationCQL: function() {
         return this._getCQLUsingColumnNames(this.filter.wmsStartDateName, this.filter.wmsEndDateName);
+    },
+
+    getWmsDownloadCQL: function() {
+        return this.getVisualisationCQL();
     }
 });

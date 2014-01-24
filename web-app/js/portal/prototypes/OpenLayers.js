@@ -86,7 +86,7 @@ OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFor
         this.server.uri,
         this.params.LAYERS,
         outputFormat,
-        this.getDownloadFilter()
+        this.getWmsDownloadFilter()
     );
 };
 
@@ -211,6 +211,16 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
 
     if (this.downloadOnlyFilters) {
         filters.push(this.downloadOnlyFilters);
+    }
+
+    return filters.join(' AND ');
+};
+
+OpenLayers.Layer.WMS.prototype.getWmsDownloadFilter = function() {
+    var filters = [];
+
+    if (this.wmsDownloadOnlyFilters) {
+        filters.push(this.wmsDownloadOnlyFilters);
     }
 
     return filters.join(' AND ');
