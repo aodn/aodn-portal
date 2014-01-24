@@ -64,25 +64,27 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     getDataSpecificMarkup: function(values) {
-        this._getDownloadEstimate(values.wmsLayer);
+        this._getDownloadEstimate(values);
         return '<div id="downloadEst' + values.uuid + '"></div>';
     },
 
-    _getDownloadEstimate: function(layer) {
+    _getDownloadEstimate: function(collection) {
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
             scope: this,
             params: {
-                layerId: layer.grailsLayerId,
-                url: this._wmsDownloadUrl(layer, 'csv')
+                layerId: collection.wmsLayer.grailsLayerId,
+                url: this._wmsDownloadUrl(collection.wmsLayer, 'csv')
             },
-            success: this._createDownloadEstimate
+            success: function(result, values) {
+                this._createDownloadEstimate(result, collection.uuid);
+            }
         });
     },
 
     _createDownloadEstimate: function(result, uuid) {
         var sizeEstimate = parseInt(result.responseText);
-        var elementId = 'downloadEst' + uuid.params;
+        var elementId = 'downloadEst' + uuid;
 
         this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
     },
