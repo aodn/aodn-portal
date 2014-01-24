@@ -194,6 +194,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         if (this._isLayerActive(this.layer)) {
             this.layer.setCqlFilter(this._getVisualisationCQLFilter());
             this.layer.downloadOnlyFilters = this._getDownloadCQLFilter();
+            this.layer.wmsDownloadOnlyFilters = this._getWmsDownloadCQLFilter();
         }
     },
 
@@ -215,6 +216,16 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(this._getActiveFilters(), function(filter) {
             cql.push(filter.getDownloadCQL());
+        });
+
+        return cql.join(this.AND_QUERY);
+    },
+
+    _getWmsDownloadCQLFilter: function() {
+        var cql = [];
+
+        Ext.each(this._getActiveFilters(), function(filter) {
+            cql.push(filter.getWmsDownloadCQL());
         });
 
         return cql.join(this.AND_QUERY);

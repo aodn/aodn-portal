@@ -134,7 +134,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _cql: function(wmsLayer) {
-        return wmsLayer.getDownloadFilter();
+        return wmsLayer.getWmsDownloadFilter();
     },
 
     _downloadWfsHandler: function(collection, format) {
