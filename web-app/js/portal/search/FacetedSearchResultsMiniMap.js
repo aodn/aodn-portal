@@ -53,9 +53,14 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     _getBaseLayer: function() {
         return new OpenLayers.Layer.WMS(
             "baselayer",
-            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
-            { layers: 'HiRes_aus-group' },
-            { wrapDateLine: true }
+//            "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/",
+            "http://geoserver.emii.org.au/geoserver/wms",
+//            { layers: 'HiRes_aus-group' },
+            { layers: 'default_basemap_simple' },
+            {
+                wrapDateLine: true,
+                singleTile: true
+            }
         );
     },
 
