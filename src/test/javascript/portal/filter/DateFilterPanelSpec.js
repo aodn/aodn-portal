@@ -212,8 +212,8 @@ describe("Portal.filter.DateFilterPanel", function() {
                     dateFilter._applyDateFilterPanel();
                     expect(dateFilter._fireAddEvent).toHaveBeenCalled();
                     expect(dateFilter.getCQL()).toBeTruthy();
-                    expect(dateFilter.getCQL().indexOf('after')).toBeGreaterThan(0);
-                    expect(dateFilter.getCQL().indexOf('before')).toBeGreaterThan(0);
+                    expect(dateFilter.getCQL().indexOf('>=')).toBeGreaterThan(0);
+                    expect(dateFilter.getCQL().indexOf('<=')).toBeGreaterThan(0);
                 });
             });
 
@@ -259,17 +259,17 @@ describe("Portal.filter.DateFilterPanel", function() {
 
             it('after', function() {
                 operator = 'after';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column after 2013');
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2013');
             });
 
             it('before', function() {
                 operator = 'before';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column before 2013');
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2013');
             });
 
             it('between', function() {
                 operator = 'between';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column after 2013 AND some_column before 2013');
+                expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2013 AND some_column <= 2013');
             });
 
             var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
