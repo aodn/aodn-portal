@@ -71,6 +71,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     _getDownloadEstimate: function(collection) {
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
+            timeout: 90000,
             scope: this,
             params: {
                 layerId: collection.wmsLayer.grailsLayerId,
@@ -78,8 +79,19 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             },
             success: function(result, values) {
                 this._createDownloadEstimate(result, collection.uuid);
+            },
+            failure: function(values) {
+                this._createFailMessage(collection.uuid);
             }
         });
+    },
+
+    _createFailMessage: function(uuid) {
+        // return a flag indicating estimation failure
+        var sizeEstimate = -1;
+        var elementId = 'downloadEst' + uuid;
+
+        this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
     },
 
     _createDownloadEstimate: function(result, uuid) {
@@ -112,16 +124,16 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         else {
             downloadMessage = OpenLayers.i18n("estimatedDlMessage");
 
-            if (estimate >= 1024) {
+            if (estimate >= 1073741824) {
                 downloadMessage = OpenLayers.i18n("estimatedDlMessage");
-                fileSizeEstimate = (estimate / 1024).toFixed(1);
+                fileSizeEstimate = (estimate / 1073741824).toFixed(1);
                 fileMagnitude = OpenLayers.i18n("fileSizeGb");
                 fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
             }
             else {
-                fileSizeEstimate = estimate;
+                fileSizeEstimate = (estimate / 1048576).toFixed(1);
 
-                if (estimate >= 512) {
+                if (estimate >= 536870912) {
                     fileMagnitude = OpenLayers.i18n("fileSizeMb");
                     fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
                 }
