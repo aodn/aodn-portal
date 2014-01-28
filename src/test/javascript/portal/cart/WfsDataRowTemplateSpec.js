@@ -190,22 +190,22 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
         });
 
-        it('_generateEstHtmlString formats correctly when size is greater than 1024', function() {
-            mockEstimate = 1100;
+        it('_generateEstHtmlString formats correctly when size is greater than 1024MB', function() {
+            mockEstimate = 1153433600;
             var mockHtml = tpl._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>The estimated download size is  1.1GB <img src="images/clock_red.png"></div><div class="clear"></div>');
         });
 
-        it('_generateEstHtmlString formats correctly when size is greater than 512 and less than 1024', function() {
-            mockEstimate = 600;
+        it('_generateEstHtmlString formats correctly when size is greater than 512MB and less than 1024MB', function() {
+            mockEstimate = 629145600;
             var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is  600MB <img src="images/clock_red.png"></div><div class="clear"></div>');
+            expect(mockHtml).toEqual('<div>The estimated download size is  600.0MB <img src="images/clock_red.png"></div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is less than 512', function() {
-            mockEstimate = 400;
+            mockEstimate = 419430400;
             var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is  400MB </div><div class="clear"></div>');
+            expect(mockHtml).toEqual('<div>The estimated download size is  400.0MB </div><div class="clear"></div>');
         });
     });
 
