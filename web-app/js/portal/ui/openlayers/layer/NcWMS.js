@@ -192,7 +192,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getCqlForTemporalExtent: function() {
         return encodeURIComponent(String.format(
-            'time after {0} and time before {1}',
+            'time >= {0} and time <= {1}',
             this.bodaacFilterParams.dateRangeStart.toISOString(),
             this.bodaacFilterParams.dateRangeEnd.toISOString()
         ));
