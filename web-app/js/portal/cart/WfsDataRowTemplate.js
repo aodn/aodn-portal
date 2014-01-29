@@ -64,75 +64,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     getDataSpecificMarkup: function(values) {
-        this._getDownloadEstimate(values);
+        this.estimator = new Portal.cart.DownloadEstimator();
+        this.estimator._getDownloadEstimate(values);
         return '<div id="downloadEst' + values.uuid + '"></div>';
-    },
-
-    _getDownloadEstimate: function(collection) {
-        Ext.Ajax.request({
-            url: 'download/estimateSizeForLayer',
-            scope: this,
-            params: {
-                layerId: collection.wmsLayer.grailsLayerId,
-                url: this._wmsDownloadUrl(collection.wmsLayer, 'csv')
-            },
-            success: function(result, values) {
-                this._createDownloadEstimate(result, collection.uuid);
-            }
-        });
-    },
-
-    _createDownloadEstimate: function(result, uuid) {
-        var sizeEstimate = parseInt(result.responseText);
-        var elementId = 'downloadEst' + uuid;
-
-        this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
-    },
-
-    _addDownloadEstimate: function(sizeEstimate, elementId) {
-        var sizeDiv = Ext.get(elementId);
-        var htmlAddition = this._generateEstHtmlString(sizeEstimate);
-        sizeDiv.insertHtml("afterBegin", htmlAddition);
-    },
-
-    _generateEstHtmlString: function(estimate) {
-        var html = '<div>{0} {1}{2} {3}</div>' + '<div class="clear"></div>';
-        var downloadMessage;
-        var fileSizeEstimate;
-        var fileMagnitude;
-        var fileSizeImage;
-
-        // Error code received from the server-side
-        if (estimate == -1 || isNaN(estimate)) {
-            downloadMessage = OpenLayers.i18n("estimatedDlFailedMsg");
-            fileSizeEstimate = "";
-            fileMagnitude = "";
-            fileSizeImage = "";
-        }
-        else {
-            downloadMessage = OpenLayers.i18n("estimatedDlMessage");
-
-            if (estimate >= 1024) {
-                downloadMessage = OpenLayers.i18n("estimatedDlMessage");
-                fileSizeEstimate = (estimate / 1024).toFixed(1);
-                fileMagnitude = OpenLayers.i18n("fileSizeGb");
-                fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
-            }
-            else {
-                fileSizeEstimate = estimate;
-
-                if (estimate >= 512) {
-                    fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                    fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
-                }
-                else {
-                    fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                    fileSizeImage = "";
-                }
-            }
-        }
-
-        return String.format(html, downloadMessage, fileSizeEstimate, fileMagnitude, fileSizeImage);
     },
 
     _cql: function(wmsLayer) {
