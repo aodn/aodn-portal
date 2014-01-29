@@ -54,20 +54,20 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
 
         it('after', function() {
             operator = 'after';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column after 2000', 'wfs_column after 2000');
+            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column >= 2000', 'wfs_column >= 2000');
         });
 
         it('before', function() {
             operator = 'before';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column before 2000', 'wfs_column before 2000');
+            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column <= 2000', 'wfs_column <= 2000');
         });
 
         it('between', function() {
             operator = 'between';
             expectAllCQLFunctionsToEqual(
                 filterPanel,
-                'wms_end_column after 2000 AND wms_start_column before 2013',
-                'wfs_column after 2000 AND wfs_column before 2013'
+                'wms_end_column >= 2000 AND wms_start_column <= 2013',
+                'wfs_column >= 2000 AND wfs_column <= 2013'
             );
         });
 
