@@ -24,7 +24,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '   </div>',
             '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
             '       <div class="miniMap x-panel x-box-item"',
-            '            style=""',
             '            id="fsSearchMap-{storeRowIndex}-{uuid}">',
             '           {[this.getMiniMap(values)]}',
             '       </div>',
