@@ -170,45 +170,6 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         });
     });
 
-    describe('download size estimate', function() {
-        var mockEstimate;
-        it('getDataSpecificMarkup calls _getDownloadEstimate', function() {
-            spyOn(tpl, '_getDownloadEstimate');
-            tpl.getDataSpecificMarkup({});
-            expect(tpl._getDownloadEstimate).toHaveBeenCalled();
-        });
-
-        it('_generateEstHtmlString formats correctly when returned value is -1', function() {
-            mockEstimate = -1;
-            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
-        });
-
-        it('_generateEstHtmlString formats correctly when returned value is NaN', function() {
-            mockEstimate = NaN;
-            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is unknown.  </div><div class="clear"></div>');
-        });
-
-        it('_generateEstHtmlString formats correctly when size is greater than 1024MB', function() {
-            mockEstimate = 1153433600;
-            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is  1.1GB <img src="images/clock_red.png"></div><div class="clear"></div>');
-        });
-
-        it('_generateEstHtmlString formats correctly when size is greater than 512MB and less than 1024MB', function() {
-            mockEstimate = 629145600;
-            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is  600.0MB <img src="images/clock_red.png"></div><div class="clear"></div>');
-        });
-
-        it('_generateEstHtmlString formats correctly when size is less than 512', function() {
-            mockEstimate = 419430400;
-            var mockHtml = tpl._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>The estimated download size is  400.0MB </div><div class="clear"></div>');
-        });
-    });
-
     describe('_wfsDownloadUrl', function() {
 
         it('calls correct function on layer', function() {
