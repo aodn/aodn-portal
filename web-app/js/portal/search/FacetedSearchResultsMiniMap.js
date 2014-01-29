@@ -14,7 +14,8 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         Ext.apply(this, {
             controls: [],
             metadataExtent: values.bbox,
-            uuid: values.uuid
+            uuid: values.uuid,
+            storeRowIndex: values.storeRowIndex
         });
 
         Portal.search.FacetedSearchResultsMiniMap.superclass.constructor.call(this);
@@ -37,7 +38,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     },
 
     _renderAndPosition: function() {
-        this.render("fsSearchMap" + this.uuid);
+        this.render("fsSearchMap-" + this.storeRowIndex + "-" +this.uuid);
 
         if (this.metadataExtent.getBounds()) {
             this.setCenter(
