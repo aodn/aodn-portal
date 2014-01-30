@@ -168,6 +168,15 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             );
             expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
+
+        it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
+            spyOn(tpl, '_wfsDownloadUrl');
+            tpl._netCdfDownloadHandler(
+                {wmsLayer: {grailsLayerId: 1}},
+                true
+            );
+            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
+        });
     });
 
     describe('_wfsDownloadUrl', function() {

@@ -91,13 +91,18 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
     },
 
-    _netCdfDownloadHandler: function(collection) {
+    _netCdfDownloadHandler: function(collection, downloadWfs) {
         var additionalArgs = {
             action: 'downloadNetCdfFilesForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
+        if (downloadWfs) {
+            return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
+        }
+        else {
+            return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
+        }
     },
 
     _wfsDownloadUrl: function(layer, format) {
