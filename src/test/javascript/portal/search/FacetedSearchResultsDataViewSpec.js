@@ -15,11 +15,20 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView();
         testString = "2000-12-31t13:00:00.000z";
         template = new Ext.Template(
-                '<div><span class="x-panel-header">{label}</span>',
-                '   <span>- {value}</span>',
-                '</div>'
-            );
+            '<div><span class="x-panel-header">{label}</span>',
+            '   <span>- {value}</span>',
+            '</div>'
+        );
+    });
+
+    describe ('encoding and decoding', function() {
+        it('encodes correctly', function() {
+            expect(facetedSearchDataView.superEncodeUuid(0,"1231-456-789")).toBe("-0-1231-456-789");
         });
+        it('decodes correctly', function() {
+            expect(facetedSearchDataView.superDecodeUuid("-0-1231-456-789")).toBe("1231-456-789");
+        });
+    });
 
     describe('_getTemporalExtentAsHtml', function() {
         it('returns string containing date range', function() {
@@ -34,9 +43,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     describe('_formatTemporalExtentDateString', function() {
         it('parses date into formatted string', function() {
-    	    spyOn(facetedSearchDataView, '_parseTemporalExtentDateString').andCallThrough();
-    	    facetedSearchDataView._formatTemporalExtentDateString(testString);
-    	    expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
+            spyOn(facetedSearchDataView, '_parseTemporalExtentDateString').andCallThrough();
+            facetedSearchDataView._formatTemporalExtentDateString(testString);
+            expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
         });
     });
 });
