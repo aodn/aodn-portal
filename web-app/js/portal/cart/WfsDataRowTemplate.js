@@ -36,6 +36,11 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 handler: this._urlListDownloadHandler(collection, true),
                 scope: this
             });
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+                handler: this._netCdfDownloadHandler(collection, true),
+                scope: this
+            });
         }
         else {
             if (collection.wmsLayer.wfsLayer) {
