@@ -18,13 +18,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<div>',
             '   <div class="x-panel-header resultsHeaderBackground">',
             '       <h3 class="resultsRowHeader">{title}</h3>',
-            '       <div class="facetedSearchBtn" id="fsSearchAddBtn-{storeRowIndex}-{uuid}">',
+            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '           {[this.getButton(values)]}',
             '       </div>',
             '   </div>',
             '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
             '       <div class="miniMap x-panel x-box-item"',
-            '            id="fsSearchMap-{storeRowIndex}-{uuid}">',
+            '            id="fsSearchMap{[this.encode(values)]}">',
             '           {[this.getMiniMap(values)]}',
             '       </div>',
             '       <div class="x-panel x-box-item resultsTextBody" style="left:240px; ">',
@@ -44,6 +44,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 getButton: function(values) {
                     this.createButton.defer(1, this, [values.uuid, values.storeRowIndex]);
                     return "";
+                },
+                encode: function(values) {
+                    return this.superEncodeUuid(values.storeRowIndex, values.uuid);
                 }
             }
         );
@@ -161,7 +164,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             cls: "navigationButton forwardsButton " + cls,
             width: 100,
             scope: this,
-            renderTo: "fsSearchAddBtn-" + storeRowIndex + "-" + uuid,
+            renderTo: "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex,uuid),
             listeners: {
                 click: {
                     fn: this._viewButtonOnClick,
@@ -204,10 +207,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
+    // uuid alone is unique unless search results have duplicates
+    superEncodeUuid: function(storeRowIndex, uuid) {
+        return "-" + storeRowIndex + "-"  + uuid;
+    },
+
+    decodeSuperUuid: function(encodedUuid) {
+        var chunks = encodedUuid.split("-");
+        chunks.splice(0,2);
+        return chunks.join("-");
+    },
+
     _viewButtonOnClick: function(btn) {
 
         btn.addClass("x-btn-selected");
-        var uuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var superUuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
