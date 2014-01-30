@@ -12,7 +12,6 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     ONE_MB_IN_BYTES: 1048576,
     HALF_GB_IN_BYTES: 536870912,
     EST_FAIL_CODE: -1,
-    TIMEOUT_CODE: 'transaction aborted',
 
     constructor: function() {
         Portal.cart.DownloadEstimator.superclass.constructor.call(this);
@@ -62,7 +61,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var sizeDiv = Ext.get(elementId);
         var htmlAddition;
 
-        if (sizeEstimate == this.TIMEOUT_CODE) {
+        if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
             htmlAddition = this._generateTimeoutHtmlString();
         }
         else {

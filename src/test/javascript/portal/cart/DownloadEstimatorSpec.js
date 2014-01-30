@@ -18,8 +18,13 @@ describe('Portal.cart.DownloadEstimator', function() {
         var mockEstimate;
 
         it('_generateFailHtmlString formats correctly', function() {
-            var mockHtml = estimator._generateFailHtmlString(mockEstimate);
+            var mockHtml = estimator._generateFailHtmlString();
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.</div><div class="clear"></div>');
+        });
+        
+        it('_generateTimeoutHtmlString formats correctly', function() {
+            var mockHtml = estimator._generateTimeoutHtmlString();
+            expect(mockHtml).toEqual('<div>The download size is too large to estimate. <img src="images/clock_red.png"></div><div class="clear"></div>')
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 1024MB', function() {

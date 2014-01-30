@@ -269,5 +269,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeMb: "MB",
     estimatedDlMessage: "The estimated download size is ",
     estimatedDlFailedMsg: "The estimated download size is unknown.",
-    estimatedDlTimeoutMsg: "The download size is too large to estimate."
+    estimatedDlTimeoutMsg: "The download size is too large to estimate.",
+    transAbortMsg: "transaction aborted"
 });
