@@ -104,12 +104,17 @@ class FilterTests extends GrailsUnitTestCase {
     }
 
     void testPossibleValuesFieldValidatorExpectingPossibleValuesGetsNone() {
-
-        assertEquals 'invalid.possibleValues', Filter.possibleValuesFieldValidator("", filterRequiringPossibleValues).first()
+        assertEquals(
+            'invalid.possibleValues',
+            Filter.possibleValuesFieldValidator("", filterRequiringPossibleValues).first()
+        )
     }
 
     void testPossibleValuesFieldValidatorNotExpectingPossibleValues() {
-
-        assertNull Filter.possibleValuesFieldValidator(null, filterNotRequiringPossibleValues)
+        assertNull(Filter.possibleValuesFieldValidator(null, filterNotRequiringPossibleValues))
+        assertEquals(
+            'invalid.possibleValues',
+            Filter.possibleValuesFieldValidator([1, 2], filterNotRequiringPossibleValues).first()
+        )
     }
 }
