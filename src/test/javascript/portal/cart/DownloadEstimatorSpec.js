@@ -18,7 +18,7 @@ describe('Portal.cart.DownloadEstimator', function() {
         };
         mockResult = {
             statusText: 'transaction aborted',
-            status = -1
+            status: -1
         };
     });
 
