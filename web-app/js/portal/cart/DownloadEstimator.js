@@ -36,18 +36,23 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _createFailMessage: function(result, uuid) {
-        var sizeEstimate;
-
-        if (result.isTimeout) {
-            sizeEstimate = result.statusText;
-        }
-        else {
-            sizeEstimate = parseInt(result.status);
-        }
-
         var elementId = 'downloadEst' + uuid;
+        var sizeEstimate = this._generateFailureResponse(result);
 
         this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
+    },
+
+    _generateFailureResponse: function(result) {
+        var estResponse;
+
+        if (result.isTimeout) {
+            estResponse = result.statusText;
+        }
+        else {
+            estResponse = parseInt(result.status);
+        }
+
+        return estResponse;
     },
 
     _createDownloadEstimate: function(result, uuid) {

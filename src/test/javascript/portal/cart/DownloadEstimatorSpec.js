@@ -9,12 +9,40 @@ describe('Portal.cart.DownloadEstimator', function() {
 
     var estimator;
     var geoNetworkRecord;
+    var mockResult;
 
     beforeEach(function() {
         estimator = new Portal.cart.DownloadEstimator();
+        geoNetworkRecord = {
+            uuid: 9
+        };
+        mockResult = {
+            isTimeout: true,
+            statusText: 'transaction aborted',
+            status = -1
+        };
     });
 
-    describe('download size estimate', function() {
+    describe('behavior on timeout', function() {
+        it('_createFailMessage calls _generateFailureResponse', function() {
+            spyOn(estimator, '_generateFailureResponse');
+            estimator._createFailMessage(mockResult, geoNetworkRecord.uuid);
+            expect(estimator._generateFailureResponse).toHaveBeenCalled();
+        });
+
+        it('_generateFailureResponse generates correct response on timeout', function() {
+            var mockResp = estimator._generateFailureResponse(mockResult);
+            expect(mockResp).toEqual('transaction aborted');
+        });
+
+        it('_generateFailureResponse generates correct response on other failure', function() {
+            var mockResultFail = -1;
+            var mockResp = estimator._generateFailureResponse(mockResultFail);
+            expect(mockResp).toEqual(-1);
+        });
+    });
+
+    describe('download size estimate formatting', function() {
         var mockEstimate;
 
         it('_generateFailHtmlString formats correctly', function() {
